@@ -1,0 +1,7 @@
+usr/include
+
+usr/lib/*/libqtermwidget5.so
+usr/lib/*/pkgconfig/qtermwidget5.pc
+
+usr/share/cmake/qtermwidget5/*.cmake
+

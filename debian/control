@@ -1,0 +1,64 @@
+Source: qtermwidget
+Section: libs
+Priority: optional
+Maintainer: LXQt Packaging Team <pkg-lxqt-devel@lists.alioth.debian.org>
+Uploaders:
+ Alf Gaida <agaida@siduction.org>,
+ ChangZhuo Chen (陳昌倬) <czchen@gmail.com>,
+ Andrew Lee (李健秋) <ajqlee@debian.org>
+Build-Depends:
+ cmake (>= 3.0.2),
+ debhelper (>= 9),
+ qtbase5-dev (>= 5.3),
+ quilt,
+Standards-Version: 3.9.6
+Homepage: https://github.com/qterminal/qtermwidget
+Vcs-Git: git://anonscm.debian.org/pkg-lxqt/qtermwidget.git
+Vcs-Browser: http://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git
+
+
+Package: libqtermwidget5-0
+Architecture: any
+Pre-Depends:
+ ${misc:Pre-Depends}
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ qtermwidget5-data (= ${source:Version})
+Conflicts:
+  libqtermwidget0,
+  qtermwidget-data,
+  qtermwidget-dev,
+  qtermwidget-designer
+Replaces:
+  libqtermwidget0,
+  qtermwidget-data,
+  qtermwidget-dev,
+  qtermwidget-designer
+Description: Qt terminal widgets
+ Unicode-enabled, embeddable QT widget for using as a built-in console
+ or terminal emulation widget
+ .
+ This are usefully widgets and libs for building or/and implementing terminal
+ Qt based applications.
+
+Package: libqtermwidget5-0-dev
+Section: libdevel
+Architecture: any
+Depends:
+  ${shlibs:Depends},
+  ${misc:Depends},
+  libqtermwidget5-0 (= ${binary:Version})
+Description: Qt terminal widgets development files
+ Libraries for terminal widgets in Qt.
+
+Package: qtermwidget5-data
+Architecture: all
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Qt terminal widgets data files
+ This package install data files, such as keyboards layouts, color shemes and
+ some others indep arch files usefully for terminal qt based builds over this
+ awesome library widget.
+
