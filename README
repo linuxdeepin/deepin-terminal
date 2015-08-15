@@ -1,0 +1,20 @@
+Debian qtermwidget package git repositories
+------------------------------------------
+
+This Git repository contains the following branches:
+
+  * master
+    This branch contains this README file and is otherwise not used.
+
+  * debian
+    This branch tracks the Debian unstable distribution and contains
+    the current state of last released version of the component.
+
+  * pristine-tar
+    This branch contains the pristine-tar metadata. See pristine-tar(1)
+    or http://kitenet.net/~joey/code/pristine-tar/ for more information.
+
+  * upstream
+    This branch contains the upstream releases.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Thu, 13 Aug 2015 03:14:31 +0800
