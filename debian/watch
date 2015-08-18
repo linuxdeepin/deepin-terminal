@@ -1,0 +1,2 @@
+version=3
+https://github.com/qterminal/qtermwidget/releases .*/v?(\d\S*)/qtermwidget-(?:\d\S*)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz)))
