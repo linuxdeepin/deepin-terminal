@@ -19,12 +19,12 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          qtermwidget5-data (= ${source:Version}),
 Pre-Depends: ${misc:Pre-Depends}
-Description: Qt terminal widgets
+Description: qt terminal widgets
  Unicode-enabled, embeddable QT widget for using as a built-in console
  or terminal emulation widget
  .
- This are usefully widgets and libs for building or/and implementing terminal
- Qt based applications.
+ This are usefully widgets and libs for building or/and implementing
+ terminal Qt based applications.
 
 Package: libqtermwidget5-0-dev
 Architecture: any
@@ -32,12 +32,12 @@ Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          libqtermwidget5-0 (= ${binary:Version}),
-Description: Qt terminal widgets development files
+Description: qt terminal widgets development files
  Unicode-enabled, embeddable QT widget for using as a built-in console
  or terminal emulation widget
  .
- This are usefully widgets and libs for building or/and implementing terminal
- Qt based applications.
+ This are usefully widgets and libs for building or/and implementing
+ terminal Qt based applications.
  .
  This package contains header files for developer.
 
@@ -45,7 +45,7 @@ Package: qtermwidget5-data
 Architecture: all
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-Description: Qt terminal widgets data files
- This package install data files, such as keyboards layouts, color shemes and
- some others indep arch files usefully for terminal qt based builds over this
- awesome library widget.
+Description: qt terminal widgets data files
+ This package install data files, such as keyboards layouts, color
+ shemes and some others indep arch files usefully for terminal qt based
+ builds over this awesome library widget.
