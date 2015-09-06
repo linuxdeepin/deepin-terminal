@@ -145,7 +145,7 @@ void QTermWidget::findPrevious()
 void QTermWidget::search(bool forwards, bool next)
 {
     int startColumn, startLine;
-    
+
     if (next) // search from just after current selection
     {
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
@@ -155,15 +155,15 @@ void QTermWidget::search(bool forwards, bool next)
     {
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionStart(startColumn, startLine);
     }
-   
+
     qDebug() << "current selection starts at: " << startColumn << startLine;
-    qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition(); 
+    qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
 
     QRegExp regExp(m_searchBar->searchText());
     regExp.setPatternSyntax(m_searchBar->useRegularExpression() ? QRegExp::RegExp : QRegExp::FixedString);
     regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
 
-    HistorySearch *historySearch = 
+    HistorySearch *historySearch =
             new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
     connect(historySearch, SIGNAL(matchFound(int, int, int, int)), this, SLOT(matchFound(int, int, int, int)));
     connect(historySearch, SIGNAL(noMatchFound()), this, SLOT(noMatchFound()));
@@ -183,7 +183,7 @@ void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int 
     sw->setSelectionEnd(endColumn, endLine - sw->currentLine());
 }
 
-void QTermWidget::noMatchFound() 
+void QTermWidget::noMatchFound()
 {
         m_impl->m_terminalDisplay->screenWindow()->clearSelection();
 }
@@ -228,12 +228,24 @@ void QTermWidget::startShellProgram()
     m_impl->m_session->run();
 }
 
+void QTermWidget::startTerminalTeletype()
+{
+    if ( m_impl->m_session->isRunning() ) {
+        return;
+    }
+
+    m_impl->m_session->runEmptyPTY();
+    // redirect data from TTY to external recipient
+    connect( m_impl->m_session->emulation(), SIGNAL(sendData(const char *,int)),
+             this, SIGNAL(sendData(const char *,int)) );
+}
+
 void QTermWidget::init(int startnow)
 {
     m_layout = new QVBoxLayout();
     m_layout->setMargin(0);
     setLayout(m_layout);
-    
+
     m_impl = new TermWidgetImpl(this);
     m_impl->m_terminalDisplay->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     m_layout->addWidget(m_impl->m_terminalDisplay);
@@ -347,7 +359,7 @@ QString QTermWidget::workingDirectory()
     if (!d.exists())
     {
         qDebug() << "Cannot find" << d.dirName();
-        goto fallback; 
+        goto fallback;
     }
     return d.canonicalPath();
 #endif
@@ -485,9 +497,9 @@ void QTermWidget::setZoom(int step)
 {
     if (!m_impl->m_terminalDisplay)
         return;
-    
+
     QFont font = m_impl->m_terminalDisplay->getVTFont();
-    
+
     font.setPointSize(font.pointSize() + step);
     setTerminalFont(font);
 }
@@ -567,6 +579,11 @@ int QTermWidget::screenColumnsCount()
     return m_impl->m_terminalDisplay->screenWindow()->screen()->getColumns();
 }
 
+int QTermWidget::screenLinesCount()
+{
+    return m_impl->m_terminalDisplay->screenWindow()->screen()->getLines();
+}
+
 void QTermWidget::setSelectionStart(int row, int column)
 {
     m_impl->m_terminalDisplay->screenWindow()->screen()->setSelectionStart(column, row, true);
@@ -582,9 +599,9 @@ void QTermWidget::getSelectionStart(int& row, int& column)
     m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionStart(column, row);
 }
 
-void QTermWidget::setSelectionEnd(int& row, int& column)
+void QTermWidget::getSelectionEnd(int& row, int& column)
 {
-    m_impl->m_terminalDisplay->screenWindow()->screen()->setSelectionEnd(column, row);
+    m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(column, row);
 }
 
 QString QTermWidget::selectedText(bool preserveLineBreaks)
@@ -619,3 +636,7 @@ Filter::HotSpot* QTermWidget::getHotSpotAt(int row, int column) const
     return m_impl->m_terminalDisplay->filterChain()->hotSpotAt(row, column);
 }
 
+int QTermWidget::getPtySlaveFd() const
+{
+    return m_impl->m_session->getPtySlaveFd();
+}

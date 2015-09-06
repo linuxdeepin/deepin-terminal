@@ -55,6 +55,13 @@ public:
     //start shell program if it was not started in constructor
     void startShellProgram();
 
+    /**
+     * Start terminal teletype as is
+     * and redirect data for external recipient.
+     * It can be used for display and control a remote terminal.
+     */
+    void startTerminalTeletype();
+
     int getShellPID();
 
     void changeDir(const QString & dir);
@@ -63,8 +70,7 @@ public:
 
     //  Terminal font
     // Default is application font with family Monospace, size 10
-    // USE ONLY FIXED-PITCH FONT!
-    // otherwise symbols' position could be incorrect
+    // Beware of a performance penalty and display/alignment issues when using a proportional font.
     void setTerminalFont(const QFont & font);
     QFont getTerminalFont();
     void setTerminalOpacity(qreal level);
@@ -126,18 +132,19 @@ public:
 
     //! Return current key bindings
     QString keyBindings();
-    
+
     void setMotionAfterPasting(int);
 
     /** Return the number of lines in the history buffer. */
     int historyLinesCount();
 
     int screenColumnsCount();
+    int screenLinesCount();
 
     void setSelectionStart(int row, int column);
     void setSelectionEnd(int row, int column);
     void getSelectionStart(int& row, int& column);
-    void setSelectionEnd(int& row, int& column);
+    void getSelectionEnd(int& row, int& column);
 
     /**
      * Returns the currently selected text.
@@ -165,6 +172,13 @@ public:
      */
     Filter::HotSpot* getHotSpotAt(int row, int column) const;
 
+    /**
+     * Returns a pty slave file descriptor.
+     * This can be used for display and control
+     * a remote terminal.
+     */
+    int getPtySlaveFd() const;
+
 signals:
     void finished();
     void copyAvailable(bool);
@@ -181,6 +195,13 @@ signals:
     void activity();
     void silence();
 
+    /**
+     * Emitted when emulator send data to the terminal process
+     * (redirected for external recipient). It can be used for
+     * control and display the remote terminal.
+     */
+    void sendData(const char *,int);
+
 public slots:
     // Copy selection to clipboard
     void copyClipboard();
@@ -188,13 +209,13 @@ public slots:
     // Paste clipboard to terminal
     void pasteClipboard();
 
-    // Paste selection to terminal 
+    // Paste selection to terminal
     void pasteSelection();
 
     // Set zoom
     void zoomIn();
     void zoomOut();
-    
+
     /*! Set named key binding for given widget
      */
     void setKeyBindings(const QString & kb);

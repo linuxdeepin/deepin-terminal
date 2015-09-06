@@ -49,7 +49,7 @@ using namespace Konsole;
 
 int Session::lastSessionId = 0;
 
-Session::Session(QObject* parent) : 
+Session::Session(QObject* parent) :
     QObject(parent),
         _shellProcess(0)
         , _emulation(0)
@@ -79,6 +79,7 @@ Session::Session(QObject* parent) :
 
     //create teletype for I/O with shell process
     _shellProcess = new Pty();
+    ptySlaveFd = _shellProcess->pty()->slaveFd();
 
     //create emulation backend
     _emulation = new Vt102Emulation();
@@ -129,7 +130,17 @@ WId Session::windowId() const
     // there are multiple views, then the window ID for the
     // top-level window which contains the first view is
     // returned
+	//
+	// On Qt5, requesting window IDs breaks QQuickWidget and the likes,
+	// for example, see the following bug reports:
+	//
+	// https://bugreports.qt-project.org/browse/QTBUG-41779
+	// https://bugreports.qt-project.org/browse/QTBUG-40765
+	// https://bugreports.qt-project.org/browse/QTBUG-41942
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+	return 0;
+#else
     if ( _views.count() == 0 ) {
         return 0;
     } else {
@@ -143,6 +154,7 @@ WId Session::windowId() const
 
         return window->winId();
     }
+#endif
 }
 
 void Session::setDarkBackground(bool darkBackground)
@@ -341,6 +353,22 @@ void Session::run()
     emit started();
 }
 
+void Session::runEmptyPTY()
+{
+    _shellProcess->setFlowControlEnabled(_flowControl);
+    _shellProcess->setErase(_emulation->eraseChar());
+    _shellProcess->setWriteable(false);
+
+    // disconnet send data from emulator to internal terminal process
+    disconnect( _emulation,SIGNAL(sendData(const char *,int)),
+                _shellProcess, SLOT(sendData(const char *,int)) );
+
+    _shellProcess->setEmptyPTYProperties();
+
+    qDebug() << "started!";
+    emit started();
+}
+
 void Session::setUserTitle( int what, const QString & caption )
 {
     //set to true if anything is actually changed (eg. old _nameTitle != new _nameTitle )
@@ -469,8 +497,8 @@ void Session::activityStateSet(int state)
         if ( _monitorActivity ) {
             //FIXME:  See comments in Session::monitorTimerDone()
             if (!_notifiedActivity) {
-                emit activity();
                 _notifiedActivity=true;
+                emit activity();
             }
         }
     }
@@ -927,6 +955,10 @@ int Session::foregroundProcessId() const
 int Session::processId() const
 {
     return _shellProcess->pid();
+}
+int Session::getPtySlaveFd() const
+{
+    return ptySlaveFd;
 }
 
 SessionGroup::SessionGroup()
