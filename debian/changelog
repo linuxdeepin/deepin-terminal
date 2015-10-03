@@ -1,3 +1,12 @@
+qtermwidget (0.6.0+20150709-2) experimental; urgency=medium
+
+  * revert most of the optional symbol marks
+  * sort symbols and added some empty lines and comments
+  * introduce arch specific symbols
+  * switch to experimental
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 03 Oct 2015 22:34:42 +0200
+
 qtermwidget (0.6.0+20150709-1) unstable; urgency=medium
 
   [ Alf Gaida ]
