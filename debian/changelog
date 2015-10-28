@@ -1,3 +1,9 @@
+qtermwidget (0.6.0+20150709-3) experimental; urgency=medium
+
+  * reduce symbols mess again 
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 29 Oct 2015 00:09:51 +0100
+
 qtermwidget (0.6.0+20150709-2) experimental; urgency=medium
 
   * revert most of the optional symbol marks

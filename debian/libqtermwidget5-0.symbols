@@ -9,6 +9,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"HistorySearch::qt_metacast(char const*)@Base" 0.6.0+20150709
  (c++)"HistorySearch::search()@Base" 0.6.0+20150709
  (c++)"HistorySearch::search(int, int, int, int)@Base" 0.6.0+20150709
+ (c++)"HistorySearch::staticMetaObject@Base" 0.6.0+20150709
 
  (c++)"Konsole::AccessibleColorScheme::AccessibleColorScheme()@Base" 0.6.0+20150709
  (c++)"Konsole::AutoScrollHandler::~AutoScrollHandler()@Base" 0.6.0+20150709
@@ -21,8 +22,8 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::AutoScrollHandler::timerEvent(QTimerEvent*)@Base" 0.6.0+20150709
  (c++)"Konsole::base_color_table@Base" 0.6.0+20150709
  (c++)"Konsole::BlockArray::append(Konsole::Block*)@Base" 0.6.0+20150709
- (c++)"Konsole::BlockArray::~BlockArray()@Base" 0.6.0+20150709
  (c++)"Konsole::BlockArray::BlockArray()@Base" 0.6.0+20150709
+ (c++)"Konsole::BlockArray::~BlockArray()@Base" 0.6.0+20150709
  (c++)"Konsole::BlockArray::increaseBuffer()@Base" 0.6.0+20150709
  (c++)"Konsole::BlockArray::lastBlock() const@Base" 0.6.0+20150709
  (c++)"Konsole::BlockArray::newBlock()@Base" 0.6.0+20150709
@@ -32,9 +33,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::ColorScheme::colorNameForIndex(int)@Base" 0.6.0+20150709
  (c++)"Konsole::ColorScheme::colorNames@Base" 0.6.0+20150709
  (c++)"Konsole::ColorScheme::ColorScheme()@Base" 0.6.0+20150709
- (c++)"Konsole::ColorScheme::ColorScheme()@Base" 0.6.0+20150709
  (c++)"Konsole::ColorScheme::~ColorScheme()@Base" 0.6.0+20150709
- (c++)"Konsole::ColorScheme::ColorScheme(Konsole::ColorScheme const&)@Base" 0.6.0+20150709
  (c++)"Konsole::ColorScheme::ColorScheme(Konsole::ColorScheme const&)@Base" 0.6.0+20150709
  (c++)"Konsole::ColorScheme::colorTable() const@Base" 0.6.0+20150709
  (c++)"Konsole::ColorScheme::defaultTable@Base" 0.6.0+20150709
@@ -340,8 +339,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::Pty::metaObject() const@Base" 0.6.0+20150709
  (c++)"Konsole::Pty::~Pty()@Base" 0.6.0+20150709
  (c++)"Konsole::Pty::Pty(int, QObject*)@Base" 0.6.0+20150709
- (c++)"Konsole::Pty::Pty(int, QObject*)@Base" 0.6.0+20150709
- (c++)"Konsole::Pty::Pty(QObject*)@Base" 0.6.0+20150709
  (c++)"Konsole::Pty::Pty(QObject*)@Base" 0.6.0+20150709
  (c++)"Konsole::Pty::qt_metacall(QMetaObject::Call, int, void**)@Base" 0.6.0+20150709
  (c++)"Konsole::Pty::qt_metacast(char const*)@Base" 0.6.0+20150709
@@ -608,8 +605,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::ShellCommand::isAvailable() const@Base" 0.6.0+20150709
  (c++)"Konsole::ShellCommand::isRootCommand() const@Base" 0.6.0+20150709
  (c++)"Konsole::ShellCommand::ShellCommand(QString const&)@Base" 0.6.0+20150709
- (c++)"Konsole::ShellCommand::ShellCommand(QString const&)@Base" 0.6.0+20150709
- (c++)"Konsole::ShellCommand::ShellCommand(QString const&, QStringList const&)@Base" 0.6.0+20150709
  (c++)"Konsole::ShellCommand::ShellCommand(QString const&, QStringList const&)@Base" 0.6.0+20150709
  (c++)"Konsole::TerminalDisplay::_antialiasText@Base" 0.6.0+20150709
  (c++)"Konsole::TerminalDisplay::bell(QString const&)@Base" 0.6.0+20150709
@@ -807,8 +802,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"KProcess::execute(QStringList const&, int)@Base" 0.6.0+20150709
  (c++)"KProcess::~KProcess()@Base" 0.6.0+20150709
  (c++)"KProcess::KProcess(KProcessPrivate*, QObject*)@Base" 0.6.0+20150709
- (c++)"KProcess::KProcess(KProcessPrivate*, QObject*)@Base" 0.6.0+20150709
- (c++)"KProcess::KProcess(QObject*)@Base" 0.6.0+20150709
  (c++)"KProcess::KProcess(QObject*)@Base" 0.6.0+20150709
  (c++)"KProcess::metaObject() const@Base" 0.6.0+20150709
  (c++)"KProcess::operator<<(QString const&)@Base" 0.6.0+20150709
@@ -865,8 +858,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"KPtyDevice::writeData(char const*, long long)@Base" 0.6.0+20150709
  (c++)"KPty::~KPty()@Base" 0.6.0+20150709
  (c++)"KPty::KPty()@Base" 0.6.0+20150709
- (c++)"KPty::KPty()@Base" 0.6.0+20150709
- (c++)"KPty::KPty(KPtyPrivate*)@Base" 0.6.0+20150709
  (c++)"KPty::KPty(KPtyPrivate*)@Base" 0.6.0+20150709
  (c++)"KPty::login(char const*, char const*)@Base" 0.6.0+20150709
  (c++)"KPty::logout()@Base" 0.6.0+20150709
@@ -880,8 +871,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"KPtyProcess::isUseUtmp() const@Base" 0.6.0+20150709
  (c++)"KPtyProcess::~KPtyProcess()@Base" 0.6.0+20150709
  (c++)"KPtyProcess::KPtyProcess(int, QObject*)@Base" 0.6.0+20150709
- (c++)"KPtyProcess::KPtyProcess(int, QObject*)@Base" 0.6.0+20150709
- (c++)"KPtyProcess::KPtyProcess(QObject*)@Base" 0.6.0+20150709
  (c++)"KPtyProcess::KPtyProcess(QObject*)@Base" 0.6.0+20150709
  (c++)"KPtyProcess::metaObject() const@Base" 0.6.0+20150709
  (c++)"KPtyProcess::ptyChannels() const@Base" 0.6.0+20150709
@@ -1015,8 +1004,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::pasteSelection()@Base" 0.6.0+20150709
  (c++)"QTermWidget::~QTermWidget()@Base" 0.6.0+20150709
  (c++)"QTermWidget::QTermWidget(int, QWidget*)@Base" 0.6.0+20150709
- (c++)"QTermWidget::QTermWidget(int, QWidget*)@Base" 0.6.0+20150709
- (c++)"QTermWidget::QTermWidget(QWidget*)@Base" 0.6.0+20150709
  (c++)"QTermWidget::QTermWidget(QWidget*)@Base" 0.6.0+20150709
  (c++)"QTermWidget::qt_metacall(QMetaObject::Call, int, void**)@Base" 0.6.0+20150709
  (c++)"QTermWidget::qt_metacast(char const*)@Base" 0.6.0+20150709
@@ -1269,16 +1256,17 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|c++)"QList<QString>::~QList()@Base" 0.6.0+20150709
  (optional|c++)"QList<QString>::QList(QList<QString> const&)@Base" 0.6.0+20150709
  (optional|c++)"QList<QString>::removeAll(QString const&)@Base" 0.6.0+20150709
+ (optional|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0+20150709
  (optional|c++)"QList<QUrl>::detach_helper(int)@Base" 0.6.0+20150709
  (optional|c++)"QList<QUrl>::~QList()@Base" 0.6.0+20150709
  (optional|c++)"QString::~QString()@Base" 0.6.0+20150709
  (optional|c++)"QVarLengthArray<unsigned char, 64>::realloc(int, int)@Base" 0.6.0+20150709
  (optional|c++)"QVector<QRect>::~QVector()@Base" 0.6.0+20150709
- (c++)"QVector<unsigned char>::~QVector()@Base" 0.6.0+20150709
- (c++)"QVector<unsigned char>::reallocData(int, int, QFlags<QArrayData::AllocationOption>)@Base" 0.6.0+20150709
+ (optional|c++)"QVector<unsigned char>::~QVector()@Base" 0.6.0+20150709
+ (optional|c++)"QVector<unsigned char>::reallocData(int, int, QFlags<QArrayData::AllocationOption>)@Base" 0.6.0+20150709
  (optional|c++)"QWeakPointer<QObject>::~QWeakPointer()@Base" 0.6.0+20150709
 
-## arch-bits=32 
+## arch-bits=32
  (arch-bits=32|c++)"Konsole::BlockArray::at(unsigned int)@Base" 0.6.0+20150709
  (arch-bits=32|c++)"Konsole::BlockArray::decreaseBuffer(unsigned int)@Base" 0.6.0+20150709
  (arch-bits=32|c++)"Konsole::BlockArray::has(unsigned int) const@Base" 0.6.0+20150709
@@ -1314,45 +1302,8 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|arch-bits=64|c++)"QHash<int, unsigned long>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0+20150709
  (optional|arch-bits=64|c++)"QHash<int, unsigned long>::findNode(int const&, unsigned int*) const@Base" 0.6.0+20150709
 
-
-## amd64
- (arch=amd64|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
- (optional|arch=amd64|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0+20150709
-
-## arm64
- (arch=arm64|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
-
-## armel
- (arch=armel|c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
-
-## armfh
- (arch=armfh|c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
-
-## hppa
- (optional|arch=hppa|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0+20150709
-
-## i386
- (arch=i386|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
- (optional|arch=i386|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0+20150709
-
-## mips
- (arch=mips|c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
-
-## mipsel
- (arch=mipsel|c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
-
-## powerpc
- (arch=powerpc|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
-
-## ppc64el
- (arch=ppc64el|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
-
-## ppc64
- (arch=ppc64|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
-
-## s390x
- (arch=s390x|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
-
-## x32
- (arch=x32|c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
-
+## some really weird symbols
+## i don't want do break build with this one, so setting them optional is a good idea for no
+## if the symbols file don't fully match, we can refine them with the output of the build
+ (optional|arch= amd64 arm64 i386 powerpc ppc64 ppc64el|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
+ (optional|arch= armel armhf alpha mipsel mips64el |c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
