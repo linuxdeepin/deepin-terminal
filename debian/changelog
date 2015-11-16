@@ -1,3 +1,9 @@
+qtermwidget (0.6.0+20150709-4) unstable; urgency=medium
+
+  * Merge to unstable.
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Mon, 16 Nov 2015 23:23:00 +0800
+
 qtermwidget (0.6.0+20150709-3) experimental; urgency=medium
 
   * reduce symbols mess again 
