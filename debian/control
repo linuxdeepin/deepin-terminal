@@ -9,8 +9,8 @@ Build-Depends: debhelper (>= 9),
                cmake (>= 3.0.2),
                qtbase5-dev,
 Standards-Version: 3.9.6
-Vcs-Browser: http://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git
-Vcs-Git: git://anonscm.debian.org/pkg-lxqt/qtermwidget.git
+Vcs-Browser: http://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git/?h=debian/sid
+Vcs-Git: git://anonscm.debian.org/pkg-lxqt/qtermwidget.git -b debian/sid
 Homepage: https://github.com/qterminal/qtermwidget
 
 Package: libqtermwidget5-0
