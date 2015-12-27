@@ -29,8 +29,7 @@ Description: qt terminal widgets
 Package: libqtermwidget5-0-dev
 Architecture: any
 Section: libdevel
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
+Depends: ${misc:Depends},
          libqtermwidget5-0 (= ${binary:Version}),
 Description: qt terminal widgets development files
  Unicode-enabled, embeddable QT widget for using as a built-in console
@@ -43,8 +42,7 @@ Description: qt terminal widgets development files
 
 Package: qtermwidget5-data
 Architecture: all
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
+Depends: ${misc:Depends},
 Description: qt terminal widgets data files
  This package install data files, such as keyboards layouts, color
  shemes and some others indep arch files usefully for terminal qt based

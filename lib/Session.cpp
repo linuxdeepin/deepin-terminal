@@ -94,9 +94,11 @@ Session::Session(QObject* parent) :
              this, SIGNAL( changeTabTextColorRequest( int ) ) );
     connect( _emulation, SIGNAL(profileChangeCommandReceived(const QString &)),
              this, SIGNAL( profileChangeCommandReceived(const QString &)) );
-    // TODO
-    // connect( _emulation,SIGNAL(imageSizeChanged(int,int)) , this ,
-    //        SLOT(onEmulationSizeChange(int,int)) );
+
+    connect(_emulation, SIGNAL(imageResizeRequest(QSize)),
+            this, SLOT(onEmulationSizeChange(QSize)));
+    connect(_emulation, SIGNAL(imageSizeChanged(int, int)),
+            this, SLOT(onViewSizeChange(int, int)));
 
     //connect teletype to emulation backend
     _shellProcess->setUtf8Mode(_emulation->utf8());
@@ -119,42 +121,11 @@ Session::Session(QObject* parent) :
 
 WId Session::windowId() const
 {
-    // Returns a window ID for this session which is used
-    // to set the WINDOWID environment variable in the shell
-    // process.
-    //
-    // Sessions can have multiple views or no views, which means
-    // that a single ID is not always going to be accurate.
-    //
-    // If there are no views, the window ID is just 0.  If
-    // there are multiple views, then the window ID for the
-    // top-level window which contains the first view is
-    // returned
-	//
-	// On Qt5, requesting window IDs breaks QQuickWidget and the likes,
-	// for example, see the following bug reports:
-	//
-	// https://bugreports.qt-project.org/browse/QTBUG-41779
-	// https://bugreports.qt-project.org/browse/QTBUG-40765
-	// https://bugreports.qt-project.org/browse/QTBUG-41942
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-	return 0;
-#else
-    if ( _views.count() == 0 ) {
-        return 0;
-    } else {
-        QWidget * window = _views.first();
-
-        Q_ASSERT( window );
-
-        while ( window->parentWidget() != 0 ) {
-            window = window->parentWidget();
-        }
-
-        return window->winId();
-    }
-#endif
+    // On Qt5, requesting window IDs breaks QQuickWidget and the likes,
+    // for example, see the following bug reports:
+    // https://bugreports.qt.io/browse/QTBUG-40765
+    // https://codereview.qt-project.org/#/c/94880/
+    return 0;
 }
 
 void Session::setDarkBackground(bool darkBackground)
@@ -517,9 +488,9 @@ void Session::onViewSizeChange(int /*height*/, int /*width*/)
 {
     updateTerminalSize();
 }
-void Session::onEmulationSizeChange(int lines , int columns)
+void Session::onEmulationSizeChange(QSize size)
 {
-    setSize( QSize(lines,columns) );
+    setSize(size);
 }
 
 void Session::updateTerminalSize()

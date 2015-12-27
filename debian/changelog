@@ -1,3 +1,15 @@
+qtermwidget (0.6.0+20151225-1) unstable; urgency=medium
+
+  * Cherry-picking upstream version 0.6.0+201501225.
+  * Cleaned up debian/control
+  * Cleaned up debian/copyright, remove GPL-3+ because it is not used
+    in the project any longer, relicense debian to GPL-2+
+  * Fixed symbols
+  * Fixed LDFLAGS
+  * Removed obsoleted overrides from debian/rules
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 27 Dec 2015 13:34:09 +0100
+
 qtermwidget (0.6.0+20150709-4) unstable; urgency=medium
 
   * Merge to unstable.
