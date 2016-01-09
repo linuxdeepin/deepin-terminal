@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
 Standards-Version: 3.9.6
 Vcs-Browser: http://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git/?h=debian/sid
 Vcs-Git: git://anonscm.debian.org/pkg-lxqt/qtermwidget.git -b debian/sid
-Homepage: https://github.com/qterminal/qtermwidget
+Homepage: https://github.com/lxde/qtermwidget
 
 Package: libqtermwidget5-0
 Architecture: any
@@ -19,31 +19,28 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          qtermwidget5-data (= ${source:Version}),
 Pre-Depends: ${misc:Pre-Depends}
-Description: qt terminal widgets
- Unicode-enabled, embeddable QT widget for using as a built-in console
- or terminal emulation widget
+Description: Terminal emulator widget for Qt 5 - shared libraries.
+ QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
+ built-in console or terminal emulation widget.
  .
- This are usefully widgets and libs for building or/and implementing
- terminal Qt based applications.
+ This package provides the shared libraries.
 
 Package: libqtermwidget5-0-dev
 Architecture: any
 Section: libdevel
 Depends: ${misc:Depends},
          libqtermwidget5-0 (= ${binary:Version}),
-Description: qt terminal widgets development files
- Unicode-enabled, embeddable QT widget for using as a built-in console
- or terminal emulation widget
+Description: Terminal emulator widget for Qt 5 - development files.
+ QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
+ built-in console or terminal emulation widget.
  .
- This are usefully widgets and libs for building or/and implementing
- terminal Qt based applications.
- .
- This package contains header files for developer.
+ This package provides the development files.
 
 Package: qtermwidget5-data
 Architecture: all
 Depends: ${misc:Depends},
-Description: qt terminal widgets data files
- This package install data files, such as keyboards layouts, color
- shemes and some others indep arch files usefully for terminal qt based
- builds over this awesome library widget.
+Description: Terminal emulator widget for Qt 5 - data files.
+ QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
+ built-in console or terminal emulation widget.
+ .
+ This package provides data files like keyboard layouts and color schemes.
