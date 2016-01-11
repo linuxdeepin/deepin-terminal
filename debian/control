@@ -19,7 +19,7 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          qtermwidget5-data (= ${source:Version}),
 Pre-Depends: ${misc:Pre-Depends}
-Description: Terminal emulator widget for Qt 5 - shared libraries.
+Description: Terminal emulator widget for Qt 5 (shared libraries)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
  built-in console or terminal emulation widget.
  .
@@ -30,7 +30,7 @@ Architecture: any
 Section: libdevel
 Depends: ${misc:Depends},
          libqtermwidget5-0 (= ${binary:Version}),
-Description: Terminal emulator widget for Qt 5 - development files.
+Description: Terminal emulator widget for Qt 5 (development files)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
  built-in console or terminal emulation widget.
  .
@@ -39,7 +39,7 @@ Description: Terminal emulator widget for Qt 5 - development files.
 Package: qtermwidget5-data
 Architecture: all
 Depends: ${misc:Depends},
-Description: Terminal emulator widget for Qt 5 - data files.
+Description: Terminal emulator widget for Qt 5 (data files)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
  built-in console or terminal emulation widget.
  .

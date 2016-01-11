@@ -1,3 +1,18 @@
+qtermwidget (0.6.0+20160108-1) unstable; urgency=medium
+
+  [ Alf Gaida ]
+  * Cherry-picking upstream version 0.6.0+20160108, Modification
+    of treatment of double-width character (e.g. Japanese)
+    https://github.com/lxde/qtermwidget/pull/55#issuecomment-170615897
+  * Fixed copyright
+  * No full stop in short descriptions, see lintian warning:
+    'description-synopsis-might-not-be-phrased-properly'
+
+  [ Peter Mattern ]
+  * Fixed descriptions in debian/control
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 11 Jan 2016 20:41:00 +0100
+
 qtermwidget (0.6.0+20151225-1) unstable; urgency=medium
 
   * Cherry-picking upstream version 0.6.0+201501225.
