@@ -1,1 +1,9 @@
 /mangled
+/*.debhelper/
+/files
+/*.log
+/*.substvars
+/libqtermwidget5-0-dev/
+/libqtermwidget5-0/
+/qtermwidget5-data/
+/tmp/

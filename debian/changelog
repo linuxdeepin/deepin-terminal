@@ -1,3 +1,9 @@
+qtermwidget (0.6.0+20160108-2) unstable; urgency=medium
+
+  * patching: 798053  'TCGETS' not declared
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 14 Jan 2016 00:47:51 +0100
+
 qtermwidget (0.6.0+20160108-1) unstable; urgency=medium
 
   [ Alf Gaida ]
