@@ -8,9 +8,9 @@ Priority: optional
 Build-Depends: debhelper (>= 9),
                cmake (>= 3.0.2),
                qtbase5-dev,
-Standards-Version: 3.9.6
-Vcs-Browser: http://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git/?h=debian/sid
-Vcs-Git: git://anonscm.debian.org/pkg-lxqt/qtermwidget.git -b debian/sid
+Standards-Version: 3.9.7
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git/?h=debian/sid
+Vcs-Git: https://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git -b debian/sid
 Homepage: https://github.com/lxde/qtermwidget
 
 Package: libqtermwidget5-0

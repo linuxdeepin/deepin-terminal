@@ -1,3 +1,12 @@
+qtermwidget (0.6.0+20160108-3) unstable; urgency=medium
+
+  * Fixed symbols for -03, thanks vorlon (Closes: #819225) 
+  * Bump standards to 3.9.7
+  * Use secured VCS-links
+  * Added hardening =+ all to rules
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 27 Mar 2016 12:24:03 +0200
+
 qtermwidget (0.6.0+20160108-2) unstable; urgency=medium
 
   * patching: 798053  'TCGETS' not declared
