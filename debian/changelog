@@ -1,3 +1,9 @@
+qtermwidget (0.6.0+20160108-4) unstable; urgency=medium
+
+  * Added kfreebsd-patch, thanks to Bas Couwenberg <sebastic@debian.org>.
+
+ -- Alf Gaida <agaida@siduction.org>  Fri, 13 May 2016 18:21:52 +0200
+
 qtermwidget (0.6.0+20160108-3) unstable; urgency=medium
 
   * Fixed symbols for -03, thanks vorlon (Closes: #819225) 
