@@ -3,8 +3,8 @@ Author: Bas Couwenberg <sebastic@debian.org>
 Bug-Debian: https://bugs.debian.org/824079
 Forwarded: https://github.com/qgis/QGIS/pull/3068
 
---- a/src/plugins/grass/qtermwidget/kpty.cpp
-+++ b/src/plugins/grass/qtermwidget/kpty.cpp
+--- a/lib/kpty.cpp
++++ b/lib/kptypty.cpp
 @@ -117,7 +117,7 @@ extern "C" {
  # define _NEW_TTY_CTRL
  #endif
