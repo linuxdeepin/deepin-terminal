@@ -1,0 +1,25 @@
+Description: Add support for kFreeBSD to grass plugin.
+Author: Bas Couwenberg <sebastic@debian.org>
+Bug-Debian: https://bugs.debian.org/824079
+Forwarded: https://github.com/qgis/QGIS/pull/3068
+
+--- a/src/plugins/grass/qtermwidget/kpty.cpp
++++ b/src/plugins/grass/qtermwidget/kpty.cpp
+@@ -117,7 +117,7 @@ extern "C" {
+ # define _NEW_TTY_CTRL
+ #endif
+ 
+-#if defined (__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__) || defined (__bsdi__) || defined(__APPLE__) || defined (__DragonFly__)
++#if defined (__FreeBSD__) || defined(__FreeBSD_kernel__) || defined (__NetBSD__) || defined (__OpenBSD__) || defined (__bsdi__) || defined(__APPLE__) || defined (__DragonFly__)
+ # define _tcgetattr(fd, ttmode) ioctl(fd, TIOCGETA, (char *)ttmode)
+ #else
+ # if defined(_HPUX_SOURCE) || defined(__Lynx__) || defined (__CYGWIN__)
+@@ -127,7 +127,7 @@ extern "C" {
+ # endif
+ #endif
+ 
+-#if defined (__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__) || defined (__bsdi__) || defined(__APPLE__) || defined (__DragonFly__)
++#if defined (__FreeBSD__) || defined(__FreeBSD_kernel__) || defined (__NetBSD__) || defined (__OpenBSD__) || defined (__bsdi__) || defined(__APPLE__) || defined (__DragonFly__)
+ # define _tcsetattr(fd, ttmode) ioctl(fd, TIOCSETA, (char *)ttmode)
+ #else
+ # if defined(_HPUX_SOURCE) || defined(__CYGWIN__)
