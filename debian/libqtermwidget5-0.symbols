@@ -1208,7 +1208,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|c++)"QHash<int, QString>::detach_helper()@Base" 0.6.0+20150709
  (optional|c++)"QHash<int, QString>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0+20150709
  (optional|c++)"QHash<int, QString>::findNode(int const&, unsigned int*) const@Base" 0.6.0+20150709
- (optional|c++)"QHash<int, QString>::keys() const@Base" 0.6.0+20150709
  (optional|c++)"QHash<int, QString>::~QHash()@Base" 0.6.0+20150709
  (optional|c++)"QHash<unsigned short, unsigned short*>::deleteNode2(QHashData::Node*)@Base" 0.6.0+20150709
  (optional|c++)"QHash<unsigned short, unsigned short*>::detach_helper()@Base" 0.6.0+20150709
@@ -1257,7 +1256,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|c++)"QList<QString>::~QList()@Base" 0.6.0+20150709
  (optional|c++)"QList<QString>::QList(QList<QString> const&)@Base" 0.6.0+20150709
  (optional|c++)"QList<QString>::removeAll(QString const&)@Base" 0.6.0+20150709
- (optional|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0+20150709
  (optional|c++)"QList<QUrl>::detach_helper(int)@Base" 0.6.0+20150709
  (optional|c++)"QList<QUrl>::~QList()@Base" 0.6.0+20150709
  (optional|c++)"QString::~QString()@Base" 0.6.0+20150709
@@ -1307,7 +1305,14 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|arch-bits=64|c++)"QHash<int, unsigned long>::findNode(int const&, unsigned int*) const@Base" 0.6.0+20150709
 
 ## some really weird symbols
-## i don't want do break build with this one, so setting them optional is a good idea for no
+## i don't want do break build with this one, so setting them optional is a good idea for now
 ## if the symbols file don't fully match, we can refine them with the output of the build
- (optional|arch= amd64 arm64 i386 powerpc ppc64 ppc64el|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
- (optional|arch= armel armhf alpha mipsel mips64el |c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
+ (optional|arch= amd64 arm64 i386 kfreebsd64 m86k powerpc ppc64 ppc64el s390x sh4 sparc64 x32 |c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0+20150709
+ (optional|arch= armel armhf alpha hppa mips mipsel mips64el |c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0+20150709
+
+## missed in arm64, armel, mips, mipsel, powerpc, ppc64el, s390x, alpha, hppa,
+## m68k, mips64el, ppc64, sh4, sparc64
+ (optional|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0+20150709
+
+ ## missed in armel, mips, mipsel, alpha, hppa, mips64el, sparc64
+  (optional|c++)"QHash<int, QString>::keys() const@Base" 0.6.0+20150709
