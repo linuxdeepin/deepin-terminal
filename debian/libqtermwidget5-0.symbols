@@ -1314,5 +1314,5 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
 ## m68k, mips64el, ppc64, sh4, sparc64
  (optional|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0+20150709
 
- ## missed in armel, mips, mipsel, alpha, hppa, mips64el, sparc64
-  (optional|c++)"QHash<int, QString>::keys() const@Base" 0.6.0+20150709
+## missed in armel, mips, mipsel, alpha, hppa, mips64el, sparc64
+ (optional|c++)"QHash<int, QString>::keys() const@Base" 0.6.0+20150709

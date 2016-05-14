@@ -1,3 +1,10 @@
+qtermwidget (0.6.0+20160108-6) unstable; urgency=medium
+
+  * Fix two whitespace bugs, which i've had by mistake  introduced
+    after the test builds
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 14 May 2016 03:09:49 +0200
+
 qtermwidget (0.6.0+20160108-5) unstable; urgency=medium
 
   * Rework some symbols 
