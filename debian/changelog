@@ -1,3 +1,13 @@
+qtermwidget (0.6.0-55-gd572f39-1) unstable; urgency=medium
+
+  * Cherry-picked snapshot: 0.6.0-55-gd572f39
+  * switch package numbering to git describe instead of dates
+  * Remove patch, now integrated into upstream (Closes: #798053)
+  * Bump standards to 3.9.8
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 14 May 2016 18:09:02 +0200
+
+
 qtermwidget (0.6.0+20160108-6) unstable; urgency=medium
 
   * Fix two whitespace bugs, which i've had by mistake  introduced
