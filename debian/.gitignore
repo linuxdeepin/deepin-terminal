@@ -1,9 +1,10 @@
 /debhelper-build-stamp
-/mangled
 /*.debhelper/
-/files
 /*.log
+/*.mangled
 /*.substvars
+/files
+
 /libqtermwidget5-0-dev/
 /libqtermwidget5-0/
 /qtermwidget5-data/

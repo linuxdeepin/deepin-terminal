@@ -1,3 +1,15 @@
+qtermwidget (0.6.1~55-gd572f39-1) unstable; urgency=medium
+
+  * Bump version to 0.6.1~
+  * Added a renamed tarball to pristine-tar
+  * Rework symbols (Closes: #831083), tested with i386 and amd64
+  * Fixed VCS fields, using plain /git/
+  * Fixed copyright Format field, using https
+  * Exported LC_ALL=C.UTF-8, make builds reproducible
+  * Set CMAKE_BUILD_TYPE=RelWithDebInfo
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 06 Aug 2016 02:26:26 +0200
+
 qtermwidget (0.6.0-55-gd572f39-1) unstable; urgency=medium
 
   * Cherry-picked snapshot: 0.6.0-55-gd572f39
