@@ -5,7 +5,7 @@ Uploaders: Alf Gaida <agaida@siduction.org>,
            Andrew Lee (李健秋) <ajqlee@debian.org>,
 Section: libs
 Priority: optional
-Build-Depends: debhelper (>= 9),
+Build-Depends: debhelper (>= 10),
                cmake (>= 3.0.2),
                qtbase5-dev
 Standards-Version: 3.9.8
