@@ -6,8 +6,7 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 %:
-	dh ${@} --buildsystem cmake\
-		--parallel\
+	dh ${@} --buildsystem cmake \
 		--fail-missing
 
 override_dh_auto_configure:

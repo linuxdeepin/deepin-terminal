@@ -296,11 +296,13 @@ void QTermWidget::init(int startnow)
     m_searchBar->setFont(font);
 
     setScrollBarPosition(NoScrollBar);
+    setKeyboardCursorShape(BlockCursor);
 
     m_impl->m_session->addView(m_impl->m_terminalDisplay);
 
     connect(m_impl->m_session, SIGNAL(resizeRequest(QSize)), this, SLOT(setSize(QSize)));
     connect(m_impl->m_session, SIGNAL(finished()), this, SLOT(sessionFinished()));
+    connect(m_impl->m_session, &Session::titleChanged, this, &QTermWidget::titleChanged);
 }
 
 
@@ -432,6 +434,11 @@ QStringList QTermWidget::availableColorSchemes()
     return ret;
 }
 
+void QTermWidget::addCustomColorSchemeDir(const QString& custom_dir)
+{
+    ColorSchemeManager::instance()->addCustomColorSchemeDir(custom_dir);
+}
+
 void QTermWidget::setSize(const QSize &size)
 {
     if (!m_impl->m_terminalDisplay)
@@ -451,7 +458,7 @@ void QTermWidget::setScrollBarPosition(ScrollBarPosition pos)
 {
     if (!m_impl->m_terminalDisplay)
         return;
-    m_impl->m_terminalDisplay->setScrollBarPosition((TerminalDisplay::ScrollBarPosition)pos);
+    m_impl->m_terminalDisplay->setScrollBarPosition(pos);
 }
 
 void QTermWidget::scrollToEnd()
@@ -477,7 +484,6 @@ void QTermWidget::sessionFinished()
 {
     emit finished();
 }
-
 
 void QTermWidget::copyClipboard()
 {
@@ -640,4 +646,32 @@ Filter::HotSpot* QTermWidget::getHotSpotAt(int row, int column) const
 int QTermWidget::getPtySlaveFd() const
 {
     return m_impl->m_session->getPtySlaveFd();
+}
+
+void QTermWidget::setKeyboardCursorShape(KeyboardCursorShape shape)
+{
+    if (!m_impl->m_terminalDisplay)
+        return;
+    m_impl->m_terminalDisplay->setKeyboardCursorShape(shape);
+}
+
+QString QTermWidget::title() const
+{
+    QString title = m_impl->m_session->userTitle();
+    if (title.isEmpty())
+        title = m_impl->m_session->title(Konsole::Session::NameRole);
+    return title;
+}
+
+QString QTermWidget::icon() const
+{
+    QString icon = m_impl->m_session->iconText();
+    if (icon.isEmpty())
+        icon = m_impl->m_session->iconName();
+    return icon;
+}
+
+bool QTermWidget::isTitleChanged() const
+{
+    return m_impl->m_session->isTitleChanged();
 }

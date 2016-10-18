@@ -1,8 +1,8 @@
-/debhelper-build-stamp
-/*.debhelper/
+/*.debhelper
 /*.log
 /*.mangled
 /*.substvars
+/debhelper-build-stamp
 /files
 
 /libqtermwidget5-0-dev/

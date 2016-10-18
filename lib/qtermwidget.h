@@ -32,13 +32,35 @@ class QTermWidget : public QWidget {
     Q_OBJECT
 public:
 
+    /**
+     * This enum describes the location where the scroll bar is positioned in the display widget.
+     */
     enum ScrollBarPosition {
         /** Do not show the scroll bar. */
-        NoScrollBar=0,
+        NoScrollBar = 0,
         /** Show the scroll bar on the left side of the display. */
-        ScrollBarLeft=1,
+        ScrollBarLeft = 1,
         /** Show the scroll bar on the right side of the display. */
-        ScrollBarRight=2
+        ScrollBarRight = 2
+    };
+
+    /**
+     * This enum describes the available shapes for the keyboard cursor.
+     * See setKeyboardCursorShape()
+     */
+    enum KeyboardCursorShape {
+        /** A rectangular block which covers the entire area of the cursor character. */
+        BlockCursor = 0,
+        /**
+         * A single flat line which occupies the space at the bottom of the cursor
+         * character's area.
+         */
+        UnderlineCursor = 1,
+        /**
+         * An cursor shaped like the capital letter 'I', similar to the IBeam
+         * cursor used in Qt/KDE text editors.
+         */
+        IBeamCursor = 2
     };
 
     //Creation of widget
@@ -98,6 +120,7 @@ public:
      */
     void setColorScheme(const QString & name);
     static QStringList availableColorSchemes();
+    static void addCustomColorSchemeDir(const QString& custom_dir);
 
     // History size for scrolling
     void setHistorySize(int lines); //infinite if lines < 0
@@ -176,6 +199,18 @@ public:
      */
     int getPtySlaveFd() const;
 
+    /**
+     * Sets the shape of the keyboard cursor.  This is the cursor drawn
+     * at the position in the terminal where keyboard input will appear.
+     */
+    void setKeyboardCursorShape(KeyboardCursorShape shape);
+
+    QString title() const;
+    QString icon() const;
+
+    /** True if the title() or icon() was (ever) changed by the session. */
+    bool isTitleChanged() const;
+
 signals:
     void finished();
     void copyAvailable(bool);
@@ -198,6 +233,8 @@ signals:
      * control and display the remote terminal.
      */
     void sendData(const char *,int);
+
+    void titleChanged();
 
 public slots:
     // Copy selection to clipboard

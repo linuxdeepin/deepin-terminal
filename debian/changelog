@@ -1,3 +1,18 @@
+qtermwidget (0.7.0-4) unstable; urgency=medium
+
+  * Cherry-picking upstream release: 0.7.0
+  * Bumped compat to 10
+  * Removed --parallel from rules, standard in compat 10
+  * Bumped minimum version debhelper (>= 10)
+  * Added build dependency liblxqt-dev (>= 0.11.0)
+  * Followed Multiarch hinter suggestions
+    - qtermwidget5-data marked as Multi-Arch: foreign
+    - libqtermwidget5-0 marked as Multi-Arch: same
+    - libqtermwidget5-0-dev marked as Multi-Arch: same
+  * Simplified optional symbols 
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 18 Oct 2016 21:16:57 +0200
+
 qtermwidget (0.6.1~55-gd572f39-1) unstable; urgency=medium
 
   * Bump version to 0.6.1~
