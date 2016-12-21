@@ -7,7 +7,6 @@ Section: libs
 Priority: optional
 Build-Depends: debhelper (>= 10),
                cmake (>= 3.0.2),
-               liblxqt0-dev (>= 0.11.0),
                qtbase5-dev
 Standards-Version: 3.9.8
 Vcs-Browser: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git/?h=debian/sid

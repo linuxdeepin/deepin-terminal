@@ -96,6 +96,7 @@ public:
     void setTerminalFont(const QFont & font);
     QFont getTerminalFont();
     void setTerminalOpacity(qreal level);
+    void setTerminalBackgroundImage(QString backgroundImage);
 
     //environment
     void setEnvironment(const QStringList & environment);
@@ -192,6 +193,11 @@ public:
      */
     Filter::HotSpot* getHotSpotAt(int row, int column) const;
 
+    /*
+     * Proxy for TerminalDisplay::filterActions
+     * */
+    QList<QAction*> filterActions(const QPoint& position);
+
     /**
      * Returns a pty slave file descriptor.
      * This can be used for display and control
@@ -220,7 +226,7 @@ signals:
 
     void termKeyPressed(QKeyEvent *);
 
-    void urlActivated(const QUrl&);
+    void urlActivated(const QUrl&, bool fromContextMenu);
 
     void bell(const QString& message);
 

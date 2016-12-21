@@ -258,7 +258,7 @@ void QTermWidget::init(int startnow)
 
     // That's OK, FilterChain's dtor takes care of UrlFilter.
     UrlFilter *urlFilter = new UrlFilter();
-    connect(urlFilter, SIGNAL(activated(QUrl)), this, SIGNAL(urlActivated(QUrl)));
+    connect(urlFilter, &UrlFilter::activated, this, &QTermWidget::urlActivated);
     m_impl->m_terminalDisplay->filterChain()->addFilter(urlFilter);
 
     m_searchBar = new SearchBar(this);
@@ -333,6 +333,14 @@ void QTermWidget::setTerminalOpacity(qreal level)
         return;
 
     m_impl->m_terminalDisplay->setOpacity(level);
+}
+
+void QTermWidget::setTerminalBackgroundImage(QString backgroundImage)
+{
+    if (!m_impl->m_terminalDisplay)
+        return;
+
+    m_impl->m_terminalDisplay->setBackgroundImage(backgroundImage);
 }
 
 void QTermWidget::setShellProgram(const QString &progname)
@@ -641,6 +649,11 @@ Filter::HotSpot* QTermWidget::getHotSpotAt(const QPoint &pos) const
 Filter::HotSpot* QTermWidget::getHotSpotAt(int row, int column) const
 {
     return m_impl->m_terminalDisplay->filterChain()->hotSpotAt(row, column);
+}
+
+QList<QAction*> QTermWidget::filterActions(const QPoint& position)
+{
+    return m_impl->m_terminalDisplay->filterActions(position);
 }
 
 int QTermWidget::getPtySlaveFd() const

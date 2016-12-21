@@ -1,3 +1,12 @@
+qtermwidget (0.7.1-1) unstable; urgency=medium
+
+  * Cherry-picking upstream release 0.7.1. 
+  * Fixed Symbols
+  * Removed build dependency liblxqt0-dev
+  * Activate new UTF8 processing in rules
+
+ -- Alf Gaida <agaida@siduction.org>  Wed, 21 Dec 2016 23:50:11 +0100
+
 qtermwidget (0.7.0-4) unstable; urgency=medium
 
   * Cherry-picking upstream release: 0.7.0

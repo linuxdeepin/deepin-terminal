@@ -1,4 +1,7 @@
 libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
+ (optional|c++)"add_custom_color_scheme_dir(QString const&)@Base" 0.7.0
+ (optional|c++)"get_color_schemes_dirs()@Base" 0.7.0
+ (optional|c++)"get_kb_layout_dir()@Base" 0.6.0
  (c++)"HistorySearch::findLineNumberInString(QList<int>, int)@Base" 0.6.0
  (c++)"HistorySearch::~HistorySearch()@Base" 0.6.0
  (c++)"HistorySearch::HistorySearch(QPointer<Konsole::Emulation>, QRegExp, bool, int, int, QObject*)@Base" 0.6.0
@@ -10,7 +13,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"HistorySearch::search()@Base" 0.6.0
  (c++)"HistorySearch::search(int, int, int, int)@Base" 0.6.0
  (c++)"HistorySearch::staticMetaObject@Base" 0.6.0
-
  (c++)"Konsole::AccessibleColorScheme::AccessibleColorScheme()@Base" 0.6.0
  (c++)"Konsole::AutoScrollHandler::~AutoScrollHandler()@Base" 0.6.0
  (c++)"Konsole::AutoScrollHandler::AutoScrollHandler(QWidget*)@Base" 0.6.0
@@ -22,11 +24,21 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::AutoScrollHandler::timerEvent(QTimerEvent*)@Base" 0.6.0
  (c++)"Konsole::base_color_table@Base" 0.6.0
  (c++)"Konsole::BlockArray::append(Konsole::Block*)@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::at(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::at(unsigned long)@Base" 0.6.0
  (c++)"Konsole::BlockArray::~BlockArray()@Base" 0.6.0
  (c++)"Konsole::BlockArray::BlockArray()@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::decreaseBuffer(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::decreaseBuffer(unsigned long)@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::has(unsigned int) const@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::has(unsigned long) const@Base" 0.6.0
  (c++)"Konsole::BlockArray::increaseBuffer()@Base" 0.6.0
  (c++)"Konsole::BlockArray::lastBlock() const@Base" 0.6.0
  (c++)"Konsole::BlockArray::newBlock()@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::setHistorySize(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::setHistorySize(unsigned long)@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::setSize(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::BlockArray::setSize(unsigned long)@Base" 0.6.0
  (c++)"Konsole::BlockArray::unmap()@Base" 0.6.0
  (c++)"Konsole::ColorScheme::backgroundColor() const@Base" 0.6.0
  (c++)"Konsole::ColorScheme::colorEntry(int, unsigned int) const@Base" 0.6.0
@@ -70,11 +82,15 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::ColorScheme::setRandomizedBackgroundColor(bool)@Base" 0.6.0
  (c++)"Konsole::ColorScheme::translatedColorNameForIndex(int)@Base" 0.6.0
  (c++)"Konsole::ColorScheme::translatedColorNames@Base" 0.6.0
+ (optional|c++)"Konsole::CompactHistoryBlock::allocate(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::CompactHistoryBlock::allocate(unsigned long)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::~CompactHistoryBlock()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::contains(void*)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::deallocate()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::isInUse()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::length()@Base" 0.6.0
+ (optional|c++)"Konsole::CompactHistoryBlockList::allocate(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::CompactHistoryBlockList::allocate(unsigned long)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlockList::~CompactHistoryBlockList()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlockList::deallocate(void*)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::remaining()@Base" 0.6.0
@@ -84,6 +100,8 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::CompactHistoryLine::getCharacters(Konsole::Character*, int, int)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryLine::getLength() const@Base" 0.6.0
  (c++)"Konsole::CompactHistoryLine::isWrapped() const@Base" 0.6.0
+ (optional|c++)"Konsole::CompactHistoryLine::operator new(unsigned int, Konsole::CompactHistoryBlockList&)@Base" 0.6.0
+ (optional|c++)"Konsole::CompactHistoryLine::operator new(unsigned long, Konsole::CompactHistoryBlockList&)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryLine::setWrapped(bool)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryScroll::addCells(Konsole::Character const*, int)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryScroll::addCellsVector(QVector<Konsole::Character> const&)@Base" 0.6.0
@@ -179,11 +197,10 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::Filter::HotSpot::setType(Konsole::Filter::HotSpot::Type)@Base" 0.6.0
  (c++)"Konsole::Filter::HotSpot::startColumn() const@Base" 0.6.0
  (c++)"Konsole::Filter::HotSpot::startLine() const@Base" 0.6.0
- (c++)"Konsole::Filter::HotSpot::tooltip() const@Base" 0.6.0
  (c++)"Konsole::Filter::HotSpot::type() const@Base" 0.6.0
- (c++)"Konsole::FilterObject::activated()@Base" 0.6.0
- (c++)"Konsole::FilterObject::activated(QUrl const&)@Base" 0.6.0
- (c++)"Konsole::FilterObject::emitActivated(QUrl const&)@Base" 0.6.0
+ (c++)"Konsole::FilterObject::activate()@Base" 0.7.1
+ (c++)"Konsole::FilterObject::activated(QUrl const&, bool)@Base" 0.7.1
+ (c++)"Konsole::FilterObject::emitActivated(QUrl const&, bool)@Base" 0.7.1
  (c++)"Konsole::FilterObject::~FilterObject()@Base" 0.6.0
  (c++)"Konsole::FilterObject::metaObject() const@Base" 0.6.0
  (c++)"Konsole::FilterObject::qt_metacall(QMetaObject::Call, int, void**)@Base" 0.6.0
@@ -206,6 +223,8 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::HistoryScrollBlockArray::getLineLen(int)@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBlockArray::getLines()@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBlockArray::~HistoryScrollBlockArray()@Base" 0.6.0
+ (optional|c++)"Konsole::HistoryScrollBlockArray::HistoryScrollBlockArray(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::HistoryScrollBlockArray::HistoryScrollBlockArray(unsigned long)@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBlockArray::isWrappedLine(int)@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBuffer::addCells(Konsole::Character const*, int)@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBuffer::addCellsVector(QVector<Konsole::Character> const&)@Base" 0.6.0
@@ -240,6 +259,8 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::HistoryScrollNone::HistoryScrollNone()@Base" 0.6.0
  (c++)"Konsole::HistoryScrollNone::isWrappedLine(int)@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::~HistoryTypeBlockArray()@Base" 0.6.0
+ (optional|c++)"Konsole::HistoryTypeBlockArray::HistoryTypeBlockArray(unsigned int)@Base" 0.6.0
+ (optional|c++)"Konsole::HistoryTypeBlockArray::HistoryTypeBlockArray(unsigned long)@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::isEnabled() const@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::maximumLineCount() const@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::scroll(Konsole::HistoryScroll*) const@Base" 0.6.0
@@ -690,6 +711,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::TerminalDisplay::selectionChanged()@Base" 0.6.0
  (c++)"Konsole::TerminalDisplay::sendStringToEmu(char const*)@Base" 0.6.0
  (c++)"Konsole::TerminalDisplay::setBackgroundColor(QColor const&)@Base" 0.6.0
+ (c++)"Konsole::TerminalDisplay::setBackgroundImage(QString)@Base" 0.7.1
  (c++)"Konsole::TerminalDisplay::setBellMode(int)@Base" 0.6.0
  (c++)"Konsole::TerminalDisplay::setBlinkingCursor(bool)@Base" 0.6.0
  (c++)"Konsole::TerminalDisplay::setBlinkingTextEnabled(bool)@Base" 0.6.0
@@ -735,7 +757,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::TerminalImageFilterChain::setImage(Konsole::Character const*, int, int, QVector<unsigned char> const&)@Base" 0.6.0
  (c++)"Konsole::TerminalImageFilterChain::~TerminalImageFilterChain()@Base" 0.6.0
  (c++)"Konsole::TerminalImageFilterChain::TerminalImageFilterChain()@Base" 0.6.0
- (c++)"Konsole::UrlFilter::activated(QUrl const&)@Base" 0.6.0
+ (c++)"Konsole::UrlFilter::activated(QUrl const&, bool)@Base" 0.7.1
  (c++)"Konsole::UrlFilter::CompleteUrlRegExp@Base" 0.6.0
  (c++)"Konsole::UrlFilter::EmailAddressRegExp@Base" 0.6.0
  (c++)"Konsole::UrlFilter::FullUrlRegExp@Base" 0.6.0
@@ -744,7 +766,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::UrlFilter::HotSpot::getUrlObject() const@Base" 0.6.0
  (c++)"Konsole::UrlFilter::HotSpot::~HotSpot()@Base" 0.6.0
  (c++)"Konsole::UrlFilter::HotSpot::HotSpot(int, int, int, int)@Base" 0.6.0
- (c++)"Konsole::UrlFilter::HotSpot::tooltip() const@Base" 0.6.0
  (c++)"Konsole::UrlFilter::HotSpot::urlType() const@Base" 0.6.0
  (c++)"Konsole::UrlFilter::metaObject() const@Base" 0.6.0
  (c++)"Konsole::UrlFilter::newHotSpot(int, int, int, int)@Base" 0.6.0
@@ -801,8 +822,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::Vt102Emulation::useCharset(int)@Base" 0.6.0
  (c++)"Konsole::Vt102Emulation::~Vt102Emulation()@Base" 0.6.0
  (c++)"Konsole::Vt102Emulation::Vt102Emulation()@Base" 0.6.0
- (c++)"konsole_wcwidth(unsigned short)@Base" 0.6.0
-
+ (c++)"konsole_wcwidth(wchar_t)@Base" 0.7.1
  (c++)"KProcess::clearEnvironment()@Base" 0.6.0
  (c++)"KProcess::clearProgram()@Base" 0.6.0
  (c++)"KProcess::execute(int)@Base" 0.6.0
@@ -835,7 +855,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"KProcess::startDetached(QStringList const&)@Base" 0.6.0
  (c++)"KProcess::staticMetaObject@Base" 0.6.0
  (c++)"KProcess::unsetEnv(QString const&)@Base" 0.6.0
-
  (c++)"KPty::close()@Base" 0.6.0
  (c++)"KPty::closeSlave()@Base" 0.6.0
  (c++)"KPtyDevice::atEnd() const@Base" 0.6.0
@@ -898,42 +917,84 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"KPty::tcGetAttr(termios*) const@Base" 0.6.0
  (c++)"KPty::tcSetAttr(termios*)@Base" 0.6.0
  (c++)"KPty::ttyName() const@Base" 0.6.0
-
+ (optional|c++)"moveBlock(_IO_FILE*, int, int, char*)@Base" 0.6.0
  (c++)"non-virtual thunk to Konsole::TerminalDisplay::~TerminalDisplay()@Base" 0.6.0
  (c++)"non-virtual thunk to QTermWidget::~QTermWidget()@Base" 0.6.0
  (c++)"non-virtual thunk to SearchBar::~SearchBar()@Base" 0.6.0
-
+ (optional|c++)"operator+(QString const&, char)@Base" 0.6.0
+ (optional|c++)"QByteArray::~QByteArray()@Base" 0.6.0
  (c++)"QHash<int, Konsole::Filter::HotSpot*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++)"QHash<int, Konsole::Filter::HotSpot*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (c++)"QHash<int, Konsole::Filter::HotSpot*>::findNode(int const&, unsigned int) const@Base" 0.7.0
  (c++)"QHash<int, Konsole::Filter::HotSpot*>::values(int const&) const@Base" 0.6.0
  (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (optional|c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::detach_helper()@Base" 0.6.0
  (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (optional|c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::erase(QHash<int, Konsole::KeyboardTranslator::Entry>::const_iterator)@Base" 0.7.0
  (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::findNode(int const&, unsigned int) const@Base" 0.7.0
+ (optional|c++)"QHash<int, QString>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (optional|c++)"QHash<int, QString>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (c++)"QHash<int, QString>::findNode(int const&, unsigned int) const@Base" 0.7.0
-
+ (optional|c++)"QHash<int, QString>::keys() const@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned int>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned long>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned int>::detach_helper()@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned long>::detach_helper()@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned int>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned long>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned int>::findNode(int const&, unsigned int) const@Base" 0.7.0
+ (optional|c++)"QHash<int, unsigned long>::findNode(int const&, unsigned int) const@Base" 0.7.0
  (c++)"QHash<Konsole::ColorScheme*, QHashDummyValue>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++)"QHash<Konsole::Session*, bool>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (optional|c++)"QHash<Konsole::Session*, bool>::detach_helper()@Base" 0.6.0
  (c++)"QHash<Konsole::Session*, bool>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (optional|c++)"QHash<Konsole::Session*, bool>::findNode(Konsole::Session* const&, unsigned int) const@Base" 0.7.0
+ (optional|c++)"QHash<Konsole::Session*, bool>::findNode(Konsole::Session* const&, unsigned int*) const@Base" 0.7.0
+ (optional|c++)"QHash<Konsole::Session*, bool>::remove(Konsole::Session* const&)@Base" 0.7.0
  (c++)"QHash<Konsole::Session*, bool>::keys() const@Base" 0.6.0
-
  (c++)"QHash<QString, Konsole::ColorScheme const*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::detach_helper()@Base" 0.6.0
  (c++)"QHash<QString, Konsole::ColorScheme const*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::findNode(QString const&, unsigned int*) const@Base" 0.6.0
  (c++)"QHash<QString, Konsole::ColorScheme const*>::remove(QString const&)@Base" 0.6.0
+ (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.7.0
  (c++)"QHash<QString, Konsole::KeyboardTranslator*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (c++)"QHash<QString, Konsole::KeyboardTranslator*>::detach_helper()@Base" 0.7.1
  (c++)"QHash<QString, Konsole::KeyboardTranslator*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (c++)"QHash<QString, Konsole::KeyboardTranslator*>::findNode(QString const&, unsigned int*) const@Base" 0.7.1
  (c++)"QHash<QString, Konsole::KeyboardTranslator*>::remove(QString const&)@Base" 0.6.0
-
+ (optional|c++)"QHash<unsigned short, unsigned short*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (optional|c++)"QHash<unsigned short, unsigned short*>::detach_helper()@Base" 0.6.0
+ (optional|c++)"QHash<unsigned short, unsigned short*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (c++)"QHash<unsigned short, unsigned short*>::findNode(unsigned short const&, unsigned int) const@Base" 0.7.0
-
+ (optional|c++)"QLinkedList<QByteArray>::append(QByteArray const&)@Base" 0.6.0
+ (optional|c++)"QLinkedList<QByteArray>::detach_helper2(QLinkedList<QByteArray>::iterator)@Base" 0.6.0
+ (optional|c++)"QLinkedList<QByteArray>::~QLinkedList()@Base" 0.6.0
+ (optional|c++)"QList<int>::append(int const&)@Base" 0.6.0
+ (optional|c++)"QList<int>::detach_helper_grow(int, int)@Base" 0.6.0
+ (optional|c++)"QList<int>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::ColorScheme const*>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::ColorScheme const*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::CompactHistoryBlock*>::append(Konsole::CompactHistoryBlock* const&)@Base" 0.6.0
  (c++)"QList<Konsole::CompactHistoryBlock*>::detach_helper_grow(int, int)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::CompactHistoryBlock*>::detach_helper(int)@Base" 0.6.0
  (c++)"QList<Konsole::CompactHistoryBlock*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::CompactHistoryLine*>::append(Konsole::CompactHistoryLine* const&)@Base" 0.6.0
  (c++)"QList<Konsole::CompactHistoryLine*>::detach_helper_grow(int, int)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::CompactHistoryLine*>::detach_helper(int)@Base" 0.6.0
  (c++)"QList<Konsole::CompactHistoryLine*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter*>::append(Konsole::Filter* const&)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter*>::detach_helper_grow(int, int)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter*>::detach_helper(int)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter::HotSpot*>::append(Konsole::Filter::HotSpot* const&)@Base" 0.6.0
  (c++)"QList<Konsole::Filter::HotSpot*>::detach_helper_grow(int, int)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter::HotSpot*>::operator+=(QList<Konsole::Filter::HotSpot*> const&)@Base" 0.6.0
  (c++)"QList<Konsole::Filter::HotSpot*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter::HotSpot*>::QList(QList<Konsole::Filter::HotSpot*> const&)@Base" 0.6.0
  (c++)"QList<Konsole::Filter*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter*>::QList(QList<Konsole::Filter*> const&)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Filter*>::removeAll(Konsole::Filter* const&)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::KeyboardTranslator::Entry>::append(Konsole::KeyboardTranslator::Entry const&)@Base" 0.6.0
  (c++)"QList<Konsole::KeyboardTranslator::Entry>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::KeyboardTranslator::Entry>::detach_helper(int)@Base" 0.6.0
  (c++)"QList<Konsole::KeyboardTranslator::Entry>::~QList()@Base" 0.6.0
@@ -942,16 +1003,34 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QList<Konsole::KeyboardTranslatorReader::Token>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::KeyboardTranslatorReader::Token>::detach_helper(int)@Base" 0.6.0
  (c++)"QList<Konsole::KeyboardTranslatorReader::Token>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::ScreenWindow*>::append(Konsole::ScreenWindow* const&)@Base" 0.6.0
  (c++)"QList<Konsole::ScreenWindow*>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::ScreenWindow*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::ScreenWindow*>::QList(QList<Konsole::ScreenWindow*> const&)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Session*>::append(Konsole::Session* const&)@Base" 0.6.0
  (c++)"QList<Konsole::Session*>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::Session*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::Session*>::QList(QList<Konsole::Session*> const&)@Base" 0.6.0
+ (optional|c++)"QList<Konsole::TerminalDisplay*>::append(Konsole::TerminalDisplay* const&)@Base" 0.6.0
  (c++)"QList<Konsole::TerminalDisplay*>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::TerminalDisplay*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::TerminalDisplay*>::QList(QList<Konsole::TerminalDisplay*> const&)@Base" 0.6.0
  (c++)"QList<Konsole::TerminalDisplay*>::removeAll(Konsole::TerminalDisplay* const&)@Base" 0.6.0
-
+ (optional|c++)"QList<QAction*>::append(QAction* const&)@Base" 0.6.0
+ (optional|c++)"QList<QAction*>::detach_helper_grow(int, int)@Base" 0.6.0
+ (optional|c++)"QList<QString>::append(QString const&)@Base" 0.6.0
+ (optional|c++)"QList<QString>::detach_helper_grow(int, int)@Base" 0.6.0
+ (optional|c++)"QList<QString>::detach_helper(int)@Base" 0.6.0
+ (optional|c++)"QList<QString>::mid(int, int) const@Base" 0.6.0
+ (optional|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0
+ (optional|c++)"QList<QString>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<QString>::QList(QList<QString> const&)@Base" 0.6.0
+ (optional|c++)"QList<QString>::removeAll(QString const&)@Base" 0.6.0
  (c++)"QList<QString>::reserve(int)@Base" 0.7.0
-
+ (optional|c++)"QList<QUrl>::detach_helper(int)@Base" 0.6.0
+ (optional|c++)"QList<QUrl>::~QList()@Base" 0.6.0
+ (optional|c++)"QStringList::~QStringList()@Base" 0.7.0
+ (optional|c++)"QString::~QString()@Base" 0.6.0
  (c++)"QTermWidget::activity()@Base" 0.6.0
  (c++)"QTermWidget::addCustomColorSchemeDir(QString const&)@Base" 0.7.0
  (c++)"QTermWidget::availableColorSchemes()@Base" 0.6.0
@@ -961,6 +1040,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::clear()@Base" 0.6.0
  (c++)"QTermWidget::copyAvailable(bool)@Base" 0.6.0
  (c++)"QTermWidget::copyClipboard()@Base" 0.6.0
+ (c++)"QTermWidget::filterActions(QPoint const&)@Base" 0.7.1
  (c++)"QTermWidget::find()@Base" 0.6.0
  (c++)"QTermWidget::findNext()@Base" 0.6.0
  (c++)"QTermWidget::findPrevious()@Base" 0.6.0
@@ -1015,6 +1095,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::setShellProgram(QString const&)@Base" 0.6.0
  (c++)"QTermWidget::setSilenceTimeout(int)@Base" 0.6.0
  (c++)"QTermWidget::setSize(QSize const&)@Base" 0.6.0
+ (c++)"QTermWidget::setTerminalBackgroundImage(QString)@Base" 0.7.1
  (c++)"QTermWidget::setTerminalFont(QFont const&)@Base" 0.6.0
  (c++)"QTermWidget::setTerminalOpacity(double)@Base" 0.6.0
  (c++)"QTermWidget::setTextCodec(QTextCodec*)@Base" 0.6.0
@@ -1031,15 +1112,24 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::titleChanged()@Base" 0.7.0
  (c++)"QTermWidget::title() const@Base" 0.7.0
  (c++)"QTermWidget::toggleShowSearchBar()@Base" 0.6.0
- (c++)"QTermWidget::urlActivated(QUrl const&)@Base" 0.6.0
+ (c++)"QTermWidget::urlActivated(QUrl const&, bool)@Base" 0.7.1
  (c++)"QTermWidget::workingDirectory()@Base" 0.6.0
  (c++)"QTermWidget::zoomIn()@Base" 0.6.0
  (c++)"QTermWidget::zoomOut()@Base" 0.6.0
+ (c++)"QtPrivate::QSlotObject<void (Konsole::FilterObject::*)(), QtPrivate::List<>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)@Base" 0.7.1
+ (c++)"QtPrivate::QSlotObject<void (Konsole::UrlFilter::*)(QUrl const&, bool), QtPrivate::List<QUrl const&, bool>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)@Base" 0.7.1
  (c++)"QtPrivate::QSlotObject<void (QTermWidget::*)(), QtPrivate::List<>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)@Base" 0.7.0
+ (c++)"QtPrivate::QSlotObject<void (QTermWidget::*)(QUrl const&, bool), QtPrivate::List<QUrl const&, bool>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)@Base" 0.7.1
+ (c++)"QVarLengthArray<unsigned char, 64>::realloc(int, int)@Base" 0.6.0
+ (c++)"QVector<Konsole::Character>::insert(Konsole::Character*, int, Konsole::Character const&)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::operator=(QVector<Konsole::Character> const&)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::~QVector()@Base" 0.6.0
+ (optional|c++)"QVector<Konsole::Character>::QVector(int)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::reallocData(int, int, QFlags<QArrayData::AllocationOption>)@Base" 0.6.0
-
+ (optional|c++)"QVector<Konsole::Character>::resize(int)@Base" 0.6.0
+ (optional|c++)"QVector<QRect>::~QVector()@Base" 0.6.0
+ (optional|c++)"QVector<unsigned char>::~QVector()@Base" 0.6.0
+ (optional|c++)"QVector<unsigned char>::reallocData(int, int, QFlags<QArrayData::AllocationOption>)@Base" 0.6.0
  createTermWidget@Base 0.6.0
  (c++)"SearchBar::clearBackgroundColor()@Base" 0.6.0
  (c++)"SearchBar::findNext()@Base" 0.6.0
@@ -1059,11 +1149,10 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"SearchBar::show()@Base" 0.6.0
  (c++)"SearchBar::staticMetaObject@Base" 0.6.0
  (c++)"SearchBar::useRegularExpression()@Base" 0.6.0
-
+ (optional|c++)"string_width(QString const&)@Base" 0.6.0
  (c++)"TermWidgetImpl::createSession(QWidget*)@Base" 0.6.0
  (c++)"TermWidgetImpl::createTerminalDisplay(Konsole::Session*, QWidget*)@Base" 0.6.0
  (c++)"TermWidgetImpl::TermWidgetImpl(QWidget*)@Base" 0.6.0
-
  (c++)"typeinfo for HistorySearch@Base" 0.6.0
  (c++)"typeinfo for Konsole::AutoScrollHandler@Base" 0.6.0
  (c++)"typeinfo for Konsole::CompactHistoryBlock@Base" 0.6.0
@@ -1160,7 +1249,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"typeinfo name for QListSpecialMethods<Konsole::Filter*>@Base" 0.6.0
  (c++)"typeinfo name for QTermWidget@Base" 0.6.0
  (c++)"typeinfo name for SearchBar@Base" 0.6.0
-
  (c++)"Ui_SearchBar::setupUi(QWidget*)@Base" 0.6.0
  (c++)"Ui_SearchBar::setupUi(QWidget*)::{lambda()#10}::operator()() const::qstring_literal@Base" 0.7.0
  (c++)"Ui_SearchBar::setupUi(QWidget*)::{lambda()#11}::operator()() const::qstring_literal@Base" 0.7.0
@@ -1221,124 +1309,3 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"vtable for KPtyProcessPrivate@Base" 0.7.0
  (c++)"vtable for QTermWidget@Base" 0.6.0
  (c++)"vtable for SearchBar@Base" 0.6.0
-
-# optional symbols
- (optional|c++)"Konsole::BlockArray::at(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::at(unsigned long)@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::decreaseBuffer(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::decreaseBuffer(unsigned long)@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::has(unsigned int) const@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::has(unsigned long) const@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::setHistorySize(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::setHistorySize(unsigned long)@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::setSize(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::BlockArray::setSize(unsigned long)@Base" 0.6.0
- (optional|c++)"Konsole::CompactHistoryBlock::allocate(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::CompactHistoryBlock::allocate(unsigned long)@Base" 0.6.0
- (optional|c++)"Konsole::CompactHistoryBlockList::allocate(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::CompactHistoryBlockList::allocate(unsigned long)@Base" 0.6.0
- (optional|c++)"Konsole::CompactHistoryLine::operator new(unsigned int, Konsole::CompactHistoryBlockList&)@Base" 0.6.0
- (optional|c++)"Konsole::CompactHistoryLine::operator new(unsigned long, Konsole::CompactHistoryBlockList&)@Base" 0.6.0
- (optional|c++)"Konsole::HistoryScrollBlockArray::HistoryScrollBlockArray(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::HistoryScrollBlockArray::HistoryScrollBlockArray(unsigned long)@Base" 0.6.0
- (optional|c++)"Konsole::HistoryTypeBlockArray::HistoryTypeBlockArray(unsigned int)@Base" 0.6.0
- (optional|c++)"Konsole::HistoryTypeBlockArray::HistoryTypeBlockArray(unsigned long)@Base" 0.6.0
-
- (optional|c++)"QByteArray::~QByteArray()@Base" 0.6.0
-
- (optional|c++)"QHash<Konsole::Session*, bool>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<Konsole::Session*, bool>::findNode(Konsole::Session* const&, unsigned int) const@Base" 0.7.0
- (optional|c++)"QHash<Konsole::Session*, bool>::findNode(Konsole::Session* const&, unsigned int*) const@Base" 0.7.0
- (optional|c++)"QHash<Konsole::Session*, bool>::remove(Konsole::Session* const&)@Base" 0.7.0
-
- (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::findNode(QString const&, unsigned int*) const@Base" 0.6.0
- (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.6.0
- (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::values() const@Base" 0.7.0
- (optional|c++)"QHash<QString, Konsole::KeyboardTranslator*>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<QString, Konsole::KeyboardTranslator*>::findNode(QString const&, unsigned int*) const@Base" 0.6.0
-
- (optional|c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::erase(QHash<int, Konsole::KeyboardTranslator::Entry>::const_iterator)@Base" 0.7.0
- (optional|c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::erase(QHash<int, Konsole::KeyboardTranslator::Entry>::iterator)@Base" 0.6.0
- (optional|c++)"QHash<int, QString>::deleteNode2(QHashData::Node*)@Base" 0.6.0
- (optional|c++)"QHash<int, QString>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (optional|c++)"QHash<int, QString>::keys() const@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned int>::deleteNode2(QHashData::Node*)@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned int>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned int>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned int>::findNode(int const&, unsigned int) const@Base"  0.7.0
- (optional|c++)"QHash<int, unsigned int>::findNode(int const&, unsigned int) const@Base" 0.7.0
- (optional|c++)"QHash<int, unsigned long>::deleteNode2(QHashData::Node*)@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned long>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned long>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned long>::findNode(int const&, unsigned int) const@Base" 0.7.0
-
- (optional|c++)"QHash<unsigned short, unsigned short*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
- (optional|c++)"QHash<unsigned short, unsigned short*>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<unsigned short, unsigned short*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
-
- (optional|c++)"QLinkedList<QByteArray>::append(QByteArray const&)@Base" 0.6.0
- (optional|c++)"QLinkedList<QByteArray>::detach_helper2(QLinkedList<QByteArray>::iterator)@Base" 0.6.0
- (optional|c++)"QLinkedList<QByteArray>::~QLinkedList()@Base" 0.6.0
-
- (optional|c++)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::ColorScheme const*>::detach_helper_grow(int, int)@Base" 0.6.0
- (optional|c++)"QList<Konsole::CompactHistoryBlock*>::append(Konsole::CompactHistoryBlock* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::CompactHistoryBlock*>::detach_helper(int)@Base" 0.6.0
- (optional|c++)"QList<Konsole::CompactHistoryLine*>::append(Konsole::CompactHistoryLine* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::CompactHistoryLine*>::detach_helper(int)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter*>::QList(QList<Konsole::Filter*> const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter*>::append(Konsole::Filter* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter*>::detach_helper(int)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter*>::detach_helper_grow(int, int)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter*>::removeAll(Konsole::Filter* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter::HotSpot*>::QList(QList<Konsole::Filter::HotSpot*> const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter::HotSpot*>::append(Konsole::Filter::HotSpot* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Filter::HotSpot*>::operator+=(QList<Konsole::Filter::HotSpot*> const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::KeyboardTranslator::Entry>::append(Konsole::KeyboardTranslator::Entry const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::ScreenWindow*>::QList(QList<Konsole::ScreenWindow*> const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::ScreenWindow*>::append(Konsole::ScreenWindow* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Session*>::QList(QList<Konsole::Session*> const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::Session*>::append(Konsole::Session* const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::TerminalDisplay*>::QList(QList<Konsole::TerminalDisplay*> const&)@Base" 0.6.0
- (optional|c++)"QList<Konsole::TerminalDisplay*>::append(Konsole::TerminalDisplay* const&)@Base" 0.6.0
-
- (optional|c++)"QList<QAction*>::append(QAction* const&)@Base" 0.6.0
- (optional|c++)"QList<QAction*>::detach_helper_grow(int, int)@Base" 0.6.0
-
- (optional|c++)"QList<QString>::QList(QList<QString> const&)@Base" 0.6.0
- (optional|c++)"QList<QString>::append(QString const&)@Base" 0.6.0
- (optional|c++)"QList<QString>::detach_helper(int)@Base" 0.6.0
- (optional|c++)"QList<QString>::detach_helper_grow(int, int)@Base" 0.6.0
- (optional|c++)"QList<QString>::mid(int, int) const@Base" 0.6.0
- (optional|c++)"QList<QString>::operator+=(QList<QString> const&)@Base" 0.6.0
- (optional|c++)"QList<QString>::removeAll(QString const&)@Base" 0.6.0
- (optional|c++)"QList<QString>::~QList()@Base" 0.6.0
-
- (optional|c++)"QList<QUrl>::detach_helper(int)@Base" 0.6.0
- (optional|c++)"QList<QUrl>::~QList()@Base" 0.6.0
-
- (optional|c++)"QList<int>::append(int const&)@Base" 0.6.0
- (optional|c++)"QList<int>::detach_helper_grow(int, int)@Base" 0.6.0
- (optional|c++)"QList<int>::~QList()@Base" 0.6.0
-
- (optional|c++)"QString::~QString()@Base" 0.6.0
-
- (optional|c++)"QStringList::~QStringList()@Base" 0.7.0
-
- (optional|c++)"QVarLengthArray<unsigned char, 64>::realloc(int, int)@Base" 0.6.0
-
- (optional|c++)"QVector<Konsole::Character>::QVector(int)@Base" 0.6.0
- (optional|c++)"QVector<Konsole::Character>::insert(Konsole::Character*, int, Konsole::Character const&)@Base" 0.6.0
- (optional|c++)"QVector<Konsole::Character>::resize(int)@Base" 0.6.0
- (optional|c++)"QVector<QRect>::~QVector()@Base" 0.6.0
- (optional|c++)"QVector<unsigned char>::reallocData(int, int, QFlags<QArrayData::AllocationOption>)@Base" 0.6.0
- (optional|c++)"QVector<unsigned char>::~QVector()@Base" 0.6.0
-
- (optional|c++)"add_custom_color_scheme_dir(QString const&)@Base" 0.7.0
- (optional|c++)"get_color_schemes_dirs()@Base" 0.7.0
- (optional|c++)"get_kb_layout_dir()@Base" 0.6.0
- (optional|c++)"moveBlock(_IO_FILE*, int, int, char*)@Base" 0.6.0
- (optional|c++)"operator+(QString const&, char)@Base" 0.6.0
- (optional|c++)"string_width(QString const&)@Base" 0.6.0
