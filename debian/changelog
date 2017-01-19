@@ -1,3 +1,12 @@
+qtermwidget (0.7.1-2) unstable; urgency=medium
+
+  * Added build-dependency libutf8proc-dev as the missed part for
+    full utf-8 support. The use-trigger is already set.
+    Thanks Riku Voipio <riku.voipio@linaro.org>, nice catch.
+    (Closes: #851832)
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 19 Jan 2017 14:52:26 -0500
+
 qtermwidget (0.7.1-1) unstable; urgency=medium
 
   * Cherry-picking upstream release 0.7.1. 
