@@ -973,8 +973,10 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|c++)"QList<int>::append(int const&)@Base" 0.6.0
  (optional|c++)"QList<int>::detach_helper_grow(int, int)@Base" 0.6.0
  (optional|c++)"QList<int>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<int>::QList(QList<int> const&)@Base" 0.7.1
  (optional|c++)"QList<Konsole::ColorScheme const*>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::ColorScheme const*>::~QList()@Base" 0.6.0
+ (optional|c++)"QList<Konsole::ColorScheme const*>::QList(QList<Konsole::ColorScheme const*> const&)@Base" 0.7.1
  (optional|c++)"QList<Konsole::CompactHistoryBlock*>::append(Konsole::CompactHistoryBlock* const&)@Base" 0.6.0
  (c++)"QList<Konsole::CompactHistoryBlock*>::detach_helper_grow(int, int)@Base" 0.6.0
  (optional|c++)"QList<Konsole::CompactHistoryBlock*>::detach_helper(int)@Base" 0.6.0
@@ -1120,14 +1122,17 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QtPrivate::QSlotObject<void (Konsole::UrlFilter::*)(QUrl const&, bool), QtPrivate::List<QUrl const&, bool>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)@Base" 0.7.1
  (c++)"QtPrivate::QSlotObject<void (QTermWidget::*)(), QtPrivate::List<>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)@Base" 0.7.0
  (c++)"QtPrivate::QSlotObject<void (QTermWidget::*)(QUrl const&, bool), QtPrivate::List<QUrl const&, bool>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)@Base" 0.7.1
+ (optional|c++)"QVarLengthArray<unsigned char, 64>::QVarLengthArray(int)@Base" 0.7.1
  (c++)"QVarLengthArray<unsigned char, 64>::realloc(int, int)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::insert(Konsole::Character*, int, Konsole::Character const&)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::operator=(QVector<Konsole::Character> const&)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::~QVector()@Base" 0.6.0
  (optional|c++)"QVector<Konsole::Character>::QVector(int)@Base" 0.6.0
+ (optional|c++)"QVector<Konsole::Character>::QVector(QVector<Konsole::Character> const&)@Base" 0.7.1
  (c++)"QVector<Konsole::Character>::reallocData(int, int, QFlags<QArrayData::AllocationOption>)@Base" 0.6.0
  (optional|c++)"QVector<Konsole::Character>::resize(int)@Base" 0.6.0
  (optional|c++)"QVector<QRect>::~QVector()@Base" 0.6.0
+ (optional|c++)"QVector<QRect>::QVector(QVector<QRect> const&)@Base" 0.7.1
  (optional|c++)"QVector<unsigned char>::~QVector()@Base" 0.6.0
  (optional|c++)"QVector<unsigned char>::reallocData(int, int, QFlags<QArrayData::AllocationOption>)@Base" 0.6.0
  createTermWidget@Base 0.6.0
