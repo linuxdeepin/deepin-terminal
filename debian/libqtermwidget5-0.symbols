@@ -941,7 +941,9 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|c++)"QHash<int, unsigned long>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<int, unsigned int>::detach_helper()@Base" 0.6.0
  (optional|c++)"QHash<int, unsigned long>::detach_helper()@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned int>::duplicateNode(QHashData::Node*, void*)@Base" 0.7.1
  (optional|c++)"QHash<int, unsigned long>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (optional|c++)"QHash<int, unsigned int>::findNode(int const&, unsigned int*) const@Base" 0.7.1
  (optional|c++)"QHash<int, unsigned long>::findNode(int const&, unsigned int*) const@Base" 0.7.1
  (c++)"QHash<Konsole::ColorScheme*, QHashDummyValue>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++)"QHash<Konsole::Session*, bool>::deleteNode2(QHashData::Node*)@Base" 0.6.0
