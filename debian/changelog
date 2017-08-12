@@ -1,3 +1,9 @@
+qtermwidget (0.7.1-4) unstable; urgency=medium
+
+  * fixed symbols for gcc 7.1.0 (Closes: #871122)
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 12 Aug 2017 19:34:55 +0200
+
 qtermwidget (0.7.1-3) unstable; urgency=medium
 
   * Bumped Standards to 4.0.0 - no changes needed
