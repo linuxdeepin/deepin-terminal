@@ -925,32 +925,30 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|c++)"QByteArray::~QByteArray()@Base" 0.6.0
  (c++)"QHash<int, Konsole::Filter::HotSpot*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++)"QHash<int, Konsole::Filter::HotSpot*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (c++)"QHash<int, Konsole::Filter::HotSpot*>::findNode(int const&, unsigned int) const@Base" 0.7.0
+ (c++)"QHash<int, Konsole::Filter::HotSpot*>::findNode(int const&, unsigned int*) const@Base" 0.7.1
  (c++)"QHash<int, Konsole::Filter::HotSpot*>::values(int const&) const@Base" 0.6.0
  (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::detach_helper()@Base" 0.6.0
  (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (optional|c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::erase(QHash<int, Konsole::KeyboardTranslator::Entry>::const_iterator)@Base" 0.7.0
- (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::findNode(int const&, unsigned int) const@Base" 0.7.0
+ (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::findNode(int const&, unsigned int*) const@Base" 0.7.1
+ (c++)"QHash<int, Konsole::KeyboardTranslator::Entry>::values() const@Base" 0.7.1
  (optional|c++)"QHash<int, QString>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<int, QString>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (c++)"QHash<int, QString>::findNode(int const&, unsigned int) const@Base" 0.7.0
+ (c++)"QHash<int, QString>::findNode(int const&, unsigned int*) const@Base" 0.7.1
  (optional|c++)"QHash<int, QString>::keys() const@Base" 0.6.0
  (optional|c++)"QHash<int, unsigned int>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<int, unsigned long>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<int, unsigned int>::detach_helper()@Base" 0.6.0
  (optional|c++)"QHash<int, unsigned long>::detach_helper()@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned int>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (optional|c++)"QHash<int, unsigned long>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (optional|c++)"QHash<int, unsigned int>::findNode(int const&, unsigned int) const@Base" 0.7.0
- (optional|c++)"QHash<int, unsigned long>::findNode(int const&, unsigned int) const@Base" 0.7.0
+ (optional|c++)"QHash<int, unsigned long>::findNode(int const&, unsigned int*) const@Base" 0.7.1
  (c++)"QHash<Konsole::ColorScheme*, QHashDummyValue>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++)"QHash<Konsole::Session*, bool>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<Konsole::Session*, bool>::detach_helper()@Base" 0.6.0
  (c++)"QHash<Konsole::Session*, bool>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (optional|c++)"QHash<Konsole::Session*, bool>::findNode(Konsole::Session* const&, unsigned int) const@Base" 0.7.0
  (optional|c++)"QHash<Konsole::Session*, bool>::findNode(Konsole::Session* const&, unsigned int*) const@Base" 0.7.0
- (optional|c++)"QHash<Konsole::Session*, bool>::remove(Konsole::Session* const&)@Base" 0.7.0
  (c++)"QHash<Konsole::Session*, bool>::keys() const@Base" 0.6.0
  (c++)"QHash<QString, Konsole::ColorScheme const*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<QString, Konsole::ColorScheme const*>::detach_helper()@Base" 0.6.0
@@ -962,11 +960,12 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QHash<QString, Konsole::KeyboardTranslator*>::detach_helper()@Base" 0.7.1
  (c++)"QHash<QString, Konsole::KeyboardTranslator*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (c++)"QHash<QString, Konsole::KeyboardTranslator*>::findNode(QString const&, unsigned int*) const@Base" 0.7.1
+ (c++)"QHash<QString, Konsole::KeyboardTranslator*>::keys() const@Base" 0.7.1
  (c++)"QHash<QString, Konsole::KeyboardTranslator*>::remove(QString const&)@Base" 0.6.0
  (optional|c++)"QHash<unsigned short, unsigned short*>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (optional|c++)"QHash<unsigned short, unsigned short*>::detach_helper()@Base" 0.6.0
  (optional|c++)"QHash<unsigned short, unsigned short*>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (c++)"QHash<unsigned short, unsigned short*>::findNode(unsigned short const&, unsigned int) const@Base" 0.7.0
+ (c++)"QHash<unsigned short, unsigned short*>::findNode(unsigned short const&, unsigned int*) const@Base" 0.7.1
  (optional|c++)"QLinkedList<QByteArray>::append(QByteArray const&)@Base" 0.6.0
  (optional|c++)"QLinkedList<QByteArray>::detach_helper2(QLinkedList<QByteArray>::iterator)@Base" 0.6.0
  (optional|c++)"QLinkedList<QByteArray>::~QLinkedList()@Base" 0.6.0
@@ -1125,7 +1124,6 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (optional|c++)"QVarLengthArray<unsigned char, 64>::QVarLengthArray(int)@Base" 0.7.1
  (c++)"QVarLengthArray<unsigned char, 64>::realloc(int, int)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::insert(Konsole::Character*, int, Konsole::Character const&)@Base" 0.6.0
- (c++)"QVector<Konsole::Character>::operator=(QVector<Konsole::Character> const&)@Base" 0.6.0
  (c++)"QVector<Konsole::Character>::~QVector()@Base" 0.6.0
  (optional|c++)"QVector<Konsole::Character>::QVector(int)@Base" 0.6.0
  (optional|c++)"QVector<Konsole::Character>::QVector(QVector<Konsole::Character> const&)@Base" 0.7.1
