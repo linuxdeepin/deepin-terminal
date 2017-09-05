@@ -25,20 +25,20 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::base_color_table@Base" 0.6.0
  (c++)"Konsole::BlockArray::append(Konsole::Block*)@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::BlockArray::at(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::BlockArray::at(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::BlockArray::at(unsigned long)@Base" 0.6.0
  (c++)"Konsole::BlockArray::~BlockArray()@Base" 0.6.0
  (c++)"Konsole::BlockArray::BlockArray()@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::BlockArray::decreaseBuffer(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::BlockArray::decreaseBuffer(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::BlockArray::decreaseBuffer(unsigned long)@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::BlockArray::has(unsigned int) const@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::BlockArray::has(unsigned long) const@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::BlockArray::has(unsigned long) const@Base" 0.6.0
  (c++)"Konsole::BlockArray::increaseBuffer()@Base" 0.6.0
  (c++)"Konsole::BlockArray::lastBlock() const@Base" 0.6.0
  (c++)"Konsole::BlockArray::newBlock()@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::BlockArray::setHistorySize(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::BlockArray::setHistorySize(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::BlockArray::setHistorySize(unsigned long)@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::BlockArray::setSize(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::BlockArray::setSize(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::BlockArray::setSize(unsigned long)@Base" 0.6.0
  (c++)"Konsole::BlockArray::unmap()@Base" 0.6.0
  (c++)"Konsole::ColorScheme::backgroundColor() const@Base" 0.6.0
  (c++)"Konsole::ColorScheme::colorEntry(int, unsigned int) const@Base" 0.6.0
@@ -83,14 +83,14 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::ColorScheme::translatedColorNameForIndex(int)@Base" 0.6.0
  (c++)"Konsole::ColorScheme::translatedColorNames@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::CompactHistoryBlock::allocate(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::CompactHistoryBlock::allocate(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::CompactHistoryBlock::allocate(unsigned long)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::~CompactHistoryBlock()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::contains(void*)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::deallocate()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::isInUse()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::length()@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::CompactHistoryBlockList::allocate(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::CompactHistoryBlockList::allocate(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::CompactHistoryBlockList::allocate(unsigned long)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlockList::~CompactHistoryBlockList()@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlockList::deallocate(void*)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryBlock::remaining()@Base" 0.6.0
@@ -101,7 +101,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::CompactHistoryLine::getLength() const@Base" 0.6.0
  (c++)"Konsole::CompactHistoryLine::isWrapped() const@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::CompactHistoryLine::operator new(unsigned int, Konsole::CompactHistoryBlockList&)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::CompactHistoryLine::operator new(unsigned long, Konsole::CompactHistoryBlockList&)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::CompactHistoryLine::operator new(unsigned long, Konsole::CompactHistoryBlockList&)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryLine::setWrapped(bool)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryScroll::addCells(Konsole::Character const*, int)@Base" 0.6.0
  (c++)"Konsole::CompactHistoryScroll::addCellsVector(QVector<Konsole::Character> const&)@Base" 0.6.0
@@ -224,7 +224,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::HistoryScrollBlockArray::getLines()@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBlockArray::~HistoryScrollBlockArray()@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::HistoryScrollBlockArray::HistoryScrollBlockArray(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::HistoryScrollBlockArray::HistoryScrollBlockArray(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::HistoryScrollBlockArray::HistoryScrollBlockArray(unsigned long)@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBlockArray::isWrappedLine(int)@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBuffer::addCells(Konsole::Character const*, int)@Base" 0.6.0
  (c++)"Konsole::HistoryScrollBuffer::addCellsVector(QVector<Konsole::Character> const&)@Base" 0.6.0
@@ -260,7 +260,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"Konsole::HistoryScrollNone::isWrappedLine(int)@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::~HistoryTypeBlockArray()@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"Konsole::HistoryTypeBlockArray::HistoryTypeBlockArray(unsigned int)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"Konsole::HistoryTypeBlockArray::HistoryTypeBlockArray(unsigned long)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"Konsole::HistoryTypeBlockArray::HistoryTypeBlockArray(unsigned long)@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::isEnabled() const@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::maximumLineCount() const@Base" 0.6.0
  (c++)"Konsole::HistoryTypeBlockArray::scroll(Konsole::HistoryScroll*) const@Base" 0.6.0
@@ -937,13 +937,13 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QHash<int, QString>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (c++)"QHash<int, QString>::keys() const@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"QHash<int, unsigned int>::deleteNode2(QHashData::Node*)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"QHash<int, unsigned long>::deleteNode2(QHashData::Node*)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"QHash<int, unsigned long>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"QHash<int, unsigned int>::detach_helper()@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"QHash<int, unsigned long>::detach_helper()@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"QHash<int, unsigned long>::detach_helper()@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"QHash<int, unsigned int>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"QHash<int, unsigned long>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"QHash<int, unsigned long>::duplicateNode(QHashData::Node*, void*)@Base" 0.6.0
  (c++|arch= !alpha !amd64 !arm64 !kfreebsd-amd64 !mips64el !ppc64el !s390x)"QHash<int, unsigned int>::findNode(int const&, unsigned int*) const@Base" 0.6.0
- (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel)"QHash<int, unsigned long>::findNode(int const&, unsigned int*) const@Base" 0.6.0
+ (c++|arch= !armel !hppa !hurd-i386 !i386 !kfreebsd-i386 !m68k !mips !mipsel !powerpc)"QHash<int, unsigned long>::findNode(int const&, unsigned int*) const@Base" 0.6.0
  (c++)"QHash<Konsole::ColorScheme*, QHashDummyValue>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++)"QHash<Konsole::Session*, bool>::deleteNode2(QHashData::Node*)@Base" 0.6.0
  (c++)"QHash<Konsole::Session*, bool>::detach_helper()@Base" 0.6.0
@@ -975,7 +975,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QList<int>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<int>::~QList()@Base" 0.6.0
  (c++)"QList<int>::QList(QList<int> const&)@Base" 0.7.1
- (c++|arch= !amd64 !arm64 !hurd-i386 !i386 !kfreebsd-amd64 !kfreebsd-i386 !m68k !ppc64el !s390x)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.7.1
+ (c++|arch= !amd64 !arm64 !hurd-i386 !i386 !kfreebsd-amd64 !kfreebsd-i386 !m68k !ppc64el !powerpc !s390x)"QList<Konsole::ColorScheme const*>::append(Konsole::ColorScheme const* const&)@Base" 0.7.1
  (c++)"QList<Konsole::ColorScheme const*>::detach_helper_grow(int, int)@Base" 0.6.0
  (c++)"QList<Konsole::ColorScheme const*>::~QList()@Base" 0.6.0
  (c++)"QList<Konsole::CompactHistoryBlock*>::append(Konsole::CompactHistoryBlock* const&)@Base" 0.6.0
