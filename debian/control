@@ -2,15 +2,15 @@ Source: qtermwidget
 Maintainer: LXQt Packaging Team <pkg-lxqt-devel@lists.alioth.debian.org>
 Uploaders: Alf Gaida <agaida@siduction.org>,
            ChangZhuo Chen (陳昌倬) <czchen@debian.org>,
-           Andrew Lee (李健秋) <ajqlee@debian.org>,
+           Andrew Lee (李健秋) <ajqlee@debian.org>
 Section: libs
 Priority: optional
 Build-Depends: debhelper (>= 10),
                cmake (>= 3.0.2),
                libutf8proc-dev,
-               lxqt-build-tools (>= 0.3.2),
+               lxqt-build-tools,
                qtbase5-dev
-Standards-Version: 4.0.0
+Standards-Version: 4.1.0
 Vcs-Browser: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git/?h=debian/sid
 Vcs-Git: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git -b debian/sid
 Homepage: https://github.com/lxde/qtermwidget
@@ -20,10 +20,10 @@ Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         qtermwidget5-data (= ${source:Version}),
-Pre-Depends: ${misc:Pre-Depends}
+         qtermwidget5-data (= ${source:Version})
 Recommends: qtermwidget-l10n,
             fonts-hack-ttf
+Pre-Depends: ${misc:Pre-Depends}
 Description: Terminal emulator widget for Qt 5 (shared libraries)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
  built-in console or terminal emulation widget.
@@ -35,7 +35,7 @@ Architecture: any
 Multi-Arch: same
 Section: libdevel
 Depends: ${misc:Depends},
-         libqtermwidget5-0 (= ${binary:Version}),
+         libqtermwidget5-0 (= ${binary:Version})
 Description: Terminal emulator widget for Qt 5 (development files)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
  built-in console or terminal emulation widget.
@@ -45,7 +45,7 @@ Description: Terminal emulator widget for Qt 5 (development files)
 Package: qtermwidget5-data
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends},
+Depends: ${misc:Depends}
 Description: Terminal emulator widget for Qt 5 (data files)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
  built-in console or terminal emulation widget.
