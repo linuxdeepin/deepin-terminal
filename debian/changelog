@@ -1,3 +1,10 @@
+qtermwidget (0.7.1-6) unstable; urgency=medium
+
+  * Fixed symbols for all but powerpcspe - missed build deps and
+    i don't want to guess. 
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 05 Sep 2017 23:56:54 +0200
+
 qtermwidget (0.7.1-5) unstable; urgency=medium
 
   * fixed another round of symbols, work in progress
