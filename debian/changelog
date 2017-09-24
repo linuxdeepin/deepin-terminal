@@ -1,3 +1,9 @@
+qtermwidget (0.7.1-7) unstable; urgency=medium
+
+  * Fixed symbols for powerpcspe 
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 24 Sep 2017 14:05:24 +0200
+
 qtermwidget (0.7.1-6) unstable; urgency=medium
 
   * Fixed symbols for all but powerpcspe - missed build deps and
