@@ -1,3 +1,14 @@
+qtermwidget (0.8.0-1) experimental; urgency=medium
+
+  * Cherry-picking upstream release 0.8.0.
+  * Switched to experimental
+  * Bumped Standards to 4.1.1
+  * Bumped build tools to >= 0.4.0
+  * Fixed copyright
+  * Fixed symbols
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 22 Oct 2017 22:15:52 +0200
+
 qtermwidget (0.7.1-7) unstable; urgency=medium
 
   * Fixed symbols for powerpcspe 

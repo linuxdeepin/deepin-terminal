@@ -241,7 +241,30 @@ void TerminalDisplay::fontChange(const QFont&)
 
   emit changedFontMetricSignal( _fontHeight, _fontWidth );
   propagateSize();
+
+  // We will run paint event testing procedure.
+  // Although this operation will destory the orignal content,
+  // the content will be drawn again after the test.
+  _drawTextTestFlag = true;
   update();
+}
+
+void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
+{
+    QRect test_rect, feedback_rect;
+	test_rect.setRect(1, 1, _fontWidth * 4, _fontHeight);
+	painter.drawText(test_rect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + QString("Mq"), &feedback_rect);
+
+	//qDebug() << "test_rect:" << test_rect << "feeback_rect:" << feedback_rect;
+
+	_drawTextAdditionHeight = (feedback_rect.height() - _fontHeight) / 2;
+	if(_drawTextAdditionHeight < 0) {
+	  _drawTextAdditionHeight = 0;
+	}
+
+	// update the original content
+    _drawTextTestFlag = false;
+	update();
 }
 
 void TerminalDisplay::setVTFont(const QFont& f)
@@ -334,9 +357,13 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_colorsInverted(false)
 ,_blendColor(qRgba(0,0,0,0xff))
 ,_filterChain(new TerminalImageFilterChain())
-,_cursorShape(QTermWidget::BlockCursor)
+,_cursorShape(Emulation::KeyboardCursorShape::BlockCursor)
 ,mMotionAfterPasting(NoMoveScreenWindow)
 {
+  // variables for draw text
+  _drawTextAdditionHeight = 0;
+  _drawTextTestFlag = false;
+
   // terminal applications are not designed with Right-To-Left in mind,
   // so the layout is forced to Left-To-Right
   setLayoutDirection(Qt::LeftToRight);
@@ -739,7 +766,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
        else
            painter.setPen(foregroundColor);
 
-       if ( _cursorShape == QTermWidget::BlockCursor )
+       if ( _cursorShape == Emulation::KeyboardCursorShape::BlockCursor )
        {
             // draw the cursor outline, adjusting the area so that
             // it is draw entirely inside 'rect'
@@ -761,12 +788,12 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                 }
             }
        }
-       else if ( _cursorShape == QTermWidget::UnderlineCursor )
+       else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
             painter.drawLine(cursorRect.left(),
                              cursorRect.bottom(),
                              cursorRect.right(),
                              cursorRect.bottom());
-       else if ( _cursorShape == QTermWidget::IBeamCursor )
+       else if ( _cursorShape == Emulation::KeyboardCursorShape::IBeamCursor )
             painter.drawLine(cursorRect.left(),
                              cursorRect.top(),
                              cursorRect.left(),
@@ -783,23 +810,30 @@ void TerminalDisplay::drawCharacters(QPainter& painter,
 {
     // don't draw text which is currently blinking
     if ( _blinking && (style->rendition & RE_BLINK) )
+        return;
+
+    // don't draw concealed characters
+    if (style->rendition & RE_CONCEAL)
             return;
 
     // setup bold and underline
-    bool useBold;
-    ColorEntry::FontWeight weight = style->fontWeight(_colorTable);
-    if (weight == ColorEntry::UseCurrentFormat)
-        useBold = ((style->rendition & RE_BOLD) && _boldIntense) || font().bold();
-    else
-        useBold = (weight == ColorEntry::Bold) ? true : false;
-    bool useUnderline = style->rendition & RE_UNDERLINE || font().underline();
+    bool useBold = ((style->rendition & RE_BOLD) && _boldIntense) || font().bold();
+    const bool useUnderline = style->rendition & RE_UNDERLINE || font().underline();
+    const bool useItalic = style->rendition & RE_ITALIC || font().italic();
+    const bool useStrikeOut = style->rendition & RE_STRIKEOUT || font().strikeOut();
+    const bool useOverline = style->rendition & RE_OVERLINE || font().overline();
 
     QFont font = painter.font();
     if (    font.bold() != useBold
-         || font.underline() != useUnderline )
-    {
+         || font.underline() != useUnderline
+         || font.italic() != useItalic
+         || font.strikeOut() != useStrikeOut
+         || font.overline() != useOverline) {
        font.setBold(useBold);
        font.setUnderline(useUnderline);
+       font.setItalic(useItalic);
+       font.setStrikeOut(useStrikeOut);
+       font.setOverline(useOverline);
        painter.setFont(font);
     }
 
@@ -818,16 +852,21 @@ void TerminalDisplay::drawCharacters(QPainter& painter,
         drawLineCharString(painter,rect.x(),rect.y(),text,style);
     else
     {
-        // the drawText(rect,flags,string) overload is used here with null flags
-        // instead of drawText(rect,string) because the (rect,string) overload causes
-        // the application's default layout direction to be used instead of
-        // the widget-specific layout direction, which should always be
-        // Qt::LeftToRight for this widget
-        // This was discussed in: http://lists.kde.org/?t=120552223600002&r=1&w=2
-        if (_bidiEnabled)
-            painter.drawText(rect,0,text);
-        else
-            painter.drawText(rect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + text);
+        // Force using LTR as the document layout for the terminal area, because
+        // there is no use cases for RTL emulator and RTL terminal application.
+        //
+        // This still allows RTL characters to be rendered in the RTL way.
+        painter.setLayoutDirection(Qt::LeftToRight);
+
+        if (_bidiEnabled) {
+            painter.drawText(rect.x(), rect.y() + _fontAscent + _lineSpacing, text);
+        } else {
+         {
+            QRect drawRect(rect.topLeft(), rect.size());
+            drawRect.setHeight(rect.height() + _drawTextAdditionHeight);
+            painter.drawText(drawRect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + text);
+         }
+        }
     }
 }
 
@@ -1241,8 +1280,9 @@ void TerminalDisplay::showResizeNotification()
      }
      if (!_resizeWidget)
      {
-        _resizeWidget = new QLabel("Size: XXX x XXX", this);
-        _resizeWidget->setMinimumWidth(_resizeWidget->fontMetrics().width("Size: XXX x XXX"));
+         const QString label = tr("Size: XXX x XXX");
+        _resizeWidget = new QLabel(label, this);
+        _resizeWidget->setMinimumWidth(_resizeWidget->fontMetrics().width(label));
         _resizeWidget->setMinimumHeight(_resizeWidget->sizeHint().height());
         _resizeWidget->setAlignment(Qt::AlignCenter);
 
@@ -1252,8 +1292,7 @@ void TerminalDisplay::showResizeNotification()
         _resizeTimer->setSingleShot(true);
         connect(_resizeTimer, SIGNAL(timeout()), _resizeWidget, SLOT(hide()));
      }
-     QString sizeStr = QString("Size: %1 x %2").arg(_columns).arg(_lines);
-     _resizeWidget->setText(sizeStr);
+     _resizeWidget->setText(tr("Size: %1 x %2").arg(_columns).arg(_lines));
      _resizeWidget->move((width()-_resizeWidget->width())/2,
                          (height()-_resizeWidget->height())/2+20);
      _resizeWidget->show();
@@ -1332,14 +1371,21 @@ void TerminalDisplay::paintEvent( QPaintEvent* pe )
     paint.fillRect(contentsRect(), background);
   }
 
-  foreach (const QRect &rect, (pe->region() & contentsRect()).rects())
+  if(_drawTextTestFlag)
   {
-    drawBackground(paint,rect,palette().background().color(),
-                    true /* use opacity setting */);
-    drawContents(paint, rect);
+    calDrawTextAdditionHeight(paint);
   }
-  drawInputMethodPreeditString(paint,preeditRect());
-  paintFilters(paint);
+  else
+  {
+      foreach (const QRect &rect, (pe->region() & contentsRect()).rects())
+      {
+        drawBackground(paint,rect,palette().background().color(),
+                       true /* use opacity setting */);
+        drawContents(paint, rect);
+      }
+      drawInputMethodPreeditString(paint,preeditRect());
+      paintFilters(paint);
+  }
 }
 
 QPoint TerminalDisplay::cursorPosition() const

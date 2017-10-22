@@ -321,6 +321,10 @@ bool KeyboardTranslatorReader::parseAsCommand(const QString& text,KeyboardTransl
         command = KeyboardTranslator::ScrollLineDownCommand;
     else if ( text.compare("scrolllock",Qt::CaseInsensitive) == 0 )
         command = KeyboardTranslator::ScrollLockCommand;
+    else if ( text.compare("scrolluptotop",Qt::CaseInsensitive) == 0)
+        command = KeyboardTranslator::ScrollUpToTopCommand;
+    else if ( text.compare("scrolldowntobottom",Qt::CaseInsensitive) == 0)
+        command = KeyboardTranslator::ScrollDownToBottomCommand;
     else
         return false;
 
@@ -543,27 +547,27 @@ QList<KeyboardTranslatorReader::Token> KeyboardTranslatorReader::tokenize(const 
     if ( title.exactMatch(text) )
     {
         Token titleToken = { Token::TitleKeyword , QString() };
-        Token textToken = { Token::TitleText , title.capturedTexts()[1] };
+        Token textToken = { Token::TitleText , title.capturedTexts().at(1) };
 
         list << titleToken << textToken;
     }
     else if  ( key.exactMatch(text) )
     {
         Token keyToken = { Token::KeyKeyword , QString() };
-        Token sequenceToken = { Token::KeySequence , key.capturedTexts()[1].remove(' ') };
+        Token sequenceToken = { Token::KeySequence , key.capturedTexts().value(1).remove(' ') };
 
         list << keyToken << sequenceToken;
 
-        if ( key.capturedTexts()[3].isEmpty() )
+        if ( key.capturedTexts().at(3).isEmpty() )
         {
             // capturedTexts()[2] is a command
-            Token commandToken = { Token::Command , key.capturedTexts()[2] };
+            Token commandToken = { Token::Command , key.capturedTexts().at(2) };
             list << commandToken;
         }
         else
         {
             // capturedTexts()[3] is the output string
-           Token outputToken = { Token::OutputText , key.capturedTexts()[3] };
+           Token outputToken = { Token::OutputText , key.capturedTexts().at(3) };
            list << outputToken;
         }
     }
@@ -785,6 +789,10 @@ QString KeyboardTranslator::Entry::resultToString(bool expandWildCards,Qt::Keybo
         return "ScrollLineDown";
     else if ( _command == ScrollLockCommand )
         return "ScrollLock";
+    else if (_command == ScrollUpToTopCommand)
+        return "ScrollUpToTop";
+    else if (_command == ScrollDownToBottomCommand)
+        return "ScrollDownToBottom";
 
     return QString();
 }
@@ -852,10 +860,11 @@ void KeyboardTranslator::removeEntry(const Entry& entry)
 }
 KeyboardTranslator::Entry KeyboardTranslator::findEntry(int keyCode, Qt::KeyboardModifiers modifiers, States state) const
 {
-    foreach(const Entry& entry, _entries.values(keyCode))
+    for (auto it = _entries.cbegin(), end = _entries.cend(); it != end; ++it)
     {
-        if ( entry.matches(keyCode,modifiers,state) )
-            return entry;
+        if (it.key() == keyCode)
+            if ( it.value().matches(keyCode,modifiers,state) )
+                return *it;
     }
     return Entry(); // entry not found
 }
