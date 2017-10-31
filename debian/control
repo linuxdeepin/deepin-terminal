@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 10),
                lxqt-build-tools (>= 0.4.0),
                qtbase5-dev
 Standards-Version: 4.1.1
-Vcs-Browser: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git/?h=debian/experimental
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git/?h=debian/experimental
 Vcs-Git: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git -b debian/experimental
 Homepage: https://github.com/lxde/qtermwidget
 

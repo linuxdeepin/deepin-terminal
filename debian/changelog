@@ -1,3 +1,11 @@
+qtermwidget (0.8.0-2) experimental; urgency=medium
+
+  * Fixed cmake install directories (Closes: #880389)
+    Thanks Andreas Beckmann <anbe@debian.org> for spotting this.
+  * Removed superflous whitespaces from changelog
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 31 Oct 2017 15:18:42 +0100
+
 qtermwidget (0.8.0-1) experimental; urgency=medium
 
   * Cherry-picking upstream release 0.8.0.
@@ -11,14 +19,14 @@ qtermwidget (0.8.0-1) experimental; urgency=medium
 
 qtermwidget (0.7.1-7) unstable; urgency=medium
 
-  * Fixed symbols for powerpcspe 
+  * Fixed symbols for powerpcspe
 
  -- Alf Gaida <agaida@siduction.org>  Sun, 24 Sep 2017 14:05:24 +0200
 
 qtermwidget (0.7.1-6) unstable; urgency=medium
 
   * Fixed symbols for all but powerpcspe - missed build deps and
-    i don't want to guess. 
+    i don't want to guess.
 
  -- Alf Gaida <agaida@siduction.org>  Tue, 05 Sep 2017 23:56:54 +0200
 
@@ -28,7 +36,7 @@ qtermwidget (0.7.1-5) unstable; urgency=medium
     (currently fixed amd64 and i386) (Closes: #874187)
     Thanks Adrian Bunk for spotting this.
   * bumped Standards to 4.1.0 - no changes needed
-  * fix some colons and not needed versions in d/control 
+  * fix some colons and not needed versions in d/control
 
  -- Alf Gaida <agaida@siduction.org>  Tue, 05 Sep 2017 16:55:18 +0200
 
@@ -58,7 +66,7 @@ qtermwidget (0.7.1-2) unstable; urgency=medium
 
 qtermwidget (0.7.1-1) unstable; urgency=medium
 
-  * Cherry-picking upstream release 0.7.1. 
+  * Cherry-picking upstream release 0.7.1.
   * Fixed Symbols
   * Removed build dependency liblxqt0-dev
   * Activate new UTF8 processing in rules
@@ -76,7 +84,7 @@ qtermwidget (0.7.0-4) unstable; urgency=medium
     - qtermwidget5-data marked as Multi-Arch: foreign
     - libqtermwidget5-0 marked as Multi-Arch: same
     - libqtermwidget5-0-dev marked as Multi-Arch: same
-  * Simplified optional symbols 
+  * Simplified optional symbols
 
  -- Alf Gaida <agaida@siduction.org>  Tue, 18 Oct 2016 21:16:57 +0200
 
@@ -111,7 +119,7 @@ qtermwidget (0.6.0+20160108-6) unstable; urgency=medium
 
 qtermwidget (0.6.0+20160108-5) unstable; urgency=medium
 
-  * Rework some symbols 
+  * Rework some symbols
 
  -- Alf Gaida <agaida@siduction.org>  Sat, 14 May 2016 02:01:05 +0200
 
@@ -123,7 +131,7 @@ qtermwidget (0.6.0+20160108-4) unstable; urgency=medium
 
 qtermwidget (0.6.0+20160108-3) unstable; urgency=medium
 
-  * Fixed symbols for -03, thanks vorlon (Closes: #819225) 
+  * Fixed symbols for -03, thanks vorlon (Closes: #819225)
   * Bump standards to 3.9.7
   * Use secured VCS-links
   * Added hardening =+ all to rules
@@ -171,7 +179,7 @@ qtermwidget (0.6.0+20150709-4) unstable; urgency=medium
 
 qtermwidget (0.6.0+20150709-3) experimental; urgency=medium
 
-  * reduce symbols mess again 
+  * reduce symbols mess again
 
  -- Alf Gaida <agaida@siduction.org>  Thu, 29 Oct 2015 00:09:51 +0100
 
