@@ -1,8 +1,14 @@
+qtermwidget (0.8.0-3) experimental; urgency=medium
+
+  * Fixed typo in changelog
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 05 Nov 2017 02:05:43 +0100
+
 qtermwidget (0.8.0-2) experimental; urgency=medium
 
   * Fixed cmake install directories (Closes: #880389)
     Thanks Andreas Beckmann <anbe@debian.org> for spotting this.
-  * Removed superflous whitespaces from changelog
+  * Removed superfluous whitespaces from changelog
 
  -- Alf Gaida <agaida@siduction.org>  Tue, 31 Oct 2017 15:18:42 +0100
 
