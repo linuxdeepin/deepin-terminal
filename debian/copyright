@@ -13,7 +13,6 @@ Files: lib/kprocess.*
        lib/kpty*
        lib/qtermwidget.*
        lib/TerminalCharacterDecoder.*
-       src/main.cpp
 Copyright: 2007      Oswald Buddenhagen <ossi@kde.org>
            2008      e_k (e_k@users.sourceforge.net)
 License: LGPL-2+

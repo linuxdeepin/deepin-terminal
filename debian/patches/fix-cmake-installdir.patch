@@ -1,0 +1,33 @@
+Description: Install cmake files arch-dependend
+  That will prevent file conflicts described at #880389
+Author: Alf Gaida <agaida@siduction.org>
+
+Last-Update: 2017-10-31
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -213,13 +213,13 @@
+ 
+ install(FILES
+     "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config-version.cmake"
+-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
++    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+     COMPONENT Devel
+ )
+ 
+ install(EXPORT
+     "${QTERMWIDGET_LIBRARY_NAME}-targets"
+-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
++    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+     COMPONENT Devel
+ )
+ 
+@@ -263,7 +263,7 @@
+ 
+ install(FILES
+     "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config.cmake"
+-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
++    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+     COMPONENT Devel
+ )
+ 
