@@ -1,3 +1,9 @@
+qtermwidget (0.8.0-4) unstable; urgency=medium
+
+  * Transition to unstable
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 04 Dec 2017 20:14:31 +0100
+
 qtermwidget (0.8.0-3) experimental; urgency=medium
 
   * Fixed typo in changelog
