@@ -3,54 +3,44 @@ cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
 project(qtermwidget)
 
 include(GNUInstallDirs)
+include(GenerateExportHeader)
+include(CMakePackageConfigHelpers)
 include(CheckFunctionExists)
 
-option(BUILD_TEST "Build test application. Default OFF." OFF)
+set(REQUIRED_QT_VERSION "5.6")
+set(LXQTBT_MINIMUM_VERSION "0.4.0")
+
+option(UPDATE_TRANSLATIONS "Update source translation translations/*.ts files" OFF)
+option(BUILD_EXAMPLE "Build example application. Default OFF." OFF)
 # just change version for releases
 set(QTERMWIDGET_VERSION_MAJOR "0")
-set(QTERMWIDGET_VERSION_MINOR "7")
-set(QTERMWIDGET_VERSION_PATCH "1")
+set(QTERMWIDGET_VERSION_MINOR "8")
+set(QTERMWIDGET_VERSION_PATCH "0")
 
 set(QTERMWIDGET_VERSION "${QTERMWIDGET_VERSION_MAJOR}.${QTERMWIDGET_VERSION_MINOR}.${QTERMWIDGET_VERSION_PATCH}")
 
 # additional cmake files
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-elseif(COMPILER_SUPPORTS_CXX0X)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-else()
-    message(FATAL "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. C++11 support is required")
-endif()
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-include_directories(
-    "${CMAKE_SOURCE_DIR}/lib"
-    "${CMAKE_BINARY_DIR}/lib"
-    "${CMAKE_BINARY_DIR}"
-)
-add_definitions(-Wall)
-
+find_package(Qt5Widgets "${REQUIRED_QT_VERSION}" REQUIRED)
+find_package(Qt5LinguistTools "${REQUIRED_QT_VERSION}" REQUIRED)
+find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+include(LXQtTranslateTs)
+include(LXQtCompilerSettings NO_POLICY_SCOPE)
+include(LXQtCreatePkgConfigFile)
 
 set(QTERMWIDGET_LIBRARY_NAME qtermwidget5)
-include(qtermwidget5_use)
 
 option(USE_UTF8PROC "Use libutf8proc for better Unicode support. Default OFF" OFF)
 
 if(USE_UTF8PROC)
-    find_package(Utf8Proc)
-endif()
-
-if (UTF8PROC_FOUND)
-    add_definitions(-DHAVE_UTF8PROC)
-    include_directories("${UTF8PROC_INCLUDE_DIRS}")
+    find_package(Utf8Proc REQUIRED)
 endif()
 
 # main library
@@ -105,86 +95,200 @@ set(UI
 # for distribution
 set(HDRS_DISTRIB
     lib/qtermwidget.h
+    lib/Emulation.h
     lib/Filter.h
 )
 
 # dirs
 set(KB_LAYOUT_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${QTERMWIDGET_LIBRARY_NAME}/kb-layouts")
 message(STATUS "Keyboard layouts will be installed in: ${KB_LAYOUT_DIR}")
-add_definitions(-DKB_LAYOUT_DIR="${KB_LAYOUT_DIR}")
 
 set(COLORSCHEMES_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${QTERMWIDGET_LIBRARY_NAME}/color-schemes")
 message(STATUS "Color schemes will be installed in: ${COLORSCHEMES_DIR}" )
-add_definitions(-DCOLORSCHEMES_DIR="${COLORSCHEMES_DIR}")
+
+set(TRANSLATIONS_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${QTERMWIDGET_LIBRARY_NAME}/translations")
+message(STATUS "Translations will be installed in: ${TRANSLATIONS_DIR}")
 
 set(QTERMWIDGET_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${QTERMWIDGET_LIBRARY_NAME}")
 
-#| Defines
-add_definitions(-DHAVE_POSIX_OPENPT -DHAVE_SYS_TIME_H)
-if(APPLE)
-    add_definitions(-DHAVE_UTMPX -D_UTMPX_COMPAT)
-endif()
 CHECK_FUNCTION_EXISTS(updwtmpx HAVE_UPDWTMPX)
-if(HAVE_UPDWTMPX)
-    add_definitions(-DHAVE_UPDWTMPX)
-endif()
 
 qt5_wrap_cpp(MOCS ${HDRS})
 qt5_wrap_ui(UI_SRCS ${UI})
-set(PKG_CONFIG_REQ "Qt5Core, Qt5Xml, Qt5Widgets")
+set(PKG_CONFIG_REQ "Qt5Widgets")
 
-add_library(${QTERMWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS})
-target_link_libraries(${QTERMWIDGET_LIBRARY_NAME} ${QTERMWIDGET_QT_LIBRARIES})
+lxqt_translate_ts(QTERMWIDGET_QM
+    TRANSLATION_DIR "lib/translations"
+    UPDATE_TRANSLATIONS
+        ${UPDATE_TRANSLATIONS}
+    SOURCES
+        ${SRCS} ${HDRS} ${UI}
+    PULL_TRANSLATIONS
+        ${PULL_TRANSLATIONS}
+    CLEAN_TRANSLATIONS
+        ${CLEAN_TRANSLATIONS}
+    TRANSLATIONS_REPO
+        ${TRANSLATIONS_REPO}
+    TRANSLATIONS_REFSPEC
+        ${TRANSLATIONS_REFSPEC}
+    INSTALL_DIR
+        ${TRANSLATIONS_DIR}
+    COMPONENT
+        Runtime
+)
+
+add_library(${QTERMWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS} ${QTERMWIDGET_QM})
+target_link_libraries(${QTERMWIDGET_LIBRARY_NAME} Qt5::Widgets)
 set_target_properties( ${QTERMWIDGET_LIBRARY_NAME} PROPERTIES
                        SOVERSION ${QTERMWIDGET_VERSION_MAJOR}
                        VERSION ${QTERMWIDGET_VERSION}
                      )
-if (UTF8PROC_FOUND)
-    target_link_libraries(${QTERMWIDGET_LIBRARY_NAME} ${UTF8PROC_LIBRARIES})
+
+
+if(APPLE)
+    target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME}
+        PRIVATE
+            "HAVE_UTMPX"
+            "UTMPX_COMPAT"
+    )
 endif()
+
+if(HAVE_UPDWTMPX)
+    target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME}
+        PRIVATE
+            "HAVE_UPDWTMPX"
+    )
+endif()
+
+if (UTF8PROC_FOUND)
+    target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME}
+        PRIVATE
+            "HAVE_UTF8PROC"
+    )
+    target_include_directories(${QTERMWIDGET_LIBRARY_NAME}
+        INTERFACE
+            ${UTF8PROC_INCLUDE_DIRS}
+    )
+    target_link_libraries(${QTERMWIDGET_LIBRARY_NAME}
+        ${UTF8PROC_LIBRARIES}
+    )
+    string(APPEND PKG_CONFIG_REQ ", libutf8proc")
+endif()
+
 if(APPLE)
     set (CMAKE_SKIP_RPATH 1)
     # this is a must to load the lib correctly
     set_target_properties(${QTERMWIDGET_LIBRARY_NAME} PROPERTIES INSTALL_NAME_DIR ${CMAKE_INSTALL_FULL_LIBDIR})
 endif()
 
-install(TARGETS ${QTERMWIDGET_LIBRARY_NAME} DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-install(FILES ${HDRS_DISTRIB} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${QTERMWIDGET_LIBRARY_NAME}")
-# keyboard layouts
-install(DIRECTORY lib/kb-layouts/ DESTINATION "${KB_LAYOUT_DIR}" FILES_MATCHING PATTERN "*.keytab" )
-# color schemes
-install(DIRECTORY lib/color-schemes/ DESTINATION "${COLORSCHEMES_DIR}" FILES_MATCHING PATTERN "*.*schem*")
+target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME}
+    PRIVATE
+        "KB_LAYOUT_DIR=\"${KB_LAYOUT_DIR}\""
+        "COLORSCHEMES_DIR=\"${COLORSCHEMES_DIR}\""
+        "TRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\""
+        "HAVE_POSIX_OPENPT"
+        "HAVE_SYS_TIME_H"
+)
 
-include(create_pkgconfig_file)
-create_pkgconfig_file(${QTERMWIDGET_LIBRARY_NAME}
-    "QTermWidget library for Qt ${QTERMWIDGET_VERSION_MAJOR}.x"
-    ${PKG_CONFIG_REQ}
-    ${QTERMWIDGET_LIBRARY_NAME}
-    ${QTERMWIDGET_VERSION}
+
+generate_export_header(${QTERMWIDGET_LIBRARY_NAME}
+    EXPORT_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/lib/qtermwidget_export.h"
+    EXPORT_MACRO_NAME QTERMWIDGET_EXPORT
+)
+
+target_include_directories(${QTERMWIDGET_LIBRARY_NAME}
+    PUBLIC
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib>"
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/lib>"
+    INTERFACE
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${QTERMWIDGET_LIBRARY_NAME}>"
+)
+
+write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config-version.cmake"
+    VERSION ${QTERMWIDGET_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES
+    "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config-version.cmake"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+    COMPONENT Devel
+)
+
+install(EXPORT
+    "${QTERMWIDGET_LIBRARY_NAME}-targets"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+    COMPONENT Devel
+)
+
+install(FILES
+    ${HDRS_DISTRIB} "${CMAKE_CURRENT_BINARY_DIR}/lib/qtermwidget_export.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${QTERMWIDGET_LIBRARY_NAME}"
+    COMPONENT Devel
+)
+# keyboard layouts
+install(DIRECTORY
+    lib/kb-layouts/
+    DESTINATION "${KB_LAYOUT_DIR}"
+    COMPONENT Runtime
+    FILES_MATCHING PATTERN "*.keytab"
+)
+# color schemes
+install(DIRECTORY
+    lib/color-schemes/
+    DESTINATION "${COLORSCHEMES_DIR}"
+    COMPONENT Runtime
+    FILES_MATCHING PATTERN "*.*schem*"
+)
+
+lxqt_create_pkgconfig_file(
+    PACKAGE_NAME ${QTERMWIDGET_LIBRARY_NAME}
+    DESCRIPTIVE_NAME ${QTERMWIDGET_LIBRARY_NAME}
+    DESCRIPTION "QTermWidget library for Qt ${QTERMWIDGET_VERSION_MAJOR}.x"
+    INCLUDEDIRS ${QTERMWIDGET_LIBRARY_NAME}
+    LIBS ${QTERMWIDGET_LIBRARY_NAME}
+    REQUIRES ${PKG_CONFIG_REQ}
+    VERSION ${QTERMWIDGET_VERSION}
+    INSTALL
+    COMPONENT Devel
 )
 
 configure_file(
-    "${CMAKE_SOURCE_DIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}-config.cmake.in"
+    "${PROJECT_SOURCE_DIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}-config.cmake.in"
     "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config.cmake"
     @ONLY
 )
+
 install(FILES
     "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config.cmake"
-    "${CMAKE_SOURCE_DIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}_use.cmake"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+    COMPONENT Devel
+)
+
+install(TARGETS ${QTERMWIDGET_LIBRARY_NAME}
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    EXPORT "${QTERMWIDGET_LIBRARY_NAME}-targets"
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    PUBLIC_HEADER
+    COMPONENT Runtime
+)
+
+export(TARGETS ${QTERMWIDGET_LIBRARY_NAME}
+    FILE "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-targets.cmake"
+    EXPORT_LINK_INTERFACE_LIBRARIES
 )
 # end of main library
 
 
-# test application
-if(BUILD_TEST)
-    set(TEST_SRC src/main.cpp)
-    add_executable(test ${TEST_SRC})
-    add_dependencies(test ${QTERMWIDGET_LIBRARY_NAME})
-    link_directories(${CMAKE_BINARY_DIR})
-    target_link_libraries(test ${QTERMWIDGET_QT_LIBRARIES} ${QTERMWIDGET_LIBRARY_NAME} util)
-endif (BUILD_TEST)
-# end of test application
+# example application
+if(BUILD_EXAMPLE)
+    set(EXAMPLE_SRC example/main.cpp)
+    add_executable(example ${EXAMPLE_SRC})
+    target_link_libraries(example ${QTERMWIDGET_LIBRARY_NAME})
+endif()
+# end of example application
 
 
 CONFIGURE_FILE(
