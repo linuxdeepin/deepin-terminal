@@ -1,3 +1,11 @@
+qtermwidget (0.8.0-5) unstable; urgency=medium
+
+  * Bumped Standards to 4.1.2, no changes needed
+  * Removed branch from VCS fields
+  * Removed gbp.conf
+
+ -- Alf Gaida <agaida@siduction.org>  Fri, 15 Dec 2017 19:30:23 +0100
+
 qtermwidget (0.8.0-4) unstable; urgency=medium
 
   * Transition to unstable

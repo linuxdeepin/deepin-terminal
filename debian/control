@@ -10,9 +10,9 @@ Build-Depends: debhelper (>= 10),
                libutf8proc-dev,
                lxqt-build-tools (>= 0.4.0),
                qtbase5-dev
-Standards-Version: 4.1.1
-Vcs-Browser: https://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git/?h=debian/sid
-Vcs-Git: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git -b debian/sid
+Standards-Version: 4.1.2
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git
 Homepage: https://github.com/lxde/qtermwidget
 
 Package: libqtermwidget5-0
