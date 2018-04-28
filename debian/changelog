@@ -1,3 +1,15 @@
+qtermwidget (0.8.0-6) unstable; urgency=medium
+
+  * Bumped compat to 11
+  * Bumped debhelper to >= 11~
+  * Removed not needed cmake minimim version
+  * Bumped Standards to 4.1.4, no changes needed
+  * Changed VCS fields for salsa
+  * Changed Homepage, Source and watch to lxqt
+  * Bumped years in copyright
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 28 Apr 2018 19:31:10 +0200
+
 qtermwidget (0.8.0-5) unstable; urgency=medium
 
   * Bumped Standards to 4.1.2, no changes needed

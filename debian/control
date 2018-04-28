@@ -5,15 +5,15 @@ Uploaders: Alf Gaida <agaida@siduction.org>,
            Andrew Lee (李健秋) <ajqlee@debian.org>
 Section: libs
 Priority: optional
-Build-Depends: debhelper (>= 10),
-               cmake (>= 3.0.2),
+Build-Depends: debhelper (>= 11~),
+               cmake,
                libutf8proc-dev,
                lxqt-build-tools (>= 0.4.0),
                qtbase5-dev
-Standards-Version: 4.1.2
-Vcs-Browser: https://anonscm.debian.org/cgit/pkg-lxqt/qtermwidget.git
-Vcs-Git: https://anonscm.debian.org/git/pkg-lxqt/qtermwidget.git
-Homepage: https://github.com/lxde/qtermwidget
+Standards-Version: 4.1.4
+Vcs-Browser: https://salsa.debian.org/lxqt-team/qtermwidget
+Vcs-Git: https://salsa.debian.org/lxqt-team/qtermwidget.git
+Homepage: https://github.com/lxqt/qtermwidget
 
 Package: libqtermwidget5-0
 Architecture: any
