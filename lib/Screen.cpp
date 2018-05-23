@@ -419,7 +419,7 @@ void Screen::updateEffectiveRendition()
     }
 
     if (currentRendition & RE_BOLD)
-        effectiveForeground.toggleIntensive();
+        effectiveForeground.setIntensive();
 }
 
 void Screen::copyFromHistory(Character* dest, int startLine, int count) const
@@ -644,7 +644,7 @@ void Screen::checkSelection(int from, int to)
         clearSelection();
 }
 
-void Screen::displayCharacter(unsigned short c)
+void Screen::displayCharacter(wchar_t c)
 {
     // Note that VT100 does wrapping BEFORE putting the character.
     // This has impact on the assumption of valid cursor positions.
@@ -751,13 +751,18 @@ QRect Screen::lastScrolledRegion() const
 
 void Screen::scrollUp(int from, int n)
 {
-    if (n <= 0 || from + n > _bottomMargin) return;
+    if (n <= 0)
+        return;
+    if (from > _bottomMargin)
+        return;
+    if (from + n > _bottomMargin)
+        n = _bottomMargin + 1 - from;
 
     _scrolledLines -= n;
     _lastScrolledRegion = QRect(0,_topMargin,columns-1,(_bottomMargin-_topMargin));
 
     //FIXME: make sure `topMargin', `bottomMargin', `from', `n' is in bounds.
-    moveImage(loc(0,from),loc(0,from+n),loc(columns-1,_bottomMargin));
+    moveImage(loc(0,from),loc(0,from+n),loc(columns,_bottomMargin));
     clearImage(loc(0,_bottomMargin-n+1),loc(columns-1,_bottomMargin),' ');
 }
 

@@ -1,0 +1,11 @@
+debian/*.debhelper
+debian/*.log
+debian/*.mangled
+debian/*.substvars
+debian/debhelper-build-stamp
+debian/files
+
+debian/libqtermwidget5-0-dev/
+debian/libqtermwidget5-0/
+debian/qtermwidget5-data/
+debian/tmp/

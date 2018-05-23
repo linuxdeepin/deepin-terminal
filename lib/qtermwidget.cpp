@@ -219,6 +219,20 @@ QSize QTermWidget::sizeHint() const
     return size;
 }
 
+void QTermWidget::setTerminalSizeHint(bool on)
+{
+    if (!m_impl->m_terminalDisplay)
+        return;
+    m_impl->m_terminalDisplay->setTerminalSizeHint(on);
+}
+
+bool QTermWidget::terminalSizeHint()
+{
+    if (!m_impl->m_terminalDisplay)
+        return true;
+    return m_impl->m_terminalDisplay->terminalSizeHint();
+}
+
 void QTermWidget::startShellProgram()
 {
     if ( m_impl->m_session->isRunning() ) {
@@ -460,7 +474,8 @@ void QTermWidget::setColorScheme(const QString& origName)
 QStringList QTermWidget::availableColorSchemes()
 {
     QStringList ret;
-    foreach (const ColorScheme* cs, ColorSchemeManager::instance()->allColorSchemes())
+    const auto allColorSchemes = ColorSchemeManager::instance()->allColorSchemes();
+    for (const ColorScheme* cs : allColorSchemes)
         ret.append(cs->name());
     return ret;
 }
@@ -514,6 +529,11 @@ void QTermWidget::resizeEvent(QResizeEvent*)
 void QTermWidget::sessionFinished()
 {
     emit finished();
+}
+
+void QTermWidget::bracketText(QString& text)
+{
+    m_impl->m_terminalDisplay->bracketText(text);
 }
 
 void QTermWidget::copyClipboard()
@@ -696,6 +716,20 @@ void QTermWidget::setBlinkingCursor(bool blink)
     if (!m_impl->m_terminalDisplay)
         return;
     m_impl->m_terminalDisplay->setBlinkingCursor(blink);
+}
+
+void QTermWidget::setBidiEnabled(bool enabled)
+{
+    if (!m_impl->m_terminalDisplay)
+        return;
+    m_impl->m_terminalDisplay->setBidiEnabled(enabled);
+}
+
+bool QTermWidget::isBidiEnabled()
+{
+    if (!m_impl->m_terminalDisplay)
+        return false; // Default value
+    return m_impl->m_terminalDisplay->isBidiEnabled();
 }
 
 QString QTermWidget::title() const

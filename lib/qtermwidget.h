@@ -60,6 +60,10 @@ public:
     //Initial size
     QSize sizeHint() const;
 
+    // expose TerminalDisplay::TerminalSizeHint, setTerminalSizeHint
+    void setTerminalSizeHint(bool on);
+    bool terminalSizeHint();
+
     //start shell program if it was not started in constructor
     void startShellProgram();
 
@@ -199,6 +203,9 @@ public:
 
     void setBlinkingCursor(bool blink);
 
+    /** Enables or disables bidi text in the terminal. */
+    void setBidiEnabled(bool enabled);
+    bool isBidiEnabled();
 
     /**
      * Automatically close the terminal session after the shell process exits or
@@ -212,6 +219,8 @@ public:
     /** True if the title() or icon() was (ever) changed by the session. */
     bool isTitleChanged() const;
 
+    /** change and wrap text corresponding to paste mode **/
+    void bracketText(QString& text);
 signals:
     void finished();
     void copyAvailable(bool);

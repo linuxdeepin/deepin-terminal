@@ -1,5 +1,8 @@
 %Module QTermWidget
 
+%ModuleHeaderCode
+#pragma GCC visibility push(default)
+%End
 
 %Import QtGui/QtGuimod.sip
 %Import QtCore/QtCoremod.sip
@@ -19,7 +22,7 @@ public:
         ScrollBarRight=2
     };
 
-    enum KeyboardCursorShape
+    enum class KeyboardCursorShape
     {
         BlockCursor=0,
         UnderlineCursor=1,
@@ -30,6 +33,8 @@ public:
     ~QTermWidget();
     void startTerminalTeletype();
     QSize sizeHint() const;
+    void setTerminalSizeHint(bool on);
+    bool terminalSizeHint();
     void startShellProgram();
     int getShellPID();
     void changeDir(const QString & dir);

@@ -6,6 +6,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::availableColorSchemes()@Base" 0.6.0
  (c++)"QTermWidget::availableKeyBindings()@Base" 0.6.0
  (c++)"QTermWidget::bell(QString const&)@Base" 0.6.0
+ (c++)"QTermWidget::bracketText(QString&)@Base" 0.9.0~
  (c++)"QTermWidget::changeDir(QString const&)@Base" 0.6.0
  (c++)"QTermWidget::clear()@Base" 0.6.0
  (c++)"QTermWidget::copyAvailable(bool)@Base" 0.6.0
@@ -27,6 +28,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::historyLinesCount()@Base" 0.6.0
  (c++)"QTermWidget::icon() const@Base" 0.7.0
  (c++)"QTermWidget::init(int)@Base" 0.6.0
+ (c++)"QTermWidget::isBidiEnabled()@Base" 0.9.0~
  (c++)"QTermWidget::isTitleChanged() const@Base" 0.7.0
  (c++)"QTermWidget::keyBindings()@Base" 0.6.0
  (c++)"QTermWidget::matchFound(int, int, int, int)@Base" 0.6.0
@@ -50,6 +52,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::sessionFinished()@Base" 0.6.0
  (c++)"QTermWidget::setArgs(QStringList const&)@Base" 0.6.0
  (c++)"QTermWidget::setAutoClose(bool)@Base" 0.8.0
+ (c++)"QTermWidget::setBidiEnabled(bool)@Base" 0.9.0~
  (c++)"QTermWidget::setBlinkingCursor(bool)@Base" 0.8.0
  (c++)"QTermWidget::setColorScheme(QString const&)@Base" 0.6.0
  (c++)"QTermWidget::setEnvironment(QStringList const&)@Base" 0.6.0
@@ -70,6 +73,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::setTerminalBackgroundImage(QString)@Base" 0.7.1
  (c++)"QTermWidget::setTerminalFont(QFont const&)@Base" 0.6.0
  (c++)"QTermWidget::setTerminalOpacity(double)@Base" 0.6.0
+ (c++)"QTermWidget::setTerminalSizeHint(bool)@Base" 0.9.0~
  (c++)"QTermWidget::setTextCodec(QTextCodec*)@Base" 0.6.0
  (c++)"QTermWidget::setWorkingDirectory(QString const&)@Base" 0.6.0
  (c++)"QTermWidget::setZoom(int)@Base" 0.6.0
@@ -81,6 +85,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::termGetFocus()@Base" 0.6.0
  (c++)"QTermWidget::termKeyPressed(QKeyEvent*)@Base" 0.6.0
  (c++)"QTermWidget::termLostFocus()@Base" 0.6.0
+ (c++)"QTermWidget::terminalSizeHint()@Base" 0.9.0~
  (c++)"QTermWidget::title() const@Base" 0.7.0
  (c++)"QTermWidget::titleChanged()@Base" 0.7.0
  (c++)"QTermWidget::toggleShowSearchBar()@Base" 0.6.0
@@ -92,4 +97,5 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"non-virtual thunk to QTermWidget::~QTermWidget()@Base" 0.6.0
  (c++)"typeinfo for QTermWidget@Base" 0.6.0
  (c++)"typeinfo name for QTermWidget@Base" 0.6.0
+ (c++)"void std::__cxx11::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_M_construct<wchar_t const*>(wchar_t const*, wchar_t const*, std::forward_iterator_tag)@Base" 0.9.0~
  (c++)"vtable for QTermWidget@Base" 0.6.0

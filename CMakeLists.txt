@@ -6,15 +6,19 @@ include(GNUInstallDirs)
 include(GenerateExportHeader)
 include(CMakePackageConfigHelpers)
 include(CheckFunctionExists)
+include(CheckIncludeFile)
 
-set(REQUIRED_QT_VERSION "5.6")
-set(LXQTBT_MINIMUM_VERSION "0.4.0")
+set(REQUIRED_QT_VERSION "5.7.1")
+set(LXQTBT_MINIMUM_VERSION "0.5.0")
 
 option(UPDATE_TRANSLATIONS "Update source translation translations/*.ts files" OFF)
 option(BUILD_EXAMPLE "Build example application. Default OFF." OFF)
+option(QTERMWIDGET_USE_UTEMPTER "Uses the libutempter library. Mainly for FreeBSD" OFF)
+option(QTERMWIDGET_BUILD_PYTHON_BINDING "Build python binding" OFF)
+
 # just change version for releases
 set(QTERMWIDGET_VERSION_MAJOR "0")
-set(QTERMWIDGET_VERSION_MINOR "8")
+set(QTERMWIDGET_VERSION_MINOR "9")
 set(QTERMWIDGET_VERSION_PATCH "0")
 
 set(QTERMWIDGET_VERSION "${QTERMWIDGET_VERSION_MAJOR}.${QTERMWIDGET_VERSION_MINOR}.${QTERMWIDGET_VERSION_PATCH}")
@@ -31,6 +35,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5Widgets "${REQUIRED_QT_VERSION}" REQUIRED)
 find_package(Qt5LinguistTools "${REQUIRED_QT_VERSION}" REQUIRED)
 find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+
+include(LXQtPreventInSourceBuilds)
 include(LXQtTranslateTs)
 include(LXQtCompilerSettings NO_POLICY_SCOPE)
 include(LXQtCreatePkgConfigFile)
@@ -160,6 +166,16 @@ if(HAVE_UPDWTMPX)
     )
 endif()
 
+if (QTERMWIDGET_USE_UTEMPTER)
+    CHECK_INCLUDE_FILE(utempter.h HAVE_UTEMPTER)
+    if (HAVE_UTEMPTER)
+        target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME} PRIVATE
+                "HAVE_UTEMPTER"
+        )
+        target_link_libraries(${QTERMWIDGET_LIBRARY_NAME} ulog)
+    endif()
+endif()
+
 if (UTF8PROC_FOUND)
     target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME}
         PRIVATE
@@ -188,6 +204,7 @@ target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME}
         "TRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\""
         "HAVE_POSIX_OPENPT"
         "HAVE_SYS_TIME_H"
+        "QT_NO_FOREACH"
 )
 
 
@@ -213,13 +230,13 @@ write_basic_package_version_file(
 
 install(FILES
     "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config-version.cmake"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
     COMPONENT Devel
 )
 
 install(EXPORT
     "${QTERMWIDGET_LIBRARY_NAME}-targets"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
     COMPONENT Devel
 )
 
@@ -263,7 +280,7 @@ configure_file(
 
 install(FILES
     "${CMAKE_BINARY_DIR}/${QTERMWIDGET_LIBRARY_NAME}-config.cmake"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${QTERMWIDGET_LIBRARY_NAME}"
     COMPONENT Devel
 )
 
@@ -289,6 +306,12 @@ if(BUILD_EXAMPLE)
     target_link_libraries(example ${QTERMWIDGET_LIBRARY_NAME})
 endif()
 # end of example application
+
+# python binding
+if (QTERMWIDGET_BUILD_PYTHON_BINDING)
+    add_subdirectory(pyqt)
+endif()
+# end of python binding
 
 
 CONFIGURE_FILE(

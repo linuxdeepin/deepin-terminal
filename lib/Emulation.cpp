@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string>
 
 // Qt
 #include <QApplication>
@@ -132,7 +133,7 @@ void Emulation::setScreen(int n)
   if (_currentScreen != old)
   {
      // tell all windows onto this emulation to switch to the newly active screen
-     foreach(ScreenWindow* window,_windows)
+     for(ScreenWindow* window : const_cast<const QList<ScreenWindow*>&>(_windows))
          window->setScreen(_currentScreen);
   }
 }
@@ -188,7 +189,7 @@ QString Emulation::keyBindings() const
   return _keyTranslator->name();
 }
 
-void Emulation::receiveChar(int c)
+void Emulation::receiveChar(wchar_t c)
 // process application unicode input to terminal
 // this is a trivial scanner
 {
@@ -238,11 +239,17 @@ void Emulation::receiveData(const char* text, int length)
 
     bufferedUpdate();
 
-    QString unicodeText = _decoder->toUnicode(text,length);
+    /* XXX: the following code involves encoding & decoding of "UTF-16
+     * surrogate pairs", which does not work with characters higher than
+     * U+10FFFF
+     * https://unicodebook.readthedocs.io/unicode_encodings.html#surrogates
+     */
+    QString utf16Text = _decoder->toUnicode(text,length);
+    std::wstring unicodeText = utf16Text.toStdWString();
 
     //send characters to terminal emulator
-    for (int i=0;i<unicodeText.length();i++)
-        receiveChar(unicodeText[i].unicode());
+    for (size_t i=0;i<unicodeText.length();i++)
+        receiveChar(unicodeText[i]);
 
     //look for z-modem indicator
     //-- someone who understands more about z-modems that I do may be able to move
