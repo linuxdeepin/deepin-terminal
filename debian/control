@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 11~),
                libutf8proc-dev,
                lxqt-build-tools (>= 0.5.0~),
                qtbase5-dev
-Standards-Version: 4.1.4
+Standards-Version: 4.2.1
 Vcs-Browser: https://salsa.debian.org/lxqt-team/qtermwidget
 Vcs-Git: https://salsa.debian.org/lxqt-team/qtermwidget.git
 Homepage: https://github.com/lxqt/qtermwidget
@@ -22,7 +22,7 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          qtermwidget5-data (= ${source:Version})
 Recommends: qtermwidget-l10n,
-            fonts-hack-ttf
+            fonts-hack
 Pre-Depends: ${misc:Pre-Depends}
 Description: Terminal emulator widget for Qt 5 (shared libraries)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
