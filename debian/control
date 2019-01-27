@@ -5,12 +5,12 @@ Uploaders: Alf Gaida <agaida@siduction.org>,
            Andrew Lee (李健秋) <ajqlee@debian.org>
 Section: libs
 Priority: optional
-Build-Depends: debhelper (>= 11~),
+Build-Depends: debhelper-compat (= 12),
                cmake,
                libutf8proc-dev,
-               lxqt-build-tools (>= 0.5.0~),
+               lxqt-build-tools (>= 0.6.0~),
                qtbase5-dev
-Standards-Version: 4.2.1
+Standards-Version: 4.3.0
 Vcs-Browser: https://salsa.debian.org/lxqt-team/qtermwidget
 Vcs-Git: https://salsa.debian.org/lxqt-team/qtermwidget.git
 Homepage: https://github.com/lxqt/qtermwidget
@@ -50,4 +50,5 @@ Description: Terminal emulator widget for Qt 5 (data files)
  QTermWidget is a Unicode-enabled, embeddable Qt widget that can be used as
  built-in console or terminal emulation widget.
  .
- This package provides data files like keyboard layouts and color schemes.
+ This package provides data files like translations, keyboard layouts
+ and color schemes.

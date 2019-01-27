@@ -188,6 +188,9 @@ public:
     TripleClickMode tripleClickMode() { return _tripleClickMode; }
 
     void setLineSpacing(uint);
+    void setMargin(int);
+
+    int margin() const;
     uint lineSpacing() const;
 
     void emitSelection(bool useXselection,bool appendReturn);
@@ -820,8 +823,9 @@ private:
 
     //the delay in milliseconds between redrawing blinking text
     static const int TEXT_BLINK_DELAY = 500;
-    static const int DEFAULT_LEFT_MARGIN = 1;
-    static const int DEFAULT_TOP_MARGIN = 1;
+
+    int _leftBaseMargin;
+    int _topBaseMargin;
 
 public:
     static void setTransparencyEnabled(bool enable)

@@ -1,5 +1,9 @@
-cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
-
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+# CMP0000: Call the cmake_minimum_required() command at the beginning of the top-level
+# CMakeLists.txt file even before calling the project() command.
+# The cmake_minimum_required(VERSION) command implicitly invokes the cmake_policy(VERSION)
+# command to specify that the current project code is written for the given range of CMake
+# versions.
 project(qtermwidget)
 
 include(GNUInstallDirs)
@@ -8,33 +12,35 @@ include(CMakePackageConfigHelpers)
 include(CheckFunctionExists)
 include(CheckIncludeFile)
 
-set(REQUIRED_QT_VERSION "5.7.1")
-set(LXQTBT_MINIMUM_VERSION "0.5.0")
-
 option(UPDATE_TRANSLATIONS "Update source translation translations/*.ts files" OFF)
 option(BUILD_EXAMPLE "Build example application. Default OFF." OFF)
 option(QTERMWIDGET_USE_UTEMPTER "Uses the libutempter library. Mainly for FreeBSD" OFF)
 option(QTERMWIDGET_BUILD_PYTHON_BINDING "Build python binding" OFF)
+option(USE_UTF8PROC "Use libutf8proc for better Unicode support. Default OFF" OFF)
+
 
 # just change version for releases
 set(QTERMWIDGET_VERSION_MAJOR "0")
-set(QTERMWIDGET_VERSION_MINOR "9")
+set(QTERMWIDGET_VERSION_MINOR "14")
 set(QTERMWIDGET_VERSION_PATCH "0")
 
 set(QTERMWIDGET_VERSION "${QTERMWIDGET_VERSION_MAJOR}.${QTERMWIDGET_VERSION_MINOR}.${QTERMWIDGET_VERSION_PATCH}")
 
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
-endif()
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5Widgets "${REQUIRED_QT_VERSION}" REQUIRED)
-find_package(Qt5LinguistTools "${REQUIRED_QT_VERSION}" REQUIRED)
+# Minimum Versions
+set(QT_MINIMUM_VERSION "5.7.1")
+set(LXQTBT_MINIMUM_VERSION "0.6.0")
+
+find_package(Qt5Widgets "${QT_MINIMUM_VERSION}" REQUIRED)
+find_package(Qt5LinguistTools "${QT_MINIMUM_VERSION}" REQUIRED)
 find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+
+if(USE_UTF8PROC)
+    find_package(Utf8Proc REQUIRED)
+endif()
 
 include(LXQtPreventInSourceBuilds)
 include(LXQtTranslateTs)
@@ -43,11 +49,6 @@ include(LXQtCreatePkgConfigFile)
 
 set(QTERMWIDGET_LIBRARY_NAME qtermwidget5)
 
-option(USE_UTF8PROC "Use libutf8proc for better Unicode support. Default OFF" OFF)
-
-if(USE_UTF8PROC)
-    find_package(Utf8Proc REQUIRED)
-endif()
 
 # main library
 
@@ -129,14 +130,6 @@ lxqt_translate_ts(QTERMWIDGET_QM
         ${UPDATE_TRANSLATIONS}
     SOURCES
         ${SRCS} ${HDRS} ${UI}
-    PULL_TRANSLATIONS
-        ${PULL_TRANSLATIONS}
-    CLEAN_TRANSLATIONS
-        ${CLEAN_TRANSLATIONS}
-    TRANSLATIONS_REPO
-        ${TRANSLATIONS_REPO}
-    TRANSLATIONS_REFSPEC
-        ${TRANSLATIONS_REFSPEC}
     INSTALL_DIR
         ${TRANSLATIONS_DIR}
     COMPONENT
@@ -204,7 +197,11 @@ target_compile_definitions(${QTERMWIDGET_LIBRARY_NAME}
         "TRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\""
         "HAVE_POSIX_OPENPT"
         "HAVE_SYS_TIME_H"
-        "QT_NO_FOREACH"
+        "QT_USE_QSTRINGBUILDER"
+        "QT_NO_CAST_FROM_ASCII"
+        "QT_NO_CAST_TO_ASCII"
+        "QT_NO_URL_CAST_FROM_STRING"
+        "QT_NO_CAST_FROM_BYTEARRAY"
 )
 
 

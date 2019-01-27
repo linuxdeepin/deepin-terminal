@@ -13,7 +13,6 @@ override_dh_missing:
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		-DPULL_TRANSLATIONS=OFF \
 		-DUPDATE_TRANSLATIONS=OFF \
 		-DBUILD_EXAMPLE=OFF \
 		-DQTERMWIDGET_USE_UTEMPTER=OFF \

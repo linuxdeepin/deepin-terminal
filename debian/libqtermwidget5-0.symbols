@@ -1,4 +1,5 @@
 libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
+* Build-Depends-Package: libqtermwidget5-0-dev
  (c++)"QTermWidget::QTermWidget(QWidget*)@Base" 0.6.0
  (c++)"QTermWidget::QTermWidget(int, QWidget*)@Base" 0.6.0
  (c++)"QTermWidget::activity()@Base" 0.6.0
@@ -20,6 +21,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::flowControlEnabled()@Base" 0.6.0
  (c++)"QTermWidget::getHotSpotAt(QPoint const&) const@Base" 0.6.0
  (c++)"QTermWidget::getHotSpotAt(int, int) const@Base" 0.6.0
+ (c++)"QTermWidget::getMargin() const@Base" 0.14.0~
  (c++)"QTermWidget::getPtySlaveFd() const@Base" 0.6.0
  (c++)"QTermWidget::getSelectionEnd(int&, int&)@Base" 0.6.0
  (c++)"QTermWidget::getSelectionStart(int&, int&)@Base" 0.6.0
@@ -61,6 +63,7 @@ libqtermwidget5.so.0 libqtermwidget5-0 #MINVER#
  (c++)"QTermWidget::setHistorySize(int)@Base" 0.6.0
  (c++)"QTermWidget::setKeyBindings(QString const&)@Base" 0.6.0
  (c++)"QTermWidget::setKeyboardCursorShape(Konsole::Emulation::KeyboardCursorShape)@Base" 0.8.0
+ (c++)"QTermWidget::setMargin(int)@Base" 0.14.0~
  (c++)"QTermWidget::setMonitorActivity(bool)@Base" 0.6.0
  (c++)"QTermWidget::setMonitorSilence(bool)@Base" 0.6.0
  (c++)"QTermWidget::setMotionAfterPasting(int)@Base" 0.6.0

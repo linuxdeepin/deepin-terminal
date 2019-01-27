@@ -27,9 +27,19 @@
 #include <QtDebug>
 
 
-#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
+#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
 #define HAVE_LOGIN
 #define HAVE_LIBUTIL_H
+#endif
+
+#if defined(__OpenBSD__)
+#define HAVE_LOGIN
+#define HAVE_UTIL_H
+#endif
+
+#if defined(__APPLE__)
+#define HAVE_OPENPTY
+#define HAVE_UTIL_H
 #endif
 
 #ifdef __sgi
@@ -164,12 +174,14 @@ KPtyPrivate::~KPtyPrivate()
 {
 }
 
+#ifndef HAVE_OPENPTY
 bool KPtyPrivate::chownpty(bool)
 {
 //    return !QProcess::execute(KStandardDirs::findExe("kgrantpty"),
 //        QStringList() << (grant?"--grant":"--revoke") << QString::number(masterFd));
     return true;
 }
+#endif
 
 /////////////////////////////
 // public member functions //
@@ -216,7 +228,7 @@ bool KPty::open()
     if (::openpty( &d->masterFd, &d->slaveFd, ptsn, 0, 0)) {
         d->masterFd = -1;
         d->slaveFd = -1;
-        qWarning(175) << "Can't open a pseudo teletype";
+        qWarning() << "Can't open a pseudo teletype";
         return false;
     }
     d->ttyName = ptsn;
@@ -491,7 +503,7 @@ void KPty::login(const char * user, const char * remotehost)
 #ifdef HAVE_UTEMPTER
     Q_D(KPty);
 
-    addToUtmp(d->ttyName, remotehost, d->masterFd);
+    addToUtmp(d->ttyName.constData(), remotehost, d->masterFd);
     Q_UNUSED(user);
 #else
 # ifdef HAVE_UTMPX
@@ -577,7 +589,7 @@ void KPty::logout()
 #ifdef HAVE_UTEMPTER
     Q_D(KPty);
 
-    removeLineFromUtmp(d->ttyName, d->masterFd);
+    removeLineFromUtmp(d->ttyName.constData(), d->masterFd);
 #else
     Q_D(KPty);
 
