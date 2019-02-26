@@ -16,7 +16,7 @@
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
         <source>&lt;qt&gt;Output has been &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspended&lt;/a&gt; by pressing Ctrl+S.  Press &lt;b&gt;Ctrl+Q&lt;/b&gt; to resume.&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;O resultado foi &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspenso&lt;/a&gt; através de Ctrl+S. Prima &lt;b&gt;Ctrl+Q&lt;/b&gt; para continuar.&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;A saída foi &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt; suspendida&lt;/a&gt; com Ctrl+S. Prima &lt;b&gt;Ctrl+Q&lt;/b&gt; para continuar.&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>Não há tradutores de teclado disponíveis. A informação necessária para converter os toques das teclas em caracteres enviados ao terminal não existem.</translation>
+        <translation>Não há um tradutor de teclado disponível. A informação necessária para converter a pressão da tecla nos caracteres a enviar ao terminal não existe.</translation>
     </message>
 </context>
 <context>
@@ -71,7 +71,7 @@
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation>Incapaz de carregar o esquema: %1</translation>
+        <translation>Não foi possível carregar o esquema de cores: %1</translation>
     </message>
 </context>
 <context>
