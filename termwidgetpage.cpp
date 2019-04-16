@@ -3,6 +3,7 @@
 #include "termwidget.h"
 
 #include <QSplitter>
+#include <QUuid>
 #include <QVBoxLayout>
 
 TermWidgetPage::TermWidgetPage(QWidget *parent)
@@ -10,6 +11,7 @@ TermWidgetPage::TermWidgetPage(QWidget *parent)
 {
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
+    setProperty("TAB_IDENTIFIER_PROPERTY", QUuid::createUuid().toString());
 
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->setSpacing(0);
@@ -31,6 +33,11 @@ TermWidgetPage::TermWidgetPage(QWidget *parent)
 TermWidgetWrapper *TermWidgetPage::currentTerminal()
 {
     return m_currentTerm;
+}
+
+const QString TermWidgetPage::identifier()
+{
+    return property("TAB_IDENTIFIER_PROPERTY").toString();
 }
 
 void TermWidgetPage::onTermTitleChanged(QString title) const

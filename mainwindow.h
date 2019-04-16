@@ -18,12 +18,15 @@ public:
     ~MainWindow();
 
     void addTab(bool activeTab = false);
+    void closeTab(const QString &identifier);
+    void focusTab(const QString &identifier);
 
 protected slots:
     void onTermTitleChanged(QString title);
 
 private:
-    void setNewTermPage(TermWidgetPage *termPage);
+    void initTitleBar();
+    void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 
     TabBar *m_tabbar;
     QWidget *m_centralWidget;

@@ -11,6 +11,7 @@ public:
     TermWidgetPage(QWidget * parent = nullptr);
 
     TermWidgetWrapper* currentTerminal();
+    const QString identifier();
 
 public slots:
     void onTermTitleChanged(QString title) const;

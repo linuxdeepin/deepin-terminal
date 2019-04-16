@@ -11,7 +11,10 @@ class TabBar : public DTabBar
 public:
     explicit TabBar(QWidget *parent = nullptr);
 
-    void addTab(const QString &tabIdentifier, const QString &text);
+    const QString identifier(int index) const;
+
+    int addTab(const QString &tabIdentifier, const QString &text);
+    void removeTab(const QString &tabIdentifier);
     bool setTabText(const QString &tabIdentifier, const QString &text);
 };
 
