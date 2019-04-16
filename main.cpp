@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 
     DApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
+    app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
     app.loadTranslator();
 
     qputenv("TERM", "xterm-256color");

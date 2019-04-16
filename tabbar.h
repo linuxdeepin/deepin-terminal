@@ -7,8 +7,12 @@ DWIDGET_USE_NAMESPACE
 
 class TabBar : public DTabBar
 {
+    Q_OBJECT
 public:
     explicit TabBar(QWidget *parent = nullptr);
+
+    void addTab(const QString &tabIdentifier, const QString &text);
+    bool setTabText(const QString &tabIdentifier, const QString &text);
 };
 
 #endif // TABBAR_H

@@ -28,11 +28,17 @@ PKGCONFIG += dtkwidget
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    tabbar.cpp
+    tabbar.cpp \
+    termwidget.cpp \
+    termwidgetpage.cpp \
+    titlebar.cpp
 
 HEADERS += \
         mainwindow.h \
-    tabbar.h
+    tabbar.h \
+    termwidget.h \
+    termwidgetpage.h \
+    titlebar.h
 
 INCLUDEPATH += /usr/include/qtermwidget5
 LIBS += -L/usr/lib/x86_64-linux-gnu/ -lqtermwidget5
