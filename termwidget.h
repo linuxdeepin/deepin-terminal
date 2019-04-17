@@ -8,6 +8,9 @@ class TermWidget : public QTermWidget
     Q_OBJECT
 public:
     TermWidget(QWidget * parent = nullptr);
+
+private slots:
+    void customContextMenuCall(const QPoint & pos);
 };
 
 class TermWidgetWrapper : public QWidget
