@@ -21,6 +21,7 @@ public:
 
 signals:
     void termTitleChanged(QString titleText);
+    void termClosed();
 
 private:
     void initUI();

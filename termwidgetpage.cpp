@@ -2,8 +2,9 @@
 
 #include "termwidget.h"
 
-#include <QSplitter>
 #include <QUuid>
+#include <QDebug>
+#include <QSplitter>
 #include <QVBoxLayout>
 
 TermWidgetPage::TermWidgetPage(QWidget *parent)
@@ -28,11 +29,78 @@ TermWidgetPage::TermWidgetPage(QWidget *parent)
     m_currentTerm = w;
 
     setLayout(layout);
+
+    split(m_currentTerm, Qt::Horizontal);
 }
 
 TermWidgetWrapper *TermWidgetPage::currentTerminal()
 {
     return m_currentTerm;
+}
+
+TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientation orientation)
+{
+    QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
+    Q_CHECK_PTR(parent);
+
+    int index = parent->indexOf(term);
+    QList<int> parentSizes = parent->sizes();
+
+    QSplitter *s = new QSplitter(orientation, this);
+    s->setFocusPolicy(Qt::NoFocus);
+    s->insertWidget(0, term);
+
+    TermWidgetWrapper * w = createTerm();
+    s->insertWidget(1, w);
+    s->setSizes({1,1});
+
+    parent->insertWidget(index, s);
+    parent->setSizes(parentSizes);
+
+    w->setFocus(Qt::OtherFocusReason);
+    return w;
+}
+
+void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
+{
+    QSplitter * parent = qobject_cast<QSplitter*>(term->parent());
+    Q_CHECK_PTR(parent);
+
+    term->setParent(nullptr);
+    term->deleteLater();
+
+    QWidget *nextFocus = nullptr;
+
+    // Collapse splitters containing a single element, excluding the top one.
+    if (parent->count() == 1) {
+        QSplitter *uselessSplitterParent = qobject_cast<QSplitter*>(parent->parent());
+        if (uselessSplitterParent != nullptr) {
+            int index = uselessSplitterParent->indexOf(parent);
+            Q_ASSERT(index != -1);
+            QWidget *singleHeir = parent->widget(0);
+            uselessSplitterParent->insertWidget(index, singleHeir);
+            if (qobject_cast<TermWidgetWrapper *>(singleHeir)) {
+                nextFocus = singleHeir;
+            } else {
+                nextFocus = singleHeir->findChild<TermWidgetWrapper*>();
+            }
+            parent->setParent(nullptr);
+            parent->deleteLater();
+            // Make sure there's no access to the removed parent
+            parent = uselessSplitterParent;
+        }
+    }
+
+    if (parent->count() > 0) {
+        if (nextFocus) {
+            nextFocus->setFocus(Qt::OtherFocusReason);
+        } else {
+            parent->widget(0)->setFocus(Qt::OtherFocusReason);
+        }
+        parent->update();
+    } else {
+        emit lastTermClosed(identifier());
+    }
 }
 
 const QString TermWidgetPage::identifier()
@@ -48,11 +116,22 @@ void TermWidgetPage::onTermTitleChanged(QString title) const
     }
 }
 
+void TermWidgetPage::onTermClosed()
+{
+    TermWidgetWrapper * w = qobject_cast<TermWidgetWrapper*>(sender());
+    if (!w) {
+        qDebug() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
+        Q_ASSERT(0);
+    }
+    closeSplit(w);
+}
+
 TermWidgetWrapper *TermWidgetPage::createTerm()
 {
     TermWidgetWrapper *term = new TermWidgetWrapper(this);
 
     connect(term, &TermWidgetWrapper::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
+    connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
 
     return term;
 }

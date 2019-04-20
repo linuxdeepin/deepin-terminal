@@ -15,6 +15,8 @@ TermWidget::TermWidget(QWidget *parent)
 
     // set shell program
     setShellProgram("/bin/bash");
+    setTerminalOpacity(0.75);
+    setScrollBarPosition(QTermWidget::ScrollBarRight);
 
     // config
     qDebug() << availableColorSchemes();
@@ -54,6 +56,7 @@ TermWidgetWrapper::TermWidgetWrapper(QWidget *parent)
     initUI();
 
     connect(m_term, &QTermWidget::titleChanged, this, [this] { emit termTitleChanged(m_term->title()); });
+    connect(m_term, &QTermWidget::finished, this, &TermWidgetWrapper::termClosed);
 }
 
 void TermWidgetWrapper::initUI()

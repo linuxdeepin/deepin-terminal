@@ -37,7 +37,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::addTab(bool activeTab)
 {
-    Q_UNUSED(activeTab);
     TermWidgetPage *termPage = new TermWidgetPage();
     setNewTermPage(termPage, activeTab);
     int index = m_tabbar->addTab(termPage->identifier(), "New Terminal Tab");
@@ -45,6 +44,7 @@ void MainWindow::addTab(bool activeTab)
         m_tabbar->setCurrentIndex(index);
     }
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
+    connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
 }
 
 void MainWindow::closeTab(const QString &identifier)
