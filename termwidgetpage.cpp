@@ -29,8 +29,6 @@ TermWidgetPage::TermWidgetPage(QWidget *parent)
     m_currentTerm = w;
 
     setLayout(layout);
-
-    split(m_currentTerm, Qt::Horizontal);
 }
 
 TermWidgetWrapper *TermWidgetPage::currentTerminal()
@@ -108,6 +106,14 @@ const QString TermWidgetPage::identifier()
     return property("TAB_IDENTIFIER_PROPERTY").toString();
 }
 
+void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
+{
+    TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
+    if (term) {
+        split(term, ori);
+    }
+}
+
 void TermWidgetPage::onTermTitleChanged(QString title) const
 {
     TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
@@ -130,6 +136,7 @@ TermWidgetWrapper *TermWidgetPage::createTerm()
 {
     TermWidgetWrapper *term = new TermWidgetWrapper(this);
 
+    connect(term, &TermWidgetWrapper::termRequestSplit, this, &TermWidgetPage::onTermRequestSplit);
     connect(term, &TermWidgetWrapper::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
 

@@ -9,6 +9,9 @@ class TermWidget : public QTermWidget
 public:
     TermWidget(QWidget * parent = nullptr);
 
+signals:
+    void termRequestSplit(Qt::Orientation ori);
+
 private slots:
     void customContextMenuCall(const QPoint & pos);
 };
@@ -20,6 +23,7 @@ public:
     TermWidgetWrapper(QWidget * parent = nullptr);
 
 signals:
+    void termRequestSplit(Qt::Orientation ori);
     void termTitleChanged(QString titleText);
     void termClosed();
 

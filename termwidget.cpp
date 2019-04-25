@@ -45,6 +45,13 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
 
     // add other actions here.
+    menu.addAction(tr("Split &Horizontally"), [this]{
+        emit termRequestSplit(Qt::Horizontal);
+    });
+
+    menu.addAction(tr("Split &Vertically"), [this]{
+        emit termRequestSplit(Qt::Vertical);
+    });
 
     // display the menu.
     menu.exec(mapToGlobal(pos));
@@ -57,6 +64,8 @@ TermWidgetWrapper::TermWidgetWrapper(QWidget *parent)
 
     connect(m_term, &QTermWidget::titleChanged, this, [this] { emit termTitleChanged(m_term->title()); });
     connect(m_term, &QTermWidget::finished, this, &TermWidgetWrapper::termClosed);
+    // proxy signal:
+    connect(m_term, &TermWidget::termRequestSplit, this, &TermWidgetWrapper::termRequestSplit);
 }
 
 void TermWidgetWrapper::initUI()

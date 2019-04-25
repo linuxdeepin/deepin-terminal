@@ -16,6 +16,7 @@ public:
     const QString identifier();
 
 public slots:
+    void onTermRequestSplit(Qt::Orientation ori);
     void onTermTitleChanged(QString title) const;
     void onTermClosed();
 
