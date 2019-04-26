@@ -90,6 +90,7 @@ void MainWindow::initTitleBar()
     TitleBar *titleBar = new TitleBar;
     titleBar->setTabBar(m_tabbar);
     titlebar()->setCustomWidget(titleBar, Qt::AlignVCenter, false);
+    titlebar()->setAutoHideOnFullscreen(true);
 
     connect(m_tabbar, &DTabBar::tabCloseRequested, this, [this](int index){
         closeTab(m_tabbar->identifier(index));

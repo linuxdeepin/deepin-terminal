@@ -78,6 +78,24 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         emit termRequestSplit(Qt::Vertical);
     });
 
+    menu.addSeparator();
+
+    bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
+    if (isFullScreen) {
+        menu.addAction(QIcon::fromTheme("view-restore-symbolic"), tr("Exit Fullscreen"), [this] {
+            window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
+        });
+    } else {
+        menu.addAction(QIcon::fromTheme("view-fullscreen-symbolic"), tr("Fullscreen"), [this] {
+            window()->setWindowState(windowState() | Qt::WindowFullScreen);
+        });
+    }
+
+    menu.addAction(QIcon::fromTheme("edit-find"), tr("&Find"), [this] {
+        // this is not a DTK look'n'feel search bar, but nah.
+        toggleShowSearchBar();
+    });
+
     // display the menu.
     menu.exec(mapToGlobal(pos));
 }
