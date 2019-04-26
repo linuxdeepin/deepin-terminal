@@ -45,6 +45,7 @@ void MainWindow::addTab(bool activeTab)
         m_tabbar->setCurrentIndex(index);
     }
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
+    connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
 }
 
@@ -83,6 +84,12 @@ void MainWindow::onTermTitleChanged(QString title)
     if (!customName) {
         m_tabbar->setTabText(tabPage->identifier(), title);
     }
+}
+
+void MainWindow::onTabTitleChanged(QString title)
+{
+    TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(sender());
+    m_tabbar->setTabText(tabPage->identifier(), title);
 }
 
 void MainWindow::initTitleBar()

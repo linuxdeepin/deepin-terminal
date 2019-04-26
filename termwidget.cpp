@@ -7,6 +7,7 @@
 #include <QMenu>
 
 #include <DDesktopServices>
+#include <dinputdialog.h>
 
 DWIDGET_USE_NAMESPACE
 
@@ -64,17 +65,17 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         pasteClipboard();
     });
 
-    menu.addAction(QIcon::fromTheme("document-open-folder"), tr("Open Working &Directory"), this, [this] {
+    menu.addAction(QIcon::fromTheme("document-open-folder"), tr("&Open File Manager"), this, [this] {
         DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
     });
 
     menu.addSeparator();
 
-    menu.addAction(QIcon::fromTheme("view-split-left-right"), tr("Split &Horizontally"), [this] {
+    menu.addAction(QIcon::fromTheme("view-split-left-right"), tr("Split &Horizontally"), this, [this] {
         emit termRequestSplit(Qt::Horizontal);
     });
 
-    menu.addAction(QIcon::fromTheme("view-split-top-bottom"), tr("Split &Vertically"), [this] {
+    menu.addAction(QIcon::fromTheme("view-split-top-bottom"), tr("Split &Vertically"), this, [this] {
         emit termRequestSplit(Qt::Vertical);
     });
 
@@ -82,18 +83,30 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
     if (isFullScreen) {
-        menu.addAction(QIcon::fromTheme("view-restore-symbolic"), tr("Exit Fullscreen"), [this] {
+        menu.addAction(QIcon::fromTheme("view-restore-symbolic"), tr("Exit Full&screen"), this, [this] {
             window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
         });
     } else {
-        menu.addAction(QIcon::fromTheme("view-fullscreen-symbolic"), tr("Fullscreen"), [this] {
+        menu.addAction(QIcon::fromTheme("view-fullscreen-symbolic"), tr("Full&screen"), this, [this] {
             window()->setWindowState(windowState() | Qt::WindowFullScreen);
         });
     }
 
-    menu.addAction(QIcon::fromTheme("edit-find"), tr("&Find"), [this] {
+    menu.addAction(QIcon::fromTheme("edit-find"), tr("&Find"), this, [this] {
         // this is not a DTK look'n'feel search bar, but nah.
         toggleShowSearchBar();
+    });
+
+    menu.addSeparator();
+
+    menu.addAction(QIcon::fromTheme("edit-rename"), tr("Rename Tab"), this, [this] {
+        // TODO: Tab name as default text?
+        bool ok;
+        QString text = DInputDialog::getText(window(), tr("Rename Tab"), tr("Tab name:"),
+                                             QLineEdit::Normal, QString(), &ok);
+        if (ok) {
+            emit termRequestRenameTab(text);
+        }
     });
 
     // display the menu.
@@ -110,6 +123,7 @@ TermWidgetWrapper::TermWidgetWrapper(QWidget *parent)
     // proxy signal:
     connect(m_term, &QTermWidget::termGetFocus, this, &TermWidgetWrapper::termGetFocus);
     connect(m_term, &TermWidget::termRequestSplit, this, &TermWidgetWrapper::termRequestSplit);
+    connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
 }
 
 bool TermWidgetWrapper::isTitleChanged() const

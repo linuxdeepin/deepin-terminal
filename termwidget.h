@@ -11,6 +11,7 @@ public:
 
 signals:
     void termRequestSplit(Qt::Orientation ori);
+    void termRequestRenameTab(QString newTabName);
 
 private slots:
     void customContextMenuCall(const QPoint & pos);
@@ -27,6 +28,7 @@ public:
 
 signals:
     void termRequestSplit(Qt::Orientation ori);
+    void termRequestRenameTab(QString newTabName);
     void termTitleChanged(QString titleText);
     void termGetFocus();
     void termClosed();

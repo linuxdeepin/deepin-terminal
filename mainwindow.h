@@ -23,6 +23,7 @@ public:
 
 protected slots:
     void onTermTitleChanged(QString title);
+    void onTabTitleChanged(QString title);
 
 private:
     void initTitleBar();

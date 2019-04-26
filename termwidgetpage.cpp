@@ -114,6 +114,19 @@ void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
     }
 }
 
+void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
+{
+    if (newTabName.isEmpty()) {
+        setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
+        emit termTitleChanged(m_currentTerm->title());
+    } else {
+        // Mark it as we renamed it.
+        setProperty("TAB_CUSTOM_NAME_PROPERTY", true);
+        // Yeah, TermWidgetPage doesn't store the tab name, only the tab bar did it.
+        emit tabTitleChanged(newTabName);
+    }
+}
+
 void TermWidgetPage::onTermTitleChanged(QString title) const
 {
     TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
@@ -156,6 +169,7 @@ TermWidgetWrapper *TermWidgetPage::createTerm()
     TermWidgetWrapper *term = new TermWidgetWrapper(this);
 
     connect(term, &TermWidgetWrapper::termRequestSplit, this, &TermWidgetPage::onTermRequestSplit);
+    connect(term, &TermWidgetWrapper::termRequestRenameTab, this, &TermWidgetPage::onTermRequestRenameTab);
     connect(term, &TermWidgetWrapper::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
