@@ -6,6 +6,10 @@
 #include <QDebug>
 #include <QMenu>
 
+#include <DDesktopServices>
+
+DWIDGET_USE_NAMESPACE
+
 TermWidget::TermWidget(QWidget *parent)
     : QTermWidget(0, parent)
 {
@@ -45,22 +49,32 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         menu.addAction(action);
     }
 
+    if (!menu.isEmpty()) {
+        menu.addSeparator();
+    }
+
     // add other actions here.
     if (!selectedText().isEmpty()) {
-        menu.addAction(tr("Copy Selection"), this, [=] {
+        menu.addAction(QIcon::fromTheme("edit-copy"), tr("Copy &Selection"), this, [this] {
             copyClipboard();
         });
     }
 
-    menu.addAction(tr("Paste"), this, [=] {
+    menu.addAction(QIcon::fromTheme("edit-paste"), tr("&Paste"), this, [this] {
         pasteClipboard();
     });
 
-    menu.addAction(tr("Split &Horizontally"), [this]{
+    menu.addAction(QIcon::fromTheme("document-open-folder"), tr("Open Working &Directory"), this, [this] {
+        DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
+    });
+
+    menu.addSeparator();
+
+    menu.addAction(QIcon::fromTheme("view-split-left-right"), tr("Split &Horizontally"), [this] {
         emit termRequestSplit(Qt::Horizontal);
     });
 
-    menu.addAction(tr("Split &Vertically"), [this]{
+    menu.addAction(QIcon::fromTheme("view-split-top-bottom"), tr("Split &Vertically"), [this] {
         emit termRequestSplit(Qt::Vertical);
     });
 
