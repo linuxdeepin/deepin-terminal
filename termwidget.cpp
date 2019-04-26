@@ -14,7 +14,8 @@ TermWidget::TermWidget(QWidget *parent)
     setHistorySize(5000);
 
     // set shell program
-    setShellProgram("/bin/bash");
+    QString shell { getenv("SHELL") };
+    setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
     setTerminalOpacity(0.75);
     setScrollBarPosition(QTermWidget::ScrollBarRight);
 
