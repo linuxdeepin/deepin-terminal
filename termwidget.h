@@ -22,9 +22,13 @@ class TermWidgetWrapper : public QWidget
 public:
     TermWidgetWrapper(QWidget * parent = nullptr);
 
+    bool isTitleChanged() const;
+    QString title() const;
+
 signals:
     void termRequestSplit(Qt::Orientation ori);
     void termTitleChanged(QString titleText);
+    void termGetFocus();
     void termClosed();
 
 private:

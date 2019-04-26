@@ -122,6 +122,12 @@ void TermWidgetPage::onTermTitleChanged(QString title) const
     }
 }
 
+void TermWidgetPage::onTermGetFocus()
+{
+    TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
+    setCurrentTerminal(term);
+}
+
 void TermWidgetPage::onTermClosed()
 {
     TermWidgetWrapper * w = qobject_cast<TermWidgetWrapper*>(sender());
@@ -132,12 +138,26 @@ void TermWidgetPage::onTermClosed()
     closeSplit(w);
 }
 
+void TermWidgetPage::setCurrentTerminal(TermWidgetWrapper *term)
+{
+    TermWidgetWrapper * oldTerm = m_currentTerm;
+    m_currentTerm = term;
+    if (oldTerm != m_currentTerm) {
+        if (m_currentTerm->isTitleChanged()) {
+            emit termTitleChanged(m_currentTerm->title());
+        } else {
+            emit termTitleChanged(windowTitle());
+        }
+    }
+}
+
 TermWidgetWrapper *TermWidgetPage::createTerm()
 {
     TermWidgetWrapper *term = new TermWidgetWrapper(this);
 
     connect(term, &TermWidgetWrapper::termRequestSplit, this, &TermWidgetPage::onTermRequestSplit);
     connect(term, &TermWidgetWrapper::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
+    connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
 
     return term;

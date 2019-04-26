@@ -18,11 +18,15 @@ public:
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);
     void onTermTitleChanged(QString title) const;
+    void onTermGetFocus();
     void onTermClosed();
 
 signals:
     void termTitleChanged(QString title) const;
     void lastTermClosed(QString pageIdentifier) const;
+
+private slots:
+    void setCurrentTerminal(TermWidgetWrapper * term);
 
 private:
     TermWidgetWrapper * createTerm();

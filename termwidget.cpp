@@ -90,7 +90,18 @@ TermWidgetWrapper::TermWidgetWrapper(QWidget *parent)
     connect(m_term, &QTermWidget::titleChanged, this, [this] { emit termTitleChanged(m_term->title()); });
     connect(m_term, &QTermWidget::finished, this, &TermWidgetWrapper::termClosed);
     // proxy signal:
+    connect(m_term, &QTermWidget::termGetFocus, this, &TermWidgetWrapper::termGetFocus);
     connect(m_term, &TermWidget::termRequestSplit, this, &TermWidgetWrapper::termRequestSplit);
+}
+
+bool TermWidgetWrapper::isTitleChanged() const
+{
+    return m_term->isTitleChanged();
+}
+
+QString TermWidgetWrapper::title() const
+{
+    return m_term->title();
 }
 
 void TermWidgetWrapper::initUI()
