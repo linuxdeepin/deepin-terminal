@@ -46,6 +46,16 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
 
     // add other actions here.
+    if (!selectedText().isEmpty()) {
+        menu.addAction(tr("Copy Selection"), this, [=] {
+            copyClipboard();
+        });
+    }
+
+    menu.addAction(tr("Paste"), this, [=] {
+        pasteClipboard();
+    });
+
     menu.addAction(tr("Split &Horizontally"), [this]{
         emit termRequestSplit(Qt::Horizontal);
     });
