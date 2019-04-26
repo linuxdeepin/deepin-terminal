@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <DTitlebar>
 #include <QDebug>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent) :
     DMainWindow(parent),
@@ -57,6 +58,10 @@ void MainWindow::closeTab(const QString &identifier)
             m_tabbar->removeTab(identifier);
             break;
         }
+    }
+
+    if (m_tabbar->count() == 0) {
+        qApp->quit();
     }
 }
 
