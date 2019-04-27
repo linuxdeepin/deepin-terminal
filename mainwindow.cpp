@@ -72,6 +72,7 @@ void MainWindow::focusTab(const QString &identifier)
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
             m_termStackWidget->setCurrentWidget(tabPage);
+            tabPage->focusCurrentTerm();
             break;
         }
     }

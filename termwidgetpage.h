@@ -14,6 +14,7 @@ public:
     TermWidgetWrapper* split(TermWidgetWrapper * term, Qt::Orientation orientation);
     void closeSplit(TermWidgetWrapper * term);
     const QString identifier();
+    void focusCurrentTerm();
 
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);

@@ -106,6 +106,11 @@ const QString TermWidgetPage::identifier()
     return property("TAB_IDENTIFIER_PROPERTY").toString();
 }
 
+void TermWidgetPage::focusCurrentTerm()
+{
+    m_currentTerm->setFocus();
+}
+
 void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
 {
     TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
