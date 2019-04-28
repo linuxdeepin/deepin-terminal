@@ -8,11 +8,14 @@
 #include <DTitlebar>
 #include <QDebug>
 #include <QApplication>
+#include <DBlurEffectWidget>
+
+DWIDGET_USE_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent) :
     DMainWindow(parent),
     m_tabbar(new TabBar),
-    m_centralWidget(new QWidget),
+    m_centralWidget(new DBlurEffectWidget(parent)),
     m_centralLayout(new QVBoxLayout(m_centralWidget)),
     m_termStackWidget(new QStackedWidget)
 {
@@ -25,6 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_centralLayout->setSpacing(0);
 
     m_centralLayout->addWidget(m_termStackWidget);
+
+    DBlurEffectWidget *cwb = (DBlurEffectWidget*)m_centralWidget;
+    cwb->setBlendMode(DBlurEffectWidget::BlendMode::BehindWindowBlend);
+    cwb->setRadius(16);
 
     initTitleBar();
 

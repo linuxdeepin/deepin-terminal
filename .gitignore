@@ -1,2 +1,3 @@
 # User config
 *.user
+build/
