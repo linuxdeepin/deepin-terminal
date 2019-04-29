@@ -105,7 +105,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addAction(QIcon::fromTheme("edit-rename"), tr("Rename Tab"), this, [this] {
         // TODO: Tab name as default text?
         bool ok;
-        QString text = DInputDialog::getText(window(), tr("Rename Tab"), tr("Tab name:"),
+        QString text = DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"),
                                              QLineEdit::Normal, QString(), &ok);
         if (ok) {
             emit termRequestRenameTab(text);
