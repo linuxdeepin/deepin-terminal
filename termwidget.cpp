@@ -28,7 +28,10 @@ TermWidget::TermWidget(QWidget *parent)
     qDebug() << availableColorSchemes();
     setColorScheme("Linux");
 
+#ifndef OLD_QTERMWIDGET_VERSION
+// Fsck old qtermial and deepin stable
     setBlinkingCursor(true);
+#endif
 
     connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu){
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
