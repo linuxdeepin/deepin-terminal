@@ -1,3 +1,5 @@
+#include <QtGlobal>
+
 /*
    QTERMWIDGET_VERSION is (major << 16) + (minor << 8) + patch.
    can be used like #if (QTERMWIDGET_VERSION >= QT_VERSION_CHECK(0, 7, 1))

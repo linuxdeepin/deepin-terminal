@@ -1,4 +1,5 @@
 #include "termwidget.h"
+#include "define.h"
 
 #include <QVBoxLayout>
 #include <QApplication>
