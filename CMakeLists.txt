@@ -1,27 +1,38 @@
 project(dtng)
 
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.9.5)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_FLAGS "-g -Wall")
-set(QT_MINIMUM_VERSION "5.6.3")
+set(QT_MINIMUM_VERSION "5.7.1")
 
 # Find the QtWidgets library
 find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Widgets)
 find_package(Dtk REQUIRED Core Widget)
 find_package(QTermWidget5 REQUIRED)
 
-if(QTERMWIDGET_VERSION)
-ADD_DEFINITIONS(-DOLD_QTERMWIDGET_VERSION)
-endif()
-
 # Populate a CMake variable with the sources
 # TODO: portable headers?
-file (GLOB DTNG_HEADER_FILES "*.h")
-file (GLOB DTNG_CPP_FILES "*.cpp")
+set (DTNG_CPP_FILES
+    main.cpp
+    mainwindow.cpp
+    tabbar.cpp
+    termwidget.cpp
+    termwidgetpage.cpp
+    titlebar.cpp
+)
+
+set (DTNG_HEADER_FILES
+    define.h
+    mainwindow.h
+    tabbar.h
+    termwidget.h
+    termwidgetpage.h
+    titlebar.h
+)
 
 # Program
 set(EXE_NAME dterm)
@@ -32,9 +43,16 @@ add_executable (${EXE_NAME}
 )
 
 target_include_directories(${EXE_NAME} PUBLIC
-                                        ${DtkWidget_INCLUDE_DIRS}
-                                        ${PROJECT_BINARY_DIR}
-                                        ${QTERMWIDGET_INCLUDE_DIRS}
+    ${DtkWidget_INCLUDE_DIRS}
+    ${QTERMWIDGET_INCLUDE_DIRS}
 )
 
 target_link_libraries (dterm Qt5::Widgets ${DtkWidget_LIBRARIES} qtermwidget5)
+
+# Compile definitions for QTermWidget
+# So we can use QT_VERSION_CHECK
+target_compile_definitions(${EXE_NAME} PRIVATE
+    QTERMWIDGET_VERSION_MAJOR=${QTermWidget5_VERSION_MAJOR}
+    QTERMWIDGET_VERSION_MINOR=${QTermWidget5_VERSION_MINOR}
+    QTERMWIDGET_VERSION_PATCH=${QTermWidget5_VERSION_PATCH}
+)
