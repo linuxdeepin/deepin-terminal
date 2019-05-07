@@ -20,12 +20,14 @@ public:
     void addTab(bool activeTab = false);
     void closeTab(const QString &identifier);
     void focusTab(const QString &identifier);
+    TermWidgetPage *currentTab();
 
 protected slots:
     void onTermTitleChanged(QString title);
     void onTabTitleChanged(QString title);
 
 private:
+    void initShortcuts();
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 

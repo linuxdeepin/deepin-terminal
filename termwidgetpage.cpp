@@ -7,13 +7,6 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-enum NavigationDirection : unsigned int {
-    Left,
-    Right,
-    Up,
-    Down
-};
-
 TermWidgetPage::TermWidgetPage(QWidget *parent)
     : QWidget(parent)
 {

@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <DBlurEffectWidget>
+#include <QShortcut>
 
 DWIDGET_USE_NAMESPACE
 
@@ -33,8 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     cwb->setBlendMode(DBlurEffectWidget::BlendMode::BehindWindowBlend);
     cwb->setRadius(16);
 
-    initTitleBar();
+    initShortcuts();
 
+    initTitleBar();
     addTab();
 }
 
@@ -85,6 +87,11 @@ void MainWindow::focusTab(const QString &identifier)
     }
 }
 
+TermWidgetPage *MainWindow::currentTab()
+{
+    return qobject_cast<TermWidgetPage *>(m_termStackWidget->currentWidget());
+}
+
 void MainWindow::onTermTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(sender());
@@ -98,6 +105,30 @@ void MainWindow::onTabTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(sender());
     m_tabbar->setTabText(tabPage->identifier(), title);
+}
+
+void MainWindow::initShortcuts()
+{
+    QShortcut *focusNavUp = new QShortcut(QKeySequence("Alt+k"), this);
+    connect(focusNavUp, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->focusNavigation(Up);
+    });
+    QShortcut *focusNavDown = new QShortcut(QKeySequence("Alt+j"), this);
+    connect(focusNavDown, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->focusNavigation(Down);
+    });
+    QShortcut *focusNavLeft = new QShortcut(QKeySequence("Alt+h"), this);
+    connect(focusNavLeft, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->focusNavigation(Left);
+    });
+    QShortcut *focusNavRight = new QShortcut(QKeySequence("Alt+l"), this);
+    connect(focusNavRight, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->focusNavigation(Right);
+    });
 }
 
 void MainWindow::initTitleBar()

@@ -1,9 +1,10 @@
 #ifndef TERMWIDGETPAGE_H
 #define TERMWIDGETPAGE_H
 
+#include <define.h>
+
 #include <QWidget>
 
-enum NavigationDirection : unsigned int;
 class TermWidgetWrapper;
 class TermWidgetPage : public QWidget
 {
