@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+enum NavigationDirection : unsigned int;
 class TermWidgetWrapper;
 class TermWidgetPage : public QWidget
 {
@@ -15,6 +16,7 @@ public:
     void closeSplit(TermWidgetWrapper * term);
     const QString identifier();
     void focusCurrentTerm();
+    void focusNavigation(NavigationDirection dir);
 
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);
