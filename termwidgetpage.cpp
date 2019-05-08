@@ -143,7 +143,18 @@ void TermWidgetPage::focusNavigation(NavigationDirection dir)
     Qt::Orientation navOri = (dir == Up || dir == Down) ? Qt::Vertical : Qt::Horizontal;
     bool isForward = dir == Down || dir == Right;
 
-    while (splitter->orientation() != navOri) {
+    for (;;) {
+        if (splitter->orientation() == navOri) {
+            // check if we need keep find
+            int idx = splitter->indexOf(splitterChild);
+            idx = idx + (isForward ? 1 : -1);
+            bool splitterIndexOOB = (idx < 0 || idx >= splitter->count());
+            if (!splitterIndexOOB) {
+                splitterChild = splitter->widget(idx);
+                break;
+            }
+        }
+
         QSplitter *splitterParent = qobject_cast<QSplitter*>(splitter->parent());
         if (splitterParent == nullptr) {
             // we do not have any extra terminal for navigation, so just return.
@@ -153,10 +164,6 @@ void TermWidgetPage::focusNavigation(NavigationDirection dir)
             splitter = splitterParent;
         }
     }
-
-    int idx = splitter->indexOf(splitterChild);
-    idx = idx + (isForward ? 1 : -1);
-    splitterChild = splitter->widget(idx);
 
     if (splitterChild) {
         // find the first term.
@@ -170,6 +177,7 @@ void TermWidgetPage::focusNavigation(NavigationDirection dir)
                 Q_CHECK_PTR(subSplitter);
                 // Get the one in the same row/col
                 int subSplitterIndex = 0;
+                // fixme: backward navigation need i--
                 for (int i = subSplitterIndex, cnt = subSplitter->count(); i < cnt; i++) {
 
                     QRect widgetGeometry = subSplitter->widget(i)->geometry();
