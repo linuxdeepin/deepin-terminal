@@ -1,3 +1,6 @@
+#ifndef DTNG_DEFINE_H
+#define DTNG_DEFINE_H
+
 #include <QtGlobal>
 
 /*
@@ -12,3 +15,5 @@ enum NavigationDirection {
     Up,
     Down
 };
+
+#endif // DTNG_DEFINE_H
