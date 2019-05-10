@@ -29,28 +29,6 @@ TermWidgetPage::TermWidgetPage(QWidget *parent)
     m_currentTerm = w;
 
     setLayout(layout);
-
-#if 0
-    // test
-    split(currentTerminal(), Qt::Horizontal);
-    split(currentTerminal(), Qt::Vertical);
-    QTimer::singleShot(1000, this, [this](){
-        focusNavigation(Right);
-        split(currentTerminal(), Qt::Vertical);
-        QTimer::singleShot(1000, this, [this](){
-            focusNavigation(Left);
-            QTimer::singleShot(500, this, [this](){
-                focusNavigation(Right);
-                QTimer::singleShot(500, this, [this](){
-                    focusNavigation(Up);
-                    QTimer::singleShot(500, this, [this](){
-                        focusNavigation(Left);
-                    });
-                });
-            });
-        });
-    });
-#endif
 }
 
 TermWidgetWrapper *TermWidgetPage::currentTerminal()
@@ -133,73 +111,90 @@ void TermWidgetPage::focusCurrentTerm()
     m_currentTerm->setFocus();
 }
 
+typedef struct  {
+    QPoint topLeft;
+    QPoint middle;
+    QPoint bottomRight;
+} CoordinateRect;
+
+static void transpose(QPoint *point) {
+    int x = point->x();
+    point->setX(point->y());
+    point->setY(x);
+}
+
+static void transposeTransform(CoordinateRect *point) {
+    transpose(&point->topLeft);
+    transpose(&point->middle);
+    transpose(&point->bottomRight);
+}
+
+static void flipTransform(CoordinateRect *point) {
+    QPoint oldTopLeft = point->topLeft;
+    point->topLeft = -(point->bottomRight);
+    point->bottomRight = -(oldTopLeft);
+    point->middle = -(point->middle);
+}
+
+static void normalizeToRight(CoordinateRect *point, NavigationDirection dir) {
+    switch (dir) {
+        case Left:
+            flipTransform(point);
+            break;
+        case Right:
+            // No-op
+            break;
+        case Up:
+            flipTransform(point);
+            transposeTransform(point);
+            break;
+        case Down:
+            transposeTransform(point);
+            break;
+        default:
+            qFatal("Invalid navigation");
+            return;
+    }
+}
+
+static CoordinateRect getNormalizedCoordinateRect(QWidget *w, NavigationDirection dir) {
+    CoordinateRect nd;
+    nd.topLeft = w->mapTo(w->window(), QPoint(0, 0));
+    nd.middle = w->mapTo(w->window(), QPoint(w->width() / 2, w->height() / 2));
+    nd.bottomRight = w->mapTo(w->window(), QPoint(w->width(), w->height()));
+    normalizeToRight(&nd, dir);
+    return nd;
+}
+
 void TermWidgetPage::focusNavigation(NavigationDirection dir)
 {
-    QSplitter *splitter = qobject_cast<QSplitter *>(currentTerminal()->parent());
-    QWidget *splitterChild = currentTerminal();
-    QPoint termCenter = splitterChild->mapTo(parentWidget(), splitterChild->rect().center());
-    Q_CHECK_PTR(splitter);
+    // All cases are normalized to "Right navigation"
+    // LXQT qterminal's implementation is pretty neat, so just dropped the old implementation
+    CoordinateRect ori = getNormalizedCoordinateRect(currentTerminal(), dir);
+    // Search parent that contains point of interest (right edge middlepoint)
+    QPoint poi = QPoint(ori.bottomRight.x(), ori.middle.y());
+    int xAxeNearestDistance = INT_MAX; // x is strictly higher than poi.x(),
+    int yAxeNearestDistance = INT_MAX; // y is strictly less than poi.y()
 
-    Qt::Orientation navOri = (dir == Up || dir == Down) ? Qt::Vertical : Qt::Horizontal;
-    bool isForward = dir == Down || dir == Right;
-
-    for (;;) {
-        if (splitter->orientation() == navOri) {
-            // check if we need keep find
-            int idx = splitter->indexOf(splitterChild);
-            idx = idx + (isForward ? 1 : -1);
-            bool splitterIndexOOB = (idx < 0 || idx >= splitter->count());
-            if (!splitterIndexOOB) {
-                splitterChild = splitter->widget(idx);
-                break;
-            }
-        }
-
-        QSplitter *splitterParent = qobject_cast<QSplitter*>(splitter->parent());
-        if (splitterParent == nullptr) {
-            // we do not have any extra terminal for navigation, so just return.
-            return;
-        } else {
-            splitterChild = splitter;
-            splitter = splitterParent;
+    TermWidgetWrapper *dst = nullptr;
+    QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
+    for (TermWidgetWrapper * term : qAsConst(termList)) {
+        CoordinateRect termCoordinate = getNormalizedCoordinateRect(term, dir);
+        int midpointDistance = qMin(
+            abs(poi.y() - termCoordinate.topLeft.y()),
+            abs(poi.y() - termCoordinate.bottomRight.y())
+        );
+        if (termCoordinate.topLeft.x() > poi.x()) {
+            if (termCoordinate.topLeft.x() > xAxeNearestDistance) continue;
+            if (midpointDistance > yAxeNearestDistance) continue;
+            xAxeNearestDistance = termCoordinate.topLeft.x();
+            yAxeNearestDistance = midpointDistance;
+            dst = term;
         }
     }
 
-    if (splitterChild) {
-        // find the first term.
-        for(;;) {
-            TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper*>(splitterChild);
-            if (term) {
-                term->setFocus();
-                return;
-            } else {
-                QSplitter * subSplitter = qobject_cast<QSplitter*>(splitterChild);
-                Q_CHECK_PTR(subSplitter);
-                // Get the one in the same row/col
-                int subSplitterIndex = 0;
-                // fixme: backward navigation need i--
-                for (int i = subSplitterIndex, cnt = subSplitter->count(); i < cnt; i++) {
-
-                    QRect widgetGeometry = subSplitter->widget(i)->geometry();
-                    widgetGeometry.setTopLeft(subSplitter->mapTo(parentWidget(), widgetGeometry.topLeft()));
-
-                    if (navOri == Qt::Horizontal) {
-                        if (widgetGeometry.top() <= termCenter.y()
-                                && widgetGeometry.bottom() >= termCenter.y()) {
-                            subSplitterIndex = i;
-                            break;
-                        }
-                    } else {
-                        if (widgetGeometry.left() <= termCenter.x()
-                                && widgetGeometry.right() >= termCenter.x()) {
-                            subSplitterIndex = i;
-                            break;
-                        }
-                    }
-                }
-                splitterChild = subSplitter->widget(subSplitterIndex);
-            }
-        }
+    if (dst) {
+        dst->setFocus();
     }
 }
 
