@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <DBlurEffectWidget>
 #include <QShortcut>
+#include <QSettings>
 
 DWIDGET_USE_NAMESPACE
 
@@ -30,12 +31,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_centralLayout->addWidget(m_termStackWidget);
 
-    DBlurEffectWidget *cwb = (DBlurEffectWidget*)m_centralWidget;
+    DBlurEffectWidget *cwb = qobject_cast<DBlurEffectWidget*>(m_centralWidget);
     cwb->setBlendMode(DBlurEffectWidget::BlendMode::BehindWindowBlend);
     cwb->setRadius(16);
 
     initShortcuts();
 
+    initWindow();
     initTitleBar();
     addTab();
 }
@@ -92,6 +94,14 @@ TermWidgetPage *MainWindow::currentTab()
     return qobject_cast<TermWidgetPage *>(m_termStackWidget->currentWidget());
 }
 
+void MainWindow::closeEvent(QCloseEvent *event) {
+    QSettings settings("blumia", "dterm");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+
+    DMainWindow::closeEvent(event);
+}
+
 void MainWindow::onTermTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(sender());
@@ -105,6 +115,13 @@ void MainWindow::onTabTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(sender());
     m_tabbar->setTabText(tabPage->identifier(), title);
+}
+
+void MainWindow::initWindow()
+{
+    QSettings settings("blumia", "dterm");
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
 }
 
 void MainWindow::initShortcuts()

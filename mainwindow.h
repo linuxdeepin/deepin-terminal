@@ -15,18 +15,22 @@ class MainWindow : public DMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
     void addTab(bool activeTab = false);
     void closeTab(const QString &identifier);
     void focusTab(const QString &identifier);
     TermWidgetPage *currentTab();
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 protected slots:
     void onTermTitleChanged(QString title);
     void onTabTitleChanged(QString title);
 
 private:
+    void initWindow();
     void initShortcuts();
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
