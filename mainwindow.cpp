@@ -146,6 +146,11 @@ void MainWindow::initShortcuts()
         TermWidgetPage *page = currentTab();
         if (page) page->focusNavigation(Right);
     });
+
+    QShortcut *newTab = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::ShiftModifier + Qt::Key_T), this);
+    connect(newTab, &QShortcut::activated, this, [this](){
+        this->addTab(true);
+    });
 }
 
 void MainWindow::initTitleBar()
