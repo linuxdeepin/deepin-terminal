@@ -24,6 +24,9 @@ set (DTNG_CPP_FILES
     termwidgetpage.cpp
     titlebar.cpp
     themepanel.cpp
+    themelistview.cpp
+    themelistmodel.cpp
+    themeitemdelegate.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -34,6 +37,9 @@ set (DTNG_HEADER_FILES
     termwidgetpage.h
     titlebar.h
     themepanel.h
+    themelistview.h
+    themelistmodel.h
+    themeitemdelegate.h
 )
 
 # Program

@@ -1,23 +1,29 @@
 #include "themepanel.h"
 
+#include "themelistview.h"
+#include "themelistmodel.h"
+#include "themeitemdelegate.h"
+
 #include <QDebug>
 #include <QScroller>
 #include <QVBoxLayout>
 #include <QPropertyAnimation>
-#include <QLabel> // should remove
 
 ThemePanel::ThemePanel(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      m_themeView(new ThemeListView(this)),
+      m_themeModel(new ThemeListModel(this))
 {
-//    QScroller::grabGesture(m_themeView, QScroller::TouchGesture);
-    // test
-    QLabel* testWidget = new QLabel(" placeholder, should be removed");
-    testWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(testWidget, &QWidget::customContextMenuRequested, this, [=](){hide();});
+    // init view.
+    m_themeView->setModel(m_themeModel);
+    m_themeView->setItemDelegate(new ThemeItemDelegate(this));
+
+    setFocusProxy(m_themeView);
+    QScroller::grabGesture(m_themeView, QScroller::TouchGesture);
 
     // init layout.
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->addWidget(testWidget);
+    layout->addWidget(m_themeView);
     setStyleSheet("background-color: brown;");
 
     layout->setMargin(0);
@@ -25,13 +31,16 @@ ThemePanel::ThemePanel(QWidget *parent)
     setFixedWidth(250);
 
     QWidget::hide();
+
+    connect(m_themeView, &ThemeListView::focusOut, this, &ThemePanel::hide);
 }
 
 void ThemePanel::show()
 {
     QWidget::show();
     QWidget::raise();
-//    m_themeView->setFocus();
+
+    setFocus();
 
     QRect rect = geometry();
     QRect windowRect = window()->geometry();

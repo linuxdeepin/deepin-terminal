@@ -26,7 +26,6 @@ TermWidget::TermWidget(QWidget *parent)
     setScrollBarPosition(QTermWidget::ScrollBarRight);
 
     // config
-    qDebug() << availableColorSchemes();
     setColorScheme("Linux");
 
 #if !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))

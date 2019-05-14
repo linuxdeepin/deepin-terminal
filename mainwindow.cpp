@@ -164,7 +164,7 @@ void MainWindow::initShortcuts()
 
 void MainWindow::initTitleBar()
 {
-    QAction *switchThemeAction(new QAction(tr("Switch theme"), this));
+    QAction *switchThemeAction(new QAction(tr("Switch &theme"), this));
     m_menu->addAction(switchThemeAction);
 
     TitleBar *titleBar = new TitleBar;

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class ThemeListView;
+class ThemeListModel;
 class ThemePanel : public QWidget
 {
     Q_OBJECT
@@ -14,6 +16,10 @@ signals:
 public slots:
     void show();
     void hide();
+
+private:
+    ThemeListView *m_themeView;
+    ThemeListModel *m_themeModel;
 };
 
 #endif // THEMEPANEL_H
