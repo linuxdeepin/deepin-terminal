@@ -2,10 +2,12 @@
 
 #include "titlebar.h"
 #include "tabbar.h"
+#include "themepanel.h"
 #include "termwidgetpage.h"
 
-#include <QVBoxLayout>
+#include <DAnchors>
 #include <DTitlebar>
+#include <QVBoxLayout>
 #include <QDebug>
 #include <QApplication>
 #include <DBlurEffectWidget>
@@ -16,7 +18,9 @@ DWIDGET_USE_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent) :
     DMainWindow(parent),
+    m_menu(new QMenu),
     m_tabbar(new TabBar),
+    m_themePanel(new ThemePanel(this)),
     m_centralWidget(new DBlurEffectWidget(parent)),
     m_centralLayout(new QVBoxLayout(m_centralWidget)),
     m_termStackWidget(new QStackedWidget)
@@ -30,6 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_centralLayout->setSpacing(0);
 
     m_centralLayout->addWidget(m_termStackWidget);
+
+    // Init theme panel.
+    DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorTop, m_centralWidget, Qt::AnchorTop);
+    DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorBottom, m_centralWidget, Qt::AnchorBottom);
+    DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorRight, m_centralWidget, Qt::AnchorRight);
 
     DBlurEffectWidget *cwb = qobject_cast<DBlurEffectWidget*>(m_centralWidget);
     cwb->setBlendMode(DBlurEffectWidget::BlendMode::BehindWindowBlend);
@@ -155,10 +164,14 @@ void MainWindow::initShortcuts()
 
 void MainWindow::initTitleBar()
 {
+    QAction *switchThemeAction(new QAction(tr("Switch theme"), this));
+    m_menu->addAction(switchThemeAction);
+
     TitleBar *titleBar = new TitleBar;
     titleBar->setTabBar(m_tabbar);
     titlebar()->setCustomWidget(titleBar, Qt::AlignVCenter, false);
     titlebar()->setAutoHideOnFullscreen(true);
+    titlebar()->setMenu(m_menu);
 
     connect(m_tabbar, &DTabBar::tabCloseRequested, this, [this](int index){
         closeTab(m_tabbar->identifier(index));
@@ -171,6 +184,10 @@ void MainWindow::initTitleBar()
     connect(m_tabbar, &DTabBar::currentChanged, this, [this](int index){
         focusTab(m_tabbar->identifier(index));
     }, Qt::QueuedConnection);
+
+    connect(switchThemeAction, &QAction::triggered, this, [this](){
+        m_themePanel->show();
+    });
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)

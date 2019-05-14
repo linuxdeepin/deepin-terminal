@@ -8,6 +8,7 @@
 DWIDGET_USE_NAMESPACE
 
 class TabBar;
+class ThemePanel;
 class TermWidgetPage;
 class MainWindow : public DMainWindow
 {
@@ -35,7 +36,9 @@ private:
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 
+    QMenu *m_menu;
     TabBar *m_tabbar;
+    ThemePanel *m_themePanel;
     QWidget *m_centralWidget;
     QVBoxLayout *m_centralLayout;
     QStackedWidget *m_termStackWidget;
