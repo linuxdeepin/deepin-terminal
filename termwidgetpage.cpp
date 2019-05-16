@@ -36,6 +36,11 @@ TermWidgetWrapper *TermWidgetPage::currentTerminal()
     return m_currentTerm;
 }
 
+TermWidgetWrapper *TermWidgetPage::split(Qt::Orientation orientation)
+{
+    return split(currentTerminal(), orientation);
+}
+
 TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientation orientation)
 {
     QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
@@ -195,6 +200,14 @@ void TermWidgetPage::focusNavigation(NavigationDirection dir)
 
     if (dst) {
         dst->setFocus();
+    }
+}
+
+void TermWidgetPage::setColorScheme(const QString &name)
+{
+    QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
+    for (TermWidgetWrapper* term : termList) {
+        term->setColorScheme(name);
     }
 }
 

@@ -33,6 +33,7 @@ ThemePanel::ThemePanel(QWidget *parent)
     QWidget::hide();
 
     connect(m_themeView, &ThemeListView::focusOut, this, &ThemePanel::hide);
+    connect(m_themeView, &ThemeListView::themeChanged, this, &ThemePanel::themeChanged);
 }
 
 void ThemePanel::show()

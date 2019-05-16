@@ -13,11 +13,14 @@ public:
     TermWidgetPage(QWidget * parent = nullptr);
 
     TermWidgetWrapper* currentTerminal();
+    TermWidgetWrapper* split(Qt::Orientation orientation);
     TermWidgetWrapper* split(TermWidgetWrapper * term, Qt::Orientation orientation);
     void closeSplit(TermWidgetWrapper * term);
     const QString identifier();
     void focusCurrentTerm();
     void focusNavigation(NavigationDirection dir);
+
+    void setColorScheme(const QString &name);
 
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);

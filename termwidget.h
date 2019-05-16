@@ -26,6 +26,8 @@ public:
     bool isTitleChanged() const;
     QString title() const;
 
+    void setColorScheme(const QString &name);
+
 signals:
     void termRequestSplit(Qt::Orientation ori);
     void termRequestRenameTab(QString newTabName);

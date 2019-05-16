@@ -138,6 +138,11 @@ QString TermWidgetWrapper::title() const
     return m_term->title();
 }
 
+void TermWidgetWrapper::setColorScheme(const QString &name)
+{
+    m_term->setColorScheme(name);
+}
+
 void TermWidgetWrapper::initUI()
 {
     m_term = new TermWidget(this);

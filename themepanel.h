@@ -12,6 +12,7 @@ public:
     explicit ThemePanel(QWidget *parent = nullptr);
 
 signals:
+    void themeChanged(const QString themeName);
 
 public slots:
     void show();

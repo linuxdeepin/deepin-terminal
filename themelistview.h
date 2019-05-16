@@ -12,9 +12,11 @@ public:
 
 protected:
     void focusOutEvent(QFocusEvent *event) override;
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
 signals:
     void focusOut();
+    void themeChanged(const QString themeName);
 };
 
 #endif // THEMELISTVIEW_H

@@ -40,6 +40,13 @@ MainWindow::MainWindow(QWidget *parent) :
     DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorBottom, m_centralWidget, Qt::AnchorBottom);
     DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorRight, m_centralWidget, Qt::AnchorRight);
 
+    connect(m_themePanel, &ThemePanel::themeChanged, this, [this](const QString themeName){
+        qDebug() << "Test, will not be saved. Theme name:" << themeName;
+        // just for test purpose
+        TermWidgetPage *page = currentTab();
+        if (page) page->setColorScheme(themeName);
+    });
+
     DBlurEffectWidget *cwb = qobject_cast<DBlurEffectWidget*>(m_centralWidget);
     cwb->setBlendMode(DBlurEffectWidget::BlendMode::BehindWindowBlend);
     cwb->setRadius(16);
@@ -154,6 +161,17 @@ void MainWindow::initShortcuts()
     connect(focusNavRight, &QShortcut::activated, this, [this](){
         TermWidgetPage *page = currentTab();
         if (page) page->focusNavigation(Right);
+    });
+
+    QShortcut *splitHorizontal = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::ShiftModifier + Qt::Key_J), this);
+    connect(splitHorizontal, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->split(Qt::Horizontal);
+    });
+    QShortcut *splitVertical = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::ShiftModifier + Qt::Key_H), this);
+    connect(splitVertical, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->split(Qt::Vertical);
     });
 
     QShortcut *newTab = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::ShiftModifier + Qt::Key_T), this);
