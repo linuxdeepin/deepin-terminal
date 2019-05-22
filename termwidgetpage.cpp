@@ -7,7 +7,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-TermWidgetPage::TermWidgetPage(QWidget *parent)
+TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     : QWidget(parent)
 {
     setFocusPolicy(Qt::NoFocus);
@@ -21,7 +21,7 @@ TermWidgetPage::TermWidgetPage(QWidget *parent)
     QSplitter *splitter = new QSplitter(this);
     splitter->setFocusPolicy(Qt::NoFocus);
 
-    TermWidgetWrapper *w = createTerm();
+    TermWidgetWrapper *w = createTerm(properties);
     splitter->addWidget(w);
 
     layout->addWidget(splitter);
@@ -53,7 +53,8 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
     s->setFocusPolicy(Qt::NoFocus);
     s->insertWidget(0, term);
 
-    TermWidgetWrapper * w = createTerm();
+    TermProperties properties(term->workingDirectory());
+    TermWidgetWrapper * w = createTerm(properties);
     s->insertWidget(1, w);
     s->setSizes({1,1});
 
@@ -203,6 +204,18 @@ void TermWidgetPage::focusNavigation(NavigationDirection dir)
     }
 }
 
+TermProperties TermWidgetPage::createCurrentTerminalProperties()
+{
+    TermProperties properties;
+
+    TermWidgetWrapper * term = currentTerminal();
+    if (term) {
+        properties[WorkingDir] = currentTerminal()->workingDirectory();
+    }
+
+    return properties;
+}
+
 void TermWidgetPage::setColorScheme(const QString &name)
 {
     QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
@@ -269,9 +282,9 @@ void TermWidgetPage::setCurrentTerminal(TermWidgetWrapper *term)
     }
 }
 
-TermWidgetWrapper *TermWidgetPage::createTerm()
+TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
 {
-    TermWidgetWrapper *term = new TermWidgetWrapper(this);
+    TermWidgetWrapper *term = new TermWidgetWrapper(properties, this);
 
     connect(term, &TermWidgetWrapper::termRequestSplit, this, &TermWidgetPage::onTermRequestSplit);
     connect(term, &TermWidgetWrapper::termRequestRenameTab, this, &TermWidgetPage::onTermRequestRenameTab);

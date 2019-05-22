@@ -27,6 +27,7 @@ set (DTNG_CPP_FILES
     themelistview.cpp
     themelistmodel.cpp
     themeitemdelegate.cpp
+    termproperties.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -40,6 +41,7 @@ set (DTNG_HEADER_FILES
     themelistview.h
     themelistmodel.h
     themeitemdelegate.h
+    termproperties.h
 )
 
 # Program

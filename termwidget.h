@@ -3,11 +3,12 @@
 
 #include <qtermwidget.h>
 
+class TermProperties;
 class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
-    TermWidget(QWidget * parent = nullptr);
+    TermWidget(TermProperties properties, QWidget * parent = nullptr);
 
 signals:
     void termRequestSplit(Qt::Orientation ori);
@@ -21,10 +22,12 @@ class TermWidgetWrapper : public QWidget
 {
     Q_OBJECT
 public:
-    TermWidgetWrapper(QWidget * parent = nullptr);
+    TermWidgetWrapper(TermProperties properties, QWidget * parent = nullptr);
 
     bool isTitleChanged() const;
     QString title() const;
+
+    QString workingDirectory();
 
     void setColorScheme(const QString &name);
 

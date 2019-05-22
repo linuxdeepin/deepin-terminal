@@ -1,4 +1,5 @@
 #include "termwidget.h"
+#include "termproperties.h"
 #include "define.h"
 
 #include <QVBoxLayout>
@@ -12,7 +13,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-TermWidget::TermWidget(QWidget *parent)
+TermWidget::TermWidget(TermProperties properties, QWidget *parent)
     : QTermWidget(0, parent)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -24,6 +25,9 @@ TermWidget::TermWidget(QWidget *parent)
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
     setTerminalOpacity(0.75);
     setScrollBarPosition(QTermWidget::ScrollBarRight);
+    if (properties.contains(WorkingDir)) {
+        setWorkingDirectory(properties[WorkingDir].toString());
+    }
 
     // config
     setColorScheme("Linux");
@@ -115,8 +119,9 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.exec(mapToGlobal(pos));
 }
 
-TermWidgetWrapper::TermWidgetWrapper(QWidget *parent)
+TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     : QWidget(parent)
+    , m_term(new TermWidget(properties, this))
 {
     initUI();
 
@@ -138,6 +143,11 @@ QString TermWidgetWrapper::title() const
     return m_term->title();
 }
 
+QString TermWidgetWrapper::workingDirectory()
+{
+    return m_term->workingDirectory();
+}
+
 void TermWidgetWrapper::setColorScheme(const QString &name)
 {
     m_term->setColorScheme(name);
@@ -145,7 +155,6 @@ void TermWidgetWrapper::setColorScheme(const QString &name)
 
 void TermWidgetWrapper::initUI()
 {
-    m_term = new TermWidget(this);
     setFocusProxy(m_term);
 
     m_layout = new QVBoxLayout;

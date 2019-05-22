@@ -1,7 +1,8 @@
 #ifndef TERMWIDGETPAGE_H
 #define TERMWIDGETPAGE_H
 
-#include <define.h>
+#include "define.h"
+#include "termproperties.h"
 
 #include <QWidget>
 
@@ -10,7 +11,7 @@ class TermWidgetPage : public QWidget
 {
     Q_OBJECT
 public:
-    TermWidgetPage(QWidget * parent = nullptr);
+    TermWidgetPage(TermProperties properties, QWidget * parent = nullptr);
 
     TermWidgetWrapper* currentTerminal();
     TermWidgetWrapper* split(Qt::Orientation orientation);
@@ -19,6 +20,8 @@ public:
     const QString identifier();
     void focusCurrentTerm();
     void focusNavigation(NavigationDirection dir);
+
+    TermProperties createCurrentTerminalProperties();
 
     void setColorScheme(const QString &name);
 
@@ -38,7 +41,7 @@ private slots:
     void setCurrentTerminal(TermWidgetWrapper * term);
 
 private:
-    TermWidgetWrapper * createTerm();
+    TermWidgetWrapper * createTerm(TermProperties properties);
 
     TermWidgetWrapper * m_currentTerm;
 };
