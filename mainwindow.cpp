@@ -179,6 +179,18 @@ void MainWindow::initShortcuts()
     connect(newTab, &QShortcut::activated, this, [this](){
         this->addTab(currentTab()->createCurrentTerminalProperties(), true);
     });
+
+    QShortcut *copyShortcut = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::ShiftModifier + Qt::Key_C), this);
+    connect(copyShortcut, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->copyClipboard();
+    });
+
+    QShortcut *pasteShortcut = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::ShiftModifier + Qt::Key_V), this);
+    connect(pasteShortcut, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->pasteClipboard();
+    });
 }
 
 void MainWindow::initTitleBar()

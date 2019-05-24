@@ -25,6 +25,9 @@ public:
 
     void setColorScheme(const QString &name);
 
+    void copyClipboard();
+    void pasteClipboard();
+
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);
     void onTermRequestRenameTab(QString newTabName);

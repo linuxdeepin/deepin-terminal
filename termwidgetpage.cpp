@@ -224,6 +224,22 @@ void TermWidgetPage::setColorScheme(const QString &name)
     }
 }
 
+void TermWidgetPage::copyClipboard()
+{
+    TermWidgetWrapper* term = currentTerminal();
+    if (term) {
+        term->copyClipboard();
+    }
+}
+
+void TermWidgetPage::pasteClipboard()
+{
+    TermWidgetWrapper* term = currentTerminal();
+    if (term) {
+        term->pasteClipboard();
+    }
+}
+
 void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
 {
     TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());

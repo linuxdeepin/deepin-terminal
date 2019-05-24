@@ -153,6 +153,16 @@ void TermWidgetWrapper::setColorScheme(const QString &name)
     m_term->setColorScheme(name);
 }
 
+void TermWidgetWrapper::copyClipboard()
+{
+    m_term->copyClipboard();
+}
+
+void TermWidgetWrapper::pasteClipboard()
+{
+    m_term->pasteClipboard();
+}
+
 void TermWidgetWrapper::initUI()
 {
     setFocusProxy(m_term);
