@@ -17,7 +17,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     DMainWindow(parent),
     m_menu(new QMenu),
     m_tabbar(new TabBar),
@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initWindow();
     initTitleBar();
-    addTab(TermProperties{});
+    addTab(properties);
 }
 
 MainWindow::~MainWindow()

@@ -28,6 +28,18 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent)
     if (properties.contains(WorkingDir)) {
         setWorkingDirectory(properties[WorkingDir].toString());
     }
+    if (properties.contains(Execute)) {
+        QString args = properties[Execute].toString();
+        qDebug() << args;
+        QStringList argList = args.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
+        if (argList.count() > 0) {
+            setShellProgram(argList.at(0));
+            argList.removeAt(0);
+            if (argList.count()) {
+                setArgs(argList);
+            }
+        }
+    }
 
     // config
     setColorScheme("Linux");

@@ -6,7 +6,8 @@
 enum TermProperty {
     WorkingDir,
     ColorScheme,
-    ShellProgram
+    ShellProgram,
+    Execute
 };
 
 class TermProperties

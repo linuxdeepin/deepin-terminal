@@ -16,7 +16,7 @@ class MainWindow : public DMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(TermProperties properties, QWidget *parent = nullptr);
     ~MainWindow() override;
 
     void addTab(TermProperties properties, bool activeTab = false);

@@ -1,5 +1,11 @@
 #include "mainwindow.h"
+
+#include "termproperties.h"
+
 #include <DApplication>
+
+#include <QDebug>
+#include <QCommandLineParser>
 
 DWIDGET_USE_NAMESPACE
 
@@ -14,7 +20,33 @@ int main(int argc, char *argv[])
 
     qputenv("TERM", "xterm-256color");
 
-    MainWindow w;
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    QCommandLineOption optionExecute({"e", "execute"}, "Execute command instead of shell", "command");
+    parser.addOptions({optionExecute});
+    parser.process(app);
+
+    TermProperties firstTermProperties;
+
+    if (parser.isSet(optionExecute)) {
+        // get raw arg, so we cannot use `parser.value(optionExecute)`.
+        QStringList rawCommandList;
+        bool reachedArg = false;
+        for (int i = 0; i < argc; i++) {
+            QString currentArg = QString::fromLocal8Bit(argv[i]);
+            if (reachedArg) {
+                rawCommandList.append(QString::fromLocal8Bit(argv[i]));
+            } else {
+                if (currentArg == "-e" || currentArg == "--execute") {
+                    reachedArg = true;
+                    continue;
+                }
+            }
+        }
+        firstTermProperties[Execute] = rawCommandList.join(' ');
+    }
+
+    MainWindow w(firstTermProperties);
     w.show();
 
     return app.exec();
