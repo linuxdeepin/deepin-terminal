@@ -40,7 +40,7 @@ $ make # then you'll got the proper binary to run.
  - [ ] Properties dialog
  - [ ] Color scheme preview from selection panel
  - [ ] Independent terminal config
- - [ ] Proper way to support ZModel / remote connection panel
+ - [ ] Proper way to support ZModem / remote connection panel
  - [ ] Command mode (planned feature)
 
 ## License

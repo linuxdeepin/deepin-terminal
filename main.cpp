@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < argc; i++) {
             QString currentArg = QString::fromLocal8Bit(argv[i]);
             if (reachedArg) {
-                rawCommandList.append(QString::fromLocal8Bit(argv[i]));
+                rawCommandList.append(currentArg);
             } else {
                 if (currentArg == "-e" || currentArg == "--execute") {
                     reachedArg = true;
