@@ -23,13 +23,9 @@ ThemePanel::ThemePanel(QWidget *parent)
     // init layout.
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(m_themeView);
-    setStyleSheet("background-color: brown;");
 
     layout->setMargin(0);
     layout->setSpacing(0);
-    setFixedWidth(250);
-
-    QWidget::hide();
 
     connect(m_themeView, &ThemeListView::focusOut, this, &RightPanel::hide);
     connect(m_themeView, &ThemeListView::themeChanged, this, &ThemePanel::themeChanged);

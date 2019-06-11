@@ -5,7 +5,11 @@
 RightPanel::RightPanel(QWidget *parent)
     : QWidget(parent)
 {
-    // hide by default
+    // default look'n'feel.
+    setStyleSheet("background-color: brown;");
+    setFixedWidth(250);
+
+    // hide by default.
     QWidget::hide();
 }
 
