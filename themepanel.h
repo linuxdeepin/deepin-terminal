@@ -1,11 +1,11 @@
 #ifndef THEMEPANEL_H
 #define THEMEPANEL_H
 
-#include <QWidget>
+#include "rightpanel.h"
 
 class ThemeListView;
 class ThemeListModel;
-class ThemePanel : public QWidget
+class ThemePanel : public RightPanel
 {
     Q_OBJECT
 public:
@@ -13,10 +13,6 @@ public:
 
 signals:
     void themeChanged(const QString themeName);
-
-public slots:
-    void show();
-    void hide();
 
 private:
     ThemeListView *m_themeView;

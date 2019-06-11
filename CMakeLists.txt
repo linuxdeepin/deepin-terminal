@@ -23,6 +23,7 @@ set (DTNG_CPP_FILES
     termwidget.cpp
     termwidgetpage.cpp
     titlebar.cpp
+    rightpanel.cpp
     themepanel.cpp
     themelistview.cpp
     themelistmodel.cpp
@@ -37,6 +38,7 @@ set (DTNG_HEADER_FILES
     termwidget.h
     termwidgetpage.h
     titlebar.h
+    rightpanel.h
     themepanel.h
     themelistview.h
     themelistmodel.h

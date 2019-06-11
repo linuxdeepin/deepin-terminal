@@ -7,10 +7,9 @@
 #include <QDebug>
 #include <QScroller>
 #include <QVBoxLayout>
-#include <QPropertyAnimation>
 
 ThemePanel::ThemePanel(QWidget *parent)
-    : QWidget(parent),
+    : RightPanel(parent),
       m_themeView(new ThemeListView(this)),
       m_themeModel(new ThemeListModel(this))
 {
@@ -32,42 +31,6 @@ ThemePanel::ThemePanel(QWidget *parent)
 
     QWidget::hide();
 
-    connect(m_themeView, &ThemeListView::focusOut, this, &ThemePanel::hide);
+    connect(m_themeView, &ThemeListView::focusOut, this, &RightPanel::hide);
     connect(m_themeView, &ThemeListView::themeChanged, this, &ThemePanel::themeChanged);
-}
-
-void ThemePanel::show()
-{
-    QWidget::show();
-    QWidget::raise();
-
-    setFocus();
-
-    QRect rect = geometry();
-    QRect windowRect = window()->geometry();
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
-    animation->setDuration(250);
-    animation->setEasingCurve(QEasingCurve::OutQuad);
-    animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), rect.height()));
-    animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), rect.height()));
-    animation->start();
-
-//    connect(animation, &QPropertyAnimation::valueChanged, this, [=] { m_themeView->adjustScrollbarMargins(); });
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-}
-
-void ThemePanel::hide()
-{
-    QRect rect = geometry();
-    QRect windowRect = window()->geometry();
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
-    animation->setDuration(250);
-    animation->setEasingCurve(QEasingCurve::OutQuad);
-    animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), rect.height()));
-    animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), rect.height()));
-
-    animation->start();
-
-    connect(animation, &QPropertyAnimation::finished, this, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 }
