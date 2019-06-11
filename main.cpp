@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     DApplication::loadDXcbPlugin();
 
     DApplication app(argc, argv);
+    app.setOrganizationName("blumia");
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
     app.loadTranslator();

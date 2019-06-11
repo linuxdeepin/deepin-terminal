@@ -34,6 +34,7 @@ protected slots:
 private:
     void initWindow();
     void initShortcuts();
+    void initCustomCommands();
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 

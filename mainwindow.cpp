@@ -14,6 +14,8 @@
 #include <DBlurEffectWidget>
 #include <QShortcut>
 #include <QSettings>
+#include <QStandardPaths>
+#include <QDir>
 
 DWIDGET_USE_NAMESPACE
 
@@ -53,6 +55,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     cwb->setRadius(16);
 
     initShortcuts();
+    initCustomCommands();
 
     initWindow();
     initTitleBar();
@@ -191,6 +194,42 @@ void MainWindow::initShortcuts()
         TermWidgetPage *page = currentTab();
         if (page) page->pasteClipboard();
     });
+}
+
+void MainWindow::initCustomCommands()
+{
+    QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!customCommandBasePath.exists()) {
+        return;
+    }
+
+    QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
+    if (!QFile::exists(customCommandConfigFilePath)) {
+        return;
+    }
+
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    QStringList commandGroups = commandsSettings.childGroups();
+    for (const QString &commandName : commandGroups) {
+        commandsSettings.beginGroup(commandName);
+        if (!commandsSettings.contains("Command")) continue;
+        QAction * action = new QAction(commandName, this);
+        action->setData(commandsSettings.value("Command").toString()); // make sure it is a QString
+        if (commandsSettings.contains("Shortcut")) {
+            QVariant shortcutVariant = commandsSettings.value("Shortcut");
+            if (shortcutVariant.type() == QVariant::KeySequence) {
+                action->setShortcut(shortcutVariant.convert(QMetaType::QKeySequence));
+            } else if (shortcutVariant.type() == QVariant::String) {
+                // to make it compatible to deepin-terminal config file.
+                QString shortcutStr = shortcutVariant.toString().remove(QChar(' '));
+                action->setShortcut(QKeySequence(shortcutStr));
+            }
+        }
+        this->addAction(action);
+        connect(action, &QAction::triggered, this, [action](){
+            qDebug() << action->data();
+        });
+    }
 }
 
 void MainWindow::initTitleBar()
