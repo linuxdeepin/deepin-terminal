@@ -226,8 +226,12 @@ void MainWindow::initCustomCommands()
             }
         }
         this->addAction(action);
-        connect(action, &QAction::triggered, this, [action](){
-            qDebug() << action->data();
+        connect(action, &QAction::triggered, this, [this, action](){
+            QString command = action->data().toString();
+            if (!command.endsWith('\n')) {
+                command.append('\n');
+            }
+            this->currentTab()->sendTextToCurrentTerm(command);
         });
     }
 }

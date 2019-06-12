@@ -34,7 +34,8 @@ $ make # then you'll got the proper binary to run.
 ## TODO
 
  - [ ] Proper license
- - [ ] CLI arguments processing
+ - [x] CLI arguments processing
+ - [ ] Custom commands
  - [ ] Drop-down mode (quark mode in deepin-terminal)
  - [ ] Proper way to implement shortcut support
  - [ ] Properties dialog

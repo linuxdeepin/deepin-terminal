@@ -29,6 +29,7 @@ public:
 
     QString workingDirectory();
 
+    void sendText(const QString & text);
     void setColorScheme(const QString &name);
 
 public slots:

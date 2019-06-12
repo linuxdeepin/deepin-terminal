@@ -25,6 +25,8 @@ public:
 
     void setColorScheme(const QString &name);
 
+    void sendTextToCurrentTerm(const QString & text);
+
     void copyClipboard();
     void pasteClipboard();
 

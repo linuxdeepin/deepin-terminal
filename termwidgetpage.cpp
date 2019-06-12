@@ -224,6 +224,14 @@ void TermWidgetPage::setColorScheme(const QString &name)
     }
 }
 
+void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
+{
+    TermWidgetWrapper* term = currentTerminal();
+    if (term) {
+        term->sendText(text);
+    }
+}
+
 void TermWidgetPage::copyClipboard()
 {
     TermWidgetWrapper* term = currentTerminal();

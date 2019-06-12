@@ -160,6 +160,11 @@ QString TermWidgetWrapper::workingDirectory()
     return m_term->workingDirectory();
 }
 
+void TermWidgetWrapper::sendText(const QString &text)
+{
+    return m_term->sendText(text);
+}
+
 void TermWidgetWrapper::setColorScheme(const QString &name)
 {
     m_term->setColorScheme(name);
