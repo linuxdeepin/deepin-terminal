@@ -33,7 +33,7 @@ $ make # then you'll got the proper binary to run.
 
 ## TODO
 
- - [ ] Proper license
+ - [x] Proper license
  - [x] CLI arguments processing
  - [ ] Custom commands
  - [ ] Drop-down mode (quark mode in deepin-terminal)
@@ -46,9 +46,7 @@ $ make # then you'll got the proper binary to run.
 
 ## License
 
-// Should add a license before this repo got public.
-
-Haven't check about the license issue, will probably be licensed under GPLv3.
+This program is released under the terms of the GNU General Public License, version 3.0 or, at your option, any later version, as published by the Free Software Foundation. See the LICENSE file for the full text of the license.
 
 ## Disclaimer
 
@@ -56,4 +54,5 @@ Haven't check about the license issue, will probably be licensed under GPLv3.
 
 This project is (currently) not affiliated with, funded, or in any way associated with Wuhan Deepin Technology.
 
-THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OFALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
