@@ -33,6 +33,8 @@ public:
     void setColorScheme(const QString &name);
 
 public slots:
+    void zoomIn();
+    void zoomOut();
     void copyClipboard();
     void pasteClipboard();
 

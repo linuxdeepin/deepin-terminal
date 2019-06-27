@@ -194,6 +194,18 @@ void MainWindow::initShortcuts()
         TermWidgetPage *page = currentTab();
         if (page) page->pasteClipboard();
     });
+
+    QShortcut *zoomInShortcut = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::Key_Equal), this);
+    connect(zoomInShortcut, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->zoomInCurrentTierminal();
+    });
+
+    QShortcut *zoomOutShortcut = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::Key_Minus), this);
+    connect(zoomOutShortcut, &QShortcut::activated, this, [this](){
+        TermWidgetPage *page = currentTab();
+        if (page) page->zoomOutCurrentTerminal();
+    });
 }
 
 void MainWindow::initCustomCommands()

@@ -248,6 +248,22 @@ void TermWidgetPage::pasteClipboard()
     }
 }
 
+void TermWidgetPage::zoomInCurrentTierminal()
+{
+    TermWidgetWrapper* term = currentTerminal();
+    if (term) {
+        term->zoomIn();
+    }
+}
+
+void TermWidgetPage::zoomOutCurrentTerminal()
+{
+    TermWidgetWrapper* term = currentTerminal();
+    if (term) {
+        term->zoomOut();
+    }
+}
+
 void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
 {
     TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());

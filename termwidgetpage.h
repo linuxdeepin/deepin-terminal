@@ -30,6 +30,9 @@ public:
     void copyClipboard();
     void pasteClipboard();
 
+    void zoomInCurrentTierminal();
+    void zoomOutCurrentTerminal();
+
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);
     void onTermRequestRenameTab(QString newTabName);

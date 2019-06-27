@@ -170,6 +170,16 @@ void TermWidgetWrapper::setColorScheme(const QString &name)
     m_term->setColorScheme(name);
 }
 
+void TermWidgetWrapper::zoomIn()
+{
+    m_term->zoomIn();
+}
+
+void TermWidgetWrapper::zoomOut()
+{
+    m_term->zoomOut();
+}
+
 void TermWidgetWrapper::copyClipboard()
 {
     m_term->copyClipboard();
