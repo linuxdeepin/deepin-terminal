@@ -11,7 +11,6 @@
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QApplication>
-#include <DBlurEffectWidget>
 #include <QShortcut>
 #include <QSettings>
 #include <QStandardPaths>
@@ -24,7 +23,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     m_menu(new QMenu),
     m_tabbar(new TabBar),
     m_themePanel(new ThemePanel(this)),
-    m_centralWidget(new DBlurEffectWidget(parent)),
+    m_centralWidget(new QWidget(this)),
     m_centralLayout(new QVBoxLayout(m_centralWidget)),
     m_termStackWidget(new QStackedWidget)
 {
@@ -50,9 +49,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
         if (page) page->setColorScheme(themeName);
     });
 
-    DBlurEffectWidget *cwb = qobject_cast<DBlurEffectWidget*>(m_centralWidget);
-    cwb->setBlendMode(DBlurEffectWidget::BlendMode::BehindWindowBlend);
-    cwb->setRadius(16);
+    setEnableBlurWindow(true);
 
     initShortcuts();
     initCustomCommands();
