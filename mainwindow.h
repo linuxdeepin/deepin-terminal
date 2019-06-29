@@ -9,6 +9,7 @@ DWIDGET_USE_NAMESPACE
 
 class TabBar;
 class ThemePanel;
+class Settings;
 class TermWidgetPage;
 class TermProperties;
 class MainWindow : public DMainWindow
@@ -34,13 +35,16 @@ protected slots:
 private:
     void initWindow();
     void initShortcuts();
+    void initConnections();
     void initCustomCommands();
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
+    void showSettingDialog();
 
     QMenu *m_menu;
     TabBar *m_tabbar;
     ThemePanel *m_themePanel;
+    Settings *m_settings;
     QWidget *m_centralWidget;
     QVBoxLayout *m_centralLayout;
     QStackedWidget *m_termStackWidget;

@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.9.5)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "-g -Wall")
 set(QT_MINIMUM_VERSION "5.7.1")
 
@@ -29,6 +30,7 @@ set (DTNG_CPP_FILES
     themelistmodel.cpp
     themeitemdelegate.cpp
     termproperties.cpp
+    settings.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -44,6 +46,11 @@ set (DTNG_HEADER_FILES
     themelistmodel.h
     themeitemdelegate.h
     termproperties.h
+    settings.h
+)
+
+set (DTNG_QRC_FILES
+    resources.qrc
 )
 
 # Program
@@ -52,6 +59,7 @@ set(EXE_NAME dterm)
 add_executable (${EXE_NAME}
     ${DTNG_HEADER_FILES}
     ${DTNG_CPP_FILES}
+    ${DTNG_QRC_FILES}
 )
 
 target_include_directories(${EXE_NAME} PUBLIC

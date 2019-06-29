@@ -1,0 +1,22 @@
+{
+    "groups": [
+        {
+            "key": "advanced",
+            "name": "Advanced",
+            "groups": [
+                {
+                    "key": "window",
+                    "name": "Window",
+                    "options": [
+                        {
+                            "key": "blur_background",
+                            "text": "Blur background",
+                            "type": "checkbox",
+                            "default": "false"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

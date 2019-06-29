@@ -3,6 +3,7 @@
 #include "titlebar.h"
 #include "tabbar.h"
 #include "themepanel.h"
+#include "settings.h"
 #include "termwidgetpage.h"
 #include "termproperties.h"
 
@@ -23,6 +24,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     m_menu(new QMenu),
     m_tabbar(new TabBar),
     m_themePanel(new ThemePanel(this)),
+    m_settings(new Settings(this)),
     m_centralWidget(new QWidget(this)),
     m_centralLayout(new QVBoxLayout(m_centralWidget)),
     m_termStackWidget(new QStackedWidget)
@@ -42,15 +44,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorBottom, m_centralWidget, Qt::AnchorBottom);
     DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorRight, m_centralWidget, Qt::AnchorRight);
 
-    connect(m_themePanel, &ThemePanel::themeChanged, this, [this](const QString themeName){
-        qDebug() << "Test, will not be saved. Theme name:" << themeName;
-        // just for test purpose
-        TermWidgetPage *page = currentTab();
-        if (page) page->setColorScheme(themeName);
-    });
-
-    setEnableBlurWindow(true);
-
+    initConnections();
     initShortcuts();
     initCustomCommands();
 
@@ -139,6 +133,8 @@ void MainWindow::initWindow()
     QSettings settings("blumia", "dterm");
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("windowState").toByteArray());
+
+    setEnableBlurWindow(m_settings->backgroundBlur());
 }
 
 void MainWindow::initShortcuts()
@@ -205,6 +201,20 @@ void MainWindow::initShortcuts()
     });
 }
 
+void MainWindow::initConnections()
+{
+    connect(m_themePanel, &ThemePanel::themeChanged, this, [this](const QString themeName){
+        qDebug() << "Test, will not be saved. Theme name:" << themeName;
+        // just for test purpose
+        TermWidgetPage *page = currentTab();
+        if (page) page->setColorScheme(themeName);
+    });
+
+    connect(m_settings, &Settings::backgroundBlurChanged, this, [this](bool enabled) {
+        setEnableBlurWindow(enabled);
+    });
+}
+
 void MainWindow::initCustomCommands()
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -249,6 +259,9 @@ void MainWindow::initTitleBar()
 {
     QAction *switchThemeAction(new QAction(tr("Switch &theme"), this));
     m_menu->addAction(switchThemeAction);
+    QAction *settingAction(new QAction(tr("Settings"), this));
+
+    m_menu->addAction(settingAction);
 
     TitleBar *titleBar = new TitleBar;
     titleBar->setTabBar(m_tabbar);
@@ -271,6 +284,7 @@ void MainWindow::initTitleBar()
     connect(switchThemeAction, &QAction::triggered, this, [this](){
         m_themePanel->show();
     });
+    connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
@@ -279,4 +293,11 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
     if (activePage) {
         m_termStackWidget->setCurrentWidget(termPage);
     }
+}
+
+void MainWindow::showSettingDialog()
+{
+    QScopedPointer<DSettingsDialog> dialog(new DSettingsDialog(this));
+    dialog->updateSettings(m_settings->settings);
+    dialog->exec();
 }
