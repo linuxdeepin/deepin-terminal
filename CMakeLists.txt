@@ -11,7 +11,7 @@ set(CMAKE_CXX_FLAGS "-g -Wall")
 set(QT_MINIMUM_VERSION "5.7.1")
 
 # Find the QtWidgets library
-find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Widgets)
+find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Widgets LinguistTools)
 find_package(Dtk REQUIRED Core Widget)
 find_package(QTermWidget5 REQUIRED)
 
@@ -56,10 +56,17 @@ set (DTNG_QRC_FILES
 # Program
 set(EXE_NAME dterm)
 
+# Translation
+file(GLOB DTNG_TS_FILES translations/*.ts)
+
+qt5_create_translation(DTNG_SINGLE_QM_FILE ${DTNG_CPP_FILES} translations/dterm.ts)
+qt5_add_translation(DTNG_QM_FILES ${DTNG_TS_FILES})
+
 add_executable (${EXE_NAME}
     ${DTNG_HEADER_FILES}
     ${DTNG_CPP_FILES}
     ${DTNG_QRC_FILES}
+    ${DTNG_QM_FILES}
 )
 
 target_include_directories(${EXE_NAME} PUBLIC
@@ -76,3 +83,11 @@ target_compile_definitions(${EXE_NAME} PRIVATE
     QTERMWIDGET_VERSION_MINOR=${QTermWidget5_VERSION_MINOR}
     QTERMWIDGET_VERSION_PATCH=${QTermWidget5_VERSION_PATCH}
 )
+
+# Install settings
+
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX /usr)
+endif ()
+
+install(FILES ${DTNG_QM_FILES} DESTINATION share/dterm/translations)
