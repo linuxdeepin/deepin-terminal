@@ -35,10 +35,11 @@ $ make # then you'll got the proper binary to run.
 
  - [x] Proper license
  - [x] CLI arguments processing
+ - [ ] international (translation) support
  - [ ] Custom commands
- - [ ] Drop-down mode (quark mode in deepin-terminal)
+ - [ ] Drop-down mode (Quake mode in deepin-terminal)
  - [ ] Proper way to implement shortcut support
- - [ ] Properties dialog
+ - [x] Properties dialog
  - [ ] Color scheme preview from selection panel
  - [ ] Independent terminal config
  - [ ] Proper way to support ZModem / remote connection panel
