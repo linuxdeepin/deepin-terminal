@@ -30,6 +30,7 @@ public:
     QString workingDirectory();
 
     void sendText(const QString & text);
+    void setTerminalOpacity(qreal opacity);
     void setColorScheme(const QString &name);
 
 public slots:

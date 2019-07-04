@@ -9,7 +9,6 @@ DWIDGET_USE_NAMESPACE
 
 class TabBar;
 class ThemePanel;
-class Settings;
 class TermWidgetPage;
 class TermProperties;
 class MainWindow : public DMainWindow
@@ -44,7 +43,6 @@ private:
     QMenu *m_menu;
     TabBar *m_tabbar;
     ThemePanel *m_themePanel;
-    Settings *m_settings;
     QWidget *m_centralWidget;
     QVBoxLayout *m_centralLayout;
     QStackedWidget *m_termStackWidget;

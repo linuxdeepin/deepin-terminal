@@ -23,6 +23,7 @@ public:
 
     TermProperties createCurrentTerminalProperties();
 
+    void setTerminalOpacity(qreal opacity);
     void setColorScheme(const QString &name);
 
     void sendTextToCurrentTerm(const QString & text);

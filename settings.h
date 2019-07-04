@@ -10,10 +10,11 @@ class Settings : public QObject
 {
     Q_OBJECT
 public:
-    Settings(QWidget *parent = nullptr);
+    static Settings *instance();
 
     void initConnection();
 
+    qreal opacity() const;
     bool backgroundBlur() const;
 
     DSettings *settings;
@@ -21,9 +22,14 @@ public:
 signals:
     void settingValueChanged(const QString &key, const QVariant &value);
 
+    void opacityChanged(qreal opacity);
     void backgroundBlurChanged(bool enabled);
 
 private:
+    Settings();
+
+    static Settings *m_settings_instance;
+
     Dtk::Core::QSettingBackend *m_backend;
     QString m_configPath;
 };

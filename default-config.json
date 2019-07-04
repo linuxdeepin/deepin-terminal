@@ -1,6 +1,26 @@
 {
     "groups": [
         {
+            "key": "basic",
+            "name": "Basic",
+            "groups": [
+                {
+                    "key": "interface",
+                    "name": "Interface",
+                    "options": [
+                        {
+                            "key": "opacity",
+                            "name": "Opacity",
+                            "type": "slider",
+                            "max": 100,
+                            "min": 0,
+                            "default": 80
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "key": "advanced",
             "name": "Advanced",
             "groups": [

@@ -4,13 +4,13 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="260"/>
+        <location filename="../mainwindow.cpp" line="268"/>
         <source>Switch &amp;theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="262"/>
-        <source>Settings</source>
+        <location filename="../mainwindow.cpp" line="270"/>
+        <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -25,53 +25,53 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../termwidget.cpp" line="77"/>
+        <location filename="../termwidget.cpp" line="78"/>
         <source>Copy &amp;Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="82"/>
+        <location filename="../termwidget.cpp" line="83"/>
         <source>&amp;Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="86"/>
+        <location filename="../termwidget.cpp" line="87"/>
         <source>&amp;Open File Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="92"/>
+        <location filename="../termwidget.cpp" line="93"/>
         <source>Split &amp;Horizontally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="96"/>
+        <location filename="../termwidget.cpp" line="97"/>
         <source>Split &amp;Vertically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="104"/>
+        <location filename="../termwidget.cpp" line="105"/>
         <source>Exit Full&amp;screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="108"/>
+        <location filename="../termwidget.cpp" line="109"/>
         <source>Full&amp;screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="113"/>
+        <location filename="../termwidget.cpp" line="114"/>
         <source>&amp;Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="120"/>
-        <location filename="../termwidget.cpp" line="123"/>
+        <location filename="../termwidget.cpp" line="121"/>
+        <location filename="../termwidget.cpp" line="124"/>
         <source>Rename Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="123"/>
+        <location filename="../termwidget.cpp" line="124"/>
         <source>Tab name:</source>
         <translation type="unfinished"></translation>
     </message>

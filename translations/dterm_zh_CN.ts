@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="262"/>
-        <source>Settings</source>
-        <translation>设置</translation>
+        <source>&amp;Settings</source>
+        <translation>设置(&amp;S)</translation>
     </message>
 </context>
 <context>

@@ -216,6 +216,14 @@ TermProperties TermWidgetPage::createCurrentTerminalProperties()
     return properties;
 }
 
+void TermWidgetPage::setTerminalOpacity(qreal opacity)
+{
+    QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
+    for (TermWidgetWrapper* term : termList) {
+        term->setTerminalOpacity(opacity);
+    }
+}
+
 void TermWidgetPage::setColorScheme(const QString &name)
 {
     QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
