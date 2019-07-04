@@ -42,6 +42,16 @@ void Settings::initConnection()
         emit opacityChanged(value.toInt() / 100.0);
     });
 
+    QPointer<DSettingsOption> cursorShape = settings->option("advanced.cursor.shape");
+    connect(cursorShape, &Dtk::Core::DSettingsOption::valueChanged, this, [=] (QVariant value) {
+        emit cursorShapeChanged(value.toInt());
+    });
+
+    QPointer<DSettingsOption> cursorBlink = settings->option("advanced.cursor.blink");
+    connect(cursorBlink, &Dtk::Core::DSettingsOption::valueChanged, this, [=] (QVariant value) {
+        emit cursorBlinkChanged(value.toBool());
+    });
+
     QPointer<DSettingsOption> backgroundBlur = settings->option("advanced.window.blur_background");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [=] (QVariant value) {
         emit backgroundBlurChanged(value.toBool());
@@ -51,6 +61,16 @@ void Settings::initConnection()
 qreal Settings::opacity() const
 {
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
+}
+
+int Settings::cursorShape() const
+{
+    return settings->option("advanced.cursor.shape")->value().toInt();
+}
+
+bool Settings::cursorBlink() const
+{
+    return settings->option("advanced.cursor.blink")->value().toBool();
 }
 
 bool Settings::backgroundBlur() const

@@ -25,6 +25,25 @@
             "name": "Advanced",
             "groups": [
                 {
+                    "key": "cursor",
+                    "name": "Cursor",
+                    "options": [
+                        {
+                            "key": "shape",
+                            "name": "Cursor Shape",
+                            "type": "buttongroup",
+                            "items": ["█","_","|"],
+                            "default": 0
+                        },
+                        {
+                            "key": "blink",
+                            "type": "checkbox",
+                            "text": "Cursor blink",
+                            "default": true
+                        }
+                    ]
+                },
+                {
                     "key": "window",
                     "name": "Window",
                     "options": [

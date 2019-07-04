@@ -15,6 +15,8 @@ public:
     void initConnection();
 
     qreal opacity() const;
+    int cursorShape() const;
+    bool cursorBlink() const;
     bool backgroundBlur() const;
 
     DSettings *settings;
@@ -23,6 +25,8 @@ signals:
     void settingValueChanged(const QString &key, const QVariant &value);
 
     void opacityChanged(qreal opacity);
+    void cursorShapeChanged(int shape);
+    void cursorBlinkChanged(bool blink);
     void backgroundBlurChanged(bool enabled);
 
 private:

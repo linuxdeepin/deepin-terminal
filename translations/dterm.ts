@@ -25,53 +25,53 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../termwidget.cpp" line="78"/>
+        <location filename="../termwidget.cpp" line="79"/>
         <source>Copy &amp;Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="83"/>
+        <location filename="../termwidget.cpp" line="84"/>
         <source>&amp;Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="87"/>
+        <location filename="../termwidget.cpp" line="88"/>
         <source>&amp;Open File Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="93"/>
+        <location filename="../termwidget.cpp" line="94"/>
         <source>Split &amp;Horizontally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="97"/>
+        <location filename="../termwidget.cpp" line="98"/>
         <source>Split &amp;Vertically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="105"/>
+        <location filename="../termwidget.cpp" line="106"/>
         <source>Exit Full&amp;screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="109"/>
+        <location filename="../termwidget.cpp" line="110"/>
         <source>Full&amp;screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="114"/>
+        <location filename="../termwidget.cpp" line="115"/>
         <source>&amp;Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="121"/>
-        <location filename="../termwidget.cpp" line="124"/>
+        <location filename="../termwidget.cpp" line="122"/>
+        <location filename="../termwidget.cpp" line="125"/>
         <source>Rename Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="124"/>
+        <location filename="../termwidget.cpp" line="125"/>
         <source>Tab name:</source>
         <translation type="unfinished"></translation>
     </message>

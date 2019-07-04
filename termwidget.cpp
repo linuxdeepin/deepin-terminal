@@ -26,6 +26,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent)
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
     setTerminalOpacity(Settings::instance()->opacity());
     setScrollBarPosition(QTermWidget::ScrollBarRight);
+    setKeyboardCursorShape(static_cast<QTermWidget::KeyboardCursorShape>(Settings::instance()->cursorShape()));
     if (properties.contains(WorkingDir)) {
         setWorkingDirectory(properties[WorkingDir].toString());
     }
@@ -46,7 +47,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent)
     setColorScheme("Linux");
 
 #if !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
-    setBlinkingCursor(true);
+    setBlinkingCursor(Settings::instance()->cursorBlink());
 #endif // !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
 
     connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu){
