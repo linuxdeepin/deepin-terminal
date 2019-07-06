@@ -33,7 +33,8 @@
                             "name": "Cursor Shape",
                             "type": "buttongroup",
                             "items": ["█","_","|"],
-                            "default": 0
+                            "default": 0,
+                            "i18n_skip_keys": ["items"]
                         },
                         {
                             "key": "blink",

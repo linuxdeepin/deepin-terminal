@@ -54,12 +54,24 @@ set (DTNG_QRC_FILES
 )
 
 # Program
-set(EXE_NAME dterm)
+set (EXE_NAME dterm)
 
 # Translation
-file(GLOB DTNG_TS_FILES translations/*.ts)
+file (GLOB DTNG_TS_FILES translations/*.ts)
+set (DTNG_CPP_FILES_FOR_I18N ${DTNG_CPP_FILES})
 
-qt5_create_translation(DTNG_SINGLE_QM_FILE ${DTNG_CPP_FILES} translations/dterm.ts)
+add_custom_target(json_i18n ALL
+    /usr/lib/dtk2/dtk-settings default-config.json -o settings_translation.cpp
+    COMMAND sed -i "s,#include .*,#include <DSettings>," settings_translation.cpp
+    VERBATIM
+    SOURCES default-config.json
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/)
+
+if (EXISTS ${PROJECT_SOURCE_DIR}/settings_translation.cpp)
+    list (APPEND DTNG_CPP_FILES_FOR_I18N settings_translation.cpp)
+endif ()
+
+qt5_create_translation(DTNG_SINGLE_QM_FILE ${DTNG_CPP_FILES_FOR_I18N} translations/dterm.ts)
 qt5_add_translation(DTNG_QM_FILES ${DTNG_TS_FILES})
 
 add_executable (${EXE_NAME}
@@ -68,6 +80,8 @@ add_executable (${EXE_NAME}
     ${DTNG_QRC_FILES}
     ${DTNG_QM_FILES}
 )
+
+add_dependencies(${EXE_NAME} json_i18n)
 
 target_include_directories(${EXE_NAME} PUBLIC
     ${DtkWidget_INCLUDE_DIRS}
