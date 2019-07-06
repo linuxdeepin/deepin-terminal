@@ -2,6 +2,10 @@ project(dtng)
 
 cmake_minimum_required(VERSION 3.9.5)
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+
+include (DtkSettingsToolsMacros)
+
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
@@ -60,19 +64,9 @@ set (EXE_NAME dterm)
 file (GLOB DTNG_TS_FILES translations/*.ts)
 set (DTNG_CPP_FILES_FOR_I18N ${DTNG_CPP_FILES})
 
-add_custom_target(json_i18n ALL
-    /usr/lib/dtk2/dtk-settings default-config.json -o settings_translation.cpp
-    COMMAND sed -i "s,#include .*,#include <DSettings>," settings_translation.cpp
-    VERBATIM
-    SOURCES default-config.json
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/)
-
-if (EXISTS ${PROJECT_SOURCE_DIR}/settings_translation.cpp)
-    list (APPEND DTNG_CPP_FILES_FOR_I18N settings_translation.cpp)
-endif ()
-
-qt5_create_translation(DTNG_SINGLE_QM_FILE ${DTNG_CPP_FILES_FOR_I18N} translations/dterm.ts)
-qt5_add_translation(DTNG_QM_FILES ${DTNG_TS_FILES})
+dtk_create_i18n_from_json(DTNG_SETTINGS_I18N_FILES default-config.json settings_translation.cpp)
+list (APPEND DTNG_CPP_FILES_FOR_I18N ${DTNG_SETTINGS_I18N_FILES})
+qt5_create_translation(DTNG_QM_FILES ${DTNG_CPP_FILES_FOR_I18N} translations/dterm.ts)
 
 add_executable (${EXE_NAME}
     ${DTNG_HEADER_FILES}
@@ -80,8 +74,6 @@ add_executable (${EXE_NAME}
     ${DTNG_QRC_FILES}
     ${DTNG_QM_FILES}
 )
-
-add_dependencies(${EXE_NAME} json_i18n)
 
 target_include_directories(${EXE_NAME} PUBLIC
     ${DtkWidget_INCLUDE_DIRS}
