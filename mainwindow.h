@@ -5,6 +5,8 @@
 #include <QVBoxLayout>
 #include <QStackedWidget>
 
+#include <functional>
+
 DWIDGET_USE_NAMESPACE
 
 class TabBar;
@@ -39,6 +41,7 @@ private:
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
+    void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
 
     QMenu *m_menu;
     TabBar *m_tabbar;

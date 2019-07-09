@@ -15,9 +15,12 @@ public:
     void initConnection();
 
     qreal opacity() const;
+    QString colorScheme() const;
     int cursorShape() const;
     bool cursorBlink() const;
     bool backgroundBlur() const;
+
+    void setColorScheme(const QString &name);
 
     DSettings *settings;
 

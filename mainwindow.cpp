@@ -203,19 +203,16 @@ void MainWindow::initShortcuts()
 void MainWindow::initConnections()
 {
     connect(m_themePanel, &ThemePanel::themeChanged, this, [this](const QString themeName) {
-        qDebug() << "Test, will not be saved. Theme name:" << themeName;
-        // just for test purpose
-        TermWidgetPage *page = currentTab();
-        if (page) page->setColorScheme(themeName);
+        forAllTabPage([themeName](TermWidgetPage * tabPage) {
+            tabPage->setColorScheme(themeName);
+        });
+        Settings::instance()->setColorScheme(themeName);
     });
 
     connect(Settings::instance(), &Settings::opacityChanged, this, [this](qreal opacity) {
-        for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
-            TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(m_termStackWidget->widget(i));
-            if (tabPage) {
-                tabPage->setTerminalOpacity(opacity);
-            }
-        }
+        forAllTabPage([opacity](TermWidgetPage * tabPage) {
+            tabPage->setTerminalOpacity(opacity);
+        });
     });
 
     connect(Settings::instance(), &Settings::backgroundBlurChanged, this, [this](bool enabled) {
@@ -308,4 +305,14 @@ void MainWindow::showSettingDialog()
     QScopedPointer<DSettingsDialog> dialog(new DSettingsDialog(this));
     dialog->updateSettings(Settings::instance()->settings);
     dialog->exec();
+}
+
+void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage*)> &func)
+{
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(m_termStackWidget->widget(i));
+        if (tabPage) {
+            func(tabPage);
+        }
+    }
 }

@@ -63,6 +63,11 @@ qreal Settings::opacity() const
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
 }
 
+QString Settings::colorScheme() const
+{
+    return settings->option("basic.interface.theme")->value().toString();
+}
+
 int Settings::cursorShape() const
 {
     return settings->option("advanced.cursor.shape")->value().toInt();
@@ -76,4 +81,9 @@ bool Settings::cursorBlink() const
 bool Settings::backgroundBlur() const
 {
     return settings->option("advanced.window.blur_background")->value().toBool();
+}
+
+void Settings::setColorScheme(const QString &name)
+{
+    return settings->option("basic.interface.theme")->setValue(name);
 }
