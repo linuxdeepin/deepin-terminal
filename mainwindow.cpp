@@ -9,6 +9,7 @@
 
 #include <DAnchors>
 #include <DTitlebar>
+#include <DThemeManager>
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QApplication>
@@ -26,7 +27,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     m_themePanel(new ThemePanel(this)),
     m_centralWidget(new QWidget(this)),
     m_centralLayout(new QVBoxLayout(m_centralWidget)),
-    m_termStackWidget(new QStackedWidget)
+    m_termStackWidget(new QStackedWidget),
+    m_titlebarStyleSheet(titlebar()->styleSheet())
 {
     setAttribute(Qt::WA_TranslucentBackground);
 
@@ -317,4 +319,19 @@ void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage*)> &func)
             func(tabPage);
         }
     }
+}
+
+void MainWindow::setTitleBarBackgroundColor(QString color)
+{
+    // how dde-file-manager make the setting dialog works under dark theme?
+    if (QColor(color).lightness() < 128) {
+        DThemeManager::instance()->setTheme("dark");
+    } else {
+        DThemeManager::instance()->setTheme("light");
+    }
+    // apply titlebar background color
+    titlebar()->setStyleSheet(QString("%1"
+                                      "Dtk--Widget--DTitlebar {"
+                                      "background: %2;"
+                                      "}").arg(m_titlebarStyleSheet, color));
 }

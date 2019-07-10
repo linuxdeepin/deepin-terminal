@@ -42,6 +42,7 @@ private:
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
+    void setTitleBarBackgroundColor(QString color);
 
     QMenu *m_menu;
     TabBar *m_tabbar;
@@ -49,6 +50,7 @@ private:
     QWidget *m_centralWidget;
     QVBoxLayout *m_centralLayout;
     QStackedWidget *m_termStackWidget;
+    QString m_titlebarStyleSheet;
 };
 
 #endif // MAINWINDOW_H
