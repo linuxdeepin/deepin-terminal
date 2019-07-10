@@ -28,6 +28,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     m_centralLayout(new QVBoxLayout(m_centralWidget)),
     m_termStackWidget(new QStackedWidget)
 {
+    setAttribute(Qt::WA_TranslucentBackground);
+
     setMinimumSize(450, 250);
     setCentralWidget(m_centralWidget);
     setWindowIcon(QIcon::fromTheme("deepin-terminal"));
