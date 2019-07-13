@@ -66,6 +66,76 @@
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="16"/>
+        <source>Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="17"/>
+        <source>Tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="18"/>
+        <source>Terminal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="19"/>
+        <source>Select lower window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="20"/>
+        <source>Select left window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="21"/>
+        <source>Select right window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="22"/>
+        <source>Select upper window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="23"/>
+        <source>Horizontal split</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="24"/>
+        <source>New tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="25"/>
+        <source>Vertical split</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="26"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="27"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="28"/>
+        <source>Zoom in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="29"/>
+        <source>Zoom out</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TermWidget</name>
@@ -118,6 +188,11 @@
     <message>
         <location filename="../termwidget.cpp" line="125"/>
         <source>Tab name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../termwidget.cpp" line="134"/>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

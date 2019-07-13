@@ -13,4 +13,18 @@ void GenerateSettingTranslate()
     auto group_advanced_windowName = QObject::tr("Window");
     auto group_basicName = QObject::tr("Basic");
     auto group_basic_interfaceName = QObject::tr("Interface");
+    auto group_shortcutsName = QObject::tr("Shortcuts");
+    auto group_shortcuts_tabsName = QObject::tr("Tabs");
+    auto group_shortcuts_terminalName = QObject::tr("Terminal");
+    auto shortcuts_tabs_focus_nav_downName = QObject::tr("Select lower window");
+    auto shortcuts_tabs_focus_nav_leftName = QObject::tr("Select left window");
+    auto shortcuts_tabs_focus_nav_rightName = QObject::tr("Select right window");
+    auto shortcuts_tabs_focus_nav_upName = QObject::tr("Select upper window");
+    auto shortcuts_tabs_horizontal_splitName = QObject::tr("Horizontal split");
+    auto shortcuts_tabs_new_tabName = QObject::tr("New tab");
+    auto shortcuts_tabs_vertical_splitName = QObject::tr("Vertical split");
+    auto shortcuts_terminal_copyName = QObject::tr("Copy");
+    auto shortcuts_terminal_pasteName = QObject::tr("Paste");
+    auto shortcuts_terminal_zoom_inName = QObject::tr("Zoom in");
+    auto shortcuts_terminal_zoom_outName = QObject::tr("Zoom out");
 }

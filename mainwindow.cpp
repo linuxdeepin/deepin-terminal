@@ -71,6 +71,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     }
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
+    connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
 }
 

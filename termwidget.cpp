@@ -129,6 +129,12 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         }
     });
 
+    menu.addSeparator();
+
+    menu.addAction(QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] {
+        emit termRequestOpenSettings();
+    });
+
     // display the menu.
     menu.exec(mapToGlobal(pos));
 }
@@ -145,6 +151,7 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &QTermWidget::termGetFocus, this, &TermWidgetWrapper::termGetFocus);
     connect(m_term, &TermWidget::termRequestSplit, this, &TermWidgetWrapper::termRequestSplit);
     connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
+    connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
 }
 
 bool TermWidgetWrapper::isTitleChanged() const

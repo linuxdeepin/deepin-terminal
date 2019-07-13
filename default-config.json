@@ -27,6 +27,90 @@
             ]
         },
         {
+            "key": "shortcuts",
+            "name": "Shortcuts",
+            "groups": [
+                {
+                    "key" : "terminal",
+                    "name" : "Terminal",
+                    "options" : [
+                        {
+                            "key": "copy",
+                            "name": "Copy",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shfit+C"
+                        },
+                        {
+                            "key": "paste",
+                            "name": "Paste",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shfit+V"
+                        },
+                        {
+                            "key": "zoom_in",
+                            "name": "Zoom in",
+                            "type": "shortcut",
+                            "default":  "Ctrl+="
+                        },
+                        {
+                            "key": "zoom_out",
+                            "name": "Zoom out",
+                            "type": "shortcut",
+                            "default":  "Ctrl+-"
+                        }
+                    ]
+                },
+                {
+                    "key" : "tabs",
+                    "name" : "Tabs",
+                    "options" : [
+                        {
+                            "key": "new_tab",
+                            "name": "New tab",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+T"
+                        },
+                        {
+                            "key": "vertical_split",
+                            "name": "Vertical split",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shfit+H"
+                        },
+                        {
+                            "key": "horizontal_split",
+                            "name": "Horizontal split",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shfit+J"
+                        },
+                        {
+                            "key": "focus_nav_up",
+                            "name": "Select upper window",
+                            "type": "shortcut",
+                            "default":  "Alt+K"
+                        },
+                        {
+                            "key": "focus_nav_down",
+                            "name": "Select lower window",
+                            "type": "shortcut",
+                            "default":  "Alt+J"
+                        },
+                        {
+                            "key": "focus_nav_left",
+                            "name": "Select left window",
+                            "type": "shortcut",
+                            "default":  "Alt+H"
+                        },
+                        {
+                            "key": "focus_nav_right",
+                            "name": "Select right window",
+                            "type": "shortcut",
+                            "default":  "Alt+L"
+                        }
+                    ]
+                }
+             ]
+        },
+        {
             "key": "advanced",
             "name": "Advanced",
             "groups": [

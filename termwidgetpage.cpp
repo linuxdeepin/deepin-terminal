@@ -336,6 +336,7 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
 
     connect(term, &TermWidgetWrapper::termRequestSplit, this, &TermWidgetPage::onTermRequestSplit);
     connect(term, &TermWidgetWrapper::termRequestRenameTab, this, &TermWidgetPage::onTermRequestRenameTab);
+    connect(term, &TermWidgetWrapper::termRequestOpenSettings, this, &TermWidgetPage::termRequestOpenSettings);
     connect(term, &TermWidgetWrapper::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);

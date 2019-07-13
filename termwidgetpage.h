@@ -45,6 +45,7 @@ signals:
     void tabTitleChanged(QString title) const;
     void termTitleChanged(QString title) const;
     void lastTermClosed(QString pageIdentifier) const;
+    void termRequestOpenSettings() const;
 
 private slots:
     void setCurrentTerminal(TermWidgetWrapper * term);
