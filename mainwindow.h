@@ -13,6 +13,7 @@ class TabBar;
 class ThemePanel;
 class TermWidgetPage;
 class TermProperties;
+class ShortcutManager;
 class MainWindow : public DMainWindow
 {
     Q_OBJECT
@@ -37,7 +38,6 @@ private:
     void initWindow();
     void initShortcuts();
     void initConnections();
-    void initCustomCommands();
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
@@ -51,6 +51,7 @@ private:
     QVBoxLayout *m_centralLayout;
     QStackedWidget *m_termStackWidget;
     QString m_titlebarStyleSheet;
+    ShortcutManager *m_shortcutManager;
 };
 
 #endif // MAINWINDOW_H

@@ -1,5 +1,6 @@
 #include "settings.h"
 
+#include <QDebug>
 #include <QApplication>
 #include <QStandardPaths>
 #include <DSettingsOption>
@@ -60,6 +61,7 @@ void Settings::initConnection()
 
 qreal Settings::opacity() const
 {
+    qDebug() << settings->option("shortcuts.workspace.horizontal_split")->value();
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
 }
 

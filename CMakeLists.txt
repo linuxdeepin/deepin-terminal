@@ -35,6 +35,7 @@ set (DTNG_CPP_FILES
     themeitemdelegate.cpp
     termproperties.cpp
     settings.cpp
+    shortcutmanager.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -51,6 +52,7 @@ set (DTNG_HEADER_FILES
     themeitemdelegate.h
     termproperties.h
     settings.h
+    shortcutmanager.h
 )
 
 set (DTNG_QRC_FILES

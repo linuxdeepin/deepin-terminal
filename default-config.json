@@ -61,8 +61,8 @@
                     ]
                 },
                 {
-                    "key" : "tabs",
-                    "name" : "Tabs",
+                    "key" : "workspace",
+                    "name" : "Workspace",
                     "options" : [
                         {
                             "key": "new_tab",
