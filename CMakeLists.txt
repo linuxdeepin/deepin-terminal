@@ -71,7 +71,7 @@ set (DTNG_CPP_FILES_FOR_I18N ${DTNG_CPP_FILES})
 
 dtk_create_i18n_from_json(DTNG_SETTINGS_I18N_FILES default-config.json settings_translation.cpp)
 list (APPEND DTNG_CPP_FILES_FOR_I18N ${DTNG_SETTINGS_I18N_FILES})
-qt5_create_translation(DTNG_QM_FILES ${DTNG_CPP_FILES_FOR_I18N} translations/dterm.ts)
+qt5_create_translation(DTNG_QM_FILES ${DTNG_CPP_FILES_FOR_I18N} ${DTNG_TS_FILES})
 
 add_executable (${EXE_NAME}
     ${DTNG_HEADER_FILES}

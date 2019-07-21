@@ -12,11 +12,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="30"/>
-        <source>Deep Dark Terminal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings_translation.cpp" line="7"/>
         <source>Cursor blink</source>
         <translation type="unfinished"></translation>
@@ -88,6 +83,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../settings_translation.cpp" line="22"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="23"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="24"/>
+        <source>Zoom in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="25"/>
+        <source>Zoom out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../settings_translation.cpp" line="26"/>
         <source>Select lower window</source>
         <translation type="unfinished"></translation>
@@ -123,23 +138,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="22"/>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings_translation.cpp" line="23"/>
-        <source>Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings_translation.cpp" line="24"/>
-        <source>Zoom in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings_translation.cpp" line="25"/>
-        <source>Zoom out</source>
+        <location filename="../main.cpp" line="30"/>
+        <source>Deep Dark Terminal</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

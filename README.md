@@ -31,11 +31,17 @@ $ cmake ../
 $ make # then you'll got the proper binary to run.
 ```
 
+### Contribute translations:
+
+Sign up on [Transifex](https://www.transifex.com/blumia/dterm/) and start translating!
+
+If your language is not listed here, feel free to open up an new issue and then I'll add it.
+
 ## TODO
 
  - [x] Proper license
  - [x] CLI arguments processing
- - [ ] international (translation) support
+ - [x] international (translation) support
  - [ ] Custom commands
  - [ ] Drop-down mode (Quake mode in deepin-terminal)
  - [ ] Proper way to implement shortcut support
