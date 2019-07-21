@@ -1,16 +1,24 @@
 #include "rightpanel.h"
 
+#include <DAnchors>
 #include <QPropertyAnimation>
+
+DWIDGET_USE_NAMESPACE
 
 RightPanel::RightPanel(QWidget *parent)
     : QWidget(parent)
 {
+    // hide by default.
+    QWidget::hide();
+
     // default look'n'feel.
     setStyleSheet("background-color: brown;");
     setFixedWidth(250);
 
-    // hide by default.
-    QWidget::hide();
+    // Init theme panel.
+    DAnchorsBase::setAnchor(this, Qt::AnchorTop, parent, Qt::AnchorTop);
+    DAnchorsBase::setAnchor(this, Qt::AnchorBottom, parent, Qt::AnchorBottom);
+    DAnchorsBase::setAnchor(this, Qt::AnchorRight, parent, Qt::AnchorRight);
 }
 
 void RightPanel::show()

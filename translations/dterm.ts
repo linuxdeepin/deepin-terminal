@@ -4,12 +4,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="268"/>
-        <source>Switch &amp;theme</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="270"/>
+        <location filename="../mainwindow.cpp" line="264"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17,7 +12,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="20"/>
+        <location filename="../main.cpp" line="30"/>
         <source>Deep Dark Terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,6 +38,7 @@
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="11"/>
+        <location filename="../settings_translation.cpp" line="17"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
@@ -72,67 +68,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="17"/>
-        <source>Tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings_translation.cpp" line="18"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="19"/>
-        <source>Select lower window</source>
+        <source>Workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="20"/>
-        <source>Select left window</source>
+        <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="21"/>
-        <source>Select right window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings_translation.cpp" line="22"/>
-        <source>Select upper window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings_translation.cpp" line="23"/>
-        <source>Horizontal split</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings_translation.cpp" line="24"/>
-        <source>New tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings_translation.cpp" line="25"/>
-        <source>Vertical split</source>
+        <source>Rename tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="26"/>
-        <source>Copy</source>
+        <source>Select lower window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="27"/>
-        <source>Paste</source>
+        <source>Select left window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="28"/>
-        <source>Zoom in</source>
+        <source>Select right window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="29"/>
+        <source>Select upper window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="30"/>
+        <source>Horizontal split</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="31"/>
+        <source>New tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="32"/>
+        <source>Vertical split</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="22"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="23"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="24"/>
+        <source>Zoom in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="25"/>
         <source>Zoom out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -193,6 +199,14 @@
     <message>
         <location filename="../termwidget.cpp" line="134"/>
         <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ThemePanelPlugin</name>
+    <message>
+        <location filename="../themepanelplugin.cpp" line="21"/>
+        <source>Switch &amp;theme</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

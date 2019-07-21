@@ -10,10 +10,10 @@
 DWIDGET_USE_NAMESPACE
 
 class TabBar;
-class ThemePanel;
 class TermWidgetPage;
 class TermProperties;
 class ShortcutManager;
+class MainWindowPluginInterface;
 class MainWindow : public DMainWindow
 {
     Q_OBJECT
@@ -27,6 +27,9 @@ public:
     void focusTab(const QString &identifier);
     TermWidgetPage *currentTab();
 
+    void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
+    void setTitleBarBackgroundColor(QString color);
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -35,23 +38,22 @@ protected slots:
     void onTabTitleChanged(QString title);
 
 private:
+    void initPlugins();
     void initWindow();
     void initShortcuts();
     void initConnections();
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
-    void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
-    void setTitleBarBackgroundColor(QString color);
 
     QMenu *m_menu;
     TabBar *m_tabbar;
-    ThemePanel *m_themePanel;
     QWidget *m_centralWidget;
     QVBoxLayout *m_centralLayout;
     QStackedWidget *m_termStackWidget;
     QString m_titlebarStyleSheet;
     ShortcutManager *m_shortcutManager;
+    QList<MainWindowPluginInterface*> m_plugins;
 };
 
 #endif // MAINWINDOW_H

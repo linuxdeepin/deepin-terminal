@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
     DApplication app(argc, argv);
     app.setOrganizationName("blumia");
     app.setApplicationName("dterm");
-    app.setApplicationDisplayName(QObject::tr("Deep Dark Terminal"));
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
     app.loadTranslator();
@@ -27,6 +26,8 @@ int main(int argc, char *argv[])
     translator.load(QString("dterm_%1").arg(QLocale::system().name()));
     app.installTranslator(&translator);
 #endif // QT_DEBUG
+
+    app.setApplicationDisplayName(QObject::tr("Deep Dark Terminal"));
 
     qputenv("TERM", "xterm-256color");
 

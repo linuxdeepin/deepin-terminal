@@ -2,13 +2,14 @@
 
 #include "titlebar.h"
 #include "tabbar.h"
-#include "themepanel.h"
 #include "settings.h"
 #include "termwidgetpage.h"
 #include "termproperties.h"
 #include "shortcutmanager.h"
+#include "mainwindowplugininterface.h"
 
-#include <DAnchors>
+#include "themepanelplugin.h"
+
 #include <DTitlebar>
 #include <DThemeManager>
 #include <QVBoxLayout>
@@ -23,7 +24,6 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
     DMainWindow(parent),
     m_menu(new QMenu),
     m_tabbar(new TabBar),
-    m_themePanel(new ThemePanel(this)),
     m_centralWidget(new QWidget(this)),
     m_centralLayout(new QVBoxLayout(m_centralWidget)),
     m_termStackWidget(new QStackedWidget),
@@ -42,13 +42,12 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent) :
 
     m_centralLayout->addWidget(m_termStackWidget);
 
-    // Init theme panel.
-    DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorTop, m_centralWidget, Qt::AnchorTop);
-    DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorBottom, m_centralWidget, Qt::AnchorBottom);
-    DAnchorsBase::setAnchor(m_themePanel, Qt::AnchorRight, m_centralWidget, Qt::AnchorRight);
-
     initConnections();
     initShortcuts();
+
+    // Plugin may need centralWidget() to work so make sure initPlugin() is after setCentralWidget()
+    // Other place (eg. create titlebar menu) will call plugin method so we should create plugins before init other parts.
+    initPlugins();
 
     initWindow();
     initTitleBar();
@@ -108,6 +107,31 @@ TermWidgetPage *MainWindow::currentTab()
     return qobject_cast<TermWidgetPage *>(m_termStackWidget->currentWidget());
 }
 
+void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage*)> &func)
+{
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(m_termStackWidget->widget(i));
+        if (tabPage) {
+            func(tabPage);
+        }
+    }
+}
+
+void MainWindow::setTitleBarBackgroundColor(QString color)
+{
+    // how dde-file-manager make the setting dialog works under dark theme?
+    if (QColor(color).lightness() < 128) {
+        DThemeManager::instance()->setTheme("dark");
+    } else {
+        DThemeManager::instance()->setTheme("light");
+    }
+    // apply titlebar background color
+    titlebar()->setStyleSheet(QString("%1"
+                                      "Dtk--Widget--DTitlebar {"
+                                      "background: %2;"
+                                      "}").arg(m_titlebarStyleSheet, color));
+}
+
 void MainWindow::closeEvent(QCloseEvent *event) {
     QSettings settings("blumia", "dterm");
     settings.setValue("geometry", saveGeometry());
@@ -129,6 +153,15 @@ void MainWindow::onTabTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(sender());
     m_tabbar->setTabText(tabPage->identifier(), title);
+}
+
+void MainWindow::initPlugins()
+{
+    // Todo: real plugin loader and plugin support.
+    ThemePanelPlugin *testPlugin = new ThemePanelPlugin(this);
+    testPlugin->initPlugin(this);
+
+    m_plugins.append(testPlugin);
 }
 
 void MainWindow::initWindow()
@@ -208,13 +241,6 @@ void MainWindow::initShortcuts()
 
 void MainWindow::initConnections()
 {
-    connect(m_themePanel, &ThemePanel::themeChanged, this, [this](const QString themeName) {
-        forAllTabPage([themeName](TermWidgetPage * tabPage) {
-            tabPage->setColorScheme(themeName);
-        });
-        Settings::instance()->setColorScheme(themeName);
-    });
-
     connect(Settings::instance(), &Settings::opacityChanged, this, [this](qreal opacity) {
         forAllTabPage([opacity](TermWidgetPage * tabPage) {
             tabPage->setTerminalOpacity(opacity);
@@ -228,10 +254,14 @@ void MainWindow::initConnections()
 
 void MainWindow::initTitleBar()
 {
-    QAction *switchThemeAction(new QAction(tr("Switch &theme"), this));
-    m_menu->addAction(switchThemeAction);
-    QAction *settingAction(new QAction(tr("&Settings"), this));
+    for (MainWindowPluginInterface* plugin : m_plugins) {
+        QAction * pluginMenu = plugin->titlebarMenu(this);
+        if (pluginMenu) {
+            m_menu->addAction(pluginMenu);
+        }
+    }
 
+    QAction *settingAction(new QAction(tr("&Settings"), this));
     m_menu->addAction(settingAction);
 
     TitleBar *titleBar = new TitleBar;
@@ -252,9 +282,6 @@ void MainWindow::initTitleBar()
         focusTab(m_tabbar->identifier(index));
     }, Qt::QueuedConnection);
 
-    connect(switchThemeAction, &QAction::triggered, this, [this](){
-        m_themePanel->show();
-    });
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
 }
 
@@ -271,29 +298,4 @@ void MainWindow::showSettingDialog()
     QScopedPointer<DSettingsDialog> dialog(new DSettingsDialog(this));
     dialog->updateSettings(Settings::instance()->settings);
     dialog->exec();
-}
-
-void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage*)> &func)
-{
-    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
-        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage*>(m_termStackWidget->widget(i));
-        if (tabPage) {
-            func(tabPage);
-        }
-    }
-}
-
-void MainWindow::setTitleBarBackgroundColor(QString color)
-{
-    // how dde-file-manager make the setting dialog works under dark theme?
-    if (QColor(color).lightness() < 128) {
-        DThemeManager::instance()->setTheme("dark");
-    } else {
-        DThemeManager::instance()->setTheme("light");
-    }
-    // apply titlebar background color
-    titlebar()->setStyleSheet(QString("%1"
-                                      "Dtk--Widget--DTitlebar {"
-                                      "background: %2;"
-                                      "}").arg(m_titlebarStyleSheet, color));
 }

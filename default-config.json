@@ -107,6 +107,24 @@
                             "default":  "Alt+L"
                         }
                     ]
+                },
+                {
+                    "key" : "advanced",
+                    "name" : "Advanced",
+                    "options" : [
+                        {
+                            "key": "fullscreen",
+                            "name": "Fullscreen",
+                            "type": "shortcut",
+                            "default":  "F11"
+                        },
+                        {
+                            "key": "rename_tab",
+                            "name": "Rename tab",
+                            "type": "shortcut",
+                            "default":  "F2"
+                        }
+                    ]
                 }
              ]
         },

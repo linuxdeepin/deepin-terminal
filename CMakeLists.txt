@@ -36,6 +36,7 @@ set (DTNG_CPP_FILES
     termproperties.cpp
     settings.cpp
     shortcutmanager.cpp
+    themepanelplugin.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -53,6 +54,8 @@ set (DTNG_HEADER_FILES
     termproperties.h
     settings.h
     shortcutmanager.h
+    mainwindowplugininterface.h
+    themepanelplugin.h
 )
 
 set (DTNG_QRC_FILES
