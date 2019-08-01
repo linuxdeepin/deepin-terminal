@@ -31,7 +31,7 @@
 #=============================================================================
 
 function(DTK_CREATE_I18N_FROM_JSON _generated_file_list _input_json_file _output_cpp_file_name)
-    set (DTK_SETTINGS_TOOLS_EXECUTABLE /usr/lib/dtk2/dtk-settings)
+    set (DTK_SETTINGS_TOOLS_EXECUTABLE ${DTKCORE_TOOL_DIR}/dtk-settings)
     set (generated_file_list) # 0(failed) or 1(successed) files in the list.
 
     get_filename_component(_input_json_abs_path ${_input_json_file} ABSOLUTE)
