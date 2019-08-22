@@ -180,22 +180,22 @@ void MainWindow::initShortcuts()
     QShortcut *focusNavUp = new QShortcut(QKeySequence("Alt+k"), this);
     connect(focusNavUp, &QShortcut::activated, this, [this](){
         TermWidgetPage *page = currentTab();
-        if (page) page->focusNavigation(Up);
+        if (page) page->focusNavigation(Qt::TopEdge);
     });
     QShortcut *focusNavDown = new QShortcut(QKeySequence("Alt+j"), this);
     connect(focusNavDown, &QShortcut::activated, this, [this](){
         TermWidgetPage *page = currentTab();
-        if (page) page->focusNavigation(Down);
+        if (page) page->focusNavigation(Qt::BottomEdge);
     });
     QShortcut *focusNavLeft = new QShortcut(QKeySequence("Alt+h"), this);
     connect(focusNavLeft, &QShortcut::activated, this, [this](){
         TermWidgetPage *page = currentTab();
-        if (page) page->focusNavigation(Left);
+        if (page) page->focusNavigation(Qt::LeftEdge);
     });
     QShortcut *focusNavRight = new QShortcut(QKeySequence("Alt+l"), this);
     connect(focusNavRight, &QShortcut::activated, this, [this](){
         TermWidgetPage *page = currentTab();
-        if (page) page->focusNavigation(Right);
+        if (page) page->focusNavigation(Qt::RightEdge);
     });
 
     QShortcut *splitHorizontal = new QShortcut(QKeySequence(Qt::ControlModifier + Qt::ShiftModifier + Qt::Key_J), this);

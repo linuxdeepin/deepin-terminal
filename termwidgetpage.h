@@ -19,7 +19,7 @@ public:
     void closeSplit(TermWidgetWrapper * term);
     const QString identifier();
     void focusCurrentTerm();
-    void focusNavigation(NavigationDirection dir);
+    void focusNavigation(Qt::Edge dir);
 
     TermProperties createCurrentTerminalProperties();
 

@@ -142,19 +142,19 @@ static void flipTransform(CoordinateRect *point) {
     point->middle = -(point->middle);
 }
 
-static void normalizeToRight(CoordinateRect *point, NavigationDirection dir) {
+static void normalizeToRight(CoordinateRect *point, Qt::Edge dir) {
     switch (dir) {
-        case Left:
+        case Qt::LeftEdge:
             flipTransform(point);
             break;
-        case Right:
+        case Qt::RightEdge:
             // No-op
             break;
-        case Up:
+        case Qt::TopEdge:
             flipTransform(point);
             transposeTransform(point);
             break;
-        case Down:
+        case Qt::BottomEdge:
             transposeTransform(point);
             break;
         default:
@@ -163,16 +163,16 @@ static void normalizeToRight(CoordinateRect *point, NavigationDirection dir) {
     }
 }
 
-static CoordinateRect getNormalizedCoordinateRect(QWidget *w, NavigationDirection dir) {
+static CoordinateRect getNormalizedCoordinateRect(QWidget *w, Qt::Edge navigationDirection) {
     CoordinateRect nd;
     nd.topLeft = w->mapTo(w->window(), QPoint(0, 0));
     nd.middle = w->mapTo(w->window(), QPoint(w->width() / 2, w->height() / 2));
     nd.bottomRight = w->mapTo(w->window(), QPoint(w->width(), w->height()));
-    normalizeToRight(&nd, dir);
+    normalizeToRight(&nd, navigationDirection);
     return nd;
 }
 
-void TermWidgetPage::focusNavigation(NavigationDirection dir)
+void TermWidgetPage::focusNavigation(Qt::Edge dir)
 {
     // All cases are normalized to "Right navigation"
     // LXQT qterminal's implementation is pretty neat, so just dropped the old implementation
