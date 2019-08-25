@@ -1,3 +1,10 @@
+qtermwidget (0.14.1-2) UNRELEASED; urgency=medium
+
+  * Switched to gbp
+  * Bumped Standards-Version to 4.4.0, no changes needed
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 25 Aug 2019 15:14:49 +0200
+
 qtermwidget (0.14.1-1) unstable; urgency=medium
 
   * Cherry-picking upstream release: 0.14.1.

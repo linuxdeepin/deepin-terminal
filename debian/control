@@ -10,7 +10,7 @@ Build-Depends: debhelper-compat (= 12),
                libutf8proc-dev,
                lxqt-build-tools (>= 0.6.0~),
                qtbase5-dev
-Standards-Version: 4.3.0
+Standards-Version: 4.4.0
 Vcs-Browser: https://salsa.debian.org/lxqt-team/qtermwidget
 Vcs-Git: https://salsa.debian.org/lxqt-team/qtermwidget.git
 Homepage: https://github.com/lxqt/qtermwidget
