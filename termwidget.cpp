@@ -50,7 +50,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent)
     setBlinkingCursor(Settings::instance()->cursorBlink());
 #endif // !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
 
-    connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu){
+    connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
             QDesktopServices::openUrl(url);
         }
@@ -65,8 +65,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 {
     QMenu menu;
 
-    QList<QAction*> termActions = filterActions(pos);
-    for (QAction *& action : termActions) {
+    QList<QAction *> termActions = filterActions(pos);
+    for (QAction *&action : termActions) {
         menu.addAction(action);
     }
 
@@ -124,9 +124,15 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         bool ok;
         QString text = DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"),
                                              QLineEdit::Normal, QString(), &ok);
-        if (ok) {
+        if (ok)
+        {
             emit termRequestRenameTab(text);
         }
+    });
+
+    menu.addAction(QIcon::fromTheme("custom-command"), tr("Custom Command"), this, [this] {
+        // TODO: Tab name as default text?
+        emit termRequestOpenCustomCommand();
     });
 
     menu.addSeparator();
@@ -152,6 +158,7 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestSplit, this, &TermWidgetWrapper::termRequestSplit);
     connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
+    connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
 }
 
 bool TermWidgetWrapper::isTitleChanged() const

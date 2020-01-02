@@ -8,7 +8,7 @@
 ThemePanelPlugin::ThemePanelPlugin(QObject *parent)
     : MainWindowPluginInterface(parent)
 {
-
+    m_pluginName = "Theme";
 }
 
 void ThemePanelPlugin::initPlugin(MainWindow *mainWindow)
@@ -20,7 +20,7 @@ QAction *ThemePanelPlugin::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *switchThemeAction(new QAction(tr("Switch &theme"), mainWindow));
 
-    connect(switchThemeAction, &QAction::triggered, this, [this](){
+    connect(switchThemeAction, &QAction::triggered, this, [this]() {
         getThemePanel()->show();
     });
 
@@ -47,3 +47,4 @@ void ThemePanelPlugin::initThemePanel()
         Settings::instance()->setColorScheme(themeName);
     });
 }
+

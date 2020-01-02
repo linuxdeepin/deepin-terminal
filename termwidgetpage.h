@@ -11,12 +11,12 @@ class TermWidgetPage : public QWidget
 {
     Q_OBJECT
 public:
-    TermWidgetPage(TermProperties properties, QWidget * parent = nullptr);
+    TermWidgetPage(TermProperties properties, QWidget *parent = nullptr);
 
-    TermWidgetWrapper* currentTerminal();
-    TermWidgetWrapper* split(Qt::Orientation orientation);
-    TermWidgetWrapper* split(TermWidgetWrapper * term, Qt::Orientation orientation);
-    void closeSplit(TermWidgetWrapper * term);
+    TermWidgetWrapper *currentTerminal();
+    TermWidgetWrapper *split(Qt::Orientation orientation);
+    TermWidgetWrapper *split(TermWidgetWrapper *term, Qt::Orientation orientation);
+    void closeSplit(TermWidgetWrapper *term);
     const QString identifier();
     void focusCurrentTerm();
     void focusNavigation(Qt::Edge dir);
@@ -26,7 +26,7 @@ public:
     void setTerminalOpacity(qreal opacity);
     void setColorScheme(const QString &name);
 
-    void sendTextToCurrentTerm(const QString & text);
+    void sendTextToCurrentTerm(const QString &text);
 
     void copyClipboard();
     void pasteClipboard();
@@ -46,14 +46,15 @@ signals:
     void termTitleChanged(QString title) const;
     void lastTermClosed(QString pageIdentifier) const;
     void termRequestOpenSettings() const;
-
+    void termGetFocus() const;
+    void termRequestOpenCustomCommand() const;
 private slots:
-    void setCurrentTerminal(TermWidgetWrapper * term);
+    void setCurrentTerminal(TermWidgetWrapper *term);
 
 private:
-    TermWidgetWrapper * createTerm(TermProperties properties);
+    TermWidgetWrapper *createTerm(TermProperties properties);
 
-    TermWidgetWrapper * m_currentTerm;
+    TermWidgetWrapper *m_currentTerm;
 };
 
 #endif // TERMWIDGETPAGE_H

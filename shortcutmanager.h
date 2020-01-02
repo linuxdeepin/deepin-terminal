@@ -11,18 +11,27 @@ class ShortcutManager : public QObject
 {
     Q_OBJECT
 public:
-    ShortcutManager(MainWindow *parent);
-
+    ShortcutManager(QObject *parent = nullptr);
+    void setMainWindow(MainWindow *curMainWindow);
+    static ShortcutManager *instance();
     void initShortcuts();
 
-    QList<QAction*> createCustomCommandsFromConfig();
-    QList<QAction*> createBuiltinShortcutsFromConfig();
+    QList<QAction *> createCustomCommandsFromConfig();
+    QList<QAction *> createBuiltinShortcutsFromConfig();
+    QList<QAction *> &getCustomCommands();
+
+    QAction *addCustomCommand(QAction &action);
+    void delCustomCommand(QAction *action);
+    void saveCustomCommandToConfig(QAction *action);
+    void delCUstomCommandToConfig(QAction *action);
+    //check same name of the action is exist
+    QAction *checkActionIsExist(QAction &action);
 
 private:
     MainWindow *m_mainWindow = nullptr;
-
-    QList<QAction*> m_customCommandList;
-    QList<QAction*> m_builtinShortcuts;
+    QList<QAction *> m_customCommandList;
+    QList<QAction *> m_builtinShortcuts;
+    static ShortcutManager *m_instance;
 };
 
 #endif // SHORTCUTMANAGER_H

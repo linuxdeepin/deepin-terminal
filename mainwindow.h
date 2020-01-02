@@ -14,6 +14,10 @@ class TermWidgetPage;
 class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
+class CustomCommandPlugin;
+#define PLUGIN_TYPE_THEME "Theme"
+#define PLUGIN_TYPE_CUSTOMCOMMAND "Custom Command"
+#define PLUGIN_TYPE_REMOTEMANAGEMENT "Remote Management"
 class MainWindow : public DMainWindow
 {
     Q_OBJECT
@@ -29,7 +33,7 @@ public:
 
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
     void setTitleBarBackgroundColor(QString color);
-
+    ShortcutManager *getShortcutManager();
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -45,7 +49,7 @@ private:
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
-
+    MainWindowPluginInterface *getPluginByName(const QString &name);
     QMenu *m_menu;
     TabBar *m_tabbar;
     QWidget *m_centralWidget;
@@ -53,7 +57,7 @@ private:
     QStackedWidget *m_termStackWidget;
     QString m_titlebarStyleSheet;
     ShortcutManager *m_shortcutManager;
-    QList<MainWindowPluginInterface*> m_plugins;
+    QList<MainWindowPluginInterface *> m_plugins;
 };
 
 #endif // MAINWINDOW_H

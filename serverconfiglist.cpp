@@ -1,0 +1,158 @@
+#include "serverconfiglist.h"
+#include "serverconfigitem.h"
+#include "serverconfigmanager.h"
+ServerConfigList::ServerConfigList(QWidget *parent): DListWidget(parent)
+{
+    setVerticalScrollMode(ScrollPerItem);
+    //setVerticalScrollMode(ScrollPerPixel);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    setStyleSheet("QListWidget{border:1px solid gray; color:black; }"
+                  "QListWidget::item:hover{background-color:lightgray}"
+                  "QListWidget::item:selected{background:lightgray; color:red; }"
+                  "QListWidget::item:selected{background-color:rgb(255,0,0,100)}"
+                  "QListWidget::item:border_style{solid,none,solid,solid}"
+                  "QListWidget::item:border_width{medium,none,medium,none}"
+                  "QListWidget::item:border_color{gray,none,gray,red}");
+}
+void ServerConfigList::refreshAllDatas()
+{
+    clear();
+    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
+    QMap<QString, QList<ServerConfig *> >::const_iterator iter = configMap.constBegin();
+    while (iter != configMap.constEnd()) {
+        if (iter.key().isEmpty()) {
+            iter++;
+            continue;
+        }
+        addOneRowServerConfigGroupData(iter.key());
+        iter++;
+    }
+
+    refreshDataByGroup("");
+}
+void ServerConfigList::refreshDataByGroup(const QString &strGroupName)
+{
+    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
+    QList<ServerConfig *> &configList = configMap[strGroupName];
+    for (auto cfg : configList) {
+        addOneRowServerConfigData(cfg);
+    }
+}
+//根据分组信息和搜索信息联合查询
+void ServerConfigList::refreshDataByGroupAndFilter(const QString &strGroupName, const QString &strFilter)
+{
+    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
+    QList<ServerConfig *> &configList = configMap[strGroupName];
+    for (auto cfg : configList) {
+        if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive) ||
+                cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+            addOneRowServerConfigData(cfg);
+        }
+    }
+}
+void ServerConfigList::refreshDataByFilter(const QString &strFilter)
+{
+    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
+    QMap<QString, QList<ServerConfig *> >::const_iterator iter = configMap.constBegin();
+    while (iter != configMap.constEnd()) {
+
+        QList<ServerConfig *> configList = iter.value();
+        for (auto cfg : configList) {
+            if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive) ||
+                    cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+                addOneRowServerConfigData(cfg);
+            }
+        }
+        iter++;
+    }
+
+}
+void ServerConfigList::refreshOneRowServerConfigInfo(ServerConfig *curConfig)
+{
+    for (int i = 0; i < count(); i++) {
+        ServerConfigItem *curItem = qobject_cast<ServerConfigItem *>(itemWidget(item(i)));
+        if (curItem->getCurServerConfig() == curConfig) {
+            // curItem->refresh(action);
+        }
+    }
+}
+void ServerConfigList::addOneRowServerConfigGroupData(const QString &group)
+{
+    ServerConfigItem *configItem = new ServerConfigItem(nullptr, true, group, this);
+    //textItem->highSearchText(key,Qt::red);
+    QListWidgetItem *item = new QListWidgetItem();
+    item->setSizeHint(QSize(250, 70));
+    addItem(item);
+    this->setItemWidget(item, configItem);
+    connect(configItem, &ServerConfigItem::modifyServerConfig, this, &ServerConfigList::handleModifyServerConfig);
+}
+
+void ServerConfigList::addOneRowServerConfigData(ServerConfig *curConfig)
+{
+    ServerConfigItem *configItem = new ServerConfigItem(curConfig, false, "", this);
+    //textItem->highSearchText(key,Qt::red);
+    QListWidgetItem *item = new QListWidgetItem();
+    item->setSizeHint(QSize(250, 70));
+    addItem(item);
+    this->setItemWidget(item, configItem);
+    connect(configItem, &ServerConfigItem::modifyServerConfig, this, &ServerConfigList::handleModifyServerConfig);
+}
+int ServerConfigList::getItemRow(ServerConfigItem *findItem)
+{
+    for (int i = 0; i < count(); i++) {
+        ServerConfigItem *curItem = qobject_cast<ServerConfigItem *>(itemWidget(item(i)));
+        if (curItem == findItem) {
+            return i;
+        }
+
+    }
+    return -1;
+}
+void ServerConfigList::handleModifyServerConfig(ServerConfigItem *item)
+{
+#if 0
+    QAction *curItemAction = item->getCurCustomCommandAction();
+    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, curItemAction, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        QAction &newAction = dlg.getCurCustomCmd();
+        QString tmp11 = newAction.shortcut().toString(QKeySequence::NativeText);
+        if (newAction.text() != curItemAction->text()) {
+            takeItem(getItemRow(item));
+            ShortcutManager::instance()->delCustomCommand(curItemAction);
+            QAction *existAction = ShortcutManager::instance()->checkActionIsExist(newAction);
+            if (nullptr == existAction) {
+                QAction *newTmp =  ShortcutManager::instance()->addCustomCommand(newAction);
+                addOneRowData(newTmp);
+            } else {
+                existAction->setData(newAction.data());
+                existAction->setShortcut(newAction.shortcut());
+                refreshOneRowCommandInfo(existAction);
+                ShortcutManager::instance()->saveCustomCommandToConfig(existAction);
+            }
+            emit listItemCountChange();
+        } else {
+            curItemAction->setData(newAction.data());
+            curItemAction->setShortcut(newAction.shortcut());
+            item->refreshCommandInfo(&newAction);
+            ShortcutManager::instance()->saveCustomCommandToConfig(curItemAction);
+        }
+
+    } else {
+
+        if (dlg.isDelCurCommand()) {
+
+            OperationConfirmDlg dlg;
+            dlg.setOperatTypeName(tr("delete opt"));
+            dlg.setTipInfo(tr("Do you sure to delete the %1").arg(curItemAction->text()));
+            dlg.exec();
+            if (dlg.getConfirmResult() == QDialog::Accepted) {
+                takeItem(getItemRow(item));
+                ShortcutManager::instance()->delCustomCommand(curItemAction);
+                emit listItemCountChange();
+            }
+        }
+    }
+#endif
+}

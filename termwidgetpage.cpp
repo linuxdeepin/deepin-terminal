@@ -14,7 +14,7 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
     setProperty("TAB_IDENTIFIER_PROPERTY", QUuid::createUuid().toString());
 
-    QVBoxLayout * layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -54,9 +54,9 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
     s->insertWidget(0, term);
 
     TermProperties properties(term->workingDirectory());
-    TermWidgetWrapper * w = createTerm(properties);
+    TermWidgetWrapper *w = createTerm(properties);
     s->insertWidget(1, w);
-    s->setSizes({1,1});
+    s->setSizes({1, 1});
 
     parent->insertWidget(index, s);
     parent->setSizes(parentSizes);
@@ -67,7 +67,7 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
 
 void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
 {
-    QSplitter * parent = qobject_cast<QSplitter*>(term->parent());
+    QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
     Q_CHECK_PTR(parent);
 
     term->setParent(nullptr);
@@ -77,7 +77,7 @@ void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
 
     // Collapse splitters containing a single element, excluding the top one.
     if (parent->count() == 1) {
-        QSplitter *uselessSplitterParent = qobject_cast<QSplitter*>(parent->parent());
+        QSplitter *uselessSplitterParent = qobject_cast<QSplitter *>(parent->parent());
         if (uselessSplitterParent != nullptr) {
             int index = uselessSplitterParent->indexOf(parent);
             Q_ASSERT(index != -1);
@@ -86,7 +86,7 @@ void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
             if (qobject_cast<TermWidgetWrapper *>(singleHeir)) {
                 nextFocus = singleHeir;
             } else {
-                nextFocus = singleHeir->findChild<TermWidgetWrapper*>();
+                nextFocus = singleHeir->findChild<TermWidgetWrapper *>();
             }
             parent->setParent(nullptr);
             parent->deleteLater();
@@ -123,47 +123,52 @@ typedef struct  {
     QPoint bottomRight;
 } CoordinateRect;
 
-static void transpose(QPoint *point) {
+static void transpose(QPoint *point)
+{
     int x = point->x();
     point->setX(point->y());
     point->setY(x);
 }
 
-static void transposeTransform(CoordinateRect *point) {
+static void transposeTransform(CoordinateRect *point)
+{
     transpose(&point->topLeft);
     transpose(&point->middle);
     transpose(&point->bottomRight);
 }
 
-static void flipTransform(CoordinateRect *point) {
+static void flipTransform(CoordinateRect *point)
+{
     QPoint oldTopLeft = point->topLeft;
     point->topLeft = -(point->bottomRight);
     point->bottomRight = -(oldTopLeft);
     point->middle = -(point->middle);
 }
 
-static void normalizeToRight(CoordinateRect *point, Qt::Edge dir) {
+static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
+{
     switch (dir) {
-        case Qt::LeftEdge:
-            flipTransform(point);
-            break;
-        case Qt::RightEdge:
-            // No-op
-            break;
-        case Qt::TopEdge:
-            flipTransform(point);
-            transposeTransform(point);
-            break;
-        case Qt::BottomEdge:
-            transposeTransform(point);
-            break;
-        default:
-            qFatal("Invalid navigation");
-            return;
+    case Qt::LeftEdge:
+        flipTransform(point);
+        break;
+    case Qt::RightEdge:
+        // No-op
+        break;
+    case Qt::TopEdge:
+        flipTransform(point);
+        transposeTransform(point);
+        break;
+    case Qt::BottomEdge:
+        transposeTransform(point);
+        break;
+    default:
+        qFatal("Invalid navigation");
+        return;
     }
 }
 
-static CoordinateRect getNormalizedCoordinateRect(QWidget *w, Qt::Edge navigationDirection) {
+static CoordinateRect getNormalizedCoordinateRect(QWidget *w, Qt::Edge navigationDirection)
+{
     CoordinateRect nd;
     nd.topLeft = w->mapTo(w->window(), QPoint(0, 0));
     nd.middle = w->mapTo(w->window(), QPoint(w->width() / 2, w->height() / 2));
@@ -183,13 +188,13 @@ void TermWidgetPage::focusNavigation(Qt::Edge dir)
     int yAxeNearestDistance = INT_MAX; // y is strictly less than poi.y()
 
     TermWidgetWrapper *dst = nullptr;
-    QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
-    for (TermWidgetWrapper * term : qAsConst(termList)) {
+    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
+    for (TermWidgetWrapper *term : qAsConst(termList)) {
         CoordinateRect termCoordinate = getNormalizedCoordinateRect(term, dir);
         int midpointDistance = qMin(
-            abs(poi.y() - termCoordinate.topLeft.y()),
-            abs(poi.y() - termCoordinate.bottomRight.y())
-        );
+                                   abs(poi.y() - termCoordinate.topLeft.y()),
+                                   abs(poi.y() - termCoordinate.bottomRight.y())
+                               );
         if (termCoordinate.topLeft.x() > poi.x()) {
             if (termCoordinate.topLeft.x() > xAxeNearestDistance) continue;
             if (midpointDistance > yAxeNearestDistance) continue;
@@ -208,7 +213,7 @@ TermProperties TermWidgetPage::createCurrentTerminalProperties()
 {
     TermProperties properties;
 
-    TermWidgetWrapper * term = currentTerminal();
+    TermWidgetWrapper *term = currentTerminal();
     if (term) {
         properties[WorkingDir] = currentTerminal()->workingDirectory();
     }
@@ -218,23 +223,23 @@ TermProperties TermWidgetPage::createCurrentTerminalProperties()
 
 void TermWidgetPage::setTerminalOpacity(qreal opacity)
 {
-    QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
-    for (TermWidgetWrapper* term : termList) {
+    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
+    for (TermWidgetWrapper *term : termList) {
         term->setTerminalOpacity(opacity);
     }
 }
 
 void TermWidgetPage::setColorScheme(const QString &name)
 {
-    QList<TermWidgetWrapper*> termList = findChildren<TermWidgetWrapper*>();
-    for (TermWidgetWrapper* term : termList) {
+    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
+    for (TermWidgetWrapper *term : termList) {
         term->setColorScheme(name);
     }
 }
 
 void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
 {
-    TermWidgetWrapper* term = currentTerminal();
+    TermWidgetWrapper *term = currentTerminal();
     if (term) {
         term->sendText(text);
     }
@@ -242,7 +247,7 @@ void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
 
 void TermWidgetPage::copyClipboard()
 {
-    TermWidgetWrapper* term = currentTerminal();
+    TermWidgetWrapper *term = currentTerminal();
     if (term) {
         term->copyClipboard();
     }
@@ -250,7 +255,7 @@ void TermWidgetPage::copyClipboard()
 
 void TermWidgetPage::pasteClipboard()
 {
-    TermWidgetWrapper* term = currentTerminal();
+    TermWidgetWrapper *term = currentTerminal();
     if (term) {
         term->pasteClipboard();
     }
@@ -258,7 +263,7 @@ void TermWidgetPage::pasteClipboard()
 
 void TermWidgetPage::zoomInCurrentTierminal()
 {
-    TermWidgetWrapper* term = currentTerminal();
+    TermWidgetWrapper *term = currentTerminal();
     if (term) {
         term->zoomIn();
     }
@@ -266,7 +271,7 @@ void TermWidgetPage::zoomInCurrentTierminal()
 
 void TermWidgetPage::zoomOutCurrentTerminal()
 {
-    TermWidgetWrapper* term = currentTerminal();
+    TermWidgetWrapper *term = currentTerminal();
     if (term) {
         term->zoomOut();
     }
@@ -274,7 +279,7 @@ void TermWidgetPage::zoomOutCurrentTerminal()
 
 void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
 {
-    TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
+    TermWidgetWrapper *term = qobject_cast<TermWidgetWrapper *>(sender());
     if (term) {
         split(term, ori);
     }
@@ -295,7 +300,7 @@ void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
 
 void TermWidgetPage::onTermTitleChanged(QString title) const
 {
-    TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
+    TermWidgetWrapper *term = qobject_cast<TermWidgetWrapper *>(sender());
     if (m_currentTerm == term) {
         emit termTitleChanged(title);
     }
@@ -303,13 +308,14 @@ void TermWidgetPage::onTermTitleChanged(QString title) const
 
 void TermWidgetPage::onTermGetFocus()
 {
-    TermWidgetWrapper * term = qobject_cast<TermWidgetWrapper *>(sender());
+    TermWidgetWrapper *term = qobject_cast<TermWidgetWrapper *>(sender());
     setCurrentTerminal(term);
+    emit termGetFocus();
 }
 
 void TermWidgetPage::onTermClosed()
 {
-    TermWidgetWrapper * w = qobject_cast<TermWidgetWrapper*>(sender());
+    TermWidgetWrapper *w = qobject_cast<TermWidgetWrapper *>(sender());
     if (!w) {
         qDebug() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
         Q_ASSERT(0);
@@ -319,7 +325,7 @@ void TermWidgetPage::onTermClosed()
 
 void TermWidgetPage::setCurrentTerminal(TermWidgetWrapper *term)
 {
-    TermWidgetWrapper * oldTerm = m_currentTerm;
+    TermWidgetWrapper *oldTerm = m_currentTerm;
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
         if (m_currentTerm->isTitleChanged()) {
@@ -340,6 +346,7 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidgetWrapper::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
+    connect(term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
 
     return term;
 }
