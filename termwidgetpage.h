@@ -7,6 +7,7 @@
 #include <QWidget>
 
 class TermWidgetWrapper;
+
 class TermWidgetPage : public QWidget
 {
     Q_OBJECT
@@ -16,10 +17,15 @@ public:
     TermWidgetWrapper *currentTerminal();
     TermWidgetWrapper *split(Qt::Orientation orientation);
     TermWidgetWrapper *split(TermWidgetWrapper *term, Qt::Orientation orientation);
-    void closeSplit(TermWidgetWrapper *term);
-    const QString identifier();
-    void focusCurrentTerm();
-    void focusNavigation(Qt::Edge dir);
+    void               closeSplit(TermWidgetWrapper *term);
+    const QString      identifier();
+    void               focusCurrentTerm();
+    void               focusNavigation(Qt::Edge dir);
+
+    /******** Modify by n014361 wangpeili 2020-01-08: 计算上下左右判断方法 ******×****/
+    QRect  GetRect(TermWidgetWrapper *term);
+    QPoint GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir);
+    /********************* Modify by n014361 wangpeili End ************************/
 
     TermProperties createCurrentTerminalProperties();
 
@@ -33,6 +39,23 @@ public:
 
     void zoomInCurrentTierminal();
     void zoomOutCurrentTerminal();
+
+    /******** Modify by n014361 wangpeili 2020-01-06:增加相关设置功能 ***********×****/
+    // 字体大小
+    void setFontSize(int fontSize);
+    // 字体
+    void setFont(QString fontName);
+    // 全选
+    void selectAll();
+    // 跳转到下一命令
+    void skipToNextCommand();
+    // 跳转到前一命令
+    void skipToPreCommand();
+    // 设置光标形状
+    void setcursorShape(int shape);
+    // 设置光标闪烁
+    void setBlinkingCursor(bool enable);
+    /********************* Modify by n014361 wangpeili End ************************/
 
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);
@@ -56,5 +79,4 @@ private:
 
     TermWidgetWrapper *m_currentTerm;
 };
-
-#endif // TERMWIDGETPAGE_H
+#endif  // TERMWIDGETPAGE_H

@@ -2,13 +2,13 @@
 
 #include "termwidget.h"
 
-#include <QUuid>
+#include "settings.h"
 #include <QDebug>
 #include <QSplitter>
+#include <QUuid>
 #include <QVBoxLayout>
 
-TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
-    : QWidget(parent)
+TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent) : QWidget(parent)
 {
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
@@ -43,20 +43,20 @@ TermWidgetWrapper *TermWidgetPage::split(Qt::Orientation orientation)
 
 TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientation orientation)
 {
-    QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
+    QSplitter *parent = qobject_cast< QSplitter * >(term->parent());
     Q_CHECK_PTR(parent);
 
-    int index = parent->indexOf(term);
-    QList<int> parentSizes = parent->sizes();
+    int          index       = parent->indexOf(term);
+    QList< int > parentSizes = parent->sizes();
 
     QSplitter *s = new QSplitter(orientation, this);
     s->setFocusPolicy(Qt::NoFocus);
     s->insertWidget(0, term);
 
-    TermProperties properties(term->workingDirectory());
+    TermProperties     properties(term->workingDirectory());
     TermWidgetWrapper *w = createTerm(properties);
     s->insertWidget(1, w);
-    s->setSizes({1, 1});
+    s->setSizes({ 1, 1 });
 
     parent->insertWidget(index, s);
     parent->setSizes(parentSizes);
@@ -67,7 +67,7 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
 
 void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
 {
-    QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
+    QSplitter *parent = qobject_cast< QSplitter * >(term->parent());
     Q_CHECK_PTR(parent);
 
     term->setParent(nullptr);
@@ -76,17 +76,22 @@ void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
     QWidget *nextFocus = nullptr;
 
     // Collapse splitters containing a single element, excluding the top one.
-    if (parent->count() == 1) {
-        QSplitter *uselessSplitterParent = qobject_cast<QSplitter *>(parent->parent());
-        if (uselessSplitterParent != nullptr) {
+    if (parent->count() == 1)
+    {
+        QSplitter *uselessSplitterParent = qobject_cast< QSplitter * >(parent->parent());
+        if (uselessSplitterParent != nullptr)
+        {
             int index = uselessSplitterParent->indexOf(parent);
             Q_ASSERT(index != -1);
             QWidget *singleHeir = parent->widget(0);
             uselessSplitterParent->insertWidget(index, singleHeir);
-            if (qobject_cast<TermWidgetWrapper *>(singleHeir)) {
+            if (qobject_cast< TermWidgetWrapper * >(singleHeir))
+            {
                 nextFocus = singleHeir;
-            } else {
-                nextFocus = singleHeir->findChild<TermWidgetWrapper *>();
+            }
+            else
+            {
+                nextFocus = singleHeir->findChild< TermWidgetWrapper * >();
             }
             parent->setParent(nullptr);
             parent->deleteLater();
@@ -95,14 +100,20 @@ void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
         }
     }
 
-    if (parent->count() > 0) {
-        if (nextFocus) {
+    if (parent->count() > 0)
+    {
+        if (nextFocus)
+        {
             nextFocus->setFocus(Qt::OtherFocusReason);
-        } else {
+        }
+        else
+        {
             parent->widget(0)->setFocus(Qt::OtherFocusReason);
         }
         parent->update();
-    } else {
+    }
+    else
+    {
         emit lastTermClosed(identifier());
     }
 }
@@ -116,38 +127,40 @@ void TermWidgetPage::focusCurrentTerm()
 {
     m_currentTerm->setFocus();
 }
-
-typedef struct  {
+// 待删除
+typedef struct
+{
     QPoint topLeft;
     QPoint middle;
     QPoint bottomRight;
 } CoordinateRect;
-
+// 待删除
 static void transpose(QPoint *point)
 {
     int x = point->x();
     point->setX(point->y());
     point->setY(x);
 }
-
+// 待删除
 static void transposeTransform(CoordinateRect *point)
 {
     transpose(&point->topLeft);
     transpose(&point->middle);
     transpose(&point->bottomRight);
 }
-
+// 待删除
 static void flipTransform(CoordinateRect *point)
 {
-    QPoint oldTopLeft = point->topLeft;
-    point->topLeft = -(point->bottomRight);
+    QPoint oldTopLeft  = point->topLeft;
+    point->topLeft     = -(point->bottomRight);
     point->bottomRight = -(oldTopLeft);
-    point->middle = -(point->middle);
+    point->middle      = -(point->middle);
 }
-
+// 待删除
 static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
 {
-    switch (dir) {
+    switch (dir)
+    {
     case Qt::LeftEdge:
         flipTransform(point);
         break;
@@ -167,46 +180,85 @@ static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
     }
 }
 
+// 待删除
 static CoordinateRect getNormalizedCoordinateRect(QWidget *w, Qt::Edge navigationDirection)
 {
     CoordinateRect nd;
-    nd.topLeft = w->mapTo(w->window(), QPoint(0, 0));
-    nd.middle = w->mapTo(w->window(), QPoint(w->width() / 2, w->height() / 2));
+    nd.topLeft     = w->mapTo(w->window(), QPoint(0, 0));
+    nd.middle      = w->mapTo(w->window(), QPoint(w->width() / 2, w->height() / 2));
     nd.bottomRight = w->mapTo(w->window(), QPoint(w->width(), w->height()));
     normalizeToRight(&nd, navigationDirection);
     return nd;
 }
-
+/******** Modify by n014361 wangpeili 2020-01-07:  修改了计算上下左右判断的方法 ********×****/
 void TermWidgetPage::focusNavigation(Qt::Edge dir)
 {
-    // All cases are normalized to "Right navigation"
-    // LXQT qterminal's implementation is pretty neat, so just dropped the old implementation
-    CoordinateRect ori = getNormalizedCoordinateRect(currentTerminal(), dir);
-    // Search parent that contains point of interest (right edge middlepoint)
-    QPoint poi = QPoint(ori.bottomRight.x(), ori.middle.y());
-    int xAxeNearestDistance = INT_MAX; // x is strictly higher than poi.x(),
-    int yAxeNearestDistance = INT_MAX; // y is strictly less than poi.y()
-
-    TermWidgetWrapper *dst = nullptr;
-    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
-    for (TermWidgetWrapper *term : qAsConst(termList)) {
-        CoordinateRect termCoordinate = getNormalizedCoordinateRect(term, dir);
-        int midpointDistance = qMin(
-                                   abs(poi.y() - termCoordinate.topLeft.y()),
-                                   abs(poi.y() - termCoordinate.bottomRight.y())
-                               );
-        if (termCoordinate.topLeft.x() > poi.x()) {
-            if (termCoordinate.topLeft.x() > xAxeNearestDistance) continue;
-            if (midpointDistance > yAxeNearestDistance) continue;
-            xAxeNearestDistance = termCoordinate.topLeft.x();
-            yAxeNearestDistance = midpointDistance;
+    QPoint                             comparPoint = GetComparePoint(currentTerminal(), dir);
+    TermWidgetWrapper *                dst         = nullptr;
+    QList< TermWidgetWrapper * >       termList    = findChildren< TermWidgetWrapper * >();
+    QMap< TermWidgetWrapper *, QRect > mapTermRect;
+    for (TermWidgetWrapper *term : qAsConst(termList))
+    {
+        if (GetRect(term).contains(comparPoint))
+        {
+            qDebug() << "yes!" << comparPoint.x() << comparPoint.y();
             dst = term;
+            break;
         }
     }
-
-    if (dst) {
+    if (dst)
+    {
         dst->setFocus();
     }
+}
+/********************* Modify by n014361 wangpeili End ************************/
+
+/*******************************************************************************
+ 1. @函数:  QRect TermWidgetPage::GetRect(TermWidgetWrapper *term)
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:  获取标签页内所有子窗体的区域
+*******************************************************************************/
+QRect TermWidgetPage::GetRect(TermWidgetWrapper *term)
+{
+
+    QPoint leftTop     = term->mapTo(term->window(), QPoint(0, 0));
+    QPoint rightBottom = term->mapTo(term->window(), QPoint(term->width(), term->height()));
+    QRect  rec(leftTop, rightBottom);
+    qDebug() << "leftTop: " << leftTop.x() << leftTop.y() << "rightBottom: " << rightBottom.x() << rightBottom.y();
+    return rec;
+}
+/*******************************************************************************
+ 1. @函数: QPoint TermWidgetPage::GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir)
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-08
+ 4. @说明:     获取窗口上下左右键需要判断的点位信息
+*******************************************************************************/
+QPoint TermWidgetPage::GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir)
+{
+    QPoint leftTop    = term->mapTo(term->window(), QPoint(0, 0));
+    QPoint leftBottom = term->mapTo(term->window(), QPoint(0, term->height()));
+    QPoint rightTop   = term->mapTo(term->window(), QPoint(term->width(), 0));
+    QPoint ret;
+    switch (dir)
+    {
+    case Qt::LeftEdge:
+        ret = leftTop + QPoint(-1, 1);
+        break;
+    case Qt::RightEdge:
+        ret = rightTop + QPoint(1, 1);
+        break;
+    case Qt::TopEdge:
+        ret = leftTop + QPoint(1, -1);
+        break;
+    case Qt::BottomEdge:
+        ret = leftBottom + QPoint(1, 1);
+        break;
+    default:
+        qFatal("Invalid navigation");
+        break;
+    }
+    return ret;
 }
 
 TermProperties TermWidgetPage::createCurrentTerminalProperties()
@@ -214,7 +266,8 @@ TermProperties TermWidgetPage::createCurrentTerminalProperties()
     TermProperties properties;
 
     TermWidgetWrapper *term = currentTerminal();
-    if (term) {
+    if (term)
+    {
         properties[WorkingDir] = currentTerminal()->workingDirectory();
     }
 
@@ -223,16 +276,18 @@ TermProperties TermWidgetPage::createCurrentTerminalProperties()
 
 void TermWidgetPage::setTerminalOpacity(qreal opacity)
 {
-    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
-    for (TermWidgetWrapper *term : termList) {
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
         term->setTerminalOpacity(opacity);
     }
 }
 
 void TermWidgetPage::setColorScheme(const QString &name)
 {
-    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
-    for (TermWidgetWrapper *term : termList) {
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
         term->setColorScheme(name);
     }
 }
@@ -240,7 +295,8 @@ void TermWidgetPage::setColorScheme(const QString &name)
 void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
 {
     TermWidgetWrapper *term = currentTerminal();
-    if (term) {
+    if (term)
+    {
         term->sendText(text);
     }
 }
@@ -248,23 +304,40 @@ void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
 void TermWidgetPage::copyClipboard()
 {
     TermWidgetWrapper *term = currentTerminal();
-    if (term) {
+    if (term)
+    {
         term->copyClipboard();
     }
 }
-
+/*******************************************************************************
+ 1. @函数: void TermWidgetPage::pasteClipboard()
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明: 用户粘贴时候，如果设置了选中即复制，就粘贴选中内容，否则粘贴剪切板内容
+*******************************************************************************/
 void TermWidgetPage::pasteClipboard()
 {
     TermWidgetWrapper *term = currentTerminal();
-    if (term) {
-        term->pasteClipboard();
+    if (term)
+    {
+        if (Settings::instance()->IsPasteSelection())
+        {
+            qDebug() << "pasteSelection";
+            term->pasteSelection();
+        }
+        else
+        {
+            qDebug() << "pasteClipboard";
+            term->pasteClipboard();
+        }
     }
 }
 
 void TermWidgetPage::zoomInCurrentTierminal()
 {
     TermWidgetWrapper *term = currentTerminal();
-    if (term) {
+    if (term)
+    {
         term->zoomIn();
     }
 }
@@ -272,25 +345,133 @@ void TermWidgetPage::zoomInCurrentTierminal()
 void TermWidgetPage::zoomOutCurrentTerminal()
 {
     TermWidgetWrapper *term = currentTerminal();
-    if (term) {
+    if (term)
+    {
         term->zoomOut();
     }
 }
 
+/*******************************************************************************
+ 1. @函数:   void TermWidgetPage::setFontSize(int fontSize)
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:    设置字体大小
+*******************************************************************************/
+void TermWidgetPage::setFontSize(int fontSize)
+{
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
+        term->setTerminalFontSize(fontSize);
+        qDebug() << "setTerminalFontSize";
+    }
+}
+/*******************************************************************************
+ 1. @函数:   void TermWidgetPage::setFont(QString fontName)
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:    设置字体
+*******************************************************************************/
+void TermWidgetPage::setFont(QString fontName)
+{
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
+        term->setTerminalFont(fontName);
+        qDebug() << "TermWidgetPage setFont";
+    }
+}
+/*******************************************************************************
+ 1. @函数:   void TermWidgetPage::selectAll()
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:    全选
+*******************************************************************************/
+void TermWidgetPage::selectAll()
+{
+    TermWidgetWrapper *term = currentTerminal();
+    if (term)
+    {
+        term->selectAll();
+    }
+}
+/*******************************************************************************
+ 1. @函数:   void TermWidgetPage::skipToNextCommand()
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:    跳转到下一命令
+*******************************************************************************/
+void TermWidgetPage::skipToNextCommand()
+{
+    TermWidgetWrapper *term = currentTerminal();
+    if (term)
+    {
+        term->skipToNextCommand();
+    }
+}
+/*******************************************************************************
+ 1. @函数:   void TermWidgetPage::skipToPreCommand()
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:    跳转到前一命令
+*******************************************************************************/
+void TermWidgetPage::skipToPreCommand()
+{
+    TermWidgetWrapper *term = currentTerminal();
+    if (term)
+    {
+        term->skipToPreCommand();
+    }
+}
+/*******************************************************************************
+ 1. @函数:   void TermWidgetPage::setcursorShape()
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:    设置鼠标形状
+*******************************************************************************/
+void TermWidgetPage::setcursorShape(int shape)
+{
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
+        term->setCursorShape(shape);
+    }
+}
+/*******************************************************************************
+ 1. @函数:   void TermWidgetPage::setBlinkingCursor(bool enable)
+ 2. @作者:     n014361 王培利
+ 3. @日期:     2020-01-10
+ 4. @说明:    设置鼠标闪烁
+*******************************************************************************/
+void TermWidgetPage::setBlinkingCursor(bool enable)
+{
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
+        term->setCursorBlinking(enable);
+    }
+
+    // emit termGetFocus();
+}
+
 void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
 {
-    TermWidgetWrapper *term = qobject_cast<TermWidgetWrapper *>(sender());
-    if (term) {
+    TermWidgetWrapper *term = qobject_cast< TermWidgetWrapper * >(sender());
+    if (term)
+    {
         split(term, ori);
     }
 }
 
 void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
 {
-    if (newTabName.isEmpty()) {
+    if (newTabName.isEmpty())
+    {
         setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
         emit termTitleChanged(m_currentTerm->title());
-    } else {
+    }
+    else
+    {
         // Mark it as we renamed it.
         setProperty("TAB_CUSTOM_NAME_PROPERTY", true);
         // Yeah, TermWidgetPage doesn't store the tab name, only the tab bar did it.
@@ -300,23 +481,26 @@ void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
 
 void TermWidgetPage::onTermTitleChanged(QString title) const
 {
-    TermWidgetWrapper *term = qobject_cast<TermWidgetWrapper *>(sender());
-    if (m_currentTerm == term) {
+    TermWidgetWrapper *term = qobject_cast< TermWidgetWrapper * >(sender());
+    if (m_currentTerm == term)
+    {
         emit termTitleChanged(title);
     }
 }
 
 void TermWidgetPage::onTermGetFocus()
 {
-    TermWidgetWrapper *term = qobject_cast<TermWidgetWrapper *>(sender());
+    TermWidgetWrapper *term = qobject_cast< TermWidgetWrapper * >(sender());
     setCurrentTerminal(term);
-    emit termGetFocus();
+    m_currentTerm->setFocus(Qt::OtherFocusReason);
+    // emit termGetFocus();
 }
 
 void TermWidgetPage::onTermClosed()
 {
-    TermWidgetWrapper *w = qobject_cast<TermWidgetWrapper *>(sender());
-    if (!w) {
+    TermWidgetWrapper *w = qobject_cast< TermWidgetWrapper * >(sender());
+    if (!w)
+    {
         qDebug() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
         Q_ASSERT(0);
     }
@@ -326,11 +510,15 @@ void TermWidgetPage::onTermClosed()
 void TermWidgetPage::setCurrentTerminal(TermWidgetWrapper *term)
 {
     TermWidgetWrapper *oldTerm = m_currentTerm;
-    m_currentTerm = term;
-    if (oldTerm != m_currentTerm) {
-        if (m_currentTerm->isTitleChanged()) {
+    m_currentTerm              = term;
+    if (oldTerm != m_currentTerm)
+    {
+        if (m_currentTerm->isTitleChanged())
+        {
             emit termTitleChanged(m_currentTerm->title());
-        } else {
+        }
+        else
+        {
             emit termTitleChanged(windowTitle());
         }
     }
@@ -346,7 +534,8 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidgetWrapper::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
-    connect(term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
+    connect(
+        term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
 
     return term;
 }
