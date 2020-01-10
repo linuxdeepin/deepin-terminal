@@ -493,7 +493,7 @@ void TermWidgetPage::onTermGetFocus()
     TermWidgetWrapper *term = qobject_cast< TermWidgetWrapper * >(sender());
     setCurrentTerminal(term);
     m_currentTerm->setFocus(Qt::OtherFocusReason);
-    // emit termGetFocus();
+    emit termGetFocus();
 }
 
 void TermWidgetPage::onTermClosed()
@@ -536,6 +536,9 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
     connect(
         term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
-    connect(term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
+    connect(term,
+            &TermWidgetWrapper::termRequestOpenRemoteManagement,
+            this,
+            &TermWidgetPage::termRequestOpenRemoteManagement);
     return term;
 }
