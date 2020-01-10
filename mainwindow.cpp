@@ -13,14 +13,17 @@
 #include "customcommandplugin.h"
 #include "remotemanagementplugn.h"
 #include "serverconfigmanager.h"
+
 #include <DSettings>
 #include <DSettingsGroup>
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
 #include <DThemeManager>
 #include <DTitlebar>
+
 #include <QApplication>
 #include <QDebug>
+#include <QDesktopWidget>
 #include <QInputDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -30,17 +33,27 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QVBoxLayout>
+
 DWIDGET_USE_NAMESPACE
 
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent),
       m_menu(new QMenu),
-      m_tabbar(new TabBar),
+      m_tabbar(nullptr),
       m_centralWidget(new QWidget(this)),
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
       m_termStackWidget(new QStackedWidget),
-      m_titlebarStyleSheet(titlebar()->styleSheet())
+      m_titlebarStyleSheet(titlebar()->styleSheet()),
+      m_properties(properties)
 {
+    initUI();
+}
+
+void MainWindow::initUI()
+{
+    m_tabbar = new TabBar(this, true);
+    m_tabbar->setChromeTabStyle(true);
+
     // ShortcutManager::instance();不管是懒汉式还是饿汉式，都不需要这样单独操作
     ShortcutManager::instance()->setMainWindow(this);
     m_shortcutManager = ShortcutManager::instance();
@@ -66,13 +79,35 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     // parts.
     initPlugins();
     initWindow();
-    initTitleBar();
-    addTab(properties);
+
+    qApp->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
 {
     //
+}
+
+void MainWindow::setQuakeWindow(bool isQuakeWindow)
+{
+    m_isQuakeWindow = isQuakeWindow;
+    if (m_isQuakeWindow)
+    {
+        titlebar()->setFixedHeight(0);
+        setWindowRadius(0);
+
+        QRect deskRect = QApplication::desktop()->availableGeometry();
+
+        Qt::WindowFlags windowFlags = this->windowFlags();
+        setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
+        this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        this->setMinimumSize(deskRect.size().width(), 60);
+        this->resize(deskRect.size().width(), 200);
+        this->move(0, 0);
+    }
+
+    initTitleBar();
+    addTab(m_properties);
 }
 
 void MainWindow::addTab(TermProperties properties, bool activeTab)
@@ -96,8 +131,10 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         {
             emit plugin->doHide();
         }
-        RemoteManagementPlugn *remoteMgtPlugin = qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-        if (remoteMgtPlugin) {
+        RemoteManagementPlugn *remoteMgtPlugin =
+            qobject_cast< RemoteManagementPlugn * >(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
+        if (remoteMgtPlugin)
+        {
             emit remoteMgtPlugin->doHide();
         }
     });
@@ -105,10 +142,11 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         CustomCommandPlugin *plugin = qobject_cast< CustomCommandPlugin * >(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
         plugin->getCustomCommandTopPanel()->show();
     });
-    connect(termPage, &TermWidgetPage::termRequestOpenRemoteManagement, this, [ = ]() {
-            RemoteManagementPlugn *plugin = qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-            plugin->getRemoteManagementTopPanel()->show();
-        });
+    connect(termPage, &TermWidgetPage::termRequestOpenRemoteManagement, this, [=]() {
+        RemoteManagementPlugn *plugin =
+            qobject_cast< RemoteManagementPlugn * >(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
+        plugin->getRemoteManagementTopPanel()->show();
+    });
 }
 
 void MainWindow::closeTab(const QString &identifier)
@@ -130,6 +168,7 @@ void MainWindow::closeTab(const QString &identifier)
         qApp->quit();
     }
 }
+
 /*******************************************************************************
  1. @函数:     closeOtherTab
  2. @作者:     n014361 王培利
@@ -207,6 +246,17 @@ void MainWindow::setTitleBarBackgroundColor(QString color)
                                       "background: %2;"
                                       "}")
                                   .arg(m_titlebarStyleSheet, color));
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    if (m_isQuakeWindow)
+    {
+        QRect deskRect = QApplication::desktop()->availableGeometry();
+        this->resize(deskRect.size().width(), this->size().height());
+        this->move(0, 0);
+    }
+    DMainWindow::resizeEvent(event);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -578,11 +628,22 @@ void MainWindow::initTitleBar()
     QAction *settingAction(new QAction(tr("&Settings"), this));
     m_menu->addAction(settingAction);
 
-    TitleBar *titleBar = new TitleBar;
-    titleBar->setTabBar(m_tabbar);
-    titlebar()->setCustomWidget(titleBar);
-    titlebar()->setAutoHideOnFullscreen(true);
-    titlebar()->setMenu(m_menu);
+    m_titleBar = new TitleBar(this, m_isQuakeWindow);
+    m_titleBar->setTabBar(m_tabbar);
+    if (m_isQuakeWindow)
+    {
+        m_titleBar->setBackgroundRole(QPalette::Window);
+        m_titleBar->setAutoFillBackground(true);
+        m_centralLayout->addWidget(m_titleBar);
+    }
+    else
+    {
+        titlebar()->setCustomWidget(m_titleBar);
+        titlebar()->setAutoHideOnFullscreen(true);
+        titlebar()->setMenu(m_menu);
+    }
+
+    connect(m_tabbar, &DTabBar::tabFull, this, [=]() { qDebug() << "tab is full"; });
 
     connect(m_tabbar,
             &DTabBar::tabCloseRequested,
@@ -603,6 +664,23 @@ void MainWindow::initTitleBar()
             Qt::QueuedConnection);
 
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if (m_isQuakeWindow)
+    {
+        // disable move window
+        if (event->type() == QEvent::MouseMove || event->type() == QEvent::DragMove)
+        {
+            if (watched->objectName() == QLatin1String("QMainWindowClassWindow"))
+            {
+                event->ignore();
+                return true;
+            }
+        }
+    }
+    return QObject::eventFilter(watched, event);
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)

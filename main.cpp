@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
      * ************************/
 
     MainWindow w(firstTermProperties);
+    w.setQuakeWindow(false);
     w.show();
 
     return app.exec();

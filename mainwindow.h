@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "termproperties.h"
+#include "titlebar.h"
+
 #include <DMainWindow>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -39,30 +42,37 @@ public:
 
     void             forAllTabPage(const std::function< void(TermWidgetPage *) > &func);
     void             setTitleBarBackgroundColor(QString color);
+    void             setQuakeWindow(bool isQuakeWindow);
     ShortcutManager *getShortcutManager();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 protected slots:
     void onTermTitleChanged(QString title);
     void onTabTitleChanged(QString title);
 
 private:
+    void initUI();
     void initPlugins();
     void initWindow();
     void initShortcuts();
     void initConnections();
+    void initTitleBar();
+    void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
+    void showSettingDialog();
+
+    MainWindowPluginInterface *getPluginByName(const QString &name);
+
     /******** Modify by n014361 wangpeili 2020-01-06:增加显示快捷键功能***********×****/
     // 显示快捷键功能
     void displayShortcuts();
     // 创建Json组信息
     void createJsonGroup(const QString &keyCategory, QJsonArray &jsonGroups);
     /********************* Modify by n014361 wangpeili End ************************/
-    void                                 initTitleBar();
-    void                                 setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
-    void                                 showSettingDialog();
-    MainWindowPluginInterface *          getPluginByName(const QString &name);
+
     QMenu *                              m_menu;
     TabBar *                             m_tabbar;
     QWidget *                            m_centralWidget;
@@ -71,6 +81,9 @@ private:
     QString                              m_titlebarStyleSheet;
     ShortcutManager *                    m_shortcutManager;
     QList< MainWindowPluginInterface * > m_plugins;
+    TermProperties                       m_properties;
+    TitleBar *                           m_titleBar{ nullptr };
+    bool                                 m_isQuakeWindow{ false };
 };
 
 #endif  // MAINWINDOW_H

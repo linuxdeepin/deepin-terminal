@@ -19,22 +19,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += define.h \
-           mainwindow.h \
-           mainwindowplugininterface.h \
-           rightpanel.h \
-           settings.h \
-           shortcutmanager.h \
-           tabbar.h \
-           termproperties.h \
-           termwidget.h \
-           termwidgetpage.h \
-           themeitemdelegate.h \
-           themelistmodel.h \
-           themelistview.h \
-           themepanel.h \
-           themepanelplugin.h \
-           titlebar.h \
+HEADERS += \
+    define.h \
+    mainwindow.h \
+    mainwindowplugininterface.h \
+    rightpanel.h \
+    settings.h \
+    shortcutmanager.h \
+    tabbar.h \
+    termproperties.h \
+    termwidget.h \
+    termwidgetpage.h \
+    themeitemdelegate.h \
+    themelistmodel.h \
+    themelistview.h \
+    themepanel.h \
+    themepanelplugin.h \
+    titlebar.h \
     customcommandplugin.h \
     customcommandpanel.h \
     customcommandlist.h \
@@ -54,23 +55,26 @@ HEADERS += define.h \
     serverconfiggrouppanel.h \
     remotemanagementsearchpanel.h \
     serverconfigoptwidget.h \
-    serverconfigoptdlg.h
-SOURCES += main.cpp \
-           mainwindow.cpp \
-           rightpanel.cpp \
-           settings.cpp \
-           settings_translation.cpp \
-           shortcutmanager.cpp \
-           tabbar.cpp \
-           termproperties.cpp \
-           termwidget.cpp \
-           termwidgetpage.cpp \
-           themeitemdelegate.cpp \
-           themelistmodel.cpp \
-           themelistview.cpp \
-           themepanel.cpp \
-           themepanelplugin.cpp \
-           titlebar.cpp \
+    serverconfigoptdlg.h \
+    termtabbar.h
+
+SOURCES += \
+    main.cpp \
+    mainwindow.cpp \
+    rightpanel.cpp \
+    settings.cpp \
+    settings_translation.cpp \
+    shortcutmanager.cpp \
+    tabbar.cpp \
+    termproperties.cpp \
+    termwidget.cpp \
+    termwidgetpage.cpp \
+    themeitemdelegate.cpp \
+    themelistmodel.cpp \
+    themelistview.cpp \
+    themepanel.cpp \
+    themepanelplugin.cpp \
+    titlebar.cpp \
     customcommandplugin.cpp \
     customcommandpanel.cpp \
     customcommandlist.cpp \
@@ -90,6 +94,8 @@ SOURCES += main.cpp \
     serverconfiggrouppanel.cpp \
     remotemanagementsearchpanel.cpp \
     serverconfigoptwidget.cpp \
-    serverconfigoptdlg.cpp
+    serverconfigoptdlg.cpp \
+    termtabbar.cpp
+
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts
