@@ -4,11 +4,15 @@
 
 #include <DApplication>
 
-#include <QDebug>
+#include <DLog>
 #include <QCommandLineParser>
+#include <QDebug>
 #include <QTranslator>
 
 DWIDGET_USE_NAMESPACE
+/******** Modify by n014361 wangpeili 2020-01-10:增加日志需要 ***********×****/
+DCORE_USE_NAMESPACE
+/********************* Modify by n014361 wangpeili End ************************/
 
 int main(int argc, char *argv[])
 {
@@ -25,7 +29,7 @@ int main(int argc, char *argv[])
     QTranslator translator;
     translator.load(QString("dterm_%1").arg(QLocale::system().name()));
     app.installTranslator(&translator);
-#endif // QT_DEBUG
+#endif  // QT_DEBUG
 
     app.setApplicationDisplayName(QObject::tr("Deep Dark Terminal"));
 
@@ -33,22 +37,28 @@ int main(int argc, char *argv[])
 
     QCommandLineParser parser;
     parser.addHelpOption();
-    QCommandLineOption optionExecute({"e", "execute"}, "Execute command instead of shell", "command");
-    parser.addOptions({optionExecute});
+    QCommandLineOption optionExecute({ "e", "execute" }, "Execute command instead of shell", "command");
+    parser.addOptions({ optionExecute });
     parser.process(app);
 
     TermProperties firstTermProperties;
 
-    if (parser.isSet(optionExecute)) {
+    if (parser.isSet(optionExecute))
+    {
         // get raw arg, so we cannot use `parser.value(optionExecute)`.
         QStringList rawCommandList;
-        bool reachedArg = false;
-        for (int i = 0; i < argc; i++) {
+        bool        reachedArg = false;
+        for (int i = 0; i < argc; i++)
+        {
             QString currentArg = QString::fromLocal8Bit(argv[i]);
-            if (reachedArg) {
+            if (reachedArg)
+            {
                 rawCommandList.append(currentArg);
-            } else {
-                if (currentArg == "-e" || currentArg == "--execute") {
+            }
+            else
+            {
+                if (currentArg == "-e" || currentArg == "--execute")
+                {
                     reachedArg = true;
                     continue;
                 }
@@ -56,6 +66,12 @@ int main(int argc, char *argv[])
         }
         firstTermProperties[Execute] = rawCommandList.join(' ');
     }
+
+    /******** Modify by n014361 wangpeili 2020-01-10: 增加日志 ***********×****/
+    DLogManager::registerConsoleAppender();
+    DLogManager::registerFileAppender();
+    /********************* Modify by n014361 wangpeili End
+     * ************************/
 
     MainWindow w(firstTermProperties);
     w.show();
