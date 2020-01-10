@@ -620,7 +620,6 @@ void MainWindow::showSettingDialog()
     TermWidgetPage *page = currentTab();
     if (page)
     {
-        page->clearAllFocus();
         page->focusCurrentTerm();
     }
     /********************* Modify by n014361 wangpeili End ************************/
