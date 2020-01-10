@@ -71,6 +71,7 @@ signals:
     void termRequestOpenSettings() const;
     void termGetFocus() const;
     void termRequestOpenCustomCommand() const;
+    void termRequestOpenRemoteManagement() const;
 private slots:
     void setCurrentTerminal(TermWidgetWrapper *term);
 

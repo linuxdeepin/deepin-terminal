@@ -536,6 +536,6 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
     connect(
         term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
-
+    connect(term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
     return term;
 }

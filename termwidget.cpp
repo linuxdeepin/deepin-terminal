@@ -141,6 +141,10 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         emit termRequestOpenCustomCommand();
     });
 
+    menu.addAction(QIcon::fromTheme("remote-management"), tr("RemoteManagement"), this, [this] {
+        emit termRequestOpenRemoteManagement();
+    });
+
     menu.addSeparator();
 
     menu.addAction(
@@ -163,6 +167,7 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
+    connect(m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
     // m_term->selectionChanged()
     // connect(m_term, &TermWidget::copyAvailable, this, &TermWidgetWrapper::AutoCopy);
 }

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "commonpanel.h"
 #include "serverconfiglist.h"
+#include "serverconfigoptdlg.h"
 class RemoteManagementPanel : public CommonPanel
 {
     Q_OBJECT

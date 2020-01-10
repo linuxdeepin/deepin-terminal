@@ -1,5 +1,6 @@
 #include "remotemanagementpanel.h"
 #include "serverconfigitem.h"
+#include "shortcutmanager.h"
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
     initUI();
@@ -30,24 +31,22 @@ void RemoteManagementPanel::showCurSearchResult()
 
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
-#if 0
-    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
+    ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
     if (dlg.exec() == QDialog::Accepted) {
-        QAction &newAction = dlg.getCurCustomCmd();
-        QAction *existAction = ShortcutManager::instance()->checkActionIsExist(newAction);
+        QAction &curAction = dlg.getCurAction();
+        QAction *existAction = ShortcutManager::instance()->checkActionIsExist(curAction);
         if (nullptr == existAction) {
-            QAction *newTmp =  ShortcutManager::instance()->addCustomCommand(newAction);
-            m_listWidget->addOneRowData(newTmp);
+            QAction *newTmp =  ShortcutManager::instance()->addCustomCommand(curAction);
+//            m_listWidget->addOneRowData(newTmp);
             refreshSearchState();
         } else {
-            existAction->data() = newAction.data();
-            existAction->setShortcut(newAction.shortcut());
-            m_listWidget->refreshOneRowCommandInfo(existAction);
+            existAction->data() = curAction.data();
+            existAction->setShortcut(curAction.shortcut());
+//            m_listWidget->refreshOneRowCommandInfo(existAction);
             ShortcutManager::instance()->saveCustomCommandToConfig(existAction);
         }
 
     }
-#endif
 }
 
 
@@ -82,7 +81,7 @@ void RemoteManagementPanel::initUI()
                                 "QListWidget::item:border_color{gray,none,gray,red}");
 
     m_pushButton->setFixedHeight(60);
-    m_pushButton->setText("+ Add Command");
+    m_pushButton->setText("+ Add Server");
     m_pushButton->setStyleSheet("border-width:0;border-style:sloid");
     //connect(m_iconButton, &DIconButton::clicked, this, &CommonPanel::iconButtonCliecked);//
     //connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CommonPanel::searchEditingFinished);//

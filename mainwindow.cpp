@@ -96,11 +96,19 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         {
             emit plugin->doHide();
         }
+        RemoteManagementPlugn *remoteMgtPlugin = qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
+        if (remoteMgtPlugin) {
+            emit remoteMgtPlugin->doHide();
+        }
     });
     connect(termPage, &TermWidgetPage::termRequestOpenCustomCommand, this, [=]() {
         CustomCommandPlugin *plugin = qobject_cast< CustomCommandPlugin * >(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
         plugin->getCustomCommandTopPanel()->show();
     });
+    connect(termPage, &TermWidgetPage::termRequestOpenRemoteManagement, this, [ = ]() {
+            RemoteManagementPlugn *plugin = qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
+            plugin->getRemoteManagementTopPanel()->show();
+        });
 }
 
 void MainWindow::closeTab(const QString &identifier)

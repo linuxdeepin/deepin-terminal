@@ -15,6 +15,7 @@ signals:
     void termRequestRenameTab(QString newTabName);
     void termRequestOpenSettings();
     void termRequestOpenCustomCommand();
+    void termRequestOpenRemoteManagement();
 private slots:
     void customContextMenuCall(const QPoint &pos);
 };
@@ -67,7 +68,7 @@ signals:
     void termGetFocus();
     void termClosed();
     void termRequestOpenCustomCommand();
-
+    void termRequestOpenRemoteManagement();
 private:
     void initUI();
 

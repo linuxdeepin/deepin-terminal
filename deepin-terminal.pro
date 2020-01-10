@@ -53,7 +53,8 @@ HEADERS += define.h \
     serverconfiglist.h \
     serverconfiggrouppanel.h \
     remotemanagementsearchpanel.h \
-    serverconfigoptwidget.h
+    serverconfigoptwidget.h \
+    serverconfigoptdlg.h
 SOURCES += main.cpp \
            mainwindow.cpp \
            rightpanel.cpp \
@@ -88,6 +89,7 @@ SOURCES += main.cpp \
     serverconfiglist.cpp \
     serverconfiggrouppanel.cpp \
     remotemanagementsearchpanel.cpp \
-    serverconfigoptwidget.cpp
+    serverconfigoptwidget.cpp \
+    serverconfigoptdlg.cpp
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts
