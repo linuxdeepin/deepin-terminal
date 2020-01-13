@@ -2,8 +2,8 @@
 
 #include <QDebug>
 
-TabBar::TabBar(QWidget *parent)
-    : DTabBar(parent)
+TabBar::TabBar(QWidget *parent, bool chromeTabStyle)
+    : DTabBar(parent, chromeTabStyle)
 {
     setTabsClosable(true);
 

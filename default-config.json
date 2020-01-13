@@ -2,19 +2,33 @@
     "groups": [
         {
             "key": "basic",
-            "name": "Basic",
+            "name": "基础设置",
             "groups": [
                 {
                     "key": "interface",
-                    "name": "Interface",
+                    "name": "界面",
                     "options": [
                         {
                             "key": "opacity",
-                            "name": "Opacity",
+                            "name": "透明度",
                             "type": "slider",
                             "max": 100,
                             "min": 0,
-                            "default": 80
+                            "default": 95
+                        },
+                        {
+                            "key": "family",
+                            "name": "字体",
+                            "type": "fontcombobox",
+                            "default": "Noto Mono"
+                        },
+                        {
+                            "key": "size",
+                            "name": "字体大小",
+                            "type": "spinbutton",
+                            "default": 11,
+                            "max": 50,
+                            "min": 8
                         },
                         {
                             "key": "theme",
@@ -28,101 +42,156 @@
         },
         {
             "key": "shortcuts",
-            "name": "Shortcuts",
+            "name": "快捷键",
             "groups": [
                 {
                     "key" : "terminal",
-                    "name" : "Terminal",
+                    "name" : "终端",
                     "options" : [
                         {
                             "key": "copy",
-                            "name": "Copy",
+                            "name": "复制",
                             "type": "shortcut",
                             "default":  "Ctrl+Shfit+C"
                         },
                         {
                             "key": "paste",
-                            "name": "Paste",
+                            "name": "粘贴",
                             "type": "shortcut",
                             "default":  "Ctrl+Shfit+V"
                         },
                         {
                             "key": "zoom_in",
-                            "name": "Zoom in",
+                            "name": "放大",
                             "type": "shortcut",
                             "default":  "Ctrl+="
                         },
                         {
                             "key": "zoom_out",
-                            "name": "Zoom out",
+                            "name": "缩小",
                             "type": "shortcut",
                             "default":  "Ctrl+-"
+                        },
+                        {
+                            "key": "DefaultFontSize",
+                            "name": "默认大小",
+                            "type": "shortcut",
+                            "default":  "Ctrl+0"
+                        },
+                        {
+                            "key": "SkipToNextCommand",
+                            "name": "跳转到下一个命令",
+                            "type": "shortcut",
+                            "default":  "Shift+Down"
+                        },
+                        {
+                            "key": "SkipToPreCommand",
+                            "name": "跳转到上一个命令",
+                            "type": "shortcut",
+                            "default":  "Shift+Up"
+                        }
+                        ,
+                        {
+                            "key": "SelectAll",
+                            "name": "全选",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+a"
                         }
                     ]
                 },
                 {
                     "key" : "workspace",
-                    "name" : "Workspace",
+                    "name" : "工作区",
                     "options" : [
                         {
                             "key": "new_tab",
-                            "name": "New tab",
+                            "name": "新建工作区",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+T"
                         },
                         {
                             "key": "vertical_split",
-                            "name": "Vertical split",
+                            "name": "纵向分屏",
                             "type": "shortcut",
                             "default":  "Ctrl+Shfit+H"
                         },
                         {
                             "key": "horizontal_split",
-                            "name": "Horizontal split",
+                            "name": "横向分屏",
                             "type": "shortcut",
                             "default":  "Ctrl+Shfit+J"
                         },
                         {
                             "key": "focus_nav_up",
-                            "name": "Select upper window",
+                            "name": "选择上面的窗口",
                             "type": "shortcut",
                             "default":  "Alt+K"
                         },
                         {
                             "key": "focus_nav_down",
-                            "name": "Select lower window",
+                            "name": "选择下面的窗口",
                             "type": "shortcut",
                             "default":  "Alt+J"
                         },
                         {
                             "key": "focus_nav_left",
-                            "name": "Select left window",
+                            "name": "选择左面的窗口",
                             "type": "shortcut",
                             "default":  "Alt+H"
                         },
                         {
                             "key": "focus_nav_right",
-                            "name": "Select right window",
+                            "name": "选择右面的窗口",
                             "type": "shortcut",
                             "default":  "Alt+L"
+                        },
+                        {
+                            "key": "CloseTab",
+                            "name": "关闭窗口",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Alt+q"
+                        },
+                        {
+                            "key": "CloseOtherTab",
+                            "name": "关闭其它的窗口",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shfit+q"
                         }
                     ]
                 },
                 {
                     "key" : "advanced",
-                    "name" : "Advanced",
+                    "name" : "高级设置",
                     "options" : [
                         {
                             "key": "fullscreen",
-                            "name": "Fullscreen",
+                            "name": "全屏",
                             "type": "shortcut",
                             "default":  "F11"
                         },
                         {
                             "key": "rename_tab",
-                            "name": "Rename tab",
+                            "name": "重命名标题",
                             "type": "shortcut",
                             "default":  "F2"
+                        },
+                        {
+                            "key": "ShowShortCut",
+                            "name": "显示快捷键",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shfit+?"
+                        },
+                        {
+                            "key": "CustomCommand",
+                            "name": "自定义命令",
+                            "type": "shortcut",
+                            "default":  "Ctrl+["
+                        },
+                        {
+                            "key": "RemoteManager",
+                            "name": "远程管理",
+                            "type": "shortcut",
+                            "default":  "Ctrl+/"
                         }
                     ]
                 }
@@ -130,15 +199,15 @@
         },
         {
             "key": "advanced",
-            "name": "Advanced",
+            "name": "高级设置",
             "groups": [
                 {
                     "key": "cursor",
-                    "name": "Cursor",
+                    "name": "光标",
                     "options": [
                         {
                             "key": "shape",
-                            "name": "Cursor Shape",
+                            "name": "光标风格",
                             "type": "buttongroup",
                             "items": ["█","_","|"],
                             "default": 0,
@@ -147,18 +216,60 @@
                         {
                             "key": "blink",
                             "type": "checkbox",
-                            "text": "Cursor blink",
+                            "text": "光标闪烁",
+                            "default": true
+                        },
+                        {
+                            "key": "AutoHide",
+                            "type": "checkbox",
+                            "text": "光标自动隐藏",
+                            "default": false
+                        },
+                        {
+                            "key": "AutoCopy",
+                            "type": "checkbox",
+                            "text": "选中文字时自动复制到剪切板",
+                            "default": true
+                        }
+                    ]
+                },
+                {
+                    "key": "scroll",
+                    "name": "滚动",
+                    "options": [
+                        {
+                            "key": "PressingScroll",
+                            "type": "checkbox",
+                            "text": "按键时滚动",
+                            "default": true
+                        },
+                        {
+                            "key": "OutputtingScroll",
+                            "type": "checkbox",
+                            "text": "输出时滚动",
                             "default": true
                         }
                     ]
                 },
                 {
                     "key": "window",
-                    "name": "Window",
+                    "name": "窗口",
                     "options": [
                         {
+                            "key": "windowstate",
+                            "name": "窗口状态",
+                            "type": "combobox",
+                            "default": "window_normal"
+                        },
+                        {
                             "key": "blur_background",
-                            "text": "Blur background",
+                            "text": "背景模糊",
+                            "type": "checkbox",
+                            "default": "false"
+                        },
+                        {
+                            "key": "HideRaytheonWindow",
+                            "text": "丢失焦点后隐藏雷神窗口",
                             "type": "checkbox",
                             "default": "false"
                         }

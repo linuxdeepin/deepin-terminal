@@ -12,14 +12,13 @@ public:
     ThemePanelPlugin(QObject *parent);
 
     void initPlugin(MainWindow *mainWindow) override;
-    QAction* titlebarMenu(MainWindow *mainWindow) override;
+    QAction *titlebarMenu(MainWindow *mainWindow) override;
 
-    ThemePanel* getThemePanel();
+    ThemePanel *getThemePanel();
     void initThemePanel();
-
 private:
-    MainWindow* m_mainWindow = nullptr;
-    ThemePanel* m_themePanel = nullptr;
+    MainWindow *m_mainWindow = nullptr;
+    ThemePanel *m_themePanel = nullptr;
 };
 
 #endif // THEMEPANELPLUGIN_H

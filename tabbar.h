@@ -1,7 +1,7 @@
 #ifndef TABBAR_H
 #define TABBAR_H
 
-#include <DTabBar>
+#include "termtabbar.h"
 
 DWIDGET_USE_NAMESPACE
 
@@ -9,7 +9,7 @@ class TabBar : public DTabBar
 {
     Q_OBJECT
 public:
-    explicit TabBar(QWidget *parent = nullptr);
+    explicit TabBar(QWidget *parent = nullptr, bool chromeTabStyle = false);
 
     const QString identifier(int index) const;
 

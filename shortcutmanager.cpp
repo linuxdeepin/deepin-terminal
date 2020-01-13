@@ -7,15 +7,23 @@
 #include <QDir>
 #include <QSettings>
 #include <QStandardPaths>
-
+#include <QDebug>
 // this class only provided for convenience, do not do anything in the construct function,
 // let the caller decided when to create the shortcuts.
-ShortcutManager::ShortcutManager(MainWindow *parent) :
-    QObject(parent),
-    m_mainWindow(parent)
+ShortcutManager *ShortcutManager::m_instance = nullptr;
+ShortcutManager::ShortcutManager(QObject *parent) :
+    QObject(parent)
 {
+    //Q_UNUSED(parent);
     // make sure it is NOT a nullptr since we'll use it all the time.
-    Q_CHECK_PTR(parent);
+    //Q_CHECK_PTR(parent);
+}
+ShortcutManager *ShortcutManager::instance()
+{
+    if (nullptr == m_instance) {
+        m_instance = new ShortcutManager();
+    }
+    return m_instance;
 }
 
 void ShortcutManager::initShortcuts()
@@ -43,10 +51,11 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
 
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     QStringList commandGroups = commandsSettings.childGroups();
+    //qDebug() << commandGroups.size() << endl;
     for (const QString &commandName : commandGroups) {
         commandsSettings.beginGroup(commandName);
         if (!commandsSettings.contains("Command")) continue;
-        QAction * action = new QAction(commandName, this);
+        QAction *action = new QAction(commandName, this);
         action->setData(commandsSettings.value("Command").toString()); // make sure it is a QString
         if (commandsSettings.contains("Shortcut")) {
             QVariant shortcutVariant = commandsSettings.value("Shortcut");
@@ -58,13 +67,14 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
                 action->setShortcut(QKeySequence(shortcutStr));
             }
         }
-        connect(action, &QAction::triggered, m_mainWindow, [this, action](){
+        connect(action, &QAction::triggered, m_mainWindow, [this, action]() {
             QString command = action->data().toString();
             if (!command.endsWith('\n')) {
                 command.append('\n');
             }
             m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
         });
+        commandsSettings.endGroup();
         actionList.append(action);
     }
 
@@ -91,4 +101,77 @@ QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
 //    actionList.append(action);
 
     return actionList;
+}
+QList<QAction *> &ShortcutManager::getCustomCommands()
+{
+    qDebug() << m_customCommandList.size() << endl;
+    return m_customCommandList;
+}
+void ShortcutManager::setMainWindow(MainWindow *curMainWindow)
+{
+    m_mainWindow = curMainWindow;
+}
+
+QAction *ShortcutManager::addCustomCommand(QAction &action)
+{
+
+    QAction *addAction = new QAction(action.text(), this);
+    addAction->setData(action.data());
+    addAction->setShortcut(action.shortcut());
+    m_customCommandList.append(addAction);
+    connect(addAction, &QAction::triggered, m_mainWindow, [this, addAction]() {
+        QString command = addAction->data().toString();
+        if (!command.endsWith('\n')) {
+            command.append('\n');
+        }
+        m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
+    });
+    saveCustomCommandToConfig(addAction);
+    return addAction;
+
+}
+QAction *ShortcutManager::checkActionIsExist(QAction &action)
+{
+    QString strNewName = action.text();
+    for (int i = 0; i < m_customCommandList.size(); i++) {
+        QAction *curAct = m_customCommandList[i];
+        if (strNewName == curAct->text()) {
+            return curAct;
+        }
+    }
+    return nullptr;
+}
+void ShortcutManager::delCustomCommand(QAction *action)
+{
+    delCUstomCommandToConfig(action);
+    m_customCommandList.removeOne(action);
+    delete  action;
+    action = nullptr;
+}
+void ShortcutManager::saveCustomCommandToConfig(QAction *action)
+{
+    QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!customCommandBasePath.exists()) {
+        customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    }
+
+    QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    commandsSettings.beginGroup(action->text());
+    commandsSettings.setValue("Command", action->data());
+    QString tmp = action->shortcut().toString();
+    commandsSettings.setValue("Shortcut", action->shortcut().toString());
+    commandsSettings.endGroup();
+}
+
+void ShortcutManager::delCUstomCommandToConfig(QAction *action)
+{
+    QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!customCommandBasePath.exists()) {
+        customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    }
+
+    QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    commandsSettings.remove(action->text());
 }

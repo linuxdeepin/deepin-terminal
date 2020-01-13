@@ -12,7 +12,9 @@ RightPanel::RightPanel(QWidget *parent)
     QWidget::hide();
 
     // default look'n'feel.
-    setStyleSheet("background-color: brown;");
+    //setStyleSheet("background-color: transparent;");
+    setStyleSheet("background-color: white;");
+    //setAttribute(Qt::WA_TranslucentBackground);
     setFixedWidth(250);
 
     // Init theme panel.
@@ -56,3 +58,4 @@ void RightPanel::hide()
     connect(animation, &QPropertyAnimation::finished, this, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 }
+

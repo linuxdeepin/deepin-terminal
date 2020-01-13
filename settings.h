@@ -15,15 +15,23 @@ public:
     void initConnection();
 
     qreal opacity() const;
-    QString colorScheme() const;
-    int cursorShape() const;
-    bool cursorBlink() const;
-    bool backgroundBlur() const;
+    int   cursorShape() const;
+    bool  cursorBlink() const;
+    bool  backgroundBlur() const;
 
+    QString colorScheme() const;
+    // 设置主题
     void setColorScheme(const QString &name);
 
     DSettings *settings;
+    /******** Modify by n014361 wangpeili 2020-01-04: 获取当前配置粘贴是否为选择内容 *************×****/
+    bool IsPasteSelection();
 
+public:
+    QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);
+
+    static QPair< QWidget *, QWidget * > createFontComBoBoxHandle(QObject *obj);
+    /******** Modify by n014361 wangpeili 2020-01-04:              ****************/
 signals:
     void settingValueChanged(const QString &key, const QVariant &value);
 
@@ -32,13 +40,18 @@ signals:
     void cursorBlinkChanged(bool blink);
     void backgroundBlurChanged(bool enabled);
 
+    /******** Modify by n014361 wangpeili 2020-01-06:字体，字体大小修改功能 ******×****/
+    void fontSizeChanged(int fontSize);
+    void fontChanged(QString fontName);
+    /********************* Modify by n014361 wangpeili End ************************/
+
 private:
     Settings();
 
     static Settings *m_settings_instance;
 
     Dtk::Core::QSettingBackend *m_backend;
-    QString m_configPath;
+    QString                     m_configPath;
 };
 
-#endif // SETTINGS_H
+#endif  // SETTINGS_H
