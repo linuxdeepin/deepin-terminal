@@ -1,0 +1,13 @@
+Source: deepin-terminal
+Section: utils
+Priority: optional
+Maintainer: Deepin Terminal <terminal@deepin.com>
+Build-Depends: debhelper (>= 9), pkg-config, qt5-qmake, libqt5widgets5, libqt5concurrent5, libqtermwidget5-0-dev, libdtkwidget-dev, qt5-default, qttools5-dev-tools, qtbase5-private-dev
+Standards-Version: 3.9.8
+Homepage: https://www.deepin.com/
+
+Package: deepin-terminal
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqtermwidget5-0
+Description: deepin terminal
+ Deepin Terminal
