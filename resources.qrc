@@ -5,5 +5,7 @@
     <qresource prefix="/">
         <file>images/icon/focus/circlebutton_add 2.svg</file>
         <file>images/icon/hover/circlebutton_add _hover.svg</file>
+        <file>images/icon/hover/server.svg</file>
+        <file>images/icon/focus/server.svg</file>
     </qresource>
 </RCC>

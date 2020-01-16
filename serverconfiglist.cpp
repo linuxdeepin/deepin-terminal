@@ -1,28 +1,32 @@
 #include "serverconfiglist.h"
+#include "operationconfirmdlg.h"
 #include "serverconfigitem.h"
 #include "serverconfigmanager.h"
-ServerConfigList::ServerConfigList(QWidget *parent): DListWidget(parent)
+#include "serverconfigoptdlg.h"
+ServerConfigList::ServerConfigList(QWidget *parent) : DListWidget(parent)
 {
     setVerticalScrollMode(ScrollPerItem);
-    //setVerticalScrollMode(ScrollPerPixel);
+    // setVerticalScrollMode(ScrollPerPixel);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    setStyleSheet("QListWidget{border:1px solid gray; color:black; }"
-                  "QListWidget::item:hover{background-color:lightgray}"
-                  "QListWidget::item:selected{background:lightgray; color:red; }"
-                  "QListWidget::item:selected{background-color:rgb(255,0,0,100)}"
-                  "QListWidget::item:border_style{solid,none,solid,solid}"
-                  "QListWidget::item:border_width{medium,none,medium,none}"
-                  "QListWidget::item:border_color{gray,none,gray,red}");
+    //    setStyleSheet("QListWidget{border:1px solid gray; color:black; }"
+    //                  "QListWidget::item:hover{background-color:lightgray}"
+    //                  "QListWidget::item:selected{background:lightgray; color:red; }"
+    //                  "QListWidget::item:selected{background-color:rgb(255,0,0,100)}"
+    //                  "QListWidget::item:border_style{solid,none,solid,solid}"
+    //                  "QListWidget::item:border_width{medium,none,medium,none}"
+    //                  "QListWidget::item:border_color{gray,none,gray,red}");
 }
 void ServerConfigList::refreshAllDatas()
 {
     clear();
-    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
-    QMap<QString, QList<ServerConfig *> >::const_iterator iter = configMap.constBegin();
-    while (iter != configMap.constEnd()) {
-        if (iter.key().isEmpty()) {
+    QMap< QString, QList< ServerConfig * > > &configMap = ServerConfigManager::instance()->getServerCommands();
+    QMap< QString, QList< ServerConfig * > >::const_iterator iter = configMap.constBegin();
+    while (iter != configMap.constEnd())
+    {
+        if (iter.key().isEmpty())
+        {
             iter++;
             continue;
         }
@@ -34,46 +38,53 @@ void ServerConfigList::refreshAllDatas()
 }
 void ServerConfigList::refreshDataByGroup(const QString &strGroupName)
 {
-    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
-    QList<ServerConfig *> &configList = configMap[strGroupName];
-    for (auto cfg : configList) {
+    QMap< QString, QList< ServerConfig * > > &configMap  = ServerConfigManager::instance()->getServerCommands();
+    QList< ServerConfig * > &                 configList = configMap[strGroupName];
+    for (auto cfg : configList)
+    {
         addOneRowServerConfigData(cfg);
     }
 }
 //根据分组信息和搜索信息联合查询
 void ServerConfigList::refreshDataByGroupAndFilter(const QString &strGroupName, const QString &strFilter)
 {
-    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
-    QList<ServerConfig *> &configList = configMap[strGroupName];
-    for (auto cfg : configList) {
-        if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive) ||
-                cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+    QMap< QString, QList< ServerConfig * > > &configMap  = ServerConfigManager::instance()->getServerCommands();
+    QList< ServerConfig * > &                 configList = configMap[strGroupName];
+    for (auto cfg : configList)
+    {
+        if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
+            || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive))
+        {
             addOneRowServerConfigData(cfg);
         }
     }
 }
 void ServerConfigList::refreshDataByFilter(const QString &strFilter)
 {
-    QMap<QString, QList<ServerConfig *> > &configMap = ServerConfigManager::instance()->getServerCommands();
-    QMap<QString, QList<ServerConfig *> >::const_iterator iter = configMap.constBegin();
-    while (iter != configMap.constEnd()) {
+    QMap< QString, QList< ServerConfig * > > &configMap = ServerConfigManager::instance()->getServerCommands();
+    QMap< QString, QList< ServerConfig * > >::const_iterator iter = configMap.constBegin();
+    while (iter != configMap.constEnd())
+    {
 
-        QList<ServerConfig *> configList = iter.value();
-        for (auto cfg : configList) {
-            if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive) ||
-                    cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+        QList< ServerConfig * > configList = iter.value();
+        for (auto cfg : configList)
+        {
+            if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
+                || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive))
+            {
                 addOneRowServerConfigData(cfg);
             }
         }
         iter++;
     }
-
 }
 void ServerConfigList::refreshOneRowServerConfigInfo(ServerConfig *curConfig)
 {
-    for (int i = 0; i < count(); i++) {
-        ServerConfigItem *curItem = qobject_cast<ServerConfigItem *>(itemWidget(item(i)));
-        if (curItem->getCurServerConfig() == curConfig) {
+    for (int i = 0; i < count(); i++)
+    {
+        ServerConfigItem *curItem = qobject_cast< ServerConfigItem * >(itemWidget(item(i)));
+        if (curItem->getCurServerConfig() == curConfig)
+        {
             // curItem->refresh(action);
         }
     }
@@ -81,7 +92,7 @@ void ServerConfigList::refreshOneRowServerConfigInfo(ServerConfig *curConfig)
 void ServerConfigList::addOneRowServerConfigGroupData(const QString &group)
 {
     ServerConfigItem *configItem = new ServerConfigItem(nullptr, true, group, this);
-    //textItem->highSearchText(key,Qt::red);
+    // textItem->highSearchText(key,Qt::red);
     QListWidgetItem *item = new QListWidgetItem();
     item->setSizeHint(QSize(250, 70));
     addItem(item);
@@ -92,7 +103,7 @@ void ServerConfigList::addOneRowServerConfigGroupData(const QString &group)
 void ServerConfigList::addOneRowServerConfigData(ServerConfig *curConfig)
 {
     ServerConfigItem *configItem = new ServerConfigItem(curConfig, false, "", this);
-    //textItem->highSearchText(key,Qt::red);
+    // textItem->highSearchText(key,Qt::red);
     QListWidgetItem *item = new QListWidgetItem();
     item->setSizeHint(QSize(250, 70));
     addItem(item);
@@ -101,17 +112,41 @@ void ServerConfigList::addOneRowServerConfigData(ServerConfig *curConfig)
 }
 int ServerConfigList::getItemRow(ServerConfigItem *findItem)
 {
-    for (int i = 0; i < count(); i++) {
-        ServerConfigItem *curItem = qobject_cast<ServerConfigItem *>(itemWidget(item(i)));
-        if (curItem == findItem) {
+    for (int i = 0; i < count(); i++)
+    {
+        ServerConfigItem *curItem = qobject_cast< ServerConfigItem * >(itemWidget(item(i)));
+        if (curItem == findItem)
+        {
             return i;
         }
-
     }
     return -1;
 }
 void ServerConfigList::handleModifyServerConfig(ServerConfigItem *item)
 {
+    ServerConfig *     curItemServer = item->getCurServerConfig();
+    ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        if (dlg.isDelServer())
+        {
+            OperationConfirmDlg optDlg;
+            optDlg.setOperatTypeName(tr("delete opt"));
+            optDlg.setTipInfo(tr("Do you sure to delete the %1").arg(curItemServer->m_serverName));
+            optDlg.exec();
+            if (optDlg.getConfirmResult() == QDialog::Accepted)
+            {
+                takeItem(getItemRow(item));
+                ServerConfigManager::instance()->delServerConfig(curItemServer);
+                emit listItemCountChange();
+            }
+        }
+        else
+        {
+            //刷新所有数据，待完善
+            refreshAllDatas();
+        }
+    }
 #if 0
     QAction *curItemAction = item->getCurCustomCommandAction();
     CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, curItemAction, this);

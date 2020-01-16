@@ -1,23 +1,24 @@
 #include "operationconfirmdlg.h"
+#include <DApplicationHelper>
 #include <DButtonBox>
+#include <DIconButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <DIconButton>
-#include <DApplicationHelper>
-OperationConfirmDlg::OperationConfirmDlg(QWidget *parent) : DAbstractDialog(parent)
-    , m_iconLabel(new DLabel(this))
-    , m_operatType(new DLabel(this))
-    , m_tipInfo(new DLabel(this))
-    , m_okButton(new DButtonBoxButton(tr("Delete")))
-    , m_cancelButton(new DButtonBoxButton(tr("Cancel")))
+OperationConfirmDlg::OperationConfirmDlg(QWidget *parent)
+    : DAbstractDialog(parent),
+      m_iconLabel(new DLabel(this)),
+      m_operatType(new DLabel(this)),
+      m_tipInfo(new DLabel(this)),
+      m_okButton(new DButtonBoxButton(tr("Delete"))),
+      m_cancelButton(new DButtonBoxButton(tr("Cancel")))
 {
-    //setWindowFlag(Qt::Dialog| Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
-    //setAttribute(Qt::WA_ShowModal, true);
+    // setWindowFlag(Qt::Dialog| Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
+    // setAttribute(Qt::WA_ShowModal, true);
 
-    //m_iconLabel->setPixmap(QPixmap(QIcon::fromTheme("deepin-terminal")));
+    // m_iconLabel->setPixmap(QPixmap(QIcon::fromTheme("deepin-terminal")));
     setWindowModality(Qt::ApplicationModal);
     setFixedSize(300, 200);
-    QHBoxLayout *headLayout = new QHBoxLayout();
+    QHBoxLayout *headLayout   = new QHBoxLayout();
     DIconButton *pCloseButton = new DIconButton(QStyle::SP_DialogCloseButton);
     headLayout->addStretch();
     headLayout->addWidget(pCloseButton);
@@ -36,19 +37,18 @@ OperationConfirmDlg::OperationConfirmDlg(QWidget *parent) : DAbstractDialog(pare
     hLayout->setSpacing(0);
     hLayout->setMargin(0);
     DButtonBox *btBox = new DButtonBox();
-    //m_okButton->setText(tr("Ok"));
-    //m_cancelButton->setText(tr("Cancel"));
+    // m_okButton->setText(tr("Ok"));
+    // m_cancelButton->setText(tr("Cancel"));
     DPalette pb = DApplicationHelper::instance()->palette(m_okButton);
     pb.setBrush(DPalette::Base, pb.color(DPalette::ItemBackground));
     pb.setColor(QPalette::Text, QColor(255, 0, 0));
     m_okButton->setPalette(pb);
     btBox->setFixedHeight(50);
-    QList<DButtonBoxButton *> listBtnBox;
+    QList< DButtonBoxButton * > listBtnBox;
     listBtnBox.append(m_cancelButton);
     listBtnBox.append(m_okButton);
-    //m_okButton->setFocus(Qt::StrongFocus);
-    //m_okButton->setStyleSheet("hover{background-color:blue}");
-    //m_cancelButton->setStyleSheet("hover{background-color:blue}");
+    // m_okButton->setFocus(Qt::StrongFocus);
+
     btBox->setButtonList(listBtnBox, true);
 #if 0
     QHBoxLayout *ptmp = new QHBoxLayout();
@@ -62,26 +62,29 @@ OperationConfirmDlg::OperationConfirmDlg(QWidget *parent) : DAbstractDialog(pare
     QVBoxLayout *pVLayout1 = new QVBoxLayout();
     pVLayout1->addLayout(headLayout);
     pVLayout1->addLayout(hLayout);
-    //pVLayout1->addLayout(ptmp);
+    // pVLayout1->addLayout(ptmp);
     pVLayout1->addWidget(btBox);
     setLayout(pVLayout1);
     pVLayout1->setSpacing(0);
     pVLayout1->setMargin(0);
-    connect(btBox, &DButtonBox::buttonClicked, this, [ = ](QAbstractButton * bt) {
-        if (bt == m_okButton) {
+    connect(btBox, &DButtonBox::buttonClicked, this, [=](QAbstractButton *bt) {
+        if (bt == m_okButton)
+        {
             m_confirmResultCode = QDialog::Accepted;
             close();
-        } else {
+        }
+        else
+        {
             m_confirmResultCode = QDialog::Rejected;
             close();
         }
     });
-    connect(pCloseButton, &DIconButton::clicked, this, [ = ]() {
+    connect(pCloseButton, &DIconButton::clicked, this, [=]() {
         m_confirmResultCode = QDialog::Rejected;
         close();
     });
-    //connect(m_okButton, &DButtonBoxButton::clicked, this, &OperationConfirmDlg::slotClickOkButton);
-    //connect(m_cancelButton, &DButtonBoxButton::clicked, this, &OperationConfirmDlg::slotClickCancelButton);
+    // connect(m_okButton, &DButtonBoxButton::clicked, this, &OperationConfirmDlg::slotClickOkButton);
+    // connect(m_cancelButton, &DButtonBoxButton::clicked, this, &OperationConfirmDlg::slotClickCancelButton);
 }
 
 void OperationConfirmDlg::setOperatTypeName(const QString &strName)

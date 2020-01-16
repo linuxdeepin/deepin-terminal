@@ -241,11 +241,11 @@ void MainWindow::setTitleBarBackgroundColor(QString color)
         DThemeManager::instance()->setTheme("light");
     }
     // apply titlebar background color
-    titlebar()->setStyleSheet(QString("%1"
-                                      "Dtk--Widget--DTitlebar {"
-                                      "background: %2;"
-                                      "}")
-                                  .arg(m_titlebarStyleSheet, color));
+    //    titlebar()->setStyleSheet(QString("%1"
+    //                                      "Dtk--Widget--DTitlebar {"
+    //                                      "background: %2;"
+    //                                      "}")
+    //                                  .arg(m_titlebarStyleSheet, color));
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)

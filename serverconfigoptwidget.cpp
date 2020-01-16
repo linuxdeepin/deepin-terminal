@@ -1,24 +1,25 @@
 #include "serverconfigoptwidget.h"
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QGridLayout>
-ServerConfigOptWidget::ServerConfigOptWidget(QWidget *parent) : QWidget(parent)
-    , m_titleLabel(new DLabel)
-    , m_closeButton(new DIconButton(QStyle::SP_DialogCloseButton))
-    , m_serverName(new DLineEdit)
-    , m_address(new DLineEdit)
-    , m_port(new DSpinBox)
-    , m_userName(new DLineEdit)
-    , m_password(new DPasswordEdit)
-    , m_privateKey(new DFileChooserEdit)
-    , m_group(new DLineEdit)
-    , m_path(new DLineEdit)
-    , m_command(new DLineEdit)
-    , m_coding(new DComboBox)
-    , m_backSapceKey(new DComboBox)
-    , m_deleteKey(new DComboBox)
-    , m_advancedOptions(new DCommandLinkButton(tr("Advanced options")))
-    , m_delServer(new DCommandLinkButton(tr("Delete server")))
+ServerConfigOptWidget::ServerConfigOptWidget(QWidget *parent)
+    : QWidget(parent),
+      m_titleLabel(new DLabel),
+      m_closeButton(new DIconButton(QStyle::SP_DialogCloseButton)),
+      m_serverName(new DLineEdit),
+      m_address(new DLineEdit),
+      m_port(new DSpinBox),
+      m_userName(new DLineEdit),
+      m_password(new DPasswordEdit),
+      m_privateKey(new DFileChooserEdit),
+      m_group(new DLineEdit),
+      m_path(new DLineEdit),
+      m_command(new DLineEdit),
+      m_coding(new DComboBox),
+      m_backSapceKey(new DComboBox),
+      m_deleteKey(new DComboBox),
+      m_advancedOptions(new DCommandLinkButton(tr("Advanced options"))),
+      m_delServer(new DCommandLinkButton(tr("Delete server")))
 
 {
     setWindowModality(Qt::ApplicationModal);
@@ -32,8 +33,8 @@ ServerConfigOptWidget::ServerConfigOptWidget(QWidget *parent) : QWidget(parent)
     headLayout->setSpacing(0);
     headLayout->setMargin(0);
 
-    QGridLayout *pGridLayout = new QGridLayout();
-    DLabel *pServerNameLabel = new DLabel(tr("Server name:"));
+    QGridLayout *pGridLayout      = new QGridLayout();
+    DLabel *     pServerNameLabel = new DLabel(tr("Server name:"));
     pServerNameLabel->setAlignment(Qt::AlignLeft);
     pServerNameLabel->setFixedWidth(100);
     m_serverName->lineEdit()->setPlaceholderText(tr("Optional"));
@@ -55,10 +56,6 @@ ServerConfigOptWidget::ServerConfigOptWidget(QWidget *parent) : QWidget(parent)
     pPortLabel->setFixedWidth(100);
     m_userName->lineEdit()->setPlaceholderText(tr("Optional"));
 
-    //m_serverName->setStyleSheet("QLineEdit{border:1px solid gray;}");
     connect(m_closeButton, &DIconButton::clicked, this, &ServerConfigOptWidget::slotClose);
 }
-void ServerConfigOptWidget::slotClose()
-{
-
-}
+void ServerConfigOptWidget::slotClose() {}

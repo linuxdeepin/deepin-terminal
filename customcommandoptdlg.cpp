@@ -43,17 +43,17 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     DLabel *pNameLabel = new DLabel(tr("Name:"));
     pNameLabel->setFixedWidth(100);
     m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
-    m_nameLineEdit->setStyleSheet("QLineEdit{border:1px solid gray;}");
+
 
     DLabel *pCommandLabel = new DLabel(tr("Command:"));
     pCommandLabel->setFixedWidth(100);
     m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
-    m_commandLineEdit->setStyleSheet("QLineEdit{border:1px solid gray;}");
+
     DLabel *pShortCutsLabel = new DLabel(tr("Shortcuts:"));
     pNameLabel->setFixedWidth(100);
 
     //pShortCutsLineEdit->setMinimumWidth(100);
-    //pShortCutsLineEdit->setStyleSheet("QLineEdit{border:1px solid gray;}");
+
     m_shortCutsLineEdit->ShortcutDirection(Qt::AlignLeft);
     pGridLayout->addWidget(pNameLabel, 0, 0);
     pGridLayout->addWidget(m_nameLineEdit, 0, 1);
@@ -80,7 +80,7 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
 
         QHBoxLayout *pHboxLayout1 = new QHBoxLayout();
         DCommandLinkButton *pCommandLinkBt = new DCommandLinkButton(tr("Delete Command"));
-        //pCommandLinkBt->setStyleSheet("font-color:white;");
+
         DPalette pa1 = DApplicationHelper::instance()->palette(pCommandLinkBt);
         QBrush brush1 = pa1.textWarning();
         pa1.setBrush(DPalette::ButtonText, brush1);

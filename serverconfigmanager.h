@@ -1,9 +1,9 @@
 #ifndef SERVERCONFIGMANAGER_H
 #define SERVERCONFIGMANAGER_H
 
-#include <QObject>
 #include <QList>
 #include <QMap>
+#include <QObject>
 class ServerConfig
 {
 public:
@@ -25,21 +25,22 @@ class ServerConfigManager : public QObject
 {
     Q_OBJECT
 public:
-
-    static ServerConfigManager *instance();
-    void initServerConfig();
-    void saveServerConfig(ServerConfig *config);
-    void delServerConfig(ServerConfig *config);
-    QMap<QString, QList<ServerConfig *> > &getServerCommands();
+    static ServerConfigManager *              instance();
+    void                                      initServerConfig();
+    void                                      saveServerConfig(ServerConfig *config);
+    void                                      delServerConfig(ServerConfig *config);
+    void                                      modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig);
+    QMap< QString, QList< ServerConfig * > > &getServerCommands();
 signals:
 
 public slots:
 private:
     ServerConfigManager(QObject *parent = nullptr);
+
 private:
     static ServerConfigManager *m_instance;
-    //QList<ServerConfig *> m_serverConfigs;
-    QMap<QString, QList<ServerConfig *> > m_serverConfigs;
+    // QList<ServerConfig *> m_serverConfigs;
+    QMap< QString, QList< ServerConfig * > > m_serverConfigs;
 };
 
-#endif // SERVERCONFIGMANAGER_H
+#endif  // SERVERCONFIGMANAGER_H
