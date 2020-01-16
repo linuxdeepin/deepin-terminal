@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 
+#include "termargumentparser.h"
 #include "termproperties.h"
 
 #include <DApplication>
@@ -19,9 +20,11 @@ int main(int argc, char *argv[])
     DApplication::loadDXcbPlugin();
 
     DApplication app(argc, argv);
-    app.setOrganizationName("blumia");
-    app.setApplicationName("dterm");
-    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
+    app.setOrganizationName("deepin");
+    app.setOrganizationDomain("deepin.org");
+    app.setApplicationVersion("1.0");
+    app.setApplicationName("deepin-terminal");
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
     app.loadTranslator();
 
@@ -39,7 +42,7 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     QCommandLineOption optionExecute({ "e", "execute" }, "Execute command instead of shell", "command");
     parser.addOptions({ optionExecute });
-    parser.process(app);
+    parser.parse(app.arguments());
 
     TermProperties firstTermProperties;
 
@@ -74,8 +77,16 @@ int main(int argc, char *argv[])
      * ************************/
 
     MainWindow w(firstTermProperties);
-    w.setQuakeWindow(false);
-    w.show();
+
+    /********* Modify by n013252 wangliang 2020-01-14: 用于解析命令参数 ****************/
+    TermArgumentParser argumentParser;
+    if (argumentParser.parseArguments(&w))
+    {
+        // Exit process after 1000ms.
+        QTimer::singleShot(1000, [&]() { app.quit(); });
+        return app.exec();
+    }
+    /**************** Modify by n013252 wangliang End ****************/
 
     return app.exec();
 }

@@ -45,6 +45,11 @@ public:
     void             setQuakeWindow(bool isQuakeWindow);
     ShortcutManager *getShortcutManager();
 
+    /********** Modify by n013252 wangliang 2020-01-14: 是否主动激活主窗口 **********/
+    bool isQuakeWindowActivated();
+    void setQuakeWindowActivated(bool isQuakeWindowActivated);
+    /**************** Modify by n013252 wangliang End ****************/
+
 protected:
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
@@ -84,6 +89,7 @@ private:
     TermProperties                       m_properties;
     TitleBar *                           m_titleBar{ nullptr };
     bool                                 m_isQuakeWindow{ false };
+    bool                                 m_isQuakeWindowActivated{ false };
 };
 
 #endif  // MAINWINDOW_H

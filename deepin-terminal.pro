@@ -62,7 +62,10 @@ HEADERS += \
     remotemanagementsearchpanel.h \
     serverconfigoptwidget.h \
     serverconfigoptdlg.h \
-    termtabbar.h
+    termtabbar.h \
+    quaketerminaladapter.h \
+    termargumentparser.h \
+    quaketerminalproxy.h
 
 SOURCES += \
     main.cpp \
@@ -101,7 +104,10 @@ SOURCES += \
     remotemanagementsearchpanel.cpp \
     serverconfigoptwidget.cpp \
     serverconfigoptdlg.cpp \
-    termtabbar.cpp
+    termtabbar.cpp \
+    quaketerminaladapter.cpp \
+    termargumentparser.cpp \
+    quaketerminalproxy.cpp
 
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts

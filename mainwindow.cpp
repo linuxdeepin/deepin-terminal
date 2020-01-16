@@ -679,8 +679,32 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                 return true;
             }
         }
+
+        /********** Modify by n013252 wangliang 2020-01-14: 雷神窗口从未激活状态恢复****************/
+        if (watched == this && event->type() == QEvent::WindowStateChange)
+        {
+            event->ignore();
+
+            show();
+            raise();
+            activateWindow();
+
+            m_isQuakeWindowActivated = true;
+            return true;
+        }
+        /**************** Modify by n013252 wangliang End ****************/
     }
     return QObject::eventFilter(watched, event);
+}
+
+bool MainWindow::isQuakeWindowActivated()
+{
+    return m_isQuakeWindowActivated;
+}
+
+void MainWindow::setQuakeWindowActivated(bool isQuakeWindowActivated)
+{
+    m_isQuakeWindowActivated = isQuakeWindowActivated;
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
