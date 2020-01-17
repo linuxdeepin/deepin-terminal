@@ -79,7 +79,7 @@ void MainWindow::initUI()
     // parts.
     initPlugins();
     initWindow();
-
+    qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
 }
 
@@ -207,6 +207,7 @@ void MainWindow::focusTab(const QString &identifier)
         {
             m_termStackWidget->setCurrentWidget(tabPage);
             tabPage->focusCurrentTerm();
+
             break;
         }
     }
@@ -303,10 +304,25 @@ void MainWindow::initPlugins()
 
 void MainWindow::initWindow()
 {
-    QSettings settings("blumia", "dterm");
-    restoreGeometry(settings.value("geometry").toByteArray());
-    restoreState(settings.value("windowState").toByteArray());
-
+    QSettings      settings("blumia", "dterm");
+    const QString &windowState =
+        Settings::instance()->settings->option("advanced.window.WindowState")->value().toString();
+    qDebug() << windowState;
+    // init window state.
+    if (windowState == "window_maximum")
+    {
+        showMaximized();
+    }
+    else if (windowState == "fullscreen")
+    {
+        showFullScreen();
+    }
+    else
+    {
+        resize(QSize(1180, 550));
+        // restoreGeometry(settings.value("geometry").toByteArray());
+        move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
+    }
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
 }
 
@@ -316,14 +332,59 @@ void MainWindow::initShortcuts()
     /******** Modify by n014361 wangpeili 2020-01-10: 增加设置的各种快捷键修改关联***********×****/
     // new_tab
     QShortcut *newTab =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "new_tab")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "NewWorkspace")), this);
     connect(newTab, &QShortcut::activated, this, [this]() {
         this->addTab(currentTab()->createCurrentTerminalProperties(), true);
     });
 
+    // CloseWorkspace
+    QShortcut *CloseWorkspace = new QShortcut(
+        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "CloseWorkspace")), this);
+    connect(CloseWorkspace, &QShortcut::activated, this, [this]() {
+        TermWidgetPage *page = currentTab();
+        if (page)
+        {
+            closeTab(page->identifier());
+        }
+    });
+
+    // PreWorkspace
+    QShortcut *PreWorkspace =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "PreWorkspace")), this);
+    connect(PreWorkspace, &QShortcut::activated, this, [this]() {
+        TermWidgetPage *page = currentTab();
+        if (page)
+        {
+            int index = m_tabbar->currentIndex();
+            index -= 1;
+            if (index < 0)
+            {
+                index = m_tabbar->count() - 1;
+            }
+            m_tabbar->setCurrentIndex(index);
+        }
+    });
+
+    // NextWorkspace
+    QShortcut *NextWorkspace =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "NextWorkspace")), this);
+    connect(NextWorkspace, &QShortcut::activated, this, [this]() {
+        TermWidgetPage *page = currentTab();
+        if (page)
+        {
+            int index = m_tabbar->currentIndex();
+            index += 1;
+            if (index == m_tabbar->count())
+            {
+                index = 0;
+            }
+            m_tabbar->setCurrentIndex(index);
+        }
+    });
+
     // horizontal_split
     QShortcut *splitHorizontal = new QShortcut(
-        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "horizontal_split")), this);
+        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "HorizontalSplit")), this);
     connect(splitHorizontal, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -334,8 +395,8 @@ void MainWindow::initShortcuts()
     });
 
     // vertical_split
-    QShortcut *splitVertical = new QShortcut(
-        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "vertical_split")), this);
+    QShortcut *splitVertical =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "VerticalSplit")), this);
     connect(splitVertical, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -345,9 +406,9 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // focus_nav_up
+    // FocusNavUp
     QShortcut *focusNavUp =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "focus_nav_up")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "FocusNavUp")), this);
     connect(focusNavUp, &QShortcut::activated, this, [this]() {
         qDebug() << "Alt+k";
         TermWidgetPage *page = currentTab();
@@ -356,9 +417,9 @@ void MainWindow::initShortcuts()
             page->focusNavigation(Qt::TopEdge);
         }
     });
-    // focus_nav_down
-    QShortcut *focusNavDown = new QShortcut(
-        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "focus_nav_down")), this);
+    // FocusNavDown
+    QShortcut *focusNavDown =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "FocusNavDown")), this);
     connect(focusNavDown, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -366,9 +427,9 @@ void MainWindow::initShortcuts()
             page->focusNavigation(Qt::BottomEdge);
         }
     });
-    // focus_nav_left
-    QShortcut *focusNavLeft = new QShortcut(
-        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "focus_nav_left")), this);
+    // FocusNavLeft
+    QShortcut *focusNavLeft =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "FocusNavLeft")), this);
     connect(focusNavLeft, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -376,9 +437,9 @@ void MainWindow::initShortcuts()
             page->focusNavigation(Qt::LeftEdge);
         }
     });
-    // focus_nav_right
-    QShortcut *focusNavRight = new QShortcut(
-        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "focus_nav_right")), this);
+    // FocusNavRight
+    QShortcut *focusNavRight =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "FocusNavRight")), this);
     connect(focusNavRight, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -388,25 +449,32 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // CloseTab
-    QShortcut *CloseTab =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "CloseTab")), this);
-    connect(CloseTab, &QShortcut::activated, this, [this]() {
+    // CloseWindows
+    QShortcut *CloseWindow =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "CloseWindow")), this);
+    connect(CloseWindow, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
         {
-            closeTab(page->identifier());
+            qDebug() << "CloseWindow";
+            page->closeSplit(page->currentTerminal());
         }
     });
 
-    // closeOtherTab
-    QShortcut *closeOther =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "CloseOtherTab")), this);
-    connect(closeOther, &QShortcut::activated, this, [this]() { closeOtherTab(); });
+    // CloseOtherWindows
+    QShortcut *CloseOtherWindows = new QShortcut(
+        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("workspace", "CloseOtherWindows")), this);
+    connect(CloseOtherWindows, &QShortcut::activated, this, [this]() {
+        TermWidgetPage *page = currentTab();
+        if (page)
+        {
+            page->closeOtherTerminal();
+        }
+    });
 
     // copy
     QShortcut *copyShortcut =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "copy")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "Copy")), this);
     connect(copyShortcut, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -417,7 +485,7 @@ void MainWindow::initShortcuts()
 
     // paste
     QShortcut *pasteShortcut =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "paste")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "Paste")), this);
     connect(pasteShortcut, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -427,9 +495,20 @@ void MainWindow::initShortcuts()
         // page->doAction("paste");
     });
 
+    // Search
+    QShortcut *SearchShortcut =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "Search")), this);
+    connect(SearchShortcut, &QShortcut::activated, this, [this]() {
+        TermWidgetPage *page = currentTab();
+        if (page)
+        {
+            page->toggleShowSearchBar();
+        }
+    });
+
     // zoom_in
     QShortcut *zoomInShortcut =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "zoom_in")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "ZoomIn")), this);
     connect(zoomInShortcut, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -440,7 +519,7 @@ void MainWindow::initShortcuts()
 
     // zoom_out
     QShortcut *zoomOutShortcut =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "zoom_out")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "ZoomOut")), this);
     connect(zoomOutShortcut, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -450,8 +529,8 @@ void MainWindow::initShortcuts()
     });
 
     // zoom_out
-    QShortcut *DefaultFontSize = new QShortcut(
-        QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "DefaultFontSize")), this);
+    QShortcut *DefaultFontSize =
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "DefaultSize")), this);
     connect(DefaultFontSize, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -511,9 +590,9 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // fullscreen
+    // FullScreen
     QShortcut *fullscreen =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("advanced", "fullscreen")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("advanced", "FullScreen")), this);
     connect(fullscreen, &QShortcut::activated, this, [this]() {
         if (!window()->windowState().testFlag(Qt::WindowFullScreen))
         {
@@ -525,9 +604,9 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // rename_tab
+    // RenameTab
     QShortcut *rename_tab =
-        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("advanced", "rename_tab")), this);
+        new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("advanced", "RenameTab")), this);
     connect(rename_tab, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
@@ -611,6 +690,14 @@ void MainWindow::initConnections()
         }
         focusTab(currentTab()->identifier());
     });
+
+    connect(Settings::instance(), &Settings::pressingScrollChanged, this, [this](bool value) {
+        forAllTabPage([value](TermWidgetPage *tabPage) { tabPage->setPressingScroll(value); });
+    });
+
+    connect(Settings::instance(), &Settings::OutputScrollChanged, this, [this](bool value) {
+        forAllTabPage([value](TermWidgetPage *tabPage) { tabPage->setOutputtingScroll(value); });
+    });
     /********************* Modify by n014361 wangpeili End ************************/
 }
 
@@ -693,7 +780,19 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             return true;
         }
         /**************** Modify by n013252 wangliang End ****************/
+
+        /******** Modify by n014361 wangpeili 2020-01-13:雷神模式隐藏 ****************/
+        if (Settings::instance()->settings->option("advanced.window.HideRaytheonWindow")->value().toBool())
+        {
+            if (event->type() == QEvent::FocusOut)
+            {
+                qDebug() << "focusOutEvent";
+                this->hide();
+            }
+        }
+        /********************* Modify by n014361 wangpeili End ************************/
     }
+
     return QObject::eventFilter(watched, event);
 }
 
@@ -705,6 +804,11 @@ bool MainWindow::isQuakeWindowActivated()
 void MainWindow::setQuakeWindowActivated(bool isQuakeWindowActivated)
 {
     m_isQuakeWindowActivated = isQuakeWindowActivated;
+}
+
+void MainWindow::focusOutEvent(QFocusEvent *event)
+{
+    // this->hide();
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)

@@ -49,6 +49,8 @@ public:
     void setCursorShape(int shape);
     // 设置光标是否闪烁
     void setCursorBlinking(bool enable);
+    void setPressingScroll(bool enable);
+    void setOutputtingScroll(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
 
 public slots:
@@ -58,6 +60,7 @@ public slots:
     void pasteClipboard();
     /******** Modify by n014361 wangpeili 2020-01-10: 粘贴选择内容   ****************/
     void pasteSelection();
+    void toggleShowSearchBar();
     /********************* Modify by n014361 wangpeili End ************************/
 
 signals:
@@ -69,6 +72,7 @@ signals:
     void termClosed();
     void termRequestOpenCustomCommand();
     void termRequestOpenRemoteManagement();
+
 private:
     void initUI();
 

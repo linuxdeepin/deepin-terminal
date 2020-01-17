@@ -54,6 +54,7 @@ protected:
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 protected slots:
     void onTermTitleChanged(QString title);

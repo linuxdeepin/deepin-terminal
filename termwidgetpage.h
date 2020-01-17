@@ -20,6 +20,7 @@ public:
     void               closeSplit(TermWidgetWrapper *term);
     const QString      identifier();
     void               focusCurrentTerm();
+    void               closeOtherTerminal();
     void               focusNavigation(Qt::Edge dir);
 
     /******** Modify by n014361 wangpeili 2020-01-08: 计算上下左右判断方法 ******×****/
@@ -36,6 +37,7 @@ public:
 
     void copyClipboard();
     void pasteClipboard();
+    void toggleShowSearchBar();
 
     void zoomInCurrentTierminal();
     void zoomOutCurrentTerminal();
@@ -55,6 +57,8 @@ public:
     void setcursorShape(int shape);
     // 设置光标闪烁
     void setBlinkingCursor(bool enable);
+    void setPressingScroll(bool enable);
+    void setOutputtingScroll(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
 
 public slots:

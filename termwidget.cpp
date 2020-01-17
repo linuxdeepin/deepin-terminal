@@ -10,6 +10,7 @@
 #include <QVBoxLayout>
 
 #include <DDesktopServices>
+#include <QTime>
 #include <dinputdialog.h>
 
 DWIDGET_USE_NAMESPACE
@@ -25,7 +26,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
     setTerminalOpacity(Settings::instance()->opacity());
     setScrollBarPosition(QTermWidget::ScrollBarRight);
-    setKeyboardCursorShape(static_cast< QTermWidget::KeyboardCursorShape >(Settings::instance()->cursorShape()));
+    /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
+    // theme
+    setColorScheme(Settings::instance()->colorScheme());
     if (properties.contains(WorkingDir))
     {
         setWorkingDirectory(properties[WorkingDir].toString());
@@ -46,8 +49,42 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     }
 
-    // config
-    setColorScheme(Settings::instance()->colorScheme());
+    // 字体和字体大小
+    QFont font = getTerminalFont();
+    font.setFamily(Settings::instance()->fontName());
+    font.setPointSize(Settings::instance()->fontSize());
+    setTerminalFont(font);
+
+    // 光标形状
+    setKeyboardCursorShape(static_cast< QTermWidget::KeyboardCursorShape >(Settings::instance()->cursorShape()));
+    // 光标闪烁
+    setBlinkingCursor(Settings::instance()->cursorBlink());
+
+    // 按键滚动
+    if (Settings::instance()->PressingScroll())
+    {
+        qDebug() << "setMotionAfterPasting(2)";
+        setMotionAfterPasting(2);
+    }
+    else
+    {
+        setMotionAfterPasting(0);
+        qDebug() << "setMotionAfterPasting(0)";
+    }
+
+    if (Settings::instance()->OutputtingScroll())
+    {
+        connect(this, &QTermWidget::receivedData, this, [this](QString value) {
+            // qDebug() << "receivedData(true)" << value;
+            if (value != "\r\n")
+            {
+                // qDebug() << "receivedData(true)" << value;
+                scrollToEnd();
+            }
+        });
+
+        // setMonitorActivity(true);
+    }
 
 #if !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
     setBlinkingCursor(Settings::instance()->cursorBlink());
@@ -61,6 +98,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     });
 
     connect(this, &QWidget::customContextMenuRequested, this, &TermWidget::customContextMenuCall);
+
+    /********************* Modify by n014361 wangpeili End ************************/
 
     startShellProgram();
 }
@@ -167,9 +206,10 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
-    connect(m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
-    // m_term->selectionChanged()
-    // connect(m_term, &TermWidget::copyAvailable, this, &TermWidgetWrapper::AutoCopy);
+    connect(m_term,
+            &TermWidget::termRequestOpenRemoteManagement,
+            this,
+            &TermWidgetWrapper::termRequestOpenRemoteManagement);
 }
 
 bool TermWidgetWrapper::isTitleChanged() const
@@ -240,15 +280,17 @@ void TermWidgetWrapper::setTerminalFontSize(const int fontSize)
 *******************************************************************************/
 void TermWidgetWrapper::selectAll()
 {
-    int iRowCount     = m_term->historyLinesCount();
+    int iRowCount     = m_term->historyLinesCount() + m_term->screenLinesCount();
     int iColumnsCount = m_term->screenColumnsCount();
 
-    m_term->setSelectionStart(1, 1);
-    m_term->setSelectionEnd(iRowCount, iColumnsCount);
-    m_term->hide();
-    m_term->show();
+    m_term->setSelectionStart(0, 0);
+    m_term->setSelectionEnd(3, iColumnsCount);
+
     qDebug() << "selectAll" << iRowCount << iColumnsCount;
-    qDebug() << m_term->availableKeyBindings();
+    m_term->getHotSpotAt(3, iColumnsCount);
+
+    qDebug() << m_term->selectedText(true);
+    // qDebug() << m_term->availableKeyBindings();
 }
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::skipToNextCommand()
@@ -299,11 +341,45 @@ void TermWidgetWrapper::setCursorBlinking(bool enable)
     // m_term->clearFocus();
     // emit m_term->termLostFocus();
 }
+using namespace Konsole;
+void TermWidgetWrapper::setPressingScroll(bool enable)
+{
+    qDebug() << "setPressingScroll";
+    if (enable)
+    {
+        m_term->setMotionAfterPasting(2);
+    }
+    else
+    {
+        m_term->setMotionAfterPasting(0);
+    }
+}
+
+void TermWidgetWrapper::setOutputtingScroll(bool enable)
+{
+    if (enable)
+    {
+        connect(m_term, &QTermWidget::receivedData, this, [this](QString value) {
+            // qDebug() << "receivedData(true)" << value;
+            if (value != "\r\n")
+            {
+                qDebug() << "setOutputtingScroll(true)";
+                m_term->scrollToEnd();
+            }
+        });
+    }
+    else
+    {
+
+        disconnect(m_term, &QTermWidget::receivedData, this, 0);
+    }
+}
 
 void TermWidgetWrapper::zoomIn()
 {
     m_term->zoomIn();
     // m_term->test();
+    // m_term->silence();
 }
 
 void TermWidgetWrapper::zoomOut()
@@ -329,7 +405,19 @@ void TermWidgetWrapper::pasteClipboard()
 *******************************************************************************/
 void TermWidgetWrapper::pasteSelection()
 {
+
+    int x1, y1, x2, y2;
+    m_term->getSelectionStart(x1, y1);
+    qDebug() << x1 << y1;
+    m_term->getSelectionEnd(x2, y2);
+    qDebug() << x2 << y2;
+
     m_term->pasteSelection();
+}
+
+void TermWidgetWrapper::toggleShowSearchBar()
+{
+    m_term->toggleShowSearchBar();
 }
 
 void TermWidgetWrapper::initUI()

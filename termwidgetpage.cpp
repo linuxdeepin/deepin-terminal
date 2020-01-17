@@ -53,7 +53,10 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
     s->setFocusPolicy(Qt::NoFocus);
     s->insertWidget(0, term);
 
-    TermProperties     properties(term->workingDirectory());
+    TermProperties properties(term->workingDirectory());
+    term->toggleShowSearchBar();
+    // term->update();
+
     TermWidgetWrapper *w = createTerm(properties);
     s->insertWidget(1, w);
     s->setSizes({ 1, 1 });
@@ -62,11 +65,14 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
     parent->setSizes(parentSizes);
 
     w->setFocus(Qt::OtherFocusReason);
+    // w->toggleShowSearchBar();
+    // this->repaint();
     return w;
 }
 
 void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
 {
+    // qDebug() << "TermWidgetPage::closeSplit";
     QSplitter *parent = qobject_cast< QSplitter * >(term->parent());
     Q_CHECK_PTR(parent);
 
@@ -126,6 +132,19 @@ const QString TermWidgetPage::identifier()
 void TermWidgetPage::focusCurrentTerm()
 {
     m_currentTerm->setFocus();
+}
+
+void TermWidgetPage::closeOtherTerminal()
+{
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : qAsConst(termList))
+    {
+        if (term == m_currentTerm)
+        {
+            continue;
+        }
+        closeSplit(term);
+    }
 }
 // 待删除
 typedef struct
@@ -333,6 +352,15 @@ void TermWidgetPage::pasteClipboard()
     }
 }
 
+void TermWidgetPage::toggleShowSearchBar()
+{
+    TermWidgetWrapper *term = currentTerminal();
+    if (term)
+    {
+        term->toggleShowSearchBar();
+    }
+}
+
 void TermWidgetPage::zoomInCurrentTierminal()
 {
     TermWidgetWrapper *term = currentTerminal();
@@ -454,11 +482,30 @@ void TermWidgetPage::setBlinkingCursor(bool enable)
     // emit termGetFocus();
 }
 
+void TermWidgetPage::setPressingScroll(bool enable)
+{
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
+        term->setPressingScroll(enable);
+    }
+}
+
+void TermWidgetPage::setOutputtingScroll(bool enable)
+{
+    QList< TermWidgetWrapper * > termList = findChildren< TermWidgetWrapper * >();
+    for (TermWidgetWrapper *term : termList)
+    {
+        term->setOutputtingScroll(enable);
+    }
+}
+
 void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
 {
     TermWidgetWrapper *term = qobject_cast< TermWidgetWrapper * >(sender());
     if (term)
     {
+        // toggleShowSearchBar();
         split(term, ori);
     }
 }
