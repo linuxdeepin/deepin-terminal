@@ -27,7 +27,7 @@ Settings::Settings() : QObject(qApp)
     settings->setBackend(m_backend);
 
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
-    auto                      windowState = settings->option("advanced.window.windowstate");
+    auto                      windowState = settings->option("advanced.window.WindowState");
     QMap< QString, QVariant > windowStateMap;
 
     windowStateMap.insert("keys",
@@ -62,67 +62,97 @@ void Settings::initConnection()
         emit settingValueChanged(key, value);
     });
 
-    QPointer< DSettingsOption > opacity = settings->option("basic.interface.opacity");
+    QPointer< DSettingsOption > opacity = settings->option("basic.interface.Opacity");
     connect(opacity, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit opacityChanged(value.toInt() / 100.0);
     });
 
-    QPointer< DSettingsOption > cursorShape = settings->option("advanced.cursor.shape");
+    QPointer< DSettingsOption > cursorShape = settings->option("advanced.cursor.Shape");
     connect(cursorShape, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit cursorShapeChanged(value.toInt());
     });
 
-    QPointer< DSettingsOption > cursorBlink = settings->option("advanced.cursor.blink");
+    QPointer< DSettingsOption > cursorBlink = settings->option("advanced.cursor.link");
     connect(cursorBlink, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit cursorBlinkChanged(value.toBool());
     });
 
-    QPointer< DSettingsOption > backgroundBlur = settings->option("advanced.window.blur_background");
+    QPointer< DSettingsOption > backgroundBlur = settings->option("advanced.window.BlurredBackground");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit backgroundBlurChanged(value.toBool());
     });
 
     /******** Modify by n014361 wangpeili 2020-01-06:  字体，字体大小实时生效 ****************/
-    QPointer< DSettingsOption > fontSize = settings->option("basic.interface.size");
+    QPointer< DSettingsOption > fontSize = settings->option("basic.interface.FontSize");
     connect(fontSize, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit fontSizeChanged(value.toInt());
     });
 
-    QPointer< DSettingsOption > family = settings->option("basic.interface.family");
+    QPointer< DSettingsOption > family = settings->option("basic.interface.Family");
     connect(family, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit fontChanged(value.toString());
+    });
+
+    QPointer< DSettingsOption > PressingScroll = settings->option("advanced.scroll.PressingScroll");
+    connect(PressingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+        emit pressingScrollChanged(value.toBool());
+    });
+
+    QPointer< DSettingsOption > OutputtingScroll = settings->option("advanced.scroll.OutputtingScroll");
+    connect(OutputtingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+        emit OutputScrollChanged(value.toBool());
     });
     /********************* Modify by n014361 wangpeili End ************************/
 }
 
 qreal Settings::opacity() const
 {
-    return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
+    return settings->option("basic.interface.Opacity")->value().toInt() / 100.0;
 }
 
 QString Settings::colorScheme() const
 {
-    return settings->option("basic.interface.theme")->value().toString();
+    return settings->option("basic.interface.Theme")->value().toString();
+}
+
+QString Settings::fontName()
+{
+    return settings->option("basic.interface.Family")->value().toString();
+}
+
+int Settings::fontSize()
+{
+    return settings->option("basic.interface.FontSize")->value().toInt();
+}
+
+bool Settings::PressingScroll()
+{
+    return settings->option("advanced.scroll.PressingScroll")->value().toBool();
+}
+
+bool Settings::OutputtingScroll()
+{
+    return settings->option("advanced.scroll.OutputtingScroll")->value().toBool();
 }
 
 int Settings::cursorShape() const
 {
-    return settings->option("advanced.cursor.shape")->value().toInt();
+    return settings->option("advanced.cursor.Shape")->value().toInt();
 }
 
 bool Settings::cursorBlink() const
 {
-    return settings->option("advanced.cursor.blink")->value().toBool();
+    return settings->option("advanced.cursor.Blink")->value().toBool();
 }
 
 bool Settings::backgroundBlur() const
 {
-    return settings->option("advanced.window.blur_background")->value().toBool();
+    return settings->option("advanced.window.BlurredBackground")->value().toBool();
 }
 
 void Settings::setColorScheme(const QString &name)
 {
-    return settings->option("basic.interface.theme")->setValue(name);
+    return settings->option("basic.interface.Theme")->setValue(name);
 }
 /*******************************************************************************
  1. @函数:   bool Settings::IsPasteSelection()

@@ -20,6 +20,10 @@ public:
     bool  backgroundBlur() const;
 
     QString colorScheme() const;
+    QString fontName();
+    int     fontSize();
+    bool    PressingScroll();
+    bool    OutputtingScroll();
     // 设置主题
     void setColorScheme(const QString &name);
 
@@ -39,6 +43,8 @@ signals:
     void cursorShapeChanged(int shape);
     void cursorBlinkChanged(bool blink);
     void backgroundBlurChanged(bool enabled);
+    void pressingScrollChanged(bool enabled);
+    void OutputScrollChanged(bool enabled);
 
     /******** Modify by n014361 wangpeili 2020-01-06:字体，字体大小修改功能 ******×****/
     void fontSizeChanged(int fontSize);
