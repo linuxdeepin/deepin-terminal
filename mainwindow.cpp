@@ -528,15 +528,15 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // zoom_out
+    // DefaultFontSize
     QShortcut *DefaultFontSize =
         new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("terminal", "DefaultSize")), this);
     connect(DefaultFontSize, &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page)
         {
-            qDebug() << "setFontSize";
-            page->setFontSize(20);
+            // qDebug() << "DefaultFontSize";
+            page->setFontSize(Settings::instance()->fontSize());
         }
     });
 
