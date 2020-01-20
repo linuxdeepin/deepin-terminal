@@ -1,11 +1,10 @@
 #include "mainwindow.h"
-
 #include "termargumentparser.h"
 #include "termproperties.h"
 
 #include <DApplication>
-
 #include <DLog>
+
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QTranslator>
@@ -46,22 +45,16 @@ int main(int argc, char *argv[])
 
     TermProperties firstTermProperties;
 
-    if (parser.isSet(optionExecute))
-    {
+    if (parser.isSet(optionExecute)) {
         // get raw arg, so we cannot use `parser.value(optionExecute)`.
         QStringList rawCommandList;
-        bool        reachedArg = false;
-        for (int i = 0; i < argc; i++)
-        {
+        bool reachedArg = false;
+        for (int i = 0; i < argc; i++) {
             QString currentArg = QString::fromLocal8Bit(argv[i]);
-            if (reachedArg)
-            {
+            if (reachedArg) {
                 rawCommandList.append(currentArg);
-            }
-            else
-            {
-                if (currentArg == "-e" || currentArg == "--execute")
-                {
+            } else {
+                if (currentArg == "-e" || currentArg == "--execute") {
                     reachedArg = true;
                     continue;
                 }
@@ -73,15 +66,13 @@ int main(int argc, char *argv[])
     /******** Modify by n014361 wangpeili 2020-01-10: 增加日志 ***********×****/
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
-    /********************* Modify by n014361 wangpeili End
-     * ************************/
+    /********************* Modify by n014361 wangpeili End *****************/
 
     MainWindow w(firstTermProperties);
 
     /********* Modify by n013252 wangliang 2020-01-14: 用于解析命令参数 ****************/
     TermArgumentParser argumentParser;
-    if (argumentParser.parseArguments(&w))
-    {
+    if (argumentParser.parseArguments(&w)) {
         // Exit process after 1000ms.
         QTimer::singleShot(1000, [&]() { app.quit(); });
         return app.exec();

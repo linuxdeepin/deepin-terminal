@@ -1,12 +1,15 @@
 #ifndef OPERATIONCONFIRMDLG_H
 #define OPERATIONCONFIRMDLG_H
 
-#include <QWidget>
 #include <DSuggestButton>
 #include <DLabel>
 #include <DButtonBox>
 #include <DDialog>
+
+#include <QWidget>
+
 DWIDGET_USE_NAMESPACE
+
 class OperationConfirmDlg : public DAbstractDialog
 {
     Q_OBJECT
@@ -15,18 +18,18 @@ public:
     void setOperatTypeName(const QString &strName);
     void setTipInfo(const QString &strInfo);
     QDialog::DialogCode getConfirmResult();
-signals:
 
 public slots:
     void slotClickOkButton();
     void slotClickCancelButton();
+
 private:
-    DLabel *m_iconLabel;
-    DLabel *m_operatType;
-    DLabel *m_tipInfo;//tip  information
-    DButtonBoxButton *m_okButton;
-    DButtonBoxButton *m_cancelButton;
+    DLabel *m_iconLabel = nullptr;
+    DLabel *m_operatType = nullptr;
+    DLabel *m_tipInfo = nullptr;  // tip  information
+    DButtonBoxButton *m_okButton = nullptr;
+    DButtonBoxButton *m_cancelButton = nullptr;
     QDialog::DialogCode m_confirmResultCode;
 };
 
-#endif // OPERATIONCONFIRMDLG_H
+#endif  // OPERATIONCONFIRMDLG_H

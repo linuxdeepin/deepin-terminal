@@ -15,8 +15,8 @@ public:
     int rightSpace();
 
 private:
-    QHBoxLayout *m_layout;
+    QHBoxLayout *m_layout = nullptr;
     int m_rightSpace;
 };
 
-#endif // TITLEBAR_H
+#endif  // TITLEBAR_H

@@ -9,9 +9,7 @@
 #include <QVBoxLayout>
 
 ThemePanel::ThemePanel(QWidget *parent)
-    : RightPanel(parent),
-      m_themeView(new ThemeListView(this)),
-      m_themeModel(new ThemeListModel(this))
+    : RightPanel(parent), m_themeView(new ThemeListView(this)), m_themeModel(new ThemeListModel(this))
 {
     // init view.
     m_themeView->setModel(m_themeModel);

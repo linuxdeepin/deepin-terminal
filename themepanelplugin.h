@@ -1,7 +1,7 @@
 #ifndef THEMEPANELPLUGIN_H
 #define THEMEPANELPLUGIN_H
 
-#include <mainwindowplugininterface.h>
+#include "mainwindowplugininterface.h"
 
 class ThemePanel;
 class MainWindow;
@@ -16,9 +16,10 @@ public:
 
     ThemePanel *getThemePanel();
     void initThemePanel();
+
 private:
     MainWindow *m_mainWindow = nullptr;
     ThemePanel *m_themePanel = nullptr;
 };
 
-#endif // THEMEPANELPLUGIN_H
+#endif  // THEMEPANELPLUGIN_H

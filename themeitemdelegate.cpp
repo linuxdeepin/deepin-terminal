@@ -2,10 +2,8 @@
 
 #include <QPainter>
 
-ThemeItemDelegate::ThemeItemDelegate(QObject *parent)
-    : QAbstractItemDelegate(parent)
+ThemeItemDelegate::ThemeItemDelegate(QObject *parent) : QAbstractItemDelegate(parent)
 {
-
 }
 
 void ThemeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -29,22 +27,20 @@ void ThemeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 
     // draw background.
     QPainterPath backgroundPath;
-    backgroundPath.addRoundedRect(QRect(rect.x() + paddingX,
-                                        rect.y() + paddingY,
-                                        rect.width() - paddingX * 2,
-                                        rect.height() - paddingY * 2),
-                                  m_frameRadius, m_frameRadius);
+    backgroundPath.addRoundedRect(
+    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2, rect.height() - paddingY * 2),
+    m_frameRadius,
+    m_frameRadius);
 
     painter->setOpacity(0.8);
     painter->fillPath(backgroundPath, QColor(backgroundColor));
 
     // draw border frame.
     QPainterPath framePath;
-    framePath.addRoundedRect(QRect(rect.x() + paddingX,
-                                   rect.y() + paddingY,
-                                   rect.width() - paddingX * 2,
-                                   rect.height() - paddingY * 2),
-                             m_frameRadius, m_frameRadius);
+    framePath.addRoundedRect(
+    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2, rect.height() - paddingY * 2),
+    m_frameRadius,
+    m_frameRadius);
     QPen framePen;
 
     if (option.state & QStyle::State_Selected) {
@@ -66,11 +62,13 @@ void ThemeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     int nameX = paddingX + 8;
     int nameY = paddingY + 8;
     painter->setPen(QPen(QColor(otherColor)));
-    painter->drawText(QRect(rect.x() + nameX, rect.y() + nameY, rect.width(), lineHeight),
-                      Qt::AlignLeft | Qt::AlignTop, themeName);
+    painter->drawText(
+    QRect(rect.x() + nameX, rect.y() + nameY, rect.width(), lineHeight), Qt::AlignLeft | Qt::AlignTop, themeName);
 }
 
 QSize ThemeItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(option)
+    Q_UNUSED(index)
     return QSize(-1, 61);
 }

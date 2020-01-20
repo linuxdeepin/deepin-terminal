@@ -1,8 +1,8 @@
 #ifndef QUAKETERMINALADAPTER_H
 #define QUAKETERMINALADAPTER_H
 
-#include <QtCore/QObject>
-#include <QtDBus/QtDBus>
+#include <QObject>
+#include <QtDBus>
 
 #define kQuakeTerminalService "com.deepin.quake_terminal"
 #define kQuakeTerminalIface "/com/deepin/quake_terminal"
@@ -20,6 +20,7 @@ class QuakeTerminalAdapter : public QDBusAbstractAdaptor
                                        "    </method>\n"
                                        "  </interface>\n"
                                        "")
+
 public:
     QuakeTerminalAdapter(QObject *parent);
     virtual ~QuakeTerminalAdapter();

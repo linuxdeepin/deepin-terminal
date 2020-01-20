@@ -15,4 +15,4 @@ protected:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-#endif // THEMEITEMDELEGATE_H
+#endif  // THEMEITEMDELEGATE_H

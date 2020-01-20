@@ -1,11 +1,14 @@
 #ifndef SERVERCONFIGLIST_H
 #define SERVERCONFIGLIST_H
 
-#include <QWidget>
 #include <DListWidget>
+
+#include <QWidget>
+
+DWIDGET_USE_NAMESPACE
+
 class ServerConfig;
 class ServerConfigItem;
-DWIDGET_USE_NAMESPACE
 class ServerConfigList : public DListWidget
 {
     Q_OBJECT
@@ -23,21 +26,18 @@ public:
     //根据分组信息和搜索信息联合查询
     void refreshDataByGroupAndFilter(const QString &strGroupName, const QString &strFilter);
     void refreshDataByFilter(const QString &strFilter);
+
 private:
     void initData();
 
 signals:
     void listItemCountChange();
-protected:
 
 private slots:
     void handleModifyServerConfig(ServerConfigItem *item);
 
 private:
     int getItemRow(ServerConfigItem *findItem);
-
-
-
 };
 
-#endif // SERVERCONFIGLIST_H
+#endif  // SERVERCONFIGLIST_H

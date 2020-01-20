@@ -1,12 +1,14 @@
 #ifndef CUSTOMCOMMANDLIST_H
 #define CUSTOMCOMMANDLIST_H
 
-#include <QWidget>
 #include <DListWidget>
+
+#include <QWidget>
 #include <QAction>
-class CustomCommandItem;
+
 DWIDGET_USE_NAMESPACE
 
+class CustomCommandItem;
 class CustomCommandList : public DListWidget
 {
     Q_OBJECT
@@ -21,12 +23,12 @@ private:
 
 signals:
     void listItemCountChange();
-protected:
 
 private slots:
     void handleModifyCustomCommand(CustomCommandItem *item);
+
 private:
     int getItemRow(CustomCommandItem *findItem);
 };
 
-#endif // CUSTOMCOMMANDLIST_H
+#endif  // CUSTOMCOMMANDLIST_H

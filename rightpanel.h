@@ -12,7 +12,6 @@ public:
 public slots:
     void show();
     void hide();
-
 };
 
-#endif // THEMEPANEL_H
+#endif  // RIGHTPANEL_H

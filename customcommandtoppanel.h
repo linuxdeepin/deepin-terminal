@@ -1,10 +1,12 @@
 #ifndef CUSTOMCOMMANDTOPPANEL_H
 #define CUSTOMCOMMANDTOPPANEL_H
 
-#include <QWidget>
 #include "rightpanel.h"
 #include "customcommandpanel.h"
 #include "customcommandsearchrstpanel.h"
+
+#include <QWidget>
+
 class CustomCommandTopPanel : public RightPanel
 {
     Q_OBJECT
@@ -15,12 +17,14 @@ public:
 signals:
     void focusOut();
     void handleCustomCurCommand(const QString &strCommand);
+
 public slots:
     void showCustomCommandPanel();
     void showCustomCommandSearchPanel(const QString &strFilter);
+
 private:
-    CustomCommandPanel *m_customCommandPanel;
-    CustomCommandSearchRstPanel *m_customCommandSearchPanel;
+    CustomCommandPanel *m_customCommandPanel = nullptr;
+    CustomCommandSearchRstPanel *m_customCommandSearchPanel = nullptr;
 };
 
-#endif // CUSTOMCOMMANDTOPPANEL_H
+#endif  // CUSTOMCOMMANDTOPPANEL_H

@@ -3,13 +3,19 @@
 
 #include "termproperties.h"
 #include "titlebar.h"
+#include "termwidgetpage.h"
 
 #include <DMainWindow>
+
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
-#include "termwidgetpage.h"
 #include <functional>
+
+#define PLUGIN_TYPE_THEME "Theme"
+#define PLUGIN_TYPE_CUSTOMCOMMAND "Custom Command"
+#define PLUGIN_TYPE_REMOTEMANAGEMENT "Remote Management"
+
 DWIDGET_USE_NAMESPACE
 
 class TabBar;
@@ -18,9 +24,6 @@ class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
-#define PLUGIN_TYPE_THEME "Theme"
-#define PLUGIN_TYPE_CUSTOMCOMMAND "Custom Command"
-#define PLUGIN_TYPE_REMOTEMANAGEMENT "Remote Management"
 
 class MainWindow : public DMainWindow
 {
@@ -37,12 +40,12 @@ public:
     void closeOtherTab();
     /********************* Modify by n014361 wangpeili End ************************/
 
-    void            focusTab(const QString &identifier);
+    void focusTab(const QString &identifier);
     TermWidgetPage *currentTab();
 
-    void             forAllTabPage(const std::function< void(TermWidgetPage *) > &func);
-    void             setTitleBarBackgroundColor(QString color);
-    void             setQuakeWindow(bool isQuakeWindow);
+    void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
+    void setTitleBarBackgroundColor(QString color);
+    void setQuakeWindow(bool isQuakeWindow);
     ShortcutManager *getShortcutManager();
 
     /********** Modify by n013252 wangliang 2020-01-14: 是否主动激活主窗口 **********/
@@ -79,18 +82,18 @@ private:
     void createJsonGroup(const QString &keyCategory, QJsonArray &jsonGroups);
     /********************* Modify by n014361 wangpeili End ************************/
 
-    QMenu *                              m_menu;
-    TabBar *                             m_tabbar;
-    QWidget *                            m_centralWidget;
-    QVBoxLayout *                        m_centralLayout;
-    QStackedWidget *                     m_termStackWidget;
-    QString                              m_titlebarStyleSheet;
-    ShortcutManager *                    m_shortcutManager;
-    QList< MainWindowPluginInterface * > m_plugins;
-    TermProperties                       m_properties;
-    TitleBar *                           m_titleBar{ nullptr };
-    bool                                 m_isQuakeWindow{ false };
-    bool                                 m_isQuakeWindowActivated{ false };
+    QMenu *m_menu = nullptr;
+    TabBar *m_tabbar = nullptr;
+    QWidget *m_centralWidget = nullptr;
+    QVBoxLayout *m_centralLayout = nullptr;
+    QStackedWidget *m_termStackWidget = nullptr;
+    QString m_titlebarStyleSheet = nullptr;
+    ShortcutManager *m_shortcutManager = nullptr;
+    QList<MainWindowPluginInterface *> m_plugins;
+    TermProperties m_properties;
+    TitleBar *m_titleBar = nullptr;
+    bool m_isQuakeWindow = false;
+    bool m_isQuakeWindowActivated = false;
 };
 
 #endif  // MAINWINDOW_H

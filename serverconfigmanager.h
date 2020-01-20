@@ -4,6 +4,7 @@
 #include <QList>
 #include <QMap>
 #include <QObject>
+
 class ServerConfig
 {
 public:
@@ -25,22 +26,20 @@ class ServerConfigManager : public QObject
 {
     Q_OBJECT
 public:
-    static ServerConfigManager *              instance();
-    void                                      initServerConfig();
-    void                                      saveServerConfig(ServerConfig *config);
-    void                                      delServerConfig(ServerConfig *config);
-    void                                      modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig);
-    QMap< QString, QList< ServerConfig * > > &getServerCommands();
-signals:
+    static ServerConfigManager *instance();
+    void initServerConfig();
+    void saveServerConfig(ServerConfig *config);
+    void delServerConfig(ServerConfig *config);
+    void modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig);
+    QMap<QString, QList<ServerConfig *>> &getServerCommands();
 
-public slots:
 private:
     ServerConfigManager(QObject *parent = nullptr);
 
 private:
     static ServerConfigManager *m_instance;
     // QList<ServerConfig *> m_serverConfigs;
-    QMap< QString, QList< ServerConfig * > > m_serverConfigs;
+    QMap<QString, QList<ServerConfig *>> m_serverConfigs;
 };
 
 #endif  // SERVERCONFIGMANAGER_H

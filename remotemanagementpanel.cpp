@@ -1,24 +1,24 @@
 #include "remotemanagementpanel.h"
 #include "serverconfigitem.h"
 #include "shortcutmanager.h"
+
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
     initUI();
 }
+
 void RemoteManagementPanel::refreshPanel()
 {
     clearSearchInfo();
     m_listWidget->refreshAllDatas();
     refreshSearchState();
 }
+
 void RemoteManagementPanel::refreshSearchState()
 {
-    if (m_listWidget->count() >= 2)
-    {
+    if (m_listWidget->count() >= 2) {
         m_searchEdit->show();
-    }
-    else
-    {
+    } else {
         m_searchEdit->hide();
     }
 }
@@ -34,8 +34,7 @@ void RemoteManagementPanel::showCurSearchResult()
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
     ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
-    if (dlg.exec() == QDialog::Accepted)
-    {
+    if (dlg.exec() == QDialog::Accepted) {
         //        QAction &curAction = dlg.getCurAction();
         //        QAction *existAction = ShortcutManager::instance()->checkActionIsExist(curAction);
         //        if (nullptr == existAction) {
@@ -71,15 +70,6 @@ void RemoteManagementPanel::initUI()
     m_listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     m_listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
-    // setStyleSheet("QListWidget::item:hover{background-color:rgb(0,255,0,50)}"
-    //             "QListWidget::item:selected{background-color:rgb(255,0,0,100)}");
-    //    m_listWidget->setStyleSheet("QListWidget{border:1px solid gray; color:black; }"
-    //                                "QListWidget::item:hover{background-color:lightgray}"
-    //                                "QListWidget::item:selected{background:lightgray; color:red; }"
-    //                                "QListWidget::item:selected{background-color:rgb(255,0,0,100)}"
-    //                                "QListWidget::item:border_style{solid,none,solid,solid}"
-    //                                "QListWidget::item:border_width{medium,none,medium,none}"
-    //                                "QListWidget::item:border_color{gray,none,gray,red}");
 
     m_pushButton->setFixedHeight(50);
     m_pushButton->setText("Add Server");
@@ -109,17 +99,13 @@ void RemoteManagementPanel::initUI()
 
 void RemoteManagementPanel::listItemClicked(QListWidgetItem *item)
 {
-    ServerConfigItem *widgetTemp = qobject_cast< ServerConfigItem * >(m_listWidget->itemWidget(item));
-    if (nullptr == widgetTemp)
-    {
+    ServerConfigItem *widgetTemp = qobject_cast<ServerConfigItem *>(m_listWidget->itemWidget(item));
+    if (nullptr == widgetTemp) {
         return;
     }
-    if (widgetTemp->isGroup())
-    {
+    if (widgetTemp->isGroup()) {
         emit showServerConfigGroupPanel(widgetTemp->getGroupName());
-    }
-    else
-    {
+    } else {
         emit doConnectServer();
     }
 }

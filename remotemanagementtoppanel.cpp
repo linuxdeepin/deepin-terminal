@@ -1,30 +1,43 @@
 #include "remotemanagementtoppanel.h"
+
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+
 RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel(parent)
 {
     setAttribute(Qt::WA_TranslucentBackground);
     m_remoteManagementPanel = new RemoteManagementPanel(this);
     connect(this, &RemoteManagementTopPanel::focusOut, this, &RightPanel::hide);
-    connect(m_remoteManagementPanel, &RemoteManagementPanel::showServerConfigGroupPanel,
-            this, &RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel);
-    connect(m_remoteManagementPanel, &RemoteManagementPanel::showSearchPanel,
-            this, &RemoteManagementTopPanel::showSearchPanelFromRemotePanel);
+    connect(m_remoteManagementPanel,
+            &RemoteManagementPanel::showServerConfigGroupPanel,
+            this,
+            &RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel);
+    connect(m_remoteManagementPanel,
+            &RemoteManagementPanel::showSearchPanel,
+            this,
+            &RemoteManagementTopPanel::showSearchPanelFromRemotePanel);
 
     m_serverConfigGroupPanel = new ServerConfigGroupPanel(this);
-    connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::showRemoteManagementPanel,
-            this, &RemoteManagementTopPanel::showRemotePanelFromGroupPanel);
-    connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::showSearchResult,
-            this, &RemoteManagementTopPanel::showSearchPanelFromGroupPanel);
+    connect(m_serverConfigGroupPanel,
+            &ServerConfigGroupPanel::showRemoteManagementPanel,
+            this,
+            &RemoteManagementTopPanel::showRemotePanelFromGroupPanel);
+    connect(m_serverConfigGroupPanel,
+            &ServerConfigGroupPanel::showSearchResult,
+            this,
+            &RemoteManagementTopPanel::showSearchPanelFromGroupPanel);
 
     m_remoteManagementSearchPanel = new RemoteManagementSearchPanel(this);
-    connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::showRemoteManagementPanel,
-            this, &RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel);
-    connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::showServerConfigGroupPanel,
-            this, &RemoteManagementTopPanel::showGroupPanelFromSearchPanel);
+    connect(m_remoteManagementSearchPanel,
+            &RemoteManagementSearchPanel::showRemoteManagementPanel,
+            this,
+            &RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel);
+    connect(m_remoteManagementSearchPanel,
+            &RemoteManagementSearchPanel::showServerConfigGroupPanel,
+            this,
+            &RemoteManagementTopPanel::showGroupPanelFromSearchPanel);
     m_serverConfigGroupPanel->hide();
     m_remoteManagementSearchPanel->hide();
-
 }
 
 void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &strFilter)
@@ -75,7 +88,7 @@ void RemoteManagementTopPanel::showRemotePanelFromGroupPanel()
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     animation1->setDuration(3000);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
-    animation1->setStartValue(QRect(- rect.width(), rect.y(), rect.width(), rect.height()));
+    animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
 
@@ -83,7 +96,6 @@ void RemoteManagementTopPanel::showRemotePanelFromGroupPanel()
     group->addAnimation(animation);
     group->addAnimation(animation1);
     group->start();
-
 }
 
 void RemoteManagementTopPanel::show()
@@ -122,7 +134,6 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
     group->addAnimation(animation);
     group->addAnimation(animation1);
     group->start();
-
 }
 
 void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter)

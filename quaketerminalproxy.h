@@ -1,10 +1,10 @@
 #ifndef QUAKETERMINALPROXY_H
 #define QUAKETERMINALPROXY_H
 
+#include <DSysInfo>
+
 #include <QDBusConnection>
 #include <QObject>
-
-#include <DSysInfo>
 
 class QuakeTerminalProxy : public QObject
 {

@@ -1,10 +1,12 @@
 #ifndef REMOTEMANAGEMENTPANEL_H
 #define REMOTEMANAGEMENTPANEL_H
 
-#include <QWidget>
 #include "commonpanel.h"
 #include "serverconfiglist.h"
 #include "serverconfigoptdlg.h"
+
+#include <QWidget>
+
 class RemoteManagementPanel : public CommonPanel
 {
     Q_OBJECT
@@ -22,10 +24,12 @@ public slots:
     void showAddServerConfigDlg();
     void listItemClicked(QListWidgetItem *item);
     void refreshSearchState();
+
 private:
     void initUI();
+
 private:
-    ServerConfigList *m_listWidget;
+    ServerConfigList *m_listWidget = nullptr;
 };
 
-#endif // REMOTEMANAGEMENTPANEL_H
+#endif  // REMOTEMANAGEMENTPANEL_H

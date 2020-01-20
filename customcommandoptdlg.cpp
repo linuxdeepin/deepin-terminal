@@ -1,41 +1,35 @@
 #include "customcommandoptdlg.h"
+
 #include <DButtonBox>
 #include <DPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <DGroupBox>
 #include <DLabel>
-#include <QGridLayout>
 #include <DKeySequenceEdit>
 #include <DCommandLinkButton>
-#include <QDebug>
 #include <DDialogCloseButton>
 #include <DApplicationHelper>
 #include <DWidgetUtil>
-//#include <Dialog>
-CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curAction, QWidget *parent) : DAbstractDialog(parent)
-    , m_type(type)
-    , m_action(curAction)
-    , m_nameLineEdit(new DLineEdit)
-    , m_commandLineEdit(new DLineEdit)
-    , m_shortCutsLineEdit(new DKeySequenceEdit)
-    , m_bDelOpt(false)
-{
-    //setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint | Qt::WindowMinMaxButtonsHint|Qt::WindowTitleHint);
-    //setWindowFlags(windowFlags() &~Qt::WindowMinMaxButtonsHint&~Qt::WindowContextHelpButtonHint &~Qt::MaximizeUsingFullscreenGeometryHint&~Qt::WindowMaximizeButtonHint);
-    //etWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
-    // setWindowFlags(Qt::FramelessWindowHint);
-    //Qt::WindowFlags flags=Qt::Dialog;
-    //setWindowFlags(flags);
 
+#include <QGridLayout>
+#include <QDebug>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curAction, QWidget *parent)
+    : DAbstractDialog(parent),
+      m_type(type),
+      m_action(curAction),
+      m_nameLineEdit(new DLineEdit),
+      m_commandLineEdit(new DLineEdit),
+      m_shortCutsLineEdit(new DKeySequenceEdit),
+      m_bDelOpt(false)
+{
     setFixedSize(300, 200);
     QHBoxLayout *pHBoxLayout = new QHBoxLayout();
     DLabel *pTitleLable = new DLabel();
     pTitleLable->setAlignment(Qt::AlignCenter);
     DDialogCloseButton *pCloseBt = new DDialogCloseButton();
-    connect(pCloseBt, &DDialogCloseButton::clicked, this, [ = ]() {
-        reject();
-    });
+    connect(pCloseBt, &DDialogCloseButton::clicked, this, [=]() { reject(); });
     pHBoxLayout->addWidget(pTitleLable);
     pHBoxLayout->addWidget(pCloseBt);
 
@@ -44,15 +38,12 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     pNameLabel->setFixedWidth(100);
     m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
 
-
     DLabel *pCommandLabel = new DLabel(tr("Command:"));
     pCommandLabel->setFixedWidth(100);
     m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
 
     DLabel *pShortCutsLabel = new DLabel(tr("Shortcuts:"));
     pNameLabel->setFixedWidth(100);
-
-    //pShortCutsLineEdit->setMinimumWidth(100);
 
     m_shortCutsLineEdit->ShortcutDirection(Qt::AlignLeft);
     pGridLayout->addWidget(pNameLabel, 0, 0);
@@ -85,7 +76,6 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
         QBrush brush1 = pa1.textWarning();
         pa1.setBrush(DPalette::ButtonText, brush1);
         pCommandLinkBt->setPalette(pa1);
-        //pCommandLinkBt->setFont(QsFont())
         connect(pCommandLinkBt, &DCommandLinkButton::clicked, this, &CustomCommandOptDlg::slotDelCurCustomCommand);
         pHboxLayout1->addStretch();
         pHboxLayout1->addWidget(pCommandLinkBt);
@@ -100,29 +90,24 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     pVBoxLayout->addLayout(pBtHbLayout);
     setLayout(pVBoxLayout);
 
-    connect(pCancelButton, &DPushButton::clicked, this, [ = ]() {
-        reject();
-    }
-           );
+    connect(pCancelButton, &DPushButton::clicked, this, [=]() { reject(); });
     connect(pAddSaveButton, &DPushButton::clicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
 
-    connect(m_nameLineEdit, &DLineEdit::editingFinished, this, [ = ] {
-        if (m_nameLineEdit->text().isEmpty())
-        {
+    connect(m_nameLineEdit, &DLineEdit::editingFinished, this, [=] {
+        if (m_nameLineEdit->text().isEmpty()) {
             m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
         }
     });
 
-    connect(m_commandLineEdit, &DLineEdit::editingFinished, this, [ = ] {
-        if (m_commandLineEdit->text().isEmpty())
-        {
+    connect(m_commandLineEdit, &DLineEdit::editingFinished, this, [=] {
+        if (m_commandLineEdit->text().isEmpty()) {
             m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
         }
     });
     if (type == CCT_MODIFY) {
         QString strName = m_action->text();
         QString strCommad = m_action->data().toString();
-        QKeySequence keyseq  = m_action->shortcut();
+        QKeySequence keyseq = m_action->shortcut();
         m_nameLineEdit->setText(strName);
         m_commandLineEdit->setText(strCommad);
         m_shortCutsLineEdit->setKeySequence(keyseq);
@@ -132,7 +117,6 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
 
 CustomCommandOptDlg::~CustomCommandOptDlg()
 {
-
 }
 
 void CustomCommandOptDlg::slotAddSaveButtonClicked()
@@ -142,7 +126,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     QKeySequence keytmp = m_shortCutsLineEdit->keySequence();
 
     if (strName.isEmpty() || strCommand.isEmpty()) {
-        return ;
+        return;
     }
 
     m_newAction.setText(strName);

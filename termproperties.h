@@ -3,7 +3,8 @@
 
 #include <QVariant>
 
-enum TermProperty {
+enum TermProperty
+{
     WorkingDir,
     ColorScheme,
     ShellProgram,
@@ -28,4 +29,4 @@ private:
     QMap<TermProperty, QVariant> m_properties;
 };
 
-#endif // TERMPROPERTIES_H
+#endif  // TERMPROPERTIES_H

@@ -1,11 +1,14 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigmanager.h"
+
 #include <DFontSizeManager>
 #include <DPushButton>
 #include <DSuggestButton>
+
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
     : DAbstractDialog(parent),
       m_type(type),
@@ -76,7 +79,7 @@ void ServerConfigOptDlg::initUI()
     pGridLayout->addWidget(m_address);
 
     QHBoxLayout *portLayout = new QHBoxLayout();
-    DLabel *     pPortLabel = new DLabel(tr("Port:"));
+    DLabel *pPortLabel = new DLabel(tr("Port:"));
     pPortLabel->setAlignment(Qt::AlignLeft);
     pPortLabel->setAlignment(Qt::AlignVCenter);
     pPortLabel->setFixedWidth(40);
@@ -114,7 +117,7 @@ void ServerConfigOptDlg::initUI()
     pGridLayout->addWidget(m_privateKey);
 
     //高级选项
-    DWidget *    seniorWidget = new DWidget;
+    DWidget *seniorWidget = new DWidget;
     QGridLayout *seniorLayout = new QGridLayout();
     seniorLayout->setAlignment(Qt::AlignTop);
     seniorLayout->setContentsMargins(10, 0, 10, 10);
@@ -171,8 +174,7 @@ void ServerConfigOptDlg::initUI()
     connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [=]() {
         m_advancedOptions->hide();
         seniorWidget->show();
-        if (m_type == SCT_MODIFY)
-        {
+        if (m_type == SCT_MODIFY) {
             m_delServer->show();
         }
     });
@@ -184,14 +186,13 @@ void ServerConfigOptDlg::initUI()
     m_delServer->hide();
     seniorWidget->hide();
 
-    DPushButton *   pCancelButton  = new DPushButton(tr("Cancel"));
+    DPushButton *pCancelButton = new DPushButton(tr("Cancel"));
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add"));
-    if (m_type == SCT_MODIFY)
-    {
+    if (m_type == SCT_MODIFY) {
         pAddSaveButton->setText(tr("Save"));
     }
-    DPalette pa    = DApplicationHelper::instance()->palette(pAddSaveButton);
-    QBrush   brush = pa.textLively().color();
+    DPalette pa = DApplicationHelper::instance()->palette(pAddSaveButton);
+    QBrush brush = pa.textLively().color();
     pa.setBrush(DPalette::ButtonText, brush);
     pAddSaveButton->setPalette(pa);
     QHBoxLayout *pBtHbLayout = new QHBoxLayout();
@@ -211,8 +212,7 @@ void ServerConfigOptDlg::initUI()
 
 void ServerConfigOptDlg::initData()
 {
-    if (m_type == SCT_MODIFY && m_curServer != nullptr)
-    {
+    if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         m_serverName->setText(m_curServer->m_serverName);
         m_address->setText(m_curServer->m_address);
         m_port->setValue(m_curServer->m_port.toInt());
@@ -228,29 +228,28 @@ void ServerConfigOptDlg::initData()
     }
 }
 
-ServerConfigOptDlg::~ServerConfigOptDlg() {}
+ServerConfigOptDlg::~ServerConfigOptDlg()
+{
+}
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
-    ServerConfig *config   = new ServerConfig();
-    config->m_serverName   = m_serverName->text();
-    config->m_address      = m_address->text();
-    config->m_userName     = m_userName->text();
-    config->m_password     = m_password->text();
-    config->m_privateKey   = m_privateKey->text();
-    config->m_port         = m_port->text();
-    config->m_group        = m_group->text();
-    config->m_path         = m_path->text();
-    config->m_command      = m_command->text();
-    config->m_encoding     = m_coding->currentText();
+    ServerConfig *config = new ServerConfig();
+    config->m_serverName = m_serverName->text();
+    config->m_address = m_address->text();
+    config->m_userName = m_userName->text();
+    config->m_password = m_password->text();
+    config->m_privateKey = m_privateKey->text();
+    config->m_port = m_port->text();
+    config->m_group = m_group->text();
+    config->m_path = m_path->text();
+    config->m_command = m_command->text();
+    config->m_encoding = m_coding->currentText();
     config->m_backspaceKey = m_backSapceKey->currentText();
-    config->m_deleteKey    = m_deleteKey->currentText();
-    if (m_type == SCT_ADD)
-    {
+    config->m_deleteKey = m_deleteKey->currentText();
+    if (m_type == SCT_ADD) {
         ServerConfigManager::instance()->saveServerConfig(config);
-    }
-    else if (m_type == SCT_MODIFY && m_curServer != nullptr)
-    {
+    } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
 

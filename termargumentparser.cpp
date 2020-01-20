@@ -3,16 +3,20 @@
 #include "quaketerminaladapter.h"
 #include "quaketerminalproxy.h"
 
+#include <DApplicationHelper>
+#include <DLog>
+
 #include <QCommandLineParser>
 #include <QDBusConnection>
 #include <QTimer>
 
-#include <DApplicationHelper>
-#include <DLog>
+TermArgumentParser::TermArgumentParser(QObject *parent) : QObject(parent)
+{
+}
 
-TermArgumentParser::TermArgumentParser(QObject *parent) : QObject(parent) {}
-
-TermArgumentParser::~TermArgumentParser() {}
+TermArgumentParser::~TermArgumentParser()
+{
+}
 
 bool TermArgumentParser::parseArguments(MainWindow *mainWindow)
 {
@@ -23,16 +27,13 @@ bool TermArgumentParser::parseArguments(MainWindow *mainWindow)
     const QString quakeModeOption = "--quake-mode";
 
     bool isQuakeMode = false;
-    if (qApp->arguments().length() > 1 && quakeModeOption == qApp->arguments().value(1))
-    {
+    if (qApp->arguments().length() > 1 && quakeModeOption == qApp->arguments().value(1)) {
         isQuakeMode = true;
     }
 
-    if (isQuakeMode)
-    {
+    if (isQuakeMode) {
         bool isDBusRegSuccess = initDBus();
-        if (!isDBusRegSuccess)
-        {
+        if (!isDBusRegSuccess) {
             return true;
         }
     }
@@ -54,8 +55,8 @@ bool TermArgumentParser::initDBus()
     QuakeTerminalAdapter *adapter = new QuakeTerminalAdapter(m_quakeTerminalProxy);
     Q_UNUSED(adapter);
 
-    if (!conn.registerService(kQuakeTerminalService) || !conn.registerObject(kQuakeTerminalIface, m_quakeTerminalProxy))
-    {
+    if (!conn.registerService(kQuakeTerminalService)
+        || !conn.registerObject(kQuakeTerminalIface, m_quakeTerminalProxy)) {
         qDebug() << "Failed to register dbus" << qApp->applicationPid();
         showOrHideQuakeTerminal();
         return false;
@@ -69,15 +70,12 @@ bool TermArgumentParser::initDBus()
 void TermArgumentParser::showOrHideQuakeTerminal()
 {
     QDBusMessage msg =
-        QDBusMessage::createMethodCall(kQuakeTerminalService, kQuakeTerminalIface, kQuakeTerminalService, "ShowOrHide");
+    QDBusMessage::createMethodCall(kQuakeTerminalService, kQuakeTerminalIface, kQuakeTerminalService, "ShowOrHide");
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage)
-    {
+    if (response.type() == QDBusMessage::ReplyMessage) {
         qDebug() << "call ShowOrHide Success!";
-    }
-    else
-    {
+    } else {
         qDebug() << "call ShowOrHide Fail!" << response.errorMessage();
     }
 }

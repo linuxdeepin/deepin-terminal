@@ -1,23 +1,26 @@
 #include "settings.h"
+
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
+
 #include <QApplication>
 #include <QDebug>
 #include <QStandardPaths>
 /******** Modify by n014361 wangpeili 2020-01-04:              ***********×****/
-
 #include <QComboBox>
 #include <QFontDatabase>
 /********************* Modify by n014361 wangpeili End ************************/
+
 DWIDGET_USE_NAMESPACE
+
 Settings *Settings::m_settings_instance = nullptr;
 
 Settings::Settings() : QObject(qApp)
 {
     m_configPath = QString("%1/%2/%3/config.conf")
-                       .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation))
-                       .arg(qApp->organizationName())
-                       .arg(qApp->applicationName());
+                   .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation))
+                   .arg(qApp->organizationName())
+                   .arg(qApp->applicationName());
     m_backend = new QSettingBackend(m_configPath);
 
     // 默认配置
@@ -27,8 +30,8 @@ Settings::Settings() : QObject(qApp)
     settings->setBackend(m_backend);
 
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
-    auto                      windowState = settings->option("advanced.window.WindowState");
-    QMap< QString, QVariant > windowStateMap;
+    auto windowState = settings->option("advanced.window.WindowState");
+    QMap<QString, QVariant> windowStateMap;
 
     windowStateMap.insert("keys",
                           QStringList() << "window_normal"
@@ -37,8 +40,7 @@ Settings::Settings() : QObject(qApp)
     windowStateMap.insert("values", QStringList() << tr("Normal") << tr("Maximum") << tr("Fullscreen"));
     windowState->setData("items", windowStateMap);
 
-    for (QString key : settings->keys())
-    {
+    for (QString key : settings->keys()) {
         qDebug() << key << settings->value(key);
     }
     /********************* Modify by n014361 wangpeili End ************************/
@@ -48,8 +50,7 @@ Settings::Settings() : QObject(qApp)
 
 Settings *Settings::instance()
 {
-    if (!m_settings_instance)
-    {
+    if (!m_settings_instance) {
         m_settings_instance = new Settings;
     }
 
@@ -62,43 +63,43 @@ void Settings::initConnection()
         emit settingValueChanged(key, value);
     });
 
-    QPointer< DSettingsOption > opacity = settings->option("basic.interface.Opacity");
+    QPointer<DSettingsOption> opacity = settings->option("basic.interface.Opacity");
     connect(opacity, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit opacityChanged(value.toInt() / 100.0);
     });
 
-    QPointer< DSettingsOption > cursorShape = settings->option("advanced.cursor.Shape");
+    QPointer<DSettingsOption> cursorShape = settings->option("advanced.cursor.Shape");
     connect(cursorShape, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit cursorShapeChanged(value.toInt());
     });
 
-    QPointer< DSettingsOption > cursorBlink = settings->option("advanced.cursor.link");
+    QPointer<DSettingsOption> cursorBlink = settings->option("advanced.cursor.link");
     connect(cursorBlink, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit cursorBlinkChanged(value.toBool());
     });
 
-    QPointer< DSettingsOption > backgroundBlur = settings->option("advanced.window.BlurredBackground");
+    QPointer<DSettingsOption> backgroundBlur = settings->option("advanced.window.BlurredBackground");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit backgroundBlurChanged(value.toBool());
     });
 
     /******** Modify by n014361 wangpeili 2020-01-06:  字体，字体大小实时生效 ****************/
-    QPointer< DSettingsOption > fontSize = settings->option("basic.interface.FontSize");
+    QPointer<DSettingsOption> fontSize = settings->option("basic.interface.FontSize");
     connect(fontSize, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit fontSizeChanged(value.toInt());
     });
 
-    QPointer< DSettingsOption > family = settings->option("basic.interface.Family");
+    QPointer<DSettingsOption> family = settings->option("basic.interface.Family");
     connect(family, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit fontChanged(value.toString());
     });
 
-    QPointer< DSettingsOption > PressingScroll = settings->option("advanced.scroll.PressingScroll");
+    QPointer<DSettingsOption> PressingScroll = settings->option("advanced.scroll.PressingScroll");
     connect(PressingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit pressingScrollChanged(value.toBool());
     });
 
-    QPointer< DSettingsOption > OutputtingScroll = settings->option("advanced.scroll.OutputtingScroll");
+    QPointer<DSettingsOption> OutputtingScroll = settings->option("advanced.scroll.OutputtingScroll");
     connect(OutputtingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit OutputScrollChanged(value.toBool());
     });
@@ -154,6 +155,7 @@ void Settings::setColorScheme(const QString &name)
 {
     return settings->option("basic.interface.Theme")->setValue(name);
 }
+
 /*******************************************************************************
  1. @函数:   bool Settings::IsPasteSelection()
  2. @作者:     n014361 王培利
@@ -171,37 +173,34 @@ QString Settings::getKeyshortcutFromKeymap(const QString &keyCategory, const QSt
 }
 
 /******** Modify by n014361 wangpeili 2020-01-04: 创建Combox控件        ***********×****/
-QPair< QWidget *, QWidget * > Settings::createFontComBoBoxHandle(QObject *obj)
+QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 {
-    auto option = qobject_cast< DTK_CORE_NAMESPACE::DSettingsOption * >(obj);
+    auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
     QComboBox *comboBox = new QComboBox;
     // QWidget *optionWidget = DSettingsWidgetFactory::createTwoColumWidget(option, comboBox);
 
-    QPair< QWidget *, QWidget * > optionWidget =
-        DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
+    QPair<QWidget *, QWidget *> optionWidget =
+    DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
     QFontDatabase fontDatabase;
     comboBox->addItems(fontDatabase.families());
     // comboBox->setItemDelegate(new FontItemDelegate);
     // comboBox->setFixedSize(240, 36);
 
-    if (option->value().toString().isEmpty())
-    {
+    if (option->value().toString().isEmpty()) {
         option->setValue(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());
     }
 
     // init.
     comboBox->setCurrentText(option->value().toString());
 
-    connect(option, &DSettingsOption::valueChanged, comboBox, [=](QVariant var) {
-        comboBox->setCurrentText(var.toString());
-    });
+    connect(
+    option, &DSettingsOption::valueChanged, comboBox, [=](QVariant var) { comboBox->setCurrentText(var.toString()); });
 
     option->connect(
-        comboBox, &QComboBox::currentTextChanged, option, [=](const QString &text) { option->setValue(text); });
+    comboBox, &QComboBox::currentTextChanged, option, [=](const QString &text) { option->setValue(text); });
 
     return optionWidget;
 }
-
 /********************* Modify by n014361 wangpeili End ************************/

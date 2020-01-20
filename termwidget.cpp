@@ -3,17 +3,18 @@
 #include "settings.h"
 #include "termproperties.h"
 
+#include <DDesktopServices>
+#include <DInputDialog>
+
 #include <QApplication>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QMenu>
 #include <QVBoxLayout>
-
-#include <DDesktopServices>
 #include <QTime>
-#include <dinputdialog.h>
+#include <QDebug>
 
 DWIDGET_USE_NAMESPACE
+using namespace Konsole;
 
 TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent)
 {
@@ -26,24 +27,22 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
     setTerminalOpacity(Settings::instance()->opacity());
     setScrollBarPosition(QTermWidget::ScrollBarRight);
+
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     // theme
     setColorScheme(Settings::instance()->colorScheme());
-    if (properties.contains(WorkingDir))
-    {
+    if (properties.contains(WorkingDir)) {
         setWorkingDirectory(properties[WorkingDir].toString());
     }
-    if (properties.contains(Execute))
-    {
+
+    if (properties.contains(Execute)) {
         QString args = properties[Execute].toString();
         qDebug() << args;
         QStringList argList = args.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
-        if (argList.count() > 0)
-        {
+        if (argList.count() > 0) {
             setShellProgram(argList.at(0));
             argList.removeAt(0);
-            if (argList.count())
-            {
+            if (argList.count()) {
                 setArgs(argList);
             }
         }
@@ -56,28 +55,23 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setTerminalFont(font);
 
     // 光标形状
-    setKeyboardCursorShape(static_cast< QTermWidget::KeyboardCursorShape >(Settings::instance()->cursorShape()));
+    setKeyboardCursorShape(static_cast<QTermWidget::KeyboardCursorShape>(Settings::instance()->cursorShape()));
     // 光标闪烁
     setBlinkingCursor(Settings::instance()->cursorBlink());
 
     // 按键滚动
-    if (Settings::instance()->PressingScroll())
-    {
+    if (Settings::instance()->PressingScroll()) {
         qDebug() << "setMotionAfterPasting(2)";
         setMotionAfterPasting(2);
-    }
-    else
-    {
+    } else {
         setMotionAfterPasting(0);
         qDebug() << "setMotionAfterPasting(0)";
     }
 
-    if (Settings::instance()->OutputtingScroll())
-    {
+    if (Settings::instance()->OutputtingScroll()) {
         connect(this, &QTermWidget::receivedData, this, [this](QString value) {
             // qDebug() << "receivedData(true)" << value;
-            if (value != "\r\n")
-            {
+            if (value != "\r\n") {
                 // qDebug() << "receivedData(true)" << value;
                 scrollToEnd();
             }
@@ -91,8 +85,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 #endif  // !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
 
     connect(this, &QTermWidget::urlActivated, this, [](const QUrl &url, bool fromContextMenu) {
-        if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu)
-        {
+        if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
             QDesktopServices::openUrl(url);
         }
     });
@@ -108,20 +101,17 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 {
     QMenu menu;
 
-    QList< QAction * > termActions = filterActions(pos);
-    for (QAction *&action : termActions)
-    {
+    QList<QAction *> termActions = filterActions(pos);
+    for (QAction *&action : termActions) {
         menu.addAction(action);
     }
 
-    if (!menu.isEmpty())
-    {
+    if (!menu.isEmpty()) {
         menu.addSeparator();
     }
 
     // add other actions here.
-    if (!selectedText().isEmpty())
-    {
+    if (!selectedText().isEmpty()) {
         menu.addAction(QIcon::fromTheme("edit-copy"), tr("Copy &Selection"), this, [this] { copyClipboard(); });
     }
 
@@ -144,14 +134,11 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addSeparator();
 
     bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
-    if (isFullScreen)
-    {
+    if (isFullScreen) {
         menu.addAction(QIcon::fromTheme("view-restore-symbolic"), tr("Exit Full&screen"), this, [this] {
             window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
         });
-    }
-    else
-    {
+    } else {
         menu.addAction(QIcon::fromTheme("view-fullscreen-symbolic"), tr("Full&screen"), this, [this] {
             window()->setWindowState(windowState() | Qt::WindowFullScreen);
         });
@@ -166,11 +153,10 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     menu.addAction(QIcon::fromTheme("edit-rename"), tr("Rename Tab"), this, [this] {
         // TODO: Tab name as default text?
-        bool    ok;
+        bool ok;
         QString text =
-            DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
-        if (ok)
-        {
+        DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
+        if (ok) {
             emit termRequestRenameTab(text);
         }
     });
@@ -187,7 +173,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addSeparator();
 
     menu.addAction(
-        QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
+    QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
 
     // display the menu.
     menu.exec(mapToGlobal(pos));
@@ -206,10 +192,8 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
-    connect(m_term,
-            &TermWidget::termRequestOpenRemoteManagement,
-            this,
-            &TermWidgetWrapper::termRequestOpenRemoteManagement);
+    connect(
+    m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
 }
 
 bool TermWidgetWrapper::isTitleChanged() const
@@ -245,6 +229,7 @@ void TermWidgetWrapper::setColorScheme(const QString &name)
 {
     m_term->setColorScheme(name);
 }
+
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::setTerminalFont(const QString &fontName)
  2. @作者:     n014361 王培利
@@ -259,6 +244,7 @@ void TermWidgetWrapper::setTerminalFont(const QString &fontName)
 
     m_term->setTerminalFont(font);
 }
+
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::setTerminalFontSize(const int fontSize)
  2. @作者:     n014361 王培利
@@ -272,6 +258,7 @@ void TermWidgetWrapper::setTerminalFontSize(const int fontSize)
     font.setPointSize(fontSize);
     m_term->setTerminalFont(font);
 }
+
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::selectAll()
  2. @作者:     n014361 王培利
@@ -280,7 +267,7 @@ void TermWidgetWrapper::setTerminalFontSize(const int fontSize)
 *******************************************************************************/
 void TermWidgetWrapper::selectAll()
 {
-    int iRowCount     = m_term->historyLinesCount() + m_term->screenLinesCount();
+    int iRowCount = m_term->historyLinesCount() + m_term->screenLinesCount();
     int iColumnsCount = m_term->screenColumnsCount();
 
     m_term->setSelectionStart(0, 0);
@@ -292,6 +279,7 @@ void TermWidgetWrapper::selectAll()
     qDebug() << m_term->selectedText(true);
     // qDebug() << m_term->availableKeyBindings();
 }
+
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::skipToNextCommand()
  2. @作者:     n014361 王培利
@@ -302,6 +290,7 @@ void TermWidgetWrapper::skipToNextCommand()
 {
     qDebug() << "skipToNextCommand";
 }
+
 /*******************************************************************************
  1. @函数:  void TermWidgetWrapper::skipToPreCommand()
  2. @作者:     n014361 王培利
@@ -312,6 +301,7 @@ void TermWidgetWrapper::skipToPreCommand()
 {
     qDebug() << "skipToPreCommand";
 }
+
 /*******************************************************************************
  1. @函数:  void TermWidgetWrapper::setCursorShape(int shape)
  2. @作者:     n014361 王培利
@@ -323,6 +313,7 @@ void TermWidgetWrapper::setCursorShape(int shape)
     Konsole::Emulation::KeyboardCursorShape cursorShape = Konsole::Emulation::KeyboardCursorShape(shape);
     m_term->setKeyboardCursorShape(cursorShape);
 }
+
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::setCursorBlinking(bool enable)
  2. @作者:     n014361 王培利
@@ -341,35 +332,28 @@ void TermWidgetWrapper::setCursorBlinking(bool enable)
     // m_term->clearFocus();
     // emit m_term->termLostFocus();
 }
-using namespace Konsole;
+
 void TermWidgetWrapper::setPressingScroll(bool enable)
 {
     qDebug() << "setPressingScroll";
-    if (enable)
-    {
+    if (enable) {
         m_term->setMotionAfterPasting(2);
-    }
-    else
-    {
+    } else {
         m_term->setMotionAfterPasting(0);
     }
 }
 
 void TermWidgetWrapper::setOutputtingScroll(bool enable)
 {
-    if (enable)
-    {
+    if (enable) {
         connect(m_term, &QTermWidget::receivedData, this, [this](QString value) {
             // qDebug() << "receivedData(true)" << value;
-            if (value != "\r\n")
-            {
+            if (value != "\r\n") {
                 qDebug() << "setOutputtingScroll(true)";
                 m_term->scrollToEnd();
             }
         });
-    }
-    else
-    {
+    } else {
 
         disconnect(m_term, &QTermWidget::receivedData, this, 0);
     }

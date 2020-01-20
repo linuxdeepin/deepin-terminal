@@ -26,7 +26,7 @@ class TermWidgetWrapper : public QWidget
 public:
     TermWidgetWrapper(TermProperties properties, QWidget *parent = nullptr);
 
-    bool    isTitleChanged() const;
+    bool isTitleChanged() const;
     QString title() const;
 
     QString workingDirectory();
@@ -76,8 +76,8 @@ signals:
 private:
     void initUI();
 
-    TermWidget * m_term;
-    QVBoxLayout *m_layout;
+    TermWidget *m_term = nullptr;
+    QVBoxLayout *m_layout = nullptr;
 };
 
 #endif  // TERMWIDGET_H

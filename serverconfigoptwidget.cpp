@@ -1,7 +1,9 @@
 #include "serverconfigoptwidget.h"
+
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
 ServerConfigOptWidget::ServerConfigOptWidget(QWidget *parent)
     : QWidget(parent),
       m_titleLabel(new DLabel),
@@ -33,8 +35,8 @@ ServerConfigOptWidget::ServerConfigOptWidget(QWidget *parent)
     headLayout->setSpacing(0);
     headLayout->setMargin(0);
 
-    QGridLayout *pGridLayout      = new QGridLayout();
-    DLabel *     pServerNameLabel = new DLabel(tr("Server name:"));
+    QGridLayout *pGridLayout = new QGridLayout();
+    DLabel *pServerNameLabel = new DLabel(tr("Server name:"));
     pServerNameLabel->setAlignment(Qt::AlignLeft);
     pServerNameLabel->setFixedWidth(100);
     m_serverName->lineEdit()->setPlaceholderText(tr("Optional"));
@@ -58,4 +60,7 @@ ServerConfigOptWidget::ServerConfigOptWidget(QWidget *parent)
 
     connect(m_closeButton, &DIconButton::clicked, this, &ServerConfigOptWidget::slotClose);
 }
-void ServerConfigOptWidget::slotClose() {}
+
+void ServerConfigOptWidget::slotClose()
+{
+}

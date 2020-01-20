@@ -18,4 +18,4 @@ public:
     bool setTabText(const QString &tabIdentifier, const QString &text);
 };
 
-#endif // TABBAR_H
+#endif  // TABBAR_H

@@ -7,9 +7,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle)
-    : QWidget(parent),
-      m_layout(new QHBoxLayout(this))
+TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), m_layout(new QHBoxLayout(this))
 {
     m_layout->setContentsMargins(0, 0, 0, 0);
 

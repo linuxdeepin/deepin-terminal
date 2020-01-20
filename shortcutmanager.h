@@ -24,7 +24,7 @@ public:
     void delCustomCommand(QAction *action);
     void saveCustomCommandToConfig(QAction *action);
     void delCUstomCommandToConfig(QAction *action);
-    //check same name of the action is exist
+    // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
 
 private:
@@ -34,4 +34,4 @@ private:
     static ShortcutManager *m_instance;
 };
 
-#endif // SHORTCUTMANAGER_H
+#endif  // SHORTCUTMANAGER_H

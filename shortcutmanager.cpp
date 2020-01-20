@@ -1,5 +1,4 @@
 #include "shortcutmanager.h"
-
 #include "termwidgetpage.h"
 #include "mainwindow.h"
 #include "settings.h"
@@ -8,16 +7,18 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QDebug>
+
 // this class only provided for convenience, do not do anything in the construct function,
 // let the caller decided when to create the shortcuts.
 ShortcutManager *ShortcutManager::m_instance = nullptr;
-ShortcutManager::ShortcutManager(QObject *parent) :
-    QObject(parent)
+
+ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent)
 {
-    //Q_UNUSED(parent);
+    // Q_UNUSED(parent);
     // make sure it is NOT a nullptr since we'll use it all the time.
-    //Q_CHECK_PTR(parent);
+    // Q_CHECK_PTR(parent);
 }
+
 ShortcutManager *ShortcutManager::instance()
 {
     if (nullptr == m_instance) {
@@ -29,7 +30,7 @@ ShortcutManager *ShortcutManager::instance()
 void ShortcutManager::initShortcuts()
 {
     m_customCommandList = createCustomCommandsFromConfig();
-    m_builtinShortcuts = createBuiltinShortcutsFromConfig(); // use QAction or QShortcut ?
+    m_builtinShortcuts = createBuiltinShortcutsFromConfig();  // use QAction or QShortcut ?
 
     m_mainWindow->addActions(m_customCommandList);
     m_mainWindow->addActions(m_builtinShortcuts);
@@ -51,12 +52,13 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
 
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     QStringList commandGroups = commandsSettings.childGroups();
-    //qDebug() << commandGroups.size() << endl;
+    // qDebug() << commandGroups.size() << endl;
     for (const QString &commandName : commandGroups) {
         commandsSettings.beginGroup(commandName);
-        if (!commandsSettings.contains("Command")) continue;
+        if (!commandsSettings.contains("Command"))
+            continue;
         QAction *action = new QAction(commandName, this);
-        action->setData(commandsSettings.value("Command").toString()); // make sure it is a QString
+        action->setData(commandsSettings.value("Command").toString());  // make sure it is a QString
         if (commandsSettings.contains("Shortcut")) {
             QVariant shortcutVariant = commandsSettings.value("Shortcut");
             if (shortcutVariant.type() == QVariant::KeySequence) {
@@ -87,26 +89,29 @@ QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
 
     // TODO.
 
-//    QAction *action = nullptr;
+    //    QAction *action = nullptr;
 
-//    action = new QAction("__builtin_focus_nav_up", this);
-//    // blumia: in Qt 5.7.1 (from Debian stretch) if we pass something like "Ctrl+Shift+Q" to QKeySequence then it won't works.
-//    //         in Qt 5.11.3 (from Debian buster) it works fine.
-//    action->setShortcut(QKeySequence("Alt+k"));
+    //    action = new QAction("__builtin_focus_nav_up", this);
+    //    // blumia: in Qt 5.7.1 (from Debian stretch) if we pass something like "Ctrl+Shift+Q" to QKeySequence then it
+    //    won't works.
+    //    //         in Qt 5.11.3 (from Debian buster) it works fine.
+    //    action->setShortcut(QKeySequence("Alt+k"));
 
-//    connect(action, &QAction::triggered, m_mainWindow, [this](){
-//        TermWidgetPage *page = m_mainWindow->currentTab();
-//        if (page) page->focusNavigation(Up);
-//    });
-//    actionList.append(action);
+    //    connect(action, &QAction::triggered, m_mainWindow, [this](){
+    //        TermWidgetPage *page = m_mainWindow->currentTab();
+    //        if (page) page->focusNavigation(Up);
+    //    });
+    //    actionList.append(action);
 
     return actionList;
 }
+
 QList<QAction *> &ShortcutManager::getCustomCommands()
 {
     qDebug() << m_customCommandList.size() << endl;
     return m_customCommandList;
 }
+
 void ShortcutManager::setMainWindow(MainWindow *curMainWindow)
 {
     m_mainWindow = curMainWindow;
@@ -128,8 +133,8 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     });
     saveCustomCommandToConfig(addAction);
     return addAction;
-
 }
+
 QAction *ShortcutManager::checkActionIsExist(QAction &action)
 {
     QString strNewName = action.text();
@@ -141,13 +146,15 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
     }
     return nullptr;
 }
+
 void ShortcutManager::delCustomCommand(QAction *action)
 {
     delCUstomCommandToConfig(action);
     m_customCommandList.removeOne(action);
-    delete  action;
+    delete action;
     action = nullptr;
 }
+
 void ShortcutManager::saveCustomCommandToConfig(QAction *action)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));

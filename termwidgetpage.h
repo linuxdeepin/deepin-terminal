@@ -17,14 +17,14 @@ public:
     TermWidgetWrapper *currentTerminal();
     TermWidgetWrapper *split(Qt::Orientation orientation);
     TermWidgetWrapper *split(TermWidgetWrapper *term, Qt::Orientation orientation);
-    void               closeSplit(TermWidgetWrapper *term);
-    const QString      identifier();
-    void               focusCurrentTerm();
-    void               closeOtherTerminal();
-    void               focusNavigation(Qt::Edge dir);
+    void closeSplit(TermWidgetWrapper *term);
+    const QString identifier();
+    void focusCurrentTerm();
+    void closeOtherTerminal();
+    void focusNavigation(Qt::Edge dir);
 
     /******** Modify by n014361 wangpeili 2020-01-08: 计算上下左右判断方法 ******×****/
-    QRect  GetRect(TermWidgetWrapper *term);
+    QRect GetRect(TermWidgetWrapper *term);
     QPoint GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir);
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -76,12 +76,13 @@ signals:
     void termGetFocus() const;
     void termRequestOpenCustomCommand() const;
     void termRequestOpenRemoteManagement() const;
+
 private slots:
     void setCurrentTerminal(TermWidgetWrapper *term);
 
 private:
     TermWidgetWrapper *createTerm(TermProperties properties);
 
-    TermWidgetWrapper *m_currentTerm;
+    TermWidgetWrapper *m_currentTerm = nullptr;
 };
 #endif  // TERMWIDGETPAGE_H

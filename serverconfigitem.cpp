@@ -1,7 +1,9 @@
 #include "serverconfigitem.h"
 #include "serverconfigmanager.h"
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
 ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QString &group, QWidget *parent)
     : QWidget(parent),
       m_serverConfig(config),
@@ -16,16 +18,13 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
     m_leftIcon->setPixmap(QPixmap::fromImage(img));
     m_leftIcon->setFixedSize(QSize(70, 70));
     m_leftIcon->setFocusPolicy(Qt::NoFocus);
-    if (!m_bGroup)
-    {
+    if (!m_bGroup) {
         m_rightIconButton = new MyIconButton(this);
         m_rightIconButton->setFixedSize(QSize(30, 30));
         m_rightIconButton->setIcon(QIcon(":/images/icon/hover/edit_hover.svg"));
         connect(m_rightIconButton, &DIconButton::clicked, this, &ServerConfigItem::editServerConfig);
         m_rightIcon = nullptr;
-    }
-    else
-    {
+    } else {
         m_rightIcon = new DLabel(this);
         m_rightIcon->setPixmap(QPixmap::fromImage(QImage(":/images/icon/hover/arrowr.svg")));
         m_rightIcon->setFixedSize(QSize(30, 30));
@@ -42,34 +41,27 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
     QHBoxLayout *mainLayout = new QHBoxLayout();
     mainLayout->addWidget(m_leftIcon);
     mainLayout->addLayout(vLayout);
-    if (m_bGroup)
-    {
+    if (m_bGroup) {
         mainLayout->addWidget(m_rightIcon, 0, Qt::AlignRight);
-    }
-    else
-    {
+    } else {
         mainLayout->addWidget(m_rightIconButton);
     }
     mainLayout->setSpacing(0);
     mainLayout->setMargin(0);
     setLayout(mainLayout);
 
-    if (m_bGroup)
-    {
-        QMap< QString, QList< ServerConfig * > > &configMap = ServerConfigManager::instance()->getServerCommands();
+    if (m_bGroup) {
+        QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerCommands();
         m_nameLabel->setText(group);
         m_detailsLabel->setText(QString("%1 server").arg(configMap[group].count()));
-    }
-    else
-    {
+    } else {
         m_rightIconButton->hide();
-        if (m_serverConfig)
-        {
+        if (m_serverConfig) {
             m_nameLabel->setText(m_serverConfig->m_serverName);
             m_detailsLabel->setText(QString("%1@%2@%3")
-                                        .arg(m_serverConfig->m_userName)
-                                        .arg(m_serverConfig->m_address)
-                                        .arg(m_serverConfig->m_port));
+                                    .arg(m_serverConfig->m_userName)
+                                    .arg(m_serverConfig->m_address)
+                                    .arg(m_serverConfig->m_port));
         }
     }
 }
@@ -90,10 +82,12 @@ void ServerConfigItem::enterEvent(QEvent *event)
         m_rightIconButton->show();
     DWidget::enterEvent(event);
 }
+
 void ServerConfigItem::leaveEvent(QEvent *event)
 {
-    if (!m_bGroup && m_rightIconButton)
+    if (!m_bGroup && m_rightIconButton) {
         m_rightIconButton->hide();
+    }
     DWidget::enterEvent(event);
 }
 

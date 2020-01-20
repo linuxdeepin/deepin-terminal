@@ -1,7 +1,6 @@
 #include "themelistview.h"
 
-ThemeListView::ThemeListView(QWidget *parent)
-    : QListView (parent)
+ThemeListView::ThemeListView(QWidget *parent) : QListView(parent)
 {
     setVerticalScrollMode(ScrollPerPixel);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);

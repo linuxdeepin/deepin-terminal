@@ -4,6 +4,7 @@ RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : Comm
 {
     initUI();
 }
+
 void RemoteManagementSearchPanel::initUI()
 {
     // setAttribute(Qt::WA_TranslucentBackground);//Qt::WA_NoBackground|
@@ -12,7 +13,7 @@ void RemoteManagementSearchPanel::initUI()
     m_iconButton->setFixedSize(QSize(40, 40));
 
     m_listWidget = new ServerConfigList(this);
-    m_label      = new DLabel(this);
+    m_label = new DLabel(this);
     m_label->setAlignment(Qt::AlignCenter);
 
     m_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
@@ -20,15 +21,6 @@ void RemoteManagementSearchPanel::initUI()
     m_listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     m_listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
-    // setStyleSheet("QListWidget::item:hover{background-color:rgb(0,255,0,50)}"
-    //             "QListWidget::item:selected{background-color:rgb(255,0,0,100)}");
-    //    m_listWidget->setStyleSheet("QListWidget{border:1px solid gray; color:black; }"
-    //                                "QListWidget::item:hover{background-color:lightgray}"
-    //                                "QListWidget::item:selected{background:lightgray; color:red; }"
-    //                                "QListWidget::item:selected{background-color:rgb(255,0,0,100)}"
-    //                                "QListWidget::item:border_style{solid,none,solid,solid}"
-    //                                "QListWidget::item:border_width{medium,none,medium,none}"
-    //                                "QListWidget::item:border_color{gray,none,gray,red}");
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addWidget(m_iconButton);
@@ -51,7 +43,7 @@ void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &str
 {
     setSearchFilter(strFilter);
     m_strGroupName = strGroup;
-    m_strFilter    = strFilter;
+    m_strFilter = strFilter;
     m_listWidget->clear();
     m_listWidget->refreshDataByGroupAndFilter(strGroup, strFilter);
 }
@@ -70,12 +62,10 @@ void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
 }
 void RemoteManagementSearchPanel::showPreviousPanel()
 {
-    if (m_previousPanel == REMOTE_MANAGEMENT_PANEL)
-    {
+    if (m_previousPanel == REMOTE_MANAGEMENT_PANEL) {
         emit showRemoteManagementPanel();
     }
-    if (m_previousPanel == REMOTE_MANAGEMENT_GROUP)
-    {
+    if (m_previousPanel == REMOTE_MANAGEMENT_GROUP) {
         emit showServerConfigGroupPanel(m_strGroupName);
     }
 }

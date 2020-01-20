@@ -1,6 +1,8 @@
 #include "customcommanditem.h"
 #include "customcommandoptdlg.h"
+
 #include <DIconButton>
+
 #include <QAction>
 #include <QDebug>
 #include <QHBoxLayout>
@@ -16,15 +18,11 @@ CustomCommandItem::CustomCommandItem(QAction *action, QWidget *parent)
       m_leftIcon(new DLabel(this))
 
 {
-
-    // setStyleSheet("border:2px sloid red;");
-    // setStyleSheet("selection-color:rgb(241, 70, 62)");
     QImage img(":/images/icon/hover/circlebutton_add _hover.svg");
     m_leftIcon->setPixmap(QPixmap::fromImage(img));
     m_leftIcon->setFixedSize(QSize(70, 70));
 
     m_leftIcon->setFocusPolicy(Qt::NoFocus);
-    // m_customCommandAction = action;
     m_leftIconButton->setFixedSize(QSize(70, 70));
 
     m_leftIconButton->setIcon(QStyle::StandardPixmap::SP_DialogYesButton);
@@ -41,28 +39,17 @@ CustomCommandItem::CustomCommandItem(QAction *action, QWidget *parent)
 
     m_rightIconButton->setFixedSize(QSize(70, 70));
 
-    // m_leftIconButton->setIcon(QIcon(":/images/icon/focus/circlebutton_add 2.svg"));
     m_rightIconButton->setIcon(QIcon(":/images/icon/hover/circlebutton_add _hover.svg"));
-    if (m_customCommandAction)
-    {
-        QString strName   = m_customCommandAction->text();
+    if (m_customCommandAction) {
+        QString strName = m_customCommandAction->text();
         QString strCommad = m_customCommandAction->data().toString();
-        //        QString strkey1 = m_customCommandAction->shortcut().toString();
-        //        QString strkey2 = m_customCommandAction->shortcut().toString(QKeySequence::NativeText);
-        //        qDebug() << "strkey1" << strkey1 << "strkey2" << strkey2 << endl;
         QKeySequence keyseq = m_customCommandAction->shortcut();
-        // QString strLabelTxt = strName + "\n" + keyseq.toString();
         m_nameLabel->setText(strName);
         m_shortcutLabel->setText(keyseq.toString());
     }
-    //    m_nameLabel->setFocusPolicy(Qt::NoFocus);
-    //    m_leftIcon->setFocusPolicy(Qt::NoFocus);
-    //    m_nameLabel->installEventFilter(this);
-    //    m_leftIcon->installEventFilter(this);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(m_leftIcon);
-    // layout->addWidget(m_leftIconButton);
     layout->addLayout(vboxlayout);
     layout->addWidget(m_rightIconButton);
     layout->addStretch();
@@ -71,10 +58,9 @@ CustomCommandItem::CustomCommandItem(QAction *action, QWidget *parent)
     setLayout(layout);
 
     connect(m_rightIconButton, &DIconButton::clicked, this, &CustomCommandItem::editCustomCommand);
-    // connect(m_leftIcon, &DIconButton::focusOutEvent, this, &CustomCommandItem::editCustomCommand);
-    // setFixedSize(50, 250);
     m_rightIconButton->hide();
 }
+
 QAction *CustomCommandItem::getCurCustomCommandAction()
 {
     return m_customCommandAction;
@@ -96,11 +82,12 @@ void CustomCommandItem::leaveEvent(QEvent *event)
     m_rightIconButton->hide();
     DWidget::enterEvent(event);
 }
+
 void CustomCommandItem::refreshCommandInfo(QAction *action)
 {
-    QString      strName   = action->text();
-    QString      strCommad = action->data().toString();
-    QKeySequence keyseq    = action->shortcut();
+    QString strName = action->text();
+    QString strCommad = action->data().toString();
+    QKeySequence keyseq = action->shortcut();
     m_nameLabel->setText(strName);
     m_shortcutLabel->setText(keyseq.toString());
 }

@@ -1,6 +1,7 @@
 #include "rightpanel.h"
 
 #include <DAnchors>
+
 #include <QPropertyAnimation>
 
 DWIDGET_USE_NAMESPACE
@@ -10,10 +11,6 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
     // hide by default.
     QWidget::hide();
 
-    // default look'n'feel.
-    // setStyleSheet("background-color: transparent;");
-    //    setStyleSheet("background-color: white;");
-    // setAttribute(Qt::WA_TranslucentBackground);
     setFixedWidth(250);
 
     // Init theme panel.
@@ -29,9 +26,9 @@ void RightPanel::show()
 
     setFocus();
 
-    QRect               rect       = geometry();
-    QRect               windowRect = window()->geometry();
-    QPropertyAnimation *animation  = new QPropertyAnimation(this, "geometry");
+    QRect rect = geometry();
+    QRect windowRect = window()->geometry();
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), rect.height()));
@@ -44,9 +41,9 @@ void RightPanel::show()
 
 void RightPanel::hide()
 {
-    QRect               rect       = geometry();
-    QRect               windowRect = window()->geometry();
-    QPropertyAnimation *animation  = new QPropertyAnimation(this, "geometry");
+    QRect rect = geometry();
+    QRect windowRect = window()->geometry();
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), rect.height()));

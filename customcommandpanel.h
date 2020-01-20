@@ -1,18 +1,20 @@
 #ifndef CUSTOMCOMMANDPANEL_H
 #define CUSTOMCOMMANDPANEL_H
 
-#include <QWidget>
 #include "rightpanel.h"
+#include "customcommandlist.h"
+#include "customcommandsearchrstpanel.h"
+#include "commonpanel.h"
+
 #include <DGroupBox>
 #include <DSearchEdit>
 #include <DListView>
 #include <DButtonBox>
 #include <DPushButton>
-#include "customcommandlist.h"
-#include "customcommandsearchrstpanel.h"
-#include "commonpanel.h"
+#include <QWidget>
 
 DWIDGET_USE_NAMESPACE
+
 class CustomCommandPanel : public CommonPanel
 {
     Q_OBJECT
@@ -28,10 +30,12 @@ public slots:
     void showCurSearchResult();
     void showAddCustomCommandDlg();
     void doCustomCommand(QListWidgetItem *item);
+
 private:
     void initUI();
+
 private:
     CustomCommandList *m_listWidget = nullptr;
 };
 
-#endif // CUSTOMCOMMANDPANEL_H
+#endif  // CUSTOMCOMMANDPANEL_H

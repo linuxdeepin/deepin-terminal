@@ -2,11 +2,9 @@
 
 #include <QDebug>
 
-TabBar::TabBar(QWidget *parent, bool chromeTabStyle)
-    : DTabBar(parent, chromeTabStyle)
+TabBar::TabBar(QWidget *parent, bool chromeTabStyle) : DTabBar(parent, chromeTabStyle)
 {
     setTabsClosable(true);
-
     setFixedHeight(40);
 }
 

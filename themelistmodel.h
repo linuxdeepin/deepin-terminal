@@ -18,4 +18,4 @@ private:
     QList<QString> m_themeData;
 };
 
-#endif // THEMELISTMODEL_H
+#endif  // THEMELISTMODEL_H

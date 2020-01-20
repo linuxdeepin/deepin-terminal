@@ -15,8 +15,8 @@ signals:
     void themeChanged(const QString themeName);
 
 private:
-    ThemeListView *m_themeView;
-    ThemeListModel *m_themeModel;
+    ThemeListView *m_themeView = nullptr;
+    ThemeListModel *m_themeModel = nullptr;
 };
 
-#endif // THEMEPANEL_H
+#endif  // THEMEPANEL_H

@@ -1,10 +1,12 @@
 #ifndef REMOTEMANAGEMENTPLUGN_H
 #define REMOTEMANAGEMENTPLUGN_H
 
+#include "mainwindowplugininterface.h"
+#include "remotemanagementtoppanel.h"
+
 #include <QObject>
 #include <QWidget>
-#include <mainwindowplugininterface.h>
-#include "remotemanagementtoppanel.h"
+
 class MainWindow;
 class RemoteManagementPlugn : public MainWindowPluginInterface
 {
@@ -19,12 +21,13 @@ public:
 
 signals:
     void doHide();
+
 public slots:
     void doCennectServer();
+
 private:
     MainWindow *m_mainWindow = nullptr;
     RemoteManagementTopPanel *m_remoteManagementTopPanel = nullptr;
-
 };
 
-#endif // REMOTEMANAGEMENTPLUGN_H
+#endif  // REMOTEMANAGEMENTPLUGN_H

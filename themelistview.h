@@ -19,4 +19,4 @@ signals:
     void themeChanged(const QString themeName);
 };
 
-#endif // THEMELISTVIEW_H
+#endif  // THEMELISTVIEW_H

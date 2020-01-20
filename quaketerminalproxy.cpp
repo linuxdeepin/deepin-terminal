@@ -1,28 +1,27 @@
 #include "quaketerminalproxy.h"
 #include "mainwindow.h"
 
+#include <DLog>
+
 #include <QApplication>
 #include <QDir>
-#include <QtDBus/QtDBus>
-
-#include <DLog>
+#include <QtDBus>
 
 QuakeTerminalProxy::QuakeTerminalProxy(QObject *parent) : QObject(parent)
 {
-    qDebug() << "QuakeTerminalProxy init";
     this->setObjectName("QuakeTerminalProxy");
 }
 
-QuakeTerminalProxy::~QuakeTerminalProxy() {}
+QuakeTerminalProxy::~QuakeTerminalProxy()
+{
+}
 
 MainWindow *getMainWindow()
 {
     MainWindow *mainWin = nullptr;
-    foreach (QWidget *w, qApp->topLevelWidgets())
-    {
-        mainWin = qobject_cast< MainWindow * >(w);
-        if (mainWin)
-        {
+    foreach (QWidget *w, qApp->topLevelWidgets()) {
+        mainWin = qobject_cast<MainWindow *>(w);
+        if (mainWin) {
             return mainWin;
         }
     }
@@ -34,17 +33,12 @@ void QuakeTerminalProxy::ShowOrHide()
     MainWindow *mainWindow = getMainWindow();
     qDebug() << "ShowOrHide" << mainWindow->winId();
     bool isWinVisible = mainWindow->isVisible();
-    if (isWinVisible)
-    {
-        if (mainWindow->isActiveWindow())
-        {
+    if (isWinVisible) {
+        if (mainWindow->isActiveWindow()) {
             qDebug() << "isWinVisible mainWindow->isActiveWindow() : start hide" << mainWindow->winId();
             mainWindow->hide();
-        }
-        else
-        {
-            if (mainWindow->isQuakeWindowActivated())
-            {
+        } else {
+            if (mainWindow->isQuakeWindowActivated()) {
                 qDebug() << "isWinVisible mainWindow->isQuakeWindowActivated() : "
                          << mainWindow->isQuakeWindowActivated();
                 mainWindow->setQuakeWindowActivated(false);
@@ -56,9 +50,7 @@ void QuakeTerminalProxy::ShowOrHide()
             mainWindow->activateWindow();
             mainWindow->setQuakeWindowActivated(true);
         }
-    }
-    else
-    {
+    } else {
         qDebug() << "!isWinVisible show and activateWindow" << mainWindow->winId();
         mainWindow->show();
         mainWindow->raise();

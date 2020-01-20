@@ -7,7 +7,6 @@
 #include <QObject>
 
 class QuakeTerminalProxy;
-
 class TermArgumentParser : public QObject
 {
     Q_OBJECT
@@ -21,9 +20,8 @@ public:
     void showOrHideQuakeTerminal();
 
 private:
-    MainWindow *m_mainWindow{ nullptr };
-
-    QuakeTerminalProxy *m_quakeTerminalProxy{ nullptr };
+    MainWindow *m_mainWindow = nullptr;
+    QuakeTerminalProxy *m_quakeTerminalProxy = nullptr;
 };
 
 #endif  // TERMARGUMENTPARSER_H

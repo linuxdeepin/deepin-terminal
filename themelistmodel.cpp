@@ -2,8 +2,7 @@
 
 #include <qtermwidget5/qtermwidget.h>
 
-ThemeListModel::ThemeListModel(QObject *parent)
-    : QAbstractListModel(parent)
+ThemeListModel::ThemeListModel(QObject *parent) : QAbstractListModel(parent)
 {
     initThemeData();
 }

@@ -15,15 +15,15 @@ public:
     void initConnection();
 
     qreal opacity() const;
-    int   cursorShape() const;
-    bool  cursorBlink() const;
-    bool  backgroundBlur() const;
+    int cursorShape() const;
+    bool cursorBlink() const;
+    bool backgroundBlur() const;
 
     QString colorScheme() const;
     QString fontName();
-    int     fontSize();
-    bool    PressingScroll();
-    bool    OutputtingScroll();
+    int fontSize();
+    bool PressingScroll();
+    bool OutputtingScroll();
     // 设置主题
     void setColorScheme(const QString &name);
 
@@ -34,8 +34,9 @@ public:
 public:
     QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);
 
-    static QPair< QWidget *, QWidget * > createFontComBoBoxHandle(QObject *obj);
+    static QPair<QWidget *, QWidget *> createFontComBoBoxHandle(QObject *obj);
     /******** Modify by n014361 wangpeili 2020-01-04:              ****************/
+
 signals:
     void settingValueChanged(const QString &key, const QVariant &value);
 
@@ -57,7 +58,7 @@ private:
     static Settings *m_settings_instance;
 
     Dtk::Core::QSettingBackend *m_backend;
-    QString                     m_configPath;
+    QString m_configPath;
 };
 
 #endif  // SETTINGS_H
