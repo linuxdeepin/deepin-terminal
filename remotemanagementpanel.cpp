@@ -81,9 +81,8 @@ void RemoteManagementPanel::initUI()
     //                                "QListWidget::item:border_width{medium,none,medium,none}"
     //                                "QListWidget::item:border_color{gray,none,gray,red}");
 
-    m_pushButton->setFixedHeight(60);
-    m_pushButton->setText("+ Add Server");
-
+    m_pushButton->setFixedHeight(50);
+    m_pushButton->setText("Add Server");
     // connect(m_iconButton, &DIconButton::clicked, this, &CommonPanel::iconButtonCliecked);//
     // connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CommonPanel::searchEditingFinished);//
     // connect(m_pushButton, &DPushButton::clicked, this, &CommonPanel::pushButtonClicked);

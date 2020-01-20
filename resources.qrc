@@ -8,5 +8,9 @@
         <file>images/icon/hover/server.svg</file>
         <file>images/icon/focus/server.svg</file>
         <file>images/logo/deepin-terminal.svg</file>
+        <file>images/icon/focus/arrowr.svg</file>
+        <file>images/icon/focus/edit _press.svg</file>
+        <file>images/icon/hover/arrowr.svg</file>
+        <file>images/icon/hover/edit_hover .svg</file>
     </qresource>
 </RCC>

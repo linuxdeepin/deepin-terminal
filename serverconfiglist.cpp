@@ -17,6 +17,10 @@ ServerConfigList::ServerConfigList(QWidget *parent) : DListWidget(parent)
     //                  "QListWidget::item:border_style{solid,none,solid,solid}"
     //                  "QListWidget::item:border_width{medium,none,medium,none}"
     //                  "QListWidget::item:border_color{gray,none,gray,red}");
+
+    //    DPalette palette = DApplicationHelper::instance()->palette(this);
+    //    palette.setBrush(DPalette::Active, palette.color(DPalette::ItemBackground));
+    //    setPalette(palette);
 }
 void ServerConfigList::refreshAllDatas()
 {

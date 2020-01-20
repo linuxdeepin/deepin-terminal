@@ -6,12 +6,8 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
     : QWidget(parent),
       m_serverConfig(config),
       m_nameLabel(new DLabel(this)),
-      m_detailsLabel(new DLabel(this))
-      //, m_rightIconButton(new MyIconButton(this))
-      ,
-      m_leftIcon(new DLabel(this))
-      //, m_rightIcon(new DLabel(this))
-      ,
+      m_detailsLabel(new DLabel(this)),
+      m_leftIcon(new DLabel(this)),
       m_bGroup(bGroup),
       m_strGroupName(group)
 
@@ -19,23 +15,21 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
     QImage img(":/images/icon/hover/server.svg");
     m_leftIcon->setPixmap(QPixmap::fromImage(img));
     m_leftIcon->setFixedSize(QSize(70, 70));
-
     m_leftIcon->setFocusPolicy(Qt::NoFocus);
     if (!m_bGroup)
     {
         m_rightIconButton = new MyIconButton(this);
-        m_rightIconButton->setFixedSize(QSize(70, 70));
-
-        m_rightIconButton->setIcon(QIcon(":/images/icon/hover/server.svg"));
+        m_rightIconButton->setFixedSize(QSize(30, 30));
+        m_rightIconButton->setIcon(QIcon(":/images/icon/hover/edit_hover.svg"));
         connect(m_rightIconButton, &DIconButton::clicked, this, &ServerConfigItem::editServerConfig);
         m_rightIcon = nullptr;
     }
     else
     {
         m_rightIcon = new DLabel(this);
-        m_rightIcon->setPixmap(QPixmap::fromImage(img));
-        m_rightIcon->setFixedSize(QSize(70, 70));
-
+        m_rightIcon->setPixmap(QPixmap::fromImage(QImage(":/images/icon/hover/arrowr.svg")));
+        m_rightIcon->setFixedSize(QSize(30, 30));
+        m_rightIcon->setAlignment(Qt::AlignVCenter);
         m_rightIcon->setFocusPolicy(Qt::NoFocus);
         m_rightIconButton = nullptr;
     }
@@ -50,7 +44,7 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
     mainLayout->addLayout(vLayout);
     if (m_bGroup)
     {
-        mainLayout->addWidget(m_rightIcon);
+        mainLayout->addWidget(m_rightIcon, 0, Qt::AlignRight);
     }
     else
     {

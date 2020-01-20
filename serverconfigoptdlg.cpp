@@ -1,6 +1,8 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigmanager.h"
+#include <DFontSizeManager>
 #include <DPushButton>
+#include <DSuggestButton>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -27,7 +29,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
 
 {
     setWindowModality(Qt::ApplicationModal);
-    setFixedWidth(400);
+    setFixedWidth(420);
     setAutoFillBackground(true);
     initUI();
     initData();
@@ -40,6 +42,7 @@ void ServerConfigOptDlg::initUI()
     //头部布局
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setText(tr("Add Server"));
+    DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5);
     QHBoxLayout *headLayout = new QHBoxLayout();
     headLayout->addWidget(m_titleLabel);
     headLayout->addWidget(m_closeButton);
@@ -51,28 +54,20 @@ void ServerConfigOptDlg::initUI()
 
     //数据部分
     QGridLayout *pGridLayout = new QGridLayout();
-    pGridLayout->setAlignment(Qt::AlignTop);
     pGridLayout->setColumnStretch(1, 1);
+    pGridLayout->setContentsMargins(10, 10, 10, 0);
     DLabel *pServerNameLabel = new DLabel(tr("Server name:"));
     pServerNameLabel->setAlignment(Qt::AlignLeft);
+    pServerNameLabel->setAlignment(Qt::AlignVCenter);
     pServerNameLabel->setFixedWidth(100);
     pServerNameLabel->setFixedHeight(30);
     m_serverName->lineEdit()->setPlaceholderText(tr("Optional"));
-
-    pServerNameLabel->setForegroundRole(DPalette::TextWarning);
-
-    pServerNameLabel->setBackgroundRole(QPalette::Highlight);
-    pServerNameLabel->setAutoFillBackground(true);
-
-    //    DPalette pal = DApplicationHelper::instance()->palette(pServerNameLabel);
-    //    pal.setColor(DPalette::WindowText, pal.color(DPalette::TextWarning));
-    //    pServerNameLabel->setPalette(pal);
-
     pGridLayout->addWidget(pServerNameLabel);
     pGridLayout->addWidget(m_serverName);
 
     DLabel *pAddressLabel = new DLabel(tr("Address:"));
     pAddressLabel->setAlignment(Qt::AlignLeft);
+    pAddressLabel->setAlignment(Qt::AlignVCenter);
     pAddressLabel->setFixedWidth(100);
     pAddressLabel->setFixedHeight(30);
     m_address->lineEdit()->setPlaceholderText(tr("Optional"));
@@ -83,16 +78,19 @@ void ServerConfigOptDlg::initUI()
     QHBoxLayout *portLayout = new QHBoxLayout();
     DLabel *     pPortLabel = new DLabel(tr("Port:"));
     pPortLabel->setAlignment(Qt::AlignLeft);
+    pPortLabel->setAlignment(Qt::AlignVCenter);
     pPortLabel->setFixedWidth(40);
     m_port->setRange(0, 65535);
     m_port->setValue(22);
     m_port->setSingleStep(1);
+    m_port->setFixedWidth(70);
     portLayout->addWidget(pPortLabel);
     portLayout->addWidget(m_port);
     pGridLayout->addLayout(portLayout, 1, 1, Qt::AlignRight);
 
     DLabel *pUsernameLabel = new DLabel(tr("Username:"));
     pUsernameLabel->setAlignment(Qt::AlignLeft);
+    pUsernameLabel->setAlignment(Qt::AlignVCenter);
     pUsernameLabel->setFixedWidth(100);
     pUsernameLabel->setFixedHeight(30);
     m_userName->lineEdit()->setPlaceholderText(tr("Optional"));
@@ -101,6 +99,7 @@ void ServerConfigOptDlg::initUI()
 
     DLabel *pPasswordLabel = new DLabel(tr("Password:"));
     pPasswordLabel->setAlignment(Qt::AlignLeft);
+    pPasswordLabel->setAlignment(Qt::AlignVCenter);
     pPasswordLabel->setFixedWidth(100);
     pPasswordLabel->setFixedHeight(30);
     pGridLayout->addWidget(pPasswordLabel);
@@ -108,6 +107,7 @@ void ServerConfigOptDlg::initUI()
 
     DLabel *pPrivateKeyLabel = new DLabel(tr("PrivateKey:"));
     pPrivateKeyLabel->setAlignment(Qt::AlignLeft);
+    pPrivateKeyLabel->setAlignment(Qt::AlignVCenter);
     pPrivateKeyLabel->setFixedWidth(100);
     pPrivateKeyLabel->setFixedHeight(30);
     pGridLayout->addWidget(pPrivateKeyLabel);
@@ -117,9 +117,11 @@ void ServerConfigOptDlg::initUI()
     DWidget *    seniorWidget = new DWidget;
     QGridLayout *seniorLayout = new QGridLayout();
     seniorLayout->setAlignment(Qt::AlignTop);
+    seniorLayout->setContentsMargins(10, 0, 10, 10);
     seniorLayout->setColumnStretch(1, 1);
     DLabel *pGroupLabel = new DLabel(tr("Group:"));
     pGroupLabel->setAlignment(Qt::AlignLeft);
+    pGroupLabel->setAlignment(Qt::AlignVCenter);
     pGroupLabel->setFixedWidth(100);
     pGroupLabel->setFixedHeight(30);
     seniorLayout->addWidget(pGroupLabel);
@@ -127,6 +129,7 @@ void ServerConfigOptDlg::initUI()
 
     DLabel *pPathLabel = new DLabel(tr("Path:"));
     pPathLabel->setAlignment(Qt::AlignLeft);
+    pPathLabel->setAlignment(Qt::AlignVCenter);
     pPathLabel->setFixedWidth(100);
     pPathLabel->setFixedHeight(30);
     seniorLayout->addWidget(pPathLabel);
@@ -134,6 +137,7 @@ void ServerConfigOptDlg::initUI()
 
     DLabel *pCommandLabel = new DLabel(tr("Command:"));
     pCommandLabel->setAlignment(Qt::AlignLeft);
+    pCommandLabel->setAlignment(Qt::AlignVCenter);
     pCommandLabel->setFixedWidth(100);
     pCommandLabel->setFixedHeight(30);
     seniorLayout->addWidget(pCommandLabel);
@@ -141,6 +145,7 @@ void ServerConfigOptDlg::initUI()
 
     DLabel *pCodingLabel = new DLabel(tr("Coding:"));
     pCodingLabel->setAlignment(Qt::AlignLeft);
+    pCodingLabel->setAlignment(Qt::AlignVCenter);
     pCodingLabel->setFixedWidth(100);
     pCodingLabel->setFixedHeight(30);
     seniorLayout->addWidget(pCodingLabel);
@@ -148,6 +153,7 @@ void ServerConfigOptDlg::initUI()
 
     DLabel *pBackspaceKeyLabel = new DLabel(tr("BackspaceKey:"));
     pBackspaceKeyLabel->setAlignment(Qt::AlignLeft);
+    pBackspaceKeyLabel->setAlignment(Qt::AlignVCenter);
     pBackspaceKeyLabel->setFixedWidth(100);
     pBackspaceKeyLabel->setFixedHeight(30);
     seniorLayout->addWidget(pBackspaceKeyLabel);
@@ -155,6 +161,7 @@ void ServerConfigOptDlg::initUI()
 
     DLabel *pDeleteKeyLabel = new DLabel(tr("DeleteKey:"));
     pDeleteKeyLabel->setAlignment(Qt::AlignLeft);
+    pDeleteKeyLabel->setAlignment(Qt::AlignVCenter);
     pDeleteKeyLabel->setFixedWidth(100);
     pDeleteKeyLabel->setFixedHeight(30);
     seniorLayout->addWidget(pDeleteKeyLabel);
@@ -177,8 +184,8 @@ void ServerConfigOptDlg::initUI()
     m_delServer->hide();
     seniorWidget->hide();
 
-    DPushButton *pCancelButton  = new DPushButton(tr("Cancel"));
-    DPushButton *pAddSaveButton = new DPushButton(tr("Add"));
+    DPushButton *   pCancelButton  = new DPushButton(tr("Cancel"));
+    DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add"));
     if (m_type == SCT_MODIFY)
     {
         pAddSaveButton->setText(tr("Save"));
