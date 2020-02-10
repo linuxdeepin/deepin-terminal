@@ -29,10 +29,10 @@ ShortcutManager *ShortcutManager::instance()
 
 void ShortcutManager::initShortcuts()
 {
-    m_customCommandList = createCustomCommandsFromConfig();
+    m_customCommandActionList = createCustomCommandsFromConfig();
     m_builtinShortcuts = createBuiltinShortcutsFromConfig();  // use QAction or QShortcut ?
 
-    m_mainWindow->addActions(m_customCommandList);
+    m_mainWindow->addActions(m_customCommandActionList);
     m_mainWindow->addActions(m_builtinShortcuts);
 }
 
@@ -106,10 +106,10 @@ QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
     return actionList;
 }
 
-QList<QAction *> &ShortcutManager::getCustomCommands()
+QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 {
-    qDebug() << m_customCommandList.size() << endl;
-    return m_customCommandList;
+    qDebug() << m_customCommandActionList.size() << endl;
+    return m_customCommandActionList;
 }
 
 void ShortcutManager::setMainWindow(MainWindow *curMainWindow)
@@ -119,11 +119,10 @@ void ShortcutManager::setMainWindow(MainWindow *curMainWindow)
 
 QAction *ShortcutManager::addCustomCommand(QAction &action)
 {
-
     QAction *addAction = new QAction(action.text(), this);
     addAction->setData(action.data());
     addAction->setShortcut(action.shortcut());
-    m_customCommandList.append(addAction);
+    m_customCommandActionList.append(addAction);
     connect(addAction, &QAction::triggered, m_mainWindow, [this, addAction]() {
         QString command = addAction->data().toString();
         if (!command.endsWith('\n')) {
@@ -137,11 +136,11 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
 
 QAction *ShortcutManager::checkActionIsExist(QAction &action)
 {
-    QString strNewName = action.text();
-    for (int i = 0; i < m_customCommandList.size(); i++) {
-        QAction *curAct = m_customCommandList[i];
-        if (strNewName == curAct->text()) {
-            return curAct;
+    QString strNewActionName = action.text();
+    for (int i = 0; i < m_customCommandActionList.size(); i++) {
+        QAction *currAction = m_customCommandActionList[i];
+        if (strNewActionName == currAction->text()) {
+            return currAction;
         }
     }
     return nullptr;
@@ -150,7 +149,7 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
 void ShortcutManager::delCustomCommand(QAction *action)
 {
     delCUstomCommandToConfig(action);
-    m_customCommandList.removeOne(action);
+    m_customCommandActionList.removeOne(action);
     delete action;
     action = nullptr;
 }

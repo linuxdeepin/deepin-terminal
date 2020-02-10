@@ -2,7 +2,7 @@
 
 #include <QPainter>
 
-ThemeItemDelegate::ThemeItemDelegate(QObject *parent) : QAbstractItemDelegate(parent)
+ThemeItemDelegate::ThemeItemDelegate(QAbstractItemView *parent) : DStyledItemDelegate(parent)
 {
 }
 

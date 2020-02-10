@@ -14,7 +14,7 @@
 CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
     initUI();
-    if (ShortcutManager::instance()->getCustomCommands().size() >= 2) {
+    if (ShortcutManager::instance()->getCustomCommandActionList().size() >= 2) {
         m_searchEdit->setHidden(false);
     } else {
         m_searchEdit->setHidden(true);
@@ -36,8 +36,8 @@ void CustomCommandPanel::showAddCustomCommandDlg()
         QAction &newAction = dlg.getCurCustomCmd();
         QAction *existAction = ShortcutManager::instance()->checkActionIsExist(newAction);
         if (nullptr == existAction) {
-            QAction *newTmp = ShortcutManager::instance()->addCustomCommand(newAction);
-            m_listWidget->addOneRowData(newTmp);
+            QAction *actionData = ShortcutManager::instance()->addCustomCommand(newAction);
+            m_listWidget->addNewCustomCommandData(actionData);
             refreshSearchState();
         } else {
             existAction->data() = newAction.data();
@@ -50,18 +50,18 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
 void CustomCommandPanel::doCustomCommand(QListWidgetItem *item)
 {
-    CustomCommandItem *widgetTemp = qobject_cast<CustomCommandItem *>(m_listWidget->itemWidget(item));
-    QString strCommand = widgetTemp->getCurCustomCommandAction()->data().toString();
-    if (!strCommand.endsWith('\n')) {
-        strCommand.append('\n');
-    }
-    emit handleCustomCurCommand(strCommand);
+//    CustomCommandItem *widgetTemp = qobject_cast<CustomCommandItem *>(m_listWidget->itemWidget(item));
+//    QString strCommand = widgetTemp->getCurCustomCommandAction()->data().toString();
+//    if (!strCommand.endsWith('\n')) {
+//        strCommand.append('\n');
+//    }
+//    emit handleCustomCurCommand(strCommand);
 }
 
 void CustomCommandPanel::refreshPanel()
 {
     clearSearchInfo();
-    m_listWidget->refreshData("");
+    m_listWidget->refreshCommandListData("");
     refreshSearchState();
 }
 
@@ -105,6 +105,6 @@ void CustomCommandPanel::initUI()
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);  //
     connect(m_pushButton, &DPushButton::clicked, this, &CustomCommandPanel::showAddCustomCommandDlg);
-    connect(m_listWidget, &DListWidget::itemClicked, this, &CustomCommandPanel::doCustomCommand);
+//    connect(m_listWidget, &DListWidget::itemClicked, this, &CustomCommandPanel::doCustomCommand);
     connect(m_listWidget, &CustomCommandList::listItemCountChange, this, &CustomCommandPanel::refreshSearchState);
 }

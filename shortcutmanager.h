@@ -18,7 +18,7 @@ public:
 
     QList<QAction *> createCustomCommandsFromConfig();
     QList<QAction *> createBuiltinShortcutsFromConfig();
-    QList<QAction *> &getCustomCommands();
+    QList<QAction *> &getCustomCommandActionList();
 
     QAction *addCustomCommand(QAction &action);
     void delCustomCommand(QAction *action);
@@ -29,7 +29,7 @@ public:
 
 private:
     MainWindow *m_mainWindow = nullptr;
-    QList<QAction *> m_customCommandList;
+    QList<QAction *> m_customCommandActionList;
     QList<QAction *> m_builtinShortcuts;
     static ShortcutManager *m_instance;
 };

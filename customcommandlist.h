@@ -1,21 +1,23 @@
 #ifndef CUSTOMCOMMANDLIST_H
 #define CUSTOMCOMMANDLIST_H
 
-#include <DListWidget>
+#include <DListView>
 
 #include <QWidget>
 #include <QAction>
 
 DWIDGET_USE_NAMESPACE
 
+class CustomCommandDelegate;
+class CustomCommandItemModel;
 class CustomCommandItem;
-class CustomCommandList : public DListWidget
+class CustomCommandList : public DListView
 {
     Q_OBJECT
 public:
     explicit CustomCommandList(QWidget *parent = nullptr);
-    void refreshData(const QString &strFilter);
-    void addOneRowData(QAction *action);
+    void refreshCommandListData(const QString &strFilter);
+    void addNewCustomCommandData(QAction *actionData);
     void refreshOneRowCommandInfo(QAction *action);
 
 private:
@@ -29,6 +31,9 @@ private slots:
 
 private:
     int getItemRow(CustomCommandItem *findItem);
+    
+    CustomCommandDelegate *m_cmdDelegate = nullptr;
+    CustomCommandItemModel *m_cmdListModel = nullptr;
 };
 
 #endif  // CUSTOMCOMMANDLIST_H

@@ -1,14 +1,16 @@
 #ifndef THEMEITEMDELEGATE_H
 #define THEMEITEMDELEGATE_H
 
-#include <QAbstractItemDelegate>
+#include <DStyledItemDelegate>
 
-class ThemeItemDelegate : public QAbstractItemDelegate
+DWIDGET_USE_NAMESPACE
+
+class ThemeItemDelegate : public DStyledItemDelegate
 {
     Q_OBJECT
 
 public:
-    ThemeItemDelegate(QObject *parent = nullptr);
+    ThemeItemDelegate(QAbstractItemView *parent = nullptr);
 
 protected:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

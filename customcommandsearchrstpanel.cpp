@@ -22,7 +22,7 @@ void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
 void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 {
     setSearchFilter(strFilter);
-    m_listWidget->refreshData(strFilter);
+    m_listWidget->refreshCommandListData(strFilter);
 }
 
 #if 0
@@ -136,12 +136,12 @@ void CustomCommandSearchRstPanel::handleModifyCustomCommand(CustomCommandItem *i
 
 void CustomCommandSearchRstPanel::doCustomCommand(QListWidgetItem *item)
 {
-    CustomCommandItem *widgetTemp = static_cast<CustomCommandItem *>(m_listWidget->itemWidget(item));
-    QString strCommand = widgetTemp->getCurCustomCommandAction()->data().toString();
-    if (!strCommand.endsWith('\n')) {
-        strCommand.append('\n');
-    }
-    emit handleCustomCurCommand(strCommand);
+//    CustomCommandItem *widgetTemp = static_cast<CustomCommandItem *>(m_listWidget->itemWidget(item));
+//    QString strCommand = widgetTemp->getCurCustomCommandAction()->data().toString();
+//    if (!strCommand.endsWith('\n')) {
+//        strCommand.append('\n');
+//    }
+//    emit handleCustomCurCommand(strCommand);
     emit focusOut();
 }
 
@@ -172,6 +172,6 @@ void CustomCommandSearchRstPanel::initUI()
     vlayout->setMargin(0);
     vlayout->setSpacing(0);
     setLayout(vlayout);
-    connect(m_listWidget, &DListWidget::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
+//    connect(m_listWidget, &DListWidget::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_iconButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
 }

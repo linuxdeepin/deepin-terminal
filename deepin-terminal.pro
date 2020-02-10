@@ -26,6 +26,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 HEADERS += \
+    customcommanddelegate.h \
+    customcommanditemmodel.h \
     define.h \
     mainwindow.h \
     mainwindowplugininterface.h \
@@ -65,9 +67,12 @@ HEADERS += \
     termtabbar.h \
     quaketerminaladapter.h \
     termargumentparser.h \
-    quaketerminalproxy.h
+    quaketerminalproxy.h \
+    utils.h
 
 SOURCES += \
+    customcommanddelegate.cpp \
+    customcommanditemmodel.cpp \
     main.cpp \
     mainwindow.cpp \
     rightpanel.cpp \
@@ -107,7 +112,8 @@ SOURCES += \
     termtabbar.cpp \
     quaketerminaladapter.cpp \
     termargumentparser.cpp \
-    quaketerminalproxy.cpp
+    quaketerminalproxy.cpp \
+    utils.cpp
 
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts
