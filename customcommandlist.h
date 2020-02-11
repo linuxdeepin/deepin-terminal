@@ -6,6 +6,7 @@
 #include <DListView>
 
 #include <QWidget>
+#include <QMouseEvent>
 #include <QAction>
 
 DWIDGET_USE_NAMESPACE
@@ -40,7 +41,7 @@ private slots:
 
 private:
     int getItemRow(CustomCommandItemData itemData);
-    
+
     CustomCommandDelegate *m_cmdDelegate = nullptr;
     CustomCommandItemModel *m_cmdListModel = nullptr;
     bool m_bLeftMouse = true;

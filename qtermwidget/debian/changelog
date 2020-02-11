@@ -1,0 +1,301 @@
+qtermwidget (0.14.1-1) unstable; urgency=medium
+
+  * Cherry-picking upstream release: 0.14.1.
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 26 Feb 2019 01:00:03 +0100
+
+qtermwidget (0.14.0-1) unstable; urgency=medium
+
+  * Cherry-picking upstream release: 0.14.0.
+  * Bumped Standards to 4.3.0, no changes needed
+  * Dropped d/compat, use debhelper-compat = 12, no changes needed
+  * Fixed years in d/copyright
+  * Bumped minimum version lxqt-build-tools (>= 0.6.0~)
+  * Removed obsolete PULL_TRANSLATIONS= OFF from dh_auto_configure
+  * Added Build-Depends-Package field to symbols
+  * Installed new translations in the data package.
+  * Added two new symbols
+  * Added d/upstream/metadata
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 27 Jan 2019 15:29:16 +0100
+
+qtermwidget (0.9.0-2) unstable; urgency=medium
+
+  * Recommend fonts-hack instead of fonts-hack-ttf (Closes: #907279)
+  * Bumped Standards to 4.2.1, no changes needed
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 16 Sep 2018 14:16:19 +0200
+
+qtermwidget (0.9.0-1) unstable; urgency=medium
+
+  * Cherry-picking upstream release: 0.9.0.
+  * Moved debian/.gitignore to ./.gitignore
+  * Bumped build dependency lxqt-build-tools to >= 0.5.0~
+  * Removed cmake fix, applied upstream
+  * Added some options to rules
+  * Added some new symbols
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 24 May 2018 01:11:06 +0200
+
+qtermwidget (0.8.0-6) unstable; urgency=medium
+
+  * Bumped compat to 11
+  * Bumped debhelper to >= 11~
+  * Removed not needed cmake minimim version
+  * Bumped Standards to 4.1.4, no changes needed
+  * Changed VCS fields for salsa
+  * Changed Homepage, Source and watch to lxqt
+  * Bumped years in copyright
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 28 Apr 2018 19:31:10 +0200
+
+qtermwidget (0.8.0-5) unstable; urgency=medium
+
+  * Bumped Standards to 4.1.2, no changes needed
+  * Removed branch from VCS fields
+  * Removed gbp.conf
+
+ -- Alf Gaida <agaida@siduction.org>  Fri, 15 Dec 2017 19:30:23 +0100
+
+qtermwidget (0.8.0-4) unstable; urgency=medium
+
+  * Transition to unstable
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 04 Dec 2017 20:14:31 +0100
+
+qtermwidget (0.8.0-3) experimental; urgency=medium
+
+  * Fixed typo in changelog
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 05 Nov 2017 02:05:43 +0100
+
+qtermwidget (0.8.0-2) experimental; urgency=medium
+
+  * Fixed cmake install directories (Closes: #880389)
+    Thanks Andreas Beckmann <anbe@debian.org> for spotting this.
+  * Removed superfluous whitespaces from changelog
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 31 Oct 2017 15:18:42 +0100
+
+qtermwidget (0.8.0-1) experimental; urgency=medium
+
+  * Cherry-picking upstream release 0.8.0.
+  * Switched to experimental
+  * Bumped Standards to 4.1.1
+  * Bumped build tools to >= 0.4.0
+  * Fixed copyright
+  * Fixed symbols
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 22 Oct 2017 22:15:52 +0200
+
+qtermwidget (0.7.1-7) unstable; urgency=medium
+
+  * Fixed symbols for powerpcspe
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 24 Sep 2017 14:05:24 +0200
+
+qtermwidget (0.7.1-6) unstable; urgency=medium
+
+  * Fixed symbols for all but powerpcspe - missed build deps and
+    i don't want to guess.
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 05 Sep 2017 23:56:54 +0200
+
+qtermwidget (0.7.1-5) unstable; urgency=medium
+
+  * fixed another round of symbols, work in progress
+    (currently fixed amd64 and i386) (Closes: #874187)
+    Thanks Adrian Bunk for spotting this.
+  * bumped Standards to 4.1.0 - no changes needed
+  * fix some colons and not needed versions in d/control
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 05 Sep 2017 16:55:18 +0200
+
+qtermwidget (0.7.1-4) unstable; urgency=medium
+
+  * fixed symbols for gcc 7.1.0 (Closes: #871122)
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 12 Aug 2017 19:34:55 +0200
+
+qtermwidget (0.7.1-3) unstable; urgency=medium
+
+  * Bumped Standards to 4.0.0 - no changes needed
+  * Added 5 optional symbols (Closes: #853632)
+  * Added build dependency lxqt-build-tools
+  * Added Recommends: qtermwidget-l10n, fonts-hack-ttf
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 03 Jul 2017 00:45:55 +0200
+
+qtermwidget (0.7.1-2) unstable; urgency=medium
+
+  * Added build-dependency libutf8proc-dev as the missed part for
+    full utf-8 support. The use-trigger is already set.
+    Thanks Riku Voipio <riku.voipio@linaro.org>, nice catch.
+    (Closes: #851832)
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 19 Jan 2017 14:52:26 -0500
+
+qtermwidget (0.7.1-1) unstable; urgency=medium
+
+  * Cherry-picking upstream release 0.7.1.
+  * Fixed Symbols
+  * Removed build dependency liblxqt0-dev
+  * Activate new UTF8 processing in rules
+
+ -- Alf Gaida <agaida@siduction.org>  Wed, 21 Dec 2016 23:50:11 +0100
+
+qtermwidget (0.7.0-4) unstable; urgency=medium
+
+  * Cherry-picking upstream release: 0.7.0
+  * Bumped compat to 10
+  * Removed --parallel from rules, standard in compat 10
+  * Bumped minimum version debhelper (>= 10)
+  * Added build dependency liblxqt-dev (>= 0.11.0)
+  * Followed Multiarch hinter suggestions
+    - qtermwidget5-data marked as Multi-Arch: foreign
+    - libqtermwidget5-0 marked as Multi-Arch: same
+    - libqtermwidget5-0-dev marked as Multi-Arch: same
+  * Simplified optional symbols
+
+ -- Alf Gaida <agaida@siduction.org>  Tue, 18 Oct 2016 21:16:57 +0200
+
+qtermwidget (0.6.1~55-gd572f39-1) unstable; urgency=medium
+
+  * Bump version to 0.6.1~
+  * Added a renamed tarball to pristine-tar
+  * Rework symbols (Closes: #831083), tested with i386 and amd64
+  * Fixed VCS fields, using plain /git/
+  * Fixed copyright Format field, using https
+  * Exported LC_ALL=C.UTF-8, make builds reproducible
+  * Set CMAKE_BUILD_TYPE=RelWithDebInfo
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 06 Aug 2016 02:26:26 +0200
+
+qtermwidget (0.6.0-55-gd572f39-1) unstable; urgency=medium
+
+  * Cherry-picked snapshot: 0.6.0-55-gd572f39
+  * switch package numbering to git describe instead of dates
+  * Remove patch, now integrated into upstream (Closes: #798053)
+  * Bump standards to 3.9.8
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 14 May 2016 18:09:02 +0200
+
+
+qtermwidget (0.6.0+20160108-6) unstable; urgency=medium
+
+  * Fix two whitespace bugs, which i've had by mistake  introduced
+    after the test builds
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 14 May 2016 03:09:49 +0200
+
+qtermwidget (0.6.0+20160108-5) unstable; urgency=medium
+
+  * Rework some symbols
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 14 May 2016 02:01:05 +0200
+
+qtermwidget (0.6.0+20160108-4) unstable; urgency=medium
+
+  * Added kfreebsd-patch, thanks to Bas Couwenberg <sebastic@debian.org>.
+
+ -- Alf Gaida <agaida@siduction.org>  Fri, 13 May 2016 18:21:52 +0200
+
+qtermwidget (0.6.0+20160108-3) unstable; urgency=medium
+
+  * Fixed symbols for -03, thanks vorlon (Closes: #819225)
+  * Bump standards to 3.9.7
+  * Use secured VCS-links
+  * Added hardening =+ all to rules
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 27 Mar 2016 12:24:03 +0200
+
+qtermwidget (0.6.0+20160108-2) unstable; urgency=medium
+
+  * patching: 798053  'TCGETS' not declared
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 14 Jan 2016 00:47:51 +0100
+
+qtermwidget (0.6.0+20160108-1) unstable; urgency=medium
+
+  [ Alf Gaida ]
+  * Cherry-picking upstream version 0.6.0+20160108, Modification
+    of treatment of double-width character (e.g. Japanese)
+    https://github.com/lxde/qtermwidget/pull/55#issuecomment-170615897
+  * Fixed copyright
+  * No full stop in short descriptions, see lintian warning:
+    'description-synopsis-might-not-be-phrased-properly'
+
+  [ Peter Mattern ]
+  * Fixed descriptions in debian/control
+
+ -- Alf Gaida <agaida@siduction.org>  Mon, 11 Jan 2016 20:41:00 +0100
+
+qtermwidget (0.6.0+20151225-1) unstable; urgency=medium
+
+  * Cherry-picking upstream version 0.6.0+201501225.
+  * Cleaned up debian/control
+  * Cleaned up debian/copyright, remove GPL-3+ because it is not used
+    in the project any longer, relicense debian to GPL-2+
+  * Fixed symbols
+  * Fixed LDFLAGS
+  * Removed obsoleted overrides from debian/rules
+
+ -- Alf Gaida <agaida@siduction.org>  Sun, 27 Dec 2015 13:34:09 +0100
+
+qtermwidget (0.6.0+20150709-4) unstable; urgency=medium
+
+  * Merge to unstable.
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Mon, 16 Nov 2015 23:23:00 +0800
+
+qtermwidget (0.6.0+20150709-3) experimental; urgency=medium
+
+  * reduce symbols mess again
+
+ -- Alf Gaida <agaida@siduction.org>  Thu, 29 Oct 2015 00:09:51 +0100
+
+qtermwidget (0.6.0+20150709-2) experimental; urgency=medium
+
+  * revert most of the optional symbol marks
+  * sort symbols and added some empty lines and comments
+  * introduce arch specific symbols
+  * switch to experimental
+
+ -- Alf Gaida <agaida@siduction.org>  Sat, 03 Oct 2015 22:34:42 +0200
+
+qtermwidget (0.6.0+20150709-1) unstable; urgency=medium
+
+  [ Alf Gaida ]
+  * Cherry-picking upstream version 0.6.0+20150709.
+  * Symbols fixed for amd64 and i386
+
+  [ ChangZhuo Chen (陳昌倬) ]
+  * Make all non QTermWidget symbols optional (Closes: #798050).
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@debian.org>  Tue, 15 Sep 2015 20:34:04 +0800
+
+qtermwidget (0.6.0-1) unstable; urgency=medium
+
+  [ Alf Gaida ]
+  * README added.
+  * new debian $foo.
+  * Initial release (Closes: #675355).
+
+  [ Andrew Lee (李健秋) ]
+  * Adding upstream version 0.6.0.
+
+  [ ChangZhuo Chen (陳昌倬) ]
+  * Update symbol control file.
+  * Add watch.
+  * Cleanup control.
+  * Update copyright.
+  * Cleanup rule.
+  * Update changelog.
+
+  [ Andrew Lee (李健秋) ]
+  * Drop build-deps on quilt in control.
+  * Refine package descriptions.
+  * Added myself in copyright file.
+  * Refine copyright file.
+
+ -- Andrew Lee (李健秋) <ajqlee@debian.org>  Wed, 19 Aug 2015 02:39:14 +0800

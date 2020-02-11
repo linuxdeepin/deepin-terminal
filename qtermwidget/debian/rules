@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+# export DH_VERBOSE=1
+
+export LC_ALL=C.UTF-8
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh ${@} --buildsystem cmake
+
+override_dh_missing:
+	dh_missing --fail-missing
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DUPDATE_TRANSLATIONS=OFF \
+		-DBUILD_EXAMPLE=OFF \
+		-DQTERMWIDGET_USE_UTEMPTER=OFF \
+		-DQTERMWIDGET_BUILD_PYTHON_BINDING=OFF \
+		-DUSE_UTF8PROC=ON \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo
