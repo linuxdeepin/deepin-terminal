@@ -29,7 +29,7 @@ signals:
 public slots:
     void showCurSearchResult();
     void showAddCustomCommandDlg();
-    void doCustomCommand(QListWidgetItem *item);
+    void doCustomCommand(CustomCommandItemData itemData, QModelIndex index);
 
 private:
     void initUI();

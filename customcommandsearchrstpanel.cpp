@@ -134,14 +134,16 @@ void CustomCommandSearchRstPanel::handleModifyCustomCommand(CustomCommandItem *i
 }
 #endif
 
-void CustomCommandSearchRstPanel::doCustomCommand(QListWidgetItem *item)
+void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)
 {
-//    CustomCommandItem *widgetTemp = static_cast<CustomCommandItem *>(m_listWidget->itemWidget(item));
-//    QString strCommand = widgetTemp->getCurCustomCommandAction()->data().toString();
-//    if (!strCommand.endsWith('\n')) {
-//        strCommand.append('\n');
-//    }
-//    emit handleCustomCurCommand(strCommand);
+    Q_UNUSED(index)
+
+    QAction* cmdAction = itemData.m_customCommandAction;
+    QString strCommand = cmdAction->data().toString();
+    if (!strCommand.endsWith('\n')) {
+        strCommand.append('\n');
+    }
+    emit handleCustomCurCommand(strCommand);
     emit focusOut();
 }
 
@@ -172,6 +174,6 @@ void CustomCommandSearchRstPanel::initUI()
     vlayout->setMargin(0);
     vlayout->setSpacing(0);
     setLayout(vlayout);
-//    connect(m_listWidget, &DListWidget::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
+    connect(m_listWidget, &CustomCommandList::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_iconButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
 }

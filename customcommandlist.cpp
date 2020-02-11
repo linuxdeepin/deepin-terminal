@@ -1,6 +1,5 @@
 #include "customcommandlist.h"
 #include "customcommanddelegate.h"
-#include "customcommanditemmodel.h"
 #include "customcommanditem.h"
 #include "customcommandoptdlg.h"
 #include "operationconfirmdlg.h"
@@ -95,18 +94,11 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
     itemData.m_customCommandAction = curAction;
 
     m_cmdListModel->addNewCommandData(itemData);
-    
-//    CustomCommandItem *commandItem = new CustomCommandItem(action, this);
-//    QListWidgetItem *item = new QListWidgetItem();
-//    item->setSizeHint(QSize(250, 70));
-//    addItem(item);
-//    this->setItemWidget(item, commandItem);
-//    connect(commandItem, &CustomCommandItem::modifyCustomCommand, this, &CustomCommandList::handleModifyCustomCommand);
 }
 
-void CustomCommandList::handleModifyCustomCommand(CustomCommandItem *item)
+void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData)
 {
-    QAction *curItemAction = item->getCurCustomCommandAction();
+    QAction *curItemAction = itemData.m_customCommandAction;
 
     CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, curItemAction, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -129,7 +121,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItem *item)
         } else {
             curItemAction->setData(newAction.data());
             curItemAction->setShortcut(newAction.shortcut());
-            item->refreshCommandInfo(&newAction);
+//            item->refreshCommandInfo(&newAction);
             ShortcutManager::instance()->saveCustomCommandToConfig(curItemAction);
         }
     } else {
@@ -171,7 +163,7 @@ void CustomCommandList::refreshOneRowCommandInfo(QAction *action)
     }
 }
 
-int CustomCommandList::getItemRow(CustomCommandItem *findItem)
+int CustomCommandList::getItemRow(CustomCommandItemData itemData)
 {
     for (int i = 0; i < count(); i++) {
 //        CustomCommandItem *curItem = qobject_cast<CustomCommandItem *>(itemWidget(item(i)));
@@ -180,4 +172,62 @@ int CustomCommandList::getItemRow(CustomCommandItem *findItem)
 //        }
     }
     return -1;
+}
+
+QRect getModifyIconRect(QRect visualRect)
+{
+    int modifyIconSize = 30;
+    return QRect(visualRect.right() - modifyIconSize - 10, visualRect.top() + (visualRect.height()-modifyIconSize)/2, modifyIconSize, modifyIconSize);
+}
+
+void CustomCommandList::mouseMoveEvent(QMouseEvent *event)
+{
+    DListView::mouseMoveEvent(event);
+}
+
+void CustomCommandList::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_bLeftMouse = true;
+    } else {
+        m_bLeftMouse = false;
+    }
+
+    DListView::mousePressEvent(event);
+
+    qDebug() << "start Press!!";
+    if (m_cmdListModel && m_cmdListModel->rowCount(QModelIndex()) == 0) {
+        return;
+    }
+
+    QPoint clickPoint = event->pos();
+
+    QModelIndex modelIndex = indexAt(clickPoint);
+    QRect rect = visualRect(modelIndex);
+
+    if (!modelIndex.isValid()) {
+        return;
+    }
+
+    CustomCommandItemData itemData =
+        qvariant_cast<CustomCommandItemData>(m_cmdListModel->data(modelIndex, Qt::DisplayRole));
+
+    if (getModifyIconRect(rect).contains(clickPoint)) {
+        handleModifyCustomCommand(itemData);
+    } else {
+        qDebug() << "click item -- choose command";
+        emit itemClicked(itemData, modelIndex);
+    }
+    m_cmdListModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
+}
+
+void CustomCommandList::mouseReleaseEvent(QMouseEvent *event)
+{
+    DListView::mouseReleaseEvent(event);
+}
+
+void CustomCommandList::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
+{
+    DListView::setSelection(rect, command);
 }

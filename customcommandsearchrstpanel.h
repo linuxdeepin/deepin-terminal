@@ -24,7 +24,7 @@ signals:
     void showCustomCommandPanel();
 
 public slots:
-    void doCustomCommand(QListWidgetItem *item);
+    void doCustomCommand(CustomCommandItemData itemData, QModelIndex index);
 
 private:
     void setSearchFilter(const QString &filter);

@@ -75,12 +75,6 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         
         QRect cmdShortcutRect = QRect(bgRect.left() + leftIconSize + 5, bgRect.bottom()-labelHeight-5, bgRect.width()-leftIconSize-rightIconSize, labelHeight);
         painter->drawText(cmdShortcutRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdShortcut);
-        
-//        m_leftIconButton->setFixedSize(QSize(70, 70));
-//        m_leftIconButton->setIcon(QStyle::StandardPixmap::SP_DialogYesButton);
-//
-//        connect(m_rightIconButton, &DIconButton::clicked, this, &CustomCommandItem::editCustomCommand);
-//        m_rightIconButton->hide();
 
         painter->restore();
     } else {

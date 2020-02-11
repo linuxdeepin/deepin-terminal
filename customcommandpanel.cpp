@@ -48,14 +48,16 @@ void CustomCommandPanel::showAddCustomCommandDlg()
     }
 }
 
-void CustomCommandPanel::doCustomCommand(QListWidgetItem *item)
+void CustomCommandPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)
 {
-//    CustomCommandItem *widgetTemp = qobject_cast<CustomCommandItem *>(m_listWidget->itemWidget(item));
-//    QString strCommand = widgetTemp->getCurCustomCommandAction()->data().toString();
-//    if (!strCommand.endsWith('\n')) {
-//        strCommand.append('\n');
-//    }
-//    emit handleCustomCurCommand(strCommand);
+    Q_UNUSED(index)
+
+    QAction* cmdAction = itemData.m_customCommandAction;
+    QString strCommand = cmdAction->data().toString();
+    if (!strCommand.endsWith('\n')) {
+        strCommand.append('\n');
+    }
+    emit handleCustomCurCommand(strCommand);
 }
 
 void CustomCommandPanel::refreshPanel()
@@ -105,6 +107,6 @@ void CustomCommandPanel::initUI()
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);  //
     connect(m_pushButton, &DPushButton::clicked, this, &CustomCommandPanel::showAddCustomCommandDlg);
-//    connect(m_listWidget, &DListWidget::itemClicked, this, &CustomCommandPanel::doCustomCommand);
+    connect(m_listWidget, &CustomCommandList::itemClicked, this, &CustomCommandPanel::doCustomCommand);
     connect(m_listWidget, &CustomCommandList::listItemCountChange, this, &CustomCommandPanel::refreshSearchState);
 }
