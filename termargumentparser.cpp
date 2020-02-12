@@ -42,6 +42,10 @@ bool TermArgumentParser::parseArguments(MainWindow *mainWindow)
 
     mainWindow->show();
 
+    /******** Modify by n014361 wangpeili 2020-01-20: 雷神窗口打开不能自动激活 ********/
+    mainWindow->activateWindow();
+    /********************* Modify by n014361 wangpeili End ************************/
+
     return false;
 }
 
