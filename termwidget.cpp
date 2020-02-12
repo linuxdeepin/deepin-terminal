@@ -12,6 +12,8 @@
 #include <QVBoxLayout>
 #include <QTime>
 #include <QDebug>
+#include <QApplication>
+#include <QClipboard>
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
@@ -194,6 +196,12 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
     connect(
     m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
+    connect(m_term, &TermWidget::copyAvailable, this, [this](bool enable) {
+        if (Settings::instance()->IsPasteSelection() && enable) {
+            qDebug() << "hasCopySelection";
+            QApplication::clipboard()->setText(selectedText(), QClipboard::Clipboard);
+        }
+    });
 }
 
 QList<int> TermWidgetWrapper::getRunningSessionIdList()
@@ -412,6 +420,11 @@ void TermWidgetWrapper::pasteSelection()
 void TermWidgetWrapper::toggleShowSearchBar()
 {
     m_term->toggleShowSearchBar();
+}
+
+QString TermWidgetWrapper::selectedText(bool preserveLineBreaks)
+{
+    return m_term->selectedText(true);
 }
 
 void TermWidgetWrapper::initUI()

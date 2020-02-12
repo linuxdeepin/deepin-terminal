@@ -170,7 +170,9 @@ static void flipTransform(CoordinateRect *point)
 static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
 {
     switch (dir) {
-    case Qt::LeftEdge: flipTransform(point); break;
+    case Qt::LeftEdge:
+        flipTransform(point);
+        break;
     case Qt::RightEdge:
         // No-op
         break;
@@ -178,8 +180,12 @@ static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
         flipTransform(point);
         transposeTransform(point);
         break;
-    case Qt::BottomEdge: transposeTransform(point); break;
-    default: qFatal("Invalid navigation"); return;
+    case Qt::BottomEdge:
+        transposeTransform(point);
+        break;
+    default:
+        qFatal("Invalid navigation");
+        return;
     }
 }
 
@@ -243,11 +249,21 @@ QPoint TermWidgetPage::GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir)
     QPoint rightTop = term->mapTo(term->window(), QPoint(term->width(), 0));
     QPoint ret;
     switch (dir) {
-    case Qt::LeftEdge: ret = leftTop + QPoint(-1, 1); break;
-    case Qt::RightEdge: ret = rightTop + QPoint(1, 1); break;
-    case Qt::TopEdge: ret = leftTop + QPoint(1, -1); break;
-    case Qt::BottomEdge: ret = leftBottom + QPoint(1, 1); break;
-    default: qFatal("Invalid navigation"); break;
+    case Qt::LeftEdge:
+        ret = leftTop + QPoint(-1, 1);
+        break;
+    case Qt::RightEdge:
+        ret = rightTop + QPoint(1, 1);
+        break;
+    case Qt::TopEdge:
+        ret = leftTop + QPoint(1, -1);
+        break;
+    case Qt::BottomEdge:
+        ret = leftBottom + QPoint(1, 1);
+        break;
+    default:
+        qFatal("Invalid navigation");
+        break;
     }
     return ret;
 }
@@ -300,19 +316,13 @@ void TermWidgetPage::copyClipboard()
  1. @函数: void TermWidgetPage::pasteClipboard()
  2. @作者:     n014361 王培利
  3. @日期:     2020-01-10
- 4. @说明: 用户粘贴时候，如果设置了选中即复制，就粘贴选中内容，否则粘贴剪切板内容
+ 4. @说明: 用户粘贴时候，直接粘贴剪切板内容
 *******************************************************************************/
 void TermWidgetPage::pasteClipboard()
 {
     TermWidgetWrapper *term = currentTerminal();
     if (term) {
-        if (Settings::instance()->IsPasteSelection()) {
-            qDebug() << "pasteSelection";
-            term->pasteSelection();
-        } else {
-            qDebug() << "pasteClipboard";
-            term->pasteClipboard();
-        }
+        term->pasteClipboard();
     }
 }
 

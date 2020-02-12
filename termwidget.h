@@ -64,6 +64,8 @@ public slots:
     /******** Modify by n014361 wangpeili 2020-01-10: 粘贴选择内容   ****************/
     void pasteSelection();
     void toggleShowSearchBar();
+
+    QString selectedText(bool preserveLineBreaks = true);
     /********************* Modify by n014361 wangpeili End ************************/
 
 signals:
