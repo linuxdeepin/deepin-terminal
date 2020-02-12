@@ -5,7 +5,7 @@
 
 RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel(parent)
 {
-    setAttribute(Qt::WA_TranslucentBackground);
+    //    setAttribute(Qt::WA_TranslucentBackground);
     m_remoteManagementPanel = new RemoteManagementPanel(this);
     connect(this, &RemoteManagementTopPanel::focusOut, this, &RightPanel::hide);
     connect(m_remoteManagementPanel,
@@ -49,7 +49,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
     m_remoteManagementSearchPanel->show();
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    animation->setDuration(5000);
+    animation->setDuration(300);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
     animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -58,7 +58,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    animation1->setDuration(5000);
+    animation1->setDuration(300);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -77,7 +77,7 @@ void RemoteManagementTopPanel::showRemotePanelFromGroupPanel()
     m_remoteManagementPanel->show();
     m_remoteManagementSearchPanel->hide();
     QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    animation->setDuration(3000);
+    animation->setDuration(300);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
     animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -86,7 +86,7 @@ void RemoteManagementTopPanel::showRemotePanelFromGroupPanel()
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    animation1->setDuration(3000);
+    animation1->setDuration(300);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -116,7 +116,7 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
     m_serverConfigGroupPanel->refreshData(strGroup);
     m_remoteManagementSearchPanel->hide();
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    animation->setDuration(5000);
+    animation->setDuration(300);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
     animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -125,7 +125,7 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    animation1->setDuration(5000);
+    animation1->setDuration(300);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -145,7 +145,7 @@ void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strG
     m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(strGroup, strFilter);
     m_remoteManagementSearchPanel->show();
     QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    animation->setDuration(5000);
+    animation->setDuration(300);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
     animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -154,7 +154,7 @@ void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strG
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    animation1->setDuration(5000);
+    animation1->setDuration(300);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -172,7 +172,7 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
     m_remoteManagementPanel->refreshPanel();
     m_remoteManagementPanel->show();
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    animation->setDuration(5000);
+    animation->setDuration(300);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
     animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -181,7 +181,7 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    animation1->setDuration(5000);
+    animation1->setDuration(300);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -200,7 +200,7 @@ void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strG
     m_serverConfigGroupPanel->refreshData(strGroup);
     m_serverConfigGroupPanel->show();
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    animation->setDuration(5000);
+    animation->setDuration(300);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
     animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -209,7 +209,7 @@ void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strG
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    animation1->setDuration(5000);
+    animation1->setDuration(300);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));

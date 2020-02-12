@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 
 ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QString &group, QWidget *parent)
-    : QWidget(parent),
+    : QFrame(parent),
       m_serverConfig(config),
       m_nameLabel(new DLabel(this)),
       m_detailsLabel(new DLabel(this)),
@@ -14,13 +14,16 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
       m_strGroupName(group)
 
 {
+    setAutoFillBackground(true);
     QImage img(":/images/icon/hover/server.svg");
     m_leftIcon->setPixmap(QPixmap::fromImage(img));
     m_leftIcon->setFixedSize(QSize(70, 70));
     m_leftIcon->setFocusPolicy(Qt::NoFocus);
+    m_leftIcon->setContentsMargins(10, 0, 0, 0);
     if (!m_bGroup) {
         m_rightIconButton = new MyIconButton(this);
         m_rightIconButton->setFixedSize(QSize(30, 30));
+        m_rightIconButton->setIconSize(QSize(30, 30));
         m_rightIconButton->setIcon(QIcon(":/images/icon/hover/edit_hover.svg"));
         connect(m_rightIconButton, &DIconButton::clicked, this, &ServerConfigItem::editServerConfig);
         m_rightIcon = nullptr;
@@ -28,7 +31,7 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
         m_rightIcon = new DLabel(this);
         m_rightIcon->setPixmap(QPixmap::fromImage(QImage(":/images/icon/hover/arrowr.svg")));
         m_rightIcon->setFixedSize(QSize(30, 30));
-        m_rightIcon->setAlignment(Qt::AlignVCenter);
+        m_rightIcon->setAlignment(Qt::AlignCenter);
         m_rightIcon->setFocusPolicy(Qt::NoFocus);
         m_rightIconButton = nullptr;
     }
@@ -47,7 +50,7 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
         mainLayout->addWidget(m_rightIconButton);
     }
     mainLayout->setSpacing(0);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 20, 0);
     setLayout(mainLayout);
 
     if (m_bGroup) {
@@ -78,8 +81,10 @@ void ServerConfigItem::editServerConfig()
 
 void ServerConfigItem::enterEvent(QEvent *event)
 {
-    if (!m_bGroup && m_rightIconButton)
+    if (!m_bGroup && m_rightIconButton) {
         m_rightIconButton->show();
+    }
+    setBackgroundRole(DPalette::ColorRole::Light);
     DWidget::enterEvent(event);
 }
 
@@ -88,6 +93,7 @@ void ServerConfigItem::leaveEvent(QEvent *event)
     if (!m_bGroup && m_rightIconButton) {
         m_rightIconButton->hide();
     }
+    setBackgroundRole(DPalette::ColorRole::NoRole);
     DWidget::enterEvent(event);
 }
 

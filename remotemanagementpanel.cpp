@@ -4,6 +4,8 @@
 
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
+    this->setBackgroundRole(DPalette::Window);
+    setAutoFillBackground(true);
     initUI();
 }
 
@@ -73,6 +75,7 @@ void RemoteManagementPanel::initUI()
 
     m_pushButton->setFixedHeight(50);
     m_pushButton->setText("Add Server");
+
     // connect(m_iconButton, &DIconButton::clicked, this, &CommonPanel::iconButtonCliecked);//
     // connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CommonPanel::searchEditingFinished);//
     // connect(m_pushButton, &DPushButton::clicked, this, &CommonPanel::pushButtonClicked);
@@ -81,12 +84,17 @@ void RemoteManagementPanel::initUI()
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addWidget(m_searchEdit);
     hlayout->setSpacing(0);
-    hlayout->setMargin(0);
+    hlayout->setMargin(10);
+
+    QHBoxLayout *blayout = new QHBoxLayout();
+    blayout->addWidget(m_pushButton);
+    blayout->setSpacing(0);
+    blayout->setMargin(10);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
-    vlayout->addWidget(m_pushButton);
+    vlayout->addLayout(blayout);
     vlayout->setMargin(0);
     vlayout->setSpacing(0);
     setLayout(vlayout);

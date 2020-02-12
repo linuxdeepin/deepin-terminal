@@ -8,7 +8,7 @@ MyIconButton::MyIconButton(QWidget *parent) : DIconButton(parent)
 
 void MyIconButton::enterEvent(QEvent *event)
 {
-    setIcon(QIcon(":/images/icon/hover/edit_press.svg"));
+    setIcon(QIcon(":/images/icon/focus/edit_press.svg"));
     DIconButton::enterEvent(event);
 }
 

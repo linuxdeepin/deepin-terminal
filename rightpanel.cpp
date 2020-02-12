@@ -31,8 +31,8 @@ void RightPanel::show()
     QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
-    animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), rect.height()));
-    animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), rect.height()));
+    animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
     animation->start();
 
     //    connect(animation, &QPropertyAnimation::valueChanged, this, [=] { m_themeView->adjustScrollbarMargins(); });
@@ -46,8 +46,9 @@ void RightPanel::hide()
     QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
-    animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), rect.height()));
-    animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), rect.height()));
+    animation->setStartValue(
+    QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
 
     animation->start();
 

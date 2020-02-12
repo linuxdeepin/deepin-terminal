@@ -2,6 +2,8 @@
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
+    this->setBackgroundRole(DPalette::Window);
+    setAutoFillBackground(true);
     initUI();
 }
 

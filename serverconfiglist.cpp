@@ -6,6 +6,8 @@
 
 ServerConfigList::ServerConfigList(QWidget *parent) : DListWidget(parent)
 {
+    //    setStyleSheet("QListWidget:item{padding:0}");
+    setFocusPolicy(Qt::NoFocus);
     setVerticalScrollMode(ScrollPerItem);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -80,11 +82,11 @@ void ServerConfigList::refreshOneRowServerConfigInfo(ServerConfig *curConfig)
 void ServerConfigList::addOneRowServerConfigGroupData(const QString &group)
 {
     ServerConfigItem *configItem = new ServerConfigItem(nullptr, true, group, this);
-    // textItem->highSearchText(key,Qt::red);
     QListWidgetItem *item = new QListWidgetItem();
-    item->setSizeHint(QSize(250, 70));
+    item->setSizeHint(QSize(260, 70));
     addItem(item);
     this->setItemWidget(item, configItem);
+    item->setData(Qt::UserRole, 0);
     connect(configItem, &ServerConfigItem::modifyServerConfig, this, &ServerConfigList::handleModifyServerConfig);
 }
 
@@ -93,7 +95,7 @@ void ServerConfigList::addOneRowServerConfigData(ServerConfig *curConfig)
     ServerConfigItem *configItem = new ServerConfigItem(curConfig, false, "", this);
     // textItem->highSearchText(key,Qt::red);
     QListWidgetItem *item = new QListWidgetItem();
-    item->setSizeHint(QSize(250, 70));
+    item->setSizeHint(QSize(260, 70));
     addItem(item);
     this->setItemWidget(item, configItem);
     connect(configItem, &ServerConfigItem::modifyServerConfig, this, &ServerConfigList::handleModifyServerConfig);

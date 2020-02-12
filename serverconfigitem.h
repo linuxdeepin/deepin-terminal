@@ -13,7 +13,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-class ServerConfigItem : public QWidget
+class ServerConfigItem : public QFrame
 {
     Q_OBJECT
 public:
@@ -37,7 +37,7 @@ private:
     ServerConfig *m_serverConfig = nullptr;
     DLabel *m_nameLabel = nullptr;
     DLabel *m_detailsLabel = nullptr;
-    DIconButton *m_rightIconButton = nullptr;
+    MyIconButton *m_rightIconButton = nullptr;
     DLabel *m_leftIcon = nullptr;
     DLabel *m_rightIcon = nullptr;
     bool m_bGroup;
