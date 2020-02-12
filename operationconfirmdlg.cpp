@@ -94,6 +94,12 @@ void OperationConfirmDlg::setTipInfo(const QString &strInfo)
     m_tipInfo->setText(strInfo);
 }
 
+void OperationConfirmDlg::setOKCancelBtnText(const QString &strOk, const QString &strCancel)
+{
+    m_okButton->setText(strOk);
+    m_cancelButton->setText(strCancel);
+}
+
 void OperationConfirmDlg::slotClickOkButton()
 {
     m_confirmResultCode = QDialog::Accepted;

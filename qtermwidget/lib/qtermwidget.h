@@ -67,6 +67,12 @@ public:
     //start shell program if it was not started in constructor
     void startShellProgram();
 
+    // Returns session id list of processes running in the terminal window
+    QList<int> getRunningSessionIdList();
+
+    //Determine whether the terminal control has running process
+    bool hasRunningProcess();
+
     /**
      * Start terminal teletype as is
      * and redirect data for external recipient.

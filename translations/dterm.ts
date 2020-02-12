@@ -106,32 +106,32 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="553"/>
+        <location filename="../mainwindow.cpp" line="614"/>
         <source>Rename Tab</source>
         <translation>标题重命名</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="553"/>
+        <location filename="../mainwindow.cpp" line="614"/>
         <source>Tab name:</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="645"/>
+        <location filename="../mainwindow.cpp" line="706"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="817"/>
+        <location filename="../mainwindow.cpp" line="879"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="819"/>
+        <location filename="../mainwindow.cpp" line="881"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="821"/>
+        <location filename="../mainwindow.cpp" line="883"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
@@ -457,6 +457,26 @@
         <location filename="../main.cpp" line="36"/>
         <source>Deep Dark Terminal</source>
         <translation>UOS终端</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="151"/>
+        <source>Programs are still running in terminal</source>
+        <translation>终端仍然有程序在运⾏</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="152"/>
+        <source>Are you sure you want to exit?</source>
+        <translation>您确定要退出吗？</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="153"/>
+        <source>Exit</source>
+        <translation>退出</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="153"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
 </context>
 <context>

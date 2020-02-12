@@ -78,6 +78,7 @@ set(SRCS
     lib/ScreenWindow.cpp
     lib/SearchBar.cpp
     lib/Session.cpp
+    lib/SessionManager.cpp
     lib/ShellCommand.cpp
     lib/TerminalCharacterDecoder.cpp
     lib/TerminalDisplay.cpp
@@ -98,6 +99,7 @@ set(HDRS
     lib/ScreenWindow.h
     lib/SearchBar.h
     lib/Session.h
+    lib/SessionManager.h
     lib/TerminalDisplay.h
     lib/Vt102Emulation.h
 )
@@ -111,6 +113,13 @@ set(HDRS_DISTRIB
     lib/qtermwidget.h
     lib/Emulation.h
     lib/Filter.h
+    lib/Session.h
+    lib/SessionManager.h
+    lib/History.h
+    lib/BlockArray.h
+    lib/Character.h
+    lib/CharacterColor.h
+    lib/TerminalDisplay.h
 )
 
 # dirs

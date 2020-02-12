@@ -923,6 +923,13 @@ int Session::foregroundProcessId() const
 {
     return _shellProcess->foregroundProcessGroup();
 }
+
+bool Session::isForegroundProcessActive()
+{
+    // foreground process info is always updated after this
+    return (_shellProcess->pid() != _shellProcess->foregroundProcessGroup());
+}
+
 int Session::processId() const
 {
     return _shellProcess->pid();

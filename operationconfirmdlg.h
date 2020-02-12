@@ -17,6 +17,7 @@ public:
     explicit OperationConfirmDlg(QWidget *parent = nullptr);
     void setOperatTypeName(const QString &strName);
     void setTipInfo(const QString &strInfo);
+    void setOKCancelBtnText(const QString &strOk, const QString &strCancel);
     QDialog::DialogCode getConfirmResult();
 
 public slots:

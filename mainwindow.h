@@ -72,6 +72,9 @@ private:
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
+    /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
+    bool closeProtect();
+    /**************** Modify by n013252 wangliang End ****************/
 
     MainWindowPluginInterface *getPluginByName(const QString &name);
 

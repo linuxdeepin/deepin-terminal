@@ -24,6 +24,7 @@
 
 #include "ColorTables.h"
 #include "Session.h"
+#include "SessionManager.h"
 #include "Screen.h"
 #include "ScreenWindow.h"
 #include "Emulation.h"
@@ -56,6 +57,8 @@ struct TermWidgetImpl {
 TermWidgetImpl::TermWidgetImpl(QWidget* parent)
 {
     this->m_session = createSession(parent);
+    SessionManager::instance()->saveSession(this->m_session);
+
     this->m_terminalDisplay = createTerminalDisplay(this->m_session, parent);
 }
 
@@ -341,10 +344,46 @@ void QTermWidget::init(int startnow)
 
 QTermWidget::~QTermWidget()
 {
+    SessionManager::instance()->removeSession(m_impl->m_session->sessionId());
+
     delete m_impl;
     emit destroyed();
 }
 
+QList<int> QTermWidget::getRunningSessionIdList()
+{
+    SessionManager *sessionMgr = SessionManager::instance();
+    QList<Session *> sessionList = sessionMgr->sessions();
+
+    QList<int> sessionIdList;
+    for (int i=0; i<sessionList.size(); i++)
+    {
+        Session *session = sessionList.at(i);
+        if ((session == nullptr) || !session->isForegroundProcessActive())
+        {
+            continue;
+        }
+        sessionIdList.append(session->sessionId());
+    }
+
+    return sessionIdList;
+}
+
+bool QTermWidget::hasRunningProcess()
+{
+    QList<int> sessionIdList = getRunningSessionIdList();
+    for(int i=0; i<sessionIdList.size(); i++)
+    {
+        int sessionId = sessionIdList.at(i);
+        int currSessionId = m_impl->m_session->sessionId();
+        if (sessionId == currSessionId)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 void QTermWidget::setTerminalFont(const QFont &font)
 {

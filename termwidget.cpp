@@ -196,6 +196,16 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
 }
 
+QList<int> TermWidgetWrapper::getRunningSessionIdList()
+{
+    return m_term->getRunningSessionIdList();
+}
+
+bool TermWidgetWrapper::hasRunningProcess()
+{
+    return m_term->hasRunningProcess();
+}
+
 bool TermWidgetWrapper::isTitleChanged() const
 {
     return m_term->isTitleChanged();

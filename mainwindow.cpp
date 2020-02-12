@@ -6,7 +6,9 @@
 #include "tabbar.h"
 #include "termproperties.h"
 #include "termwidgetpage.h"
+#include "termwidget.h"
 #include "titlebar.h"
+#include "operationconfirmdlg.h"
 
 #include "themepanelplugin.h"
 
@@ -143,11 +145,28 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     });
 }
 
+bool showExitConfirmDialog()
+{
+    OperationConfirmDlg optDlg;
+    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
+    optDlg.setTipInfo(QObject::tr("Are you sure you want to exit?"));
+    optDlg.setOKCancelBtnText(QObject::tr("Exit"), QObject::tr("Cancel"));
+    optDlg.exec();
+
+    return (optDlg.getConfirmResult() == QDialog::Accepted);
+}
+
 void MainWindow::closeTab(const QString &identifier)
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
+            TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+            if (termWidgetWapper->hasRunningProcess() && !showExitConfirmDialog()) {
+                qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+                return;
+            }
+
             m_termStackWidget->removeWidget(tabPage);
             tabPage->deleteLater();
             m_tabbar->removeTab(identifier);
@@ -239,7 +258,49 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("geometry", saveGeometry());
     settings.setValue("windowState", saveState());
 
+    bool hasRunning = closeProtect();
+    if (hasRunning && !showExitConfirmDialog()) {
+        qDebug() << "close window protect..." << endl;
+        event->ignore();
+        return;
+    }
+
     DMainWindow::closeEvent(event);
+}
+
+bool MainWindow::closeProtect()
+{
+    // Do not ask for confirmation during log out and power off
+    if (qApp->isSavingSession()) {
+        return false;
+    }
+
+    // Check what processes are running, excluding the shell
+    TermWidgetPage *tabPage = currentTab();
+    TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+    QList<int> processesRunning = termWidgetWapper->getRunningSessionIdList();
+    qDebug() << processesRunning << endl;
+
+    // Get number of open tabs
+    const int openTabs = m_termStackWidget->count();
+
+    // If no processes running (except the shell) and no extra tabs, just close
+    if (processesRunning.count() == 0 && openTabs < 2) {
+        return false;
+    }
+
+    // make sure the window is shown on current desktop and is not minimized
+    if (this->isMinimized() && !this->m_isQuakeWindow) {
+        qDebug() << "isMinimized........... " << endl;
+        this->setWindowState((this->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+    }
+
+    if (processesRunning.count() > 0) {
+        qDebug() << "here are " << processesRunning.count() << " processes running in this window. " << endl;
+        return true;
+    }
+
+    return false;
 }
 
 void MainWindow::onTermTitleChanged(QString title)

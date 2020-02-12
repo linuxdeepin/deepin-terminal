@@ -53,6 +53,9 @@ public:
     void setOutputtingScroll(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
 
+    QList<int> getRunningSessionIdList();
+    bool hasRunningProcess();
+
 public slots:
     void zoomIn();
     void zoomOut();
