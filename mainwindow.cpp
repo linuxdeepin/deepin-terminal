@@ -706,9 +706,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
         /******** Modify by n014361 wangpeili 2020-01-13:雷神模式隐藏 ****************/
         if (Settings::instance()->settings->option("advanced.window.HideRaytheonWindow")->value().toBool()) {
-            if (event->type() == QEvent::FocusOut) {
-                qDebug() << "focusOutEvent";
+            if (watched == this && event->type() == QEvent::WindowDeactivate) {
+                qDebug() << "WindowDeactivate" << event->type();
                 this->hide();
+                this->setQuakeWindowActivated(false);
             }
         }
         /********************* Modify by n014361 wangpeili End ************************/
