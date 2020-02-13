@@ -281,21 +281,11 @@ void TermWidgetWrapper::setTerminalFontSize(const int fontSize)
  1. @函数:   void TermWidgetWrapper::selectAll()
  2. @作者:     n014361 王培利
  3. @日期:     2020-01-10
- 4. @说明:   全选（功能实现有问题）
+ 4. @说明:   全选
 *******************************************************************************/
 void TermWidgetWrapper::selectAll()
 {
-    int iRowCount = m_term->historyLinesCount() + m_term->screenLinesCount();
-    int iColumnsCount = m_term->screenColumnsCount();
-
-    m_term->setSelectionStart(0, 0);
-    m_term->setSelectionEnd(3, iColumnsCount);
-
-    qDebug() << "selectAll" << iRowCount << iColumnsCount;
-    m_term->getHotSpotAt(3, iColumnsCount);
-
-    qDebug() << m_term->selectedText(true);
-    // qDebug() << m_term->availableKeyBindings();
+    m_term->setSelectionAll();
 }
 
 /*******************************************************************************
