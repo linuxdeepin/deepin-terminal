@@ -51,8 +51,6 @@ public:
     }
 
 private slots:
-    void initUI();
-    void initData();
     void slotClose();
     void slotAddSaveButtonClicked();
 
@@ -76,6 +74,12 @@ private:
     DCommandLinkButton *m_advancedOptions = nullptr;
     DCommandLinkButton *m_delServer = nullptr;
     bool m_bDelOpt = false;
+
+    void initUI();
+    void initData();
+    QList<QString> getTextCodec();
+    QList<QString> getBackSpaceKey();
+    QList<QString> getDeleteKey();
 };
 
 #endif  // SERVERCONFIGOPTDLG_H

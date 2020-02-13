@@ -8,6 +8,7 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QTextCodec>
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
     : DAbstractDialog(parent),
@@ -212,6 +213,12 @@ void ServerConfigOptDlg::initUI()
 
 void ServerConfigOptDlg::initData()
 {
+    QList<QString> textCodeList = getTextCodec();
+    m_coding->addItems(textCodeList);
+    QList<QString> backSpaceKeyList = getBackSpaceKey();
+    m_backSapceKey->addItems(backSpaceKeyList);
+    QList<QString> deleteKeyList = getDeleteKey();
+    m_deleteKey->addItems(deleteKeyList);
     if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         m_serverName->setText(m_curServer->m_serverName);
         m_address->setText(m_curServer->m_address);
@@ -222,10 +229,54 @@ void ServerConfigOptDlg::initData()
         m_group->setText(m_curServer->m_group);
         m_path->setText(m_curServer->m_path);
         m_command->setText(m_curServer->m_command);
-        m_coding->setEditText(m_curServer->m_encoding);
-        m_backSapceKey->setEditText(m_curServer->m_backspaceKey);
-        m_deleteKey->setEditText(m_curServer->m_deleteKey);
+        if (!m_curServer->m_encoding.isEmpty()) {
+            int textCodeIndex = textCodeList.indexOf(m_curServer->m_encoding);
+            m_coding->setCurrentIndex(textCodeIndex);
+        }
+        if (!m_curServer->m_backspaceKey.isEmpty()) {
+            int backSpaceKeyIndex = backSpaceKeyList.indexOf(m_curServer->m_backspaceKey);
+            m_backSapceKey->setCurrentIndex(backSpaceKeyIndex);
+        }
+        if (!m_curServer->m_deleteKey.isEmpty()) {
+            int deleteKeyIndex = deleteKeyList.indexOf(m_curServer->m_deleteKey);
+            m_deleteKey->setCurrentIndex(deleteKeyIndex);
+        }
     }
+}
+
+QList<QString> ServerConfigOptDlg::getTextCodec()
+{
+    QList<QByteArray> list = QTextCodec::availableCodecs();
+    QList<QString> textCodecList;
+    for (QByteArray byteArr : list) {
+        QString str = QString(byteArr);
+        if (!textCodecList.contains(str)) {
+            textCodecList.append(str);
+        }
+    }
+    return textCodecList;
+}
+
+QList<QString> ServerConfigOptDlg::getBackSpaceKey()
+{
+    QList<QString> eraseKeyList;
+    eraseKeyList.append(tr("ascii-del"));
+    eraseKeyList.append(tr("auto"));
+    eraseKeyList.append(tr("control-h"));
+    eraseKeyList.append(tr("escape-sequence"));
+    eraseKeyList.append(tr("ttys"));
+    return eraseKeyList;
+}
+
+QList<QString> ServerConfigOptDlg::getDeleteKey()
+{
+    QList<QString> eraseKeyList;
+    eraseKeyList.append(tr("escape-sequence"));
+    eraseKeyList.append(tr("ascii-del"));
+    eraseKeyList.append(tr("auto"));
+    eraseKeyList.append(tr("control-h"));
+    eraseKeyList.append(tr("ttys"));
+    return eraseKeyList;
 }
 
 ServerConfigOptDlg::~ServerConfigOptDlg()
