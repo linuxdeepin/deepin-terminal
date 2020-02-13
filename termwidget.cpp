@@ -323,22 +323,14 @@ void TermWidgetWrapper::setCursorShape(int shape)
 }
 
 /*******************************************************************************
- 1. @函数:   void TermWidgetWrapper::setCursorBlinking(bool enable)
- 2. @作者:     n014361 王培利
- 3. @日期:     2020-01-10
- 4. @说明:   设置光标是否闪烁(有BUG，设置完成后，失去焦点的窗口会一直闪烁）
+ 1. @函数:   setCursorBlinking(bool enable)
+ 2. @作者:   王培利n014361
+ 3. @日期:   2020-01-10
+ 4. @说明:   设置光标是否闪烁
 *******************************************************************************/
 void TermWidgetWrapper::setCursorBlinking(bool enable)
 {
     m_term->setBlinkingCursor(enable);
-    // m_term->unsetCursor();
-    // m_term->setCursor();
-    emit m_term->termLostFocus();
-    // qDebug() << m_term->hasFocus();
-    // m_term->update();
-    // m_term->show();
-    // m_term->clearFocus();
-    // emit m_term->termLostFocus();
 }
 
 void TermWidgetWrapper::setPressingScroll(bool enable)

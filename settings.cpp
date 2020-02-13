@@ -73,7 +73,7 @@ void Settings::initConnection()
         emit cursorShapeChanged(value.toInt());
     });
 
-    QPointer<DSettingsOption> cursorBlink = settings->option("advanced.cursor.link");
+    QPointer<DSettingsOption> cursorBlink = settings->option("advanced.cursor.Blink");
     connect(cursorBlink, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
         emit cursorBlinkChanged(value.toBool());
     });

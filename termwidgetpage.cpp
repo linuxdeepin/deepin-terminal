@@ -437,9 +437,9 @@ void TermWidgetPage::setcursorShape(int shape)
 }
 
 /*******************************************************************************
- 1. @函数:   void TermWidgetPage::setBlinkingCursor(bool enable)
- 2. @作者:     n014361 王培利
- 3. @日期:     2020-01-10
+ 1. @函数:    setBlinkingCursor(bool enable)
+ 2. @作者:    王培利n014361
+ 3. @日期:    2020-01-10
  4. @说明:    设置鼠标闪烁
 *******************************************************************************/
 void TermWidgetPage::setBlinkingCursor(bool enable)
@@ -448,8 +448,6 @@ void TermWidgetPage::setBlinkingCursor(bool enable)
     for (TermWidgetWrapper *term : termList) {
         term->setCursorBlinking(enable);
     }
-
-    // emit termGetFocus();
 }
 
 void TermWidgetPage::setPressingScroll(bool enable)

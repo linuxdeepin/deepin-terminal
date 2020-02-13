@@ -1298,19 +1298,29 @@ void TerminalDisplay::showResizeNotification()
 
 void TerminalDisplay::setBlinkingCursor(bool blink)
 {
-  _hasBlinkingCursor=blink;
+    _hasBlinkingCursor=blink;
 
-  if (blink && !_blinkCursorTimer->isActive())
-      _blinkCursorTimer->start(QApplication::cursorFlashTime() / 2);
+    if (blink && !_blinkCursorTimer->isActive())
+    _blinkCursorTimer->start(QApplication::cursorFlashTime() / 2);
 
-  if (!blink && _blinkCursorTimer->isActive())
-  {
-    _blinkCursorTimer->stop();
-    if (_cursorBlinking)
-      blinkCursorEvent();
+    if (!blink && _blinkCursorTimer->isActive())
+    {
+        _blinkCursorTimer->stop();
+        if (_cursorBlinking)
+        blinkCursorEvent();
+        else
+        _cursorBlinking = false;
+    }
+    /******** Modify by n014361 wangpeili 2020-02-13: 修复“设置光标闪烁后，非焦点光标也在闪烁”***********×****/
+    if (hasFocus())
+    {
+        focusInEvent(nullptr);
+    }
     else
-      _cursorBlinking = false;
-  }
+    {
+        focusOutEvent(nullptr);
+    }
+    /***************** Modify by n014361 End *************************/
 }
 
 void TerminalDisplay::setBlinkingTextEnabled(bool blink)
