@@ -160,6 +160,9 @@ public:
 
     void setSelectionStart(int row, int column);
     void setSelectionEnd(int row, int column);
+    /******** Modify by n014361 wangpeili 2020-02-13: 新增屏幕全选功能***********×****/
+    void setSelectionAll();
+    /***************** Modify by n014361 End *************************/
     void getSelectionStart(int& row, int& column);
     void getSelectionEnd(int& row, int& column);
 
