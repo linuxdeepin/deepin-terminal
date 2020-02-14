@@ -70,17 +70,22 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         qDebug() << "setMotionAfterPasting(0)";
     }
 
-    if (Settings::instance()->OutputtingScroll()) {
-        connect(this, &QTermWidget::receivedData, this, [this](QString value) {
-            // qDebug() << "receivedData(true)" << value;
+
+    connect(this, &QTermWidget::receivedData, this, [this](QString value) {
+        if (Settings::instance()->OutputtingScroll()) {
+            //qDebug() << "receivedData(true)" << value;
             if (value != "\r\n") {
                 // qDebug() << "receivedData(true)" << value;
                 scrollToEnd();
             }
-        });
-
-        // setMonitorActivity(true);
-    }
+            //if (!value.endsWith("$ ")) {
+                // qDebug() << "receivedData(true)" << value;
+                //scrollToEnd();
+                //QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_End, Qt::ShiftModifier);
+                //QApplication::sendEvent(focusWidget(), &keyPress);
+            //}
+        }
+    });
 
 #if !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
     setBlinkingCursor(Settings::instance()->cursorBlink());
@@ -342,21 +347,10 @@ void TermWidgetWrapper::setPressingScroll(bool enable)
         m_term->setMotionAfterPasting(0);
     }
 }
-
+//
 void TermWidgetWrapper::setOutputtingScroll(bool enable)
 {
-    if (enable) {
-        connect(m_term, &QTermWidget::receivedData, this, [this](QString value) {
-            // qDebug() << "receivedData(true)" << value;
-            if (value != "\r\n") {
-                qDebug() << "setOutputtingScroll(true)";
-                m_term->scrollToEnd();
-            }
-        });
-    } else {
 
-        disconnect(m_term, &QTermWidget::receivedData, this, 0);
-    }
 }
 
 void TermWidgetWrapper::zoomIn()
