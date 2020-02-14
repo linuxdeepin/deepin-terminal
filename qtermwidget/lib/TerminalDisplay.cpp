@@ -2821,10 +2821,13 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
     {
         emit keyPressedSignal(event);
 
-        if(event->modifiers().testFlag(Qt::ShiftModifier)
-             || event->modifiers().testFlag(Qt::ControlModifier)
-             || event->modifiers().testFlag(Qt::AltModifier))
-        {
+        /******** Modify by wangpeili n014361 2020-02-14: 按键滚动功能***********/
+        // 按键滚动原为默认。现在修改为可以设置是否滚动
+        // 暂时取消了原系统shift/alt/ctrl键的单独跳转功能。
+//        if(event->modifiers().testFlag(Qt::ShiftModifier)
+//             || event->modifiers().testFlag(Qt::ControlModifier)
+//             || event->modifiers().testFlag(Qt::AltModifier))
+//        {
             switch(mMotionAfterPasting)
             {
             case MoveStartScreenWindow:
@@ -2836,11 +2839,12 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
             case NoMoveScreenWindow:
                 break;
             }
-        }
-        else
-        {
-            scrollToEnd();
-        }
+//        }
+//        else
+//        {
+//            scrollToEnd();
+//        }
+          /***************** Modify by wangpeili n014361 End *****************/
     }
 
     event->accept();
