@@ -668,6 +668,17 @@ void QTermWidget::setSelectionEnd(int row, int column)
     m_impl->m_terminalDisplay->screenWindow()->screen()->setSelectionEnd(column, row);
 }
 
+/********************************************************************
+ 1. @函数:    setSelectionAll
+ 2. @作者:     王培利
+ 3. @日期:     2020-02-13
+ 4. @说明:    屏幕全选功能
+********************************************************************/
+void QTermWidget::setSelectionAll()
+{
+    m_impl->m_terminalDisplay->setSelectionAll();
+}
+
 void QTermWidget::getSelectionStart(int& row, int& column)
 {
     m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionStart(column, row);

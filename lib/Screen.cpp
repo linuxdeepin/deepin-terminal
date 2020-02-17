@@ -1110,6 +1110,20 @@ void Screen::setSelectionEnd( const int x, const int y)
     }
 }
 
+/********************************************************************
+ 1. @函数:    setSelectionAll
+ 2. @作者:     王培利
+ 3. @日期:     2020-02-13
+ 4. @说明:    屏幕全选功能
+********************************************************************/
+void Screen::setSelectionAll()
+{
+    selBegin   = 0;
+    selTopLeft     = 0;
+    int endPos = (getHistLines() + getCursorY() + 1) * columns - 1;
+    selBottomRight = endPos;
+}
+
 bool Screen::isSelected( const int x,const int y) const
 {
     bool columnInSelection = true;

@@ -2690,6 +2690,18 @@ void TerminalDisplay::setSelection(const QString& t)
     /***************** Modify by n014361 End *************************/
 }
 
+/********************************************************************
+ 1. @函数:    setSelectionAll
+ 2. @作者:     王培利
+ 3. @日期:     2020-02-13
+ 4. @说明:    屏幕全选功能
+********************************************************************/
+void TerminalDisplay::setSelectionAll()
+{
+    _screenWindow->setSelectionAll();
+    setSelection(_screenWindow->selectedText(_preserveLineBreaks));
+}
+
 void TerminalDisplay::copyClipboard()
 {
   if ( !_screenWindow )

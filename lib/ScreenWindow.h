@@ -124,6 +124,11 @@ public:
      * the window.
      */
     void setSelectionEnd( int column , int line );
+    
+    /******** Modify by n014361 wangpeili 2020-02-13: 新增屏幕全选功能***********×****/
+    void setSelectionAll();
+    /***************** Modify by n014361 End *************************/
+
     /**
      * Retrieves the start of the selection within the window.
      */
