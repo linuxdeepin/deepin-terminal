@@ -327,6 +327,9 @@ public:
      */
     int foregroundProcessId() const;
 
+    /** Returns true if the user has started a program in the session. */
+    bool isForegroundProcessActive();
+
     /** Returns the terminal session's window size in lines and columns. */
     QSize size();
     /**
