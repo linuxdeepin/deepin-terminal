@@ -12,10 +12,10 @@
 
 CustomCommandList::CustomCommandList(QWidget *parent) : DListView(parent)
 {
-    setBackgroundRole(QPalette::Window);
-    setAutoFillBackground(true);
-    
-    setVerticalScrollMode(ScrollPerItem);
+    setBackgroundRole(QPalette::NoRole);
+    setAutoFillBackground(false);
+
+//    setVerticalScrollMode(ScrollPerItem);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     initData();
@@ -32,47 +32,51 @@ void CustomCommandList::initData()
 
 void CustomCommandList::refreshCommandListData(const QString &strFilter)
 {
+    qDebug() << __FUNCTION__ << strFilter;
+    m_cmdListModel->clear();
+    m_cmdItemDataList.clear();
+
     QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
     qDebug() << "size:" << customCommandActionList.size();
 
-    QList<CustomCommandItemData> cmdItemDataList;
-    for (int i = 0; i < customCommandActionList.size(); i++) {
-        QAction *curAction = customCommandActionList[i];
-        QString strCmdName = curAction->text();
-        QString strCmdText = curAction->data().toString();
-        QKeySequence keySeq = curAction->shortcut();
-        QString strKeySeq = keySeq.toString();
-        
-        CustomCommandItemData itemData;
-        itemData.m_cmdName = strCmdName;
-        itemData.m_cmdText = strCmdText;
-        itemData.m_cmdShortcut = strKeySeq;
-        itemData.m_customCommandAction = curAction;
-        
-        cmdItemDataList.append(itemData);
+    if (strFilter.isEmpty()) {
+        for (int i = 0; i < customCommandActionList.size(); i++) {
+            QAction *curAction = customCommandActionList[i];
+            QString strCmdName = curAction->text();
+            QString strCmdText = curAction->data().toString();
+            QKeySequence keySeq = curAction->shortcut();
+            QString strKeySeq = keySeq.toString();
+
+            CustomCommandItemData itemData;
+            itemData.m_cmdName = strCmdName;
+            itemData.m_cmdText = strCmdText;
+            itemData.m_cmdShortcut = strKeySeq;
+            itemData.m_customCommandAction = curAction;
+
+            m_cmdItemDataList.append(itemData);
+        }
+    } else {
+        for (int i = 0; i < customCommandActionList.size(); i++) {
+            QAction *curAction = customCommandActionList[i];
+            QString strCmdName = curAction->text();
+            QString strCmdText = curAction->data().toString();
+            QKeySequence keySeq = curAction->shortcut();
+            QString strKeySeq = keySeq.toString();
+            if (strCmdName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
+                    || strCmdText.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
+                    || strKeySeq.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+                CustomCommandItemData itemData;
+                itemData.m_cmdName = strCmdName;
+                itemData.m_cmdText = strCmdText;
+                itemData.m_cmdShortcut = strKeySeq;
+                itemData.m_customCommandAction = curAction;
+
+                m_cmdItemDataList.append(itemData);
+            }
+        }
     }
-    
-    m_cmdListModel->initCommandListData(cmdItemDataList);
-    
-//    if (strFilter.isEmpty()) {
-//        for (int i = 0; i < customCommandList.size(); i++) {
-//            QAction *curAction = customCommandList[i];
-//            addOneRowData(curAction);
-//        }
-//    } else {
-//        for (int i = 0; i < customCommandList.size(); i++) {
-//            QAction *curAction = customCommandList[i];
-//            QString strName = curAction->text();
-//            QString strCommad = curAction->data().toString();
-//            QKeySequence keyseq = curAction->shortcut();
-//            QString strKeyseq = keyseq.toString();
-//            if (strName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
-//                || strCommad.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
-//                || strKeyseq.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
-//                addOneRowData(curAction);
-//            }
-//        }
-//    }
+
+    m_cmdListModel->initCommandListData(m_cmdItemDataList);
 }
 
 void CustomCommandList::addNewCustomCommandData(QAction *actionData)
@@ -96,7 +100,7 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
     m_cmdListModel->addNewCommandData(itemData);
 }
 
-void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData)
+void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData, QModelIndex modelIndex)
 {
     QAction *curItemAction = itemData.m_customCommandAction;
 
@@ -127,30 +131,24 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData
     } else {
 
         if (dlg.isDelCurCommand()) {
-#if 0
-            QString strInfo = QString("删除命令\n你确认要删除%1").arg(curItemAction->text());
-
-            DMessageBox dmb(DMessageBox::Icon::Information,
-                            "", strInfo);
-            QPushButton *cancelbt = dmb.addButton(tr("取消"), DMessageBox::RejectRole);
-            QPushButton *okbt = dmb.addButton(tr("确定"), DMessageBox::AcceptRole);
-            dmb.setWindowTitle("");
-            if (dmb.exec() == QDialog::Accepted) {
-                takeItem(item->getItemRow());
-                ShortcutManager::instance()->delCustomCommand(curItemAction);
-            }
-#endif
             OperationConfirmDlg dlg;
             dlg.setOperatTypeName(tr("delete opt"));
             dlg.setTipInfo(tr("Do you sure to delete the %1").arg(curItemAction->text()));
             dlg.exec();
             if (dlg.getConfirmResult() == QDialog::Accepted) {
-//                takeItem(getItemRow(item));
+                removeCommandItem(itemData, modelIndex);
                 ShortcutManager::instance()->delCustomCommand(curItemAction);
                 emit listItemCountChange();
             }
         }
     }
+}
+
+void CustomCommandList::removeCommandItem(CustomCommandItemData itemData, QModelIndex modelIndex)
+{
+    this->m_cmdListModel->removeRow(modelIndex.row(), modelIndex.parent());
+    this->m_cmdItemDataList.removeAt(modelIndex.row());
+    this->removeItem(modelIndex.row());
 }
 
 void CustomCommandList::refreshOneRowCommandInfo(QAction *action)
@@ -166,10 +164,12 @@ void CustomCommandList::refreshOneRowCommandInfo(QAction *action)
 int CustomCommandList::getItemRow(CustomCommandItemData itemData)
 {
     for (int i = 0; i < count(); i++) {
-//        CustomCommandItem *curItem = qobject_cast<CustomCommandItem *>(itemWidget(item(i)));
-//        if (curItem == findItem) {
-//            return i;
-//        }
+        CustomCommandItemData data = m_cmdItemDataList.at(i);
+        if (itemData.m_cmdName == data.m_cmdName
+                && itemData.m_cmdText == data.m_cmdText
+                && itemData.m_cmdShortcut == data.m_cmdShortcut) {
+            return i;
+        }
     }
     return -1;
 }
@@ -177,7 +177,7 @@ int CustomCommandList::getItemRow(CustomCommandItemData itemData)
 QRect getModifyIconRect(QRect visualRect)
 {
     int modifyIconSize = 30;
-    return QRect(visualRect.right() - modifyIconSize - 10, visualRect.top() + (visualRect.height()-modifyIconSize)/2, modifyIconSize, modifyIconSize);
+    return QRect(visualRect.right() - modifyIconSize - 10, visualRect.top() + (visualRect.height() - modifyIconSize) / 2, modifyIconSize, modifyIconSize);
 }
 
 void CustomCommandList::mouseMoveEvent(QMouseEvent *event)
@@ -213,7 +213,7 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
         qvariant_cast<CustomCommandItemData>(m_cmdListModel->data(modelIndex, Qt::DisplayRole));
 
     if (getModifyIconRect(rect).contains(clickPoint)) {
-        handleModifyCustomCommand(itemData);
+        handleModifyCustomCommand(itemData, modelIndex);
     } else {
         qDebug() << "click item -- choose command";
         emit itemClicked(itemData, modelIndex);

@@ -14,11 +14,6 @@
 CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
     initUI();
-    if (ShortcutManager::instance()->getCustomCommandActionList().size() >= 2) {
-        m_searchEdit->setHidden(false);
-    } else {
-        m_searchEdit->setHidden(true);
-    }
 }
 
 void CustomCommandPanel::showCurSearchResult()
@@ -52,7 +47,7 @@ void CustomCommandPanel::doCustomCommand(CustomCommandItemData itemData, QModelI
 {
     Q_UNUSED(index)
 
-    QAction* cmdAction = itemData.m_customCommandAction;
+    QAction *cmdAction = itemData.m_customCommandAction;
     QString strCommand = cmdAction->data().toString();
     if (!strCommand.endsWith('\n')) {
         strCommand.append('\n');
@@ -69,6 +64,7 @@ void CustomCommandPanel::refreshPanel()
 
 void CustomCommandPanel::refreshSearchState()
 {
+    qDebug() << __FUNCTION__ << m_listWidget->count() << endl;
     if (m_listWidget->count() >= 2) {
         m_searchEdit->show();
     } else {
@@ -78,10 +74,15 @@ void CustomCommandPanel::refreshSearchState()
 
 void CustomCommandPanel::initUI()
 {
-    m_pushButton = new DPushButton(this);
-    m_listWidget = new CustomCommandList(this);
-    m_searchEdit = new DSearchEdit(this);
+    setBackgroundRole(QPalette::Window);
+    setAutoFillBackground(true);
+
+    m_pushButton = new DPushButton();
+    m_listWidget = new CustomCommandList();
+    m_searchEdit = new DSearchEdit();
     m_searchEdit->setClearButtonEnabled(true);
+    DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
+    m_searchEdit->setPlaceHolder(tr("Search"));
 
     m_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
     m_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
@@ -93,16 +94,18 @@ void CustomCommandPanel::initUI()
     m_pushButton->setText("+ Add Command");
 
     QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->addWidget(m_searchEdit);
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
+    hlayout->setContentsMargins(0, 0, 0, 0);
+    hlayout->addWidget(m_searchEdit);
 
-    QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->addLayout(hlayout);
+    QVBoxLayout *vlayout = new QVBoxLayout(this);
+    vlayout->setSpacing(0);
+    vlayout->setMargin(0);
+    vlayout->setContentsMargins(0, 0, 0, 0);
+    vlayout->addWidget(m_searchEdit);
     vlayout->addWidget(m_listWidget);
     vlayout->addWidget(m_pushButton);
-    vlayout->setMargin(0);
-    vlayout->setSpacing(0);
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);  //

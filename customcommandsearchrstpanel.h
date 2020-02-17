@@ -27,8 +27,9 @@ public slots:
     void doCustomCommand(CustomCommandItemData itemData, QModelIndex index);
 
 private:
-    void setSearchFilter(const QString &filter);
     void initUI();
+    void setSearchFilter(const QString &filter);
+    void showPreviousPanel();
 
     CustomCommandList *m_listWidget = nullptr;
     QString m_strFilter;

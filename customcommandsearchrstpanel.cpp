@@ -138,7 +138,7 @@ void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData
 {
     Q_UNUSED(index)
 
-    QAction* cmdAction = itemData.m_customCommandAction;
+    QAction *cmdAction = itemData.m_customCommandAction;
     QString strCommand = cmdAction->data().toString();
     if (!strCommand.endsWith('\n')) {
         strCommand.append('\n');
@@ -149,6 +149,9 @@ void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData
 
 void CustomCommandSearchRstPanel::initUI()
 {
+    setBackgroundRole(QPalette::Window);
+    setAutoFillBackground(true);
+
     m_iconButton = new DIconButton(this);
     m_iconButton->setIcon(DStyle::StandardPixmap::SP_ArrowPrev);
     m_iconButton->setFixedSize(QSize(40, 40));

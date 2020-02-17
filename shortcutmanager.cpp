@@ -108,7 +108,7 @@ QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
 
 QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 {
-    qDebug() << m_customCommandActionList.size() << endl;
+    qDebug() << __FUNCTION__ << m_customCommandActionList.size();
     return m_customCommandActionList;
 }
 
@@ -149,9 +149,23 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
 void ShortcutManager::delCustomCommand(QAction *action)
 {
     delCUstomCommandToConfig(action);
-    m_customCommandActionList.removeOne(action);
-    delete action;
-    action = nullptr;
+
+    QString actionCmdName = action->text();
+    QString actionCmdText = action->data().toString();
+    QString actionKeySeq = action->shortcut().toString();
+
+    for (int i = 0; i < m_customCommandActionList.size(); i++) {
+        QAction *currAction = m_customCommandActionList.at(i);
+        QString currCmdName = currAction->text();
+        QString currCmdText = currAction->data().toString();
+        QString currKeySeq = currAction->shortcut().toString();
+        if (actionCmdName == currCmdName
+                && actionCmdText == currCmdText
+                && actionKeySeq == currKeySeq) {
+            m_customCommandActionList.removeAt(i);
+            break;
+        }
+    }
 }
 
 void ShortcutManager::saveCustomCommandToConfig(QAction *action)

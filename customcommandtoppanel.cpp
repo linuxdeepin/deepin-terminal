@@ -8,6 +8,8 @@
 #include <QParallelAnimationGroup>
 #include <QDebug>
 
+const int iAnimationDuration = 300;
+
 CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
     : RightPanel(parent),
       m_customCommandPanel(new CustomCommandPanel(this)),
@@ -36,10 +38,12 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
 void CustomCommandTopPanel::showCustomCommandPanel()
 {
     qDebug() << "showCustomCommandPanel" << endl;
+    m_customCommandPanel->resize(size());
     m_customCommandPanel->refreshPanel();
+    m_customCommandPanel->show();
 
     QPropertyAnimation *animation = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
-    animation->setDuration(5000);
+    animation->setDuration(iAnimationDuration);
     animation->setEasingCurve(QEasingCurve::OutQuad);
 
     QRect rect = geometry();
@@ -49,7 +53,7 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_customCommandPanel, "geometry");
-    animation1->setDuration(5000);
+    animation1->setDuration(iAnimationDuration);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
@@ -69,7 +73,7 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
     m_customCommandSearchPanel->setFocus();
 
     QPropertyAnimation *animation = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
-    animation->setDuration(5000);
+    animation->setDuration(iAnimationDuration);
     animation->setEasingCurve(QEasingCurve::OutQuad);
 
     QRect rect = geometry();
@@ -78,7 +82,7 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_customCommandPanel, "geometry");
-    animation1->setDuration(5000);
+    animation1->setDuration(iAnimationDuration);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));

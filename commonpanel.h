@@ -10,11 +10,11 @@
 #include <DListWidget>
 #include <DLabel>
 
-#include <QWidget>
+#include <QFrame>
 
 DWIDGET_USE_NAMESPACE
 
-class CommonPanel : public QWidget
+class CommonPanel : public QFrame
 {
     Q_OBJECT
 public:

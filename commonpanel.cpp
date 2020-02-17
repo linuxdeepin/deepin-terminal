@@ -4,7 +4,7 @@
 #include <QVBoxLayout>
 #include <QDebug>
 
-CommonPanel::CommonPanel(QWidget *parent) : QWidget(parent)
+CommonPanel::CommonPanel(QWidget *parent) : QFrame(parent)
 {
 }
 

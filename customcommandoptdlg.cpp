@@ -24,12 +24,11 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
       m_shortCutsLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
-    setFixedSize(300, 200);
     QHBoxLayout *pHBoxLayout = new QHBoxLayout();
     DLabel *pTitleLable = new DLabel();
     pTitleLable->setAlignment(Qt::AlignCenter);
     DDialogCloseButton *pCloseBt = new DDialogCloseButton();
-    connect(pCloseBt, &DDialogCloseButton::clicked, this, [=]() { reject(); });
+    connect(pCloseBt, &DDialogCloseButton::clicked, this, [ = ]() { reject(); });
     pHBoxLayout->addWidget(pTitleLable);
     pHBoxLayout->addWidget(pCloseBt);
 
@@ -65,8 +64,10 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     pAddSaveButton->setPalette(pa);
 
     if (m_type == CCT_ADD) {
+        setFixedSize(300, 200);
         pTitleLable->setText(tr("Add Command"));
     } else {
+        setFixedSize(300, 230);
         pTitleLable->setText(tr("Edit Command"));
 
         QHBoxLayout *pHboxLayout1 = new QHBoxLayout();
@@ -90,17 +91,19 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     pVBoxLayout->addLayout(pBtHbLayout);
     setLayout(pVBoxLayout);
 
-    connect(pCancelButton, &DPushButton::clicked, this, [=]() { reject(); });
+    connect(pCancelButton, &DPushButton::clicked, this, [ = ]() { reject(); });
     connect(pAddSaveButton, &DPushButton::clicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
 
-    connect(m_nameLineEdit, &DLineEdit::editingFinished, this, [=] {
-        if (m_nameLineEdit->text().isEmpty()) {
+    connect(m_nameLineEdit, &DLineEdit::editingFinished, this, [ = ] {
+        if (m_nameLineEdit->text().isEmpty())
+        {
             m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
         }
     });
 
-    connect(m_commandLineEdit, &DLineEdit::editingFinished, this, [=] {
-        if (m_commandLineEdit->text().isEmpty()) {
+    connect(m_commandLineEdit, &DLineEdit::editingFinished, this, [ = ] {
+        if (m_commandLineEdit->text().isEmpty())
+        {
             m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
         }
     });

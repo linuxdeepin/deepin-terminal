@@ -29,21 +29,21 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
     void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command);
 
-private:
-    void initData();
-
 signals:
     void listItemCountChange();
-    void itemClicked(CustomCommandItemData itemData, QModelIndex index);
+    void itemClicked(CustomCommandItemData itemData, QModelIndex modelIndex);
 
 private slots:
-    void handleModifyCustomCommand(CustomCommandItemData itemData);
+    void handleModifyCustomCommand(CustomCommandItemData itemData, QModelIndex modelIndex);
 
 private:
+    void initData();
     int getItemRow(CustomCommandItemData itemData);
+    void removeCommandItem(CustomCommandItemData itemData, QModelIndex modelIndex);
 
     CustomCommandDelegate *m_cmdDelegate = nullptr;
     CustomCommandItemModel *m_cmdListModel = nullptr;
+    QList<CustomCommandItemData> m_cmdItemDataList;
     bool m_bLeftMouse = true;
 };
 
