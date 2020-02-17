@@ -38,9 +38,17 @@ void RemoteManagementPlugn::initRemoteManagementTopPanel()
             &RemoteManagementPlugn::doCennectServer);
 }
 
-void RemoteManagementPlugn::doCennectServer()
+void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 {
-    // if (!strTxt.isEmpty())
-    // m_mainWindow->currentTab()->sendTextToCurrentTerm(strTxt);
+    if (nullptr != curServer) {
+        QString address = curServer->m_address;
+        QString port = curServer->m_port;
+        QString userName = curServer->m_userName;
+        QString password = curServer->m_password;
+        QString strTxt = "ssh -p" + port + " " + userName + "@" + address + "\n";
+        m_mainWindow->currentTab()->sendTextToCurrentTerm(strTxt);
+        //密码处理
+        // m_mainWindow->currentTab()->sendTextToCurrentTerm(password + "\n");
+    }
     emit doHide();
 }

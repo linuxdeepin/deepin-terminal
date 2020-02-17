@@ -23,7 +23,7 @@ signals:
     void doHide();
 
 public slots:
-    void doCennectServer();
+    void doCennectServer(ServerConfig *curServer);
 
 private:
     MainWindow *m_mainWindow = nullptr;

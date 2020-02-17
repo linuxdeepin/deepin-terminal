@@ -114,6 +114,9 @@ void RemoteManagementPanel::listItemClicked(QListWidgetItem *item)
     if (widgetTemp->isGroup()) {
         emit showServerConfigGroupPanel(widgetTemp->getGroupName());
     } else {
-        emit doConnectServer();
+        ServerConfig *curServer = widgetTemp->getCurServerConfig();
+        if (nullptr != curServer) {
+            emit doConnectServer(curServer);
+        }
     }
 }

@@ -17,7 +17,7 @@ public:
 
 signals:
     void focusOut();
-    void doConnectServer();
+    void doConnectServer(ServerConfig *curServer);
 
 public slots:
     void showSearchPanelFromRemotePanel(const QString &strFilter);

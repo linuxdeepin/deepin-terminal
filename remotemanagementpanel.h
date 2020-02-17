@@ -17,7 +17,7 @@ public:
 signals:
     void showSearchPanel(const QString &strFilter);
     void showServerConfigGroupPanel(const QString &strGroup);
-    void doConnectServer(bool bChecked = false);
+    void doConnectServer(ServerConfig *serverConfig);
 
 public slots:
     void showCurSearchResult();

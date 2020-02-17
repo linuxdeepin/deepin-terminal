@@ -16,6 +16,8 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
             &RemoteManagementPanel::showSearchPanel,
             this,
             &RemoteManagementTopPanel::showSearchPanelFromRemotePanel);
+    connect(
+    m_remoteManagementPanel, &RemoteManagementPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer);
 
     m_serverConfigGroupPanel = new ServerConfigGroupPanel(this);
     connect(m_serverConfigGroupPanel,
