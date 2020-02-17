@@ -688,9 +688,6 @@ void MainWindow::initConnections()
         forAllTabPage([value](TermWidgetPage *tabPage) { tabPage->setPressingScroll(value); });
     });
 
-    connect(Settings::instance(), &Settings::OutputScrollChanged, this, [this](bool value) {
-        forAllTabPage([value](TermWidgetPage *tabPage) { tabPage->setOutputtingScroll(value); });
-    });
     /********************* Modify by n014361 wangpeili End ************************/
 }
 

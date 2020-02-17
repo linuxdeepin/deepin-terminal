@@ -70,21 +70,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         qDebug() << "setMotionAfterPasting(0)";
     }
 
-
+    // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, [this](QString value) {
-        if (Settings::instance()->OutputtingScroll()) {
-            //qDebug() << "receivedData(true)" << value;
-            if (value != "\r\n") {
-                // qDebug() << "receivedData(true)" << value;
-                scrollToEnd();
-            }
-            //if (!value.endsWith("$ ")) {
-                // qDebug() << "receivedData(true)" << value;
-                //scrollToEnd();
-                //QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_End, Qt::ShiftModifier);
-                //QApplication::sendEvent(focusWidget(), &keyPress);
-            //}
-        }
+        setTrackOutput(Settings::instance()->OutputtingScroll());
     });
 
 #if !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
@@ -346,11 +334,6 @@ void TermWidgetWrapper::setPressingScroll(bool enable)
     } else {
         m_term->setMotionAfterPasting(0);
     }
-}
-//
-void TermWidgetWrapper::setOutputtingScroll(bool enable)
-{
-
 }
 
 void TermWidgetWrapper::zoomIn()

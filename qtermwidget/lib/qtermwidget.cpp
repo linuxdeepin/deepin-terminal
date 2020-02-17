@@ -532,6 +532,16 @@ void QTermWidget::scrollToEnd()
 {
     m_impl->m_terminalDisplay->scrollToEnd();
 }
+/*******************************************************************************
+ 1. @函数:    setTrackOutput
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-17
+ 4. @说明:    设置当前屏幕是否滚动
+*******************************************************************************/
+void QTermWidget::setTrackOutput(bool enable)
+{
+    m_impl->m_terminalDisplay->screenWindow()->setTrackOutput(enable);
+}
 
 void QTermWidget::sendText(const QString &text)
 {

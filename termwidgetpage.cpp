@@ -458,13 +458,13 @@ void TermWidgetPage::setPressingScroll(bool enable)
     }
 }
 
-void TermWidgetPage::setOutputtingScroll(bool enable)
-{
-    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
-    for (TermWidgetWrapper *term : termList) {
-        term->setOutputtingScroll(enable);
-    }
-}
+// void TermWidgetPage::setOutputtingScroll(bool enable)
+//{
+//    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
+//    for (TermWidgetWrapper *term : termList) {
+//        term->setOutputtingScroll(enable);
+//    }
+//}
 
 void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
 {

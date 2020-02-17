@@ -58,7 +58,6 @@ public:
     // 设置光标闪烁
     void setBlinkingCursor(bool enable);
     void setPressingScroll(bool enable);
-    void setOutputtingScroll(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
 
 public slots:

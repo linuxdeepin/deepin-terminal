@@ -50,7 +50,6 @@ public:
     // 设置光标是否闪烁
     void setCursorBlinking(bool enable);
     void setPressingScroll(bool enable);
-    void setOutputtingScroll(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
 
     QList<int> getRunningSessionIdList();
