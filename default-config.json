@@ -2,36 +2,36 @@
     "groups": [
         {
             "key": "basic",
-            "name": "Basic",
+            "name": "basic",
             "groups": [
                 {
                     "key": "interface",
-                    "name": "Interface",
+                    "name": "interface",
                     "options": [
                         {
-                            "key": "Opacity",
-                            "name": "Opacity",
+                            "key": "opacity",
+                            "name": "opacity",
                             "type": "slider",
                             "max": 100,
                             "min": 20,
                             "default": 90
                         },
                         {
-                            "key": "Family",
-                            "name": "Family",
+                            "key": "font",
+                            "name": "font",
                             "type": "fontcombobox",
                             "default": "Noto Mono"
                         },
                         {
-                            "key": "FontSize",
-                            "name": "FontSize",
+                            "key": "font_size",
+                            "name": "font_size",
                             "type": "spinbutton",
                             "default": 11,
                             "max": 50,
                             "min": 5
                         },
                         {
-                            "key": "Theme",
+                            "key": "theme",
                             "hide": true,
                             "reset": true,
                             "default": "Linux"
@@ -42,63 +42,63 @@
         },
         {
             "key": "shortcuts",
-            "name": "Shortcuts",
+            "name": "shortcuts",
             "groups": [
                 {
                     "key" : "terminal",
-                    "name" : "Terminal",
+                    "name" : "terminal",
                     "options" : [
                         {
-                            "key": "Copy",
-                            "name": "Copy",
+                            "key": "copy",
+                            "name": "copy",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+C"
                         },
                         {
-                            "key": "Paste",
-                            "name": "Paste",
+                            "key": "paste",
+                            "name": "paste",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+V"
                         },
                         {
-                            "key": "Search",
-                            "name": "Search",
+                            "key": "search",
+                            "name": "search",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+F"
                         },
                         {
-                            "key": "ZoomIn",
-                            "name": "ZoomIn",
+                            "key": "zoom_in",
+                            "name": "zoom_in",
                             "type": "shortcut",
                             "default":  "Ctrl+="
                         },
                         {
-                            "key": "ZoomOut",
-                            "name": "ZoomOut",
+                            "key": "zoom_out",
+                            "name": "zoom_out",
                             "type": "shortcut",
                             "default":  "Ctrl+-"
                         },
                         {
-                            "key": "DefaultSize",
-                            "name": "DefaultSize",
+                            "key": "default_size",
+                            "name": "default_size",
                             "type": "shortcut",
                             "default":  "Ctrl+0"
                         },
                         {
-                            "key": "SkipToNextCommand",
-                            "name": "SkipToNextCommand",
+                            "key": "skip_to_next_command",
+                            "name": "skip_to_next_command",
                             "type": "shortcut",
                             "default":  "Shift+Down"
                         },
                         {
-                            "key": "SkipToPreCommand",
-                            "name": "SkipToPreCommand",
+                            "key": "skip_to_previous_command",
+                            "name": "skip_to_previous_command",
                             "type": "shortcut",
                             "default":  "Shift+Up"
                         },
                         {
-                            "key": "SelectAll",
-                            "name": "SelectAll",
+                            "key": "select_all",
+                            "name": "select_all",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+a"
                         }
@@ -106,77 +106,77 @@
                 },
                 {
                     "key" : "workspace",
-                    "name" : "Workspace",
+                    "name" : "workspace",
                     "options" : [
                         {
-                            "key": "NewWorkspace",
-                            "name": "NewWorkspace",
+                            "key": "new_workspace",
+                            "name": "new_workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+T"
                         },
                         {
-                            "key": "CloseWorkspace",
-                            "name": "CloseWorkspace",
+                            "key": "close_workspace",
+                            "name": "close_workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Alt+W"
                         },
                         {
-                            "key": "PreWorkspace",
-                            "name": "PreWorkspace",
+                            "key": "previous_workspace",
+                            "name": "previous_workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Tab"
                         },
                         {
-                            "key": "NextWorkspace",
-                            "name": "NextWorkspace",
+                            "key": "next_workspace",
+                            "name": "next_workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+Tab"
                         },
                         {
-                            "key": "VerticalSplit",
-                            "name": "VerticalSplit",
+                            "key": "vertical_split",
+                            "name": "vertical_split",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+H"
                         },
                         {
-                            "key": "HorizontalSplit",
-                            "name": "HorizontalSplit",
+                            "key": "horionzal_split",
+                            "name": "horionzal_split",
                             "type": "shortcut",
                             "default":  "Ctrl+H"
                         },
                         {
-                            "key": "FocusNavUp",
-                            "name": "FocusNavUp",
+                            "key": "select_upper_window",
+                            "name": "select_upper_window",
                             "type": "shortcut",
                             "default":  "Alt+K"
                         },
                         {
-                            "key": "FocusNavDown",
-                            "name": "FocusNavDown",
+                            "key": "select_lower_window",
+                            "name": "select_lower_window",
                             "type": "shortcut",
                             "default":  "Alt+J"
                         },
                         {
-                            "key": "FocusNavLeft",
-                            "name": "FocusNavLeft",
+                            "key": "select_left_window",
+                            "name": "select_left_window",
                             "type": "shortcut",
                             "default":  "Alt+H"
                         },
                         {
-                            "key": "FocusNavRight",
-                            "name": "FocusNavRight",
+                            "key": "select_right_window",
+                            "name": "select_right_window",
                             "type": "shortcut",
                             "default":  "Alt+L"
                         },
                         {
-                            "key": "CloseWindow",
-                            "name": "CloseWindow",
+                            "key": "close_window",
+                            "name": "close_window",
                             "type": "shortcut",
                             "default":  "Ctrl+Q"
                         },
                         {
-                            "key": "CloseOtherWindows",
-                            "name": "CloseOtherWindows",
+                            "key": "close_other_windows",
+                            "name": "close_other_windows",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+Q"
                         }
@@ -184,35 +184,35 @@
                 },
                 {
                     "key" : "advanced",
-                    "name" : "Advanced",
+                    "name" : "advanced",
                     "options" : [
                         {
-                            "key": "FullScreen",
-                            "name": "FullScreen",
+                            "key": "switch_fullscreen",
+                            "name": "switch_fullscreen",
                             "type": "shortcut",
                             "default":  "F11"
                         },
                         {
-                            "key": "RenameTab",
-                            "name": "RenameTab",
+                            "key": "rename_tab",
+                            "name": "rename_tab",
                             "type": "shortcut",
                             "default":  "F2"
                         },
                         {
-                            "key": "ShowShortCut",
-                            "name": "ShowShortCut",
+                            "key": "display_shortcuts",
+                            "name": "display_shortcuts",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+?"
                         },
                         {
-                            "key": "CustomCommand",
-                            "name": "CustomCommand",
+                            "key": "custom_command",
+                            "name": "custom_command",
                             "type": "shortcut",
                             "default":  "Ctrl+["
                         },
                         {
-                            "key": "RemoteManager",
-                            "name": "RemoteManager",
+                            "key": "remote_management",
+                            "name": "remote_management",
                             "type": "shortcut",
                             "default":  "Ctrl+/"
                         }
@@ -222,77 +222,77 @@
         },
         {
             "key": "advanced",
-            "name": "Advanced",
+            "name": "advanced",
             "groups": [
                 {
                     "key": "cursor",
-                    "name": "Cursor",
+                    "name": "cursor",
                     "options": [
                         {
-                            "key": "Shape",
-                            "name": "Shape",
+                            "key": "cursor_shape",
+                            "name": "cursor_shape",
                             "type": "buttongroup",
                             "items": ["█","_","|"],
                             "default": 0,
                             "i18n_skip_keys": ["items"]
                         },
                         {
-                            "key": "Blink",
+                            "key": "cursor_blink",
                             "type": "checkbox",
-                            "text": "Blink",
+                            "text": "cursor_blink",
                             "default": true
                         },
                         {
-                            "key": "AutoHide",
+                            "key": "auto_hide",
                             "type": "checkbox",
-                            "text": "AutoHide",
+                            "text": "auto_hide",
                             "default": false
                         },
                         {
-                            "key": "AutoCopy",
+                            "key": "auto_copy_selection",
                             "type": "checkbox",
-                            "text": "AutoCopy",
+                            "text": "auto_copy_selection",
                             "default": true
                         }
                     ]
                 },
                 {
                     "key": "scroll",
-                    "name": "Scroll",
+                    "name": "scroll",
                     "options": [
                         {
-                            "key": "PressingScroll",
+                            "key": "scroll_on_key",
                             "type": "checkbox",
-                            "text": "PressingScroll",
+                            "text": "scroll_on_key",
                             "default": true
                         },
                         {
-                            "key": "OutputtingScroll",
+                            "key": "scroll_on_output",
                             "type": "checkbox",
-                            "text": "OutputtingScroll",
+                            "text": "scroll_on_output",
                             "default": true
                         }
                     ]
                 },
                 {
                     "key": "window",
-                    "name": "Window",
+                    "name": "window",
                     "options": [
                         {
-                            "key": "WindowState",
-                            "name": "WindowState",
+                            "key": "use_on_starting",
+                            "name": "use_on_starting",
                             "type": "combobox",
                             "default": "window_normal"
                         },
                         {
-                            "key": "BlurredBackground",
-                            "text": "BlurredBackground",
+                            "key": "blurred_background",
+                            "text": "blurred_background",
                             "type": "checkbox",
                             "default": "false"
                         },
                         {
-                            "key": "HideRaytheonWindow",
-                            "text": "HideRaytheonWindow",
+                            "key": "auto_hide_raytheon_window",
+                            "text": "auto_hide_raytheon_window",
                             "type": "checkbox",
                             "default": "false"
                         }
