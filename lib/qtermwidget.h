@@ -127,6 +127,10 @@ public:
 
     // Wrapped, scroll to end.
     void scrollToEnd();
+    
+    /******** Modify by n014361 wangpeili 2020-02-17:设置当前屏幕是否滚动****************/
+    void setTrackOutput(bool enable);
+    /********************* Modify by n014361 wangpeili End ************************/
 
     // Send some text to terminal
     void sendText(const QString & text);
