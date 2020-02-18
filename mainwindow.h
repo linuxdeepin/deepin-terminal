@@ -78,7 +78,7 @@ private:
     /**************** Modify by n013252 wangliang End ****************/
 
     /******** Modify by n014361 wangpeili 2020-02-18:              ****************/
-    bool switchFullscreen(bool forceFullscreen = false);
+    void switchFullscreen(bool forceFullscreen = false);
     /********************* Modify by n014361 wangpeili End ************************/
 
     MainWindowPluginInterface *getPluginByName(const QString &name);

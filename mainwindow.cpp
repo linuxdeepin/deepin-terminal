@@ -99,6 +99,9 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
 
         Qt::WindowFlags windowFlags = this->windowFlags();
         setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
+        /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
+        setWindowState(windowState() & ~Qt::WindowFullScreen);
+        /********************* Modify by n014361 wangpeili End ************************/
         this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         this->setMinimumSize(deskRect.size().width(), 60);
         this->resize(deskRect.size().width(), 200);
@@ -309,8 +312,11 @@ bool MainWindow::closeProtect()
  3. @日期:    2020-02-18
  4. @说明:    全屏切换
 *******************************************************************************/
-bool MainWindow::switchFullscreen(bool forceFullscreen)
+void MainWindow::switchFullscreen(bool forceFullscreen)
 {
+    if (m_isQuakeWindow) {
+        return;
+    }
     if (forceFullscreen || !window()->windowState().testFlag(Qt::WindowFullScreen)) {
         titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
         m_exitFullScreen->setVisible(true);
