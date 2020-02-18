@@ -259,8 +259,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     QSettings settings("blumia", "dterm");
     settings.setValue("geometry", saveGeometry());
-    settings.setValue("windowState", saveState());
 
+    if (Qt::WindowNoState == windowState()) {
+        settings.setValue("save_width", this->width());
+        settings.setValue("save_height", this->height());
+    }
+    settings.setValue("windowState", saveState());
     bool hasRunning = closeProtect();
     if (hasRunning && !showExitConfirmDialog()) {
         qDebug() << "close window protect..." << endl;
@@ -381,14 +385,13 @@ void MainWindow::initWindow()
     QSettings settings("blumia", "dterm");
     const QString &windowState =
     Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
-    qDebug() << windowState;
     // init window state.
     if (windowState == "window_maximum") {
         showMaximized();
     } else if (windowState == "fullscreen") {
         switchFullscreen(true);
     } else {
-        resize(QSize(1180, 550));
+        resize(QSize(settings.value("save_width").toInt(), settings.value("save_height").toInt()));
         move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
     }
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
