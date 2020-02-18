@@ -751,6 +751,7 @@ void MainWindow::initTitleBar()
         titlebar()->setCustomWidget(m_titleBar);
         titlebar()->setAutoHideOnFullscreen(true);
         titlebar()->setMenu(m_menu);
+        titlebar()->setTitle("");
     }
 
     connect(m_tabbar, &DTabBar::tabFull, this, [=]() { qDebug() << "tab is full"; });
