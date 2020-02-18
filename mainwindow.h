@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 
 #include <functional>
+#include <DPushButton>
 
 #define PLUGIN_TYPE_THEME "Theme"
 #define PLUGIN_TYPE_CUSTOMCOMMAND "Custom Command"
@@ -76,6 +77,10 @@ private:
     bool closeProtect();
     /**************** Modify by n013252 wangliang End ****************/
 
+    /******** Modify by n014361 wangpeili 2020-02-18:              ****************/
+    bool switchFullscreen(bool forceFullscreen = false);
+    /********************* Modify by n014361 wangpeili End ************************/
+
     MainWindowPluginInterface *getPluginByName(const QString &name);
 
     /******** Modify by n014361 wangpeili 2020-01-06:增加显示快捷键功能***********×****/
@@ -86,6 +91,7 @@ private:
     /********************* Modify by n014361 wangpeili End ************************/
 
     QMenu *m_menu = nullptr;
+    DPushButton *m_exitFullScreen = nullptr;
     TabBar *m_tabbar = nullptr;
     QWidget *m_centralWidget = nullptr;
     QVBoxLayout *m_centralLayout = nullptr;

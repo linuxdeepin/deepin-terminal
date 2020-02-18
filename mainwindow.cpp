@@ -303,6 +303,30 @@ bool MainWindow::closeProtect()
     return false;
 }
 
+/*******************************************************************************
+ 1. @函数:    switchFullscreen
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-18
+ 4. @说明:    全屏切换
+*******************************************************************************/
+bool MainWindow::switchFullscreen(bool forceFullscreen)
+{
+    if (forceFullscreen || !window()->windowState().testFlag(Qt::WindowFullScreen)) {
+        titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
+        m_exitFullScreen->setVisible(true);
+        titlebar()->setMenuVisible(false);
+
+        window()->setWindowState(windowState() | Qt::WindowFullScreen);
+
+    } else {
+        titlebar()->removeWidget(m_exitFullScreen);
+        m_exitFullScreen->setVisible(false);
+        titlebar()->setMenuVisible(true);
+        window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
+    }
+    // displayTitlebarIcon();
+}
+
 void MainWindow::onTermTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
@@ -337,6 +361,17 @@ void MainWindow::initPlugins()
 
 void MainWindow::initWindow()
 {
+    // 全屏退出按钮
+    QIcon ico(":/images/icon/hover/exit_hover.svg");
+    m_exitFullScreen = new DPushButton();
+    m_exitFullScreen->setIcon(ico);
+    m_exitFullScreen->setIconSize(QSize(36, 36));
+    m_exitFullScreen->setFixedSize(QSize(36, 36));
+    m_exitFullScreen->setFlat(true);
+    titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
+    m_exitFullScreen->setVisible(false);
+    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() { switchFullscreen(); });
+
     QSettings settings("blumia", "dterm");
     const QString &windowState =
     Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
@@ -345,7 +380,7 @@ void MainWindow::initWindow()
     if (windowState == "window_maximum") {
         showMaximized();
     } else if (windowState == "fullscreen") {
-        showFullScreen();
+        switchFullscreen(true);
     } else {
         resize(QSize(1180, 550));
         move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
@@ -595,13 +630,7 @@ void MainWindow::initShortcuts()
     // FullScreen
     QShortcut *fullscreen =
     new QShortcut(QKeySequence(Settings::instance()->getKeyshortcutFromKeymap("advanced", "switch_fullscreen")), this);
-    connect(fullscreen, &QShortcut::activated, this, [this]() {
-        if (!window()->windowState().testFlag(Qt::WindowFullScreen)) {
-            window()->setWindowState(windowState() | Qt::WindowFullScreen);
-        } else {
-            window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
-        }
-    });
+    connect(fullscreen, &QShortcut::activated, this, [this]() { switchFullscreen(); });
 
     // RenameTab
     QShortcut *rename_tab =

@@ -12,5 +12,6 @@
         <file>images/icon/hover/arrowr.svg</file>
         <file>images/icon/focus/edit_press.svg</file>
         <file>images/icon/hover/edit_hover.svg</file>
+        <file>images/icon/hover/exit_hover.svg</file>
     </qresource>
 </RCC>
