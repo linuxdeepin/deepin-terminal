@@ -23,7 +23,11 @@
 #include <QWidget>
 #include "Emulation.h"
 #include "Filter.h"
+#ifdef USE_QMAKE
+#include "../build/lib/qtermwidget_export.h"
+#else
 #include "qtermwidget_export.h"
+#endif
 
 class QVBoxLayout;
 struct TermWidgetImpl;

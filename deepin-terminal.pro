@@ -11,13 +11,14 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 TEMPLATE = app
 TARGET = deepin-terminal
 INCLUDEPATH += .
-LIBS += -lqtermwidget5
+LIBS += -L../deepin-terminal/qtermwidget/build/ -lqtermwidget5
 
 # The following define makes your compiler warn you if you use any
 # feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += USE_QMAKE
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -117,6 +118,8 @@ SOURCES += \
 
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts
+
+!build_pass:system($$PWD/build_qtermwidget.sh)
 
 # Automating generation .qm files from .ts files
 !system($$PWD/translate_generation.sh): error("Failed to generate translation")
