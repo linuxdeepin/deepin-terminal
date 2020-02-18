@@ -2,15 +2,15 @@
     "groups": [
         {
             "key": "basic",
-            "name": "basic",
+            "name": "Basic",
             "groups": [
                 {
                     "key": "interface",
-                    "name": "interface",
+                    "name": "Interface",
                     "options": [
                         {
                             "key": "opacity",
-                            "name": "opacity",
+                            "name": "Opacity",
                             "type": "slider",
                             "max": 100,
                             "min": 20,
@@ -18,13 +18,13 @@
                         },
                         {
                             "key": "font",
-                            "name": "font",
+                            "name": "Font",
                             "type": "fontcombobox",
                             "default": "Noto Mono"
                         },
                         {
                             "key": "font_size",
-                            "name": "font_size",
+                            "name": "Font size",
                             "type": "spinbutton",
                             "default": 11,
                             "max": 50,
@@ -42,63 +42,63 @@
         },
         {
             "key": "shortcuts",
-            "name": "shortcuts",
+            "name": "Shortcuts",
             "groups": [
                 {
                     "key" : "terminal",
-                    "name" : "terminal",
+                    "name" : "Terminal",
                     "options" : [
                         {
                             "key": "copy",
-                            "name": "copy",
+                            "name": "Copy",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+C"
                         },
                         {
                             "key": "paste",
-                            "name": "paste",
+                            "name": "Paste",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+V"
                         },
                         {
                             "key": "search",
-                            "name": "search",
+                            "name": "Search",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+F"
                         },
                         {
                             "key": "zoom_in",
-                            "name": "zoom_in",
+                            "name": "Zoom in",
                             "type": "shortcut",
                             "default":  "Ctrl+="
                         },
                         {
                             "key": "zoom_out",
-                            "name": "zoom_out",
+                            "name": "Zoom out",
                             "type": "shortcut",
                             "default":  "Ctrl+-"
                         },
                         {
                             "key": "default_size",
-                            "name": "default_size",
+                            "name": "Default size",
                             "type": "shortcut",
                             "default":  "Ctrl+0"
                         },
                         {
                             "key": "skip_to_next_command",
-                            "name": "skip_to_next_command",
+                            "name": "Skip to next command",
                             "type": "shortcut",
                             "default":  "Shift+Down"
                         },
                         {
                             "key": "skip_to_previous_command",
-                            "name": "skip_to_previous_command",
+                            "name": "Skip to previous command",
                             "type": "shortcut",
                             "default":  "Shift+Up"
                         },
                         {
                             "key": "select_all",
-                            "name": "select_all",
+                            "name": "Select all",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+a"
                         }
@@ -106,77 +106,77 @@
                 },
                 {
                     "key" : "workspace",
-                    "name" : "workspace",
+                    "name" : "Workspace",
                     "options" : [
                         {
                             "key": "new_workspace",
-                            "name": "new_workspace",
+                            "name": "New workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+T"
                         },
                         {
                             "key": "close_workspace",
-                            "name": "close_workspace",
+                            "name": "Close workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Alt+W"
                         },
                         {
                             "key": "previous_workspace",
-                            "name": "previous_workspace",
+                            "name": "Previous workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Tab"
                         },
                         {
                             "key": "next_workspace",
-                            "name": "next_workspace",
+                            "name": "Next workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+Tab"
                         },
                         {
                             "key": "vertical_split",
-                            "name": "vertical_split",
+                            "name": "Vertical split",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+H"
                         },
                         {
                             "key": "horionzal_split",
-                            "name": "horionzal_split",
+                            "name": "Horionzal split",
                             "type": "shortcut",
                             "default":  "Ctrl+H"
                         },
                         {
                             "key": "select_upper_window",
-                            "name": "select_upper_window",
+                            "name": "Select upper window",
                             "type": "shortcut",
                             "default":  "Alt+K"
                         },
                         {
                             "key": "select_lower_window",
-                            "name": "select_lower_window",
+                            "name": "Select lower window",
                             "type": "shortcut",
                             "default":  "Alt+J"
                         },
                         {
                             "key": "select_left_window",
-                            "name": "select_left_window",
+                            "name": "Select left window",
                             "type": "shortcut",
                             "default":  "Alt+H"
                         },
                         {
                             "key": "select_right_window",
-                            "name": "select_right_window",
+                            "name": "Select right window",
                             "type": "shortcut",
                             "default":  "Alt+L"
                         },
                         {
                             "key": "close_window",
-                            "name": "close_window",
+                            "name": "Close window",
                             "type": "shortcut",
                             "default":  "Ctrl+Q"
                         },
                         {
                             "key": "close_other_windows",
-                            "name": "close_other_windows",
+                            "name": "Close other windows",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+Q"
                         }
@@ -184,35 +184,35 @@
                 },
                 {
                     "key" : "advanced",
-                    "name" : "advanced",
+                    "name" : "Advanced",
                     "options" : [
                         {
                             "key": "switch_fullscreen",
-                            "name": "switch_fullscreen",
+                            "name": "Fullscreen",
                             "type": "shortcut",
                             "default":  "F11"
                         },
                         {
                             "key": "rename_tab",
-                            "name": "rename_tab",
+                            "name": "Rename tab",
                             "type": "shortcut",
                             "default":  "F2"
                         },
                         {
                             "key": "display_shortcuts",
-                            "name": "display_shortcuts",
+                            "name": "Display shortcuts",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+?"
                         },
                         {
                             "key": "custom_command",
-                            "name": "custom_command",
+                            "name": "Custom command",
                             "type": "shortcut",
                             "default":  "Ctrl+["
                         },
                         {
                             "key": "remote_management",
-                            "name": "remote_management",
+                            "name": "Remote management",
                             "type": "shortcut",
                             "default":  "Ctrl+/"
                         }
@@ -222,15 +222,15 @@
         },
         {
             "key": "advanced",
-            "name": "advanced",
+            "name": "Advanced",
             "groups": [
                 {
                     "key": "cursor",
-                    "name": "cursor",
+                    "name": "Cursor",
                     "options": [
                         {
                             "key": "cursor_shape",
-                            "name": "cursor_shape",
+                            "name": "Cursor style",
                             "type": "buttongroup",
                             "items": ["█","_","|"],
                             "default": 0,
@@ -239,19 +239,19 @@
                         {
                             "key": "cursor_blink",
                             "type": "checkbox",
-                            "text": "cursor_blink",
+                            "text": "Cursor blink",
                             "default": true
                         },
                         {
                             "key": "auto_hide",
                             "type": "checkbox",
-                            "text": "auto_hide",
+                            "text": "Auto hide",
                             "default": false
                         },
                         {
                             "key": "auto_copy_selection",
                             "type": "checkbox",
-                            "text": "auto_copy_selection",
+                            "text": "Auto copy selection",
                             "default": true
                         }
                     ]
@@ -263,36 +263,36 @@
                         {
                             "key": "scroll_on_key",
                             "type": "checkbox",
-                            "text": "scroll_on_key",
+                            "text": "Scroll on keystroke",
                             "default": true
                         },
                         {
                             "key": "scroll_on_output",
                             "type": "checkbox",
-                            "text": "scroll_on_output",
+                            "text": "Scroll on output",
                             "default": true
                         }
                     ]
                 },
                 {
                     "key": "window",
-                    "name": "window",
+                    "name": "Window",
                     "options": [
                         {
                             "key": "use_on_starting",
-                            "name": "use_on_starting",
+                            "name": "Use on starting",
                             "type": "combobox",
                             "default": "window_normal"
                         },
                         {
                             "key": "blurred_background",
-                            "text": "blurred_background",
+                            "text": "Blurred background",
                             "type": "checkbox",
                             "default": "false"
                         },
                         {
                             "key": "auto_hide_raytheon_window",
-                            "text": "auto_hide_raytheon_window",
+                            "text": "Auto hide raytheon window",
                             "type": "checkbox",
                             "default": "false"
                         }
