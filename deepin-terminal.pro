@@ -119,7 +119,17 @@ SOURCES += \
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts
 
-!build_pass:system($$PWD/build_qtermwidget.sh)
+DISTFILES += \
+translations/dterm.ts \
+translations/dterm_zh_CN.ts \
+qtermwidget/* \
+qtermwidget/lib/* \
+qtermwidget/lib/translations/* \
+qtermwidget/lib/kb-layouts/* \
+qtermwidget/lib/kb-layouts/historic/* \
+qtermwidget/lib/color-schemes/*
+
+!system($$PWD/build_qtermwidget.sh)
 
 # Automating generation .qm files from .ts files
 !system($$PWD/translate_generation.sh): error("Failed to generate translation")

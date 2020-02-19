@@ -9,7 +9,7 @@ mkdir build
 cd build
 cmake ..
 make
-ENV_STRING="export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/home/wang/deepin-terminal/qtermwidget/build"
+ENV_STRING="export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$PWD"
 BASH_RC_FILE=$HOME/.bashrc
 if [ ! `grep -c "$ENV_STRING" $BASH_RC_FILE` -ne '0' ];then
     echo "$ENV_STRING" >> $BASH_RC_FILE
