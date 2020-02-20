@@ -32,19 +32,22 @@ public:
     QString workingDirectory();
 
     void sendText(const QString &text);
-    void setTerminalOpacity(qreal opacity);
+
     void setColorScheme(const QString &name);
     /******** Modify by n014361 wangpeili 2020-01-06: 修改字体      ***********×****/
-    // 修改字体
-    void setTerminalFont(const QString &fontName);
-    // 修改字体大小
-    void setTerminalFontSize(const int fontSize);
+
     // 全选
     void selectAll();
     // 跳转到下一个命令
     void skipToNextCommand();
     // 跳转到前一个命令
     void skipToPreCommand();
+
+    void setTerminalOpacity(qreal opacity);
+    // 修改字体
+    void setTerminalFont(const QString &fontName);
+    // 修改字体大小
+    void setTerminalFontSize(const int fontSize);
     // 修改光标形状
     void setCursorShape(int shape);
     // 设置光标是否闪烁
@@ -66,6 +69,7 @@ public slots:
     void toggleShowSearchBar();
 
     QString selectedText(bool preserveLineBreaks = true);
+    void onSettingValueChanged(const QString &keyName);
     /********************* Modify by n014361 wangpeili End ************************/
 
 signals:

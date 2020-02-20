@@ -79,7 +79,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setBlinkingCursor(Settings::instance()->cursorBlink());
 #endif  // !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
 
-    connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
+    connect(this, &QTermWidget::urlActivated, this, [](const QUrl &url, bool fromContextMenu) {
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
             QDesktopServices::openUrl(url);
         }
@@ -151,8 +151,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         bool ok;
         QString text =
         DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
-        if (ok)
-        {
+        if (ok) {
             emit termRequestRenameTab(text);
         }
     });
@@ -169,7 +168,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addSeparator();
 
     menu.addAction(
-        QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
+    QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
 
     // display the menu.
     menu.exec(mapToGlobal(pos));
@@ -189,13 +188,14 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
     connect(
-        m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
+    m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
     connect(m_term, &TermWidget::copyAvailable, this, [this](bool enable) {
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
             QApplication::clipboard()->setText(selectedText(), QClipboard::Clipboard);
         }
     });
+    connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidgetWrapper::onSettingValueChanged);
 }
 
 QList<int> TermWidgetWrapper::getRunningSessionIdList()
@@ -329,7 +329,6 @@ void TermWidgetWrapper::setCursorBlinking(bool enable)
 
 void TermWidgetWrapper::setPressingScroll(bool enable)
 {
-    qDebug() << "setPressingScroll";
     if (enable) {
         m_term->setMotionAfterPasting(2);
     } else {
@@ -340,8 +339,6 @@ void TermWidgetWrapper::setPressingScroll(bool enable)
 void TermWidgetWrapper::zoomIn()
 {
     m_term->zoomIn();
-    // m_term->test();
-    // m_term->silence();
 }
 
 void TermWidgetWrapper::zoomOut()
@@ -385,6 +382,53 @@ void TermWidgetWrapper::toggleShowSearchBar()
 QString TermWidgetWrapper::selectedText(bool preserveLineBreaks)
 {
     return m_term->selectedText(true);
+}
+/*******************************************************************************
+ 1. @函数:    onSettingValueChanged
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-20
+ 4. @说明:    Terminal的各项设置生效
+*******************************************************************************/
+void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
+{
+    qDebug() << "onSettingValueChanged:" << keyName;
+    if (keyName == "basic.interface.opacity") {
+        setTerminalOpacity(Settings::instance()->opacity());
+        return;
+    }
+
+    if (keyName == "basic.interface.font") {
+        setTerminalFont(Settings::instance()->fontName());
+        return;
+    }
+
+    if (keyName == "basic.interface.font_size") {
+        setTerminalFontSize(Settings::instance()->fontSize());
+        return;
+    }
+
+    if (keyName == "advanced.cursor.cursor_shape") {
+        setCursorShape(Settings::instance()->cursorShape());
+        return;
+    }
+
+    if (keyName == "advanced.cursor.cursor_blink") {
+        setCursorBlinking(Settings::instance()->cursorBlink());
+        return;
+    }
+
+    if (keyName == "advanced.scroll.scroll_on_key") {
+        setPressingScroll(Settings::instance()->PressingScroll());
+        return;
+    }
+
+    if ((keyName == "advanced.cursor.auto_copy_selection") || (keyName == "advanced.scroll.scroll_on_output")) {
+        qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
+                 << ", auto effective when happen";
+        return;
+    }
+
+    qDebug() << "settingValue[" << keyName << "] changed is not effective";
 }
 
 void TermWidgetWrapper::initUI()

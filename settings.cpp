@@ -60,7 +60,13 @@ Settings *Settings::instance()
 void Settings::initConnection()
 {
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [=](const QString &key, const QVariant &value) {
-        emit settingValueChanged(key, value);
+        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.")) {
+            emit terminalSettingChanged(key);
+        } else if (key.contains("shortcuts.")) {
+            emit shortcutSettingChanged(key);
+        } else {
+            emit windowSettingChanged(key);
+        }
     });
 
     QPointer<DSettingsOption> opacity = settings->option("basic.interface.opacity");

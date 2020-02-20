@@ -12,6 +12,7 @@
 
 #include <functional>
 #include <DPushButton>
+#include <QShortcut>
 
 #define PLUGIN_TYPE_THEME "Theme"
 #define PLUGIN_TYPE_CUSTOMCOMMAND "Custom Command"
@@ -53,6 +54,10 @@ public:
     bool isQuakeWindowActivated();
     void setQuakeWindowActivated(bool isQuakeWindowActivated);
     /**************** Modify by n013252 wangliang End ****************/
+public slots:
+    // void onSettingValueChanged(const int &keyIndex, const QVariant &value);
+    void onWindowSettingChanged(const QString &keyName);
+    void onShortcutSettingChanged(const QString &keyName);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -89,7 +94,9 @@ private:
     // 创建Json组信息
     void createJsonGroup(const QString &keyCategory, QJsonArray &jsonGroups);
     /********************* Modify by n014361 wangpeili End ************************/
-
+    /******** Modify by n014361 wangpeili 2020-02-20: 创建快捷键管理 ****************/
+    QShortcut *createNewShotcut(const QString &key);
+    /********************* Modify by n014361 wangpeili End ************************/
     QMenu *m_menu = nullptr;
     DPushButton *m_exitFullScreen = nullptr;
     TabBar *m_tabbar = nullptr;
@@ -103,6 +110,10 @@ private:
     TitleBar *m_titleBar = nullptr;
     bool m_isQuakeWindow = false;
     bool m_isQuakeWindowActivated = false;
+
+    /******** Modify by n014361 wangpeili 2020-02-20: 内置快捷键集中管理 ****************/
+    QMap<QString, QShortcut *> m_BuiltInShortcut;
+    /********************* Modify by n014361 wangpeili End ************************/
 };
 
 #endif  // MAINWINDOW_H

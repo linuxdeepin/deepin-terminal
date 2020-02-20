@@ -38,7 +38,10 @@ public:
     /******** Modify by n014361 wangpeili 2020-01-04:              ****************/
 
 signals:
-    void settingValueChanged(const QString &key, const QVariant &value);
+    // void settingValueChanged(const QString &key, const QVariant &value);
+    void windowSettingChanged(const QString &key);
+    void terminalSettingChanged(const QString &key);
+    void shortcutSettingChanged(const QString &key);
 
     void opacityChanged(qreal opacity);
     void cursorShapeChanged(int shape);

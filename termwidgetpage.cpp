@@ -360,7 +360,6 @@ void TermWidgetPage::setFontSize(int fontSize)
     QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
     for (TermWidgetWrapper *term : termList) {
         term->setTerminalFontSize(fontSize);
-        qDebug() << "setTerminalFontSize";
     }
 }
 
@@ -375,7 +374,6 @@ void TermWidgetPage::setFont(QString fontName)
     QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
     for (TermWidgetWrapper *term : termList) {
         term->setTerminalFont(fontName);
-        qDebug() << "TermWidgetPage setFont";
     }
 }
 
