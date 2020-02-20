@@ -39,6 +39,7 @@
 #include <QtDebug>
 
 #include "Pty.h"
+#include "ProcessInfo.h"
 //#include "kptyprocess.h"
 #include "TerminalDisplay.h"
 #include "ShellCommand.h"
@@ -67,6 +68,8 @@ Session::Session(QObject* parent) :
         , _flowControl(true)
         , _fullScripting(false)
         , _sessionId(0)
+    	, _sessionProcessInfo(nullptr)
+    	, _foregroundProcessInfo(nullptr)
 //   , _zmodemBusy(false)
 //   , _zmodemProc(0)
 //   , _zmodemProgress(0)
@@ -413,6 +416,8 @@ void Session::setTabTitleFormat(TabTitleContext context , const QString & format
 {
     if ( context == LocalTabTitle ) {
         _localTabTitleFormat = format;
+        ProcessInfo *process = getProcessInfo();
+        process->setUserNameRequired(format.contains(QLatin1String("%u")));
     } else if ( context == RemoteTabTitle ) {
         _remoteTabTitleFormat = format;
     }
@@ -650,6 +655,12 @@ void Session::setTitle(TitleRole role , const QString & newTitle)
             _nameTitle = newTitle;
         } else if ( role == DisplayedTitleRole ) {
             _displayTitle = newTitle;
+            // without these, that title will be overridden by the expansion of
+            // title format shortly after, which will confuses users.
+            _localTabTitleFormat = newTitle;
+            _remoteTabTitleFormat = newTitle;
+
+            qDebug() << "curr running process:" << newTitle << endl;
         }
 
         emit titleChanged();
@@ -919,9 +930,37 @@ void Session::setSize(const QSize & size)
 
     emit resizeRequest(size);
 }
-int Session::foregroundProcessId() const
+
+QString Session::getDynamicProcessName()
 {
-    return _shellProcess->foregroundProcessGroup();
+    bool ok = false;
+    QString processName = getProcessInfo()->name(&ok);
+
+    return processName;
+}
+
+void Session::updateWorkingDirectory()
+{
+    updateSessionProcessInfo();
+
+    const QString currentDir = _sessionProcessInfo->validCurrentDir();
+    if (currentDir != _currentWorkingDir) {
+        _currentWorkingDir = currentDir;
+        emit currentDirectoryChanged(_currentWorkingDir);
+    }
+}
+
+int Session::foregroundProcessId()
+{
+    int pid;
+
+    bool ok = false;
+    pid = getProcessInfo()->pid(&ok);
+    if (!ok) {
+        pid = -1;
+    }
+
+    return pid;
 }
 
 bool Session::isForegroundProcessActive()
@@ -930,10 +969,78 @@ bool Session::isForegroundProcessActive()
     return (_shellProcess->pid() != _shellProcess->foregroundProcessGroup());
 }
 
+QString Session::foregroundProcessName()
+{
+    QString name;
+
+    if (updateForegroundProcessInfo()) {
+        bool ok = false;
+        name = _foregroundProcessInfo->name(&ok);
+        if (!ok) {
+            name.clear();
+        }
+    }
+
+    return name;
+}
+
 int Session::processId() const
 {
     return _shellProcess->pid();
 }
+
+ProcessInfo *Session::getProcessInfo()
+{
+    ProcessInfo *process = nullptr;
+
+    if (isForegroundProcessActive() && updateForegroundProcessInfo()) {
+        process = _foregroundProcessInfo;
+    } else {
+        updateSessionProcessInfo();
+        process = _sessionProcessInfo;
+    }
+
+    return process;
+}
+
+void Session::updateSessionProcessInfo()
+{
+    Q_ASSERT(_shellProcess);
+
+    bool ok;
+    // The checking for pid changing looks stupid, but it is needed
+    // at the moment to workaround the problem that processId() might
+    // return 0
+    if ((_sessionProcessInfo == nullptr) ||
+            (processId() != 0 && processId() != _sessionProcessInfo->pid(&ok))) {
+        delete _sessionProcessInfo;
+        _sessionProcessInfo = ProcessInfo::newInstance(processId(),
+                                                       tabTitleFormat(Session::LocalTabTitle));
+        _sessionProcessInfo->setUserHomeDir();
+    }
+    _sessionProcessInfo->update();
+}
+
+bool Session::updateForegroundProcessInfo()
+{
+    Q_ASSERT(_shellProcess);
+
+    const int foregroundPid = _shellProcess->foregroundProcessGroup();
+    if (foregroundPid != _foregroundPid) {
+        delete _foregroundProcessInfo;
+        _foregroundProcessInfo = ProcessInfo::newInstance(foregroundPid,
+                                                          tabTitleFormat(Session::LocalTabTitle));
+        _foregroundPid = foregroundPid;
+    }
+
+    if (_foregroundProcessInfo != nullptr) {
+        _foregroundProcessInfo->update();
+        return _foregroundProcessInfo->isValid();
+    } else {
+        return false;
+    }
+}
+
 int Session::getPtySlaveFd() const
 {
     return ptySlaveFd;

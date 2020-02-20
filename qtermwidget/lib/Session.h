@@ -38,6 +38,7 @@ namespace Konsole {
 class Emulation;
 class Pty;
 class TerminalDisplay;
+class ProcessInfo;
 //class ZModemDialog;
 
 /**
@@ -314,6 +315,9 @@ public:
      */
     void sendText(const QString & text) const;
 
+    /** Returns a title generated from tab format and process information. */
+    QString getDynamicProcessName();
+
     /**
      * Returns the process id of the terminal process.
      * This is the id used by the system API to refer to the process.
@@ -321,11 +325,25 @@ public:
     int processId() const;
 
     /**
+     * Returns foreground process's name
+     */
+    QString foregroundProcessName();
+
+    /**
+     * Get process info of current Session
+     */
+    ProcessInfo *getProcessInfo();
+
+    void updateSessionProcessInfo();
+    bool updateForegroundProcessInfo();
+    void updateWorkingDirectory();
+
+    /**
      * Returns the process id of the terminal's foreground process.
      * This is initially the same as processId() but can change
      * as the user starts other programs inside the terminal.
      */
-    int foregroundProcessId() const;
+    int foregroundProcessId();
 
     /** Returns true if the user has started a program in the session. */
     bool isForegroundProcessActive();
@@ -434,6 +452,13 @@ signals:
      * of NOTIFYNORMAL, NOTIFYSILENCE or NOTIFYACTIVITY
      */
     void stateChanged(int state);
+
+    /**
+     * Emitted when the current working directory of this session changes.
+     *
+     * @param dir The new current working directory of the session.
+     */
+    void currentDirectoryChanged(const QString &dir);
 
     /** Emitted when a bell event occurs in the session. */
     void bellRequest( const QString & message );
@@ -553,6 +578,12 @@ private:
     int            _sessionId;
 
     QString        _initialWorkingDir;
+    QString        _currentWorkingDir;
+    QUrl           _reportedWorkingUrl;
+
+    ProcessInfo   *_sessionProcessInfo = nullptr;
+    ProcessInfo   *_foregroundProcessInfo = nullptr;
+    int            _foregroundPid;
 
     // ZModem
 //  bool           _zmodemBusy;

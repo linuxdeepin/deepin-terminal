@@ -74,6 +74,7 @@ set(SRCS
     lib/kpty.cpp
     lib/kptydevice.cpp
     lib/kptyprocess.cpp
+    lib/ProcessInfo.cpp
     lib/Pty.cpp
     lib/qtermwidget.cpp
     lib/Screen.cpp
@@ -96,6 +97,7 @@ set(HDRS
     lib/kprocess.h
     lib/kptydevice.h
     lib/kptyprocess.h
+    lib/ProcessInfo.h
     lib/Pty.h
     lib/qtermwidget.h
     lib/ScreenWindow.h
