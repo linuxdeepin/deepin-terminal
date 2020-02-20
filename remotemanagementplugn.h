@@ -18,6 +18,7 @@ public:
 
     RemoteManagementTopPanel *getRemoteManagementTopPanel();
     void initRemoteManagementTopPanel();
+    QString createShellFile(ServerConfig *curServer);
 
 signals:
     void doHide();

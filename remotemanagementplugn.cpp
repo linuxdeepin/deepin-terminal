@@ -1,5 +1,8 @@
 #include "remotemanagementplugn.h"
 #include "mainwindow.h"
+#include "utils.h"
+
+#include <QTextCodec>
 
 RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPluginInterface(parent)
 {
@@ -41,14 +44,56 @@ void RemoteManagementPlugn::initRemoteManagementTopPanel()
 void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 {
     if (nullptr != curServer) {
-        QString address = curServer->m_address;
-        QString port = curServer->m_port;
-        QString userName = curServer->m_userName;
-        QString password = curServer->m_password;
-        QString strTxt = "ssh -p" + port + " " + userName + "@" + address + "\n";
+        QString shellFile = createShellFile(curServer);
+        QString strTxt = "expect -f " + shellFile + "\n";
         m_mainWindow->currentTab()->sendTextToCurrentTerm(strTxt);
-        //密码处理
-        // m_mainWindow->currentTab()->sendTextToCurrentTerm(password + "\n");
+        QString encodeString = curServer->m_encoding;
+        if (!encodeString.isNull() && !encodeString.isEmpty()) {
+            m_mainWindow->currentTab()->setTextCodec(QTextCodec::codecForName(curServer->m_encoding.toLocal8Bit()));
+        }
     }
     emit doHide();
+}
+
+QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
+{
+    QFile sourceFile(":/config/ssh_login.sh");
+    QString fileString;
+    if (sourceFile.open(QIODevice::ReadOnly)) {
+        fileString = sourceFile.readAll();
+        sourceFile.close();
+    }
+
+    fileString.replace("<<USER>>", curServer->m_userName);
+    fileString.replace("<<SERVER>>", curServer->m_address);
+    fileString.replace("<<PORT>>", curServer->m_port);
+    if (curServer->m_privateKey.isNull() || curServer->m_privateKey.isEmpty()) {
+        fileString.replace("<<PRIVATE_KEY>>", "");
+        QRegExp rx("([\"$\\\\])");
+        QString password = curServer->m_password;
+        password.replace(rx, "\\\\\\1");
+        fileString.replace("<<PASSWORD>>", password);
+        fileString.replace("<<AUTHENTICATION>>", "no");
+    } else {
+        fileString.replace("<<PRIVATE_KEY>>", curServer->m_privateKey);
+        fileString.replace("<<PASSWORD>>", "");
+        fileString.replace("<<AUTHENTICATION>>", "yes");
+    }
+    QString path = curServer->m_path;
+    QString command = curServer->m_command;
+    QString remote_command = "echo " + tr("Welcome to Deepin Terminal, please make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.") + " && ";
+    if (!path.isNull() && !path.isEmpty()) {
+        remote_command = remote_command + "cd " + path + " && ";
+    }
+    if (!command.isNull() && !command.isEmpty()) {
+        remote_command = remote_command + command + " && ";
+    }
+    fileString.replace("<<REMOTE_COMMAND>>", remote_command);
+
+    QString toFileStr = "/tmp/terminal-" + Utils::getRandString();
+    QFile toFile(toFileStr);
+    toFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    toFile.write(fileString.toUtf8());
+    toFile.close();
+    return toFileStr;
 }

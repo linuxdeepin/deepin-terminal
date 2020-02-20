@@ -79,7 +79,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setBlinkingCursor(Settings::instance()->cursorBlink());
 #endif  // !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
 
-    connect(this, &QTermWidget::urlActivated, this, [](const QUrl &url, bool fromContextMenu) {
+    connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
             QDesktopServices::openUrl(url);
         }
@@ -151,7 +151,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         bool ok;
         QString text =
         DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
-        if (ok) {
+        if (ok)
+        {
             emit termRequestRenameTab(text);
         }
     });
@@ -168,7 +169,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addSeparator();
 
     menu.addAction(
-    QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
+        QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
 
     // display the menu.
     menu.exec(mapToGlobal(pos));
@@ -188,7 +189,7 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
     connect(
-    m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
+        m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
     connect(m_term, &TermWidget::copyAvailable, this, [this](bool enable) {
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
@@ -395,4 +396,9 @@ void TermWidgetWrapper::initUI()
 
     m_layout->addWidget(m_term);
     m_layout->setContentsMargins(0, 0, 0, 0);
+}
+
+void TermWidgetWrapper::setTextCodec(QTextCodec *codec)
+{
+    m_term->setTextCodec(codec);
 }

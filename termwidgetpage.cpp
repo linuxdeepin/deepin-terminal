@@ -134,8 +134,7 @@ void TermWidgetPage::closeOtherTerminal()
 }
 
 // 待删除
-typedef struct
-{
+typedef struct {
     QPoint topLeft;
     QPoint middle;
     QPoint bottomRight;
@@ -538,8 +537,16 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
     connect(
-    term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
+        term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
     connect(
-    term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
+        term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
     return term;
+}
+
+void TermWidgetPage::setTextCodec(QTextCodec *codec)
+{
+    TermWidgetWrapper *term = currentTerminal();
+    if (term) {
+        term->setTextCodec(codec);
+    }
 }

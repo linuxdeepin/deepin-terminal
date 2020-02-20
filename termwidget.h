@@ -54,6 +54,7 @@ public:
 
     QList<int> getRunningSessionIdList();
     bool hasRunningProcess();
+    void setTextCodec(QTextCodec *codec);
 
 public slots:
     void zoomIn();

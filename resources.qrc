@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/config">
         <file>default-config.json</file>
+        <file>ssh_login.sh</file>
     </qresource>
     <qresource prefix="/">
         <file>images/icon/focus/circlebutton_add 2.svg</file>

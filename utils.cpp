@@ -36,12 +36,12 @@
 #include <QFontDatabase>
 #include <QFontMetrics>
 #include <QTextLayout>
+#include <QTime>
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
 
-Utils::Utils(QObject *parent)
-    : QObject(parent)
+Utils::Utils(QObject *parent) : QObject(parent)
 {
 }
 
@@ -63,8 +63,8 @@ QString Utils::getQssContent(const QString &filePath)
 
 QString Utils::getConfigPath()
 {
-    QDir dir(QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first())
-             .filePath(qApp->organizationName()));
+    QDir dir(
+    QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()).filePath(qApp->organizationName()));
 
     return dir.filePath(qApp->applicationName());
 }
@@ -108,16 +108,14 @@ QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
     QString fontFamilyName = "";
 
     QFile fontFile(fontFileName);
-    if(!fontFile.open(QIODevice::ReadOnly))
-    {
-        qDebug()<<"Open font file error";
+    if (!fontFile.open(QIODevice::ReadOnly)) {
+        qDebug() << "Open font file error";
         return fontFamilyName;
     }
 
     int loadedFontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll());
     QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(loadedFontID);
-    if(!loadedFontFamilies.empty())
-    {
+    if (!loadedFontFamilies.empty()) {
         fontFamilyName = loadedFontFamilies.at(0);
     }
     fontFile.close();
@@ -165,7 +163,8 @@ const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize
 
         lines.append(text.mid(line.textStart(), line.textLength()));
 
-        if (height + lineHeight > size.height()) break;
+        if (height + lineHeight > size.height())
+            break;
 
         line = layout.createLine();
     }
@@ -185,9 +184,9 @@ QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
 
     QRawFont rawFont(fontFilePath, 0, QFont::PreferNoHinting);
     bool isSupport = rawFont.supportsCharacter(QChar('a'));
-    bool isSupportF = rawFont.supportsCharacter(QChar('a'|0xf000));
+    bool isSupportF = rawFont.supportsCharacter(QChar('a' | 0xf000));
     if ((!isSupport && isSupportF)) {
-        QChar *chArr = new QChar[srcString.length()+1];
+        QChar *chArr = new QChar[srcString.length() + 1];
         for (int i = 0; i < srcString.length(); i++) {
             int ch = srcString.at(i).toLatin1();
             //判断字符ascii在32～126范围内(共95个)
@@ -205,4 +204,19 @@ QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
     }
 
     return strFontPreview;
+}
+
+QString Utils::getRandString()
+{
+    int max = 6;  //字符串长度
+    QString tmp = QString("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    QString str;
+    QTime t;
+    t = QTime::currentTime();
+    qsrand(t.msec() + t.second() * 1000);
+    for (int i = 0; i < max; i++) {
+        int len = qrand() % tmp.length();
+        str[i] = tmp.at(len);
+    }
+    return QString(str);
 }

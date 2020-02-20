@@ -43,6 +43,8 @@ public:
     static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
 
     static QString convertToPreviewString(QString fontFilePath, QString srcString);
+
+    static QString getRandString();
 };
 
 #endif

@@ -59,6 +59,7 @@ public:
     void setBlinkingCursor(bool enable);
     void setPressingScroll(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
+    void setTextCodec(QTextCodec *codec);
 
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);
