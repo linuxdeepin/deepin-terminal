@@ -134,7 +134,8 @@ void TermWidgetPage::closeOtherTerminal()
 }
 
 // 待删除
-typedef struct {
+typedef struct
+{
     QPoint topLeft;
     QPoint middle;
     QPoint bottomRight;
@@ -216,6 +217,16 @@ void TermWidgetPage::focusNavigation(Qt::Edge dir)
     if (dst) {
         dst->setFocus();
     }
+}
+/*******************************************************************************
+ 1. @函数:    getTerminalCount
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-21
+ 4. @说明:    获取当前页的终端个数
+*******************************************************************************/
+int TermWidgetPage::getTerminalCount()
+{
+    return findChildren<TermWidgetWrapper *>().size();
 }
 /********************* Modify by n014361 wangpeili End ************************/
 
@@ -535,9 +546,9 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
     connect(
-        term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
+    term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
     connect(
-        term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
+    term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
     return term;
 }
 

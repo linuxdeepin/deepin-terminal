@@ -18,9 +18,9 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
-
-TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent)
+TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *grandma) : QTermWidget(0, parent)
 {
+    m_Page = ( void * )grandma;
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     setHistorySize(5000);
@@ -121,46 +121,49 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     // add other actions here.
     if (!selectedText().isEmpty()) {
-        menu.addAction(QIcon::fromTheme("edit-copy"), tr("Copy &Selection"), this, [this] { copyClipboard(); });
+
+        menu.addAction(tr("Copy &Selection"), this, [this] { copyClipboard(); });
     }
 
-    menu.addAction(QIcon::fromTheme("edit-paste"), tr("&Paste"), this, [this] { pasteClipboard(); });
+    menu.addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
 
-    menu.addAction(QIcon::fromTheme("document-open-folder"), tr("&Open File Manager"), this, [this] {
-        DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
-    });
+    menu.addAction(
+    tr("&Open File Manager"), this, [this] { DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory())); });
 
     menu.addSeparator();
 
-    menu.addAction(QIcon::fromTheme("view-split-left-right"), tr("Split &Horizontally"), this, [this] {
-        emit termRequestSplit(Qt::Horizontal);
-    });
+    menu.addAction(tr("Split &Horizontally"), this, [this] { emit termRequestSplit(Qt::Horizontal); });
 
-    menu.addAction(QIcon::fromTheme("view-split-top-bottom"), tr("Split &Vertically"), this, [this] {
-        emit termRequestSplit(Qt::Vertical);
-    });
+    menu.addAction(tr("Split &Vertically"), this, [this] { emit termRequestSplit(Qt::Vertical); });
+
+    /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
+    menu.addAction(tr("Close &Window"), this, [this] { (( TermWidgetPage * )m_Page)->currentTerminal()->close(); });
+    if ((( TermWidgetPage * )m_Page)->getTerminalCount() > 1) {
+        menu.addAction(
+        tr("Close &Other &Window"), this, [this] { (( TermWidgetPage * )m_Page)->closeOtherTerminal(); });
+    };
+
+    /********************* Modify by n014361 wangpeili End ************************/
 
     menu.addSeparator();
 
     bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
     if (isFullScreen) {
-        menu.addAction(QIcon::fromTheme("view-restore-symbolic"), tr("Exit Full&screen"), this, [this] {
-            window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
-        });
+        menu.addAction(
+        tr("Exit Full&screen"), this, [this] { window()->setWindowState(windowState() & ~Qt::WindowFullScreen); });
     } else {
-        menu.addAction(QIcon::fromTheme("view-fullscreen-symbolic"), tr("Full&screen"), this, [this] {
-            window()->setWindowState(windowState() | Qt::WindowFullScreen);
-        });
+        menu.addAction(
+        tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
     }
 
-    menu.addAction(QIcon::fromTheme("edit-find"), tr("&Find"), this, [this] {
+    menu.addAction(tr("&Find"), this, [this] {
         // this is not a DTK look'n'feel search bar, but nah.
         toggleShowSearchBar();
     });
 
     menu.addSeparator();
 
-    menu.addAction(QIcon::fromTheme("edit-rename"), tr("Rename Tab"), this, [this] {
+    menu.addAction(tr("Rename Tab"), this, [this] {
         // TODO: Tab name as default text?
         bool ok;
         QString text =
@@ -170,26 +173,23 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         }
     });
 
-    menu.addAction(QIcon::fromTheme("custom-command"), tr("Custom Command"), this, [this] {
+    menu.addAction(tr("Custom Command"), this, [this] {
         // TODO: Tab name as default text?
         emit termRequestOpenCustomCommand();
     });
 
-    menu.addAction(QIcon::fromTheme("remote-management"), tr("RemoteManagement"), this, [this] {
-        emit termRequestOpenRemoteManagement();
-    });
+    menu.addAction(tr("RemoteManagement"), this, [this] { emit termRequestOpenRemoteManagement(); });
 
     menu.addSeparator();
 
-    menu.addAction(
-    QIcon::fromTheme("settings-configure"), tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
+    menu.addAction(tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
 
     // display the menu.
     menu.exec(mapToGlobal(pos));
 }
 
 TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
-    : QWidget(parent), m_term(new TermWidget(properties, this))
+    : QWidget(parent), m_term(new TermWidget(properties, this, parent))
 {
     initUI();
 

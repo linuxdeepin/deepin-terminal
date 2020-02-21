@@ -2,13 +2,14 @@
 #define TERMWIDGET_H
 
 #include "qtermwidget/lib/qtermwidget.h"
+#include "termwidgetpage.h"
 
 class TermProperties;
 class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
-    TermWidget(TermProperties properties, QWidget *parent = nullptr);
+    TermWidget(TermProperties properties, QWidget *parent = nullptr, QWidget *grandma = nullptr);
 
 signals:
     void termRequestSplit(Qt::Orientation ori);
@@ -18,6 +19,9 @@ signals:
     void termRequestOpenRemoteManagement();
 private slots:
     void customContextMenuCall(const QPoint &pos);
+
+private:
+    void *m_Page = nullptr;
 };
 
 class TermWidgetWrapper : public QWidget

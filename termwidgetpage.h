@@ -22,7 +22,7 @@ public:
     void focusCurrentTerm();
     void closeOtherTerminal();
     void focusNavigation(Qt::Edge dir);
-
+    int getTerminalCount();
     /******** Modify by n014361 wangpeili 2020-01-08: 计算上下左右判断方法 ******×****/
     QRect GetRect(TermWidgetWrapper *term);
     QPoint GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir);
