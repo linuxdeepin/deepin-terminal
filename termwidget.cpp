@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QClipboard>
+#include <DApplicationHelper>
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
@@ -87,6 +88,19 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     connect(this, &QWidget::customContextMenuRequested, this, &TermWidget::customContextMenuCall);
 
+    connect(DApplicationHelper::instance(),
+            &DApplicationHelper::themeTypeChanged,
+            this,
+            [=](DGuiApplicationHelper::ColorType builtInTheme) {
+                qDebug() << "themeChanged" << builtInTheme;
+                // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
+                QString theme = "GreenOnBlack";
+                if (builtInTheme == DGuiApplicationHelper::LightType) {
+                    theme = "BlackOnWhite";
+                }
+                setColorScheme(theme);
+                Settings::instance()->setColorScheme(theme);
+            });
     /********************* Modify by n014361 wangpeili End ************************/
 
     startShellProgram();

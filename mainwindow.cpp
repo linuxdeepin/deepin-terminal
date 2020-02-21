@@ -356,8 +356,8 @@ void MainWindow::onTabTitleChanged(QString title)
 void MainWindow::initPlugins()
 {
     // Todo: real plugin loader and plugin support.
-    ThemePanelPlugin *testPlugin = new ThemePanelPlugin(this);
-    testPlugin->initPlugin(this);
+    // ThemePanelPlugin *testPlugin = new ThemePanelPlugin(this);
+    // testPlugin->initPlugin(this);
 
     CustomCommandPlugin *customCommandPlugin = new CustomCommandPlugin(this);
     customCommandPlugin->initPlugin(this);
@@ -365,7 +365,7 @@ void MainWindow::initPlugins()
     RemoteManagementPlugn *remoteManagPlugin = new RemoteManagementPlugn(this);
     remoteManagPlugin->initPlugin(this);
 
-    m_plugins.append(testPlugin);
+    // m_plugins.append(testPlugin);
     m_plugins.append(customCommandPlugin);
     m_plugins.append(remoteManagPlugin);
 }
@@ -641,7 +641,7 @@ void MainWindow::initShortcuts()
 
     // ctrl+5 not response?
     for (int i = 1; i <= 9; i++) {
-        QString shortCutStr = QString("ctrl+%1").arg(i);
+        QString shortCutStr = QString("alt+%1").arg(i);
         qDebug() << shortCutStr;
         QShortcut *switchTabSC = new QShortcut(QKeySequence(shortCutStr), this);
         connect(switchTabSC, &QShortcut::activated, this, [this, i]() {
