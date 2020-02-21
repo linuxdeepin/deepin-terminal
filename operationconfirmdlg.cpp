@@ -3,90 +3,197 @@
 #include <DApplicationHelper>
 #include <DButtonBox>
 #include <DIconButton>
+#include <DFontSizeManager>
+#include <DVerticalLine>
+#include <DLog>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
 OperationConfirmDlg::OperationConfirmDlg(QWidget *parent)
-    : DAbstractDialog(parent),
-      m_iconLabel(new DLabel(this)),
-      m_operatType(new DLabel(this)),
-      m_tipInfo(new DLabel(this)),
-      m_okButton(new DButtonBoxButton(tr("Delete"))),
-      m_cancelButton(new DButtonBoxButton(tr("Cancel")))
+    : DAbstractDialog(parent)
+{
+    initUI();
+    initContentLayout();
+    initConnections();
+}
+
+void OperationConfirmDlg::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
-    setFixedSize(300, 200);
+    setFixedSize(422, 202);
 
-    QHBoxLayout *headLayout = new QHBoxLayout();
-    DIconButton *pCloseButton = new DIconButton(QStyle::SP_DialogCloseButton);
-    headLayout->addStretch();
-    headLayout->addWidget(pCloseButton);
-    headLayout->setSpacing(0);
-    headLayout->setMargin(0);
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    QVBoxLayout *vLayout = new QVBoxLayout();
-    vLayout->addStretch();
-    vLayout->addWidget(m_operatType);
-    vLayout->addWidget(m_tipInfo);
-    vLayout->addStretch();
-    vLayout->setSpacing(0);
-    vLayout->setMargin(0);
+    QHBoxLayout *titleLayout = new QHBoxLayout();
+    titleLayout->setSpacing(0);
+    titleLayout->setContentsMargins(10, 0, 0, 0);
 
-    QHBoxLayout *hLayout = new QHBoxLayout();
-    hLayout->addWidget(m_iconLabel);
-    hLayout->addLayout(vLayout);
-    hLayout->setSpacing(0);
-    hLayout->setMargin(0);
+    m_titleBar = new QWidget(this);
+    m_titleBar->setFixedHeight(50);
+    m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_titleBar->setLayout(titleLayout);
 
-    DButtonBox *btBox = new DButtonBox();
-    DPalette pb = DApplicationHelper::instance()->palette(m_okButton);
-    pb.setBrush(DPalette::Base, pb.color(DPalette::ItemBackground));
-    pb.setColor(QPalette::Text, QColor(255, 0, 0));
-    m_okButton->setPalette(pb);
-    btBox->setFixedHeight(50);
+    m_logoIcon = new DLabel(this);
+    m_logoIcon->setFixedSize(QSize(32, 32));
+    m_logoIcon->setFocusPolicy(Qt::NoFocus);
+    m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
+    m_logoIcon->setPixmap(QIcon::fromTheme("deepin-terminal").pixmap(QSize(32, 32)));
 
-    QList<DButtonBoxButton *> listBtnBox;
-    listBtnBox.append(m_cancelButton);
-    listBtnBox.append(m_okButton);
+    m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setIconSize(QSize(50, 50));
 
-    btBox->setButtonList(listBtnBox, true);
-#if 0
-    QHBoxLayout *ptmp = new QHBoxLayout();
-    DSuggestButton *pok = new DSuggestButton(tr("ok"));
-    DSuggestButton *pcancel = new DSuggestButton(tr("cancel"));
-    ptmp->addWidget(pcancel);
-    ptmp->addWidget(pok);
-    ptmp->setSpacing(0);
-    ptmp->setMargin(0);
-#endif
-    QVBoxLayout *pVLayout1 = new QVBoxLayout();
-    pVLayout1->addLayout(headLayout);
-    pVLayout1->addLayout(hLayout);
-    pVLayout1->addWidget(btBox);
-    setLayout(pVLayout1);
-    pVLayout1->setSpacing(0);
-    pVLayout1->setMargin(0);
+    m_titleText = new DLabel(this);
+    m_titleText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_titleText->setAlignment(Qt::AlignCenter);
+    DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T6);
 
-    connect(btBox, &DButtonBox::buttonClicked, this, [=](QAbstractButton *bt) {
-        if (bt == m_okButton) {
-            m_confirmResultCode = QDialog::Accepted;
-            close();
-        } else {
-            m_confirmResultCode = QDialog::Rejected;
-            close();
-        }
+    titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    titleLayout->addWidget(m_titleText);
+    titleLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignVCenter);
+
+    //Dialog content
+    m_contentLayout = new QVBoxLayout();
+    m_contentLayout->setSpacing(0);
+    m_contentLayout->setContentsMargins(0, 0, 0, 0);
+
+    m_content = new QWidget(this);
+    m_content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_content->setLayout(m_contentLayout);
+
+    mainLayout->addWidget(m_titleBar);
+    mainLayout->addWidget(m_content);
+    setLayout(mainLayout);
+}
+
+void OperationConfirmDlg::initContentLayout()
+{
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(10, 0, 10, 10);
+
+    QWidget *mainFrame = new QWidget(this);
+    mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    m_operateTypeName = new DLabel(this);
+    m_operateTypeName->setFixedHeight(20);
+    m_operateTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    QFont operateTypeNameFont;
+    m_operateTypeName->setFont(operateTypeNameFont);
+    DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6);
+
+    m_tipInfo = new DLabel(this);
+    m_tipInfo->setFixedHeight(20);
+    m_tipInfo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    QFont tipInfoFont;
+    tipInfoFont.setWeight(QFont::Bold);
+    m_tipInfo->setFont(tipInfoFont);
+    DFontSizeManager::instance()->bind(m_tipInfo, DFontSizeManager::T6);
+    DPalette paTipInfo = DApplicationHelper::instance()->palette(m_tipInfo);
+    paTipInfo.setBrush(DPalette::WindowText, paTipInfo.color(DPalette::TextTips));
+    m_tipInfo->setPalette(paTipInfo);
+
+    QHBoxLayout *actionBarLayout = new QHBoxLayout();
+    actionBarLayout->setSpacing(0);
+    actionBarLayout->setContentsMargins(0, 0, 0, 0);
+
+    QFont btnFont;
+    m_cancelBtn = new DPushButton(this);
+    m_cancelBtn->setFixedHeight(38);
+    m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    m_cancelBtn->setFont(btnFont);
+
+    m_confirmBtn = new DWarningButton(this);
+    m_confirmBtn->setFixedHeight(38);
+    m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    m_confirmBtn->setFont(btnFont);
+
+    DVerticalLine *verticalSplite = new DVerticalLine(this);
+    DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
+    QColor splitColor = pa.color(DPalette::ItemBackground);
+    pa.setBrush(DPalette::Background, splitColor);
+    verticalSplite->setPalette(pa);
+    verticalSplite->setBackgroundRole(QPalette::Background);
+    verticalSplite->setAutoFillBackground(true);
+    verticalSplite->setFixedSize(3, 28);
+
+    actionBarLayout->addWidget(m_cancelBtn);
+    actionBarLayout->addSpacing(8);
+    actionBarLayout->addWidget(verticalSplite);
+    actionBarLayout->addSpacing(8);
+    actionBarLayout->addWidget(m_confirmBtn);
+
+    mainLayout->addWidget(m_operateTypeName, 0, Qt::AlignCenter);
+    mainLayout->addSpacing(8);
+    mainLayout->addWidget(m_tipInfo, 0, Qt::AlignCenter);
+    mainLayout->addStretch();
+    mainLayout->addLayout(actionBarLayout);
+    mainFrame->setLayout(mainLayout);
+
+    addContent(mainFrame);
+}
+
+void OperationConfirmDlg::initConnections()
+{
+    connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
+        qDebug() << "cancelBtnClicked";
+        m_confirmResultCode = QDialog::Rejected;
+        reject();
+        close();
+    });
+    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
+        qDebug() << "confirmBtnClicked";
+        m_confirmResultCode = QDialog::Accepted;
+        close();
     });
 
-    connect(pCloseButton, &DIconButton::clicked, this, [=]() {
+    connect(m_closeButton, &DIconButton::clicked, this, [ = ]() {
+        qDebug() << "dialog close Btn Clicked";
         m_confirmResultCode = QDialog::Rejected;
         close();
     });
 }
 
+void OperationConfirmDlg::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event)
+
+    done(-1);
+    Q_EMIT closed();
+}
+
+void OperationConfirmDlg::setTitle(const QString &title)
+{
+    if (nullptr != m_titleText) {
+        m_titleText->setText(title);
+    }
+}
+
+QLayout *OperationConfirmDlg::getContentLayout()
+{
+    return m_contentLayout;
+}
+
+void OperationConfirmDlg::addContent(QWidget *content)
+{
+    Q_ASSERT(nullptr != getContentLayout());
+
+    getContentLayout()->addWidget(content);
+}
+
+void OperationConfirmDlg::setIconPixmap(const QPixmap &iconPixmap)
+{
+    if (nullptr != m_logoIcon) {
+        m_logoIcon->setPixmap(iconPixmap);
+    }
+}
+
 void OperationConfirmDlg::setOperatTypeName(const QString &strName)
 {
-    m_operatType->setText(strName);
+    m_operateTypeName->setText(strName);
 }
 
 void OperationConfirmDlg::setTipInfo(const QString &strInfo)
@@ -94,22 +201,10 @@ void OperationConfirmDlg::setTipInfo(const QString &strInfo)
     m_tipInfo->setText(strInfo);
 }
 
-void OperationConfirmDlg::setOKCancelBtnText(const QString &strOk, const QString &strCancel)
+void OperationConfirmDlg::setOKCancelBtnText(const QString &strConfirm, const QString &strCancel)
 {
-    m_okButton->setText(strOk);
-    m_cancelButton->setText(strCancel);
-}
-
-void OperationConfirmDlg::slotClickOkButton()
-{
-    m_confirmResultCode = QDialog::Accepted;
-    close();
-}
-
-void OperationConfirmDlg::slotClickCancelButton()
-{
-    m_confirmResultCode = QDialog::Rejected;
-    close();
+    m_confirmBtn->setText(strConfirm);
+    m_cancelBtn->setText(strCancel);
 }
 
 QDialog::DialogCode OperationConfirmDlg::getConfirmResult()

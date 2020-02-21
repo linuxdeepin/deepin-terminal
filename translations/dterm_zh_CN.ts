@@ -104,32 +104,32 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="609"/>
+        <location filename="../mainwindow.cpp" line="608"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="609"/>
+        <location filename="../mainwindow.cpp" line="608"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="687"/>
+        <location filename="../mainwindow.cpp" line="686"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="897"/>
+        <location filename="../mainwindow.cpp" line="896"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="899"/>
+        <location filename="../mainwindow.cpp" line="898"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="901"/>
+        <location filename="../mainwindow.cpp" line="900"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
@@ -137,30 +137,26 @@
 <context>
     <name>OperationConfirmDlg</name>
     <message>
-        <location filename="../operationconfirmdlg.cpp" line="15"/>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation type="vanished">删除</translation>
     </message>
     <message>
-        <location filename="../operationconfirmdlg.cpp" line="16"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="vanished">取消</translation>
     </message>
     <message>
-        <location filename="../operationconfirmdlg.cpp" line="56"/>
         <source>ok</source>
-        <translation>确认</translation>
+        <translation type="vanished">确认</translation>
     </message>
     <message>
-        <location filename="../operationconfirmdlg.cpp" line="57"/>
         <source>cancel</source>
-        <translation>取消</translation>
+        <translation type="vanished">取消</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="36"/>
+        <location filename="../main.cpp" line="38"/>
         <source>Deep Dark Terminal</source>
         <translation>USO终端</translation>
     </message>
@@ -652,68 +648,68 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../termwidget.cpp" line="110"/>
+        <location filename="../termwidget.cpp" line="124"/>
         <source>Copy &amp;Selection</source>
         <translation>复制已选择内容</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="113"/>
+        <location filename="../termwidget.cpp" line="127"/>
         <source>&amp;Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="115"/>
+        <location filename="../termwidget.cpp" line="129"/>
         <source>&amp;Open File Manager</source>
         <translation>在文件管理器中打开</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="121"/>
+        <location filename="../termwidget.cpp" line="135"/>
         <source>Split &amp;Horizontally</source>
         <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="125"/>
+        <location filename="../termwidget.cpp" line="139"/>
         <source>Split &amp;Vertically</source>
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="133"/>
+        <location filename="../termwidget.cpp" line="147"/>
         <source>Exit Full&amp;screen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="137"/>
+        <location filename="../termwidget.cpp" line="151"/>
         <source>Full&amp;screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="142"/>
+        <location filename="../termwidget.cpp" line="156"/>
         <source>&amp;Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="149"/>
-        <location filename="../termwidget.cpp" line="153"/>
+        <location filename="../termwidget.cpp" line="163"/>
+        <location filename="../termwidget.cpp" line="167"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="153"/>
+        <location filename="../termwidget.cpp" line="167"/>
         <source>Tab name:</source>
         <translation>标题名字: </translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="159"/>
+        <location filename="../termwidget.cpp" line="173"/>
         <source>Custom Command</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="164"/>
+        <location filename="../termwidget.cpp" line="178"/>
         <source>RemoteManagement</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="171"/>
+        <location filename="../termwidget.cpp" line="185"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
