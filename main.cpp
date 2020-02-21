@@ -3,6 +3,7 @@
 #include "termproperties.h"
 
 #include <DApplication>
+#include <DApplicationSettings>
 #include <DLog>
 
 #include <QCommandLineParser>
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
     app.loadTranslator();
 
+    DApplicationSettings set(&app);
 #ifdef QT_DEBUG
     QTranslator translator;
     translator.load(QString("dterm_%1").arg(QLocale::system().name()));

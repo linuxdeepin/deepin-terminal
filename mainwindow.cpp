@@ -552,7 +552,6 @@ void MainWindow::initShortcuts()
     connect(createNewShotcut("shortcuts.terminal.default_size"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page) {
-            // qDebug() << "DefaultFontSize";
             page->setFontSize(Settings::instance()->fontSize());
         }
     });

@@ -436,6 +436,10 @@ void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
         return;
     }
 
+    if (keyName == "basic.interface.theme") {
+        return;
+    }
+
     if ((keyName == "advanced.cursor.auto_copy_selection") || (keyName == "advanced.scroll.scroll_on_output")) {
         qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                  << ", auto effective when happen";
