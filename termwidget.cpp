@@ -20,7 +20,7 @@ DWIDGET_USE_NAMESPACE
 using namespace Konsole;
 TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *grandma) : QTermWidget(0, parent)
 {
-    m_Page = ( void * )grandma;
+    m_Page = (void *)grandma;
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     setHistorySize(5000);
@@ -80,7 +80,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     setBlinkingCursor(Settings::instance()->cursorBlink());
 #endif  // !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
 
-    connect(this, &QTermWidget::urlActivated, this, [](const QUrl &url, bool fromContextMenu) {
+    connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
             QDesktopServices::openUrl(url);
         }
@@ -91,16 +91,16 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     connect(DApplicationHelper::instance(),
             &DApplicationHelper::themeTypeChanged,
             this,
-            [=](DGuiApplicationHelper::ColorType builtInTheme) {
-                qDebug() << "themeChanged" << builtInTheme;
-                // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
-                QString theme = "GreenOnBlack";
-                if (builtInTheme == DGuiApplicationHelper::LightType) {
-                    theme = "BlackOnWhite";
-                }
-                setColorScheme(theme);
-                Settings::instance()->setColorScheme(theme);
-            });
+    [ = ](DGuiApplicationHelper::ColorType builtInTheme) {
+        qDebug() << "themeChanged" << builtInTheme;
+        // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
+        QString theme = "GreenOnBlack";
+        if (builtInTheme == DGuiApplicationHelper::LightType) {
+            theme = "BlackOnWhite";
+        }
+        setColorScheme(theme);
+        Settings::instance()->setColorScheme(theme);
+    });
     /********************* Modify by n014361 wangpeili End ************************/
 
     startShellProgram();
@@ -128,7 +128,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
 
     menu.addAction(
-    tr("&Open File Manager"), this, [this] { DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory())); });
+        tr("&Open File Manager"), this, [this] { DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory())); });
 
     menu.addSeparator();
 
@@ -137,10 +137,10 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addAction(tr("Split &Vertically"), this, [this] { emit termRequestSplit(Qt::Vertical); });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    menu.addAction(tr("Close &Window"), this, [this] { (( TermWidgetPage * )m_Page)->currentTerminal()->close(); });
-    if ((( TermWidgetPage * )m_Page)->getTerminalCount() > 1) {
+    menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->currentTerminal()->close(); });
+    if (((TermWidgetPage *)m_Page)->getTerminalCount() > 1) {
         menu.addAction(
-        tr("Close &Other &Window"), this, [this] { (( TermWidgetPage * )m_Page)->closeOtherTerminal(); });
+            tr("Close &Other &Window"), this, [this] { ((TermWidgetPage *)m_Page)->closeOtherTerminal(); });
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
@@ -150,10 +150,10 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
     if (isFullScreen) {
         menu.addAction(
-        tr("Exit Full&screen"), this, [this] { window()->setWindowState(windowState() & ~Qt::WindowFullScreen); });
+            tr("Exit Full&screen"), this, [this] { window()->setWindowState(windowState() & ~Qt::WindowFullScreen); });
     } else {
         menu.addAction(
-        tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
+            tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
     }
 
     menu.addAction(tr("&Find"), this, [this] {
@@ -168,7 +168,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         bool ok;
         QString text =
         DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
-        if (ok) {
+        if (ok)
+        {
             emit termRequestRenameTab(text);
         }
     });
@@ -180,12 +181,41 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     menu.addAction(tr("RemoteManagement"), this, [this] { emit termRequestOpenRemoteManagement(); });
 
+    if (isInRemoteServer()) {
+        menu.addSeparator();
+        menu.addAction(QIcon::fromTheme("upload-file"), tr("Upload File"), this, [this] {
+            emit termRequestUploadFile();
+        });
+        menu.addAction(QIcon::fromTheme("download-file"), tr("Download File"), this, [this] {
+            emit termRequestDownloadFile();
+        });
+    }
+
     menu.addSeparator();
 
     menu.addAction(tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
 
     // display the menu.
     menu.exec(mapToGlobal(pos));
+}
+
+bool TermWidget::isInRemoteServer()
+{
+    int pid = getForegroundProcessId();
+    if (pid <= 0) {
+        return false;
+    }
+    QString pidFilepath = "/proc/" + QString::number(pid) + "/comm";
+    QFile pidFile(pidFilepath);
+    if (pidFile.exists()) {
+        pidFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QString commString(pidFile.readLine());
+        pidFile.close();
+        if ("expect" == commString.trimmed()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
@@ -202,7 +232,7 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
     connect(
-    m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
+        m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
     connect(m_term, &TermWidget::copyAvailable, this, [this](bool enable) {
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";

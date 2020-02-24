@@ -45,8 +45,7 @@ public:
     /**
      * This enum describes the location where the scroll bar is positioned in the display widget.
      */
-    enum ScrollBarPosition
-    {
+    enum ScrollBarPosition {
         /** Do not show the scroll bar. */
         NoScrollBar = 0,
         /** Show the scroll bar on the left side of the display. */
@@ -248,6 +247,9 @@ public:
 
     /** Get the empty space outside the terminal */
     int getMargin() const;
+
+    /** Get the foreground pid in terminal */
+    int getForegroundProcessId() const;
 signals:
     void finished();
     void copyAvailable(bool);

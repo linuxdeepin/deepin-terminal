@@ -11,12 +11,15 @@ class TermWidget : public QTermWidget
 public:
     TermWidget(TermProperties properties, QWidget *parent = nullptr, QWidget *grandma = nullptr);
 
+    bool isInRemoteServer();
 signals:
     void termRequestSplit(Qt::Orientation ori);
     void termRequestRenameTab(QString newTabName);
     void termRequestOpenSettings();
     void termRequestOpenCustomCommand();
     void termRequestOpenRemoteManagement();
+    void termRequestUploadFile();
+    void termRequestDownloadFile();
 private slots:
     void customContextMenuCall(const QPoint &pos);
 
