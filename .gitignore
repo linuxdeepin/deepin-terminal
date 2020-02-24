@@ -2,3 +2,6 @@
 *.user
 build/
 .vscode/
+build-*/
+CMakeLists.txt.user
+deepin-terminal.pro.user
