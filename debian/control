@@ -8,6 +8,6 @@ Homepage: https://www.deepin.com/
 
 Package: deepin-terminal
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libqtermwidget5-0
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: deepin terminal
  Deepin Terminal

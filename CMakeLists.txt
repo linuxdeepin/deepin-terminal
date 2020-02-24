@@ -179,5 +179,18 @@ endif ()
 
 # Installation
 
-install(TARGETS deepin-terminal DESTINATION share/deepin-terminal)
-install(FILES ${DTNG_QM_FILES} DESTINATION share/deepin-terminal/translations)
+#install(TARGETS deepin-terminal DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal)
+
+install(FILES deepin-terminal.desktop
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
+
+install(FILES images/logo/deepin-terminal.svg
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        PERMISSIONS OWNER_READ OWNER_EXECUTE
+        GROUP_READ GROUP_EXECUTE
+        WORLD_READ WORLD_EXECUTE)
+
+install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)

@@ -692,17 +692,17 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../termwidget.cpp" line="124"/>
+        <location filename="../termwidget.cpp" line="125"/>
         <source>Copy &amp;Selection</source>
         <translation>复制选择内容</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="127"/>
+        <location filename="../termwidget.cpp" line="128"/>
         <source>&amp;Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="129"/>
+        <location filename="../termwidget.cpp" line="131"/>
         <source>&amp;Open File Manager</source>
         <translation>打开文件管理器</translation>
     </message>
@@ -712,43 +712,53 @@
         <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="139"/>
+        <location filename="../termwidget.cpp" line="137"/>
         <source>Split &amp;Vertically</source>
         <translation>垂直分屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="147"/>
+        <location filename="../termwidget.cpp" line="140"/>
+        <source>Close &amp;Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../termwidget.cpp" line="143"/>
+        <source>Close &amp;Other &amp;Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../termwidget.cpp" line="153"/>
         <source>Exit Full&amp;screen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="151"/>
+        <location filename="../termwidget.cpp" line="156"/>
         <source>Full&amp;screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="156"/>
+        <location filename="../termwidget.cpp" line="159"/>
         <source>&amp;Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="163"/>
-        <location filename="../termwidget.cpp" line="167"/>
+        <location filename="../termwidget.cpp" line="166"/>
+        <location filename="../termwidget.cpp" line="170"/>
         <source>Rename Tab</source>
         <translation>标题重命名</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="167"/>
+        <location filename="../termwidget.cpp" line="170"/>
         <source>Tab name:</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="173"/>
+        <location filename="../termwidget.cpp" line="176"/>
         <source>Custom Command</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="178"/>
+        <location filename="../termwidget.cpp" line="181"/>
         <source>RemoteManagement</source>
         <translation>远程管理</translation>
     </message>

@@ -281,6 +281,11 @@ signals:
      */
     void receivedData(const QString &text);
 
+    /**
+     * Signals for dynamically determine whether current terminal is busy or idle
+     */
+    void isTermIdle(bool bIdle);
+
 public slots:
     // Copy selection to clipboard
     void copyClipboard();

@@ -935,8 +935,24 @@ QString Session::getDynamicProcessName()
 {
     bool ok = false;
     QString processName = getProcessInfo()->name(&ok);
+    if (ok) {
+        return processName;
+    }
 
-    return processName;
+    return QString::fromLocal8Bit(qgetenv("SHELL"));
+}
+
+int Session::getDynamicProcessId()
+{
+    bool ok = false;
+    int pid = getProcessInfo()->pid(&ok);
+    if (ok) {
+        if (this->isForegroundProcessActive()) {
+            return pid;
+        }
+    }
+
+    return 0;
 }
 
 void Session::updateWorkingDirectory()
