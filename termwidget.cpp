@@ -158,10 +158,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
     }
 
-    menu.addAction(tr("&Find"), this, [this] {
-        // this is not a DTK look'n'feel search bar, but nah.
-        toggleShowSearchBar();
-    });
+    menu.addAction(tr("&Find"), this, [this] { (( TermWidgetPage * )m_Page)->showSearchBar(true); });
 
     menu.addSeparator();
 
