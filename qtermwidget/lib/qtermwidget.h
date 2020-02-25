@@ -34,7 +34,8 @@ class QVBoxLayout;
 struct TermWidgetImpl;
 class SearchBar;
 class QUrl;
-namespace Konsole {
+namespace Konsole
+{
 class TerminalDisplay;
 }
 
@@ -45,7 +46,8 @@ public:
     /**
      * This enum describes the location where the scroll bar is positioned in the display widget.
      */
-    enum ScrollBarPosition {
+    enum ScrollBarPosition
+    {
         /** Do not show the scroll bar. */
         NoScrollBar = 0,
         /** Show the scroll bar on the left side of the display. */
@@ -287,6 +289,8 @@ signals:
      * Signals for dynamically determine whether current terminal is busy or idle
      */
     void isTermIdle(bool bIdle);
+    // 将库里返回信号透传出来。原来的noMatchFound方法改名为clearSelection
+    void noMatchFound();
 
 public slots:
     // Copy selection to clipboard
@@ -314,6 +318,12 @@ public slots:
     void clear();
 
     void toggleShowSearchBar();
+    /******** Modify by n014361 wangpeili 2020-02-24:              ****************/
+    // 新增外部搜索接口，不用qterminal内置的搜索接口
+    void search(QString txt, bool forwards, bool next);
+    // 清除选中框
+    void clearSelection();
+    /********************* Modify by n014361 wangpeili End ************************/
 
 protected:
     virtual void resizeEvent(QResizeEvent *);
@@ -327,7 +337,7 @@ private slots:
     void findNext();
     void findPrevious();
     void matchFound(int startColumn, int startLine, int endColumn, int endLine);
-    void noMatchFound();
+
     /**
      * Emulation::cursorChanged() signal propogates to here and QTermWidget
      * sends the specified cursor states to the terminal display

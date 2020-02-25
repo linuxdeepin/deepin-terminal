@@ -528,7 +528,7 @@ void MainWindow::initShortcuts()
     connect(createNewShotcut("shortcuts.terminal.search"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page) {
-            page->toggleShowSearchBar();
+            page->showSearchBar(true);
         }
     });
 
@@ -636,6 +636,14 @@ void MainWindow::initShortcuts()
             emit remoteplugin->getRemoteManagementTopPanel()->show();
         }
     });
+    //    QShortcut *switchTabSC = new QShortcut(QKeySequence::Cancel, this);
+    //    connect(switchTabSC, &QShortcut::activated, this, [this]() {
+    //        TermWidgetPage *page = currentTab();
+    //        if (page) {
+    //            qDebug() << "ESC pressed";
+    //            page->showSearchBar(false);
+    //        }
+    //    });
     /********************* Modify by n014361 wangpeili End ************************/
 
     // ctrl+5 not response?

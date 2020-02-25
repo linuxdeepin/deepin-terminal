@@ -99,6 +99,7 @@ set (DTNG_CPP_FILES
     themepanelplugin.cpp
     titlebar.cpp
     utils.cpp
+    pagesearchbar.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -145,6 +146,7 @@ set (DTNG_HEADER_FILES
     themepanelplugin.h
     titlebar.h
     utils.h
+    pagesearchbar.h
 )
 
 set (DTNG_QRC_FILES

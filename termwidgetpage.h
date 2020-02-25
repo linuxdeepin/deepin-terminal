@@ -3,6 +3,7 @@
 
 #include "define.h"
 #include "termproperties.h"
+#include "pagesearchbar.h"
 
 #include <QWidget>
 
@@ -58,8 +59,14 @@ public:
     // 设置光标闪烁
     void setBlinkingCursor(bool enable);
     void setPressingScroll(bool enable);
+    void showSearchBar(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
     void setTextCodec(QTextCodec *codec);
+    void setMismatchAlert(bool alert);
+
+protected:
+    //将窗口设置为随着窗口变化而变化
+    virtual void resizeEvent(QResizeEvent *event) override;
 
 public slots:
     void onTermRequestSplit(Qt::Orientation ori);
@@ -67,6 +74,16 @@ public slots:
     void onTermTitleChanged(QString title) const;
     void onTermGetFocus();
     void onTermClosed();
+    // 查找下一个接口
+    void handleFindNext();
+    // 查找上一个接口
+    void handleFindPrev();
+    // 预留
+    void slotFindbarClose();
+    // 预留
+    void handleRemoveSearchKeyword();
+    // 更新搜索关键词接口
+    void handleUpdateSearchKeyword(const QString &keyword);
 
 signals:
     void tabTitleChanged(QString title) const;
@@ -84,5 +101,6 @@ private:
     TermWidgetWrapper *createTerm(TermProperties properties);
 
     TermWidgetWrapper *m_currentTerm = nullptr;
+    PageSearchBar *m_findBar = nullptr;
 };
 #endif  // TERMWIDGETPAGE_H

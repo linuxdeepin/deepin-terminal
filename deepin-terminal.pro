@@ -69,7 +69,8 @@ HEADERS += \
     quaketerminaladapter.h \
     termargumentparser.h \
     quaketerminalproxy.h \
-    utils.h
+    utils.h \
+    pagesearchbar.h
 
 SOURCES += \
     customcommanddelegate.cpp \
@@ -114,7 +115,8 @@ SOURCES += \
     quaketerminaladapter.cpp \
     termargumentparser.cpp \
     quaketerminalproxy.cpp \
-    utils.cpp
+    utils.cpp \
+    pagesearchbar.cpp
 
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts

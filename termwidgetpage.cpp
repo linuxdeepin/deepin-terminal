@@ -6,8 +6,10 @@
 #include <QSplitter>
 #include <QUuid>
 #include <QVBoxLayout>
+#include <QApplication>
 
-TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent) : QWidget(parent)
+TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
+    : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
@@ -19,6 +21,15 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent) : QWi
 
     QSplitter *splitter = new QSplitter(this);
     splitter->setFocusPolicy(Qt::NoFocus);
+
+    // Init find bar.
+    m_findBar->move(this->x() - 100, this->y() - 100);
+    connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
+    connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
+    connect(
+    m_findBar, &PageSearchBar::keywordChanged, this, [=](QString keyword) { handleUpdateSearchKeyword(keyword); });
+    // connect(m_findBar, &PageSearchBar::sigFindbarClose, this, &TermWidgetPage::slotFindbarClose,
+    // Qt::QueuedConnection);
 
     TermWidgetWrapper *w = createTerm(properties);
     splitter->addWidget(w);
@@ -53,7 +64,7 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
     s->insertWidget(0, term);
 
     TermProperties properties(term->workingDirectory());
-    term->toggleShowSearchBar();
+    // term->toggleShowSearchBar();
     // term->update();
 
     TermWidgetWrapper *w = createTerm(properties);
@@ -465,6 +476,25 @@ void TermWidgetPage::setPressingScroll(bool enable)
         term->setPressingScroll(enable);
     }
 }
+/*******************************************************************************
+ 1. @函数:    showSearchBar(bool enable)
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-24
+ 4. @说明:    是否显示搜索框
+*******************************************************************************/
+void TermWidgetPage::showSearchBar(bool enable)
+{
+    qDebug() << "popupFindBar";
+    if (enable) {
+        qDebug() << "popupFindBar show";
+        m_findBar->raise();
+        m_findBar->show();
+        m_findBar->move(width() - 382, 0);
+        QTimer::singleShot(10, this, [=] { m_findBar->focus(); });
+    } else {
+        m_findBar->hide();
+    }
+}
 
 // void TermWidgetPage::setOutputtingScroll(bool enable)
 //{
@@ -510,6 +540,7 @@ void TermWidgetPage::onTermGetFocus()
     setCurrentTerminal(term);
     m_currentTerm->setFocus(Qt::OtherFocusReason);
     emit termGetFocus();
+    m_findBar->hide();
 }
 
 void TermWidgetPage::onTermClosed()
@@ -520,6 +551,60 @@ void TermWidgetPage::onTermClosed()
         Q_ASSERT(0);
     }
     closeSplit(w);
+}
+/*******************************************************************************
+ 1. @函数:    handleFindNext
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-24
+ 4. @说明:    查找下一个接口
+*******************************************************************************/
+void TermWidgetPage::handleFindNext()
+{
+    qDebug() << m_findBar->searchKeytxt();
+    setMismatchAlert(false);
+    m_currentTerm->search(m_findBar->searchKeytxt(), true, true);
+}
+
+/*******************************************************************************
+ 1. @函数:    handleFindPrev
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-24
+ 4. @说明:    查找上一个接口
+*******************************************************************************/
+void TermWidgetPage::handleFindPrev()
+{
+    setMismatchAlert(false);
+    m_currentTerm->search(m_findBar->searchKeytxt(), false, false);
+}
+
+void TermWidgetPage::slotFindbarClose()
+{
+    //    EditWrapper *wrapper = currentWrapper();
+    //    if (wrapper->bottomBar()->isHidden())
+    //    {
+    //        wrapper->bottomBar()->show();
+    //    }
+}
+
+void TermWidgetPage::handleRemoveSearchKeyword()
+{
+    //    currentWrapper()->textEditor()->removeKeywords();
+}
+/*******************************************************************************
+ 1. @函数:    handleUpdateSearchKeyword
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-24
+ 4. @说明:    更新key(没有输入回车情况),自动查找接口
+*******************************************************************************/
+void TermWidgetPage::handleUpdateSearchKeyword(const QString &keyword)
+{
+    setMismatchAlert(false);
+    if (keyword.isEmpty()) {
+        m_currentTerm->clearSelection();
+    } else {
+        // 输入时直接查找，被禁用
+        // m_currentTerm->search(m_findBar->SearchKeytxt(), true, false);
+    }
 }
 
 void TermWidgetPage::setCurrentTerminal(TermWidgetWrapper *term)
@@ -558,4 +643,25 @@ void TermWidgetPage::setTextCodec(QTextCodec *codec)
     if (term) {
         term->setTextCodec(codec);
     }
+}
+/*******************************************************************************
+ 1. @函数:    setMismatchAlert
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-24
+ 4. @说明:    是否将输入框标为警告
+*******************************************************************************/
+void TermWidgetPage::setMismatchAlert(bool alert)
+{
+    m_findBar->setNoMatchAlert(alert);
+}
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-02-24
+ 4. @说明:    重绘时候，调整查找框的位置
+*******************************************************************************/
+void TermWidgetPage::resizeEvent(QResizeEvent *event)
+{
+    qDebug() << "resizeEvent" << x() << y();
+    this->m_findBar->move(width() - 382, 0);
 }
