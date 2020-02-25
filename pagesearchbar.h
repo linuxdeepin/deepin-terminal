@@ -53,26 +53,24 @@ signals:
 
 public slots:
     void findCancel();
-    void onThemeChanged(DGuiApplicationHelper::ColorType builtInTheme);
 
 private:
     void initFindPrevButton();
     void initFindNextButton();
     void initSearchEdit();
 
-    DPushButton *m_findNextButton = nullptr;
-    DPushButton *m_findPrevButton = nullptr;
+    DIconButton *m_findNextButton = nullptr;
+    DIconButton *m_findPrevButton = nullptr;
     DSearchEdit *m_searchEdit = nullptr;
-    QIcon *m_NextButton_Normal = nullptr;
-    QIcon *m_NextButton_Click = nullptr;
-    QIcon *m_PrevButton_Normal = nullptr;
-    QIcon *m_PrevButton_Click = nullptr;
 
     const int barHight = 50;
     const int barWidth = 382;
     const int layoutMargins = 7;
     const int widgetHight = 36;
     const int widgetSpace = 10;
+
+    const int iconHight = 6;
+    const int iconWidth = 12;
 
     const qreal opacity = 0.9;
 };

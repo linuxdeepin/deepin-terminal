@@ -14,13 +14,5 @@
         <file>images/icon/focus/edit_press.svg</file>
         <file>images/icon/hover/edit_hover.svg</file>
         <file>images/icon/hover/exit_hover.svg</file>
-        <file>images/icon/hover/search_next_light_normal.svg</file>
-        <file>images/icon/hover/search_next_light_press.svg</file>
-        <file>images/icon/hover/search_previous_light_normal.svg</file>
-        <file>images/icon/hover/search_previous_light_press.svg</file>
-        <file>images/icon/hover/search_next_dark_normal.svg</file>
-        <file>images/icon/hover/search_next_dark_press.svg</file>
-        <file>images/icon/hover/search_previous_dark_normal.svg</file>
-        <file>images/icon/hover/search_previous_dark_press.svg</file>
     </qresource>
 </RCC>
