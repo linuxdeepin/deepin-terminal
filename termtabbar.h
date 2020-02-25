@@ -10,6 +10,7 @@
 #include <QTabBar>
 #include <QPointer>
 #include <QVariantAnimation>
+#include <QProxyStyle>
 
 #include <DObject>
 
@@ -24,6 +25,27 @@ QT_END_NAMESPACE
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
+
+
+class CustomTabStyle : public QProxyStyle
+{
+    Q_OBJECT
+public:
+    CustomTabStyle(QStyle *style = nullptr);
+    CustomTabStyle(const QString &key);
+    virtual ~CustomTabStyle();
+
+    void setTabColor(const QColor &color);
+    void setTabStatusMap(const QMap<int,int> &tabStatusMap);
+
+    QSize sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const;
+    void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
+private:
+    int m_tabCount;
+    QColor m_tabColor;
+
+    QMap<int,int> m_tabStatusMap;
+};
 
 class DTabBarPrivate;
 
@@ -79,6 +101,11 @@ public:
 
     QString tabText(int index) const;
     void setTabText(int index, const QString &text);
+
+    //set tab label's background color
+    void setTabColor(int index, const QColor &color);
+    void setClearTabColor(int index);
+    void setTabStatusMap(const QMap<int,int> &tabStatusMap);
 
     QIcon tabIcon(int index) const;
     void setTabIcon(int index, const QIcon &icon);
@@ -208,6 +235,8 @@ private:
     DTabBarPrivate* d_func();
     const DTabBarPrivate* d_func() const;
     friend class DTabBarPrivate;
+
+    QMap<int,int> m_tabStatusMap;
 };
 
 class DTabBarPrivate : public QTabBar, public DObjectPrivate
@@ -287,6 +316,10 @@ public:
     void setDragingFromOther(bool v);
     int tabInsertIndexFromMouse(QPoint pos);
 
+    void setTabStatusMap(const QMap<int,int> &tabStatusMap);
+    void setTabColor(int index, const QColor &color);
+    void setClearTabColor(int index);
+
     void startMove(int index);
     void stopMove();
 
@@ -340,6 +373,8 @@ public:
     QPoint dragStartPosition;
 
     int ghostTabIndex = -1;
+
+    QMap<int,int> m_tabStatusMap;
 };
 
 #endif // TERMTITLEBAR_H

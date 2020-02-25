@@ -104,32 +104,32 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="608"/>
+        <location filename="../mainwindow.cpp" line="643"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="608"/>
+        <location filename="../mainwindow.cpp" line="643"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="686"/>
+        <location filename="../mainwindow.cpp" line="721"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="896"/>
+        <location filename="../mainwindow.cpp" line="944"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="898"/>
+        <location filename="../mainwindow.cpp" line="946"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="900"/>
+        <location filename="../mainwindow.cpp" line="948"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
@@ -409,22 +409,22 @@
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="155"/>
+        <location filename="../mainwindow.cpp" line="190"/>
         <source>Programs are still running in terminal</source>
         <translation>终端仍然有程序在运⾏</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="156"/>
+        <location filename="../mainwindow.cpp" line="191"/>
         <source>Are you sure you want to exit?</source>
         <translation>您确定要退出吗？</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="157"/>
+        <location filename="../mainwindow.cpp" line="192"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="157"/>
+        <location filename="../mainwindow.cpp" line="192"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -648,78 +648,88 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../termwidget.cpp" line="125"/>
+        <location filename="../termwidget.cpp" line="134"/>
         <source>Copy &amp;Selection</source>
         <translation>复制已选择内容</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="128"/>
+        <location filename="../termwidget.cpp" line="137"/>
         <source>&amp;Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="131"/>
+        <location filename="../termwidget.cpp" line="140"/>
         <source>&amp;Open File Manager</source>
         <translation>在文件管理器中打开</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="135"/>
+        <location filename="../termwidget.cpp" line="144"/>
         <source>Split &amp;Horizontally</source>
         <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="137"/>
+        <location filename="../termwidget.cpp" line="146"/>
         <source>Split &amp;Vertically</source>
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="140"/>
+        <location filename="../termwidget.cpp" line="149"/>
         <source>Close &amp;Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="143"/>
+        <location filename="../termwidget.cpp" line="152"/>
         <source>Close &amp;Other &amp;Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="153"/>
+        <location filename="../termwidget.cpp" line="162"/>
         <source>Exit Full&amp;screen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="156"/>
+        <location filename="../termwidget.cpp" line="165"/>
         <source>Full&amp;screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="159"/>
+        <location filename="../termwidget.cpp" line="168"/>
         <source>&amp;Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="166"/>
-        <location filename="../termwidget.cpp" line="170"/>
+        <location filename="../termwidget.cpp" line="172"/>
+        <location filename="../termwidget.cpp" line="176"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="170"/>
+        <location filename="../termwidget.cpp" line="176"/>
         <source>Tab name:</source>
         <translation>标题名字: </translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="176"/>
+        <location filename="../termwidget.cpp" line="182"/>
         <source>Custom Command</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="181"/>
+        <location filename="../termwidget.cpp" line="187"/>
         <source>RemoteManagement</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../termwidget.cpp" line="185"/>
+        <location filename="../termwidget.cpp" line="192"/>
+        <source>Upload File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../termwidget.cpp" line="194"/>
+        <source>Download File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../termwidget.cpp" line="199"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

@@ -18,11 +18,13 @@ signals:
     void termRequestOpenSettings();
     void termRequestOpenCustomCommand();
     void termRequestOpenRemoteManagement();
+    void termIsIdle(int currSessionId, bool bIdle);
     void termRequestUploadFile();
     void termRequestDownloadFile();
-private slots:
-    void customContextMenuCall(const QPoint& pos);
 
+private slots:
+    void customContextMenuCall(const QPoint &pos);
+    void handleTermIdle(bool bIdle);
 private:
     void* m_Page = nullptr;
 };
@@ -68,7 +70,8 @@ public:
 
     QList<int> getRunningSessionIdList();
     bool hasRunningProcess();
-    void setTextCodec(QTextCodec* codec);
+    int getCurrSessionId();
+    void setTextCodec(QTextCodec *codec);
 
 public slots:
     void zoomIn();
@@ -92,6 +95,7 @@ signals:
     void termClosed();
     void termRequestOpenCustomCommand();
     void termRequestOpenRemoteManagement();
+    void termIsIdle(int currSessionId, bool bIdle);
 
 private:
     void initUI();

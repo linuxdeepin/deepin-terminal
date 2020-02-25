@@ -20,6 +20,83 @@
 #undef protected
 
 #include <DApplication>
+#include <DApplicationHelper>
+
+//CustomTabStyle start
+CustomTabStyle::CustomTabStyle(QStyle *style) : QProxyStyle(style), m_tabCount(0)
+{
+}
+
+CustomTabStyle::CustomTabStyle(const QString &key) : QProxyStyle(key), m_tabCount(0)
+{
+}
+
+CustomTabStyle::~CustomTabStyle()
+{
+}
+
+void CustomTabStyle::setTabColor(const QColor &color)
+{
+    m_tabColor = color;
+}
+
+void CustomTabStyle::setTabStatusMap(const QMap<int,int> &tabStatusMap)
+{
+    m_tabStatusMap = tabStatusMap;
+}
+
+QSize CustomTabStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
+{
+    return QProxyStyle::sizeFromContents(type, option, size, widget);
+}
+
+void CustomTabStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    if (element == CE_TabBarTabLabel)
+    {
+        if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option))
+        {
+            if (m_tabStatusMap.value(tab->row) == 0)
+            {
+                QProxyStyle::drawControl(element, option, painter, widget);
+                return;
+            }
+
+            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+            DPalette pa = appHelper->standardPalette(appHelper->themeType());
+
+            if (m_tabStatusMap.value(tab->row))
+            {
+                if (tab->state & QStyle::State_Selected)
+                {
+                }
+                else if(tab->state & QStyle::State_MouseOver)
+                {
+                }
+                else
+                {
+                    painter->save();
+                    painter->setBrush(QBrush(m_tabColor));
+                    painter->drawRoundedRect(tab->rect, 8, 8);
+                    painter->restore();
+                }
+            }
+
+            QTextOption option;
+            option.setAlignment(Qt::AlignCenter);
+            painter->setFont(QFont());
+            painter->setPen(pa.color(DPalette::TextTitle));
+            painter->drawText(tab->rect, tab->text, option);
+            return;
+        }
+    }
+
+    if (element == CE_TabBarTab)
+    {
+        QProxyStyle::drawControl(element, option, painter, widget);
+    }
+}
+//CustomTabStyle end
 
 inline static bool verticalTabs(QTabBar::Shape shape)
 {//
@@ -68,6 +145,7 @@ DTabBarPrivate::DTabBarPrivate(DTabBar* qq, bool chromeTabStyle)
   , DObjectPrivate(qq)
   , isChromeTabStyle(chromeTabStyle)
 {
+    setStyle(new CustomTabStyle);
     startDragDistance = qApp->startDragDistance();
     maskColor = flashColor = QColor(0, 0, 255, 125);
 
@@ -670,6 +748,30 @@ int DTabBarPrivate::tabInsertIndexFromMouse(QPoint pos)
     }
 }
 
+void DTabBarPrivate::setTabColor(int index, const QColor &color)
+{
+    m_tabStatusMap.insert(index, 1);
+
+    CustomTabStyle *style = qobject_cast<CustomTabStyle *>(this->style());
+    style->setTabColor(color);
+    style->setTabStatusMap(m_tabStatusMap);
+    this->style()->polish(this);
+}
+
+void DTabBarPrivate::setClearTabColor(int index)
+{
+    m_tabStatusMap.insert(index, 0);
+
+    CustomTabStyle *style = qobject_cast<CustomTabStyle *>(this->style());
+    style->setTabStatusMap(m_tabStatusMap);
+    this->style()->polish(this);
+}
+
+void DTabBarPrivate::setTabStatusMap(const QMap<int,int> &tabStatusMap)
+{
+    m_tabStatusMap = tabStatusMap;
+}
+
 void DTabBarPrivate::startMove(int index)
 {
     if (dd()->dragInProgress)
@@ -1138,6 +1240,8 @@ void DTabBarPrivate::tabLayoutChange()
 void DTabBarPrivate::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 {
     QTabBar::initStyleOption(option, tabIndex);
+    // 保存tab的索引值到row字段
+    option->row = tabIndex;
 }
 
 QTabBarPrivate *DTabBarPrivate::dd() const
@@ -1380,6 +1484,24 @@ QString DTabBar::tabText(int index) const
 void DTabBar::setTabText(int index, const QString &text)
 {
     d_func()->setTabText(index, text);
+}
+
+/*!
+ * \~chinese \brief 设置标签索引位置背景颜色
+ */
+void DTabBar::setTabColor(int index, const QColor &color)
+{
+    d_func()->setTabColor(index, color);
+}
+
+void DTabBar::setClearTabColor(int index)
+{
+    d_func()->setClearTabColor(index);
+}
+
+void DTabBar::setTabStatusMap(const QMap<int, int> &tabStatusMap)
+{
+    d_func()->setTabStatusMap(tabStatusMap);
 }
 
 /*!
@@ -1872,7 +1994,8 @@ void DTabBar::paintTab(QPainter *painter, int index, const QStyleOptionTab &opti
 {
     Q_UNUSED(index)
 
-    style()->drawControl(QStyle::CE_TabBarTab, &option, painter, this);
+    //use CustomTabStyle to draw tab contrl
+    d_func()->style()->drawControl(QStyle::CE_TabBarTab, &option, painter, this);
 }
 
 QPixmap DTabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option, QPoint *hotspot) const
@@ -2010,3 +2133,5 @@ const DTabBarPrivate *DTabBar::d_func() const
 {
     return dynamic_cast<const DTabBarPrivate*>(d_d_ptr.data());
 }
+
+#include "termtabbar.moc"

@@ -16,6 +16,9 @@ public:
     int addTab(const QString &tabIdentifier, const QString &text);
     void removeTab(const QString &tabIdentifier);
     bool setTabText(const QString &tabIdentifier, const QString &text);
+
+signals:
+    void tabBarClicked(int index);
 };
 
 #endif  // TABBAR_H

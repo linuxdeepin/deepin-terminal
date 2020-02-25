@@ -105,7 +105,14 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     connect(this, &QTermWidget::noMatchFound, this, [this]() { (( TermWidgetPage * )m_Page)->setMismatchAlert(true); });
     /********************* Modify by n014361 wangpeili End ************************/
 
+    connect(this, &TermWidget::isTermIdle, this, &TermWidget::handleTermIdle);
+
     startShellProgram();
+}
+
+void TermWidget::handleTermIdle(bool bIdle)
+{
+    emit termIsIdle(this->getSessionId(), bIdle);
 }
 
 void TermWidget::customContextMenuCall(const QPoint &pos)
@@ -236,6 +243,7 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidgetWrapper::onSettingValueChanged);
+    connect(m_term, &TermWidget::termIsIdle, this, &TermWidgetWrapper::termIsIdle);
 }
 
 QList<int> TermWidgetWrapper::getRunningSessionIdList()
@@ -246,6 +254,11 @@ QList<int> TermWidgetWrapper::getRunningSessionIdList()
 bool TermWidgetWrapper::hasRunningProcess()
 {
     return m_term->hasRunningProcess();
+}
+
+int TermWidgetWrapper::getCurrSessionId()
+{
+    return m_term->getSessionId();
 }
 
 bool TermWidgetWrapper::isTitleChanged() const

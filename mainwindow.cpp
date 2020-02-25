@@ -113,6 +113,11 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
     addTab(m_properties);
 }
 
+bool MainWindow::isTabVisited(int tabIndex)
+{
+    return m_tabVisitMap.value(tabIndex);
+}
+
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
     TermWidgetPage *termPage = new TermWidgetPage(properties);
@@ -146,6 +151,36 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         RemoteManagementPlugn *plugin =
         qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
         plugin->getRemoteManagementTopPanel()->show();
+    });
+
+    connect(termPage->currentTerminal(), &TermWidgetWrapper::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
+        int tabIndex = currSessionId - 1;
+        if (isTabVisited(tabIndex) && !bIdle)
+        {
+            qDebug() << "visited -- " << tabIndex;
+            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+            DPalette pa = appHelper->standardPalette(appHelper->themeType());
+            m_tabbar->setClearTabColor(tabIndex);
+            return;
+        }
+
+        if (bIdle) {
+            qDebug() << "idle -- " << tabIndex;
+            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+            DPalette pa = appHelper->standardPalette(appHelper->themeType());
+            m_tabbar->setClearTabColor(tabIndex);
+
+            if (isTabVisited(tabIndex))
+            {
+                qDebug() << "reset tab status!!!!!!!! -- " << tabIndex;
+                m_tabVisitMap.insert(tabIndex, false);
+            }
+        } else {
+            qDebug() << "busy -- " << tabIndex;
+            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+            DPalette pa = appHelper->standardPalette(appHelper->themeType());
+            m_tabbar->setTabColor(tabIndex, pa.color(DPalette::TextWarning));
+        }
     });
 }
 
@@ -706,6 +741,19 @@ void MainWindow::initTitleBar()
     }
 
     connect(m_tabbar, &DTabBar::tabFull, this, [=]() { qDebug() << "tab is full"; });
+
+    connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
+
+        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+        DPalette pa = appHelper->standardPalette(appHelper->themeType());
+        m_tabbar->setClearTabColor(index);
+
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
+        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+        if (termWidgetWapper->hasRunningProcess()) {
+            m_tabVisitMap.insert(index, true);
+        }
+    });
 
     connect(m_tabbar,
             &DTabBar::tabCloseRequested,

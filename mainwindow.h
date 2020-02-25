@@ -35,6 +35,7 @@ public:
     explicit MainWindow(TermProperties properties, QWidget *parent = nullptr);
     ~MainWindow() override;
 
+    bool isTabVisited(int tabIndex);
     void addTab(TermProperties properties, bool activeTab = false);
     void closeTab(const QString &identifier);
 
@@ -110,6 +111,7 @@ private:
     TitleBar *m_titleBar = nullptr;
     bool m_isQuakeWindow = false;
     bool m_isQuakeWindowActivated = false;
+    QMap<int, bool> m_tabVisitMap;
 
     /******** Modify by n014361 wangpeili 2020-02-20: 内置快捷键集中管理 ****************/
     QMap<QString, QShortcut *> m_BuiltInShortcut;

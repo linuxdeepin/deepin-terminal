@@ -6,6 +6,8 @@ TabBar::TabBar(QWidget *parent, bool chromeTabStyle) : DTabBar(parent, chromeTab
 {
     setTabsClosable(true);
     setFixedHeight(40);
+
+    connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);
 }
 
 const QString TabBar::identifier(int index) const
