@@ -52,9 +52,13 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     m_layout->addWidget(m_findNextButton);
     setLayout(m_layout);
 
+    onThemeChanged(DGuiApplicationHelper::instance()->themeType());
     // Esc隐藏
     QShortcut *shortcut = new QShortcut(QKeySequence::Cancel, this);
     connect(shortcut, &QShortcut::activated, this, [this]() { findCancel(); });
+
+    connect(
+    DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &PageSearchBar::onThemeChanged);
 }
 
 bool PageSearchBar::isFocus()
@@ -79,15 +83,34 @@ void PageSearchBar::findCancel()
     emit closeSearchBar();
 }
 
+void PageSearchBar::onThemeChanged(DGuiApplicationHelper::ColorType builtInTheme)
+{
+    if (builtInTheme == DGuiApplicationHelper::LightType) {
+        *m_NextButton_Normal = QIcon(":/images/icon/hover/search_next_light_normal.svg");
+        *m_NextButton_Click = QIcon(":/images/icon/hover/search_next_light_press.svg");
+
+        *m_PrevButton_Normal = QIcon(":/images/icon/hover/search_previous_light_normal.svg");
+        *m_PrevButton_Click = QIcon(":/images/icon/hover/search_previous_light_press.svg");
+    } else {
+        *m_NextButton_Normal = QIcon(":/images/icon/hover/search_next_dark_normal.svg");
+        *m_NextButton_Click = QIcon(":/images/icon/hover/search_next_dark_press.svg");
+
+        *m_PrevButton_Normal = QIcon(":/images/icon/hover/search_previous_dark_normal.svg");
+        *m_PrevButton_Click = QIcon(":/images/icon/hover/search_previous_dark_press.svg");
+    }
+    m_findNextButton->setIcon(*m_NextButton_Normal);
+    m_findPrevButton->setIcon(*m_PrevButton_Normal);
+}
+
 void PageSearchBar::initFindPrevButton()
 {
-    m_PrevButton_Normal = new QIcon(":/images/icon/hover/arrow_left.png");
-    m_PrevButton_Click = new QIcon(":/images/icon/focus/arrow_left@2x.png");
+    m_PrevButton_Normal = new QIcon();
+    m_PrevButton_Click = new QIcon();
 
     m_findPrevButton = new QPushButton(*m_PrevButton_Normal, "");
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
     m_findPrevButton->setFocusPolicy(Qt::NoFocus);
-
+    m_findPrevButton->setIconSize(QSize(widgetHight, widgetHight));
     connect(m_findPrevButton, &QPushButton::pressed, this, [this]() {
         qDebug() << "pressed";
         m_findPrevButton->setIcon(*m_PrevButton_Click);
@@ -101,10 +124,11 @@ void PageSearchBar::initFindPrevButton()
 
 void PageSearchBar::initFindNextButton()
 {
-    m_NextButton_Normal = new QIcon(":/images/icon/hover/arrow_right.png");
-    m_NextButton_Click = new QIcon(":/images/icon/focus/arrow_right@2x.png");
+    m_NextButton_Normal = new QIcon();
+    m_NextButton_Click = new QIcon();
 
     m_findNextButton = new QPushButton(*m_NextButton_Normal, "");
+    m_findNextButton->setIconSize(QSize(widgetHight, widgetHight));
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
     m_findNextButton->setFocusPolicy(Qt::NoFocus);
 

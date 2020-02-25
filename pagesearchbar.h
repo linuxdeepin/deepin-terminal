@@ -53,6 +53,7 @@ signals:
 
 public slots:
     void findCancel();
+    void onThemeChanged(DGuiApplicationHelper::ColorType builtInTheme);
 
 private:
     void initFindPrevButton();
