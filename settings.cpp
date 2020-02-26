@@ -35,11 +35,11 @@ Settings::Settings() : QObject(qApp)
 
     windowStateMap.insert("keys",
                           QStringList() << "window_normal"
+                                        << "Halfscreen"
                                         << "window_maximum"
-                                        << "fullscreen"
-                                        << "Halfscreen");
+                                        << "fullscreen");
     windowStateMap.insert("values",
-                          QStringList() << tr("Normal") << tr("Maximum") << tr("Fullscreen") << tr("Halfscreen"));
+                          QStringList() << tr("Normal") << tr("Halfscreen") << tr("Maximum") << tr("Fullscreen"));
     windowState->setData("items", windowStateMap);
 
     for (QString key : settings->keys()) {
