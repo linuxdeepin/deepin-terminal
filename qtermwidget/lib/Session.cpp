@@ -660,7 +660,7 @@ void Session::setTitle(TitleRole role , const QString & newTitle)
             _localTabTitleFormat = newTitle;
             _remoteTabTitleFormat = newTitle;
 
-            qDebug() << "curr running process:" << newTitle << endl;
+//            qDebug() << "curr running process:" << newTitle << endl;
         }
 
         emit titleChanged();

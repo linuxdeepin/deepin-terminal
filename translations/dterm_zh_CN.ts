@@ -104,32 +104,32 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="643"/>
+        <location filename="../mainwindow.cpp" line="680"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="643"/>
+        <location filename="../mainwindow.cpp" line="680"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="721"/>
+        <location filename="../mainwindow.cpp" line="758"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="944"/>
+        <location filename="../mainwindow.cpp" line="989"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="946"/>
+        <location filename="../mainwindow.cpp" line="991"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="948"/>
+        <location filename="../mainwindow.cpp" line="993"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
@@ -161,59 +161,48 @@
         <translation>USO终端</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="7"/>
         <source>AutoCopy</source>
-        <translation>自动复制选中的内容</translation>
+        <translation type="vanished">自动复制选中的内容</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="8"/>
         <source>AutoHide</source>
-        <translation>光标自动隐藏</translation>
+        <translation type="vanished">光标自动隐藏</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="9"/>
         <source>Blink</source>
-        <translation>光标闪烁</translation>
+        <translation type="vanished">光标闪烁</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="10"/>
         <source>Shape</source>
-        <translation>光标风格</translation>
+        <translation type="vanished">光标风格</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="11"/>
         <source>OutputtingScroll</source>
-        <translation>输出时滚动</translation>
+        <translation type="vanished">输出时滚动</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="12"/>
         <source>PressingScroll</source>
-        <translation>按键时滚动</translation>
+        <translation type="vanished">按键时滚动</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="13"/>
         <source>BlurredBackground</source>
-        <translation>背景模糊</translation>
+        <translation type="vanished">背景模糊</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="14"/>
         <source>HideRaytheonWindow</source>
-        <translation>失去焦点后自动隐藏雷神窗口</translation>
+        <translation type="vanished">失去焦点后自动隐藏雷神窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="15"/>
         <source>WindowState</source>
-        <translation>启动时使用: </translation>
+        <translation type="vanished">启动时使用: </translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="16"/>
         <source>Family</source>
-        <translation>字体</translation>
+        <translation type="vanished">字体</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="17"/>
         <source>FontSize</source>
-        <translation>字体大小</translation>
+        <translation type="vanished">字体大小</translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="18"/>
@@ -232,9 +221,68 @@
         <translation>光标</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="21"/>
         <source>Scroll</source>
-        <translation>滚动</translation>
+        <translation type="vanished">滚动</translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="7"/>
+        <source>Auto copy selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="8"/>
+        <source>Auto hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="9"/>
+        <source>Cursor blink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="10"/>
+        <source>Cursor style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="11"/>
+        <source>Scroll on keystroke</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="12"/>
+        <source>Scroll on output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="13"/>
+        <source>Auto hide raytheon window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="14"/>
+        <source>Blurred background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="15"/>
+        <source>Use on starting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="16"/>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="17"/>
+        <source>Font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="21"/>
+        <source>scroll</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="22"/>
@@ -268,28 +316,138 @@
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="29"/>
-        <source>CustomCommand</source>
-        <translation>自定义命令</translation>
+        <source>Custom command</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="30"/>
-        <source>FullScreen</source>
-        <translation>全屏</translation>
+        <source>Display shortcuts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="31"/>
-        <source>RemoteManager</source>
-        <translation>远程管理</translation>
+        <source>Remote management</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="32"/>
-        <source>RenameTab</source>
-        <translation>重命名标题</translation>
+        <source>Rename tab</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="33"/>
+        <source>Fullscreen</source>
+        <translation type="unfinished">全屏显示</translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="35"/>
+        <source>Default size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="38"/>
+        <source>Select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="39"/>
+        <source>Skip to next command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="40"/>
+        <source>Skip to previous command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="41"/>
+        <source>Zoom in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="42"/>
+        <source>Zoom out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="43"/>
+        <source>Close other windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="44"/>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="45"/>
+        <source>Close workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="46"/>
+        <source>Horionzal split</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="47"/>
+        <source>New workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="48"/>
+        <source>Next workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="49"/>
+        <source>Previous workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="50"/>
+        <source>Select left window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="51"/>
+        <source>Select lower window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="52"/>
+        <source>Select right window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="53"/>
+        <source>Select upper window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings_translation.cpp" line="54"/>
+        <source>Vertical split</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CustomCommand</source>
+        <translation type="vanished">自定义命令</translation>
+    </message>
+    <message>
+        <source>FullScreen</source>
+        <translation type="vanished">全屏</translation>
+    </message>
+    <message>
+        <source>RemoteManager</source>
+        <translation type="vanished">远程管理</translation>
+    </message>
+    <message>
+        <source>RenameTab</source>
+        <translation type="vanished">重命名标题</translation>
+    </message>
+    <message>
         <source>ShowShortCut</source>
-        <translation>显示快捷键</translation>
+        <translation type="vanished">显示快捷键</translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="37"/>
@@ -297,59 +455,48 @@
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="38"/>
         <source>SelectAll</source>
-        <translation>全选</translation>
+        <translation type="vanished">全选</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="39"/>
         <source>SkipToNextCommand</source>
-        <translation>跳转到下一个命令</translation>
+        <translation type="vanished">跳转到下一个命令</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="40"/>
         <source>SkipToPreCommand</source>
-        <translation>跳转到上一个命令</translation>
+        <translation type="vanished">跳转到上一个命令</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="41"/>
         <source>ZoomIn</source>
-        <translation>缩小</translation>
+        <translation type="vanished">缩小</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="42"/>
         <source>ZoomOut</source>
-        <translation>放大</translation>
+        <translation type="vanished">放大</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="43"/>
         <source>CloseOtherWindows</source>
-        <translation>关闭其它窗口</translation>
+        <translation type="vanished">关闭其它窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="44"/>
         <source>CloseWindow</source>
-        <translation>关闭窗口</translation>
+        <translation type="vanished">关闭窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="45"/>
         <source>CloseWorkspace</source>
-        <translation>关闭工作区</translation>
+        <translation type="vanished">关闭工作区</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="51"/>
         <source>NewWorkspace</source>
-        <translation>新建工作区</translation>
+        <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="52"/>
         <source>NextWorkspace</source>
-        <translation>下一个工作区</translation>
+        <translation type="vanished">下一个工作区</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="53"/>
         <source>PreWorkspace</source>
-        <translation>前一个工作区</translation>
+        <translation type="vanished">前一个工作区</translation>
     </message>
     <message>
         <source>CloseOtherTab</source>
@@ -360,38 +507,32 @@
         <translation type="vanished">关闭窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="46"/>
         <source>FocusNavDown</source>
-        <translation>选择下面的窗口</translation>
+        <translation type="vanished">选择下面的窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="47"/>
         <source>FocusNavLeft</source>
-        <translation>选择左边的窗口</translation>
+        <translation type="vanished">选择左边的窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="48"/>
         <source>FocusNavRight</source>
-        <translation>选择右边的窗口</translation>
+        <translation type="vanished">选择右边的窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="49"/>
         <source>FocusNavUp</source>
-        <translation>选择上面的窗口</translation>
+        <translation type="vanished">选择上面的窗口</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="50"/>
         <source>HorizontalSplit</source>
-        <translation>横向分屏</translation>
+        <translation type="vanished">横向分屏</translation>
     </message>
     <message>
         <source>NewTab</source>
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="54"/>
         <source>VerticalSplit</source>
-        <translation>垂直分屏</translation>
+        <translation type="vanished">垂直分屏</translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="34"/>
@@ -399,9 +540,8 @@
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../settings_translation.cpp" line="35"/>
         <source>DefaultSize</source>
-        <translation>默认大小</translation>
+        <translation type="vanished">默认大小</translation>
     </message>
     <message>
         <location filename="../settings_translation.cpp" line="36"/>
@@ -630,19 +770,37 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../settings.cpp" line="40"/>
+        <location filename="../settings.cpp" line="42"/>
         <source>Normal</source>
         <translation>正常窗口</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="40"/>
+        <location filename="../settings.cpp" line="42"/>
         <source>Maximum</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="../settings.cpp" line="40"/>
+        <location filename="../settings.cpp" line="42"/>
         <source>Fullscreen</source>
         <translation>全屏显示</translation>
+    </message>
+    <message>
+        <location filename="../settings.cpp" line="42"/>
+        <source>Halfscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabBar</name>
+    <message>
+        <location filename="../tabbar.cpp" line="128"/>
+        <source>Close tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tabbar.cpp" line="129"/>
+        <source>Close other tabs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

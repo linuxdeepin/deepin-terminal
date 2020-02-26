@@ -113,9 +113,9 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
     addTab(m_properties);
 }
 
-bool MainWindow::isTabVisited(int tabIndex)
+bool MainWindow::isTabVisited(int tabSessionId)
 {
-    return m_tabVisitMap.value(tabIndex);
+    return m_tabVisitMap.value(tabSessionId);
 }
 
 void MainWindow::addTab(TermProperties properties, bool activeTab)
@@ -128,36 +128,40 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         m_tabbar->setCurrentIndex(index);
     }
 
+    TermWidgetWrapper *termWidgetWapper = termPage->currentTerminal();
+    m_tabbar->saveSessionIdWithTabIndex(termWidgetWapper->getCurrSessionId(), index);
+    m_tabbar->saveSessionIdWithTabId(termWidgetWapper->getCurrSessionId(), termPage->identifier());
+
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
-    connect(termPage, &TermWidgetPage::termGetFocus, this, [=]() {
+    connect(termPage, &TermWidgetPage::termGetFocus, this, [ = ]() {
         CustomCommandPlugin *plugin = qobject_cast<CustomCommandPlugin *>(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
         if (plugin) {
             emit plugin->doHide();
         }
         RemoteManagementPlugn *remoteMgtPlugin =
-        qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
+            qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
         if (remoteMgtPlugin) {
             emit remoteMgtPlugin->doHide();
         }
     });
-    connect(termPage, &TermWidgetPage::termRequestOpenCustomCommand, this, [=]() {
+    connect(termPage, &TermWidgetPage::termRequestOpenCustomCommand, this, [ = ]() {
         CustomCommandPlugin *plugin = qobject_cast<CustomCommandPlugin *>(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
         plugin->getCustomCommandTopPanel()->show();
     });
-    connect(termPage, &TermWidgetPage::termRequestOpenRemoteManagement, this, [=]() {
+    connect(termPage, &TermWidgetPage::termRequestOpenRemoteManagement, this, [ = ]() {
         RemoteManagementPlugn *plugin =
-        qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
+            qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
         plugin->getRemoteManagementTopPanel()->show();
     });
 
     connect(termPage->currentTerminal(), &TermWidgetWrapper::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
-        int tabIndex = currSessionId - 1;
-        if (isTabVisited(tabIndex) && !bIdle)
-        {
-            qDebug() << "visited -- " << tabIndex;
+
+        int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
+
+        if (isTabVisited(currSessionId) && !bIdle) {
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
             m_tabbar->setClearTabColor(tabIndex);
@@ -165,18 +169,14 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         }
 
         if (bIdle) {
-            qDebug() << "idle -- " << tabIndex;
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
             m_tabbar->setClearTabColor(tabIndex);
 
-            if (isTabVisited(tabIndex))
-            {
-                qDebug() << "reset tab status!!!!!!!! -- " << tabIndex;
-                m_tabVisitMap.insert(tabIndex, false);
+            if (isTabVisited(currSessionId)) {
+                m_tabVisitMap.insert(currSessionId, false);
             }
         } else {
-            qDebug() << "busy -- " << tabIndex;
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
             m_tabbar->setTabColor(tabIndex, pa.color(DPalette::TextWarning));
@@ -209,12 +209,43 @@ void MainWindow::closeTab(const QString &identifier)
             m_termStackWidget->removeWidget(tabPage);
             tabPage->deleteLater();
             m_tabbar->removeTab(identifier);
+
+            updateTabStatus();
             break;
         }
     }
 
     if (m_tabbar->count() == 0) {
         qApp->quit();
+    }
+}
+
+void MainWindow::updateTabStatus()
+{
+    for (int i = 0; i < m_tabbar->count(); i++) {
+        int currIndex = i;
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(currIndex));
+        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+        bool bIdle = ! (termWidgetWapper->hasRunningProcess());
+        int currSessionId = termWidgetWapper->getCurrSessionId();
+
+        if (bIdle) {
+            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+            DPalette pa = appHelper->standardPalette(appHelper->themeType());
+            m_tabbar->setClearTabColor(currIndex);
+        }
+        else {
+            if (isTabVisited(currSessionId)) {
+                DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+                DPalette pa = appHelper->standardPalette(appHelper->themeType());
+                m_tabbar->setClearTabColor(currIndex);
+            }
+            else {
+                DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+                DPalette pa = appHelper->standardPalette(appHelper->themeType());
+                m_tabbar->setTabColor(currIndex, pa.color(DPalette::TextWarning));
+            }
+        }
     }
 }
 
@@ -420,7 +451,7 @@ void MainWindow::initWindow()
 
     QSettings settings("blumia", "dterm");
     const QString &windowState =
-    Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
+        Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
     // init window state.
     if (windowState == "window_maximum") {
         showMaximized();
@@ -646,7 +677,7 @@ void MainWindow::initShortcuts()
         if (page) {
             bool ok;
             QString text =
-            DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
+                DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
             if (ok) {
                 page->onTermRequestRenameTab(text);
             }
@@ -672,7 +703,7 @@ void MainWindow::initShortcuts()
         TermWidgetPage *page = currentTab();
         if (page) {
             RemoteManagementPlugn *remoteplugin =
-            qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
+                qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
 
             emit remoteplugin->getRemoteManagementTopPanel()->show();
         }
@@ -740,7 +771,7 @@ void MainWindow::initTitleBar()
         titlebar()->setTitle("");
     }
 
-    connect(m_tabbar, &DTabBar::tabFull, this, [=]() { qDebug() << "tab is full"; });
+    connect(m_tabbar, &DTabBar::tabFull, this, [ = ]() { qDebug() << "tab is full"; });
 
     connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
 
@@ -751,27 +782,35 @@ void MainWindow::initTitleBar()
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
         TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
         if (termWidgetWapper->hasRunningProcess()) {
-            m_tabVisitMap.insert(index, true);
+            m_tabVisitMap.insert(termWidgetWapper->getCurrSessionId(), true);
         }
     });
 
-    connect(m_tabbar,
-            &DTabBar::tabCloseRequested,
-            this,
-            [this](int index) { closeTab(m_tabbar->identifier(index)); },
-            Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::tabCloseRequested, this, [this](int index) {
+        closeTab(m_tabbar->identifier(index));
+    }, Qt::QueuedConnection);
 
-    connect(m_tabbar,
-            &DTabBar::tabAddRequested,
-            this,
-            [this]() { addTab(currentTab()->createCurrentTerminalProperties(), true); },
-            Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() {
+        addTab(currentTab()->createCurrentTerminalProperties(), true);
+    }, Qt::QueuedConnection);
 
-    connect(m_tabbar,
-            &DTabBar::currentChanged,
-            this,
-            [this](int index) { focusTab(m_tabbar->identifier(index)); },
-            Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::currentChanged, this, [this](int index) {
+        focusTab(m_tabbar->identifier(index));
+    }, Qt::QueuedConnection);
+
+    connect(m_tabbar, &TabBar::closeTabs, this, [ = ](QList<QString> closeTabIdList) {
+
+        for (int i = 0; i < closeTabIdList.size(); i++) {
+            QString tabIdentifier = closeTabIdList.at(i);
+            m_tabbar->removeTab(tabIdentifier);
+
+            TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+            if (tabPage && tabPage->identifier() == tabIdentifier) {
+                m_termStackWidget->removeWidget(tabPage);
+                delete tabPage;
+            }
+        }
+    });
 
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
 }
@@ -959,7 +998,7 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 
     QJsonArray JsonArry;
     for (auto opt :
-         Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
+            Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
         jsonItem.insert("name", tr(opt->name().toUtf8().data()));
         jsonItem.insert("value", opt->value().toString());

@@ -35,9 +35,10 @@ public:
     explicit MainWindow(TermProperties properties, QWidget *parent = nullptr);
     ~MainWindow() override;
 
-    bool isTabVisited(int tabIndex);
+    bool isTabVisited(int tabSessionId);
     void addTab(TermProperties properties, bool activeTab = false);
     void closeTab(const QString &identifier);
+    void updateTabStatus();
 
     /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
     void closeOtherTab();
