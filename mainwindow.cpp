@@ -391,6 +391,12 @@ void MainWindow::initWindow()
         showMaximized();
     } else if (windowState == "fullscreen") {
         switchFullscreen(true);
+        /******** Modify by n014361 wangpeili 2020-02-25:增加半屏设置    ****************/
+    } else if (windowState == "Halfscreen") {
+        setWindowRadius(0);
+        resize(QSize(QApplication::desktop()->width() / 2, QApplication::desktop()->height()));
+        move(0, 0);
+        /********************* Modify by n014361 wangpeili End ************************/
     } else {
         resize(QSize(settings.value("save_width").toInt(), settings.value("save_height").toInt()));
         move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
