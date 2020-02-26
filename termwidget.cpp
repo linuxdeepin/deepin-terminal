@@ -5,6 +5,7 @@
 
 #include <DDesktopServices>
 #include <DInputDialog>
+#include <DApplicationHelper>
 
 #include <QApplication>
 #include <QDesktopServices>
@@ -14,7 +15,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QClipboard>
-#include <DApplicationHelper>
+#include <QFileInfo>
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
@@ -117,7 +118,10 @@ void TermWidget::handleTermIdle(bool bIdle)
 
 void TermWidget::customContextMenuCall(const QPoint &pos)
 {
-    QMenu menu;
+    DMenu menu;
+
+    QString selection = QApplication::clipboard()->text(QClipboard::Selection);
+    bool isRemoting = isInRemoteServer();
 
     QList<QAction *> termActions = filterActions(pos);
     for (QAction *&action : termActions) {
@@ -133,11 +137,27 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
         menu.addAction(tr("Copy &Selection"), this, [this] { copyClipboard(); });
     }
+    if (!QApplication::clipboard()->text(QClipboard::Clipboard).isEmpty()) {
+        menu.addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
+    }
+    /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
+    if (!isRemoting && !selection.isEmpty()) {
+        QFileInfo tempfile(workingDirectory() + "/" + selection);
+        if (tempfile.exists()) {
+            menu.addAction(tr("&Open"), this, [this] {
+                QString file = workingDirectory() + "/" + QApplication::clipboard()->text(QClipboard::Selection);
+                QString cmd = QString("xdg-open ") + file;
+                //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
+                system(cmd.toStdString().c_str());
+                // qDebug() << file << " open";
+            });
+        }
+    }
+    /********************* Modify by n014361 wangpeili End ************************/
 
-    menu.addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
-
-    menu.addAction(
-    tr("&Open File Manager"), this, [this] { DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory())); });
+    menu.addAction(tr("&Open File Manager"), this, [this] {
+        DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
+    });
 
     menu.addSeparator();
 
@@ -188,10 +208,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     if (isInRemoteServer()) {
         menu.addSeparator();
-        menu.addAction(
-        QIcon::fromTheme("upload-file"), tr("Upload File"), this, [this] { emit termRequestUploadFile(); });
-        menu.addAction(
-        QIcon::fromTheme("download-file"), tr("Download File"), this, [this] { emit termRequestDownloadFile(); });
+        menu.addAction(tr("Upload File"), this, [this] { emit termRequestUploadFile(); });
+        menu.addAction(tr("Download File"), this, [this] { emit termRequestDownloadFile(); });
     }
 
     menu.addSeparator();
