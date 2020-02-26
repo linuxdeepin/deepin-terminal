@@ -22,6 +22,7 @@
 #include <DSettingsWidgetFactory>
 #include <DThemeManager>
 #include <DTitlebar>
+#include <DFileDialog>
 
 #include <QApplication>
 #include <QDebug>
@@ -182,6 +183,9 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
             m_tabbar->setTabColor(tabIndex, pa.color(DPalette::TextWarning));
         }
     });
+
+    connect(termPage, &TermWidgetPage::termRequestUploadFile, this, &MainWindow::remoteUploadFile);
+    connect(termPage, &TermWidgetPage::termRequestDownloadFile, this, &MainWindow::remoteDownloadFile);
 }
 
 bool showExitConfirmDialog()
@@ -226,21 +230,19 @@ void MainWindow::updateTabStatus()
         int currIndex = i;
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(currIndex));
         TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-        bool bIdle = ! (termWidgetWapper->hasRunningProcess());
+        bool bIdle = !(termWidgetWapper->hasRunningProcess());
         int currSessionId = termWidgetWapper->getCurrSessionId();
 
         if (bIdle) {
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
             m_tabbar->setClearTabColor(currIndex);
-        }
-        else {
+        } else {
             if (isTabVisited(currSessionId)) {
                 DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
                 DPalette pa = appHelper->standardPalette(appHelper->themeType());
                 m_tabbar->setClearTabColor(currIndex);
-            }
-            else {
+            } else {
                 DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
                 DPalette pa = appHelper->standardPalette(appHelper->themeType());
                 m_tabbar->setTabColor(currIndex, pa.color(DPalette::TextWarning));
@@ -1022,4 +1024,77 @@ QShortcut *MainWindow::createNewShotcut(const QString &key)
     m_BuiltInShortcut[key] = shortcut;
     // qDebug() << "createNewShotcut" << key << value;
     return shortcut;
+}
+
+
+/**
+ * Upload file to remote server
+ */
+void MainWindow::remoteUploadFile()
+{
+    QString fileName = showFileDailog(false);
+    if (!fileName.isNull() && !fileName.isEmpty()) {
+        pressCtrlAt();
+        sleep(100);
+        QString strTxt = "sz '" + fileName + "'\n";
+        currentTab()->sendTextToCurrentTerm(strTxt);
+    }
+}
+
+/**
+ * Download file from remote server
+ */
+void MainWindow::remoteDownloadFile()
+{
+    downloadFilePath = showFileDailog(true);
+    if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
+        QString strTxt = "read -e -a files -p \"" + tr("Type path to download file: ") + "\"; sz \"${files[@]}\"\n";
+        currentTab()->sendTextToCurrentTerm(strTxt);
+    }
+}
+
+/**
+ * after sz command,wait input file and download file.
+ */
+void MainWindow::executeDownloadFile()
+{
+    pressCtrlAt();
+    sleep(100);
+    QString strCd = "cd " + downloadFilePath + "\n";
+    currentTab()->sendTextToCurrentTerm(strCd);
+    QString strRz = "rz\n";
+    currentTab()->sendTextToCurrentTerm(strRz);
+    //if need?
+    //sleep(500);
+    //QString strEnter = "\n";
+    //currentTab()->sendTextToCurrentTerm(strEnter);
+    downloadFilePath = "";
+}
+
+/**
+ * Open file dialog
+ */
+QString MainWindow::showFileDailog(bool isDir)
+{
+    QString curPath = QDir::currentPath();
+    QString dlgTitle = tr("Select file to upload");
+    if (isDir) {
+        dlgTitle = tr("Select directory to save the file");
+        return DFileDialog::getExistingDirectory(this, dlgTitle, curPath);
+    }
+    return DFileDialog::getOpenFileName(this, dlgTitle, curPath);
+}
+
+void MainWindow::pressCtrlAt()
+{
+    QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_At, Qt::ControlModifier);
+    QApplication::sendEvent(focusWidget(), &keyPress);
+}
+
+void MainWindow::sleep(unsigned int msec)
+{
+    QTime dieTime = QTime::currentTime().addMSecs(msec);
+    while (QTime::currentTime() < dieTime) {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }

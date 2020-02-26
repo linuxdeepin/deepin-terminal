@@ -27,7 +27,7 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
     connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
     connect(
-    m_findBar, &PageSearchBar::keywordChanged, this, [=](QString keyword) { handleUpdateSearchKeyword(keyword); });
+    m_findBar, &PageSearchBar::keywordChanged, this, [ = ](QString keyword) { handleUpdateSearchKeyword(keyword); });
     // connect(m_findBar, &PageSearchBar::sigFindbarClose, this, &TermWidgetPage::slotFindbarClose,
     // Qt::QueuedConnection);
 
@@ -145,8 +145,7 @@ void TermWidgetPage::closeOtherTerminal()
 }
 
 // 待删除
-typedef struct
-{
+typedef struct {
     QPoint topLeft;
     QPoint middle;
     QPoint bottomRight;
@@ -490,7 +489,7 @@ void TermWidgetPage::showSearchBar(bool enable)
         m_findBar->raise();
         m_findBar->show();
         m_findBar->move(width() - 382, 0);
-        QTimer::singleShot(10, this, [=] { m_findBar->focus(); });
+        QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });
     } else {
         m_findBar->hide();
     }
@@ -631,9 +630,11 @@ TermWidgetWrapper *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidgetWrapper::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidgetWrapper::termClosed, this, &TermWidgetPage::onTermClosed);
     connect(
-    term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
+        term, &TermWidgetWrapper::termRequestOpenCustomCommand, this, &TermWidgetPage::termRequestOpenCustomCommand);
     connect(
-    term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
+        term, &TermWidgetWrapper::termRequestOpenRemoteManagement, this, &TermWidgetPage::termRequestOpenRemoteManagement);
+    connect(term, &TermWidgetWrapper::termRequestUploadFile, this, &TermWidgetPage::termRequestUploadFile);
+    connect(term, &TermWidgetWrapper::termRequestDownloadFile, this, &TermWidgetPage::termRequestDownloadFile);
     return term;
 }
 

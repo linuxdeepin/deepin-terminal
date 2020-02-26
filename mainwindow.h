@@ -56,10 +56,17 @@ public:
     bool isQuakeWindowActivated();
     void setQuakeWindowActivated(bool isQuakeWindowActivated);
     /**************** Modify by n013252 wangliang End ****************/
+
+    void executeDownloadFile();
+    QString showFileDailog(bool isDir);
+    void pressCtrlAt();
+    void sleep(unsigned int msec);
 public slots:
     // void onSettingValueChanged(const int &keyIndex, const QVariant &value);
     void onWindowSettingChanged(const QString &keyName);
     void onShortcutSettingChanged(const QString &keyName);
+    void remoteUploadFile();
+    void remoteDownloadFile();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -117,6 +124,7 @@ private:
     /******** Modify by n014361 wangpeili 2020-02-20: 内置快捷键集中管理 ****************/
     QMap<QString, QShortcut *> m_BuiltInShortcut;
     /********************* Modify by n014361 wangpeili End ************************/
+    QString downloadFilePath = "";
 };
 
 #endif  // MAINWINDOW_H

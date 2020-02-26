@@ -93,6 +93,8 @@ signals:
     void termGetFocus() const;
     void termRequestOpenCustomCommand() const;
     void termRequestOpenRemoteManagement() const;
+    void termRequestUploadFile() const;
+    void termRequestDownloadFile() const;
 
 private slots:
     void setCurrentTerminal(TermWidgetWrapper *term);

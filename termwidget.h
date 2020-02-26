@@ -9,7 +9,7 @@ class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
-    TermWidget(TermProperties properties, QWidget* parent = nullptr, QWidget* grandma = nullptr);
+    TermWidget(TermProperties properties, QWidget *parent = nullptr, QWidget *grandma = nullptr);
 
     bool isInRemoteServer();
 signals:
@@ -26,23 +26,23 @@ private slots:
     void customContextMenuCall(const QPoint &pos);
     void handleTermIdle(bool bIdle);
 private:
-    void* m_Page = nullptr;
+    void *m_Page = nullptr;
 };
 
 class TermWidgetWrapper : public QWidget
 {
     Q_OBJECT
 public:
-    TermWidgetWrapper(TermProperties properties, QWidget* parent = nullptr);
+    TermWidgetWrapper(TermProperties properties, QWidget *parent = nullptr);
 
     bool isTitleChanged() const;
     QString title() const;
 
     QString workingDirectory();
 
-    void sendText(const QString& text);
+    void sendText(const QString &text);
 
-    void setColorScheme(const QString& name);
+    void setColorScheme(const QString &name);
     /******** Modify by n014361 wangpeili 2020-01-06: 修改字体      ***********×****/
 
     // 全选
@@ -54,7 +54,7 @@ public:
 
     void setTerminalOpacity(qreal opacity);
     // 修改字体
-    void setTerminalFont(const QString& fontName);
+    void setTerminalFont(const QString &fontName);
     // 修改字体大小
     void setTerminalFontSize(const int fontSize);
     // 修改光标形状
@@ -83,7 +83,7 @@ public slots:
     void toggleShowSearchBar();
 
     QString selectedText(bool preserveLineBreaks = true);
-    void onSettingValueChanged(const QString& keyName);
+    void onSettingValueChanged(const QString &keyName);
     /********************* Modify by n014361 wangpeili End ************************/
 
 signals:
@@ -96,12 +96,14 @@ signals:
     void termRequestOpenCustomCommand();
     void termRequestOpenRemoteManagement();
     void termIsIdle(int currSessionId, bool bIdle);
+    void termRequestUploadFile();
+    void termRequestDownloadFile();
 
 private:
     void initUI();
 
-    TermWidget* m_term = nullptr;
-    QVBoxLayout* m_layout = nullptr;
+    TermWidget *m_term = nullptr;
+    QVBoxLayout *m_layout = nullptr;
 };
 
 #endif  // TERMWIDGET_H
