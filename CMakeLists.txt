@@ -58,7 +58,6 @@ set(LINK_LIBS
 set (DTNG_CPP_FILES
     commonpanel.cpp
     customcommanddelegate.cpp
-    customcommanditem.cpp
     customcommanditemmodel.cpp
     customcommandlist.cpp
     customcommandoptdlg.cpp
@@ -105,7 +104,6 @@ set (DTNG_CPP_FILES
 set (DTNG_HEADER_FILES
     commonpanel.h
     customcommanddelegate.h
-    customcommanditem.h
     customcommanditemmodel.h
     customcommandlist.h
     customcommandoptdlg.h

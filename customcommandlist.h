@@ -8,6 +8,8 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QAction>
+#include <QSortFilterProxyModel>
+#include <QStandardItemModel>
 
 DWIDGET_USE_NAMESPACE
 
@@ -21,7 +23,6 @@ public:
     explicit CustomCommandList(QWidget *parent = nullptr);
     void refreshCommandListData(const QString &strFilter);
     void addNewCustomCommandData(QAction *actionData);
-    void refreshOneRowCommandInfo(QAction *action);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event);
@@ -39,10 +40,11 @@ private slots:
 private:
     void initData();
     int getItemRow(CustomCommandItemData itemData);
-    void removeCommandItem(CustomCommandItemData itemData, QModelIndex modelIndex);
+    void removeCommandItem(QModelIndex modelIndex);
 
     CustomCommandDelegate *m_cmdDelegate = nullptr;
-    CustomCommandItemModel *m_cmdListModel = nullptr;
+    QStandardItemModel *m_cmdListModel = nullptr;
+    CustomCommandItemModel *m_cmdProxyModel = nullptr;
     QList<CustomCommandItemData> m_cmdItemDataList;
     bool m_bLeftMouse = true;
 };

@@ -39,7 +39,7 @@ void CustomCommandTopPanel::showCustomCommandPanel()
 {
     qDebug() << "showCustomCommandPanel" << endl;
     m_customCommandPanel->resize(size());
-    m_customCommandPanel->refreshPanel();
+    m_customCommandPanel->refreshCmdPanel();
     m_customCommandPanel->show();
 
     QPropertyAnimation *animation = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
@@ -101,7 +101,7 @@ void CustomCommandTopPanel::show()
     m_customCommandPanel->resize(size());
     m_customCommandPanel->move(0, 0);
     m_customCommandPanel->show();
-    m_customCommandPanel->refreshPanel();
+    m_customCommandPanel->refreshCmdPanel();
     m_customCommandSearchPanel->resize(size());
     m_customCommandSearchPanel->hide();
 }

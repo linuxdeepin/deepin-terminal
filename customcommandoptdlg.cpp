@@ -122,6 +122,16 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
 {
 }
 
+QAction *CustomCommandOptDlg::getCurCustomCmd()
+{
+    return m_newAction;
+}
+
+bool CustomCommandOptDlg::isDelCurCommand()
+{
+    return m_bDelOpt;
+}
+
 void CustomCommandOptDlg::slotAddSaveButtonClicked()
 {
     QString strName = m_nameLineEdit->text();
@@ -132,9 +142,10 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         return;
     }
 
-    m_newAction.setText(strName);
-    m_newAction.setData(strCommand);
-    m_newAction.setShortcut(m_shortCutsLineEdit->keySequence());
+    m_newAction = new QAction(this);
+    m_newAction->setText(strName);
+    m_newAction->setData(strCommand);
+    m_newAction->setShortcut(m_shortCutsLineEdit->keySequence());
     accept();
 }
 

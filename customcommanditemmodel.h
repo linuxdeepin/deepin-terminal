@@ -1,7 +1,7 @@
 #ifndef CUSTOMCOMMANDITEMMODEL_H
 #define CUSTOMCOMMANDITEMMODEL_H
 
-#include <QStandardItemModel>
+#include <QSortFilterProxyModel>
 #include <QAction>
 
 typedef struct {
@@ -9,19 +9,19 @@ typedef struct {
     QString m_cmdText;
     QString m_cmdShortcut;
     QAction *m_customCommandAction;
-}CustomCommandItemData;
+} CustomCommandItemData;
 
 Q_DECLARE_METATYPE(CustomCommandItemData)
 
-class CustomCommandItemModel : public QStandardItemModel
+class CustomCommandItemModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
     CustomCommandItemModel(QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
-    
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
     void initCommandListData(const QList<CustomCommandItemData> &cmdListData);
     void addNewCommandData(const CustomCommandItemData itemData);
 

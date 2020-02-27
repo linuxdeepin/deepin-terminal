@@ -4,8 +4,6 @@
         <file>ssh_login.sh</file>
     </qresource>
     <qresource prefix="/">
-        <file>images/icon/focus/circlebutton_add 2.svg</file>
-        <file>images/icon/hover/circlebutton_add _hover.svg</file>
         <file>images/icon/hover/server.svg</file>
         <file>images/icon/focus/server.svg</file>
         <file>images/logo/deepin-terminal.svg</file>
@@ -14,5 +12,9 @@
         <file>images/icon/focus/edit_press.svg</file>
         <file>images/icon/hover/edit_hover.svg</file>
         <file>images/icon/hover/exit_hover.svg</file>
+        <file>images/buildin/dark/command.svg</file>
+        <file>images/buildin/dark/edit.svg</file>
+        <file>images/buildin/light/command.svg</file>
+        <file>images/buildin/light/edit.svg</file>
     </qresource>
 </RCC>

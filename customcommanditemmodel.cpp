@@ -1,37 +1,40 @@
 #include "customcommanditemmodel.h"
 
+#include <QStandardItemModel>
+
 #include <DLog>
 
-CustomCommandItemModel::CustomCommandItemModel(QObject *parent) : QStandardItemModel(parent)
+CustomCommandItemModel::CustomCommandItemModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
 }
 
 void CustomCommandItemModel::initCommandListData(const QList<CustomCommandItemData> &cmdListData)
 {
     m_cmdListData.clear();
-    
-    for(int i=0; i<cmdListData.size(); i++)
-    {
+
+    for (int i = 0; i < cmdListData.size(); i++) {
         CustomCommandItemData itemData = cmdListData.at(i);
         m_cmdListData.append(itemData);
     }
-    
-    for(int i=0; i<m_cmdListData.size(); i++)
-    {
+
+    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(this->sourceModel());
+    for (int i = 0; i < m_cmdListData.size(); i++) {
         CustomCommandItemData itemData = m_cmdListData.at(i);
         QStandardItem *item = new QStandardItem;
         item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
         item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-        this->appendRow(item);
+        sourceModel->appendRow(item);
     }
 }
 
 void CustomCommandItemModel::addNewCommandData(const CustomCommandItemData itemData)
 {
+    QStandardItemModel *sourceModel = qobject_cast<QStandardItemModel *>(this->sourceModel());
+
     QStandardItem *item = new QStandardItem;
     item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
     item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
-    this->appendRow(item);
+    sourceModel->appendRow(item);
     m_cmdListData.append(itemData);
 }
 

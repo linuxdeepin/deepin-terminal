@@ -1,5 +1,4 @@
 #include "customcommandpanel.h"
-#include "customcommanditem.h"
 #include "customcommandoptdlg.h"
 #include "shortcutmanager.h"
 
@@ -28,16 +27,16 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 {
     CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     if (dlg.exec() == QDialog::Accepted) {
-        QAction &newAction = dlg.getCurCustomCmd();
-        QAction *existAction = ShortcutManager::instance()->checkActionIsExist(newAction);
+        QAction *newAction = dlg.getCurCustomCmd();
+        QAction *existAction = ShortcutManager::instance()->checkActionIsExist(*newAction);
         if (nullptr == existAction) {
-            QAction *actionData = ShortcutManager::instance()->addCustomCommand(newAction);
-            m_listWidget->addNewCustomCommandData(actionData);
-            refreshSearchState();
+            QAction *actionData = ShortcutManager::instance()->addCustomCommand(*newAction);
+            m_cmdListWidget->addNewCustomCommandData(actionData);
+            refreshCmdSearchState();
         } else {
-            existAction->data() = newAction.data();
-            existAction->setShortcut(newAction.shortcut());
-            m_listWidget->refreshOneRowCommandInfo(existAction);
+            existAction->data() = newAction->data();
+            existAction->setShortcut(newAction->shortcut());
+//            m_cmdListWidget->refreshOneRowCommandInfo(existAction);
             ShortcutManager::instance()->saveCustomCommandToConfig(existAction);
         }
     }
@@ -55,17 +54,17 @@ void CustomCommandPanel::doCustomCommand(CustomCommandItemData itemData, QModelI
     emit handleCustomCurCommand(strCommand);
 }
 
-void CustomCommandPanel::refreshPanel()
+void CustomCommandPanel::refreshCmdPanel()
 {
     clearSearchInfo();
-    m_listWidget->refreshCommandListData("");
-    refreshSearchState();
+    m_cmdListWidget->refreshCommandListData("");
+    refreshCmdSearchState();
 }
 
-void CustomCommandPanel::refreshSearchState()
+void CustomCommandPanel::refreshCmdSearchState()
 {
-    qDebug() << __FUNCTION__ << m_listWidget->count() << endl;
-    if (m_listWidget->count() >= 2) {
+    qDebug() << __FUNCTION__ << m_cmdListWidget->count() << endl;
+    if (m_cmdListWidget->count() >= 2) {
         m_searchEdit->show();
     } else {
         m_searchEdit->hide();
@@ -78,17 +77,17 @@ void CustomCommandPanel::initUI()
     setAutoFillBackground(true);
 
     m_pushButton = new DPushButton();
-    m_listWidget = new CustomCommandList();
+    m_cmdListWidget = new CustomCommandList();
     m_searchEdit = new DSearchEdit();
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
     m_searchEdit->setPlaceHolder(tr("Search"));
 
-    m_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    m_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
-    m_listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    m_listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+    m_cmdListWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    m_cmdListWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
+    m_cmdListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    m_cmdListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_cmdListWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     m_pushButton->setFixedHeight(60);
     m_pushButton->setText("+ Add Command");
@@ -104,12 +103,12 @@ void CustomCommandPanel::initUI()
     vlayout->setMargin(0);
     vlayout->setContentsMargins(0, 0, 0, 0);
     vlayout->addWidget(m_searchEdit);
-    vlayout->addWidget(m_listWidget);
+    vlayout->addWidget(m_cmdListWidget);
     vlayout->addWidget(m_pushButton);
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);  //
     connect(m_pushButton, &DPushButton::clicked, this, &CustomCommandPanel::showAddCustomCommandDlg);
-    connect(m_listWidget, &CustomCommandList::itemClicked, this, &CustomCommandPanel::doCustomCommand);
-    connect(m_listWidget, &CustomCommandList::listItemCountChange, this, &CustomCommandPanel::refreshSearchState);
+    connect(m_cmdListWidget, &CustomCommandList::itemClicked, this, &CustomCommandPanel::doCustomCommand);
+    connect(m_cmdListWidget, &CustomCommandList::listItemCountChange, this, &CustomCommandPanel::refreshCmdSearchState);
 }

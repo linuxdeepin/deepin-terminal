@@ -137,8 +137,10 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
 QAction *ShortcutManager::checkActionIsExist(QAction &action)
 {
     QString strNewActionName = action.text();
+    qDebug() << "strNewActionName" << strNewActionName << endl;
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList[i];
+        qDebug() << "currAction->text()" << currAction->text() << endl;
         if (strNewActionName == currAction->text()) {
             return currAction;
         }

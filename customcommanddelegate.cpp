@@ -28,8 +28,6 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         CustomCommandItemData itemData = varDisplay.value<CustomCommandItemData>();
 
-        QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
-
         DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
                                   ? DPalette::Normal : DPalette::Disabled;
         if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
@@ -38,26 +36,48 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         QRect bgRect;
         bgRect.setX(option.rect.x() + 10);
-        bgRect.setY(option.rect.y());
-        bgRect.setWidth(option.rect.width() - 10);
-        bgRect.setHeight(option.rect.height());
+        bgRect.setY(option.rect.y() + 10);
+        bgRect.setWidth(option.rect.width() - 20);
+        bgRect.setHeight(option.rect.height() - 10);
 
-        int leftIconSize = 70;
-        int rightIconSize = 30;
+        QPainterPath path;
+        int cornerSize = 16;
+        int arcRadius = 8;
+        path.moveTo(bgRect.left() + arcRadius, bgRect.top());
+        path.arcTo(bgRect.left(), bgRect.top(), cornerSize, cornerSize, 90.0, 90.0);
+        path.lineTo(bgRect.left(), bgRect.bottom() - arcRadius);
+        path.arcTo(bgRect.left(), bgRect.bottom() - cornerSize, cornerSize, cornerSize, 180.0, 90.0);
+        path.lineTo(bgRect.right() - arcRadius, bgRect.bottom());
+        path.arcTo(bgRect.right() - cornerSize, bgRect.bottom() - cornerSize, cornerSize, cornerSize, 270.0, 90.0);
+        path.lineTo(bgRect.right(), bgRect.top() + arcRadius);
+        path.arcTo(bgRect.right() - cornerSize, bgRect.top(), cornerSize, cornerSize, 0.0, 90.0);
 
-        QString strLeftIconSrc = ":/images/icon/hover/circlebutton_add _hover.svg";
-        QPixmap leftIconPixmap = Utils::renderSVG(strLeftIconSrc, QSize(leftIconSize, leftIconSize));
+        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+        DStyleHelper styleHelper;
+        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
+        painter->setBrush(QBrush(fillColor));
+        painter->fillPath(path, fillColor);
 
-        QRect leftIconRect = QRect(bgRect.left(), bgRect.top() + (bgRect.height() - leftIconSize) / 2,
-                                   leftIconSize, leftIconSize);
-        painter->drawPixmap(leftIconRect, leftIconPixmap);
+        int cmdIconSize = 44;
+        int editIconSize = 20;
 
+        QString themeType = "light";
+        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+        if (DGuiApplicationHelper::DarkType == appHelper->themeType()) {
+            themeType = "dark";
+        }
+        QString strCmdIconSrc = QString(":/images/buildin/%1/command.svg").arg(themeType);
+        QPixmap cmdIconPixmap = Utils::renderSVG(strCmdIconSrc, QSize(cmdIconSize, cmdIconSize));
 
-        QString strRightIconSrc = ":/images/icon/hover/edit_hover.svg";
-        QPixmap rightIconPixmap = Utils::renderSVG(strRightIconSrc, QSize(rightIconSize, rightIconSize));
-        QRect rightIconRect = QRect(bgRect.right() - rightIconSize - 10, bgRect.top() + (bgRect.height() - rightIconSize) / 2,
-                                    rightIconSize, rightIconSize);
-        painter->drawPixmap(rightIconRect, rightIconPixmap);
+        QRect cmdIconRect = QRect(bgRect.left(), bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
+                                  cmdIconSize, cmdIconSize);
+        painter->drawPixmap(cmdIconRect, cmdIconPixmap);
+
+        QString strEditIconSrc = QString(":/images/buildin/%1/edit.svg").arg(themeType);
+        QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
+        QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
+                                   editIconSize, editIconSize);
+        painter->drawPixmap(editIconRect, editIconPixmap);
 
         QString strCmdName = "";
         QString strCmdShortcut = "";
@@ -70,10 +90,10 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         }
 
         int labelHeight = 35;
-        QRect cmdNameRect = QRect(bgRect.left() + leftIconSize + 5, bgRect.top() + 5, bgRect.width() - leftIconSize - rightIconSize, labelHeight);
+        QRect cmdNameRect = QRect(bgRect.left() + cmdIconSize + 5, bgRect.top() + 5, bgRect.width() - cmdIconSize - editIconSize, labelHeight);
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
 
-        QRect cmdShortcutRect = QRect(bgRect.left() + leftIconSize + 5, bgRect.bottom() - labelHeight - 5, bgRect.width() - leftIconSize - rightIconSize, labelHeight);
+        QRect cmdShortcutRect = QRect(bgRect.left() + cmdIconSize + 5, bgRect.bottom() - labelHeight - 5, bgRect.width() - cmdIconSize - editIconSize, labelHeight);
         painter->drawText(cmdShortcutRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdShortcut);
 
         painter->restore();

@@ -15,8 +15,7 @@ class CustomCommandOptDlg : public DAbstractDialog
 {
     Q_OBJECT
 public:
-    enum CustomCmdOptType
-    {
+    enum CustomCmdOptType {
         CCT_ADD,     // the add type of custom command operation
         CCT_MODIFY,  // the modify type of custom command operation
     };
@@ -24,14 +23,9 @@ public:
     explicit CustomCommandOptDlg(CustomCmdOptType type = CCT_ADD, QAction *curAction = nullptr,
                                  QWidget *parent = nullptr);
     ~CustomCommandOptDlg();
-    QAction &getCurCustomCmd()
-    {
-        return m_newAction;
-    }
-    bool isDelCurCommand()
-    {
-        return m_bDelOpt;
-    }
+
+    QAction *getCurCustomCmd();
+    bool isDelCurCommand();
 
 private slots:
     void slotAddSaveButtonClicked();
@@ -40,7 +34,7 @@ private slots:
 private:
     CustomCmdOptType m_type;
     QAction *m_action = nullptr;
-    QAction m_newAction;
+    QAction *m_newAction = nullptr;
     DLineEdit *m_nameLineEdit = nullptr;
     DLineEdit *m_commandLineEdit = nullptr;
     DKeySequenceEdit *m_shortCutsLineEdit = nullptr;

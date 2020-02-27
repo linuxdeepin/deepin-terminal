@@ -31,7 +31,7 @@ private:
     void setSearchFilter(const QString &filter);
     void showPreviousPanel();
 
-    CustomCommandList *m_listWidget = nullptr;
+    CustomCommandList *m_cmdListWidget = nullptr;
     QString m_strFilter;
 };
 
