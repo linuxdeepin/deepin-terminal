@@ -173,6 +173,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
+    menu.addSeparator();
+    menu.addAction(tr("New &workspace"), this, [this] { emit((TermWidgetPage *)m_Page)->pageRequestNewWorkspace(); });
 
     menu.addSeparator();
 
@@ -186,10 +188,34 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
 
     menu.addAction(tr("&Find"), this, [this] { ((TermWidgetPage *)m_Page)->showSearchBar(true); });
-
     menu.addSeparator();
 
-    menu.addAction(tr("Rename Tab"), this, [this] {
+    if (!selection.isEmpty()) {
+        qDebug() << "selection" << selection;
+        DMenu *search = new DMenu(tr("&Search"), this);
+
+        search->addAction("Bing", this, [this] {
+            QString strurl = "https://cn.bing.com/search?q=" + QApplication::clipboard()->text(QClipboard::Selection);
+            QDesktopServices::openUrl(QUrl(strurl));
+        });
+        search->addAction("Baidu", this, [this] {
+            QString strurl = "https://www.baidu.com/s?wd=" + QApplication::clipboard()->text(QClipboard::Selection);
+            QDesktopServices::openUrl(QUrl(strurl));
+        });
+        search->addAction("Github", this, [this] {
+            QString strurl = "https://github.com/search?q=" + QApplication::clipboard()->text(QClipboard::Selection);
+            QDesktopServices::openUrl(QUrl(strurl));
+        });
+        search->addAction("Stack Overflow", this, [this] {
+            QString strurl =
+            "https://stackoverflow.com/search?q=" + QApplication::clipboard()->text(QClipboard::Selection);
+            QDesktopServices::openUrl(QUrl(strurl));
+        });
+        menu.addMenu(search);
+        menu.addSeparator();
+    }
+
+    menu.addAction(tr("Rename title"), this, [this] {
         // TODO: Tab name as default text?
         bool ok;
         QString text =
@@ -253,8 +279,10 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
     connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
     connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
-    connect(
-        m_term, &TermWidget::termRequestOpenRemoteManagement, this, &TermWidgetWrapper::termRequestOpenRemoteManagement);
+    connect(m_term,
+            &TermWidget::termRequestOpenRemoteManagement,
+            this,
+            &TermWidgetWrapper::termRequestOpenRemoteManagement);
     connect(m_term, &TermWidget::copyAvailable, this, [this](bool enable) {
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
@@ -263,10 +291,8 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidgetWrapper::onSettingValueChanged);
     connect(m_term, &TermWidget::termIsIdle, this, &TermWidgetWrapper::termIsIdle);
-    connect(
-        m_term, &TermWidget::termRequestUploadFile, this, &TermWidgetWrapper::termRequestUploadFile);
-    connect(
-        m_term, &TermWidget::termRequestDownloadFile, this, &TermWidgetWrapper::termRequestDownloadFile);
+    connect(m_term, &TermWidget::termRequestUploadFile, this, &TermWidgetWrapper::termRequestUploadFile);
+    connect(m_term, &TermWidget::termRequestDownloadFile, this, &TermWidgetWrapper::termRequestDownloadFile);
 }
 
 QList<int> TermWidgetWrapper::getRunningSessionIdList()

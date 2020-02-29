@@ -121,7 +121,7 @@ bool MainWindow::isTabVisited(int tabSessionId)
 
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
-    TermWidgetPage *termPage = new TermWidgetPage(properties);
+    TermWidgetPage *termPage = new TermWidgetPage(properties, this);
     setNewTermPage(termPage, activeTab);
 
     int index = m_tabbar->addTab(termPage->identifier(), "New Terminal Tab");
@@ -133,6 +133,9 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     m_tabbar->saveSessionIdWithTabIndex(termWidgetWapper->getCurrSessionId(), index);
     m_tabbar->saveSessionIdWithTabId(termWidgetWapper->getCurrSessionId(), termPage->identifier());
 
+    connect(termPage, &TermWidgetPage::pageRequestNewWorkspace, this, [this]() {
+        this->addTab(currentTab()->createCurrentTerminalProperties(), true);
+    });
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);

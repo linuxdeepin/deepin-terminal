@@ -86,6 +86,7 @@ public slots:
     void handleUpdateSearchKeyword(const QString &keyword);
 
 signals:
+    void pageRequestNewWorkspace();
     void tabTitleChanged(QString title) const;
     void termTitleChanged(QString title) const;
     void lastTermClosed(QString pageIdentifier) const;
