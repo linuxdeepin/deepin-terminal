@@ -27,7 +27,7 @@ QAction *EncodePanelPlugin::titlebarMenu(MainWindow *mainWindow)
 
 EncodePanel *EncodePanelPlugin::getEncodePanel()
 {
-    if (!m_encodePanel) {
+    if (m_encodePanel == nullptr) {
         initEncodePanel();
     }
 
