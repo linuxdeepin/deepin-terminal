@@ -99,6 +99,7 @@ set (DTNG_CPP_FILES
     titlebar.cpp
     utils.cpp
     pagesearchbar.cpp
+    termqsettings.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -145,6 +146,8 @@ set (DTNG_HEADER_FILES
     titlebar.h
     utils.h
     pagesearchbar.h
+    termqsettings.h
+    termqsettings_p.h
 )
 
 set (DTNG_QRC_FILES

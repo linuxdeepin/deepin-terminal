@@ -4,7 +4,7 @@
 #include "settings.h"
 
 #include <QDir>
-#include <QSettings>
+#include "termqsettings.h"
 #include <QStandardPaths>
 #include <QDebug>
 
@@ -51,6 +51,7 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
     }
 
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    commandsSettings.setDisableAutoSortSection(true);
     QStringList commandGroups = commandsSettings.childGroups();
     // qDebug() << commandGroups.size() << endl;
     for (const QString &commandName : commandGroups) {
@@ -179,6 +180,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action)
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    commandsSettings.setDisableAutoSortSection(true);
     commandsSettings.beginGroup(action->text());
     commandsSettings.setValue("Command", action->data());
     QString tmp = action->shortcut().toString();
