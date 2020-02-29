@@ -120,7 +120,6 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 {
     DMenu menu;
 
-    QString selection = QApplication::clipboard()->text(QClipboard::Selection);
     bool isRemoting = isInRemoteServer();
 
     QList<QAction *> termActions = filterActions(pos);
@@ -141,11 +140,11 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         menu.addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
     }
     /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
-    if (!isRemoting && !selection.isEmpty()) {
-        QFileInfo tempfile(workingDirectory() + "/" + selection);
+    if (!isRemoting && !selectedText().isEmpty()) {
+        QFileInfo tempfile(workingDirectory() + "/" + selectedText());
         if (tempfile.exists()) {
             menu.addAction(tr("&Open"), this, [this] {
-                QString file = workingDirectory() + "/" + QApplication::clipboard()->text(QClipboard::Selection);
+                QString file = workingDirectory() + "/" + selectedText();;
                 QString cmd = QString("xdg-open ") + file;
                 //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
                 system(cmd.toStdString().c_str());
@@ -190,25 +189,24 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addAction(tr("&Find"), this, [this] { ((TermWidgetPage *)m_Page)->showSearchBar(true); });
     menu.addSeparator();
 
-    if (!selection.isEmpty()) {
-        qDebug() << "selection" << selection;
+    if (!selectedText().isEmpty()) {
         DMenu *search = new DMenu(tr("&Search"), this);
 
         search->addAction("Bing", this, [this] {
-            QString strurl = "https://cn.bing.com/search?q=" + QApplication::clipboard()->text(QClipboard::Selection);
+            QString strurl = "https://cn.bing.com/search?q=" + selectedText();;
             QDesktopServices::openUrl(QUrl(strurl));
         });
         search->addAction("Baidu", this, [this] {
-            QString strurl = "https://www.baidu.com/s?wd=" + QApplication::clipboard()->text(QClipboard::Selection);
+            QString strurl = "https://www.baidu.com/s?wd=" + selectedText();;
             QDesktopServices::openUrl(QUrl(strurl));
         });
         search->addAction("Github", this, [this] {
-            QString strurl = "https://github.com/search?q=" + QApplication::clipboard()->text(QClipboard::Selection);
+            QString strurl = "https://github.com/search?q=" + selectedText();;
             QDesktopServices::openUrl(QUrl(strurl));
         });
         search->addAction("Stack Overflow", this, [this] {
             QString strurl =
-            "https://stackoverflow.com/search?q=" + QApplication::clipboard()->text(QClipboard::Selection);
+            "https://stackoverflow.com/search?q=" + selectedText();;
             QDesktopServices::openUrl(QUrl(strurl));
         });
         menu.addMenu(search);
