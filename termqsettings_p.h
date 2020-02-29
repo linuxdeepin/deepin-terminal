@@ -254,7 +254,7 @@ protected:
     bool pendingChanges;
     bool atomicSyncOnly = true;
     mutable QSettings::Status status;
-    bool m_bDisableAutoSortSection;
+    bool m_bDisableAutoSortSection = false;
 };
 
 class QConfFileSettingsPrivate : public QSettingsPrivate

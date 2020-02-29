@@ -1861,23 +1861,17 @@ bool QConfFileSettingsPrivate::writeIniFile(QIODevice &device, const ParsedSetti
     if (m_bDisableAutoSortSection) {
         QString newKey("");
         for (i = iniMap.constBegin(); i != iniMap.constEnd(); ++i) {
-            sections.append(QSettingsIniKey(i.key(), i.value().position));
-
             if (!s_keyOrderList.contains(i.key())) {
                 newKey = i.key();
             }
         }
 
         QVector<QSettingsIniKey> newSections;
-        for(int i=0;i<sectionCount;i++)
-        {
-            if (i == s_keyOrderList.length()) {
-                newSections.append(QSettingsIniKey(newKey, -1));
-            }
-            else {
-                newSections.append(QSettingsIniKey(s_keyOrderList.at(i), -1));
-            }
+        for(int i=0;i<s_keyOrderList.size();i++) {
+            QString key = s_keyOrderList.at(i);
+            newSections.append(QSettingsIniKey(key, iniMap.value(key).position));
         }
+        newSections.append(QSettingsIniKey(newKey, iniMap.value(newKey).position));
 
         sections = newSections;
     }

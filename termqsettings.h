@@ -205,7 +205,7 @@ protected:
 #ifndef QT_NO_QOBJECT
     bool event(QEvent *event) override;
 #endif
-    bool m_bDisableAutoSortSection;
+    bool m_bDisableAutoSortSection = false;
 
 private:
     Q_DISABLE_COPY(QSettings)
