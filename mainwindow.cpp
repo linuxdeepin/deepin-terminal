@@ -138,7 +138,9 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     });
     connect(termPage, &TermWidgetPage::pageRequestShowEncoding, this, [this]() {
         EncodePanelPlugin *plugin = qobject_cast<EncodePanelPlugin *>(getPluginByName(PLUGIN_TYPE_ENCODING));
-        plugin->getEncodePanel()->show();
+        if (plugin) {
+            plugin->getEncodePanel()->show();
+        }
     });
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
@@ -433,6 +435,8 @@ void MainWindow::initPlugins()
     // Todo: real plugin loader and plugin support.
     // ThemePanelPlugin *testPlugin = new ThemePanelPlugin(this);
     // testPlugin->initPlugin(this);
+    EncodePanelPlugin *encodePlugin = new EncodePanelPlugin(this);
+    encodePlugin->initPlugin(this);
 
     CustomCommandPlugin *customCommandPlugin = new CustomCommandPlugin(this);
     customCommandPlugin->initPlugin(this);
@@ -440,7 +444,7 @@ void MainWindow::initPlugins()
     RemoteManagementPlugn *remoteManagPlugin = new RemoteManagementPlugn(this);
     remoteManagPlugin->initPlugin(this);
 
-    // m_plugins.append(testPlugin);
+    m_plugins.append(encodePlugin);
     m_plugins.append(customCommandPlugin);
     m_plugins.append(remoteManagPlugin);
 }
@@ -759,6 +763,10 @@ void MainWindow::initTitleBar()
 {
     for (MainWindowPluginInterface *plugin : m_plugins) {
         QAction *pluginMenu = plugin->titlebarMenu(this);
+        // 取消Encoding插件的菜单展示
+        if (plugin->getPluginName() == PLUGIN_TYPE_ENCODING) {
+            continue;
+        }
         if (pluginMenu) {
             m_menu->addAction(pluginMenu);
         }
