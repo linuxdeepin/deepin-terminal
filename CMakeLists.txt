@@ -100,6 +100,11 @@ set (DTNG_CPP_FILES
     utils.cpp
     pagesearchbar.cpp
     termqsettings.cpp
+    encodeplugin/encodepanelplugin.cpp
+    encodeplugin/encodepanel.cpp
+    encodeplugin/encodelistview.cpp
+    encodeplugin/encodelistmodel.cpp
+    encodeplugin/encodeitemdelegate.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -148,6 +153,11 @@ set (DTNG_HEADER_FILES
     pagesearchbar.h
     termqsettings.h
     termqsettings_p.h
+    encodeplugin/encodepanelplugin.h
+    encodeplugin/encodepanel.h
+    encodeplugin/encodelistview.h
+    encodeplugin/encodelistmodel.h
+    encodeplugin/encodeitemdelegate.h
 )
 
 set (DTNG_QRC_FILES

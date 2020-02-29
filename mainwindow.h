@@ -17,6 +17,7 @@
 #define PLUGIN_TYPE_THEME "Theme"
 #define PLUGIN_TYPE_CUSTOMCOMMAND "Custom Command"
 #define PLUGIN_TYPE_REMOTEMANAGEMENT "Remote Management"
+#define PLUGIN_TYPE_ENCODING "Encoding"
 
 DWIDGET_USE_NAMESPACE
 

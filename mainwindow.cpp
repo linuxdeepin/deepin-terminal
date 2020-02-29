@@ -10,7 +10,7 @@
 #include "titlebar.h"
 #include "operationconfirmdlg.h"
 
-#include "themepanelplugin.h"
+#include "encodeplugin/encodepanelplugin.h"
 
 #include "customcommandplugin.h"
 #include "remotemanagementplugn.h"
@@ -135,6 +135,10 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
 
     connect(termPage, &TermWidgetPage::pageRequestNewWorkspace, this, [this]() {
         this->addTab(currentTab()->createCurrentTerminalProperties(), true);
+    });
+    connect(termPage, &TermWidgetPage::pageRequestShowEncoding, this, [this]() {
+        EncodePanelPlugin *plugin = qobject_cast<EncodePanelPlugin *>(getPluginByName(PLUGIN_TYPE_ENCODING));
+        plugin->getEncodePanel()->show();
     });
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);

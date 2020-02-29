@@ -144,7 +144,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         QFileInfo tempfile(workingDirectory() + "/" + selectedText());
         if (tempfile.exists()) {
             menu.addAction(tr("&Open"), this, [this] {
-                QString file = workingDirectory() + "/" + selectedText();;
+                QString file = workingDirectory() + "/" + selectedText();
                 QString cmd = QString("xdg-open ") + file;
                 //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
                 system(cmd.toStdString().c_str());
@@ -193,20 +193,19 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         DMenu *search = new DMenu(tr("&Search"), this);
 
         search->addAction("Bing", this, [this] {
-            QString strurl = "https://cn.bing.com/search?q=" + selectedText();;
+            QString strurl = "https://cn.bing.com/search?q=" + selectedText();
             QDesktopServices::openUrl(QUrl(strurl));
         });
         search->addAction("Baidu", this, [this] {
-            QString strurl = "https://www.baidu.com/s?wd=" + selectedText();;
+            QString strurl = "https://www.baidu.com/s?wd=" + selectedText();
             QDesktopServices::openUrl(QUrl(strurl));
         });
         search->addAction("Github", this, [this] {
-            QString strurl = "https://github.com/search?q=" + selectedText();;
+            QString strurl = "https://github.com/search?q=" + selectedText();
             QDesktopServices::openUrl(QUrl(strurl));
         });
         search->addAction("Stack Overflow", this, [this] {
-            QString strurl =
-            "https://stackoverflow.com/search?q=" + selectedText();;
+            QString strurl = "https://stackoverflow.com/search?q=" + selectedText();
             QDesktopServices::openUrl(QUrl(strurl));
         });
         menu.addMenu(search);
@@ -223,6 +222,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
             emit termRequestRenameTab(text);
         }
     });
+
+    menu.addAction(tr("&Encoding"), this, [this] { emit((TermWidgetPage *)m_Page)->pageRequestShowEncoding(); });
 
     menu.addAction(tr("Custom Command"), this, [this] {
         // TODO: Tab name as default text?

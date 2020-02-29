@@ -70,7 +70,14 @@ HEADERS += \
     termargumentparser.h \
     quaketerminalproxy.h \
     utils.h \
-    pagesearchbar.h
+    pagesearchbar.h \
+    termqsettings.h \
+    termqsettings_p.h \
+    encodeplugin/encodepanelplugin.h \
+    encodeplugin/encodepanel.h \
+    encodeplugin/encodelistview.h \
+    encodeplugin/encodelistmodel.h \
+    encodeplugin/encodeitemdelegate.h
 
 SOURCES += \
     customcommanddelegate.cpp \
@@ -116,7 +123,13 @@ SOURCES += \
     termargumentparser.cpp \
     quaketerminalproxy.cpp \
     utils.cpp \
-    pagesearchbar.cpp
+    pagesearchbar.cpp \
+    termqsettings.cpp \
+    encodeplugin/encodepanelplugin.cpp \
+    encodeplugin/encodepanel.cpp \
+    encodeplugin/encodelistview.cpp \
+    encodeplugin/encodelistmodel.cpp \
+    encodeplugin/encodeitemdelegate.cpp
 
 RESOURCES += resources.qrc
 TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts
