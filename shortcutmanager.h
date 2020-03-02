@@ -22,8 +22,8 @@ public:
 
     QAction *addCustomCommand(QAction &action);
     void delCustomCommand(QAction *action);
-    void saveCustomCommandToConfig(QAction *action);
-    void delCUstomCommandToConfig(QAction *action);
+    void saveCustomCommandToConfig(QAction *action, int saveIndex);
+    int delCustomCommandToConfig(QAction *action);
     // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
 

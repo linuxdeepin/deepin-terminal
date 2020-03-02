@@ -131,7 +131,7 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
         }
         m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
     });
-    saveCustomCommandToConfig(addAction);
+    saveCustomCommandToConfig(addAction, -1);
     return addAction;
 }
 
@@ -151,7 +151,7 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
 
 void ShortcutManager::delCustomCommand(QAction *action)
 {
-    delCUstomCommandToConfig(action);
+    delCustomCommandToConfig(action);
 
     QString actionCmdName = action->text();
     QString actionCmdText = action->data().toString();
@@ -171,7 +171,7 @@ void ShortcutManager::delCustomCommand(QAction *action)
     }
 }
 
-void ShortcutManager::saveCustomCommandToConfig(QAction *action)
+void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists()) {
@@ -181,6 +181,9 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action)
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setDisableAutoSortSection(true);
+    if (saveIndex >= 0) {
+        commandsSettings.setOperationIndex(saveIndex);
+    }
     commandsSettings.beginGroup(action->text());
     commandsSettings.setValue("Command", action->data());
     QString tmp = action->shortcut().toString();
@@ -188,7 +191,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action)
     commandsSettings.endGroup();
 }
 
-void ShortcutManager::delCUstomCommandToConfig(QAction *action)
+int ShortcutManager::delCustomCommandToConfig(QAction *action)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists()) {
@@ -197,5 +200,7 @@ void ShortcutManager::delCUstomCommandToConfig(QAction *action)
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
-    commandsSettings.remove(action->text());
+    int removeIndex = commandsSettings.remove(action->text());
+
+    return removeIndex;
 }

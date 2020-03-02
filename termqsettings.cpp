@@ -925,6 +925,11 @@ void QSettingsPrivate::setDisableAutoSortSection(bool bDisableAutoSortSection)
     m_bDisableAutoSortSection = bDisableAutoSortSection;
 }
 
+void QSettingsPrivate::setOperationIndex(int operationIndex)
+{
+    m_operationIndex = operationIndex;
+}
+
 // ************************************************************************
 // QConfFileSettingsPrivate
 
@@ -1232,10 +1237,10 @@ QConfFileSettingsPrivate::~QConfFileSettingsPrivate()
     }
 }
 
-void QConfFileSettingsPrivate::remove(const QString &key)
+int QConfFileSettingsPrivate::remove(const QString &key)
 {
     if (confFiles.isEmpty())
-        return;
+        return -1;
 
     // Note: First config file is always the most specific.
     QConfFile *confFile = confFiles.at(0);
@@ -1259,6 +1264,9 @@ void QConfFileSettingsPrivate::remove(const QString &key)
     }
     if (confFile->originalKeys.contains(theKey))
         confFile->removedKeys.insert(theKey, QVariant());
+
+    int removeIndex = confFile->m_keyOrderList.indexOf(key);
+    return removeIndex;
 }
 
 void QConfFileSettingsPrivate::set(const QString &key, const QVariant &value)
@@ -1314,6 +1322,7 @@ QStringList QConfFileSettingsPrivate::children(const QString &prefix, ChildSpec 
     QSettingsKey thePrefix(prefix, caseSensitivity);
     int startPos = prefix.size();
 
+    QConfFile *currConfile = nullptr;
     for (auto confFile : qAsConst(confFiles)) {
         QMutexLocker locker(&confFile->mutex);
 
@@ -1337,6 +1346,7 @@ QStringList QConfFileSettingsPrivate::children(const QString &prefix, ChildSpec 
             ++j;
         }
 
+        currConfile = confFile;
         if (!fallbacks)
             break;
     }
@@ -1345,7 +1355,7 @@ QStringList QConfFileSettingsPrivate::children(const QString &prefix, ChildSpec 
                  result.end());
 
     if (m_bDisableAutoSortSection) {
-        return m_keyOrderList;
+        return currConfile->m_keyOrderList;
     } else {
         return result;
     }
@@ -1443,11 +1453,13 @@ void QConfFileSettingsPrivate::syncConfFile(QConfFile *confFile)
     bool mustReadFile = true;
     bool createFile = !fileInfo.exists();
 
-    if (!readOnly)
-        mustReadFile = (confFile->size != fileInfo.size()
-                        || (confFile->size != 0 && confFile->timeStamp != fileInfo.lastModified()));
+//    if (!readOnly)
+//        mustReadFile = (confFile->size != fileInfo.size()
+//                        || (confFile->size != 0 && confFile->timeStamp != fileInfo.lastModified()));
 
     if (mustReadFile) {
+        QList<QString> keyOrderList;
+
         confFile->unparsedIniSections.clear();
         confFile->originalKeys.clear();
 
@@ -1471,7 +1483,7 @@ void QConfFileSettingsPrivate::syncConfFile(QConfFile *confFile)
 #endif
             if (format <= QSettings::IniFormat) {
                 QByteArray data = file.readAll();
-                ok = readIniFile(data, &confFile->unparsedIniSections);
+                ok = readIniFile(data, &confFile->unparsedIniSections, keyOrderList);
             } else if (readFunc) {
                 QSettings::SettingsMap tempNewKeys;
                 ok = readFunc(file, tempNewKeys);
@@ -1492,6 +1504,8 @@ void QConfFileSettingsPrivate::syncConfFile(QConfFile *confFile)
 
         confFile->size = fileInfo.size();
         confFile->timeStamp = fileInfo.lastModified();
+        confFile->m_keyOrderList = keyOrderList;
+        m_keyOrderList = confFile->m_keyOrderList;
     }
 
     /*
@@ -1655,7 +1669,8 @@ break_out_of_outer_loop:
     most out of the file anyway.
 */
 bool QConfFileSettingsPrivate::readIniFile(const QByteArray &data,
-                                           UnparsedSettingsMap *unparsedIniSections)
+                                           UnparsedSettingsMap *unparsedIniSections,
+                                           QList<QString> &keyOrderList)
 {
 #define FLUSH_CURRENT_SECTION() \
     { \
@@ -1687,7 +1702,7 @@ bool QConfFileSettingsPrivate::readIniFile(const QByteArray &data,
     }
 #endif
 
-    m_keyOrderList.clear();
+    keyOrderList.clear();
     while (readIniLine(data, dataPos, lineStart, lineLen, equalsPos)) {
         char ch = data.at(lineStart);
         if (ch == '[') {
@@ -1704,7 +1719,7 @@ bool QConfFileSettingsPrivate::readIniFile(const QByteArray &data,
             }
 
             iniSection = iniSection.trimmed();
-            m_keyOrderList.append(QString(iniSection));
+            keyOrderList.append(QString(iniSection));
 
             if (qstricmp(iniSection.constData(), "general") == 0) {
                 currentSection.clear();
@@ -1869,7 +1884,13 @@ bool QConfFileSettingsPrivate::writeIniFile(QIODevice &device, const ParsedSetti
                 QString key = m_keyOrderList.at(i);
                 newSections.append(QSettingsIniKey(key, iniMap.value(key).position));
             }
-            newSections.append(QSettingsIniKey(newKey, iniMap.value(newKey).position));
+
+            if (m_operationIndex >= 0) {
+                newSections.insert(m_operationIndex, QSettingsIniKey(newKey, iniMap.value(newKey).position));
+            }
+            else {
+                newSections.append(QSettingsIniKey(newKey, iniMap.value(newKey).position));
+            }
         }
         else {
             for (int i = 0; i < m_keyOrderList.size(); i++) {
@@ -3294,7 +3315,7 @@ void QSettings::setValue(const QString &key, const QVariant &value)
 
     \sa setValue(), value(), contains()
 */
-void QSettings::remove(const QString &key)
+int QSettings::remove(const QString &key)
 {
     Q_D(QSettings);
     /*
@@ -3307,12 +3328,15 @@ void QSettings::remove(const QString &key)
     else
         theKey.prepend(d->groupPrefix);
 
+    int removeIndex = -1;
     if (theKey.isEmpty()) {
         d->clear();
     } else {
-        d->remove(theKey);
+        removeIndex = d->remove(theKey);
     }
     d->requestUpdate();
+
+    return removeIndex;
 }
 
 /*!
@@ -3611,6 +3635,12 @@ void QSettings::setDisableAutoSortSection(bool bDisableAutoSortSection)
 {
     Q_D(QSettings);
     d->setDisableAutoSortSection(bDisableAutoSortSection);
+}
+
+void QSettings::setOperationIndex(int operationIndex)
+{
+    Q_D(QSettings);
+    d->setOperationIndex(operationIndex);
 }
 
 QT_END_NAMESPACE

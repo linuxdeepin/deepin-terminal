@@ -169,7 +169,7 @@ public:
     void setValue(const QString &key, const QVariant &value);
     QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
 
-    void remove(const QString &key);
+    int remove(const QString &key);
     bool contains(const QString &key) const;
 
     void setFallbacksEnabled(bool b);
@@ -203,6 +203,8 @@ public:
     //set flag used to judge whether automatically sort by section key(dictionary order)
     //if don't set this flag, read/write ini file will automatically sort by section key
     void setDisableAutoSortSection(bool bDisableAutoSortSection);
+
+    void setOperationIndex(int operationIndex);
 
 protected:
 #ifndef QT_NO_QOBJECT

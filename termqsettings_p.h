@@ -167,6 +167,7 @@ public:
     ParsedSettingsMap originalKeys;
     ParsedSettingsMap addedKeys;
     ParsedSettingsMap removedKeys;
+    QList<QString> m_keyOrderList;
     QAtomicInt ref;
     QMutex mutex;
     bool userPerms;
@@ -197,7 +198,7 @@ public:
                      const QString &organization, const QString &application);
     virtual ~QSettingsPrivate();
 
-    virtual void remove(const QString &key) = 0;
+    virtual int remove(const QString &key) = 0;
     virtual void set(const QString &key, const QVariant &value) = 0;
     virtual bool get(const QString &key, QVariant *value) const = 0;
 
@@ -240,6 +241,7 @@ public:
     static QStringList splitArgs(const QString &s, int idx);
 
     void setDisableAutoSortSection(bool bDisableAutoSortSection);
+    void setOperationIndex(int operationIndex);
 
     QSettings::Format format;
     QSettings::Scope scope;
@@ -255,6 +257,7 @@ protected:
     bool atomicSyncOnly = true;
     mutable QSettings::Status status;
     bool m_bDisableAutoSortSection = false;
+    int m_operationIndex = -1;
 };
 
 class QConfFileSettingsPrivate : public QSettingsPrivate
@@ -265,7 +268,7 @@ public:
     QConfFileSettingsPrivate(const QString &fileName, QSettings::Format format);
     ~QConfFileSettingsPrivate();
 
-    void remove(const QString &key) override;
+    int remove(const QString &key) override;
     void set(const QString &key, const QVariant &value) override;
     bool get(const QString &key, QVariant *value) const override;
 
@@ -277,7 +280,8 @@ public:
     bool isWritable() const override;
     QString fileName() const override;
 
-    bool readIniFile(const QByteArray &data, UnparsedSettingsMap *unparsedIniSections);
+    bool readIniFile(const QByteArray &data, UnparsedSettingsMap *unparsedIniSections,
+                     QList<QString> &keyOrderList);
     static bool readIniSection(const QSettingsKey &section, const QByteArray &data,
                                ParsedSettingsMap *settingsMap, QTextCodec *codec);
     static bool readIniLine(const QByteArray &data, int &dataPos, int &lineStart, int &lineLen,

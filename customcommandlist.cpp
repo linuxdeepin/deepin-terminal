@@ -123,8 +123,8 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData
         newAction->setShortcut(newAction->shortcut());
         itemData.m_customCommandAction = newAction;
 
-        ShortcutManager::instance()->delCUstomCommandToConfig(curItemAction);
-        ShortcutManager::instance()->saveCustomCommandToConfig(itemData.m_customCommandAction);
+        int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(curItemAction);
+        ShortcutManager::instance()->saveCustomCommandToConfig(itemData.m_customCommandAction, deleteIndex);
 
         m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData));
     } else {

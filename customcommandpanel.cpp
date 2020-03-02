@@ -37,7 +37,7 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             existAction->data() = newAction->data();
             existAction->setShortcut(newAction->shortcut());
 //            m_cmdListWidget->refreshOneRowCommandInfo(existAction);
-            ShortcutManager::instance()->saveCustomCommandToConfig(existAction);
+            ShortcutManager::instance()->saveCustomCommandToConfig(existAction, -1);
         }
     }
 }
