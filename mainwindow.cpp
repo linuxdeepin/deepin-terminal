@@ -867,6 +867,20 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         /********************* Modify by n014361 wangpeili End ************************/
     }
 
+    if (event->type() == QEvent::Enter) {
+        if (enterSzCommand) {
+            executeDownloadFile();
+            enterSzCommand = false;
+        }
+    }
+    //"ctrl+c" and "ctrl+d"?
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if ((keyEvent->modifiers() == Qt::ControlModifier) && (event->KeyPress == Qt::Key_C || event->KeyPress == Qt::Key_D)) {
+            enterSzCommand = false;
+        }
+    }
+
     return QObject::eventFilter(watched, event);
 }
 
@@ -1065,6 +1079,8 @@ void MainWindow::remoteDownloadFile()
     if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
         QString strTxt = "read -e -a files -p \"" + tr("Type path to download file: ") + "\"; sz \"${files[@]}\"\n";
         currentTab()->sendTextToCurrentTerm(strTxt);
+        sleep(100);
+        enterSzCommand = true;
     }
 }
 
@@ -1080,9 +1096,9 @@ void MainWindow::executeDownloadFile()
     QString strRz = "rz\n";
     currentTab()->sendTextToCurrentTerm(strRz);
     //if need?
-    //sleep(500);
-    //QString strEnter = "\n";
-    //currentTab()->sendTextToCurrentTerm(strEnter);
+    sleep(500);
+    QString strEnter = "\n";
+    currentTab()->sendTextToCurrentTerm(strEnter);
     downloadFilePath = "";
 }
 

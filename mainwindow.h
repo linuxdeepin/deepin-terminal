@@ -126,6 +126,7 @@ private:
     QMap<QString, QShortcut *> m_BuiltInShortcut;
     /********************* Modify by n014361 wangpeili End ************************/
     QString downloadFilePath = "";
+    bool enterSzCommand = false;
 };
 
 #endif  // MAINWINDOW_H
