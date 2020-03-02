@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QSETTINGS_H
-#define QSETTINGS_H
+#ifndef TERM_QSETTINGS_H
+#define TERM_QSETTINGS_H
 
 #include <QtCore/qobject.h>
 #include <QtCore/qvariant.h>
@@ -57,6 +57,9 @@ QT_BEGIN_NAMESPACE
 #ifdef Status // we seem to pick up a macro Status --> int somewhere
 #undef Status
 #endif
+
+#define QSettings TermQSettings
+#define QSettingsPrivate TermQSettingsPrivate
 
 class QIODevice;
 class QSettingsPrivate;
@@ -215,4 +218,4 @@ QT_END_NAMESPACE
 
 #endif // QT_NO_SETTINGS
 
-#endif // QSETTINGS_H
+#endif // TERM_QSETTINGS_H

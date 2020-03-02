@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QSETTINGS_P_H
-#define QSETTINGS_P_H
+#ifndef TERM_QSETTINGS_P_H
+#define TERM_QSETTINGS_P_H
 
 //
 //  W A R N I N G
@@ -301,8 +301,9 @@ private:
     QString extension;
     Qt::CaseSensitivity caseSensitivity;
     int nextPosition;
+    QList<QString> m_keyOrderList;
 };
 
 QT_END_NAMESPACE
 
-#endif // QSETTINGS_P_H
+#endif // TERM_QSETTINGS_P_H

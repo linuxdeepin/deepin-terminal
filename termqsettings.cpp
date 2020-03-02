@@ -117,8 +117,6 @@ using namespace ABI::Windows::Storage;
 
 QT_BEGIN_NAMESPACE
 
-static QList<QString> s_keyOrderList;
-
 struct QConfFileCustomFormat
 {
     QString extension;
@@ -1347,7 +1345,7 @@ QStringList QConfFileSettingsPrivate::children(const QString &prefix, ChildSpec 
                  result.end());
 
     if (m_bDisableAutoSortSection) {
-        return s_keyOrderList;
+        return m_keyOrderList;
     } else {
         return result;
     }
@@ -1689,8 +1687,7 @@ bool QConfFileSettingsPrivate::readIniFile(const QByteArray &data,
     }
 #endif
 
-    s_keyOrderList.clear();
-
+    m_keyOrderList.clear();
     while (readIniLine(data, dataPos, lineStart, lineLen, equalsPos)) {
         char ch = data.at(lineStart);
         if (ch == '[') {
@@ -1707,7 +1704,7 @@ bool QConfFileSettingsPrivate::readIniFile(const QByteArray &data,
             }
 
             iniSection = iniSection.trimmed();
-            s_keyOrderList.append(QString(iniSection));
+            m_keyOrderList.append(QString(iniSection));
 
             if (qstricmp(iniSection.constData(), "general") == 0) {
                 currentSection.clear();
@@ -1860,22 +1857,29 @@ bool QConfFileSettingsPrivate::writeIniFile(QIODevice &device, const ParsedSetti
 
     if (m_bDisableAutoSortSection) {
         QString newKey("");
-        for (i = iniMap.constBegin(); i != iniMap.constEnd(); ++i) {
-            if (!s_keyOrderList.contains(i.key())) {
-                newKey = i.key();
+
+        QVector<QSettingsIniKey> newSections;
+        if (iniMap.keys().size() > m_keyOrderList.size()) {
+            for (i = iniMap.constBegin(); i != iniMap.constEnd(); ++i) {
+                if (!m_keyOrderList.contains(i.key())) {
+                    newKey = i.key();
+                }
+            }
+            for (int i = 0; i < m_keyOrderList.size(); i++) {
+                QString key = m_keyOrderList.at(i);
+                newSections.append(QSettingsIniKey(key, iniMap.value(key).position));
+            }
+            newSections.append(QSettingsIniKey(newKey, iniMap.value(newKey).position));
+        }
+        else {
+            for (int i = 0; i < m_keyOrderList.size(); i++) {
+                QString key = m_keyOrderList.at(i);
+                newSections.append(QSettingsIniKey(key, iniMap.value(key).position));
             }
         }
 
-        QVector<QSettingsIniKey> newSections;
-        for(int i=0;i<s_keyOrderList.size();i++) {
-            QString key = s_keyOrderList.at(i);
-            newSections.append(QSettingsIniKey(key, iniMap.value(key).position));
-        }
-        newSections.append(QSettingsIniKey(newKey, iniMap.value(newKey).position));
-
         sections = newSections;
-    }
-    else {
+    } else {
         for (i = iniMap.constBegin(); i != iniMap.constEnd(); ++i)
             sections.append(QSettingsIniKey(i.key(), i.value().position));
         std::sort(sections.begin(), sections.end());
@@ -3606,8 +3610,7 @@ QSettings::Format QSettings::registerFormat(const QString &extension, ReadFunc r
 void QSettings::setDisableAutoSortSection(bool bDisableAutoSortSection)
 {
     Q_D(QSettings);
-    m_bDisableAutoSortSection = bDisableAutoSortSection;
-    d->setDisableAutoSortSection(m_bDisableAutoSortSection);
+    d->setDisableAutoSortSection(bDisableAutoSortSection);
 }
 
 QT_END_NAMESPACE

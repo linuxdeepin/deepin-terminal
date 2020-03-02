@@ -50,7 +50,7 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
         return actionList;
     }
 
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setDisableAutoSortSection(true);
     QStringList commandGroups = commandsSettings.childGroups();
     // qDebug() << commandGroups.size() << endl;
@@ -179,7 +179,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setDisableAutoSortSection(true);
     commandsSettings.beginGroup(action->text());
     commandsSettings.setValue("Command", action->data());
@@ -196,6 +196,6 @@ void ShortcutManager::delCUstomCommandToConfig(QAction *action)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.remove(action->text());
 }
