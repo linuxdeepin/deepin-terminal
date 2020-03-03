@@ -92,15 +92,8 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
             painter->drawPixmap(editIconRect, editIconPixmap);
         }
 
-        QString strCmdName = "";
-        QString strCmdShortcut = "";
-        QAction *customCommandAction = itemData.m_customCommandAction;
-        if (customCommandAction) {
-            QString strCommad = customCommandAction->data().toString();
-            QKeySequence keyseq = customCommandAction->shortcut();
-            strCmdName = customCommandAction->text();
-            strCmdShortcut = keyseq.toString();
-        }
+        QString strCmdName = itemData.m_cmdName;
+        QString strCmdShortcut = itemData.m_cmdShortcut;
 
         int labelHeight = 35;
         QRect cmdNameRect = QRect(bgRect.left() + cmdIconSize + 5, bgRect.top() + 5, bgRect.width() - cmdIconSize - editIconSize, labelHeight);

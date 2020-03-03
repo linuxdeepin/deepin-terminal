@@ -19,15 +19,8 @@ class CustomCommandItemModel : public QSortFilterProxyModel
 public:
     CustomCommandItemModel(QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
     void initCommandListData(const QList<CustomCommandItemData> &cmdListData);
     void addNewCommandData(const CustomCommandItemData itemData);
-
-private:
-
-    QList<CustomCommandItemData> m_cmdListData;
 };
 
 #endif // CUSTOMCOMMANDITEMMODEL_H

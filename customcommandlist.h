@@ -35,7 +35,7 @@ signals:
     void itemClicked(CustomCommandItemData itemData, QModelIndex modelIndex);
 
 private slots:
-    void handleModifyCustomCommand(CustomCommandItemData itemData, QModelIndex modelIndex);
+    void handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex);
 
 private:
     void initData();

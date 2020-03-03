@@ -13,6 +13,7 @@ CustomCommandList::CustomCommandList(QWidget *parent) : DListView(parent)
 {
     setBackgroundRole(QPalette::NoRole);
     setAutoFillBackground(false);
+    setUpdatesEnabled(true);
 
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -21,7 +22,7 @@ CustomCommandList::CustomCommandList(QWidget *parent) : DListView(parent)
 
 void CustomCommandList::initData()
 {
-    m_cmdListModel = new QStandardItemModel();
+    m_cmdListModel = new QStandardItemModel;
     m_cmdProxyModel = new CustomCommandItemModel(this);
     m_cmdProxyModel->setSourceModel(m_cmdListModel);
     m_cmdProxyModel->setFilterRole(Qt::UserRole);
@@ -34,11 +35,11 @@ void CustomCommandList::initData()
 
 void CustomCommandList::refreshCommandListData(const QString &strFilter)
 {
-    qDebug() << __FUNCTION__ << strFilter;
     m_cmdListModel->clear();
     m_cmdItemDataList.clear();
 
     QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
+    qDebug() << __FUNCTION__ << strFilter  << " : " << customCommandActionList.size();
 
     if (strFilter.isEmpty()) {
         for (int i = 0; i < customCommandActionList.size(); i++) {
@@ -101,21 +102,14 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
     m_cmdProxyModel->addNewCommandData(itemData);
 }
 
-void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData, QModelIndex modelIndex)
+void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex)
 {
     QAction *curItemAction = itemData.m_customCommandAction;
-    qDebug() << "old name:" << itemData.m_cmdName;
-    qDebug() << "old cmd:" << itemData.m_cmdText;
-    qDebug() << "old shortcut:" << itemData.m_cmdShortcut;
-    qDebug() << "old action:" << itemData.m_customCommandAction;
-
     CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, curItemAction, this);
     if (dlg.exec() == QDialog::Accepted) {
         QAction *newAction = dlg.getCurCustomCmd();
         QString strActionShortcut = newAction->shortcut().toString(QKeySequence::NativeText);
 
-        qDebug() << "strActionShortcut:" << strActionShortcut;
-        qDebug() << "newAction:" << newAction;
         itemData.m_cmdName = newAction->text();
         itemData.m_cmdText = newAction->data().toString();
         itemData.m_cmdShortcut = newAction->shortcut().toString();
@@ -125,8 +119,6 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData
 
         int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(curItemAction);
         ShortcutManager::instance()->saveCustomCommandToConfig(itemData.m_customCommandAction, deleteIndex);
-
-        m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData));
     } else {
 
         //Delete custom command
@@ -136,8 +128,8 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData
             dlg.setTipInfo(tr("Do you sure to delete the %1").arg(curItemAction->text()));
             dlg.exec();
             if (dlg.getConfirmResult() == QDialog::Accepted) {
-                removeCommandItem(modelIndex);
                 ShortcutManager::instance()->delCustomCommand(curItemAction);
+                removeCommandItem(modelIndex);
                 emit listItemCountChange();
             }
         }
@@ -146,7 +138,13 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData itemData
 
 void CustomCommandList::removeCommandItem(QModelIndex modelIndex)
 {
-    m_cmdProxyModel->removeRow(modelIndex.row());
+    Q_UNUSED(modelIndex)
+    if (m_cmdListModel && m_cmdListModel->rowCount() == 0) {
+        return;
+    }
+
+//    m_cmdProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
+    refreshCommandListData("");
 }
 
 int CustomCommandList::getItemRow(CustomCommandItemData itemData)
@@ -183,7 +181,11 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
 
     DListView::mousePressEvent(event);
 
-    if (m_cmdProxyModel && m_cmdProxyModel->rowCount() == 0) {
+    if (m_cmdListModel && m_cmdListModel->rowCount() == 0) {
+        return;
+    }
+
+    if (!m_cmdProxyModel) {
         return;
     }
 
@@ -197,14 +199,15 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     }
 
     CustomCommandItemData itemData =
-        qvariant_cast<CustomCommandItemData>(m_cmdProxyModel->data(modelIndex, Qt::DisplayRole));
+        qvariant_cast<CustomCommandItemData>(m_cmdProxyModel->data(modelIndex));
 
     if (getModifyIconRect(rect).contains(clickPoint)) {
         handleModifyCustomCommand(itemData, modelIndex);
+
+        m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     } else {
         emit itemClicked(itemData, modelIndex);
     }
-    m_cmdListModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 }
 
 void CustomCommandList::mouseReleaseEvent(QMouseEvent *event)

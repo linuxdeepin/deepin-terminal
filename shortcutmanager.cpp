@@ -138,10 +138,8 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
 QAction *ShortcutManager::checkActionIsExist(QAction &action)
 {
     QString strNewActionName = action.text();
-    qDebug() << "strNewActionName" << strNewActionName << endl;
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList[i];
-        qDebug() << "currAction->text()" << currAction->text() << endl;
         if (strNewActionName == currAction->text()) {
             return currAction;
         }
@@ -189,6 +187,15 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     QString tmp = action->shortcut().toString();
     commandsSettings.setValue("Shortcut", action->shortcut().toString());
     commandsSettings.endGroup();
+
+    qDebug() << "saveIndex:" << saveIndex;
+    if (saveIndex >= 0) {
+        QAction *saveAction = new QAction;
+        saveAction->setText(action->text());
+        saveAction->setData(action->data());
+        saveAction->setShortcut(action->shortcut());
+        m_customCommandActionList[saveIndex] = saveAction;
+    }
 }
 
 int ShortcutManager::delCustomCommandToConfig(QAction *action)
