@@ -35,15 +35,14 @@ public:
     CustomTabStyle(const QString &key);
     virtual ~CustomTabStyle();
 
-    void setTabColor(const QColor &color);
+    void setTabTextColor(const QColor &color);
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
 
     QSize sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const;
     void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
 private:
     int m_tabCount;
-    QColor m_tabColor;
-
+    QColor m_tabTextColor;
     QMap<int,int> m_tabStatusMap;
 };
 
@@ -102,8 +101,8 @@ public:
     QString tabText(int index) const;
     void setTabText(int index, const QString &text);
 
-    //set tab label's background color
-    void setTabColor(int index, const QColor &color);
+    //set tab label's title color
+    void setTabTextColor(int index, const QColor &color);
     void setClearTabColor(int index);
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
 
@@ -317,7 +316,7 @@ public:
     int tabInsertIndexFromMouse(QPoint pos);
 
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
-    void setTabColor(int index, const QColor &color);
+    void setTabTextColor(int index, const QColor &color);
     void setClearTabColor(int index);
 
     void startMove(int index);

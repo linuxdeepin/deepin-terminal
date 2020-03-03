@@ -189,7 +189,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         } else {
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
-            m_tabbar->setTabColor(tabIndex, pa.color(DPalette::TextWarning));
+            m_tabbar->setTabTextColor(tabIndex, pa.color(DPalette::Highlight));
         }
     });
 
@@ -254,7 +254,7 @@ void MainWindow::updateTabStatus()
             } else {
                 DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
                 DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                m_tabbar->setTabColor(currIndex, pa.color(DPalette::TextWarning));
+                m_tabbar->setTabTextColor(currIndex, pa.color(DPalette::Highlight));
             }
         }
     }

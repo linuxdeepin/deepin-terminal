@@ -35,9 +35,9 @@ CustomTabStyle::~CustomTabStyle()
 {
 }
 
-void CustomTabStyle::setTabColor(const QColor &color)
+void CustomTabStyle::setTabTextColor(const QColor &color)
 {
-    m_tabColor = color;
+    m_tabTextColor = color;
 }
 
 void CustomTabStyle::setTabStatusMap(const QMap<int,int> &tabStatusMap)
@@ -65,28 +65,28 @@ void CustomTabStyle::drawControl(ControlElement element, const QStyleOption *opt
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
 
+            painter->save();
             if (m_tabStatusMap.value(tab->row))
             {
                 if (tab->state & QStyle::State_Selected)
                 {
+                    painter->setPen(pa.color(DPalette::HighlightedText));
                 }
                 else if(tab->state & QStyle::State_MouseOver)
                 {
+                    painter->setPen(m_tabTextColor);
                 }
                 else
                 {
-                    painter->save();
-                    painter->setBrush(QBrush(m_tabColor));
-                    painter->drawRoundedRect(tab->rect, 8, 8);
-                    painter->restore();
+                    painter->setPen(m_tabTextColor);
                 }
             }
 
             QTextOption option;
             option.setAlignment(Qt::AlignCenter);
             painter->setFont(QFont());
-            painter->setPen(pa.color(DPalette::TextTitle));
             painter->drawText(tab->rect, tab->text, option);
+            painter->restore();
             return;
         }
     }
@@ -748,12 +748,12 @@ int DTabBarPrivate::tabInsertIndexFromMouse(QPoint pos)
     }
 }
 
-void DTabBarPrivate::setTabColor(int index, const QColor &color)
+void DTabBarPrivate::setTabTextColor(int index, const QColor &color)
 {
     m_tabStatusMap.insert(index, 1);
 
     CustomTabStyle *style = qobject_cast<CustomTabStyle *>(this->style());
-    style->setTabColor(color);
+    style->setTabTextColor(color);
     style->setTabStatusMap(m_tabStatusMap);
     this->style()->polish(this);
 }
@@ -1489,9 +1489,9 @@ void DTabBar::setTabText(int index, const QString &text)
 /*!
  * \~chinese \brief 设置标签索引位置背景颜色
  */
-void DTabBar::setTabColor(int index, const QColor &color)
+void DTabBar::setTabTextColor(int index, const QColor &color)
 {
-    d_func()->setTabColor(index, color);
+    d_func()->setTabTextColor(index, color);
 }
 
 void DTabBar::setClearTabColor(int index)
@@ -1594,7 +1594,7 @@ void DTabBar::setTabData(int index, const QVariant &data)
             }
         }
     }
-    
+
     d_func()->setTabData(index, data);
 }
 

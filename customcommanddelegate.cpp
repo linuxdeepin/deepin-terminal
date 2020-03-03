@@ -28,6 +28,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         CustomCommandItemData itemData = varDisplay.value<CustomCommandItemData>();
 
+        QStyleOptionViewItem viewOption(option);  //用来在视图中画一个item
         DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
                                   ? DPalette::Normal : DPalette::Disabled;
         if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
@@ -43,6 +44,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         QPainterPath path;
         int cornerSize = 16;
         int arcRadius = 8;
+
         path.moveTo(bgRect.left() + arcRadius, bgRect.top());
         path.arcTo(bgRect.left(), bgRect.top(), cornerSize, cornerSize, 90.0, 90.0);
         path.lineTo(bgRect.left(), bgRect.bottom() - arcRadius);
@@ -52,11 +54,20 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         path.lineTo(bgRect.right(), bgRect.top() + arcRadius);
         path.arcTo(bgRect.right() - cornerSize, bgRect.top(), cornerSize, cornerSize, 0.0, 90.0);
 
-        DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
-        DStyleHelper styleHelper;
-        QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
-        painter->setBrush(QBrush(fillColor));
-        painter->fillPath(path, fillColor);
+        if (option.state & QStyle::State_MouseOver) {
+            DStyleHelper styleHelper;
+            QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
+            fillColor.setAlphaF(0.3);
+            painter->setBrush(QBrush(fillColor));
+            painter->fillPath(path, fillColor);
+        }
+        else {
+            DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+            DStyleHelper styleHelper;
+            QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
+            painter->setBrush(QBrush(fillColor));
+            painter->fillPath(path, fillColor);
+        }
 
         int cmdIconSize = 44;
         int editIconSize = 20;
@@ -73,11 +84,13 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
                                   cmdIconSize, cmdIconSize);
         painter->drawPixmap(cmdIconRect, cmdIconPixmap);
 
-        QString strEditIconSrc = QString(":/images/buildin/%1/edit.svg").arg(themeType);
-        QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
-        QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
-                                   editIconSize, editIconSize);
-        painter->drawPixmap(editIconRect, editIconPixmap);
+        if (option.state & QStyle::State_MouseOver) {
+            QString strEditIconSrc = QString(":/images/buildin/%1/edit.svg").arg(themeType);
+            QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
+            QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
+                                       editIconSize, editIconSize);
+            painter->drawPixmap(editIconRect, editIconPixmap);
+        }
 
         QString strCmdName = "";
         QString strCmdShortcut = "";
