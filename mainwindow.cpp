@@ -757,6 +757,8 @@ void MainWindow::initConnections()
 {
     connect(Settings::instance(), &Settings::windowSettingChanged, this, &MainWindow::onWindowSettingChanged);
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
+
+    connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
 }
 
 void MainWindow::initTitleBar()
@@ -788,7 +790,14 @@ void MainWindow::initTitleBar()
         titlebar()->setTitle("");
     }
 
-    connect(m_tabbar, &DTabBar::tabFull, this, [ = ]() { qDebug() << "tab is full"; });
+    connect(m_tabbar, &DTabBar::tabFull, this, [ = ]() {
+        qDebug() << "tab is full";
+
+        TermWidgetPage *tabPage = currentTab();
+        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+        QString currWorkingDir = termWidgetWapper->workingDirectory();
+        emit newWindowRequest(currWorkingDir);
+    });
 
     connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
 
@@ -849,6 +858,16 @@ void MainWindow::initTitleBar()
     });
 
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
+}
+
+void MainWindow::onCreateNewWindow(QString workingDir)
+{
+    qDebug() << "************************workingDir:" << workingDir << endl;
+    TermProperties properties;
+    properties.setWorkingDir(workingDir);
+    MainWindow *window = new MainWindow(properties);
+    window->setQuakeWindow(false);
+    window->show();
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)

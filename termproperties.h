@@ -22,6 +22,9 @@ public:
 
     bool contains(TermProperty propertyType) const;
 
+    void setTermPropertyMap(QMap<TermProperty, QVariant> list);
+    void setWorkingDir(QString workingDir);
+
     QVariant &operator[](const TermProperty &key);
     const QVariant operator[](const TermProperty &key) const;
 

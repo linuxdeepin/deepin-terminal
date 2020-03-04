@@ -62,6 +62,9 @@ public:
     QString showFileDailog(bool isDir);
     void pressCtrlAt();
     void sleep(unsigned int msec);
+signals:
+    void newWindowRequest(const QString &directory);
+
 public slots:
     // void onSettingValueChanged(const int &keyIndex, const QVariant &value);
     void onWindowSettingChanged(const QString &keyName);
@@ -78,6 +81,7 @@ protected:
 protected slots:
     void onTermTitleChanged(QString title);
     void onTabTitleChanged(QString title);
+    void onCreateNewWindow(QString workingDir);
 
 private:
     void initUI();

@@ -16,6 +16,16 @@ TermProperties::TermProperties(QMap<TermProperty, QVariant> list)
     m_properties = list;
 }
 
+void TermProperties::setWorkingDir(QString workingDir)
+{
+    m_properties.insert(WorkingDir, workingDir);
+}
+
+void TermProperties::setTermPropertyMap(QMap<TermProperty, QVariant> list)
+{
+    m_properties = list;
+}
+
 bool TermProperties::contains(TermProperty propertyType) const
 {
     return m_properties.contains(propertyType);
