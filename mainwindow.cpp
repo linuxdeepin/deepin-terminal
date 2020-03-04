@@ -463,8 +463,23 @@ void MainWindow::initWindow()
     connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() { switchFullscreen(); });
 
     QSettings settings("blumia", "dterm");
-    const QString &windowState =
+
+    QString windowState =
         Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
+    if (m_properties.contains(StartWindowState)) {
+        QString state = m_properties[StartWindowState].toString();
+        qDebug() << "use line state set:" << state;
+        if (state == "maximize") {
+            windowState = "window_maximum";
+        } else if (state == "halfscreen") {
+            windowState = "Halfscreen";
+        } else if ((state == "fullscreen") || (state == "normal")) {
+            windowState = state;
+        } else {
+            qDebug() << "error line state set:" << state << "ignore it!";
+        }
+    }
+
     // init window state.
     if (windowState == "window_maximum") {
         showMaximized();

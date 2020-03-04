@@ -8,7 +8,10 @@ enum TermProperty
     WorkingDir,
     ColorScheme,
     ShellProgram,
-    Execute
+    Execute,
+    StartWindowState,
+    KeepOpen,
+    Script
 };
 
 class TermProperties

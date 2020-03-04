@@ -18,19 +18,8 @@ TermArgumentParser::~TermArgumentParser()
 {
 }
 
-bool TermArgumentParser::parseArguments(MainWindow *mainWindow)
+bool TermArgumentParser::parseArguments(MainWindow *mainWindow, bool isQuakeMode)
 {
-    qDebug() << "app arguments:" << qApp->arguments();
-    m_mainWindow = mainWindow;
-
-    // quakeModeOption用于判断是否为雷神窗口
-    const QString quakeModeOption = "--quake-mode";
-
-    bool isQuakeMode = false;
-    if (qApp->arguments().length() > 1 && quakeModeOption == qApp->arguments().value(1)) {
-        isQuakeMode = true;
-    }
-
     if (isQuakeMode) {
         bool isDBusRegSuccess = initDBus();
         if (!isDBusRegSuccess) {

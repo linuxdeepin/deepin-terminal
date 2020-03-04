@@ -15,7 +15,7 @@ public:
     ~TermArgumentParser() override;
 
     bool initDBus();
-    bool parseArguments(MainWindow *mainWindow);
+    bool parseArguments(MainWindow *mainWindow, bool isQuakeMode);
 
     void showOrHideQuakeTerminal();
 

@@ -35,6 +35,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     // theme
     setColorScheme(Settings::instance()->colorScheme());
+
+    /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
+    setAutoClose(!properties.contains(KeepOpen));
+    /********************* Modify by n014361 wangpeili End ************************/
+
+    // WorkingDir
     if (properties.contains(WorkingDir)) {
         setWorkingDirectory(properties[WorkingDir].toString());
     }
@@ -109,6 +115,17 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     connect(this, &TermWidget::isTermIdle, this, &TermWidget::handleTermIdle);
 
     startShellProgram();
+
+    // 增加可以自动运行脚本的命令，不需要的话，可以删除
+    if (properties.contains(Script)) {
+        QString args = properties[Script].toString();
+        qDebug()<<"run cmd:"<<args;
+        args.append("\n");
+        if(!properties.contains(KeepOpen)){
+            args.append("exit\n");
+        }
+        sendText(args);
+    }
 }
 
 void TermWidget::handleTermIdle(bool bIdle)
