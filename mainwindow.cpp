@@ -817,11 +817,30 @@ void MainWindow::initTitleBar()
 
     connect(m_tabbar, &TabBar::closeTabs, this, [ = ](QList<QString> closeTabIdList) {
 
+        QMap<QString, TermWidgetPage*> pageMap;
+        for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+            TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+            pageMap.insert(tabPage->identifier(), tabPage);
+        }
+
         for (int i = 0; i < closeTabIdList.size(); i++) {
             QString tabIdentifier = closeTabIdList.at(i);
-            m_tabbar->removeTab(tabIdentifier);
 
-            TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+            TermWidgetPage *tabPage = pageMap.value(tabIdentifier);
+            if (tabPage) {
+                TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+                if (termWidgetWapper->hasRunningProcess() && !showExitConfirmDialog()) {
+                    qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+                    return;
+                }
+            }
+        }
+
+        for (int i = 0; i < closeTabIdList.size(); i++) {
+
+            QString tabIdentifier = closeTabIdList.at(i);
+            TermWidgetPage *tabPage = pageMap.value(tabIdentifier);
+            m_tabbar->removeTab(tabIdentifier);
             if (tabPage && tabPage->identifier() == tabIdentifier) {
                 m_termStackWidget->removeWidget(tabPage);
                 delete tabPage;

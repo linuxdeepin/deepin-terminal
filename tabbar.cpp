@@ -89,9 +89,6 @@ void TabBar::closeOtherTabsExceptCurrent(int tabIndex)
     if (this->count() < 2) {
         return;
     }
-    qDebug() << "start close action";
-    qDebug() << "currIndex" << tabIndex << endl;
-    qDebug() << "total count: " << this->count();
 
     QList<QString> closeTabIdList;
     for (int i = 0; i < this->count(); i++) {
@@ -99,7 +96,6 @@ void TabBar::closeOtherTabsExceptCurrent(int tabIndex)
             closeTabIdList.append(identifier(i));
         }
     }
-    qDebug() << "closeTabIdList: " << closeTabIdList;
 
     emit closeTabs(closeTabIdList);
 }
