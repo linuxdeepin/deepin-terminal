@@ -1,5 +1,8 @@
 # User config
 *.user
+moc_*.h
+moc_*.cpp
+*.moc
 build/
 .vscode/
 build-*/

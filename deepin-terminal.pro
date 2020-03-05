@@ -49,7 +49,6 @@ HEADERS += \
     customcommandpanel.h \
     customcommandlist.h \
     customcommandoptdlg.h \
-    customcommanditem.h \
     myiconbutton.h \
     customcommandsearchrstpanel.h \
     commonpanel.h \
@@ -102,7 +101,6 @@ SOURCES += \
     customcommandpanel.cpp \
     customcommandlist.cpp \
     customcommandoptdlg.cpp \
-    customcommanditem.cpp \
     myiconbutton.cpp \
     customcommandsearchrstpanel.cpp \
     commonpanel.cpp \
