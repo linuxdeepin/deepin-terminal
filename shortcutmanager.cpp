@@ -7,6 +7,9 @@
 #include "termqsettings.h"
 #include <QStandardPaths>
 #include <QDebug>
+#include <QTextCodec>
+
+#define INI_FILE_CODEC QTextCodec::codecForName("UTF-8")
 
 // this class only provided for convenience, do not do anything in the construct function,
 // let the caller decided when to create the shortcuts.
@@ -51,6 +54,7 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
     }
 
     TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    commandsSettings.setIniCodec(INI_FILE_CODEC);
     commandsSettings.setDisableAutoSortSection(true);
     QStringList commandGroups = commandsSettings.childGroups();
     // qDebug() << commandGroups.size() << endl;
@@ -109,7 +113,7 @@ QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
 
 QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 {
-    qDebug() << __FUNCTION__ << m_customCommandActionList.size();
+    qDebug() << __FUNCTION__ << m_customCommandActionList;
     return m_customCommandActionList;
 }
 
@@ -178,6 +182,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    commandsSettings.setIniCodec(INI_FILE_CODEC);
     commandsSettings.setDisableAutoSortSection(true);
     if (saveIndex >= 0) {
         commandsSettings.setOperationIndex(saveIndex);
@@ -207,6 +212,7 @@ int ShortcutManager::delCustomCommandToConfig(QAction *action)
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    commandsSettings.setIniCodec(INI_FILE_CODEC);
     int removeIndex = commandsSettings.remove(action->text());
 
     return removeIndex;

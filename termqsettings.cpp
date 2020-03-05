@@ -542,19 +542,11 @@ void QSettingsPrivate::iniEscapedKey(const QString &key, QByteArray &result)
             result += '\\';
         } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')
                 || ch == '_' || ch == '-' || ch == '.') {
-            result += (char)ch;
+            result += static_cast<char>(ch);
         } else if (ch <= 0xFF) {
-            result += '%';
-            result += hexDigits[ch / 16];
-            result += hexDigits[ch % 16];
+            result += QChar(ch);
         } else {
-            result += "%U";
-            QByteArray hexCode;
-            for (int i = 0; i < 4; ++i) {
-                hexCode.prepend(hexDigits[ch % 16]);
-                ch >>= 4;
-            }
-            result += hexCode;
+            result += QChar(ch);
         }
     }
 }
@@ -1731,6 +1723,11 @@ bool QConfFileSettingsPrivate::readIniFile(const QByteArray &data,
                     iniUnescapedKey(iniSection, 0, iniSection.size(), currentSection);
                 }
                 currentSection += QLatin1Char('/');
+                QTextCodec *codec = QTextCodec::codecForName("utf-8");
+                if (codec)
+                {
+                    currentSection =  codec->toUnicode(currentSection.toLatin1());
+                }
             }
             currentSectionStart = dataPos;
         }
