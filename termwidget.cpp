@@ -182,7 +182,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addAction(tr("Split &Vertically"), this, [this] { emit termRequestSplit(Qt::Vertical); });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->currentTerminal()->close(); });
+    menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->closeSplit(((TermWidgetPage *)m_Page)->currentTerminal());});
+    //menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
     if (((TermWidgetPage *)m_Page)->getTerminalCount() > 1) {
         menu.addAction(
             tr("Close &Other &Window"), this, [this] { ((TermWidgetPage *)m_Page)->closeOtherTerminal(); });

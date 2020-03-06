@@ -598,10 +598,13 @@ QString Session::profileKey() const
 
 void Session::done(int exitStatus)
 {
-    if ((_autoClose || _wantedClose) && (exitStatus == 0)) {
+    qDebug()<<"done exitStatus:"<<exitStatus<< _shellProcess->exitStatus();
+    if (_autoClose || _wantedClose) {
         emit finished();
+        return;
     }
-    else {
+    if(exitStatus != 0)
+    {
         QString message;
         QString infoText;
         if (exitStatus == -1){
