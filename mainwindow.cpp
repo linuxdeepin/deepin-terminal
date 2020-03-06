@@ -15,6 +15,7 @@
 #include "customcommandplugin.h"
 #include "remotemanagementplugn.h"
 #include "serverconfigmanager.h"
+#include "utils.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -197,24 +198,13 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::termRequestDownloadFile, this, &MainWindow::remoteDownloadFile);
 }
 
-bool showExitConfirmDialog()
-{
-    OperationConfirmDlg optDlg;
-    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
-    optDlg.setTipInfo(QObject::tr("Are you sure you want to exit?"));
-    optDlg.setOKCancelBtnText(QObject::tr("Exit"), QObject::tr("Cancel"));
-    optDlg.exec();
-
-    return (optDlg.getConfirmResult() == QDialog::Accepted);
-}
-
 void MainWindow::closeTab(const QString &identifier)
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
             TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-            if (termWidgetWapper->hasRunningProcess() && !showExitConfirmDialog()) {
+            if (termWidgetWapper->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
                 qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
                 return;
             }
@@ -344,7 +334,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
     settings.setValue("windowState", saveState());
     bool hasRunning = closeProtect();
-    if (hasRunning && !showExitConfirmDialog()) {
+    if (hasRunning && !Utils::showExitConfirmDialog()) {
         qDebug() << "close window protect..." << endl;
         event->ignore();
         return;
@@ -853,7 +843,7 @@ void MainWindow::initTitleBar()
             TermWidgetPage *tabPage = pageMap.value(tabIdentifier);
             if (tabPage) {
                 TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-                if (termWidgetWapper->hasRunningProcess() && !showExitConfirmDialog()) {
+                if (termWidgetWapper->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
                     qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
                     return;
                 }

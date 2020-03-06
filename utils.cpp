@@ -19,6 +19,7 @@
  */
 
 #include "utils.h"
+#include "operationconfirmdlg.h"
 
 #include <QUrl>
 #include <QDir>
@@ -219,4 +220,15 @@ QString Utils::getRandString()
         str[i] = tmp.at(len);
     }
     return QString(str);
+}
+
+bool Utils::showExitConfirmDialog()
+{
+    OperationConfirmDlg optDlg;
+    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
+    optDlg.setTipInfo(QObject::tr("Are you sure you want to exit?"));
+    optDlg.setOKCancelBtnText(QObject::tr("Exit"), QObject::tr("Cancel"));
+    optDlg.exec();
+
+    return (optDlg.getConfirmResult() == QDialog::Accepted);
 }

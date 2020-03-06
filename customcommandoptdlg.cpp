@@ -142,9 +142,9 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     addCancelConfirmButtons();
     setCancelBtnText(tr("Cancel"));
     if (m_type == CCT_ADD) {
-        setConfirmBtnText(tr("Save"));
-    } else {
         setConfirmBtnText(tr("Add"));
+    } else {
+        setConfirmBtnText(tr("Save"));
     }
 
     connect(this, &TermBaseDialog::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);

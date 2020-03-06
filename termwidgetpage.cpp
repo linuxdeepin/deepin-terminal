@@ -1,6 +1,7 @@
 #include "termwidgetpage.h"
 #include "termwidget.h"
 #include "settings.h"
+#include "utils.h"
 
 #include <QDebug>
 #include <QSplitter>
@@ -82,7 +83,7 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
 
 void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
 {
-    // qDebug() << "TermWidgetPage::closeSplit";
+    qDebug() << "TermWidgetPage::closeSplit:" << term->getCurrSessionId();
     QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
     Q_CHECK_PTR(parent);
 
@@ -136,11 +137,20 @@ void TermWidgetPage::focusCurrentTerm()
 void TermWidgetPage::closeOtherTerminal()
 {
     QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
+
+    int currSessionId = m_currentTerm->getCurrSessionId();
+    //exit protection
     for (TermWidgetWrapper *term : qAsConst(termList)) {
-        if (term == m_currentTerm) {
-            continue;
+        if ((term->getCurrSessionId() != currSessionId) && term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
+            qDebug() << "here are processes running in this terminal split... " << endl;
+            return;
         }
-        closeSplit(term);
+    }
+
+    for (TermWidgetWrapper *term : qAsConst(termList)) {
+        if (term->getCurrSessionId() != currSessionId) {
+            closeSplit(term);
+        }
     }
 }
 

@@ -45,6 +45,8 @@ public:
     static QString convertToPreviewString(QString fontFilePath, QString srcString);
 
     static QString getRandString();
+
+    static bool showExitConfirmDialog();
 };
 
 #endif
