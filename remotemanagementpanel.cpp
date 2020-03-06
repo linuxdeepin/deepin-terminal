@@ -1,11 +1,11 @@
 #include "remotemanagementpanel.h"
 #include "serverconfigitem.h"
 #include "shortcutmanager.h"
-
+#include <DLog>
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
-    this->setBackgroundRole(DPalette::Window);
-    setAutoFillBackground(true);
+//    this->setBackgroundRole(DPalette::Window);
+//    setAutoFillBackground(true);
     initUI();
 }
 
@@ -98,6 +98,9 @@ void RemoteManagementPanel::initUI()
     vlayout->setMargin(0);
     vlayout->setSpacing(0);
     setLayout(vlayout);
+
+    this->setAutoFillBackground(true);
+    this->setBackgroundRole(DPalette::Window);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);  //
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);

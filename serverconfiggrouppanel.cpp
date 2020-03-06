@@ -3,8 +3,8 @@
 
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
-    this->setBackgroundRole(DPalette::Window);
-    setAutoFillBackground(true);
+//    this->setBackgroundRole(DPalette::Window);
+//    setAutoFillBackground(true);
     initUI();
 }
 
@@ -40,8 +40,11 @@ void ServerConfigGroupPanel::initUI()
     vlayout->setSpacing(0);
     setLayout(vlayout);
 
+    this->setAutoFillBackground(true);
+    this->setBackgroundRole(DPalette::Window);
+
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
-    connect(m_listWidget, &DListWidget::itemClicked, this, &ServerConfigGroupPanel::doConnectServer);
+    connect(m_listWidget, &DListWidget::itemClicked, this, &ServerConfigGroupPanel::listItemClicked);
     connect(m_iconButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::showRemoteManagementPanel);
     connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
 }
@@ -66,5 +69,17 @@ void ServerConfigGroupPanel::refreshSearchState()
         m_searchEdit->show();
     } else {
         m_searchEdit->hide();
+    }
+}
+
+void ServerConfigGroupPanel::listItemClicked(QListWidgetItem *item)
+{
+    ServerConfigItem *widgetTemp = qobject_cast<ServerConfigItem *>(m_listWidget->itemWidget(item));
+    if (nullptr == widgetTemp) {
+        return;
+    }
+    ServerConfig *curServer = widgetTemp->getCurServerConfig();
+    if (nullptr != curServer) {
+        emit doConnectServer(curServer);
     }
 }

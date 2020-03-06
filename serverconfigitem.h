@@ -13,7 +13,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-class ServerConfigItem : public QFrame
+class ServerConfigItem : public DWidget
 {
     Q_OBJECT
 public:

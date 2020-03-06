@@ -15,12 +15,13 @@ public:
 
 signals:
     void showSearchResult(const QString &strGroup, const QString &strFilter);
-    void doConnectServer();
+    void doConnectServer(ServerConfig *curServer);
     void showRemoteManagementPanel();
 
 public slots:
     void handleShowSearchResult();
     void refreshSearchState();
+    void listItemClicked(QListWidgetItem *item);
 
 private:
     void initUI();

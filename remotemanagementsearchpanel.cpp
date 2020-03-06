@@ -2,8 +2,8 @@
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
-    this->setBackgroundRole(DPalette::Window);
-    setAutoFillBackground(true);
+//    this->setBackgroundRole(DPalette::Window);
+//    setAutoFillBackground(true);
     initUI();
 }
 
@@ -36,6 +36,9 @@ void RemoteManagementSearchPanel::initUI()
     vlayout->setMargin(0);
     vlayout->setSpacing(0);
     setLayout(vlayout);
+
+    this->setAutoFillBackground(true);
+    this->setBackgroundRole(DPalette::Window);
 
     connect(m_iconButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
     connect(m_listWidget, &DListWidget::itemClicked, this, &RemoteManagementSearchPanel::listItemClicked);

@@ -41,9 +41,9 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
 
 void ServerConfigOptDlg::initUI()
 {
-    //整个垂直布局
+    //all layout
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
-    //头部布局
+    //head layout
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setText(tr("Add Server"));
     DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5);
@@ -53,10 +53,10 @@ void ServerConfigOptDlg::initUI()
     headLayout->setSpacing(0);
     headLayout->setMargin(0);
     headLayout->setAlignment(Qt::AlignTop);
-    connect(m_closeButton, &DDialogCloseButton::clicked, this, [=]() { reject(); });
+    connect(m_closeButton, &DDialogCloseButton::clicked, this, [ = ]() { reject(); });
     m_VBoxLayout->addLayout(headLayout);
 
-    //数据部分
+    //main layout
     QGridLayout *pGridLayout = new QGridLayout();
     pGridLayout->setColumnStretch(1, 1);
     pGridLayout->setContentsMargins(10, 10, 10, 0);
@@ -117,7 +117,7 @@ void ServerConfigOptDlg::initUI()
     pGridLayout->addWidget(pPrivateKeyLabel);
     pGridLayout->addWidget(m_privateKey);
 
-    //高级选项
+    //senior layout
     DWidget *seniorWidget = new DWidget;
     QGridLayout *seniorLayout = new QGridLayout();
     seniorLayout->setAlignment(Qt::AlignTop);
@@ -172,7 +172,7 @@ void ServerConfigOptDlg::initUI()
     seniorLayout->addWidget(m_deleteKey);
     seniorWidget->setLayout(seniorLayout);
 
-    connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [=]() {
+    connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
         m_advancedOptions->hide();
         seniorWidget->show();
         if (m_type == SCT_MODIFY) {
@@ -203,9 +203,9 @@ void ServerConfigOptDlg::initUI()
 
     setLayout(m_VBoxLayout);
 
-    connect(pCancelButton, &DPushButton::clicked, this, [=]() { reject(); });
+    connect(pCancelButton, &DPushButton::clicked, this, [ = ]() { reject(); });
     connect(pAddSaveButton, &DPushButton::clicked, this, &ServerConfigOptDlg::slotAddSaveButtonClicked);
-    connect(m_delServer, &DCommandLinkButton::clicked, this, [=]() {
+    connect(m_delServer, &DCommandLinkButton::clicked, this, [ = ]() {
         setDelServer(true);
         accept();
     });

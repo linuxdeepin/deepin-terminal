@@ -3,9 +3,10 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <DApplicationHelper>
 
 ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QString &group, QWidget *parent)
-    : QFrame(parent),
+    : DWidget(parent),
       m_serverConfig(config),
       m_nameLabel(new DLabel(this)),
       m_detailsLabel(new DLabel(this)),
@@ -14,7 +15,7 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
       m_strGroupName(group)
 
 {
-    setAutoFillBackground(true);
+    setFixedWidth(230);
     QImage img(":/images/icon/hover/server.svg");
     m_leftIcon->setPixmap(QPixmap::fromImage(img));
     m_leftIcon->setFixedSize(QSize(70, 70));
@@ -84,7 +85,8 @@ void ServerConfigItem::enterEvent(QEvent *event)
     if (!m_bGroup && m_rightIconButton) {
         m_rightIconButton->show();
     }
-    setBackgroundRole(DPalette::ColorRole::Light);
+    this->setAutoFillBackground(true);
+    this->setBackgroundRole(DPalette::ColorRole::Light);
     DWidget::enterEvent(event);
 }
 
@@ -93,7 +95,8 @@ void ServerConfigItem::leaveEvent(QEvent *event)
     if (!m_bGroup && m_rightIconButton) {
         m_rightIconButton->hide();
     }
-    setBackgroundRole(DPalette::ColorRole::NoRole);
+    this->setAutoFillBackground(true);
+    this->setBackgroundRole(DPalette::ColorRole::NoRole);
     DWidget::enterEvent(event);
 }
 

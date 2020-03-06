@@ -6,11 +6,18 @@
 
 ServerConfigList::ServerConfigList(QWidget *parent) : DListWidget(parent)
 {
-    //    setStyleSheet("QListWidget:item{padding:0}");
     setFocusPolicy(Qt::NoFocus);
     setVerticalScrollMode(ScrollPerItem);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    //这里设置背景颜色无效，只能用setStyleSheet方法
+//    DPalette pal = DApplicationHelper::instance()->palette(this);
+//    pal.setColor(DPalette::Background, Qt::transparent);
+//    this->setAutoFillBackground(true);
+//    this->setPalette(pal);
+//    setBackgroundRole(DPalette::ColorRole::NoRole);
+    this->setStyleSheet("background-color:transparent;");
 }
 
 void ServerConfigList::refreshAllDatas()
@@ -46,7 +53,7 @@ void ServerConfigList::refreshDataByGroupAndFilter(const QString &strGroupName, 
     QList<ServerConfig *> &configList = configMap[strGroupName];
     for (auto cfg : configList) {
         if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
-            || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+                || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
             addOneRowServerConfigData(cfg);
         }
     }
@@ -61,7 +68,7 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
         QList<ServerConfig *> configList = iter.value();
         for (auto cfg : configList) {
             if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
-                || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+                    || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
                 addOneRowServerConfigData(cfg);
             }
         }
