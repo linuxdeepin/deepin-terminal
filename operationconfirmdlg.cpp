@@ -111,18 +111,18 @@ void OperationConfirmDlg::initContentLayout()
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setFont(btnFont);
 
-    DVerticalLine *verticalSplite = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(verticalSplite);
+    DVerticalLine *verticalLine = new DVerticalLine(this);
+    DPalette pa = DApplicationHelper::instance()->palette(verticalLine);
     QColor splitColor = pa.color(DPalette::ItemBackground);
     pa.setBrush(DPalette::Background, splitColor);
-    verticalSplite->setPalette(pa);
-    verticalSplite->setBackgroundRole(QPalette::Background);
-    verticalSplite->setAutoFillBackground(true);
-    verticalSplite->setFixedSize(3, 28);
+    verticalLine->setPalette(pa);
+    verticalLine->setBackgroundRole(QPalette::Background);
+    verticalLine->setAutoFillBackground(true);
+    verticalLine->setFixedSize(3, 28);
 
     actionBarLayout->addWidget(m_cancelBtn);
     actionBarLayout->addSpacing(8);
-    actionBarLayout->addWidget(verticalSplite);
+    actionBarLayout->addWidget(verticalLine);
     actionBarLayout->addSpacing(8);
     actionBarLayout->addWidget(m_confirmBtn);
 

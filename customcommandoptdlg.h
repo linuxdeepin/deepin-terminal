@@ -1,8 +1,9 @@
 #ifndef CUSTOMCOMMANDOPTDLG_H
 #define CUSTOMCOMMANDOPTDLG_H
 
+#include "termbasedialog.h"
+
 #include <DDialog>
-#include <DAbstractDialog>
 #include <DLineEdit>
 #include <DKeySequenceEdit>
 
@@ -11,7 +12,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-class CustomCommandOptDlg : public DAbstractDialog
+class CustomCommandOptDlg : public TermBaseDialog
 {
     Q_OBJECT
 public:
@@ -37,7 +38,7 @@ private:
     QAction *m_newAction = nullptr;
     DLineEdit *m_nameLineEdit = nullptr;
     DLineEdit *m_commandLineEdit = nullptr;
-    DKeySequenceEdit *m_shortCutsLineEdit = nullptr;
+    DKeySequenceEdit *m_shortCutLineEdit = nullptr;
     bool m_bDelOpt;
 };
 
