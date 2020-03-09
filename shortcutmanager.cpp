@@ -128,6 +128,7 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     addAction->setData(action.data());
     addAction->setShortcut(action.shortcut());
     m_customCommandActionList.append(addAction);
+    m_mainWindow->addAction(addAction);
     connect(addAction, &QAction::triggered, m_mainWindow, [this, addAction]() {
         QString command = addAction->data().toString();
         if (!command.endsWith('\n')) {
@@ -167,10 +168,12 @@ void ShortcutManager::delCustomCommand(QAction *action)
         if (actionCmdName == currCmdName
                 && actionCmdText == currCmdText
                 && actionKeySeq == currKeySeq) {
+            m_mainWindow->removeAction(m_customCommandActionList.at(i));
             m_customCommandActionList.removeAt(i);
             break;
         }
     }
+
 }
 
 void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
@@ -199,7 +202,18 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
         saveAction->setText(action->text());
         saveAction->setData(action->data());
         saveAction->setShortcut(action->shortcut());
+        qDebug()<<"old"<<m_customCommandActionList[saveIndex]->shortcut();
+        m_mainWindow->removeAction(m_customCommandActionList[saveIndex]);
         m_customCommandActionList[saveIndex] = saveAction;
+        m_mainWindow->addAction(saveAction);
+        connect(saveAction, &QAction::triggered, m_mainWindow, [this, saveAction]() {
+            QString command = saveAction->data().toString();
+            if (!command.endsWith('\n')) {
+                command.append('\n');
+            }
+            m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
+        });
+        qDebug()<<"new"<<m_customCommandActionList[saveIndex]->shortcut();
     }
 }
 
