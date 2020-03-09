@@ -34,8 +34,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     // theme
-    setColorScheme(Settings::instance()->colorScheme());
-
+    QString theme = "GreenOnBlack";
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+        theme = "BlackOnWhite";
+    }
+    setColorScheme(theme);
+    Settings::instance()->setColorScheme(theme);
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
     setAutoClose(!properties.contains(KeepOpen));
     /********************* Modify by n014361 wangpeili End ************************/
