@@ -170,9 +170,9 @@ Name[tr]=Deepin Uçbirim
 Name[ug]=Deepin تېرمىنالى
 Name[uk]=Термінал Deepin
 Name[vi]=Deepin Terminal
-Name[zh_CN]=深度终端
-Name[zh_HK]=Deepin 終端機
-Name[zh_TW]=Deepin Terminal
+Name[zh_CN]=终端
+Name[zh_HK]=終端機
+Name[zh_TW]=Terminal
 
 [NewWindow Shortcut Group]
 Exec=deepin-terminal

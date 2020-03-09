@@ -1,0 +1,16 @@
+[main]
+host = https://www.transifex.com
+minimum_perc = 80
+mode = developer
+
+[deepin-terminal.dterm]
+file_filter = translations/dterm_<lang>.ts
+source_file = translations/dterm.ts
+source_lang = en
+type = QT
+
+[deepin-terminal.deepin-terminal-desktop-ts]
+file_filter = translations/desktop/desktop_<lang>.ts
+source_file = translations/desktop/desktop.ts
+source_lang = en
+type = QT
