@@ -444,7 +444,7 @@ void MainWindow::initWindow()
     // 全屏退出按钮
     QIcon ico(":/images/icon/hover/exit_hover.svg");
     m_exitFullScreen = new DPushButton();
-    m_exitFullScreen->setIcon(ico);
+    applyTheme();
     m_exitFullScreen->setIconSize(QSize(36, 36));
     m_exitFullScreen->setFixedSize(QSize(36, 36));
     m_exitFullScreen->setFlat(true);
@@ -764,6 +764,8 @@ void MainWindow::initConnections()
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
 
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
+
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() { applyTheme(); });
 }
 
 void MainWindow::initTitleBar()
@@ -999,6 +1001,20 @@ void MainWindow::showSettingDialog()
         page->focusCurrentTerm();
     }
     /********************* Modify by n014361 wangpeili End ************************/
+}
+/*******************************************************************************
+ 1. @函数:    applyTheme
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-09
+ 4. @说明:    非DTK控件手动匹配系统主题的修改
+*******************************************************************************/
+void MainWindow::applyTheme()
+{
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+        m_exitFullScreen->setIcon(QIcon(":/images/icon/hover/exit_hover.svg"));
+    } else {
+        m_exitFullScreen->setIcon(QIcon(":/images/icon/hover/exit_hover_dark.svg"));
+    }
 }
 
 ShortcutManager *MainWindow::getShortcutManager()

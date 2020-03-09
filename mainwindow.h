@@ -92,6 +92,10 @@ private:
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
+    /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
+    void applyTheme();
+    /********************* Modify by n014361 wangpeili End ************************/
+
     /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
     bool closeProtect();
     /**************** Modify by n013252 wangliang End ****************/
