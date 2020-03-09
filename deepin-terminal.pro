@@ -72,6 +72,8 @@ HEADERS += \
     pagesearchbar.h \
     termqsettings.h \
     termqsettings_p.h \
+    termbasedialog.h \
+    termcommandlinkbutton.h \
     encodeplugin/encodepanelplugin.h \
     encodeplugin/encodepanel.h \
     encodeplugin/encodelistview.h \
@@ -123,6 +125,8 @@ SOURCES += \
     utils.cpp \
     pagesearchbar.cpp \
     termqsettings.cpp \
+    termbasedialog.cpp \
+    termcommandlinkbutton.cpp \
     encodeplugin/encodepanelplugin.cpp \
     encodeplugin/encodepanel.cpp \
     encodeplugin/encodelistview.cpp \

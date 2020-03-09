@@ -19,6 +19,8 @@ int main(int argc, char *argv[])
 {
     DApplication::loadDXcbPlugin();
 
+    QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace, "
+                                  "multiple windows, remote management, quake mode and other features. ");
     DApplication app(argc, argv);
     app.setOrganizationName("deepin");
     app.setOrganizationDomain("deepin.org");
@@ -26,6 +28,7 @@ int main(int argc, char *argv[])
     app.setApplicationName("deepin-terminal");
     app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
+    app.setApplicationDescription(appDesc);
     app.loadTranslator();
 
     DApplicationSettings set(&app);
@@ -35,7 +38,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
 #endif  // QT_DEBUG
 
-    app.setApplicationDisplayName(QObject::tr("Deep Dark Terminal"));
+    app.setApplicationDisplayName(QObject::tr("Terminal"));
 
     qputenv("TERM", "xterm-256color");
 
@@ -45,15 +48,15 @@ int main(int argc, char *argv[])
     /********************* Modify by n014361 wangpeili End *****************/
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Deepin Terminal.");
+    parser.setApplicationDescription(appDesc);
     parser.addHelpOption();
     parser.addVersionOption();
     parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
     QCommandLineOption optWorkDirectory({ "w", "work-directory" }, "Set terminal start work directory", "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                         "Set terminal start on window mode: normal, maximize, fullscreen, halfscreen ",
-                                         "state-mode");
+                                      "Set terminal start on window mode: normal, maximize, fullscreen, halfscreen ",
+                                      "state-mode");
     QCommandLineOption optExecute({ "e", "execute" }, "Execute command in the terminal", "command");
     QCommandLineOption optScript({ "c", "run-script" }, "Run script string in the terminal", "script");
     //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
@@ -64,12 +67,12 @@ int main(int argc, char *argv[])
     parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
     parser.parse(app.arguments());
 
-    qDebug() << "optionWorkDirectory"<<parser.value(optWorkDirectory);
-    qDebug() << "optionExecute"<<parser.value(optExecute);
+    qDebug() << "optionWorkDirectory" << parser.value(optWorkDirectory);
+    qDebug() << "optionExecute" << parser.value(optExecute);
 //    qDebug() << "optionExecute2"<<parser.value(optionExecute2);
-    qDebug() << "optionQuakeMode"<<parser.isSet(optQuakeMode);
-    qDebug() << "optionWindowState"<<parser.isSet(optWindowState);
-    qDebug() << "positionalArguments"<<parser.positionalArguments();
+    qDebug() << "optionQuakeMode" << parser.isSet(optQuakeMode);
+    qDebug() << "optionWindowState" << parser.isSet(optWindowState);
+    qDebug() << "positionalArguments" << parser.positionalArguments();
 
     parser.process(app);
 

@@ -81,7 +81,7 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
     }
     QString path = curServer->m_path;
     QString command = curServer->m_command;
-    QString remote_command = "echo " + tr("Welcome to Deepin Terminal, please make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.") + " && ";
+    QString remote_command = "echo " + tr("Welcome to Terminal, please make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.") + " && ";
     if (!path.isNull() && !path.isEmpty()) {
         remote_command = remote_command + "cd " + path + " && ";
     }
