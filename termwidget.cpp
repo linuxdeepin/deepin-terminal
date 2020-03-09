@@ -62,11 +62,20 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
         }
     }
 
-    // 字体和字体大小
-    QFont font = getTerminalFont();
-    font.setFamily(Settings::instance()->fontName());
-    font.setPointSize(Settings::instance()->fontSize());
-    setTerminalFont(font);
+    // 字体和字体大小, 8#字体立即设置的时候会有BUG显示，做个延迟生效就好了。
+    if (Settings::instance()->fontSize() == 8) {
+        QTimer::singleShot(10, this, [this]() {
+            QFont font = getTerminalFont();
+            font.setFamily(Settings::instance()->fontName());
+            font.setPointSize(Settings::instance()->fontSize());
+            setTerminalFont(font);
+        });
+    } else {
+        QFont font = getTerminalFont();
+        font.setFamily(Settings::instance()->fontName());
+        font.setPointSize(Settings::instance()->fontSize());
+        setTerminalFont(font);
+    }
 
     // 光标形状
     setKeyboardCursorShape(static_cast<QTermWidget::KeyboardCursorShape>(Settings::instance()->cursorShape()));
@@ -123,9 +132,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     // 增加可以自动运行脚本的命令，不需要的话，可以删除
     if (properties.contains(Script)) {
         QString args = properties[Script].toString();
-        qDebug()<<"run cmd:"<<args;
+        qDebug() << "run cmd:" << args;
         args.append("\n");
-        if(!properties.contains(KeepOpen)){
+        if (!properties.contains(KeepOpen)) {
             args.append("exit\n");
         }
         sendText(args);
