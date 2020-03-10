@@ -315,8 +315,11 @@ public:
      */
     void sendText(const QString & text) const;
 
-    /** Returns a title generated from tab format and process information. */
+    /** Returns dynamic process name. */
     QString getDynamicProcessName();
+
+    /** Returns dynamic process id */
+    int getDynamicProcessId();
 
     /**
      * Returns the process id of the terminal process.

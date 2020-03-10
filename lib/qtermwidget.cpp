@@ -212,6 +212,12 @@ void QTermWidget::snapshot()
 
     // apply new title
     currSession->setTitle(Session::DisplayedTitleRole, title);
+
+    if (currSession->isForegroundProcessActive()) {
+        emit isTermIdle(false);
+    } else {
+        emit isTermIdle(true);
+    }
 }
 
 void QTermWidget::changeDir(const QString & dir)
