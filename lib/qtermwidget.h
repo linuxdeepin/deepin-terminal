@@ -86,6 +86,9 @@ public:
 
     int getShellPID();
 
+    // Get current terminal's session id
+    int getSessionId();
+
     void changeDir(const QString & dir);
 
     //look-n-feel, if you don`t like defaults

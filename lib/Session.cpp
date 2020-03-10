@@ -312,7 +312,12 @@ void Session::run()
                                       _addToUtmp);
 
     if (result < 0) {
-        qDebug() << "CRASHED! result: " << result;
+        //qDebug() << "CRASHED! result: " << result<<arguments;
+        QString infoText = QString("There was an error ctreating the child processfor this teminal. \n"
+                 "Faild to execute child process \"%1\"(No such file or directory)!").arg(exec);
+        sendText(infoText);
+        _userTitle = QString::fromLatin1("Session crashed");
+        emit titleChanged();
         return;
     }
 
@@ -575,6 +580,7 @@ void Session::sendText(const QString & text) const
 
 Session::~Session()
 {
+    _wantedClose = true;
     delete _emulation;
     delete _shellProcess;
 //  delete _zmodemProc;
@@ -592,30 +598,29 @@ QString Session::profileKey() const
 
 void Session::done(int exitStatus)
 {
-    if (!_autoClose) {
-        _userTitle = QString::fromLatin1("This session is done. Finished");
-        emit titleChanged();
+    qDebug()<<"done exitStatus:"<<exitStatus<< _shellProcess->exitStatus();
+    if (_autoClose || _wantedClose) {
+        emit finished();
         return;
     }
-
-    QString message;
-    if (!_wantedClose || exitStatus != 0) {
-
-        if (_shellProcess->exitStatus() == QProcess::NormalExit) {
-            message.sprintf("Session '%s' exited with status %d.",
-                          _nameTitle.toUtf8().data(), exitStatus);
-        } else {
-            message.sprintf("Session '%s' crashed.",
-                          _nameTitle.toUtf8().data());
+    if(exitStatus != 0)
+    {
+        QString message;
+        QString infoText;
+        if (exitStatus == -1){
+            infoText.sprintf("There was an error ctreating the child processfor this teminal. \n"
+                     "Faild to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
+            message = "Session crashed.";
         }
+        else {
+            infoText.sprintf("The child process exit normally with status %d.", exitStatus);
+            message.sprintf("Session '%s' exited with status %d.",
+                      _nameTitle.toUtf8().data(), exitStatus);
+        }
+        _userTitle = message;
+        //sendText(infoText);
+        emit titleChanged();
     }
-
-    if ( !_wantedClose && _shellProcess->exitStatus() != QProcess::NormalExit )
-        message.sprintf("Session '%s' exited unexpectedly.",
-                        _nameTitle.toUtf8().data());
-    else
-        emit finished();
-
 }
 
 Emulation * Session::emulation() const

@@ -226,6 +226,12 @@ int QTermWidget::getShellPID()
     return m_impl->m_session->processId();
 }
 
+int QTermWidget::getSessionId()
+{
+    int currSessionId = m_impl->m_session->sessionId();
+    return currSessionId;
+}
+
 void QTermWidget::snapshot()
 {
     Q_ASSERT(m_impl->m_session != nullptr);
