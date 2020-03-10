@@ -5,7 +5,11 @@
 #include "termproperties.h"
 #include "pagesearchbar.h"
 
+#include <DSplitter>
+
 #include <QWidget>
+
+DWIDGET_USE_NAMESPACE
 
 class TermWidgetWrapper;
 
@@ -103,6 +107,7 @@ private slots:
 
 private:
     TermWidgetWrapper *createTerm(TermProperties properties);
+    void setSplitStyle(DSplitter *splitter);
 
     TermWidgetWrapper *m_currentTerm = nullptr;
     PageSearchBar *m_findBar = nullptr;

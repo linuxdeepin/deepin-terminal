@@ -4,7 +4,6 @@
 #include "utils.h"
 
 #include <QDebug>
-#include <QSplitter>
 #include <QUuid>
 #include <QVBoxLayout>
 #include <QApplication>
@@ -20,8 +19,9 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    QSplitter *splitter = new QSplitter(this);
+    DSplitter *splitter = new DSplitter(Qt::Horizontal, this);
     splitter->setFocusPolicy(Qt::NoFocus);
+    setSplitStyle(splitter);
 
     // Init find bar.
     m_findBar->move(this->x() - 100, this->y() - 100);
@@ -42,6 +42,22 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     setLayout(layout);
 }
 
+void TermWidgetPage::setSplitStyle(DSplitter *splitter)
+{
+    splitter->setHandleWidth(1);
+    QSplitterHandle *handle = splitter->handle(1);
+
+    if (handle) {
+        //分割线颜色暂时设置为Highlight颜色，需要和UI确认下
+        DPalette pa = DApplicationHelper::instance()->palette(handle);
+        QColor splitBrush = pa.color(DPalette::Highlight);
+        pa.setBrush(DPalette::Background, splitBrush);
+        handle->setPalette(pa);
+        handle->setBackgroundRole(QPalette::Background);
+        handle->setAutoFillBackground(true);
+    }
+}
+
 TermWidgetWrapper *TermWidgetPage::currentTerminal()
 {
     return m_currentTerm;
@@ -60,20 +76,34 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
     int index = parent->indexOf(term);
     QList<int> parentSizes = parent->sizes();
 
-    QSplitter *s = new QSplitter(orientation, this);
-    s->setFocusPolicy(Qt::NoFocus);
-    s->insertWidget(0, term);
-
     TermProperties properties(term->workingDirectory());
     // term->toggleShowSearchBar();
     // term->update();
 
     TermWidgetWrapper *w = createTerm(properties);
-    s->insertWidget(1, w);
-    s->setSizes({ 1, 1 });
 
-    parent->insertWidget(index, s);
-    parent->setSizes(parentSizes);
+    if (1 == parent->count()) {
+        parent->insertWidget(0, term);
+        parent->insertWidget(1, w);
+        parent->setSizes({ 1, 1 });
+
+        setSplitStyle(parent);
+
+    } else {
+
+        DSplitter *subSplit = new DSplitter(orientation, this);
+        subSplit->setFocusPolicy(Qt::NoFocus);
+        subSplit->insertWidget(0, term);
+        subSplit->insertWidget(1, w);
+        subSplit->setSizes({ 1, 1 });
+
+        setSplitStyle(subSplit);
+
+        parent->insertWidget(index, subSplit);
+        parent->setSizes(parentSizes);
+
+        setSplitStyle(parent);
+    }
 
     w->setFocus(Qt::OtherFocusReason);
     // w->toggleShowSearchBar();
