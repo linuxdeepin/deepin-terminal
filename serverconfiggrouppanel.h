@@ -21,7 +21,7 @@ signals:
 public slots:
     void handleShowSearchResult();
     void refreshSearchState();
-    void listItemClicked(QListWidgetItem *item);
+    void listItemClicked(ServerConfig *curItemServer);
 
 private:
     void initUI();

@@ -10,8 +10,7 @@ class RemoteManagementSearchPanel : public CommonPanel
 {
     Q_OBJECT
 public:
-    enum RemoteManagementPanelType
-    {
+    enum RemoteManagementPanelType {
         REMOTE_MANAGEMENT_PANEL = 0,  //远程管理主界面，对应RemoteManagementPanel类
         REMOTE_MANAGEMENT_GROUP,      //远程管理分组面，对应ServerConfigGroupPanel类
         REMOTE_MANAGEMENT_SERARCH,    //远程管理搜索结果界面，对应RemoteManagementSearchPanel类
@@ -24,12 +23,12 @@ public:
     void setPreviousPanelType(RemoteManagementPanelType type);
 
 signals:
-    void doConnectServer();
+    void doConnectServer(ServerConfig *curItemServer);
     void showRemoteManagementPanel();
     void showServerConfigGroupPanel(const QString &strGroup);
 
 public slots:
-    void listItemClicked(QListWidgetItem *item);
+    void listItemClicked(ServerConfig *curItemServer);
     //显示调用本搜索页面的前置页面
     void showPreviousPanel();
 

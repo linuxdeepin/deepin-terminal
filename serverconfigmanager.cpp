@@ -20,21 +20,21 @@ ServerConfigManager *ServerConfigManager::instance()
 
 void ServerConfigManager::initServerConfig()
 {
-    QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!customCommandBasePath.exists()) {
+    QDir serverConfigBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!serverConfigBasePath.exists()) {
         return;
     }
 
-    QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
-    if (!QFile::exists(customCommandConfigFilePath)) {
+    QString serverConfigFilePath(serverConfigBasePath.filePath("server-config.conf"));
+    if (!QFile::exists(serverConfigFilePath)) {
         return;
     }
 
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
-    QStringList commandGroups = commandsSettings.childGroups();
-    for (const QString &commandName : commandGroups) {
-        commandsSettings.beginGroup(commandName);
-        QStringList strList = commandName.split("@");
+    QSettings serversSettings(serverConfigFilePath, QSettings::IniFormat);
+    QStringList serverGroups = serversSettings.childGroups();
+    for (const QString &serverName : serverGroups) {
+        serversSettings.beginGroup(serverName);
+        QStringList strList = serverName.split("@");
         if (strList.count() != 3) {
             continue;
         }
@@ -42,16 +42,16 @@ void ServerConfigManager::initServerConfig()
         pServerConfig->m_userName = strList.at(0);
         pServerConfig->m_address = strList.at(1);
         pServerConfig->m_port = strList.at(2);
-        pServerConfig->m_serverName = commandsSettings.value("Name").toString();
-        pServerConfig->m_password = commandsSettings.value("Password").toString();
-        pServerConfig->m_group = commandsSettings.value("GroupName").toString();
-        pServerConfig->m_command = commandsSettings.value("Command").toString();
-        pServerConfig->m_path = commandsSettings.value("Path").toString();
-        pServerConfig->m_encoding = commandsSettings.value("Encode").toString();
-        pServerConfig->m_backspaceKey = commandsSettings.value("Backspace").toString();
-        pServerConfig->m_deleteKey = commandsSettings.value("Del").toString();
-        pServerConfig->m_privateKey = commandsSettings.value("PrivateKey").toString();
-        commandsSettings.endGroup();
+        pServerConfig->m_serverName = serversSettings.value("Name").toString();
+        pServerConfig->m_password = serversSettings.value("Password").toString();
+        pServerConfig->m_group = serversSettings.value("GroupName").toString();
+        pServerConfig->m_command = serversSettings.value("Command").toString();
+        pServerConfig->m_path = serversSettings.value("Path").toString();
+        pServerConfig->m_encoding = serversSettings.value("Encode").toString();
+        pServerConfig->m_backspaceKey = serversSettings.value("Backspace").toString();
+        pServerConfig->m_deleteKey = serversSettings.value("Del").toString();
+        pServerConfig->m_privateKey = serversSettings.value("PrivateKey").toString();
+        serversSettings.endGroup();
         if (m_serverConfigs.contains(pServerConfig->m_group)) {
             m_serverConfigs[pServerConfig->m_group].append(pServerConfig);
         } else {
@@ -105,11 +105,14 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     QString strConfigGroupName = QString("%1@%2@%3").arg(config->m_userName).arg(config->m_address).arg(config->m_port);
     commandsSettings.remove(strConfigGroupName);
-    if (m_serverConfigs.contains(config->m_group)) {
-        m_serverConfigs[config->m_group].removeOne(config);
-    } else {
-        m_serverConfigs.remove(config->m_group);
-    }
+//    if (m_serverConfigs.contains(config->m_group)) {
+//        m_serverConfigs[config->m_group].removeOne(config);
+//    } else {
+//        m_serverConfigs.remove(config->m_group);
+//    }
+    //待优化
+    m_serverConfigs.clear();
+    initServerConfig();
 }
 
 void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig)
@@ -118,7 +121,7 @@ void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConf
     saveServerConfig(newConfig);
 }
 
-QMap<QString, QList<ServerConfig *>> &ServerConfigManager::getServerCommands()
+QMap<QString, QList<ServerConfig *>> &ServerConfigManager::getServerConfigs()
 {
     return m_serverConfigs;
 }

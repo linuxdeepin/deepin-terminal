@@ -40,6 +40,8 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
             &RemoteManagementSearchPanel::showServerConfigGroupPanel,
             this,
             &RemoteManagementTopPanel::showGroupPanelFromSearchPanel);
+    connect(
+        m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer);
     m_serverConfigGroupPanel->hide();
     m_remoteManagementSearchPanel->hide();
 }

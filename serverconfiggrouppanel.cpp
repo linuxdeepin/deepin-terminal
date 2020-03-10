@@ -44,7 +44,7 @@ void ServerConfigGroupPanel::initUI()
     this->setBackgroundRole(DPalette::Window);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
-    connect(m_listWidget, &DListWidget::itemClicked, this, &ServerConfigGroupPanel::listItemClicked);
+    connect(m_listWidget, &ServerConfigList::itemClicked, this, &ServerConfigGroupPanel::listItemClicked);
     connect(m_iconButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::showRemoteManagementPanel);
     connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
 }
@@ -52,8 +52,8 @@ void ServerConfigGroupPanel::initUI()
 void ServerConfigGroupPanel::refreshData(const QString &groupName)
 {
     m_groupName = groupName;
-    m_listWidget->clear();
-    m_listWidget->refreshDataByGroup(groupName);
+    m_listWidget->clearData();
+    m_listWidget->refreshDataByGroup(groupName, true);
     refreshSearchState();
 }
 
@@ -72,14 +72,9 @@ void ServerConfigGroupPanel::refreshSearchState()
     }
 }
 
-void ServerConfigGroupPanel::listItemClicked(QListWidgetItem *item)
+void ServerConfigGroupPanel::listItemClicked(ServerConfig *curItemServer)
 {
-    ServerConfigItem *widgetTemp = qobject_cast<ServerConfigItem *>(m_listWidget->itemWidget(item));
-    if (nullptr == widgetTemp) {
-        return;
-    }
-    ServerConfig *curServer = widgetTemp->getCurServerConfig();
-    if (nullptr != curServer) {
-        emit doConnectServer(curServer);
+    if (nullptr != curItemServer) {
+        emit doConnectServer(curItemServer);
     }
 }

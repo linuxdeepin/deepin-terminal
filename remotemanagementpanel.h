@@ -17,12 +17,12 @@ public:
 signals:
     void showSearchPanel(const QString &strFilter);
     void showServerConfigGroupPanel(const QString &strGroup);
-    void doConnectServer(ServerConfig *serverConfig);
+    void doConnectServer(ServerConfig *curItemServer);
 
 public slots:
     void showCurSearchResult();
     void showAddServerConfigDlg();
-    void listItemClicked(QListWidgetItem *item);
+    void listItemClicked(ServerConfig *curItemServer);
     void refreshSearchState();
 
 private:

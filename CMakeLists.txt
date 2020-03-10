@@ -76,8 +76,10 @@ set (DTNG_CPP_FILES
     remotemanagementsearchpanel.cpp
     remotemanagementtoppanel.cpp
     rightpanel.cpp
+    serverconfigdelegate.cpp
     serverconfiggrouppanel.cpp
     serverconfigitem.cpp
+    serverconfigitemmodel.cpp
     serverconfiglist.cpp
     serverconfigmanager.cpp
     serverconfigoptdlg.cpp
@@ -131,8 +133,10 @@ set (DTNG_HEADER_FILES
     remotemanagementsearchpanel.h
     remotemanagementtoppanel.h
     rightpanel.h
+    serverconfigdelegate.h
     serverconfiggrouppanel.h
     serverconfigitem.h
+    serverconfigitemmodel.h
     serverconfiglist.h
     serverconfigmanager.h
     serverconfigoptdlg.h

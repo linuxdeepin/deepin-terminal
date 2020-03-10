@@ -600,14 +600,12 @@
 <context>
     <name>ServerConfigList</name>
     <message>
-        <location filename="../serverconfiglist.cpp" line="129"/>
-        <location filename="../serverconfiglist.cpp" line="174"/>
+        <location filename="../serverconfiglist.cpp" line="178"/>
         <source>delete opt</source>
         <translation>删除选项</translation>
     </message>
     <message>
-        <location filename="../serverconfiglist.cpp" line="130"/>
-        <location filename="../serverconfiglist.cpp" line="175"/>
+        <location filename="../serverconfiglist.cpp" line="179"/>
         <source>Do you sure to delete the %1</source>
         <translation>确认删除</translation>
     </message>

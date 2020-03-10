@@ -104,22 +104,18 @@ void RemoteManagementPanel::initUI()
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);  //
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
-    connect(m_listWidget, &DListWidget::itemClicked, this, &RemoteManagementPanel::listItemClicked);
+    connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementPanel::listItemClicked);
     connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
 }
 
-void RemoteManagementPanel::listItemClicked(QListWidgetItem *item)
+void RemoteManagementPanel::listItemClicked(ServerConfig *curItemServer)
 {
-    ServerConfigItem *widgetTemp = qobject_cast<ServerConfigItem *>(m_listWidget->itemWidget(item));
-    if (nullptr == widgetTemp) {
-        return;
-    }
-    if (widgetTemp->isGroup()) {
-        emit showServerConfigGroupPanel(widgetTemp->getGroupName());
-    } else {
-        ServerConfig *curServer = widgetTemp->getCurServerConfig();
-        if (nullptr != curServer) {
-            emit doConnectServer(curServer);
+    if (nullptr != curItemServer) {
+        QString group = curItemServer->m_group;
+        if (!group.isNull() && !group.isEmpty()) {
+            emit showServerConfigGroupPanel(group);
+        } else {
+            emit doConnectServer(curItemServer);
         }
     }
 }

@@ -1,4 +1,5 @@
 #include "remotemanagementsearchpanel.h"
+#include "serverconfigmanager.h"
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -41,7 +42,7 @@ void RemoteManagementSearchPanel::initUI()
     this->setBackgroundRole(DPalette::Window);
 
     connect(m_iconButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
-    connect(m_listWidget, &DListWidget::itemClicked, this, &RemoteManagementSearchPanel::listItemClicked);
+    connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementSearchPanel::listItemClicked);
 }
 
 void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &strGroup, const QString &strFilter)
@@ -49,7 +50,7 @@ void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &str
     setSearchFilter(strFilter);
     m_strGroupName = strGroup;
     m_strFilter = strFilter;
-    m_listWidget->clear();
+    m_listWidget->clearData();
     m_listWidget->refreshDataByGroupAndFilter(strGroup, strFilter);
 }
 // void RemoteManagementSearchPanel::refreshDataByGroup(const QString &strGroup)
@@ -62,7 +63,7 @@ void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &str
 void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
 {
     setSearchFilter(strFilter);
-    m_listWidget->clear();
+    m_listWidget->clearData();
     m_listWidget->refreshDataByFilter(strFilter);
 }
 void RemoteManagementSearchPanel::showPreviousPanel()
@@ -80,11 +81,16 @@ void RemoteManagementSearchPanel::setPreviousPanelType(RemoteManagementPanelType
     m_previousPanel = type;
 }
 
-void RemoteManagementSearchPanel::listItemClicked(QListWidgetItem *item)
+void RemoteManagementSearchPanel::listItemClicked(ServerConfig *curItemServer)
 {
-    // ServerConfigItem *widgetTemp = qobject_cast<ServerConfigItem *>(m_listWidget->itemWidget(item));
-
-    emit doConnectServer();
+    if (nullptr != curItemServer) {
+        QString group = curItemServer->m_group;
+        if (!group.isNull() && !group.isEmpty()) {
+            emit showServerConfigGroupPanel(group);
+        } else {
+            emit doConnectServer(curItemServer);
+        }
+    }
 }
 
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)

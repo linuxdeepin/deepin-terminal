@@ -31,7 +31,7 @@ public:
     void saveServerConfig(ServerConfig *config);
     void delServerConfig(ServerConfig *config);
     void modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig);
-    QMap<QString, QList<ServerConfig *>> &getServerCommands();
+    QMap<QString, QList<ServerConfig *>> &getServerConfigs();
 
 private:
     ServerConfigManager(QObject *parent = nullptr);

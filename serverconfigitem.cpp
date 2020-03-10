@@ -55,7 +55,7 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
     setLayout(mainLayout);
 
     if (m_bGroup) {
-        QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerCommands();
+        QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
         m_nameLabel->setText(group);
         m_detailsLabel->setText(QString("%1 server").arg(configMap[group].count()));
     } else {

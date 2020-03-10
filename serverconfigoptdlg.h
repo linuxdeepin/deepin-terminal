@@ -25,8 +25,7 @@ class ServerConfigOptDlg : public DAbstractDialog
 {
     Q_OBJECT
 public:
-    enum ServerConfigOptType
-    {
+    enum ServerConfigOptType {
         SCT_ADD,     // the add type of server config operation
         SCT_MODIFY,  // the modify type of server config operation
     };
