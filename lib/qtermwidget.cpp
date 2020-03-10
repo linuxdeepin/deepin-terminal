@@ -169,11 +169,41 @@ void QTermWidget::search(bool forwards, bool next)
     HistorySearch *historySearch =
             new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
     connect(historySearch, SIGNAL(matchFound(int, int, int, int)), this, SLOT(matchFound(int, int, int, int)));
-    connect(historySearch, SIGNAL(noMatchFound()), this, SLOT(noMatchFound()));
-    connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(noMatchFound()));
+    connect(historySearch, SIGNAL(noMatchFound()), this, SLOT(clearSelection()));
+    connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(clearSelection()));
     historySearch->search();
 }
 
+void QTermWidget::search(QString txt, bool forwards, bool next)
+{
+    int startColumn, startLine;
+
+    if (next)  // search from just after current selection
+    {
+        m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
+        startColumn++;
+    } else  // search from start of current selection
+    {
+        m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionStart(startColumn, startLine);
+    }
+
+    qDebug() << "current selection starts at: " << startColumn << startLine;
+    qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
+
+    QRegExp regExp(txt);
+    // qDebug() << "regExp??????" << regExp.isEmpty();
+    regExp.setPatternSyntax(m_searchBar->useRegularExpression() ? QRegExp::RegExp : QRegExp::FixedString);
+    regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
+
+    HistorySearch *historySearch =
+    new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
+    connect(historySearch, SIGNAL(matchFound(int, int, int, int)), this, SLOT(matchFound(int, int, int, int)));
+    connect(historySearch, SIGNAL(noMatchFound()), this, SLOT(clearSelection()));
+
+    connect(historySearch, &HistorySearch::noMatchFound, this, [this]() { emit noMatchFound(); });
+    // connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(noMatchFound()));
+    historySearch->search();
+}
 
 void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int endLine)
 {
@@ -186,9 +216,9 @@ void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int 
     sw->setSelectionEnd(endColumn, endLine - sw->currentLine());
 }
 
-void QTermWidget::noMatchFound()
+void QTermWidget::clearSelection()
 {
-        m_impl->m_terminalDisplay->screenWindow()->clearSelection();
+    m_impl->m_terminalDisplay->screenWindow()->clearSelection();
 }
 
 int QTermWidget::getShellPID()
@@ -857,4 +887,9 @@ void QTermWidget::setMargin(int margin)
 int QTermWidget::getMargin() const
 {
     return m_impl->m_terminalDisplay->margin();
+}
+
+int QTermWidget::getForegroundProcessId() const
+{
+    return m_impl->m_session->foregroundProcessId();
 }

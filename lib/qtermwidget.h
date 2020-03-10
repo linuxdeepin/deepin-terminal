@@ -246,6 +246,9 @@ public:
 
     /** Get the empty space outside the terminal */
     int getMargin() const;
+
+    /** Get the foreground pid in terminal */
+    int getForegroundProcessId() const;
 signals:
     void finished();
     void copyAvailable(bool);
@@ -284,6 +287,10 @@ signals:
      */
     void isTermIdle(bool bIdle);
 
+    // Transmit the return signal from the library
+    // The original noMatchFound method was renamed clearSelection
+    void noMatchFound();
+
 public slots:
     // Copy selection to clipboard
     void copyClipboard();
@@ -311,6 +318,13 @@ public slots:
 
     void toggleShowSearchBar();
 
+    /******** Modify by n014361 wangpeili 2020-02-24:              ****************/
+    // Add external search interface instead of qterminal built-in search interface
+    void search(QString txt, bool forwards, bool next);
+    // Clear Selection
+    void clearSelection();
+    /********************* Modify by n014361 wangpeili End ************************/
+
 protected:
     virtual void resizeEvent(QResizeEvent *);
 
@@ -323,7 +337,7 @@ private slots:
     void findNext();
     void findPrevious();
     void matchFound(int startColumn, int startLine, int endColumn, int endLine);
-    void noMatchFound();
+
     /**
      * Emulation::cursorChanged() signal propogates to here and QTermWidget
      * sends the specified cursor states to the terminal display
