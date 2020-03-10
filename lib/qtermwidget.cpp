@@ -196,6 +196,24 @@ int QTermWidget::getShellPID()
     return m_impl->m_session->processId();
 }
 
+void QTermWidget::snapshot()
+{
+    Q_ASSERT(m_impl->m_session != nullptr);
+
+    Session *currSession = m_impl->m_session;
+    //use process name as tab title, which not for display
+    QString title = currSession->getDynamicProcessName();
+    title = title.simplified();
+
+    // use the fallback title if needed
+    if (title.isEmpty()) {
+        title = currSession->title(Session::NameRole);
+    }
+
+    // apply new title
+    currSession->setTitle(Session::DisplayedTitleRole, title);
+}
+
 void QTermWidget::changeDir(const QString & dir)
 {
     /*
@@ -239,6 +257,36 @@ void QTermWidget::startShellProgram()
     }
 
     m_impl->m_session->run();
+
+    //add snapshot timer when session start running
+    addSnapShotTimer();
+}
+
+// take a snapshot of the session state every so often when
+// user activity occurs
+void QTermWidget::addSnapShotTimer()
+{
+    // the timer is owned by the session so that it will be destroyed along
+    // with the session
+    Session *currSession = m_impl->m_session;
+    m_interactionTimer = new QTimer(currSession);
+    m_interactionTimer->setSingleShot(true);
+    m_interactionTimer->setInterval(500);
+    m_termDisplay = m_impl->m_terminalDisplay;
+    connect(m_interactionTimer, &QTimer::timeout, this, &QTermWidget::snapshot);
+    connect(m_termDisplay.data(), &Konsole::TerminalDisplay::keyPressedSignal, this, &QTermWidget::interactionHandler);
+
+    // take a snapshot of the session state periodically in the background
+    auto backgroundTimer = new QTimer(currSession);
+    backgroundTimer->setSingleShot(false);
+    backgroundTimer->setInterval(2000);
+    connect(backgroundTimer, &QTimer::timeout, this, &QTermWidget::snapshot);
+    backgroundTimer->start();
+}
+
+void QTermWidget::interactionHandler()
+{
+    m_interactionTimer->start();
 }
 
 void QTermWidget::startTerminalTeletype()

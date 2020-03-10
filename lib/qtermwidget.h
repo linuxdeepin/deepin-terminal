@@ -22,6 +22,7 @@
 
 #include <QTranslator>
 #include <QWidget>
+#include <QPointer>
 #include "Emulation.h"
 #include "Filter.h"
 #include "qtermwidget_export.h"
@@ -30,6 +31,9 @@ class QVBoxLayout;
 struct TermWidgetImpl;
 class SearchBar;
 class QUrl;
+namespace Konsole {
+class TerminalDisplay;
+}
 
 class QTERMWIDGET_EXPORT QTermWidget : public QWidget {
     Q_OBJECT
@@ -320,15 +324,21 @@ private slots:
      * sends the specified cursor states to the terminal display
      */
     void cursorChanged(Konsole::Emulation::KeyboardCursorShape cursorShape, bool blinkingCursorEnabled);
+    void snapshot();
 
 private:
     void search(bool forwards, bool next);
     void setZoom(int step);
     void init(int startnow);
-    TermWidgetImpl * m_impl;
-    SearchBar* m_searchBar;
+    void addSnapShotTimer();
+    void interactionHandler();
+
+    TermWidgetImpl *m_impl;
+    SearchBar *m_searchBar;
     QVBoxLayout *m_layout;
     QTranslator *m_translator;
+    QPointer<Konsole::TerminalDisplay> m_termDisplay;
+    QTimer *m_interactionTimer = nullptr;
 };
 
 

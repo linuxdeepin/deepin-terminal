@@ -30,6 +30,8 @@ set(QTERMWIDGET_VERSION "${QTERMWIDGET_VERSION_MAJOR}.${QTERMWIDGET_VERSION_MINO
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(CMAKE_INSTALL_PREFIX "/usr")
+
 # Minimum Versions
 set(QT_MINIMUM_VERSION "5.7.1")
 set(LXQTBT_MINIMUM_VERSION "0.6.0")
@@ -65,6 +67,7 @@ set(SRCS
     lib/kpty.cpp
     lib/kptydevice.cpp
     lib/kptyprocess.cpp
+    lib/ProcessInfo.cpp
     lib/Pty.cpp
     lib/qtermwidget.cpp
     lib/Screen.cpp
@@ -87,6 +90,7 @@ set(HDRS
     lib/kprocess.h
     lib/kptydevice.h
     lib/kptyprocess.h
+    lib/ProcessInfo.h
     lib/Pty.h
     lib/qtermwidget.h
     lib/ScreenWindow.h
