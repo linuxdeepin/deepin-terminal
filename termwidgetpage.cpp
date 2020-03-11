@@ -31,6 +31,7 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     m_findBar, &PageSearchBar::keywordChanged, this, [ = ](QString keyword) { handleUpdateSearchKeyword(keyword); });
     // connect(m_findBar, &PageSearchBar::sigFindbarClose, this, &TermWidgetPage::slotFindbarClose,
     // Qt::QueuedConnection);
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() { applyTheme(); });
 
     TermWidgetWrapper *w = createTerm(properties);
     splitter->addWidget(w);
@@ -643,6 +644,24 @@ void TermWidgetPage::handleUpdateSearchKeyword(const QString &keyword)
     } else {
         // 输入时直接查找，被禁用
         // m_currentTerm->search(m_findBar->SearchKeytxt(), true, false);
+    }
+}
+/*******************************************************************************
+ 1. @函数:    applyTheme
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-011
+ 4. @说明:    非DTK控件手动匹配系统主题的修改
+*******************************************************************************/
+void TermWidgetPage::applyTheme()
+{
+    updateSplitStyle();
+}
+
+void TermWidgetPage::updateSplitStyle()
+{
+    QList<DSplitter *> splitList = findChildren<DSplitter *>();
+    for (DSplitter *splitter : qAsConst(splitList)) {
+        setSplitStyle(splitter);
     }
 }
 

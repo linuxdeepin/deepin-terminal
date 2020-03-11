@@ -88,6 +88,10 @@ public slots:
     void handleRemoveSearchKeyword();
     // 更新搜索关键词接口
     void handleUpdateSearchKeyword(const QString &keyword);
+    /******** Modify by n014361 wangpeili 2020-03-11: 非DTK控件手动匹配系统主题的修改 **********/
+    void applyTheme();
+    /********************* Modify by n014361 wangpeili End ************************/
+    void updateSplitStyle();
 
 signals:
     void pageRequestShowEncoding();
