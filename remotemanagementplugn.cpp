@@ -97,3 +97,9 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
     toFile.close();
     return toFileStr;
 }
+void RemoteManagementPlugn::hidePlugn()
+{
+    if (m_remoteManagementTopPanel && m_remoteManagementTopPanel->isVisible()) {
+        m_remoteManagementTopPanel->hide();
+    }
+}

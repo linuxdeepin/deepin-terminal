@@ -21,7 +21,7 @@ public:
 
     CustomCommandTopPanel *getCustomCommandTopPanel();
     void initCustomCommandTopPanel();
-
+    void hidePlugn();
 signals:
     void doHide();
 

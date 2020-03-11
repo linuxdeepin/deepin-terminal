@@ -25,6 +25,6 @@ EncodePanel::EncodePanel(QWidget *parent)
     layout->setMargin(0);
     layout->setSpacing(0);
 
-    connect(m_encodeView, &EncodeListView::focusOut, this, &RightPanel::hide);
+    connect(m_encodeView, &EncodeListView::focusOut, this, &RightPanel::hideAnim);
     connect(m_encodeView, &EncodeListView::encodeChanged, this, &EncodePanel::encodeChanged);
 }

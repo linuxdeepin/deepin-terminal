@@ -177,6 +177,7 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
             OperationConfirmDlg optDlg;
             optDlg.setOperatTypeName(tr("delete opt"));
             optDlg.setTipInfo(tr("Do you sure to delete the %1").arg(curItemServer->m_serverName));
+            optDlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
             optDlg.exec();
             if (optDlg.getConfirmResult() == QDialog::Accepted) {
 //                takeItem(getItemRow(item));
@@ -271,7 +272,11 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
     curItemServer->m_privateKey = itemData.m_privateKey;
 
     if (getModifyIconRectS(rect).contains(clickPoint)) {
-        handleModifyServerConfig(curItemServer, modelIndex);
+        if (state == 1 && !itemData.m_group.isNull() && !itemData.m_group.isEmpty()) {
+            emit itemClicked(curItemServer);
+        } else {
+            handleModifyServerConfig(curItemServer, modelIndex);
+        }
 //        m_serCfgProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     } else {
         emit itemClicked(curItemServer);
@@ -292,5 +297,10 @@ void ServerConfigList::clearData()
 {
     m_serCfgListModel->clear();
     m_serCfgItemDataList.clear();
+}
+
+int ServerConfigList::getState()
+{
+    return state;
 }
 

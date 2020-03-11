@@ -13,7 +13,6 @@
 #include "encodeplugin/encodepanelplugin.h"
 
 #include "customcommandplugin.h"
-#include "remotemanagementplugn.h"
 #include "serverconfigmanager.h"
 #include "utils.h"
 
@@ -320,6 +319,12 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         this->resize(deskRect.size().width(), this->size().height());
         this->move(0, 0);
     }
+    if (customCommandPlugin) {
+        customCommandPlugin->hidePlugn();
+    }
+    if (remoteManagPlugin) {
+        remoteManagPlugin->hidePlugn();
+    }
     DMainWindow::resizeEvent(event);
 }
 
@@ -428,10 +433,10 @@ void MainWindow::initPlugins()
     EncodePanelPlugin *encodePlugin = new EncodePanelPlugin(this);
     encodePlugin->initPlugin(this);
 
-    CustomCommandPlugin *customCommandPlugin = new CustomCommandPlugin(this);
+    customCommandPlugin = new CustomCommandPlugin(this);
     customCommandPlugin->initPlugin(this);
 
-    RemoteManagementPlugn *remoteManagPlugin = new RemoteManagementPlugn(this);
+    remoteManagPlugin = new RemoteManagementPlugn(this);
     remoteManagPlugin->initPlugin(this);
 
     m_plugins.append(encodePlugin);
@@ -833,7 +838,7 @@ void MainWindow::initTitleBar()
 
     connect(m_tabbar, &TabBar::closeTabs, this, [ = ](QList<QString> closeTabIdList) {
 
-        QMap<QString, TermWidgetPage*> pageMap;
+        QMap<QString, TermWidgetPage *> pageMap;
         for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
             TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
             pageMap.insert(tabPage->identifier(), tabPage);

@@ -7,7 +7,7 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
 {
     //    setAttribute(Qt::WA_TranslucentBackground);
     m_remoteManagementPanel = new RemoteManagementPanel(this);
-    connect(this, &RemoteManagementTopPanel::focusOut, this, &RightPanel::hide);
+    connect(this, &RemoteManagementTopPanel::focusOut, this, &RightPanel::hideAnim);
     connect(m_remoteManagementPanel,
             &RemoteManagementPanel::showServerConfigGroupPanel,
             this,

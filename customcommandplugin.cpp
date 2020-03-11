@@ -55,3 +55,10 @@ void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
     }
     emit doHide();
 }
+
+void CustomCommandPlugin::hidePlugn()
+{
+    if (m_customCommandTopPanel && m_customCommandTopPanel->isVisible()) {
+        m_customCommandTopPanel->hide();
+    }
+}

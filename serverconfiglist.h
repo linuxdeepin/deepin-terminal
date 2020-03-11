@@ -57,6 +57,7 @@ private:
     int state = 1;
     QString m_GroupName;
     QString m_Filter;
+    int getState();
 };
 
 #endif  // SERVERCONFIGLIST_H

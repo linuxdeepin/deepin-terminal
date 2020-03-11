@@ -10,8 +10,8 @@
 
 ThemePanel::ThemePanel(QWidget *parent)
     : RightPanel(parent),
-    m_themeView(new ThemeListView(this)),
-    m_themeModel(new ThemeListModel(this))
+      m_themeView(new ThemeListView(this)),
+      m_themeModel(new ThemeListModel(this))
 {
     // init view.
     m_themeView->setModel(m_themeModel);
@@ -27,6 +27,6 @@ ThemePanel::ThemePanel(QWidget *parent)
     layout->setMargin(0);
     layout->setSpacing(0);
 
-    connect(m_themeView, &ThemeListView::focusOut, this, &RightPanel::hide);
+    connect(m_themeView, &ThemeListView::focusOut, this, &RightPanel::hideAnim);
     connect(m_themeView, &ThemeListView::themeChanged, this, &ThemePanel::themeChanged);
 }

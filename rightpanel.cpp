@@ -39,7 +39,7 @@ void RightPanel::show()
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 }
 
-void RightPanel::hide()
+void RightPanel::hideAnim()
 {
     QRect rect = geometry();
     QRect windowRect = window()->geometry();
@@ -47,7 +47,7 @@ void RightPanel::hide()
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     animation->setStartValue(
-    QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+        QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
     animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
 
     animation->start();

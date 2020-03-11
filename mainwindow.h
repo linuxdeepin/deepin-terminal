@@ -4,6 +4,7 @@
 #include "termproperties.h"
 #include "titlebar.h"
 #include "termwidgetpage.h"
+#include "remotemanagementplugn.h"
 
 #include <DMainWindow>
 
@@ -135,6 +136,8 @@ private:
     /********************* Modify by n014361 wangpeili End ************************/
     QString downloadFilePath = "";
     bool enterSzCommand = false;
+    RemoteManagementPlugn *remoteManagPlugin;
+    CustomCommandPlugin *customCommandPlugin;
 };
 
 #endif  // MAINWINDOW_H

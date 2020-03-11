@@ -11,7 +11,7 @@ public:
 
 public slots:
     void show();
-    void hide();
+    void hideAnim();
 };
 
 #endif  // RIGHTPANEL_H
