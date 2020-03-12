@@ -775,6 +775,11 @@ void MainWindow::initConnections()
 
 void MainWindow::initTitleBar()
 {
+    QAction *newWorkspaceAction(new QAction(tr("New &workspace"), this));
+    connect(newWorkspaceAction, &QAction::triggered, this, [this]() {
+        this->addTab(currentTab()->createCurrentTerminalProperties(), true);
+    });
+    m_menu->addAction(newWorkspaceAction);
     for (MainWindowPluginInterface *plugin : m_plugins) {
         QAction *pluginMenu = plugin->titlebarMenu(this);
         // 取消Encoding插件的菜单展示
