@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <DApplicationHelper>
 
-EncodeItemDelegate::EncodeItemDelegate(QAbstractItemView *parent) : DStyledItemDelegate(parent)
+EncodeItemDelegate::EncodeItemDelegate(QAbstractItemView *parent) : DStyledItemDelegate(parent) , m_parentView(parent)
 {
 }
 
@@ -27,8 +27,7 @@ void EncodeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     //QString frameNormalColor = "blue";
     //QString otherColor = "white";
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-    DPalette pa = appHelper->standardPalette(appHelper->themeType());
-
+    DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
 
     // draw background.
     QPainterPath backgroundPath;
@@ -50,7 +49,7 @@ void EncodeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
     if (option.state & QStyle::State_Selected) {
         painter->setOpacity(1);
-        framePen = QPen(pa.color(DPalette::DarkLively), 2);
+        framePen = QPen(pa.color(DPalette::Highlight), 2);
     } else {
         painter->setOpacity(0.3);
         framePen = QPen(pa.color(DPalette::FrameBorder), 1);
