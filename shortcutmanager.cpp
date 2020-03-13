@@ -2,12 +2,12 @@
 #include "termwidgetpage.h"
 #include "mainwindow.h"
 #include "settings.h"
-
-#include <QDir>
 #include "termqsettings.h"
+
 #include <QStandardPaths>
-#include <QDebug>
 #include <QTextCodec>
+#include <QDebug>
+#include <QDir>
 
 #define INI_FILE_CODEC QTextCodec::codecForName("UTF-8")
 

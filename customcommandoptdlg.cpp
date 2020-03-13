@@ -10,9 +10,9 @@
 #include <DDialogCloseButton>
 #include <DApplicationHelper>
 #include <DWidgetUtil>
+#include <DLog>
 
 #include <QGridLayout>
-#include <QDebug>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 

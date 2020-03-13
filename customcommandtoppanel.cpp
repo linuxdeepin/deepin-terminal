@@ -1,12 +1,12 @@
 #include "customcommandtoppanel.h"
 
 #include <DPushButton>
+#include <DLog>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
-#include <QDebug>
 
 const int iAnimationDuration = 300;
 

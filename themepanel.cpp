@@ -4,7 +4,8 @@
 #include "themelistmodel.h"
 #include "themeitemdelegate.h"
 
-#include <QDebug>
+#include <DLog>
+
 #include <QScroller>
 #include <QVBoxLayout>
 

@@ -4,8 +4,8 @@
 
 #include <DGroupBox>
 #include <DVerticalLine>
+#include <DLog>
 
-#include <QDebug>
 #include <QEvent>
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>

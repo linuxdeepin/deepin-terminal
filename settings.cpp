@@ -2,9 +2,9 @@
 
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
+#include <DLog>
 
 #include <QApplication>
-#include <QDebug>
 #include <QStandardPaths>
 /******** Modify by n014361 wangpeili 2020-01-04:              ***********×****/
 #include <QComboBox>

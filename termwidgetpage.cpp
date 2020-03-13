@@ -3,7 +3,8 @@
 #include "settings.h"
 #include "utils.h"
 
-#include <QDebug>
+#include <DLog>
+
 #include <QUuid>
 #include <QVBoxLayout>
 #include <QApplication>

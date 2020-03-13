@@ -1,6 +1,6 @@
 #include "myiconbutton.h"
 
-#include <QDebug>
+#include <DLog>
 
 MyIconButton::MyIconButton(QWidget *parent) : DIconButton(parent)
 {

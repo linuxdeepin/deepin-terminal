@@ -21,10 +21,11 @@
 #include "utils.h"
 #include "operationconfirmdlg.h"
 
+#include <DLog>
+
 #include <QUrl>
 #include <QDir>
 #include <QFile>
-#include <QDebug>
 #include <QFileInfo>
 #include <QFontInfo>
 #include <QMimeType>

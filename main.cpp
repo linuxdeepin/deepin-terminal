@@ -7,7 +7,6 @@
 #include <DLog>
 
 #include <QCommandLineParser>
-#include <QDebug>
 #include <QTranslator>
 
 DWIDGET_USE_NAMESPACE

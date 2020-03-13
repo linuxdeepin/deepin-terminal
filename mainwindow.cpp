@@ -23,9 +23,9 @@
 #include <DThemeManager>
 #include <DTitlebar>
 #include <DFileDialog>
+#include <DLog>
 
 #include <QApplication>
-#include <QDebug>
 #include <QDesktopWidget>
 #include <QInputDialog>
 #include <QJsonArray>

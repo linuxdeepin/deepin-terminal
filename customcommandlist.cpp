@@ -5,9 +5,9 @@
 #include "shortcutmanager.h"
 
 #include <DMessageBox>
+#include <DLog>
 
 #include <QAction>
-#include <QDebug>
 
 CustomCommandList::CustomCommandList(QWidget *parent) : DListView(parent)
 {

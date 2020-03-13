@@ -1,6 +1,6 @@
 #include "tabbar.h"
 
-#include <QDebug>
+#include <DLog>
 
 TabBar::TabBar(QWidget *parent, bool chromeTabStyle) : DTabBar(parent, chromeTabStyle), m_rightClickTab(-1)
 {

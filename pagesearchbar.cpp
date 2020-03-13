@@ -23,7 +23,8 @@
 #include "pagesearchbar.h"
 #include "utils.h"
 
-#include <QDebug>
+#include <DLog>
+
 #include <QGraphicsOpacityEffect>
 #include <QKeyEvent>
 #include <QShortcut>

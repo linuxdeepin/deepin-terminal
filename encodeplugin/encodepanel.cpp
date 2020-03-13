@@ -4,7 +4,7 @@
 #include "encodelistmodel.h"
 #include "encodeitemdelegate.h"
 
-#include <QDebug>
+#include <DLog>
 #include <QScroller>
 #include <QVBoxLayout>
 

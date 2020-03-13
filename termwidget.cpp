@@ -6,13 +6,13 @@
 #include <DDesktopServices>
 #include <DInputDialog>
 #include <DApplicationHelper>
+#include <DLog>
 
 #include <QApplication>
 #include <QDesktopServices>
 #include <QMenu>
 #include <QVBoxLayout>
 #include <QTime>
-#include <QDebug>
 #include <QApplication>
 #include <QClipboard>
 #include <QFileInfo>

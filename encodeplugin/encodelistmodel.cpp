@@ -2,8 +2,9 @@
 
 #include "qtermwidget/lib/qtermwidget.h"
 
+#include <DLog>
+
 #include <QTextCodec>
-#include <QDebug>
 #include <QRegExp>
 
 EncodeListModel::EncodeListModel(QObject *parent) : QAbstractListModel(parent)

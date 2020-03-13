@@ -1,8 +1,9 @@
 #include "commonpanel.h"
 
+#include <DLog>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QDebug>
 
 CommonPanel::CommonPanel(QWidget *parent) : QFrame(parent)
 {

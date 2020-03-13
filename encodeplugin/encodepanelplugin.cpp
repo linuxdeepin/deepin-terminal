@@ -4,7 +4,8 @@
 #include "encodepanel.h"
 #include "termwidgetpage.h"
 #include "settings.h"
-#include <QDebug>
+
+#include <DLog>
 
 EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
