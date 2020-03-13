@@ -10,7 +10,7 @@ TabBar::TabBar(QWidget *parent, bool chromeTabStyle) : DTabBar(parent, chromeTab
     installEventFilter(this);
 
     setTabsClosable(true);
-    setFixedHeight(40);
+    setFixedHeight(36);
 
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);
 }

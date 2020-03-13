@@ -17,10 +17,11 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
 
     if (DApplication::isDXcbPlatform()) {
 
-        QPixmap iconPixmap = QIcon::fromTheme("deepin-terminal").pixmap(24, 24);
+        QPixmap iconPixmap = QIcon::fromTheme("deepin-terminal").pixmap(36, 36);
         QLabel *iconLabel = new QLabel(this);
+        iconLabel->setFixedSize(36, 36);
         iconLabel->setPixmap(iconPixmap);
-        iconLabel->setFixedSize(24, 40);
+
 
         m_layout->addSpacing(10);
 

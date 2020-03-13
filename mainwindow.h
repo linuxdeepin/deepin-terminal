@@ -122,7 +122,7 @@ private:
     QWidget *m_centralWidget = nullptr;
     QVBoxLayout *m_centralLayout = nullptr;
     QStackedWidget *m_termStackWidget = nullptr;
-    QString m_titlebarStyleSheet = nullptr;
+    //QString m_titlebarStyleSheet = nullptr;
     ShortcutManager *m_shortcutManager = nullptr;
     QList<MainWindowPluginInterface *> m_plugins;
     TermProperties m_properties;

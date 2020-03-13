@@ -47,7 +47,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_centralWidget(new QWidget(this)),
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
       m_termStackWidget(new QStackedWidget),
-      m_titlebarStyleSheet(titlebar()->styleSheet()),
+      //m_titlebarStyleSheet(titlebar()->styleSheet()),
       m_properties(properties)
 {
     initUI();
