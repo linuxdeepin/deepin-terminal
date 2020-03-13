@@ -805,6 +805,9 @@ void MainWindow::initTitleBar()
         titlebar()->setAutoHideOnFullscreen(true);
         titlebar()->setMenu(m_menu);
         titlebar()->setTitle("");
+
+        //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
+        titlebar()->setFocusPolicy(Qt::NoFocus);
     }
 
     connect(m_tabbar, &DTabBar::tabFull, this, [ = ]() {
