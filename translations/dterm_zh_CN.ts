@@ -117,32 +117,32 @@
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1091"/>
+        <location filename="../main/mainwindow.cpp" line="1092"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1093"/>
+        <location filename="../main/mainwindow.cpp" line="1094"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1095"/>
+        <location filename="../main/mainwindow.cpp" line="1096"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1151"/>
+        <location filename="../main/mainwindow.cpp" line="1152"/>
         <source>Type path to download file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1183"/>
+        <location filename="../main/mainwindow.cpp" line="1184"/>
         <source>Select file to upload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1185"/>
+        <location filename="../main/mainwindow.cpp" line="1186"/>
         <source>Select directory to save the file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -790,22 +790,22 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../settings/settings.cpp" line="42"/>
+        <location filename="../settings/settings.cpp" line="43"/>
         <source>Normal</source>
         <translation>正常窗口</translation>
     </message>
     <message>
-        <location filename="../settings/settings.cpp" line="42"/>
+        <location filename="../settings/settings.cpp" line="43"/>
         <source>Maximum</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="../settings/settings.cpp" line="42"/>
+        <location filename="../settings/settings.cpp" line="43"/>
         <source>Fullscreen</source>
         <translation>全屏显示</translation>
     </message>
     <message>
-        <location filename="../settings/settings.cpp" line="42"/>
+        <location filename="../settings/settings.cpp" line="43"/>
         <source>Halfscreen</source>
         <translation type="unfinished"></translation>
     </message>

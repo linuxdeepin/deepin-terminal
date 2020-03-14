@@ -11,8 +11,8 @@
         <file>resources/images/icon/hover/edit_hover.svg</file>
         <file>resources/images/icon/hover/exit_hover.svg</file>
         <file>resources/images/icon/hover/exit_hover_dark.svg</file>
-        <file>resources/images/icon/hover/Opacity0.png</file>
-        <file>resources/images/icon/hover/Opacity1.png</file>
+        <file>resources/images/icon/hover/opacity0.png</file>
+        <file>resources/images/icon/hover/opacity1.png</file>
         <file>resources/images/buildin/dark/edit.svg</file>
         <file>resources/images/buildin/dark/command.svg</file>
         <file>resources/images/buildin/light/edit.svg</file>
