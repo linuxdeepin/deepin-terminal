@@ -3,6 +3,7 @@
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
 #include <DLog>
+#include <DSlider>
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -211,4 +212,33 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 
     return optionWidget;
 }
-/********************* Modify by n014361 wangpeili End ************************/
+/*******************************************************************************
+ 1. @函数:    createCustomSliderHandle
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-14
+ 4. @说明:    自定义slider控件样式
+*******************************************************************************/
+QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
+{
+    auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
+
+    DSlider *slider = new DSlider;
+    slider->setLeftIcon(QIcon(":/images/icon/hover/Opacity0.png"));
+    slider->setRightIcon(QIcon(":/images/icon/hover/Opacity1.png"));
+    slider->setIconSize(QSize(20, 20));
+
+    QPair<QWidget *, QWidget *> optionWidget =
+        DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
+
+    connect(
+    option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) {
+        slider->setValue(var.toInt());
+    });
+
+    option->connect(
+    slider, &DSlider::valueChanged, option, [ = ](QVariant var) {
+        option->setValue(var.toInt());
+    });
+
+    return optionWidget;
+}/********************* Modify by n014361 wangpeili End ************************/

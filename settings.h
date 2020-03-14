@@ -35,6 +35,8 @@ public:
     QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);
 
     static QPair<QWidget *, QWidget *> createFontComBoBoxHandle(QObject *obj);
+    // 新增自定义slider控件
+    static QPair<QWidget *, QWidget *> createCustomSliderHandle(QObject *obj);
     /******** Modify by n014361 wangpeili 2020-01-04:              ****************/
 
 signals:
