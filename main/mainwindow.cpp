@@ -207,9 +207,13 @@ void MainWindow::closeTab(const QString &identifier)
                 qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
                 return;
             }
+        }
+    }
 
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        if (tabPage && tabPage->identifier() == identifier) {
             m_termStackWidget->removeWidget(tabPage);
-            tabPage->deleteLater();
             m_tabbar->removeTab(identifier);
 
             updateTabStatus();
@@ -265,7 +269,6 @@ void MainWindow::closeOtherTab()
             m_termStackWidget->removeWidget(tabPage);
             m_tabbar->removeTab(tabPage->identifier());
 
-            delete tabPage;
             index = 0;
             // break;
         } else {
@@ -872,7 +875,6 @@ void MainWindow::initTitleBar()
             m_tabbar->removeTab(tabIdentifier);
             if (tabPage && tabPage->identifier() == tabIdentifier) {
                 m_termStackWidget->removeWidget(tabPage);
-                delete tabPage;
             }
         }
     });

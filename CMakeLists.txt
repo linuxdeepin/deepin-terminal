@@ -215,7 +215,7 @@ endif ()
 install(FILES deepin-terminal.desktop
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
 
-install(FILES images/logo/deepin-terminal.svg
+install(FILES resources/images/logo/deepin-terminal.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
