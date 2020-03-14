@@ -17,5 +17,11 @@
         <file>resources/images/buildin/dark/command.svg</file>
         <file>resources/images/buildin/light/edit.svg</file>
         <file>resources/images/buildin/light/command.svg</file>
+        <file>resources/images/buildin/dark/server_group.svg</file>
+        <file>resources/images/buildin/dark/server.svg</file>
+        <file>resources/images/buildin/light/server_group.svg</file>
+        <file>resources/images/buildin/light/server.svg</file>
+        <file>resources/images/buildin/dark/arrow_right.svg</file>
+        <file>resources/images/buildin/light/arrow_right.svg</file>
     </qresource>
 </RCC>

@@ -76,7 +76,10 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         if (DGuiApplicationHelper::DarkType == appHelper->themeType()) {
             themeType = "dark";
         }
-        QString strCmdIconSrc = QString(":/resources/images/icon/hover/server.svg").arg(themeType);
+        QString strCmdIconSrc = QString(":/resources/images/buildin/%1/server.svg").arg(themeType);
+        if (isgroup) {
+            strCmdIconSrc = QString(":/resources/images/buildin/%1/server_group.svg").arg(themeType);
+        }
         QPixmap cmdIconPixmap = Utils::renderSVG(strCmdIconSrc, QSize(cmdIconSize, cmdIconSize));
 
         QRect cmdIconRect = QRect(bgRect.left(), bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
@@ -89,8 +92,9 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         if (isgroup) {
             strCmdName = itemData.m_group;
             strCmdShortcut = itemData.m_number;
-            editIconSize = 10;
-            QString strEditIconSrc = QString(":/resources/images/icon/hover/arrowr.svg").arg(themeType);
+            editIconSize = 12;
+            QString strEditIconSrc = QString(":/resources/images/buildin/%1/arrow_right.svg").arg(themeType);
+            qDebug() << strEditIconSrc << endl;
             QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
             QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
                                        editIconSize, editIconSize);
