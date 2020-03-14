@@ -19,7 +19,7 @@
  */
 
 #include "utils.h"
-#include "operationconfirmdlg.h"
+#include "../views/operationconfirmdlg.h"
 
 #include <DLog>
 
@@ -66,7 +66,7 @@ QString Utils::getQssContent(const QString &filePath)
 QString Utils::getConfigPath()
 {
     QDir dir(
-    QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()).filePath(qApp->organizationName()));
+        QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()).filePath(qApp->organizationName()));
 
     return dir.filePath(qApp->applicationName());
 }

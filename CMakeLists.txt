@@ -42,6 +42,16 @@ include_directories(${DtkWidget_INCLUDE_DIRS})
 include_directories(${DtkGui_INCLUDE_DIRS})
 include_directories(${DtkCore_INCLUDE_DIRS})
 
+include_directories("common")
+include_directories("customcommand")
+include_directories("encodeplugin")
+include_directories("main")
+include_directories("quaketerminal")
+include_directories("remotemanage")
+include_directories("settings")
+include_directories("theme")
+include_directories("views")
+
 set(LINK_LIBS
     Qt5::Core
     Qt5::DBus
@@ -56,116 +66,116 @@ set(LINK_LIBS
 # Populate a CMake variable with the sources
 # TODO: portable headers?
 set (DTNG_CPP_FILES
-    commonpanel.cpp
-    customcommanddelegate.cpp
-    customcommanditemmodel.cpp
-    customcommandlist.cpp
-    customcommandoptdlg.cpp
-    customcommandpanel.cpp
-    customcommandplugin.cpp
-    customcommandsearchrstpanel.cpp
-    customcommandtoppanel.cpp
-    main.cpp
-    mainwindow.cpp
-    myiconbutton.cpp
-    operationconfirmdlg.cpp
-    quaketerminaladapter.cpp
-    quaketerminalproxy.cpp
-    remotemanagementpanel.cpp
-    remotemanagementplugn.cpp
-    remotemanagementsearchpanel.cpp
-    remotemanagementtoppanel.cpp
-    rightpanel.cpp
-    serverconfigdelegate.cpp
-    serverconfiggrouppanel.cpp
-    serverconfigitem.cpp
-    serverconfigitemmodel.cpp
-    serverconfiglist.cpp
-    serverconfigmanager.cpp
-    serverconfigoptdlg.cpp
-    serverconfigoptwidget.cpp
-    settings.cpp
-    settings_translation.cpp
-    shortcutmanager.cpp
-    tabbar.cpp
-    termargumentparser.cpp
-    termproperties.cpp
-    termtabbar.cpp
-    termwidget.cpp
-    termwidgetpage.cpp
-    themeitemdelegate.cpp
-    themelistmodel.cpp
-    themelistview.cpp
-    themepanel.cpp
-    themepanelplugin.cpp
-    titlebar.cpp
-    utils.cpp
-    pagesearchbar.cpp
-    termqsettings.cpp
-    termbasedialog.cpp
-    termcommandlinkbutton.cpp
+    common/utils.cpp
+    common/termqsettings.cpp
+    customcommand/customcommanddelegate.cpp
+    customcommand/customcommanditemmodel.cpp
+    customcommand/customcommandlist.cpp
+    customcommand/customcommandoptdlg.cpp
+    customcommand/customcommandpanel.cpp
+    customcommand/customcommandplugin.cpp
+    customcommand/customcommandsearchrstpanel.cpp
+    customcommand/customcommandtoppanel.cpp
     encodeplugin/encodepanelplugin.cpp
     encodeplugin/encodepanel.cpp
     encodeplugin/encodelistview.cpp
     encodeplugin/encodelistmodel.cpp
     encodeplugin/encodeitemdelegate.cpp
+    main/main.cpp
+    main/mainwindow.cpp
+    main/termproperties.cpp
+    quaketerminal/quaketerminaladapter.cpp
+    quaketerminal/quaketerminalproxy.cpp
+    quaketerminal/termargumentparser.cpp
+    remotemanage/remotemanagementpanel.cpp
+    remotemanage/remotemanagementplugn.cpp
+    remotemanage/remotemanagementsearchpanel.cpp
+    remotemanage/remotemanagementtoppanel.cpp
+    remotemanage/serverconfigdelegate.cpp
+    remotemanage/serverconfiggrouppanel.cpp
+    remotemanage/serverconfigitem.cpp
+    remotemanage/serverconfigitemmodel.cpp
+    remotemanage/serverconfiglist.cpp
+    remotemanage/serverconfigmanager.cpp
+    remotemanage/serverconfigoptdlg.cpp
+    remotemanage/serverconfigoptwidget.cpp
+    settings/settings.cpp
+    settings/settings_translation.cpp
+    settings/shortcutmanager.cpp
+    theme/themeitemdelegate.cpp
+    theme/themelistmodel.cpp
+    theme/themelistview.cpp
+    theme/themepanel.cpp
+    theme/themepanelplugin.cpp
+    views/commonpanel.cpp
+    views/myiconbutton.cpp
+    views/operationconfirmdlg.cpp
+    views/pagesearchbar.cpp
+    views/rightpanel.cpp
+    views/tabbar.cpp
+    views/termtabbar.cpp
+    views/termwidget.cpp
+    views/termwidgetpage.cpp
+    views/termbasedialog.cpp
+    views/termcommandlinkbutton.cpp
+    views/titlebar.cpp
 )
 
 set (DTNG_HEADER_FILES
-    commonpanel.h
-    customcommanddelegate.h
-    customcommanditemmodel.h
-    customcommandlist.h
-    customcommandoptdlg.h
-    customcommandpanel.h
-    customcommandplugin.h
-    customcommandsearchrstpanel.h
-    customcommandtoppanel.h
-    define.h
-    mainwindow.h
-    mainwindowplugininterface.h
-    myiconbutton.h
-    operationconfirmdlg.h
-    quaketerminaladapter.h
-    quaketerminalproxy.h
-    remotemanagementpanel.h
-    remotemanagementplugn.h
-    remotemanagementsearchpanel.h
-    remotemanagementtoppanel.h
-    rightpanel.h
-    serverconfigdelegate.h
-    serverconfiggrouppanel.h
-    serverconfigitem.h
-    serverconfigitemmodel.h
-    serverconfiglist.h
-    serverconfigmanager.h
-    serverconfigoptdlg.h
-    serverconfigoptwidget.h
-    settings.h
-    shortcutmanager.h
-    tabbar.h
-    termargumentparser.h
-    termproperties.h
-    termtabbar.h
-    termwidget.h
-    termwidgetpage.h
-    themeitemdelegate.h
-    themelistmodel.h
-    themelistview.h
-    themepanel.h
-    themepanelplugin.h
-    titlebar.h
-    utils.h
-    pagesearchbar.h
-    termqsettings.h
-    termqsettings_p.h
-    termbasedialog.h
-    termcommandlinkbutton.h
+    common/define.h
+    common/termqsettings.h
+    common/termqsettings_p.h
+    common/utils.h
+    customcommand/customcommanddelegate.h
+    customcommand/customcommanditemmodel.h
+    customcommand/customcommandlist.h
+    customcommand/customcommandoptdlg.h
+    customcommand/customcommandpanel.h
+    customcommand/customcommandplugin.h
+    customcommand/customcommandsearchrstpanel.h
+    customcommand/customcommandtoppanel.h
     encodeplugin/encodepanelplugin.h
     encodeplugin/encodepanel.h
     encodeplugin/encodelistview.h
     encodeplugin/encodelistmodel.h
     encodeplugin/encodeitemdelegate.h
+    main/mainwindow.h
+    main/mainwindowplugininterface.h
+    main/termproperties.h
+    quaketerminal/quaketerminaladapter.h
+    quaketerminal/quaketerminalproxy.h
+    quaketerminal/termargumentparser.h
+    remotemanage/remotemanagementpanel.h
+    remotemanage/remotemanagementplugn.h
+    remotemanage/remotemanagementsearchpanel.h
+    remotemanage/remotemanagementtoppanel.h
+    remotemanage/serverconfigdelegate.h
+    remotemanage/serverconfiggrouppanel.h
+    remotemanage/serverconfigitem.h
+    remotemanage/serverconfigitemmodel.h
+    remotemanage/serverconfiglist.h
+    remotemanage/serverconfigmanager.h
+    remotemanage/serverconfigoptdlg.h
+    remotemanage/serverconfigoptwidget.h
+    settings/settings.h
+    settings/shortcutmanager.h
+    theme/themeitemdelegate.h
+    theme/themelistmodel.h
+    theme/themelistview.h
+    theme/themepanel.h
+    theme/themepanelplugin.h
+    views/commonpanel.h
+    views/myiconbutton.h
+    views/operationconfirmdlg.h
+    views/pagesearchbar.h
+    views/rightpanel.h
+    views/tabbar.h
+    views/termtabbar.h
+    views/termwidget.h
+    views/termwidgetpage.h
+    views/titlebar.h
+    views/termbasedialog.h
+    views/termcommandlinkbutton.h
 )
 
 set (DTNG_QRC_FILES

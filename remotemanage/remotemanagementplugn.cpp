@@ -57,7 +57,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 
 QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
 {
-    QFile sourceFile(":/config/ssh_login.sh");
+    QFile sourceFile(":/resources/other/ssh_login.sh");
     QString fileString;
     if (sourceFile.open(QIODevice::ReadOnly)) {
         fileString = sourceFile.readAll();

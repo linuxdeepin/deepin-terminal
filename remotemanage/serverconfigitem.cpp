@@ -16,7 +16,7 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
 
 {
     setFixedWidth(230);
-    QImage img(":/images/icon/hover/server.svg");
+    QImage img(":/resources/images/icon/hover/server.svg");
     m_leftIcon->setPixmap(QPixmap::fromImage(img));
     m_leftIcon->setFixedSize(QSize(70, 70));
     m_leftIcon->setFocusPolicy(Qt::NoFocus);
@@ -25,12 +25,12 @@ ServerConfigItem::ServerConfigItem(ServerConfig *config, bool bGroup, const QStr
         m_rightIconButton = new MyIconButton(this);
         m_rightIconButton->setFixedSize(QSize(30, 30));
         m_rightIconButton->setIconSize(QSize(30, 30));
-        m_rightIconButton->setIcon(QIcon(":/images/icon/hover/edit_hover.svg"));
+        m_rightIconButton->setIcon(QIcon(":/resources/images/icon/hover/edit_hover.svg"));
         connect(m_rightIconButton, &DIconButton::clicked, this, &ServerConfigItem::editServerConfig);
         m_rightIcon = nullptr;
     } else {
         m_rightIcon = new DLabel(this);
-        m_rightIcon->setPixmap(QPixmap::fromImage(QImage(":/images/icon/hover/arrowr.svg")));
+        m_rightIcon->setPixmap(QPixmap::fromImage(QImage(":/resources/images/icon/hover/arrowr.svg")));
         m_rightIcon->setFixedSize(QSize(30, 30));
         m_rightIcon->setAlignment(Qt::AlignCenter);
         m_rightIcon->setFocusPolicy(Qt::NoFocus);

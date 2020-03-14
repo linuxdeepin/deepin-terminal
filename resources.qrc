@@ -1,23 +1,21 @@
 <RCC>
-    <qresource prefix="/config">
-        <file>default-config.json</file>
-        <file>ssh_login.sh</file>
-    </qresource>
     <qresource prefix="/">
-        <file>images/icon/hover/server.svg</file>
-        <file>images/icon/focus/server.svg</file>
-        <file>images/logo/deepin-terminal.svg</file>
-        <file>images/icon/focus/arrowr.svg</file>
-        <file>images/icon/hover/arrowr.svg</file>
-        <file>images/icon/focus/edit_press.svg</file>
-        <file>images/icon/hover/edit_hover.svg</file>
-        <file>images/icon/hover/exit_hover.svg</file>
-        <file>images/icon/hover/exit_hover_dark.svg</file>
-        <file>images/icon/hover/Opacity0.png</file>
-        <file>images/icon/hover/Opacity1.png</file>
-        <file>images/buildin/dark/command.svg</file>
-        <file>images/buildin/dark/edit.svg</file>
-        <file>images/buildin/light/command.svg</file>
-        <file>images/buildin/light/edit.svg</file>
+        <file>resources/other/default-config.json</file>
+        <file>resources/other/ssh_login.sh</file>
+        <file>resources/images/icon/hover/server.svg</file>
+        <file>resources/images/icon/focus/server.svg</file>
+        <file>resources/images/logo/deepin-terminal.svg</file>
+        <file>resources/images/icon/focus/arrowr.svg</file>
+        <file>resources/images/icon/hover/arrowr.svg</file>
+        <file>resources/images/icon/focus/edit_press.svg</file>
+        <file>resources/images/icon/hover/edit_hover.svg</file>
+        <file>resources/images/icon/hover/exit_hover.svg</file>
+        <file>resources/images/icon/hover/exit_hover_dark.svg</file>
+        <file>resources/images/icon/hover/Opacity0.png</file>
+        <file>resources/images/icon/hover/Opacity1.png</file>
+        <file>resources/images/buildin/dark/edit.svg</file>
+        <file>resources/images/buildin/dark/command.svg</file>
+        <file>resources/images/buildin/light/edit.svg</file>
+        <file>resources/images/buildin/light/command.svg</file>
     </qresource>
 </RCC>

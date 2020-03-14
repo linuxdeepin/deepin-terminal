@@ -25,7 +25,7 @@ Settings::Settings() : QObject(qApp)
     m_backend = new QSettingBackend(m_configPath);
 
     // 默认配置
-    settings = DSettings::fromJsonFile(":/config/default-config.json");
+    settings = DSettings::fromJsonFile(":/resources/other/default-config.json");
 
     // 加载自定义配置
     settings->setBackend(m_backend);
@@ -36,9 +36,9 @@ Settings::Settings() : QObject(qApp)
 
     windowStateMap.insert("keys",
                           QStringList() << "window_normal"
-                                        << "Halfscreen"
-                                        << "window_maximum"
-                                        << "fullscreen");
+                          << "Halfscreen"
+                          << "window_maximum"
+                          << "fullscreen");
     windowStateMap.insert("values",
                           QStringList() << tr("Normal") << tr("Halfscreen") << tr("Maximum") << tr("Fullscreen"));
     windowState->setData("items", windowStateMap);
@@ -62,7 +62,7 @@ Settings *Settings::instance()
 
 void Settings::initConnection()
 {
-    connect(settings, &Dtk::Core::DSettings::valueChanged, this, [=](const QString &key, const QVariant &value) {
+    connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
         if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.")) {
             emit terminalSettingChanged(key);
         } else if (key.contains("shortcuts.")) {
@@ -73,38 +73,38 @@ void Settings::initConnection()
     });
 
     QPointer<DSettingsOption> opacity = settings->option("basic.interface.opacity");
-    connect(opacity, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+    connect(opacity, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit opacityChanged(value.toInt() / 100.0);
     });
 
     QPointer<DSettingsOption> cursorShape = settings->option("advanced.cursor.cursor_shape");
-    connect(cursorShape, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+    connect(cursorShape, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit cursorShapeChanged(value.toInt());
     });
 
     QPointer<DSettingsOption> cursorBlink = settings->option("advanced.cursor.cursor_blink");
-    connect(cursorBlink, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+    connect(cursorBlink, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit cursorBlinkChanged(value.toBool());
     });
 
     QPointer<DSettingsOption> backgroundBlur = settings->option("advanced.window.blurred_background");
-    connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+    connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit backgroundBlurChanged(value.toBool());
     });
 
     /******** Modify by n014361 wangpeili 2020-01-06:  字体，字体大小实时生效 ****************/
     QPointer<DSettingsOption> fontSize = settings->option("basic.interface.font_size");
-    connect(fontSize, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+    connect(fontSize, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit fontSizeChanged(value.toInt());
     });
 
     QPointer<DSettingsOption> family = settings->option("basic.interface.font");
-    connect(family, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+    connect(family, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit fontChanged(value.toString());
     });
 
     QPointer<DSettingsOption> PressingScroll = settings->option("advanced.scroll.scroll_on_key");
-    connect(PressingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
+    connect(PressingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit pressingScrollChanged(value.toBool());
     });
     // 取消了这个修改信号，设置信息为实时读取
@@ -190,7 +190,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     // QWidget *optionWidget = DSettingsWidgetFactory::createTwoColumWidget(option, comboBox);
 
     QPair<QWidget *, QWidget *> optionWidget =
-    DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
+        DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
     QFontDatabase fontDatabase;
     comboBox->addItems(fontDatabase.families());
@@ -205,10 +205,10 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     comboBox->setCurrentText(option->value().toString());
 
     connect(
-    option, &DSettingsOption::valueChanged, comboBox, [=](QVariant var) { comboBox->setCurrentText(var.toString()); });
+    option, &DSettingsOption::valueChanged, comboBox, [ = ](QVariant var) { comboBox->setCurrentText(var.toString()); });
 
     option->connect(
-    comboBox, &QComboBox::currentTextChanged, option, [=](const QString &text) { option->setValue(text); });
+    comboBox, &QComboBox::currentTextChanged, option, [ = ](const QString & text) { option->setValue(text); });
 
     return optionWidget;
 }

@@ -447,7 +447,7 @@ void MainWindow::initPlugins()
 void MainWindow::initWindow()
 {
     // 全屏退出按钮
-    QIcon ico(":/images/icon/hover/exit_hover.svg");
+    QIcon ico(":/resources/images/icon/hover/exit_hover.svg");
     m_exitFullScreen = new DPushButton();
     applyTheme();
     m_exitFullScreen->setIconSize(QSize(36, 36));
@@ -1025,9 +1025,9 @@ void MainWindow::showSettingDialog()
 void MainWindow::applyTheme()
 {
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        m_exitFullScreen->setIcon(QIcon(":/images/icon/hover/exit_hover.svg"));
+        m_exitFullScreen->setIcon(QIcon(":/resources/images/icon/hover/exit_hover.svg"));
     } else {
-        m_exitFullScreen->setIcon(QIcon(":/images/icon/hover/exit_hover_dark.svg"));
+        m_exitFullScreen->setIcon(QIcon(":/resources/images/icon/hover/exit_hover_dark.svg"));
     }
 }
 
