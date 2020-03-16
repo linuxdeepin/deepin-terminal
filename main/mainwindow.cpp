@@ -1152,7 +1152,7 @@ void MainWindow::remoteDownloadFile()
 {
     downloadFilePath = showFileDailog(true);
     if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
-        QString strTxt = "read -e -a files -p \"" + tr("Type path to download file: ") + "\"; sz \"${files[@]}\"\n";
+        QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
         currentTab()->sendTextToCurrentTerm(strTxt);
         enterSzCommand = true;
         sleep(100);

@@ -25,126 +25,143 @@ DEFINES += USE_QMAKE
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += \
+    common \
+    customcommand \
+    encodeplugin \
+    main \
+    quaketerminal \
+    remotemanage \
+    settings \
+    theme \
+    views
+
 # Input
 HEADERS += \
-    customcommanddelegate.h \
-    customcommanditemmodel.h \
-    define.h \
-    mainwindow.h \
-    mainwindowplugininterface.h \
-    rightpanel.h \
-    settings.h \
-    shortcutmanager.h \
-    tabbar.h \
-    termproperties.h \
-    termwidget.h \
-    termwidgetpage.h \
-    themeitemdelegate.h \
-    themelistmodel.h \
-    themelistview.h \
-    themepanel.h \
-    themepanelplugin.h \
-    titlebar.h \
-    customcommandplugin.h \
-    customcommandpanel.h \
-    customcommandlist.h \
-    customcommandoptdlg.h \
-    myiconbutton.h \
-    customcommandsearchrstpanel.h \
-    commonpanel.h \
-    customcommandtoppanel.h \
-    operationconfirmdlg.h \
-    serverconfigmanager.h \
-    remotemanagementplugn.h \
-    remotemanagementtoppanel.h \
-    remotemanagementpanel.h \
-    serverconfigitem.h \
-    serverconfiglist.h \
-    serverconfiggrouppanel.h \
-    remotemanagementsearchpanel.h \
-    serverconfigoptwidget.h \
-    serverconfigoptdlg.h \
-    termtabbar.h \
-    quaketerminaladapter.h \
-    termargumentparser.h \
-    quaketerminalproxy.h \
-    utils.h \
-    pagesearchbar.h \
-    termqsettings.h \
-    termqsettings_p.h \
-    termbasedialog.h \
-    termcommandlinkbutton.h \
+    common/define.h \
+    common/termqsettings.h \
+    common/termqsettings_p.h \
+    common/utils.h \
+    customcommand/customcommanddelegate.h \
+    customcommand/customcommanditemmodel.h \
+    customcommand/customcommandlist.h \
+    customcommand/customcommandoptdlg.h \
+    customcommand/customcommandpanel.h \
+    customcommand/customcommandplugin.h \
+    customcommand/customcommandsearchrstpanel.h \
+    customcommand/customcommandtoppanel.h \
     encodeplugin/encodepanelplugin.h \
     encodeplugin/encodepanel.h \
     encodeplugin/encodelistview.h \
     encodeplugin/encodelistmodel.h \
-    encodeplugin/encodeitemdelegate.h
+    encodeplugin/encodeitemdelegate.h \
+    main/mainwindow.h \
+    main/mainwindowplugininterface.h \
+    main/termproperties.h \
+    quaketerminal/quaketerminaladapter.h \
+    quaketerminal/quaketerminalproxy.h \
+    quaketerminal/termargumentparser.h \
+    remotemanage/remotemanagementpanel.h \
+    remotemanage/remotemanagementplugn.h \
+    remotemanage/remotemanagementsearchpanel.h \
+    remotemanage/remotemanagementtoppanel.h \
+    remotemanage/serverconfigdelegate.h \
+    remotemanage/serverconfiggrouppanel.h \
+    remotemanage/serverconfigitem.h \
+    remotemanage/serverconfigitemmodel.h \
+    remotemanage/serverconfiglist.h \
+    remotemanage/serverconfigmanager.h \
+    remotemanage/serverconfigoptdlg.h \
+    remotemanage/serverconfigoptwidget.h \
+    settings/settings.h \
+    settings/shortcutmanager.h \
+    theme/themeitemdelegate.h \
+    theme/themelistmodel.h \
+    theme/themelistview.h \
+    theme/themepanel.h \
+    theme/themepanelplugin.h \
+    views/commonpanel.h \
+    views/myiconbutton.h \
+    views/operationconfirmdlg.h \
+    views/pagesearchbar.h \
+    views/rightpanel.h \
+    views/tabbar.h \
+    views/termtabbar.h \
+    views/termwidget.h \
+    views/termwidgetpage.h \
+    views/titlebar.h \
+    views/termbasedialog.h \
+    views/termcommandlinkbutton.h
 
 SOURCES += \
-    customcommanddelegate.cpp \
-    customcommanditemmodel.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    rightpanel.cpp \
-    settings.cpp \
-    settings_translation.cpp \
-    shortcutmanager.cpp \
-    tabbar.cpp \
-    termproperties.cpp \
-    termwidget.cpp \
-    termwidgetpage.cpp \
-    themeitemdelegate.cpp \
-    themelistmodel.cpp \
-    themelistview.cpp \
-    themepanel.cpp \
-    themepanelplugin.cpp \
-    titlebar.cpp \
-    customcommandplugin.cpp \
-    customcommandpanel.cpp \
-    customcommandlist.cpp \
-    customcommandoptdlg.cpp \
-    myiconbutton.cpp \
-    customcommandsearchrstpanel.cpp \
-    commonpanel.cpp \
-    customcommandtoppanel.cpp \
-    operationconfirmdlg.cpp \
-    serverconfigmanager.cpp \
-    remotemanagementplugn.cpp \
-    remotemanagementtoppanel.cpp \
-    remotemanagementpanel.cpp \
-    serverconfigitem.cpp \
-    serverconfiglist.cpp \
-    serverconfiggrouppanel.cpp \
-    remotemanagementsearchpanel.cpp \
-    serverconfigoptwidget.cpp \
-    serverconfigoptdlg.cpp \
-    termtabbar.cpp \
-    quaketerminaladapter.cpp \
-    termargumentparser.cpp \
-    quaketerminalproxy.cpp \
-    utils.cpp \
-    pagesearchbar.cpp \
-    termqsettings.cpp \
-    termbasedialog.cpp \
-    termcommandlinkbutton.cpp \
+    common/utils.cpp \
+    common/termqsettings.cpp \
+    customcommand/customcommanddelegate.cpp \
+    customcommand/customcommanditemmodel.cpp \
+    customcommand/customcommandlist.cpp \
+    customcommand/customcommandoptdlg.cpp \
+    customcommand/customcommandpanel.cpp \
+    customcommand/customcommandplugin.cpp \
+    customcommand/customcommandsearchrstpanel.cpp \
+    customcommand/customcommandtoppanel.cpp \
     encodeplugin/encodepanelplugin.cpp \
     encodeplugin/encodepanel.cpp \
     encodeplugin/encodelistview.cpp \
     encodeplugin/encodelistmodel.cpp \
-    encodeplugin/encodeitemdelegate.cpp
+    encodeplugin/encodeitemdelegate.cpp \
+    main/main.cpp \
+    main/mainwindow.cpp \
+    main/termproperties.cpp \
+    quaketerminal/quaketerminaladapter.cpp \
+    quaketerminal/quaketerminalproxy.cpp \
+    quaketerminal/termargumentparser.cpp \
+    remotemanage/remotemanagementpanel.cpp \
+    remotemanage/remotemanagementplugn.cpp \
+    remotemanage/remotemanagementsearchpanel.cpp \
+    remotemanage/remotemanagementtoppanel.cpp \
+    remotemanage/serverconfigdelegate.cpp \
+    remotemanage/serverconfiggrouppanel.cpp \
+    remotemanage/serverconfigitem.cpp \
+    remotemanage/serverconfigitemmodel.cpp \
+    remotemanage/serverconfiglist.cpp \
+    remotemanage/serverconfigmanager.cpp \
+    remotemanage/serverconfigoptdlg.cpp \
+    remotemanage/serverconfigoptwidget.cpp \
+    settings/settings.cpp \
+    settings/settings_translation.cpp \
+    settings/shortcutmanager.cpp \
+    theme/themeitemdelegate.cpp \
+    theme/themelistmodel.cpp \
+    theme/themelistview.cpp \
+    theme/themepanel.cpp \
+    theme/themepanelplugin.cpp \
+    views/commonpanel.cpp \
+    views/myiconbutton.cpp \
+    views/operationconfirmdlg.cpp \
+    views/pagesearchbar.cpp \
+    views/rightpanel.cpp \
+    views/tabbar.cpp \
+    views/termtabbar.cpp \
+    views/termwidget.cpp \
+    views/termwidgetpage.cpp \
+    views/termbasedialog.cpp \
+    views/termcommandlinkbutton.cpp \
+    views/titlebar.cpp
 
 RESOURCES += resources.qrc
-TRANSLATIONS += translations/dterm.ts translations/dterm_zh_CN.ts
+TRANSLATIONS += \
+    translations/deepin-terminal.ts\
+    translations/deepin-terminal_zh_CN.ts
 
 DISTFILES += \
-translations/dterm.ts \
-translations/dterm_zh_CN.ts \
-qtermwidget/* \
-qtermwidget/lib/* \
-qtermwidget/lib/translations/* \
-qtermwidget/lib/kb-layouts/* \
-qtermwidget/lib/kb-layouts/historic/* \
-qtermwidget/lib/color-schemes/*
+    translations/deepin-terminal.ts \
+    translations/deepin-terminal_zh_CN.ts \
+    qtermwidget/* \
+    qtermwidget/lib/* \
+    qtermwidget/lib/translations/* \
+    qtermwidget/lib/kb-layouts/* \
+    qtermwidget/lib/kb-layouts/historic/* \
+    qtermwidget/lib/color-schemes/*
 
 !system($$PWD/build_qtermwidget.sh)
 

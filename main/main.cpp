@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     DApplicationSettings set(&app);
 #ifdef QT_DEBUG
     QTranslator translator;
-    translator.load(QString("dterm_%1").arg(QLocale::system().name()));
+    translator.load(QString("deepin-terminal_%1").arg(QLocale::system().name()));
     app.installTranslator(&translator);
 #endif  // QT_DEBUG
 

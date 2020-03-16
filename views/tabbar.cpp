@@ -121,8 +121,8 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
             if (m_rightClickTab >= 0) {
                 m_rightMenu = new DMenu;
 
-                m_closeTabAction = new QAction(tr("Close tab"), this);
-                m_closeOtherTabAction = new QAction(tr("Close other tabs"), this);
+                m_closeTabAction = new QAction(tr("Close workspace"), this);
+                m_closeOtherTabAction = new QAction(tr("Close other workspace"), this);
 
                 connect(m_closeTabAction, &QAction::triggered, this, [ = ] {
                     Q_EMIT tabCloseRequested(m_rightClickTab);

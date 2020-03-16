@@ -3,9 +3,9 @@ host = https://www.transifex.com
 minimum_perc = 80
 mode = developer
 
-[deepin-terminal.dterm]
-file_filter = translations/dterm_<lang>.ts
-source_file = translations/dterm.ts
+[deepin-terminal.deepin-terminal]
+file_filter = translations/deepin-terminal_<lang>.ts
+source_file = translations/deepin-terminal.ts
 source_lang = en
 type = QT
 

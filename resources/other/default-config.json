@@ -86,13 +86,13 @@
                         },
                         {
                             "key": "skip_to_next_command",
-                            "name": "Skip to next command",
+                            "name": "Jump to next command",
                             "type": "shortcut",
                             "default":  "Shift+Down"
                         },
                         {
                             "key": "skip_to_previous_command",
-                            "name": "Skip to previous command",
+                            "name": "Jump to previous command",
                             "type": "shortcut",
                             "default":  "Shift+Up"
                         },
@@ -140,7 +140,7 @@
                         },
                         {
                             "key": "horionzal_split",
-                            "name": "Horionzal split",
+                            "name": "Horizontal split",
                             "type": "shortcut",
                             "default":  "Ctrl+H"
                         },
@@ -206,7 +206,7 @@
                         },
                         {
                             "key": "custom_command",
-                            "name": "Custom command",
+                            "name": "Custom commands",
                             "type": "shortcut",
                             "default":  "Ctrl+["
                         },

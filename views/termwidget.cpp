@@ -256,17 +256,17 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     menu.addAction(tr("&Encoding"), this, [this] { emit((TermWidgetPage *)m_Page)->pageRequestShowEncoding(); });
 
-    menu.addAction(tr("Custom Command"), this, [this] {
+    menu.addAction(tr("Custom commands"), this, [this] {
         // TODO: Tab name as default text?
         emit termRequestOpenCustomCommand();
     });
 
-    menu.addAction(tr("RemoteManagement"), this, [this] { emit termRequestOpenRemoteManagement(); });
+    menu.addAction(tr("Remote management"), this, [this] { emit termRequestOpenRemoteManagement(); });
 
     if (isInRemoteServer()) {
         menu.addSeparator();
-        menu.addAction(tr("Upload File"), this, [this] { emit termRequestUploadFile(); });
-        menu.addAction(tr("Download File"), this, [this] { emit termRequestDownloadFile(); });
+        menu.addAction(tr("Upload file"), this, [this] { emit termRequestUploadFile(); });
+        menu.addAction(tr("Download file"), this, [this] { emit termRequestDownloadFile(); });
     }
 
     menu.addSeparator();
