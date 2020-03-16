@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Opacity1</title>
+    <desc>Created with Sketch.</desc>
+    <g id="light" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="设置" transform="translate(-777.000000, -203.000000)" fill="#536076">
+            <g id="编组-8" transform="translate(330.000000, 130.000000)">
+                <g id="编组-7" transform="translate(447.000000, 73.000000)">
+                    <path d="M10,10 L10,19 L5,19 C2.790861,19 1,17.209139 1,15 L1,10 L10,10 Z M10,10 L10,1 L15,1 C17.209139,1 19,2.790861 19,5 L19,10 L10,10 Z" id="Combined-Shape"></path>
+                    <path d="M19,10 L19,15 C19,17.209139 17.209139,19 15,19 L10,19 L10,10 L19,10 Z M10,1 L10,10 L1,10 L1,5 C1,2.790861 2.790861,1 5,1 L10,1 Z" id="Combined-Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

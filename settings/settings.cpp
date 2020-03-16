@@ -5,6 +5,7 @@
 #include <DSettingsWidgetFactory>
 #include <DLog>
 #include <DSlider>
+#include <DApplicationHelper>
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -225,9 +226,23 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
     DSlider *slider = new DSlider;
-    slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0.png"));
-    slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1.png"));
     slider->setIconSize(QSize(20, 20));
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+        slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0.svg"));
+        slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1.svg"));
+    } else {
+        slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0_dark.svg"));
+        slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1_dark.svg"));
+    }
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, slider, [ = ]() {
+        if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+            slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0.svg"));
+            slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1.svg"));
+        } else {
+            slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0_dark.svg"));
+            slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1_dark.svg"));
+        }
+    });
 
     slider->setValue(int(instance()->opacity() * 100));
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
@@ -256,9 +271,8 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, rightWidget);
-    connect(option, &DSettingsOption::valueChanged, rightWidget, [ = ](QVariant var) {
-        rightWidget->setValue(var.toInt());
-    });
+    connect(
+    option, &DSettingsOption::valueChanged, rightWidget, [ = ](QVariant var) { rightWidget->setValue(var.toInt()); });
 
     option->connect(rightWidget, &NewDspinBox::valueChanged, option, [ = ](const QVariant & value) {
         option->setValue(value.toInt());
