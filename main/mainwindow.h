@@ -93,6 +93,8 @@ private:
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
+    void initWindowPosition(MainWindow *mainwindow);
+
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
     /********************* Modify by n014361 wangpeili End ************************/
@@ -138,6 +140,7 @@ private:
     bool enterSzCommand = false;
     RemoteManagementPlugn *remoteManagPlugin;
     CustomCommandPlugin *customCommandPlugin;
+    QString m_strWindowId;
 };
 
 #endif  // MAINWINDOW_H

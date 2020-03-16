@@ -101,42 +101,42 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="706"/>
+        <location filename="../main/mainwindow.cpp" line="753"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="706"/>
+        <location filename="../main/mainwindow.cpp" line="753"/>
         <source>Rename Tab</source>
         <translation type="unfinished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="781"/>
+        <location filename="../main/mainwindow.cpp" line="828"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="797"/>
+        <location filename="../main/mainwindow.cpp" line="844"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1095"/>
+        <location filename="../main/mainwindow.cpp" line="1142"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1097"/>
+        <location filename="../main/mainwindow.cpp" line="1144"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1099"/>
+        <location filename="../main/mainwindow.cpp" line="1146"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1155"/>
+        <location filename="../main/mainwindow.cpp" line="1202"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -145,12 +145,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1187"/>
+        <location filename="../main/mainwindow.cpp" line="1234"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1189"/>
+        <location filename="../main/mainwindow.cpp" line="1236"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>

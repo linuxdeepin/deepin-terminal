@@ -34,6 +34,7 @@
 #include <QMouseEvent>
 #include <QProcess>
 #include <QSettings>
+#include <QStandardPaths>
 
 #include <QVBoxLayout>
 #include <QMap>
@@ -82,6 +83,7 @@ void MainWindow::initUI()
     // parts.
     initPlugins();
     initWindow();
+    initWindowPosition(this);
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
 }
@@ -348,6 +350,23 @@ void MainWindow::closeEvent(QCloseEvent *event)
         return;
     }
 
+    QDir winInfoPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!winInfoPath.exists()) {
+        return;
+    }
+    QString winInfoFilePath(winInfoPath.filePath("wininfo-config.conf"));
+    QSettings settingsa(winInfoFilePath, QSettings::IniFormat);
+    QString QStrwinId = QString::number(this->winId());
+
+    int position = m_strWindowId.indexOf(QStrwinId);
+    qDebug() << "QStrwinId---------" << QStrwinId;
+    qDebug() << "QStrminwindowId------------" << m_strWindowId;
+    if (position != -1) {
+        m_strWindowId = m_strWindowId.remove(position, QStrwinId.size());
+        qDebug() << "QStrminwindowId------------" << m_strWindowId;
+    }
+    settingsa.setValue("mainwindowWinId", m_strWindowId);
+
     DMainWindow::closeEvent(event);
 }
 
@@ -494,6 +513,34 @@ void MainWindow::initWindow()
         move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
     }
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
+}
+
+void MainWindow::initWindowPosition(MainWindow *mainwindow)
+{
+    QDir winInfoPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!winInfoPath.exists()) {
+        return;
+    }
+
+    QString winInfoFilePath(winInfoPath.filePath("wininfo-config.conf"));
+    QSettings settings(winInfoFilePath, QSettings::IniFormat);
+    m_strWindowId = settings.value("mainwindowWinId").toString();
+
+    if (m_strWindowId.size() == 0) {
+        move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
+
+    } else {
+        int moved = m_strWindowId.size() * 10 ;
+        QRect screenGeometry = qApp->desktop()->screenGeometry(QCursor::pos());
+        mainwindow->move(screenGeometry.x() + moved, screenGeometry.y() + moved);
+    }
+
+    m_strWindowId.append(QString::number(mainwindow->winId()));
+    if (m_strWindowId.size() >= 100) {
+        m_strWindowId = nullptr;
+    }
+
+    settings.setValue("mainwindowWinId", m_strWindowId);
 }
 
 void MainWindow::initShortcuts()
