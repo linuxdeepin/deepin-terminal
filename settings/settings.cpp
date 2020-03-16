@@ -1,4 +1,5 @@
 #include "settings.h"
+#include "newdspinbox.h"
 
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
@@ -204,8 +205,9 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     // init.
     comboBox->setCurrentText(option->value().toString());
 
-    connect(
-    option, &DSettingsOption::valueChanged, comboBox, [ = ](QVariant var) { comboBox->setCurrentText(var.toString()); });
+    connect(option, &DSettingsOption::valueChanged, comboBox, [ = ](QVariant var) {
+        comboBox->setCurrentText(var.toString());
+    });
 
     option->connect(
     comboBox, &QComboBox::currentTextChanged, option, [ = ](const QString & text) { option->setValue(text); });
@@ -223,22 +225,44 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
     DSlider *slider = new DSlider;
-    slider->setLeftIcon(QIcon(":/images/icon/hover/Opacity0.png"));
-    slider->setRightIcon(QIcon(":/images/icon/hover/Opacity1.png"));
+    slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0.png"));
+    slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1.png"));
     slider->setIconSize(QSize(20, 20));
 
-    QPair<QWidget *, QWidget *> optionWidget =
-        DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
+    slider->setValue(int(instance()->opacity() * 100));
+    QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
 
-    connect(
-    option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) {
-        slider->setValue(var.toInt());
+    connect(option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) { slider->setValue(var.toInt()); });
+
+    option->connect(slider, &DSlider::valueChanged, option, [ = ](QVariant var) { option->setValue(var.toInt()); });
+
+    return optionWidget;
+}
+
+QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
+{
+    auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
+    auto rightWidget = new NewDspinBox();
+
+    // rightWidget->setObjectName("OptionDSpinBox");
+    rightWidget->setValue(option->value().toInt());
+
+    if (option->data("max").isValid()) {
+        rightWidget->setMaximum(option->data("max").toInt());
+    }
+    if (option->data("min").isValid()) {
+        rightWidget->setMinimum(option->data("min").toInt());
+    }
+
+    QPair<QWidget *, QWidget *> optionWidget =
+        DSettingsWidgetFactory::createStandardItem(QByteArray(), option, rightWidget);
+    connect(option, &DSettingsOption::valueChanged, rightWidget, [ = ](QVariant var) {
+        rightWidget->setValue(var.toInt());
     });
 
-    option->connect(
-    slider, &DSlider::valueChanged, option, [ = ](QVariant var) {
-        option->setValue(var.toInt());
+    option->connect(rightWidget, &NewDspinBox::valueChanged, option, [ = ](const QVariant & value) {
+        option->setValue(value.toInt());
     });
 
     return optionWidget;
-}/********************* Modify by n014361 wangpeili End ************************/
+} /********************* Modify by n014361 wangpeili End ************************/

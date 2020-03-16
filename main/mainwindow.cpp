@@ -1007,6 +1007,7 @@ void MainWindow::showSettingDialog()
     DSettingsDialog *dialog = new DSettingsDialog(this);
     dialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     dialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
+    dialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
     dialog->updateSettings(Settings::instance()->settings);
     dialog->exec();
     delete dialog;
