@@ -23,8 +23,8 @@
 #include <QPointer>
 #include <QMap>
 
-#include <Session.h>
-#include <ScreenWindow.h>
+#include "Session.h"
+#include "ScreenWindow.h"
 
 #include "Emulation.h"
 #include "TerminalCharacterDecoder.h"

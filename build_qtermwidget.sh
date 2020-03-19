@@ -1,7 +1,7 @@
 #!/bin/bash
 
 touch views/termtabbar.moc
-cd qtermwidget
+cd terminalwidget
 if [ -d build ]
 then
 	rm -fr build
