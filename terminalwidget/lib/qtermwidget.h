@@ -24,11 +24,11 @@
 #include <QPointer>
 #include "Emulation.h"
 #include "Filter.h"
-#ifdef USE_QMAKE
+//#ifdef USE_QMAKE
 #include "../build/lib/qtermwidget_export.h"
-#else
-#include "qtermwidget_export.h"
-#endif
+//#else
+//#include "qtermwidget_export.h"
+//#endif
 
 class QVBoxLayout;
 struct TermWidgetImpl;
@@ -293,7 +293,7 @@ signals:
      */
     void isTermIdle(bool bIdle);
     // 将库里返回信号透传出来。原来的noMatchFound方法改名为clearSelection
-    void noMatchFound();
+    void sig_noMatchFound();
 
 public slots:
     // Copy selection to clipboard
@@ -326,6 +326,8 @@ public slots:
     void search(QString txt, bool forwards, bool next);
     // 清除选中框
     void clearSelection();
+
+    void noMatchFound();
     /********************* Modify by n014361 wangpeili End ************************/
 
 protected:

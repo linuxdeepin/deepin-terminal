@@ -1,6 +1,6 @@
 #!/bin/bash
 
-touch termtabbar.moc
+touch views/termtabbar.moc
 cd qtermwidget
 if [ -d build ]
 then

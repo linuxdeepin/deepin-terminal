@@ -1,6 +1,6 @@
 #include "encodelistmodel.h"
 
-#include "qtermwidget/lib/qtermwidget.h"
+#include "terminalwidget/lib/qtermwidget.h"
 
 #include <DLog>
 

@@ -96,9 +96,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
         setTrackOutput(Settings::instance()->OutputtingScroll());
     });
 
-#if !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
+#if !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
     setBlinkingCursor(Settings::instance()->cursorBlink());
-#endif  // !(QTERMWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
+#endif  // !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
 
     connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
@@ -122,7 +122,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
         Settings::instance()->setColorScheme(theme);
     });
 
-    connect(this, &QTermWidget::noMatchFound, this, [this]() { ((TermWidgetPage *)m_Page)->setMismatchAlert(true); });
+    connect(this, &QTermWidget::sig_noMatchFound, this, [this]() { ((TermWidgetPage *)m_Page)->setMismatchAlert(true); });
     /********************* Modify by n014361 wangpeili End ************************/
 
     connect(this, &TermWidget::isTermIdle, this, &TermWidget::handleTermIdle);

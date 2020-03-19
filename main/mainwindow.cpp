@@ -66,6 +66,7 @@ void MainWindow::initUI()
     setAttribute(Qt::WA_TranslucentBackground);
 
     setMinimumSize(450, 250);
+    resize(1024, 768);
     setCentralWidget(m_centralWidget);
     setWindowIcon(QIcon::fromTheme("deepin-terminal"));
 

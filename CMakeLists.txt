@@ -28,15 +28,13 @@ pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
 pkg_search_module(DtkCore REQUIRED dtkcore)
 
-#find_package(QTermWidget5 REQUIRED)
-
-# Compile definitions for QTermWidget
+# Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
-set(QTERMWIDGET_VERSION_MAJOR ${QTermWidget5_VERSION_MAJOR})
-set(QTERMWIDGET_VERSION_MINOR=${QTermWidget5_VERSION_MINOR})
-set(QTERMWIDGET_VERSION_PATCH=${QTermWidget5_VERSION_PATCH})
+set(TERMINALWIDGET_VERSION_MAJOR ${TerminalWidget5_VERSION_MAJOR})
+set(TERMINALWIDGET_VERSION_MINOR=${TerminalWidget5_VERSION_MINOR})
+set(TERMINALWIDGET_VERSION_PATCH=${TerminalWidget5_VERSION_PATCH})
 
-add_subdirectory(qtermwidget)
+add_subdirectory(terminalwidget)
 
 include_directories(${DtkWidget_INCLUDE_DIRS})
 include_directories(${DtkGui_INCLUDE_DIRS})
@@ -202,7 +200,7 @@ add_executable (${EXE_NAME}
     ${DTNG_QM_FILES}
 )
 
-target_link_libraries (deepin-terminal ${LINK_LIBS} qtermwidget5)
+target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
 # Install settings
 

@@ -160,8 +160,8 @@ void QTermWidget::search(bool forwards, bool next)
     HistorySearch *historySearch =
     new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
     connect(historySearch, SIGNAL(matchFound(int, int, int, int)), this, SLOT(matchFound(int, int, int, int)));
-    connect(historySearch, SIGNAL(noMatchFound()), this, SLOT(clearSelection()));
-    connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(clearSelection()));
+    connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
+    connect(historySearch, SIGNAL(sig_noMatchFound()), m_searchBar, SLOT(clearSelection()));
     historySearch->search();
 }
 
@@ -189,9 +189,9 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
     HistorySearch *historySearch =
     new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
     connect(historySearch, SIGNAL(matchFound(int, int, int, int)), this, SLOT(matchFound(int, int, int, int)));
-    connect(historySearch, SIGNAL(noMatchFound()), this, SLOT(clearSelection()));
+    connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
 
-    connect(historySearch, &HistorySearch::noMatchFound, this, [this]() { emit noMatchFound(); });
+    connect(historySearch, &HistorySearch::noMatchFound, this, [this]() { emit sig_noMatchFound(); });
     // connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(noMatchFound()));
     historySearch->search();
 }
@@ -208,6 +208,11 @@ void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int 
 }
 
 void QTermWidget::clearSelection()
+{
+    m_impl->m_terminalDisplay->screenWindow()->clearSelection();
+}
+
+void QTermWidget::noMatchFound()
 {
     m_impl->m_terminalDisplay->screenWindow()->clearSelection();
 }

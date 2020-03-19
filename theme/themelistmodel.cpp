@@ -1,6 +1,6 @@
 #include "themelistmodel.h"
 
-#include "qtermwidget/lib/qtermwidget.h"
+#include "terminalwidget/lib/qtermwidget.h"
 
 ThemeListModel::ThemeListModel(QObject *parent) : QAbstractListModel(parent)
 {

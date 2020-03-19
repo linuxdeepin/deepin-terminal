@@ -75,6 +75,7 @@ HEADERS += \
     remotemanage/serverconfigoptwidget.h \
     settings/settings.h \
     settings/shortcutmanager.h \
+    settings/newdspinbox.h \
     theme/themeitemdelegate.h \
     theme/themelistmodel.h \
     theme/themelistview.h \
@@ -128,6 +129,7 @@ SOURCES += \
     remotemanage/serverconfigoptdlg.cpp \
     remotemanage/serverconfigoptwidget.cpp \
     settings/settings.cpp \
+    settings/newdspinbox.cpp \
     settings/settings_translation.cpp \
     settings/shortcutmanager.cpp \
     theme/themeitemdelegate.cpp \
