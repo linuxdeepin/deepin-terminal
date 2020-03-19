@@ -24,11 +24,11 @@
 #include <QPointer>
 #include "Emulation.h"
 #include "Filter.h"
-//#ifdef USE_QMAKE
+#ifdef USE_QMAKE
 #include "../build/lib/qtermwidget_export.h"
-//#else
-//#include "qtermwidget_export.h"
-//#endif
+#else
+#include "qtermwidget_export.h"
+#endif
 
 class QVBoxLayout;
 struct TermWidgetImpl;
@@ -39,7 +39,7 @@ namespace Konsole
 class TerminalDisplay;
 }
 
-class QTERMWIDGET_EXPORT QTermWidget : public QWidget
+class TERMINALWIDGET_EXPORT QTermWidget : public QWidget
 {
     Q_OBJECT
 public:
