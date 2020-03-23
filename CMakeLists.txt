@@ -14,6 +14,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "-g -Wall")
 set(QT_MINIMUM_VERSION "5.7.1")
 
+configure_file(environments.h.in environments.h @ONLY)
+
 # Find the QtWidgets library
 
 find_package(PkgConfig REQUIRED)

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "termargumentparser.h"
 #include "termproperties.h"
+#include "environments.h"
 
 #include <DApplication>
 #include <DApplicationSettings>
@@ -18,18 +19,18 @@ int main(int argc, char *argv[])
 {
     DApplication::loadDXcbPlugin();
 
-    QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace, "
-                                  "multiple windows, remote management, quake mode and other features. ");
     DApplication app(argc, argv);
     app.setOrganizationName("deepin");
     app.setOrganizationDomain("deepin.org");
-    app.setApplicationVersion("1.0");
+    app.setApplicationVersion(VERSION);
     app.setApplicationName("deepin-terminal");
     app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
-    app.setApplicationDescription(appDesc);
     app.loadTranslator();
 
+    QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace"
+                                  ", multiple windows, remote management, quake mode and other features.");
+    app.setApplicationDescription(appDesc);
     DApplicationSettings set(&app);
 #ifdef QT_DEBUG
     QTranslator translator;

@@ -228,7 +228,7 @@
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="27"/>
-        <location filename="../main/main.cpp" line="40"/>
+        <location filename="../main/main.cpp" line="41"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
@@ -444,8 +444,8 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="21"/>
-        <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features. </source>
+        <location filename="../main/main.cpp" line="31"/>
+        <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation>终端是⼀款集⼯作区、多窗⼝、远程管理、雷神模式等功能的⾼级终端模拟器。</translation>
     </message>
     <message>
