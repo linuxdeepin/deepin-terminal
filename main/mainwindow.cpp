@@ -57,6 +57,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
 void MainWindow::initUI()
 {
     m_tabbar = new TabBar(this, true);
+    m_tabbar->setFocusPolicy(Qt::NoFocus);
+    m_tabbar->setAddButtonFocusPolicy(Qt::NoFocus);
     m_tabbar->setChromeTabStyle(true);
 
     // ShortcutManager::instance();不管是懒汉式还是饿汉式，都不需要这样单独操作
@@ -859,6 +861,9 @@ void MainWindow::initTitleBar()
 
         //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
         titlebar()->setFocusPolicy(Qt::NoFocus);
+
+        //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
+        handleTitleBarMenuFocusPolicy();
     }
 
     connect(m_tabbar, &DTabBar::tabFull, this, [ = ]() {
@@ -928,6 +933,29 @@ void MainWindow::initTitleBar()
     });
 
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
+}
+
+void MainWindow::handleTitleBarMenuFocusPolicy()
+{
+    QLayout *layout = titlebar()->layout();
+    for (int i = 0; i < layout->count(); ++i) {
+        QWidget *widget = layout->itemAt(i)->widget();
+        if (widget != nullptr && QString(widget->metaObject()->className()) ==  QString("QWidget")) {
+            QLayout *widgetLayout = widget->layout();
+            for (int j = 0; j < widgetLayout->count(); ++j) {
+                QWidget *widget = widgetLayout->itemAt(j)->widget();
+                if (widget != nullptr && QString(widget->metaObject()->className()) ==  QString("QWidget")) {
+                    QLayout *wLayout = widget->layout();
+                    for (int k = 0; k < wLayout->count(); ++k) {
+                        QWidget *widget = wLayout->itemAt(k)->widget();
+                        if (widget != nullptr && QString(widget->metaObject()->className()).contains("Button")) {
+                            widget->setFocusPolicy(Qt::NoFocus);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void MainWindow::onCreateNewWindow(QString workingDir)

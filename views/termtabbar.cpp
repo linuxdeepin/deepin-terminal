@@ -1306,6 +1306,13 @@ void DTabBar::setChromeTabStyle(bool chromeTabStyle)
     d->setChromeTabStyle(chromeTabStyle);
 }
 
+void DTabBar::setAddButtonFocusPolicy(Qt::FocusPolicy focusPolicy)
+{
+    D_D(DTabBar);
+
+    d->addButton->setFocusPolicy(focusPolicy);
+}
+
 /*!
  * \~chinese \brief 设置索引标签的最小尺寸
  */

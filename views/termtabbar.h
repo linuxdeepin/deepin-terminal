@@ -178,6 +178,8 @@ public:
     bool isChromeTabStyle() const;
     void setChromeTabStyle(bool dragable);
 
+    void setAddButtonFocusPolicy(Qt::FocusPolicy focusPolicy);
+
 Q_SIGNALS:
     void currentChanged(int index);
     void tabCloseRequested(int index);
