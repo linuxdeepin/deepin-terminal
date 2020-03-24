@@ -353,17 +353,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         return;
     }
 
-    QString QStrwinId = QString::number(this->winId());
-
-    int position = m_strWindowId.indexOf(QStrwinId);
-    qDebug() << "QStrwinId---------" << QStrwinId;
-    qDebug() << "QStrminwindowId------------" << m_strWindowId;
-    if (position != -1) {
-        m_strWindowId = m_strWindowId.remove(position, QStrwinId.size());
-        qDebug() << "QStrminwindowId------------" << m_strWindowId;
-    }
-    settings.setValue("mainwindowWinId", m_strWindowId);
-
     DMainWindow::closeEvent(event);
 }
 
@@ -474,7 +463,9 @@ void MainWindow::initWindow()
     m_exitFullScreen->setFlat(true);
     titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
     m_exitFullScreen->setVisible(false);
-    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() { switchFullscreen(); });
+    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
+        switchFullscreen();
+    });
 
     QSettings settings("blumia", "dterm");
 
@@ -515,13 +506,14 @@ void MainWindow::initWindow()
 
         if (saveWidth == 0 || saveHeight == 0) {
             resize(QSize(1000, 600));
-        }
-        else {
+        } else {
             resize(QSize(saveWidth, saveHeight));
         }
 
-        move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
+//        move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
+        initWindowPosition(this);
     }
+
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
 }
 
@@ -538,24 +530,11 @@ QString MainWindow::getWinInfoConfigPath()
 
 void MainWindow::initWindowPosition(MainWindow *mainwindow)
 {
-    QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
-    m_strWindowId = settings.value("mainwindowWinId").toString();
 
-    if (m_strWindowId.size() == 0) {
-        move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
-
-    } else {
-        int moved = m_strWindowId.size() * 10 ;
-        QRect screenGeometry = qApp->desktop()->screenGeometry(QCursor::pos());
-        mainwindow->move(screenGeometry.x() + moved, screenGeometry.y() + moved);
+    int m_WindowNumber = executeCMD(cmd);
+    if (m_WindowNumber == 1) {
+        mainwindow->move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
     }
-
-    m_strWindowId.append(QString::number(mainwindow->winId()));
-    if (m_strWindowId.size() >= 100) {
-        m_strWindowId = nullptr;
-    }
-
-    settings.setValue("mainwindowWinId", m_strWindowId);
 }
 
 void MainWindow::initShortcuts()
@@ -835,7 +814,9 @@ void MainWindow::initConnections()
 
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
 
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() { applyTheme(); });
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
+        applyTheme();
+    });
 }
 
 void MainWindow::initTitleBar()
@@ -968,6 +949,24 @@ void MainWindow::handleTitleBarMenuFocusPolicy()
             }
         }
     }
+}
+
+int MainWindow::executeCMD(const char *cmd)
+{
+
+    char *result;
+    char buf_ps[1024] = {0};
+    FILE *ptr;
+
+    ptr = popen(cmd, "r");
+    result = fgets(buf_ps, 1024, ptr);
+
+    QString qStr(result);
+    qDebug() << "qStr========" << qStr;
+    int num = qStr.toInt() ;
+    qDebug() << "num ========" << num;
+    return  num;
+
 }
 
 void MainWindow::onCreateNewWindow(QString workingDir)

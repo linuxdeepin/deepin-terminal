@@ -96,6 +96,7 @@ private:
     QString getWinInfoConfigPath();
     void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
+    int executeCMD(const char *cmd);
 
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
@@ -143,6 +144,7 @@ private:
     RemoteManagementPlugn *remoteManagPlugin;
     CustomCommandPlugin *customCommandPlugin;
     QString m_strWindowId;
+    const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";
 };
 
 #endif  // MAINWINDOW_H
