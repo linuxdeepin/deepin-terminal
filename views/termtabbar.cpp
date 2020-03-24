@@ -1594,7 +1594,7 @@ void DTabBar::setTabData(int index, const QVariant &data)
             QWidget *parentWidget = this->parentWidget();
             int tabBarWidth = parentWidget->width()-tabRightSpace;
             int tabWidth = tabBarWidth/(this->count()+1);
-            if (tabWidth < tabMinSize) {
+            if (tabWidth <= tabMinSize) {
                 emit tabFull();
                 removeTab(index);
                 return;

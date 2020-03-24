@@ -111,7 +111,7 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
         /********************* Modify by n014361 wangpeili End ************************/
         this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         this->setMinimumSize(deskRect.size().width(), 60);
-        this->resize(deskRect.size().width(), 200);
+        this->resize(deskRect.size().width(), deskRect.size().height() / 3);
         this->move(0, 0);
     }
 
@@ -338,7 +338,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    QSettings settings("blumia", "dterm");
+    QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
     settings.setValue("geometry", saveGeometry());
 
     if (Qt::WindowNoState == windowState()) {
@@ -353,12 +353,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         return;
     }
 
-    QDir winInfoPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!winInfoPath.exists()) {
-        return;
-    }
-    QString winInfoFilePath(winInfoPath.filePath("wininfo-config.conf"));
-    QSettings settingsa(winInfoFilePath, QSettings::IniFormat);
     QString QStrwinId = QString::number(this->winId());
 
     int position = m_strWindowId.indexOf(QStrwinId);
@@ -368,7 +362,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         m_strWindowId = m_strWindowId.remove(position, QStrwinId.size());
         qDebug() << "QStrminwindowId------------" << m_strWindowId;
     }
-    settingsa.setValue("mainwindowWinId", m_strWindowId);
+    settings.setValue("mainwindowWinId", m_strWindowId);
 
     DMainWindow::closeEvent(event);
 }
@@ -512,21 +506,39 @@ void MainWindow::initWindow()
         move(0, 0);
         /********************* Modify by n014361 wangpeili End ************************/
     } else {
-        resize(QSize(settings.value("save_width").toInt(), settings.value("save_height").toInt()));
+
+        QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
+        int saveWidth = settings.value("save_width").toInt();
+        int saveHeight = settings.value("save_height").toInt();
+        qDebug() << "saveWidth: " << saveWidth;
+        qDebug() << "saveHeight: " << saveHeight;
+
+        if (saveWidth == 0 || saveHeight == 0) {
+            resize(QSize(1000, 600));
+        }
+        else {
+            resize(QSize(saveWidth, saveHeight));
+        }
+
         move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
     }
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
 }
 
-void MainWindow::initWindowPosition(MainWindow *mainwindow)
+QString MainWindow::getWinInfoConfigPath()
 {
     QDir winInfoPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!winInfoPath.exists()) {
-        return;
+        winInfoPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     }
 
     QString winInfoFilePath(winInfoPath.filePath("wininfo-config.conf"));
-    QSettings settings(winInfoFilePath, QSettings::IniFormat);
+    return winInfoFilePath;
+}
+
+void MainWindow::initWindowPosition(MainWindow *mainwindow)
+{
+    QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
     m_strWindowId = settings.value("mainwindowWinId").toString();
 
     if (m_strWindowId.size() == 0) {

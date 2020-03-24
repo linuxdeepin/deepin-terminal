@@ -115,6 +115,10 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
 
 void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
 {
+    if (term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
+        return;
+    }
+
     qDebug() << "TermWidgetPage::closeSplit:" << term->getCurrSessionId();
     QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
     Q_CHECK_PTR(parent);

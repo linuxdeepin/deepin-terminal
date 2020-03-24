@@ -93,6 +93,7 @@ private:
     void initTitleBar();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
+    QString getWinInfoConfigPath();
     void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
 
