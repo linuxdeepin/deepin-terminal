@@ -1291,8 +1291,9 @@ void TerminalDisplay::showResizeNotification()
      _resizeWidget->setText(tr("Size: %1 x %2").arg(_columns).arg(_lines));
      _resizeWidget->move((width()-_resizeWidget->width())/2,
                          (height()-_resizeWidget->height())/2+20);
-     _resizeWidget->show();
-     _resizeTimer->start(1000);
+
+     //fix bug 17684 在放大，正常窗口，最大化之间切换，终端窗口会显示ｓｉｚｅ
+     _resizeWidget->hide();
   }
 }
 
