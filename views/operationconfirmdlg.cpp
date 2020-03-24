@@ -89,7 +89,6 @@ void OperationConfirmDlg::initContentLayout()
     m_tipInfo->setFixedHeight(20);
     m_tipInfo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     QFont tipInfoFont;
-    tipInfoFont.setWeight(QFont::Bold);
     m_tipInfo->setFont(tipInfoFont);
     DFontSizeManager::instance()->bind(m_tipInfo, DFontSizeManager::T6);
     DPalette paTipInfo = DApplicationHelper::instance()->palette(m_tipInfo);
