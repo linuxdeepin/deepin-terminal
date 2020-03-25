@@ -11,6 +11,9 @@
 EncodePanel::EncodePanel(QWidget *parent)
     : RightPanel(parent), m_encodeView(new EncodeListView(this)), m_encodeModel(new EncodeListModel(this))
 {
+    setBackgroundRole(QPalette::Window);
+    setAutoFillBackground(true);
+
     // init view.
     m_encodeView->setModel(m_encodeModel);
     m_encodeView->setItemDelegate(new EncodeItemDelegate(m_encodeView));

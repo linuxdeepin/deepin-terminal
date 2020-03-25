@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="45px" height="45px" viewBox="0 0 45 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
     <title>command_dark_light</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <rect id="path-1" x="0" y="0" width="36.6666667" height="40.3333333" rx="8"></rect>
+        <rect id="path-1" x="4.33333333" y="2.16666667" width="37" height="40" rx="8"></rect>
     </defs>
     <g id="light" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="终端窗口-自定义命令" transform="translate(-837.000000, -177.000000)">
-            <g id="Group-35" transform="translate(837.000000, 177.000000)">
-                <g id="cmd_light" transform="translate(3.666667, 1.833333)">
-                    <mask id="mask-2" fill="white">
-                        <use xlink:href="#path-1"></use>
-                    </mask>
-                    <rect stroke-opacity="0.1" stroke="#000000" stroke-width="0.916666667" x="-0.458333333" y="-0.458333333" width="37.5833333" height="41.25" rx="8"></rect>
-                    <rect id="Rectangle-6" fill="#D6D6D6" mask="url(#mask-2)" x="6.41666667" y="30.25" width="5.5" height="5.5"></rect>
-                    <rect id="Rectangle-6" fill="#D6D6D6" mask="url(#mask-2)" x="15.5833333" y="30.25" width="5.5" height="5.5"></rect>
-                    <rect id="Rectangle-6" fill="#D6D6D6" mask="url(#mask-2)" x="24.75" y="30.25" width="5.5" height="5.5"></rect>
-                    <text id="&gt;_" mask="url(#mask-2)" font-family="SourceHanSansSC-Regular, Source Han Sans SC" font-size="11" font-weight="normal" fill="#000000">
-                        <tspan x="10.8313333" y="16.6666667">&gt;_</tspan>
-                    </text>
-                </g>
+        <g id="画板" transform="translate(-24.000000, -19.000000)">
+            <g id="cmd_light" transform="translate(24.000000, 19.000000)">
+                <rect id="Rectangle-44" fill="#FFFFFF" x="4.33333333" y="2.16666667" width="37" height="40" rx="8"></rect>
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <rect stroke-opacity="0.1" stroke="#000000" x="3.83333333" y="1.66666667" width="38" height="41" rx="8"></rect>
+                <rect id="Rectangle-6" fill-opacity="0.2" fill="#000000" x="10" y="32" width="6" height="6"></rect>
+                <rect id="Rectangle-6" fill-opacity="0.2" fill="#000000" x="20" y="32" width="6" height="6"></rect>
+                <rect id="Rectangle-6" fill-opacity="0.2" fill="#000000" x="29" y="32" width="6" height="6"></rect>
+                <path d="M15.2493333,17.0606667 L20.5183333,14.9926667 L20.5183333,14.1896667 L15.2493333,12.1216667 L15.2493333,12.9906667 L17.8453333,13.9476667 L19.4953333,14.5636667 L19.4953333,14.6076667 L17.8453333,15.2236667 L15.2493333,16.1806667 L15.2493333,17.0606667 Z M21,19.8355 L21,19.1645 L27,19.1645 L27,19.8355 L21,19.8355 Z M21,19 L27,19 L27,20 L21,20 L21,19 Z" id="&gt;_" fill="#000000" fill-rule="nonzero"></path>
             </g>
         </g>
     </g>

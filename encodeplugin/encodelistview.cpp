@@ -1,7 +1,10 @@
 #include "encodelistview.h"
 
-EncodeListView::EncodeListView(QWidget *parent) : QListView(parent)
+EncodeListView::EncodeListView(QWidget *parent) : DListView(parent)
 {
+    setBackgroundRole(QPalette::NoRole);
+    setAutoFillBackground(false);
+
     setVerticalScrollMode(ScrollPerPixel);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -11,7 +14,7 @@ void EncodeListView::focusOutEvent(QFocusEvent *event)
 {
     emit focusOut();
 
-    QListView::focusOutEvent(event);
+    DListView::focusOutEvent(event);
 }
 
 void EncodeListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
@@ -24,5 +27,5 @@ void EncodeListView::selectionChanged(const QItemSelection &selected, const QIte
         break;
     }
 
-    QListView::selectionChanged(selected, deselected);
+    DListView::selectionChanged(selected, deselected);
 }

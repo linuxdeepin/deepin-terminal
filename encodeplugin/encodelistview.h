@@ -1,9 +1,11 @@
 #ifndef ENCODELISTVIEW_H
 #define ENCODELISTVIEW_H
 
-#include <QListView>
+#include <DListView>
 
-class EncodeListView : public QListView
+DWIDGET_USE_NAMESPACE
+
+class EncodeListView : public DListView
 {
     Q_OBJECT
 
