@@ -96,13 +96,16 @@ void CustomCommandPanel::initUI()
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
     hlayout->setContentsMargins(0, 0, 0, 0);
+    hlayout->addSpacing(10);
     hlayout->addWidget(m_searchEdit);
+    hlayout->addSpacing(10);
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     vlayout->setSpacing(0);
     vlayout->setMargin(0);
     vlayout->setContentsMargins(0, 0, 0, 0);
-    vlayout->addWidget(m_searchEdit);
+    vlayout->addSpacing(10);
+    vlayout->addLayout(hlayout);
     vlayout->addWidget(m_cmdListWidget);
     vlayout->addWidget(m_pushButton);
     setLayout(vlayout);

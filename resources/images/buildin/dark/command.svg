@@ -11,18 +11,18 @@
         <rect id="path-2" x="0" y="0" width="36.6666667" height="40.3333333" rx="8"></rect>
     </defs>
     <g id="dark" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="终端窗口-自定义命令-编辑" transform="translate(-837.000000, -317.000000)">
+        <g id="终端窗口-自定义命令" transform="translate(-837.000000, -177.000000)">
             <g id="应用窗口" transform="translate(57.000000, 63.000000)">
                 <g id="编组-3" transform="translate(760.000000, 50.000000)">
-                    <g id="Group-35" transform="translate(20.000000, 204.000000)">
+                    <g id="Group-35" transform="translate(20.000000, 64.000000)">
                         <g id="cmd_light" transform="translate(3.666667, 1.833333)">
                             <mask id="mask-3" fill="white">
                                 <use xlink:href="#path-2"></use>
                             </mask>
                             <use id="Rectangle-44" fill-opacity="0.4" fill="url(#linearGradient-1)" opacity="0.300000012" xlink:href="#path-2"></use>
-                            <rect id="Rectangle-6" fill="#FFFFFF" opacity="0.200000003" mask="url(#mask-3)" x="6.41666667" y="30.25" width="5.5" height="5.5"></rect>
-                            <rect id="Rectangle-6" fill="#FFFFFF" opacity="0.200000003" mask="url(#mask-3)" x="15.5833333" y="30.25" width="5.5" height="5.5"></rect>
-                            <rect id="Rectangle-6" fill="#FFFFFF" opacity="0.200000003" mask="url(#mask-3)" x="24.75" y="30.25" width="5.5" height="5.5"></rect>
+                            <rect id="Rectangle-6" fill="#777777" mask="url(#mask-3)" x="6.41666667" y="30.25" width="5.5" height="5.5"></rect>
+                            <rect id="Rectangle-6" fill="#777777" mask="url(#mask-3)" x="15.5833333" y="30.25" width="5.5" height="5.5"></rect>
+                            <rect id="Rectangle-6" fill="#777777" mask="url(#mask-3)" x="24.75" y="30.25" width="5.5" height="5.5"></rect>
                             <text id="&gt;_" mask="url(#mask-3)" font-family="SourceHanSansSC-Regular, Source Han Sans SC" font-size="11" font-weight="normal" fill="#FFFFFF">
                                 <tspan x="10.8313333" y="16.6666667">&gt;_</tspan>
                             </text>

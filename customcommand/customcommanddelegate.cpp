@@ -79,7 +79,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         QString strCmdIconSrc = QString(":/resources/images/buildin/%1/command.svg").arg(themeType);
         QPixmap cmdIconPixmap = Utils::renderSVG(strCmdIconSrc, QSize(cmdIconSize, cmdIconSize));
 
-        QRect cmdIconRect = QRect(bgRect.left(), bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
+        QRect cmdIconRect = QRect(bgRect.left() + 6, bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
                                   cmdIconSize, cmdIconSize);
         painter->drawPixmap(cmdIconRect, cmdIconPixmap);
 
@@ -94,12 +94,30 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         QString strCmdName = itemData.m_cmdName;
         QString strCmdShortcut = itemData.m_cmdShortcut;
 
-        int labelHeight = 35;
-        QRect cmdNameRect = QRect(bgRect.left() + cmdIconSize + 5, bgRect.top() + 5, bgRect.width() - cmdIconSize - editIconSize, labelHeight);
-        painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
+        QFont textFont = painter->font();
+        int cmdNameFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
+        textFont.setPixelSize(cmdNameFontSize);
+        painter->setFont(textFont);
 
-        QRect cmdShortcutRect = QRect(bgRect.left() + cmdIconSize + 5, bgRect.bottom() - labelHeight - 5, bgRect.width() - cmdIconSize - editIconSize, labelHeight);
-        painter->drawText(cmdShortcutRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdShortcut);
+        int lineSpace = 8;
+        int offsetY = 8;
+        int leftOffset = cmdIconRect.left() + cmdIconSize + 6;
+
+        DPalette pa = appHelper->standardPalette(appHelper->themeType());
+        painter->setPen(pa.color(DPalette::Text));
+
+        QRect cmdNameRect = QRect(leftOffset, bgRect.top()+offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
+        painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignTop, strCmdName);
+
+        textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7));
+        painter->setFont(textFont);
+
+        DStyleHelper styleHelper;
+        DPalette palette = DApplicationHelper::instance()->palette(m_parentView);
+        painter->setPen(QPen(styleHelper.getColor(static_cast<const QStyleOption *>(&option), palette, DPalette::TextTips)));
+
+        QRect cmdShortcutRect = QRect(leftOffset, cmdNameRect.top() + cmdNameFontSize + lineSpace, bgRect.width() - cmdIconSize - editIconSize, 35);
+        painter->drawText(cmdShortcutRect, Qt::AlignLeft | Qt::AlignTop, strCmdShortcut);
 
         painter->restore();
     } else {
