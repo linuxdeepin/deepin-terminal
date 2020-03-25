@@ -97,6 +97,7 @@ private:
     void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
     int executeCMD(const char *cmd);
+    void addQuakeTerminalShortcut();
 
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();

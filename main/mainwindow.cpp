@@ -35,6 +35,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QtDBus>
 
 #include <QVBoxLayout>
 #include <QMap>
@@ -52,6 +53,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_properties(properties)
 {
     initUI();
+    addQuakeTerminalShortcut();
 }
 
 void MainWindow::initUI()
@@ -93,6 +95,28 @@ void MainWindow::initUI()
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::addQuakeTerminalShortcut()
+{
+    QDBusInterface shortcutInterface("com.deepin.daemon.Keybinding",
+                                     "/com/deepin/daemon/Keybinding",
+                                     "com.deepin.daemon.Keybinding",
+                                     QDBusConnection::sessionBus());
+    if (!shortcutInterface.isValid()) {
+        qWarning()<< "com.deepin.daemon.Keybinding error ,"<< shortcutInterface.lastError().name();
+        return;
+    }
+
+    QVariant shortcutName(QString("雷神终端"));
+    QVariant shortcutAction(QString("deepin-terminal -q"));
+    QVariant shortcutKeySequence(QString("<Alt>F2"));
+    QDBusReply<void> reply = shortcutInterface.asyncCall("AddCustomShortcut", shortcutName, shortcutAction, shortcutKeySequence);
+    if (reply.isValid()) {
+        qDebug() << "AddCustomShortcut success..";
+    } else {
+        qDebug() << "AddCustomShortcut failed..";
+    }
 }
 
 void MainWindow::setQuakeWindow(bool isQuakeWindow)
