@@ -11,7 +11,7 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
     // hide by default.
     QWidget::hide();
 
-    setFixedWidth(250);
+    setFixedWidth(240+2);
 
     // Init theme panel.
     DAnchorsBase::setAnchor(this, Qt::AnchorTop, parent, Qt::AnchorTop);

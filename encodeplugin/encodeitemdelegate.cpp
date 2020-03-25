@@ -9,40 +9,39 @@ EncodeItemDelegate::EncodeItemDelegate(QAbstractItemView *parent) : DStyledItemD
 
 void EncodeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    //return;
     const QRect &rect = option.rect;
     const QString &encodeName = index.data(114514).toString();
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     QFont font;
-    font.setPointSize(10);
+    font.setPointSize(13);
     painter->setFont(font);
 
-    int paddingX = 15;
-    int paddingY = 8;
-    int m_frameRadius = 5;
-    QString backgroundColor = "black";
-    //QString frameSelectedColor = "green";
-    //QString frameNormalColor = "blue";
-    //QString otherColor = "white";
+    int paddingX = 10;
+    int paddingY = 10;
+    int m_frameRadius = 8;
     DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
     DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
 
     // draw background.
     QPainterPath backgroundPath;
     backgroundPath.addRoundedRect(
-    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2, rect.height() - paddingY * 2),
+    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2, rect.height() - paddingY),
     m_frameRadius,
     m_frameRadius);
 
-    painter->setOpacity(0.8);
-    painter->fillPath(backgroundPath, QColor(backgroundColor));
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+        painter->setOpacity(0.03);
+    } else {
+        painter->setOpacity(0.05);
+    }
+    painter->fillPath(backgroundPath, pa.color(DPalette::BrightText));
 
     // draw border frame.
     QPainterPath framePath;
     framePath.addRoundedRect(
-    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2, rect.height() - paddingY * 2),
+    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2, rect.height() - paddingY),
     m_frameRadius,
     m_frameRadius);
     QPen framePen;
@@ -61,11 +60,11 @@ void EncodeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     // draw color theme prevew text.
     painter->setOpacity(1);
     QFontMetrics fm(font);
-    int lineHeight = 20;
+    int lineHeight = 50;
 
-    int nameX = paddingX + 8;
-    int nameY = paddingY + 8;
-    painter->setPen(QPen(pa.color(DPalette::TextLively)));
+    int nameX = paddingX + 15;
+    int nameY = paddingY + 10;
+    painter->setPen(QPen(pa.color(DPalette::Foreground)));
     painter->drawText(
     QRect(rect.x() + nameX, rect.y() + nameY, rect.width(), lineHeight), Qt::AlignLeft | Qt::AlignTop, encodeName);
 }
@@ -74,5 +73,5 @@ QSize EncodeItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QMo
 {
     Q_UNUSED(option)
     Q_UNUSED(index)
-    return QSize(-1, 61);
+    return QSize(-1, 60);
 }
