@@ -4,6 +4,7 @@
 #include "define.h"
 #include "termproperties.h"
 #include "pagesearchbar.h"
+#include "mainwindow.h"
 
 #include <DSplitter>
 
@@ -94,15 +95,13 @@ public slots:
     void updateSplitStyle();
 
 signals:
-    void pageRequestShowEncoding();
+    void pageRequestShowPlugin(const QString &name);
     void pageRequestNewWorkspace();
     void tabTitleChanged(QString title) const;
     void termTitleChanged(QString title) const;
     void lastTermClosed(QString pageIdentifier) const;
     void termRequestOpenSettings() const;
     void termGetFocus() const;
-    void termRequestOpenCustomCommand() const;
-    void termRequestOpenRemoteManagement() const;
     void termRequestUploadFile() const;
     void termRequestDownloadFile() const;
 

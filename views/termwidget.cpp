@@ -2,6 +2,7 @@
 #include "define.h"
 #include "settings.h"
 #include "termproperties.h"
+#include "mainwindow.h"
 
 #include <DDesktopServices>
 #include <DInputDialog>
@@ -217,7 +218,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
             tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
     }
 
-    menu.addAction(tr("&Find"), this, [this] { ((TermWidgetPage *)m_Page)->showSearchBar(true); });
+    menu.addAction(tr("&Find"), this, [this] {
+        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR); });
     menu.addSeparator();
 
     if (!selectedText().isEmpty()) {
@@ -254,14 +256,16 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         }
     });
 
-    menu.addAction(tr("&Encoding"), this, [this] { emit((TermWidgetPage *)m_Page)->pageRequestShowEncoding(); });
+    menu.addAction(tr("&Encoding"), this, [this] {
+        emit((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING); });
 
     menu.addAction(tr("Custom commands"), this, [this] {
-        // TODO: Tab name as default text?
-        emit termRequestOpenCustomCommand();
+        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
-    menu.addAction(tr("Remote management"), this, [this] { emit termRequestOpenRemoteManagement(); });
+    menu.addAction(tr("Remote management"), this, [this] {
+        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+    });
 
     if (isInRemoteServer()) {
         menu.addSeparator();

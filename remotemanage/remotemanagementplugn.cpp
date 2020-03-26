@@ -12,14 +12,25 @@ RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPlugin
 void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [=](const QString name)
+    {
+        if(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT != name)
+        {
+            getRemoteManagementTopPanel()->hideAnim();
+        }
+        else {
+            getRemoteManagementTopPanel()->show();
+        }
+    });
 }
 
 QAction *RemoteManagementPlugn::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *remoteManagementAction(new QAction(tr("Remote management"), mainWindow));
 
-    connect(remoteManagementAction, &QAction::triggered, this, [this]() { getRemoteManagementTopPanel()->show(); });
-
+    connect(remoteManagementAction, &QAction::triggered, mainWindow, [mainWindow]() {
+        emit mainWindow->showPluginChanged(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+    });
     return remoteManagementAction;
 }
 
@@ -34,7 +45,6 @@ RemoteManagementTopPanel *RemoteManagementPlugn::getRemoteManagementTopPanel()
 void RemoteManagementPlugn::initRemoteManagementTopPanel()
 {
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
-    connect(this, &RemoteManagementPlugn::doHide, m_remoteManagementTopPanel, &RemoteManagementTopPanel::focusOut);
     connect(m_remoteManagementTopPanel,
             &RemoteManagementTopPanel::doConnectServer,
             this,

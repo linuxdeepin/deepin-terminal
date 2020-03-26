@@ -49,7 +49,6 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_centralWidget(new QWidget(this)),
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
       m_termStackWidget(new QStackedWidget),
-      //m_titlebarStyleSheet(titlebar()->styleSheet()),
       m_properties(properties)
 {
     initUI();
@@ -168,35 +167,19 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::pageRequestNewWorkspace, this, [this]() {
         this->addTab(currentTab()->createCurrentTerminalProperties(), true);
     });
-    connect(termPage, &TermWidgetPage::pageRequestShowEncoding, this, [this]() {
-        EncodePanelPlugin *plugin = qobject_cast<EncodePanelPlugin *>(getPluginByName(PLUGIN_TYPE_ENCODING));
-        if (plugin) {
-            plugin->getEncodePanel()->show();
-        }
+    connect(termPage, &TermWidgetPage::pageRequestShowPlugin, this, [this](QString name) {
+        showPlugin(name);
     });
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
     connect(termPage, &TermWidgetPage::termGetFocus, this, [ = ]() {
-        CustomCommandPlugin *plugin = qobject_cast<CustomCommandPlugin *>(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
-        if (plugin) {
-            emit plugin->doHide();
-        }
-        RemoteManagementPlugn *remoteMgtPlugin =
-            qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-        if (remoteMgtPlugin) {
-            emit remoteMgtPlugin->doHide();
-        }
+        showPlugin(PLUGIN_TYPE_NONE);
     });
-    connect(termPage, &TermWidgetPage::termRequestOpenCustomCommand, this, [ = ]() {
-        CustomCommandPlugin *plugin = qobject_cast<CustomCommandPlugin *>(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
-        plugin->getCustomCommandTopPanel()->show();
-    });
-    connect(termPage, &TermWidgetPage::termRequestOpenRemoteManagement, this, [ = ]() {
-        RemoteManagementPlugn *plugin =
-            qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-        plugin->getRemoteManagementTopPanel()->show();
+    connect(this, &MainWindow::showPluginChanged,  termPage, [=](const QString name)
+    {
+         termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name);
     });
 
     connect(termPage->currentTerminal(), &TermWidgetWrapper::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
@@ -692,10 +675,7 @@ void MainWindow::initShortcuts()
 
     // search
     connect(createNewShotcut("shortcuts.terminal.search"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            page->showSearchBar(true);
-        }
+        showPlugin(PLUGIN_TYPE_SEARCHBAR);
     });
 
     // zoom_in
@@ -786,21 +766,12 @@ void MainWindow::initShortcuts()
 
     // custom_command
     connect(createNewShotcut("shortcuts.advanced.custom_command"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            emit page->termRequestOpenCustomCommand();
-        }
+        showPlugin(PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
     // remote_management
     connect(createNewShotcut("shortcuts.advanced.remote_management"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            RemoteManagementPlugn *remoteplugin =
-                qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-
-            emit remoteplugin->getRemoteManagementTopPanel()->show();
-        }
+        showPlugin(PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -996,6 +967,21 @@ int MainWindow::executeCMD(const char *cmd)
     pclose(ptr);
     return  num;
 
+}
+/*******************************************************************************
+ 1. @函数:    showPlugin
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-26
+ 4. @说明:   由mainwindow统一指令当前显示哪个插件
+*******************************************************************************/
+void MainWindow::showPlugin(const QString &name)
+{
+    if(name != PLUGIN_TYPE_NONE)
+    {
+        qDebug()<< "show Plugin" << name;
+    }
+
+    emit showPluginChanged(name);
 }
 
 void MainWindow::onCreateNewWindow(QString workingDir)
