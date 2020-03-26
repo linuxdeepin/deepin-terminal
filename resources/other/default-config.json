@@ -118,7 +118,7 @@
                             "key": "close_workspace",
                             "name": "Close workspace",
                             "type": "shortcut",
-                            "default":  "Ctrl+Alt+W"
+                            "default":  "Ctrl+Shift+W"
                         },
                         {
                             "key": "previous_workspace",
