@@ -14,7 +14,7 @@
                             "type": "slider",
                             "max": 100,
                             "min": 20,
-                            "default": 90
+                            "default": 100
                         },
                         {
                             "key": "font",
