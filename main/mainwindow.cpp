@@ -981,6 +981,7 @@ void MainWindow::handleTitleBarMenuFocusPolicy()
 int MainWindow::executeCMD(const char *cmd)
 {
 
+
     char *result;
     char buf_ps[1024] = {0};
     FILE *ptr;
@@ -992,6 +993,7 @@ int MainWindow::executeCMD(const char *cmd)
     qDebug() << "qStr========" << qStr;
     int num = qStr.toInt() ;
     qDebug() << "num ========" << num;
+    pclose(ptr);
     return  num;
 
 }

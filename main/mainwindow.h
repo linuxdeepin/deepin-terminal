@@ -146,6 +146,9 @@ private:
     CustomCommandPlugin *customCommandPlugin;
     QString m_strWindowId;
     const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";
+
+
+//    const char *cmd = "ps -elf|awk '{if($15==\"deepin-terminal\")print $15}'|wc -l";
 };
 
 #endif  // MAINWINDOW_H

@@ -79,6 +79,7 @@ private:
     QList<QString> getTextCodec();
     QList<QString> getBackSpaceKey();
     QList<QString> getDeleteKey();
+
 };
 
 #endif  // SERVERCONFIGOPTDLG_H
