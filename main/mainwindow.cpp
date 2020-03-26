@@ -109,6 +109,9 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
         /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
         setWindowState(windowState() & ~Qt::WindowFullScreen);
         /********************* Modify by n014361 wangpeili End ************************/
+        /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
+        this->setMaximumHeight(deskRect.size().height() * 2 / 3);
+        /********************* Modify by m000714 daizhengwen End ************************/
         this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         this->setMinimumSize(deskRect.size().width(), 60);
         this->resize(deskRect.size().width(), deskRect.size().height() / 3);
