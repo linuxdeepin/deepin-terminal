@@ -41,7 +41,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     }
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
-    setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
+    // 系统初始打开始终为UTF-8格式。中间的这个参数仅用作通讯使用。
+    // 如果需要“记忆”，删除下面这行即可。
+    //setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
+    setTextCodec(QTextCodec::codecForName("UTF-8"));
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
     setAutoClose(!properties.contains(KeepOpen));
     /********************* Modify by n014361 wangpeili End ************************/
