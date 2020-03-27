@@ -145,6 +145,11 @@ QString Settings::colorScheme() const
     return settings->option("basic.interface.theme")->value().toString();
 }
 
+QString Settings::encoding() const
+{
+    return settings->option("basic.interface.encoding")->value().toString();
+}
+
 QString Settings::fontName()
 {
     return settings->option("basic.interface.font")->value().toString();
@@ -183,6 +188,11 @@ bool Settings::backgroundBlur() const
 void Settings::setColorScheme(const QString &name)
 {
     return settings->option("basic.interface.theme")->setValue(name);
+}
+
+void Settings::setEncoding(const QString &name)
+{
+    settings->option("basic.interface.encoding")->setValue(name);
 }
 
 /*******************************************************************************

@@ -18,14 +18,17 @@ public:
     int cursorShape() const;
     bool cursorBlink() const;
     bool backgroundBlur() const;
-
     QString colorScheme() const;
+    QString encoding() const;
     QString fontName();
     int fontSize();
     bool PressingScroll();
     bool OutputtingScroll();
+
     // 设置主题
     void setColorScheme(const QString &name);
+    // 设置编码格式
+    void setEncoding(const QString &name);
 
     DSettings *settings;
     /******** Modify by n014361 wangpeili 2020-01-04: 获取当前配置粘贴是否为选择内容 *************×****/

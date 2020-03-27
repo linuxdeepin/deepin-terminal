@@ -50,12 +50,4 @@ EncodePanel *EncodePanelPlugin::getEncodePanel()
 void EncodePanelPlugin::initEncodePanel()
 {
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
-    connect(m_encodePanel, &EncodePanel::encodeChanged, this, [=](const QByteArray encodeName) {
-        m_mainWindow->forAllTabPage([encodeName](TermWidgetPage *tabPage) {
-            qDebug() << "encodeName" << encodeName;
-            tabPage->setTextCodec(QTextCodec::codecForName(encodeName));
-            // tabPage->setColorScheme(encodeName);
-        });
-        // Settings::instance()->setColorScheme(encodeName);
-    });
 }

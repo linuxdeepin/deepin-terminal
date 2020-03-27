@@ -41,6 +41,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     }
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
+    setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
     setAutoClose(!properties.contains(KeepOpen));
     /********************* Modify by n014361 wangpeili End ************************/
@@ -580,6 +581,11 @@ void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
     }
 
     if (keyName == "basic.interface.theme") {
+        return;
+    }
+
+    if (keyName == "basic.interface.encoding") {
+        setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
         return;
     }
 

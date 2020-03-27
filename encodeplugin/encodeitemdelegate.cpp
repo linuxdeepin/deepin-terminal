@@ -41,7 +41,7 @@ void EncodeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     // draw border frame.
     QPainterPath framePath;
     framePath.addRoundedRect(
-    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2, rect.height() - paddingY),
+    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2-1, rect.height() - paddingY-1),
     m_frameRadius,
     m_frameRadius);
     QPen framePen;
@@ -49,9 +49,6 @@ void EncodeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     if (option.state & QStyle::State_Selected) {
         painter->setOpacity(1);
         framePen = QPen(pa.color(DPalette::Highlight), 2);
-    } else {
-        painter->setOpacity(0.3);
-        framePen = QPen(pa.color(DPalette::FrameBorder), 1);
     }
 
     painter->setPen(framePen);
