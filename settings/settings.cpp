@@ -254,6 +254,10 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
     DSlider *slider = new DSlider;
+    //--added by qinyaning(nyq) to slove the problem of hide the right icon--//
+    const int SLIDER_FIXED_WIDTH = 296;
+    slider->setFixedWidth(SLIDER_FIXED_WIDTH);
+    //------------------------------------------------------------------------s
     slider->setIconSize(QSize(20, 20));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
         slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0.svg"));

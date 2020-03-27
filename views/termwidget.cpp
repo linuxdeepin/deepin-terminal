@@ -31,7 +31,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     QString shell{ getenv("SHELL") };
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
     setTerminalOpacity(Settings::instance()->opacity());
-    setScrollBarPosition(QTermWidget::ScrollBarRight);
+    //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     // theme
