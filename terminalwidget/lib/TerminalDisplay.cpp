@@ -245,7 +245,10 @@ void TerminalDisplay::fontChange(const QFont&)
   // We will run paint event testing procedure.
   // Although this operation will destory the orignal content,
   // the content will be drawn again after the test.
-  _drawTextTestFlag = true;
+  //_drawTextTestFlag = true;//
+  //----------add by nyq to slove the twinkle of the window--
+  _drawTextTestFlag = false;
+  //---------------------------------------------------------
   update();
 }
 

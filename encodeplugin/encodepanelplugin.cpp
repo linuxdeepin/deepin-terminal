@@ -15,13 +15,25 @@ EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterfac
 void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [=](const QString name)
+    {
+        if(MainWindow::PLUGIN_TYPE_ENCODING != name)
+        {
+            getEncodePanel()->hideAnim();
+        }
+        else {
+            getEncodePanel()->show();
+        }
+    });
 }
 
 QAction *EncodePanelPlugin::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *switchThemeAction(new QAction(tr("Switch &Encoding"), mainWindow));
 
-    connect(switchThemeAction, &QAction::triggered, this, [this]() { getEncodePanel()->show(); });
+    connect(switchThemeAction, &QAction::triggered, mainWindow, [mainWindow]() {
+        emit mainWindow->showPluginChanged(MainWindow::PLUGIN_TYPE_ENCODING);
+    });
 
     return switchThemeAction;
 }
@@ -38,7 +50,6 @@ EncodePanel *EncodePanelPlugin::getEncodePanel()
 void EncodePanelPlugin::initEncodePanel()
 {
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
-
     connect(m_encodePanel, &EncodePanel::encodeChanged, this, [=](const QByteArray encodeName) {
         m_mainWindow->forAllTabPage([encodeName](TermWidgetPage *tabPage) {
             qDebug() << "encodeName" << encodeName;

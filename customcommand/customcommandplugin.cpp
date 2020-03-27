@@ -18,13 +18,25 @@ CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInte
 void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [=](const QString name)
+    {
+        if(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name)
+        {
+            getCustomCommandTopPanel()->hideAnim();
+        }
+        else {
+            getCustomCommandTopPanel()->show();
+        }
+    });
 }
 
 QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *customCommandAction(new QAction(tr("Custom Commands"), mainWindow));
 
-    connect(customCommandAction, &QAction::triggered, this, [this]() { getCustomCommandTopPanel()->show(); });
+    connect(customCommandAction, &QAction::triggered, mainWindow, [mainWindow]() {
+        emit mainWindow->showPluginChanged(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
+    });
 
     return customCommandAction;
 }
@@ -32,7 +44,6 @@ QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
 void CustomCommandPlugin::initCustomCommandTopPanel()
 {
     m_customCommandTopPanel = new CustomCommandTopPanel(m_mainWindow->centralWidget());
-    connect(this, &CustomCommandPlugin::doHide, m_customCommandTopPanel, &CustomCommandTopPanel::focusOut);
     connect(m_customCommandTopPanel,
             &CustomCommandTopPanel::handleCustomCurCommand,
             this,

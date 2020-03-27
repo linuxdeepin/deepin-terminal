@@ -35,6 +35,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QtDBus>
 
 #include <QVBoxLayout>
 #include <QMap>
@@ -48,10 +49,10 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_centralWidget(new QWidget(this)),
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
       m_termStackWidget(new QStackedWidget),
-      //m_titlebarStyleSheet(titlebar()->styleSheet()),
       m_properties(properties)
 {
     initUI();
+    addQuakeTerminalShortcut();
 }
 
 void MainWindow::initUI()
@@ -95,6 +96,28 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::addQuakeTerminalShortcut()
+{
+    QDBusInterface shortcutInterface("com.deepin.daemon.Keybinding",
+                                     "/com/deepin/daemon/Keybinding",
+                                     "com.deepin.daemon.Keybinding",
+                                     QDBusConnection::sessionBus());
+    if (!shortcutInterface.isValid()) {
+        qWarning()<< "com.deepin.daemon.Keybinding error ,"<< shortcutInterface.lastError().name();
+        return;
+    }
+
+    QVariant shortcutName(QString("雷神终端"));
+    QVariant shortcutAction(QString("deepin-terminal -q"));
+    QVariant shortcutKeySequence(QString("<Alt>F2"));
+    QDBusReply<void> reply = shortcutInterface.asyncCall("AddCustomShortcut", shortcutName, shortcutAction, shortcutKeySequence);
+    if (reply.isValid()) {
+        qDebug() << "AddCustomShortcut success..";
+    } else {
+        qDebug() << "AddCustomShortcut failed..";
+    }
+}
+
 void MainWindow::setQuakeWindow(bool isQuakeWindow)
 {
     m_isQuakeWindow = isQuakeWindow;
@@ -109,6 +132,9 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
         /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
         setWindowState(windowState() & ~Qt::WindowFullScreen);
         /********************* Modify by n014361 wangpeili End ************************/
+        /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
+        this->setMaximumHeight(deskRect.size().height() * 2 / 3);
+        /********************* Modify by m000714 daizhengwen End ************************/
         this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         this->setMinimumSize(deskRect.size().width(), 60);
         this->resize(deskRect.size().width(), deskRect.size().height() / 3);
@@ -141,35 +167,19 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::pageRequestNewWorkspace, this, [this]() {
         this->addTab(currentTab()->createCurrentTerminalProperties(), true);
     });
-    connect(termPage, &TermWidgetPage::pageRequestShowEncoding, this, [this]() {
-        EncodePanelPlugin *plugin = qobject_cast<EncodePanelPlugin *>(getPluginByName(PLUGIN_TYPE_ENCODING));
-        if (plugin) {
-            plugin->getEncodePanel()->show();
-        }
+    connect(termPage, &TermWidgetPage::pageRequestShowPlugin, this, [this](QString name) {
+        showPlugin(name);
     });
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
     connect(termPage, &TermWidgetPage::termGetFocus, this, [ = ]() {
-        CustomCommandPlugin *plugin = qobject_cast<CustomCommandPlugin *>(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
-        if (plugin) {
-            emit plugin->doHide();
-        }
-        RemoteManagementPlugn *remoteMgtPlugin =
-            qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-        if (remoteMgtPlugin) {
-            emit remoteMgtPlugin->doHide();
-        }
+        showPlugin(PLUGIN_TYPE_NONE);
     });
-    connect(termPage, &TermWidgetPage::termRequestOpenCustomCommand, this, [ = ]() {
-        CustomCommandPlugin *plugin = qobject_cast<CustomCommandPlugin *>(getPluginByName(PLUGIN_TYPE_CUSTOMCOMMAND));
-        plugin->getCustomCommandTopPanel()->show();
-    });
-    connect(termPage, &TermWidgetPage::termRequestOpenRemoteManagement, this, [ = ]() {
-        RemoteManagementPlugn *plugin =
-            qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-        plugin->getRemoteManagementTopPanel()->show();
+    connect(this, &MainWindow::showPluginChanged,  termPage, [=](const QString name)
+    {
+         termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name);
     });
 
     connect(termPage->currentTerminal(), &TermWidgetWrapper::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
@@ -665,10 +675,7 @@ void MainWindow::initShortcuts()
 
     // search
     connect(createNewShotcut("shortcuts.terminal.search"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            page->showSearchBar(true);
-        }
+        showPlugin(PLUGIN_TYPE_SEARCHBAR);
     });
 
     // zoom_in
@@ -759,21 +766,12 @@ void MainWindow::initShortcuts()
 
     // custom_command
     connect(createNewShotcut("shortcuts.advanced.custom_command"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            emit page->termRequestOpenCustomCommand();
-        }
+        showPlugin(PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
     // remote_management
     connect(createNewShotcut("shortcuts.advanced.remote_management"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            RemoteManagementPlugn *remoteplugin =
-                qobject_cast<RemoteManagementPlugn *>(getPluginByName(PLUGIN_TYPE_REMOTEMANAGEMENT));
-
-            emit remoteplugin->getRemoteManagementTopPanel()->show();
-        }
+        showPlugin(PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -954,6 +952,7 @@ void MainWindow::handleTitleBarMenuFocusPolicy()
 int MainWindow::executeCMD(const char *cmd)
 {
 
+
     char *result;
     char buf_ps[1024] = {0};
     FILE *ptr;
@@ -965,8 +964,24 @@ int MainWindow::executeCMD(const char *cmd)
     qDebug() << "qStr========" << qStr;
     int num = qStr.toInt() ;
     qDebug() << "num ========" << num;
+    pclose(ptr);
     return  num;
 
+}
+/*******************************************************************************
+ 1. @函数:    showPlugin
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-26
+ 4. @说明:   由mainwindow统一指令当前显示哪个插件
+*******************************************************************************/
+void MainWindow::showPlugin(const QString &name)
+{
+    if(name != PLUGIN_TYPE_NONE)
+    {
+        qDebug()<< "show Plugin" << name;
+    }
+
+    emit showPluginChanged(name);
 }
 
 void MainWindow::onCreateNewWindow(QString workingDir)

@@ -360,7 +360,7 @@ void QTermWidget::init(int startnow)
     for (const QString &dir : dirs) {
         qDebug() << "Trying to load translation file from dir" << dir;
         if (m_translator->load(
-            QLocale::system(), QLatin1String("qtermwidget"), QLatin1String(QLatin1String("_")), dir)) {
+            QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
             qApp->installTranslator(m_translator);
             qDebug() << "Translations found in" << dir;
             break;

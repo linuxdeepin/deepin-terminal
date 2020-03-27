@@ -45,7 +45,10 @@ void ServerConfigOptDlg::initUI()
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
     //head layout
     m_titleLabel->setAlignment(Qt::AlignCenter);
+
     m_titleLabel->setText(tr("Add Server"));
+
+
     DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5);
     QHBoxLayout *headLayout = new QHBoxLayout();
     headLayout->addWidget(m_titleLabel);
@@ -53,7 +56,9 @@ void ServerConfigOptDlg::initUI()
     headLayout->setSpacing(0);
     headLayout->setMargin(0);
     headLayout->setAlignment(Qt::AlignTop);
-    connect(m_closeButton, &DDialogCloseButton::clicked, this, [ = ]() { reject(); });
+    connect(m_closeButton, &DDialogCloseButton::clicked, this, [ = ]() {
+        reject();
+    });
     m_VBoxLayout->addLayout(headLayout);
 
     //main layout
@@ -190,6 +195,7 @@ void ServerConfigOptDlg::initUI()
     DPushButton *pCancelButton = new DPushButton(tr("Cancel"));
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add"));
     if (m_type == SCT_MODIFY) {
+        m_titleLabel->setText(tr("Edit server"));
         pAddSaveButton->setText(tr("Save"));
     }
     DPalette pa = DApplicationHelper::instance()->palette(pAddSaveButton);
@@ -203,7 +209,9 @@ void ServerConfigOptDlg::initUI()
 
     setLayout(m_VBoxLayout);
 
-    connect(pCancelButton, &DPushButton::clicked, this, [ = ]() { reject(); });
+    connect(pCancelButton, &DPushButton::clicked, this, [ = ]() {
+        reject();
+    });
     connect(pAddSaveButton, &DPushButton::clicked, this, &ServerConfigOptDlg::slotAddSaveButtonClicked);
     connect(m_delServer, &DCommandLinkButton::clicked, this, [ = ]() {
         setDelServer(true);

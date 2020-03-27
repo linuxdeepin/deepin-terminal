@@ -27,7 +27,7 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
 {
     int contentOffsetY = 18;
     QWidget *contentFrame = new QWidget;
-    contentFrame->setFixedSize(459, 128+contentOffsetY);
+    contentFrame->setFixedSize(459, 128 + contentOffsetY);
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
     contentLayout->setSpacing(0);
@@ -144,7 +144,7 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     if (m_type == CCT_ADD) {
         setConfirmBtnText(tr("Add"));
     } else {
-        setConfirmBtnText(tr("Save"));
+        setConfirmBtnText(tr("Save1"));
     }
 
     connect(this, &TermBaseDialog::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);

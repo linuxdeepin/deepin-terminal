@@ -15,10 +15,6 @@
 #include <DPushButton>
 #include <QShortcut>
 
-#define PLUGIN_TYPE_THEME "Theme"
-#define PLUGIN_TYPE_CUSTOMCOMMAND "Custom Command"
-#define PLUGIN_TYPE_REMOTEMANAGEMENT "Remote Management"
-#define PLUGIN_TYPE_ENCODING "Encoding"
 
 DWIDGET_USE_NAMESPACE
 
@@ -63,8 +59,16 @@ public:
     QString showFileDailog(bool isDir);
     void pressCtrlAt();
     void sleep(unsigned int msec);
+
+    static constexpr const char* PLUGIN_TYPE_SEARCHBAR = "Search Bar";
+    static constexpr const char* PLUGIN_TYPE_THEME = "Theme";
+    static constexpr const char* PLUGIN_TYPE_CUSTOMCOMMAND = "Custom Command";
+    static constexpr const char* PLUGIN_TYPE_REMOTEMANAGEMENT ="Remote Management";
+    static constexpr const char* PLUGIN_TYPE_ENCODING = "Encoding";
+    static constexpr const char* PLUGIN_TYPE_NONE = "None";
 signals:
     void newWindowRequest(const QString &directory);
+    void showPluginChanged(const QString &name);
 
 public slots:
     // void onSettingValueChanged(const int &keyIndex, const QVariant &value);
@@ -97,6 +101,9 @@ private:
     void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
     int executeCMD(const char *cmd);
+    // 由mainwindow统一指令当前显示哪个插件
+    void showPlugin(const QString &name);
+    void addQuakeTerminalShortcut();
 
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
@@ -145,6 +152,9 @@ private:
     CustomCommandPlugin *customCommandPlugin;
     QString m_strWindowId;
     const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";
+
+
+//    const char *cmd = "ps -elf|awk '{if($15==\"deepin-terminal\")print $15}'|wc -l";
 };
 
 #endif  // MAINWINDOW_H

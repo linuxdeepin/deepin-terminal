@@ -14,7 +14,7 @@
                             "type": "slider",
                             "max": 100,
                             "min": 20,
-                            "default": 90
+                            "default": 100
                         },
                         {
                             "key": "font",
@@ -118,7 +118,7 @@
                             "key": "close_workspace",
                             "name": "Close workspace",
                             "type": "shortcut",
-                            "default":  "Ctrl+Alt+W"
+                            "default":  "Ctrl+Shift+W"
                         },
                         {
                             "key": "previous_workspace",

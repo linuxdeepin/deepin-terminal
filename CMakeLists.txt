@@ -220,6 +220,10 @@ install(FILES deepin-terminal.desktop
 install(FILES resources/images/logo/deepin-terminal.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
+# add this empty file for first install/reinstall judge
+install(FILES resources/other/install_flag
+        DESTINATION $ENV{HOME}/.config/deepin/deepin-terminal/)
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
         PERMISSIONS OWNER_READ OWNER_EXECUTE
