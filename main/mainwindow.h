@@ -10,6 +10,7 @@
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
+#include <QSettings>
 
 #include <functional>
 #include <DPushButton>
@@ -152,6 +153,11 @@ private:
     CustomCommandPlugin *customCommandPlugin;
     QString m_strWindowId;
     const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";
+
+    /******** Modify by m000714 daizhengwen 2020-03-27: 终端窗口（normal）记忆大小和状态 ****************/
+    QString m_strStartWindowState = "";
+    QSettings *m_winInfoConfig;
+    /********************* Modify by m000714 daizhengwen End ************************/
 
 
 //    const char *cmd = "ps -elf|awk '{if($15==\"deepin-terminal\")print $15}'|wc -l";

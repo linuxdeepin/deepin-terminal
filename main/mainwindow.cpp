@@ -49,7 +49,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_centralWidget(new QWidget(this)),
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
       m_termStackWidget(new QStackedWidget),
-      m_properties(properties)
+      m_properties(properties),
+      m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat))
 {
     initUI();
     addQuakeTerminalShortcut();
@@ -343,19 +344,22 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     if (remoteManagPlugin) {
         remoteManagPlugin->hidePlugn();
     }
+
+    if (m_strStartWindowState == "window_normal") {
+        if (windowState() == Qt::WindowNoState) {
+            m_winInfoConfig->setValue("save_width", this->width());
+            m_winInfoConfig->setValue("save_height", this->height());
+        }
+
+    }
     DMainWindow::resizeEvent(event);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
-    settings.setValue("geometry", saveGeometry());
+    m_winInfoConfig->setValue("geometry", saveGeometry());
+    m_winInfoConfig->setValue("windowState", saveState());
 
-    if (Qt::WindowNoState == windowState()) {
-        settings.setValue("save_width", this->width());
-        settings.setValue("save_height", this->height());
-    }
-    settings.setValue("windowState", saveState());
     bool hasRunning = closeProtect();
     if (hasRunning && !Utils::showExitConfirmDialog()) {
         qDebug() << "close window protect..." << endl;
@@ -479,38 +483,37 @@ void MainWindow::initWindow()
 
     QSettings settings("blumia", "dterm");
 
-    QString windowState =
+    m_strStartWindowState =
         Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
         qDebug() << "use line state set:" << state;
         if (state == "maximize") {
-            windowState = "window_maximum";
+            m_strStartWindowState = "window_maximum";
         } else if (state == "halfscreen") {
-            windowState = "Halfscreen";
+            m_strStartWindowState = "Halfscreen";
         } else if ((state == "fullscreen") || (state == "normal")) {
-            windowState = state;
+            m_strStartWindowState = state;
         } else {
             qDebug() << "error line state set:" << state << "ignore it!";
         }
     }
 
     // init window state.
-    if (windowState == "window_maximum") {
+    if (m_strStartWindowState == "window_maximum") {
         showMaximized();
-    } else if (windowState == "fullscreen") {
+    } else if (m_strStartWindowState == "fullscreen") {
         switchFullscreen(true);
         /******** Modify by n014361 wangpeili 2020-02-25:增加半屏设置    ****************/
-    } else if (windowState == "Halfscreen") {
+    } else if (m_strStartWindowState == "Halfscreen") {
         setWindowRadius(0);
         resize(QSize(QApplication::desktop()->width() / 2, QApplication::desktop()->height()));
         move(0, 0);
         /********************* Modify by n014361 wangpeili End ************************/
     } else {
-
-        QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
-        int saveWidth = settings.value("save_width").toInt();
-        int saveHeight = settings.value("save_height").toInt();
+//        QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
+        int saveWidth = m_winInfoConfig->value("save_width").toInt();
+        int saveHeight = m_winInfoConfig->value("save_height").toInt();
         qDebug() << "saveWidth: " << saveWidth;
         qDebug() << "saveHeight: " << saveHeight;
 
