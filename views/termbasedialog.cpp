@@ -116,8 +116,6 @@ void TermBaseDialog::addCancelConfirmButtons()
     connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
         qDebug() << "confirmBtnClicked";
         m_confirmResultCode = QDialog::Accepted;
-        close();
-
         emit confirmBtnClicked();
     });
 
