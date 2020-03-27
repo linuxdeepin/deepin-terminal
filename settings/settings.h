@@ -61,6 +61,7 @@ signals:
 
 private:
     Settings();
+    void loadDefaultsWhenReinstall();
 
     static Settings *m_settings_instance;
 

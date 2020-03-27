@@ -51,6 +51,7 @@ Settings::Settings() : QObject(qApp)
     /********************* Modify by n014361 wangpeili End ************************/
 
     initConnection();
+    loadDefaultsWhenReinstall();
 }
 
 Settings *Settings::instance()
@@ -60,6 +61,23 @@ Settings *Settings::instance()
     }
 
     return m_settings_instance;
+}
+
+//重新安装终端后在这里重置状态
+void Settings::loadDefaultsWhenReinstall()
+{
+    QDir installFlagPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!installFlagPath.exists()) {
+        installFlagPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    }
+
+    QString installFlagFilePath(installFlagPath.filePath("install_flag"));
+    QFile installFlagFile(installFlagFilePath);
+    if (installFlagFile.exists()) {
+        //fix bug: 17676 终端窗口透明度较低，能够看到桌面上文案
+        this->settings->setOption("basic.interface.opacity", 100);
+        installFlagFile.remove();
+    }
 }
 
 void Settings::initConnection()
