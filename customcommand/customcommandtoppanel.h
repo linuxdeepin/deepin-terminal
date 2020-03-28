@@ -14,6 +14,9 @@ public:
     explicit CustomCommandTopPanel(QWidget *parent = nullptr);
     void show();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 signals:
     void focusOut();
     void handleCustomCurCommand(const QString &strCommand);

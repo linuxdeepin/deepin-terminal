@@ -18,6 +18,7 @@ CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInte
 void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
+    initCustomCommandTopPanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [=](const QString name)
     {
         if(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name)

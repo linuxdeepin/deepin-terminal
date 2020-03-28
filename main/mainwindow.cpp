@@ -338,12 +338,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         this->resize(deskRect.size().width(), this->size().height());
         this->move(0, 0);
     }
-    if (customCommandPlugin) {
-        customCommandPlugin->hidePlugn();
-    }
-    if (remoteManagPlugin) {
-        remoteManagPlugin->hidePlugn();
-    }
 
     if (m_strStartWindowState == "window_normal") {
         if (windowState() == Qt::WindowNoState) {

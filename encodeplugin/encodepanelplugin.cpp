@@ -15,6 +15,7 @@ EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterfac
 void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
+    initEncodePanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [=](const QString name)
     {
         if(MainWindow::PLUGIN_TYPE_ENCODING != name)

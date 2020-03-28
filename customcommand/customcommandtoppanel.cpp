@@ -105,3 +105,8 @@ void CustomCommandTopPanel::show()
     m_customCommandSearchPanel->resize(size());
     m_customCommandSearchPanel->hide();
 }
+
+void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
+{
+    m_customCommandPanel->resize(size());
+}
