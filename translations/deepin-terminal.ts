@@ -37,7 +37,7 @@
         <location filename="../customcommand/customcommandoptdlg.cpp" line="96"/>
         <location filename="../customcommand/customcommandoptdlg.cpp" line="103"/>
         <source>Required</source>
-        <translation type="unfinished"></translation>
+        <translation>必填</translation>
     </message>
     <message>
         <location filename="../customcommand/customcommandoptdlg.cpp" line="149"/>
@@ -45,9 +45,8 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="151"/>
         <source>Add</source>
-        <translation>添加</translation>
+        <translation type="vanished">添加</translation>
     </message>
     <message>
         <location filename="../customcommand/customcommandoptdlg.cpp" line="111"/>
@@ -65,9 +64,14 @@
         <translation>删除命令</translation>
     </message>
     <message>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="151"/>
         <location filename="../customcommand/customcommandoptdlg.cpp" line="153"/>
+        <source>Sure</source>
+        <translation>确定</translation>
+    </message>
+    <message>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation type="vanished">保存</translation>
     </message>
 </context>
 <context>
@@ -106,42 +110,42 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="751"/>
+        <location filename="../main/mainwindow.cpp" line="768"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="751"/>
+        <location filename="../main/mainwindow.cpp" line="768"/>
         <source>Rename Tab</source>
         <translation type="unfinished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="819"/>
+        <location filename="../main/mainwindow.cpp" line="836"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="835"/>
+        <location filename="../main/mainwindow.cpp" line="852"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1194"/>
+        <location filename="../main/mainwindow.cpp" line="1211"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1196"/>
+        <location filename="../main/mainwindow.cpp" line="1213"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1198"/>
+        <location filename="../main/mainwindow.cpp" line="1215"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1254"/>
+        <location filename="../main/mainwindow.cpp" line="1271"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -150,12 +154,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1286"/>
+        <location filename="../main/mainwindow.cpp" line="1303"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1288"/>
+        <location filename="../main/mainwindow.cpp" line="1305"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -458,6 +462,13 @@
         <location filename="../customcommand/customcommandlist.cpp" line="129"/>
         <source>ok</source>
         <translation>确定</translation>
+    </message>
+</context>
+<context>
+    <name>RemoteManagementPanel</name>
+    <message>
+        <source>Add Server</source>
+        <translation type="obsolete">添加服务器</translation>
     </message>
 </context>
 <context>
