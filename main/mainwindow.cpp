@@ -140,6 +140,8 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
         this->setMinimumSize(deskRect.size().width(), 60);
         this->resize(deskRect.size().width(), deskRect.size().height() / 3);
         this->move(0, 0);
+        // 区分雷神窗口和正常窗口，雷神窗口不记录窗口大小
+        m_strStartWindowState = "quake terminal";
     }
 
     initTitleBar();
@@ -338,22 +340,37 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         this->resize(deskRect.size().width(), this->size().height());
         this->move(0, 0);
     }
-
+    /******** Modify by m000714 daizhengwen 2020-03-28: 记录当前正常窗口正常大小****************/
     if (m_strStartWindowState == "window_normal") {
-        if (windowState() == Qt::WindowNoState) {
+        QRect deskRect = QApplication::desktop()->availableGeometry();
+        // 分屏不记录窗口大小
+        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
+            // 记录当前窗口的大小
             m_winInfoConfig->setValue("save_width", this->width());
             m_winInfoConfig->setValue("save_height", this->height());
         }
-
     }
+    /********************* Modify by m000714 daizhengwen End ************************/
     DMainWindow::resizeEvent(event);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    /******** Modify by m000714 daizhengwen 2020-03-28: 记录最后一个关闭的窗口的****************/
     m_winInfoConfig->setValue("geometry", saveGeometry());
     m_winInfoConfig->setValue("windowState", saveState());
 
+    if (m_strStartWindowState == "window_normal") {
+        QRect deskRect = QApplication::desktop()->availableGeometry();
+        // 正常模式下，分屏不记录窗口大小，最大和全屏操作也不记录窗口大小
+        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
+            // 记录最后一个正常窗口的大小
+            m_winInfoConfig->setValue("save_width", this->width());
+            m_winInfoConfig->setValue("save_height", this->height());
+        }
+
+    }
+    /********************* Modify by m000714 daizhengwen End ************************/
     bool hasRunning = closeProtect();
     if (hasRunning && !Utils::showExitConfirmDialog()) {
         qDebug() << "close window protect..." << endl;
