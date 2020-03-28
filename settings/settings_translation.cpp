@@ -4,14 +4,14 @@
 
 void GenerateSettingTranslate()
 {
-    auto advanced_cursor_auto_copy_selectionText = QObject::tr("Auto copy selection");
-    auto advanced_cursor_auto_hideText = QObject::tr("Auto hide");
+    auto advanced_cursor_auto_copy_selectionText = QObject::tr("Copy on select");
+    auto advanced_cursor_auto_hideText = QObject::tr("Cursor autohide");
     auto advanced_cursor_cursor_blinkText = QObject::tr("Cursor blink");
     auto advanced_cursor_cursor_shapeName = QObject::tr("Cursor style");
     auto advanced_scroll_scroll_on_keyText = QObject::tr("Scroll on keystroke");
     auto advanced_scroll_scroll_on_outputText = QObject::tr("Scroll on output");
-    auto advanced_window_auto_hide_raytheon_windowText = QObject::tr("Auto hide raytheon window");
-    auto advanced_window_blurred_backgroundText = QObject::tr("Blur background");
+    auto advanced_window_auto_hide_raytheon_windowText = QObject::tr("Hide Quake window after losing focus");
+    auto advanced_window_blurred_backgroundText = QObject::tr("Blurred background");
     auto advanced_window_use_on_startingName = QObject::tr("Use on starting");
     auto basic_interface_fontName = QObject::tr("Font");
     auto basic_interface_font_sizeName = QObject::tr("Font size");

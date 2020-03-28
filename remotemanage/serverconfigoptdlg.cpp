@@ -114,7 +114,7 @@ void ServerConfigOptDlg::initUI()
     pGridLayout->addWidget(pPasswordLabel);
     pGridLayout->addWidget(m_password);
 
-    DLabel *pPrivateKeyLabel = new DLabel(tr("PrivateKey:"));
+    DLabel *pPrivateKeyLabel = new DLabel(tr("Certificate:"));
     pPrivateKeyLabel->setAlignment(Qt::AlignLeft);
     pPrivateKeyLabel->setAlignment(Qt::AlignVCenter);
     pPrivateKeyLabel->setFixedWidth(100);
@@ -152,7 +152,7 @@ void ServerConfigOptDlg::initUI()
     seniorLayout->addWidget(pCommandLabel);
     seniorLayout->addWidget(m_command);
 
-    DLabel *pCodingLabel = new DLabel(tr("Coding:"));
+    DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
     pCodingLabel->setAlignment(Qt::AlignLeft);
     pCodingLabel->setAlignment(Qt::AlignVCenter);
     pCodingLabel->setFixedWidth(100);
@@ -160,7 +160,7 @@ void ServerConfigOptDlg::initUI()
     seniorLayout->addWidget(pCodingLabel);
     seniorLayout->addWidget(m_coding);
 
-    DLabel *pBackspaceKeyLabel = new DLabel(tr("BackspaceKey:"));
+    DLabel *pBackspaceKeyLabel = new DLabel(tr("Backspace key:"));
     pBackspaceKeyLabel->setAlignment(Qt::AlignLeft);
     pBackspaceKeyLabel->setAlignment(Qt::AlignVCenter);
     pBackspaceKeyLabel->setFixedWidth(100);
@@ -168,7 +168,7 @@ void ServerConfigOptDlg::initUI()
     seniorLayout->addWidget(pBackspaceKeyLabel);
     seniorLayout->addWidget(m_backSapceKey);
 
-    DLabel *pDeleteKeyLabel = new DLabel(tr("DeleteKey:"));
+    DLabel *pDeleteKeyLabel = new DLabel(tr("Delete key:"));
     pDeleteKeyLabel->setAlignment(Qt::AlignLeft);
     pDeleteKeyLabel->setAlignment(Qt::AlignVCenter);
     pDeleteKeyLabel->setFixedWidth(100);

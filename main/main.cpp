@@ -53,15 +53,15 @@ int main(int argc, char *argv[])
     parser.addVersionOption();
     parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
-    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, "Set terminal start work directory", "path");
+    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      "Set terminal start on window mode: normal, maximize, fullscreen, halfscreen ",
+                                      QObject::tr("Set terminal start on window mode: normal, maximize, fullscreen, halfscreen "),
                                       "state-mode");
-    QCommandLineOption optExecute({ "e", "execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optScript({ "c", "run-script" }, "Run script string in the terminal", "script");
+    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
+    QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
     //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, "Set terminal start on quake mode", "");
-    QCommandLineOption optKeepOpen("keep-open", "Set terminal keep open when finished", "");
+    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
+    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
     //parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
 
     parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});

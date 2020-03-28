@@ -251,20 +251,20 @@
                         {
                             "key": "auto_hide",
                             "type": "checkbox",
-                            "text": "Auto hide",
+                            "text": "Cursor autohide",
                             "default": false
                         },
                         {
                             "key": "auto_copy_selection",
                             "type": "checkbox",
-                            "text": "Auto copy selection",
+                            "text": "Copy on select",
                             "default": true
                         }
                     ]
                 },
                 {
                     "key": "scroll",
-                    "name": "scroll",
+                    "name": "Scroll",
                     "options": [
                         {
                             "key": "scroll_on_key",
@@ -298,7 +298,7 @@
                         },
                         {
                             "key": "auto_hide_raytheon_window",
-                            "text": "Auto hide raytheon window",
+                            "text": "Hide Quake window after losing focus",
                             "type": "checkbox",
                             "default": "false"
                         }
