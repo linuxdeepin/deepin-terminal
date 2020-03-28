@@ -125,7 +125,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         if (dlg.isDelCurCommand()) {
             OperationConfirmDlg dlg;
             dlg.setOperatTypeName(tr("delete opt"));
-            dlg.setTipInfo(tr("Do you sure to delete the %1").arg(curItemAction->text()));
+            dlg.setTipInfo(tr("Do you sure to delete the '%1'?").arg(curItemAction->text()));
             dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
             dlg.exec();
             if (dlg.getConfirmResult() == QDialog::Accepted) {

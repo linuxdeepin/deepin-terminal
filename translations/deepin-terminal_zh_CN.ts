@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../customcommand/customcommandlist.cpp" line="128"/>
-        <source>Do you sure to delete the %1</source>
-        <translation>确定删除吗</translation>
+        <source>Do you sure to delete the &apos;%1&apos;?</source>
+        <translation>确定删除“%1”吗？</translation>
     </message>
 </context>
 <context>
@@ -45,9 +45,8 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="151"/>
         <source>Add</source>
-        <translation>添加</translation>
+        <translation type="vanished">添加</translation>
     </message>
     <message>
         <location filename="../customcommand/customcommandoptdlg.cpp" line="111"/>
@@ -65,7 +64,12 @@
         <translation>删除命令</translation>
     </message>
     <message>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="151"/>
         <location filename="../customcommand/customcommandoptdlg.cpp" line="153"/>
+        <source>Sure</source>
+        <translation>确定</translation>
+    </message>
+    <message>
         <source>Save</source>
         <translation>保存</translation>
     </message>
