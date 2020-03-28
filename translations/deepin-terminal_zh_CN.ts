@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../customcommand/customcommandlist.cpp" line="128"/>
-        <source>Do you sure to delete the %1</source>
-        <translation>确定删除吗</translation>
+        <source>Do you sure to delete the &apos;%1&apos;?</source>
+        <translation>确定删除“%1”吗？</translation>
     </message>
 </context>
 <context>
