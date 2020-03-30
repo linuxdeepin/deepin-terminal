@@ -33,6 +33,9 @@ private slots:
     void slotDelCurCustomCommand();
 
 private:
+    void initUI();
+    void initCommandFromClipBoardText();
+
     CustomCmdOptType m_type;
     QAction *m_action = nullptr;
     QAction *m_newAction = nullptr;

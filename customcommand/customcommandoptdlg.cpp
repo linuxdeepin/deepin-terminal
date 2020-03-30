@@ -15,6 +15,8 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QApplication>
+#include <QClipboard>
 
 CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curAction, QWidget *parent)
     : TermBaseDialog(parent),
@@ -24,6 +26,16 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
       m_commandLineEdit(new DPasswordEdit),
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
+{
+    initUI();
+    initCommandFromClipBoardText();
+}
+
+CustomCommandOptDlg::~CustomCommandOptDlg()
+{
+}
+
+void CustomCommandOptDlg::initUI()
 {
     int contentOffsetY = 18;
     QWidget *contentFrame = new QWidget;
@@ -167,8 +179,13 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
 #endif
 }
 
-CustomCommandOptDlg::~CustomCommandOptDlg()
+// fix bug 18366 终端中选中内容，创建自定义命令，选中内容没有自动粘贴到命令输入框
+void CustomCommandOptDlg::initCommandFromClipBoardText()
 {
+    if (m_commandLineEdit) {
+        QString clipText = QApplication::clipboard()->text();
+        m_commandLineEdit->setText(clipText.trimmed());
+    }
 }
 
 QAction *CustomCommandOptDlg::getCurCustomCmd()
