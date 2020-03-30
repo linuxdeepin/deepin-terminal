@@ -339,12 +339,18 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         this->move(0, 0);
     }
     /******** Modify by m000714 daizhengwen 2020-03-29: 记录当前正常窗口正常大小****************/
-    QRect deskRect = QApplication::desktop()->availableGeometry();
+    const QRect &deskRect = QApplication::desktop()->availableGeometry();
     // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
-    if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2 && !m_isQuakeWindow) {
-        // 记录最后一个正常窗口的大小
-        m_winInfoConfig->setValue("save_width", this->width());
-        m_winInfoConfig->setValue("save_height", this->height());
+    if (!m_isQuakeWindow) {
+        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
+            // 记录最后一个正常窗口的大小
+            m_winInfoConfig->setValue("save_width", this->width());
+            m_winInfoConfig->setValue("save_height", this->height());
+        } else {
+            // 设置默认
+            m_winInfoConfig->setValue("save_width", 1000);
+            m_winInfoConfig->setValue("save_height", 600);
+        }
     }
     /********************* Modify by m000714 daizhengwen End ************************/
     DMainWindow::resizeEvent(event);
@@ -356,12 +362,18 @@ void MainWindow::closeEvent(QCloseEvent *event)
     m_winInfoConfig->setValue("geometry", saveGeometry());
     m_winInfoConfig->setValue("windowState", saveState());
 
-    QRect deskRect = QApplication::desktop()->availableGeometry();
+    const QRect &deskRect = QApplication::desktop()->availableGeometry();
     // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
-    if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2 && !m_isQuakeWindow) {
-        // 记录最后一个正常窗口的大小
-        m_winInfoConfig->setValue("save_width", this->width());
-        m_winInfoConfig->setValue("save_height", this->height());
+    if (!m_isQuakeWindow) {
+        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
+            // 记录最后一个正常窗口的大小
+            m_winInfoConfig->setValue("save_width", this->width());
+            m_winInfoConfig->setValue("save_height", this->height());
+        } else {
+            // 设置默认
+            m_winInfoConfig->setValue("save_width", 1000);
+            m_winInfoConfig->setValue("save_height", 600);
+        }
     }
     /********************* Modify by m000714 daizhengwen End ************************/
     bool hasRunning = closeProtect();
