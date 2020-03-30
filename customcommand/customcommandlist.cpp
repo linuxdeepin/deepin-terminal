@@ -119,6 +119,8 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
 
         int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(curItemAction);
         ShortcutManager::instance()->saveCustomCommandToConfig(itemData.m_customCommandAction, deleteIndex);
+        m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+
     } else {
 
         //Delete custom command
@@ -205,7 +207,6 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     if (getModifyIconRect(rect).contains(clickPoint)) {
         handleModifyCustomCommand(itemData, modelIndex);
 
-        m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
     } else {
         emit itemClicked(itemData, modelIndex);
     }
