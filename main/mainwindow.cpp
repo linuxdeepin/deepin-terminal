@@ -140,8 +140,6 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
         this->setMinimumSize(deskRect.size().width(), 60);
         this->resize(deskRect.size().width(), deskRect.size().height() / 3);
         this->move(0, 0);
-        // 区分雷神窗口和正常窗口，雷神窗口不记录窗口大小
-        m_strStartWindowState = "quake terminal";
     }
 
     initTitleBar();
@@ -340,15 +338,13 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         this->resize(deskRect.size().width(), this->size().height());
         this->move(0, 0);
     }
-    /******** Modify by m000714 daizhengwen 2020-03-28: 记录当前正常窗口正常大小****************/
-    if (m_strStartWindowState == "window_normal") {
-        QRect deskRect = QApplication::desktop()->availableGeometry();
-        // 分屏不记录窗口大小
-        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
-            // 记录当前窗口的大小
-            m_winInfoConfig->setValue("save_width", this->width());
-            m_winInfoConfig->setValue("save_height", this->height());
-        }
+    /******** Modify by m000714 daizhengwen 2020-03-29: 记录当前正常窗口正常大小****************/
+    QRect deskRect = QApplication::desktop()->availableGeometry();
+    // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
+    if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2 && !m_isQuakeWindow) {
+        // 记录最后一个正常窗口的大小
+        m_winInfoConfig->setValue("save_width", this->width());
+        m_winInfoConfig->setValue("save_height", this->height());
     }
     /********************* Modify by m000714 daizhengwen End ************************/
     DMainWindow::resizeEvent(event);
@@ -356,19 +352,16 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    /******** Modify by m000714 daizhengwen 2020-03-28: 记录最后一个关闭的窗口的****************/
+    /******** Modify by m000714 daizhengwen 2020-03-29: 记录最后一个关闭的窗口的大小****************/
     m_winInfoConfig->setValue("geometry", saveGeometry());
     m_winInfoConfig->setValue("windowState", saveState());
 
-    if (m_strStartWindowState == "window_normal") {
-        QRect deskRect = QApplication::desktop()->availableGeometry();
-        // 正常模式下，分屏不记录窗口大小，最大和全屏操作也不记录窗口大小
-        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
-            // 记录最后一个正常窗口的大小
-            m_winInfoConfig->setValue("save_width", this->width());
-            m_winInfoConfig->setValue("save_height", this->height());
-        }
-
+    QRect deskRect = QApplication::desktop()->availableGeometry();
+    // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
+    if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2 && !m_isQuakeWindow) {
+        // 记录最后一个正常窗口的大小
+        m_winInfoConfig->setValue("save_width", this->width());
+        m_winInfoConfig->setValue("save_height", this->height());
     }
     /********************* Modify by m000714 daizhengwen End ************************/
     bool hasRunning = closeProtect();
@@ -494,29 +487,29 @@ void MainWindow::initWindow()
 
     QSettings settings("blumia", "dterm");
 
-    m_strStartWindowState =
+    QString windowState =
         Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
         qDebug() << "use line state set:" << state;
         if (state == "maximize") {
-            m_strStartWindowState = "window_maximum";
+            windowState = "window_maximum";
         } else if (state == "halfscreen") {
-            m_strStartWindowState = "Halfscreen";
+            windowState = "Halfscreen";
         } else if ((state == "fullscreen") || (state == "normal")) {
-            m_strStartWindowState = state;
+            windowState = state;
         } else {
             qDebug() << "error line state set:" << state << "ignore it!";
         }
     }
 
     // init window state.
-    if (m_strStartWindowState == "window_maximum") {
+    if (windowState == "window_maximum") {
         showMaximized();
-    } else if (m_strStartWindowState == "fullscreen") {
+    } else if (windowState == "fullscreen") {
         switchFullscreen(true);
         /******** Modify by n014361 wangpeili 2020-02-25:增加半屏设置    ****************/
-    } else if (m_strStartWindowState == "Halfscreen") {
+    } else if (windowState == "Halfscreen") {
         setWindowRadius(0);
         resize(QSize(QApplication::desktop()->width() / 2, QApplication::desktop()->height()));
         move(0, 0);

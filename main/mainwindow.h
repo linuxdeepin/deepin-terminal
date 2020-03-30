@@ -154,8 +154,7 @@ private:
     QString m_strWindowId;
     const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";
 
-    /******** Modify by m000714 daizhengwen 2020-03-27: 终端窗口（normal）记忆大小和状态 ****************/
-    QString m_strStartWindowState = "";
+    /******** Modify by m000714 daizhengwen 2020-03-29: 终端窗口配置 ****************/
     QSettings *m_winInfoConfig;
     /********************* Modify by m000714 daizhengwen End ************************/
 
