@@ -18,7 +18,6 @@ protected:
 
 signals:
     void focusOut();
-    void encodeChanged(const QByteArray encodeName);
 };
 
 #endif  // THEMELISTVIEW_H

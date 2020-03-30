@@ -74,7 +74,7 @@ void RemoteManagementPanel::initUI()
     m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     m_pushButton->setFixedHeight(50);
-    m_pushButton->setText("Add Server");
+    m_pushButton->setText(tr("Add Server"));
 
     // connect(m_iconButton, &DIconButton::clicked, this, &CommonPanel::iconButtonCliecked);//
     // connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CommonPanel::searchEditingFinished);//

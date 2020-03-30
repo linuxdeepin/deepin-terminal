@@ -20,8 +20,8 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     : TermBaseDialog(parent),
       m_type(type),
       m_action(curAction),
-      m_nameLineEdit(new DLineEdit),
-      m_commandLineEdit(new DLineEdit),
+      m_nameLineEdit(new DPasswordEdit),
+      m_commandLineEdit(new DPasswordEdit),
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
@@ -64,9 +64,15 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     m_commandLineEdit->setFixedSize(285, 36);
     m_shortCutLineEdit->setFixedSize(285, 36);
 
-    m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
-    m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
+    m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
+    m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     m_shortCutLineEdit->ShortcutDirection(Qt::AlignLeft);
+
+    m_nameLineEdit->setEchoButtonIsVisible(false);
+    m_nameLineEdit->setEchoMode(QLineEdit::EchoMode::Normal);
+
+    m_commandLineEdit->setEchoButtonIsVisible(false);
+    m_commandLineEdit->setEchoMode(QLineEdit::EchoMode::Normal);
 
     nameLayout->addWidget(nameLabel);
     nameLayout->addWidget(m_nameLineEdit);
@@ -87,14 +93,14 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     connect(m_nameLineEdit, &DLineEdit::editingFinished, this, [ = ] {
         if (m_nameLineEdit->text().isEmpty())
         {
-            m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
+            m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
         }
     });
 
     connect(m_commandLineEdit, &DLineEdit::editingFinished, this, [ = ] {
         if (m_commandLineEdit->text().isEmpty())
         {
-            m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Mandatory"));
+            m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
         }
     });
 
@@ -142,12 +148,12 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curActi
     addCancelConfirmButtons();
     setCancelBtnText(tr("Cancel"));
     if (m_type == CCT_ADD) {
-        setConfirmBtnText(tr("Add"));
+        setConfirmBtnText(tr("Sure"));
     } else {
-        setConfirmBtnText(tr("Save1"));
+        setConfirmBtnText(tr("Sure"));
     }
 
-    connect(this, &TermBaseDialog::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
+    connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
 
 #ifdef UI_DEBUG
     contentFrame->setStyleSheet("background:cyan");
@@ -181,7 +187,13 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     QString strCommand = m_commandLineEdit->text();
     QKeySequence keytmp = m_shortCutLineEdit->keySequence();
 
-    if (strName.isEmpty() || strCommand.isEmpty()) {
+    if (strName.isEmpty()) {
+        m_nameLineEdit->showAlertMessage(QStringLiteral("请输入名称"), m_nameLineEdit->parentWidget());
+        return;
+    }
+
+    if (strCommand.isEmpty()) {
+        m_commandLineEdit->showAlertMessage(QStringLiteral("请输入命令"), m_commandLineEdit->parentWidget());
         return;
     }
 

@@ -14,7 +14,8 @@ class RemoteManagementTopPanel : public RightPanel
 public:
     explicit RemoteManagementTopPanel(QWidget *parent = nullptr);
     void show();
-
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 signals:
     void focusOut();
     void doConnectServer(ServerConfig *curServer);

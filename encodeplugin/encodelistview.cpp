@@ -1,4 +1,5 @@
 #include "encodelistview.h"
+#include "settings.h"
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent)
 {
@@ -22,8 +23,7 @@ void EncodeListView::selectionChanged(const QItemSelection &selected, const QIte
     // Theme changed.
     QModelIndexList list = selected.indexes();
     for (const QModelIndex &index : list) {
-        const QByteArray &encodeName = index.data(1919810).toByteArray();
-        emit encodeChanged(encodeName);
+        Settings::instance()->setEncoding(index.data(1919810).toString());
         break;
     }
 

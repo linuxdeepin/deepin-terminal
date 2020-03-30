@@ -89,8 +89,13 @@ void CustomCommandPanel::initUI()
     m_cmdListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_cmdListWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
-    m_pushButton->setFixedHeight(60);
-    m_pushButton->setText("+ Add Command");
+    m_pushButton->setFixedHeight(36);
+    m_pushButton->setText(tr("Add Command"));
+
+    QHBoxLayout *btnLayout = new QHBoxLayout();
+    btnLayout->addSpacing(10);
+    btnLayout->addWidget(m_pushButton);
+    btnLayout->addSpacing(10);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setSpacing(0);
@@ -107,7 +112,8 @@ void CustomCommandPanel::initUI()
     vlayout->addSpacing(10);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_cmdListWidget);
-    vlayout->addWidget(m_pushButton);
+    vlayout->addLayout(btnLayout);
+    vlayout->addSpacing(12);
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);  //

@@ -5,6 +5,7 @@
 
 #include <DApplicationHelper>
 #include <DLog>
+#include <DWidgetUtil>
 
 #include <QCommandLineParser>
 #include <QDBusConnection>
@@ -34,7 +35,9 @@ bool TermArgumentParser::parseArguments(MainWindow *mainWindow, bool isQuakeMode
     /******** Modify by n014361 wangpeili 2020-01-20: 雷神窗口打开不能自动激活 ********/
     mainWindow->activateWindow();
     /********************* Modify by n014361 wangpeili End ************************/
-
+    //---------------added by qinyaning(nyq): 解决窗口不居中问题----------------------/
+    Dtk::Widget::moveToCenter(mainWindow);
+    //-----------------------------------------------------------------------------/
     return false;
 }
 

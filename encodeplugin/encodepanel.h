@@ -12,8 +12,6 @@ public:
     explicit EncodePanel(QWidget *parent = nullptr);
 
 signals:
-    void encodeChanged(const QByteArray encodeName);
-
 private:
     EncodeListView *m_encodeView = nullptr;
     EncodeListModel *m_encodeModel = nullptr;

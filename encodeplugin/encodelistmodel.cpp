@@ -26,6 +26,11 @@ QVariant EncodeListModel::data(const QModelIndex &index, int role) const
     return m_encodeData[row];
 }
 
+QList<QByteArray> EncodeListModel::listData()
+{
+    return  m_encodeData;
+}
+
 void EncodeListModel::initEncodeData()
 {
     QList<QByteArray> all = QTextCodec::availableCodecs();

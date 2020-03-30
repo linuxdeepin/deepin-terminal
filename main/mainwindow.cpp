@@ -49,7 +49,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_centralWidget(new QWidget(this)),
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
       m_termStackWidget(new QStackedWidget),
-      m_properties(properties)
+      m_properties(properties),
+      m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat))
 {
     initUI();
     addQuakeTerminalShortcut();
@@ -337,25 +338,32 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         this->resize(deskRect.size().width(), this->size().height());
         this->move(0, 0);
     }
-    if (customCommandPlugin) {
-        customCommandPlugin->hidePlugn();
+    /******** Modify by m000714 daizhengwen 2020-03-29: 记录当前正常窗口正常大小****************/
+    QRect deskRect = QApplication::desktop()->availableGeometry();
+    // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
+    if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2 && !m_isQuakeWindow) {
+        // 记录最后一个正常窗口的大小
+        m_winInfoConfig->setValue("save_width", this->width());
+        m_winInfoConfig->setValue("save_height", this->height());
     }
-    if (remoteManagPlugin) {
-        remoteManagPlugin->hidePlugn();
-    }
+    /********************* Modify by m000714 daizhengwen End ************************/
     DMainWindow::resizeEvent(event);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
-    settings.setValue("geometry", saveGeometry());
+    /******** Modify by m000714 daizhengwen 2020-03-29: 记录最后一个关闭的窗口的大小****************/
+    m_winInfoConfig->setValue("geometry", saveGeometry());
+    m_winInfoConfig->setValue("windowState", saveState());
 
-    if (Qt::WindowNoState == windowState()) {
-        settings.setValue("save_width", this->width());
-        settings.setValue("save_height", this->height());
+    QRect deskRect = QApplication::desktop()->availableGeometry();
+    // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
+    if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2 && !m_isQuakeWindow) {
+        // 记录最后一个正常窗口的大小
+        m_winInfoConfig->setValue("save_width", this->width());
+        m_winInfoConfig->setValue("save_height", this->height());
     }
-    settings.setValue("windowState", saveState());
+    /********************* Modify by m000714 daizhengwen End ************************/
     bool hasRunning = closeProtect();
     if (hasRunning && !Utils::showExitConfirmDialog()) {
         qDebug() << "close window protect..." << endl;
@@ -507,10 +515,9 @@ void MainWindow::initWindow()
         move(0, 0);
         /********************* Modify by n014361 wangpeili End ************************/
     } else {
-
-        QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
-        int saveWidth = settings.value("save_width").toInt();
-        int saveHeight = settings.value("save_height").toInt();
+//        QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
+        int saveWidth = m_winInfoConfig->value("save_width").toInt();
+        int saveHeight = m_winInfoConfig->value("save_height").toInt();
         qDebug() << "saveWidth: " << saveWidth;
         qDebug() << "saveHeight: " << saveHeight;
 

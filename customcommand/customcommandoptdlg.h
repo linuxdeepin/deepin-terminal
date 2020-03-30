@@ -4,7 +4,7 @@
 #include "termbasedialog.h"
 
 #include <DDialog>
-#include <DLineEdit>
+#include <DPasswordEdit>
 #include <DKeySequenceEdit>
 
 #include <QAction>
@@ -36,8 +36,8 @@ private:
     CustomCmdOptType m_type;
     QAction *m_action = nullptr;
     QAction *m_newAction = nullptr;
-    DLineEdit *m_nameLineEdit = nullptr;
-    DLineEdit *m_commandLineEdit = nullptr;
+    DPasswordEdit *m_nameLineEdit = nullptr;
+    DPasswordEdit *m_commandLineEdit = nullptr;
     DKeySequenceEdit *m_shortCutLineEdit = nullptr;
     bool m_bDelOpt;
 };

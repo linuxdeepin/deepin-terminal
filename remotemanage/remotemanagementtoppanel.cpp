@@ -115,6 +115,11 @@ void RemoteManagementTopPanel::show()
     m_remoteManagementSearchPanel->hide();
 }
 
+void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
+{
+    m_remoteManagementPanel->resize(size());
+}
+
 void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup)
 {
     m_serverConfigGroupPanel->resize(size());

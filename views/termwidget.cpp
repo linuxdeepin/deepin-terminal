@@ -31,7 +31,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     QString shell{ getenv("SHELL") };
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
     setTerminalOpacity(Settings::instance()->opacity());
-    setScrollBarPosition(QTermWidget::ScrollBarRight);
+    //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     // theme
@@ -41,6 +41,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     }
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
+    // 系统初始打开始终为UTF-8格式。中间的这个参数仅用作通讯使用。
+    // 如果需要“记忆”，删除下面这行即可。
+    //setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
+    setTextCodec(QTextCodec::codecForName("UTF-8"));
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
     setAutoClose(!properties.contains(KeepOpen));
     /********************* Modify by n014361 wangpeili End ************************/
@@ -580,6 +584,11 @@ void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
     }
 
     if (keyName == "basic.interface.theme") {
+        return;
+    }
+
+    if (keyName == "basic.interface.encoding") {
+        setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
         return;
     }
 

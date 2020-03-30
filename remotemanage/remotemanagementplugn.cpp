@@ -12,6 +12,7 @@ RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPlugin
 void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
+    initRemoteManagementTopPanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [=](const QString name)
     {
         if(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT != name)

@@ -35,7 +35,6 @@ void TermBaseDialog::initUI()
     m_logoIcon->setFixedSize(QSize(32, 32));
     m_logoIcon->setFocusPolicy(Qt::NoFocus);
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
-    m_logoIcon->setPixmap(QIcon::fromTheme("deepin-terminal").pixmap(QSize(32, 32)));
 
     m_closeButton = new DWindowCloseButton(this);
     m_closeButton->setFocusPolicy(Qt::NoFocus);
@@ -47,7 +46,7 @@ void TermBaseDialog::initUI()
     DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5);
 
     QFont titleFont = m_titleText->font();
-    titleFont.setBold(true);
+    titleFont.setWeight(QFont::DemiBold);
     m_titleText->setFont(titleFont);
 
     titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
@@ -116,8 +115,6 @@ void TermBaseDialog::addCancelConfirmButtons()
     connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
         qDebug() << "confirmBtnClicked";
         m_confirmResultCode = QDialog::Accepted;
-        close();
-
         emit confirmBtnClicked();
     });
 

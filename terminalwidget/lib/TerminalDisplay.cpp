@@ -1104,6 +1104,10 @@ void TerminalDisplay::updateImage()
   int lines = _screenWindow->windowLines();
   int columns = _screenWindow->windowColumns();
 
+  //--added by qinyaning(nyq) to slove the problem of scroll init show--/
+  setScrollBarPosition(_lines > 1 && _screenWindow->currentLine() >= _lines?
+                           QTermWidget::ScrollBarRight : QTermWidget::NoScrollBar);
+  //--------------------------------------------------------------------/
   setScroll( _screenWindow->currentLine() , _screenWindow->lineCount() );
 
   Q_ASSERT( this->_usedLines <= this->_lines );
@@ -2517,6 +2521,10 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
         // to get a reasonable scrolling speed, scroll by one line for every 5 degrees
         // of mouse wheel rotation.  Mouse wheels typically move in steps of 15 degrees,
         // giving a scroll of 3 lines
+
+        // commit this to fix bug 17772, Because this code will turn the scrolling operation
+        // into the up and down keys of the keyboard and send the keyboard signal
+        /*
         int key = ev->delta() > 0 ? Qt::Key_Up : Qt::Key_Down;
 
         // QWheelEvent::delta() gives rotation in eighths of a degree
@@ -2527,6 +2535,7 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 
         for (int i=0;i<linesToScroll;i++)
             emit keyPressedSignal(&keyScrollEvent);
+        */
     }
   }
   else
