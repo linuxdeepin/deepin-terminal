@@ -2,8 +2,9 @@
 #include "termargumentparser.h"
 #include "termproperties.h"
 #include "environments.h"
+#include "dterminalsingleapplication.h"
 
-#include <DApplication>
+//#include <DApplication>
 #include <DApplicationSettings>
 #include <DLog>
 
@@ -14,12 +15,12 @@ DWIDGET_USE_NAMESPACE
 /******** Modify by n014361 wangpeili 2020-01-10:增加日志需要 ***********×****/
 DCORE_USE_NAMESPACE
 /********************* Modify by n014361 wangpeili End ************************/
-
 int main(int argc, char *argv[])
 {
     DApplication::loadDXcbPlugin();
 
-    DApplication app(argc, argv);
+    //DApplication app(argc, argv);
+    DTerminalSingleApplication app(argc, argv, "deepin-terminal-app");
     app.setOrganizationName("deepin");
     app.setOrganizationDomain("deepin.org");
     app.setApplicationVersion(VERSION);
@@ -53,15 +54,15 @@ int main(int argc, char *argv[])
     parser.addVersionOption();
     parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
-    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
+    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, "Set terminal start work directory", "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QObject::tr("Set terminal start on window mode: normal, maximize, fullscreen, halfscreen "),
+                                      "Set terminal start on window mode: normal, maximize, fullscreen, halfscreen ",
                                       "state-mode");
-    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
-    QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
+    QCommandLineOption optExecute({ "e", "execute" }, "Execute command in the terminal", "command");
+    QCommandLineOption optScript({ "c", "run-script" }, "Run script string in the terminal", "script");
     //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
-    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
+    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, "Set terminal start on quake mode", "");
+    QCommandLineOption optKeepOpen("keep-open", "Set terminal keep open when finished", "");
     //parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
 
     parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
@@ -98,9 +99,13 @@ int main(int argc, char *argv[])
 
     /********* Modify by n013252 wangliang 2020-01-14: 用于解析命令参数 ****************/
     TermArgumentParser argumentParser;
-    if (argumentParser.parseArguments(&w, parser.isSet(optQuakeMode))) {
+//    if (argumentParser.parseArguments(&w, parser.isSet(optQuakeMode))) {
+    //--added by nyq to solve the problem of the second instance window location--//
+    if (argumentParser.ParseArguments(&w, parser.isSet(optQuakeMode), !app.isRunning())) {
+    //----------------------------------------------------------------------------//
         // Exit process after 1000ms.
         QTimer::singleShot(1000, [&]() { app.quit(); });
+        //Dtk::Widget::moveToCenter(mainWindow);
         return app.exec();
     }
     /**************** Modify by n013252 wangliang End ****************/

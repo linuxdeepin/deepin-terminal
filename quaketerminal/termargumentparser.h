@@ -17,6 +17,10 @@ public:
     bool initDBus();
     bool parseArguments(MainWindow *mainWindow, bool isQuakeMode);
 
+    //--解决窗口不居中问题 added by nyq
+    bool ParseArguments(MainWindow *mainWindow, bool isQuakeMode, bool isSingleApp);
+    //--
+
     void showOrHideQuakeTerminal();
 
 private:
