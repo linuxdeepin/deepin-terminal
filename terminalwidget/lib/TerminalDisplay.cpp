@@ -1107,7 +1107,7 @@ void TerminalDisplay::updateImage()
 
   setScroll( _screenWindow->currentLine() , _screenWindow->lineCount() );
   //--added by qinyaning(nyq) to slove the problem of scroll init show--/
-  setScrollBarPosition(_lines > 1 && _screenWindow->lineCount() >= _lines?
+  setScrollBarPosition(_lines > 1 && _screenWindow->lineCount() > _lines?
                            QTermWidget::ScrollBarRight : QTermWidget::NoScrollBar);
   //--------------------------------------------------------------------/
 
