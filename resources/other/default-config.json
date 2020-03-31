@@ -70,7 +70,7 @@
                             "key": "search",
                             "name": "Search",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+F"
+                            "default":  "Ctrl+F"
                         },
                         {
                             "key": "zoom_in",
