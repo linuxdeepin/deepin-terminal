@@ -241,14 +241,16 @@ bool Utils::showExitConfirmDialog()
 *******************************************************************************/
 bool Utils::showShortcutConflictDialog(QString conflictkey)
 {
-    QString str = qApp->translate("DSettingsDialog", "This shortcut conflicts with %1, click on Add to make this shortcut effective immediately")
+    QString str = qApp->translate("DSettingsDialog", "This shortcut conflicts with %1")
                   .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(conflictkey));
 
     OperationConfirmDlg optDlg;
-    QPixmap warnning = QIcon(":/resources/images/icon/hover/exit_hover.svg").pixmap(QSize(36, 32));
+    QPixmap warnning = QIcon::fromTheme("dialog-warning").pixmap(QSize(32, 32));
     optDlg.setIconPixmap(warnning);
     optDlg.setOperatTypeName(str);
+    optDlg.setTipInfo(QObject::tr("click on Add to make this shortcut effective immediately"));
     optDlg.setOKCancelBtnText(QObject::tr("Replace"), QObject::tr("Cancel"));
+    optDlg.setFixedSize(380,160);
     optDlg.exec();
     return optDlg.getConfirmResult() == QDialog::Accepted;
 }
