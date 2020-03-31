@@ -39,7 +39,7 @@ void RemoteManagementSearchPanel::initUI()
     setLayout(vlayout);
 
     this->setAutoFillBackground(true);
-    this->setBackgroundRole(DPalette::Window);
+    this->setBackgroundRole(DPalette::Base);
 
     connect(m_iconButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
     connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementSearchPanel::listItemClicked);

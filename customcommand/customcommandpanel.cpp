@@ -90,7 +90,7 @@ void CustomCommandPanel::refreshCmdSearchState()
 
 void CustomCommandPanel::initUI()
 {
-    setBackgroundRole(QPalette::Window);
+    setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
     m_pushButton = new DPushButton();

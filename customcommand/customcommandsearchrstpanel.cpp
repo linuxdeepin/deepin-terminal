@@ -38,7 +38,7 @@ void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData
 
 void CustomCommandSearchRstPanel::initUI()
 {
-    setBackgroundRole(QPalette::Window);
+    setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
     m_iconButton = new DIconButton(this);

@@ -100,7 +100,7 @@ void RemoteManagementPanel::initUI()
     setLayout(vlayout);
 
     this->setAutoFillBackground(true);
-    this->setBackgroundRole(DPalette::Window);
+    this->setBackgroundRole(DPalette::Base);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);  //
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
