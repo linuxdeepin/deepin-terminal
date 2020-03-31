@@ -276,7 +276,7 @@
                             "key": "scroll_on_output",
                             "type": "checkbox",
                             "text": "Scroll on output",
-                            "default": true
+                            "default": false
                         }
                     ]
                 },
