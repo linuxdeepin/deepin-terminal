@@ -24,7 +24,8 @@ void RightPanel::show()
     QWidget::show();
     QWidget::raise();
     /******** Modify by m000714 daizhengwen 2020-03-31: 关闭编辑框光标丢失焦点的问题****************/
-    //setFocus();
+//    setFocus();
+    setAttribute(Qt::WA_X11DoNotAcceptFocus, true);
     /********************* Modify by m000714 daizhengwen End ************************/
     QRect rect = geometry();
     QRect windowRect = window()->geometry();

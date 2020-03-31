@@ -20,6 +20,9 @@ EncodePanel::EncodePanel(QWidget *parent)
     m_encodeView->setItemDelegate(new EncodeItemDelegate(m_encodeView));
 
     setFocusProxy(m_encodeView);
+    /******** Modify by m000714 daizhengwen 2020-03-31: 设置本窗口不获得主场口的焦点****************/
+    setFocusPolicy(Qt::NoFocus);
+    /********************* Modify by m000714 daizhengwen End ************************/
     QScroller::grabGesture(m_encodeView, QScroller::TouchGesture);
 
     // init layout.

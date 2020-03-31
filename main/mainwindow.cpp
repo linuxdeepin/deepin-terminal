@@ -175,12 +175,14 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
-    connect(termPage, &TermWidgetPage::termGetFocus, this, [ = ]() {
-        showPlugin(PLUGIN_TYPE_NONE);
-    });
-    connect(this, &MainWindow::showPluginChanged,  termPage, [=](const QString name)
-    {
-         termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name);
+    /******** Modify by m000714 daizhengwen 2020-03-31: 避免多次菜单弹出****************/
+    // 菜单弹出在时间过滤器获取，不需要从terminal事件中获取
+//    connect(termPage, &TermWidgetPage::termGetFocus, this, [ = ]() {
+//        showPlugin(PLUGIN_TYPE_NONE);
+//    });
+    /********************* Modify by m000714 daizhengwen End ************************/
+    connect(this, &MainWindow::showPluginChanged,  termPage, [ = ](const QString name) {
+        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name);
     });
 
     connect(termPage->currentTerminal(), &TermWidgetWrapper::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
@@ -1060,6 +1062,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             enterSzCommand = false;
         }
     }
+    /******** Modify by m000714 daizhengwen 2020-03-31: 获取左键点击事件，隐藏右侧窗口****************/
+    if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        // 242为RightPanel的的宽度
+        if (mouseEvent->button() == Qt::LeftButton && mouseEvent->x() < this->width()  - 242 ) {
+            showPlugin(PLUGIN_TYPE_NONE);
+        }
+    }
+    /********************* Modify by m000714 daizhengwen End ************************/
 
     return QObject::eventFilter(watched, event);
 }
