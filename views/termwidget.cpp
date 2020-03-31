@@ -9,6 +9,7 @@
 #include <DInputDialog>
 #include <DApplicationHelper>
 #include <DLog>
+#include <DDialog>
 
 #include <QApplication>
 #include <QDesktopServices>
@@ -252,12 +253,34 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     menu.addAction(tr("Rename title"), this, [this] {
         // TODO: Tab name as default text?
-        bool ok;
-        QString text =
-        DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
-        if (ok)
+        DDialog *pDialog = new DDialog(nullptr);
+        pDialog->setWindowModality(Qt::ApplicationModal);
+        pDialog->setFixedSize(380, 180);
+        pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+
+        DLineEdit *lineEidt = new DLineEdit();
+        lineEidt->setFixedSize(360, 36);
+        lineEidt->setText(this->title());
+        lineEidt->setClearButtonEnabled(false);
+        connect(lineEidt, &DLineEdit::focusChanged, this, [ = ](bool onFocus)
         {
-            emit termRequestRenameTab(text);
+            Q_UNUSED(onFocus);
+            lineEidt->lineEdit()->selectAll();
+        });
+
+        DLabel *label = new DLabel(tr("Tab name"));
+        label->setFixedSize(360, 20);
+        label->setAlignment(Qt::AlignCenter);
+
+        pDialog->addContent(label);
+        pDialog->addSpacing(10);
+        pDialog->addContent(lineEidt);
+        pDialog->addButton(tr("Cancel"), false, DDialog::ButtonNormal);
+        pDialog->addButton(tr("Sure"), true, DDialog::ButtonRecommend);
+        pDialog->show();
+        if (pDialog->exec() == DDialog::Accepted)
+        {
+            emit termRequestRenameTab(lineEidt->text());
         }
     });
 
