@@ -15,7 +15,7 @@
 // let the caller decided when to create the shortcuts.
 ShortcutManager *ShortcutManager::m_instance = nullptr;
 
-ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent)
+ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent), m_clipboardCommand("")
 {
     // Q_UNUSED(parent);
     // make sure it is NOT a nullptr since we'll use it all the time.
@@ -152,13 +152,13 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
     return nullptr;
 }
 
-void ShortcutManager::delCustomCommand(QAction *action)
+void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
 {
-    delCustomCommandToConfig(action);
+    delCustomCommandToConfig(itemData);
 
-    QString actionCmdName = action->text();
-    QString actionCmdText = action->data().toString();
-    QString actionKeySeq = action->shortcut().toString();
+    QString actionCmdName = itemData.m_cmdName;
+    QString actionCmdText = itemData.m_cmdText;
+    QString actionKeySeq = itemData.m_cmdShortcut;
 
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList.at(i);
@@ -217,7 +217,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     }
 }
 
-int ShortcutManager::delCustomCommandToConfig(QAction *action)
+int ShortcutManager::delCustomCommandToConfig(CustomCommandItemData itemData)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists()) {
@@ -227,7 +227,18 @@ int ShortcutManager::delCustomCommandToConfig(QAction *action)
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setIniCodec(INI_FILE_CODEC);
-    int removeIndex = commandsSettings.remove(action->text());
+    int removeIndex = commandsSettings.remove(itemData.m_cmdName);
 
     return removeIndex;
 }
+
+void ShortcutManager::setClipboardCommandData(QString clipboardCommand)
+{
+    m_clipboardCommand = clipboardCommand;
+}
+
+QString ShortcutManager::getClipboardCommandData()
+{
+    return m_clipboardCommand;
+}
+

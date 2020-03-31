@@ -2,6 +2,7 @@
 #define CUSTOMCOMMANDOPTDLG_H
 
 #include "termbasedialog.h"
+#include "customcommanditemmodel.h"
 
 #include <DDialog>
 #include <DPasswordEdit>
@@ -21,7 +22,8 @@ public:
         CCT_MODIFY,  // the modify type of custom command operation
     };
 
-    explicit CustomCommandOptDlg(CustomCmdOptType type = CCT_ADD, QAction *curAction = nullptr,
+    explicit CustomCommandOptDlg(CustomCmdOptType type = CCT_ADD,
+                                 CustomCommandItemData *currItemData = nullptr,
                                  QWidget *parent = nullptr);
     ~CustomCommandOptDlg();
 
@@ -37,7 +39,7 @@ private:
     void initCommandFromClipBoardText();
 
     CustomCmdOptType m_type;
-    QAction *m_action = nullptr;
+    CustomCommandItemData *m_currItemData = nullptr;
     QAction *m_newAction = nullptr;
     DPasswordEdit *m_nameLineEdit = nullptr;
     DPasswordEdit *m_commandLineEdit = nullptr;

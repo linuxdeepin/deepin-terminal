@@ -8,7 +8,6 @@ typedef struct {
     QString m_cmdName;
     QString m_cmdText;
     QString m_cmdShortcut;
-    QAction *m_customCommandAction;
 } CustomCommandItemData;
 
 Q_DECLARE_METATYPE(CustomCommandItemData)

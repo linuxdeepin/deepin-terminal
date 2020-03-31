@@ -3,6 +3,7 @@
 #include "settings.h"
 #include "termproperties.h"
 #include "mainwindow.h"
+#include "shortcutmanager.h"
 
 #include <DDesktopServices>
 #include <DInputDialog>
@@ -324,7 +325,9 @@ TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
     connect(m_term, &TermWidget::copyAvailable, this, [this](bool enable) {
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
-            QApplication::clipboard()->setText(selectedText(), QClipboard::Clipboard);
+            QString strSelected = selectedText();
+            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
+            ShortcutManager::instance()->setClipboardCommandData(strSelected);
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidgetWrapper::onSettingValueChanged);

@@ -28,8 +28,7 @@ void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData
 {
     Q_UNUSED(index)
 
-    QAction *cmdAction = itemData.m_customCommandAction;
-    QString strCommand = cmdAction->data().toString();
+    QString strCommand = itemData.m_cmdText;
     if (!strCommand.endsWith('\n')) {
         strCommand.append('\n');
     }

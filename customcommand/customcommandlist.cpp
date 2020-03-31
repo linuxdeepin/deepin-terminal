@@ -53,7 +53,6 @@ void CustomCommandList::refreshCommandListData(const QString &strFilter)
             itemData.m_cmdName = strCmdName;
             itemData.m_cmdText = strCmdText;
             itemData.m_cmdShortcut = strKeySeq;
-            itemData.m_customCommandAction = curAction;
 
             m_cmdItemDataList.append(itemData);
         }
@@ -71,7 +70,6 @@ void CustomCommandList::refreshCommandListData(const QString &strFilter)
                 itemData.m_cmdName = strCmdName;
                 itemData.m_cmdText = strCmdText;
                 itemData.m_cmdShortcut = strKeySeq;
-                itemData.m_customCommandAction = curAction;
 
                 m_cmdItemDataList.append(itemData);
             }
@@ -97,15 +95,13 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
     itemData.m_cmdName = strCmdName;
     itemData.m_cmdText = strCmdText;
     itemData.m_cmdShortcut = strKeySeq;
-    itemData.m_customCommandAction = curAction;
 
     m_cmdProxyModel->addNewCommandData(itemData);
 }
 
 void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex)
 {
-    QAction *curItemAction = itemData.m_customCommandAction;
-    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, curItemAction, this);
+    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
     if (dlg.exec() == QDialog::Accepted) {
         QAction *newAction = dlg.getCurCustomCmd();
         QString strActionShortcut = newAction->shortcut().toString(QKeySequence::NativeText);
@@ -115,10 +111,9 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         itemData.m_cmdShortcut = newAction->shortcut().toString();
         newAction->setData(newAction->data());
         newAction->setShortcut(newAction->shortcut());
-        itemData.m_customCommandAction = newAction;
 
-        int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(curItemAction);
-        ShortcutManager::instance()->saveCustomCommandToConfig(itemData.m_customCommandAction, deleteIndex);
+        int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(itemData);
+        ShortcutManager::instance()->saveCustomCommandToConfig(newAction, deleteIndex);
         m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
 
     } else {
@@ -127,11 +122,11 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         if (dlg.isDelCurCommand()) {
             OperationConfirmDlg dlg;
             dlg.setOperatTypeName(tr("delete opt"));
-            dlg.setTipInfo(tr("Do you sure to delete the '%1'?").arg(curItemAction->text()));
+            dlg.setTipInfo(tr("Do you sure to delete the '%1'?").arg(itemData.m_cmdText));
             dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
             dlg.exec();
             if (dlg.getConfirmResult() == QDialog::Accepted) {
-                ShortcutManager::instance()->delCustomCommand(curItemAction);
+                ShortcutManager::instance()->delCustomCommand(itemData);
                 removeCommandItem(modelIndex);
                 emit listItemCountChange();
             }

@@ -1,5 +1,6 @@
 #include "customcommandoptdlg.h"
 #include "termcommandlinkbutton.h"
+#include "shortcutmanager.h"
 
 #include <DButtonBox>
 #include <DPushButton>
@@ -18,17 +19,16 @@
 #include <QApplication>
 #include <QClipboard>
 
-CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, QAction *curAction, QWidget *parent)
+CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandItemData *currItemData, QWidget *parent)
     : TermBaseDialog(parent),
       m_type(type),
-      m_action(curAction),
+      m_currItemData(currItemData),
       m_nameLineEdit(new DPasswordEdit),
       m_commandLineEdit(new DPasswordEdit),
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
     initUI();
-    initCommandFromClipBoardText();
 }
 
 CustomCommandOptDlg::~CustomCommandOptDlg()
@@ -121,6 +121,7 @@ void CustomCommandOptDlg::initUI()
     if (m_type == CCT_ADD) {
         setFixedSize(459, 262);
         setTitle(tr("Add Command"));
+        initCommandFromClipBoardText();
 
         getMainLayout()->addSpacing(18);
     } else {
@@ -145,9 +146,9 @@ void CustomCommandOptDlg::initUI()
 
         connect(deleteCmdBtn, &DCommandLinkButton::clicked, this, &CustomCommandOptDlg::slotDelCurCustomCommand);
 
-        QString strName = m_action->text();
-        QString strCommad = m_action->data().toString();
-        QKeySequence keyseq = m_action->shortcut();
+        QString strName = m_currItemData->m_cmdName;
+        QString strCommad = m_currItemData->m_cmdText;
+        QKeySequence keyseq = QKeySequence(m_currItemData->m_cmdShortcut);
         m_nameLineEdit->setText(strName);
         m_commandLineEdit->setText(strCommad);
         m_shortCutLineEdit->setKeySequence(keyseq);
@@ -183,7 +184,7 @@ void CustomCommandOptDlg::initUI()
 void CustomCommandOptDlg::initCommandFromClipBoardText()
 {
     if (m_commandLineEdit) {
-        QString clipText = QApplication::clipboard()->text();
+        QString clipText = ShortcutManager::instance()->getClipboardCommandData();
         m_commandLineEdit->setText(clipText.trimmed());
     }
 }
