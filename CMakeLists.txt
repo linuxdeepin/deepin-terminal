@@ -25,6 +25,7 @@ find_package(Qt5Gui REQUIRED)
 find_package(Qt5LinguistTools)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt5Network REQUIRED)
 
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
@@ -57,6 +58,7 @@ set(LINK_LIBS
     Qt5::DBus
     Qt5::Widgets
     Qt5::WidgetsPrivate
+    Qt5::Network
 
     ${DtkWidget_LDFLAGS}
     ${DtkGui_LDFLAGS}
@@ -84,6 +86,7 @@ set (DTNG_CPP_FILES
     main/main.cpp
     main/mainwindow.cpp
     main/termproperties.cpp
+    main/dterminalsingleapplication.cpp
     quaketerminal/quaketerminaladapter.cpp
     quaketerminal/quaketerminalproxy.cpp
     quaketerminal/termargumentparser.cpp
@@ -143,6 +146,7 @@ set (DTNG_HEADER_FILES
     main/mainwindow.h
     main/mainwindowplugininterface.h
     main/termproperties.h
+    main/dterminalsingleapplication.h
     quaketerminal/quaketerminaladapter.h
     quaketerminal/quaketerminalproxy.h
     quaketerminal/termargumentparser.h
