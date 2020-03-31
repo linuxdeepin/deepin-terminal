@@ -135,6 +135,11 @@ void OperationConfirmDlg::initContentLayout()
     addContent(mainFrame);
 }
 
+void OperationConfirmDlg::setDialogFrameSize(int width, int height)
+{
+    setFixedSize(width, height);
+}
+
 void OperationConfirmDlg::initConnections()
 {
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
