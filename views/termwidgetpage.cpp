@@ -28,11 +28,12 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     m_findBar->move(this->x() - 100, this->y() - 100);
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
     connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
-    connect(
-    m_findBar, &PageSearchBar::keywordChanged, this, [ = ](QString keyword) { handleUpdateSearchKeyword(keyword); });
-    // connect(m_findBar, &PageSearchBar::sigFindbarClose, this, &TermWidgetPage::slotFindbarClose,
-    // Qt::QueuedConnection);
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() { applyTheme(); });
+    connect(m_findBar, &PageSearchBar::keywordChanged, this, [=](QString keyword) {
+        handleUpdateSearchKeyword(keyword);
+    });
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [=]() {
+        applyTheme();
+    });
 
     TermWidgetWrapper *w = createTerm(properties);
     splitter->addWidget(w);
@@ -136,6 +137,7 @@ void TermWidgetPage::closeSplit(TermWidgetWrapper *term)
             Q_ASSERT(index != -1);
             QWidget *singleHeir = parent->widget(0);
             uselessSplitterParent->insertWidget(index, singleHeir);
+            setSplitStyle(uselessSplitterParent);
             if (qobject_cast<TermWidgetWrapper *>(singleHeir)) {
                 nextFocus = singleHeir;
             } else {
