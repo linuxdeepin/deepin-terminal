@@ -5,6 +5,7 @@
 #include <DGroupBox>
 #include <DVerticalLine>
 #include <DLog>
+#include <DDialog>
 
 #include <QEvent>
 #include <QParallelAnimationGroup>
@@ -34,10 +35,27 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             m_cmdListWidget->addNewCustomCommandData(actionData);
             refreshCmdSearchState();
         } else {
-            existAction->data() = newAction->data();
-            existAction->setShortcut(newAction->shortcut());
-//            m_cmdListWidget->refreshOneRowCommandInfo(existAction);
-            ShortcutManager::instance()->saveCustomCommandToConfig(existAction, -1);
+            /******** Modify by m000714 daizhengwen 2020-03-30: 同名的情况，弹出提示框，约束输入****************/
+            // 有同名命令，发出警告
+            DDialog *pDialog = new DDialog(tr("Same name exists"), tr("Replace existing command or not?"), nullptr);
+            // icon 未定 文案未定
+            pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+            pDialog->setWindowFlags(pDialog->windowFlags() | Qt::WindowStaysOnTopHint);
+            pDialog->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+            pDialog->addButton(QString(tr("Replace")), true, DDialog::ButtonWarning);
+            pDialog->show();
+            if (pDialog->exec() == QDialog::Accepted) {
+                // 替换已有结构
+                existAction->setData(newAction->data());
+                existAction->setText(newAction->text());
+                existAction->setShortcut(newAction->shortcut());
+                qDebug() << "dzw : " << existAction->text();
+                //            m_cmdListWidget->refreshOneRowCommandInfo(existAction);
+                // 刷新列表
+                refreshCmdPanel();
+                ShortcutManager::instance()->saveCustomCommandToConfig(existAction, -1);
+            }
+            /********************* Modify by m000714 daizhengwen End ************************/
         }
     }
 }

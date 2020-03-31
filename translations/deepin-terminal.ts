@@ -17,30 +17,30 @@
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="54"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="66"/>
         <source>Name:</source>
         <translation>名称: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="57"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="69"/>
         <source>Command:</source>
         <translation>命令:</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="60"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="72"/>
         <source>Shortcuts:</source>
         <translation>快捷键: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="67"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="68"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="96"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="103"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="79"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="80"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="108"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="115"/>
         <source>Required</source>
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="149"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="161"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -49,23 +49,23 @@
         <translation type="vanished">添加</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="111"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="123"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="116"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="128"/>
         <source>Edit Command</source>
         <translation>编辑命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="125"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="137"/>
         <source>Delete Command</source>
         <translation>删除命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="151"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="153"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="163"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="165"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>
@@ -77,12 +77,32 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="84"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="40"/>
+        <source>Same name exists</source>
+        <translation>存在相同的名称</translation>
+    </message>
+    <message>
+        <location filename="../customcommand/customcommandpanel.cpp" line="40"/>
+        <source>Replace existing command or not?</source>
+        <translation>是否替换已有命令?</translation>
+    </message>
+    <message>
+        <location filename="../customcommand/customcommandpanel.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../customcommand/customcommandpanel.cpp" line="45"/>
+        <source>Replace</source>
+        <translation>替换</translation>
+    </message>
+    <message>
+        <location filename="../customcommand/customcommandpanel.cpp" line="102"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="93"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="111"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
@@ -114,42 +134,42 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="761"/>
+        <location filename="../main/mainwindow.cpp" line="773"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="761"/>
+        <location filename="../main/mainwindow.cpp" line="773"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="829"/>
+        <location filename="../main/mainwindow.cpp" line="841"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="845"/>
+        <location filename="../main/mainwindow.cpp" line="857"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1204"/>
+        <location filename="../main/mainwindow.cpp" line="1216"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1206"/>
+        <location filename="../main/mainwindow.cpp" line="1218"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1208"/>
+        <location filename="../main/mainwindow.cpp" line="1220"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1264"/>
+        <location filename="../main/mainwindow.cpp" line="1276"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -158,12 +178,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1296"/>
+        <location filename="../main/mainwindow.cpp" line="1308"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1298"/>
+        <location filename="../main/mainwindow.cpp" line="1310"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -239,38 +259,38 @@
         <translation>快捷键</translation>
     </message>
     <message>
+        <location filename="../main/main.cpp" line="42"/>
         <location filename="../settings/settings_translation.cpp" line="27"/>
-        <location filename="../main/main.cpp" line="41"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="56"/>
+        <location filename="../main/main.cpp" line="57"/>
         <source>Set terminal start work directory</source>
         <translation>设置终端的启动⽬录</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="58"/>
+        <location filename="../main/main.cpp" line="59"/>
         <source>Set terminal start on window mode: normal, maximize, fullscreen, halfscreen </source>
         <translation>设置终端开启时的模式:正常，最大化，全屏，分屏</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="60"/>
+        <location filename="../main/main.cpp" line="61"/>
         <source>Execute command in the terminal</source>
         <translation>在终端中运⾏⼀个程序</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="61"/>
+        <location filename="../main/main.cpp" line="62"/>
         <source>Run script string in the terminal</source>
         <translation>在终端中运行脚本字符串</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="63"/>
+        <location filename="../main/main.cpp" line="64"/>
         <source>Set terminal start on quake mode</source>
         <translation>设置终端以雷神模式启动</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="64"/>
+        <location filename="../main/main.cpp" line="65"/>
         <source>Set terminal keep open when finished</source>
         <translation>设置终端显示命令或脚本执行后的结果</translation>
     </message>
@@ -496,20 +516,20 @@
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="180"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="131"/>
         <location filename="../common/utils.cpp" line="231"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="131"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="180"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="31"/>
+        <location filename="../main/main.cpp" line="32"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation>终端是⼀款集⼯作区、多窗⼝、远程管理、雷神模式等功能的⾼级终端模拟器。</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="180"/>
         <location filename="../customcommand/customcommandlist.cpp" line="131"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="180"/>
         <source>ok</source>
         <translation>确定</translation>
     </message>
