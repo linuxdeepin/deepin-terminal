@@ -5,7 +5,9 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigdelegate.h"
 #include "serverconfigitemmodel.h"
+
 #include <DLog>
+
 ServerConfigList::ServerConfigList(QWidget *parent) : DListView(parent)
 {
     setBackgroundRole(QPalette::NoRole);
@@ -45,7 +47,6 @@ void ServerConfigList::refreshAllDatas()
         itemData.m_group = iter.key();
         itemData.m_number = QString("%1 server").arg(count);
         m_serCfgItemDataList.append(itemData);
-//        m_serCfgProxyModel->addNewServerData(itemData);
         iter++;
     }
     refreshDataByGroup("", false);
@@ -125,50 +126,6 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
     m_serCfgProxyModel->initServerListData(m_serCfgItemDataList);
 }
 
-void ServerConfigList::refreshOneRowServerConfigInfo(ServerConfig *curConfig)
-{
-//    for (int i = 0; i < count(); i++) {
-//        ServerConfigItem *curItem = qobject_cast<ServerConfigItem *>(itemWidget(item(i)));
-//        if (curItem->getCurServerConfig() == curConfig) {
-//            // curItem->refresh(action);
-//        }
-//    }
-}
-
-void ServerConfigList::addOneRowServerConfigGroupData(const QString &group)
-{
-//    ServerConfigItem *configItem = new ServerConfigItem(nullptr, true, group, this);
-//    QListWidgetItem *item = new QListWidgetItem();
-//    item->setSizeHint(QSize(260, 70));
-//    addItem(item);
-//    this->setItemWidget(item, configItem);
-//    item->setData(Qt::UserRole, 0);
-//    connect(configItem, &ServerConfigItem::modifyServerConfig, this, &ServerConfigList::handleModifyServerConfig);
-}
-
-void ServerConfigList::addOneRowServerConfigData(ServerConfig *curConfig)
-{
-//    ServerConfigItem *configItem = new ServerConfigItem(curConfig, false, "", this);
-//    QListWidgetItem *item = new QListWidgetItem();
-//    item->setSizeHint(QSize(260, 70));
-//    addItem(item);
-//    this->setItemWidget(item, configItem);
-//    connect(configItem, &ServerConfigItem::modifyServerConfig, this, &ServerConfigList::handleModifyServerConfig);
-}
-
-int ServerConfigList::getItemRow(ServerConfigItemData itemData)
-{
-//    for (int i = 0; i < count(); i++) {
-//        CustomCommandItemData data = m_cmdItemDataList.at(i);
-//        if (itemData.m_cmdName == data.m_cmdName
-//                && itemData.m_cmdText == data.m_cmdText
-//                && itemData.m_cmdShortcut == data.m_cmdShortcut) {
-//            return i;
-//        }
-//    }
-//    return -1;
-}
-
 void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QModelIndex modelIndex)
 {
     ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
@@ -180,7 +137,6 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
             optDlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
             optDlg.exec();
             if (optDlg.getConfirmResult() == QDialog::Accepted) {
-//                takeItem(getItemRow(item));
                 ServerConfigManager::instance()->delServerConfig(curItemServer);
                 refreshPanelData(modelIndex);
                 emit listItemCountChange();

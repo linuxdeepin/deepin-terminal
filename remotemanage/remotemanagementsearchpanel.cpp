@@ -3,17 +3,17 @@
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
-//    this->setBackgroundRole(DPalette::Window);
-//    setAutoFillBackground(true);
     initUI();
 }
 
 void RemoteManagementSearchPanel::initUI()
 {
-    // setAttribute(Qt::WA_TranslucentBackground);//Qt::WA_NoBackground|
-    m_iconButton = new DIconButton(this);
-    m_iconButton->setIcon(DStyle::StandardPixmap::SP_ArrowPrev);
-    m_iconButton->setFixedSize(QSize(40, 40));
+    this->setBackgroundRole(QPalette::Base);
+    this->setAutoFillBackground(true);
+
+    m_backButton = new DIconButton(this);
+    m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
+    m_backButton->setFixedSize(QSize(40, 40));
 
     m_listWidget = new ServerConfigList(this);
     m_label = new DLabel(this);
@@ -26,7 +26,7 @@ void RemoteManagementSearchPanel::initUI()
     m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->addWidget(m_iconButton);
+    hlayout->addWidget(m_backButton);
     hlayout->addWidget(m_label);
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
@@ -38,10 +38,7 @@ void RemoteManagementSearchPanel::initUI()
     vlayout->setSpacing(0);
     setLayout(vlayout);
 
-    this->setAutoFillBackground(true);
-    this->setBackgroundRole(DPalette::Base);
-
-    connect(m_iconButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
+    connect(m_backButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
     connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementSearchPanel::listItemClicked);
 }
 
@@ -53,12 +50,6 @@ void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &str
     m_listWidget->clearData();
     m_listWidget->refreshDataByGroupAndFilter(strGroup, strFilter);
 }
-// void RemoteManagementSearchPanel::refreshDataByGroup(const QString &strGroup)
-//{
-//    m_strGroupName = strGroup;
-//    m_listWidget->clear();
-//    m_listWidget->refreshDataByGroup(strGroup);
-//}
 
 void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
 {

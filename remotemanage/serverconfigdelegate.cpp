@@ -86,12 +86,12 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
                                   cmdIconSize, cmdIconSize);
         painter->drawPixmap(cmdIconRect, cmdIconPixmap);
 
-        QString strCmdName = itemData.m_serverName;
-        QString strCmdShortcut = QString("%1@%2").arg(itemData.m_userName).arg(itemData.m_address);
+        QString strServerName = itemData.m_serverName;
+        QString strAddress = QString("%1@%2").arg(itemData.m_userName).arg(itemData.m_address);
 
         if (isgroup) {
-            strCmdName = itemData.m_group;
-            strCmdShortcut = itemData.m_number;
+            strServerName = itemData.m_group;
+            strAddress = itemData.m_number;
             editIconSize = 12;
             QString strEditIconSrc = QString(":/resources/images/buildin/%1/arrow_right.svg").arg(themeType);
             qDebug() << strEditIconSrc << endl;
@@ -109,12 +109,30 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             }
         }
 
-        int labelHeight = 35;
-        QRect cmdNameRect = QRect(bgRect.left() + cmdIconSize + 5, bgRect.top() + 5, bgRect.width() - cmdIconSize - editIconSize, labelHeight);
-        painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
+        QFont textFont = painter->font();
+        int textFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
+        textFont.setPixelSize(textFontSize);
+        painter->setFont(textFont);
 
-        QRect cmdShortcutRect = QRect(bgRect.left() + cmdIconSize + 5, bgRect.bottom() - labelHeight - 5, bgRect.width() - cmdIconSize - editIconSize, labelHeight);
-        painter->drawText(cmdShortcutRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdShortcut);
+        int lineSpace = 8;
+        int offsetY = 8;
+        int leftOffset = cmdIconRect.left() + cmdIconSize + 6;
+
+        DPalette pa = appHelper->standardPalette(appHelper->themeType());
+        painter->setPen(pa.color(DPalette::Text));
+
+        QRect serverNameRect = QRect(leftOffset, bgRect.top()+offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
+        painter->drawText(serverNameRect, Qt::AlignLeft | Qt::AlignTop, strServerName);
+
+        textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7));
+        painter->setFont(textFont);
+
+        DStyleHelper styleHelper;
+        DPalette palette = DApplicationHelper::instance()->palette(m_parentView);
+        painter->setPen(QPen(styleHelper.getColor(static_cast<const QStyleOption *>(&option), palette, DPalette::TextTips)));
+
+        QRect addressRect = QRect(leftOffset, serverNameRect.top() + textFontSize + lineSpace, bgRect.width() - cmdIconSize - editIconSize, 35);
+        painter->drawText(addressRect, Qt::AlignLeft | Qt::AlignTop, strAddress);
 
         painter->restore();
     } else {

@@ -18,7 +18,6 @@ public:
 
     explicit RemoteManagementSearchPanel(QWidget *parent = nullptr);
     void refreshDataByGroupAndFilter(const QString &strGroup, const QString &strFilter);
-    // void refreshDataByGroup(const QString &strGroup);
     void refreshDataByFilter(const QString &strFilter);
     void setPreviousPanelType(RemoteManagementPanelType type);
 

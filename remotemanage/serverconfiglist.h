@@ -17,11 +17,6 @@ public:
     ServerConfigList(QWidget *parent = nullptr);
     //显示所有的服务器信息
     void refreshAllDatas();
-    //在列表中添加一行远程服务器配置对象
-    void addOneRowServerConfigData(ServerConfig *curConfig);
-    //在列表中添加一行远程服务器配置组对象
-    void addOneRowServerConfigGroupData(const QString &group);
-    void refreshOneRowServerConfigInfo(ServerConfig *curConfig);
     //根据分组信息和搜索信息联合查询
     void refreshDataByGroup(const QString &strGroupName, bool isFromGroupPanel);
     //根据分组信息和搜索信息联合查询
@@ -46,8 +41,6 @@ private slots:
     void handleModifyServerConfig(ServerConfig *curItemServer, QModelIndex modelIndex);
 
 private:
-    int getItemRow(ServerConfigItemData itemData);
-
     ServerConfigDelegate *m_serCfgDelegate = nullptr;
     QStandardItemModel *m_serCfgListModel = nullptr;
     ServerConfigItemModel *m_serCfgProxyModel = nullptr;

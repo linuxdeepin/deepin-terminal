@@ -98,7 +98,6 @@ void CustomCommandPanel::initUI()
     m_searchEdit = new DSearchEdit();
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
-    m_searchEdit->setPlaceHolder(tr("Search"));
 
     m_cmdListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     m_cmdListWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);

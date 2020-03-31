@@ -41,9 +41,9 @@ void CustomCommandSearchRstPanel::initUI()
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
-    m_iconButton = new DIconButton(this);
-    m_iconButton->setIcon(DStyle::StandardPixmap::SP_ArrowPrev);
-    m_iconButton->setFixedSize(QSize(40, 40));
+    m_backButton = new DIconButton(this);
+    m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
+    m_backButton->setFixedSize(QSize(40, 40));
 
     m_label = new DLabel(this);
     m_label->setAlignment(Qt::AlignCenter);
@@ -55,7 +55,7 @@ void CustomCommandSearchRstPanel::initUI()
     m_cmdListWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->addWidget(m_iconButton);
+    hlayout->addWidget(m_backButton);
     hlayout->addWidget(m_label);
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
@@ -67,5 +67,5 @@ void CustomCommandSearchRstPanel::initUI()
     vlayout->setSpacing(0);
     setLayout(vlayout);
     connect(m_cmdListWidget, &CustomCommandList::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
-    connect(m_iconButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
+    connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
 }

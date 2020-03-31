@@ -25,7 +25,7 @@ signals:
     void focusOut();
 
 public:
-    DIconButton *m_iconButton = nullptr;
+    DIconButton *m_backButton = nullptr;
     DSearchEdit *m_searchEdit = nullptr;
     DPushButton *m_pushButton = nullptr;
     DLabel *m_label = nullptr;
