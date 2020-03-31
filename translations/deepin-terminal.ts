@@ -142,42 +142,42 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="773"/>
+        <location filename="../main/mainwindow.cpp" line="775"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="773"/>
+        <location filename="../main/mainwindow.cpp" line="775"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="841"/>
+        <location filename="../main/mainwindow.cpp" line="843"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="857"/>
+        <location filename="../main/mainwindow.cpp" line="859"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1218"/>
+        <location filename="../main/mainwindow.cpp" line="1229"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1220"/>
+        <location filename="../main/mainwindow.cpp" line="1231"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1222"/>
+        <location filename="../main/mainwindow.cpp" line="1233"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1278"/>
+        <location filename="../main/mainwindow.cpp" line="1289"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -186,12 +186,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1310"/>
+        <location filename="../main/mainwindow.cpp" line="1321"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1312"/>
+        <location filename="../main/mainwindow.cpp" line="1323"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -323,9 +323,8 @@
         <translation>选中文字时自动复制到剪切板</translation>
     </message>
     <message>
-        <location filename="../settings/settings_translation.cpp" line="8"/>
         <source>Cursor autohide</source>
-        <translation>光标自动隐藏</translation>
+        <translation type="vanished">光标自动隐藏</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="13"/>

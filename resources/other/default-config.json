@@ -248,17 +248,12 @@
                             "text": "Cursor blink",
                             "default": true
                         },
-                        {
-                            "key": "auto_hide",
-                            "type": "checkbox",
-                            "text": "Cursor autohide",
-                            "default": false
-                        },
+                          
                         {
                             "key": "auto_copy_selection",
                             "type": "checkbox",
                             "text": "Copy on select",
-                            "default": true
+                            "default": false
                         }
                     ]
                 },

@@ -5,7 +5,7 @@
 void GenerateSettingTranslate()
 {
     auto advanced_cursor_auto_copy_selectionText = QObject::tr("Copy on select");
-    auto advanced_cursor_auto_hideText = QObject::tr("Cursor autohide");
+//    auto advanced_cursor_auto_hideText = QObject::tr("Cursor autohide");
     auto advanced_cursor_cursor_blinkText = QObject::tr("Cursor blink");
     auto advanced_cursor_cursor_shapeName = QObject::tr("Cursor style");
     auto advanced_scroll_scroll_on_keyText = QObject::tr("Scroll on keystroke");
