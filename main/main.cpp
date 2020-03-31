@@ -87,6 +87,12 @@ int main(int argc, char *argv[])
     }
     if (parser.isSet(optWindowState)) {
         firstTermProperties[StartWindowState] = parser.value(optWindowState);
+        QStringList validString={"maximize", "fullscreen", "halfscreen", "normal"};
+        if(!validString.contains(parser.value(optWindowState)))
+        {
+            parser.showHelp();
+            exit;
+        }
     }
     if (parser.isSet(optKeepOpen)) {
         firstTermProperties[KeepOpen] = "";
