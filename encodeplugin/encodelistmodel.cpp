@@ -68,8 +68,8 @@ void EncodeListModel::initEncodeData()
 //                   << "IBM850" << "ISO-8859-1" << "ISO-8859-15" << "MAC_ROMAN" << "WINDOWS-1252";
     showEncodeList << "UTF-8" << "GB18030" << "GB2312" << "GBK" /*简体中文*/
                    << "BIG5" << "BIG5-HKSCS" //<< "EUC-TW"      /*繁体中文*/
-                   << "EUC-JP" << "ISO-2022-JP" << "SHIFT_JIS"  /*日语*/
-                   << "EUC-KR" << "ISO-2022-KR" //<< "UHC"      /*韩语*/
+                   << "EUC-JP"  << "SHIFT_JIS"  //<< "ISO-2022-JP"/*日语*/
+                   << "EUC-KR" //<< "ISO-2022-KR" //<< "UHC"      /*韩语*/
                    << "IBM864" << "ISO-8859-6" << "ARABIC" << "WINDOWS-1256"   /*阿拉伯语*/
                    //<< "ARMSCII-8"    /*美国语*/
                    << "ISO-8859-13" << "ISO-8859-4" << "WINDOWS-1257"  /*波罗的海各国语*/
