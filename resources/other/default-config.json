@@ -142,13 +142,13 @@
                             "key": "vertical_split",
                             "name": "Vertical split",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+H"
+                            "default":  "Ctrl+Shift+J"
                         },
                         {
                             "key": "horionzal_split",
                             "name": "Horizontal split",
                             "type": "shortcut",
-                            "default":  "Ctrl+H"
+                            "default":  "Ctrl+Shift+H"
                         },
                         {
                             "key": "select_upper_window",
