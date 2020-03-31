@@ -233,3 +233,22 @@ bool Utils::showExitConfirmDialog()
 
     return (optDlg.getConfirmResult() == QDialog::Accepted);
 }
+/*******************************************************************************
+ 1. @函数:    showShortcutConflictDialog
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-31
+ 4. @说明:    快捷键冲突框显示
+*******************************************************************************/
+bool Utils::showShortcutConflictDialog(QString conflictkey)
+{
+    QString str = qApp->translate("DSettingsDialog", "This shortcut conflicts with %1, click on Add to make this shortcut effective immediately")
+                  .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(conflictkey));
+
+    OperationConfirmDlg optDlg;
+    QPixmap warnning = QIcon(":/resources/images/icon/hover/exit_hover.svg").pixmap(QSize(36, 32));
+    optDlg.setIconPixmap(warnning);
+    optDlg.setOperatTypeName(str);
+    optDlg.setOKCancelBtnText(QObject::tr("Replace"), QObject::tr("Cancel"));
+    optDlg.exec();
+    return optDlg.getConfirmResult() == QDialog::Accepted;
+}

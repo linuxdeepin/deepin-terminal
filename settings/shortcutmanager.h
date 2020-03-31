@@ -3,6 +3,7 @@
 
 #include "define.h"
 #include "customcommanditemmodel.h"
+#include "utils.h"
 
 #include <QList>
 #include <QAction>
@@ -29,11 +30,15 @@ public:
     QAction *checkActionIsExist(QAction &action);
     void setClipboardCommandData(QString clipboardCommand);
     QString getClipboardCommandData();
+    QString updateShortcut(const QString &Name, const QString &seq, bool loadMode = false);
+    QString getShortcutSet(const QString &Name);
+    bool    isValidShortcut(const QString &Key);
 
 private:
     MainWindow *m_mainWindow = nullptr;
     QList<QAction *> m_customCommandActionList;
     QList<QAction *> m_builtinShortcuts;
+    QMap<QString, QString> m_GloableShortctus;
     static ShortcutManager *m_instance;
     QString m_clipboardCommand;
 };

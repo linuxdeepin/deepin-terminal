@@ -37,6 +37,12 @@ void ShortcutManager::initShortcuts()
 
     m_mainWindow->addActions(m_customCommandActionList);
     m_mainWindow->addActions(m_builtinShortcuts);
+    // 快捷键初始化
+    for (QString key : Settings::instance()->settings->keys())
+    {
+        qDebug() << key << Settings::instance()->settings->value(key);
+        m_GloableShortctus[key] = Settings::instance()->settings->value(key).toString();
+    }
 }
 
 QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
@@ -151,7 +157,101 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
     }
     return nullptr;
 }
-
+/*******************************************************************************
+ 1. @函数:    shortcutConfirm
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-26
+ 4. @说明:    全局检测是否冲突, 如果修改不成功，返回原来的快捷键
+*******************************************************************************/
+QString ShortcutManager::updateShortcut(const QString &Name, const QString &seq, bool loadMode)
+{
+    QString conflictName;
+    qDebug()<<"updateShortcut " << Name<< seq <<loadMode;
+    if(!isValidShortcut(seq))
+    {
+        return "";
+    }
+    for (QString item : m_GloableShortctus.keys())
+    {
+        if (m_GloableShortctus[item] == seq)
+        {
+            // 如果是自己键，值也一样，返回
+            if (item == Name)
+            {
+                return Name;
+            }
+            // 如果冲突的值是初始值，不理会，直接设置
+            if((m_GloableShortctus[item] == SHORTCUT_VALUE))
+            {
+                m_GloableShortctus[Name] = seq;
+                return Name;
+            }
+            // 加载模式，不处理冲突，意味着配置文件出错了。
+            if(loadMode)
+            {
+                qDebug() << "loadMode:"<<Name<<seq<<"conflict"<<item<< " set, not load config";
+                return "";
+            }
+            // 如果某个已知项已经有了, 用户决定冲突是否覆盖。
+            if (Utils::showShortcutConflictDialog(seq))
+            {
+                // 如果同意，则删除原，增加新，返回成功的
+                m_GloableShortctus[item] = SHORTCUT_VALUE;
+                m_GloableShortctus[Name] = seq;
+                qDebug() << "m_GloableShortctus clear:" << item;
+                qDebug() << "m_GloableShortctus set:" << Name << seq;
+                return item;
+            }
+            else
+            {
+                // 如果不同意，返回原先的快捷键
+                qDebug() << "change nothing" << Name;
+                return "";
+            }
+        }
+    }
+    qDebug() << "first set m_GloableShortctus "<<Name << seq;
+    m_GloableShortctus[Name] = seq;
+    return Name;
+}
+/*******************************************************************************
+ 1. @函数:    getShortcutSet
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-31
+ 4. @说明:    获取当前内存快捷键
+*******************************************************************************/
+QString ShortcutManager::getShortcutSet(const QString &Name)
+{
+    if (m_GloableShortctus.contains(Name))
+    {
+        return m_GloableShortctus[Name];
+    }
+    else
+    {
+        return "";
+    }
+}
+/*******************************************************************************
+ 1. @函数:    判断快捷键是否合法
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-03-31
+ 4. @说明:    目前单键除了F1-F12, 其它均不可以设置
+*******************************************************************************/
+bool ShortcutManager::isValidShortcut(const QString &Key)
+{
+    //F1-F12是允许的，这个正则不够精确，但是没关系。
+    QRegExp regexp("^F[0-9]{1,2}$");
+    if(Key.contains(regexp))
+    {
+        return true;
+    }
+    if(Key.count("+") == 0)
+    {
+        qDebug()<<Key<<"is invalid!";
+        return  false;
+    }
+    return true;
+}
 void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
 {
     delCustomCommandToConfig(itemData);

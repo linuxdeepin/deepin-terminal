@@ -19,6 +19,7 @@
 
 #ifndef UTILS_H
 #define UTILS_H
+#include "settings.h"
 
 #include <QObject>
 #include <QHash>
@@ -47,6 +48,7 @@ public:
     static QString getRandString();
 
     static bool showExitConfirmDialog();
+    static bool showShortcutConflictDialog(QString conflictkey);
 };
 
 #endif

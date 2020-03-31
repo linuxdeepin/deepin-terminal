@@ -2,10 +2,14 @@
 #define SETTINGS_H
 
 #include <DSettingsDialog>
+#include <DKeySequenceEdit>
+
 #include <qsettingbackend.h>
 
 DCORE_USE_NAMESPACE
+DWIDGET_USE_NAMESPACE
 
+class DSettingsWidgetFactoryPrivate;
 class Settings : public QObject
 {
     Q_OBJECT
@@ -29,6 +33,8 @@ public:
     void setColorScheme(const QString &name);
     // 设置编码格式
     void setEncoding(const QString &name);
+    // 通用设置
+    void setKeyValue(const QString &name, const QString &value);
 
     DSettings *settings;
     /******** Modify by n014361 wangpeili 2020-01-04: 获取当前配置粘贴是否为选择内容 *************×****/
@@ -42,6 +48,8 @@ public:
     static QPair<QWidget *, QWidget *> createCustomSliderHandle(QObject *obj);
     // 新增自定义spinbutton控件
     static QPair<QWidget *, QWidget *> createSpinButtonHandle(QObject *obj);
+    // 新增自定义ShortcutEdit控件处理
+    static QPair<QWidget *, QWidget *> createShortcutEditOptionHandle(QObject *opt);
     /******** Modify by n014361 wangpeili 2020-01-04:              ****************/
 
 signals:
@@ -71,5 +79,20 @@ private:
     Dtk::Core::QSettingBackend *m_backend;
     QString m_configPath;
 };
-
+class KeySequenceEdit : public DKeySequenceEdit
+{
+public:
+    KeySequenceEdit(DTK_CORE_NAMESPACE::DSettingsOption *opt, QWidget *parent = nullptr): DKeySequenceEdit(parent)
+    {
+        m_poption = opt;
+    }
+    DTK_CORE_NAMESPACE::DSettingsOption *option()
+    {
+        return m_poption;
+    }
+private:
+    DTK_CORE_NAMESPACE::DSettingsOption *m_poption = nullptr;
+};
+QPair<QWidget *, QWidget *> createShortcutEditOptionHandle(DSettingsWidgetFactoryPrivate *p, QObject *opt);
+#define SHORTCUT_VALUE "shortcut_null"
 #endif  // SETTINGS_H

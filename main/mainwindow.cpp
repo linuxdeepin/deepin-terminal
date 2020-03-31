@@ -1129,6 +1129,8 @@ void MainWindow::showSettingDialog()
     dialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     dialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
     dialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
+    dialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
+
     dialog->updateSettings(Settings::instance()->settings);
     dialog->exec();
     delete dialog;

@@ -1,11 +1,16 @@
 #include "settings.h"
 #include "newdspinbox.h"
+#include "utils.h"
+#include "shortcutmanager.h"
+#include "../views/operationconfirmdlg.h"
 
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
 #include <DLog>
 #include <DSlider>
 #include <DApplicationHelper>
+#include <DKeySequenceEdit>
+
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -15,7 +20,7 @@
 /********************* Modify by n014361 wangpeili End ************************/
 
 DWIDGET_USE_NAMESPACE
-
+#define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
 Settings *Settings::m_settings_instance = nullptr;
 
 Settings::Settings() : QObject(qApp)
@@ -195,6 +200,11 @@ void Settings::setEncoding(const QString &name)
     settings->option("basic.interface.encoding")->setValue(name);
 }
 
+void Settings::setKeyValue(const QString &name, const QString &value)
+{
+    settings->option(name)->setValue(value);
+}
+
 /*******************************************************************************
  1. @函数:   bool Settings::IsPasteSelection()
  2. @作者:     n014361 王培利
@@ -312,3 +322,72 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
 
     return optionWidget;
 } /********************* Modify by n014361 wangpeili End ************************/
+
+QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettingsWidgetFactoryPrivate *p,*/ QObject *opt)
+{
+    auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(opt);
+    auto rightWidget = new KeySequenceEdit(option);
+
+    rightWidget->setObjectName("OptionShortcutEdit");
+    rightWidget->ShortcutDirection(Qt::AlignLeft);
+
+    auto optionValue = option->value();
+    auto translateContext = opt->property(PRIVATE_PROPERTY_translateContext).toByteArray();
+    QString optname=option->key();
+    qDebug()<<"optname"<<optname;
+
+    // 控件初始加载配置文件的值
+    auto updateWidgetValue = [ = ](const QVariant & optionValue, DTK_CORE_NAMESPACE::DSettingsOption * opt) {
+        QKeySequence sequence(optionValue.toString());
+        QString keyseq = sequence.toString();
+        if(keyseq == SHORTCUT_VALUE)
+        {
+            return;
+        }
+        qDebug()<<"sequence set"<<sequence;
+        rightWidget->setKeySequence(sequence);
+    };
+    updateWidgetValue(optionValue, option);
+
+    // 控件输入
+    option->connect(rightWidget, &KeySequenceEdit::editingFinished, [ = ](const QKeySequence & sequence) {
+        QString conflictKey = ShortcutManager::instance()->updateShortcut(optname, sequence.toString());
+        // 返回为空的时候表示用户拒绝了冲突
+        if(!conflictKey.isEmpty())
+        {
+            option->setValue(sequence.toString());
+            if(conflictKey != optname )
+            {
+                qDebug()<<"clear "<<optname;
+                Settings::instance()->setKeyValue(conflictKey, SHORTCUT_VALUE);
+            }
+        }
+        else {
+            qDebug()<<"change nothing"<<QKeySequence(ShortcutManager::instance()->getShortcutSet(optname));
+        }
+        // 有可能取消了输入，界面要返回原数据
+        rightWidget->clear();
+        rightWidget->setKeySequence(QKeySequence(ShortcutManager::instance()->getShortcutSet(optname)));
+    });
+
+    // 配置修改
+    option->connect(option, &DTK_CORE_NAMESPACE::DSettingsOption::valueChanged, rightWidget, [ = ](const QVariant & value) {
+
+        //QString keyseq = ShortcutManager::instance()->getShortcutSet(value.toString());
+        QString keyseq = value.toString();
+        QString loadKey = ShortcutManager::instance()->updateShortcut(rightWidget->option()->key(), keyseq, true);
+        qDebug()<<"valueChanged"<<rightWidget->option()->key()<<keyseq;
+        if (keyseq == SHORTCUT_VALUE || keyseq.isEmpty() || loadKey.isEmpty()) {
+            qDebug()<<"keyseq"<<keyseq<<"loadKey"<<loadKey;
+            Settings::instance()->setKeyValue(rightWidget->option()->key(), SHORTCUT_VALUE);
+            rightWidget->clear();
+            return;
+        }
+
+        rightWidget->setKeySequence(QKeySequence(keyseq));
+    });
+
+    return DSettingsWidgetFactory::createStandardItem(translateContext, option, rightWidget);
+}
+
+
