@@ -104,7 +104,7 @@ void MainWindow::addQuakeTerminalShortcut()
                                      "com.deepin.daemon.Keybinding",
                                      QDBusConnection::sessionBus());
     if (!shortcutInterface.isValid()) {
-        qWarning()<< "com.deepin.daemon.Keybinding error ,"<< shortcutInterface.lastError().name();
+        qWarning() << "com.deepin.daemon.Keybinding error ," << shortcutInterface.lastError().name();
         return;
     }
 
@@ -707,6 +707,12 @@ void MainWindow::initShortcuts()
         }
     });
 
+//Close_other_workspaces
+    connect(createNewShotcut("shortcuts.terminal.Close_other_workspaces"), &QShortcut::activated, this, [this]() {
+
+        closeOtherTab();
+    });
+
     // zoom_out
     connect(createNewShotcut("shortcuts.terminal.zoom_out"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
@@ -997,9 +1003,8 @@ int MainWindow::executeCMD(const char *cmd)
 *******************************************************************************/
 void MainWindow::showPlugin(const QString &name)
 {
-    if(name != PLUGIN_TYPE_NONE)
-    {
-        qDebug()<< "show Plugin" << name;
+    if (name != PLUGIN_TYPE_NONE) {
+        qDebug() << "show Plugin" << name;
     }
 
     emit showPluginChanged(name);
