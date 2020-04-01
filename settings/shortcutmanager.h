@@ -23,6 +23,7 @@ public:
     QList<QAction *> &getCustomCommandActionList();
 
     QAction *addCustomCommand(QAction &action);
+    void mainWindowAddAction(QAction *action);
     void delCustomCommand(CustomCommandItemData itemData);
     void saveCustomCommandToConfig(QAction *action, int saveIndex);
     int delCustomCommandToConfig(CustomCommandItemData itemData);
@@ -32,6 +33,7 @@ public:
     QString getClipboardCommandData();
     QString updateShortcut(const QString &Name, const QString &seq, bool loadMode = false);
     QString getShortcutSet(const QString &Name);
+    bool    isShortcutExist(const QString &Key);
     bool    isValidShortcut(const QString &Key);
 
 private:

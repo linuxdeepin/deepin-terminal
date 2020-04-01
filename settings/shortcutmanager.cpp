@@ -32,17 +32,19 @@ ShortcutManager *ShortcutManager::instance()
 
 void ShortcutManager::initShortcuts()
 {
-    m_customCommandActionList = createCustomCommandsFromConfig();
     m_builtinShortcuts = createBuiltinShortcutsFromConfig();  // use QAction or QShortcut ?
 
-    m_mainWindow->addActions(m_customCommandActionList);
-    m_mainWindow->addActions(m_builtinShortcuts);
+
     // 快捷键初始化
     for (QString key : Settings::instance()->settings->keys())
     {
         qDebug() << key << Settings::instance()->settings->value(key);
         m_GloableShortctus[key] = Settings::instance()->settings->value(key).toString();
     }
+
+    m_customCommandActionList = createCustomCommandsFromConfig();
+    m_mainWindow->addActions(m_customCommandActionList);
+    m_mainWindow->addActions(m_builtinShortcuts);
 }
 
 QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
@@ -79,6 +81,10 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
                 QString shortcutStr = shortcutVariant.toString().remove(QChar(' '));
                 action->setShortcut(QKeySequence(shortcutStr));
             }
+        }
+        if(isShortcutExist(action->shortcut().toString()))
+        {
+            action->setEnabled(false);
         }
         connect(action, &QAction::triggered, m_mainWindow, [this, action]() {
             QString command = action->data().toString();
@@ -134,7 +140,8 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     addAction->setData(action.data());
     addAction->setShortcut(action.shortcut());
     m_customCommandActionList.append(addAction);
-    m_mainWindow->addAction(addAction);
+    //m_mainWindow->addAction(addAction);
+    mainWindowAddAction(addAction);
     connect(addAction, &QAction::triggered, m_mainWindow, [this, addAction]() {
         QString command = addAction->data().toString();
         if (!command.endsWith('\n')) {
@@ -144,6 +151,14 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     });
     saveCustomCommandToConfig(addAction, -1);
     return addAction;
+}
+
+void ShortcutManager::mainWindowAddAction(QAction *action)
+{
+    if(!isShortcutExist(action->shortcut().toString()))
+    {        
+        m_mainWindow->addAction(action);
+    }
 }
 
 QAction *ShortcutManager::checkActionIsExist(QAction &action)
@@ -232,6 +247,25 @@ QString ShortcutManager::getShortcutSet(const QString &Name)
     }
 }
 /*******************************************************************************
+ 1. @函数:    isShortcutExist
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-04-01
+ 4. @说明:    判断快捷键是否已经存在系统中
+*******************************************************************************/
+bool ShortcutManager::isShortcutExist(const QString &seq)
+{
+    for (QString item : m_GloableShortctus.keys())
+    {
+        if (m_GloableShortctus[item] == seq)
+        {
+            qDebug()<<seq<<"is exist in system!";
+            return true;
+        }
+    }
+    qDebug()<<seq<<"is not exist in system!";
+    return  false;
+}
+/*******************************************************************************
  1. @函数:    判断快捷键是否合法
  2. @作者:    n014361 王培利
  3. @日期:    2020-03-31
@@ -305,7 +339,8 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
         qDebug()<<"old"<<m_customCommandActionList[saveIndex]->shortcut();
         m_mainWindow->removeAction(m_customCommandActionList[saveIndex]);
         m_customCommandActionList[saveIndex] = saveAction;
-        m_mainWindow->addAction(saveAction);
+        //m_mainWindow->addAction(saveAction);
+        mainWindowAddAction(saveAction);
         connect(saveAction, &QAction::triggered, m_mainWindow, [this, saveAction]() {
             QString command = saveAction->data().toString();
             if (!command.endsWith('\n')) {
