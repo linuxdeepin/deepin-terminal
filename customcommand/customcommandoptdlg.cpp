@@ -161,9 +161,9 @@ void CustomCommandOptDlg::initUI()
     addCancelConfirmButtons();
     setCancelBtnText(tr("Cancel"));
     if (m_type == CCT_ADD) {
-        setConfirmBtnText(tr("Sure"));
+        setConfirmBtnText(tr("Add"));
     } else {
-        setConfirmBtnText(tr("Sure"));
+        setConfirmBtnText(tr("Save"));
     }
 
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);

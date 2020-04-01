@@ -38,8 +38,8 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             /******** Modify by m000714 daizhengwen 2020-03-30: 同名的情况，弹出提示框，约束输入****************/
             // 有同名命令，发出警告
             DDialog *pDialog = new DDialog(tr("Same name exists"), tr("Replace existing command or not?"), nullptr);
-            // icon 未定 文案未定
-            pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+            pDialog->setFixedSize(380, 160);
+            pDialog->setIcon(QIcon::fromTheme("dialog-warning"));
             pDialog->setWindowFlags(pDialog->windowFlags() | Qt::WindowStaysOnTopHint);
             pDialog->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
             pDialog->addButton(QString(tr("Replace")), true, DDialog::ButtonWarning);
