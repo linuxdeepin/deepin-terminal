@@ -40,6 +40,10 @@
 #include <QVBoxLayout>
 #include <QMap>
 
+#include <fstream>
+using std::ifstream;
+using std::ofstream;
+
 DWIDGET_USE_NAMESPACE
 
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
@@ -1046,7 +1050,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         /**************** Modify by n013252 wangliang End ****************/
 
         /******** Modify by n014361 wangpeili 2020-01-13:雷神模式隐藏 ****************/
-        if (Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+        //if (Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+        //---modified by qinyaning(nyq) to slove the realtime hide raytheon_window--//
+        //When the terminal is used for a period of time, open the window of Raytheon and click other places to disappear
+        bool auto_hide_raytheon_window = Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool();
+        ifstream in("./QuakeWindowActivated.dat");
+        in >> auto_hide_raytheon_window;
+        in.close();
+        if(auto_hide_raytheon_window) {
+        //--------------------------------------------------------------------------//
             if (watched == this && event->type() == QEvent::WindowDeactivate) {
                 qDebug() << "WindowDeactivate" << event->type();
                 this->hide();
@@ -1104,6 +1116,15 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
         setEnableBlurWindow(Settings::instance()->backgroundBlur());
         return;
     }
+
+    //--added by qinyaning(nyq) to save the param advanced.window.auto_hide_raytheon_window to QuakeWindowActivated.dat
+    if((keyName == "advanced.window.auto_hide_raytheon_window")) {
+        bool value = Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool();
+        ofstream out("./QuakeWindowActivated.dat");
+        out << value;
+        out.close();
+    }
+    //----------------------------------------------
     // auto_hide_raytheon_window在使用中自动读取生效
     // use_on_starting重启生效
     if ((keyName == "advanced.window.auto_hide_raytheon_window") || (keyName == "advanced.window.use_on_starting")) {
