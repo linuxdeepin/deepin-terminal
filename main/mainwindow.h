@@ -70,6 +70,7 @@ public:
 signals:
     void newWindowRequest(const QString &directory);
     void showPluginChanged(const QString &name);
+    void quakeHidePlugin();
 
 public slots:
     // void onSettingValueChanged(const int &keyIndex, const QVariant &value);

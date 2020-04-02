@@ -26,6 +26,9 @@ void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
             getEncodePanel()->show();
         }
     });
+    connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
+        getEncodePanel()->hide();
+    });
 }
 
 QAction *EncodePanelPlugin::titlebarMenu(MainWindow *mainWindow)

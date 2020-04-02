@@ -23,6 +23,9 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
             getRemoteManagementTopPanel()->show();
         }
     });
+    connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
+        getRemoteManagementTopPanel()->hide();
+    });
 }
 
 QAction *RemoteManagementPlugn::titlebarMenu(MainWindow *mainWindow)

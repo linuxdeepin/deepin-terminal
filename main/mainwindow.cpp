@@ -354,6 +354,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
             m_winInfoConfig->setValue("save_height", 600);
         }
     }
+    emit quakeHidePlugin();
     /********************* Modify by m000714 daizhengwen End ************************/
     DMainWindow::resizeEvent(event);
 }

@@ -29,6 +29,9 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
             getCustomCommandTopPanel()->show();
         }
     });
+    connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
+        getCustomCommandTopPanel()->hide();
+    });
 }
 
 QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
