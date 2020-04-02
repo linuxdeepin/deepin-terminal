@@ -186,7 +186,7 @@
                             "key": "close_window",
                             "name": "Close window",
                             "type": "shortcut",
-                            "default":  "Ctrl+Q"
+                            "default":  "Ctrl+Alt+Q"
                         },
                         {
                             "key": "close_other_windows",
