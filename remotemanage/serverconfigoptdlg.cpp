@@ -293,6 +293,12 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
+    //---added by qinyaning(nyq) to show the tip when username is empty--//
+    if(m_userName->text().trimmed().isEmpty()) {//如果用户名为空， 提示用户名为空， 添加失败
+        m_userName->showAlertMessage(tr("Enter user name please!"), m_userName);
+        return;
+    }
+    //------------------------------------------------------------------//
     ServerConfig *config = new ServerConfig();
     config->m_serverName = m_serverName->text();
     config->m_address = m_address->text();
