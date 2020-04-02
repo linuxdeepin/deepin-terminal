@@ -590,6 +590,12 @@ void MainWindow::initShortcuts()
         }
     });
 
+    //Close_other_workspaces
+    connect(createNewShotcut("shortcuts.workspace.close_other_workspace"), &QShortcut::activated, this, [this]() {
+
+        closeOtherTab();
+    });
+
     // previous_workspace
     connect(createNewShotcut("shortcuts.workspace.previous_workspace"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
@@ -710,12 +716,6 @@ void MainWindow::initShortcuts()
         if (page) {
             page->zoomInCurrentTierminal();
         }
-    });
-
-//Close_other_workspaces
-    connect(createNewShotcut("shortcuts.terminal.Close_other_workspaces"), &QShortcut::activated, this, [this]() {
-
-        closeOtherTab();
     });
 
     // zoom_out

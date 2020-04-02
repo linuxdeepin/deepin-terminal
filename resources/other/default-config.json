@@ -75,12 +75,6 @@
                             "default":  "Ctrl+F"
                         },
                         {
-                            "key": "Close_other_workspaces",
-                            "name": "Close_other_workspaces",
-                            "type": "shortcut",
-                            "default":  "Ctrl+W"
-                        },
-                        {
                             "key": "zoom_in",
                             "name": "Zoom in",
                             "type": "shortcut",
@@ -133,6 +127,12 @@
                             "name": "Close workspace",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+W"
+                        },
+                        {
+                            "key": "close_other_workspace",
+                            "name": "Close other workspace",
+                            "type": "shortcut",
+                            "default":  "Ctrl+W"
                         },
                         {
                             "key": "previous_workspace",

@@ -41,6 +41,7 @@ void GenerateSettingTranslate()
     auto shortcuts_terminal_zoom_inName = QObject::tr("Zoom in");
     auto shortcuts_terminal_zoom_outName = QObject::tr("Zoom out");
     auto shortcuts_workspace_close_other_windowsName = QObject::tr("Close other windows");
+    auto shortcuts_workspace_close_other_workspace = QObject::tr("Close other workspace");
     auto shortcuts_workspace_close_windowName = QObject::tr("Close window");
     auto shortcuts_workspace_close_workspaceName = QObject::tr("Close workspace");
     auto shortcuts_workspace_horionzal_splitName = QObject::tr("Horizontal split");
