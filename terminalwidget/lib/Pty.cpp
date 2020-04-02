@@ -259,7 +259,6 @@ Pty::Pty(int masterFd, QObject* parent)
     , _cursorPos(0)
     , _bHistoryUp(false)
     , _bHistoryDown(false)
-    , _bTerminalRemoved(false)
     , _currHistory(nullptr)
 {
     init();
@@ -271,7 +270,6 @@ Pty::Pty(QObject* parent)
     , _cursorPos(0)
     , _bHistoryUp(false)
     , _bHistoryDown(false)
-    , _bTerminalRemoved(false)
     , _currHistory(nullptr)
 {
     init();
@@ -287,7 +285,6 @@ void Pty::initHistoryInfo()
     read_history(historyPath.toStdString().c_str());
     _currHistory = history_get(history_length-history_offset);
     history_set_pos(history_length-history_offset);
-    qDebug() << __FUNCTION__ << "curr history: " << QString(_currHistory->line) << endl;
 }
 
 void Pty::init()
@@ -308,8 +305,19 @@ Pty::~Pty()
 {
 }
 
+bool Pty::isTerminalRemoved()
+{
+    QFile terminalExecFile("/usr/bin/deepin-terminal");
+    if (terminalExecFile.exists())
+    {
+        return false;
+    }
+
+    return true;
+}
+
 //判断当前命令是否是要删除终端
-bool bWillRemoveTerminal(QString strCommand)
+bool Pty::bWillRemoveTerminal(QString strCommand)
 {
     QStringList originArgs = strCommand.trimmed().split(" ");
     QStringList arguments;
@@ -428,7 +436,10 @@ void Pty::sendData(const char* data, int length)
       }
   }
 
-  if (!_bTerminalRemoved && isPressEnter && bWillRemoveTerminal(_sendBuffer) && _sendBuffer.length() > 0)
+  if (!isTerminalRemoved()
+          && isPressEnter
+          && _sendBuffer.length() > 0
+          && bWillRemoveTerminal(_sendBuffer))
   {
       QMessageBox messageBox(QMessageBox::NoIcon,
                              "警告", "您确定要卸载终端吗，卸载后将无法再使用终端应用?",
@@ -441,20 +452,9 @@ void Pty::sendData(const char* data, int length)
       else
       {
           connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [=](bool isIdle) {
-              if (isIdle)
+              if (isIdle && isTerminalRemoved())
               {
-                  if (!_bTerminalRemoved)
-                  {
-                      _bTerminalRemoved = true;
-                      QMessageBox messageBox(QMessageBox::NoIcon,
-                                             "警告", "终端已卸载，是否直接退出终端？",
-                                             QMessageBox::Yes | QMessageBox::No, nullptr);
-                      int result = messageBox.exec();
-                      if (QMessageBox::Yes == result)
-                      {
-                          exit(0);
-                      }
-                  }
+                  exit(0);
               }
           });
       }

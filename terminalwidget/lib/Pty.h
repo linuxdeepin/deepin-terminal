@@ -200,6 +200,8 @@ Q_OBJECT
   private:
     void init();
     void initHistoryInfo();
+    bool isTerminalRemoved();
+    bool bWillRemoveTerminal(QString strCommand);
 
     // takes a list of key=value pairs and adds them
     // to the environment for the process
@@ -214,7 +216,6 @@ Q_OBJECT
     int _cursorPos;
     bool _bHistoryUp;
     bool _bHistoryDown;
-    bool _bTerminalRemoved;
     HIST_ENTRY *_currHistory;
 };
 
