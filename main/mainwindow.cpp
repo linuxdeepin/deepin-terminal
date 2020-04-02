@@ -1219,6 +1219,9 @@ MainWindowPluginInterface *MainWindow::getPluginByName(const QString &name)
 void MainWindow::displayShortcuts()
 {
     QRect rect = window()->geometry();
+    //--added by qinyaning(nyq) to solve the problem of can't show center--//
+    rect = QApplication::desktop()->availableGeometry();
+    //---------------------------------------------------------------------//
     QPoint pos(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 
     QJsonArray jsonGroups;
