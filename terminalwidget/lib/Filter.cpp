@@ -513,7 +513,7 @@ QList<QAction*> UrlFilter::HotSpot::actions()
     if ( kind == StandardUrl )
     {
         openAction->setText(QObject::tr("Open Link"));
-        copyAction->setText(QObject::tr("Copy Link Address"));
+        copyAction->setText(QObject::tr("Copy Link"));
     }
     else if ( kind == Email )
     {

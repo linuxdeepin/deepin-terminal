@@ -171,7 +171,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     // add other actions here.
     if (!selectedText().isEmpty()) {
 
-        menu.addAction(tr("Copy &Selection"), this, [this] { copyClipboard(); });
+        menu.addAction(tr("&Copy"), this, [this] { copyClipboard(); });
     }
     if (!QApplication::clipboard()->text(QClipboard::Clipboard).isEmpty()) {
         menu.addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
@@ -197,9 +197,9 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     menu.addSeparator();
 
-    menu.addAction(tr("Split &Horizontally"), this, [this] { emit termRequestSplit(Qt::Horizontal); });
+    menu.addAction(tr("&Horizontal Split"), this, [this] { emit termRequestSplit(Qt::Horizontal); });
 
-    menu.addAction(tr("Split &Vertically"), this, [this] { emit termRequestSplit(Qt::Vertical); });
+    menu.addAction(tr("&Vertical Split"), this, [this] { emit termRequestSplit(Qt::Vertical); });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->closeSplit(((TermWidgetPage *)m_Page)->currentTerminal());});

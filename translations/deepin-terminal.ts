@@ -555,7 +555,7 @@
     <message>
         <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
         <source>Delete</source>
-        <translation type="unfinished">删除</translation>
+        <translation>删除</translation>
     </message>
 </context>
 <context>
@@ -826,87 +826,99 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../views/termwidget.cpp" line="174"/>
         <source>Copy &amp;Selection</source>
-        <translation>复制选择内容</translation>
+        <translation type="vanished">复制选择内容</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="177"/>
+        <location filename="../views/termwidget.cpp" line="179"/>
         <source>&amp;Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="183"/>
+        <location filename="../views/termwidget.cpp" line="185"/>
         <source>&amp;Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="194"/>
+        <location filename="../views/termwidget.cpp" line="196"/>
         <source>&amp;Open File Manager</source>
         <translation>打开文件管理器</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="200"/>
         <source>Split &amp;Horizontally</source>
-        <translation>横向分屏</translation>
+        <translation type="vanished">横向分屏</translation>
+    </message>
+    <message>
+        <source>Split &amp;Vertically</source>
+        <translation type="vanished">垂直分屏</translation>
+    </message>
+    <message>
+        <location filename="../views/termwidget.cpp" line="176"/>
+        <source>&amp;Copy</source>
+        <translation>复制</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="202"/>
-        <source>Split &amp;Vertically</source>
-        <translation>垂直分屏</translation>
+        <source>&amp;Horizontal Split</source>
+        <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="205"/>
+        <location filename="../views/termwidget.cpp" line="204"/>
+        <source>&amp;Vertical Split</source>
+        <translation>纵向分屏</translation>
+    </message>
+    <message>
+        <location filename="../views/termwidget.cpp" line="207"/>
         <source>Close &amp;Window</source>
         <translation>关闭窗⼝</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="209"/>
+        <location filename="../views/termwidget.cpp" line="211"/>
         <source>Close &amp;Other &amp;Window</source>
         <translation>关闭其他窗⼝</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="214"/>
+        <location filename="../views/termwidget.cpp" line="216"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="221"/>
+        <location filename="../views/termwidget.cpp" line="223"/>
         <source>Exit Full&amp;screen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="224"/>
+        <location filename="../views/termwidget.cpp" line="226"/>
         <source>Full&amp;screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="227"/>
+        <location filename="../views/termwidget.cpp" line="229"/>
         <source>&amp;Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="232"/>
+        <location filename="../views/termwidget.cpp" line="235"/>
         <source>&amp;Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="254"/>
+        <location filename="../views/termwidget.cpp" line="257"/>
         <source>Rename title</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="271"/>
+        <location filename="../views/termwidget.cpp" line="274"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="278"/>
+        <location filename="../views/termwidget.cpp" line="281"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="279"/>
+        <location filename="../views/termwidget.cpp" line="282"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>
@@ -919,32 +931,32 @@
         <translation type="vanished">标题名称: </translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="287"/>
+        <location filename="../views/termwidget.cpp" line="290"/>
         <source>&amp;Encoding</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="290"/>
+        <location filename="../views/termwidget.cpp" line="294"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="294"/>
+        <location filename="../views/termwidget.cpp" line="298"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="300"/>
+        <location filename="../views/termwidget.cpp" line="304"/>
         <source>Upload file</source>
         <translation>上传⽂件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="301"/>
+        <location filename="../views/termwidget.cpp" line="305"/>
         <source>Download file</source>
         <translation>下载⽂件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="306"/>
+        <location filename="../views/termwidget.cpp" line="310"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

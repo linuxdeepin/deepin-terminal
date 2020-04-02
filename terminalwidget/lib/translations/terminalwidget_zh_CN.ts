@@ -47,8 +47,8 @@
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
-        <source>Copy Link Address</source>
-        <translation>复制链接地址</translation>
+        <source>Copy Link</source>
+        <translation>复制链接</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
