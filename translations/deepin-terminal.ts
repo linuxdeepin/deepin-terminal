@@ -48,8 +48,9 @@
         <translation>取消</translation>
     </message>
     <message>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="164"/>
         <source>Add</source>
-        <translation type="vanished">添加</translation>
+        <translation>添加</translation>
     </message>
     <message>
         <location filename="../customcommand/customcommandoptdlg.cpp" line="123"/>
@@ -67,14 +68,13 @@
         <translation>删除命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="164"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="166"/>
         <source>Sure</source>
-        <translation>确定</translation>
+        <translation type="vanished">确定</translation>
     </message>
     <message>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="166"/>
         <source>Save</source>
-        <translation type="vanished">保存</translation>
+        <translation>保存</translation>
     </message>
 </context>
 <context>
@@ -116,7 +116,7 @@
 <context>
     <name>CustomCommandPlugin</name>
     <message>
-        <location filename="../customcommand/customcommandplugin.cpp" line="36"/>
+        <location filename="../customcommand/customcommandplugin.cpp" line="39"/>
         <source>Custom Commands</source>
         <translation>自定义命令</translation>
     </message>
@@ -125,14 +125,14 @@
     <name>DSettingsDialog</name>
     <message>
         <location filename="../common/utils.cpp" line="244"/>
-        <source>This shortcut conflicts with %1, click on Add to make this shortcut effective immediately</source>
+        <source>This shortcut conflicts with %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>EncodePanelPlugin</name>
     <message>
-        <location filename="../encodeplugin/encodepanelplugin.cpp" line="33"/>
+        <location filename="../encodeplugin/encodepanelplugin.cpp" line="36"/>
         <source>Switch &amp;Encoding</source>
         <translation type="unfinished"></translation>
     </message>
@@ -144,42 +144,42 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="781"/>
+        <location filename="../main/mainwindow.cpp" line="782"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="781"/>
+        <location filename="../main/mainwindow.cpp" line="782"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="849"/>
+        <location filename="../main/mainwindow.cpp" line="850"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="865"/>
+        <location filename="../main/mainwindow.cpp" line="866"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1234"/>
+        <location filename="../main/mainwindow.cpp" line="1235"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1236"/>
+        <location filename="../main/mainwindow.cpp" line="1237"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1238"/>
+        <location filename="../main/mainwindow.cpp" line="1239"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1294"/>
+        <location filename="../main/mainwindow.cpp" line="1295"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -188,12 +188,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1326"/>
+        <location filename="../main/mainwindow.cpp" line="1327"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1328"/>
+        <location filename="../main/mainwindow.cpp" line="1329"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -269,8 +269,8 @@
         <translation>快捷键</translation>
     </message>
     <message>
-        <location filename="../settings/settings_translation.cpp" line="27"/>
         <location filename="../main/main.cpp" line="42"/>
+        <location filename="../settings/settings_translation.cpp" line="27"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
@@ -526,12 +526,17 @@
     </message>
     <message>
         <location filename="../common/utils.cpp" line="251"/>
+        <source>click on Add to make this shortcut effective immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="252"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
     <message>
         <location filename="../common/utils.cpp" line="231"/>
-        <location filename="../common/utils.cpp" line="251"/>
+        <location filename="../common/utils.cpp" line="252"/>
         <location filename="../customcommand/customcommandlist.cpp" line="126"/>
         <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
         <source>Cancel</source>
@@ -544,9 +549,13 @@
     </message>
     <message>
         <location filename="../customcommand/customcommandlist.cpp" line="126"/>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
         <source>ok</source>
         <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
+        <source>Delete</source>
+        <translation type="unfinished">删除</translation>
     </message>
 </context>
 <context>
@@ -560,12 +569,12 @@
 <context>
     <name>RemoteManagementPlugn</name>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="30"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="33"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="95"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="98"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>在您使⽤右键菜单进⾏上传和下载⽂件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
@@ -573,14 +582,22 @@
 <context>
     <name>ServerConfigList</name>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="135"/>
         <source>delete opt</source>
-        <translation>删除选项</translation>
+        <translation type="vanished">删除选项</translation>
+    </message>
+    <message>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="135"/>
+        <source>Delete Server</source>
+        <translation>删除服务器</translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfiglist.cpp" line="136"/>
+        <source>Do you sure to delete the %1?</source>
+        <translation>您确认要删除%1？</translation>
+    </message>
+    <message>
         <source>Do you sure to delete the %1</source>
-        <translation>确认删除</translation>
+        <translation type="vanished">确认删除</translation>
     </message>
 </context>
 <context>
@@ -692,7 +709,7 @@
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="198"/>
         <source>Edit server</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑服务器</translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="199"/>
@@ -809,87 +826,87 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../views/termwidget.cpp" line="176"/>
+        <location filename="../views/termwidget.cpp" line="174"/>
         <source>Copy &amp;Selection</source>
         <translation>复制选择内容</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="179"/>
+        <location filename="../views/termwidget.cpp" line="177"/>
         <source>&amp;Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="185"/>
+        <location filename="../views/termwidget.cpp" line="183"/>
         <source>&amp;Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="196"/>
+        <location filename="../views/termwidget.cpp" line="194"/>
         <source>&amp;Open File Manager</source>
         <translation>打开文件管理器</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="202"/>
+        <location filename="../views/termwidget.cpp" line="200"/>
         <source>Split &amp;Horizontally</source>
         <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="204"/>
+        <location filename="../views/termwidget.cpp" line="202"/>
         <source>Split &amp;Vertically</source>
         <translation>垂直分屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="207"/>
+        <location filename="../views/termwidget.cpp" line="205"/>
         <source>Close &amp;Window</source>
         <translation>关闭窗⼝</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="211"/>
+        <location filename="../views/termwidget.cpp" line="209"/>
         <source>Close &amp;Other &amp;Window</source>
         <translation>关闭其他窗⼝</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="216"/>
+        <location filename="../views/termwidget.cpp" line="214"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="223"/>
+        <location filename="../views/termwidget.cpp" line="221"/>
         <source>Exit Full&amp;screen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="226"/>
+        <location filename="../views/termwidget.cpp" line="224"/>
         <source>Full&amp;screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="229"/>
+        <location filename="../views/termwidget.cpp" line="227"/>
         <source>&amp;Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="235"/>
+        <location filename="../views/termwidget.cpp" line="232"/>
         <source>&amp;Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="257"/>
+        <location filename="../views/termwidget.cpp" line="254"/>
         <source>Rename title</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="274"/>
+        <location filename="../views/termwidget.cpp" line="271"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="281"/>
+        <location filename="../views/termwidget.cpp" line="278"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="282"/>
+        <location filename="../views/termwidget.cpp" line="279"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>
@@ -902,32 +919,32 @@
         <translation type="vanished">标题名称: </translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="290"/>
+        <location filename="../views/termwidget.cpp" line="287"/>
         <source>&amp;Encoding</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="294"/>
+        <location filename="../views/termwidget.cpp" line="290"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="298"/>
+        <location filename="../views/termwidget.cpp" line="294"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="304"/>
+        <location filename="../views/termwidget.cpp" line="300"/>
         <source>Upload file</source>
         <translation>上传⽂件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="305"/>
+        <location filename="../views/termwidget.cpp" line="301"/>
         <source>Download file</source>
         <translation>下载⽂件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="310"/>
+        <location filename="../views/termwidget.cpp" line="306"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

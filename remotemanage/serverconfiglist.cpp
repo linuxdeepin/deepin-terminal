@@ -132,9 +132,9 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
     if (dlg.exec() == QDialog::Accepted) {
         if (dlg.isDelServer()) {
             OperationConfirmDlg optDlg;
-            optDlg.setOperatTypeName(tr("delete opt"));
-            optDlg.setTipInfo(tr("Do you sure to delete the %1").arg(curItemServer->m_serverName));
-            optDlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
+            optDlg.setOperatTypeName(tr("Delete Server"));
+            optDlg.setTipInfo(tr("Do you sure to delete the %1?").arg(curItemServer->m_serverName));
+            optDlg.setOKCancelBtnText(QObject::tr("Delete"), QObject::tr("Cancel"));
             optDlg.exec();
             if (optDlg.getConfirmResult() == QDialog::Accepted) {
                 ServerConfigManager::instance()->delServerConfig(curItemServer);
