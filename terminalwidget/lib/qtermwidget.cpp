@@ -58,6 +58,7 @@ TermWidgetImpl::TermWidgetImpl(QWidget *parent)
 {
     this->m_session = createSession(parent);
     SessionManager::instance()->saveSession(this->m_session);
+    SessionManager::instance()->setCurrSession(this->m_session);
 
     this->m_terminalDisplay = createTerminalDisplay(this->m_session, parent);
 }
@@ -423,6 +424,9 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, SIGNAL(finished()), this, SLOT(sessionFinished()));
     connect(m_impl->m_session, &Session::titleChanged, this, &QTermWidget::titleChanged);
     connect(m_impl->m_session, &Session::cursorChanged, this, &QTermWidget::cursorChanged);
+
+    //将终端活动状态传给SessionManager单例
+    connect(this, SIGNAL(isTermIdle(bool)), SessionManager::instance(), SIGNAL(sessionIdle(bool)));
 }
 
 QTermWidget::~QTermWidget()

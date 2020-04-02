@@ -117,3 +117,13 @@ Session *SessionManager::idToSession(int id)
     qDebug() << "Failed to find session for ID" << id;
     return nullptr;
 }
+
+void SessionManager::setCurrSession(Session *session)
+{
+    _currSession = session;
+}
+
+Session *SessionManager::getCurrSession()
+{
+    return _currSession;
+}

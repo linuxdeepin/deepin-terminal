@@ -31,6 +31,8 @@
 #ifndef PTY_H
 #define PTY_H
 
+#include <readline/history.h>
+
 // Qt
 #include <QStringList>
 #include <QVector>
@@ -196,7 +198,8 @@ Q_OBJECT
     void dataReceived();
 
   private:
-      void init();
+    void init();
+    void initHistoryInfo();
 
     // takes a list of key=value pairs and adds them
     // to the environment for the process
@@ -207,6 +210,12 @@ Q_OBJECT
     char _eraseChar;
     bool _xonXoff;
     bool _utf8;
+    QString _sendBuffer;
+    int _cursorPos;
+    bool _bHistoryUp;
+    bool _bHistoryDown;
+    bool _bTerminalRemoved;
+    HIST_ENTRY *_currHistory;
 };
 
 }

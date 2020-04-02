@@ -157,7 +157,7 @@ lxqt_translate_ts(TERMINALWIDGET_QM
 )
 
 add_library(${TERMINALWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS} ${TERMINALWIDGET_QM})
-target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME} Qt5::Widgets)
+target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME} Qt5::Widgets readline)
 set_target_properties( ${TERMINALWIDGET_LIBRARY_NAME} PROPERTIES
                        SOVERSION ${TERMINALWIDGET_VERSION_MAJOR}
                        VERSION ${TERMINALWIDGET_VERSION}

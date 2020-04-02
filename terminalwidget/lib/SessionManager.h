@@ -69,6 +69,12 @@ public:
     int  getSessionId(Session *session);
     Session *idToSession(int id);
 
+    void setCurrSession(Session *session);
+    Session *getCurrSession();
+
+signals:
+    void sessionIdle(bool isIdle);
+
 protected Q_SLOTS:
     /**
      * Called to inform the manager that a session has finished executing.
@@ -80,6 +86,8 @@ protected Q_SLOTS:
 private:
     QList<Session *> _sessions; // list of running sessions
     QHash<Session *, int> _restoreMapping;
+
+    Session *_currSession;
 };
 
 }
