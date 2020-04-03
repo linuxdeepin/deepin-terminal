@@ -36,7 +36,7 @@ public:
 
     bool isTabVisited(int tabSessionId);
     void addTab(TermProperties properties, bool activeTab = false);
-    void closeTab(const QString &identifier);
+    void closeTab(const QString &identifier, bool runCheck = true);
     void updateTabStatus();
 
     /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/

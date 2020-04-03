@@ -178,7 +178,9 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
-    connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::closeTab);
+    connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString &identifier) {
+        closeTab(identifier, false);
+    });
     /******** Modify by m000714 daizhengwen 2020-03-31: 避免多次菜单弹出****************/
     // 菜单弹出在时间过滤器获取，不需要从terminal事件中获取
 //    connect(termPage, &TermWidgetPage::termGetFocus, this, [ = ]() {
