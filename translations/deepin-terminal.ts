@@ -124,7 +124,7 @@
 <context>
     <name>DSettingsDialog</name>
     <message>
-        <location filename="../common/utils.cpp" line="244"/>
+        <location filename="../common/utils.cpp" line="265"/>
         <source>This shortcut conflicts with %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -144,42 +144,42 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="782"/>
+        <location filename="../main/mainwindow.cpp" line="786"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="782"/>
+        <location filename="../main/mainwindow.cpp" line="786"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="850"/>
+        <location filename="../main/mainwindow.cpp" line="854"/>
         <source>New &amp;workspace</source>
         <translation>新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="866"/>
+        <location filename="../main/mainwindow.cpp" line="870"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1235"/>
+        <location filename="../main/mainwindow.cpp" line="1259"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1237"/>
+        <location filename="../main/mainwindow.cpp" line="1261"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1239"/>
+        <location filename="../main/mainwindow.cpp" line="1263"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1295"/>
+        <location filename="../main/mainwindow.cpp" line="1319"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -188,12 +188,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1327"/>
+        <location filename="../main/mainwindow.cpp" line="1351"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1329"/>
+        <location filename="../main/mainwindow.cpp" line="1353"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -269,8 +269,8 @@
         <translation>快捷键</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="42"/>
         <location filename="../settings/settings_translation.cpp" line="27"/>
+        <location filename="../main/main.cpp" line="42"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
@@ -515,35 +515,35 @@
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="229"/>
+        <location filename="../common/utils.cpp" line="250"/>
         <source>Programs are still running in terminal</source>
         <translation>终端仍然有程序在运⾏</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="230"/>
+        <location filename="../common/utils.cpp" line="251"/>
         <source>Are you sure you want to exit?</source>
         <translation>您确定要退出吗？</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="231"/>
+        <location filename="../common/utils.cpp" line="252"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="251"/>
+        <location filename="../common/utils.cpp" line="272"/>
         <source>click on Add to make this shortcut effective immediately</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="252"/>
+        <location filename="../common/utils.cpp" line="273"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="231"/>
-        <location filename="../common/utils.cpp" line="252"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="126"/>
         <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="126"/>
+        <location filename="../common/utils.cpp" line="252"/>
+        <location filename="../common/utils.cpp" line="273"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -673,6 +673,11 @@
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="171"/>
         <source>Delete key:</source>
         <translation>删除键:</translation>
+    </message>
+    <message>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="298"/>
+        <source>Enter user name please!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="131"/>
@@ -961,7 +966,7 @@
         <translation>下载⽂件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="310"/>
+        <location filename="../views/termwidget.cpp" line="306"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

@@ -23,6 +23,11 @@
 
 #include <QObject>
 #include <QHash>
+#include <QFont>
+
+/******** Modify by m000714 daizhengwen 2020-04-03: 自绘的显示控件限制item的宽度****************/
+#define ITEMMAXWIDTH 160
+/********************* Modify by m000714 daizhengwen End ************************/
 
 class Utils : public QObject
 {
@@ -40,6 +45,7 @@ public:
     static QString suffixList();
     static QPixmap renderSVG(const QString &filePath, const QSize &size);
     static QString loadFontFamilyFromFiles(const QString &fontFileName);
+    static QString getElidedText(QFont font, QString str, int MaxWith);
 
     static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
 

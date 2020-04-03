@@ -97,6 +97,8 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         QFont textFont = painter->font();
         int cmdNameFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
         textFont.setPixelSize(cmdNameFontSize);
+        strCmdName = Utils::getElidedText(textFont, strCmdName, ITEMMAXWIDTH);
+//        strCmdShortcut = Utils::getElidedText(textFont, strCmdShortcut, ITEMMAXWIDTH);
         painter->setFont(textFont);
 
         int lineSpace = 8;

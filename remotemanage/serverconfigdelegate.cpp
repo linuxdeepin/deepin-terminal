@@ -112,6 +112,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         QFont textFont = painter->font();
         int textFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
         textFont.setPixelSize(textFontSize);
+        strServerName = Utils::getElidedText(textFont, strServerName, ITEMMAXWIDTH);
         painter->setFont(textFont);
 
         int lineSpace = 8;
@@ -125,6 +126,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->drawText(serverNameRect, Qt::AlignLeft | Qt::AlignTop, strServerName);
 
         textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7));
+        strAddress = Utils::getElidedText(textFont, strAddress, ITEMMAXWIDTH);
         painter->setFont(textFont);
 
         DStyleHelper styleHelper;

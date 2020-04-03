@@ -39,6 +39,7 @@
 #include <QFontMetrics>
 #include <QTextLayout>
 #include <QTime>
+#include <QFontMetrics>
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -124,6 +125,26 @@ QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
 
     m_fontNameCache.insert(fontFileName, fontFamilyName);
     return fontFamilyName;
+}
+
+QString Utils::getElidedText(QFont font, QString text, int MaxWith)
+{
+    if (text.isEmpty()) {
+        return "";
+    }
+
+    QFontMetrics fontWidth(font);
+
+    // 计算字符串宽度
+    int width = fontWidth.width(text);
+
+    // 当字符串宽度大于最大宽度时进行转换
+    if (width >= MaxWith) {
+        // 右部显示省略号
+        text = fontWidth.elidedText(text, Qt::ElideRight, MaxWith);
+    }
+
+    return text;
 }
 
 const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize &size)
