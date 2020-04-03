@@ -32,8 +32,21 @@ ShortcutManager *ShortcutManager::instance()
 
 void ShortcutManager::initShortcuts()
 {
-    m_builtinShortcuts = createBuiltinShortcutsFromConfig();  // use QAction or QShortcut ?
+    //m_builtinShortcuts = createBuiltinShortcutsFromConfig();  // use QAction or QShortcut ?
 
+    //QStringList builtinShortcuts;
+    m_builtinShortcuts<<"F1";
+    m_builtinShortcuts<<"Ctrl+C";
+    m_builtinShortcuts<<"Ctrl+D";
+    for(int i = 0; i <= 9; i++)
+    {
+        m_builtinShortcuts<<QString("Alt+%1").arg(i);
+    }
+
+//    for(int i = 0; i < m_builtinShortcuts.size(); i++)
+//    {
+//        m_GloableShortctus[QString("builtin_%1").arg(i)] = m_builtinShortcuts.at(i);
+//    }
 
     // 快捷键初始化
     for (QString key : Settings::instance()->settings->keys())
@@ -44,7 +57,7 @@ void ShortcutManager::initShortcuts()
 
     m_customCommandActionList = createCustomCommandsFromConfig();
     m_mainWindow->addActions(m_customCommandActionList);
-    m_mainWindow->addActions(m_builtinShortcuts);
+    //m_mainWindow->addActions(m_builtinShortcuts);
 }
 
 QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
@@ -279,11 +292,26 @@ bool ShortcutManager::isValidShortcut(const QString &Key)
     {
         return true;
     }
+    // 单键都不允许
     if(Key.count("+") == 0)
     {
         qDebug()<<Key<<"is invalid!";
         return  false;
     }
+    // 小键盘单键都不允许
+    QRegExp regexpNum("^Num\+.*");
+    if(Key.contains(regexpNum))
+    {
+        qDebug()<<Key<<"is invalid!";
+        return  false;
+    }
+    // 内置快捷键都不允许
+    if(m_builtinShortcuts.contains(Key))
+    {
+        qDebug()<<Key<<"is conflict with builtin shortcut!";
+        return  false;
+    }
+
     return true;
 }
 void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)

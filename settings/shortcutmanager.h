@@ -39,7 +39,8 @@ public:
 private:
     MainWindow *m_mainWindow = nullptr;
     QList<QAction *> m_customCommandActionList;
-    QList<QAction *> m_builtinShortcuts;
+    //QList<QAction *> m_builtinShortcuts;
+    QStringList m_builtinShortcuts;
     QMap<QString, QString> m_GloableShortctus;
     static ShortcutManager *m_instance;
     QString m_clipboardCommand;

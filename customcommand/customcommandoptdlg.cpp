@@ -167,6 +167,13 @@ void CustomCommandOptDlg::initUI()
     }
 
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
+    connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, [ = ](const QKeySequence & sequence) {
+        if(!ShortcutManager::instance()->isValidShortcut(sequence.toString()))
+        {
+            m_shortCutLineEdit->clear();
+            m_shortCutLineEdit->setKeySequence(QKeySequence(m_currItemData->m_cmdShortcut));
+        }
+    });
 
 #ifdef UI_DEBUG
     contentFrame->setStyleSheet("background:cyan");
