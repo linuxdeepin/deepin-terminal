@@ -43,12 +43,12 @@
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="162"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="163"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="164"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="165"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
@@ -72,7 +72,7 @@
         <translation type="vanished">确定</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="166"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="167"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
@@ -154,32 +154,36 @@
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="854"/>
         <source>New &amp;workspace</source>
-        <translation>新建⼯作区</translation>
+        <translation type="vanished">新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="870"/>
+        <location filename="../main/mainwindow.cpp" line="861"/>
+        <source>New &amp;window</source>
+        <translation>新建窗口</translation>
+    </message>
+    <message>
+        <location filename="../main/mainwindow.cpp" line="884"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1259"/>
+        <location filename="../main/mainwindow.cpp" line="1273"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1261"/>
+        <location filename="../main/mainwindow.cpp" line="1275"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1263"/>
+        <location filename="../main/mainwindow.cpp" line="1277"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1319"/>
+        <location filename="../main/mainwindow.cpp" line="1333"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -188,12 +192,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1351"/>
+        <location filename="../main/mainwindow.cpp" line="1365"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1353"/>
+        <location filename="../main/mainwindow.cpp" line="1367"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>

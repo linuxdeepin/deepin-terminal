@@ -851,11 +851,25 @@ void MainWindow::initConnections()
 
 void MainWindow::initTitleBar()
 {
-    QAction *newWorkspaceAction(new QAction(tr("New &workspace"), this));
-    connect(newWorkspaceAction, &QAction::triggered, this, [this]() {
-        this->addTab(currentTab()->createCurrentTerminalProperties(), true);
+    /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
+//    QAction *newWorkspaceAction(new QAction(tr("New &workspace"), this));
+//    connect(newWorkspaceAction, &QAction::triggered, this, [this]() {
+//        this->addTab(currentTab()->createCurrentTerminalProperties(), true);
+//    });
+//    m_menu->addAction(newWorkspaceAction);
+
+    QAction *newWindowAction(new QAction(tr("New &window"), this));
+    connect(newWindowAction, &QAction::triggered, this, [this]() {
+        qDebug() << "menu click new window";
+
+        TermWidgetPage *tabPage = currentTab();
+        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+        QString currWorkingDir = termWidgetWapper->workingDirectory();
+        emit newWindowRequest(currWorkingDir);
     });
-    m_menu->addAction(newWorkspaceAction);
+    m_menu->addAction(newWindowAction);
+
+    /********************* Modify by m000714 daizhengwen End ************************/
     for (MainWindowPluginInterface *plugin : m_plugins) {
         QAction *pluginMenu = plugin->titlebarMenu(this);
         // 取消Encoding插件的菜单展示
@@ -1057,8 +1071,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         ifstream in("./QuakeWindowActivated.dat");
         in >> auto_hide_raytheon_window;
         in.close();
-        if(auto_hide_raytheon_window) {
-        //--------------------------------------------------------------------------//
+        if (auto_hide_raytheon_window) {
+            //--------------------------------------------------------------------------//
             if (watched == this && event->type() == QEvent::WindowDeactivate) {
                 qDebug() << "WindowDeactivate" << event->type();
                 this->hide();
@@ -1118,7 +1132,7 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
     }
 
     //--added by qinyaning(nyq) to save the param advanced.window.auto_hide_raytheon_window to QuakeWindowActivated.dat
-    if((keyName == "advanced.window.auto_hide_raytheon_window")) {
+    if ((keyName == "advanced.window.auto_hide_raytheon_window")) {
         bool value = Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool();
         ofstream out("./QuakeWindowActivated.dat");
         out << value;
