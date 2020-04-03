@@ -9,6 +9,7 @@
 #include <DComboBox>
 #include <DCommandLinkButton>
 #include <DDialogCloseButton>
+#include <DWindowCloseButton>
 #include <DIconButton>
 #include <DLabel>
 #include <DLineEdit>
@@ -20,6 +21,8 @@
 #include <QWidget>
 
 DWIDGET_USE_NAMESPACE
+
+class TermCommandLinkButton;
 
 class ServerConfigOptDlg : public DAbstractDialog
 {
@@ -57,7 +60,7 @@ private:
     ServerConfigOptType m_type;
     ServerConfig *m_curServer = nullptr;
     DLabel *m_titleLabel = nullptr;
-    DDialogCloseButton *m_closeButton = nullptr;
+    DWindowCloseButton *m_closeButton = nullptr;
     DLineEdit *m_serverName = nullptr;
     DLineEdit *m_address = nullptr;
     DSpinBox *m_port = nullptr;
@@ -71,7 +74,7 @@ private:
     DComboBox *m_backSapceKey = nullptr;
     DComboBox *m_deleteKey = nullptr;
     DCommandLinkButton *m_advancedOptions = nullptr;
-    DCommandLinkButton *m_delServer = nullptr;
+    TermCommandLinkButton *m_delServer = nullptr;
     bool m_bDelOpt = false;
 
     void initUI();

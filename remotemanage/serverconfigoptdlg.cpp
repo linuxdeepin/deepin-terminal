@@ -1,21 +1,24 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigmanager.h"
+#include "termcommandlinkbutton.h"
 
 #include <DFontSizeManager>
 #include <DPushButton>
 #include <DSuggestButton>
+#include <DVerticalLine>
 
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QTextCodec>
+#include <QSpacerItem>
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
     : DAbstractDialog(parent),
       m_type(type),
       m_curServer(curServer),
       m_titleLabel(new DLabel),
-      m_closeButton(new DDialogCloseButton()),
+      m_closeButton(new DWindowCloseButton(this)),
       m_serverName(new DLineEdit),
       m_address(new DLineEdit),
       m_port(new DSpinBox),
@@ -29,7 +32,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_backSapceKey(new DComboBox),
       m_deleteKey(new DComboBox),
       m_advancedOptions(new DCommandLinkButton(tr("Advanced options"))),
-      m_delServer(new DCommandLinkButton(tr("Delete server")))
+      m_delServer(new TermCommandLinkButton())
 
 {
     setWindowModality(Qt::ApplicationModal);
@@ -48,13 +51,17 @@ void ServerConfigOptDlg::initUI()
 
     m_titleLabel->setText(tr("Add Server"));
 
+    m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setIconSize(QSize(30, 30));
 
     DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5);
     QHBoxLayout *headLayout = new QHBoxLayout();
+    // 为了和closebutton对应是标题居中
+    headLayout->addSpacing(30);
+    headLayout->addStretch();
     headLayout->addWidget(m_titleLabel);
-    headLayout->addWidget(m_closeButton);
-    headLayout->setSpacing(0);
-    headLayout->setMargin(0);
+    headLayout->addStretch();
+    headLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignVCenter);
     headLayout->setAlignment(Qt::AlignTop);
     connect(m_closeButton, &DDialogCloseButton::clicked, this, [ = ]() {
         reject();
@@ -70,7 +77,8 @@ void ServerConfigOptDlg::initUI()
     pServerNameLabel->setAlignment(Qt::AlignVCenter);
     pServerNameLabel->setFixedWidth(100);
     pServerNameLabel->setFixedHeight(30);
-    m_serverName->lineEdit()->setPlaceholderText(tr("Optional"));
+    m_serverName->lineEdit()->setPlaceholderText(tr("Required"));
+    //m_serverName->lineEdit()->setText(tr("Remote"));
     pGridLayout->addWidget(pServerNameLabel);
     pGridLayout->addWidget(m_serverName);
 
@@ -79,7 +87,8 @@ void ServerConfigOptDlg::initUI()
     pAddressLabel->setAlignment(Qt::AlignVCenter);
     pAddressLabel->setFixedWidth(100);
     pAddressLabel->setFixedHeight(30);
-    m_address->lineEdit()->setPlaceholderText(tr("Optional"));
+    m_address->lineEdit()->setPlaceholderText(tr("Required"));
+    //m_address->lineEdit()->setText(tr("deepin"));
     m_address->setFixedWidth(150);
     pGridLayout->addWidget(pAddressLabel);
     pGridLayout->addWidget(m_address);
@@ -102,7 +111,7 @@ void ServerConfigOptDlg::initUI()
     pUsernameLabel->setAlignment(Qt::AlignVCenter);
     pUsernameLabel->setFixedWidth(100);
     pUsernameLabel->setFixedHeight(30);
-    m_userName->lineEdit()->setPlaceholderText(tr("Optional"));
+    m_userName->lineEdit()->setPlaceholderText(tr("Required"));
     pGridLayout->addWidget(pUsernameLabel);
     pGridLayout->addWidget(m_userName);
 
@@ -111,6 +120,7 @@ void ServerConfigOptDlg::initUI()
     pPasswordLabel->setAlignment(Qt::AlignVCenter);
     pPasswordLabel->setFixedWidth(100);
     pPasswordLabel->setFixedHeight(30);
+    m_password->lineEdit()->setPlaceholderText(tr("Required"));
     pGridLayout->addWidget(pPasswordLabel);
     pGridLayout->addWidget(m_password);
 
@@ -177,20 +187,29 @@ void ServerConfigOptDlg::initUI()
     seniorLayout->addWidget(m_deleteKey);
     seniorWidget->setLayout(seniorLayout);
 
+    m_VBoxLayout->addLayout(pGridLayout);
+    QSpacerItem *upItem = new QSpacerItem(this->width(), 20);
+    m_VBoxLayout->addSpacerItem(upItem);
+    m_VBoxLayout->addWidget(m_advancedOptions, 0, Qt::AlignHCenter);
+    QSpacerItem *downItem = new QSpacerItem(this->width(), 20);
+    m_VBoxLayout->addSpacerItem(downItem);
+    m_VBoxLayout->addWidget(seniorWidget);
+    m_delServer->setText(tr("Delete server"));
+    m_VBoxLayout->addWidget(m_delServer, 0, Qt::AlignHCenter);
+    m_delServer->hide();
+    seniorWidget->hide();
+
+    m_advancedOptions->setFixedSize(48, 18);
+    DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
     connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
         m_advancedOptions->hide();
         seniorWidget->show();
+        upItem->changeSize(this->width(), 0);
+        downItem->changeSize(this->width(), 0);
         if (m_type == SCT_MODIFY) {
             m_delServer->show();
         }
     });
-
-    m_VBoxLayout->addLayout(pGridLayout);
-    m_VBoxLayout->addWidget(m_advancedOptions, 0, Qt::AlignHCenter);
-    m_VBoxLayout->addWidget(seniorWidget);
-    m_VBoxLayout->addWidget(m_delServer, 0, Qt::AlignHCenter);
-    m_delServer->hide();
-    seniorWidget->hide();
 
     DPushButton *pCancelButton = new DPushButton(tr("Cancel"));
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add"));
@@ -202,10 +221,14 @@ void ServerConfigOptDlg::initUI()
     QBrush brush = pa.textLively().color();
     pa.setBrush(DPalette::ButtonText, brush);
     pAddSaveButton->setPalette(pa);
+    m_VBoxLayout->addStretch(0);
     QHBoxLayout *pBtHbLayout = new QHBoxLayout();
+    DVerticalLine *line = new DVerticalLine();
     pBtHbLayout->addWidget(pCancelButton);
+    pBtHbLayout->addWidget(line);
     pBtHbLayout->addWidget(pAddSaveButton);
     m_VBoxLayout->addLayout(pBtHbLayout);
+    m_VBoxLayout->addStretch(0);
 
     setLayout(m_VBoxLayout);
 
