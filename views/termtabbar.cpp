@@ -70,7 +70,7 @@ void CustomTabStyle::drawControl(ControlElement element, const QStyleOption *opt
             {
                 if (tab->state & QStyle::State_Selected)
                 {
-                    painter->setPen(pa.color(DPalette::HighlightedText));
+                    painter->setPen(pa.color(DPalette::DarkLively));
                 }
                 else if(tab->state & QStyle::State_MouseOver)
                 {
