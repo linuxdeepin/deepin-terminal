@@ -37,14 +37,14 @@ void CustomCommandPanel::showAddCustomCommandDlg()
         } else {
             /******** Modify by m000714 daizhengwen 2020-03-30: 同名的情况，弹出提示框，约束输入****************/
             // 有同名命令，发出警告
-            DDialog *pDialog = new DDialog(tr("Same name exists"), tr("Replace existing command or not?"), nullptr);
-            pDialog->setFixedSize(380, 160);
-            pDialog->setIcon(QIcon::fromTheme("dialog-warning"));
-            pDialog->setWindowFlags(pDialog->windowFlags() | Qt::WindowStaysOnTopHint);
-            pDialog->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
-            pDialog->addButton(QString(tr("Replace")), true, DDialog::ButtonWarning);
-            pDialog->show();
-            if (pDialog->exec() == QDialog::Accepted) {
+            DDialog pDialog(tr("Same name exists"), tr("Replace existing command or not?"), nullptr);
+            pDialog.setFixedSize(380, 160);
+            pDialog.setIcon(QIcon::fromTheme("dialog-warning"));
+            pDialog.setWindowFlags(pDialog.windowFlags() | Qt::WindowStaysOnTopHint);
+            pDialog.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+            pDialog.addButton(QString(tr("Replace")), true, DDialog::ButtonWarning);
+            pDialog.show();
+            if (pDialog.exec() == QDialog::Accepted) {
                 // 替换已有结构
                 existAction->setData(newAction->data());
                 existAction->setText(newAction->text());

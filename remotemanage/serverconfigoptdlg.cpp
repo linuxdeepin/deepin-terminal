@@ -59,7 +59,7 @@ void ServerConfigOptDlg::initUI()
     // 为了和closebutton对应是标题居中
     headLayout->addSpacing(30);
     headLayout->addStretch();
-    headLayout->addWidget(m_titleLabel);
+    headLayout->addWidget(m_titleLabel, 0, Qt::AlignCenter);
     headLayout->addStretch();
     headLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignVCenter);
     headLayout->setAlignment(Qt::AlignTop);
@@ -317,7 +317,7 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
     //---added by qinyaning(nyq) to show the tip when username is empty---//
-    if(m_userName->text().trimmed().isEmpty()) {//如果用户名为空， 提示用户名为空， 添加失败
+    if (m_userName->text().trimmed().isEmpty()) { //如果用户名为空， 提示用户名为空， 添加失败
         m_userName->showAlertMessage(tr("Enter user name please!"), m_userName);
         return;
     }
