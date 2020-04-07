@@ -14,6 +14,7 @@ void RemoteManagementSearchPanel::initUI()
     m_backButton = new DIconButton(this);
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(40, 40));
+    m_backButton->setFocusPolicy(Qt::NoFocus);
 
     m_listWidget = new ServerConfigList(this);
     m_label = new DLabel(this);
@@ -26,8 +27,11 @@ void RemoteManagementSearchPanel::initUI()
     m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->addSpacing(10);
     hlayout->addWidget(m_backButton);
+    hlayout->addSpacing(10);
     hlayout->addWidget(m_label);
+    hlayout->addStretch();
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
 

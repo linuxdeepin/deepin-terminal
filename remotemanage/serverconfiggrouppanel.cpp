@@ -17,6 +17,7 @@ void ServerConfigGroupPanel::initUI()
 
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(36, 36));
+    m_backButton->setFocusPolicy(Qt::NoFocus);
 
     m_searchEdit->setFixedWidth(174);
     m_searchEdit->setClearButtonEnabled(true);
