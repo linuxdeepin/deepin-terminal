@@ -893,7 +893,9 @@ void MainWindow::initTitleBar()
     m_titleBar = new TitleBar(this, m_isQuakeWindow);
     m_titleBar->setTabBar(m_tabbar);
     if (m_isQuakeWindow) {
-        m_titleBar->setBackgroundRole(QPalette::Window);
+        /******** Modify by m000714 daizhengwen 2020-04-07: 雷神窗口的titlebar颜色与主窗口一致****************/
+        m_titleBar->setBackgroundRole(titlebar()->backgroundRole());
+        /********************* Modify by m000714 daizhengwen End ************************/
         m_titleBar->setAutoFillBackground(true);
         m_centralLayout->addWidget(m_titleBar);
     } else {
