@@ -261,7 +261,7 @@
                             "key": "auto_copy_selection",
                             "type": "checkbox",
                             "text": "Copy on select",
-                            "default": true
+                            "default": false
                         }
                     ]
                 },
@@ -279,7 +279,7 @@
                             "key": "scroll_on_output",
                             "type": "checkbox",
                             "text": "Scroll on output",
-                            "default": false
+                            "default": true
                         }
                     ]
                 },
