@@ -178,7 +178,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
-    connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString &identifier) {
+    connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString & identifier) {
         closeTab(identifier, false);
     });
     /******** Modify by m000714 daizhengwen 2020-03-31: 避免多次菜单弹出****************/
@@ -221,15 +221,17 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::termRequestDownloadFile, this, &MainWindow::remoteDownloadFile);
 }
 
-void MainWindow::closeTab(const QString &identifier)
+void MainWindow::closeTab(const QString &identifier, bool runCheck)
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
             TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-            if (termWidgetWapper->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
-                qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
-                return;
+            if (runCheck) {
+                if (termWidgetWapper->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
+                    qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+                    return;
+                }
             }
         }
     }
@@ -1100,7 +1102,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
         // 242为RightPanel的的宽度
-        if (mouseEvent->button() == Qt::LeftButton && mouseEvent->x() < this->width()  - 242 ) {
+        if (mouseEvent->button() == Qt::LeftButton && mouseEvent->x() < this->width()  - 242) {
             showPlugin(PLUGIN_TYPE_NONE);
         }
     }
