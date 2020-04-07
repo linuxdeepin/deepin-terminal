@@ -102,6 +102,7 @@ void ServerConfigOptDlg::initUI()
     m_port->setValue(22);
     m_port->setSingleStep(1);
     m_port->setFixedWidth(70);
+    m_port->setButtonSymbols(DSpinBox::NoButtons);
     portLayout->addWidget(pPortLabel);
     portLayout->addWidget(m_port);
     pGridLayout->addLayout(portLayout, 1, 1, Qt::AlignRight);
