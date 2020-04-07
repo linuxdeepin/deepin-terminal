@@ -124,9 +124,9 @@
 <context>
     <name>DSettingsDialog</name>
     <message>
-        <location filename="../common/utils.cpp" line="265"/>
+        <location filename="../common/utils.cpp" line="274"/>
         <source>This shortcut conflicts with %1</source>
-        <translation type="unfinished"></translation>
+        <translation>此快捷键与%1冲突</translation>
     </message>
 </context>
 <context>
@@ -144,12 +144,12 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="788"/>
+        <location filename="../main/mainwindow.cpp" line="792"/>
         <source>Tab name:</source>
         <translation>标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="788"/>
+        <location filename="../main/mainwindow.cpp" line="792"/>
         <source>Rename Tab</source>
         <translation>重命名标题</translation>
     </message>
@@ -158,32 +158,32 @@
         <translation type="vanished">新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="863"/>
+        <location filename="../main/mainwindow.cpp" line="867"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="886"/>
+        <location filename="../main/mainwindow.cpp" line="890"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1275"/>
+        <location filename="../main/mainwindow.cpp" line="1281"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1277"/>
+        <location filename="../main/mainwindow.cpp" line="1283"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1279"/>
+        <location filename="../main/mainwindow.cpp" line="1285"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1335"/>
+        <location filename="../main/mainwindow.cpp" line="1341"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -192,12 +192,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1367"/>
+        <location filename="../main/mainwindow.cpp" line="1373"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1369"/>
+        <location filename="../main/mainwindow.cpp" line="1375"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -519,35 +519,39 @@
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="250"/>
+        <location filename="../common/utils.cpp" line="258"/>
         <source>Programs are still running in terminal</source>
         <translation>终端仍然有程序在运⾏</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="251"/>
+        <location filename="../common/utils.cpp" line="259"/>
         <source>Are you sure you want to exit?</source>
         <translation>您确定要退出吗？</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="252"/>
+        <location filename="../common/utils.cpp" line="261"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="272"/>
-        <source>click on Add to make this shortcut effective immediately</source>
-        <translation type="unfinished"></translation>
+        <location filename="../common/utils.cpp" line="281"/>
+        <source>Click on Add to make this shortcut effective immediately</source>
+        <translation>点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="273"/>
+        <source>click on Add to make this shortcut effective immediately</source>
+        <translation type="vanished">点击替换使这个快捷键立即生效</translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="282"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="139"/>
         <location filename="../customcommand/customcommandlist.cpp" line="126"/>
-        <location filename="../common/utils.cpp" line="252"/>
-        <location filename="../common/utils.cpp" line="273"/>
+        <location filename="../common/utils.cpp" line="260"/>
+        <location filename="../common/utils.cpp" line="282"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -562,7 +566,7 @@
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="139"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -595,12 +599,12 @@
         <translation type="vanished">删除选项</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="135"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="137"/>
         <source>Delete Server</source>
         <translation>删除服务器</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="136"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="138"/>
         <source>Do you sure to delete the %1?</source>
         <translation>您确认要删除%1？</translation>
     </message>
@@ -617,7 +621,7 @@
         <translation>高级选项</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="197"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="198"/>
         <source>Delete server</source>
         <translation>删除服务器</translation>
     </message>
@@ -646,60 +650,60 @@
         <translation>端口: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="109"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="110"/>
         <source>Username:</source>
         <translation>用户名: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="118"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="119"/>
         <source>Password:</source>
         <translation>密码: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="127"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="128"/>
         <source>Certificate:</source>
         <translation>证书:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="165"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="166"/>
         <source>Encoding:</source>
         <translation>编码:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="173"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="174"/>
         <source>Backspace key:</source>
         <translation>退格键:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="181"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="182"/>
         <source>Delete key:</source>
         <translation>删除键:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="321"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="322"/>
         <source>Enter user name please!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="141"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="142"/>
         <source>Group:</source>
         <translation>分组: </translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="80"/>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="90"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="114"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="123"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="115"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="124"/>
         <source>Required</source>
         <translation type="unfinished">必填</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="149"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="150"/>
         <source>Path:</source>
         <translation>路径: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="157"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="158"/>
         <source>Command:</source>
         <translation>命令: </translation>
     </message>
@@ -716,52 +720,52 @@
         <translation type="vanished">删除键: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="214"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="215"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="215"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="216"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="217"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="218"/>
         <source>Edit server</source>
         <translation>编辑服务器</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="218"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="219"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="294"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="306"/>
-        <source>ascii-del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="295"/>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="307"/>
-        <source>auto</source>
+        <source>ascii-del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="296"/>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="308"/>
-        <source>control-h</source>
+        <source>auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="297"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="305"/>
-        <source>escape-sequence</source>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="309"/>
+        <source>control-h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="298"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="309"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="306"/>
+        <source>escape-sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="299"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="310"/>
         <source>ttys</source>
         <translation type="unfinished"></translation>
     </message>

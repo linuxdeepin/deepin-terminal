@@ -278,7 +278,7 @@ bool Utils::showShortcutConflictDialog(QString conflictkey)
     QPixmap warnning = QIcon::fromTheme("dialog-warning").pixmap(QSize(32, 32));
     optDlg.setIconPixmap(warnning);
     optDlg.setOperatTypeName(str);
-    optDlg.setTipInfo(QObject::tr("click on Add to make this shortcut effective immediately"));
+    optDlg.setTipInfo(QObject::tr("Click on Add to make this shortcut effective immediately"));
     optDlg.setOKCancelBtnText(QObject::tr("Replace"), QObject::tr("Cancel"));
     optDlg.setFixedSize(380, 160);
     optDlg.exec();
