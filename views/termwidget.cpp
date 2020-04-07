@@ -37,9 +37,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     // theme
-    QString theme = "GreenOnBlack";
+    QString theme = "Dark";
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        theme = "BlackOnWhite";
+        theme = "Light";
     }
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
@@ -121,9 +121,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     [ = ](DGuiApplicationHelper::ColorType builtInTheme) {
         qDebug() << "themeChanged" << builtInTheme;
         // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
-        QString theme = "GreenOnBlack";
+        QString theme = "Dark";
         if (builtInTheme == DGuiApplicationHelper::LightType) {
-            theme = "BlackOnWhite";
+            theme = "Light";
         }
         setColorScheme(theme);
         Settings::instance()->setColorScheme(theme);
