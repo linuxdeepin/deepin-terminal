@@ -246,11 +246,20 @@ QString Utils::getRandString()
 
 bool Utils::showExitConfirmDialog()
 {
-    OperationConfirmDlg optDlg;
-    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
-    optDlg.setTipInfo(QObject::tr("Are you sure you want to exit?"));
-    optDlg.setOKCancelBtnText(QObject::tr("Exit"), QObject::tr("Cancel"));
-    optDlg.exec();
+//    OperationConfirmDlg optDlg;
+//    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
+//    optDlg.setTipInfo(QObject::tr("Are you sure you want to exit?"));
+//    optDlg.setOKCancelBtnText(QObject::tr("Exit"), QObject::tr("Cancel"));
+//    optDlg.exec();
+    /******** Modify by m000714 daizhengwen 2020-04-07: Dialog样式与UI不一致 bug#18918****************/
+    DDialog warningDlg;
+    warningDlg.setFixedSize(380, 160);
+    warningDlg.setIcon(QIcon::fromTheme("deepin-terminal"));
+    warningDlg.setTitle(QObject::tr("Programs are still running in terminal"));
+    warningDlg.setMessage(QObject::tr("Are you sure you want to exit?"));
+    warningDlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+    warningDlg.addButton(QObject::tr("Exit"), true, DDialog::ButtonWarning);
+    /********************* Modify by m000714 daizhengwen End ************************/
 
     return (optDlg.getConfirmResult() == QDialog::Accepted);
 }
