@@ -115,8 +115,10 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
     while (iter != configMap.constEnd()) {
         QList<ServerConfig *> configList = iter.value();
         for (auto cfg : configList) {
-            if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
-                    || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+            if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)                 // 服务名
+                    || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)            // 用户名
+                    || cfg->m_address.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)             // 地址
+                    || cfg->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {            // 分组
                 ServerConfigItemData itemData = changePointerToObject(cfg);
                 m_serCfgItemDataList.append(itemData);
             }
