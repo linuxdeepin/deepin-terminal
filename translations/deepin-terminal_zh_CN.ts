@@ -272,7 +272,7 @@
         <location filename="../settings/settings_translation.cpp" line="19"/>
         <location filename="../settings/settings_translation.cpp" line="26"/>
         <source>Advanced</source>
-        <translation>高级</translation>
+        <translation>高级设置</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="20"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="23"/>
         <source>Basic</source>
-        <translation>基础</translation>
+        <translation>基础设置</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="24"/>
