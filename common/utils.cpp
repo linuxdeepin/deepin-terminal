@@ -261,7 +261,7 @@ bool Utils::showExitConfirmDialog()
     warningDlg.addButton(QObject::tr("Exit"), true, DDialog::ButtonWarning);
     /********************* Modify by m000714 daizhengwen End ************************/
 
-    return (optDlg.getConfirmResult() == QDialog::Accepted);
+    return (warningDlg.exec() == QDialog::Accepted);
 }
 /*******************************************************************************
  1. @函数:    showShortcutConflictDialog
@@ -280,7 +280,7 @@ bool Utils::showShortcutConflictDialog(QString conflictkey)
     optDlg.setOperatTypeName(str);
     optDlg.setTipInfo(QObject::tr("click on Add to make this shortcut effective immediately"));
     optDlg.setOKCancelBtnText(QObject::tr("Replace"), QObject::tr("Cancel"));
-    optDlg.setFixedSize(380,160);
+    optDlg.setFixedSize(380, 160);
     optDlg.exec();
     return optDlg.getConfirmResult() == QDialog::Accepted;
 }
