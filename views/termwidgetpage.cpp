@@ -179,13 +179,6 @@ void TermWidgetPage::closeOtherTerminal()
     int currSessionId = m_currentTerm->getCurrSessionId();
     //exit protection
     for (TermWidgetWrapper *term : qAsConst(termList)) {
-        if ((term->getCurrSessionId() != currSessionId) && term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
-            qDebug() << "here are processes running in this terminal split... " << endl;
-            return;
-        }
-    }
-
-    for (TermWidgetWrapper *term : qAsConst(termList)) {
         if (term->getCurrSessionId() != currSessionId) {
             closeSplit(term);
         }
