@@ -324,9 +324,25 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
+    // 服务器名为空
+    if (m_serverName->text().trimmed().isEmpty()) {
+        m_serverName->showAlertMessage(tr("Please enter server name!"), m_serverName);
+        return;
+    }
+    // 地址为空
+    if (m_address->text().trimmed().isEmpty()) {
+        m_address->showAlertMessage(tr("Please enter IP address!"), m_address);
+        return;
+    }
+    // 端口为空
+    if (m_port->text().trimmed().isEmpty()) {
+        m_address->showAlertMessage(tr("Please enter port!"), m_port);
+        return;
+    }
+
     //---added by qinyaning(nyq) to show the tip when username is empty---//
     if (m_userName->text().trimmed().isEmpty()) { //如果用户名为空， 提示用户名为空， 添加失败
-        m_userName->showAlertMessage(tr("Enter user name please!"), m_userName);
+        m_userName->showAlertMessage(tr("Please enter user name!"), m_userName);
         return;
     }
     //------------------------------------------------------------------//
