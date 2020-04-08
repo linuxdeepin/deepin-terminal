@@ -102,7 +102,10 @@ void ServerConfigOptDlg::initUI()
     m_port->setValue(22);
     m_port->setSingleStep(1);
     m_port->setFixedWidth(70);
+    // 去除上下按钮
     m_port->setButtonSymbols(DSpinBox::NoButtons);
+    // 禁用输入法
+    m_port->setAttribute(Qt::WA_InputMethodEnabled, false);
     portLayout->addWidget(pPortLabel);
     portLayout->addWidget(m_port);
     pGridLayout->addLayout(portLayout, 1, 1, Qt::AlignRight);
@@ -121,7 +124,10 @@ void ServerConfigOptDlg::initUI()
     pPasswordLabel->setAlignment(Qt::AlignVCenter);
     pPasswordLabel->setFixedWidth(100);
     pPasswordLabel->setFixedHeight(30);
-    m_password->lineEdit()->setPlaceholderText(tr("Required"));
+    /******** Modify by m000714 daizhengwen 2020-04-08: password 必填项 弃用****************/
+//    m_password->lineEdit()->setPlaceholderText(tr("Required"));
+    /********************* Modify by m000714 daizhengwen End ************************/
+    m_password->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     pGridLayout->addWidget(pPasswordLabel);
     pGridLayout->addWidget(m_password);
 
@@ -161,6 +167,7 @@ void ServerConfigOptDlg::initUI()
     pCommandLabel->setFixedWidth(100);
     pCommandLabel->setFixedHeight(30);
     seniorLayout->addWidget(pCommandLabel);
+    m_command->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     seniorLayout->addWidget(m_command);
 
     DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
