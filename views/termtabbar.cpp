@@ -56,21 +56,19 @@ void CustomTabStyle::drawControl(ControlElement element, const QStyleOption *opt
     {
         if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option))
         {
-            if (m_tabStatusMap.value(tab->row) == 0)
+            if (m_tabStatusMap.value(tab->row) != 2)
             {
                 QProxyStyle::drawControl(element, option, painter, widget);
                 return;
             }
-
-            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-            DPalette pa = appHelper->standardPalette(appHelper->themeType());
-
             painter->save();
             if (m_tabStatusMap.value(tab->row))
             {
                 if (tab->state & QStyle::State_Selected)
                 {
-                    painter->setPen(pa.color(DPalette::DarkLively));
+                    DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+                    DPalette pa = appHelper->standardPalette(appHelper->themeType());
+                    painter->setPen(pa.color(DPalette::HighlightedText));
                 }
                 else if(tab->state & QStyle::State_MouseOver)
                 {
@@ -748,14 +746,31 @@ int DTabBarPrivate::tabInsertIndexFromMouse(QPoint pos)
     }
 }
 
-void DTabBarPrivate::setTabTextColor(int index, const QColor &color)
+void DTabBarPrivate::setNeedChangeTextColor(int index, const QColor &color)
 {
     m_tabStatusMap.insert(index, 1);
+    m_tabChangedTextColor = color;
+}
+
+void DTabBarPrivate::removeNeedChangeTextColor(int index)
+{
+    m_tabStatusMap.remove(index);
+}
+
+void DTabBarPrivate::setChangeTextColor(int index)
+{
+    m_tabStatusMap.insert(index, 2);
+    QColor color = m_tabChangedTextColor;
 
     CustomTabStyle *style = qobject_cast<CustomTabStyle *>(this->style());
     style->setTabTextColor(color);
     style->setTabStatusMap(m_tabStatusMap);
     this->style()->polish(this);
+}
+
+bool DTabBarPrivate::isNeedChangeTextColor(int index)
+{
+    return (m_tabStatusMap.value(index) == 1);
 }
 
 void DTabBarPrivate::setClearTabColor(int index)
@@ -1494,11 +1509,27 @@ void DTabBar::setTabText(int index, const QString &text)
 }
 
 /*!
- * \~chinese \brief 设置标签索引位置背景颜色
+ * \~chinese \brief 标记修改标签对应索引位置文字颜色，稍后修改
  */
-void DTabBar::setTabTextColor(int index, const QColor &color)
+void DTabBar::setNeedChangeTextColor(int index, const QColor &color)
 {
-    d_func()->setTabTextColor(index, color);
+    d_func()->setNeedChangeTextColor(index, color);
+}
+
+void DTabBar::removeNeedChangeTextColor(int index)
+{
+    d_func()->removeNeedChangeTextColor(index);
+    d_func()->setClearTabColor(index);
+}
+
+void DTabBar::setChangeTextColor(int index)
+{
+    d_func()->setChangeTextColor(index);
+}
+
+bool DTabBar::isNeedChangeTextColor(int index)
+{
+    return d_func()->isNeedChangeTextColor(index);
 }
 
 void DTabBar::setClearTabColor(int index)

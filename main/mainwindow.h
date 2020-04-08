@@ -34,10 +34,8 @@ public:
     explicit MainWindow(TermProperties properties, QWidget *parent = nullptr);
     ~MainWindow() override;
 
-    bool isTabVisited(int tabSessionId);
     void addTab(TermProperties properties, bool activeTab = false);
     void closeTab(const QString &identifier, bool runCheck = true);
-    void updateTabStatus();
 
     /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
     void closeOtherTab();
@@ -107,6 +105,10 @@ private:
     void showPlugin(const QString &name);
     void addQuakeTerminalShortcut();
 
+    bool isTabVisited(int tabSessionId);
+    bool isTabChangeColor(int tabSessionId);
+    void updateTabStatus();
+
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
     /********************* Modify by n014361 wangpeili End ************************/
@@ -144,6 +146,7 @@ private:
     bool m_isQuakeWindow = false;
     bool m_isQuakeWindowActivated = false;
     QMap<int, bool> m_tabVisitMap;
+    QMap<int, bool> m_tabChangeColorMap;
 
     /******** Modify by n014361 wangpeili 2020-02-20: 内置快捷键集中管理 ****************/
     QMap<QString, QShortcut *> m_BuiltInShortcut;

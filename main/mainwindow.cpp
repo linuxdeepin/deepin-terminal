@@ -155,6 +155,11 @@ bool MainWindow::isTabVisited(int tabSessionId)
     return m_tabVisitMap.value(tabSessionId);
 }
 
+bool MainWindow::isTabChangeColor(int tabSessionId)
+{
+    return m_tabChangeColorMap.value(tabSessionId);
+}
+
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
@@ -163,6 +168,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     int index = m_tabbar->addTab(termPage->identifier(), "New Terminal Tab");
     if (activeTab) {
         m_tabbar->setCurrentIndex(index);
+        m_tabbar->removeNeedChangeTextColor(index);
     }
 
     TermWidgetWrapper *termWidgetWapper = termPage->currentTerminal();
@@ -195,26 +201,23 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
 
         int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
 
-        if (isTabVisited(currSessionId) && !bIdle) {
-            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-            DPalette pa = appHelper->standardPalette(appHelper->themeType());
-            m_tabbar->setClearTabColor(tabIndex);
+        if (isTabVisited(currSessionId) && bIdle) {
+            m_tabVisitMap.insert(currSessionId, false);
+            m_tabChangeColorMap.insert(currSessionId, false);
+            m_tabbar->removeNeedChangeTextColor(tabIndex);
             return;
         }
 
         if (bIdle) {
-            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-            DPalette pa = appHelper->standardPalette(appHelper->themeType());
-            m_tabbar->setClearTabColor(tabIndex);
-
-            if (isTabVisited(currSessionId)) {
-                m_tabVisitMap.insert(currSessionId, false);
+            if (m_tabbar->isNeedChangeTextColor(tabIndex)) {
+                m_tabChangeColorMap.insert(currSessionId, true);
+                m_tabbar->setChangeTextColor(tabIndex);
             }
         } else {
+            m_tabChangeColorMap.insert(currSessionId, false);
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
-            m_tabbar->setClearTabColor(tabIndex);
-            //m_tabbar->setTabTextColor(tabIndex, pa.color(DPalette::Highlight));
+            m_tabbar->setNeedChangeTextColor(tabIndex, pa.color(DPalette::Highlight));
         }
     });
 
@@ -256,27 +259,35 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
 void MainWindow::updateTabStatus()
 {
     for (int i = 0; i < m_tabbar->count(); i++) {
-        int currIndex = i;
-        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(currIndex));
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
         bool bIdle = !(termWidgetWapper->hasRunningProcess());
         int currSessionId = termWidgetWapper->getCurrSessionId();
 
-        if (bIdle) {
-            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-            DPalette pa = appHelper->standardPalette(appHelper->themeType());
-            m_tabbar->setClearTabColor(currIndex);
-        } else {
-            if (isTabVisited(currSessionId)) {
-                DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-                DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                m_tabbar->setClearTabColor(currIndex);
-            } else {
-                DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-                DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                m_tabbar->setClearTabColor(currIndex);
-                //m_tabbar->setTabTextColor(currIndex, pa.color(DPalette::Highlight));
+        if (bIdle)
+        {
+            if (isTabVisited(currSessionId))
+            {
+                qDebug() << i << ":" << "remove text color";
+                m_tabVisitMap.insert(currSessionId, false);
+                m_tabChangeColorMap.insert(currSessionId, false);
+                m_tabbar->removeNeedChangeTextColor(i);
             }
+            else if (isTabChangeColor(currSessionId))
+            {
+                qDebug() << i << ":" << "change text color";
+                m_tabbar->setChangeTextColor(i);
+            }
+            else
+            {
+                qDebug() << i << ":" << "idle clear text color";
+                m_tabbar->removeNeedChangeTextColor(i);
+            }
+        }
+        else
+        {
+            qDebug() << i << ":" << "busy clear text color";
+            m_tabbar->removeNeedChangeTextColor(i);
         }
     }
 }
@@ -922,14 +933,15 @@ void MainWindow::initTitleBar()
 
     connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
 
-        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-        DPalette pa = appHelper->standardPalette(appHelper->themeType());
-        m_tabbar->setClearTabColor(index);
-
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
         TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-        if (termWidgetWapper->hasRunningProcess()) {
-            m_tabVisitMap.insert(termWidgetWapper->getCurrSessionId(), true);
+        bool bIdle = !(termWidgetWapper->hasRunningProcess());
+
+        int currSessionId = termWidgetWapper->getCurrSessionId();
+        if (bIdle && isTabChangeColor(currSessionId)) {
+            m_tabVisitMap.insert(currSessionId, true);
+            m_tabChangeColorMap.insert(currSessionId, false);
+            m_tabbar->removeNeedChangeTextColor(index);
         }
     });
 

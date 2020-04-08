@@ -102,7 +102,10 @@ public:
     void setTabText(int index, const QString &text);
 
     //set tab label's title color
-    void setTabTextColor(int index, const QColor &color);
+    void setChangeTextColor(int index);
+    void setNeedChangeTextColor(int index, const QColor &color);
+    void removeNeedChangeTextColor(int index);
+    bool isNeedChangeTextColor(int index);
     void setClearTabColor(int index);
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
 
@@ -318,7 +321,10 @@ public:
     int tabInsertIndexFromMouse(QPoint pos);
 
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
-    void setTabTextColor(int index, const QColor &color);
+    void setNeedChangeTextColor(int index, const QColor &color);
+    void removeNeedChangeTextColor(int index);
+    void setChangeTextColor(int index);
+    bool isNeedChangeTextColor(int index);
     void setClearTabColor(int index);
 
     void startMove(int index);
@@ -376,6 +382,7 @@ public:
     int ghostTabIndex = -1;
 
     QMap<int,int> m_tabStatusMap;
+    QColor m_tabChangedTextColor;
 };
 
 #endif // TERMTITLEBAR_H
