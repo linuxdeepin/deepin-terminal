@@ -38,11 +38,9 @@ TitleBar::~TitleBar()
 
 void TitleBar::setTabBar(QWidget *widget)
 {
-    m_rightSpace = 70;
     /******** Modify by n014361 wangpeili 2020-02-12: 修改居中样式***********×****/
     m_layout->addWidget(widget, 0, Qt::AlignVCenter);
     /***************** Modify by n014361 End ********************×****/
-    m_layout->addSpacing(m_rightSpace);
 }
 
 int TitleBar::rightSpace()

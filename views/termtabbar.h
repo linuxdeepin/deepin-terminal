@@ -1,23 +1,32 @@
+/*
+ * Copyright (C) 2017 ~ 2017 Deepin Technology Co., Ltd.
+ *
+ * Author:     zccrs <zccrs@live.com>
+ *
+ * Maintainer: zccrs <zhangjide@deepin.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef TERMTITLEBAR_H
 #define TERMTITLEBAR_H
 
-#include "dobject_p.h"
-
-#include <dtkwidget_global.h>
-#include <private/qtabbar_p.h>
-
-#include <QDrag>
 #include <QTabBar>
-#include <QPointer>
-#include <QVariantAnimation>
 #include <QProxyStyle>
 
+#include <dtkwidget_global.h>
 #include <DObject>
-
 #include <DIconButton>
-
-#define DTabBar TermTabBar
-#define DTabBarPrivate TermTabBarPrivate
 
 QT_BEGIN_NAMESPACE
 class QMimeData;
@@ -26,28 +35,32 @@ QT_END_NAMESPACE
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
+#define DTabBar TermTabBar
+#define DTabBarPrivate TermTabBarPrivate
 
 class CustomTabStyle : public QProxyStyle
 {
     Q_OBJECT
 public:
     CustomTabStyle(QStyle *style = nullptr);
-    CustomTabStyle(const QString &key);
     virtual ~CustomTabStyle();
 
     void setTabTextColor(const QColor &color);
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
 
     QSize sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const;
+    int pixelMetric(QStyle::PixelMetric metric, const QStyleOption* option, const QWidget* widget) const;
     void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
+    void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = Q_NULLPTR) const;
 private:
     int m_tabCount;
     QColor m_tabTextColor;
     QMap<int,int> m_tabStatusMap;
+
+    QStyle *m_parentStyle;
 };
 
 class DTabBarPrivate;
-
 class DTabBar : public QWidget, public DObject
 {
     Q_OBJECT
@@ -73,10 +86,9 @@ class DTabBar : public QWidget, public DObject
     Q_PROPERTY(QColor maskColor READ maskColor WRITE setMaskColor)
     // on inserted tab from mime data
     Q_PROPERTY(QColor flashColor READ flashColor WRITE setFlashColor)
-    Q_PROPERTY(bool chromeTabStyle READ isChromeTabStyle WRITE setChromeTabStyle)
 
 public:
-    explicit DTabBar(QWidget *parent = nullptr, bool chromeTabStyle = false);
+    explicit DTabBar(QWidget *parent = 0);
 
     void setTabMinimumSize(int index, const QSize &size);
     void setTabMaximumSize(int index, const QSize &size);
@@ -177,9 +189,7 @@ public:
 
     QWindow *dragIconWindow() const;
 
-    //add chrome tab style
-    bool isChromeTabStyle() const;
-    void setChromeTabStyle(bool dragable);
+    void setEnabledEmbedStyle(bool enable);
 
     void setAddButtonFocusPolicy(Qt::FocusPolicy focusPolicy);
 
@@ -194,7 +204,6 @@ Q_SIGNALS:
     void tabAddRequested();
     void tabReleaseRequested(int index);
     void tabDroped(int index, Qt::DropAction action, QObject *target);
-    void tabFull();
     void dragActionChanged(Qt::DropAction action);
     void dragStarted();
     void dragEnd(Qt::DropAction action);
@@ -241,148 +250,6 @@ private:
     friend class DTabBarPrivate;
 
     QMap<int,int> m_tabStatusMap;
-};
-
-class DTabBarPrivate : public QTabBar, public DObjectPrivate
-{
-    Q_OBJECT
-public:
-    D_DECLARE_PUBLIC(DTabBar)
-
-    explicit DTabBarPrivate(DTabBar* qq, bool chromeTabStyle = false);
-
-    void moveTabOffset(int index, int offset);
-
-    struct TabBarAnimation : public QVariantAnimation {
-        TabBarAnimation(QTabBarPrivate::Tab *t,
-                        QTabBarPrivate *_priv,
-                        DTabBarPrivate *_dpriv)
-            : tab(t), priv(_priv), dpriv(_dpriv)
-        { setEasingCurve(QEasingCurve::InOutQuad); }
-
-        void updateCurrentValue(const QVariant &current) Q_DECL_OVERRIDE
-        {
-            dpriv->moveTabOffset(priv->tabList.indexOf(*tab), current.toInt());
-        }
-
-        void updateState(State, State newState) Q_DECL_OVERRIDE
-        {
-            if (newState == Stopped) dpriv->moveTabFinished(priv->tabList.indexOf(*tab));
-        }
-
-    private:
-        //these are needed for the callbacks
-        QTabBarPrivate::Tab *tab;
-        QTabBarPrivate *priv;
-        DTabBarPrivate *dpriv;
-    };
-
-    bool eventFilter(QObject *watched, QEvent *event) override;
-
-    QSize minimumSizeHint() const override;
-
-    void paintEvent(QPaintEvent *e) override;
-    void mouseMoveEvent(QMouseEvent *e) override;
-    void mouseReleaseEvent(QMouseEvent *e) override;
-    void dragEnterEvent(QDragEnterEvent *e) override;
-    void dragLeaveEvent(QDragLeaveEvent *e) override;
-    void dragMoveEvent(QDragMoveEvent *e) override;
-    void dropEvent(QDropEvent *e) override;
-    void showEvent(QShowEvent *e) override;
-
-    QSize tabSizeHint(int index) const override;
-    QSize minimumTabSizeHint(int index) const override;
-
-    void tabInserted(int index) override;
-    void tabRemoved(int index) override;
-    void tabLayoutChange() override;
-
-    void initStyleOption(QStyleOptionTab *option, int tabIndex) const;
-
-    QTabBarPrivate *dd() const;
-
-    Q_SLOT void startDrag(int tabIndex);
-
-    void setupMovableTab();
-    void updateMoveingTabPosition(const QPoint &mouse);
-    void setupDragableTab();
-    void slide(int from, int to);
-    void layoutTab(int index);
-    void moveTabFinished(int index);
-    void layoutWidgets(int start = 0);
-    void makeVisible(int index);
-    void autoScrollTabs(const QPoint &mouse);
-    void stopAutoScrollTabs();
-    void ensureScrollTabsAnimation();
-
-    void startTabFlash();
-
-    void setDragingFromOther(bool v);
-    int tabInsertIndexFromMouse(QPoint pos);
-
-    void setTabStatusMap(const QMap<int,int> &tabStatusMap);
-    void setNeedChangeTextColor(int index, const QColor &color);
-    void removeNeedChangeTextColor(int index);
-    void setChangeTextColor(int index);
-    bool isNeedChangeTextColor(int index);
-    void setClearTabColor(int index);
-
-    void startMove(int index);
-    void stopMove();
-
-    void onCurrentChanged(int current);
-    void updateCloseButtonVisible();
-
-    void setChromeTabStyle(bool chromeTabStyle);
-
-    QList<QSize> tabMinimumSize;
-    QList<QSize> tabMaximumSize;
-    bool visibleAddButton = true;
-    DIconButton *addButton;
-    QPointer<QDrag> drag;
-    bool dragable = false;
-    int startDragDistance;
-    // 有从其它地方drag过来的标签页需要处理
-    bool dragingFromOther = false;
-    // 记录当前drag过来的对象是否可以当做新标签页插入
-    bool canInsertFromDrag = false;
-    // 为true忽略drag move事件
-    bool ignoreDragEvent = false;
-    //是否支持chrome标签样式
-    bool isChromeTabStyle = false;
-
-    QColor maskColor;
-    QColor flashColor;
-    // 要闪动绘制的Tab
-    qreal opacityOnFlash = 1;
-    int flashTabIndex = -1;
-
-    DIconButton *leftScrollButton;
-    DIconButton *rightScrollButton;
-
-    class FullWidget : public QWidget {
-    public:
-        explicit FullWidget(QWidget *parent = nullptr)
-            : QWidget(parent) {}
-
-        void paintEvent(QPaintEvent *) override {
-            QPainter pa(this);
-
-            pa.fillRect(rect(), color);
-        }
-
-        QColor color;
-    } *topFullWidget = nullptr;
-
-    QVariantAnimation *scrollTabAnimation = nullptr;
-    // 备份启动tab move时的QTabBarPrivate中的这两个值
-    int scrollOffset;
-    QPoint dragStartPosition;
-
-    int ghostTabIndex = -1;
-
-    QMap<int,int> m_tabStatusMap;
-    QColor m_tabChangedTextColor;
 };
 
 #endif // TERMTITLEBAR_H

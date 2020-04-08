@@ -117,7 +117,6 @@ set (DTNG_CPP_FILES
     views/pagesearchbar.cpp
     views/rightpanel.cpp
     views/tabbar.cpp
-    views/termtabbar.cpp
     views/termwidget.cpp
     views/termwidgetpage.cpp
     views/termbasedialog.cpp
@@ -176,7 +175,6 @@ set (DTNG_HEADER_FILES
     views/pagesearchbar.h
     views/rightpanel.h
     views/tabbar.h
-    views/termtabbar.h
     views/termwidget.h
     views/termwidgetpage.h
     views/titlebar.h

@@ -1,16 +1,40 @@
+/*
+ * Copyright (C) 2017 ~ 2017 Deepin Technology Co., Ltd.
+ *
+ * Author:     zccrs <zccrs@live.com>
+ *
+ * Maintainer: zccrs <zhangjide@deepin.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "termtabbar.h"
+#include "dobject_p.h"
 
 #include <QPainter>
 #include <QMouseEvent>
 #include <QStyleOption>
 #include <QStylePainter>
 #include <QHBoxLayout>
+#include <QDrag>
 #include <QMimeData>
 #include <QDragMoveEvent>
 #include <QTimer>
+
 #include <QFont>
 #include <QFontMetrics>
 
+#include <private/qtabbar_p.h>
 #define private public
 #define protected public
 #include <private/qdnd_p.h>
@@ -25,10 +49,7 @@
 //CustomTabStyle start
 CustomTabStyle::CustomTabStyle(QStyle *style) : QProxyStyle(style), m_tabCount(0)
 {
-}
-
-CustomTabStyle::CustomTabStyle(const QString &key) : QProxyStyle(key), m_tabCount(0)
-{
+    m_parentStyle = style;
 }
 
 CustomTabStyle::~CustomTabStyle()
@@ -47,7 +68,12 @@ void CustomTabStyle::setTabStatusMap(const QMap<int,int> &tabStatusMap)
 
 QSize CustomTabStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
 {
-    return QProxyStyle::sizeFromContents(type, option, size, widget);
+    return m_parentStyle->sizeFromContents(type, option, size, widget);
+}
+
+int CustomTabStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption* option, const QWidget* widget) const
+{
+    return m_parentStyle->pixelMetric(metric, option, widget);
 }
 
 void CustomTabStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
@@ -56,13 +82,9 @@ void CustomTabStyle::drawControl(ControlElement element, const QStyleOption *opt
     {
         if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option))
         {
-            if (m_tabStatusMap.value(tab->row) != 2)
-            {
-                QProxyStyle::drawControl(element, option, painter, widget);
-                return;
-            }
             painter->save();
-            if (m_tabStatusMap.value(tab->row))
+
+            if (m_tabStatusMap.value(tab->row) == 2)
             {
                 if (tab->state & QStyle::State_Selected)
                 {
@@ -79,25 +101,55 @@ void CustomTabStyle::drawControl(ControlElement element, const QStyleOption *opt
                     painter->setPen(m_tabTextColor);
                 }
             }
+            else
+            {
+                DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+                DPalette pa = appHelper->standardPalette(appHelper->themeType());
+                if (tab->state & QStyle::State_Selected)
+                {
+                    painter->setPen(pa.color(DPalette::HighlightedText));
+                }
+                else if(tab->state & QStyle::State_MouseOver)
+                {
+                    painter->setPen(pa.color(DPalette::HighlightedText));
+                }
+                else
+                {
+                    painter->setPen(pa.color(DPalette::Text));
+                }
+            }
 
-            QTextOption option;
-            option.setAlignment(Qt::AlignCenter);
-            painter->setFont(QFont());
-            painter->drawText(tab->rect, tab->text, option);
+            QTextOption textOption;
+            textOption.setAlignment(Qt::AlignCenter);
+
+            QFont appFont = QApplication::font();
+            painter->setFont(appFont);
+            QString content = tab->text;
+            QRect tabRect = tab->rect;
+
+            QFontMetrics fontMetric(appFont);
+            QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width()-30, Qt::TextShowMnemonic);
+            painter->drawText(tabRect, elidedText, textOption);
+
             painter->restore();
-            return;
+        }
+        else {
+            m_parentStyle->drawControl(element, option, painter, widget);
         }
     }
-
-    if (element == CE_TabBarTab)
-    {
-        QProxyStyle::drawControl(element, option, painter, widget);
+    else {
+        m_parentStyle->drawControl(element, option, painter, widget);
     }
+}
+
+void CustomTabStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 //CustomTabStyle end
 
 inline static bool verticalTabs(QTabBar::Shape shape)
-{//
+{
     return shape == QTabBar::RoundedWest
            || shape == QTabBar::RoundedEast
            || shape == QTabBar::TriangularWest
@@ -138,43 +190,45 @@ void DMovableTabWidget::paintEvent(QPaintEvent *e)
     pa.drawPixmap(0, 0, m_pixmap);
 }
 
-DTabBarPrivate::DTabBarPrivate(DTabBar* qq, bool chromeTabStyle)
-  : QTabBar(qq)
-  , DObjectPrivate(qq)
-  , isChromeTabStyle(chromeTabStyle)
+class DTabBarPrivate : public QTabBar, public DObjectPrivate
 {
-    setStyle(new CustomTabStyle);
-    startDragDistance = qApp->startDragDistance();
-    maskColor = flashColor = QColor(0, 0, 255, 125);
+    Q_OBJECT
+    D_DECLARE_PUBLIC(DTabBar)
 
-    addButton = new DIconButton(DStyle::SP_IncreaseElement, qq);
-    addButton->setObjectName("AddButton");
+public:
+    explicit DTabBarPrivate(DTabBar* qq)
+      : QTabBar(qq)
+      , DObjectPrivate(qq) {
+//        setStyle(new CustomTabStyle(this->style()));
+        startDragDistance = qApp->startDragDistance();
+        maskColor = flashColor = QColor(0, 0, 255, 125);
 
-    connect(addButton, &DIconButton::clicked,
-            qq, &DTabBar::tabAddRequested);
-    connect(this, &QTabBar::tabMoved, this, [this] (int from, int to) {
-        tabMinimumSize.move(from, to);
-        tabMaximumSize.move(from, to);
+        addButton = new DIconButton(DStyle::SP_IncreaseElement, qq);
+        addButton->setObjectName("AddButton");
 
-        if (dd()->validIndex(ghostTabIndex)) {
-            if (from == ghostTabIndex)
-                ghostTabIndex = to;
-            else if (to == ghostTabIndex)
-                ghostTabIndex = from;
-        }
-    });
+        connect(addButton, &DIconButton::clicked,
+                qq, &DTabBar::tabAddRequested);
+        connect(this, &QTabBar::tabMoved, this, [this] (int from, int to) {
+            tabMinimumSize.move(from, to);
+            tabMaximumSize.move(from, to);
 
-    setAcceptDrops(true);
-    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    setDrawBase(false);
+            if (dd()->validIndex(ghostTabIndex)) {
+                if (from == ghostTabIndex)
+                    ghostTabIndex = to;
+                else if (to == ghostTabIndex)
+                    ghostTabIndex = from;
+            }
+        });
 
-    QHBoxLayout *layout = new QHBoxLayout(qq);
+        setAcceptDrops(true);
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        setDrawBase(false);
 
-    QTabBarPrivate *d = reinterpret_cast<QTabBarPrivate *>(qGetPtrHelper(d_ptr));
-    if (!isChromeTabStyle) {
+        QTabBarPrivate *d = reinterpret_cast<QTabBarPrivate *>(qGetPtrHelper(d_ptr));
 
         leftScrollButton = new DIconButton(DStyle::SP_ArrowLeft, qq);
         rightScrollButton = new DIconButton(DStyle::SP_ArrowRight, qq);
+        rightScrollButton->setObjectName("rightButton");
 
         leftScrollButton->setVisible(d->leftB->isVisible());
         leftScrollButton->setAutoRepeat(true);
@@ -188,49 +242,168 @@ DTabBarPrivate::DTabBarPrivate(DTabBar* qq, bool chromeTabStyle)
 
         connect(leftScrollButton, &DIconButton::clicked, d->leftB, &QToolButton::click);
         connect(rightScrollButton, &DIconButton::clicked, d->rightB, &QToolButton::click);
-    }
-    else {
-        //disable auto scroll tabs
-        setUsesScrollButtons(false);
-        setElideMode(Qt::TextElideMode::ElideRight);
 
-        d->leftB->setFixedSize(0, 0);
-        d->leftB->removeEventFilter(this);
-        d->rightB->setFixedSize(0, 0);
-        d->rightB->removeEventFilter(this);
-    }
-
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(0);
-    if (!isChromeTabStyle) {
+        layout = new QHBoxLayout(qq);
+        stretch = new QSpacerItem(1, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->setSpacing(0);
         layout->addWidget(leftScrollButton);
-    }
-    layout->addWidget(this);
-    if (!isChromeTabStyle) {
+        layout->addWidget(this);
         layout->addWidget(rightScrollButton);
+        layout->addSpacing(DStyle::pixelMetric(style(), DStyle::PM_ContentsSpacing));
+        layout->addWidget(addButton);
+        layout->addSpacerItem(stretch);
+        d->expanding = false;
+
+        qq->setFocusProxy(this);
+
+        connect(this, &DTabBarPrivate::currentChanged, this, &DTabBarPrivate::onCurrentChanged);
+        connect(this, &DTabBarPrivate::tabCloseRequested, qq, &DTabBar::tabCloseRequested);
+        connect(this, &DTabBarPrivate::tabMoved, qq, &DTabBar::tabMoved);
+        connect(this, &DTabBarPrivate::tabBarClicked, qq, &DTabBar::tabBarClicked);
+        connect(this, &DTabBarPrivate::tabBarDoubleClicked, qq, &DTabBar::tabBarDoubleClicked);
     }
-    layout->addWidget(addButton);
-    layout->addStretch();
 
-    qq->setFocusProxy(this);
+    void moveTabOffset(int index, int offset)
+    {
+        QTabBarPrivate *d = reinterpret_cast<QTabBarPrivate *>(qGetPtrHelper(d_ptr));
 
-    connect(this, &DTabBarPrivate::currentChanged, this, &DTabBarPrivate::onCurrentChanged);
-    connect(this, &DTabBarPrivate::tabCloseRequested, qq, &DTabBar::tabCloseRequested);
-    connect(this, &DTabBarPrivate::tabMoved, qq, &DTabBar::tabMoved);
-    connect(this, &DTabBarPrivate::tabBarClicked, qq, &DTabBar::tabBarClicked);
-    connect(this, &DTabBarPrivate::tabBarDoubleClicked, qq, &DTabBar::tabBarDoubleClicked);
-}
+        if (!d->validIndex(index))
+            return;
+        d->tabList[index].dragOffset = offset;
+        layoutTab(index); // Make buttons follow tab
+        update();
+    }
 
-void DTabBarPrivate::moveTabOffset(int index, int offset)
-{
-    QTabBarPrivate *d = reinterpret_cast<QTabBarPrivate *>(qGetPtrHelper(d_ptr));
+    struct TabBarAnimation : public QVariantAnimation {
+        TabBarAnimation(QTabBarPrivate::Tab *t,
+                        QTabBarPrivate *_priv,
+                        DTabBarPrivate *_dpriv)
+            : tab(t), priv(_priv), dpriv(_dpriv)
+        { setEasingCurve(QEasingCurve::InOutQuad); }
 
-    if (!d->validIndex(index))
-        return;
-    d->tabList[index].dragOffset = offset;
-    layoutTab(index); // Make buttons follow tab
-    update();
-}
+        void updateCurrentValue(const QVariant &current) Q_DECL_OVERRIDE
+        {
+            dpriv->moveTabOffset(priv->tabList.indexOf(*tab), current.toInt());
+        }
+
+        void updateState(State, State newState) Q_DECL_OVERRIDE
+        {
+            if (newState == Stopped) dpriv->moveTabFinished(priv->tabList.indexOf(*tab));
+        }
+
+    private:
+        //these are needed for the callbacks
+        QTabBarPrivate::Tab *tab;
+        QTabBarPrivate *priv;
+        DTabBarPrivate *dpriv;
+    };
+
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+    QSize minimumSizeHint() const override;
+
+    void paintEvent(QPaintEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void dragEnterEvent(QDragEnterEvent *e) override;
+    void dragLeaveEvent(QDragLeaveEvent *e) override;
+    void dragMoveEvent(QDragMoveEvent *e) override;
+    void dropEvent(QDropEvent *e) override;
+    void showEvent(QShowEvent *e) override;
+
+    QSize tabSizeHint(int index) const override;
+    QSize minimumTabSizeHint(int index) const override;
+
+    void tabInserted(int index) override;
+    void tabRemoved(int index) override;
+    void tabLayoutChange() override;
+
+    void initStyleOption(QStyleOptionTab *option, int tabIndex) const;
+
+     QTabBarPrivate *dd() const;
+
+    Q_SLOT void startDrag(int tabIndex);
+
+    void setupMovableTab();
+    void updateMoveingTabPosition(const QPoint &mouse);
+    void setupDragableTab();
+    void slide(int from, int to);
+    void layoutTab(int index);
+    void moveTabFinished(int index);
+    void layoutWidgets(int start = 0);
+    void makeVisible(int index);
+    void autoScrollTabs(const QPoint &mouse);
+    void stopAutoScrollTabs();
+    void ensureScrollTabsAnimation();
+
+    void startTabFlash();
+
+    void setDragingFromOther(bool v);
+    int tabInsertIndexFromMouse(QPoint pos);
+
+    void setTabStatusMap(const QMap<int,int> &tabStatusMap);
+    void setNeedChangeTextColor(int index, const QColor &color);
+    void removeNeedChangeTextColor(int index);
+    void setChangeTextColor(int index);
+    bool isNeedChangeTextColor(int index);
+    void setClearTabColor(int index);
+
+    void startMove(int index);
+    void stopMove();
+
+    void onCurrentChanged(int current);
+    void updateCloseButtonVisible();
+
+    QList<QSize> tabMinimumSize;
+    QList<QSize> tabMaximumSize;
+    bool visibleAddButton = true;
+    DIconButton *addButton;
+    QPointer<QDrag> drag;
+    bool dragable = false;
+    int startDragDistance;
+    // 有从其它地方drag过来的标签页需要处理
+    bool dragingFromOther = false;
+    // 记录当前drag过来的对象是否可以当做新标签页插入
+    bool canInsertFromDrag = false;
+    // 为true忽略drag move事件
+    bool ignoreDragEvent = false;
+
+    QColor maskColor;
+    QColor flashColor;
+    // 要闪动绘制的Tab
+    qreal opacityOnFlash = 1;
+    int flashTabIndex = -1;
+
+    DIconButton *leftScrollButton;
+    DIconButton *rightScrollButton;
+    QHBoxLayout *layout;
+    QSpacerItem *stretch;
+
+    class FullWidget : public QWidget {
+    public:
+        explicit FullWidget(QWidget *parent = 0)
+            : QWidget(parent) {}
+
+        void paintEvent(QPaintEvent *) override {
+            QPainter pa(this);
+
+            pa.fillRect(rect(), color);
+        }
+
+        QColor color;
+    } *topFullWidget = nullptr;
+
+    QVariantAnimation *scrollTabAnimation = nullptr;
+    // 备份启动tab move时的QTabBarPrivate中的这两个值
+    int scrollOffset;
+    QPoint dragStartPosition;
+
+    int ghostTabIndex = -1;
+
+    QMap<int,int> m_tabStatusMap;
+    QColor m_tabChangedTextColor;
+};
 
 void DTabBarPrivate::startDrag(int tabIndex)
 {
@@ -265,7 +438,7 @@ void DTabBarPrivate::setupMovableTab()
     if (!d->movingTab)
         d->movingTab = reinterpret_cast<QMovableTabWidget*>(new DMovableTabWidget(this));
 
-    int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, nullptr, this);
+    int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0, this);
     QRect grabRect = tabRect(d->pressedIndex);
     grabRect.adjust(-taboverlap, 0, taboverlap, 0);
 
@@ -507,7 +680,7 @@ void DTabBarPrivate::makeVisible(int index)
     const QRect tabRect = d->tabList.at(index).rect;
     const int oldScrollOffset = d->scrollOffset;
     const bool horiz = !verticalTabs(d->shape);
-    const int extra_width = 2 * qMax(style()->pixelMetric(QStyle::PM_TabBarScrollButtonWidth, nullptr, this),
+    const int extra_width = 2 * qMax(style()->pixelMetric(QStyle::PM_TabBarScrollButtonWidth, 0, this),
                                      QApplication::globalStrut().width());
     const int available = (horiz ? width() : height()) - extra_width;
     const int start = horiz ? tabRect.left() : tabRect.top();
@@ -590,8 +763,7 @@ void DTabBarPrivate::autoScrollTabs(const QPoint &mouse)
     if (scrollTabAnimation->state() == QVariantAnimation::Running)
         scrollTabAnimation->stop();
 
-    int duration = static_cast<int>(qreal(qMax(qAbs(scroll_speed), 10)) / scroll_distance * (qAbs(scroll_end - d->scrollOffset) / 150) * 1000);
-    scrollTabAnimation->setDuration(duration);
+    scrollTabAnimation->setDuration(qreal(qMax(qAbs(scroll_speed), 10)) / scroll_distance * (qAbs(scroll_end - d->scrollOffset) / 150) * 1000);
     scrollTabAnimation->setStartValue(d->scrollOffset);
     scrollTabAnimation->setEndValue(scroll_end);
     scrollTabAnimation->start();
@@ -755,6 +927,10 @@ void DTabBarPrivate::setNeedChangeTextColor(int index, const QColor &color)
 void DTabBarPrivate::removeNeedChangeTextColor(int index)
 {
     m_tabStatusMap.remove(index);
+
+    CustomTabStyle *style = qobject_cast<CustomTabStyle *>(this->style());
+    style->setTabStatusMap(m_tabStatusMap);
+    style->polish(this);
 }
 
 void DTabBarPrivate::setChangeTextColor(int index)
@@ -860,11 +1036,6 @@ void DTabBarPrivate::updateCloseButtonVisible()
     }
 }
 
-void DTabBarPrivate::setChromeTabStyle(bool chromeTabStyle)
-{
-    this->isChromeTabStyle = chromeTabStyle;
-}
-
 static QIcon getArrowIcon(const QStyle *style, Qt::ArrowType type)
 {
     switch (type) {
@@ -885,10 +1056,6 @@ static QIcon getArrowIcon(const QStyle *style, Qt::ArrowType type)
 
 bool DTabBarPrivate::eventFilter(QObject *watched, QEvent *event)
 {
-    if (this->isChromeTabStyle) {
-        return QTabBar::eventFilter(watched, event);
-    }
-
     QTabBarPrivate *d = reinterpret_cast<QTabBarPrivate *>(qGetPtrHelper(d_ptr));
 
     if (watched == d->leftB) {
@@ -946,7 +1113,7 @@ QSize DTabBarPrivate::minimumSizeHint() const
 }
 
 void DTabBarPrivate::paintEvent(QPaintEvent *e)
-{//
+{
     Q_UNUSED(e)
     D_Q(DTabBar);
 
@@ -1035,7 +1202,7 @@ void DTabBarPrivate::paintEvent(QPaintEvent *e)
                 p.setOpacity(1);
             }
         } else {
-            int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, nullptr, this);
+            int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0, this);
             d->movingTab->setGeometry(tab.rect.adjusted(-taboverlap, 0, taboverlap, 0));
         }
     }
@@ -1300,32 +1467,11 @@ QTabBarPrivate *DTabBarPrivate::dd() const
  * \~chinese \brief 拖放结束
  */
 
-DTabBar::DTabBar(QWidget *parent, bool chromeTabStyle)
+DTabBar::DTabBar(QWidget *parent)
     : QWidget(parent)
-    , DObject(*new DTabBarPrivate(this, chromeTabStyle))
+    , DObject(*new DTabBarPrivate(this))
 {
     setAcceptDrops(true);
-}
-
-bool DTabBar::isChromeTabStyle() const
-{
-    D_DC(DTabBar);
-
-    return d->isChromeTabStyle;
-}
-
-void DTabBar::setChromeTabStyle(bool chromeTabStyle)
-{
-    D_D(DTabBar);
-
-    d->setChromeTabStyle(chromeTabStyle);
-}
-
-void DTabBar::setAddButtonFocusPolicy(Qt::FocusPolicy focusPolicy)
-{
-    D_D(DTabBar);
-
-    d->addButton->setFocusPolicy(focusPolicy);
 }
 
 /*!
@@ -1401,11 +1547,9 @@ void DTabBar::setShape(QTabBar::Shape shape)
         }
 
         if (new_vertical) {
-            if(!d->isChromeTabStyle) {
-                d->leftScrollButton->setIcon(getArrowIcon(style(), Qt::UpArrow));
-                d->rightScrollButton->setIcon(getArrowIcon(style(), Qt::DownArrow));
-                d->leftScrollButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            }
+            d->leftScrollButton->setIcon(getArrowIcon(style(), Qt::UpArrow));
+            d->rightScrollButton->setIcon(getArrowIcon(style(), Qt::DownArrow));
+            d->leftScrollButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
             d->rightScrollButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
             d->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
             d->addButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -1413,11 +1557,9 @@ void DTabBar::setShape(QTabBar::Shape shape)
             d->addButton->setMinimumWidth(0);
             d->addButton->setMaximumWidth(9999);
         } else {
-            if (!d->isChromeTabStyle) {
-                d->leftScrollButton->setIcon(getArrowIcon(style(), Qt::LeftArrow));
-                d->rightScrollButton->setIcon(getArrowIcon(style(), Qt::RightArrow));
-                d->leftScrollButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-            }
+            d->leftScrollButton->setIcon(getArrowIcon(style(), Qt::LeftArrow));
+            d->rightScrollButton->setIcon(getArrowIcon(style(), Qt::RightArrow));
+            d->leftScrollButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
             d->rightScrollButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
             d->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
             d->addButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -1519,7 +1661,6 @@ void DTabBar::setNeedChangeTextColor(int index, const QColor &color)
 void DTabBar::removeNeedChangeTextColor(int index)
 {
     d_func()->removeNeedChangeTextColor(index);
-    d_func()->setClearTabColor(index);
 }
 
 void DTabBar::setChangeTextColor(int index)
@@ -1610,29 +1751,6 @@ QString DTabBar::tabWhatsThis(int index) const
  */
 void DTabBar::setTabData(int index, const QVariant &data)
 {
-    if (d_func()->isChromeTabStyle) {
-
-        int tabMinSize = 65;
-        int tabMaxSize = 450;
-        int tabRightSpace = 70;
-
-        for(int i=0; i<this->count(); i++) {
-            setTabMinimumSize(i, QSize(tabMinSize, this->size().height()));
-            setTabMaximumSize(i, QSize(tabMaxSize, this->size().height()));
-        }
-
-        if (this->count() > 1) {
-            QWidget *parentWidget = this->parentWidget();
-            int tabBarWidth = parentWidget->width()-tabRightSpace;
-            int tabWidth = tabBarWidth/(this->count()+1);
-            if (tabWidth <= tabMinSize) {
-                emit tabFull();
-                removeTab(index);
-                return;
-            }
-        }
-    }
-
     d_func()->setTabData(index, data);
 }
 
@@ -1754,12 +1872,27 @@ void DTabBar::setSelectionBehaviorOnRemove(QTabBar::SelectionBehavior behavior)
 
 bool DTabBar::expanding() const
 {
-    return d_func()->expanding();
+    QTabBarPrivate *dd = reinterpret_cast<QTabBarPrivate *>(qGetPtrHelper(d_func()->d_ptr));
+    return dd->expanding;
 }
 
 void DTabBar::setExpanding(bool enabled)
 {
-    d_func()->setExpanding(enabled);
+    D_D(DTabBar);
+
+    if (enabled == expanding())
+        return;
+    QTabBarPrivate *dd = reinterpret_cast<QTabBarPrivate *>(qGetPtrHelper(d->d_ptr));
+    dd->expanding = enabled;
+    QHBoxLayout *auto_layout = d->layout;
+
+    if (enabled) {
+        auto_layout->removeItem(d->stretch);
+        d->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    } else {
+        auto_layout->addSpacerItem(d->stretch);
+        d->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+    }
 }
 
 bool DTabBar::isMovable() const
@@ -1835,6 +1968,26 @@ QWindow *DTabBar::dragIconWindow() const
     }
 
     return nullptr;
+}
+
+/*!
+ * \~chinese \brief DTabBar::setEnabledEmbedStyle 启用直角样式的Tabbar
+ * \~chinese \row 此风格适用于切换窗口的操作,多用于支持多开的应用
+ * \param replace true 启用，false 恢复
+ */
+void DTabBar::setEnabledEmbedStyle(bool enable)
+{
+    setProperty("_d_dtk_tabbartab_type", enable);
+}
+
+/*!
+ * \~chinese \brief 设置添加按钮焦点策略
+ */
+void DTabBar::setAddButtonFocusPolicy(Qt::FocusPolicy focusPolicy)
+{
+    D_D(DTabBar);
+
+    d->addButton->setFocusPolicy(focusPolicy);
 }
 
 /*!
@@ -2033,7 +2186,7 @@ void DTabBar::paintTab(QPainter *painter, int index, const QStyleOptionTab &opti
     Q_UNUSED(index)
 
     //use CustomTabStyle to draw tab contrl
-    d_func()->style()->drawControl(QStyle::CE_TabBarTab, &option, painter, this);
+    style()->drawControl(QStyle::CE_TabBarTab, &option, painter, this);
 }
 
 QPixmap DTabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option, QPoint *hotspot) const
@@ -2046,7 +2199,7 @@ QPixmap DTabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &optio
 
     QStyleOptionTab tab = option;
 
-    int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, nullptr, this);
+    int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0, this);
 
     tab.rect.moveTopLeft(QPoint(taboverlap, 0));
 

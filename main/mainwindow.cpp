@@ -62,10 +62,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
 
 void MainWindow::initUI()
 {
-    m_tabbar = new TabBar(this, true);
+    m_tabbar = new TabBar(this);
     m_tabbar->setFocusPolicy(Qt::NoFocus);
-    m_tabbar->setAddButtonFocusPolicy(Qt::NoFocus);
-    m_tabbar->setChromeTabStyle(true);
 
     // ShortcutManager::instance();不管是懒汉式还是饿汉式，都不需要这样单独操作
     ShortcutManager::instance()->setMainWindow(this);
@@ -243,13 +241,17 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
+            int currSessionId =  tabPage->currentTerminal()->getCurrSessionId();
+            m_tabVisitMap.remove(currSessionId);
+            m_tabChangeColorMap.remove(currSessionId);
+
             m_termStackWidget->removeWidget(tabPage);
             m_tabbar->removeTab(identifier);
-
-            updateTabStatus();
             break;
         }
     }
+
+    updateTabStatus();
 
     if (m_tabbar->count() == 0) {
         qApp->quit();
@@ -893,14 +895,6 @@ void MainWindow::initTitleBar()
         handleTitleBarMenuFocusPolicy();
     }
 
-    connect(m_tabbar, &DTabBar::tabFull, this, [ = ]() {
-        qDebug() << "tab is full";
-
-        TermWidgetPage *tabPage = currentTab();
-        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-        QString currWorkingDir = termWidgetWapper->workingDirectory();
-        emit newWindowRequest(currWorkingDir);
-    });
 
     connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
 
