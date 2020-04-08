@@ -12,6 +12,9 @@ RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(pare
 void RemoteManagementPanel::refreshPanel()
 {
     clearSearchInfo();
+    //--added byq qinyaning(nyq) to solve the show when not exist the server-config.conf--//
+    ServerConfigManager::instance()->initServerConfig();
+    //---------------------------//
     m_listWidget->refreshAllDatas();
     refreshSearchState();
 }

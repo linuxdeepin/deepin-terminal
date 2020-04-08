@@ -20,6 +20,9 @@ ServerConfigManager *ServerConfigManager::instance()
 
 void ServerConfigManager::initServerConfig()
 {
+    //--added byq qinyaning(nyq) to solve the show when not exist the server-config.conf--//
+    m_serverConfigs.clear();
+    //---------------------------------------------------------------------------//
     QDir serverConfigBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!serverConfigBasePath.exists()) {
         return;
