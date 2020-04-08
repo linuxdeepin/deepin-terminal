@@ -1,6 +1,7 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigmanager.h"
 #include "termcommandlinkbutton.h"
+#include "../views/operationconfirmdlg.h"
 
 #include <DFontSizeManager>
 #include <DPushButton>
