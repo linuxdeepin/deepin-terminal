@@ -93,18 +93,6 @@
                             "default":  "Ctrl+0"
                         },
                         {
-                            "key": "skip_to_next_command",
-                            "name": "Jump to next command",
-                            "type": "shortcut",
-                            "default":  "Shift+Down"
-                        },
-                        {
-                            "key": "skip_to_previous_command",
-                            "name": "Jump to previous command",
-                            "type": "shortcut",
-                            "default":  "Shift+Up"
-                        },
-                        {
                             "key": "select_all",
                             "name": "Select all",
                             "type": "shortcut",

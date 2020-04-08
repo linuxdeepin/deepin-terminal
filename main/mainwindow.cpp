@@ -760,35 +760,6 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // skip_to_next_command
-    connect(createNewShotcut("shortcuts.terminal.skip_to_next_command"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            qDebug() << "skipToNextCommand???";
-            // page->skipToPreCommand();
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier);
-            QApplication::sendEvent(focusWidget(), &keyPress);
-
-            QKeyEvent keyRelease(QEvent::KeyRelease, Qt::Key_Down, Qt::NoModifier);
-            QApplication::sendEvent(focusWidget(), &keyRelease);
-        }
-    });
-
-    // skip_to_previous_command
-    connect(createNewShotcut("shortcuts.terminal.skip_to_previous_command"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
-        if (page) {
-            qDebug() << "skipToPreCommand";
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Up, Qt::NoModifier);
-            QApplication::sendEvent(focusWidget(), &keyPress);
-
-            QKeyEvent keyRelease(QEvent::KeyRelease, Qt::Key_Up, Qt::NoModifier);
-            QApplication::sendEvent(focusWidget(), &keyRelease);
-
-            // m_menu->show();
-        }
-    });
-
     // switch_fullscreen
     connect(createNewShotcut("shortcuts.advanced.switch_fullscreen"), &QShortcut::activated, this, [this]() {
         switchFullscreen();
