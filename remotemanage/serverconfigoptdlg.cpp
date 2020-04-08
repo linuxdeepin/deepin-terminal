@@ -12,6 +12,7 @@
 #include <QVBoxLayout>
 #include <QTextCodec>
 #include <QSpacerItem>
+#include <iterator>//added byq qinyaning
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
     : DAbstractDialog(parent),
@@ -346,6 +347,29 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
         return;
     }
     //------------------------------------------------------------------//
+    //--added by qinyaning(nyq) to solve the bug 19116: You can create a new remote server with the same name--//
+    if((m_type == SCT_ADD)
+            || ((m_type == SCT_MODIFY && m_curServer != nullptr)
+                && (m_curServer->m_serverName.trimmed() != m_serverName->text().trimmed())))/*此时用户已经在修改模式下修改了服务器名称*/ {
+        QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
+        for(QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
+            QList<ServerConfig *> value = iter.value();
+            for(int i = 0; i < value.size(); i++) {
+                if(value[i]->m_serverName.trimmed() == m_serverName->text().trimmed()) {//服务器名相同
+                    OperationConfirmDlg optDlg;
+                    QPixmap warnning = QIcon::fromTheme("dialog-warning").pixmap(QSize(32, 32));
+                    optDlg.setIconPixmap(warnning);
+                    optDlg.setOperatTypeName("deepin-terminal-warning");
+                    optDlg.setTipInfo(QObject::tr("Named the same remote server!"));
+                    optDlg.setOKCancelBtnText(QObject::tr("Sure"), QObject::tr("Cancel"));
+                    optDlg.setFixedSize(380, 160);
+                    optDlg.exec();
+                    return;
+                }
+            }
+        }
+    }
+    //-------------------------------------------------------------------//
     ServerConfig *config = new ServerConfig();
     config->m_serverName = m_serverName->text();
     config->m_address = m_address->text();
