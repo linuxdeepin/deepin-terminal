@@ -38,7 +38,10 @@ void ServerConfigManager::initServerConfig()
     for (const QString &serverName : serverGroups) {
         serversSettings.beginGroup(serverName);
         QStringList strList = serverName.split("@");
-        if (strList.count() != 3) {
+//        if (strList.count() != 3) {
+        //--added by qinyaning to solve probel(bug 19338) when added ftp--//
+        if (strList.count() != 4) {
+        //-----------------------------------------------------//
             continue;
         }
         ServerConfig *pServerConfig = new ServerConfig();
@@ -76,7 +79,10 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
-    QString strConfigGroupName = QString("%1@%2@%3").arg(config->m_userName).arg(config->m_address).arg(config->m_port);
+     //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
+    QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
+                config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
+    //------------------------------
     commandsSettings.beginGroup(strConfigGroupName);
     commandsSettings.setValue("Name", config->m_serverName);
     commandsSettings.setValue("Password", config->m_password);
@@ -106,7 +112,10 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
-    QString strConfigGroupName = QString("%1@%2@%3").arg(config->m_userName).arg(config->m_address).arg(config->m_port);
+    //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
+    QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
+                config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
+    //-------------------------
     commandsSettings.remove(strConfigGroupName);
 //    if (m_serverConfigs.contains(config->m_group)) {
 //        m_serverConfigs[config->m_group].removeOne(config);
