@@ -126,6 +126,9 @@ void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
 void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup)
 {
     m_serverConfigGroupPanel->resize(size());
+    //--added by qinyaning(nyq) to solve the repeat history recoed--//
+    m_serverConfigGroupPanel->clearSearchInfo();
+    //--------------------------------------------------------------//
     m_serverConfigGroupPanel->show();
     m_serverConfigGroupPanel->refreshData(strGroup);
     m_remoteManagementSearchPanel->hide();
