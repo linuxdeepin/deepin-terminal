@@ -161,9 +161,6 @@ private:
     /******** Modify by m000714 daizhengwen 2020-03-29: 终端窗口配置 ****************/
     QSettings *m_winInfoConfig;
     /********************* Modify by m000714 daizhengwen End ************************/
-
-
-//    const char *cmd = "ps -elf|awk '{if($15==\"deepin-terminal\")print $15}'|wc -l";
 };
 
 #endif  // MAINWINDOW_H

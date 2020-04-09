@@ -90,7 +90,6 @@ void MainWindow::initUI()
     // parts.
     initPlugins();
     initWindow();
-    initWindowPosition(this);
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
 }
@@ -573,9 +572,6 @@ void MainWindow::initWindow()
         } else {
             resize(QSize(saveWidth, saveHeight));
         }
-
-//        move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
-        initWindowPosition(this);
     }
 
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
@@ -594,7 +590,6 @@ QString MainWindow::getWinInfoConfigPath()
 
 void MainWindow::initWindowPosition(MainWindow *mainwindow)
 {
-
     int m_WindowNumber = executeCMD(cmd);
     if (m_WindowNumber == 1) {
         mainwindow->move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
@@ -991,8 +986,6 @@ void MainWindow::handleTitleBarMenuFocusPolicy()
 
 int MainWindow::executeCMD(const char *cmd)
 {
-
-
     char *result;
     char buf_ps[1024] = {0};
     FILE *ptr;
@@ -1001,13 +994,11 @@ int MainWindow::executeCMD(const char *cmd)
     result = fgets(buf_ps, 1024, ptr);
 
     QString qStr(result);
-    qDebug() << "qStr========" << qStr;
     int num = qStr.toInt() ;
-    qDebug() << "num ========" << num;
     pclose(ptr);
     return  num;
-
 }
+
 /*******************************************************************************
  1. @函数:    showPlugin
  2. @作者:    n014361 王培利
