@@ -267,6 +267,18 @@ void ServerConfigOptDlg::initData()
         m_userName->setText(m_curServer->m_userName);
         m_password->setText(m_curServer->m_password);
         m_privateKey->setText(m_curServer->m_privateKey);
+        //--added by qinyaning(nyq) to solve the search problems--//
+        QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
+        for(QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
+            QList<ServerConfig *> value = iter.value();
+            for(int i = 0; i < value.size(); i++) {
+                if(value[i]->m_serverName.trimmed() == m_curServer->m_serverName.trimmed()) {
+                    m_curServer->m_group = value[i]->m_group;
+                    break;
+                }
+            }
+        }
+        //--------------------------------------------------------//
         m_group->setText(m_curServer->m_group);
         m_path->setText(m_curServer->m_path);
         m_command->setText(m_curServer->m_command);

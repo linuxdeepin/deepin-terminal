@@ -98,8 +98,13 @@ void ServerConfigList::refreshDataByGroupAndFilter(const QString &strGroupName, 
     QList<ServerConfig *> &configList = configMap[strGroupName];
     for (auto cfg : configList) {
         if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
-                || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+                //----commented by qinyaning(nyq) to solve search problems--//
+                /*|| cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)*/) {
+                //----------------------------------------------------------//
             ServerConfigItemData itemData = changePointerToObject(cfg);
+            //--added by qinyqning(nyq) to solve search problems--//
+            itemData.m_group = "";
+            //----------------------------------------------------//
             m_serCfgItemDataList.append(itemData);
         }
     }
@@ -114,15 +119,27 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
     QMap<QString, QList<ServerConfig *>>::const_iterator iter = configMap.constBegin();
     while (iter != configMap.constEnd()) {
         QList<ServerConfig *> configList = iter.value();
+
         for (auto cfg : configList) {
-            if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)                 // 服务名
-                    || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)            // 用户名
-                    || cfg->m_address.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)             // 地址
-                    || cfg->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {            // 分组
+            if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)//服务名
+                    //------commented by qinyaning(nyq) to solve search problems-----------------//
+                    /*          || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)//用户名
+                                                        || cfg->m_address.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)*///地址
+                    /*|| cfg->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)*/) {            //分组
+                //--------------------------------------------------------------------------//
                 ServerConfigItemData itemData = changePointerToObject(cfg);
+                //----------added by qinyaning(nyq) to slove search problems---------//
+                if(!cfg->m_group.isEmpty()) itemData.m_group = "";
+                //-------------------------------------------------------------------//
                 m_serCfgItemDataList.append(itemData);
             }
         }
+
+        //----------added by qinyaning(nyq) to slove search problems---------//
+        if(!configList.isEmpty() && (configList[0]->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive))) {
+            ServerConfigItemData itemData = changePointerToObject(configList[0]);
+            m_serCfgItemDataList.append(itemData);
+        }//---------------------------------------------------------------//
         iter++;
     }
     m_serCfgProxyModel->initServerListData(m_serCfgItemDataList);
