@@ -44,6 +44,7 @@ private:
     DPasswordEdit *m_nameLineEdit = nullptr;
     DPasswordEdit *m_commandLineEdit = nullptr;
     DKeySequenceEdit *m_shortCutLineEdit = nullptr;
+    QString m_lastCmdShortcut;
     bool m_bDelOpt;
 };
 

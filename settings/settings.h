@@ -40,6 +40,9 @@ public:
     /******** Modify by n014361 wangpeili 2020-01-04: 获取当前配置粘贴是否为选择内容 *************×****/
     bool IsPasteSelection();
 
+    // 与设置里的快捷键冲突检测
+    bool isShortcutConflict(const QString &Name, const QString &Key);
+
 public:
     QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);
 

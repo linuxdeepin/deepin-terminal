@@ -31,17 +31,18 @@ public:
     QAction *checkActionIsExist(QAction &action);
     void setClipboardCommandData(QString clipboardCommand);
     QString getClipboardCommandData();
-    QString updateShortcut(const QString &Name, const QString &seq, bool loadMode = false);
-    QString getShortcutSet(const QString &Name);
-    bool    isShortcutExist(const QString &Key);
-    bool    isValidShortcut(const QString &Key);
+
+    // 判断快捷键是否合法可用，进行界面处理
+    bool isValidShortcut(const QString &Name, const QString &Key);
+    // 检测快捷键是否合法可用，无界面
+    bool checkShortcutValid(const QString &Name, const QString &Key, QString &Reason);
+    // 快捷键是否已被自定义设置
+    bool isShortcutConflictInCustom(const QString &Name, const QString &Key);
 
 private:
     MainWindow *m_mainWindow = nullptr;
     QList<QAction *> m_customCommandActionList;
-    //QList<QAction *> m_builtinShortcuts;
     QStringList m_builtinShortcuts;
-    QMap<QString, QString> m_GloableShortctus;
     static ShortcutManager *m_instance;
     QString m_clipboardCommand;
 };

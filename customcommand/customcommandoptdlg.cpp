@@ -118,7 +118,6 @@ void CustomCommandOptDlg::initUI()
     });
 
     addContent(contentFrame);
-    QString cmdShortcut;
     if (m_type == CCT_ADD) {
         setFixedSize(459, 262);
         setTitle(tr("Add Command"));
@@ -150,7 +149,7 @@ void CustomCommandOptDlg::initUI()
         QString strName = m_currItemData->m_cmdName;
         QString strCommad = m_currItemData->m_cmdText;
         QKeySequence keyseq = QKeySequence(m_currItemData->m_cmdShortcut);
-        cmdShortcut = m_currItemData->m_cmdShortcut;
+        m_lastCmdShortcut = m_currItemData->m_cmdShortcut;
         m_nameLineEdit->setText(strName);
         m_commandLineEdit->setText(strCommad);
         m_shortCutLineEdit->setKeySequence(keyseq);
@@ -167,13 +166,32 @@ void CustomCommandOptDlg::initUI()
     } else {
         setConfirmBtnText(tr("Save"));
     }
-
+    m_lastCmdShortcut = m_shortCutLineEdit->keySequence().toString();
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
     connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, [ = ](const QKeySequence & sequence) {
-        if (!ShortcutManager::instance()->isValidShortcut(sequence.toString())) {
+         //删除
+        if (sequence.toString() == "Backspace") {
             m_shortCutLineEdit->clear();
-            m_shortCutLineEdit->setKeySequence(QKeySequence(cmdShortcut));
+            m_lastCmdShortcut = "";
+            return ;
         }
+        // 取消
+        if (sequence.toString() == "Esc") {
+            m_shortCutLineEdit->clear();
+            m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
+            return ;
+        }
+        QString checkName;
+        //QString seq = m_shortCutLineEdit->text();
+        if (m_type != CCT_ADD) {
+            checkName = m_nameLineEdit->text();
+        }
+        if (!ShortcutManager::instance()->isValidShortcut(checkName, sequence.toString())) {
+            m_shortCutLineEdit->clear();
+            m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
+            return;
+        }
+        m_lastCmdShortcut = sequence.toString();
     });
 
 #ifdef UI_DEBUG

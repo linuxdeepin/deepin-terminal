@@ -55,6 +55,7 @@ public:
 
     static bool showExitConfirmDialog();
     static bool showShortcutConflictDialog(QString conflictkey);
+    static bool showShortcutConflictMsgbox(QString conflictkey, QString txt);
 };
 
 #endif

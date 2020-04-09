@@ -113,6 +113,7 @@ set (DTNG_CPP_FILES
     theme/themepanelplugin.cpp
     views/commonpanel.cpp
     views/myiconbutton.cpp
+    views/warnningdlg.cpp
     views/operationconfirmdlg.cpp
     views/pagesearchbar.cpp
     views/rightpanel.cpp
@@ -172,6 +173,7 @@ set (DTNG_HEADER_FILES
     views/commonpanel.h
     views/myiconbutton.h
     views/operationconfirmdlg.h
+    views/warnningdlg.h
     views/pagesearchbar.h
     views/rightpanel.h
     views/tabbar.h
