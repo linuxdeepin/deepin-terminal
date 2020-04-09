@@ -10,6 +10,8 @@
 #include <DWarningButton>
 
 #include <QWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 DWIDGET_USE_NAMESPACE
 
@@ -45,6 +47,8 @@ private:
 
     QWidget *m_content = nullptr;
     QVBoxLayout *m_contentLayout = nullptr;
+    QVBoxLayout *m_mainLayout = nullptr;
+    QHBoxLayout *m_actionLayout = nullptr;
 
     DLabel *m_operateTypeName = nullptr;
     DLabel *m_tipInfo = nullptr;

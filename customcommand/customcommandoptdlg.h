@@ -5,7 +5,7 @@
 #include "customcommanditemmodel.h"
 
 #include <DDialog>
-#include <DPasswordEdit>
+#include <DLineEdit>
 #include <DKeySequenceEdit>
 
 #include <QAction>
@@ -41,8 +41,8 @@ private:
     CustomCmdOptType m_type;
     CustomCommandItemData *m_currItemData = nullptr;
     QAction *m_newAction = nullptr;
-    DPasswordEdit *m_nameLineEdit = nullptr;
-    DPasswordEdit *m_commandLineEdit = nullptr;
+    DLineEdit *m_nameLineEdit = nullptr;
+    DLineEdit *m_commandLineEdit = nullptr;
     DKeySequenceEdit *m_shortCutLineEdit = nullptr;
     QString m_lastCmdShortcut;
     bool m_bDelOpt;

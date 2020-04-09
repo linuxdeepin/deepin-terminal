@@ -23,8 +23,8 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandIte
     : TermBaseDialog(parent),
       m_type(type),
       m_currItemData(currItemData),
-      m_nameLineEdit(new DPasswordEdit),
-      m_commandLineEdit(new DPasswordEdit),
+      m_nameLineEdit(new DLineEdit),
+      m_commandLineEdit(new DLineEdit),
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
@@ -80,12 +80,6 @@ void CustomCommandOptDlg::initUI()
     m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     m_commandLineEdit->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     m_shortCutLineEdit->ShortcutDirection(Qt::AlignLeft);
-
-    m_nameLineEdit->setEchoButtonIsVisible(false);
-    m_nameLineEdit->setEchoMode(QLineEdit::EchoMode::Normal);
-
-    m_commandLineEdit->setEchoButtonIsVisible(false);
-    m_commandLineEdit->setEchoMode(QLineEdit::EchoMode::Normal);
 
     nameLayout->addWidget(nameLabel);
     nameLayout->addWidget(m_nameLineEdit);

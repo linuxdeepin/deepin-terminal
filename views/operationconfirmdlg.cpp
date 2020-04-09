@@ -1,14 +1,13 @@
 #include "operationconfirmdlg.h"
 
 #include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DButtonBox>
 #include <DIconButton>
 #include <DFontSizeManager>
 #include <DVerticalLine>
 #include <DLog>
 
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 
 OperationConfirmDlg::OperationConfirmDlg(QWidget *parent)
     : DAbstractDialog(parent)
@@ -71,9 +70,9 @@ void OperationConfirmDlg::initUI()
 
 void OperationConfirmDlg::initContentLayout()
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(10, 0, 10, 10);
+    m_mainLayout = new QVBoxLayout();
+    m_mainLayout->setSpacing(0);
+    m_mainLayout->setContentsMargins(10, 0, 10, 10);
 
     QWidget *mainFrame = new QWidget(this);
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -81,23 +80,27 @@ void OperationConfirmDlg::initContentLayout()
     m_operateTypeName = new DLabel(this);
     m_operateTypeName->setFixedHeight(20);
     m_operateTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QFont operateTypeNameFont;
-    m_operateTypeName->setFont(operateTypeNameFont);
-    DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6);
+    // 字色
+    DPalette titlepalette = m_operateTypeName->palette();
+    titlepalette.setColor(QPalette::WindowText, DPalette::ToolTipText);
+    m_operateTypeName->setPalette(titlepalette);
+    // 字号
+    DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6, QFont::Medium);
 
     m_tipInfo = new DLabel(this);
     m_tipInfo->setFixedHeight(20);
     m_tipInfo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QFont tipInfoFont;
-    m_tipInfo->setFont(tipInfoFont);
-    DFontSizeManager::instance()->bind(m_tipInfo, DFontSizeManager::T6);
-    DPalette paTipInfo = DApplicationHelper::instance()->palette(m_tipInfo);
-    paTipInfo.setBrush(DPalette::WindowText, paTipInfo.color(DPalette::TextTips));
-    m_tipInfo->setPalette(paTipInfo);
+    // 字号
+    DFontSizeManager::instance()->bind(m_tipInfo, DFontSizeManager::T6, QFont::Normal);
+    // 字色
+    DPalette palette = m_tipInfo->palette();
+    QColor color = DGuiApplicationHelper::adjustColor(palette.color(QPalette::WindowText), 0, 0, 0, 0, 0, 0, -30);
+    palette.setColor(QPalette::WindowText, color);
+    m_tipInfo->setPalette(palette);
 
-    QHBoxLayout *actionBarLayout = new QHBoxLayout();
-    actionBarLayout->setSpacing(0);
-    actionBarLayout->setContentsMargins(0, 0, 0, 0);
+    m_actionLayout = new QHBoxLayout();
+    m_actionLayout->setSpacing(0);
+    m_actionLayout->setContentsMargins(0, 0, 0, 0);
 
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
@@ -119,18 +122,13 @@ void OperationConfirmDlg::initContentLayout()
     verticalLine->setAutoFillBackground(true);
     verticalLine->setFixedSize(3, 28);
 
-    actionBarLayout->addWidget(m_cancelBtn);
-    actionBarLayout->addSpacing(8);
-    actionBarLayout->addWidget(verticalLine);
-    actionBarLayout->addSpacing(8);
-    actionBarLayout->addWidget(m_confirmBtn);
+    m_actionLayout->addWidget(m_cancelBtn);
+    m_actionLayout->addSpacing(8);
+    m_actionLayout->addWidget(verticalLine);
+    m_actionLayout->addSpacing(8);
+    m_actionLayout->addWidget(m_confirmBtn);
 
-    mainLayout->addWidget(m_operateTypeName, 0, Qt::AlignCenter);
-    mainLayout->addSpacing(8);
-    mainLayout->addWidget(m_tipInfo, 0, Qt::AlignCenter);
-    mainLayout->addStretch();
-    mainLayout->addLayout(actionBarLayout);
-    mainFrame->setLayout(mainLayout);
+    mainFrame->setLayout(m_mainLayout);
 
     addContent(mainFrame);
 }
@@ -197,16 +195,22 @@ void OperationConfirmDlg::setIconPixmap(const QPixmap &iconPixmap)
 
 void OperationConfirmDlg::setOperatTypeName(const QString &strName)
 {
+    m_mainLayout->addWidget(m_operateTypeName, 0,  Qt::AlignVCenter | Qt::AlignHCenter);
+    m_mainLayout->addSpacing(8);
     m_operateTypeName->setText(strName);
 }
 
 void OperationConfirmDlg::setTipInfo(const QString &strInfo)
 {
+
+    m_mainLayout->addWidget(m_tipInfo, 0, Qt::AlignVCenter | Qt::AlignHCenter);
+    m_mainLayout->addStretch();
     m_tipInfo->setText(strInfo);
 }
 
 void OperationConfirmDlg::setOKCancelBtnText(const QString &strConfirm, const QString &strCancel)
 {
+    m_mainLayout->addLayout(m_actionLayout);
     m_confirmBtn->setText(strConfirm);
     m_cancelBtn->setText(strCancel);
 }
