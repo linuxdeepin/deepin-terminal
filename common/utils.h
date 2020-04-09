@@ -56,6 +56,8 @@ public:
     static bool showExitConfirmDialog();
     static bool showShortcutConflictDialog(QString conflictkey);
     static bool showShortcutConflictMsgbox(QString conflictkey, QString txt);
+
+    static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
 };
 
 #endif

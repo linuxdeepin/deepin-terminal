@@ -73,6 +73,8 @@ public:
     int getCurrSessionId();
     void setTextCodec(QTextCodec *codec);
 
+    TermWidget* getTermWidget();
+
 public slots:
     void zoomIn();
     void zoomOut();

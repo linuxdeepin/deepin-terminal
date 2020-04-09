@@ -252,36 +252,14 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
 
     menu.addAction(tr("Rename title"), this, [this] {
-        // TODO: Tab name as default text?
-        DDialog *pDialog = new DDialog(nullptr);
-        pDialog->setWindowModality(Qt::ApplicationModal);
-        pDialog->setFixedSize(380, 180);
-        pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
 
-        DLineEdit *lineEidt = new DLineEdit();
-        lineEidt->setFixedSize(360, 36);
-        lineEidt->setText(this->title());
-        lineEidt->setClearButtonEnabled(false);
-        connect(lineEidt, &DLineEdit::focusChanged, this, [ = ](bool onFocus)
+        QString currTabTitle = this->property("currTabTitle").toString();
+        if (currTabTitle.isNull())
         {
-            Q_UNUSED(onFocus);
-            lineEidt->lineEdit()->selectAll();
-        });
-
-        DLabel *label = new DLabel(tr("Tab name"));
-        label->setFixedSize(360, 20);
-        label->setAlignment(Qt::AlignCenter);
-
-        pDialog->addContent(label);
-        pDialog->addSpacing(10);
-        pDialog->addContent(lineEidt);
-        pDialog->addButton(tr("Cancel"), false, DDialog::ButtonNormal);
-        pDialog->addButton(tr("Sure"), true, DDialog::ButtonRecommend);
-        pDialog->show();
-        if (pDialog->exec() == DDialog::Accepted)
-        {
-            emit termRequestRenameTab(lineEidt->text());
+            currTabTitle = this->title();
         }
+        qDebug() << "currTabTitle" << currTabTitle << endl;
+        Utils::showRenameTitleDialog(currTabTitle, this);
     });
 
     menu.addAction(tr("&Encoding"), this, [this] {
@@ -641,4 +619,9 @@ void TermWidgetWrapper::initUI()
 void TermWidgetWrapper::setTextCodec(QTextCodec *codec)
 {
     m_term->setTextCodec(codec);
+}
+
+TermWidget* TermWidgetWrapper::getTermWidget()
+{
+    return m_term;
 }

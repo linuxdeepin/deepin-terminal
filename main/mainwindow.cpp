@@ -494,6 +494,8 @@ void MainWindow::onTermTitleChanged(QString title)
 void MainWindow::onTabTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
+    TermWidget *termWidget = tabPage->currentTerminal()->getTermWidget();
+    termWidget->setProperty("currTabTitle", QVariant::fromValue(title));
     m_tabbar->setTabText(tabPage->identifier(), title);
 }
 
@@ -775,12 +777,9 @@ void MainWindow::initShortcuts()
     connect(createNewShotcut("shortcuts.advanced.rename_tab"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page) {
-            bool ok;
-            QString text =
-                DInputDialog::getText(nullptr, tr("Rename Tab"), tr("Tab name:"), QLineEdit::Normal, QString(), &ok);
-            if (ok) {
-                page->onTermRequestRenameTab(text);
-            }
+            TermWidgetWrapper *termWrapper = page->currentTerminal();
+            QString currTabTitle = m_tabbar->tabText(m_tabbar->currentIndex());
+            Utils::showRenameTitleDialog(currTabTitle, termWrapper->getTermWidget());
         }
     });
 

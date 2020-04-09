@@ -21,9 +21,11 @@
 #include "utils.h"
 #include "../views/operationconfirmdlg.h"
 #include "warnningdlg.h"
+#include "termwidget.h"
 
 #include <DLog>
 #include <DMessageBox>
+#include <DLineEdit>
 
 #include <QUrl>
 #include <QDir>
@@ -290,3 +292,38 @@ bool Utils::showShortcutConflictMsgbox(QString conflictkey, QString txt)
     dlg.exec();
     return  true;
 }
+
+void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
+{
+    DDialog *pDialog = new DDialog(nullptr);
+    pDialog->setWindowModality(Qt::ApplicationModal);
+    pDialog->setFixedSize(380, 180);
+    pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+
+    DLineEdit *lineEdit = new DLineEdit();
+    lineEdit->setFixedSize(360, 36);
+    lineEdit->setText(oldTitle);
+    lineEdit->setClearButtonEnabled(false);
+    connect(lineEdit, &DLineEdit::focusChanged, parentWidget, [ = ](bool onFocus)
+    {
+        Q_UNUSED(onFocus);
+        lineEdit->lineEdit()->selectAll();
+    });
+
+    DLabel *label = new DLabel(tr("Tab name"));
+    label->setFixedSize(360, 20);
+    label->setAlignment(Qt::AlignCenter);
+
+    pDialog->addContent(label);
+    pDialog->addSpacing(10);
+    pDialog->addContent(lineEdit);
+    pDialog->addButton(tr("Cancel"), false, DDialog::ButtonNormal);
+    pDialog->addButton(tr("Sure"), true, DDialog::ButtonRecommend);
+    pDialog->show();
+    if (pDialog->exec() == DDialog::Accepted)
+    {
+        TermWidget *termWidget = qobject_cast<TermWidget *>(parentWidget);
+        emit termWidget->termRequestRenameTab(lineEdit->text());
+    }
+}
+
