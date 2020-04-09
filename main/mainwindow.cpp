@@ -199,6 +199,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
 
         int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
 
+        //如果标签被点过，移除标签颜色
         if (isTabVisited(currSessionId) && bIdle) {
             m_tabVisitMap.insert(currSessionId, false);
             m_tabChangeColorMap.insert(currSessionId, false);
@@ -207,11 +208,23 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         }
 
         if (bIdle) {
+            //空闲状态如果标签被标记变色，则改变标签颜色
             if (m_tabbar->isNeedChangeTextColor(tabIndex)) {
                 m_tabChangeColorMap.insert(currSessionId, true);
                 m_tabbar->setChangeTextColor(tabIndex);
             }
         } else {
+
+            //如果当前标签是活动标签，移除变色请求
+            int activeTabIndex = m_tabbar->currentIndex();
+            if (activeTabIndex == tabIndex) {
+                m_tabVisitMap.insert(currSessionId, false);
+                m_tabChangeColorMap.insert(currSessionId, false);
+                m_tabbar->removeNeedChangeTextColor(tabIndex);
+                return;
+            }
+
+            //标记变色，发起请求，稍后等空闲状态变色
             m_tabChangeColorMap.insert(currSessionId, false);
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
             DPalette pa = appHelper->standardPalette(appHelper->themeType());
@@ -270,25 +283,21 @@ void MainWindow::updateTabStatus()
         {
             if (isTabVisited(currSessionId))
             {
-                qDebug() << i << ":" << "remove text color";
                 m_tabVisitMap.insert(currSessionId, false);
                 m_tabChangeColorMap.insert(currSessionId, false);
                 m_tabbar->removeNeedChangeTextColor(i);
             }
             else if (isTabChangeColor(currSessionId))
             {
-                qDebug() << i << ":" << "change text color";
                 m_tabbar->setChangeTextColor(i);
             }
             else
             {
-                qDebug() << i << ":" << "idle clear text color";
                 m_tabbar->removeNeedChangeTextColor(i);
             }
         }
         else
         {
-            qDebug() << i << ":" << "busy clear text color";
             m_tabbar->removeNeedChangeTextColor(i);
         }
     }

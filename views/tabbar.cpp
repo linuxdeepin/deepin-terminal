@@ -124,7 +124,7 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setFocusPolicy(Qt::NoFocus);
 
     setTabHeight(36);
-    setTabItemMinWidth(60);
+    setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
 
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);
@@ -237,6 +237,8 @@ void TabBar::closeOtherTabsExceptCurrent(int tabIndex)
 
 bool TabBar::eventFilter(QObject *watched, QEvent *event)
 {
+    Q_UNUSED(watched)
+
     if (event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 
