@@ -1076,12 +1076,12 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             enterSzCommand = false;
         }
     }
-    /******** Modify by m000714 daizhengwen 2020-03-31: 获取左键点击事件，隐藏右侧窗口****************/
+    /******** Modify by m000714 daizhengwen 2020-04-10: 获取点击事件，隐藏右侧窗口****************/
     if (m_CurrentShowPlugin != PLUGIN_TYPE_NONE && m_CurrentShowPlugin != PLUGIN_TYPE_SEARCHBAR) {
         if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
             QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
             // 242为RightPanel的的宽度
-            if (mouseEvent->button() == Qt::LeftButton && mouseEvent->x() < this->width()  - 242) {
+            if (mouseEvent->x() < this->width()  - 242) {
                 showPlugin(PLUGIN_TYPE_NONE);
             }
         }

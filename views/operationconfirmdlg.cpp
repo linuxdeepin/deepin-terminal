@@ -82,7 +82,7 @@ void OperationConfirmDlg::initContentLayout()
     m_operateTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // 字色
     DPalette titlepalette = m_operateTypeName->palette();
-    titlepalette.setColor(QPalette::WindowText, DPalette::ToolTipText);
+    titlepalette.setBrush(QPalette::WindowText, titlepalette.color(DPalette::ToolTipText));
     m_operateTypeName->setPalette(titlepalette);
     // 字号
     DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6, QFont::Medium);

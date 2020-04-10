@@ -28,10 +28,10 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     m_findBar->move(this->x() - 100, this->y() - 100);
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
     connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
-    connect(m_findBar, &PageSearchBar::keywordChanged, this, [=](QString keyword) {
+    connect(m_findBar, &PageSearchBar::keywordChanged, this, [ = ](QString keyword) {
         handleUpdateSearchKeyword(keyword);
     });
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [=]() {
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
         applyTheme();
     });
 
@@ -73,6 +73,7 @@ TermWidgetWrapper *TermWidgetPage::split(Qt::Orientation orientation)
 
 TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientation orientation)
 {
+    emit pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_NONE);
     QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
     Q_CHECK_PTR(parent);
 
