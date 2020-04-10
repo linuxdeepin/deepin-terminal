@@ -1265,7 +1265,12 @@ void TerminalDisplay::updateImage()
   dirtyRegion |= _inputMethodData.previousPreeditRect;
 
   // update the parts of the display which have changed
-  update(dirtyRegion);
+   //--modified and added by qinyaning(nyq) to solve When the screen zooms to 1.25 and 2.75,
+  /*the terminal interface will display colored lines. time: 2020.4.10 14:18
+   * */
+  //update(dirtyRegion);
+  update();
+  //-------------------------------------------------
 
   if ( _hasBlinker && !_blinkTimer->isActive()) _blinkTimer->start( TEXT_BLINK_DELAY );
   if (!_hasBlinker && _blinkTimer->isActive()) { _blinkTimer->stop(); _blinking = false; }
