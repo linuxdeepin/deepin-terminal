@@ -1,12 +1,14 @@
 #include "customcommandpanel.h"
 #include "customcommandoptdlg.h"
 #include "shortcutmanager.h"
+#include "operationconfirmdlg.h"
 
 #include <DGroupBox>
 #include <DVerticalLine>
 #include <DLog>
 #include <DDialog>
 
+#include <QPixmap>
 #include <QEvent>
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
@@ -40,19 +42,19 @@ void CustomCommandPanel::showAddCustomCommandDlg()
         } else {
             /******** Modify by m000714 daizhengwen 2020-03-30: 同名的情况，弹出提示框，约束输入****************/
             // 有同名命令，发出警告
-            DDialog pDialog(tr("Same name exists"), tr("Replace existing command or not?"), nullptr);
-            pDialog.setFixedSize(380, 160);
-            pDialog.setIcon(QIcon::fromTheme("dialog-warning"));
-            pDialog.setWindowFlags(pDialog.windowFlags() | Qt::WindowStaysOnTopHint);
-            pDialog.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
-            pDialog.addButton(QString(tr("Replace")), true, DDialog::ButtonWarning);
-            pDialog.show();
-            if (pDialog.exec() == QDialog::Accepted) {
+            OperationConfirmDlg optDlg;
+            QPixmap warnning = QIcon::fromTheme("dialog-warning").pixmap(QSize(32, 32));
+            optDlg.setIconPixmap(warnning);
+            optDlg.setWindowFlags(optDlg.windowFlags() | Qt::WindowStaysOnTopHint);
+            optDlg.setOperatTypeName(tr("Same name exists"));
+            optDlg.setTipInfo(tr("Replace existing command or not?"));
+            optDlg.setOKCancelBtnText(QObject::tr("Replace"), QObject::tr("Cancel"));
+            optDlg.setFixedSize(380, 160);
+            if (optDlg.exec() == QDialog::Accepted) {
                 // 替换已有结构
                 existAction->setData(newAction->data());
                 existAction->setText(newAction->text());
                 existAction->setShortcut(newAction->shortcut());
-                qDebug() << "dzw : " << existAction->text();
                 //            m_cmdListWidget->refreshOneRowCommandInfo(existAction);
                 // 刷新列表
                 refreshCmdPanel();
