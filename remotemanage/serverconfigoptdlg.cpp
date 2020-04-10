@@ -209,7 +209,6 @@ void ServerConfigOptDlg::initUI()
     m_delServer->hide();
     seniorWidget->hide();
 
-    m_advancedOptions->setFixedSize(48, 18);
     DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
     connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
         m_advancedOptions->hide();
@@ -269,10 +268,10 @@ void ServerConfigOptDlg::initData()
         m_privateKey->setText(m_curServer->m_privateKey);
         //--added by qinyaning(nyq) to solve the search problems--//
         QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
-        for(QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
+        for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
             QList<ServerConfig *> value = iter.value();
-            for(int i = 0; i < value.size(); i++) {
-                if(value[i]->m_serverName.trimmed() == m_curServer->m_serverName.trimmed()) {
+            for (int i = 0; i < value.size(); i++) {
+                if (value[i]->m_serverName.trimmed() == m_curServer->m_serverName.trimmed()) {
                     m_curServer->m_group = value[i]->m_group;
                     break;
                 }

@@ -78,7 +78,7 @@ void OperationConfirmDlg::initContentLayout()
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_operateTypeName = new DLabel(this);
-    m_operateTypeName->setFixedHeight(20);
+    //m_operateTypeName->setFixedHeight(20);
     m_operateTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // 字色
     DPalette titlepalette = m_operateTypeName->palette();
@@ -88,7 +88,7 @@ void OperationConfirmDlg::initContentLayout()
     DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6, QFont::Medium);
 
     m_tipInfo = new DLabel(this);
-    m_tipInfo->setFixedHeight(20);
+    //m_tipInfo->setFixedHeight(20);
     m_tipInfo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // 字号
     DFontSizeManager::instance()->bind(m_tipInfo, DFontSizeManager::T6, QFont::Normal);
