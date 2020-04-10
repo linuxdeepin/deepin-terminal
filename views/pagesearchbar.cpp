@@ -29,6 +29,7 @@
 #include <QKeyEvent>
 #include <QShortcut>
 #include <QApplication>
+#include <QAction>
 
 PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
 {
@@ -86,7 +87,7 @@ void PageSearchBar::initFindPrevButton()
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
     m_findPrevButton->setFocusPolicy(Qt::NoFocus);
 
-    connect(m_findPrevButton, &QPushButton::clicked, this, [this]() { emit findPrev(); });
+    connect(m_findPrevButton, &QAbstractButton::clicked, this, [this]() { emit findPrev(); });
 }
 
 void PageSearchBar::initFindNextButton()
@@ -95,16 +96,16 @@ void PageSearchBar::initFindNextButton()
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
     m_findNextButton->setFocusPolicy(Qt::NoFocus);
 
-    connect(m_findNextButton, &QPushButton::clicked, this, [this]() { emit findNext(); });
+    connect(m_findNextButton, &QAbstractButton::clicked, this, [this]() { emit findNext(); });
 
-    // 界面上输入回车就相当于直接点击下一个
-    m_findNextButton->setShortcut(QKeySequence(Qt::Key_Return));
-    // 由于不能绑定两个快捷键，当收到小键盘的"Enter"时候，再变身成"Return"给系统，就同时支持Enter/Return了
-    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Enter), this);
-    connect(shortcut, &QShortcut::activated, this, [this]() {
-        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-        QApplication::sendEvent(focusWidget(), &keyPress);
-    });
+    // 界面上输入回车就相当于直接点击下一个:Key_Enter OR Key_Return
+    // 控件本身不支持设置多个快捷键
+    QAction *action = new QAction(this);
+    QList<QKeySequence> lstShortcut;
+    lstShortcut << QKeySequence(Qt::Key_Enter) << QKeySequence(Qt::Key_Return);
+    action->setShortcuts(lstShortcut);
+    m_findNextButton->addAction(action);
+    connect(action, &QAction::triggered, this, [this]() { m_findNextButton->animateClick(80); });
 }
 
 void PageSearchBar::initSearchEdit()
@@ -112,8 +113,9 @@ void PageSearchBar::initSearchEdit()
     m_searchEdit = new DSearchEdit(this);
     m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
     // 需求不让自动查找，这个接口预留
-    connect(
-    m_searchEdit, &DSearchEdit::textChanged, this, [this]() { emit keywordChanged(m_searchEdit->lineEdit()->text()); });
+    connect(m_searchEdit, &DSearchEdit::textChanged, this, [this]() {
+        emit keywordChanged(m_searchEdit->lineEdit()->text());
+    });
 }
 
 void PageSearchBar::setNoMatchAlert(bool isAlert)
