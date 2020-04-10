@@ -124,12 +124,12 @@
 <context>
     <name>DSettingsDialog</name>
     <message>
-        <location filename="../common/utils.cpp" line="268"/>
+        <location filename="../common/utils.cpp" line="270"/>
         <source>This shortcut conflicts with %1</source>
         <translation>此快捷键与%1冲突</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="284"/>
+        <location filename="../common/utils.cpp" line="286"/>
         <source>The shortcut %1 %2 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -149,46 +149,44 @@
         <translation type="vanished">重命名标题</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="780"/>
         <source>Tab name:</source>
-        <translation>标题名称: </translation>
+        <translation type="vanished">标题名称: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="780"/>
         <source>Rename Tab</source>
-        <translation>重命名标题</translation>
+        <translation type="vanished">重命名标题</translation>
     </message>
     <message>
         <source>New &amp;workspace</source>
         <translation type="vanished">新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="855"/>
+        <location filename="../main/mainwindow.cpp" line="854"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="878"/>
+        <location filename="../main/mainwindow.cpp" line="877"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1258"/>
+        <location filename="../main/mainwindow.cpp" line="1260"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1260"/>
+        <location filename="../main/mainwindow.cpp" line="1262"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1262"/>
+        <location filename="../main/mainwindow.cpp" line="1264"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1318"/>
+        <location filename="../main/mainwindow.cpp" line="1320"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -197,12 +195,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1350"/>
+        <location filename="../main/mainwindow.cpp" line="1352"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1352"/>
+        <location filename="../main/mainwindow.cpp" line="1354"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -524,27 +522,27 @@
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="253"/>
+        <location filename="../common/utils.cpp" line="255"/>
         <source>Programs are still running in terminal</source>
         <translation>终端仍然有程序在运⾏</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="254"/>
+        <location filename="../common/utils.cpp" line="256"/>
         <source>Are you sure you want to exit?</source>
         <translation>您确定要退出吗？</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="255"/>
+        <location filename="../common/utils.cpp" line="257"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="275"/>
+        <location filename="../common/utils.cpp" line="277"/>
         <source>Click on Add to make this shortcut effective immediately</source>
         <translation>点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="289"/>
+        <location filename="../common/utils.cpp" line="291"/>
         <source>please set another one</source>
         <translation type="unfinished"></translation>
     </message>
@@ -553,7 +551,7 @@
         <translation type="vanished">点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="276"/>
+        <location filename="../common/utils.cpp" line="278"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
@@ -566,8 +564,8 @@
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="377"/>
         <location filename="../remotemanage/serverconfiglist.cpp" line="157"/>
         <location filename="../customcommand/customcommandlist.cpp" line="126"/>
-        <location filename="../common/utils.cpp" line="255"/>
-        <location filename="../common/utils.cpp" line="276"/>
+        <location filename="../common/utils.cpp" line="257"/>
+        <location filename="../common/utils.cpp" line="278"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -971,19 +969,16 @@
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="271"/>
         <source>Tab name</source>
-        <translation>标题名称</translation>
+        <translation type="vanished">标题名称</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="278"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="vanished">取消</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="279"/>
         <source>Sure</source>
-        <translation>确定</translation>
+        <translation type="vanished">确定</translation>
     </message>
     <message>
         <source>Rename Tab</source>
@@ -994,32 +989,32 @@
         <translation type="vanished">标题名称: </translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="287"/>
+        <location filename="../views/termwidget.cpp" line="265"/>
         <source>&amp;Encoding</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="290"/>
+        <location filename="../views/termwidget.cpp" line="268"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="294"/>
+        <location filename="../views/termwidget.cpp" line="272"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="300"/>
+        <location filename="../views/termwidget.cpp" line="278"/>
         <source>Upload file</source>
         <translation>上传⽂件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="301"/>
+        <location filename="../views/termwidget.cpp" line="279"/>
         <source>Download file</source>
         <translation>下载⽂件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="306"/>
+        <location filename="../views/termwidget.cpp" line="284"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -1030,6 +1025,24 @@
         <location filename="../theme/themepanelplugin.cpp" line="20"/>
         <source>Switch &amp;theme</source>
         <translation>主题</translation>
+    </message>
+</context>
+<context>
+    <name>Utils</name>
+    <message>
+        <location filename="../common/utils.cpp" line="313"/>
+        <source>Tab name</source>
+        <translation type="unfinished">标题名称</translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="320"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="321"/>
+        <source>Sure</source>
+        <translation type="unfinished">确定</translation>
     </message>
 </context>
 </TS>
