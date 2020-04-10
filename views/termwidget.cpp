@@ -4,6 +4,7 @@
 #include "termproperties.h"
 #include "mainwindow.h"
 #include "shortcutmanager.h"
+#include "operationconfirmdlg.h"
 
 #include <DDesktopServices>
 #include <DInputDialog>
@@ -133,6 +134,19 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     /********************* Modify by n014361 wangpeili End ************************/
 
     connect(this, &TermWidget::isTermIdle, this, &TermWidget::handleTermIdle);
+
+    connect(this, &QTermWidget::uninstallTerminal, this, []() {
+
+        OperationConfirmDlg dlg;
+        dlg.setDialogFrameSize(380, 140);
+#warning need translations
+        dlg.setTitle(QString("警告"));
+        dlg.setOperatTypeName(QString("您确定要卸载终端吗，卸载后将无法再使用终端应用??"));
+        dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
+        dlg.exec();
+
+        return (dlg.getConfirmResult() == QDialog::Accepted);
+    });
 
     startShellProgram();
 

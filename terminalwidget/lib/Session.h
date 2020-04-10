@@ -517,6 +517,8 @@ signals:
     void silence();
     void activity();
 
+    bool sessionUninstallTerminal();
+
 private slots:
     void done(int);
 

@@ -378,6 +378,8 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, SIGNAL(silence()), this, SIGNAL(silence()));
     connect(m_impl->m_session, &Session::profileChangeCommandReceived, this, &QTermWidget::profileChanged);
     connect(m_impl->m_session, &Session::receivedData, this, &QTermWidget::receivedData);
+    // 用于卸载终端弹出框提示
+    connect(m_impl->m_session, SIGNAL(sessionUninstallTerminal()), this, SIGNAL(uninstallTerminal()));
 
     // That's OK, FilterChain's dtor takes care of UrlFilter.
     UrlFilter *urlFilter = new UrlFilter();

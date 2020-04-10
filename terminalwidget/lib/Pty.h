@@ -190,6 +190,8 @@ Q_OBJECT
      */
     void receivedData(const char* buffer, int length);
 
+    bool ptyUninstallTerminal();
+
   protected:
       void setupChildProcess();
 

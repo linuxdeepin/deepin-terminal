@@ -352,22 +352,23 @@ void Pty::sendData(const char* data, int length)
         QString strCurrCommand = SessionManager::instance()->getCurrShellCommand();
         if (!isTerminalRemoved() && bWillRemoveTerminal(strCurrCommand))
         {
-            QMessageBox messageBox(QMessageBox::NoIcon,
-                                   "警告", "您确定要卸载终端吗，卸载后将无法再使用终端应用?",
-                                   QMessageBox::Yes | QMessageBox::No, nullptr);
-            int result = messageBox.exec();
-            if (QMessageBox::No == result)
+            bool bUninstall = false;
+            QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::DirectConnection, Q_RETURN_ARG(bool, bUninstall));
+            if (bUninstall)
             {
-                return;
-            }
-            else
-            {
+                qDebug() << "确认卸载终端！" << bUninstall << endl;
                 connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [=](bool isIdle) {
+                    //卸载完成，关闭所有终端窗口
                     if (isIdle && isTerminalRemoved())
                     {
                         pclose(popen("killall deepin-terminal", "r"));
                     }
                 });
+            }
+            else
+            {
+                qDebug() << "不卸载终端！" << bUninstall << endl;
+                return;
             }
         }
     }

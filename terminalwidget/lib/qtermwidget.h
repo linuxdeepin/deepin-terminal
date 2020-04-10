@@ -271,6 +271,8 @@ signals:
     void activity();
     void silence();
 
+    bool uninstallTerminal();
+
     /**
      * Emitted when emulator send data to the terminal process
      * (redirected for external recipient). It can be used for
