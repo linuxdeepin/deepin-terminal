@@ -80,22 +80,22 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="40"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="43"/>
         <source>Same name exists</source>
         <translation>存在相同的名称</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="40"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="43"/>
         <source>Replace existing command or not?</source>
         <translation>是否替换已有命令?</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="44"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="47"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="45"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="48"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
@@ -104,7 +104,7 @@
         <translation type="vanished">搜索</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="109"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="112"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>

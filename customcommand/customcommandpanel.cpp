@@ -34,6 +34,9 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             QAction *actionData = ShortcutManager::instance()->addCustomCommand(*newAction);
             m_cmdListWidget->addNewCustomCommandData(actionData);
             refreshCmdSearchState();
+            /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
+            m_cmdListWidget->scrollToBottom();
+            /********************* Modify by m000714 daizhengwen End ************************/
         } else {
             /******** Modify by m000714 daizhengwen 2020-03-30: 同名的情况，弹出提示框，约束输入****************/
             // 有同名命令，发出警告
