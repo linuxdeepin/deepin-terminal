@@ -278,25 +278,17 @@ void MainWindow::updateTabStatus()
         bool bIdle = !(termWidgetWapper->hasRunningProcess());
         int currSessionId = termWidgetWapper->getCurrSessionId();
 
-        if (bIdle)
-        {
-            if (isTabVisited(currSessionId))
-            {
+        if (bIdle) {
+            if (isTabVisited(currSessionId)) {
                 m_tabVisitMap.insert(currSessionId, false);
                 m_tabChangeColorMap.insert(currSessionId, false);
                 m_tabbar->removeNeedChangeTextColor(i);
-            }
-            else if (isTabChangeColor(currSessionId))
-            {
+            } else if (isTabChangeColor(currSessionId)) {
                 m_tabbar->setChangeTextColor(i);
-            }
-            else
-            {
+            } else {
                 m_tabbar->removeNeedChangeTextColor(i);
             }
-        }
-        else
-        {
+        } else {
             m_tabbar->removeNeedChangeTextColor(i);
         }
     }
@@ -512,6 +504,11 @@ void MainWindow::initPlugins()
 
     remoteManagPlugin = new RemoteManagementPlugn(this);
     remoteManagPlugin->initPlugin(this);
+    /******** Modify by m000714 daizhengwen 2020-04-10: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
+    connect(remoteManagPlugin, &RemoteManagementPlugn::doHide, this, [ = ]() {
+        showPlugin(PLUGIN_TYPE_NONE);
+    });
+    /********************* Modify by m000714 daizhengwen End ************************/
 
     m_plugins.append(encodePlugin);
     m_plugins.append(customCommandPlugin);

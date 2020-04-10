@@ -157,32 +157,32 @@
         <translation type="vanished">新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="854"/>
+        <location filename="../main/mainwindow.cpp" line="851"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="877"/>
+        <location filename="../main/mainwindow.cpp" line="874"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1260"/>
+        <location filename="../main/mainwindow.cpp" line="1257"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1262"/>
+        <location filename="../main/mainwindow.cpp" line="1259"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1264"/>
+        <location filename="../main/mainwindow.cpp" line="1261"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1320"/>
+        <location filename="../main/mainwindow.cpp" line="1317"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -191,12 +191,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1352"/>
+        <location filename="../main/mainwindow.cpp" line="1349"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1354"/>
+        <location filename="../main/mainwindow.cpp" line="1351"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
