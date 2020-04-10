@@ -199,7 +199,6 @@ Q_OBJECT
 
   private:
     void init();
-    void initHistoryInfo();
     bool isTerminalRemoved();
     bool bWillRemoveTerminal(QString strCommand);
 
@@ -212,11 +211,6 @@ Q_OBJECT
     char _eraseChar;
     bool _xonXoff;
     bool _utf8;
-    QString _sendBuffer;
-    int _cursorPos;
-    bool _bHistoryUp;
-    bool _bHistoryDown;
-    HIST_ENTRY *_currHistory;
 };
 
 }

@@ -127,3 +127,23 @@ Session *SessionManager::getCurrSession()
 {
     return _currSession;
 }
+
+void SessionManager::saveCurrShellPrompt(QString strPrompt)
+{
+    _currShellPrompt = strPrompt;
+}
+
+QString SessionManager::getCurrShellPrompt()
+{
+    return _currShellPrompt;
+}
+
+void SessionManager::saveCurrShellCommand(QString strCommand)
+{
+    _currShellCommand = strCommand;
+}
+
+QString SessionManager::getCurrShellCommand()
+{
+    return _currShellCommand;
+}

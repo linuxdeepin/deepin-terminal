@@ -72,6 +72,14 @@ public:
     void setCurrSession(Session *session);
     Session *getCurrSession();
 
+    //用于存储当前的命令提示符
+    void saveCurrShellPrompt(QString strPrompt);
+    QString getCurrShellPrompt();
+
+    //用于存储当前的执行的命令字符串
+    void saveCurrShellCommand(QString strCommand);
+    QString getCurrShellCommand();
+
 signals:
     void sessionIdle(bool isIdle);
 
@@ -88,6 +96,8 @@ private:
     QHash<Session *, int> _restoreMapping;
 
     Session *_currSession;
+    QString _currShellPrompt;
+    QString _currShellCommand;
 };
 
 }

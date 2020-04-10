@@ -43,6 +43,8 @@
 #include <QtDebug>
 #include <QMessageBox>
 #include <QDir>
+#include <QRegExp>
+#include <QRegExpValidator>
 
 #include "kpty.h"
 #include "kptydevice.h"
@@ -255,36 +257,14 @@ void Pty::setWriteable(bool writeable)
 
 Pty::Pty(int masterFd, QObject* parent)
     : KPtyProcess(masterFd,parent)
-    , _sendBuffer("")
-    , _cursorPos(0)
-    , _bHistoryUp(false)
-    , _bHistoryDown(false)
-    , _currHistory(nullptr)
 {
     init();
-    initHistoryInfo();
 }
+
 Pty::Pty(QObject* parent)
     : KPtyProcess(parent)
-    , _sendBuffer("")
-    , _cursorPos(0)
-    , _bHistoryUp(false)
-    , _bHistoryDown(false)
-    , _currHistory(nullptr)
 {
     init();
-    initHistoryInfo();
-}
-
-void Pty::initHistoryInfo()
-{
-    using_history();
-
-    QString homeDir = QDir::homePath();
-    QString historyPath = QString(homeDir).append("/.bash_history");
-    read_history(historyPath.toStdString().c_str());
-    _currHistory = history_get(history_length-history_offset);
-    history_set_pos(history_length-history_offset);
 }
 
 void Pty::init()
@@ -294,8 +274,6 @@ void Pty::init()
   _eraseChar = 0;
   _xonXoff = true;
   _utf8 = true;
-  _bHistoryUp = false;
-  _bHistoryDown = false;
 
   connect(pty(), SIGNAL(readyRead()) , this , SLOT(dataReceived()));
   setPtyChannels(KPtyProcess::AllChannels);
@@ -316,155 +294,89 @@ bool Pty::isTerminalRemoved()
     return true;
 }
 
+bool isPatternAcceptable(QString strCommand, QString strPattern)
+{
+    QString strTrimmedCmd = strCommand.trimmed();
+
+    QRegExp cmdRegExp;
+    cmdRegExp.setPattern(strPattern);
+    QRegExpValidator cmdREValidator(cmdRegExp, nullptr);
+
+    int pos = 0;
+    QValidator::State validateState = cmdREValidator.validate(strTrimmedCmd, pos);
+
+    return (validateState == QValidator::Acceptable);
+}
+
 //判断当前命令是否是要删除终端
 bool Pty::bWillRemoveTerminal(QString strCommand)
 {
-    QStringList originArgs = strCommand.trimmed().split(" ");
-    QStringList arguments;
-    for(int i=0; i<originArgs.size(); i++)
-    {
-        QString originArg = originArgs.at(i);
-        arguments.append(originArg.trimmed());
-    }
-    QString strSudo = "sudo";
     QString packageName = "deepin-terminal";
     QString packageNameReborn = "deepin-terminal-reborn";
-    bool hasAptCommand = arguments.contains("apt") || arguments.contains("apt-get");
-    bool bAptRemove = hasAptCommand &&
-            arguments.contains(strSudo) &&
-            arguments.contains("remove") &&
-            (arguments.last() == packageName || arguments.last() == packageNameReborn);
-    bool bDpkgRemoveTerminal = arguments.contains("dpkg") &&
-            arguments.contains(strSudo) &&
-            arguments.contains("-P") &&
-            (arguments.last() == packageName || arguments.last() == packageNameReborn);
-    if (bAptRemove || bDpkgRemoveTerminal)
+
+    QList<bool> acceptableList;
+
+    QStringList packageNameList;
+    packageNameList << packageName << packageNameReborn;
+    for(int i=0; i<packageNameList.size(); i++)
     {
-        return true;
+        QString removePattern = QString("sudo\\s+apt-get\\s+remove\\s+%1").arg(packageNameList.at(i));
+        acceptableList << isPatternAcceptable(strCommand, removePattern);
+
+        removePattern = QString("sudo\\s+apt\\s+remove\\s+%1").arg(packageNameList.at(i));
+        acceptableList << isPatternAcceptable(strCommand, removePattern);
+
+        removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageNameList.at(i));
+        acceptableList << isPatternAcceptable(strCommand, removePattern);
+
+        removePattern = QString("sudo\\s+rm\\s+.+\\s+/usr/bin/deepin-terminal");
+        acceptableList << isPatternAcceptable(strCommand, removePattern);
+
+        removePattern = QString("sudo\\s+rm\\s+/usr/bin/deepin-terminal");
+        acceptableList << isPatternAcceptable(strCommand, removePattern);
     }
 
-    return false;
+    return acceptableList.contains(true);
 }
 
 void Pty::sendData(const char* data, int length)
 {
-  if (!length)
-      return;
+    if (!length)
+    {
+        return;
+    }
 
-  if (*data == '\b' && _sendBuffer.length() > 0)
-  {
-      //处理按退格键
-      if (0 == _cursorPos)
-      {
-          _sendBuffer.remove(_sendBuffer.length()-1, 1);
-      }
-      else
-      {
-          _sendBuffer.remove(_sendBuffer.length()+_cursorPos-1, 1);
-      }
-  }
-  else
-  {
-      QString sendData = QString(data);
-      //判断左右键
-      if (sendData == "\u001B[D")
-      {
-          --_cursorPos;
-      }
-      else if (sendData == "\u001B[C")
-      {
-          ++_cursorPos;
-      }
-      //判断是上下切换命令历史记录
-      //向下键
-      else if (sendData == "\u001B[B")
-      {
-          _bHistoryDown = true;
-          _cursorPos = 0;
+    //检测到按了回车键
+    if((*data) == '\r')
+    {
+        QString strCurrCommand = SessionManager::instance()->getCurrShellCommand();
+        if (!isTerminalRemoved() && bWillRemoveTerminal(strCurrCommand))
+        {
+            QMessageBox messageBox(QMessageBox::NoIcon,
+                                   "警告", "您确定要卸载终端吗，卸载后将无法再使用终端应用?",
+                                   QMessageBox::Yes | QMessageBox::No, nullptr);
+            int result = messageBox.exec();
+            if (QMessageBox::No == result)
+            {
+                return;
+            }
+            else
+            {
+                connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [=](bool isIdle) {
+                    if (isIdle && isTerminalRemoved())
+                    {
+                        pclose(popen("killall deepin-terminal", "r"));
+                    }
+                });
+            }
+        }
+    }
 
-          _currHistory = next_history();
-          if (_currHistory)
-          {
-              QString history = QString(_currHistory->line);
-          }
-      }
-      //向上键
-      else if (sendData == "\u001B[A")
-      {
-          _bHistoryUp = true;
-          _cursorPos = 0;
-
-          _currHistory = previous_history();
-          if (_currHistory)
-          {
-              QString history = QString(_currHistory->line);
-          }
-      }
-      else
-      {
-          if (0 == _cursorPos)
-          {
-              _sendBuffer.append(data);
-          }
-          else
-          {
-              _sendBuffer.insert(_sendBuffer.length()+_cursorPos, data);
-          }
-      }
-  }
-
-  bool isPressEnter = false;
-  if (0 == _cursorPos)
-  {
-      isPressEnter = _sendBuffer.endsWith("\r");
-      if (isPressEnter)
-      {
-          _sendBuffer.remove(_sendBuffer.length()-1, 1);
-      }
-  }
-  else
-  {
-      int cursorIndex = _sendBuffer.length()+_cursorPos-1;
-
-      if (_sendBuffer.contains("\r") && cursorIndex > 0 && cursorIndex < _sendBuffer.length()-1)
-      {
-          isPressEnter = _sendBuffer.at(cursorIndex) == "\r";
-          if (isPressEnter)
-          {
-              _sendBuffer.remove(cursorIndex, 1);
-          }
-      }
-  }
-
-  if (!isTerminalRemoved()
-          && isPressEnter
-          && _sendBuffer.length() > 0
-          && bWillRemoveTerminal(_sendBuffer))
-  {
-      QMessageBox messageBox(QMessageBox::NoIcon,
-                             "警告", "您确定要卸载终端吗，卸载后将无法再使用终端应用?",
-                             QMessageBox::Yes | QMessageBox::No, nullptr);
-      int result = messageBox.exec();
-      if (QMessageBox::No == result)
-      {
-          return;
-      }
-      else
-      {
-          connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [=](bool isIdle) {
-              if (isIdle && isTerminalRemoved())
-              {
-                  exit(0);
-              }
-          });
-      }
-  }
-
-  if (!pty()->write(data,length))
-  {
-    qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-    return;
-  }
+    if (!pty()->write(data,length))
+    {
+        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+        return;
+    }
 }
 
 void Pty::dataReceived()
@@ -472,27 +384,6 @@ void Pty::dataReceived()
     QByteArray data = pty()->readAll();
 
     QString recvData = QString(data);
-
-    //每次回车后清空上一个命令保存记录
-    if (recvData == "\r\n")
-    {
-        initHistoryInfo();
-        _sendBuffer.clear();
-        _cursorPos = 0;
-    }
-
-    //上下切换命令历史记录，直接将切换到的命令赋给_sendBuffer
-    if (_bHistoryUp || _bHistoryDown)
-    {
-        if (_currHistory)
-        {
-            QString history = QString(_currHistory->line);
-            _sendBuffer = history;
-        }
-
-        _bHistoryUp = false;
-        _bHistoryDown = false;
-    }
 
     emit receivedData(data.constData(),data.count());
 }

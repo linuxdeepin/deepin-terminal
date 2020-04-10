@@ -19,6 +19,7 @@
 
 // Own
 #include "Filter.h"
+#include "SessionManager.h"
 
 // System
 #include <iostream>
@@ -177,6 +178,13 @@ void TerminalImageFilterChain::setImage(const Character* const image , int lines
             lineStream << QLatin1Char('\n');
     }
     decoder.end();
+
+    QString strBuffer = *_buffer;
+    if (strBuffer.length() > 0)
+    {
+        QString strCommand = strBuffer.split("$").last();
+        SessionManager::instance()->saveCurrShellCommand(strCommand);
+    }
 }
 
 Filter::Filter() :
