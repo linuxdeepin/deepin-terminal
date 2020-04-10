@@ -161,6 +161,7 @@ private:
     /******** Modify by m000714 daizhengwen 2020-03-29: 终端窗口配置 ****************/
     QSettings *m_winInfoConfig;
     /********************* Modify by m000714 daizhengwen End ************************/
+    QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 };
 
 #endif  // MAINWINDOW_H

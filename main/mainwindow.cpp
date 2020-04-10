@@ -1006,6 +1006,7 @@ int MainWindow::executeCMD(const char *cmd)
 *******************************************************************************/
 void MainWindow::showPlugin(const QString &name)
 {
+    m_CurrentShowPlugin = name;
     if (name != PLUGIN_TYPE_NONE) {
         qDebug() << "show Plugin" << name;
     }
@@ -1079,11 +1080,13 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
     /******** Modify by m000714 daizhengwen 2020-03-31: 获取左键点击事件，隐藏右侧窗口****************/
-    if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
-        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-        // 242为RightPanel的的宽度
-        if (mouseEvent->button() == Qt::LeftButton && mouseEvent->x() < this->width()  - 242) {
-            showPlugin(PLUGIN_TYPE_NONE);
+    if (m_CurrentShowPlugin != PLUGIN_TYPE_NONE && m_CurrentShowPlugin != PLUGIN_TYPE_SEARCHBAR) {
+        if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+            // 242为RightPanel的的宽度
+            if (mouseEvent->button() == Qt::LeftButton && mouseEvent->x() < this->width()  - 242) {
+                showPlugin(PLUGIN_TYPE_NONE);
+            }
         }
     }
     /********************* Modify by m000714 daizhengwen End ************************/
