@@ -80,31 +80,29 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="43"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="49"/>
         <source>Same name exists</source>
         <translation>存在相同的名称</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="43"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="50"/>
         <source>Replace existing command or not?</source>
         <translation>是否替换已有命令?</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="47"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="vanished">取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="48"/>
         <source>Replace</source>
-        <translation>替换</translation>
+        <translation type="vanished">替换</translation>
     </message>
     <message>
         <source>Search</source>
         <translation type="vanished">搜索</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="112"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="114"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
@@ -127,7 +125,7 @@
     <message>
         <location filename="../common/utils.cpp" line="286"/>
         <source>The shortcut %1 %2 </source>
-        <translation type="unfinished"></translation>
+        <translation>快捷键%1%2</translation>
     </message>
 </context>
 <context>
@@ -668,13 +666,14 @@
     <message>
         <location filename="../common/utils.cpp" line="291"/>
         <source>please set another one</source>
-        <translation type="unfinished"></translation>
+        <translation>请重新设置一个</translation>
     </message>
     <message>
         <source>click on Add to make this shortcut effective immediately</source>
         <translation type="vanished">点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
+        <location filename="../customcommand/customcommandpanel.cpp" line="51"/>
         <location filename="../common/utils.cpp" line="278"/>
         <source>Replace</source>
         <translation>替换</translation>
@@ -682,11 +681,12 @@
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="376"/>
         <source>Named the same remote server!</source>
-        <translation type="unfinished"></translation>
+        <translation>相同的服务器名称</translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="377"/>
         <location filename="../remotemanage/serverconfiglist.cpp" line="157"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="51"/>
         <location filename="../customcommand/customcommandlist.cpp" line="126"/>
         <location filename="../common/utils.cpp" line="257"/>
         <location filename="../common/utils.cpp" line="278"/>
@@ -696,7 +696,7 @@
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="377"/>
         <source>Sure</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../main/main.cpp" line="32"/>
@@ -716,7 +716,7 @@
     <message>
         <location filename="../views/warnningdlg.cpp" line="107"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>确认</translation>
     </message>
 </context>
 <context>
@@ -996,6 +996,22 @@
     </message>
 </context>
 <context>
+    <name>ShortcutManager</name>
+    <message>
+        <location filename="../settings/shortcutmanager.cpp" line="230"/>
+        <location filename="../settings/shortcutmanager.cpp" line="238"/>
+        <source>is invalid</source>
+        <translation>是无效的</translation>
+    </message>
+    <message>
+        <location filename="../settings/shortcutmanager.cpp" line="244"/>
+        <location filename="../settings/shortcutmanager.cpp" line="250"/>
+        <location filename="../settings/shortcutmanager.cpp" line="255"/>
+        <source>was already in use,</source>
+        <translation>已使用</translation>
+    </message>
+</context>
+<context>
     <name>TabBar</name>
     <message>
         <location filename="../views/tabbar.cpp" line="261"/>
@@ -1162,19 +1178,19 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../common/utils.cpp" line="313"/>
+        <location filename="../common/utils.cpp" line="312"/>
         <source>Tab name</source>
-        <translation type="unfinished">标题名称</translation>
+        <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="320"/>
+        <location filename="../common/utils.cpp" line="326"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="321"/>
+        <location filename="../common/utils.cpp" line="327"/>
         <source>Sure</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
 </context>
 </TS>

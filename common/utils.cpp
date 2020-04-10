@@ -304,8 +304,7 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     lineEdit->setFixedSize(360, 36);
     lineEdit->setText(oldTitle);
     lineEdit->setClearButtonEnabled(false);
-    connect(lineEdit, &DLineEdit::focusChanged, parentWidget, [ = ](bool onFocus)
-    {
+    connect(lineEdit, &DLineEdit::focusChanged, parentWidget, [ = ](bool onFocus) {
         Q_UNUSED(onFocus);
         lineEdit->lineEdit()->selectAll();
     });
@@ -314,14 +313,19 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     label->setFixedSize(360, 20);
     label->setAlignment(Qt::AlignCenter);
 
+    // 字色
+    DPalette titlepalette = label->palette();
+    titlepalette.setColor(QPalette::WindowText, DPalette::ToolTipText);
+    label->setPalette(titlepalette);
+    // 字号
+    DFontSizeManager::instance()->bind(label, DFontSizeManager::T6, QFont::Medium);
+
     pDialog->addContent(label);
     pDialog->addSpacing(10);
     pDialog->addContent(lineEdit);
     pDialog->addButton(tr("Cancel"), false, DDialog::ButtonNormal);
     pDialog->addButton(tr("Sure"), true, DDialog::ButtonRecommend);
-    pDialog->show();
-    if (pDialog->exec() == DDialog::Accepted)
-    {
+    if (pDialog->exec() == DDialog::Accepted) {
         TermWidget *termWidget = qobject_cast<TermWidget *>(parentWidget);
         emit termWidget->termRequestRenameTab(lineEdit->text());
     }

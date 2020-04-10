@@ -160,7 +160,7 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
 void ShortcutManager::mainWindowAddAction(QAction *action)
 {
     //if (!isShortcutExistInSetting(action->shortcut().toString())) {
-        m_mainWindow->addAction(action);
+    m_mainWindow->addAction(action);
     //}
 }
 
@@ -227,7 +227,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
         QRegExp regexp("^F[0-9]{1,2}$");
         if (!Key.contains(regexp)) {
             qDebug() << Key << "is invalid!";
-            Reason = "is invalid";
+            Reason = tr("is invalid");
             return  false;
         }
     }
@@ -235,24 +235,24 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     QRegExp regexpNum("^Num\+.*");
     if (Key.contains(regexpNum)) {
         qDebug() << Key << "is invalid!";
-        Reason = "is invalid";
+        Reason = tr("is invalid");
         return  false;
     }
     // 内置快捷键都不允许
     if (m_builtinShortcuts.contains(Key)) {
         qDebug() << Key << "is conflict with builtin shortcut!";
-        Reason = "was already in use,";
+        Reason = tr("was already in use,");
         return  false;
     }
 
     // 与设置里的快捷键冲突检测
     if (Settings::instance()->isShortcutConflict(Name, Key)) {
-        Reason = "was already in use,";
+        Reason = tr("was already in use,");
         return  false;
     }
     // 与自定义快捷键冲突检测
     if (isShortcutConflictInCustom(Name, Key)) {
-        Reason = "was already in use,";
+        Reason = tr("was already in use,");
         return  false;
     }
     return true;
@@ -307,7 +307,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
         saveAction->setText(action->text());
         saveAction->setData(action->data());
         saveAction->setShortcut(action->shortcut());
-        qDebug()<<"old"<<m_customCommandActionList[saveIndex]->shortcut();
+        qDebug() << "old" << m_customCommandActionList[saveIndex]->shortcut();
         m_mainWindow->removeAction(m_customCommandActionList[saveIndex]);
         m_customCommandActionList[saveIndex] = saveAction;
         //m_mainWindow->addAction(saveAction);
@@ -319,7 +319,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
             }
             m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
         });
-        qDebug()<<"new"<<m_customCommandActionList[saveIndex]->shortcut();
+        qDebug() << "new" << m_customCommandActionList[saveIndex]->shortcut();
     }
 }
 
