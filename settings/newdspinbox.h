@@ -24,13 +24,15 @@
 #define NEWDSPINBOX_H
 
 #include <DLineEdit>
+#include <DWidget>
 #include <DIconButton>
+
 #include <QHBoxLayout>
 #include <QRegExpValidator>
 
 DWIDGET_USE_NAMESPACE
 
-class NewDspinBox : public QWidget
+class NewDspinBox : public DWidget
 {
     Q_OBJECT
 public:
@@ -46,11 +48,11 @@ private:
 
 private:
 
-    DLineEdit * m_DLineEdit= nullptr;
+    DLineEdit *m_DLineEdit = nullptr;
     DIconButton *m_DIconBtnAdd = nullptr;
     DIconButton *m_DIconBtnSubtract = nullptr;
 
-    QIntValidator * m_QIntValidator = nullptr;
+    QIntValidator *m_QIntValidator = nullptr;
     int m_MaxValue = 100;
     int m_MinValue = 0;
 };

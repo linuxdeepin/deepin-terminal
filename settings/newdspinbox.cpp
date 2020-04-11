@@ -23,14 +23,14 @@
 #include "newdspinbox.h"
 #include <DLog>
 
-NewDspinBox::NewDspinBox(QWidget *parent) : QWidget(parent)
+NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
 {
     m_DIconBtnAdd = new DIconButton(DStyle::SP_IncreaseElement);
     m_DIconBtnAdd->setFixedSize(36, 36);
     m_DIconBtnSubtract = new DIconButton(DStyle::SP_DecreaseElement);
     m_DIconBtnSubtract->setFixedSize(36, 36);
     m_DLineEdit = new DLineEdit();
-    m_DLineEdit->setFixedSize(208, 36);
+    m_DLineEdit->setFixedSize(300, 36);
     m_DLineEdit->setClearButtonEnabled(false);
     QHBoxLayout *pHBoxLayout = new QHBoxLayout();
 

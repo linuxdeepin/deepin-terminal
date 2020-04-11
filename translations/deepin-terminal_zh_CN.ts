@@ -987,22 +987,22 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../settings/settings.cpp" line="50"/>
+        <location filename="../settings/settings.cpp" line="49"/>
         <source>Normal</source>
         <translation>正常窗口</translation>
     </message>
     <message>
-        <location filename="../settings/settings.cpp" line="50"/>
+        <location filename="../settings/settings.cpp" line="49"/>
         <source>Maximum</source>
         <translation>最大化</translation>
     </message>
     <message>
-        <location filename="../settings/settings.cpp" line="50"/>
+        <location filename="../settings/settings.cpp" line="49"/>
         <source>Fullscreen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../settings/settings.cpp" line="50"/>
+        <location filename="../settings/settings.cpp" line="49"/>
         <source>Halfscreen</source>
         <translation>分屏</translation>
     </message>

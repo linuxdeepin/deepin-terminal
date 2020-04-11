@@ -10,12 +10,11 @@
 #include <DSlider>
 #include <DApplicationHelper>
 #include <DKeySequenceEdit>
-
+#include <DComboBox>
 
 #include <QApplication>
 #include <QStandardPaths>
 /******** Modify by n014361 wangpeili 2020-01-04:              ***********×****/
-#include <QComboBox>
 #include <QFontDatabase>
 /********************* Modify by n014361 wangpeili End ************************/
 
@@ -245,7 +244,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
-    QComboBox *comboBox = new QComboBox;
+    DComboBox *comboBox = new DComboBox;
     // QWidget *optionWidget = DSettingsWidgetFactory::createTwoColumWidget(option, comboBox);
 
     QPair<QWidget *, QWidget *> optionWidget =
@@ -268,7 +267,9 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     });
 
     option->connect(
-    comboBox, &QComboBox::currentTextChanged, option, [ = ](const QString & text) { option->setValue(text); });
+    comboBox, &QComboBox::currentTextChanged, option, [ = ](const QString & text) {
+        option->setValue(text);
+    });
 
     return optionWidget;
 }
@@ -284,8 +285,8 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
 
     DSlider *slider = new DSlider;
     //--added by qinyaning(nyq) to slove the problem of hide the right icon--//
-    const int SLIDER_FIXED_WIDTH = 296;
-    slider->setFixedWidth(SLIDER_FIXED_WIDTH);
+    //const int SLIDER_FIXED_WIDTH = 296;
+    //slider->setFixedWidth(SLIDER_FIXED_WIDTH);
     //------------------------------------------------------------------------s
     slider->setIconSize(QSize(20, 20));
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
@@ -308,9 +309,13 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     slider->setValue(int(instance()->opacity() * 100));
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
 
-    connect(option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) { slider->setValue(var.toInt()); });
+    connect(option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) {
+        slider->setValue(var.toInt());
+    });
 
-    option->connect(slider, &DSlider::valueChanged, option, [ = ](QVariant var) { option->setValue(var.toInt()); });
+    option->connect(slider, &DSlider::valueChanged, option, [ = ](QVariant var) {
+        option->setValue(var.toInt());
+    });
 
     return optionWidget;
 }
@@ -333,7 +338,9 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, rightWidget);
     connect(
-    option, &DSettingsOption::valueChanged, rightWidget, [ = ](QVariant var) { rightWidget->setValue(var.toInt()); });
+    option, &DSettingsOption::valueChanged, rightWidget, [ = ](QVariant var) {
+        rightWidget->setValue(var.toInt());
+    });
 
     option->connect(rightWidget, &NewDspinBox::valueChanged, option, [ = ](const QVariant & value) {
         option->setValue(value.toInt());
@@ -370,15 +377,13 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 控件输入
     option->connect(rightWidget, &KeySequenceEdit::editingFinished, [ = ](const QKeySequence & sequence) {
         // 删除
-        if(sequence.toString() == "Backspace")
-        {
+        if (sequence.toString() == "Backspace") {
             rightWidget->clear();
             option->setValue(SHORTCUT_VALUE);
             return ;
         }
         // 取消
-        if(sequence.toString() == "Esc")
-        {
+        if (sequence.toString() == "Esc") {
             rightWidget->clear();
             rightWidget->setKeySequence(QKeySequence(rightWidget->option()->value().toString()));
             return ;
