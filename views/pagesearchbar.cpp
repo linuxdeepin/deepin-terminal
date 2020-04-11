@@ -88,6 +88,13 @@ void PageSearchBar::initFindPrevButton()
     m_findPrevButton->setFocusPolicy(Qt::NoFocus);
 
     connect(m_findPrevButton, &QAbstractButton::clicked, this, [this]() { emit findPrev(); });
+
+    QAction *action = new QAction(this);
+    QList<QKeySequence> lstShortcut;
+    lstShortcut << QKeySequence("Shift+Enter") << QKeySequence("Shift+Return");
+    action->setShortcuts(lstShortcut);
+    m_findNextButton->addAction(action);
+    connect(action, &QAction::triggered, this, [this]() { m_findPrevButton->animateClick(80); });
 }
 
 void PageSearchBar::initFindNextButton()
