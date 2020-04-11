@@ -57,7 +57,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat))
 {
     initUI();
-    addQuakeTerminalShortcut();
+    //addQuakeTerminalShortcut();
 }
 
 void MainWindow::initUI()
@@ -98,27 +98,27 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::addQuakeTerminalShortcut()
-{
-    QDBusInterface shortcutInterface("com.deepin.daemon.Keybinding",
-                                     "/com/deepin/daemon/Keybinding",
-                                     "com.deepin.daemon.Keybinding",
-                                     QDBusConnection::sessionBus());
-    if (!shortcutInterface.isValid()) {
-        qWarning() << "com.deepin.daemon.Keybinding error ," << shortcutInterface.lastError().name();
-        return;
-    }
+//void MainWindow::addQuakeTerminalShortcut()
+//{
+//    QDBusInterface shortcutInterface("com.deepin.daemon.Keybinding",
+//                                     "/com/deepin/daemon/Keybinding",
+//                                     "com.deepin.daemon.Keybinding",
+//                                     QDBusConnection::sessionBus());
+//    if (!shortcutInterface.isValid()) {
+//        qWarning() << "com.deepin.daemon.Keybinding error ," << shortcutInterface.lastError().name();
+//        return;
+//    }
 
-    QVariant shortcutName(QString("雷神终端"));
-    QVariant shortcutAction(QString("deepin-terminal -q"));
-    QVariant shortcutKeySequence(QString("<Alt>F2"));
-    QDBusReply<void> reply = shortcutInterface.asyncCall("AddCustomShortcut", shortcutName, shortcutAction, shortcutKeySequence);
-    if (reply.isValid()) {
-        qDebug() << "AddCustomShortcut success..";
-    } else {
-        qDebug() << "AddCustomShortcut failed..";
-    }
-}
+//    QVariant shortcutName(QString("雷神终端"));
+//    QVariant shortcutAction(QString("deepin-terminal -q"));
+//    QVariant shortcutKeySequence(QString("<Alt>F2"));
+//    QDBusReply<void> reply = shortcutInterface.asyncCall("AddCustomShortcut", shortcutName, shortcutAction, shortcutKeySequence);
+//    if (reply.isValid()) {
+//        qDebug() << "AddCustomShortcut success..";
+//    } else {
+//        qDebug() << "AddCustomShortcut failed..";
+//    }
+//}
 
 void MainWindow::setQuakeWindow(bool isQuakeWindow)
 {

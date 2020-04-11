@@ -103,7 +103,7 @@ private:
     int executeCMD(const char *cmd);
     // 由mainwindow统一指令当前显示哪个插件
     void showPlugin(const QString &name);
-    void addQuakeTerminalShortcut();
+    //void addQuakeTerminalShortcut();
 
     bool isTabVisited(int tabSessionId);
     bool isTabChangeColor(int tabSessionId);
