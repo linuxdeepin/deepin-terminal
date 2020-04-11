@@ -82,7 +82,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
         QPixmap cmdIconPixmap = Utils::renderSVG(strCmdIconSrc, QSize(cmdIconSize, cmdIconSize));
 
-        QRect cmdIconRect = QRect(bgRect.left(), bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
+        QRect cmdIconRect = QRect(bgRect.left() + 8, bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
                                   cmdIconSize, cmdIconSize);
         painter->drawPixmap(cmdIconRect, cmdIconPixmap);
 
