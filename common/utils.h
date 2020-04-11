@@ -20,6 +20,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include "settings.h"
+#include <DPushButton>
 
 #include <QObject>
 #include <QHash>
@@ -56,6 +57,7 @@ public:
     static bool showExitConfirmDialog();
     static bool showShortcutConflictDialog(QString conflictkey);
     static bool showShortcutConflictMsgbox(QString conflictkey, QString txt);
+    static void setSpaceInWord(DPushButton *button);
 
     static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
 };

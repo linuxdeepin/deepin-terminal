@@ -1,4 +1,5 @@
 #include "operationconfirmdlg.h"
+#include "utils.h"
 
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
@@ -213,36 +214,10 @@ void OperationConfirmDlg::setOKCancelBtnText(const QString &strConfirm, const QS
     m_mainLayout->addLayout(m_actionLayout);
     m_confirmBtn->setText(strConfirm);
     m_cancelBtn->setText(strCancel);
-    setSpaceInWord(m_confirmBtn);
-    setSpaceInWord(m_cancelBtn);
+    Utils::setSpaceInWord(m_confirmBtn);
+    Utils::setSpaceInWord(m_cancelBtn);
 }
 
-/*******************************************************************************
- 1. @函数:     setSpaceInWord
- 2. @作者:     m000714 戴正文
- 3. @日期:     2020-04-10
- 4. @说明:     为按钮两个中文之间添加空格
-*******************************************************************************/
-void OperationConfirmDlg::setSpaceInWord(DPushButton *button)
-{
-    const QString &text = button->text();
-
-    if (text.count() == 2) {
-        for (const QChar &ch : text) {
-            switch (ch.script()) {
-            case QChar::Script_Han:
-            case QChar::Script_Katakana:
-            case QChar::Script_Hiragana:
-            case QChar::Script_Hangul:
-                break;
-            default:
-                return;
-            }
-        }
-
-        button->setText(QString().append(text.at(0)).append(QChar::Nbsp).append(text.at(1)));
-    }
-}
 
 QDialog::DialogCode OperationConfirmDlg::getConfirmResult()
 {

@@ -293,6 +293,33 @@ bool Utils::showShortcutConflictMsgbox(QString conflictkey, QString txt)
     return  true;
 }
 
+/*******************************************************************************
+ 1. @函数:     setSpaceInWord
+ 2. @作者:     m000714 戴正文
+ 3. @日期:     2020-04-10
+ 4. @说明:     为按钮两个中文之间添加空格
+*******************************************************************************/
+void Utils::setSpaceInWord(DPushButton *button)
+{
+    const QString &text = button->text();
+
+    if (text.count() == 2) {
+        for (const QChar &ch : text) {
+            switch (ch.script()) {
+            case QChar::Script_Han:
+            case QChar::Script_Katakana:
+            case QChar::Script_Hiragana:
+            case QChar::Script_Hangul:
+                break;
+            default:
+                return;
+            }
+        }
+
+        button->setText(QString().append(text.at(0)).append(QChar::Nbsp).append(text.at(1)));
+    }
+}
+
 void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
 {
     DDialog *pDialog = new DDialog(nullptr);

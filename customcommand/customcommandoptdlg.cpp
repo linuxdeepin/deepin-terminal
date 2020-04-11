@@ -43,7 +43,7 @@ void CustomCommandOptDlg::initUI()
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
     contentLayout->setSpacing(0);
-    contentLayout->setContentsMargins(0, 0, 0, 0);
+    contentLayout->setContentsMargins(30, 0, 25, 0);
 
     QWidget *nameFrame = new QWidget;
     QHBoxLayout *nameLayout = new QHBoxLayout;
@@ -163,7 +163,7 @@ void CustomCommandOptDlg::initUI()
     m_lastCmdShortcut = m_shortCutLineEdit->keySequence().toString();
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
     connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, [ = ](const QKeySequence & sequence) {
-         //删除
+        //删除
         if (sequence.toString() == "Backspace") {
             m_shortCutLineEdit->clear();
             m_lastCmdShortcut = "";
@@ -226,12 +226,12 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     QKeySequence keytmp = m_shortCutLineEdit->keySequence();
 
     if (strName.isEmpty()) {
-        m_nameLineEdit->showAlertMessage(QStringLiteral("请输入名称"), m_nameLineEdit->parentWidget());
+        m_nameLineEdit->showAlertMessage(tr("Please enter name"), m_nameLineEdit->parentWidget());
         return;
     }
 
     if (strCommand.isEmpty()) {
-        m_commandLineEdit->showAlertMessage(QStringLiteral("请输入命令"), m_commandLineEdit->parentWidget());
+        m_commandLineEdit->showAlertMessage(tr("Please enter command"), m_commandLineEdit->parentWidget());
         return;
     }
 

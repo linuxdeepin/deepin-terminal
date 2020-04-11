@@ -28,7 +28,6 @@ public:
     void setOperatTypeName(const QString &strName);
     void setTipInfo(const QString &strInfo);
     void setOKCancelBtnText(const QString &strConfirm, const QString &strCancel);
-    void setSpaceInWord(DPushButton *button);
     QDialog::DialogCode getConfirmResult();
 
     void setDialogFrameSize(int width, int height);

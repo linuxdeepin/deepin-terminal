@@ -121,7 +121,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         //Delete custom command
         if (dlg.isDelCurCommand()) {
             OperationConfirmDlg dlg;
-            dlg.setFixedSize(380, 140);
+            dlg.setDialogFrameSize(380, 140);
             dlg.setOperatTypeName(tr("Are you sure to delete?"));
             dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
             dlg.exec();

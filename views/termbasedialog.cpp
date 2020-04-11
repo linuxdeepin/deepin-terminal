@@ -1,8 +1,10 @@
 #include "termbasedialog.h"
+#include "utils.h"
 
 #include <DFontSizeManager>
 #include <DVerticalLine>
 #include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DLog>
 
 DWIDGET_USE_NAMESPACE
@@ -24,7 +26,7 @@ void TermBaseDialog::initUI()
 
     QHBoxLayout *titleLayout = new QHBoxLayout();
     titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(10, 0, 0, 0);
+    titleLayout->setContentsMargins(30, 0, 30, 0);
 
     m_titleBar = new QWidget(this);
     m_titleBar->setFixedHeight(50);
@@ -43,11 +45,17 @@ void TermBaseDialog::initUI()
     m_titleText = new DLabel(this);
     m_titleText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_titleText->setAlignment(Qt::AlignCenter);
-    DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5);
-
-    QFont titleFont = m_titleText->font();
-    titleFont.setWeight(QFont::DemiBold);
-    m_titleText->setFont(titleFont);
+    DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5, QFont::DemiBold);
+    // 字色
+    DPalette palette = m_titleText->palette();
+    QColor color;
+    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::LightType) {
+        color = QColor::fromRgb(0, 26, 46, 255);
+    } else {
+        color = QColor::fromRgb(192, 198, 212, 255);
+    }
+    palette.setColor(QPalette::WindowText, color);
+    m_titleText->setPalette(palette);
 
     titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
     titleLayout->addWidget(m_titleText);
@@ -78,13 +86,13 @@ void TermBaseDialog::addCancelConfirmButtons()
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
     m_cancelBtn->setFixedWidth(189);
-    m_cancelBtn->setFixedHeight(38);
+    m_cancelBtn->setFixedHeight(36);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DSuggestButton(this);
     m_confirmBtn->setFixedWidth(189);
-    m_confirmBtn->setFixedHeight(38);
+    m_confirmBtn->setFixedHeight(36);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setFont(btnFont);
 
@@ -99,9 +107,9 @@ void TermBaseDialog::addCancelConfirmButtons()
 
     buttonsLayout->addSpacing(30);
     buttonsLayout->addWidget(m_cancelBtn);
-    buttonsLayout->addSpacing(8);
+    buttonsLayout->addSpacing(9);
     buttonsLayout->addWidget(verticalLine);
-    buttonsLayout->addSpacing(8);
+    buttonsLayout->addSpacing(9);
     buttonsLayout->addWidget(m_confirmBtn);
     buttonsLayout->addSpacing(30);
 
@@ -160,11 +168,13 @@ QLayout* TermBaseDialog::getContentLayout()
 void TermBaseDialog::setCancelBtnText(const QString &strCancel)
 {
     m_cancelBtn->setText(strCancel);
+    Utils::setSpaceInWord(m_cancelBtn);
 }
 
 void TermBaseDialog::setConfirmBtnText(const QString &strConfirm)
 {
     m_confirmBtn->setText(strConfirm);
+    Utils::setSpaceInWord(m_confirmBtn);
 }
 
 void TermBaseDialog::addContent(QWidget* content)
