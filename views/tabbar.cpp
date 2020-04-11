@@ -4,6 +4,7 @@
 
 #include <DApplication>
 #include <DApplicationHelper>
+#include <DFontSizeManager>
 #include <DLog>
 
 #include <QStyleOption>
@@ -46,11 +47,23 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
     {
         if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option))
         {
+            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+
+            QTextOption textOption;
+            textOption.setAlignment(Qt::AlignCenter);
+
+            QFont textFont = QApplication::font();
+            int fontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
+            textFont.setPixelSize(fontSize);
+            textFont.setWeight(QFont::Medium);
+            painter->setFont(textFont);
+            QString content = tab->text;
+            QRect tabRect = tab->rect;
+
             if (m_tabStatusMap.value(tab->row) == 2)
             {
                 if (tab->state & QStyle::State_Selected)
                 {
-                    DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
                     DPalette pa = appHelper->standardPalette(appHelper->themeType());
                     painter->setPen(pa.color(DPalette::HighlightedText));
                 }
@@ -65,19 +78,22 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
             }
             else
             {
-                QProxyStyle::drawControl(element, option, painter, widget);
-                return;
+                DPalette pa = appHelper->standardPalette(appHelper->themeType());
+                if (tab->state & QStyle::State_Selected)
+                {
+                    painter->setPen(pa.color(DPalette::HighlightedText));
+                }
+                else if(tab->state & QStyle::State_MouseOver)
+                {
+                    painter->setPen(pa.color(DPalette::TextTitle));
+                }
+                else
+                {
+                    painter->setPen(pa.color(DPalette::TextTitle));
+                }
             }
 
-            QTextOption textOption;
-            textOption.setAlignment(Qt::AlignCenter);
-
-            QFont appFont = QApplication::font();
-            painter->setFont(appFont);
-            QString content = tab->text;
-            QRect tabRect = tab->rect;
-
-            QFontMetrics fontMetric(appFont);
+            QFontMetrics fontMetric(textFont);
             QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width()-30, Qt::TextShowMnemonic);
             painter->drawText(tabRect, elidedText, textOption);
         }
