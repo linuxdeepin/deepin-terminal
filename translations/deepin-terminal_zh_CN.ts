@@ -12,7 +12,7 @@
         <translation type="vanished">确定删除“%1”吗？</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandlist.cpp" line="125"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="132"/>
         <source>Are you sure to delete?</source>
         <translation>确定删除吗？</translation>
     </message>
@@ -165,32 +165,32 @@
         <translation type="vanished">新建⼯作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="851"/>
+        <location filename="../main/mainwindow.cpp" line="856"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="874"/>
+        <location filename="../main/mainwindow.cpp" line="879"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1257"/>
+        <location filename="../main/mainwindow.cpp" line="1265"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1259"/>
+        <location filename="../main/mainwindow.cpp" line="1267"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1261"/>
+        <location filename="../main/mainwindow.cpp" line="1269"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1317"/>
+        <location filename="../main/mainwindow.cpp" line="1329"/>
         <source>Type path to download file</source>
         <translation>请输⼊下载⽂件的路径</translation>
     </message>
@@ -199,12 +199,12 @@
         <translation type="vanished">请输⼊下载⽂件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1349"/>
+        <location filename="../main/mainwindow.cpp" line="1364"/>
         <source>Select file to upload</source>
         <translation>选择要上传的⽂件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1351"/>
+        <location filename="../main/mainwindow.cpp" line="1366"/>
         <source>Select directory to save the file</source>
         <translation>选择下载⽂件的保存⽬录</translation>
     </message>
@@ -696,9 +696,9 @@
     <message>
         <location filename="../views/termwidget.cpp" line="147"/>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="390"/>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="170"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="177"/>
         <location filename="../customcommand/customcommandpanel.cpp" line="51"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="126"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="133"/>
         <location filename="../common/utils.cpp" line="257"/>
         <location filename="../common/utils.cpp" line="278"/>
         <source>Cancel</source>
@@ -716,12 +716,12 @@
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="147"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="126"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="133"/>
         <source>ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="170"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="177"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -734,7 +734,7 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../remotemanage/remotemanagementpanel.cpp" line="65"/>
+        <location filename="../remotemanage/remotemanagementpanel.cpp" line="67"/>
         <source>Add Server</source>
         <translation>添加服务器</translation>
     </message>
@@ -746,12 +746,12 @@
         <translation type="vanished">远程管理</translation>
     </message>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="33"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="35"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="98"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="107"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>在您使⽤右键菜单进⾏上传和下载⽂件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
@@ -763,18 +763,18 @@
         <translation type="vanished">删除选项</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="48"/>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="132"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="55"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="139"/>
         <source>%1 server</source>
-        <translation type="unfinished">%1个服务器</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="168"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="175"/>
         <source>Delete Server</source>
         <translation>删除服务器</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="169"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="176"/>
         <source>Do you sure to delete the %1?</source>
         <translation>您确认要删除%1？</translation>
     </message>

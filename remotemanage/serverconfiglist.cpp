@@ -185,7 +185,59 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
             //刷新所有数据，待完善
             refreshPanelData(modelIndex);
         }
+
+        QModelIndex index = currentIndex( dlg.getServerName());
+        scrollTo(index);
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    currentIndex
+ 2. @作者:    m000714 戴正文
+ 3. @日期:    2020-04-13
+ 4. @说明:    获取给定服务器名的index
+*******************************************************************************/
+QModelIndex ServerConfigList::currentIndex(const QString &serverName)
+{
+    return m_serCfgProxyModel->index(getServerIndex(serverName), 0);
+}
+
+/*******************************************************************************
+ 1. @函数:    getServerIndex
+ 2. @作者:    m000714 戴正文
+ 3. @日期:    2020-04-13
+ 4. @说明:    获取当前服务的index(行数)
+*******************************************************************************/
+int ServerConfigList::getServerIndex(const QString &serverName)
+{
+    int index = 0;
+    QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
+    QMap<QString, QList<ServerConfig *>>::const_iterator iter = configMap.constBegin();
+    // 组内查找服务器
+    while (iter != configMap.constEnd()) {
+        if (iter.key().isEmpty()) {
+            iter++;
+            continue;
+        }
+        foreach (auto item, iter.value()) {
+            if (item->m_serverName == serverName) {
+                // 组没有匹配的，给组的index
+                return index;
+            }
+        }
+        index++;
+        iter++;
+    }
+    // 查找没有分组的
+    QList<ServerConfig *> &configList = configMap[""];
+    foreach (auto cfg, configList) {
+        if (cfg->m_serverName == serverName) {
+            return index;
+        }
+        index++;
+    }
+
+    return -1;
 }
 
 void ServerConfigList::refreshPanelData(QModelIndex modelIndex)

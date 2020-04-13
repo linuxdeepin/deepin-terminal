@@ -41,6 +41,8 @@ void RemoteManagementPanel::showAddServerConfigDlg()
     ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
     if (dlg.exec() == QDialog::Accepted) {
         refreshPanel();
+        QModelIndex index = m_listWidget->currentIndex(dlg.getServerName());
+        m_listWidget->scrollTo(index);
     }
 }
 

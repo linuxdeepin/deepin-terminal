@@ -52,6 +52,11 @@ public:
         m_bDelOpt = isDel;
     }
 
+    const QString &getServerName()
+    {
+        return m_currentServerName;
+    }
+
 private slots:
     void slotClose();
     void slotAddSaveButtonClicked();
@@ -82,6 +87,8 @@ private:
     QList<QString> getTextCodec();
     QList<QString> getBackSpaceKey();
     QList<QString> getDeleteKey();
+
+    QString m_currentServerName = "";
 
 };
 

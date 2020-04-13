@@ -414,7 +414,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
-
+    m_currentServerName = m_serverName->text();
     accept();
 }
 

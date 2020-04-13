@@ -5,6 +5,7 @@
 #include <DListView>
 #include <QWidget>
 #include <QMouseEvent>
+#include <QModelIndex>
 DWIDGET_USE_NAMESPACE
 class ServerConfigDelegate;
 class ServerConfig;
@@ -24,6 +25,8 @@ public:
     void refreshDataByFilter(const QString &strFilter);
     void clearData();
     void refreshPanelData(QModelIndex modelIndex);
+    QModelIndex currentIndex(const QString &serverName);
+
 private:
     void initData();
 
@@ -51,6 +54,7 @@ private:
     QString m_GroupName;
     QString m_Filter;
     int getState();
+    int getServerIndex(const QString &serverName);
 };
 
 #endif  // SERVERCONFIGLIST_H
