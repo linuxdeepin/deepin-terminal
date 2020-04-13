@@ -182,8 +182,20 @@ void TerminalImageFilterChain::setImage(const Character* const image , int lines
     QString strBuffer = *_buffer;
     if (strBuffer.length() > 0)
     {
-        QString strCommand = strBuffer.split("$").last();
-        SessionManager::instance()->saveCurrShellCommand(strCommand);
+        if (strBuffer.contains("# "))
+        {
+            QString strCommand = strBuffer.split("# ").last();
+            if (!strCommand.contains("sudo "))
+            {
+                strCommand = QString("sudo %1").arg(strCommand);
+            }
+            SessionManager::instance()->saveCurrShellCommand(strCommand);
+        }
+        else
+        {
+            QString strCommand = strBuffer.split("$ ").last();
+            SessionManager::instance()->saveCurrShellCommand(strCommand);
+        }
     }
 }
 
