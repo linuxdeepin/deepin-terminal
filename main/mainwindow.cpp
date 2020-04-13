@@ -1073,6 +1073,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
             if (enterSzCommand) {
+		//--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+		pressEnterKey("\nsz \"${files[@]}\"\n");
+		//-------------------------------------
                 executeDownloadFile();
                 enterSzCommand = false;
             }
@@ -1318,11 +1321,16 @@ void MainWindow::remoteUploadFile()
 void MainWindow::remoteDownloadFile()
 {
     downloadFilePath = showFileDailog(true);
+    
     if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
-        QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
-        currentTab()->sendTextToCurrentTerm(strTxt);
+        //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
+        //currentTab()->sendTextToCurrentTerm(strTxt);
+	//--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+        QString strTxt = QString("read -e -a files -p \"%1: \"\n").arg(tr("Type path to download file"));
+        pressEnterKey(strTxt);
+	//-------------------
         enterSzCommand = true;
-        sleep(100);
+        //sleep(100);//
     }
 }
 
@@ -1331,18 +1339,20 @@ void MainWindow::remoteDownloadFile()
  */
 void MainWindow::executeDownloadFile()
 {
+    //--modified by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
     sleep(1000);
     pressCtrlAt();
     sleep(100);
     QString strCd = "cd " + downloadFilePath + "\n";
     currentTab()->sendTextToCurrentTerm(strCd);
+    sleep(100);
     QString strRz = "rz\n";
     currentTab()->sendTextToCurrentTerm(strRz);
-    //if need?
-    sleep(500);
+    sleep(100);
     QString strEnter = "\n";
     currentTab()->sendTextToCurrentTerm(strEnter);
     downloadFilePath = "";
+    //-------------------------------------------
 }
 
 /**
@@ -1377,3 +1387,14 @@ QList<MainWindow *> MainWindow::getWindowList()
 {
     return m_windowList;
 }
+//--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+void MainWindow::pressEnterKey(const QString& text)
+{
+    QKeyEvent event(QEvent::KeyPress,
+                    0,
+                    Qt::NoModifier,
+                    text);
+    QApplication::sendEvent(focusWidget(), &event); // expose as a big fat keypress event
+}
+//------------------------------------------------
+
