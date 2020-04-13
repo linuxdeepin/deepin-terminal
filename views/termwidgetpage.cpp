@@ -81,37 +81,20 @@ TermWidgetWrapper *TermWidgetPage::split(TermWidgetWrapper *term, Qt::Orientatio
     QList<int> parentSizes = parent->sizes();
 
     TermProperties properties(term->workingDirectory());
-    // term->toggleShowSearchBar();
-    // term->update();
-
     TermWidgetWrapper *w = createTerm(properties);
+    // 意义与名称是相反的
+    DSplitter *subSplit = new DSplitter(orientation == Qt::Horizontal ? Qt::Vertical : Qt::Horizontal, this);
+    subSplit->setFocusPolicy(Qt::NoFocus);
+    subSplit->insertWidget(0, term);
+    subSplit->insertWidget(1, w);
+    subSplit->setSizes({ 1, 1 });
+    setSplitStyle(subSplit);
 
-    if (1 == parent->count()) {
-        parent->insertWidget(0, term);
-        parent->insertWidget(1, w);
-        parent->setSizes({ 1, 1 });
+    parent->insertWidget(index, subSplit);
+    parent->setSizes(parentSizes);
 
-        setSplitStyle(parent);
-
-    } else {
-
-        DSplitter *subSplit = new DSplitter(orientation, this);
-        subSplit->setFocusPolicy(Qt::NoFocus);
-        subSplit->insertWidget(0, term);
-        subSplit->insertWidget(1, w);
-        subSplit->setSizes({ 1, 1 });
-
-        setSplitStyle(subSplit);
-
-        parent->insertWidget(index, subSplit);
-        parent->setSizes(parentSizes);
-
-        setSplitStyle(parent);
-    }
-
+    setSplitStyle(parent);
     w->setFocus(Qt::OtherFocusReason);
-    // w->toggleShowSearchBar();
-    // this->repaint();
     return w;
 }
 
