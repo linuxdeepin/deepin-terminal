@@ -766,7 +766,7 @@
         <location filename="../remotemanage/serverconfiglist.cpp" line="48"/>
         <location filename="../remotemanage/serverconfiglist.cpp" line="132"/>
         <source>%1 server</source>
-        <translation>%1个服务器</translation>
+        <translation type="unfinished">%1个服务器</translation>
     </message>
     <message>
         <location filename="../remotemanage/serverconfiglist.cpp" line="168"/>

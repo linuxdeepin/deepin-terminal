@@ -110,7 +110,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
 
         QFont textFont = painter->font();
-        int textFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
+        int textFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7);
         textFont.setPixelSize(textFontSize);
         strServerName = Utils::getElidedText(textFont, strServerName, ITEMMAXWIDTH);
         painter->setFont(textFont);
@@ -125,7 +125,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         QRect serverNameRect = QRect(leftOffset, bgRect.top()+offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
         painter->drawText(serverNameRect, Qt::AlignLeft | Qt::AlignTop, strServerName);
 
-        textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7));
+        textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));
         strAddress = Utils::getElidedText(textFont, strAddress, ITEMMAXWIDTH);
         painter->setFont(textFont);
 

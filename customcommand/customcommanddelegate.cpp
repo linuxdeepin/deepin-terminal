@@ -95,7 +95,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         QString strCmdShortcut = itemData.m_cmdShortcut;
 
         QFont textFont = painter->font();
-        int cmdNameFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
+        int cmdNameFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7);
         textFont.setPixelSize(cmdNameFontSize);
         strCmdName = Utils::getElidedText(textFont, strCmdName, ITEMMAXWIDTH);
 //        strCmdShortcut = Utils::getElidedText(textFont, strCmdShortcut, ITEMMAXWIDTH);
@@ -111,7 +111,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         QRect cmdNameRect = QRect(leftOffset, bgRect.top()+offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignTop, strCmdName);
 
-        textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7));
+        textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));
         painter->setFont(textFont);
 
         DStyleHelper styleHelper;
