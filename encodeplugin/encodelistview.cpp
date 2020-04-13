@@ -1,5 +1,7 @@
 #include "encodelistview.h"
 #include "settings.h"
+#include<DScrollBar>
+#include<DApplicationHelper>
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent)
 {
@@ -9,6 +11,12 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent)
     setVerticalScrollMode(ScrollPerPixel);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    /************************ Add by m000743 sunchengxi 2020-04-13:按照UI设计的滚动条，增加颜色设置 Begin************************/
+    DPalette pa = DApplicationHelper::instance()->palette(verticalScrollBar());
+    pa.setBrush(DPalette::Button, pa.color(DPalette::PlaceholderText));
+    DApplicationHelper::instance()->setPalette(verticalScrollBar(), pa);
+    /************************ Add by m000743 sunchengxi 2020-04-13:按照UI设计的滚动条，增加颜色设置 End ************************/
 }
 
 void EncodeListView::focusOutEvent(QFocusEvent *event)
