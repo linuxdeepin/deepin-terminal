@@ -46,6 +46,8 @@ using std::ofstream;
 
 DWIDGET_USE_NAMESPACE
 
+QList<MainWindow *> MainWindow::m_windowList;
+
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent),
       m_menu(new QMenu),
@@ -56,6 +58,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_properties(properties),
       m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat))
 {
+    m_windowList.append(this);
+
     initUI();
     //addQuakeTerminalShortcut();
 }
@@ -96,6 +100,7 @@ void MainWindow::initUI()
 
 MainWindow::~MainWindow()
 {
+    m_windowList.removeOne(this);
 }
 
 //void MainWindow::addQuakeTerminalShortcut()
@@ -1366,4 +1371,9 @@ void MainWindow::sleep(unsigned int msec)
     while (QTime::currentTime() < dieTime) {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
+}
+
+QList<MainWindow *> MainWindow::getWindowList()
+{
+    return m_windowList;
 }

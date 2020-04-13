@@ -1,4 +1,5 @@
 #include "dterminalsingleapplication.h"
+#include "mainwindow.h"
 
 #include <QLocalSocket>
 
@@ -68,4 +69,12 @@ bool DTerminalSingleApplication::sendMessage(const QString &message)
 
     localSocket.disconnectFromServer();
     return true;
+}
+
+void DTerminalSingleApplication::handleQuitAction()
+{
+    foreach (MainWindow *window, MainWindow::getWindowList())
+    {
+        window->close();
+    }
 }

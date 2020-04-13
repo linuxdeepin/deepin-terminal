@@ -59,6 +59,8 @@ public:
     void pressCtrlAt();
     void sleep(unsigned int msec);
 
+    static QList<MainWindow *> getWindowList();
+
     static constexpr const char* PLUGIN_TYPE_SEARCHBAR = "Search Bar";
     static constexpr const char* PLUGIN_TYPE_THEME = "Theme";
     static constexpr const char* PLUGIN_TYPE_CUSTOMCOMMAND = "Custom Command";
@@ -162,6 +164,8 @@ private:
     QSettings *m_winInfoConfig;
     /********************* Modify by m000714 daizhengwen End ************************/
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
+
+    static QList<MainWindow *> m_windowList;
 };
 
 #endif  // MAINWINDOW_H

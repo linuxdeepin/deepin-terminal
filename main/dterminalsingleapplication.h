@@ -16,6 +16,10 @@ public:
     DTerminalSingleApplication(int &argc, char *argv[], const QString uniqueKey);
     bool isRunning();
     bool sendMessage(const QString &message);
+
+protected:
+    void handleQuitAction() override;
+
 public slots:
     void receiveMessage();
 signals:
