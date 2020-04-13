@@ -1196,17 +1196,17 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../common/utils.cpp" line="339"/>
+        <location filename="../common/utils.cpp" line="341"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="353"/>
+        <location filename="../common/utils.cpp" line="355"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="354"/>
+        <location filename="../common/utils.cpp" line="356"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>

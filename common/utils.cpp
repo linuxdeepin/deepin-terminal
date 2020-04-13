@@ -326,6 +326,7 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     pDialog->setWindowModality(Qt::ApplicationModal);
     pDialog->setFixedSize(380, 180);
     pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+    pDialog->setFocusPolicy(Qt::NoFocus);
 
     DLineEdit *lineEdit = new DLineEdit();
     lineEdit->setFixedSize(360, 36);
@@ -333,7 +334,8 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     lineEdit->setClearButtonEnabled(false);
     connect(lineEdit, &DLineEdit::focusChanged, parentWidget, [ = ](bool onFocus) {
         Q_UNUSED(onFocus);
-        lineEdit->lineEdit()->selectAll();
+        //lineEdit->lineEdit()->selectAll();
+        lineEdit->lineEdit()->setFocus();
     });
 
     DLabel *label = new DLabel(tr("Tab name"));
@@ -342,7 +344,7 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
 
     // 字色
     DPalette titlepalette = label->palette();
-    titlepalette.setColor(QPalette::WindowText, DPalette::ToolTipText);
+    titlepalette.setBrush(QPalette::WindowText, titlepalette.color(DPalette::ToolTipText));
     label->setPalette(titlepalette);
     // 字号
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T6, QFont::Medium);
