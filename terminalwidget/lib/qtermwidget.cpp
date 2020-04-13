@@ -645,7 +645,10 @@ void QTermWidget::copyClipboard()
 
 void QTermWidget::pasteClipboard()
 {
-    m_impl->m_terminalDisplay->pasteClipboard();
+    if(m_impl->m_terminalDisplay->hasFocus())
+    {
+        m_impl->m_terminalDisplay->pasteClipboard();
+    }
 }
 
 void QTermWidget::pasteSelection()
