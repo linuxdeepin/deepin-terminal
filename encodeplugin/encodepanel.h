@@ -4,7 +4,6 @@
 #include "rightpanel.h"
 
 class EncodeListView;
-class EncodeListModel;
 class EncodePanel : public RightPanel
 {
     Q_OBJECT
@@ -14,7 +13,6 @@ public:
 signals:
 private:
     EncodeListView *m_encodeView = nullptr;
-    EncodeListModel *m_encodeModel = nullptr;
 };
 
 #endif  // THEMEPANEL_H

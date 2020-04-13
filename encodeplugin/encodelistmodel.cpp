@@ -2,12 +2,15 @@
 
 #include "terminalwidget/lib/qtermwidget.h"
 
+#include <DStandardItem>
 #include <DLog>
 
 #include <QTextCodec>
 #include <QRegExp>
 
-EncodeListModel::EncodeListModel(QObject *parent) : QAbstractListModel(parent)
+DWIDGET_USE_NAMESPACE
+
+EncodeListModel::EncodeListModel(QObject *parent) : QStandardItemModel(parent)
 {
     initEncodeData();
 }

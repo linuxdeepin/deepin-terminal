@@ -1,22 +1,52 @@
 #include "encodelistview.h"
+#include "encodelistmodel.h"
 #include "settings.h"
-#include<DScrollBar>
-#include<DApplicationHelper>
+//#include "encodeitemdelegate.h"
 
-EncodeListView::EncodeListView(QWidget *parent) : DListView(parent)
+#include <DLog>
+#include <QScrollBar>
+#include <QStandardItemModel>
+
+EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
+    m_standardModel = new QStandardItemModel;
+    // init view.
+    this->setModel(m_standardModel);
+//    this->setItemDelegate(new EncodeItemDelegate(this));
     setBackgroundRole(QPalette::NoRole);
     setAutoFillBackground(false);
 
-    setVerticalScrollMode(ScrollPerPixel);
+    setSelectionMode(QListView::NoSelection);
+
+    verticalScrollBar()->setFixedWidth(35);
+    setVerticalScrollMode(ScrollPerItem);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setFixedSize(220, 1500);
+    initEncodeItems();
+    qDebug()<<"itemSize"<<itemSize()<<size();
+    update();
 
-    /************************ Add by m000743 sunchengxi 2020-04-13:按照UI设计的滚动条，增加颜色设置 Begin************************/
-    DPalette pa = DApplicationHelper::instance()->palette(verticalScrollBar());
-    pa.setBrush(DPalette::Button, pa.color(DPalette::PlaceholderText));
-    DApplicationHelper::instance()->setPalette(verticalScrollBar(), pa);
-    /************************ Add by m000743 sunchengxi 2020-04-13:按照UI设计的滚动条，增加颜色设置 End ************************/
+    connect(this, &DListView::clicked, this, &EncodeListView::onListViewClicked);
+    connect(this, &DListView::activated, this, &QListView::clicked);
+}
+
+void EncodeListView::initEncodeItems()
+{
+    QList<QByteArray> encodeDataList = m_encodeModel->listData();
+    for (int i = 0; i < encodeDataList.size(); i++) {
+        QByteArray encodeData = encodeDataList.at(i);
+
+        QString strEncode = QString(encodeData);
+        DStandardItem *item = new DStandardItem;
+        //item->setSizeHint()
+        item->setSizeHint(QSize(10, 50));
+        item->setText(strEncode);
+        item->setCheckable(true);
+        m_standardModel->appendRow(item);
+    }
+
+    //setStyle();
 }
 
 void EncodeListView::focusOutEvent(QFocusEvent *event)
@@ -28,12 +58,38 @@ void EncodeListView::focusOutEvent(QFocusEvent *event)
 
 void EncodeListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    // Theme changed.
-    QModelIndexList list = selected.indexes();
-    for (const QModelIndex &index : list) {
-        Settings::instance()->setEncoding(index.data(1919810).toString());
-        break;
+    DListView::selectionChanged(selected, deselected);
+}
+
+void EncodeListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
+{
+    DListView::setSelection(rect, command);
+}
+
+void EncodeListView::resizeContents(int width, int height)
+{
+
+}
+
+QSize EncodeListView::contentsSize() const
+{
+    return QSize(100, 50);
+}
+
+void EncodeListView::onListViewClicked(const QModelIndex& index)
+{
+    if (!index.isValid())
+    {
+        return;
     }
 
-    DListView::selectionChanged(selected, deselected);
+    QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
+    for (int row = 0; row < model->rowCount(); row++) {
+        DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
+        if (row == index.row()) {
+            modelItem->setCheckState(Qt::Checked);
+        } else {
+            modelItem->setCheckState(Qt::Unchecked);
+        }
+    }
 }

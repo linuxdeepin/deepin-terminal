@@ -82,7 +82,6 @@ set (DTNG_CPP_FILES
     encodeplugin/encodepanel.cpp
     encodeplugin/encodelistview.cpp
     encodeplugin/encodelistmodel.cpp
-    encodeplugin/encodeitemdelegate.cpp
     main/main.cpp
     main/mainwindow.cpp
     main/termproperties.cpp
@@ -142,7 +141,6 @@ set (DTNG_HEADER_FILES
     encodeplugin/encodepanel.h
     encodeplugin/encodelistview.h
     encodeplugin/encodelistmodel.h
-    encodeplugin/encodeitemdelegate.h
     main/mainwindow.h
     main/mainwindowplugininterface.h
     main/termproperties.h

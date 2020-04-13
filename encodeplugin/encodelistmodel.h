@@ -1,9 +1,9 @@
 #ifndef ENCODELISTMODEL_H
 #define ENCODELISTMODEL_H
 
-#include <QAbstractListModel>
+#include <QStandardItemModel>
 
-class EncodeListModel : public QAbstractListModel
+class EncodeListModel : public QStandardItemModel
 {
     Q_OBJECT
 public:

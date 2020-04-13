@@ -5,6 +5,7 @@
 
 DWIDGET_USE_NAMESPACE
 
+class EncodeListModel;
 class EncodeListView : public DListView
 {
     Q_OBJECT
@@ -15,9 +16,23 @@ public:
 protected:
     void focusOutEvent(QFocusEvent *event) override;
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
+    void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command) override;
+
+    void resizeContents(int width, int height);
+    QSize contentsSize() const;
 
 signals:
     void focusOut();
+
+public slots:
+    void onListViewClicked(const QModelIndex &index);
+
+private:
+    void initEncodeItems();
+
+    EncodeListModel *m_encodeModel = nullptr;
+
+    QStandardItemModel *m_standardModel;
 };
 
 #endif  // THEMELISTVIEW_H
