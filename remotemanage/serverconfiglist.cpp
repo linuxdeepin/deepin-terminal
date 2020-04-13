@@ -45,7 +45,12 @@ void ServerConfigList::refreshAllDatas()
         int count = configMap[iter.key()].count();
         ServerConfigItemData itemData;
         itemData.m_group = iter.key();
-        itemData.m_number = QString("%1 server").arg(count);
+        itemData.m_number = QString(tr("%1 server")).arg(count);
+        /******** Modify by m000714 daizhengwen 2020-04-13: 组不为空则以组形式展示****************/
+        if (!itemData.m_group.isNull() && !itemData.m_group.isEmpty() && "" != itemData.m_group) {
+            itemData.m_IsGroupItem = true;
+        }
+        /********************* Modify by m000714 daizhengwen End ************************/
         m_serCfgItemDataList.append(itemData);
         iter++;
     }
@@ -99,12 +104,11 @@ void ServerConfigList::refreshDataByGroupAndFilter(const QString &strGroupName, 
     for (auto cfg : configList) {
         if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
                 //----commented by qinyaning(nyq) to solve search problems--//
-                /*|| cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)*/) {
-                //----------------------------------------------------------//
+                || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
+                || cfg->m_address.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) { //地址
+            //----------------------------------------------------------//
             ServerConfigItemData itemData = changePointerToObject(cfg);
-            //--added by qinyqning(nyq) to solve search problems--//
-            itemData.m_group = "";
-            //----------------------------------------------------//
+            itemData.m_IsGroupItem = false;
             m_serCfgItemDataList.append(itemData);
         }
     }
@@ -117,29 +121,38 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
     m_Filter = strFilter;
     QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
     QMap<QString, QList<ServerConfig *>>::const_iterator iter = configMap.constBegin();
+    // 优先搜索分组
     while (iter != configMap.constEnd()) {
         QList<ServerConfig *> configList = iter.value();
-
+        //----------added by qinyaning(nyq) to slove search problems---------//
+        if (!configList.isEmpty() && (configList[0]->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive))) {
+            ServerConfigItemData itemData = changePointerToObject(configList[0]);
+            itemData.m_IsGroupItem = true;
+            int count = configMap[iter.key()].count();
+            itemData.m_number = QString(tr("%1 server")).arg(count);
+            m_serCfgItemDataList.append(itemData);
+        }//---------------------------------------------------------------//
+        iter++;
+    }
+    // 接着搜索服务器
+    iter = configMap.constBegin();
+    while (iter != configMap.constEnd()) {
+        QList<ServerConfig *> configList = iter.value();
         for (auto cfg : configList) {
             if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)//服务名
                     //------commented by qinyaning(nyq) to solve search problems-----------------//
-                    /*          || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)//用户名
-                                                        || cfg->m_address.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)*///地址
-                    /*|| cfg->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)*/) {            //分组
+                    || cfg->m_userName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)//用户名
+                    || cfg->m_address.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)//地址
+//                    ||cfg->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)  // 分组
+               ) {
                 //--------------------------------------------------------------------------//
                 ServerConfigItemData itemData = changePointerToObject(cfg);
                 //----------added by qinyaning(nyq) to slove search problems---------//
-                if(!cfg->m_group.isEmpty()) itemData.m_group = "";
+                itemData.m_IsGroupItem = false;
                 //-------------------------------------------------------------------//
                 m_serCfgItemDataList.append(itemData);
             }
         }
-
-        //----------added by qinyaning(nyq) to slove search problems---------//
-        if(!configList.isEmpty() && (configList[0]->m_group.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive))) {
-            ServerConfigItemData itemData = changePointerToObject(configList[0]);
-            m_serCfgItemDataList.append(itemData);
-        }//---------------------------------------------------------------//
         iter++;
     }
     m_serCfgProxyModel->initServerListData(m_serCfgItemDataList);
@@ -249,6 +262,8 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
 
     if (getModifyIconRectS(rect).contains(clickPoint)) {
         if (state == 1 && !itemData.m_group.isNull() && !itemData.m_group.isEmpty()) {
+            emit itemClicked(curItemServer);
+        } else if (state == 3 && itemData.m_IsGroupItem) {          // 搜索框下的组
             emit itemClicked(curItemServer);
         } else {
             handleModifyServerConfig(curItemServer, modelIndex);
