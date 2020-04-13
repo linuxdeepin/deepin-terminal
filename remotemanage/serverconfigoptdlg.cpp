@@ -16,6 +16,7 @@
 #include <QTextCodec>
 #include <QSpacerItem>
 #include <iterator>//added byq qinyaning
+#include <QDebug>
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
     : DAbstractDialog(parent),
@@ -39,15 +40,18 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_delServer(new TermCommandLinkButton())
 
 {
+    qDebug() << "ServerConfigOptDlg init";
     setWindowModality(Qt::ApplicationModal);
     setFixedWidth(459);
     setAutoFillBackground(true);
     initUI();
     initData();
+    qDebug() << "ServerConfigOptDlg init finish";
 }
 
 void ServerConfigOptDlg::initUI()
 {
+    qDebug() << "ServerConfigOptDlg init UI";
     //all layout
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
     m_VBoxLayout->setContentsMargins(28, 0, 30, 10);
@@ -235,6 +239,7 @@ void ServerConfigOptDlg::initUI()
         if (m_type == SCT_MODIFY) {
             m_delServer->show();
             this->setFixedHeight(670);
+            qDebug() << "ServerConfigOptDlg init delet show";
         } else {
             this->setFixedHeight(630);
         }
@@ -287,18 +292,6 @@ void ServerConfigOptDlg::initData()
         m_userName->setText(m_curServer->m_userName);
         m_password->setText(m_curServer->m_password);
         m_privateKey->setText(m_curServer->m_privateKey);
-        //--added by qinyaning(nyq) to solve the search problems--//
-        QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
-        for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
-            QList<ServerConfig *> value = iter.value();
-            for (int i = 0; i < value.size(); i++) {
-                if (value[i]->m_serverName.trimmed() == m_curServer->m_serverName.trimmed()) {
-                    m_curServer->m_group = value[i]->m_group;
-                    break;
-                }
-            }
-        }
-        //--------------------------------------------------------//
         m_group->setText(m_curServer->m_group);
         m_path->setText(m_curServer->m_path);
         m_command->setText(m_curServer->m_command);

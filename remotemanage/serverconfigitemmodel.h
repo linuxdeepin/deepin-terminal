@@ -18,6 +18,7 @@ typedef struct {
     QString m_deleteKey;
     QString m_number;
     bool m_IsInGrouppanel = false;
+    bool m_IsGroupItem = false;                             // 判断是否以组形式展示
 } ServerConfigItemData;
 
 Q_DECLARE_METATYPE(ServerConfigItemData)

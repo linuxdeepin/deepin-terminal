@@ -130,7 +130,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
         Settings::instance()->setColorScheme(theme);
     });
 
-    connect(this, &QTermWidget::sig_noMatchFound, this, [this]() { ((TermWidgetPage *)m_Page)->setMismatchAlert(true); });
+    connect(this, &QTermWidget::sig_noMatchFound, this, [this]() {
+        ((TermWidgetPage *)m_Page)->setMismatchAlert(true);
+    });
     /********************* Modify by n014361 wangpeili End ************************/
 
     connect(this, &TermWidget::isTermIdle, this, &TermWidget::handleTermIdle);
@@ -239,7 +241,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
 
     menu.addAction(tr("&Find"), this, [this] {
-        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR); });
+        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
+    });
     menu.addSeparator();
 
     if (!selectedText().isEmpty()) {
@@ -277,7 +280,8 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     });
 
     menu.addAction(tr("&Encoding"), this, [this] {
-        emit((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING); });
+        emit((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
+    });
 
     menu.addAction(tr("Custom commands"), this, [this] {
         emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
@@ -635,7 +639,7 @@ void TermWidgetWrapper::setTextCodec(QTextCodec *codec)
     m_term->setTextCodec(codec);
 }
 
-TermWidget* TermWidgetWrapper::getTermWidget()
+TermWidget *TermWidgetWrapper::getTermWidget()
 {
     return m_term;
 }

@@ -94,7 +94,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             strAddress = itemData.m_number;
             editIconSize = 12;
             QString strEditIconSrc = QString(":/resources/images/buildin/%1/arrow_right.svg").arg(themeType);
-            qDebug() << strEditIconSrc << endl;
+            //qDebug() << strEditIconSrc << endl;
             QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
             QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
                                        editIconSize, editIconSize);
@@ -160,10 +160,6 @@ bool ServerConfigDelegate::isGroup(ServerConfigItemData &itemData) const
     if (itemData.m_IsInGrouppanel) {
         return false;
     }
-    bool isGroup = false;
-    QString group = itemData.m_group;
-    if (!group.isNull() && !group.isEmpty() && "" != group) {
-        isGroup = true;
-    }
-    return isGroup;
+
+    return itemData.m_IsGroupItem;
 }
