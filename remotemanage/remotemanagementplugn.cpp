@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "utils.h"
 
+#include "../views/termwidget.h"//added by nyq
+
 #include <QTextCodec>
 
 RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPluginInterface(parent)
@@ -60,6 +62,13 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
     if (nullptr != curServer) {
         QString shellFile = createShellFile(curServer);
         QString strTxt = "expect -f " + shellFile + "\n";
+        //--added by qinyaning(nyq) to solve the probelm which Connecting to the remote server
+        /*does not connect to the remote server directly in the new TAB. time: 2020.4.13 18:15
+         * */
+        if(m_mainWindow->currentTab()->currentTerminal()->hasRunningProcess()) {
+            m_mainWindow->addTab(m_mainWindow->currentTab()->createCurrentTerminalProperties(), true);
+        }
+        //--------------------------------//
         m_mainWindow->currentTab()->sendTextToCurrentTerm(strTxt);
         QString encodeString = curServer->m_encoding;
         if (!encodeString.isNull() && !encodeString.isEmpty()) {
