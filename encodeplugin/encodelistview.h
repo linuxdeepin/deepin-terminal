@@ -32,7 +32,13 @@ private:
 
     EncodeListModel *m_encodeModel = nullptr;
 
-    QStandardItemModel *m_standardModel;
+    QStandardItemModel *m_standardModel = nullptr;
+    const int m_Space = 10;
+    const int m_ContentWidth = 220;
+    const int m_ContentHeight = 50;
+    const int m_BarWidth = 35;
+    const int m_ListLenth = 1500;
+
 };
 
 #endif  // THEMELISTVIEW_H

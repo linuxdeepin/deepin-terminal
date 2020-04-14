@@ -12,19 +12,21 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     m_standardModel = new QStandardItemModel;
     // init view.
     this->setModel(m_standardModel);
-//    this->setItemDelegate(new EncodeItemDelegate(this));
     setBackgroundRole(QPalette::NoRole);
     setAutoFillBackground(false);
 
     setSelectionMode(QListView::NoSelection);
-
-    verticalScrollBar()->setFixedWidth(35);
     setVerticalScrollMode(ScrollPerItem);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFixedSize(220, 1500);
+
+    verticalScrollBar()->setFixedWidth(m_BarWidth);
+    setFixedSize(m_ContentWidth, m_ListLenth);
+    setItemSize(QSize(m_ContentWidth, m_ContentHeight + m_Space));
+    setContentsMargins(m_Space, m_Space, m_Space, m_Space);
+    qDebug() << "itemSize" << itemSize() << size();
+
     initEncodeItems();
-    qDebug()<<"itemSize"<<itemSize()<<size();
     update();
 
     connect(this, &DListView::clicked, this, &EncodeListView::onListViewClicked);
@@ -43,6 +45,7 @@ void EncodeListView::initEncodeItems()
         item->setCheckable(true);
         m_standardModel->appendRow(item);
     }
+    // 默认起动选择第一个。
     m_standardModel->item(0)->setCheckState(Qt::Checked);
 }
 
@@ -63,20 +66,16 @@ void EncodeListView::setSelection(const QRect &rect, QItemSelectionModel::Select
     DListView::setSelection(rect, command);
 }
 
-void EncodeListView::resizeContents(int width, int height)
-{
-
-}
+void EncodeListView::resizeContents(int width, int height) {}
 
 QSize EncodeListView::contentsSize() const
 {
-    return QSize(100, 50);
+    return itemSize();
 }
 
-void EncodeListView::onListViewClicked(const QModelIndex& index)
+void EncodeListView::onListViewClicked(const QModelIndex &index)
 {
-    if (!index.isValid())
-    {
+    if (!index.isValid()) {
         return;
     }
 
@@ -85,6 +84,8 @@ void EncodeListView::onListViewClicked(const QModelIndex& index)
         DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
         if (row == index.row()) {
             modelItem->setCheckState(Qt::Checked);
+            // 直接写文件生效。
+            Settings::instance()->setEncoding(index.data().toString());
         } else {
             modelItem->setCheckState(Qt::Unchecked);
         }
