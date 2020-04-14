@@ -39,6 +39,7 @@
 
 #include <QVBoxLayout>
 #include <QMap>
+#include<DImageButton>
 
 #include <fstream>
 using std::ifstream;
@@ -363,6 +364,27 @@ void MainWindow::setTitleBarBackgroundColor(QString color)
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    /************************ Add by m000743 sunchengxi 2020-04-14:按照UI设计的全屏,标签栏右上角按钮显示退出按钮 Begin************************/
+    if (window()->windowState().testFlag(Qt::WindowFullScreen)) {
+        m_exitFullScreen->setIconSize(QSize(36, 36));
+        m_exitFullScreen->setFixedSize(QSize(36, 36));
+        titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight);
+        m_exitFullScreen->setVisible(true);
+        titlebar()->setMenuVisible(false);
+        m_exitFullScreen->setFlat(true);
+        titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+
+    } else {
+        m_exitFullScreen->setIconSize(QSize(36, 36));
+        m_exitFullScreen->setFixedSize(QSize(36, 36));
+        titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight);
+        m_exitFullScreen->setVisible(false);
+        titlebar()->setMenuVisible(true);
+        m_exitFullScreen->setFlat(false);
+        titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->show();
+    }
+    /************************ Add by m000743 sunchengxi 2020-04-14:按照UI设计的全屏,标签栏右上角按钮显示退出按钮 End ************************/
+
     if (m_isQuakeWindow) {
         QRect deskRect = QApplication::desktop()->availableGeometry();
         this->resize(deskRect.size().width(), this->size().height());
@@ -1073,9 +1095,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
             if (enterSzCommand) {
-		//--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-		pressEnterKey("\nsz \"${files[@]}\"\n");
-		//-------------------------------------
+                //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+                pressEnterKey("\nsz \"${files[@]}\"\n");
+                //-------------------------------------
                 executeDownloadFile();
                 enterSzCommand = false;
             }
@@ -1321,14 +1343,14 @@ void MainWindow::remoteUploadFile()
 void MainWindow::remoteDownloadFile()
 {
     downloadFilePath = showFileDailog(true);
-    
+
     if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
         //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
         //currentTab()->sendTextToCurrentTerm(strTxt);
-	//--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+        //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
         QString strTxt = QString("read -e -a files -p \"%1: \"\n").arg(tr("Type path to download file"));
         pressEnterKey(strTxt);
-	//-------------------
+        //-------------------
         enterSzCommand = true;
         //sleep(100);//
     }
@@ -1388,7 +1410,7 @@ QList<MainWindow *> MainWindow::getWindowList()
     return m_windowList;
 }
 //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-void MainWindow::pressEnterKey(const QString& text)
+void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress,
                     0,
