@@ -166,51 +166,51 @@
     </message>
     <message>
         <source>New &amp;workspace</source>
-        <translation type="vanished">新建⼯作区</translation>
+        <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="856"/>
+        <location filename="../main/mainwindow.cpp" line="878"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="879"/>
+        <location filename="../main/mainwindow.cpp" line="901"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1265"/>
+        <location filename="../main/mainwindow.cpp" line="1287"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1267"/>
+        <location filename="../main/mainwindow.cpp" line="1289"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1269"/>
+        <location filename="../main/mainwindow.cpp" line="1291"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1329"/>
+        <location filename="../main/mainwindow.cpp" line="1351"/>
         <source>Type path to download file</source>
-        <translation>请输⼊下载⽂件的路径</translation>
+        <translation>请输入下载文件的路径</translation>
     </message>
     <message>
         <source>Type path to download file: </source>
-        <translation type="vanished">请输⼊下载⽂件的路径: </translation>
+        <translation type="vanished">请输入下载文件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1364"/>
+        <location filename="../main/mainwindow.cpp" line="1386"/>
         <source>Select file to upload</source>
-        <translation>选择要上传的⽂件</translation>
+        <translation>选择要上传的文件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1366"/>
+        <location filename="../main/mainwindow.cpp" line="1388"/>
         <source>Select directory to save the file</source>
-        <translation>选择下载⽂件的保存⽬录</translation>
+        <translation>选择下载文件的保存目录</translation>
     </message>
 </context>
 <context>
@@ -292,7 +292,7 @@
     <message>
         <location filename="../main/main.cpp" line="57"/>
         <source>Set terminal start work directory</source>
-        <translation>设置终端的启动⽬录</translation>
+        <translation>设置终端的启动目录</translation>
     </message>
     <message>
         <location filename="../main/main.cpp" line="59"/>
@@ -302,7 +302,7 @@
     <message>
         <location filename="../main/main.cpp" line="61"/>
         <source>Execute command in the terminal</source>
-        <translation>在终端中运⾏⼀个程序</translation>
+        <translation>在终端中运行一个程序</translation>
     </message>
     <message>
         <location filename="../main/main.cpp" line="62"/>
@@ -418,7 +418,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="15"/>
         <source>Use on starting</source>
-        <translation>启动时使⽤</translation>
+        <translation>启动时使用</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="16"/>
@@ -428,7 +428,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="17"/>
         <source>Font size</source>
-        <translation>字体⼤⼩</translation>
+        <translation>字体大小</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="21"/>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="30"/>
         <source>Display shortcuts</source>
-        <translation>显⽰快捷键</translation>
+        <translation>显示快捷键</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="31"/>
@@ -453,7 +453,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="35"/>
         <source>Default size</source>
-        <translation>默认⼤⼩</translation>
+        <translation>默认大小</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="38"/>
@@ -473,22 +473,22 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="43"/>
         <source>Close other windows</source>
-        <translation>关闭其他窗⼝</translation>
+        <translation>关闭其他窗口</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="44"/>
         <source>Close other workspace</source>
-        <translation>关闭其他⼯作区</translation>
+        <translation>关闭其他工作区</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="45"/>
         <source>Close window</source>
-        <translation>关闭窗⼝</translation>
+        <translation>关闭窗口</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="46"/>
         <source>Close workspace</source>
-        <translation>关闭⼯作区</translation>
+        <translation>关闭工作区</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="47"/>
@@ -498,17 +498,17 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="48"/>
         <source>New workspace</source>
-        <translation>新建⼯作区</translation>
+        <translation>新建工作区</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="49"/>
         <source>Next workspace</source>
-        <translation>下⼀个⼯作区</translation>
+        <translation>下⼀个工作区</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="50"/>
         <source>Previous workspace</source>
-        <translation>上⼀个⼯作区</translation>
+        <translation>上⼀个工作区</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="53"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../common/utils.cpp" line="255"/>
         <source>Programs are still running in terminal</source>
-        <translation>终端仍然有程序在运⾏</translation>
+        <translation>终端仍然有程序在运行</translation>
     </message>
     <message>
         <location filename="../common/utils.cpp" line="256"/>
@@ -588,7 +588,7 @@
     <message>
         <location filename="../main/main.cpp" line="32"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>终端是⼀款集⼯作区、多窗⼝、远程管理、雷神模式等功能的⾼级终端模拟器。</translation>
+        <translation>终端是⼀款集工作区、多窗口、远程管理、雷神模式等功能的⾼级终端模拟器。</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="147"/>
@@ -625,7 +625,7 @@
     <message>
         <location filename="../remotemanage/remotemanagementplugn.cpp" line="107"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation>在您使⽤右键菜单进⾏上传和下载⽂件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
+        <translation>在您使用右键菜单进行上传和下载文件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
 </context>
 <context>
@@ -910,12 +910,12 @@
     <message>
         <location filename="../views/tabbar.cpp" line="277"/>
         <source>Close workspace</source>
-        <translation>关闭⼯作区</translation>
+        <translation>关闭工作区</translation>
     </message>
     <message>
         <location filename="../views/tabbar.cpp" line="278"/>
         <source>Close other workspace</source>
-        <translation>关闭其他⼯作区</translation>
+        <translation>关闭其他工作区</translation>
     </message>
 </context>
 <context>
@@ -965,17 +965,17 @@
     <message>
         <location filename="../views/termwidget.cpp" line="221"/>
         <source>Close &amp;Window</source>
-        <translation>关闭窗⼝</translation>
+        <translation>关闭窗口</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="225"/>
         <source>Close &amp;Other &amp;Window</source>
-        <translation>关闭其他窗⼝</translation>
+        <translation>关闭其他窗口</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="230"/>
         <source>New &amp;workspace</source>
-        <translation>新建⼯作区</translation>
+        <translation>新建工作区</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="237"/>
@@ -1040,12 +1040,12 @@
     <message>
         <location filename="../views/termwidget.cpp" line="296"/>
         <source>Upload file</source>
-        <translation>上传⽂件</translation>
+        <translation>上传文件</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="297"/>
         <source>Download file</source>
-        <translation>下载⽂件</translation>
+        <translation>下载文件</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="302"/>
