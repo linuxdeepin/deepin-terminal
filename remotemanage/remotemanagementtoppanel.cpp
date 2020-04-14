@@ -221,14 +221,14 @@ void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strG
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
     animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
-    animation->setEndValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
+    animation->setEndValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
     animation1->setDuration(animationDuration);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
-    animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
+    animation1->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
     QParallelAnimationGroup *group = new QParallelAnimationGroup;
