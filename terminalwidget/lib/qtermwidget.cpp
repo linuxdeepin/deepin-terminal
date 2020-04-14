@@ -104,6 +104,7 @@ TerminalDisplay *TermWidgetImpl::createTerminalDisplay(Session *session, QWidget
     display->setTerminalSizeHint(true);
     display->setTripleClickMode(TerminalDisplay::SelectWholeLine);
     display->setTerminalSizeStartup(true);
+    display->setHideCursor(true);
 
     display->setRandomSeed(session->sessionId() * 31);
 
@@ -380,6 +381,10 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, &Session::receivedData, this, &QTermWidget::receivedData);
     // 用于卸载终端弹出框提示
     connect(m_impl->m_session, SIGNAL(sessionUninstallTerminal()), this, SIGNAL(uninstallTerminal()));
+
+    connect(m_impl->m_session, &Session::titleChanged, this, [=] {
+        m_impl->m_terminalDisplay->setHideCursor(false);
+    });
 
     // That's OK, FilterChain's dtor takes care of UrlFilter.
     UrlFilter *urlFilter = new UrlFilter();

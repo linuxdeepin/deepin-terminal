@@ -414,6 +414,8 @@ public:
     // of the character at that point.
     void getCharacterPosition(const QPoint& widgetPoint,int& line,int& column) const;
 
+    void setHideCursor(bool hideCursor);
+
 public slots:
 
     /**
@@ -785,6 +787,7 @@ private:
     QTimer* _resizeTimer;
 
     bool _flowControlWarningEnabled;
+    bool _hideCursor;
 
     //widgets related to the warning message that appears when the user presses Ctrl+S to suspend
     //terminal output - informing them what has happened and how to resume output

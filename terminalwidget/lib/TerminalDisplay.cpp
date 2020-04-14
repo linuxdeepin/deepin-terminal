@@ -355,6 +355,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_resizeWidget(0)
 ,_resizeTimer(0)
 ,_flowControlWarningEnabled(false)
+,_hideCursor(false)
 ,_outputSuspendedLabel(0)
 ,_lineSpacing(0)
 ,_colorsInverted(false)
@@ -887,8 +888,12 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
     // draw cursor shape if the current character is the cursor
     // this may alter the foreground and background colors
     bool invertCharacterColor = false;
-    if ( style->rendition & RE_CURSOR )
-        drawCursor(painter,rect,foregroundColor,backgroundColor,invertCharacterColor);
+
+    if (!_hideCursor)
+    {
+        if ( style->rendition & RE_CURSOR )
+            drawCursor(painter,rect,foregroundColor,backgroundColor,invertCharacterColor);
+    }
 
     // draw text
     drawCharacters(painter,rect,text,style,invertCharacterColor);
@@ -2397,6 +2402,12 @@ void TerminalDisplay::getCharacterPosition(const QPoint& widgetPoint,int& line,i
     // column (or left-most for right-to-left input)
     if ( column > _usedColumns )
         column = _usedColumns;
+}
+
+void TerminalDisplay::setHideCursor(bool hideCursor)
+{
+    _hideCursor = hideCursor;
+    update();
 }
 
 void TerminalDisplay::updateFilters()
