@@ -39,14 +39,11 @@ void EncodeListView::initEncodeItems()
 
         QString strEncode = QString(encodeData);
         DStandardItem *item = new DStandardItem;
-        //item->setSizeHint()
-        item->setSizeHint(QSize(10, 50));
         item->setText(strEncode);
         item->setCheckable(true);
         m_standardModel->appendRow(item);
     }
-
-    //setStyle();
+    m_standardModel->item(0)->setCheckState(Qt::Checked);
 }
 
 void EncodeListView::focusOutEvent(QFocusEvent *event)
