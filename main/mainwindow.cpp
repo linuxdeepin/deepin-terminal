@@ -1419,4 +1419,16 @@ void MainWindow::pressEnterKey(const QString &text)
     QApplication::sendEvent(focusWidget(), &event); // expose as a big fat keypress event
 }
 //------------------------------------------------
+//--added by qinyaning(nyq) to solve After exiting the pop-up interface,
+    /*press Windows+D on the keyboard, the notification bar will
+    *open the terminal interface to only display the exit
+    *pop-up, click exit pop-up terminal interface to display abnormal
+    */
+void MainWindow::changeEvent(QEvent * /*event*/)
+{
+    if(this->windowState() == Qt::WindowMinimized) {
+        activateWindow();
+    }
+}
+//--------------------------------------------------
 

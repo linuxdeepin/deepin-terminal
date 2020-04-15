@@ -85,6 +85,13 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
 
+    //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
+    /*press Windows+D on the keyboard, the notification bar will
+    *open the terminal interface to only display the exit
+    *pop-up, click exit pop-up terminal interface to display abnormal
+    */
+    void changeEvent(QEvent * event) override;
+    //------------------------------------------------------------
 protected slots:
     void onTermTitleChanged(QString title);
     void onTabTitleChanged(QString title);
