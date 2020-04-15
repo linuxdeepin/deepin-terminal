@@ -512,7 +512,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="51"/>
         <source>Select left window</source>
-        <translation>选择左侧窗口</translation>
+        <translation>选择左边窗口</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="52"/>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="53"/>
         <source>Select right window</source>
-        <translation>选择右侧窗口</translation>
+        <translation>选择右边窗口</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="54"/>

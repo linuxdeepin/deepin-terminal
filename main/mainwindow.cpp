@@ -1282,13 +1282,13 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 {
     qDebug() << keyCategory;
 
-    QJsonObject workspaceJsonGroup;
+    QString strGroupName = "";
     if (keyCategory == "workspace") {
-        workspaceJsonGroup.insert("groupName", tr("workspace"));
+        strGroupName =  tr("workspace");
     } else if (keyCategory == "terminal") {
-        workspaceJsonGroup.insert("groupName", tr("terminal"));
+        strGroupName =  tr("terminal");
     } else if (keyCategory == "advanced") {
-        workspaceJsonGroup.insert("groupName", tr("advanced"));
+        strGroupName =  tr("advanced");
     } else {
         return;
     }
@@ -1298,12 +1298,12 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     for (auto opt :
             Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
-        jsonItem.insert("name", tr(opt->name().toUtf8().data()));
+        jsonItem.insert("name", QObject::tr(opt->name().toUtf8().data()));
         jsonItem.insert("value", opt->value().toString());
         JsonArry.append(jsonItem);
     }
     QJsonObject JsonGroup;
-    JsonGroup.insert("groupName", keyCategory);
+    JsonGroup.insert("groupName", strGroupName);
     JsonGroup.insert("groupItems", JsonArry);
     jsonGroups.append(JsonGroup);
 }
