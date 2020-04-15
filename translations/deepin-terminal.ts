@@ -168,32 +168,32 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="878"/>
+        <location filename="../main/mainwindow.cpp" line="873"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="901"/>
+        <location filename="../main/mainwindow.cpp" line="896"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1287"/>
+        <location filename="../main/mainwindow.cpp" line="1275"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1289"/>
+        <location filename="../main/mainwindow.cpp" line="1277"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1291"/>
+        <location filename="../main/mainwindow.cpp" line="1279"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1351"/>
+        <location filename="../main/mainwindow.cpp" line="1339"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -202,12 +202,12 @@
         <translation type="vanished">请输入下载文件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1386"/>
+        <location filename="../main/mainwindow.cpp" line="1374"/>
         <source>Select file to upload</source>
         <translation>选择要上传的文件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1388"/>
+        <location filename="../main/mainwindow.cpp" line="1376"/>
         <source>Select directory to save the file</source>
         <translation>选择下载文件的保存目录</translation>
     </message>
@@ -1087,17 +1087,17 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../common/utils.cpp" line="338"/>
+        <location filename="../common/utils.cpp" line="343"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="352"/>
+        <location filename="../common/utils.cpp" line="357"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="353"/>
+        <location filename="../common/utils.cpp" line="358"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>

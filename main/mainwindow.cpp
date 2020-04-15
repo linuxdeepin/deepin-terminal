@@ -899,10 +899,6 @@ void MainWindow::initTitleBar()
     m_titleBar = new TitleBar(this, m_isQuakeWindow);
     m_titleBar->setTabBar(m_tabbar);
     if (m_isQuakeWindow) {
-        /******** Modify by m000714 daizhengwen 2020-04-07: 雷神窗口的titlebar颜色与主窗口一致****************/
-        m_titleBar->setBackgroundRole(titlebar()->backgroundRole());
-        /********************* Modify by m000714 daizhengwen End ************************/
-        m_titleBar->setAutoFillBackground(true);
         m_centralLayout->addWidget(m_titleBar);
     } else {
         titlebar()->setCustomWidget(m_titleBar);
@@ -1412,13 +1408,13 @@ void MainWindow::pressEnterKey(const QString &text)
 }
 //------------------------------------------------
 //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
-    /*press Windows+D on the keyboard, the notification bar will
-    *open the terminal interface to only display the exit
-    *pop-up, click exit pop-up terminal interface to display abnormal
-    */
+/*press Windows+D on the keyboard, the notification bar will
+*open the terminal interface to only display the exit
+*pop-up, click exit pop-up terminal interface to display abnormal
+*/
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
-    if(this->windowState() == Qt::WindowMinimized) {
+    if (this->windowState() == Qt::WindowMinimized) {
         activateWindow();
     }
 }
