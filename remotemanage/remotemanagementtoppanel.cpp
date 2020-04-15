@@ -50,7 +50,10 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
 void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &strFilter)
 {
     m_serverConfigGroupPanel->hide();
-
+    //--added by qinyaning(nyq) to solve the repeat history recoed--//
+    m_remoteManagementPanel->clearSearchInfo();
+    m_serverConfigGroupPanel->clearSearchInfo();
+    //--------------------------------------------------------------//
     m_remoteManagementSearchPanel->resize(size());
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_PANEL);
     m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
@@ -79,6 +82,9 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
 void RemoteManagementTopPanel::showRemotePanelFromGroupPanel()
 {
 
+    //--added by qinyaning(nyq) to solve the repeat history recoed--//
+    m_serverConfigGroupPanel->clearSearchInfo();
+    //--------------------------------------------------------------//
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->refreshPanel();
     m_remoteManagementPanel->show();
@@ -127,7 +133,7 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
 {
     m_serverConfigGroupPanel->resize(size());
     //--added by qinyaning(nyq) to solve the repeat history recoed--//
-    m_serverConfigGroupPanel->clearSearchInfo();
+    m_remoteManagementPanel->clearSearchInfo();
     //--------------------------------------------------------------//
     m_serverConfigGroupPanel->show();
     m_serverConfigGroupPanel->refreshData(strGroup);
@@ -156,7 +162,7 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
 void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter)
 {
     m_remoteManagementPanel->hide();
-
+    m_serverConfigGroupPanel->clearSearchInfo();
     m_remoteManagementSearchPanel->resize(size());
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_GROUP);
     m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(strGroup, strFilter);
@@ -184,7 +190,9 @@ void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strG
 void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
 {
     m_serverConfigGroupPanel->hide();
-
+    //--added by qinyaning(nyq) to solve the repeat history recoed--//
+    m_remoteManagementPanel->clearSearchInfo();
+    //--------------------------------------------------------------//
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->refreshPanel();
     m_remoteManagementPanel->show();
@@ -212,7 +220,9 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
 void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strGroup)
 {
     m_remoteManagementPanel->hide();
-
+    //--added by qinyaning(nyq) to solve the repeat history recoed--//
+    m_serverConfigGroupPanel->clearSearchInfo();
+    //--------------------------------------------------------------//
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
     m_serverConfigGroupPanel->show();
