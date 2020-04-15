@@ -21,6 +21,7 @@ void ServerConfigGroupPanel::initUI()
 
     m_searchEdit->setFixedWidth(174);
     m_searchEdit->setClearButtonEnabled(true);
+    m_searchEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
 
     m_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
     m_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
