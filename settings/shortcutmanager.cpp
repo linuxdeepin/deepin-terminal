@@ -205,7 +205,7 @@ bool ShortcutManager::isValidShortcut(const QString &Name, const QString &Key)
     QString reason;
     if (!checkShortcutValid(Name, Key, reason)) {
         if (Key != "Esc") {
-            Utils::showShortcutConflictMsgbox(Key, reason);
+            Utils::showShortcutConflictMsgbox(reason);
         }
         return false;
     }
@@ -227,7 +227,8 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
         QRegExp regexp("^F[0-9]{1,2}$");
         if (!Key.contains(regexp)) {
             qDebug() << Key << "is invalid!";
-            Reason = tr("is invalid");
+            Reason = tr("The shortcut %1 is invalid,")
+                     .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
             return  false;
         }
     }
@@ -235,24 +236,28 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     QRegExp regexpNum("^Num\+.*");
     if (Key.contains(regexpNum)) {
         qDebug() << Key << "is invalid!";
-        Reason = tr("is invalid");
+        Reason = tr("The shortcut %1 is invalid,")
+                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
         return  false;
     }
     // 内置快捷键都不允许
     if (m_builtinShortcuts.contains(Key)) {
         qDebug() << Key << "is conflict with builtin shortcut!";
-        Reason = tr("was already in use,");
+        Reason = tr("The shortcut %1 was already in use,")
+                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
         return  false;
     }
 
     // 与设置里的快捷键冲突检测
     if (Settings::instance()->isShortcutConflict(Name, Key)) {
-        Reason = tr("was already in use,");
+        Reason = tr("The shortcut %1 was already in use,")
+                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
         return  false;
     }
     // 与自定义快捷键冲突检测
     if (isShortcutConflictInCustom(Name, Key)) {
-        Reason = tr("was already in use,");
+        Reason = tr("The shortcut %1 was already in use,")
+                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
         return  false;
     }
     return true;

@@ -281,13 +281,10 @@ bool Utils::showShortcutConflictDialog(QString conflictkey)
     return optDlg.getConfirmResult() == QDialog::Accepted;
 }
 
-bool Utils::showShortcutConflictMsgbox(QString conflictkey, QString txt)
+bool Utils::showShortcutConflictMsgbox(QString txt)
 {
-    QString str = qApp->translate("DSettingsDialog", "The shortcut %1 %2 ")
-                  .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(conflictkey))
-                  .arg(txt);
     WarnningDlg dlg;
-    dlg.setOperatTypeName(str);
+    dlg.setOperatTypeName(txt);
     dlg.setTipInfo(QObject::tr("please set another one"));
     dlg.exec();
     return  true;

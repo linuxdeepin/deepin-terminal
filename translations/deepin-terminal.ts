@@ -137,9 +137,8 @@
         <translation>此快捷键与%1冲突</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="286"/>
         <source>The shortcut %1 %2 </source>
-        <translation>快捷键%1%2</translation>
+        <translation type="vanished">快捷键%1%2</translation>
     </message>
 </context>
 <context>
@@ -386,7 +385,7 @@
     <message>
         <location filename="../settings/settings_translation.cpp" line="51"/>
         <source>Select left window</source>
-        <translation>选择左边侧窗口</translation>
+        <translation>选择左边窗口</translation>
     </message>
     <message>
         <source>Auto copy selection</source>
@@ -550,9 +549,9 @@
         <translation>点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="291"/>
+        <location filename="../common/utils.cpp" line="288"/>
         <source>please set another one</source>
-        <translation>请重新设置一个</translation>
+        <translation>请重新设置</translation>
     </message>
     <message>
         <source>click on Add to make this shortcut effective immediately</source>
@@ -605,6 +604,18 @@
         <location filename="../views/warnningdlg.cpp" line="107"/>
         <source>OK</source>
         <translation>确认</translation>
+    </message>
+    <message>
+        <source>workspace</source>
+        <translation type="obsolete">工作区</translation>
+    </message>
+    <message>
+        <source>terminal</source>
+        <translation type="obsolete">终端</translation>
+    </message>
+    <message>
+        <source>advanced</source>
+        <translation type="obsolete">高级</translation>
     </message>
 </context>
 <context>
@@ -892,17 +903,29 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../settings/shortcutmanager.cpp" line="230"/>
-        <location filename="../settings/shortcutmanager.cpp" line="238"/>
         <source>is invalid</source>
-        <translation>是无效的</translation>
+        <translation type="vanished">是无效的</translation>
     </message>
     <message>
-        <location filename="../settings/shortcutmanager.cpp" line="244"/>
-        <location filename="../settings/shortcutmanager.cpp" line="250"/>
-        <location filename="../settings/shortcutmanager.cpp" line="255"/>
         <source>was already in use,</source>
-        <translation>已使用</translation>
+        <translation type="vanished">已使用</translation>
+    </message>
+    <message>
+        <source>The shortcut %1 is invalid</source>
+        <translation type="obsolete">%1为无效快捷键</translation>
+    </message>
+    <message>
+        <location filename="../settings/shortcutmanager.cpp" line="230"/>
+        <location filename="../settings/shortcutmanager.cpp" line="239"/>
+        <source>The shortcut %1 is invalid,</source>
+        <translation>%1为无效快捷键，</translation>
+    </message>
+    <message>
+        <location filename="../settings/shortcutmanager.cpp" line="246"/>
+        <location filename="../settings/shortcutmanager.cpp" line="253"/>
+        <location filename="../settings/shortcutmanager.cpp" line="259"/>
+        <source>The shortcut %1 was already in use,</source>
+        <translation>快捷键%1已被占用，</translation>
     </message>
 </context>
 <context>
@@ -1064,17 +1087,17 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../common/utils.cpp" line="341"/>
+        <location filename="../common/utils.cpp" line="338"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="355"/>
+        <location filename="../common/utils.cpp" line="352"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="356"/>
+        <location filename="../common/utils.cpp" line="353"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>

@@ -133,9 +133,8 @@
         <translation>此快捷键与%1冲突</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="286"/>
         <source>The shortcut %1 %2 </source>
-        <translation>快捷键%1%2</translation>
+        <translation type="vanished">快捷键%1%2</translation>
     </message>
 </context>
 <context>
@@ -674,7 +673,7 @@
         <translation>点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="291"/>
+        <location filename="../common/utils.cpp" line="288"/>
         <source>please set another one</source>
         <translation>请重新设置一个</translation>
     </message>
@@ -1016,17 +1015,25 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../settings/shortcutmanager.cpp" line="230"/>
-        <location filename="../settings/shortcutmanager.cpp" line="238"/>
         <source>is invalid</source>
-        <translation>是无效的</translation>
+        <translation type="vanished">是无效的</translation>
     </message>
     <message>
-        <location filename="../settings/shortcutmanager.cpp" line="244"/>
-        <location filename="../settings/shortcutmanager.cpp" line="250"/>
-        <location filename="../settings/shortcutmanager.cpp" line="255"/>
         <source>was already in use,</source>
-        <translation>已使用</translation>
+        <translation type="vanished">已使用</translation>
+    </message>
+    <message>
+        <location filename="../settings/shortcutmanager.cpp" line="230"/>
+        <location filename="../settings/shortcutmanager.cpp" line="239"/>
+        <source>The shortcut %1 is invalid,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/shortcutmanager.cpp" line="246"/>
+        <location filename="../settings/shortcutmanager.cpp" line="253"/>
+        <location filename="../settings/shortcutmanager.cpp" line="259"/>
+        <source>The shortcut %1 was already in use,</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1196,17 +1203,17 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../common/utils.cpp" line="341"/>
+        <location filename="../common/utils.cpp" line="338"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="355"/>
+        <location filename="../common/utils.cpp" line="352"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="356"/>
+        <location filename="../common/utils.cpp" line="353"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>
