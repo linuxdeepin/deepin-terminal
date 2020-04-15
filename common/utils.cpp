@@ -329,6 +329,11 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     lineEdit->setFixedSize(360, 36);
     lineEdit->setText(oldTitle);
     lineEdit->setClearButtonEnabled(false);
+    /************************ Add by m000743 sunchengxi 2020-04-15:解决鼠标选中异常，无法删除选中 Begin************************/
+    connect(lineEdit, &DLineEdit::selectionChanged, parentWidget, [ = ]() {
+        lineEdit->lineEdit()->setFocus();
+    });
+    /************************ Add by m000743 sunchengxi 2020-04-15:解决鼠标选中异常，无法删除选中 End ************************/
     connect(lineEdit, &DLineEdit::focusChanged, parentWidget, [ = ](bool onFocus) {
         Q_UNUSED(onFocus);
         //lineEdit->lineEdit()->selectAll();
