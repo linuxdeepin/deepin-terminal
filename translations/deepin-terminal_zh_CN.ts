@@ -1026,14 +1026,14 @@
         <location filename="../settings/shortcutmanager.cpp" line="230"/>
         <location filename="../settings/shortcutmanager.cpp" line="239"/>
         <source>The shortcut %1 is invalid,</source>
-        <translation type="unfinished"></translation>
+        <translation>%1为无效快捷键</translation>
     </message>
     <message>
         <location filename="../settings/shortcutmanager.cpp" line="246"/>
         <location filename="../settings/shortcutmanager.cpp" line="253"/>
         <location filename="../settings/shortcutmanager.cpp" line="259"/>
         <source>The shortcut %1 was already in use,</source>
-        <translation type="unfinished"></translation>
+        <translation>快捷键%1已被占用</translation>
     </message>
 </context>
 <context>
@@ -1203,17 +1203,17 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../common/utils.cpp" line="343"/>
+        <location filename="../common/utils.cpp" line="344"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="357"/>
+        <location filename="../common/utils.cpp" line="360"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="358"/>
+        <location filename="../common/utils.cpp" line="361"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>

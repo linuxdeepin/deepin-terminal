@@ -329,6 +329,7 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     lineEdit->setFixedSize(360, 36);
     lineEdit->setText(oldTitle);
     lineEdit->setClearButtonEnabled(false);
+    pDialog->setFocusProxy(lineEdit->lineEdit());
     /************************ Add by m000743 sunchengxi 2020-04-15:解决鼠标选中异常，无法删除选中 Begin************************/
     connect(lineEdit, &DLineEdit::selectionChanged, parentWidget, [ = ]() {
         lineEdit->lineEdit()->setFocus();
@@ -344,16 +345,18 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     label->setFixedSize(360, 20);
     label->setAlignment(Qt::AlignCenter);
 
-    // 字色
-    DPalette titlepalette = label->palette();
-    titlepalette.setBrush(QPalette::WindowText, titlepalette.color(DPalette::ToolTipText));
-    label->setPalette(titlepalette);
+    DPalette palette = label->palette();
+    palette.setBrush(DPalette::WindowText, palette.color(DPalette::BrightText));
+    label->setPalette(palette);
+
     // 字号
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T6, QFont::Medium);
 
-    pDialog->addContent(label);
-    pDialog->addSpacing(10);
-    pDialog->addContent(lineEdit);
+    pDialog->setSpacing(10);
+    QMargins margins(0, 0, 0, 20);
+    pDialog->setContentLayoutContentsMargins(margins);
+    pDialog->addContent(label, Qt::AlignHCenter);
+    pDialog->addContent(lineEdit, Qt::AlignHCenter);
     pDialog->addButton(tr("Cancel"), false, DDialog::ButtonNormal);
     pDialog->addButton(tr("Sure"), true, DDialog::ButtonRecommend);
     if (pDialog->exec() == DDialog::Accepted) {
