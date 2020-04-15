@@ -366,21 +366,15 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
     /************************ Add by m000743 sunchengxi 2020-04-14:按照UI设计的全屏,标签栏右上角按钮显示退出按钮 Begin************************/
     if (window()->windowState().testFlag(Qt::WindowFullScreen)) {
-        m_exitFullScreen->setIconSize(QSize(36, 36));
-        m_exitFullScreen->setFixedSize(QSize(36, 36));
         titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight);
         m_exitFullScreen->setVisible(true);
         titlebar()->setMenuVisible(false);
-        m_exitFullScreen->setFlat(true);
         titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
 
     } else {
-        m_exitFullScreen->setIconSize(QSize(36, 36));
-        m_exitFullScreen->setFixedSize(QSize(36, 36));
         titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight);
         m_exitFullScreen->setVisible(false);
         titlebar()->setMenuVisible(true);
-        m_exitFullScreen->setFlat(false);
         titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->show();
     }
     /************************ Add by m000743 sunchengxi 2020-04-14:按照UI设计的全屏,标签栏右上角按钮显示退出按钮 End ************************/
@@ -545,12 +539,12 @@ void MainWindow::initPlugins()
 void MainWindow::initWindow()
 {
     // 全屏退出按钮
-    QIcon ico(":/resources/images/icon/hover/exit_hover.svg");
-    m_exitFullScreen = new DPushButton();
+
+    m_exitFullScreen = new DToolButton(this);
+    m_exitFullScreen->setCheckable(false);
     applyTheme();
     m_exitFullScreen->setIconSize(QSize(36, 36));
     m_exitFullScreen->setFixedSize(QSize(36, 36));
-    m_exitFullScreen->setFlat(true);
     titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
     m_exitFullScreen->setVisible(false);
     connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
@@ -862,7 +856,8 @@ void MainWindow::initConnections()
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
 
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
-        applyTheme();
+        //变成自动变色的图标以后，不需要来回变了。
+        //applyTheme();
     });
 }
 
@@ -1216,11 +1211,8 @@ void MainWindow::showSettingDialog()
 *******************************************************************************/
 void MainWindow::applyTheme()
 {
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        m_exitFullScreen->setIcon(QIcon(":/resources/images/icon/hover/exit_hover.svg"));
-    } else {
-        m_exitFullScreen->setIcon(QIcon(":/resources/images/icon/hover/exit_hover_dark.svg"));
-    }
+    m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
+    return;
 }
 
 ShortcutManager *MainWindow::getShortcutManager()

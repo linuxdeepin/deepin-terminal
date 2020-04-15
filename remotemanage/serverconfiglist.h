@@ -9,7 +9,6 @@
 DWIDGET_USE_NAMESPACE
 class ServerConfigDelegate;
 class ServerConfig;
-class ServerConfigItem;
 class ServerConfigItemModel;
 class ServerConfigList : public DListView
 {

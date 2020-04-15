@@ -13,6 +13,8 @@
 #include <QSettings>
 
 #include <functional>
+#include <DToolButton>
+#include <DIconButton>
 #include <DPushButton>
 #include <QShortcut>
 
@@ -146,7 +148,7 @@ private:
     //---------------------------------------
 
     QMenu *m_menu = nullptr;
-    DPushButton *m_exitFullScreen = nullptr;
+    DToolButton *m_exitFullScreen = nullptr;
     TabBar *m_tabbar = nullptr;
     QWidget *m_centralWidget = nullptr;
     QVBoxLayout *m_centralLayout = nullptr;

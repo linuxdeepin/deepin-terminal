@@ -70,20 +70,13 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         int cmdIconSize = 44;
         int editIconSize = 20;
-
-        QString themeType = "light";
-        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-        if (DGuiApplicationHelper::DarkType == appHelper->themeType()) {
-            themeType = "dark";
-        }
-        QString strCmdIconSrc = QString(":/resources/images/buildin/%1/server.svg").arg(themeType);
-        if (isgroup) {
-            strCmdIconSrc = QString(":/resources/images/buildin/%1/server_group.svg").arg(themeType);
-        }
-        QPixmap cmdIconPixmap = Utils::renderSVG(strCmdIconSrc, QSize(cmdIconSize, cmdIconSize));
-
         QRect cmdIconRect = QRect(bgRect.left() + 8, bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
                                   cmdIconSize, cmdIconSize);
+        QIcon icon =  QIcon::fromTheme("dt_server");
+        if (isgroup) {
+            icon =  QIcon::fromTheme("dt_server_group");
+        }
+        QPixmap cmdIconPixmap = icon.pixmap(QSize(cmdIconSize, cmdIconSize));
         painter->drawPixmap(cmdIconRect, cmdIconPixmap);
 
         QString strServerName = itemData.m_serverName;
@@ -93,19 +86,14 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             strServerName = itemData.m_group;
             strAddress = itemData.m_number;
             editIconSize = 12;
-            QString strEditIconSrc = QString(":/resources/images/buildin/%1/arrow_right.svg").arg(themeType);
-            //qDebug() << strEditIconSrc << endl;
-            QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
             QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
                                        editIconSize, editIconSize);
-            painter->drawPixmap(editIconRect, editIconPixmap);
+            painter->drawPixmap(editIconRect, QIcon::fromTheme("dt_arrow_right").pixmap(QSize(editIconSize, editIconSize)));
         } else {
             if (option.state & QStyle::State_MouseOver) {
-                QString strEditIconSrc = QString(":/resources/images/buildin/%1/edit.svg").arg(themeType);
-                QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
                 QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
                                            editIconSize, editIconSize);
-                painter->drawPixmap(editIconRect, editIconPixmap);
+                painter->drawPixmap(editIconRect, QIcon::fromTheme("dt_edit").pixmap(QSize(editIconSize, editIconSize)));
             }
         }
 
@@ -119,6 +107,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         int offsetY = 8;
         int leftOffset = cmdIconRect.left() + cmdIconSize + 6;
 
+        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
         DPalette pa = appHelper->standardPalette(appHelper->themeType());
         painter->setPen(pa.color(DPalette::Text));
 

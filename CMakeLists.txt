@@ -95,7 +95,6 @@ set (DTNG_CPP_FILES
     remotemanage/remotemanagementtoppanel.cpp
     remotemanage/serverconfigdelegate.cpp
     remotemanage/serverconfiggrouppanel.cpp
-    remotemanage/serverconfigitem.cpp
     remotemanage/serverconfigitemmodel.cpp
     remotemanage/serverconfiglist.cpp
     remotemanage/serverconfigmanager.cpp
@@ -154,7 +153,6 @@ set (DTNG_HEADER_FILES
     remotemanage/remotemanagementtoppanel.h
     remotemanage/serverconfigdelegate.h
     remotemanage/serverconfiggrouppanel.h
-    remotemanage/serverconfigitem.h
     remotemanage/serverconfigitemmodel.h
     remotemanage/serverconfiglist.h
     remotemanage/serverconfigmanager.h
@@ -183,7 +181,7 @@ set (DTNG_HEADER_FILES
 )
 
 set (DTNG_QRC_FILES
-    resources.qrc
+    resources/resources.qrc
 )
 
 # Program

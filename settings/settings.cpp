@@ -31,7 +31,7 @@ Settings::Settings() : QObject(qApp)
     m_backend = new QSettingBackend(m_configPath);
 
     // 默认配置
-    settings = DSettings::fromJsonFile(":/resources/other/default-config.json");
+    settings = DSettings::fromJsonFile(":/other/default-config.json");
 
     // 加载自定义配置
     settings->setBackend(m_backend);
@@ -289,22 +289,8 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     //slider->setFixedWidth(SLIDER_FIXED_WIDTH);
     //------------------------------------------------------------------------s
     slider->setIconSize(QSize(20, 20));
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0.svg"));
-        slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1.svg"));
-    } else {
-        slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0_dark.svg"));
-        slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1_dark.svg"));
-    }
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, slider, [ = ]() {
-        if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-            slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0.svg"));
-            slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1.svg"));
-        } else {
-            slider->setLeftIcon(QIcon(":/resources/images/icon/hover/opacity0_dark.svg"));
-            slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1_dark.svg"));
-        }
-    });
+    slider->setLeftIcon(QIcon::fromTheme("dt_opacity_left"));
+    slider->setRightIcon(QIcon::fromTheme("dt_opacity_right"));
     slider->setMaximum(option->data("max").toInt());
     slider->setMinimum(option->data("min").toInt());
     slider->setValue(int(instance()->opacity() * 100));

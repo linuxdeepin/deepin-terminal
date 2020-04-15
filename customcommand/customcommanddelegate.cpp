@@ -71,24 +71,13 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         int cmdIconSize = 44;
         int editIconSize = 20;
 
-        QString themeType = "light";
-        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-        if (DGuiApplicationHelper::DarkType == appHelper->themeType()) {
-            themeType = "dark";
-        }
-        QString strCmdIconSrc = QString(":/resources/images/buildin/%1/command.svg").arg(themeType);
-        QPixmap cmdIconPixmap = Utils::renderSVG(strCmdIconSrc, QSize(cmdIconSize, cmdIconSize));
-
-        QRect cmdIconRect = QRect(bgRect.left() + 6, bgRect.top() + (bgRect.height() - cmdIconSize) / 2,
-                                  cmdIconSize, cmdIconSize);
-        painter->drawPixmap(cmdIconRect, cmdIconPixmap);
+        QRect cmdIconRect = QRect(bgRect.left() + 6, bgRect.top() + (bgRect.height() - cmdIconSize) / 2,                                  cmdIconSize, cmdIconSize);
+        painter->drawPixmap(cmdIconRect, QIcon::fromTheme("dt_command").pixmap(QSize(cmdIconSize, cmdIconSize)));
 
         if (option.state & QStyle::State_MouseOver) {
-            QString strEditIconSrc = QString(":/resources/images/buildin/%1/edit.svg").arg(themeType);
-            QPixmap editIconPixmap = Utils::renderSVG(strEditIconSrc, QSize(editIconSize, editIconSize));
             QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
                                        editIconSize, editIconSize);
-            painter->drawPixmap(editIconRect, editIconPixmap);
+            painter->drawPixmap(editIconRect, QIcon::fromTheme("dt_edit").pixmap(QSize(editIconSize, editIconSize)));
         }
 
         QString strCmdName = itemData.m_cmdName;
@@ -98,13 +87,13 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         int cmdNameFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T7);
         textFont.setPixelSize(cmdNameFontSize);
         strCmdName = Utils::getElidedText(textFont, strCmdName, ITEMMAXWIDTH);
-//        strCmdShortcut = Utils::getElidedText(textFont, strCmdShortcut, ITEMMAXWIDTH);
         painter->setFont(textFont);
 
         int lineSpace = 8;
         int offsetY = 8;
         int leftOffset = cmdIconRect.left() + cmdIconSize + 6;
 
+        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
         DPalette pa = appHelper->standardPalette(appHelper->themeType());
         painter->setPen(pa.color(DPalette::Text));
 
