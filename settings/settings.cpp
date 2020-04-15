@@ -305,7 +305,8 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
             slider->setRightIcon(QIcon(":/resources/images/icon/hover/opacity1_dark.svg"));
         }
     });
-
+    slider->setMaximum(option->data("max").toInt());
+    slider->setMinimum(option->data("min").toInt());
     slider->setValue(int(instance()->opacity() * 100));
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
 
