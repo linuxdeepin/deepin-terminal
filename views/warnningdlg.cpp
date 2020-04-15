@@ -1,4 +1,5 @@
 #include "warnningdlg.h"
+#include "utils.h"
 
 #include <DApplicationHelper>
 #include <DButtonBox>
@@ -79,32 +80,28 @@ void WarnningDlg::initContentLayout()
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_operateTypeName = new DLabel(this);
-    m_operateTypeName->setFixedHeight(20);
     m_operateTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QFont operateTypeNameFont;
-    m_operateTypeName->setFont(operateTypeNameFont);
-    DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6);
+    DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6, QFont::Medium);
+    DPalette palette = DApplicationHelper::instance()->palette(m_operateTypeName);
+    palette.setBrush(DPalette::WindowText, palette.color(DPalette::BrightText));
+    m_operateTypeName->setPalette(palette);
 
     m_tipInfo = new DLabel(this);
-    m_tipInfo->setFixedHeight(20);
     m_tipInfo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QFont tipInfoFont;
-    m_tipInfo->setFont(tipInfoFont);
-    DFontSizeManager::instance()->bind(m_tipInfo, DFontSizeManager::T6);
-//    DPalette paTipInfo = DApplicationHelper::instance()->palette(m_tipInfo);
-//    paTipInfo.setBrush(DPalette::WindowText, paTipInfo.color(DPalette::TextTips));
-//    m_tipInfo->setPalette(paTipInfo);
+
+    DFontSizeManager::instance()->bind(m_tipInfo, DFontSizeManager::T6, QFont::Medium);
+    DPalette patitInfo = DApplicationHelper::instance()->palette(m_tipInfo);
+    patitInfo.setBrush(DPalette::WindowText, patitInfo.color(DPalette::BrightText));
+    m_tipInfo->setPalette(patitInfo);
 
     QHBoxLayout *actionBarLayout = new QHBoxLayout();
     actionBarLayout->setSpacing(0);
     actionBarLayout->setContentsMargins(0, 0, 0, 0);
 
-    QFont btnFont;
     m_confirmBtn = new DPushButton(this);
-    m_confirmBtn->setFixedHeight(36);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    m_confirmBtn->setFont(btnFont);
     m_confirmBtn->setText(QObject::tr("OK"));
+    Utils::setSpaceInWord(m_confirmBtn);
 
     actionBarLayout->addWidget(m_confirmBtn);
 
@@ -182,6 +179,6 @@ void WarnningDlg::setTipInfo(const QString &strInfo)
 
 void WarnningDlg::setOKBtnText(const QString &strConfirm)
 {
-    m_confirmBtn->setText(strConfirm);    
+    m_confirmBtn->setText(strConfirm);
 }
 

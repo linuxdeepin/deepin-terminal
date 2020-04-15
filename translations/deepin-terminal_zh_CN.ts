@@ -725,7 +725,7 @@
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../views/warnningdlg.cpp" line="107"/>
+        <location filename="../views/warnningdlg.cpp" line="103"/>
         <source>OK</source>
         <translation>确认</translation>
     </message>
