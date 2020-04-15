@@ -115,6 +115,9 @@ void TermBaseDialog::addCancelConfirmButtons()
     buttonsLayout->addSpacing(9);
     buttonsLayout->addWidget(m_confirmBtn);
     buttonsLayout->addSpacing(30);
+    /************************ Add by m000743 sunchengxi 2020-04-15:默认enter回车按下，走确认校验流程 Begin************************/
+    m_confirmBtn->setDefault(true);
+    /************************ Add by m000743 sunchengxi 2020-04-15:默认enter回车按下，走确认校验流程 End ************************/
 
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
         qDebug() << "cancelBtnClicked";
