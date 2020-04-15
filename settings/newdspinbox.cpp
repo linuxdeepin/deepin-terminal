@@ -30,7 +30,6 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     m_DIconBtnSubtract = new DIconButton(DStyle::SP_DecreaseElement);
     m_DIconBtnSubtract->setFixedSize(36, 36);
     m_DLineEdit = new DLineEdit();
-    m_DLineEdit->setFixedSize(300, 36);
     m_DLineEdit->setClearButtonEnabled(false);
     QHBoxLayout *pHBoxLayout = new QHBoxLayout();
 
@@ -39,7 +38,6 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     pHBoxLayout->addWidget(m_DLineEdit);
     pHBoxLayout->addWidget(m_DIconBtnAdd);
     pHBoxLayout->addWidget(m_DIconBtnSubtract);
-    pHBoxLayout->addStretch();
     setLayout(pHBoxLayout);
 
     m_QIntValidator = new QIntValidator(m_MinValue, m_MaxValue, this);
