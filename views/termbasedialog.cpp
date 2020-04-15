@@ -96,6 +96,9 @@ void TermBaseDialog::addCancelConfirmButtons()
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setFont(btnFont);
 
+    //设置回车键默认响应的按钮
+    m_confirmBtn->setDefault(true);
+
     DVerticalLine *verticalLine = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalLine);
     QColor splitColor = pa.color(DPalette::ItemBackground);
