@@ -19,11 +19,6 @@ CustomCommandList::CustomCommandList(QWidget *parent) : DListView(parent)
 
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    /************************ Add by m000743 sunchengxi 2020-04-13:按照UI设计的滚动条，增加颜色设置 Begin************************/
-    DPalette pa = DApplicationHelper::instance()->palette(verticalScrollBar());
-    pa.setBrush(DPalette::Button, pa.color(DPalette::PlaceholderText));
-    DApplicationHelper::instance()->setPalette(verticalScrollBar(), pa);
-    /************************ Add by m000743 sunchengxi 2020-04-13:按照UI设计的滚动条，增加颜色设置 End ************************/
     initData();
 }
 
