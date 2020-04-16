@@ -613,8 +613,18 @@ void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
         setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
         return;
     }
+    // 这里只是立即生效一次，真正生效起作用的地方在初始的connect中
+    if (keyName == "advanced.cursor.auto_copy_selection") {
+        if (Settings::instance()->IsPasteSelection()) {
+            copyClipboard();
+        } else {
+            QApplication::clipboard()->clear(QClipboard::Clipboard);
+        }
 
-    if ((keyName == "advanced.cursor.auto_copy_selection") || (keyName == "advanced.scroll.scroll_on_output")) {
+        return;
+    }
+
+    if (keyName == "advanced.scroll.scroll_on_output") {
         qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                  << ", auto effective when happen";
         return;
