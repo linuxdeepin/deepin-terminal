@@ -142,10 +142,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(this, &QTermWidget::uninstallTerminal, this, []() {
 
         OperationConfirmDlg dlg;
-        dlg.setDialogFrameSize(380, 140);
-#warning need translations
-        dlg.setTitle(QString("警告"));
-        dlg.setOperatTypeName(QString("您确定要卸载终端吗，卸载后将无法再使用终端应用??"));
+        dlg.setFixedSize(380, 160);
+        dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
+        dlg.setTipInfo(QObject::tr("You will not be able to use Terminal any longer."));
         dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
         dlg.exec();
 
