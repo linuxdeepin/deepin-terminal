@@ -362,16 +362,11 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
         QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
         for(QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
             QList<ServerConfig *> value = iter.value();
-            for(int i = 0; i < value.size(); i++) {
-                if(value[i]->m_serverName.trimmed() == m_serverName->text().trimmed()) {//服务器名相同
-                    OperationConfirmDlg optDlg;
-                    QPixmap warnning = QIcon::fromTheme("dialog-warning").pixmap(QSize(32, 32));
-                    optDlg.setIconPixmap(warnning);
-                    optDlg.setOperatTypeName("deepin-terminal-warning");
-                    optDlg.setTipInfo(QObject::tr("Named the same remote server!"));
-                    optDlg.setOKCancelBtnText(QObject::tr("Sure"), QObject::tr("Cancel"));
-                    optDlg.setFixedSize(380, 160);
-                    optDlg.exec();
+            for (int i = 0; i < value.size(); i++) {
+                if (value[i]->m_serverName.trimmed() == m_serverName->text().trimmed()) { //服务器名相同
+                    QString strFirstLine = tr("The server name already exists,");
+                    QString strSecondeLine = tr("please input another one. ");
+                    Utils::showSameNameDialog(strFirstLine, strSecondeLine);
                     return;
                 }
             }

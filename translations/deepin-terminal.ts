@@ -20,60 +20,70 @@
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="66"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="68"/>
         <source>Name:</source>
         <translation>名称: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="69"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="71"/>
         <source>Command:</source>
         <translation>命令:</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="72"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="74"/>
         <source>Shortcuts:</source>
         <translation>快捷键: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="79"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="80"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="103"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="110"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="81"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="82"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="105"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="112"/>
         <source>Required</source>
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="157"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="159"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="159"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="161"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="229"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="231"/>
         <source>Please enter name</source>
         <translation>请输入名称</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="234"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="236"/>
         <source>Please enter command</source>
         <translation>请输入命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="117"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="247"/>
+        <source>The name already exists,</source>
+        <translation>该名称已存在</translation>
+    </message>
+    <message>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="248"/>
+        <source>please input another one.</source>
+        <translation>请重新输入</translation>
+    </message>
+    <message>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="119"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="123"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="125"/>
         <source>Edit Command</source>
         <translation>编辑命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="132"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="134"/>
         <source>Delete Command</source>
         <translation>删除命令</translation>
     </message>
@@ -82,7 +92,7 @@
         <translation type="vanished">确定</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="161"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="163"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
@@ -90,14 +100,12 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="49"/>
         <source>Same name exists</source>
-        <translation>存在相同的名称</translation>
+        <translation type="vanished">存在相同的名称</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="50"/>
         <source>Replace existing command or not?</source>
-        <translation>是否替换已有命令?</translation>
+        <translation type="vanished">是否替换已有命令?</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -112,7 +120,7 @@
         <translation type="vanished">搜索</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="114"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="88"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
@@ -550,23 +558,25 @@
     </message>
     <message>
         <location filename="../common/utils.cpp" line="288"/>
-        <source>please set another one</source>
+        <source>please set another one.</source>
         <translation>请重新设置</translation>
+    </message>
+    <message>
+        <source>please set another one</source>
+        <translation type="vanished">请重新设置</translation>
     </message>
     <message>
         <source>click on Add to make this shortcut effective immediately</source>
         <translation type="vanished">点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="51"/>
         <location filename="../common/utils.cpp" line="278"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="371"/>
         <source>Named the same remote server!</source>
-        <translation>相同的服务器名称</translation>
+        <translation type="vanished">相同的服务器名称</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="146"/>
@@ -580,9 +590,7 @@
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="148"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="372"/>
         <location filename="../remotemanage/serverconfiglist.cpp" line="177"/>
-        <location filename="../customcommand/customcommandpanel.cpp" line="51"/>
         <location filename="../customcommand/customcommandlist.cpp" line="133"/>
         <location filename="../common/utils.cpp" line="257"/>
         <location filename="../common/utils.cpp" line="278"/>
@@ -590,9 +598,8 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="372"/>
         <source>Sure</source>
-        <translation>确定</translation>
+        <translation type="vanished">确定</translation>
     </message>
     <message>
         <location filename="../main/main.cpp" line="32"/>
@@ -846,6 +853,16 @@
         <source>Please enter user name!</source>
         <translation>请输入用户名！</translation>
     </message>
+    <message>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="367"/>
+        <source>The server name already exists,</source>
+        <translation>该服务器名已存在</translation>
+    </message>
+    <message>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="368"/>
+        <source>please input another one. </source>
+        <translation>请重新输入</translation>
+    </message>
 </context>
 <context>
     <name>ServerConfigOptWidget</name>
@@ -1011,27 +1028,27 @@
         <translation>新建工作区</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="249"/>
+        <location filename="../views/termwidget.cpp" line="255"/>
         <source>Exit Full&amp;screen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="252"/>
+        <location filename="../views/termwidget.cpp" line="258"/>
         <source>Full&amp;screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="255"/>
+        <location filename="../views/termwidget.cpp" line="262"/>
         <source>&amp;Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="261"/>
+        <location filename="../views/termwidget.cpp" line="268"/>
         <source>&amp;Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="283"/>
+        <location filename="../views/termwidget.cpp" line="290"/>
         <source>Rename title</source>
         <translation>重命名标题</translation>
     </message>
@@ -1056,32 +1073,32 @@
         <translation type="vanished">标题名称: </translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="294"/>
+        <location filename="../views/termwidget.cpp" line="301"/>
         <source>&amp;Encoding</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="298"/>
+        <location filename="../views/termwidget.cpp" line="305"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="302"/>
+        <location filename="../views/termwidget.cpp" line="309"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="308"/>
+        <location filename="../views/termwidget.cpp" line="315"/>
         <source>Upload file</source>
         <translation>上传文件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="309"/>
+        <location filename="../views/termwidget.cpp" line="316"/>
         <source>Download file</source>
         <translation>下载文件</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="314"/>
+        <location filename="../views/termwidget.cpp" line="321"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

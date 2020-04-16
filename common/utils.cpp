@@ -285,7 +285,7 @@ bool Utils::showShortcutConflictMsgbox(QString txt)
 {
     WarnningDlg dlg;
     dlg.setOperatTypeName(txt);
-    dlg.setTipInfo(QObject::tr("please set another one"));
+    dlg.setTipInfo(QObject::tr("please set another one."));
     dlg.exec();
     return  true;
 }
@@ -366,5 +366,19 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
         TermWidget *termWidget = qobject_cast<TermWidget *>(parentWidget);
         emit termWidget->termRequestRenameTab(lineEdit->text());
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    showSameNameDialog
+ 2. @作者:    m000714 戴正文
+ 3. @日期:    2020-04-16
+ 4. @说明:    当有相同名称时，弹出弹窗给用户确认
+*******************************************************************************/
+void Utils::showSameNameDialog(const QString &fistLine, const QString &secondLine)
+{
+    WarnningDlg dlg;
+    dlg.setOperatTypeName(fistLine);
+    dlg.setTipInfo(secondLine);
+    dlg.exec();
 }
 

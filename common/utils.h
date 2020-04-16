@@ -60,6 +60,8 @@ public:
     static void setSpaceInWord(DPushButton *button);
 
     static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
+
+    static void showSameNameDialog(const QString &fistLine, const QString &secondLine);
 };
 
 #endif

@@ -31,37 +31,11 @@ void CustomCommandPanel::showAddCustomCommandDlg()
     CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     if (dlg.exec() == QDialog::Accepted) {
         QAction *newAction = dlg.getCurCustomCmd();
-        QAction *existAction = ShortcutManager::instance()->checkActionIsExist(*newAction);
-        if (nullptr == existAction) {
-            QAction *actionData = ShortcutManager::instance()->addCustomCommand(*newAction);
-            m_cmdListWidget->addNewCustomCommandData(actionData);
-            refreshCmdSearchState();
-            /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
-            m_cmdListWidget->scrollToBottom();
-            /********************* Modify by m000714 daizhengwen End ************************/
-        } else {
-            /******** Modify by m000714 daizhengwen 2020-03-30: 同名的情况，弹出提示框，约束输入****************/
-            // 有同名命令，发出警告
-            OperationConfirmDlg optDlg;
-            QPixmap warnning = QIcon::fromTheme("dialog-warning").pixmap(QSize(32, 32));
-            optDlg.setIconPixmap(warnning);
-            optDlg.setWindowFlags(optDlg.windowFlags() | Qt::WindowStaysOnTopHint);
-            optDlg.setOperatTypeName(tr("Same name exists"));
-            optDlg.setTipInfo(tr("Replace existing command or not?"));
-            optDlg.setOKCancelBtnText(QObject::tr("Replace"), QObject::tr("Cancel"));
-            optDlg.setFixedSize(380, 160);
-            if (optDlg.exec() == QDialog::Accepted) {
-                // 替换已有结构
-                existAction->setData(newAction->data());
-                existAction->setText(newAction->text());
-                existAction->setShortcut(newAction->shortcut());
-                //            m_cmdListWidget->refreshOneRowCommandInfo(existAction);
-                // 刷新列表
-                refreshCmdPanel();
-                ShortcutManager::instance()->saveCustomCommandToConfig(existAction, -1);
-            }
-            /********************* Modify by m000714 daizhengwen End ************************/
-        }
+        m_cmdListWidget->addNewCustomCommandData(newAction);
+        refreshCmdSearchState();
+        /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
+        m_cmdListWidget->scrollToBottom();
+        /********************* Modify by m000714 daizhengwen End ************************/
     }
 }
 

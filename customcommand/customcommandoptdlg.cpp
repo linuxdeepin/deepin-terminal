@@ -1,6 +1,8 @@
 #include "customcommandoptdlg.h"
 #include "termcommandlinkbutton.h"
 #include "shortcutmanager.h"
+#include "shortcutmanager.h"
+#include "utils.h"
 
 #include <DButtonBox>
 #include <DPushButton>
@@ -239,7 +241,16 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     m_newAction->setText(strName);
     m_newAction->setData(strCommand);
     m_newAction->setShortcut(m_shortCutLineEdit->keySequence());
-    accept();
+
+    QAction *existAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
+    if (nullptr != existAction) {
+        QString strFistLine = tr("The name already exists,");
+        QString strSecondeLine = tr("please input another one.");
+        Utils::showSameNameDialog(strFistLine, strSecondeLine);
+    } else {
+        accept();
+    }
+
 }
 
 void CustomCommandOptDlg::slotDelCurCustomCommand()
