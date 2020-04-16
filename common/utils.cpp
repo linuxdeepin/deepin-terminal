@@ -330,11 +330,14 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     lineEdit->setText(oldTitle);
     lineEdit->setClearButtonEnabled(false);
     pDialog->setFocusProxy(lineEdit->lineEdit());
+    // 初始化重命名窗口全选
+    lineEdit->lineEdit()->selectAll();
     /************************ Add by m000743 sunchengxi 2020-04-15:解决鼠标选中异常，无法删除选中 Begin************************/
     connect(lineEdit, &DLineEdit::selectionChanged, parentWidget, [ = ]() {
         lineEdit->lineEdit()->setFocus();
     });
     /************************ Add by m000743 sunchengxi 2020-04-15:解决鼠标选中异常，无法删除选中 End ************************/
+    // 若点击Dialog其他位置，将焦点回到lineEdit
     connect(lineEdit, &DLineEdit::focusChanged, parentWidget, [ = ](bool onFocus) {
         Q_UNUSED(onFocus);
         //lineEdit->lineEdit()->selectAll();
