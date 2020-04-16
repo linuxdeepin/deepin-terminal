@@ -12,7 +12,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-class TermWidgetWrapper;
+class TermWidget;
 
 class TermWidgetPage : public QWidget
 {
@@ -20,18 +20,18 @@ class TermWidgetPage : public QWidget
 public:
     TermWidgetPage(TermProperties properties, QWidget *parent = nullptr);
 
-    TermWidgetWrapper *currentTerminal();
-    TermWidgetWrapper *split(Qt::Orientation orientation);
-    TermWidgetWrapper *split(TermWidgetWrapper *term, Qt::Orientation orientation);
-    void closeSplit(TermWidgetWrapper *term);
+    TermWidget *currentTerminal();
+    TermWidget *split(Qt::Orientation orientation);
+    TermWidget *split(TermWidget *term, Qt::Orientation orientation);
+    void closeSplit(TermWidget *term);
     const QString identifier();
     void focusCurrentTerm();
     void closeOtherTerminal();
     void focusNavigation(Qt::Edge dir);
     int getTerminalCount();
     /******** Modify by n014361 wangpeili 2020-01-08: 计算上下左右判断方法 ******×****/
-    QRect GetRect(TermWidgetWrapper *term);
-    QPoint GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir);
+    QRect GetRect(TermWidget *term);
+    QPoint GetComparePoint(TermWidget *term, Qt::Edge dir);
     /********************* Modify by n014361 wangpeili End ************************/
 
     TermProperties createCurrentTerminalProperties();
@@ -106,13 +106,13 @@ signals:
     void termRequestDownloadFile() const;
 
 private slots:
-    void setCurrentTerminal(TermWidgetWrapper *term);
+    void setCurrentTerminal(TermWidget *term);
 
 private:
-    TermWidgetWrapper *createTerm(TermProperties properties);
+    TermWidget *createTerm(TermProperties properties);
     void setSplitStyle(DSplitter *splitter);
 
-    TermWidgetWrapper *m_currentTerm = nullptr;
+    TermWidget *m_currentTerm = nullptr;
     PageSearchBar *m_findBar = nullptr;
 };
 #endif  // TERMWIDGETPAGE_H

@@ -23,9 +23,9 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
-TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *grandma) : QTermWidget(0, parent)
+TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent)
 {
-    m_Page = (void *)grandma;
+    m_Page = (void *)parent;
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     setHistorySize(5000);
@@ -135,14 +135,17 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
-    connect(this, &TermWidget::isTermIdle, this, &TermWidget::handleTermIdle);
+    connect(this, &QTermWidget::isTermIdle, this, [this](bool bIdle) {
+        emit termIsIdle(getSessionId(), bIdle);
+    });
 
     connect(this, &QTermWidget::uninstallTerminal, this, []() {
 
         OperationConfirmDlg dlg;
-        dlg.setFixedSize(380, 160);
-        dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
-        dlg.setTipInfo(QObject::tr("You will not be able to use Terminal any longer."));
+        dlg.setDialogFrameSize(380, 140);
+#warning need translations
+        dlg.setTitle(QString("警告"));
+        dlg.setOperatTypeName(QString("您确定要卸载终端吗，卸载后将无法再使用终端应用??"));
         dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
         dlg.exec();
 
@@ -161,6 +164,17 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent, QWidget *gran
         }
         sendText(args);
     }
+
+    connect(this, &QTermWidget::titleChanged, this, [this] { emit termTitleChanged(TermWidget::title()); });
+    connect(this, &TermWidget::copyAvailable, this, [this](bool enable) {
+        if (Settings::instance()->IsPasteSelection() && enable) {
+            qDebug() << "hasCopySelection";
+            QString strSelected = selectedText();
+            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
+            ShortcutManager::instance()->setClipboardCommandData(strSelected);
+        }
+    });
+    connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
 }
 
 void TermWidget::handleTermIdle(bool bIdle)
@@ -226,14 +240,14 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     /********************* Modify by n014361 wangpeili End ************************/
     menu.addSeparator();
-    menu.addAction(tr("New &workspace"), this, [this] { emit((TermWidgetPage *)m_Page)->pageRequestNewWorkspace(); });
+    menu.addAction(tr("New &workspace"), this, [this] { emit ((TermWidgetPage *)m_Page)->pageRequestNewWorkspace(); });
 
     menu.addSeparator();
 
     bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
     if (isFullScreen) {
         menu.addAction(
-            tr("Exit Full&screen"), this, [this] { window()->setWindowState(windowState() & ~Qt::WindowFullScreen); });
+            tr("Exit Full&screen"), this, [this] {  });
     } else {
         menu.addAction(
             tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
@@ -279,7 +293,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     });
 
     menu.addAction(tr("&Encoding"), this, [this] {
-        emit((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
+        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
     });
 
     menu.addAction(tr("Custom commands"), this, [this] {
@@ -323,84 +337,13 @@ bool TermWidget::isInRemoteServer()
     return false;
 }
 
-TermWidgetWrapper::TermWidgetWrapper(TermProperties properties, QWidget *parent)
-    : QWidget(parent), m_term(new TermWidget(properties, this, parent))
+void TermWidget::setTermOpacity(qreal opacity)
 {
-    initUI();
-
-    connect(m_term, &QTermWidget::titleChanged, this, [this] { emit termTitleChanged(m_term->title()); });
-    connect(m_term, &QTermWidget::finished, this, &TermWidgetWrapper::termClosed);
-    // proxy signal:
-    connect(m_term, &QTermWidget::termGetFocus, this, &TermWidgetWrapper::termGetFocus);
-    connect(m_term, &TermWidget::termRequestSplit, this, &TermWidgetWrapper::termRequestSplit);
-    connect(m_term, &TermWidget::termRequestRenameTab, this, &TermWidgetWrapper::termRequestRenameTab);
-    connect(m_term, &TermWidget::termRequestOpenSettings, this, &TermWidgetWrapper::termRequestOpenSettings);
-    connect(m_term, &TermWidget::termRequestOpenCustomCommand, this, &TermWidgetWrapper::termRequestOpenCustomCommand);
-    connect(m_term,
-            &TermWidget::termRequestOpenRemoteManagement,
-            this,
-            &TermWidgetWrapper::termRequestOpenRemoteManagement);
-    connect(m_term, &TermWidget::copyAvailable, this, [this](bool enable) {
-        if (Settings::instance()->IsPasteSelection() && enable) {
-            qDebug() << "hasCopySelection";
-            QString strSelected = selectedText();
-            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
-            ShortcutManager::instance()->setClipboardCommandData(strSelected);
-        }
-    });
-    connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidgetWrapper::onSettingValueChanged);
-    connect(m_term, &TermWidget::termIsIdle, this, &TermWidgetWrapper::termIsIdle);
-    connect(m_term, &TermWidget::termRequestUploadFile, this, &TermWidgetWrapper::termRequestUploadFile);
-    connect(m_term, &TermWidget::termRequestDownloadFile, this, &TermWidgetWrapper::termRequestDownloadFile);
-}
-
-QList<int> TermWidgetWrapper::getRunningSessionIdList()
-{
-    return m_term->getRunningSessionIdList();
-}
-
-bool TermWidgetWrapper::hasRunningProcess()
-{
-    return m_term->hasRunningProcess();
-}
-
-int TermWidgetWrapper::getCurrSessionId()
-{
-    return m_term->getSessionId();
-}
-
-bool TermWidgetWrapper::isTitleChanged() const
-{
-    return m_term->isTitleChanged();
-}
-
-QString TermWidgetWrapper::title() const
-{
-    return m_term->title();
-}
-
-QString TermWidgetWrapper::workingDirectory()
-{
-    return m_term->workingDirectory();
-}
-
-void TermWidgetWrapper::sendText(const QString &text)
-{
-    return m_term->sendText(text);
-}
-
-void TermWidgetWrapper::setTerminalOpacity(qreal opacity)
-{
-    m_term->setTerminalOpacity(opacity);
+    setTerminalOpacity(opacity);
     /******* Modify by n014361 wangpeili 2020-01-04: 修正实时设置透明度问题************/
-    m_term->hide();
-    m_term->show();
+    hide();
+    show();
     /********************* Modify by n014361 wangpeili End ************************/
-}
-
-void TermWidgetWrapper::setColorScheme(const QString &name)
-{
-    m_term->setColorScheme(name);
 }
 
 /*******************************************************************************
@@ -409,13 +352,11 @@ void TermWidgetWrapper::setColorScheme(const QString &name)
  3. @日期:     2020-01-10
  4. @说明:     设置字体
 *******************************************************************************/
-void TermWidgetWrapper::setTerminalFont(const QString &fontName)
+void TermWidget::setTermFont(const QString &fontName)
 {
-    QFont font = m_term->getTerminalFont();
-    // font.setFixedPitch(true);
+    QFont font = getTerminalFont();
     font.setFamily(fontName);
-
-    m_term->setTerminalFont(font);
+    setTerminalFont(font);
 }
 
 /*******************************************************************************
@@ -424,24 +365,14 @@ void TermWidgetWrapper::setTerminalFont(const QString &fontName)
  3. @日期:     2020-01-10
  4. @说明:     设置字体大小
 *******************************************************************************/
-void TermWidgetWrapper::setTerminalFontSize(const int fontSize)
+void TermWidget::setTermFontSize(const int fontSize)
 {
-    QFont font = m_term->getTerminalFont();
+    QFont font = getTerminalFont();
     font.setFixedPitch(true);
     font.setPointSize(fontSize);
-    m_term->setTerminalFont(font);
+    setTerminalFont(font);
 }
 
-/*******************************************************************************
- 1. @函数:   void TermWidgetWrapper::selectAll()
- 2. @作者:     n014361 王培利
- 3. @日期:     2020-01-10
- 4. @说明:   全选
-*******************************************************************************/
-void TermWidgetWrapper::selectAll()
-{
-    m_term->setSelectionAll();
-}
 
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::skipToNextCommand()
@@ -449,7 +380,7 @@ void TermWidgetWrapper::selectAll()
  3. @日期:     2020-01-10
  4. @说明:    跳转到下一个命令（这个功能没找到库的接口，现在是暂时是以虚拟键形式实现）
 *******************************************************************************/
-void TermWidgetWrapper::skipToNextCommand()
+void TermWidget::skipToNextCommand()
 {
     qDebug() << "skipToNextCommand";
 }
@@ -460,7 +391,7 @@ void TermWidgetWrapper::skipToNextCommand()
  3. @日期:     2020-01-10
  4. @说明:   跳转到前一个命令（这个功能没找到库的接口，现在是暂时是以虚拟键形式实现）
 *******************************************************************************/
-void TermWidgetWrapper::skipToPreCommand()
+void TermWidget::skipToPreCommand()
 {
     qDebug() << "skipToPreCommand";
 }
@@ -471,71 +402,19 @@ void TermWidgetWrapper::skipToPreCommand()
  3. @日期:     2020-01-10
  4. @说明:     设置光标形状
 *******************************************************************************/
-void TermWidgetWrapper::setCursorShape(int shape)
+void TermWidget::setCursorShape(int shape)
 {
     Konsole::Emulation::KeyboardCursorShape cursorShape = Konsole::Emulation::KeyboardCursorShape(shape);
-    m_term->setKeyboardCursorShape(cursorShape);
+    setKeyboardCursorShape(cursorShape);
 }
 
-/*******************************************************************************
- 1. @函数:   setCursorBlinking(bool enable)
- 2. @作者:   王培利n014361
- 3. @日期:   2020-01-10
- 4. @说明:   设置光标是否闪烁
-*******************************************************************************/
-void TermWidgetWrapper::setCursorBlinking(bool enable)
-{
-    m_term->setBlinkingCursor(enable);
-}
-
-void TermWidgetWrapper::setPressingScroll(bool enable)
+void TermWidget::setPressingScroll(bool enable)
 {
     if (enable) {
-        m_term->setMotionAfterPasting(2);
+        setMotionAfterPasting(2);
     } else {
-        m_term->setMotionAfterPasting(0);
+        setMotionAfterPasting(0);
     }
-}
-/*******************************************************************************
- 1. @函数:    search(QString txt, bool forwards, bool next)
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-02-24
- 4. @说明:    新增搜索框接口
-*******************************************************************************/
-void TermWidgetWrapper::search(QString txt, bool forwards, bool next)
-{
-    // qDebug() << "TermWidgetWrapper" << txt;
-    m_term->search(txt, forwards, next);
-}
-/*******************************************************************************
- 1. @函数:    clearSelection()
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-02-24
- 4. @说明:    清空选择（查找失败的时候）
-*******************************************************************************/
-void TermWidgetWrapper::clearSelection()
-{
-    m_term->clearSelection();
-}
-
-void TermWidgetWrapper::zoomIn()
-{
-    m_term->zoomIn();
-}
-
-void TermWidgetWrapper::zoomOut()
-{
-    m_term->zoomOut();
-}
-
-void TermWidgetWrapper::copyClipboard()
-{
-    m_term->copyClipboard();
-}
-
-void TermWidgetWrapper::pasteClipboard()
-{
-    m_term->pasteClipboard();
 }
 
 /*******************************************************************************
@@ -544,48 +423,38 @@ void TermWidgetWrapper::pasteClipboard()
  3. @日期:     2020-01-10
  4. @说明:     粘贴选择内容
 *******************************************************************************/
-void TermWidgetWrapper::pasteSelection()
+void TermWidget::wpasteSelection()
 {
-
     int x1, y1, x2, y2;
-    m_term->getSelectionStart(x1, y1);
+    getSelectionStart(x1, y1);
     qDebug() << x1 << y1;
-    m_term->getSelectionEnd(x2, y2);
+    getSelectionEnd(x2, y2);
     qDebug() << x2 << y2;
 
-    m_term->pasteSelection();
+    pasteSelection();
 }
 
-void TermWidgetWrapper::toggleShowSearchBar()
-{
-    m_term->toggleShowSearchBar();
-}
-
-QString TermWidgetWrapper::selectedText(bool preserveLineBreaks)
-{
-    return m_term->selectedText(true);
-}
 /*******************************************************************************
  1. @函数:    onSettingValueChanged
  2. @作者:    n014361 王培利
  3. @日期:    2020-02-20
  4. @说明:    Terminal的各项设置生效
 *******************************************************************************/
-void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
+void TermWidget::onSettingValueChanged(const QString &keyName)
 {
     qDebug() << "onSettingValueChanged:" << keyName;
     if (keyName == "basic.interface.opacity") {
-        setTerminalOpacity(Settings::instance()->opacity());
+        setTermOpacity(Settings::instance()->opacity());
         return;
     }
 
     if (keyName == "basic.interface.font") {
-        setTerminalFont(Settings::instance()->fontName());
+        setTermFont(Settings::instance()->fontName());
         return;
     }
 
     if (keyName == "basic.interface.font_size") {
-        setTerminalFontSize(Settings::instance()->fontSize());
+        setTermFontSize(Settings::instance()->fontSize());
         return;
     }
 
@@ -595,7 +464,7 @@ void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
     }
 
     if (keyName == "advanced.cursor.cursor_blink") {
-        setCursorBlinking(Settings::instance()->cursorBlink());
+        setBlinkingCursor(Settings::instance()->cursorBlink());
         return;
     }
 
@@ -632,23 +501,3 @@ void TermWidgetWrapper::onSettingValueChanged(const QString &keyName)
     qDebug() << "settingValue[" << keyName << "] changed is not effective";
 }
 
-void TermWidgetWrapper::initUI()
-{
-    setFocusProxy(m_term);
-
-    m_layout = new QVBoxLayout;
-    setLayout(m_layout);
-
-    m_layout->addWidget(m_term);
-    m_layout->setContentsMargins(0, 0, 0, 0);
-}
-
-void TermWidgetWrapper::setTextCodec(QTextCodec *codec)
-{
-    m_term->setTextCodec(codec);
-}
-
-TermWidget *TermWidgetWrapper::getTermWidget()
-{
-    return m_term;
-}

@@ -174,9 +174,9 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         m_tabbar->removeNeedChangeTextColor(index);
     }
 
-    TermWidgetWrapper *termWidgetWapper = termPage->currentTerminal();
-    m_tabbar->saveSessionIdWithTabIndex(termWidgetWapper->getCurrSessionId(), index);
-    m_tabbar->saveSessionIdWithTabId(termWidgetWapper->getCurrSessionId(), termPage->identifier());
+    TermWidget *term = termPage->currentTerminal();
+    m_tabbar->saveSessionIdWithTabIndex(term->getSessionId(), index);
+    m_tabbar->saveSessionIdWithTabId(term->getSessionId(), termPage->identifier());
 
     connect(termPage, &TermWidgetPage::pageRequestNewWorkspace, this, [this]() {
         this->addTab(currentTab()->createCurrentTerminalProperties(), true);
@@ -200,7 +200,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name);
     });
 
-    connect(termPage->currentTerminal(), &TermWidgetWrapper::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
+    connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
 
         int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
 
@@ -246,9 +246,9 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
-            TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
+            TermWidget *term = tabPage->currentTerminal();
             if (runCheck) {
-                if (termWidgetWapper->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
+                if (term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
                     qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
                     return;
                 }
@@ -259,7 +259,7 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
-            int currSessionId =  tabPage->currentTerminal()->getCurrSessionId();
+            int currSessionId =  tabPage->currentTerminal()->getSessionId();
             m_tabVisitMap.remove(currSessionId);
             m_tabChangeColorMap.remove(currSessionId);
 
@@ -280,9 +280,9 @@ void MainWindow::updateTabStatus()
 {
     for (int i = 0; i < m_tabbar->count(); i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
-        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-        bool bIdle = !(termWidgetWapper->hasRunningProcess());
-        int currSessionId = termWidgetWapper->getCurrSessionId();
+        TermWidget *term = tabPage->currentTerminal();
+        bool bIdle = !(term->hasRunningProcess());
+        int currSessionId = term->getSessionId();
 
         if (bIdle) {
             if (isTabVisited(currSessionId)) {
@@ -436,8 +436,8 @@ bool MainWindow::closeProtect()
 
     // Check what processes are running, excluding the shell
     TermWidgetPage *tabPage = currentTab();
-    TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-    QList<int> processesRunning = termWidgetWapper->getRunningSessionIdList();
+    TermWidget *term = tabPage->currentTerminal();
+    QList<int> processesRunning = term->getRunningSessionIdList();
     qDebug() << processesRunning << endl;
 
     // Get number of open tabs
@@ -492,8 +492,8 @@ void MainWindow::onTermTitleChanged(QString title)
 void MainWindow::onTabTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
-    TermWidget *termWidget = tabPage->currentTerminal()->getTermWidget();
-    termWidget->setProperty("currTabTitle", QVariant::fromValue(title));
+    TermWidget *term = tabPage->currentTerminal();
+    term->setProperty("currTabTitle", QVariant::fromValue(title));
     m_tabbar->setTabText(tabPage->identifier(), title);
 }
 
@@ -767,9 +767,9 @@ void MainWindow::initShortcuts()
     connect(createNewShotcut("shortcuts.advanced.rename_tab"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentTab();
         if (page) {
-            TermWidgetWrapper *termWrapper = page->currentTerminal();
+            TermWidget *term = page->currentTerminal();
             QString currTabTitle = m_tabbar->tabText(m_tabbar->currentIndex());
-            Utils::showRenameTitleDialog(currTabTitle, termWrapper->getTermWidget());
+            Utils::showRenameTitleDialog(currTabTitle, term);
         }
     });
 
@@ -853,8 +853,8 @@ void MainWindow::initTitleBar()
         qDebug() << "menu click new window";
 
         TermWidgetPage *tabPage = currentTab();
-        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-        QString currWorkingDir = termWidgetWapper->workingDirectory();
+        TermWidget *term = tabPage->currentTerminal();
+        QString currWorkingDir = term->workingDirectory();
         emit newWindowRequest(currWorkingDir);
     });
     m_menu->addAction(newWindowAction);
@@ -895,10 +895,10 @@ void MainWindow::initTitleBar()
     connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
 
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
-        TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-        bool bIdle = !(termWidgetWapper->hasRunningProcess());
+        TermWidget *term = tabPage->currentTerminal();
+        bool bIdle = !(term->hasRunningProcess());
 
-        int currSessionId = termWidgetWapper->getCurrSessionId();
+        int currSessionId = term->getSessionId();
         if (bIdle && isTabChangeColor(currSessionId)) {
             m_tabVisitMap.insert(currSessionId, true);
             m_tabChangeColorMap.insert(currSessionId, false);
@@ -931,8 +931,8 @@ void MainWindow::initTitleBar()
 
             TermWidgetPage *tabPage = pageMap.value(tabIdentifier);
             if (tabPage) {
-                TermWidgetWrapper *termWidgetWapper = tabPage->currentTerminal();
-                if (termWidgetWapper->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
+                TermWidget *term = tabPage->currentTerminal();
+                if (term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
                     qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
                     return;
                 }
