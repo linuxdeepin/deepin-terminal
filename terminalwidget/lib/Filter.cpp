@@ -176,15 +176,28 @@ void TerminalImageFilterChain::setImage(const Character* const image , int lines
         // lines
         if ( !(lineProperties.value(i,LINE_DEFAULT) & LINE_WRAPPED) )
             lineStream << QLatin1Char('\n');
+
+        QString tempLine = lineStream.readAll().trimmed();
+        if (tempLine.count("$") == 1 && tempLine.endsWith("$"))
+        {
+            SessionManager::instance()->saveCurrShellPrompt(tempLine);
+        }
+        else if (tempLine.count("#") == 1 && tempLine.endsWith("#"))
+        {
+            SessionManager::instance()->saveCurrShellPrompt(tempLine);
+        }
     }
     decoder.end();
 
+    QString strShellPrompt = SessionManager::instance()->getCurrShellPrompt();
     QString strBuffer = *_buffer;
     if (strBuffer.length() > 0)
     {
-        if (strBuffer.contains("# "))
+        QString rootPromptEnd = QString("# ");
+        QString promptEnd = QString("$ ");
+        if (strBuffer.contains(rootPromptEnd))
         {
-            QString strCommand = strBuffer.split("# ").last();
+            QString strCommand = strBuffer.split(strShellPrompt).last();
             if (!strCommand.contains("sudo "))
             {
                 strCommand = QString("sudo %1").arg(strCommand);
@@ -193,7 +206,7 @@ void TerminalImageFilterChain::setImage(const Character* const image , int lines
         }
         else
         {
-            QString strCommand = strBuffer.split("$ ").last();
+            QString strCommand = strBuffer.split(strShellPrompt).last();
             SessionManager::instance()->saveCurrShellCommand(strCommand);
         }
     }
