@@ -179,6 +179,14 @@ private:
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 
     static QList<MainWindow *> m_windowList;
+private:
+    //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
+    /* press Windows+D on the keyboard, the notification bar will
+    *  open the terminal interface to only display the exit
+    *  pop-up, click exit pop-up terminal interface to display abnormal, time: 2020.4.16 13:32
+    */
+    bool _isClickedExitDlg {false};
+    //----------------------------
 };
 
 #endif  // MAINWINDOW_H

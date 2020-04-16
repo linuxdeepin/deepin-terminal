@@ -409,11 +409,20 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
     /********************* Modify by m000714 daizhengwen End ************************/
     bool hasRunning = closeProtect();
+    //--modified by qinyaning(nyq) to solve After exiting the pop-up interface,
+    /* press Windows+D on the keyboard, the notification bar will
+    *  open the terminal interface to only display the exit
+    *  pop-up, click exit pop-up terminal interface to display abnormal, time: 2020.4.16 13:32
+    */
+    _isClickedExitDlg = hasRunning;
     if (hasRunning && !Utils::showExitConfirmDialog()) {
         qDebug() << "close window protect..." << endl;
         event->ignore();
+        _isClickedExitDlg = false;
         return;
     }
+    _isClickedExitDlg = false;
+    //--------------------------------------------------------
 
     DMainWindow::closeEvent(event);
 }
@@ -1384,7 +1393,8 @@ void MainWindow::pressEnterKey(const QString &text)
 */
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
-    if (this->windowState() == Qt::WindowMinimized) {
+    if (this->windowState() == Qt::WindowMinimized 
+	|| this->windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
         activateWindow();
     }
     bool isFullscreen = (this->windowState() == Qt::WindowFullScreen);
