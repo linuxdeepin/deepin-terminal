@@ -22,6 +22,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     : DAbstractDialog(parent),
       m_type(type),
       m_curServer(curServer),
+      m_iconLabel(new DLabel),
       m_titleLabel(new DLabel),
       m_closeButton(new DWindowCloseButton(this)),
       m_serverName(new DLineEdit),
@@ -54,63 +55,52 @@ void ServerConfigOptDlg::initUI()
     qDebug() << "ServerConfigOptDlg init UI";
     //all layout
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
-    m_VBoxLayout->setContentsMargins(28, 0, 30, 10);
+    m_VBoxLayout->setSpacing(10);
+    m_VBoxLayout->setContentsMargins(0, 0, 0, 10);
     this->setFixedHeight(392);
     //head layout
-    m_titleLabel->setAlignment(Qt::AlignCenter);
+    m_iconLabel->setFixedSize(36, 34);
     m_titleLabel->setText(tr("Add Server"));
+    m_titleLabel->setFixedWidth(85);
 
     m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setFixedWidth(50);
     m_closeButton->setIconSize(QSize(50, 50));
 
     // 字体
     DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5, QFont::DemiBold);
     // 字色
     DPalette palette = m_titleLabel->palette();
-    QColor color;
-    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::LightType) {
-        color = QColor::fromRgb(0, 26, 46, 255);
-    } else {
-        color = QColor::fromRgb(192, 198, 212, 255);
-    }
-    palette.setBrush(QPalette::WindowText, color);
+    palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
     m_titleLabel->setPalette(palette);
 
     QHBoxLayout *headLayout = new QHBoxLayout();
+    headLayout->setSpacing(0);
+    headLayout->setContentsMargins(0, 0, 0, 0);
     // 为了和closebutton对应是标题居中
-    headLayout->addSpacing(52);
-    headLayout->addStretch();
-    headLayout->addWidget(m_titleLabel);
-    headLayout->addStretch();
+    headLayout->addWidget(m_iconLabel, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    headLayout->addWidget(m_titleLabel, 0, Qt::AlignVCenter );
     headLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignTop);
-    headLayout->setAlignment(Qt::AlignTop);
     connect(m_closeButton, &DDialogCloseButton::clicked, this, [ = ]() {
         reject();
     });
     m_VBoxLayout->addLayout(headLayout, Qt::AlignTop);
-    m_VBoxLayout->addStretch(30);
+    m_VBoxLayout->addStretch(10);
     //main layout
     QGridLayout *pGridLayout = new QGridLayout();
     pGridLayout->setColumnStretch(1, 1);
-    pGridLayout->setContentsMargins(0, 0, 0, 0);
+    pGridLayout->setContentsMargins(28, 0, 30, 0);
     pGridLayout->setSpacing(10);
     DLabel *pServerNameLabel = new DLabel(tr("Server name:"));
-    pServerNameLabel->setAlignment(Qt::AlignLeft);
-    pServerNameLabel->setAlignment(Qt::AlignVCenter);
-    pServerNameLabel->setFixedWidth(100);
-    pServerNameLabel->setFixedHeight(36);
+    setLabelStyle(pServerNameLabel);
+
     m_serverName->lineEdit()->setPlaceholderText(tr("Required"));
-    //m_serverName->lineEdit()->setText(tr("Remote"));
     pGridLayout->addWidget(pServerNameLabel);
     pGridLayout->addWidget(m_serverName);
 
     DLabel *pAddressLabel = new DLabel(tr("Address:"));
-    pAddressLabel->setAlignment(Qt::AlignLeft);
-    pAddressLabel->setAlignment(Qt::AlignVCenter);
-    pAddressLabel->setFixedWidth(100);
-    pAddressLabel->setFixedHeight(36);
+    setLabelStyle(pAddressLabel);
     m_address->lineEdit()->setPlaceholderText(tr("Required"));
-    //m_address->lineEdit()->setText(tr("deepin"));
     m_address->setFixedWidth(150);
     pGridLayout->addWidget(pAddressLabel);
     pGridLayout->addWidget(m_address);
@@ -120,10 +110,12 @@ void ServerConfigOptDlg::initUI()
     pPortLabel->setAlignment(Qt::AlignLeft);
     pPortLabel->setAlignment(Qt::AlignVCenter);
     pPortLabel->setFixedWidth(40);
+    DFontSizeManager::instance()->bind(pPortLabel, DFontSizeManager::T6);
     m_port->setRange(0, 65535);
     m_port->setValue(22);
     m_port->setSingleStep(1);
     m_port->setFixedWidth(70);
+    m_port->lineEdit()->setClearButtonEnabled(false);
     // 去除上下按钮
     m_port->setButtonSymbols(DSpinBox::NoButtons);
     // 禁用输入法
@@ -133,98 +125,71 @@ void ServerConfigOptDlg::initUI()
     pGridLayout->addLayout(portLayout, 1, 1, Qt::AlignRight);
 
     DLabel *pUsernameLabel = new DLabel(tr("Username:"));
-    pUsernameLabel->setAlignment(Qt::AlignLeft);
-    pUsernameLabel->setAlignment(Qt::AlignVCenter);
-    pUsernameLabel->setFixedWidth(100);
-    pUsernameLabel->setFixedHeight(36);
+    setLabelStyle(pUsernameLabel);
     m_userName->lineEdit()->setPlaceholderText(tr("Required"));
     pGridLayout->addWidget(pUsernameLabel);
     pGridLayout->addWidget(m_userName);
 
     DLabel *pPasswordLabel = new DLabel(tr("Password:"));
-    pPasswordLabel->setAlignment(Qt::AlignLeft);
-    pPasswordLabel->setAlignment(Qt::AlignVCenter);
-    pPasswordLabel->setFixedWidth(100);
-    pPasswordLabel->setFixedHeight(36);
-    /******** Modify by m000714 daizhengwen 2020-04-08: password 必填项 弃用****************/
-//    m_password->lineEdit()->setPlaceholderText(tr("Required"));
-    /********************* Modify by m000714 daizhengwen End ************************/
+    setLabelStyle(pPasswordLabel);
+
     m_password->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     pGridLayout->addWidget(pPasswordLabel);
     pGridLayout->addWidget(m_password);
 
     DLabel *pPrivateKeyLabel = new DLabel(tr("Certificate:"));
-    pPrivateKeyLabel->setAlignment(Qt::AlignLeft);
-    pPrivateKeyLabel->setAlignment(Qt::AlignVCenter);
-    pPrivateKeyLabel->setFixedWidth(100);
-    pPrivateKeyLabel->setFixedHeight(36);
+    setLabelStyle(pPrivateKeyLabel);
+
     pGridLayout->addWidget(pPrivateKeyLabel);
     pGridLayout->addWidget(m_privateKey);
 
     //senior layout
     DWidget *seniorWidget = new DWidget;
+    seniorWidget->setContentsMargins(0, 0, 0, 0);
     QGridLayout *seniorLayout = new QGridLayout();
     seniorLayout->setAlignment(Qt::AlignTop);
     seniorLayout->setSpacing(10);
-    seniorLayout->setContentsMargins(0, 0, 0, 0);
+    seniorLayout->setContentsMargins(28, 0, 30, 0);
     seniorLayout->setColumnStretch(1, 1);
     DLabel *pGroupLabel = new DLabel(tr("Group:"));
-    pGroupLabel->setAlignment(Qt::AlignLeft);
-    pGroupLabel->setAlignment(Qt::AlignVCenter);
-    pGroupLabel->setFixedWidth(100);
-    pGroupLabel->setFixedHeight(36);
+    setLabelStyle(pGroupLabel);
     seniorLayout->addWidget(pGroupLabel);
     seniorLayout->addWidget(m_group);
 
     DLabel *pPathLabel = new DLabel(tr("Path:"));
-    pPathLabel->setAlignment(Qt::AlignLeft);
-    pPathLabel->setAlignment(Qt::AlignVCenter);
-    pPathLabel->setFixedWidth(100);
-    pPathLabel->setFixedHeight(36);
+    setLabelStyle(pPathLabel);
     seniorLayout->addWidget(pPathLabel);
     seniorLayout->addWidget(m_path);
 
     DLabel *pCommandLabel = new DLabel(tr("Command:"));
-    pCommandLabel->setAlignment(Qt::AlignLeft);
-    pCommandLabel->setAlignment(Qt::AlignVCenter);
-    pCommandLabel->setFixedWidth(100);
-    pCommandLabel->setFixedHeight(36);
+    setLabelStyle(pCommandLabel);
     seniorLayout->addWidget(pCommandLabel);
     m_command->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     seniorLayout->addWidget(m_command);
 
     DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
-    pCodingLabel->setAlignment(Qt::AlignLeft);
-    pCodingLabel->setAlignment(Qt::AlignVCenter);
-    pCodingLabel->setFixedWidth(100);
-    pCodingLabel->setFixedHeight(36);
+    setLabelStyle(pCodingLabel);
     seniorLayout->addWidget(pCodingLabel);
     seniorLayout->addWidget(m_coding);
 
     DLabel *pBackspaceKeyLabel = new DLabel(tr("Backspace key:"));
-    pBackspaceKeyLabel->setAlignment(Qt::AlignLeft);
-    pBackspaceKeyLabel->setAlignment(Qt::AlignVCenter);
-    pBackspaceKeyLabel->setFixedWidth(100);
-    pBackspaceKeyLabel->setFixedHeight(36);
+    setLabelStyle(pBackspaceKeyLabel);
     seniorLayout->addWidget(pBackspaceKeyLabel);
     seniorLayout->addWidget(m_backSapceKey);
 
     DLabel *pDeleteKeyLabel = new DLabel(tr("Delete key:"));
-    pDeleteKeyLabel->setAlignment(Qt::AlignLeft);
-    pDeleteKeyLabel->setAlignment(Qt::AlignVCenter);
-    pDeleteKeyLabel->setFixedWidth(100);
-    pDeleteKeyLabel->setFixedHeight(36);
+    setLabelStyle(pDeleteKeyLabel);
     seniorLayout->addWidget(pDeleteKeyLabel);
     seniorLayout->addWidget(m_deleteKey);
     seniorWidget->setLayout(seniorLayout);
 
-    m_VBoxLayout->addLayout(pGridLayout, Qt::AlignVCenter);
+    m_VBoxLayout->addLayout(pGridLayout, Qt::AlignHCenter);
     QSpacerItem *upItem = new QSpacerItem(this->width(), 10);
     m_VBoxLayout->addSpacerItem(upItem);
     m_VBoxLayout->addWidget(m_advancedOptions, 0, Qt::AlignHCenter);
     QSpacerItem *downItem = new QSpacerItem(this->width(), 10);
     m_VBoxLayout->addSpacerItem(downItem);
-    m_VBoxLayout->addWidget(seniorWidget, Qt::AlignVCenter);
+    m_VBoxLayout->addWidget(seniorWidget, 0, Qt::AlignHCenter);
     m_delServer->setText(tr("Delete server"));
     m_VBoxLayout->addWidget(m_delServer, 0, Qt::AlignHCenter);
     m_delServer->hide();
@@ -259,12 +224,13 @@ void ServerConfigOptDlg::initUI()
     pAddSaveButton->setPalette(pa);
     QHBoxLayout *pBtHbLayout = new QHBoxLayout();
     DVerticalLine *line = new DVerticalLine();
+    pBtHbLayout->setContentsMargins(10, 0, 10, 0);
+    pBtHbLayout->setSpacing(9);
     pBtHbLayout->addWidget(pCancelButton);
     pBtHbLayout->addWidget(line);
     pBtHbLayout->addWidget(pAddSaveButton);
     m_VBoxLayout->addStretch(10);
     m_VBoxLayout->addLayout(pBtHbLayout, Qt::AlignBottom);
-
     setLayout(m_VBoxLayout);
 
     connect(pCancelButton, &DPushButton::clicked, this, [ = ]() {
@@ -343,6 +309,22 @@ QList<QString> ServerConfigOptDlg::getDeleteKey()
     eraseKeyList.append(tr("control-h"));
     eraseKeyList.append(tr("ttys"));
     return eraseKeyList;
+}
+
+/*******************************************************************************
+ 1. @函数:    setLabelStyle
+ 2. @作者:    m000714 戴正文
+ 3. @日期:    2020-04-16
+ 4. @说明:    设置label格式
+*******************************************************************************/
+void ServerConfigOptDlg::setLabelStyle(DLabel *label)
+{
+    label->setAlignment(Qt::AlignLeft);
+    label->setAlignment(Qt::AlignVCenter);
+    label->setFixedWidth(100);
+    label->setMinimumHeight(36);
+
+    DFontSizeManager::instance()->bind(label, DFontSizeManager::T6);
 }
 
 ServerConfigOptDlg::~ServerConfigOptDlg()

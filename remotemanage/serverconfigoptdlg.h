@@ -65,6 +65,7 @@ private:
     ServerConfigOptType m_type;
     ServerConfig *m_curServer = nullptr;
     DLabel *m_titleLabel = nullptr;
+    DLabel *m_iconLabel = nullptr;
     DWindowCloseButton *m_closeButton = nullptr;
     DLineEdit *m_serverName = nullptr;
     DLineEdit *m_address = nullptr;
@@ -89,6 +90,8 @@ private:
     QList<QString> getDeleteKey();
 
     QString m_currentServerName = "";
+
+    inline void setLabelStyle(DLabel *);
 
 };
 
