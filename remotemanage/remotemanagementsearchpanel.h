@@ -22,6 +22,7 @@ public:
     void setPreviousPanelType(RemoteManagementPanelType type);
 
 signals:
+    void showServerConfigGroupPanelFromSearch(const QString &strGroup);
     void doConnectServer(ServerConfig *curItemServer);
     void showRemoteManagementPanel();
     void showServerConfigGroupPanel(const QString &strGroup);

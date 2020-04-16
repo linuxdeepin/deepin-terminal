@@ -38,6 +38,10 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
             this,
             &RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel);
     connect(m_remoteManagementSearchPanel,
+            &RemoteManagementSearchPanel::showServerConfigGroupPanelFromSearch,
+            this,
+            &RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel);
+    connect(m_remoteManagementSearchPanel,
             &RemoteManagementSearchPanel::showServerConfigGroupPanel,
             this,
             &RemoteManagementTopPanel::showGroupPanelFromSearchPanel);
@@ -209,6 +213,36 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
     animation1->setDuration(animationDuration);
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
+    animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
+    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+    QParallelAnimationGroup *group = new QParallelAnimationGroup;
+    group->addAnimation(animation);
+    group->addAnimation(animation1);
+    group->start();
+}
+
+void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &strGroup)
+{
+    m_remoteManagementPanel->hide();
+    //--added by qinyaning(nyq) to solve the repeat history recoed--//
+    m_serverConfigGroupPanel->clearSearchInfo();
+    //--------------------------------------------------------------//
+    m_serverConfigGroupPanel->resize(size());
+    m_serverConfigGroupPanel->refreshData(strGroup);
+    m_serverConfigGroupPanel->show();
+    QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
+    animation->setDuration(animationDuration);
+    animation->setEasingCurve(QEasingCurve::OutQuad);
+    QRect rect = geometry();
+    animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
+    animation->setEndValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
+    connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
+    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+
+    QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
+    animation1->setDuration(animationDuration);
+    animation1->setEasingCurve(QEasingCurve::OutQuad);
+    animation1->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
     QParallelAnimationGroup *group = new QParallelAnimationGroup;

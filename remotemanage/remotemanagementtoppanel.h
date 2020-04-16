@@ -30,6 +30,8 @@ public slots:
     void showGroupPanelFromSearchPanel(const QString &strGroup);
     void showRemoteManagementPanelFromSearchPanel();
 
+    void slotShowGroupPanelFromSearchPanel(const QString &strGroup);
+
 private:
     RemoteManagementPanel *m_remoteManagementPanel = nullptr;
     ServerConfigGroupPanel *m_serverConfigGroupPanel = nullptr;

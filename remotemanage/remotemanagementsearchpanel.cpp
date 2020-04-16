@@ -81,7 +81,7 @@ void RemoteManagementSearchPanel::listItemClicked(ServerConfig *curItemServer)
     if (nullptr != curItemServer) {
         QString group = curItemServer->m_group;
         if (!group.isNull() && !group.isEmpty()) {
-            emit showServerConfigGroupPanel(group);
+            emit showServerConfigGroupPanelFromSearch(group);
         } else {
             emit doConnectServer(curItemServer);
         }

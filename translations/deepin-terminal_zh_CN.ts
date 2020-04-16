@@ -1203,17 +1203,17 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../common/utils.cpp" line="344"/>
+        <location filename="../common/utils.cpp" line="347"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="360"/>
+        <location filename="../common/utils.cpp" line="363"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="361"/>
+        <location filename="../common/utils.cpp" line="364"/>
         <source>Sure</source>
         <translation>确定</translation>
     </message>
