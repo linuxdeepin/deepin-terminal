@@ -364,21 +364,6 @@ void MainWindow::setTitleBarBackgroundColor(QString color)
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    /************************ Add by m000743 sunchengxi 2020-04-14:按照UI设计的全屏,标签栏右上角按钮显示退出按钮 Begin************************/
-    if (window()->windowState().testFlag(Qt::WindowFullScreen)) {
-        titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight);
-        m_exitFullScreen->setVisible(true);
-        titlebar()->setMenuVisible(false);
-        titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
-
-    } else {
-        titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight);
-        m_exitFullScreen->setVisible(false);
-        titlebar()->setMenuVisible(true);
-        titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->show();
-    }
-    /************************ Add by m000743 sunchengxi 2020-04-14:按照UI设计的全屏,标签栏右上角按钮显示退出按钮 End ************************/
-
     if (m_isQuakeWindow) {
         QRect deskRect = QApplication::desktop()->availableGeometry();
         this->resize(deskRect.size().width(), this->size().height());
@@ -480,19 +465,10 @@ void MainWindow::switchFullscreen(bool forceFullscreen)
         return;
     }
     if (forceFullscreen || !window()->windowState().testFlag(Qt::WindowFullScreen)) {
-        titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
-        m_exitFullScreen->setVisible(true);
-        titlebar()->setMenuVisible(false);
-
         window()->setWindowState(windowState() | Qt::WindowFullScreen);
-
     } else {
-        titlebar()->removeWidget(m_exitFullScreen);
-        m_exitFullScreen->setVisible(false);
-        titlebar()->setMenuVisible(true);
         window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
     }
-    // displayTitlebarIcon();
 }
 
 void MainWindow::onTermTitleChanged(QString title)
@@ -538,19 +514,6 @@ void MainWindow::initPlugins()
 
 void MainWindow::initWindow()
 {
-    // 全屏退出按钮
-
-    m_exitFullScreen = new DToolButton(this);
-    m_exitFullScreen->setCheckable(false);
-    applyTheme();
-    m_exitFullScreen->setIconSize(QSize(36, 36));
-    m_exitFullScreen->setFixedSize(QSize(36, 36));
-    titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
-    m_exitFullScreen->setVisible(false);
-    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
-        switchFullscreen();
-    });
-
     QSettings settings("blumia", "dterm");
 
     QString windowState =
@@ -863,13 +826,19 @@ void MainWindow::initConnections()
 
 void MainWindow::initTitleBar()
 {
-    /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
-//    QAction *newWorkspaceAction(new QAction(tr("New &workspace"), this));
-//    connect(newWorkspaceAction, &QAction::triggered, this, [this]() {
-//        this->addTab(currentTab()->createCurrentTerminalProperties(), true);
-//    });
-//    m_menu->addAction(newWorkspaceAction);
+    // 全屏退出按钮
+    // DTK的全屏按钮不能满足UI要求，隐去DTK最右侧的全屏
+    titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+    m_exitFullScreen = new DToolButton(this);
+    m_exitFullScreen->setCheckable(false);
+    m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
+    m_exitFullScreen->setIconSize(QSize(36, 36));
+    m_exitFullScreen->setFixedSize(QSize(36, 36));
+    titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
+    m_exitFullScreen->setVisible(false);
+    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() { switchFullscreen(); });
 
+    /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
     QAction *newWindowAction(new QAction(tr("New &window"), this));
     connect(newWindowAction, &QAction::triggered, this, [this]() {
         qDebug() << "menu click new window";
@@ -1207,7 +1176,7 @@ void MainWindow::showSettingDialog()
 *******************************************************************************/
 void MainWindow::applyTheme()
 {
-    m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
+    // m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
     return;
 }
 
@@ -1417,6 +1386,10 @@ void MainWindow::changeEvent(QEvent * /*event*/)
     if (this->windowState() == Qt::WindowMinimized) {
         activateWindow();
     }
+    bool isFullscreen = (this->windowState() == Qt::WindowFullScreen);
+    m_exitFullScreen->setVisible(isFullscreen);
+    titlebar()->setMenuVisible(!isFullscreen);
+    titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
 }
 //--------------------------------------------------
 
