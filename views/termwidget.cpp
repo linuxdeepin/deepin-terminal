@@ -23,9 +23,9 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
-TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent)
+TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
-    m_Page = (void *)parent;
+    m_Page = (TermWidgetPage *)parent;
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     setHistorySize(5000);
@@ -49,16 +49,16 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     //setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
     setTextCodec(QTextCodec::codecForName("UTF-8"));
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
-    setAutoClose(!properties.contains(KeepOpen));
+    setAutoClose(!m_properties.contains(KeepOpen));
     /********************* Modify by n014361 wangpeili End ************************/
 
     // WorkingDir
-    if (properties.contains(WorkingDir)) {
-        setWorkingDirectory(properties[WorkingDir].toString());
+    if (m_properties.contains(WorkingDir)) {
+        setWorkingDirectory(m_properties[WorkingDir].toString());
     }
 
-    if (properties.contains(Execute)) {
-        QString args = properties[Execute].toString();
+    if (m_properties.contains(Execute)) {
+        QString args = m_properties[Execute].toString();
         qDebug() << args;
         QStringList argList = args.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
         if (argList.count() > 0) {
@@ -131,7 +131,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     });
 
     connect(this, &QTermWidget::sig_noMatchFound, this, [this]() {
-        ((TermWidgetPage *)m_Page)->setMismatchAlert(true);
+        m_Page->setMismatchAlert(true);
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -154,11 +154,11 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     startShellProgram();
 
     // 增加可以自动运行脚本的命令，不需要的话，可以删除
-    if (properties.contains(Script)) {
-        QString args = properties[Script].toString();
+    if (m_properties.contains(Script)) {
+        QString args = m_properties[Script].toString();
         qDebug() << "run cmd:" << args;
         args.append("\n");
-        if (!properties.contains(KeepOpen)) {
+        if (!m_properties.contains(KeepOpen)) {
             args.append("exit\n");
         }
         sendText(args);
@@ -230,30 +230,37 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addAction(tr("&Vertical Split"), this, [this] { emit termRequestSplit(Qt::Vertical); });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->closeSplit(((TermWidgetPage *)m_Page)->currentTerminal());});
+    menu.addAction(tr("Close &Window"), this, [this] { m_Page->closeSplit(m_Page->currentTerminal());});
     //menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
-    if (((TermWidgetPage *)m_Page)->getTerminalCount() > 1) {
+    if (m_Page->getTerminalCount() > 1) {
         menu.addAction(
-            tr("Close &Other &Window"), this, [this] { ((TermWidgetPage *)m_Page)->closeOtherTerminal(); });
+            tr("Close &Other &Window"), this, [this] { m_Page->closeOtherTerminal(); });
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
     menu.addSeparator();
-    menu.addAction(tr("New &workspace"), this, [this] { emit ((TermWidgetPage *)m_Page)->pageRequestNewWorkspace(); });
+    menu.addAction(tr("New &workspace"), this, [this] { emit m_Page->pageRequestNewWorkspace(); });
 
     menu.addSeparator();
 
-    bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
-    if (isFullScreen) {
-        menu.addAction(
-            tr("Exit Full&screen"), this, [this] {  });
-    } else {
-        menu.addAction(
-            tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
+//    if((m_Page->parentWidget()->isQuak))->isQuakeWindowActivated())
+//    {
+
+//    }
+    if(!m_properties.contains(QuakeMode))
+    {
+        bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
+        if (isFullScreen) {
+            menu.addAction(
+                tr("Exit Full&screen"), this, [this] {  });
+        } else {
+            menu.addAction(
+                tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
+        }
     }
 
     menu.addAction(tr("&Find"), this, [this] {
-        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
+        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
     });
     menu.addSeparator();
 
@@ -292,15 +299,15 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     });
 
     menu.addAction(tr("&Encoding"), this, [this] {
-        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
+        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
     });
 
     menu.addAction(tr("Custom commands"), this, [this] {
-        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
+        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
     menu.addAction(tr("Remote management"), this, [this] {
-        emit ((TermWidgetPage *)m_Page)->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
 
     if (isInRemoteServer()) {

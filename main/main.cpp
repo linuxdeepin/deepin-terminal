@@ -100,6 +100,10 @@ int main(int argc, char *argv[])
     if (parser.isSet(optScript)) {
         firstTermProperties[Script] = parser.value(optScript);;
     }
+    if (parser.isSet(optQuakeMode)) {
+        firstTermProperties[QuakeMode] = true;
+    }
+
 
     MainWindow w(firstTermProperties);
 
@@ -107,7 +111,7 @@ int main(int argc, char *argv[])
     TermArgumentParser argumentParser;
 //    if (argumentParser.parseArguments(&w, parser.isSet(optQuakeMode))) {
     //--added by nyq to solve the problem of the second instance window location--//
-    if (argumentParser.ParseArguments(&w, parser.isSet(optQuakeMode), !app.isRunning())) {
+    if (argumentParser.ParseArguments(&w, firstTermProperties.contains(QuakeMode), !app.isRunning())) {
     //----------------------------------------------------------------------------//
         // Exit process after 1000ms.
         QTimer::singleShot(1000, [&]() { app.quit(); });

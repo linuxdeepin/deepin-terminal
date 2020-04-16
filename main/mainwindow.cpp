@@ -1397,10 +1397,12 @@ void MainWindow::changeEvent(QEvent * /*event*/)
 	|| this->windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
         if(_isClickedExitDlg) activateWindow();
     }
-    bool isFullscreen = (this->windowState() == Qt::WindowFullScreen);
-    m_exitFullScreen->setVisible(isFullscreen);
-    titlebar()->setMenuVisible(!isFullscreen);
-    titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+    if(!m_isQuakeWindow){
+        bool isFullscreen = (this->windowState() == Qt::WindowFullScreen);
+        m_exitFullScreen->setVisible(isFullscreen);
+        titlebar()->setMenuVisible(!isFullscreen);
+        titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+    }
 }
 //--------------------------------------------------
 

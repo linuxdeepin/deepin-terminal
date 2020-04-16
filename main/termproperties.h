@@ -5,6 +5,7 @@
 
 enum TermProperty
 {
+    QuakeMode,
     WorkingDir,
     ColorScheme,
     ShellProgram,

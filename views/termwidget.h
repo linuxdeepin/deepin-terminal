@@ -45,7 +45,8 @@ private slots:
     void customContextMenuCall(const QPoint &pos);
     void handleTermIdle(bool bIdle);
 private:
-    void *m_Page = nullptr;
+    TermWidgetPage *m_Page = nullptr;
+    TermProperties m_properties;
 };
 
 #endif  // TERMWIDGET_H
