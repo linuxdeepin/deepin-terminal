@@ -18,15 +18,13 @@ TermBaseDialog::TermBaseDialog(QWidget *parent)
 
 void TermBaseDialog::initUI()
 {
-    QWidget *mainWidget = new QWidget(this);
-
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setContentsMargins(0, 0, 0, 10);
 
     QHBoxLayout *titleLayout = new QHBoxLayout();
     titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(30, 0, 30, 0);
+    titleLayout->setContentsMargins(0, 0, 0, 0);
 
     m_titleBar = new QWidget(this);
     m_titleBar->setFixedHeight(50);
@@ -48,18 +46,12 @@ void TermBaseDialog::initUI()
     DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5, QFont::DemiBold);
     // 字色
     DPalette palette = m_titleText->palette();
-    QColor color;
-    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::LightType) {
-        color = QColor::fromRgb(0, 26, 46, 255);
-    } else {
-        color = QColor::fromRgb(192, 198, 212, 255);
-    }
-    palette.setColor(QPalette::WindowText, color);
+    palette.setColor(QPalette::WindowText, palette.color(DPalette::TextTitle));
     m_titleText->setPalette(palette);
 
     titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    titleLayout->addWidget(m_titleText);
-    titleLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignVCenter);
+    titleLayout->addWidget(m_titleText, 0, Qt::AlignHCenter);
+    titleLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignTop);
 
     //Dialog content
     m_contentLayout = new QVBoxLayout();
@@ -70,9 +62,9 @@ void TermBaseDialog::initUI()
     m_content->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_content->setLayout(m_contentLayout);
 
-    mainLayout->addWidget(m_titleBar);
+    mainLayout->addWidget(m_titleBar, 0, Qt::AlignTop);
     mainLayout->addWidget(m_content);
-    mainWidget->setLayout(mainLayout);
+    setLayout(mainLayout);
 
     m_mainLayout = mainLayout;
 }
@@ -80,18 +72,18 @@ void TermBaseDialog::initUI()
 void TermBaseDialog::addCancelConfirmButtons()
 {
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
-    buttonsLayout->setSpacing(0);
-    buttonsLayout->setContentsMargins(0, 0, 0, 0);
+    buttonsLayout->setSpacing(9);
+    buttonsLayout->setContentsMargins(10, 0, 10, 0);
 
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
-    m_cancelBtn->setFixedWidth(189);
+    m_cancelBtn->setFixedWidth(209);
     m_cancelBtn->setFixedHeight(36);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DSuggestButton(this);
-    m_confirmBtn->setFixedWidth(189);
+    m_confirmBtn->setFixedWidth(209);
     m_confirmBtn->setFixedHeight(36);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setFont(btnFont);
@@ -108,13 +100,9 @@ void TermBaseDialog::addCancelConfirmButtons()
     verticalLine->setAutoFillBackground(true);
     verticalLine->setFixedSize(3, 28);
 
-    buttonsLayout->addSpacing(30);
     buttonsLayout->addWidget(m_cancelBtn);
-    buttonsLayout->addSpacing(9);
     buttonsLayout->addWidget(verticalLine);
-    buttonsLayout->addSpacing(9);
     buttonsLayout->addWidget(m_confirmBtn);
-    buttonsLayout->addSpacing(30);
     /************************ Add by m000743 sunchengxi 2020-04-15:默认enter回车按下，走确认校验流程 Begin************************/
     m_confirmBtn->setDefault(true);
     /************************ Add by m000743 sunchengxi 2020-04-15:默认enter回车按下，走确认校验流程 End ************************/
@@ -142,7 +130,7 @@ QVBoxLayout *TermBaseDialog::getMainLayout()
 
 void TermBaseDialog::initConnections()
 {
-    connect(m_closeButton, &DWindowCloseButton::clicked, this,[this](){
+    connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
         this->close();
     });
 }
@@ -159,14 +147,14 @@ void TermBaseDialog::setLogoVisable(bool visible)
     }
 }
 
-void TermBaseDialog::setTitle(const QString& title)
+void TermBaseDialog::setTitle(const QString &title)
 {
-    if(nullptr != m_titleText) {
+    if (nullptr != m_titleText) {
         m_titleText->setText(title);
     }
 }
 
-QLayout* TermBaseDialog::getContentLayout()
+QLayout *TermBaseDialog::getContentLayout()
 {
     return m_contentLayout;
 }
@@ -183,7 +171,7 @@ void TermBaseDialog::setConfirmBtnText(const QString &strConfirm)
     Utils::setSpaceInWord(m_confirmBtn);
 }
 
-void TermBaseDialog::addContent(QWidget* content)
+void TermBaseDialog::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
 

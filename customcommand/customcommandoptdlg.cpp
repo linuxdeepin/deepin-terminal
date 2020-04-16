@@ -39,44 +39,40 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
 
 void CustomCommandOptDlg::initUI()
 {
-    int contentOffsetY = 18;
     QWidget *contentFrame = new QWidget;
-    contentFrame->setFixedSize(459, 128 + contentOffsetY);
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
-    contentLayout->setSpacing(0);
-    contentLayout->setContentsMargins(30, 0, 25, 0);
+    contentLayout->setSpacing(10);
+    contentLayout->setContentsMargins(0, 0, 0, 0);
 
     QWidget *nameFrame = new QWidget;
+    nameFrame->setFixedWidth(459);
     QHBoxLayout *nameLayout = new QHBoxLayout;
     nameLayout->setSpacing(0);
-    nameLayout->setContentsMargins(0, 0, 0, 0);
+    nameLayout->setContentsMargins(28, 0, 30, 0);
     nameFrame->setLayout(nameLayout);
 
     QWidget *cmdFrame = new QWidget;
     QHBoxLayout *cmdLayout = new QHBoxLayout;
     cmdLayout->setSpacing(0);
-    cmdLayout->setContentsMargins(0, 0, 0, 0);
+    cmdLayout->setContentsMargins(28, 0, 30, 0);
     cmdFrame->setLayout(cmdLayout);
 
     QWidget *scFrame = new QWidget;
     QHBoxLayout *scLayout = new QHBoxLayout;
     scLayout->setSpacing(0);
-    scLayout->setContentsMargins(0, 0, 0, 0);
+    scLayout->setContentsMargins(28, 0, 30, 0);
     scFrame->setLayout(scLayout);
 
     DLabel *nameLabel = new DLabel(tr("Name:"));
-    nameLabel->setFixedWidth(100);
 
     DLabel *cmdLabel = new DLabel(tr("Command:"));
-    cmdLabel->setFixedWidth(100);
 
     DLabel *shortCutLabel = new DLabel(tr("Shortcuts:"));
-    shortCutLabel->setFixedWidth(100);
 
-    m_nameLineEdit->setFixedSize(285, 36);
-    m_commandLineEdit->setFixedSize(285, 36);
-    m_shortCutLineEdit->setFixedSize(285, 36);
+    m_nameLineEdit->setFixedWidth(285);
+    m_commandLineEdit->setFixedWidth(285);
+    m_shortCutLineEdit->setFixedWidth(285);
 
     m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
@@ -92,7 +88,6 @@ void CustomCommandOptDlg::initUI()
     scLayout->addWidget(shortCutLabel);
     scLayout->addWidget(m_shortCutLineEdit);
 
-    contentLayout->addSpacing(contentOffsetY);
     contentLayout->addWidget(nameFrame);
     contentLayout->addWidget(cmdFrame);
     contentLayout->addWidget(scFrame);

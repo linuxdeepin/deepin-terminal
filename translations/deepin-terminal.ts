@@ -20,70 +20,70 @@
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="68"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="67"/>
         <source>Name:</source>
         <translation>名称: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="71"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="69"/>
         <source>Command:</source>
         <translation>命令:</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="74"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="71"/>
         <source>Shortcuts:</source>
         <translation>快捷键: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="81"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="82"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="105"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="112"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="77"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="78"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="100"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="107"/>
         <source>Required</source>
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="159"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="154"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="161"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="156"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="231"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="226"/>
         <source>Please enter name</source>
         <translation>请输入名称</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="236"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="231"/>
         <source>Please enter command</source>
         <translation>请输入命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="247"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="242"/>
         <source>The name already exists,</source>
         <translation>该名称已存在</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="248"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="243"/>
         <source>please input another one.</source>
         <translation>请重新输入</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="119"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="114"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="125"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="120"/>
         <source>Edit Command</source>
         <translation>编辑命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="134"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="129"/>
         <source>Delete Command</source>
         <translation>删除命令</translation>
     </message>
@@ -92,7 +92,7 @@
         <translation type="vanished">确定</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="163"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="158"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
