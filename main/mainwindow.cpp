@@ -1395,7 +1395,7 @@ void MainWindow::changeEvent(QEvent * /*event*/)
 {
     if (this->windowState() == Qt::WindowMinimized 
 	|| this->windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
-        activateWindow();
+        if(_isClickedExitDlg) activateWindow();
     }
     bool isFullscreen = (this->windowState() == Qt::WindowFullScreen);
     m_exitFullScreen->setVisible(isFullscreen);
