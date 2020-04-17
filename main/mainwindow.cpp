@@ -845,6 +845,10 @@ void MainWindow::initConnections()
 
 void MainWindow::initTitleBar()
 {
+    // mainwindow的设置按钮触发
+    connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this ,[this](){
+        showPlugin(PLUGIN_TYPE_NONE);
+    });
     // 全屏退出按钮
     // DTK的全屏按钮不能满足UI要求，隐去DTK最右侧的全屏
     titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
