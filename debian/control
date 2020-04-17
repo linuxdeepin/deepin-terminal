@@ -8,6 +8,6 @@ Homepage: https://www.deepin.com/
 
 Package: deepin-terminal-reborn
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, expect
 Description: deepin terminal
  Deepin Terminal

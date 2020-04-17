@@ -219,7 +219,7 @@ endif ()
 install(FILES deepin-terminal.desktop
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
 
-install(FILES resources/images/logo/deepin-terminal.svg
+install(FILES resources/logo/deepin-terminal.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
 # add this empty file for first install/reinstall judge
