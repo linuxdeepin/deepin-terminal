@@ -81,7 +81,6 @@ void CustomCommandOptDlg::initUI()
 
     m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
-    m_commandLineEdit->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     m_shortCutLineEdit->ShortcutDirection(Qt::AlignLeft);
 
     nameLayout->addWidget(nameLabel);

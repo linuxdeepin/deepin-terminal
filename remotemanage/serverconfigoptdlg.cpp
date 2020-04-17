@@ -164,7 +164,6 @@ void ServerConfigOptDlg::initUI()
     DLabel *pCommandLabel = new DLabel(tr("Command:"));
     setLabelStyle(pCommandLabel);
     seniorLayout->addWidget(pCommandLabel);
-    m_command->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     seniorLayout->addWidget(m_command);
 
     DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
