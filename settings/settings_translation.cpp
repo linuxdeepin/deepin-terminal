@@ -53,4 +53,5 @@ void GenerateSettingTranslate()
     auto shortcuts_workspace_select_right_windowName = QObject::tr("Select right window");
     auto shortcuts_workspace_select_upper_windowName = QObject::tr("Select upper window");
     auto shortcuts_workspace_vertical_splitName = QObject::tr("Vertical split");
+    auto shortcuts_terminal_FindName = QObject::tr("Find");
 }

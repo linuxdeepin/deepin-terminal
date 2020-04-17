@@ -20,70 +20,70 @@
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="67"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="72"/>
         <source>Name:</source>
         <translation>名称: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="69"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="74"/>
         <source>Command:</source>
         <translation>命令:</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="71"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="76"/>
         <source>Shortcuts:</source>
         <translation>快捷键: </translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="77"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="78"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="100"/>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="107"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="82"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="83"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="105"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="112"/>
         <source>Required</source>
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="154"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="159"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="156"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="161"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="226"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="231"/>
         <source>Please enter name</source>
         <translation>请输入名称</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="231"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="236"/>
         <source>Please enter command</source>
         <translation>请输入命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="242"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="247"/>
         <source>The name already exists,</source>
         <translation>该名称已存在</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="243"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="248"/>
         <source>please input another one.</source>
         <translation>请重新输入</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="114"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="119"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="120"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="125"/>
         <source>Edit Command</source>
         <translation>编辑命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="129"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="134"/>
         <source>Delete Command</source>
         <translation>删除命令</translation>
     </message>
@@ -92,7 +92,7 @@
         <translation type="vanished">确定</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="158"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="163"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
@@ -176,32 +176,32 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="851"/>
+        <location filename="../main/mainwindow.cpp" line="853"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="874"/>
+        <location filename="../main/mainwindow.cpp" line="876"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1254"/>
+        <location filename="../main/mainwindow.cpp" line="1256"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1256"/>
+        <location filename="../main/mainwindow.cpp" line="1258"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1258"/>
+        <location filename="../main/mainwindow.cpp" line="1260"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1318"/>
+        <location filename="../main/mainwindow.cpp" line="1320"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -210,12 +210,12 @@
         <translation type="vanished">请输入下载文件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1353"/>
+        <location filename="../main/mainwindow.cpp" line="1355"/>
         <source>Select file to upload</source>
         <translation>选择要上传的文件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1355"/>
+        <location filename="../main/mainwindow.cpp" line="1357"/>
         <source>Select directory to save the file</source>
         <translation>选择下载文件的保存目录</translation>
     </message>
@@ -526,6 +526,11 @@
         <location filename="../settings/settings_translation.cpp" line="54"/>
         <source>Select upper window</source>
         <translation>选择上面窗口</translation>
+    </message>
+    <message>
+        <location filename="../settings/settings_translation.cpp" line="56"/>
+        <source>Find</source>
+        <translation>查找</translation>
     </message>
     <message>
         <source>New tab</source>

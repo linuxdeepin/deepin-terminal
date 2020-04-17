@@ -721,7 +721,7 @@ void MainWindow::initShortcuts()
     });
 
     // search
-    connect(createNewShotcut("shortcuts.terminal.search"), &QShortcut::activated, this, [this]() {
+    connect(createNewShotcut("shortcuts.terminal.find"), &QShortcut::activated, this, [this]() {
         showPlugin(PLUGIN_TYPE_SEARCHBAR);
     });
 
@@ -845,7 +845,9 @@ void MainWindow::initTitleBar()
     m_exitFullScreen->setFixedSize(QSize(36, 36));
     titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
     m_exitFullScreen->setVisible(false);
-    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() { switchFullscreen(); });
+    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
+        switchFullscreen();
+    });
 
     /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
     QAction *newWindowAction(new QAction(tr("New &window"), this));
@@ -1214,7 +1216,7 @@ void MainWindow::displayShortcuts()
 {
     QRect rect = window()->geometry();
     //--added by qinyaning(nyq) to solve the problem of can't show center--//
-    if(m_isQuakeWindow)
+    if (m_isQuakeWindow)
         rect = QApplication::desktop()->availableGeometry();
     //---------------------------------------------------------------------//
     QPoint pos(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
@@ -1393,11 +1395,11 @@ void MainWindow::pressEnterKey(const QString &text)
 */
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
-    if (this->windowState() == Qt::WindowMinimized 
-	|| this->windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
-        if(_isClickedExitDlg) activateWindow();
+    if (this->windowState() == Qt::WindowMinimized
+            || this->windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
+        if (_isClickedExitDlg) activateWindow();
     }
-    if(!m_isQuakeWindow){
+    if (!m_isQuakeWindow) {
         bool isFullscreen = (this->windowState() == Qt::WindowFullScreen);
         m_exitFullScreen->setVisible(isFullscreen);
         titlebar()->setMenuVisible(!isFullscreen);
