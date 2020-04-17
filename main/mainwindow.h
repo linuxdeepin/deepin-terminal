@@ -60,6 +60,8 @@ public:
     QString showFileDailog(bool isDir);
     void pressCtrlAt();
     void sleep(unsigned int msec);
+    // 由mainwindow统一指令当前显示哪个插件
+    void showPlugin(const QString &name);
 
     static QList<MainWindow *> getWindowList();
 
@@ -112,8 +114,6 @@ private:
     void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
     int executeCMD(const char *cmd);
-    // 由mainwindow统一指令当前显示哪个插件
-    void showPlugin(const QString &name);
     //void addQuakeTerminalShortcut();
 
     bool isTabVisited(int tabSessionId);
