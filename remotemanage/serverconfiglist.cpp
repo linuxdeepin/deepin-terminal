@@ -5,6 +5,7 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigdelegate.h"
 #include "serverconfigitemmodel.h"
+#include "utils.h"
 
 #include <DLog>
 #include<DScrollBar>
@@ -165,6 +166,7 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
     ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
     if (dlg.exec() == QDialog::Accepted) {
         if (dlg.isDelServer()) {
+#ifndef USE_DTK
             OperationConfirmDlg optDlg;
             optDlg.setFixedSize(380, 160);
             optDlg.setOperatTypeName(tr("Delete Server"));
@@ -176,6 +178,12 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
                 refreshPanelData(modelIndex);
                 emit listItemCountChange();
             }
+#else
+            DDialog dlg(tr("Delete Server"), tr("Do you sure to delete the %1?").arg(curItemServer->m_serverName));
+            dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
+            dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+            dlg.addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
+#endif
         } else {
             //刷新所有数据，待完善
             refreshPanelData(modelIndex);

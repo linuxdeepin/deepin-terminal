@@ -221,14 +221,15 @@ bool ShortcutManager::isValidShortcut(const QString &Name, const QString &Key)
 *******************************************************************************/
 bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key, QString &Reason)
 {
+    QString style = QString("<span style=\"color: rgba(255, 87, 54, 1);\">%1</span>").arg(Key);
     // 单键
     if (Key.count("+") == 0) {
         //F1-F12是允许的，这个正则不够精确，但是没关系。
         QRegExp regexp("^F[0-9]{1,2}$");
         if (!Key.contains(regexp)) {
             qDebug() << Key << "is invalid!";
-            Reason = tr("The shortcut %1 is invalid,")
-                     .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
+            Reason = tr("The shortcut %1 is invalid, ")
+                     .arg(style);
             return  false;
         }
     }
@@ -236,28 +237,28 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     QRegExp regexpNum("^Num\+.*");
     if (Key.contains(regexpNum)) {
         qDebug() << Key << "is invalid!";
-        Reason = tr("The shortcut %1 is invalid,")
-                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
+        Reason = tr("The shortcut %1 is invalid, ")
+                 .arg(style);
         return  false;
     }
     // 内置快捷键都不允许
     if (m_builtinShortcuts.contains(Key)) {
         qDebug() << Key << "is conflict with builtin shortcut!";
-        Reason = tr("The shortcut %1 was already in use,")
-                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
+        Reason = tr("The shortcut %1 was already in use, ")
+                 .arg(style);
         return  false;
     }
 
     // 与设置里的快捷键冲突检测
     if (Settings::instance()->isShortcutConflict(Name, Key)) {
-        Reason = tr("The shortcut %1 was already in use,")
-                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
+        Reason = tr("The shortcut %1 was already in use, ")
+                 .arg(style);
         return  false;
     }
     // 与自定义快捷键冲突检测
     if (isShortcutConflictInCustom(Name, Key)) {
-        Reason = tr("The shortcut %1 was already in use,")
-                 .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(Key));
+        Reason = tr("The shortcut %1 was already in use, ")
+                 .arg(style);
         return  false;
     }
     return true;

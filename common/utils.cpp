@@ -251,6 +251,8 @@ QString Utils::getRandString()
 
 bool Utils::showExitConfirmDialog()
 {
+    /******** Modify by m000714 daizhengwen 2020-04-17: 统一使用dtk Dialog****************/
+#ifndef USE_DTK
     OperationConfirmDlg optDlg;
     optDlg.setFixedSize(380, 160);
     optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
@@ -259,6 +261,14 @@ bool Utils::showExitConfirmDialog()
     optDlg.exec();
 
     return (optDlg.getConfirmResult() == QDialog::Accepted);
+#else
+    DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to exit?"));
+    dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
+    dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+    dlg.addButton(QString(tr("Exit")), true, DDialog::ButtonWarning);
+    return (dlg.exec() == DDialog::Accepted);
+#endif
+    /********************* Modify by m000714 daizhengwen End ************************/
 }
 /*******************************************************************************
  1. @函数:    showShortcutConflictDialog
@@ -284,10 +294,20 @@ bool Utils::showShortcutConflictDialog(QString conflictkey)
 
 bool Utils::showShortcutConflictMsgbox(QString txt)
 {
+#ifndef USE_DTK
     WarnningDlg dlg;
     dlg.setOperatTypeName(txt);
     dlg.setTipInfo(QObject::tr("please set another one."));
     dlg.exec();
+#else
+    DDialog dlg;
+//    dlg.setTitle(QString(txt ));
+//    dlg.setMessage(QObject::tr(" please set another one."));
+    dlg.setIcon(QIcon::fromTheme("dialog-warning"));
+    dlg.setTitle(QString(txt + QObject::tr("please set another one.")));
+    dlg.addButton(QString(tr("OK")), false, DDialog::ButtonNormal);
+    dlg.exec();
+#endif
     return  true;
 }
 
@@ -334,11 +354,19 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
  3. @日期:    2020-04-16
  4. @说明:    当有相同名称时，弹出弹窗给用户确认
 *******************************************************************************/
-void Utils::showSameNameDialog(const QString &fistLine, const QString &secondLine)
+void Utils::showSameNameDialog(const QString &firstLine, const QString &secondLine)
 {
+#ifndef USE_DTK
     WarnningDlg dlg;
-    dlg.setOperatTypeName(fistLine);
+    dlg.setOperatTypeName(firstLine);
     dlg.setTipInfo(secondLine);
     dlg.exec();
+#else
+    DDialog dlg;
+    dlg.setTitle(QString(firstLine + secondLine));
+    dlg.setIcon(QIcon::fromTheme("dialog-warning"));
+    dlg.addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
+    dlg.exec();
+#endif
 }
 

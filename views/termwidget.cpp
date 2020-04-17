@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "shortcutmanager.h"
 #include "operationconfirmdlg.h"
+#include "utils.h"
 
 #include <DDesktopServices>
 #include <DInputDialog>
@@ -140,7 +141,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     });
 
     connect(this, &QTermWidget::uninstallTerminal, this, []() {
-
+#ifndef USE_DTK
         OperationConfirmDlg dlg;
         dlg.setFixedSize(380, 160);
         dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
@@ -149,6 +150,13 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         dlg.exec();
 
         return (dlg.getConfirmResult() == QDialog::Accepted);
+#else
+        DDialog dlg(QObject::tr("Are you sure you want to uninstall this application?"), QObject::tr("You will not be able to use Terminal any longer."));
+        dlg.setIcon(QIcon::fromTheme("dialog-warning"));
+        dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+        dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);
+        return (dlg.exec() == DDialog::Accepted);
+#endif
     });
 
     startShellProgram();
@@ -169,7 +177,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
             QString strSelected = selectedText();
-            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);            
+            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
@@ -246,8 +254,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 //    {
 
 //    }
-    if(!m_properties.contains(QuakeMode))
-    {
+    if (!m_properties.contains(QuakeMode)) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
         if (isFullScreen) {
             menu.addAction(

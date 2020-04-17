@@ -30,6 +30,10 @@
 #define ITEMMAXWIDTH 160
 /********************* Modify by m000714 daizhengwen End ************************/
 
+/******** Modify by m000714 daizhengwen 2020-04-17: 使用DTK的Dialog****************/
+//#define USE_DTK
+/********************* Modify by m000714 daizhengwen End ************************/
+
 class Utils : public QObject
 {
     Q_OBJECT
@@ -61,7 +65,7 @@ public:
 
     static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
 
-    static void showSameNameDialog(const QString &fistLine, const QString &secondLine);
+    static void showSameNameDialog(const QString &firstLine, const QString &secondLine);
 };
 
 #endif

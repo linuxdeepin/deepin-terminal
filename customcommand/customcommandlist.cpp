@@ -3,6 +3,7 @@
 #include "customcommandoptdlg.h"
 #include "operationconfirmdlg.h"
 #include "shortcutmanager.h"
+#include "utils.h"
 
 #include <DMessageBox>
 #include <DLog>
@@ -122,17 +123,33 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
 
         //Delete custom command
         if (dlg.isDelCurCommand()) {
+#ifndef USE_DTK
             OperationConfirmDlg dlg;
             dlg.setDialogFrameSize(380, 140);
             dlg.setOperatTypeName(tr("Are you sure to delete?"));
-            dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
+            dlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
             dlg.exec();
             if (dlg.getConfirmResult() == QDialog::Accepted) {
                 ShortcutManager::instance()->delCustomCommand(itemData);
                 removeCommandItem(modelIndex);
                 emit listItemCountChange();
             }
+
+#else
+            DDialog dlg;
+            dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
+            dlg.setTitle(tr("Are you sure to delete?"));
+            dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+            dlg.addButton(QObject::tr("OK"), false, DDialog::ButtonWarning);
+            if (dlg.exec() == QDialog::Accepted) {
+                ShortcutManager::instance()->delCustomCommand(itemData);
+                removeCommandItem(modelIndex);
+                emit listItemCountChange();
+            }
+#endif
+
         }
+
     }
 }
 
