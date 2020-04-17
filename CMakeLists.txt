@@ -119,6 +119,7 @@ set (DTNG_CPP_FILES
     views/termwidget.cpp
     views/termwidgetpage.cpp
     views/termbasedialog.cpp
+    views/terminputdialog.cpp
     views/termcommandlinkbutton.cpp
     views/titlebar.cpp
 )
@@ -177,6 +178,7 @@ set (DTNG_HEADER_FILES
     views/termwidgetpage.h
     views/titlebar.h
     views/termbasedialog.h
+    views/terminputdialog.h
     views/termcommandlinkbutton.h
 )
 

@@ -118,13 +118,7 @@ void OperationConfirmDlg::initContentLayout()
     m_confirmBtn->setDefault(true);
 
     DVerticalLine *verticalLine = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(verticalLine);
-    QColor splitColor = pa.color(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitColor);
-    verticalLine->setPalette(pa);
-    verticalLine->setBackgroundRole(QPalette::Background);
-    verticalLine->setAutoFillBackground(true);
-    verticalLine->setFixedSize(3, 28);
+    verticalLine->setFixedSize(1, 28);
 
     m_actionLayout->addWidget(m_cancelBtn);
     m_actionLayout->addSpacing(8);
