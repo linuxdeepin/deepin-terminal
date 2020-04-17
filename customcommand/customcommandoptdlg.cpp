@@ -288,7 +288,14 @@ void CustomCommandOptDlg::initUITitle()
     DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5, QFont::DemiBold);
     // 字色
     DPalette palette = m_titleText->palette();
-    palette.setColor(QPalette::WindowText, palette.color(DPalette::TextTitle));
+//    palette.setColor(QPalette::WindowText, palette.color(DPalette::TextTitle));
+    QColor color;
+    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+        color = QColor::fromRgb(192, 198, 212, 255);
+    } else {
+        color = QColor::fromRgb(0, 26, 46, 255);
+    }
+    palette.setBrush(QPalette::WindowText, color);
     m_titleText->setPalette(palette);
 
     titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);

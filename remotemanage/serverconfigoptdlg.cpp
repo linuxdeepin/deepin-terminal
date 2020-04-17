@@ -71,7 +71,14 @@ void ServerConfigOptDlg::initUI()
     DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5, QFont::DemiBold);
     // 字色
     DPalette palette = m_titleLabel->palette();
-    palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
+    //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
+    QColor color;
+    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+        color = QColor::fromRgb(192, 198, 212, 255);
+    } else {
+        color = QColor::fromRgb(0, 26, 46, 255);
+    }
+    palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
 
     QHBoxLayout *headLayout = new QHBoxLayout();
@@ -355,11 +362,11 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     }
     //------------------------------------------------------------------//
     //--added by qinyaning(nyq) to solve the bug 19116: You can create a new remote server with the same name--//
-    if((m_type == SCT_ADD)
+    if ((m_type == SCT_ADD)
             || ((m_type == SCT_MODIFY && m_curServer != nullptr)
-                && (m_curServer->m_serverName.trimmed() != m_serverName->text().trimmed())))/*此时用户已经在修改模式下修改了服务器名称*/ {
+                && (m_curServer->m_serverName.trimmed() != m_serverName->text().trimmed()))) { /*此时用户已经在修改模式下修改了服务器名称*/
         QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
-        for(QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
+        for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
             QList<ServerConfig *> value = iter.value();
             for (int i = 0; i < value.size(); i++) {
                 if (value[i]->m_serverName.trimmed() == m_serverName->text().trimmed()) { //服务器名相同

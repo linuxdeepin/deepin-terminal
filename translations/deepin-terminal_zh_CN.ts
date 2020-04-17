@@ -767,7 +767,7 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../remotemanage/remotemanagementpanel.cpp" line="67"/>
+        <location filename="../remotemanage/remotemanagementpanel.cpp" line="69"/>
         <source>Add Server</source>
         <translation>添加服务器</translation>
     </message>
@@ -826,7 +826,7 @@
         <translation>高级选项</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="192"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="199"/>
         <source>Delete server</source>
         <translation>删除服务器</translation>
     </message>
@@ -836,7 +836,7 @@
         <translation>添加服务器</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="94"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="101"/>
         <source>Server name:</source>
         <translation>服务器名:</translation>
     </message>
@@ -845,64 +845,64 @@
         <translation type="vanished">选项</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="101"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="108"/>
         <source>Address:</source>
         <translation>地址: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="109"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="116"/>
         <source>Port:</source>
         <translation>端口: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="127"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="134"/>
         <source>Username:</source>
         <translation>用户名: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="133"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="140"/>
         <source>Password:</source>
         <translation>密码: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="140"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="147"/>
         <source>Certificate:</source>
         <translation>证书:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="169"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="176"/>
         <source>Encoding:</source>
         <translation>编码:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="174"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="181"/>
         <source>Backspace key:</source>
         <translation>退格键:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="179"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="186"/>
         <source>Delete key:</source>
         <translation>删除键:</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="154"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="161"/>
         <source>Group:</source>
         <translation>分组: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="97"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="103"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="129"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="104"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="110"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="136"/>
         <source>Required</source>
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="159"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="166"/>
         <source>Path:</source>
         <translation>路径: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="164"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="171"/>
         <source>Command:</source>
         <translation>命令: </translation>
     </message>
@@ -915,82 +915,82 @@
         <translation type="vanished">删除键: </translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="212"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="219"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="213"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="220"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="215"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="222"/>
         <source>Edit server</source>
         <translation>编辑服务器</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="216"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="223"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="294"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="306"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="301"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="313"/>
         <source>ascii-del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="295"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="307"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="302"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="314"/>
         <source>auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="296"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="308"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="303"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="315"/>
         <source>control-h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="297"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="305"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="304"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="312"/>
         <source>escape-sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="298"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="309"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="305"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="316"/>
         <source>ttys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="337"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="344"/>
         <source>Please enter server name!</source>
         <translation>请输入服务器名称！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="342"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="349"/>
         <source>Please enter IP address!</source>
         <translation>请输入IP地址！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="347"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="354"/>
         <source>Please enter port!</source>
         <translation>请输入端口号！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="353"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="360"/>
         <source>Please enter user name!</source>
         <translation>请输入用户名！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="366"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="373"/>
         <source>The server name already exists,</source>
         <translation>该服务器名已存在，</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="367"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="374"/>
         <source>please input another one. </source>
         <translation>请重新输入</translation>
     </message>
