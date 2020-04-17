@@ -109,7 +109,16 @@ void TermWidgetPage::closeSplit(TermWidget *term)
     Q_CHECK_PTR(parent);
 
     term->setParent(nullptr);
-    term->deleteLater();
+    //--midified by qinyaning(nyq) to solve that Create a number of workspaces in the thunder window,
+    /*right click to close the window will close all workspaces, time: 2020.04.17 15:00
+    */
+    static QList<TermWidgetWrapper *> terms;
+    terms.push_back(term);
+    if(term->getCurrSessionId() == 1) {//当剩下最后一个工作区时
+        for(int i = 0; i < terms.size(); i++)
+            terms[i]->deleteLater();
+    }
+    //---------------------------------------------------------//
 
     QWidget *nextFocus = nullptr;
 
