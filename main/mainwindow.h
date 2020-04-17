@@ -76,6 +76,7 @@ public:
     static constexpr const char* PLUGIN_TYPE_NONE = "None";
 signals:
     void newWindowRequest(const QString &directory);
+    // !这个信号被封装了，请不要单独调用！
     void showPluginChanged(const QString &name);
     void quakeHidePlugin();
 

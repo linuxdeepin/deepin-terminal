@@ -781,12 +781,22 @@ void MainWindow::initShortcuts()
 
     // custom_command
     connect(createNewShotcut("shortcuts.advanced.custom_command"), &QShortcut::activated, this, [this]() {
-        showPlugin(PLUGIN_TYPE_CUSTOMCOMMAND);
+        if(m_CurrentShowPlugin == PLUGIN_TYPE_CUSTOMCOMMAND){
+            showPlugin(PLUGIN_TYPE_NONE);
+        }
+        else {
+            showPlugin(PLUGIN_TYPE_CUSTOMCOMMAND);
+        }
     });
 
     // remote_management
     connect(createNewShotcut("shortcuts.advanced.remote_management"), &QShortcut::activated, this, [this]() {
-        showPlugin(PLUGIN_TYPE_REMOTEMANAGEMENT);
+        if(m_CurrentShowPlugin == PLUGIN_TYPE_REMOTEMANAGEMENT){
+            showPlugin(PLUGIN_TYPE_NONE);
+        }
+        else {
+            showPlugin(PLUGIN_TYPE_REMOTEMANAGEMENT);
+        }
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
