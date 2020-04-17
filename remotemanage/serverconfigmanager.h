@@ -4,6 +4,9 @@
 #include <QList>
 #include <QMap>
 #include <QObject>
+#include <QDir>
+#include <QSettings>
+#include <QStandardPaths>
 
 class ServerConfig
 {
@@ -40,6 +43,8 @@ private:
     static ServerConfigManager *m_instance;
     // QList<ServerConfig *> m_serverConfigs;
     QMap<QString, QList<ServerConfig *>> m_serverConfigs;
+
+    inline void settServerConfig(QSettings &commandsSettings, const QString &strGroupName, ServerConfig *config);
 };
 
 #endif  // SERVERCONFIGMANAGER_H

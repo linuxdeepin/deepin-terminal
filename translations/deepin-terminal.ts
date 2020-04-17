@@ -12,7 +12,7 @@
         <translation type="vanished">确定删除“%1”吗？</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandlist.cpp" line="132"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="127"/>
         <source>Are you sure to delete?</source>
         <translation>确定删除吗？</translation>
     </message>
@@ -590,8 +590,8 @@
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="148"/>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="177"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="133"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="172"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="128"/>
         <location filename="../common/utils.cpp" line="257"/>
         <location filename="../common/utils.cpp" line="278"/>
         <source>Cancel</source>
@@ -608,12 +608,12 @@
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="148"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="133"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="128"/>
         <source>ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="177"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="172"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -663,18 +663,18 @@
         <translation type="vanished">删除选项</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="55"/>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="139"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="50"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="134"/>
         <source>%1 server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="175"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="170"/>
         <source>Delete Server</source>
         <translation>删除服务器</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfiglist.cpp" line="176"/>
+        <location filename="../remotemanage/serverconfiglist.cpp" line="171"/>
         <source>Do you sure to delete the %1?</source>
         <translation>您确认要删除%1？</translation>
     </message>

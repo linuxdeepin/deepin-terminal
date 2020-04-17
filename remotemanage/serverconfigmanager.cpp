@@ -1,13 +1,31 @@
 #include "serverconfigmanager.h"
 
-#include <QDir>
-#include <QSettings>
-#include <QStandardPaths>
+#include <QDebug>
 
 ServerConfigManager *ServerConfigManager::m_instance = nullptr;
 
 ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
 {
+}
+/*******************************************************************************
+ 1. @函数:    settServerConfig
+ 2. @作者:    m000714 戴正文
+ 3. @日期:    2020-04-17
+ 4. @说明:    写服务器配置文件
+*******************************************************************************/
+void ServerConfigManager::settServerConfig(QSettings &commandsSettings, const QString &strGroupName, ServerConfig *config)
+{
+    commandsSettings.beginGroup(strGroupName);
+    commandsSettings.setValue("Name", config->m_serverName);
+    commandsSettings.setValue("Password", config->m_password);
+    commandsSettings.setValue("GroupName", config->m_group);
+    commandsSettings.setValue("Command", config->m_command);
+    commandsSettings.setValue("Path", config->m_path);
+    commandsSettings.setValue("Encode", config->m_encoding);
+    commandsSettings.setValue("Backspace", config->m_backspaceKey);
+    commandsSettings.setValue("Del", config->m_deleteKey);
+    commandsSettings.setValue("PrivateKey", config->m_privateKey);
+    commandsSettings.endGroup();
 }
 
 ServerConfigManager *ServerConfigManager::instance()
@@ -38,12 +56,6 @@ void ServerConfigManager::initServerConfig()
     for (const QString &serverName : serverGroups) {
         serversSettings.beginGroup(serverName);
         QStringList strList = serverName.split("@");
-//        if (strList.count() != 3) {
-        //--added by qinyaning to solve probel(bug 19338) when added ftp--//
-        if (strList.count() != 4) {
-        //-----------------------------------------------------//
-            continue;
-        }
         ServerConfig *pServerConfig = new ServerConfig();
         pServerConfig->m_userName = strList.at(0);
         pServerConfig->m_address = strList.at(1);
@@ -58,6 +70,17 @@ void ServerConfigManager::initServerConfig()
         pServerConfig->m_deleteKey = serversSettings.value("Del").toString();
         pServerConfig->m_privateKey = serversSettings.value("PrivateKey").toString();
         serversSettings.endGroup();
+        /******** Modify by m000714 daizhengwen 2020-04-17: 兼容旧版本，旧版本GroupName为三个****************/
+        if (strList.count() == 3) {
+            qDebug() << "Group Name : " << serverName;
+            serversSettings.remove(serverName);
+            QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
+                                             pServerConfig->m_userName).arg(pServerConfig->m_address).arg(pServerConfig->m_port).arg(pServerConfig->m_serverName);
+            settServerConfig(serversSettings, strConfigGroupName, pServerConfig);
+        }
+        /********************* Modify by m000714 daizhengwen End ************************/
+
+
         if (m_serverConfigs.contains(pServerConfig->m_group)) {
             m_serverConfigs[pServerConfig->m_group].append(pServerConfig);
         } else {
@@ -79,21 +102,11 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
-     //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
+    //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
     QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
-                config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
+                                     config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
     //------------------------------
-    commandsSettings.beginGroup(strConfigGroupName);
-    commandsSettings.setValue("Name", config->m_serverName);
-    commandsSettings.setValue("Password", config->m_password);
-    commandsSettings.setValue("GroupName", config->m_group);
-    commandsSettings.setValue("Command", config->m_command);
-    commandsSettings.setValue("Path", config->m_path);
-    commandsSettings.setValue("Encode", config->m_encoding);
-    commandsSettings.setValue("Backspace", config->m_backspaceKey);
-    commandsSettings.setValue("Del", config->m_deleteKey);
-    commandsSettings.setValue("PrivateKey", config->m_privateKey);
-    commandsSettings.endGroup();
+    settServerConfig(commandsSettings, strConfigGroupName, config);
     if (m_serverConfigs.contains(config->m_group)) {
         m_serverConfigs[config->m_group].append(config);
     } else {
@@ -114,7 +127,7 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
     QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
-                config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
+                                     config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
     //-------------------------
     commandsSettings.remove(strConfigGroupName);
 //    if (m_serverConfigs.contains(config->m_group)) {
