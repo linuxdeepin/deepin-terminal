@@ -1009,6 +1009,19 @@ void MainWindow::showPlugin(const QString &name)
     emit showPluginChanged(name);
 }
 
+QString MainWindow::selectedText(bool preserveLineBreaks)
+{
+    TermWidgetPage *page = currentTab();
+    if (page) {
+        if(page->currentTerminal())
+        {
+            return page->currentTerminal()->selectedText(preserveLineBreaks);
+        }
+    }
+    qDebug()<<"not point terminal??";
+    return  "";
+}
+
 void MainWindow::onCreateNewWindow(QString workingDir)
 {
     qDebug() << "************************workingDir:" << workingDir << endl;

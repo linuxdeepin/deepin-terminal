@@ -29,7 +29,6 @@ public:
     int delCustomCommandToConfig(CustomCommandItemData itemData);
     // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
-    void setClipboardCommandData(QString clipboardCommand);
     QString getClipboardCommandData();
 
     // 判断快捷键是否合法可用，进行界面处理

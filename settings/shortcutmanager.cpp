@@ -343,13 +343,9 @@ int ShortcutManager::delCustomCommandToConfig(CustomCommandItemData itemData)
     return removeIndex;
 }
 
-void ShortcutManager::setClipboardCommandData(QString clipboardCommand)
-{
-    m_clipboardCommand = clipboardCommand;
-}
-
 QString ShortcutManager::getClipboardCommandData()
 {
-    return m_clipboardCommand;
+    // 从mainwindwo 绕了一圈过来的数据
+    return m_mainWindow->selectedText(true);
 }
 

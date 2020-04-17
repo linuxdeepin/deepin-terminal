@@ -169,8 +169,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
             QString strSelected = selectedText();
-            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
-            ShortcutManager::instance()->setClipboardCommandData(strSelected);
+            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);            
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);

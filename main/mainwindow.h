@@ -60,8 +60,11 @@ public:
     QString showFileDailog(bool isDir);
     void pressCtrlAt();
     void sleep(unsigned int msec);
+
     // 由mainwindow统一指令当前显示哪个插件
     void showPlugin(const QString &name);
+    // 由mainwindow统一获取当前选择的文本。
+    QString selectedText(bool preserveLineBreaks = true);
 
     static QList<MainWindow *> getWindowList();
 
