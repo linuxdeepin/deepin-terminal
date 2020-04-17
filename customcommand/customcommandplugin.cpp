@@ -39,7 +39,7 @@ QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
     QAction *customCommandAction(new QAction(tr("Custom Commands"), mainWindow));
 
     connect(customCommandAction, &QAction::triggered, mainWindow, [mainWindow]() {
-        emit mainWindow->showPluginChanged(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
+        mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
     return customCommandAction;

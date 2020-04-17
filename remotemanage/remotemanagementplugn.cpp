@@ -35,7 +35,7 @@ QAction *RemoteManagementPlugn::titlebarMenu(MainWindow *mainWindow)
     QAction *remoteManagementAction(new QAction(tr("Remote management"), mainWindow));
 
     connect(remoteManagementAction, &QAction::triggered, mainWindow, [mainWindow]() {
-        emit mainWindow->showPluginChanged(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+        mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
     return remoteManagementAction;
 }
