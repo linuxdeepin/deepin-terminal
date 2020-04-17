@@ -22,8 +22,8 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     : DAbstractDialog(parent),
       m_type(type),
       m_curServer(curServer),
-      m_iconLabel(new DLabel),
       m_titleLabel(new DLabel),
+      m_iconLabel(new DLabel),
       m_closeButton(new DWindowCloseButton(this)),
       m_serverName(new DLineEdit),
       m_address(new DLineEdit),
@@ -59,7 +59,7 @@ void ServerConfigOptDlg::initUI()
     m_VBoxLayout->setContentsMargins(0, 0, 0, 10);
     this->setFixedHeight(392);
     //head layout
-    m_iconLabel->setFixedSize(36, 34);
+    m_iconLabel->setFixedSize(50, 50);
     m_titleLabel->setText(tr("Add Server"));
     m_titleLabel->setFixedWidth(85);
 

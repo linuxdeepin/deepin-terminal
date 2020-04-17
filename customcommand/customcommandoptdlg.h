@@ -5,15 +5,21 @@
 #include "customcommanditemmodel.h"
 
 #include <DDialog>
+#include <DAbstractDialog>
 #include <DLineEdit>
 #include <DKeySequenceEdit>
+#include <DLabel>
+#include <DWindowCloseButton>
+#include <DPushButton>
+#include <DSuggestButton>
 
+#include <QVBoxLayout>
 #include <QAction>
 #include <QWidget>
 
 DWIDGET_USE_NAMESPACE
 
-class CustomCommandOptDlg : public TermBaseDialog
+class CustomCommandOptDlg : public DAbstractDialog
 {
     Q_OBJECT
 public:
@@ -27,8 +33,31 @@ public:
                                  QWidget *parent = nullptr);
     ~CustomCommandOptDlg();
 
+    void addContent(QWidget *content);
+    void addCancelConfirmButtons();
+
+    void setIconPixmap(const QPixmap &iconPixmap);
+    void setCancelBtnText(const QString &strCancel);
+    void setConfirmBtnText(const QString &strConfirm);
+
+    QDialog::DialogCode getConfirmResult();
+    QVBoxLayout *getMainLayout();
+
     QAction *getCurCustomCmd();
     bool isDelCurCommand();
+
+protected:
+    void initUITitle();
+    void initTitleConnections();
+    void setLogoVisable(bool visible = true);
+    void setTitle(const QString &title);
+    QLayout *getContentLayout();
+
+    //Overrides
+    void closeEvent(QCloseEvent *event) override;
+signals:
+    void closed();
+    void confirmBtnClicked();
 
 private slots:
     void slotAddSaveButtonClicked();
@@ -46,6 +75,20 @@ private:
     DKeySequenceEdit *m_shortCutLineEdit = nullptr;
     QString m_lastCmdShortcut;
     bool m_bDelOpt;
+
+    QWidget *m_titleBar = nullptr;
+    DLabel  *m_logoIcon = nullptr;
+    DLabel  *m_titleText = nullptr;
+    DWindowCloseButton *m_closeButton = nullptr;
+
+    QWidget *m_content = nullptr;
+    QVBoxLayout *m_contentLayout = nullptr;
+    QVBoxLayout *m_mainLayout = nullptr;
+
+    DPushButton *m_cancelBtn = nullptr;
+    DSuggestButton *m_confirmBtn = nullptr;
+
+    QDialog::DialogCode m_confirmResultCode;
 };
 
 #endif  // CUSTOMCOMMANDOPTDLG_H
