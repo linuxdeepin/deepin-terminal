@@ -136,7 +136,7 @@ void MainWindow::setQuakeWindow(bool isQuakeWindow)
         QRect deskRect = QApplication::desktop()->availableGeometry();
 
         Qt::WindowFlags windowFlags = this->windowFlags();
-        setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
+        setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
         /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
         setWindowState(windowState() & ~Qt::WindowFullScreen);
         /********************* Modify by n014361 wangpeili End ************************/
