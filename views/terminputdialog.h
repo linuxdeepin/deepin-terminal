@@ -25,6 +25,7 @@ public:
 
     void setCancelBtnText(const QString &strCancel);
     void setConfirmBtnText(const QString &strConfirm);
+    void showDialog(QString oldTitle, QWidget *parentWidget);
 
     QDialog::DialogCode getConfirmResult();
     QVBoxLayout *getMainLayout();

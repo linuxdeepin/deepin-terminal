@@ -44,6 +44,7 @@
 #include <QTextLayout>
 #include <QTime>
 #include <QFontMetrics>
+#include"views/terminputdialog.h"
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -319,53 +320,12 @@ void Utils::setSpaceInWord(DPushButton *button)
 
 void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
 {
-    DDialog *pDialog = new DDialog(nullptr);
+    TermInputDialog *pDialog = new TermInputDialog();
     pDialog->setWindowModality(Qt::ApplicationModal);
     pDialog->setFixedSize(380, 180);
     pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
     pDialog->setFocusPolicy(Qt::NoFocus);
-
-    DLineEdit *lineEdit = new DLineEdit();
-    lineEdit->setFixedSize(360, 36);
-    lineEdit->setText(oldTitle);
-    lineEdit->setClearButtonEnabled(false);
-    pDialog->setFocusProxy(lineEdit->lineEdit());
-    // 初始化重命名窗口全选
-    lineEdit->lineEdit()->selectAll();
-    /************************ Add by m000743 sunchengxi 2020-04-15:解决鼠标选中异常，无法删除选中 Begin************************/
-    connect(lineEdit, &DLineEdit::selectionChanged, parentWidget, [ = ]() {
-        lineEdit->lineEdit()->setFocus();
-    });
-    /************************ Add by m000743 sunchengxi 2020-04-15:解决鼠标选中异常，无法删除选中 End ************************/
-    // 若点击Dialog其他位置，将焦点回到lineEdit
-    connect(lineEdit, &DLineEdit::focusChanged, parentWidget, [ = ](bool onFocus) {
-        Q_UNUSED(onFocus);
-        //lineEdit->lineEdit()->selectAll();
-        lineEdit->lineEdit()->setFocus();
-    });
-
-    DLabel *label = new DLabel(tr("Tab name"));
-    label->setFixedSize(360, 20);
-    label->setAlignment(Qt::AlignCenter);
-
-    DPalette palette = label->palette();
-    palette.setBrush(DPalette::WindowText, palette.color(DPalette::BrightText));
-    label->setPalette(palette);
-
-    // 字号
-    DFontSizeManager::instance()->bind(label, DFontSizeManager::T6, QFont::Medium);
-
-    pDialog->setSpacing(10);
-    QMargins margins(0, 0, 0, 20);
-    pDialog->setContentLayoutContentsMargins(margins);
-    pDialog->addContent(label, Qt::AlignHCenter);
-    pDialog->addContent(lineEdit, Qt::AlignHCenter);
-    pDialog->addButton(tr("Cancel"), false, DDialog::ButtonNormal);
-    pDialog->addButton(tr("Sure"), true, DDialog::ButtonRecommend);
-    if (pDialog->exec() == DDialog::Accepted) {
-        TermWidget *termWidget = qobject_cast<TermWidget *>(parentWidget);
-        emit termWidget->termRequestRenameTab(lineEdit->text());
-    }
+    pDialog->showDialog(oldTitle, parentWidget);
 }
 
 /*******************************************************************************

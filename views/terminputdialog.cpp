@@ -1,10 +1,13 @@
 #include "terminputdialog.h"
 #include "utils.h"
+#include "termwidget.h"
 
 #include <DFontSizeManager>
 #include <DVerticalLine>
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
+#include <DLineEdit>
+
 #include <DLog>
 
 DWIDGET_USE_NAMESPACE
@@ -106,6 +109,61 @@ void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffs
     m_confirmBtn->setDefault(true);
     /************************ Add by m000743 sunchengxi 2020-04-15:默认enter回车按下，走确认校验流程 End ************************/
 
+//    connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
+//        qDebug() << "cancelBtnClicked";
+//        m_confirmResultCode = QDialog::Rejected;
+//        reject();
+//        close();
+//    });
+
+//    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
+//        qDebug() << "confirmBtnClicked";
+//        m_confirmResultCode = QDialog::Accepted;
+//        emit confirmBtnClicked();
+//    });
+
+    if (topOffset > 0) {
+        m_mainLayout->addSpacing(topOffset);
+    }
+    m_mainLayout->addLayout(buttonsLayout);
+}
+
+void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
+{
+    DLineEdit *lineEdit = new DLineEdit();
+    lineEdit->setFixedSize(360, 36);
+    lineEdit->setText(oldTitle);
+    lineEdit->setClearButtonEnabled(false);
+    lineEdit->setFocusPolicy(Qt::ClickFocus);
+    this->setFocusProxy(lineEdit->lineEdit());
+
+    // 初始化重命名窗口全选
+    lineEdit->lineEdit()->selectAll();
+
+    DLabel *label = new DLabel(tr("Tab name"));
+    label->setFixedSize(360, 20);
+    label->setAlignment(Qt::AlignHCenter);
+
+    DPalette palette = label->palette();
+    palette.setBrush(DPalette::WindowText, palette.color(DPalette::BrightText));
+    label->setPalette(palette);
+
+    // 字号
+    DFontSizeManager::instance()->bind(label, DFontSizeManager::T6, QFont::Medium);
+
+    QVBoxLayout *contentLayout = new QVBoxLayout;
+    contentLayout->setContentsMargins(10, 0, 10, 0);
+    contentLayout->addWidget(label, Qt::AlignHCenter);
+    contentLayout->addSpacing(8);
+    contentLayout->addWidget(lineEdit, Qt::AlignHCenter);
+    QWidget *contentWidget = new QWidget;
+    contentWidget->setLayout(contentLayout);
+    this->addContent(contentWidget);
+
+    this->addCancelConfirmButtons(170, 36, 15, 10, 9);
+    this->setCancelBtnText(tr("Cancel"));
+    this->setConfirmBtnText(tr("OK"));
+
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
         qDebug() << "cancelBtnClicked";
         m_confirmResultCode = QDialog::Rejected;
@@ -117,12 +175,14 @@ void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffs
         qDebug() << "confirmBtnClicked";
         m_confirmResultCode = QDialog::Accepted;
         emit confirmBtnClicked();
+
+        TermWidget *termWidget = qobject_cast<TermWidget *>(parentWidget);
+        emit termWidget->termRequestRenameTab(lineEdit->text());
+
+        close();
     });
 
-    if (topOffset > 0) {
-        m_mainLayout->addSpacing(topOffset);
-    }
-    m_mainLayout->addLayout(buttonsLayout);
+    this->exec();
 }
 
 QVBoxLayout *TermInputDialog::getMainLayout()
