@@ -12,6 +12,7 @@
 #include <DWindowCloseButton>
 #include <DIconButton>
 #include <DLabel>
+#include <DSpinBox>
 #include <DLineEdit>
 #include <DPasswordEdit>
 #include <dfilechooseredit.h>
@@ -19,8 +20,6 @@
 #include <QAction>
 #include <QWidget>
 
-#define protected public
-#include <DSpinBox>
 
 DWIDGET_USE_NAMESPACE
 
