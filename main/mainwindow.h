@@ -40,11 +40,12 @@ public:
     void closeTab(const QString &identifier, bool runCheck = true);
 
     /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
-    void closeOtherTab();
+    void closeOtherTab(const QString &identifier);
     /********************* Modify by n014361 wangpeili End ************************/
 
-    void focusTab(const QString &identifier);
-    TermWidgetPage *currentTab();
+    void focusPage(const QString &identifier);
+    TermWidgetPage *currentPage();
+    TermWidgetPage *getPageByIdentifier(const QString &identifier);
 
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
     void setTitleBarBackgroundColor(QString color);
@@ -172,13 +173,13 @@ private:
     /********************* Modify by n014361 wangpeili End ************************/
     QString downloadFilePath = "";
     bool enterSzCommand = false;
-    RemoteManagementPlugn *remoteManagPlugin;
-    CustomCommandPlugin *customCommandPlugin;
+    RemoteManagementPlugn *remoteManagPlugin = nullptr;
+    CustomCommandPlugin *customCommandPlugin = nullptr;
     QString m_strWindowId;
     const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";
 
     /******** Modify by m000714 daizhengwen 2020-03-29: 终端窗口配置 ****************/
-    QSettings *m_winInfoConfig;
+    QSettings *m_winInfoConfig = nullptr;
     /********************* Modify by m000714 daizhengwen End ************************/
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 

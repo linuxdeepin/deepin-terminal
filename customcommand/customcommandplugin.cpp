@@ -66,7 +66,7 @@ CustomCommandTopPanel *CustomCommandPlugin::getCustomCommandTopPanel()
 void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
 {
     if (!strTxt.isEmpty()) {
-        m_mainWindow->currentTab()->sendTextToCurrentTerm(strTxt);
+        m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
     }
     emit doHide();
 }

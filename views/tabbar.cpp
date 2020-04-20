@@ -210,6 +210,16 @@ int TabBar::queryIndexBySessionId(int sessionId)
     return -1;
 }
 
+int TabBar::getIndexByIdentifier(QString id)
+{
+    for (int i = 0; i < count(); i++) {
+        if (identifier(i) == id) {
+            return i;
+        }
+    }
+    return  -1;
+}
+
 void TabBar::removeTab(const QString &tabIdentifier)
 {
     for (int i = 0; i < count(); i++) {
@@ -235,20 +245,26 @@ bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
     return termFound;
 }
 
-void TabBar::closeOtherTabsExceptCurrent(int tabIndex)
+void TabBar::closeOtherTabsExceptCurrent(QString id)
 {
     if (this->count() < 2) {
         return;
     }
 
     QList<QString> closeTabIdList;
-    for (int i = 0; i < this->count(); i++) {
-        if (i != tabIndex) {
+    for (int i = 0; i < count(); i++) {
+        if (id != identifier(i)) {
             closeTabIdList.append(identifier(i));
         }
     }
-
-    emit closeTabs(closeTabIdList);
+    for (QString id : closeTabIdList) {
+        emit closeTabReq(id);
+        qDebug() << " close" << id;
+    }
+    int newIndex = getIndexByIdentifier(id);
+    if (-1 != newIndex) {
+        setCurrentIndex(newIndex);
+    }
 }
 
 bool TabBar::eventFilter(QObject *watched, QEvent *event)
@@ -282,7 +298,7 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                 });
 
                 connect(m_closeOtherTabAction, &QAction::triggered, this, [ = ] {
-                    closeOtherTabsExceptCurrent(m_rightClickTab);
+                    closeOtherTabsExceptCurrent(identifier(m_rightClickTab));
                 });
 
                 m_rightMenu->addAction(m_closeTabAction);

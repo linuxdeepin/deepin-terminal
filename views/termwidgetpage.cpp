@@ -14,15 +14,20 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
 {
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
+    // 生成唯一 pageID
     setProperty("TAB_IDENTIFIER_PROPERTY", QUuid::createUuid().toString());
+
+    TermWidget *w = createTerm(properties);
+    DSplitter *splitter = new DSplitter(Qt::Horizontal, this);
+    splitter->setFocusPolicy(Qt::NoFocus);
+    setSplitStyle(splitter);
+    splitter->addWidget(w);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
-
-    DSplitter *splitter = new DSplitter(Qt::Horizontal, this);
-    splitter->setFocusPolicy(Qt::NoFocus);
-    setSplitStyle(splitter);
+    layout->addWidget(splitter);
+    setLayout(layout);
 
     // Init find bar.
     m_findBar->move(this->x() - 100, this->y() - 100);
@@ -35,14 +40,7 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
         applyTheme();
     });
 
-    TermWidget *w = createTerm(properties);
-    splitter->addWidget(w);
-
-    layout->addWidget(splitter);
-
     m_currentTerm = w;
-
-    setLayout(layout);
 }
 
 void TermWidgetPage::setSplitStyle(DSplitter *splitter)
@@ -309,6 +307,17 @@ QPoint TermWidgetPage::GetComparePoint(TermWidget *term, Qt::Edge dir)
         break;
     }
     return ret;
+}
+
+bool TermWidgetPage::hasRunningProcess()
+{
+    QList<TermWidget *> termList = findChildren<TermWidget *>();
+    for (TermWidget *term : termList) {
+        if (term->hasRunningProcess()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 TermProperties TermWidgetPage::createCurrentTerminalProperties()
