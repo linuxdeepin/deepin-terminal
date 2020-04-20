@@ -15,11 +15,11 @@
 #include <DSpinBox>
 #include <DLineEdit>
 #include <DPasswordEdit>
+#include <DSuggestButton>
 #include <dfilechooseredit.h>
 
 #include <QAction>
 #include <QWidget>
-
 
 DWIDGET_USE_NAMESPACE
 
@@ -61,6 +61,7 @@ public:
 private slots:
     void slotClose();
     void slotAddSaveButtonClicked();
+    void slotFileChooseDialog();
 
 private:
     ServerConfigOptType m_type;
@@ -73,7 +74,9 @@ private:
     DSpinBox *m_port = nullptr;
     DLineEdit *m_userName = nullptr;
     DPasswordEdit *m_password = nullptr;
-    DFileChooserEdit *m_privateKey = nullptr;
+//    DFileChooserEdit *m_privateKey = nullptr;
+    DLineEdit *m_privateKey = nullptr;
+    DSuggestButton *m_fileDialog = nullptr;
     DLineEdit *m_group = nullptr;
     DLineEdit *m_path = nullptr;
     DLineEdit *m_command = nullptr;

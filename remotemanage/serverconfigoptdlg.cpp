@@ -30,7 +30,9 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_port(new DSpinBox),
       m_userName(new DLineEdit),
       m_password(new DPasswordEdit),
-      m_privateKey(new DFileChooserEdit),
+//      m_privateKey(new DFileChooserEdit),
+      m_privateKey(new DLineEdit),
+      m_fileDialog(new DSuggestButton),
       m_group(new DLineEdit),
       m_path(new DLineEdit),
       m_command(new DLineEdit),
@@ -148,8 +150,19 @@ void ServerConfigOptDlg::initUI()
     DLabel *pPrivateKeyLabel = new DLabel(tr("Certificate:"));
     setLabelStyle(pPrivateKeyLabel);
 
+
+    /******** Modify by m000714 daizhengwen 2020-04-20: 添加DFileChooseEditDialog****************/
     pGridLayout->addWidget(pPrivateKeyLabel);
-    pGridLayout->addWidget(m_privateKey);
+    QHBoxLayout *privateKeyLayout = new QHBoxLayout();
+    privateKeyLayout->setSpacing(5);
+    privateKeyLayout->setContentsMargins(0, 0, 0, 0);
+    privateKeyLayout->addWidget(m_privateKey);
+    privateKeyLayout->addWidget(m_fileDialog);
+    m_fileDialog->setIcon(DStyleHelper(m_fileDialog->style()).standardIcon(DStyle::SP_SelectElement, nullptr));
+    m_fileDialog->setIconSize(QSize(24, 24));
+    connect(m_fileDialog, &DSuggestButton::clicked, this, &ServerConfigOptDlg::slotFileChooseDialog);
+    pGridLayout->addLayout(privateKeyLayout, 4, 1);
+    /********************* Modify by m000714 daizhengwen End ************************/
 
     //senior layout
     DWidget *seniorWidget = new DWidget;
@@ -400,6 +413,26 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     }
     m_currentServerName = m_serverName->text();
     accept();
+}
+/*******************************************************************************
+ 1. @函数:    slotFileChooseDialog
+ 2. @作者:    m000714 戴正文
+ 3. @日期:    2020-04-20
+ 4. @说明:    获取FileName
+*******************************************************************************/
+void ServerConfigOptDlg::slotFileChooseDialog()
+{
+    QFileDialog *dialog = new QFileDialog(this);
+    dialog->setAcceptMode(QFileDialog::AcceptOpen);
+    dialog->setFileMode(QFileDialog::ExistingFile);
+
+    int code = dialog->exec();
+
+    if (code == QDialog::Accepted && !dialog->selectedFiles().isEmpty()) {
+        const QString fileName = dialog->selectedFiles().first();
+
+        m_privateKey->setText(fileName);
+    }
 }
 
 void ServerConfigOptDlg::slotClose()
