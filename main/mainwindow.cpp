@@ -593,7 +593,9 @@ void MainWindow::initShortcuts()
     m_shortcutManager->initShortcuts();
     /******** Modify by n014361 wangpeili 2020-01-10: 增加设置的各种快捷键修改关联***********×****/
     // new_workspace
-    connect(createNewShotcut("shortcuts.workspace.new_workspace"), &QShortcut::activated, this, [this]() {
+    QShortcut *newWorkspaceShortcut = createNewShotcut("shortcuts.workspace.new_workspace");
+    newWorkspaceShortcut->setAutoRepeat(false);
+    connect(newWorkspaceShortcut, &QShortcut::activated, this, [this]() {
         this->addTab(currentTab()->createCurrentTerminalProperties(), true);
     });
 
