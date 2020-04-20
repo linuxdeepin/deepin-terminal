@@ -414,8 +414,13 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
 //        showPlugin(PLUGIN_TYPE_NONE);
 //    });
     /********************* Modify by m000714 daizhengwen End ************************/
+<<<<<<< HEAD
     connect(this, &MainWindow::showPluginChanged, termPage, [ = ](const QString name) {
         termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentPage() == termPage));
+=======
+    connect(this, &MainWindow::showPluginChanged,  termPage, [ = ](const QString name) {
+        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentTab() == termPage));
+>>>>>>> Type: fix bug-19275
     });
 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
