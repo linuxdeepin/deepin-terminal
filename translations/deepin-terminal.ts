@@ -177,24 +177,44 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../main/mainwindow.cpp" line="206"/>
+=======
+        <location filename="../main/mainwindow.cpp" line="869"/>
+>>>>>>> Type:chore
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../main/mainwindow.cpp" line="228"/>
+=======
+        <location filename="../main/mainwindow.cpp" line="892"/>
+>>>>>>> Type:chore
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../main/mainwindow.cpp" line="1285"/>
+>>>>>>> Type:chore
         <source>workspace</source>
         <translation type="vanished">工作区</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../main/mainwindow.cpp" line="1287"/>
+>>>>>>> Type:chore
         <source>terminal</source>
         <translation type="vanished">终端</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../main/mainwindow.cpp" line="1289"/>
+>>>>>>> Type:chore
         <source>advanced</source>
         <translation type="vanished">高级</translation>
     </message>
@@ -204,6 +224,7 @@
         <translation>工作区</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../main/mainwindow.cpp" line="1407"/>
         <source>Terminal</source>
         <translation>终端</translation>
@@ -225,6 +246,9 @@
     </message>
     <message>
         <location filename="../main/mainwindow.cpp" line="1485"/>
+=======
+        <location filename="../main/mainwindow.cpp" line="1349"/>
+>>>>>>> Type:chore
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -233,10 +257,18 @@
         <translation type="vanished">请输入下载文件的路径: </translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../main/mainwindow.cpp" line="1384"/>
+>>>>>>> Type:chore
         <source>Select file to upload</source>
         <translation type="vanished">选择要上传的文件</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../main/mainwindow.cpp" line="1386"/>
+>>>>>>> Type:chore
         <source>Select directory to save the file</source>
         <translation type="vanished">选择下载文件的保存目录</translation>
     </message>
@@ -703,7 +735,11 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
+<<<<<<< HEAD
         <location filename="../remotemanage/remotemanagementpanel.cpp" line="70"/>
+=======
+        <location filename="../remotemanage/remotemanagementpanel.cpp" line="67"/>
+>>>>>>> Type:chore
         <source>Add Server</source>
         <translation>添加服务器</translation>
     </message>
@@ -716,7 +752,7 @@
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="107"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="104"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>在您使用右键菜单进行上传和下载文件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
