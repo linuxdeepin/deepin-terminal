@@ -14,11 +14,13 @@
 #include <DLabel>
 #include <DLineEdit>
 #include <DPasswordEdit>
-#include <DSpinBox>
 #include <dfilechooseredit.h>
 
 #include <QAction>
 #include <QWidget>
+
+#define protected public
+#include <DSpinBox>
 
 DWIDGET_USE_NAMESPACE
 
