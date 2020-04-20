@@ -140,24 +140,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         emit termIsIdle(getSessionId(), bIdle);
     });
 
-    connect(this, &QTermWidget::uninstallTerminal, this, []() {
-#ifndef USE_DTK
-        OperationConfirmDlg dlg;
-        dlg.setFixedSize(380, 160);
-        dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
-        dlg.setTipInfo(QObject::tr("You will not be able to use Terminal any longer."));
-        dlg.setOKCancelBtnText(QObject::tr("ok"), QObject::tr("Cancel"));
-        dlg.exec();
-
-        return (dlg.getConfirmResult() == QDialog::Accepted);
-#else
-        DDialog dlg(QObject::tr("Are you sure you want to uninstall this application?"), QObject::tr("You will not be able to use Terminal any longer."));
-        dlg.setIcon(QIcon::fromTheme("dialog-warning"));
-        dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-        dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);
-        return (dlg.exec() == DDialog::Accepted);
-#endif
-    });
+    TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
+    qDebug() << parentPage << endl;
+    connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
 
     startShellProgram();
 

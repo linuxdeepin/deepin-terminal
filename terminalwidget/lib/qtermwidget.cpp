@@ -58,9 +58,9 @@ TermWidgetImpl::TermWidgetImpl(QWidget *parent)
 {
     this->m_session = createSession(parent);
     SessionManager::instance()->saveSession(this->m_session);
-    SessionManager::instance()->setCurrSession(this->m_session);
 
     this->m_terminalDisplay = createTerminalDisplay(this->m_session, parent);
+    this->m_terminalDisplay->setSessionId(this->m_session->sessionId());
 }
 
 Session *TermWidgetImpl::createSession(QWidget *parent)
@@ -390,6 +390,7 @@ void QTermWidget::init(int startnow)
     UrlFilter *urlFilter = new UrlFilter();
     connect(urlFilter, &UrlFilter::activated, this, &QTermWidget::urlActivated);
     m_impl->m_terminalDisplay->filterChain()->addFilter(urlFilter);
+    m_impl->m_terminalDisplay->filterChain()->setSessionId(m_impl->m_session->sessionId());
 
     m_searchBar = new SearchBar(this);
     m_searchBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);

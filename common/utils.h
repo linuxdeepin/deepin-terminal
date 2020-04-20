@@ -59,6 +59,8 @@ public:
     static QString getRandString();
 
     static bool showExitConfirmDialog();
+    static bool showExitUninstallConfirmDialog();
+    static bool showUnistallConfirmDialog();
     static bool showShortcutConflictDialog(QString conflictkey);
     static bool showShortcutConflictMsgbox(QString txt);
     static void setSpaceInWord(DPushButton *button);

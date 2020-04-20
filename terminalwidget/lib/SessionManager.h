@@ -69,16 +69,13 @@ public:
     int  getSessionId(Session *session);
     Session *idToSession(int id);
 
-    void setCurrSession(Session *session);
-    Session *getCurrSession();
-
     //用于存储当前的命令提示符
-    void saveCurrShellPrompt(QString strPrompt);
-    QString getCurrShellPrompt();
+    void saveCurrShellPrompt(int sessionId, QString strPrompt);
+    QString getCurrShellPrompt(int sessionId);
 
     //用于存储当前的执行的命令字符串
-    void saveCurrShellCommand(QString strCommand);
-    QString getCurrShellCommand();
+    void saveCurrShellCommand(int sessionId, QString strCommand);
+    QString getCurrShellCommand(int sessionId);
 
 signals:
     void sessionIdle(bool isIdle);
@@ -95,9 +92,9 @@ private:
     QList<Session *> _sessions; // list of running sessions
     QHash<Session *, int> _restoreMapping;
 
-    Session *_currSession;
-    QString _currShellPrompt;
-    QString _currShellCommand;
+    int _currTabSessionId;
+    QMap<int, QString> _shellPromptSessionMap;
+    QMap<int, QString> _shellCommandSessionMap;
 };
 
 }

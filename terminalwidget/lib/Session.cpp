@@ -82,6 +82,7 @@ Session::Session(QObject* parent) :
 
     //create teletype for I/O with shell process
     _shellProcess = new Pty();
+    _shellProcess->setSessionId(_sessionId);
     ptySlaveFd = _shellProcess->pty()->slaveFd();
 
     //create emulation backend

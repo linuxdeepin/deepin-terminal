@@ -274,6 +274,7 @@ void Pty::init()
   _eraseChar = 0;
   _xonXoff = true;
   _utf8 = true;
+  _bUninstall = false;
 
   connect(pty(), SIGNAL(readyRead()) , this , SLOT(dataReceived()));
   setPtyChannels(KPtyProcess::AllChannels);
@@ -347,27 +348,34 @@ void Pty::sendData(const char* data, int length)
     }
 
     //检测到按了回车键
-    if((*data) == '\r')
+    if((*data) == '\r' && _bUninstall == false)
     {
-        QString strCurrCommand = SessionManager::instance()->getCurrShellCommand();
+        QString strCurrCommand = SessionManager::instance()->getCurrShellCommand(_sessionId);
         if (!isTerminalRemoved() && bWillRemoveTerminal(strCurrCommand))
         {
-            bool bUninstall = false;
-            QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::DirectConnection, Q_RETURN_ARG(bool, bUninstall));
-            if (bUninstall)
+            QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::AutoConnection, Q_RETURN_ARG(bool, _bUninstall));
+            if (_bUninstall)
             {
-                qDebug() << "确认卸载终端！" << bUninstall << endl;
+                qDebug() << "确认卸载终端！" << _bUninstall << endl;
                 connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [=](bool isIdle) {
                     //卸载完成，关闭所有终端窗口
-                    if (isIdle && isTerminalRemoved())
+                    if (isIdle)
                     {
-                        pclose(popen("killall deepin-terminal", "r"));
+                        if (isTerminalRemoved())
+                        {
+                            pclose(popen("killall deepin-terminal", "r"));
+                        }
+                    }
+
+                    if (!isTerminalRemoved())
+                    {
+                        _bUninstall = false;
                     }
                 });
             }
             else
             {
-                qDebug() << "不卸载终端！" << bUninstall << endl;
+                qDebug() << "不卸载终端！" << _bUninstall << endl;
                 return;
             }
         }
@@ -410,6 +418,11 @@ int Pty::foregroundProcessGroup() const
     }
 
     return 0;
+}
+
+void Pty::setSessionId(int sessionId)
+{
+    _sessionId = sessionId;
 }
 
 void Pty::setupChildProcess()

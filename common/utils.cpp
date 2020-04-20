@@ -270,6 +270,47 @@ bool Utils::showExitConfirmDialog()
 #endif
     /********************* Modify by m000714 daizhengwen End ************************/
 }
+
+bool Utils::showExitUninstallConfirmDialog()
+{
+#ifndef USE_DTK
+    OperationConfirmDlg optDlg;
+    optDlg.setFixedSize(380, 160);
+    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
+    optDlg.setTipInfo(QObject::tr("Are you sure you want to uninstall?"));
+    optDlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
+    optDlg.exec();
+
+    return (optDlg.getConfirmResult() == QDialog::Accepted);
+#else
+    DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to uninstall?"));
+    dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
+    dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+    dlg.addButton(QString(tr("OK")), true, DDialog::ButtonWarning);
+    return (dlg.exec() == DDialog::Accepted);
+#endif
+}
+
+bool Utils::showUnistallConfirmDialog()
+{
+#ifndef USE_DTK
+        OperationConfirmDlg dlg;
+        dlg.setFixedSize(380, 160);
+        dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
+        dlg.setTipInfo(QObject::tr("You will not be able to use Terminal any longer."));
+        dlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
+        dlg.exec();
+
+        return (dlg.getConfirmResult() == QDialog::Accepted);
+#else
+        DDialog dlg(QObject::tr("Are you sure you want to uninstall this application?"), QObject::tr("You will not be able to use Terminal any longer."));
+        dlg.setIcon(QIcon::fromTheme("dialog-warning"));
+        dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+        dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);
+        return (dlg.exec() == DDialog::Accepted);
+#endif
+}
+
 /*******************************************************************************
  1. @函数:    showShortcutConflictDialog
  2. @作者:    n014361 王培利

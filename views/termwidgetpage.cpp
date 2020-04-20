@@ -40,6 +40,30 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
         applyTheme();
     });
 
+    connect(this, &TermWidgetPage::uninstallTerminal, this, [this, parent] {
+        MainWindow *mainWindow = qobject_cast<MainWindow *>(parent);
+        if (mainWindow->hasRunningProcesses())
+        {
+            if (Utils::showExitUninstallConfirmDialog())
+            {
+                return Utils::showUnistallConfirmDialog();
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return Utils::showUnistallConfirmDialog();
+        }
+    });
+
+    TermWidget *w = createTerm(properties);
+    splitter->addWidget(w);
+
+    layout->addWidget(splitter);
+
     m_currentTerm = w;
 }
 
