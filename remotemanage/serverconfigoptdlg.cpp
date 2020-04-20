@@ -63,7 +63,8 @@ void ServerConfigOptDlg::initUI()
     //head layout
     m_iconLabel->setFixedSize(50, 50);
     m_titleLabel->setText(tr("Add Server"));
-    m_titleLabel->setFixedWidth(85);
+    m_titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    //m_titleLabel->setFixedWidth(85);
 
     m_closeButton->setFocusPolicy(Qt::NoFocus);
     m_closeButton->setFixedWidth(50);
@@ -88,7 +89,7 @@ void ServerConfigOptDlg::initUI()
     headLayout->setContentsMargins(0, 0, 0, 0);
     // 为了和closebutton对应是标题居中
     headLayout->addWidget(m_iconLabel, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    headLayout->addWidget(m_titleLabel, 0, Qt::AlignVCenter );
+    headLayout->addWidget(m_titleLabel, 0, Qt::AlignHCenter);
     headLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignTop);
     connect(m_closeButton, &DDialogCloseButton::clicked, this, [ = ]() {
         reject();
