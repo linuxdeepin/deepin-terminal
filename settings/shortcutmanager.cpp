@@ -95,7 +95,7 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
             if (!command.endsWith('\n')) {
                 command.append('\n');
             }
-            m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
+            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
         });
         commandsSettings.endGroup();
         actionList.append(action);
@@ -151,7 +151,7 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
         if (!command.endsWith('\n')) {
             command.append('\n');
         }
-        m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
+        m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
     });
     saveCustomCommandToConfig(addAction, -1);
     return addAction;
@@ -323,7 +323,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
             if (!command.endsWith('\n')) {
                 command.append('\n');
             }
-            m_mainWindow->currentTab()->sendTextToCurrentTerm(command);
+            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
         });
         qDebug() << "new" << m_customCommandActionList[saveIndex]->shortcut();
     }

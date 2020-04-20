@@ -168,6 +168,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
     setNewTermPage(termPage, activeTab);
 
+    // pageID存在 tab中，所以page增删改操作都要由tab发起。
     int index = m_tabbar->addTab(termPage->identifier(), "New Terminal Tab");
     if (activeTab) {
         m_tabbar->setCurrentIndex(index);
@@ -179,7 +180,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     m_tabbar->saveSessionIdWithTabId(term->getSessionId(), termPage->identifier());
 
     connect(termPage, &TermWidgetPage::pageRequestNewWorkspace, this, [this]() {
-        this->addTab(currentTab()->createCurrentTerminalProperties(), true);
+        this->addTab(currentPage()->createCurrentTerminalProperties(), true);
     });
     connect(termPage, &TermWidgetPage::pageRequestShowPlugin, this, [this](QString name) {
         showPlugin(name);
@@ -196,8 +197,8 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
 //        showPlugin(PLUGIN_TYPE_NONE);
 //    });
     /********************* Modify by m000714 daizhengwen End ************************/
-    connect(this, &MainWindow::showPluginChanged,  termPage, [ = ](const QString name) {
-        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentTab() == termPage));
+    connect(this, &MainWindow::showPluginChanged, termPage, [ = ](const QString name) {
+        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentPage() == termPage));
     });
 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
@@ -306,40 +307,38 @@ void MainWindow::updateTabStatus()
  3. @日期:     2020-01-10
  4. @说明:     关闭其它标签页功能
 *******************************************************************************/
-void MainWindow::closeOtherTab()
+void MainWindow::closeOtherTab(const QString &identifier)
 {
-    TermWidgetPage *page = currentTab();
-    int index = 0;
-    while (1 < m_termStackWidget->count()) {
-        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
-        if (tabPage && tabPage->identifier() != page->identifier()) {
-            m_termStackWidget->removeWidget(tabPage);
-            m_tabbar->removeTab(tabPage->identifier());
-
-            index = 0;
-            // break;
-        } else {
-            index++;
-        }
-    }
+    m_tabbar->closeOtherTabsExceptCurrent(identifier);
+    return;
 }
 
-void MainWindow::focusTab(const QString &identifier)
+void MainWindow::focusPage(const QString &identifier)
+{
+    TermWidgetPage *tabPage = getPageByIdentifier(identifier);
+    if (tabPage) {
+        m_termStackWidget->setCurrentWidget(tabPage);
+        tabPage->focusCurrentTerm();
+        return;
+    }
+    qDebug() << "focusTab nullptr identifier" << identifier;
+}
+
+TermWidgetPage *MainWindow::currentPage()
+{
+    return qobject_cast<TermWidgetPage *>(m_termStackWidget->currentWidget());
+}
+
+TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         if (tabPage && tabPage->identifier() == identifier) {
-            m_termStackWidget->setCurrentWidget(tabPage);
-            tabPage->focusCurrentTerm();
-
-            break;
+            return tabPage;
         }
     }
-}
-
-TermWidgetPage *MainWindow::currentTab()
-{
-    return qobject_cast<TermWidgetPage *>(m_termStackWidget->currentWidget());
+    qDebug() << "getPageByIdentifier nullptr identifier" << identifier;
+    return nullptr;
 }
 
 void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage *)> &func)
@@ -373,7 +372,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     const QRect &deskRect = QApplication::desktop()->availableGeometry();
     // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
     if (!m_isQuakeWindow) {
-        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
+        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height()
+                && this->width() != deskRect.width() / 2) {
             // 记录最后一个正常窗口的大小
             m_winInfoConfig->setValue("save_width", this->width());
             m_winInfoConfig->setValue("save_height", this->height());
@@ -397,7 +397,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
     const QRect &deskRect = QApplication::desktop()->availableGeometry();
     // 分屏不记录窗口大小，最大和全屏操作也不记录窗口大小,雷神窗口也不记录
     if (!m_isQuakeWindow) {
-        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height() && this->width() != deskRect.width() / 2) {
+        if (windowState() == Qt::WindowNoState && this->height() != deskRect.height()
+                && this->width() != deskRect.width() / 2) {
             // 记录最后一个正常窗口的大小
             m_winInfoConfig->setValue("save_width", this->width());
             m_winInfoConfig->setValue("save_height", this->height());
@@ -435,7 +436,7 @@ bool MainWindow::closeProtect()
     }
 
     // Check what processes are running, excluding the shell
-    TermWidgetPage *tabPage = currentTab();
+    TermWidgetPage *tabPage = currentPage();
     TermWidget *term = tabPage->currentTerminal();
     QList<int> processesRunning = term->getRunningSessionIdList();
     qDebug() << processesRunning << endl;
@@ -596,26 +597,28 @@ void MainWindow::initShortcuts()
     QShortcut *newWorkspaceShortcut = createNewShotcut("shortcuts.workspace.new_workspace");
     newWorkspaceShortcut->setAutoRepeat(false);
     connect(newWorkspaceShortcut, &QShortcut::activated, this, [this]() {
-        this->addTab(currentTab()->createCurrentTerminalProperties(), true);
+        this->addTab(currentPage()->createCurrentTerminalProperties(), true);
     });
 
     // close_workspace
     connect(createNewShotcut("shortcuts.workspace.close_workspace"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             closeTab(page->identifier());
         }
     });
 
-    //Close_other_workspaces
+    // Close_other_workspaces
     connect(createNewShotcut("shortcuts.workspace.close_other_workspace"), &QShortcut::activated, this, [this]() {
-
-        closeOtherTab();
+        TermWidgetPage *page = currentPage();
+        if (page) {
+            closeOtherTab(page->identifier());
+        }
     });
 
     // previous_workspace
     connect(createNewShotcut("shortcuts.workspace.previous_workspace"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             int index = m_tabbar->currentIndex();
             index -= 1;
@@ -628,7 +631,7 @@ void MainWindow::initShortcuts()
 
     // next_workspace
     connect(createNewShotcut("shortcuts.workspace.next_workspace"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             int index = m_tabbar->currentIndex();
             index += 1;
@@ -641,7 +644,7 @@ void MainWindow::initShortcuts()
 
     // horionzal_split
     connect(createNewShotcut("shortcuts.workspace.horionzal_split"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             qDebug() << "horizontal_split";
             page->split(Qt::Horizontal);
@@ -650,7 +653,7 @@ void MainWindow::initShortcuts()
 
     // vertical_split
     connect(createNewShotcut("shortcuts.workspace.vertical_split"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             qDebug() << "vertical_split";
             page->split(Qt::Vertical);
@@ -660,28 +663,28 @@ void MainWindow::initShortcuts()
     // select_upper_window
     connect(createNewShotcut("shortcuts.workspace.select_upper_window"), &QShortcut::activated, this, [this]() {
         qDebug() << "Alt+k";
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::TopEdge);
         }
     });
     // select_lower_window
     connect(createNewShotcut("shortcuts.workspace.select_lower_window"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::BottomEdge);
         }
     });
     // select_left_window
     connect(createNewShotcut("shortcuts.workspace.select_left_window"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::LeftEdge);
         }
     });
     // select_right_window
     connect(createNewShotcut("shortcuts.workspace.select_right_window"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::RightEdge);
             // QMouseEvent e(QEvent::MouseButtonPress, ) QApplication::sendEvent(focusWidget(), &keyPress);
@@ -690,7 +693,7 @@ void MainWindow::initShortcuts()
 
     // close_window
     connect(createNewShotcut("shortcuts.workspace.close_window"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             qDebug() << "CloseWindow";
             page->closeSplit(page->currentTerminal());
@@ -699,7 +702,7 @@ void MainWindow::initShortcuts()
 
     // close_other_windows
     connect(createNewShotcut("shortcuts.workspace.close_other_windows"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->closeOtherTerminal();
         }
@@ -707,7 +710,7 @@ void MainWindow::initShortcuts()
 
     // copy
     connect(createNewShotcut("shortcuts.terminal.copy"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->copyClipboard();
         }
@@ -715,7 +718,7 @@ void MainWindow::initShortcuts()
 
     // paste
     connect(createNewShotcut("shortcuts.terminal.paste"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->pasteClipboard();
         }
@@ -729,7 +732,7 @@ void MainWindow::initShortcuts()
 
     // zoom_in
     connect(createNewShotcut("shortcuts.terminal.zoom_in"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->zoomInCurrentTierminal();
         }
@@ -737,7 +740,7 @@ void MainWindow::initShortcuts()
 
     // zoom_out
     connect(createNewShotcut("shortcuts.terminal.zoom_out"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->zoomOutCurrentTerminal();
         }
@@ -745,7 +748,7 @@ void MainWindow::initShortcuts()
 
     // default_size
     connect(createNewShotcut("shortcuts.terminal.default_size"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             page->setFontSize(Settings::instance()->fontSize());
         }
@@ -753,7 +756,7 @@ void MainWindow::initShortcuts()
 
     // select_all
     connect(createNewShotcut("shortcuts.terminal.select_all"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             qDebug() << "selectAll";
             page->selectAll();
@@ -767,7 +770,7 @@ void MainWindow::initShortcuts()
 
     // rename_tab
     connect(createNewShotcut("shortcuts.advanced.rename_tab"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentTab();
+        TermWidgetPage *page = currentPage();
         if (page) {
             TermWidget *term = page->currentTerminal();
             QString currTabTitle = m_tabbar->tabText(m_tabbar->currentIndex());
@@ -808,7 +811,7 @@ void MainWindow::initShortcuts()
         connect(switchTabSC, &QShortcut::activated, this, [this, i]() {
             qDebug() << i << endl;
 
-            TermWidgetPage *page = currentTab();
+            TermWidgetPage *page = currentPage();
 
             if (!page) {
                 return;
@@ -839,7 +842,7 @@ void MainWindow::initConnections()
 
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
         //变成自动变色的图标以后，不需要来回变了。
-        //applyTheme();
+        // applyTheme();
     });
 }
 
@@ -868,7 +871,7 @@ void MainWindow::initTitleBar()
     connect(newWindowAction, &QAction::triggered, this, [this]() {
         qDebug() << "menu click new window";
 
-        TermWidgetPage *tabPage = currentTab();
+        TermWidgetPage *tabPage = currentPage();
         TermWidget *term = tabPage->currentTerminal();
         QString currWorkingDir = term->workingDirectory();
         emit newWindowRequest(currWorkingDir);
@@ -927,43 +930,17 @@ void MainWindow::initTitleBar()
     }, Qt::QueuedConnection);
 
     connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() {
-        addTab(currentTab()->createCurrentTerminalProperties(), true);
+        addTab(currentPage()->createCurrentTerminalProperties(), true);
     }, Qt::QueuedConnection);
 
     connect(m_tabbar, &DTabBar::currentChanged, this, [this](int index) {
-        focusTab(m_tabbar->identifier(index));
+        focusPage(m_tabbar->identifier(index));
     }, Qt::QueuedConnection);
 
-    connect(m_tabbar, &TabBar::closeTabs, this, [ = ](QList<QString> closeTabIdList) {
-
-        QMap<QString, TermWidgetPage *> pageMap;
-        for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
-            TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
-            pageMap.insert(tabPage->identifier(), tabPage);
-        }
-
-        for (int i = 0; i < closeTabIdList.size(); i++) {
-            QString tabIdentifier = closeTabIdList.at(i);
-
-            TermWidgetPage *tabPage = pageMap.value(tabIdentifier);
-            if (tabPage) {
-                TermWidget *term = tabPage->currentTerminal();
-                if (term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
-                    qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
-                    return;
-                }
-            }
-        }
-
-        for (int i = 0; i < closeTabIdList.size(); i++) {
-
-            QString tabIdentifier = closeTabIdList.at(i);
-            TermWidgetPage *tabPage = pageMap.value(tabIdentifier);
-            m_tabbar->removeTab(tabIdentifier);
-            if (tabPage && tabPage->identifier() == tabIdentifier) {
-                m_termStackWidget->removeWidget(tabPage);
-            }
-        }
+    connect(m_tabbar, &TabBar::closeTabReq, this, [ = ](QString Identifier) {
+        m_tabbar->setCurrentIndex(m_tabbar->getIndexByIdentifier(Identifier));
+        closeTab(Identifier);
+        return;
     });
 
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
@@ -1025,7 +1002,7 @@ void MainWindow::showPlugin(const QString &name)
 
 QString MainWindow::selectedText(bool preserveLineBreaks)
 {
-    TermWidgetPage *page = currentTab();
+    TermWidgetPage *page = currentPage();
     if (page) {
         if (page->currentTerminal()) {
             return page->currentTerminal()->selectedText(preserveLineBreaks);
@@ -1199,7 +1176,7 @@ void MainWindow::showSettingDialog()
     delete dialog;
 
     /******** Modify by n014361 wangpeili 2020-01-10:修复显示完设置框以后，丢失焦点的问题*/
-    TermWidgetPage *page = currentTab();
+    TermWidgetPage *page = currentPage();
     if (page) {
         page->focusCurrentTerm();
     }
@@ -1328,8 +1305,8 @@ void MainWindow::remoteUploadFile()
         pressCtrlAt();
         sleep(100);
         QString strTxt = "sz '" + fileName + "'";
-        currentTab()->sendTextToCurrentTerm(strTxt);
-        currentTab()->sendTextToCurrentTerm("\n");
+        currentPage()->sendTextToCurrentTerm(strTxt);
+        currentPage()->sendTextToCurrentTerm("\n");
     }
 }
 
@@ -1346,7 +1323,7 @@ void MainWindow::remoteDownloadFile()
         //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
         QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
         pressEnterKey(strTxt);
-        currentTab()->sendTextToCurrentTerm("\n");
+        currentPage()->sendTextToCurrentTerm("\n");
         //-------------------
         enterSzCommand = true;
         //sleep(100);//
@@ -1359,18 +1336,18 @@ void MainWindow::remoteDownloadFile()
 void MainWindow::executeDownloadFile()
 {
     //--modified by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-    currentTab()->sendTextToCurrentTerm("\r\n");
+    currentPage()->sendTextToCurrentTerm("\r\n");
     sleep(1000);
     pressCtrlAt();
     sleep(100);
     QString strCd = "cd " + downloadFilePath + "\n";
-    currentTab()->sendTextToCurrentTerm(strCd);
+    currentPage()->sendTextToCurrentTerm(strCd);
     sleep(100);
-    QString strRz = "rz";
-    currentTab()->sendTextToCurrentTerm(strRz);
-//    sleep(100);
-//    QString strEnter = "\n";
-//    currentTab()->sendTextToCurrentTerm(strEnter);
+    QString strRz = "rz\n";
+    currentPage()->sendTextToCurrentTerm(strRz);
+    sleep(100);
+    QString strEnter = "\n";
+    currentPage()->sendTextToCurrentTerm(strEnter);
     downloadFilePath = "";
     //-------------------------------------------
 }
@@ -1410,11 +1387,8 @@ QList<MainWindow *> MainWindow::getWindowList()
 //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
 void MainWindow::pressEnterKey(const QString &text)
 {
-    QKeyEvent event(QEvent::KeyPress,
-                    0,
-                    Qt::NoModifier,
-                    text);
-    QApplication::sendEvent(focusWidget(), &event); // expose as a big fat keypress event
+    QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
+    QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
 }
 //------------------------------------------------
 //--added by qinyaning(nyq) to solve After exiting the pop-up interface,

@@ -62,14 +62,14 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
         //--added by qinyaning(nyq) to solve the probelm which Connecting to the remote server
         /*does not connect to the remote server directly in the new TAB. time: 2020.4.13 18:15
          * */
-        if (m_mainWindow->currentTab()->currentTerminal()->hasRunningProcess()) {
-            m_mainWindow->addTab(m_mainWindow->currentTab()->createCurrentTerminalProperties(), true);
+        if(m_mainWindow->currentPage()->currentTerminal()->hasRunningProcess()) {
+            m_mainWindow->addTab(m_mainWindow->currentPage()->createCurrentTerminalProperties(), true);
         }
         //--------------------------------//
-        m_mainWindow->currentTab()->sendTextToCurrentTerm(strTxt);
+        m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
         QString encodeString = curServer->m_encoding;
         if (!encodeString.isNull() && !encodeString.isEmpty()) {
-            m_mainWindow->currentTab()->setTextCodec(QTextCodec::codecForName(curServer->m_encoding.toLocal8Bit()));
+            m_mainWindow->currentPage()->setTextCodec(QTextCodec::codecForName(curServer->m_encoding.toLocal8Bit()));
         }
     }
     emit doHide();

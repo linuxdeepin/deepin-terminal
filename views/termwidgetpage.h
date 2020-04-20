@@ -24,6 +24,7 @@ public:
     TermWidget *split(Qt::Orientation orientation);
     TermWidget *split(TermWidget *term, Qt::Orientation orientation);
     void closeSplit(TermWidget *term);
+    // 标识page的唯一ID， 和tab匹配，存在tab中，tabid 用的index，是变化的。
     const QString identifier();
     void focusCurrentTerm();
     void closeOtherTerminal();
@@ -33,7 +34,7 @@ public:
     QRect GetRect(TermWidget *term);
     QPoint GetComparePoint(TermWidget *term, Qt::Edge dir);
     /********************* Modify by n014361 wangpeili End ************************/
-
+    bool hasRunningProcess();
     TermProperties createCurrentTerminalProperties();
 
     void setTerminalOpacity(qreal opacity);

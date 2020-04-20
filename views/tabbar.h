@@ -47,6 +47,7 @@ public:
     void saveSessionIdWithTabId(int sessionId, const QString &tabIdentifier);
     QMap<int, int> getSessionIdTabIndexMap();
     int queryIndexBySessionId(int sessionId);
+    int getIndexByIdentifier(QString id);
 
     //set tab label's title color
     void setChangeTextColor(int index);
@@ -55,16 +56,15 @@ public:
     bool isNeedChangeTextColor(int index);
     void setClearTabColor(int index);
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
+    void closeOtherTabsExceptCurrent(QString id);
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
 signals:
     void tabBarClicked(int index);
-    void closeTabs(QList<QString> closeTabIdList);
+    void closeTabReq(QString Identifier);
 
 private:
-    void closeOtherTabsExceptCurrent(int tabIndex);
-
     QAction *m_closeOtherTabAction;
     QAction *m_closeTabAction;
     DMenu *m_rightMenu;
