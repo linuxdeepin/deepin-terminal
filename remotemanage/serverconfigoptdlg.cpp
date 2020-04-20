@@ -122,7 +122,8 @@ void ServerConfigOptDlg::initUI()
     m_port->setValue(22);
     m_port->setSingleStep(1);
     m_port->setFixedWidth(70);
-    m_port->lineEdit()->setClearButtonEnabled(false);
+    //comment code for old version dtk build
+//    m_port->lineEdit()->setClearButtonEnabled(false);
     // 去除上下按钮
     m_port->setButtonSymbols(DSpinBox::NoButtons);
     // 禁用输入法
