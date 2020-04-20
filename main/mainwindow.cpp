@@ -1424,15 +1424,17 @@ void MainWindow::pressEnterKey(const QString &text)
 */
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
-    if (this->windowState() == Qt::WindowMinimized
-            || this->windowState() == (Qt::WindowMinimized | Qt::WindowMaximized)) {
-        if (_isClickedExitDlg) activateWindow();
+    if (window()->windowState().testFlag(Qt::WindowMinimized)) {
+        if (_isClickedExitDlg)
+            activateWindow();
     }
     if (!m_isQuakeWindow) {
-        bool isFullscreen = (this->windowState() == Qt::WindowFullScreen);
-        m_exitFullScreen->setVisible(isFullscreen);
-        titlebar()->setMenuVisible(!isFullscreen);
-        titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+        if (m_exitFullScreen) {
+            bool isFullscreen = window()->windowState().testFlag(Qt::WindowFullScreen);
+            m_exitFullScreen->setVisible(isFullscreen);
+            titlebar()->setMenuVisible(!isFullscreen);
+            titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+        }
     }
 }
 //--------------------------------------------------
