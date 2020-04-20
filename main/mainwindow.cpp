@@ -783,20 +783,18 @@ void MainWindow::initShortcuts()
 
     // custom_command
     connect(createNewShotcut("shortcuts.advanced.custom_command"), &QShortcut::activated, this, [this]() {
-        if(m_CurrentShowPlugin == PLUGIN_TYPE_CUSTOMCOMMAND){
+        if (m_CurrentShowPlugin == PLUGIN_TYPE_CUSTOMCOMMAND) {
             showPlugin(PLUGIN_TYPE_NONE);
-        }
-        else {
+        } else {
             showPlugin(PLUGIN_TYPE_CUSTOMCOMMAND);
         }
     });
 
     // remote_management
     connect(createNewShotcut("shortcuts.advanced.remote_management"), &QShortcut::activated, this, [this]() {
-        if(m_CurrentShowPlugin == PLUGIN_TYPE_REMOTEMANAGEMENT){
+        if (m_CurrentShowPlugin == PLUGIN_TYPE_REMOTEMANAGEMENT) {
             showPlugin(PLUGIN_TYPE_NONE);
-        }
-        else {
+        } else {
             showPlugin(PLUGIN_TYPE_REMOTEMANAGEMENT);
         }
     });
@@ -848,7 +846,7 @@ void MainWindow::initConnections()
 void MainWindow::initTitleBar()
 {
     // mainwindow的设置按钮触发
-    connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this ,[this](){
+    connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
         showPlugin(PLUGIN_TYPE_NONE);
     });
     // 全屏退出按钮
@@ -1029,12 +1027,11 @@ QString MainWindow::selectedText(bool preserveLineBreaks)
 {
     TermWidgetPage *page = currentTab();
     if (page) {
-        if(page->currentTerminal())
-        {
+        if (page->currentTerminal()) {
             return page->currentTerminal()->selectedText(preserveLineBreaks);
         }
     }
-    qDebug()<<"not point terminal??";
+    qDebug() << "not point terminal??";
     return  "";
 }
 
@@ -1096,7 +1093,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
             if (enterSzCommand) {
                 //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-                pressEnterKey("\nsz \"${files[@]}\"\n");
+                pressEnterKey("\nsz \"${files[@]}\"");
                 //-------------------------------------
                 executeDownloadFile();
                 enterSzCommand = false;
@@ -1330,8 +1327,9 @@ void MainWindow::remoteUploadFile()
     if (!fileName.isNull() && !fileName.isEmpty()) {
         pressCtrlAt();
         sleep(100);
-        QString strTxt = "sz '" + fileName + "'\n";
+        QString strTxt = "sz '" + fileName + "'";
         currentTab()->sendTextToCurrentTerm(strTxt);
+        currentTab()->sendTextToCurrentTerm("\n");
     }
 }
 
@@ -1346,8 +1344,9 @@ void MainWindow::remoteDownloadFile()
         //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
         //currentTab()->sendTextToCurrentTerm(strTxt);
         //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-        QString strTxt = QString("read -e -a files -p \"%1: \"\n").arg(tr("Type path to download file"));
+        QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
         pressEnterKey(strTxt);
+        currentTab()->sendTextToCurrentTerm("\n");
         //-------------------
         enterSzCommand = true;
         //sleep(100);//
@@ -1360,17 +1359,18 @@ void MainWindow::remoteDownloadFile()
 void MainWindow::executeDownloadFile()
 {
     //--modified by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+    currentTab()->sendTextToCurrentTerm("\r\n");
     sleep(1000);
     pressCtrlAt();
     sleep(100);
     QString strCd = "cd " + downloadFilePath + "\n";
     currentTab()->sendTextToCurrentTerm(strCd);
     sleep(100);
-    QString strRz = "rz\n";
+    QString strRz = "rz";
     currentTab()->sendTextToCurrentTerm(strRz);
-    sleep(100);
-    QString strEnter = "\n";
-    currentTab()->sendTextToCurrentTerm(strEnter);
+//    sleep(100);
+//    QString strEnter = "\n";
+//    currentTab()->sendTextToCurrentTerm(strEnter);
     downloadFilePath = "";
     //-------------------------------------------
 }

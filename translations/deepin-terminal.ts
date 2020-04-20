@@ -121,7 +121,7 @@
         <translation type="vanished">搜索</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandpanel.cpp" line="88"/>
+        <location filename="../customcommand/customcommandpanel.cpp" line="91"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
@@ -177,32 +177,32 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="869"/>
+        <location filename="../main/mainwindow.cpp" line="867"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="892"/>
+        <location filename="../main/mainwindow.cpp" line="890"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1285"/>
+        <location filename="../main/mainwindow.cpp" line="1282"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1287"/>
+        <location filename="../main/mainwindow.cpp" line="1284"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1289"/>
+        <location filename="../main/mainwindow.cpp" line="1286"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1349"/>
+        <location filename="../main/mainwindow.cpp" line="1347"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
