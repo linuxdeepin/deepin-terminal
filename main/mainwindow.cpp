@@ -288,10 +288,10 @@ void MainWindow::setQuakeWindow()
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
-    
+
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setAttribute(Qt::WA_Disabled, true);
-    
+
     /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
     setMinimumSize(screenRect.size().width(), 60);
     setMaximumHeight(screenRect.size().height() * 2 / 3);
@@ -336,7 +336,7 @@ void MainWindow::setNormalWindow()
     } else if (windowState == "fullscreen") {
         setDefaultLocation();
         switchFullscreen(true);
-    } else if (windowState == "Halfscreen") {
+    } else if (windowState == "split_screen") {
         setWindowRadius(0);
         resize(halfScreenSize());
     } else {
@@ -565,8 +565,8 @@ void MainWindow::saveWindowSize()
     if (!m_IfUseLastSize) {
         return;
     }
-    // 半屏窗口大小时就不记录了
-    if (size() == halfScreenSize()) {
+    // (真.假)半屏窗口大小时就不记录了
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0,1)))) {
         return;
     }
 
@@ -766,8 +766,8 @@ QString MainWindow::getConfigWindowState()
         qDebug() << "use line state set:" << state;
         if (state == "maximize") {
             windowState = "window_maximum";
-        } else if (state == "halfscreen") {
-            windowState = "Halfscreen";
+        } else if (state == "splitscreen") {
+            windowState = "split_screen";
         } else if (state == "normal") {
             windowState = "window_normal";
         } else if (state == "fullscreen") {
@@ -1149,52 +1149,43 @@ QString MainWindow::selectedText(bool preserveLineBreaks)
 
 void MainWindow::onCreateNewWindow(QString workingDir)
 {
-    qDebug() << "************************workingDir:" << workingDir << endl;
-    TermProperties properties;
-    properties.setWorkingDir(workingDir);
-    properties[SingleFlag] = false;
-    properties[QuakeMode] = false;
-    MainWindow *window = new MainWindow(properties);
-    window->show();
+    Q_UNUSED(workingDir);
+    // 调用一个新的进程，开启终端
+    QProcess process;
+    process.startDetached(QApplication::applicationName());
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    if (m_isQuakeWindow) {
-        /********** delete begin by ut001121 zhangmeng 2020-04-27 修复bug#22975****************/
-        // disable move window
-        /*if (event->type() == QEvent::MouseMove || event->type() == QEvent::DragMove) {
-            if (watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
-                event->ignore();
-                return true;
-            }
-        }*/
-        /********** delete end by ut001121 zhangmeng****************/
-
-        /********** Modify by n013252 wangliang 2020-01-14: 雷神窗口从未激活状态恢复****************/
-        if (watched == this && event->type() == QEvent::WindowStateChange) {
-            event->ignore();
-
-            show();
-            raise();
-            activateWindow();
-
-            m_isQuakeWindowActivated = true;
-            return true;
-        }
-        /**************** Modify by n013252 wangliang End ****************/
-
-        /******** Modify by n014361 wangpeili 2020-01-13:雷神模式隐藏 ****************/
-        bool auto_hide_raytheon_window = Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool();
-        if (auto_hide_raytheon_window) {
-            //--------------------------------------------------------------------------//
-            if (watched == this && event->type() == QEvent::WindowDeactivate) {
-                qDebug() << "WindowDeactivate" << event->type();
-                this->hide();
-                this->setQuakeWindowActivated(false);
-            }
-        }
-        /********************* Modify by n014361 wangpeili End ************************/
+    //这里调试用
+    if ((event->type() != QEvent::Paint)
+            && (event->type() != QEvent::MetaCall)
+            && (event->type() != QEvent::UpdateRequest)
+            && (event->type() != QEvent::LayoutRequest)
+            && (event->type() != QEvent::Timer)
+            && (event->type() != QEvent::Leave)
+            && (event->type() != QEvent::HoverLeave)
+            && (event->type() != QEvent::CursorChange)
+            && (event->type() != QEvent::MouseMove)
+            && (event->type() != QEvent::LanguageChange)
+            && (event->type() != QEvent::PolishRequest)
+            && (event->type() != QEvent::DynamicPropertyChange)
+            && (event->type() != QEvent::Resize)
+            && (event->type() != QEvent::MouseButtonPress)
+            && (event->type() != QEvent::UpdateLater)
+            && (event->type() != QEvent::StatusTip)
+            && (event->type() != QEvent::DeferredDelete)
+            && (event->type() != QEvent::Polish)
+            && (event->type() != QEvent::UpdateLater)
+            && (event->type() != QEvent::HoverMove)
+            && (event->type() != QEvent::Enter)
+            && (event->type() != QEvent::KeyRelease)
+            && (event->type() != QEvent::HoverEnter)
+            && (event->type() != QEvent::MouseButtonRelease)
+            && (event->type() != QEvent::HoverEnter)
+            && (event->type() != QEvent::WindowDeactivate)
+            && (event->type() != QEvent::InputMethodQuery)) {
+        //qDebug() << "event" << event->type() << watched;
     }
 
     if (event->type() == QEvent::KeyPress) {
@@ -1215,30 +1206,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             enterSzCommand = false;
         }
     }
-    /******** Modify by m000714 daizhengwen 2020-04-10: 获取点击事件，隐藏右侧窗口****************/
-    if (m_CurrentShowPlugin != PLUGIN_TYPE_NONE) {
-        if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
-            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-            // 242为RightPanel的的宽度
-            if (mouseEvent->x() < this->width()  - 242) {
-                showPlugin(PLUGIN_TYPE_NONE);
-            }
-        }
-    }
-    /********************* Modify by m000714 daizhengwen End ************************/
 
-    return QObject::eventFilter(watched, event);
+    return DMainWindow::eventFilter(watched, event);
 }
 
-bool MainWindow::isQuakeWindowActivated()
-{
-    return m_isQuakeWindowActivated;
-}
-
-void MainWindow::setQuakeWindowActivated(bool isQuakeWindowActivated)
-{
-    m_isQuakeWindowActivated = isQuakeWindowActivated;
-}
 
 /*******************************************************************************
  1. @函数:    onSettingValueChanged
@@ -1272,6 +1243,7 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
     if ((keyName == "advanced.window.auto_hide_raytheon_window") || (keyName == "advanced.window.use_on_starting")) {
         qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                  << ", auto effective when happen";
+        onApplicationStateChanged(QApplication::applicationState());
         return;
     }
 
@@ -1295,6 +1267,19 @@ void MainWindow::focusOutEvent(QFocusEvent *event)
     Q_UNUSED(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    mousePressEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-04-28
+ 4. @说明:    左键点击隐藏插件
+*******************************************************************************/
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        showPlugin(PLUGIN_TYPE_NONE);
+    }
+}
+
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 {
     m_termStackWidget->addWidget(termPage);
@@ -1305,7 +1290,7 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 
 void MainWindow::showSettingDialog()
 {
-    DSettingsDialog *dialog = new DSettingsDialog(this);
+    DSettingsDialog *dialog = new DSettingsDialog();
     dialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     dialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
     dialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
@@ -1313,7 +1298,7 @@ void MainWindow::showSettingDialog()
 
     dialog->updateSettings(Settings::instance()->settings);
     dialog->exec();
-    delete dialog;
+    dialog->deleteLater();
 
     /******** Modify by n014361 wangpeili 2020-01-10:修复显示完设置框以后，丢失焦点的问题*/
     TermWidgetPage *page = currentPage();
@@ -1415,10 +1400,12 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     for (auto opt :
             Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
-//        qDebug() << opt->name();
         QString name = QObject::tr(opt->name().toUtf8().data());
-        if (opt->name() == "Fullscreen")
+        /***del begin by ut001121 zhangmeng 修复BUG#23269 快捷键菜单“切换全屏”显示与文案不一致***/
+        /*if (opt->name() == "Fullscreen")
             name = tr("Toggle fullscreen");
+        */
+        /***del end by ut001121 zhangmeng***/
         jsonItem.insert("name", name);
         jsonItem.insert("value", opt->value().toString());
         JsonArry.append(jsonItem);
@@ -1488,6 +1475,42 @@ void MainWindow::remoteDownloadFile()
         enterSzCommand = true;
         //sleep(100);//
     }
+}
+/*******************************************************************************
+ 1. @函数:    onApplicationStateChanged
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-04-28
+ 4. @说明:    当雷神窗口处于非激动状态自动隐藏
+*******************************************************************************/
+void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
+{
+    qDebug() << "Application  state " << state << isActiveWindow() << isVisible() << windowState();
+    // 这个逻辑的针对的是在有弹窗情况下，windows+D后，可以让弹窗和主窗口一起弹出．
+    // 如果激活应用，就激活主窗口，可以让弹窗和主窗口一起弹出．注意：不能传给弹窗父指针！！
+    if (state == Qt::ApplicationActive) {
+        activateWindow();
+        return;
+    }
+
+    // 下面的代码是雷神窗口自动隐藏功能．
+    // 不是雷神窗口，不管
+    if (!m_isQuakeWindow) {
+        return;
+    }
+    // 开关没开，不管
+    if (!Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+        return;
+    }
+
+    // 主窗口因为有弹窗而未激活，不管．
+    if (this != QApplication::activeWindow() && QApplication::activeWindow() != nullptr) {
+        qDebug()<<QApplication::activeWindow();
+        return;
+    }
+
+    // 激活应用的指令传不到这里．传到这里的都是非激活指令．
+    hide();
+    qDebug() << "Application not Active,　now hide" << state;
 }
 
 /**

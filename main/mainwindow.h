@@ -15,6 +15,7 @@
 #include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QSettings>
+#include <QMouseEvent>
 
 #include <functional>
 #include <QShortcut>
@@ -54,11 +55,6 @@ public:
     void setTitleBarBackgroundColor(QString color);
 
     ShortcutManager *getShortcutManager();
-
-    /********** Modify by n013252 wangliang 2020-01-14: 是否主动激活主窗口 **********/
-    bool isQuakeWindowActivated();
-    void setQuakeWindowActivated(bool isQuakeWindowActivated);
-    /**************** Modify by n013252 wangliang End ****************/
 
     void executeDownloadFile();
 
@@ -101,12 +97,15 @@ public slots:
     void onShortcutSettingChanged(const QString &keyName);
     void remoteUploadFile();
     void remoteDownloadFile();
+    // 处理雷神窗口自动隐藏功能以及window+D一起显示的问题
+    void onApplicationStateChanged(Qt::ApplicationState state);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
     //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
     /*press Windows+D on the keyboard, the notification bar will
@@ -184,7 +183,6 @@ private:
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;
     bool m_isQuakeWindow = false;
-    bool m_isQuakeWindowActivated = false;
     QMap<int, bool> m_tabVisitMap;
     QMap<int, bool> m_tabChangeColorMap;
 
