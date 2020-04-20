@@ -15,13 +15,10 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
     initRemoteManagementTopPanel();
-    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [=](const QString name)
-    {
-        if(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT != name)
-        {
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name) {
+        if (MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT != name) {
             getRemoteManagementTopPanel()->hideAnim();
-        }
-        else {
+        } else {
             getRemoteManagementTopPanel()->show();
         }
     });
@@ -65,7 +62,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
         //--added by qinyaning(nyq) to solve the probelm which Connecting to the remote server
         /*does not connect to the remote server directly in the new TAB. time: 2020.4.13 18:15
          * */
-        if(m_mainWindow->currentTab()->currentTerminal()->hasRunningProcess()) {
+        if (m_mainWindow->currentTab()->currentTerminal()->hasRunningProcess()) {
             m_mainWindow->addTab(m_mainWindow->currentTab()->createCurrentTerminalProperties(), true);
         }
         //--------------------------------//
@@ -80,7 +77,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 
 QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
 {
-    QFile sourceFile(":/resources/other/ssh_login.sh");
+    QFile sourceFile(":/other/ssh_login.sh");
     QString fileString;
     if (sourceFile.open(QIODevice::ReadOnly)) {
         fileString = sourceFile.readAll();
