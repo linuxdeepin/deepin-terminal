@@ -242,6 +242,23 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::termRequestDownloadFile, this, &MainWindow::remoteDownloadFile);
 }
 
+bool MainWindow::hasRunningProcesses()
+{
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        TermWidget *term = tabPage->currentTerminal();
+        if (term->hasRunningProcess()) {
+            qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+            return true;
+        }
+        else {
+            qDebug() << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
+        }
+    }
+
+    return false;
+}
+
 void MainWindow::closeTab(const QString &identifier, bool runCheck)
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {

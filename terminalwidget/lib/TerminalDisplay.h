@@ -416,6 +416,8 @@ public:
 
     void setHideCursor(bool hideCursor);
 
+    void setSessionId(int sessionId);
+
 public slots:
 
     /**
@@ -831,6 +833,8 @@ private:
 
     int _leftBaseMargin;
     int _topBaseMargin;
+
+    int _sessionId;
 
 public:
     static void setTransparencyEnabled(bool enable)

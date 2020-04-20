@@ -69,6 +69,8 @@ public:
 
     static QList<MainWindow *> getWindowList();
 
+    bool hasRunningProcesses();
+
     static constexpr const char* PLUGIN_TYPE_SEARCHBAR = "Search Bar";
     static constexpr const char* PLUGIN_TYPE_THEME = "Theme";
     static constexpr const char* PLUGIN_TYPE_CUSTOMCOMMAND = "Custom Command";

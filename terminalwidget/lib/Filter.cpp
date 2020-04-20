@@ -121,6 +121,11 @@ QList<Filter::HotSpot*> FilterChain::hotSpots() const
 }
 //QList<Filter::HotSpot*> FilterChain::hotSpotsAtLine(int line) const;
 
+void FilterChain::setSessionId(int sessionId)
+{
+    _sessionId = sessionId;
+}
+
 TerminalImageFilterChain::TerminalImageFilterChain()
 : _buffer(0)
 , _linePositions(0)
@@ -180,21 +185,20 @@ void TerminalImageFilterChain::setImage(const Character* const image , int lines
         QString tempLine = lineStream.readAll().trimmed();
         if (tempLine.count("$") == 1 && tempLine.endsWith("$"))
         {
-            SessionManager::instance()->saveCurrShellPrompt(tempLine);
+            SessionManager::instance()->saveCurrShellPrompt(_sessionId, tempLine);
         }
         else if (tempLine.count("#") == 1 && tempLine.endsWith("#"))
         {
-            SessionManager::instance()->saveCurrShellPrompt(tempLine);
+            SessionManager::instance()->saveCurrShellPrompt(_sessionId, tempLine);
         }
     }
     decoder.end();
 
-    QString strShellPrompt = SessionManager::instance()->getCurrShellPrompt();
+    QString strShellPrompt = SessionManager::instance()->getCurrShellPrompt(_sessionId);
     QString strBuffer = *_buffer;
     if (strBuffer.length() > 0)
     {
         QString rootPromptEnd = QString("# ");
-        QString promptEnd = QString("$ ");
         if (strBuffer.contains(rootPromptEnd))
         {
             QString strCommand = strBuffer.split(strShellPrompt).last();
@@ -202,12 +206,12 @@ void TerminalImageFilterChain::setImage(const Character* const image , int lines
             {
                 strCommand = QString("sudo %1").arg(strCommand);
             }
-            SessionManager::instance()->saveCurrShellCommand(strCommand);
+            SessionManager::instance()->saveCurrShellCommand(_sessionId, strCommand);
         }
         else
         {
             QString strCommand = strBuffer.split(strShellPrompt).last();
-            SessionManager::instance()->saveCurrShellCommand(strCommand);
+            SessionManager::instance()->saveCurrShellCommand(_sessionId, strCommand);
         }
     }
 }

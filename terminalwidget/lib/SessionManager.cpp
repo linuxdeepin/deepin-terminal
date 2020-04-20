@@ -118,32 +118,23 @@ Session *SessionManager::idToSession(int id)
     return nullptr;
 }
 
-void SessionManager::setCurrSession(Session *session)
+void SessionManager::saveCurrShellPrompt(int sessionId, QString strPrompt)
 {
-    _currSession = session;
+    _shellPromptSessionMap.insert(sessionId, strPrompt);
 }
 
-Session *SessionManager::getCurrSession()
+QString SessionManager::getCurrShellPrompt(int sessionId)
 {
-    return _currSession;
+    return _shellPromptSessionMap.value(sessionId);
 }
 
-void SessionManager::saveCurrShellPrompt(QString strPrompt)
+void SessionManager::saveCurrShellCommand(int sessionId, QString strCommand)
 {
-    _currShellPrompt = strPrompt;
+    strCommand = strCommand.trimmed();
+    _shellCommandSessionMap.insert(sessionId, strCommand);
 }
 
-QString SessionManager::getCurrShellPrompt()
+QString SessionManager::getCurrShellCommand(int sessionId)
 {
-    return _currShellPrompt;
-}
-
-void SessionManager::saveCurrShellCommand(QString strCommand)
-{
-    _currShellCommand = strCommand;
-}
-
-QString SessionManager::getCurrShellCommand()
-{
-    return _currShellCommand;
+    return _shellCommandSessionMap.value(sessionId);
 }

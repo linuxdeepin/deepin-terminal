@@ -355,6 +355,10 @@ public:
     /** Returns a list of all hotspots at the given line in all the chain's filters */
     QList<Filter::HotSpot> hotSpotsAtLine(int line) const;
 
+    void setSessionId(int sessionId);
+
+protected:
+    int _sessionId;
 };
 
 /** A filter chain which processes character images from terminal displays */

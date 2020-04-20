@@ -2410,6 +2410,12 @@ void TerminalDisplay::setHideCursor(bool hideCursor)
     update();
 }
 
+void TerminalDisplay::setSessionId(int sessionId)
+{
+    _sessionId = sessionId;
+    _filterChain->setSessionId(sessionId);
+}
+
 void TerminalDisplay::updateFilters()
 {
     if ( !_screenWindow )

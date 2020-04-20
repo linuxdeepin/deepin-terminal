@@ -152,6 +152,8 @@ Q_OBJECT
      */
     int foregroundProcessGroup() const;
 
+    void setSessionId(int sessionId);
+
   public slots:
 
     /**
@@ -213,6 +215,9 @@ Q_OBJECT
     char _eraseChar;
     bool _xonXoff;
     bool _utf8;
+
+    int _sessionId;
+    bool _bUninstall;
 };
 
 }
