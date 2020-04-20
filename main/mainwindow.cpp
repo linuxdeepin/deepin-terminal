@@ -197,7 +197,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
 //    });
     /********************* Modify by m000714 daizhengwen End ************************/
     connect(this, &MainWindow::showPluginChanged,  termPage, [ = ](const QString name) {
-        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name);
+        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentTab() == termPage));
     });
 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
