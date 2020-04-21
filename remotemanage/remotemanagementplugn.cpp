@@ -72,7 +72,9 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
             m_mainWindow->currentPage()->setTextCodec(QTextCodec::codecForName(curServer->m_encoding.toLocal8Bit()));
         }
     }
-    emit doHide();
+    /******** Modify by m000714 daizhengwen 2020-04-10: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
+    getRemoteManagementTopPanel()->hideAnim();
+    /********************* Modify by m000714 daizhengwen End ************************/
 }
 
 QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)

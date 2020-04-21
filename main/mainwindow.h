@@ -114,6 +114,7 @@ private:
     void initUI();
     void initPlugins();
     void initWindow();
+    QString getConfigWindowState();
     void initShortcuts();
     void initConnections();
     void initTitleBar();
@@ -195,7 +196,9 @@ private:
     *  pop-up, click exit pop-up terminal interface to display abnormal, time: 2020.4.16 13:32
     */
     bool _isClickedExitDlg {false};
-    //----------------------------
+
+    const int m_MinWidth = 450;
+    const int m_MinHeight = 250;
 };
 
 #endif  // MAINWINDOW_H
