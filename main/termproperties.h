@@ -3,8 +3,8 @@
 
 #include <QVariant>
 
-enum TermProperty
-{
+enum TermProperty {
+    SingleFlag,
     QuakeMode,
     WorkingDir,
     ColorScheme,

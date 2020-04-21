@@ -87,9 +87,8 @@ int main(int argc, char *argv[])
     }
     if (parser.isSet(optWindowState)) {
         firstTermProperties[StartWindowState] = parser.value(optWindowState);
-        QStringList validString={"maximize", "fullscreen", "halfscreen", "normal"};
-        if(!validString.contains(parser.value(optWindowState)))
-        {
+        QStringList validString = {"maximize", "fullscreen", "halfscreen", "normal"};
+        if (!validString.contains(parser.value(optWindowState))) {
             parser.showHelp();
             exit;
         }
@@ -100,25 +99,33 @@ int main(int argc, char *argv[])
     if (parser.isSet(optScript)) {
         firstTermProperties[Script] = parser.value(optScript);;
     }
+
     if (parser.isSet(optQuakeMode)) {
         firstTermProperties[QuakeMode] = true;
+    } else {
+        firstTermProperties[QuakeMode] = false;
     }
 
+    if (!app.isRunning()) {
+        firstTermProperties[SingleFlag] = true;
+    } else {
+        firstTermProperties[SingleFlag] = false;
+    }
 
+    // 雷神窗口特殊处理
+    if (firstTermProperties[QuakeMode].toBool()) {
+        TermArgumentParser argumentParser;
+        if (!argumentParser.initDBus()) {
+            // Exit process after 1000ms.
+            qDebug() << "deepin termanl start with quakemode init bus failed, now exit!";
+            QTimer::singleShot(1000, [&]() { app.quit(); });
+            //Dtk::Widget::moveToCenter(mainWindow);
+            return app.exec();
+        }
+    }
     MainWindow w(firstTermProperties);
 
-    /********* Modify by n013252 wangliang 2020-01-14: 用于解析命令参数 ****************/
-    TermArgumentParser argumentParser;
-//    if (argumentParser.parseArguments(&w, parser.isSet(optQuakeMode))) {
-    //--added by nyq to solve the problem of the second instance window location--//
-    if (argumentParser.ParseArguments(&w, firstTermProperties.contains(QuakeMode), !app.isRunning())) {
-    //----------------------------------------------------------------------------//
-        // Exit process after 1000ms.
-        QTimer::singleShot(1000, [&]() { app.quit(); });
-        //Dtk::Widget::moveToCenter(mainWindow);
-        return app.exec();
-    }
-    /**************** Modify by n013252 wangliang End ****************/
+    w.show();
 
     return app.exec();
 }

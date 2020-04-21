@@ -28,7 +28,7 @@ bool TermArgumentParser::parseArguments(MainWindow *mainWindow, bool isQuakeMode
         }
     }
 
-    mainWindow->setQuakeWindow(isQuakeMode);
+    //mainWindow->setQuakeWindow(isQuakeMode);
 
     mainWindow->show();
 
@@ -39,11 +39,12 @@ bool TermArgumentParser::parseArguments(MainWindow *mainWindow, bool isQuakeMode
     return false;
 }
 //--解决窗口不居中问题 added by nyq
-bool TermArgumentParser::ParseArguments(MainWindow *mainWindow, bool isQuakeMode, bool isSingleApp) {
+bool TermArgumentParser::ParseArguments(MainWindow *mainWindow, bool isQuakeMode, bool isSingleApp)
+{
     bool res = parseArguments(mainWindow, isQuakeMode);
     //---------------added by qinyaning(nyq): 解决窗口不居中问题----------------------/
-    qDebug() << (isSingleApp? "is single in TermArgumentParser::ParseArguments" : "is not single in TermArgumentParser::ParseArguments");
-    if(!isQuakeMode && isSingleApp) {
+    qDebug() << (isSingleApp ? "is single in TermArgumentParser::ParseArguments" : "is not single in TermArgumentParser::ParseArguments");
+    if (!isQuakeMode && isSingleApp) {
         Dtk::Widget::moveToCenter(mainWindow);
     }
     //-----------------------------------------------------------------------------/
@@ -62,7 +63,7 @@ bool TermArgumentParser::initDBus()
     Q_UNUSED(adapter);
 
     if (!conn.registerService(kQuakeTerminalService)
-        || !conn.registerObject(kQuakeTerminalIface, m_quakeTerminalProxy)) {
+            || !conn.registerObject(kQuakeTerminalIface, m_quakeTerminalProxy)) {
         qDebug() << "Failed to register dbus" << qApp->applicationPid();
         showOrHideQuakeTerminal();
         return false;
@@ -76,7 +77,7 @@ bool TermArgumentParser::initDBus()
 void TermArgumentParser::showOrHideQuakeTerminal()
 {
     QDBusMessage msg =
-    QDBusMessage::createMethodCall(kQuakeTerminalService, kQuakeTerminalIface, kQuakeTerminalService, "ShowOrHide");
+        QDBusMessage::createMethodCall(kQuakeTerminalService, kQuakeTerminalIface, kQuakeTerminalService, "ShowOrHide");
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
