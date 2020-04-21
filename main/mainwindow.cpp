@@ -1550,6 +1550,12 @@ void MainWindow::pressCtrlU()
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
+void MainWindow::pressCtrlU()
+{
+    QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
+    QApplication::sendEvent(focusWidget(), &keyPress);
+}
+
 void MainWindow::sleep(unsigned int msec)
 {
     QTime dieTime = QTime::currentTime().addMSecs(msec);
