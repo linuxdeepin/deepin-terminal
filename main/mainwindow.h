@@ -61,6 +61,7 @@ public:
     void executeDownloadFile();
     QString showFileDailog(bool isDir);
     void pressCtrlAt();
+    void pressCtrlU();
     void sleep(unsigned int msec);
 
     // 由mainwindow统一指令当前显示哪个插件

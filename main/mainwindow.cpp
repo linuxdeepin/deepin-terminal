@@ -1098,6 +1098,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                 //-------------------------------------
                 executeDownloadFile();
                 enterSzCommand = false;
+                QTimer::singleShot(100, [&]() {
+                    pressCtrlU();
+                });
             }
         }
         if ((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_C || keyEvent->key() == Qt::Key_D)) {
@@ -1364,14 +1367,12 @@ void MainWindow::executeDownloadFile()
     sleep(1000);
     pressCtrlAt();
     sleep(100);
-    QString strCd = "cd " + downloadFilePath + "\n";
+    QString strCd = "cd " + downloadFilePath;
     currentPage()->sendTextToCurrentTerm(strCd);
-    sleep(100);
-    QString strRz = "rz\n";
+    //sleep(100);
+    QString strRz = "\r\nrz";
     currentPage()->sendTextToCurrentTerm(strRz);
-    sleep(100);
-    QString strEnter = "\n";
-    currentPage()->sendTextToCurrentTerm(strEnter);
+//    currentPage()->sendTextToCurrentTerm("\n");
     downloadFilePath = "";
     //-------------------------------------------
 }
@@ -1393,6 +1394,12 @@ QString MainWindow::showFileDailog(bool isDir)
 void MainWindow::pressCtrlAt()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_At, Qt::ControlModifier);
+    QApplication::sendEvent(focusWidget(), &keyPress);
+}
+
+void MainWindow::pressCtrlU()
+{
+    QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
