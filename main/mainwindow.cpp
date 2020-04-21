@@ -279,9 +279,11 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
             int currSessionId =  tabPage->currentTerminal()->getSessionId();
             m_tabVisitMap.remove(currSessionId);
             m_tabChangeColorMap.remove(currSessionId);
-
-            m_termStackWidget->removeWidget(tabPage);
             m_tabbar->removeTab(identifier);
+            m_termStackWidget->removeWidget(tabPage);
+            tabPage->deleteLater();
+            focusCurrentPage();
+
             break;
         }
     }
@@ -338,6 +340,11 @@ void MainWindow::focusPage(const QString &identifier)
         return;
     }
     qDebug() << "focusTab nullptr identifier" << identifier;
+}
+
+void MainWindow::focusCurrentPage()
+{
+    focusPage(m_tabbar->identifier(m_tabbar->currentIndex()));
 }
 
 TermWidgetPage *MainWindow::currentPage()
