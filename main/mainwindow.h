@@ -7,15 +7,16 @@
 #include "remotemanagementplugn.h"
 
 #include <DMainWindow>
+#include <DWidgetUtil>
+#include <DToolButton>
+#include <DIconButton>
+#include <DPushButton>
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QSettings>
 
 #include <functional>
-#include <DToolButton>
-#include <DIconButton>
-#include <DPushButton>
 #include <QShortcut>
 
 
@@ -50,7 +51,7 @@ public:
 
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
     void setTitleBarBackgroundColor(QString color);
-    void setQuakeWindow(bool isQuakeWindow);
+
     ShortcutManager *getShortcutManager();
 
     /********** Modify by n013252 wangliang 2020-01-14: 是否主动激活主窗口 **********/
@@ -73,12 +74,12 @@ public:
 
     bool hasRunningProcesses();
 
-    static constexpr const char* PLUGIN_TYPE_SEARCHBAR = "Search Bar";
-    static constexpr const char* PLUGIN_TYPE_THEME = "Theme";
-    static constexpr const char* PLUGIN_TYPE_CUSTOMCOMMAND = "Custom Command";
-    static constexpr const char* PLUGIN_TYPE_REMOTEMANAGEMENT ="Remote Management";
-    static constexpr const char* PLUGIN_TYPE_ENCODING = "Encoding";
-    static constexpr const char* PLUGIN_TYPE_NONE = "None";
+    static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
+    static constexpr const char *PLUGIN_TYPE_THEME = "Theme";
+    static constexpr const char *PLUGIN_TYPE_CUSTOMCOMMAND = "Custom Command";
+    static constexpr const char *PLUGIN_TYPE_REMOTEMANAGEMENT = "Remote Management";
+    static constexpr const char *PLUGIN_TYPE_ENCODING = "Encoding";
+    static constexpr const char *PLUGIN_TYPE_NONE = "None";
 signals:
     void newWindowRequest(const QString &directory);
     // !这个信号被封装了，请不要单独调用！
@@ -103,7 +104,7 @@ protected:
     *open the terminal interface to only display the exit
     *pop-up, click exit pop-up terminal interface to display abnormal
     */
-    void changeEvent(QEvent * event) override;
+    void changeEvent(QEvent *event) override;
     //------------------------------------------------------------
 protected slots:
     void onTermTitleChanged(QString title);
@@ -112,12 +113,18 @@ protected slots:
 
 private:
     void initUI();
-    void initPlugins();
     void initWindow();
+    // 雷神窗口
+    void setQuakeWindow();
     QString getConfigWindowState();
+    // 加载插件
+    void initPlugins();
     void initShortcuts();
     void initConnections();
     void initTitleBar();
+    void initOptionButton();
+    void initOptionMenu();
+
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
     void showSettingDialog();
     QString getWinInfoConfigPath();
@@ -154,7 +161,7 @@ private:
     QShortcut *createNewShotcut(const QString &key);
     /********************* Modify by n014361 wangpeili End ************************/
     //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-    void pressEnterKey(const QString& text);
+    void pressEnterKey(const QString &text);
     //---------------------------------------
 
     QMenu *m_menu = nullptr;

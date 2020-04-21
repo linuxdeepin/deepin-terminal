@@ -57,14 +57,13 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
       m_termStackWidget(new QStackedWidget),
       m_properties(properties),
+      m_isQuakeWindow(properties[QuakeMode].toBool()),
       m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat))
 {
     m_windowList.append(this);
-
     initUI();
     initConnections();
     initShortcuts();
-
 }
 
 void MainWindow::initUI()
@@ -74,15 +73,27 @@ void MainWindow::initUI()
     // 这里没有初始化titlebar.
     // titleba需要在雷神参数解析后初始化
 
-    ShortcutManager::instance()->setMainWindow(this);
-    m_shortcutManager = ShortcutManager::instance();
-    ServerConfigManager::instance()->initServerConfig();
-
     initWindow();
+    if (m_isQuakeWindow) {
+        setQuakeWindow();
+    } else {
+        if (m_properties[SingleFlag].toBool()) {
+            Dtk::Widget::moveToCenter(this);
+            qDebug() << "SingleFlag move" ;
+        }
+    }
+
     // Plugin may need centralWidget() to work so make sure initPlugin() is after setCentralWidget()
     // Other place (eg. create titlebar menu) will call plugin method so we should create plugins before init other
     // parts.
     initPlugins();
+    initTitleBar();
+    addTab(m_properties);
+
+    //下面代码待处理
+    ShortcutManager::instance()->setMainWindow(this);
+    m_shortcutManager = ShortcutManager::instance();
+    ServerConfigManager::instance()->initServerConfig();
 
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
@@ -115,31 +126,24 @@ MainWindow::~MainWindow()
 //    }
 //}
 
-void MainWindow::setQuakeWindow(bool isQuakeWindow)
+void MainWindow::setQuakeWindow()
 {
-    m_isQuakeWindow = isQuakeWindow;
-    if (m_isQuakeWindow) {
-        titlebar()->setFixedHeight(0);
-        setWindowRadius(0);
+    setWindowRadius(0);
 
-        QRect deskRect = QApplication::desktop()->availableGeometry();
+    QRect deskRect = QApplication::desktop()->availableGeometry();
 
-        Qt::WindowFlags windowFlags = this->windowFlags();
-        setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
-        /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
-        setWindowState(windowState() & ~Qt::WindowFullScreen);
-        /********************* Modify by n014361 wangpeili End ************************/
-        /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
-        this->setMaximumHeight(deskRect.size().height() * 2 / 3);
-        /********************* Modify by m000714 daizhengwen End ************************/
-        this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        this->setMinimumSize(deskRect.size().width(), 60);
-        this->resize(deskRect.size().width(), deskRect.size().height() / 3);
-        this->move(0, 0);
-    }
-
-    initTitleBar();
-    addTab(m_properties);
+    Qt::WindowFlags windowFlags = this->windowFlags();
+    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
+    /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
+    setWindowState(windowState() & ~Qt::WindowFullScreen);
+    /********************* Modify by n014361 wangpeili End ************************/
+    /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
+    this->setMaximumHeight(deskRect.size().height() * 2 / 3);
+    /********************* Modify by m000714 daizhengwen End ************************/
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setMinimumSize(deskRect.size().width(), 60);
+    this->resize(deskRect.size().width(), deskRect.size().height() / 3);
+    this->move(0, 0);
 }
 
 bool MainWindow::isTabVisited(int tabSessionId)
@@ -860,71 +864,9 @@ void MainWindow::initConnections()
 
 void MainWindow::initTitleBar()
 {
-    // mainwindow的设置按钮触发
-    connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
-        showPlugin(PLUGIN_TYPE_NONE);
-    });
-    // 全屏退出按钮
-    // DTK的全屏按钮不能满足UI要求，隐去DTK最右侧的全屏
-    titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
-    m_exitFullScreen = new DToolButton(this);
-    m_exitFullScreen->setCheckable(false);
-    m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
-    m_exitFullScreen->setIconSize(QSize(36, 36));
-    m_exitFullScreen->setFixedSize(QSize(36, 36));
-    titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
-    m_exitFullScreen->setVisible(false);
-    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
-        switchFullscreen();
-    });
-
-    /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
-    QAction *newWindowAction(new QAction(tr("New &window"), this));
-    connect(newWindowAction, &QAction::triggered, this, [this]() {
-        qDebug() << "menu click new window";
-
-        TermWidgetPage *tabPage = currentPage();
-        TermWidget *term = tabPage->currentTerminal();
-        QString currWorkingDir = term->workingDirectory();
-        emit newWindowRequest(currWorkingDir);
-    });
-    m_menu->addAction(newWindowAction);
-
-    /********************* Modify by m000714 daizhengwen End ************************/
-    for (MainWindowPluginInterface *plugin : m_plugins) {
-        QAction *pluginMenu = plugin->titlebarMenu(this);
-        // 取消Encoding插件的菜单展示
-        if (plugin->getPluginName() == PLUGIN_TYPE_ENCODING) {
-            continue;
-        }
-        if (pluginMenu) {
-            m_menu->addAction(pluginMenu);
-        }
-    }
-
-    QAction *settingAction(new QAction(tr("&Settings"), this));
-    m_menu->addAction(settingAction);
-
     m_titleBar = new TitleBar(this, m_isQuakeWindow);
     m_titleBar->setTabBar(m_tabbar);
-    if (m_isQuakeWindow) {
-        m_centralLayout->addWidget(m_titleBar);
-    } else {
-        titlebar()->setCustomWidget(m_titleBar);
-        titlebar()->setAutoHideOnFullscreen(true);
-        titlebar()->setMenu(m_menu);
-        titlebar()->setTitle("");
-
-        //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
-        titlebar()->setFocusPolicy(Qt::NoFocus);
-
-        //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
-        handleTitleBarMenuFocusPolicy();
-    }
-
-
     connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
-
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
         TermWidget *term = tabPage->currentTerminal();
         bool bIdle = !(term->hasRunningProcess());
@@ -955,6 +897,79 @@ void MainWindow::initTitleBar()
         return;
     });
 
+    // 雷神的特殊处理
+    if (m_isQuakeWindow) {
+        titlebar()->setFixedHeight(0);
+        m_centralLayout->addWidget(m_titleBar);
+    } else {
+        titlebar()->setCustomWidget(m_titleBar);
+        titlebar()->setAutoHideOnFullscreen(true);
+        titlebar()->setTitle("");
+
+        //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
+        titlebar()->setFocusPolicy(Qt::NoFocus);
+        initOptionButton();
+        initOptionMenu();
+
+        //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
+        //handleTitleBarMenuFocusPolicy();
+
+        // mainwindow的设置按钮触发
+        connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
+            showPlugin(PLUGIN_TYPE_NONE);
+        });
+    }
+
+}
+
+void MainWindow::initOptionButton()
+{
+    // 全屏退出按钮
+    // DTK的全屏按钮不能满足UI要求，隐去DTK最右侧的全屏
+    titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+    m_exitFullScreen = new DToolButton(this);
+    m_exitFullScreen->setCheckable(false);
+    m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
+    m_exitFullScreen->setIconSize(QSize(36, 36));
+    m_exitFullScreen->setFixedSize(QSize(36, 36));
+    titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
+    m_exitFullScreen->setVisible(false);
+    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
+        switchFullscreen();
+    });
+
+
+}
+
+void MainWindow::initOptionMenu()
+{
+    titlebar()->setMenu(m_menu);
+    /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
+    QAction *newWindowAction(new QAction(tr("New &window"), this));
+    connect(newWindowAction, &QAction::triggered, this, [this]() {
+        qDebug() << "menu click new window";
+
+        TermWidgetPage *tabPage = currentPage();
+        TermWidget *term = tabPage->currentTerminal();
+        QString currWorkingDir = term->workingDirectory();
+        emit newWindowRequest(currWorkingDir);
+    });
+    m_menu->addAction(newWindowAction);
+
+    /********************* Modify by m000714 daizhengwen End ************************/
+    for (MainWindowPluginInterface *plugin : m_plugins) {
+        QAction *pluginMenu = plugin->titlebarMenu(this);
+        // 取消Encoding插件的菜单展示
+        if (plugin->getPluginName() == PLUGIN_TYPE_ENCODING) {
+            continue;
+        }
+        if (pluginMenu) {
+            m_menu->addAction(pluginMenu);
+        }
+    }
+
+    QAction *settingAction(new QAction(tr("&Settings"), this));
+    m_menu->addAction(settingAction);
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
 }
 
@@ -1029,8 +1044,9 @@ void MainWindow::onCreateNewWindow(QString workingDir)
     qDebug() << "************************workingDir:" << workingDir << endl;
     TermProperties properties;
     properties.setWorkingDir(workingDir);
+    properties[SingleFlag] = false;
+    properties[QuakeMode] = false;
     MainWindow *window = new MainWindow(properties);
-    window->setQuakeWindow(false);
     window->show();
 }
 
