@@ -62,39 +62,28 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     m_windowList.append(this);
 
     initUI();
-    //addQuakeTerminalShortcut();
+    initConnections();
+    initShortcuts();
+
 }
 
 void MainWindow::initUI()
 {
     m_tabbar = new TabBar(this);
     m_tabbar->setFocusPolicy(Qt::NoFocus);
+    // 这里没有初始化titlebar.
+    // titleba需要在雷神参数解析后初始化
 
-    // ShortcutManager::instance();不管是懒汉式还是饿汉式，都不需要这样单独操作
     ShortcutManager::instance()->setMainWindow(this);
     m_shortcutManager = ShortcutManager::instance();
     ServerConfigManager::instance()->initServerConfig();
-    setAttribute(Qt::WA_TranslucentBackground);
 
-    setMinimumSize(450, 250);
-    resize(1024, 768);
-    setCentralWidget(m_centralWidget);
-    setWindowIcon(QIcon::fromTheme("deepin-terminal"));
-
-    // Init layout
-    m_centralLayout->setMargin(0);
-    m_centralLayout->setSpacing(0);
-
-    m_centralLayout->addWidget(m_termStackWidget);
-
-    initConnections();
-    initShortcuts();
-
+    initWindow();
     // Plugin may need centralWidget() to work so make sure initPlugin() is after setCentralWidget()
     // Other place (eg. create titlebar menu) will call plugin method so we should create plugins before init other
     // parts.
     initPlugins();
-    initWindow();
+
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
 }
@@ -534,11 +523,6 @@ void MainWindow::initPlugins()
 
     remoteManagPlugin = new RemoteManagementPlugn(this);
     remoteManagPlugin->initPlugin(this);
-    /******** Modify by m000714 daizhengwen 2020-04-10: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
-    connect(remoteManagPlugin, &RemoteManagementPlugn::doHide, this, [ = ]() {
-        showPlugin(PLUGIN_TYPE_NONE);
-    });
-    /********************* Modify by m000714 daizhengwen End ************************/
 
     m_plugins.append(encodePlugin);
     m_plugins.append(customCommandPlugin);
@@ -547,10 +531,47 @@ void MainWindow::initPlugins()
 
 void MainWindow::initWindow()
 {
-    QSettings settings("blumia", "dterm");
+    setAttribute(Qt::WA_TranslucentBackground);
+    setMinimumSize(m_MinWidth, m_MinHeight);
+    setEnableBlurWindow(Settings::instance()->backgroundBlur());
+    setWindowIcon(QIcon::fromTheme("deepin-terminal"));
 
+    // Init layout
+    m_centralLayout->setMargin(0);
+    m_centralLayout->setSpacing(0);
+    m_centralLayout->addWidget(m_termStackWidget);
+    setCentralWidget(m_centralWidget);
+
+    // init window state.
+    QString windowState = getConfigWindowState();
+    if (windowState == "window_maximum") {
+        showMaximized();
+    } else if (windowState == "fullscreen") {
+        switchFullscreen(true);
+    } else if (windowState == "Halfscreen") {
+        setWindowRadius(0);
+        resize(QSize(QApplication::desktop()->width() / 2, QApplication::desktop()->height()));
+        move(0, 0);
+    } else {
+        int saveWidth = m_winInfoConfig->value("save_width").toInt();
+        int saveHeight = m_winInfoConfig->value("save_height").toInt();
+        qDebug() << "saveWidth: " << saveWidth;
+        qDebug() << "saveHeight: " << saveHeight;
+        // 如果配置文件没有数据
+        if (saveWidth == 0 || saveHeight == 0) {
+            saveWidth = 1000;
+            saveHeight = 600;
+        }
+        resize(QSize(saveWidth, saveHeight));
+    }
+}
+
+QString MainWindow::getConfigWindowState()
+{
     QString windowState =
         Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
+
+    // 启动参数配置的状态值优先于 内部配置的状态值
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
         qDebug() << "use line state set:" << state;
@@ -564,33 +585,7 @@ void MainWindow::initWindow()
             qDebug() << "error line state set:" << state << "ignore it!";
         }
     }
-
-    // init window state.
-    if (windowState == "window_maximum") {
-        showMaximized();
-    } else if (windowState == "fullscreen") {
-        switchFullscreen(true);
-        /******** Modify by n014361 wangpeili 2020-02-25:增加半屏设置    ****************/
-    } else if (windowState == "Halfscreen") {
-        setWindowRadius(0);
-        resize(QSize(QApplication::desktop()->width() / 2, QApplication::desktop()->height()));
-        move(0, 0);
-        /********************* Modify by n014361 wangpeili End ************************/
-    } else {
-//        QSettings settings(getWinInfoConfigPath(), QSettings::IniFormat);
-        int saveWidth = m_winInfoConfig->value("save_width").toInt();
-        int saveHeight = m_winInfoConfig->value("save_height").toInt();
-        qDebug() << "saveWidth: " << saveWidth;
-        qDebug() << "saveHeight: " << saveHeight;
-
-        if (saveWidth == 0 || saveHeight == 0) {
-            resize(QSize(1000, 600));
-        } else {
-            resize(QSize(saveWidth, saveHeight));
-        }
-    }
-
-    setEnableBlurWindow(Settings::instance()->backgroundBlur());
+    return  windowState;
 }
 
 QString MainWindow::getWinInfoConfigPath()
@@ -745,7 +740,6 @@ void MainWindow::initShortcuts()
         if (page) {
             page->pasteClipboard();
         }
-        // page->doAction("paste");
     });
 
     // search
@@ -795,7 +789,7 @@ void MainWindow::initShortcuts()
     connect(createNewShotcut("shortcuts.advanced.rename_tab"), &QShortcut::activated, this, [this]() {
         showPlugin(PLUGIN_TYPE_NONE);
         TermWidgetPage *page = currentPage();
-        if (page) {            
+        if (page) {
             TermWidget *term = page->currentTerminal();
             QString currTabTitle = m_tabbar->tabText(m_tabbar->currentIndex());
             Utils::showRenameTitleDialog(currTabTitle, term);
@@ -827,32 +821,28 @@ void MainWindow::initShortcuts()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
-    // ctrl+5 not response?
     for (int i = 1; i <= 9; i++) {
         QString shortCutStr = QString("alt+%1").arg(i);
         qDebug() << shortCutStr;
         QShortcut *switchTabSC = new QShortcut(QKeySequence(shortCutStr), this);
         connect(switchTabSC, &QShortcut::activated, this, [this, i]() {
-            qDebug() << i << endl;
-
             TermWidgetPage *page = currentPage();
+            if (page) {
+                if (9 == i && m_tabbar->count() > 9) {
+                    m_tabbar->setCurrentIndex(m_tabbar->count() - 1);
+                    return;
+                }
 
-            if (!page) {
+                if (i - 1 >= m_tabbar->count()) {
+                    qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << endl;
+                    return;
+                }
+
+                qDebug() << "index" << i - 1 << endl;
+                m_tabbar->setCurrentIndex(i - 1);
                 return;
             }
-
-            if (9 == i && m_tabbar->count() > 9) {
-                m_tabbar->setCurrentIndex(m_tabbar->count() - 1);
-                return;
-            }
-
-            if (i - 1 >= m_tabbar->count()) {
-                qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << endl;
-                return;
-            }
-
-            qDebug() << "index" << i - 1 << endl;
-            m_tabbar->setCurrentIndex(i - 1);
+            qDebug() << "currentPage nullptr ??";
         });
     }
 }
@@ -861,9 +851,7 @@ void MainWindow::initConnections()
 {
     connect(Settings::instance(), &Settings::windowSettingChanged, this, &MainWindow::onWindowSettingChanged);
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
-
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
-
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
         //变成自动变色的图标以后，不需要来回变了。
         // applyTheme();
