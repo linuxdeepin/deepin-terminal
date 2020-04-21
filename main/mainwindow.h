@@ -44,6 +44,7 @@ public:
     /********************* Modify by n014361 wangpeili End ************************/
 
     void focusPage(const QString &identifier);
+    void focusCurrentPage();
     TermWidgetPage *currentPage();
     TermWidgetPage *getPageByIdentifier(const QString &identifier);
 
