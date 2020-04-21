@@ -31,7 +31,7 @@
 /********************* Modify by m000714 daizhengwen End ************************/
 
 /******** Modify by m000714 daizhengwen 2020-04-17: 使用DTK的Dialog****************/
-//#define USE_DTK
+#define USE_DTK
 /********************* Modify by m000714 daizhengwen End ************************/
 
 class Utils : public QObject
