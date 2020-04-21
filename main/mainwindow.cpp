@@ -793,8 +793,9 @@ void MainWindow::initShortcuts()
 
     // rename_tab
     connect(createNewShotcut("shortcuts.advanced.rename_tab"), &QShortcut::activated, this, [this]() {
+        showPlugin(PLUGIN_TYPE_NONE);
         TermWidgetPage *page = currentPage();
-        if (page) {
+        if (page) {            
             TermWidget *term = page->currentTerminal();
             QString currTabTitle = m_tabbar->tabText(m_tabbar->currentIndex());
             Utils::showRenameTitleDialog(currTabTitle, term);
