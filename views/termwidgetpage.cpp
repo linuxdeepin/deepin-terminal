@@ -59,11 +59,6 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
         }
     });
 
-    TermWidget *w = createTerm(properties);
-    splitter->addWidget(w);
-
-    layout->addWidget(splitter);
-
     m_currentTerm = w;
 }
 
