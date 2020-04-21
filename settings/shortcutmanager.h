@@ -25,10 +25,12 @@ public:
     QAction *addCustomCommand(QAction &action);
     void mainWindowAddAction(QAction *action);
     void delCustomCommand(CustomCommandItemData itemData);
+    void delCustomCommandForModify(CustomCommandItemData itemData);
     void saveCustomCommandToConfig(QAction *action, int saveIndex);
     int delCustomCommandToConfig(CustomCommandItemData itemData);
     // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
+    QAction *checkActionIsExistForModify(QAction &action);
     QString getClipboardCommandData();
 
     // 判断快捷键是否合法可用，进行界面处理

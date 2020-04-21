@@ -108,6 +108,8 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
     if (dlg.exec() == QDialog::Accepted) {
         QAction *newAction = dlg.getCurCustomCmd();
         QString strActionShortcut = newAction->shortcut().toString(QKeySequence::NativeText);
+        /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
+        CustomCommandItemData itemDel = itemData;
 
         itemData.m_cmdName = newAction->text();
         itemData.m_cmdText = newAction->data().toString();
@@ -115,9 +117,19 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         newAction->setData(newAction->data());
         newAction->setShortcut(newAction->shortcut());
 
-        int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(itemData);
-        ShortcutManager::instance()->saveCustomCommandToConfig(newAction, deleteIndex);
-        m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+        if (dlg.m_bNeedDel) {
+            ShortcutManager::instance()->delCustomCommandForModify(itemDel);
+            ShortcutManager::instance()->delCustomCommandForModify(itemData);
+            addNewCustomCommandData(newAction);
+            ShortcutManager::instance()->addCustomCommand(*newAction);
+            removeCommandItem(modelIndex);
+            scrollToBottom();
+        } else {
+            int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(itemData);
+            ShortcutManager::instance()->saveCustomCommandToConfig(newAction, deleteIndex);
+            m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+        }
+        /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 
     } else {
 
