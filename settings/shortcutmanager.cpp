@@ -2,10 +2,10 @@
 #include "termwidgetpage.h"
 #include "mainwindow.h"
 #include "settings.h"
-#include "termqsettings.h"
 
 #include <QStandardPaths>
 #include <QTextCodec>
+#include <QSettings>
 #include <QDebug>
 #include <QDir>
 
@@ -66,9 +66,8 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
         return actionList;
     }
 
-    TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setIniCodec(INI_FILE_CODEC);
-    commandsSettings.setDisableAutoSortSection(true);
     QStringList commandGroups = commandsSettings.childGroups();
     // qDebug() << commandGroups.size() << endl;
     for (const QString &commandName : commandGroups) {
@@ -175,6 +174,19 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
     }
     return nullptr;
 }
+/************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
+QAction *ShortcutManager::checkActionIsExistForModify(QAction &action)
+{
+    QString strNewActionName = action.text();
+    for (int i = 0; i < m_customCommandActionList.size(); i++) {
+        QAction *currAction = m_customCommandActionList[i];
+        if (strNewActionName == currAction->text() && action.data() == currAction->data() && action.shortcut() == currAction->shortcut()) {
+            return currAction;
+        }
+    }
+    return nullptr;
+}
+/************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 /*******************************************************************************
  1. @函数:    isShortcutConflictInCustom
  2. @作者:    n014361 王培利
@@ -286,7 +298,25 @@ void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
     }
 
 }
+/************************ Add by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
+void ShortcutManager::delCustomCommandForModify(CustomCommandItemData itemData)
+{
+    delCustomCommandToConfig(itemData);
 
+    QString actionCmdName = itemData.m_cmdName;
+
+    for (int i = 0; i < m_customCommandActionList.size(); i++) {
+        QAction *currAction = m_customCommandActionList.at(i);
+        QString currCmdName = currAction->text();
+        if (actionCmdName == currCmdName) {
+            m_mainWindow->removeAction(m_customCommandActionList.at(i));
+            m_customCommandActionList.removeAt(i);
+            break;
+        }
+    }
+
+}
+/************************ Add by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -295,12 +325,8 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
-    TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setIniCodec(INI_FILE_CODEC);
-    commandsSettings.setDisableAutoSortSection(true);
-    if (saveIndex >= 0) {
-        commandsSettings.setOperationIndex(saveIndex);
-    }
     commandsSettings.beginGroup(action->text());
     commandsSettings.setValue("Command", action->data());
     QString tmp = action->shortcut().toString();
@@ -337,10 +363,18 @@ int ShortcutManager::delCustomCommandToConfig(CustomCommandItemData itemData)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
-    TermQSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setIniCodec(INI_FILE_CODEC);
-    int removeIndex = commandsSettings.remove(itemData.m_cmdName);
+    commandsSettings.remove(itemData.m_cmdName);
 
+    int removeIndex = -1;
+    for (int i = 0; i < m_customCommandActionList.size(); i++) {
+        QAction *currAction = m_customCommandActionList[i];
+        if (itemData.m_cmdName == currAction->text()) {
+            removeIndex = i;
+            break;
+        }
+    }
     return removeIndex;
 }
 

@@ -241,15 +241,36 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     m_newAction->setData(strCommand);
     m_newAction->setShortcut(m_shortCutLineEdit->keySequence());
 
-    QAction *existAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
-    if (nullptr != existAction) {
+    /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
+    QAction *existAction = nullptr;
+    int icount = 0;
+    m_bNeedDel = false;
+    if (m_type == CCT_MODIFY) {
+        existAction = ShortcutManager::instance()->checkActionIsExistForModify(*m_newAction);
+
+        if (strName != m_currItemData->m_cmdName) {
+            m_bNeedDel = true;
+            QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
+            for (int i = 0; i < customCommandActionList.size(); i++) {
+                QAction *curAction = customCommandActionList[i];
+                QString strCmdName = curAction->text();
+                if (strCmdName == strName) {
+                    icount++;
+                }
+            }
+        }
+    } else {
+        existAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
+    }
+
+    if (nullptr != existAction || icount) {
         QString strFistLine = tr("The name already exists,");
         QString strSecondeLine = tr("please input another one.");
         Utils::showSameNameDialog(strFistLine, strSecondeLine);
     } else {
         accept();
     }
-
+    /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 }
 
 void CustomCommandOptDlg::slotDelCurCustomCommand()

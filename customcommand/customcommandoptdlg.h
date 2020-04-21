@@ -45,7 +45,7 @@ public:
 
     QAction *getCurCustomCmd();
     bool isDelCurCommand();
-
+    bool m_bNeedDel = false;
 protected:
     void initUITitle();
     void initTitleConnections();
