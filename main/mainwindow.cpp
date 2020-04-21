@@ -250,8 +250,7 @@ bool MainWindow::hasRunningProcesses()
         if (term->hasRunningProcess()) {
             qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
             return true;
-        }
-        else {
+        } else {
             qDebug() << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
         }
     }
@@ -1378,7 +1377,7 @@ QString MainWindow::showFileDailog(bool isDir)
     QString dlgTitle = tr("Select file to upload");
     if (isDir) {
         dlgTitle = tr("Select directory to save the file");
-        return DFileDialog::getExistingDirectory(this, dlgTitle, curPath);
+        return DFileDialog::getExistingDirectory(this, dlgTitle, curPath, DFileDialog::DontConfirmOverwrite);
     }
     return DFileDialog::getOpenFileName(this, dlgTitle, curPath);
 }
