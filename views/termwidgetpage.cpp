@@ -726,6 +726,6 @@ void TermWidgetPage::setMismatchAlert(bool alert)
 *******************************************************************************/
 void TermWidgetPage::resizeEvent(QResizeEvent *event)
 {
-    qDebug() << "resizeEvent" << x() << y();
+    //qDebug() << "resizeEvent" << x() << y();
     this->m_findBar->move(width() - 382, 0);
 }
