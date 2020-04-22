@@ -390,6 +390,13 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
         emit confirmBtnClicked();
     });
 
+    /************************ Add by m000743 sunchengxi 2020-04-21:快捷键编辑结束后，enter按下可以响应校验 Begin************************/
+    connect(m_shortCutLineEdit, &DKeySequenceEdit::editingFinished, this, [ = ]() {
+        qDebug() << "shourtCut editingFinished";
+        m_confirmBtn->setFocus();
+    });
+    /************************ Add by m000743 sunchengxi 2020-04-21:快捷键编辑结束后，enter按下可以响应校验 End  ************************/
+
     m_mainLayout->addLayout(buttonsLayout);
 }
 
