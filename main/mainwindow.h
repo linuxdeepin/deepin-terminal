@@ -67,6 +67,8 @@ public:
 
     // 由mainwindow统一指令当前显示哪个插件
     void showPlugin(const QString &name);
+    // 快速隐藏插件
+    void hidePlugin();
     // 由mainwindow统一获取当前选择的文本。
     QString selectedText(bool preserveLineBreaks = true);
 
@@ -82,7 +84,7 @@ public:
     static constexpr const char *PLUGIN_TYPE_NONE = "None";
 signals:
     void newWindowRequest(const QString &directory);
-    // !这个信号被封装了，请不要单独调用！
+    // !这两个信号被封装了，请不要单独调用！
     void showPluginChanged(const QString &name);
     void quakeHidePlugin();
 
@@ -116,7 +118,11 @@ private:
     void initWindow();
     // 雷神窗口
     void setQuakeWindow();
+    void setNormalWindow();
+    void setDefaultLocation();
+    void resizeAndMove();
     QString getConfigWindowState();
+    QSize halfScreenSize();
     // 加载插件
     void initPlugins();
     void initShortcuts();
@@ -136,7 +142,7 @@ private:
     bool isTabVisited(int tabSessionId);
     bool isTabChangeColor(int tabSessionId);
     void updateTabStatus();
-
+    void saveWindowSize();
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
     /********************* Modify by n014361 wangpeili End ************************/
@@ -204,8 +210,12 @@ private:
     */
     bool _isClickedExitDlg {false};
 
+    // 窗口最小宽度
     const int m_MinWidth = 450;
+    // 窗口最小高度
     const int m_MinHeight = 250;
+    // 是否需要保存位置开关
+    bool m_IfUseLastSize = false;
 };
 
 #endif  // MAINWINDOW_H
