@@ -74,6 +74,10 @@ void MainWindow::initUI()
     // parts.    
     initPlugins();
     initTitleBar();
+
+    // 雷神和普通窗口设置不同
+    m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
+    resizeAndMove();
     addTab(m_properties);
 
     //下面代码待处理
@@ -96,10 +100,6 @@ void MainWindow::initWindow()
     m_centralLayout->setSpacing(0);
     m_centralLayout->addWidget(m_termStackWidget);
     setCentralWidget(m_centralWidget);
-
-    // 雷神和普通窗口设置不同
-    m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
-    resizeAndMove();
 }
 /*******************************************************************************
  1. @函数:    initTitleBar
