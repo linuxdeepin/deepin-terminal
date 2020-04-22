@@ -12,8 +12,8 @@
         <translation type="vanished">确定删除“%1”吗？</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandlist.cpp" line="129"/>
         <location filename="../customcommand/customcommandlist.cpp" line="141"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="153"/>
         <source>Are you sure to delete?</source>
         <translation>确定删除吗？</translation>
     </message>
@@ -64,12 +64,12 @@
         <translation>请输入命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="246"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="267"/>
         <source>The name already exists,</source>
         <translation>该名称已存在，</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="247"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="268"/>
         <source>please input another one.</source>
         <translation>请重新输入</translation>
     </message>
@@ -173,32 +173,32 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="886"/>
+        <location filename="../main/mainwindow.cpp" line="948"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="909"/>
+        <location filename="../main/mainwindow.cpp" line="971"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1275"/>
+        <location filename="../main/mainwindow.cpp" line="1290"/>
         <source>workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1277"/>
+        <location filename="../main/mainwindow.cpp" line="1292"/>
         <source>terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1279"/>
+        <location filename="../main/mainwindow.cpp" line="1294"/>
         <source>advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1340"/>
+        <location filename="../main/mainwindow.cpp" line="1355"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -207,12 +207,12 @@
         <translation type="vanished">请输入下载文件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1377"/>
+        <location filename="../main/mainwindow.cpp" line="1390"/>
         <source>Select file to upload</source>
         <translation>选择要上传的文件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1379"/>
+        <location filename="../main/mainwindow.cpp" line="1392"/>
         <source>Select directory to save the file</source>
         <translation>选择下载文件的保存目录</translation>
     </message>
@@ -734,8 +734,8 @@
     <message>
         <location filename="../remotemanage/serverconfiglist.cpp" line="174"/>
         <location filename="../remotemanage/serverconfiglist.cpp" line="184"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="130"/>
         <location filename="../customcommand/customcommandlist.cpp" line="142"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="154"/>
         <location filename="../common/utils.cpp" line="260"/>
         <location filename="../common/utils.cpp" line="281"/>
         <location filename="../common/utils.cpp" line="301"/>
@@ -765,8 +765,8 @@
     </message>
     <message>
         <location filename="../views/warnningdlg.cpp" line="103"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="130"/>
-        <location filename="../customcommand/customcommandlist.cpp" line="143"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="142"/>
+        <location filename="../customcommand/customcommandlist.cpp" line="155"/>
         <location filename="../common/utils.cpp" line="281"/>
         <location filename="../common/utils.cpp" line="301"/>
         <location filename="../common/utils.cpp" line="309"/>
@@ -794,7 +794,7 @@
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="104"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="106"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>在您使用右键菜单进行上传和下载文件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
@@ -935,72 +935,72 @@
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="237"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="239"/>
         <source>Edit server</source>
         <translation>编辑服务器</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="238"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="240"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="316"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="328"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="318"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="330"/>
         <source>ascii-del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="317"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="329"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="319"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="331"/>
         <source>auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="318"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="330"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="320"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="332"/>
         <source>control-h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="319"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="327"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="321"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="329"/>
         <source>escape-sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="320"/>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="331"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="322"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="333"/>
         <source>ttys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="359"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="361"/>
         <source>Please enter server name!</source>
         <translation>请输入服务器名称！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="364"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="366"/>
         <source>Please enter IP address!</source>
         <translation>请输入IP地址！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="369"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="371"/>
         <source>Please enter port!</source>
         <translation>请输入端口号！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="375"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="377"/>
         <source>Please enter user name!</source>
         <translation>请输入用户名！</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="388"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="390"/>
         <source>The server name already exists,</source>
         <translation>该服务器名已存在，</translation>
     </message>
     <message>
-        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="389"/>
+        <location filename="../remotemanage/serverconfigoptdlg.cpp" line="391"/>
         <source>please input another one. </source>
         <translation>请重新输入</translation>
     </message>
@@ -1087,15 +1087,15 @@
         <translation type="vanished">快捷键%1已被占用</translation>
     </message>
     <message>
-        <location filename="../settings/shortcutmanager.cpp" line="231"/>
-        <location filename="../settings/shortcutmanager.cpp" line="240"/>
+        <location filename="../settings/shortcutmanager.cpp" line="243"/>
+        <location filename="../settings/shortcutmanager.cpp" line="252"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>%1为无效快捷键，</translation>
     </message>
     <message>
-        <location filename="../settings/shortcutmanager.cpp" line="247"/>
-        <location filename="../settings/shortcutmanager.cpp" line="254"/>
-        <location filename="../settings/shortcutmanager.cpp" line="260"/>
+        <location filename="../settings/shortcutmanager.cpp" line="259"/>
+        <location filename="../settings/shortcutmanager.cpp" line="266"/>
+        <location filename="../settings/shortcutmanager.cpp" line="272"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>快捷键%1已被占用，</translation>
     </message>

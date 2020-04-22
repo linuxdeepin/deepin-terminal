@@ -233,6 +233,8 @@ void ServerConfigOptDlg::initUI()
 
     DPushButton *pCancelButton = new DPushButton(tr("Cancel"));
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add"));
+    //Add a line by m000750 zhangmeng 2020-04-22设置回车触发默认按钮
+    pAddSaveButton->setDefault(true);
     if (m_type == SCT_MODIFY) {
         m_titleLabel->setText(tr("Edit server"));
         pAddSaveButton->setText(tr("Save"));
