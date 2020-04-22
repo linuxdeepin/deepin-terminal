@@ -69,6 +69,9 @@ void ServerConfigGroupPanel::handleShowSearchResult()
 void ServerConfigGroupPanel::refreshSearchState()
 {
     if (m_listWidget->count() >= 2) {
+        /************************ Add by m000743 sunchengxi 2020-04-22:搜索显示异常 Begin************************/
+        m_searchEdit->clearEdit();
+        /************************ Add by m000743 sunchengxi 2020-04-22:搜索显示异常  End ************************/
         m_searchEdit->show();
     } else {
         m_searchEdit->hide();
