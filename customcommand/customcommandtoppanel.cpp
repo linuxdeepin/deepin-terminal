@@ -32,7 +32,7 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
             &CustomCommandSearchRstPanel::handleCustomCurCommand,
             this,
             &CustomCommandTopPanel::handleCustomCurCommand);
-    connect(this, &CustomCommandTopPanel::focusOut, this, &RightPanel::hideAnim);
+    connect(this, &CustomCommandTopPanel::handleCustomCurCommand, this, &RightPanel::hideAnim);
 }
 
 void CustomCommandTopPanel::showCustomCommandPanel()
