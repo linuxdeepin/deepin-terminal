@@ -12,6 +12,8 @@
 TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
+    qDebug()<<"parentTermWidgetPage" <<parentWidget();
+    m_MainWindow = static_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
     // 生成唯一 pageID
@@ -62,6 +64,12 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     m_currentTerm = w;
 }
 
+MainWindow *TermWidgetPage::parentMainWindow()
+{
+    //qDebug()<<"parentMainWindow" <<parentWidget();
+    return m_MainWindow;
+}
+
 void TermWidgetPage::setSplitStyle(DSplitter *splitter)
 {
     splitter->setHandleWidth(1);
@@ -90,7 +98,7 @@ TermWidget *TermWidgetPage::split(Qt::Orientation orientation)
 
 TermWidget *TermWidgetPage::split(TermWidget *term, Qt::Orientation orientation)
 {
-    emit pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_NONE);
+    //parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
     Q_CHECK_PTR(parent);
 
@@ -689,15 +697,10 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
 TermWidget *TermWidgetPage::createTerm(TermProperties properties)
 {
     TermWidget *term = new TermWidget(properties, this);
-
-    connect(term, &TermWidget::termRequestSplit, this, &TermWidgetPage::onTermRequestSplit);
     connect(term, &TermWidget::termRequestRenameTab, this, &TermWidgetPage::onTermRequestRenameTab);
-    connect(term, &TermWidget::termRequestOpenSettings, this, &TermWidgetPage::termRequestOpenSettings);
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
-    connect(term, &TermWidget::termRequestUploadFile, this, &TermWidgetPage::termRequestUploadFile);
-    connect(term, &TermWidget::termRequestDownloadFile, this, &TermWidgetPage::termRequestDownloadFile);
     return term;
 }
 

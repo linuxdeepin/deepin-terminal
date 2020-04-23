@@ -26,7 +26,8 @@ DWIDGET_USE_NAMESPACE
 using namespace Konsole;
 TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
-    m_Page = (TermWidgetPage *)parent;
+    //qDebug() << " TermWidgetparent " << parentWidget();
+    m_Page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     setHistorySize(5000);
@@ -132,7 +133,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     });
 
     connect(this, &QTermWidget::sig_noMatchFound, this, [this]() {
-        m_Page->setMismatchAlert(true);
+        parentPage()->setMismatchAlert(true);
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -168,6 +169,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
 }
 
+TermWidgetPage *TermWidget::parentPage()
+{
+    //qDebug() << "parentPage" << parentWidget();
+    return  m_Page;
+}
+
 void TermWidget::handleTermIdle(bool bIdle)
 {
     emit termIsIdle(this->getSessionId(), bIdle);
@@ -175,6 +182,9 @@ void TermWidget::handleTermIdle(bool bIdle)
 
 void TermWidget::customContextMenuCall(const QPoint &pos)
 {
+    // 右键清理插件
+    parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
+
     DMenu menu;
 
     bool isRemoting = isInRemoteServer();
@@ -217,41 +227,45 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     menu.addSeparator();
 
-    menu.addAction(tr("&Horizontal Split"), this, [this] { emit termRequestSplit(Qt::Horizontal); });
+    menu.addAction(tr("&Horizontal Split"), this, [this] {
+        parentPage()->split(Qt::Horizontal);
+    });
 
-    menu.addAction(tr("&Vertical Split"), this, [this] { emit termRequestSplit(Qt::Vertical); });
+    menu.addAction(tr("&Vertical Split"), this, [this] {
+        parentPage()->split(Qt::Vertical);
+    });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    menu.addAction(tr("Close &Window"), this, [this] { m_Page->closeSplit(m_Page->currentTerminal());});
+    menu.addAction(tr("Close &Window"), this, [this] {
+        parentPage()->closeSplit(parentPage()->currentTerminal());
+    });
     //menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
-    if (m_Page->getTerminalCount() > 1) {
-        menu.addAction(
-            tr("Close &Other &Window"), this, [this] { m_Page->closeOtherTerminal(); });
+    if (parentPage()->getTerminalCount() > 1) {
+        menu.addAction(tr("Close &Other &Window"), this, [this] {
+            parentPage()->closeOtherTerminal(); });
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
     menu.addSeparator();
-    menu.addAction(tr("New &workspace"), this, [this] { emit m_Page->pageRequestNewWorkspace(); });
+    menu.addAction(tr("New &workspace"), this, [this] {
+        parentPage()->parentMainWindow()->createNewWorkspace();
+    });
 
     menu.addSeparator();
 
-//    if((m_Page->parentWidget()->isQuak))->isQuakeWindowActivated())
-//    {
-
-//    }
-    if (!m_properties.contains(QuakeMode)) {
+    if (!m_properties[QuakeMode].toBool()) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
         if (isFullScreen) {
-            menu.addAction(
-                tr("Exit Full&screen"), this, [this] {  });
+            menu.addAction(tr("Exit Full&screen"), this, [this] {
+                parentPage()->parentMainWindow()->switchFullscreen(); });
         } else {
-            menu.addAction(
-                tr("Full&screen"), this, [this] { window()->setWindowState(windowState() | Qt::WindowFullScreen); });
+            menu.addAction(tr("Full&screen"), this, [this] {
+                parentPage()->parentMainWindow()->switchFullscreen();});
         }
     }
 
     menu.addAction(tr("&Find"), this, [this] {
-        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
+        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
     });
     menu.addSeparator();
 
@@ -279,7 +293,6 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
 
     menu.addAction(tr("Rename title"), this, [this] {
-
         QString currTabTitle = this->property("currTabTitle").toString();
         if (currTabTitle.isNull())
         {
@@ -290,26 +303,32 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     });
 
     menu.addAction(tr("&Encoding"), this, [this] {
-        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
+        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
     });
 
     menu.addAction(tr("Custom commands"), this, [this] {
-        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
+        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
     menu.addAction(tr("Remote management"), this, [this] {
-        emit m_Page->pageRequestShowPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
 
     if (isInRemoteServer()) {
         menu.addSeparator();
-        menu.addAction(tr("Upload file"), this, [this] { emit termRequestUploadFile(); });
-        menu.addAction(tr("Download file"), this, [this] { emit termRequestDownloadFile(); });
+        menu.addAction(tr("Upload file"), this, [this] {
+            parentPage()->parentMainWindow()->remoteUploadFile();
+        });
+        menu.addAction(tr("Download file"), this, [this] {
+            parentPage()->parentMainWindow()->remoteDownloadFile();
+        });
     }
 
     menu.addSeparator();
 
-    menu.addAction(tr("Settings"), this, [this] { emit termRequestOpenSettings(); });
+    menu.addAction(tr("Settings"), this, [this] {
+        parentPage()->parentMainWindow()->showSettingDialog();
+    });
 
     // display the menu.
     menu.exec(mapToGlobal(pos));

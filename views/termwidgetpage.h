@@ -13,13 +13,14 @@
 DWIDGET_USE_NAMESPACE
 
 class TermWidget;
-
+class MainWindow;
 class TermWidgetPage : public QWidget
 {
     Q_OBJECT
 public:
     TermWidgetPage(TermProperties properties, QWidget *parent = nullptr);
-
+    // mainwindow指针，parent()会变化？？？所以要在构造的时候保存。
+    MainWindow *parentMainWindow();
     TermWidget *currentTerminal();
     TermWidget *split(Qt::Orientation orientation);
     TermWidget *split(TermWidget *term, Qt::Orientation orientation);
@@ -96,15 +97,11 @@ public slots:
     void updateSplitStyle();
 
 signals:
-    void pageRequestShowPlugin(const QString &name);
-    void pageRequestNewWorkspace();
     void tabTitleChanged(QString title) const;
     void termTitleChanged(QString title) const;
     void lastTermClosed(QString pageIdentifier) const;
     void termRequestOpenSettings() const;
     void termGetFocus() const;
-    void termRequestUploadFile() const;
-    void termRequestDownloadFile() const;
     bool uninstallTerminal();
 
 private slots:
@@ -116,5 +113,6 @@ private:
 
     TermWidget *m_currentTerm = nullptr;
     PageSearchBar *m_findBar = nullptr;
+    MainWindow *m_MainWindow = nullptr;
 };
 #endif  // TERMWIDGETPAGE_H

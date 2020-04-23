@@ -130,7 +130,7 @@ void MainWindow::initTitleBar()
     }, Qt::QueuedConnection);
 
     connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() {
-        addTab(currentPage()->createCurrentTerminalProperties(), true);
+        createNewWorkspace();
     }, Qt::QueuedConnection);
 
     connect(m_tabbar, &DTabBar::currentChanged, this, [this](int index) {
@@ -390,16 +390,8 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     TermWidget *term = termPage->currentTerminal();
     m_tabbar->saveSessionIdWithTabIndex(term->getSessionId(), index);
     m_tabbar->saveSessionIdWithTabId(term->getSessionId(), termPage->identifier());
-
-    connect(termPage, &TermWidgetPage::pageRequestNewWorkspace, this, [this]() {
-        this->addTab(currentPage()->createCurrentTerminalProperties(), true);
-    });
-    connect(termPage, &TermWidgetPage::pageRequestShowPlugin, this, [this](QString name) {
-        showPlugin(name);
-    });
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
-    connect(termPage, &TermWidgetPage::termRequestOpenSettings, this, &MainWindow::showSettingDialog);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString & identifier) {
         closeTab(identifier, false);
     });
@@ -449,9 +441,6 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
             m_tabbar->setNeedChangeTextColor(tabIndex, pa.color(DPalette::Highlight));
         }
     });
-
-    connect(termPage, &TermWidgetPage::termRequestUploadFile, this, &MainWindow::remoteUploadFile);
-    connect(termPage, &TermWidgetPage::termRequestDownloadFile, this, &MainWindow::remoteDownloadFile);
 }
 
 bool MainWindow::hasRunningProcesses()
@@ -1186,7 +1175,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
     /******** Modify by m000714 daizhengwen 2020-04-10: 获取点击事件，隐藏右侧窗口****************/
-    if (m_CurrentShowPlugin != PLUGIN_TYPE_NONE && m_CurrentShowPlugin != PLUGIN_TYPE_SEARCHBAR) {
+    if (m_CurrentShowPlugin != PLUGIN_TYPE_NONE) {
         if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
             QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
             // 242为RightPanel的的宽度
@@ -1299,6 +1288,11 @@ void MainWindow::showSettingDialog()
         page->focusCurrentTerm();
     }
     /********************* Modify by n014361 wangpeili End ************************/
+}
+
+void MainWindow::createNewWorkspace()
+{
+    addTab(currentPage()->createCurrentTerminalProperties(), true);
 }
 /*******************************************************************************
  1. @函数:    applyTheme
