@@ -26,6 +26,9 @@ find_package(Qt5LinguistTools)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
+#find_package(DtkWidget REQUIRED)
+#find_package(DtkCore REQUIRED)
+#find_package(DtkGui REQUIRED)
 
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
@@ -60,16 +63,15 @@ set(LINK_LIBS
     Qt5::WidgetsPrivate
     Qt5::Network
 
-    ${DtkWidget_LDFLAGS}
-    ${DtkGui_LDFLAGS}
-    ${DtkCore_LDFLAGS}
+    ${DtkWidget_LIBRARIES}
+    ${DtkCore_LIBRARIES}
+    ${DtkGUI_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources
 # TODO: portable headers?
 set (DTNG_CPP_FILES
     common/utils.cpp
-    common/termqsettings.cpp
     customcommand/customcommanddelegate.cpp
     customcommand/customcommanditemmodel.cpp
     customcommand/customcommandlist.cpp
@@ -126,8 +128,6 @@ set (DTNG_CPP_FILES
 
 set (DTNG_HEADER_FILES
     common/define.h
-    common/termqsettings.h
-    common/termqsettings_p.h
     common/utils.h
     customcommand/customcommanddelegate.h
     customcommand/customcommanditemmodel.h
@@ -203,6 +203,16 @@ add_executable (${EXE_NAME}
     ${DTNG_QRC_FILES}
     ${DTNG_QM_FILES}
 )
+
+target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
+                                              ${Qt5DBus_LIBRARIES}
+                                              ${Qt5Widgets_PRIVATE_INCLUDE_DIRS}
+                                              ${Qt5Core_PRIVATE_INCLUDE_DIRS}
+                                              ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
+                                              ${PROJECT_BINARY_DIR}
+                                              ${DtkWidget_INCLUDE_DIRS}
+                                              ${DtkCore_LIBRARIES}
+                                              ${DtkGUI_INCLUDE_DIRS})
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
