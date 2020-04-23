@@ -565,7 +565,7 @@
         <location filename="../common/utils.cpp" line="280"/>
         <location filename="../common/utils.cpp" line="286"/>
         <source>Are you sure you want to uninstall?</source>
-        <translation>您确定要卸载终端吗？</translation>
+        <translation>您确定要卸载吗？</translation>
     </message>
     <message>
         <location filename="../common/utils.cpp" line="329"/>

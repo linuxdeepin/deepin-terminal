@@ -9,7 +9,7 @@ source_file = translations/deepin-terminal.ts
 source_lang = en
 type = QT
 
-[deepin-terminal.deepin-terminal-desktop-ts]
+[deepin-terminal.deepin-terminal-desktop]
 file_filter = translations/desktop/desktop_<lang>.ts
 source_file = translations/desktop/desktop.ts
 source_lang = en
