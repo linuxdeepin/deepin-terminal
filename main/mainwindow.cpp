@@ -224,7 +224,8 @@ void MainWindow::initOptionMenu()
     }
 
     QAction *settingAction(new QAction(tr("&Settings"), this));
-    m_menu->addAction(settingAction);    
+    m_menu->addAction(settingAction);
+    m_menu->addSeparator();
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
 }
 
