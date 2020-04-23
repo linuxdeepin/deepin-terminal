@@ -69,12 +69,17 @@ public:
     void showPlugin(const QString &name);
     // 快速隐藏插件
     void hidePlugin();
+    // 显示设置框
+    void showSettingDialog();
+    // 新建工作区
+    void createNewWorkspace();
     // 由mainwindow统一获取当前选择的文本。
     QString selectedText(bool preserveLineBreaks = true);
 
     static QList<MainWindow *> getWindowList();
 
     bool hasRunningProcesses();
+    void switchFullscreen(bool forceFullscreen = false);
 
     static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
     static constexpr const char *PLUGIN_TYPE_THEME = "Theme";
@@ -132,7 +137,7 @@ private:
     void initOptionMenu();
 
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
-    void showSettingDialog();
+
     QString getWinInfoConfigPath();
     void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
@@ -150,10 +155,6 @@ private:
     /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
     bool closeProtect();
     /**************** Modify by n013252 wangliang End ****************/
-
-    /******** Modify by n014361 wangpeili 2020-02-18:              ****************/
-    void switchFullscreen(bool forceFullscreen = false);
-    /********************* Modify by n014361 wangpeili End ************************/
 
     MainWindowPluginInterface *getPluginByName(const QString &name);
 

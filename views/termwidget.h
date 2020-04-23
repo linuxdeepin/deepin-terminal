@@ -10,7 +10,7 @@ class TermWidget : public QTermWidget
     Q_OBJECT
 public:
     TermWidget(TermProperties properties, QWidget *parent = nullptr);
-
+    TermWidgetPage * parentPage();
     bool isInRemoteServer();
 public:
     // 跳转到下一个命令
@@ -31,14 +31,8 @@ public slots:
     void onSettingValueChanged(const QString &keyName);
 
 signals:
-    void termRequestSplit(Qt::Orientation ori);
     void termRequestRenameTab(QString newTabName);
-    void termRequestOpenSettings();
-    void termRequestOpenCustomCommand();
-    void termRequestOpenRemoteManagement();
     void termIsIdle(int currSessionId, bool bIdle);
-    void termRequestUploadFile();
-    void termRequestDownloadFile();
     void termTitleChanged(QString titleText);
 
 private slots:
