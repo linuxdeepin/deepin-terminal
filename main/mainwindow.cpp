@@ -224,7 +224,7 @@ void MainWindow::initOptionMenu()
     }
 
     QAction *settingAction(new QAction(tr("&Settings"), this));
-    m_menu->addAction(settingAction);
+    m_menu->addAction(settingAction);    
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
 }
 
@@ -316,8 +316,6 @@ void MainWindow::setNormalWindow()
         switchFullscreen(true);
     } else if (windowState == "Halfscreen") {
         setWindowRadius(0);
-        move(0, 0);
-        //QApplication::desktop()->height()-10
         resize(halfScreenSize());
     } else {
         m_IfUseLastSize = true;
