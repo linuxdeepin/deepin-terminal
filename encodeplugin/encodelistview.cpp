@@ -20,11 +20,9 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    verticalScrollBar()->setFixedWidth(m_BarWidth);
-    setFixedSize(m_ContentWidth, m_ListLenth);
+    //add by ameng 设置属性，修复BUG#20074
+    setFixedWidth(m_ContentWidth);
     setItemSize(QSize(m_ContentWidth, m_ContentHeight + m_Space));
-    setContentsMargins(m_Space, m_Space, m_Space, m_Space);
-    qDebug() << "itemSize" << itemSize() << size();
 
     initEncodeItems();
     update();
@@ -64,6 +62,23 @@ void EncodeListView::selectionChanged(const QItemSelection &selected, const QIte
 void EncodeListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
     DListView::setSelection(rect, command);
+}
+
+/*******************************************************************************
+ 1. @函数:    setLabelStyle
+ 2. @作者:    m000750 zhangmeng
+ 3. @日期:    2020-04-23
+ 4. @说明:    用于移动滚动条位置，修复BUG#20074
+*******************************************************************************/
+void EncodeListView::showEvent(QShowEvent *e)
+{
+    static bool moveScrollBar = true;
+    if (moveScrollBar == true) {
+        moveScrollBar = false;
+        QScrollBar *pScrollBar = verticalScrollBar();
+        pScrollBar->move(pScrollBar->x() + 5, pScrollBar->y());
+    }
+    DListView::showEvent(e);
 }
 
 void EncodeListView::resizeContents(int width, int height) {}
