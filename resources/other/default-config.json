@@ -96,7 +96,7 @@
                             "key": "select_all",
                             "name": "Select all",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+a"
+                            "default":  "Ctrl+Shift+A"
                         }
                     ]
                 },
