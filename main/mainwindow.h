@@ -60,7 +60,7 @@ public:
     /**************** Modify by n013252 wangliang End ****************/
 
     void executeDownloadFile();
-    QString showFileDailog(bool isDir);
+
     void pressCtrlAt();
     void pressCtrlU();
     void sleep(unsigned int msec);
