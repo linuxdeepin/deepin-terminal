@@ -260,7 +260,7 @@ QString Utils::showDirDialog(QWidget *widget)
 QStringList Utils::showFilesSelectDialog(QWidget *widget)
 {
     QString curPath = QDir::currentPath();
-    QString dlgTitle = tr("Select file to upload");
+    QString dlgTitle = QObject::tr("Select file to upload");
     return DFileDialog::getOpenFileNames(widget, dlgTitle, curPath);
 }
 
@@ -309,20 +309,20 @@ bool Utils::showExitUninstallConfirmDialog()
 bool Utils::showUnistallConfirmDialog()
 {
 #ifndef USE_DTK
-        OperationConfirmDlg dlg;
-        dlg.setFixedSize(380, 160);
-        dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
-        dlg.setTipInfo(QObject::tr("You will not be able to use Terminal any longer."));
-        dlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
-        dlg.exec();
+    OperationConfirmDlg dlg;
+    dlg.setFixedSize(380, 160);
+    dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
+    dlg.setTipInfo(QObject::tr("You will not be able to use Terminal any longer."));
+    dlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
+    dlg.exec();
 
-        return (dlg.getConfirmResult() == QDialog::Accepted);
+    return (dlg.getConfirmResult() == QDialog::Accepted);
 #else
-        DDialog dlg(QObject::tr("Are you sure you want to uninstall this application?"), QObject::tr("You will not be able to use Terminal any longer."));
-        dlg.setIcon(QIcon::fromTheme("dialog-warning"));
-        dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-        dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);
-        return (dlg.exec() == DDialog::Accepted);
+    DDialog dlg(QObject::tr("Are you sure you want to uninstall this application?"), QObject::tr("You will not be able to use Terminal any longer."));
+    dlg.setIcon(QIcon::fromTheme("dialog-warning"));
+    dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+    dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);
+    return (dlg.exec() == DDialog::Accepted);
 #endif
 }
 

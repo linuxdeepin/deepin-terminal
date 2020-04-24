@@ -311,9 +311,13 @@
         <translation>设置终端的启动目录</translation>
     </message>
     <message>
-        <location filename="../main/main.cpp" line="59"/>
         <source>Set terminal start on window mode: normal, maximize, fullscreen, halfscreen </source>
-        <translation>设置终端开启时的模式:正常，最大化，全屏，分屏</translation>
+        <translation type="vanished">设置终端开启时的模式:normal, maximize, fullscreen, halfscreen</translation>
+    </message>
+    <message>
+        <location filename="../main/main.cpp" line="59"/>
+        <source>Set terminal start on window mode: </source>
+        <translation>设置终端开启时的模式:</translation>
     </message>
     <message>
         <location filename="../main/main.cpp" line="61"/>
@@ -553,7 +557,12 @@
     <message>
         <location filename="../common/utils.cpp" line="256"/>
         <source>Select directory to save the file</source>
-        <translation type="unfinished">选择下载文件的保存目录</translation>
+        <translation>选择下载文件的保存目录</translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="263"/>
+        <source>Select file to upload</source>
+        <translation>选择要上传的文件</translation>
     </message>
     <message>
         <location filename="../common/utils.cpp" line="273"/>
@@ -1186,9 +1195,8 @@
         <translation type="vanished">标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="263"/>
         <source>Select file to upload</source>
-        <translation type="unfinished">选择要上传的文件</translation>
+        <translation type="obsolete">选择要上传的文件</translation>
     </message>
     <message>
         <location filename="../common/utils.cpp" line="283"/>
