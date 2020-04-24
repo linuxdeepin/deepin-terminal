@@ -1381,10 +1381,22 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     for (auto opt :
             Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
-        jsonItem.insert("name", QObject::tr(opt->name().toUtf8().data()));
+        qDebug() << opt->name();
+        QString name = QObject::tr(opt->name().toUtf8().data());
+        if (opt->name() == "Fullscreen")
+            name = tr("Toggle fullscreen");
+        jsonItem.insert("name", name);
         jsonItem.insert("value", opt->value().toString());
         JsonArry.append(jsonItem);
     }
+
+    if (keyCategory == "workspace") {
+        QJsonObject jsonItem;
+        jsonItem.insert("name", tr("Select workspace"));
+        jsonItem.insert("value", "Alt+1~9");
+        JsonArry.append(jsonItem);
+    }
+
     QJsonObject JsonGroup;
     JsonGroup.insert("groupName", strGroupName);
     JsonGroup.insert("groupItems", JsonArry);
