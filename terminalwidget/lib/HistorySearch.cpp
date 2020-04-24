@@ -119,7 +119,14 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
 
         if (matchStart > -1)
         {
-            int matchEnd = matchStart + m_regExp.matchedLength() - 1;
+            // 中文字个数统计
+            QString txt = m_regExp.pattern();
+            QRegExp regEx("[\\x4e00-\\x9fa5]+");
+            int ChineseCount = txt.count(regEx);
+            qDebug()<<txt<<"ChineseCount"<< ChineseCount;
+
+            // 中文是宽字条，占两列，需要补充处理
+            int matchEnd = matchStart + m_regExp.matchedLength() - 1 + ChineseCount;
             qDebug() << "Found in string from" << matchStart << "to" << matchEnd;
 
             // Translate startPos and endPos to startColum, startLine, endColumn and endLine in history.
