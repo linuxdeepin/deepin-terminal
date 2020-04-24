@@ -137,7 +137,7 @@
 <context>
     <name>DSettingsDialog</name>
     <message>
-        <location filename="../common/utils.cpp" line="322"/>
+        <location filename="../common/utils.cpp" line="337"/>
         <source>This shortcut conflicts with %1</source>
         <translation>此快捷键与%1冲突</translation>
     </message>
@@ -198,7 +198,17 @@
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1435"/>
+        <location filename="../main/mainwindow.cpp" line="1387"/>
+        <source>Toggle fullscreen</source>
+        <translation>切换全屏</translation>
+    </message>
+    <message>
+        <location filename="../main/mainwindow.cpp" line="1395"/>
+        <source>Select workspace</source>
+        <translation>选择工作区</translation>
+    </message>
+    <message>
+        <location filename="../main/mainwindow.cpp" line="1450"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -207,14 +217,12 @@
         <translation type="vanished">请输入下载文件的路径: </translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1470"/>
         <source>Select file to upload</source>
-        <translation>选择要上传的文件</translation>
+        <translation type="vanished">选择要上传的文件</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1472"/>
         <source>Select directory to save the file</source>
-        <translation>选择下载文件的保存目录</translation>
+        <translation type="vanished">选择下载文件的保存目录</translation>
     </message>
 </context>
 <context>
@@ -667,38 +675,43 @@
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="258"/>
-        <location filename="../common/utils.cpp" line="265"/>
-        <location filename="../common/utils.cpp" line="279"/>
-        <location filename="../common/utils.cpp" line="286"/>
+        <location filename="../common/utils.cpp" line="256"/>
+        <source>Select directory to save the file</source>
+        <translation type="unfinished">选择下载文件的保存目录</translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="273"/>
+        <location filename="../common/utils.cpp" line="280"/>
+        <location filename="../common/utils.cpp" line="294"/>
+        <location filename="../common/utils.cpp" line="301"/>
         <source>Programs are still running in terminal</source>
         <translation>终端仍然有程序在运行</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="259"/>
-        <location filename="../common/utils.cpp" line="265"/>
+        <location filename="../common/utils.cpp" line="274"/>
+        <location filename="../common/utils.cpp" line="280"/>
         <source>Are you sure you want to exit?</source>
         <translation>您确定要退出吗？</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="260"/>
+        <location filename="../common/utils.cpp" line="275"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="280"/>
-        <location filename="../common/utils.cpp" line="286"/>
+        <location filename="../common/utils.cpp" line="295"/>
+        <location filename="../common/utils.cpp" line="301"/>
         <source>Are you sure you want to uninstall?</source>
         <translation>您确定要卸载吗？</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="329"/>
+        <location filename="../common/utils.cpp" line="344"/>
         <source>Click on Add to make this shortcut effective immediately</source>
         <translation>点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="341"/>
-        <location filename="../common/utils.cpp" line="348"/>
+        <location filename="../common/utils.cpp" line="356"/>
+        <location filename="../common/utils.cpp" line="363"/>
         <source>please set another one.</source>
         <translation>请重新设置</translation>
     </message>
@@ -711,7 +724,7 @@
         <translation type="vanished">点击替换使这个快捷键立即生效</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="330"/>
+        <location filename="../common/utils.cpp" line="345"/>
         <source>Replace</source>
         <translation>替换</translation>
     </message>
@@ -720,14 +733,14 @@
         <translation type="vanished">相同的服务器名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="299"/>
-        <location filename="../common/utils.cpp" line="306"/>
+        <location filename="../common/utils.cpp" line="314"/>
+        <location filename="../common/utils.cpp" line="321"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation>您确定要卸载终端吗？</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="300"/>
-        <location filename="../common/utils.cpp" line="306"/>
+        <location filename="../common/utils.cpp" line="315"/>
+        <location filename="../common/utils.cpp" line="321"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation>卸载后将无法再使用该应用。</translation>
     </message>
@@ -736,11 +749,11 @@
         <location filename="../remotemanage/serverconfiglist.cpp" line="184"/>
         <location filename="../customcommand/customcommandlist.cpp" line="142"/>
         <location filename="../customcommand/customcommandlist.cpp" line="154"/>
-        <location filename="../common/utils.cpp" line="260"/>
-        <location filename="../common/utils.cpp" line="281"/>
-        <location filename="../common/utils.cpp" line="301"/>
-        <location filename="../common/utils.cpp" line="308"/>
-        <location filename="../common/utils.cpp" line="330"/>
+        <location filename="../common/utils.cpp" line="275"/>
+        <location filename="../common/utils.cpp" line="296"/>
+        <location filename="../common/utils.cpp" line="316"/>
+        <location filename="../common/utils.cpp" line="323"/>
+        <location filename="../common/utils.cpp" line="345"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -767,9 +780,9 @@
         <location filename="../views/warnningdlg.cpp" line="103"/>
         <location filename="../customcommand/customcommandlist.cpp" line="142"/>
         <location filename="../customcommand/customcommandlist.cpp" line="155"/>
-        <location filename="../common/utils.cpp" line="281"/>
-        <location filename="../common/utils.cpp" line="301"/>
-        <location filename="../common/utils.cpp" line="309"/>
+        <location filename="../common/utils.cpp" line="296"/>
+        <location filename="../common/utils.cpp" line="316"/>
+        <location filename="../common/utils.cpp" line="324"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -1289,20 +1302,25 @@
         <translation type="vanished">标题名称</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="268"/>
+        <location filename="../common/utils.cpp" line="263"/>
+        <source>Select file to upload</source>
+        <translation type="unfinished">选择要上传的文件</translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="283"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="289"/>
-        <location filename="../common/utils.cpp" line="349"/>
-        <location filename="../common/utils.cpp" line="409"/>
+        <location filename="../common/utils.cpp" line="304"/>
+        <location filename="../common/utils.cpp" line="364"/>
+        <location filename="../common/utils.cpp" line="424"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="267"/>
-        <location filename="../common/utils.cpp" line="288"/>
+        <location filename="../common/utils.cpp" line="282"/>
+        <location filename="../common/utils.cpp" line="303"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
