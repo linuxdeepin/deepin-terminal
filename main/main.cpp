@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
     QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QObject::tr("Set terminal start on window mode: normal, maximize, fullscreen, halfscreen "),
+                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, halfscreen "),
                                       "state-mode");
     QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
     QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
@@ -118,7 +118,9 @@ int main(int argc, char *argv[])
         if (!argumentParser.initDBus()) {
             // Exit process after 1000ms.
             qDebug() << "deepin termanl start with quakemode init bus failed, now exit!";
-            QTimer::singleShot(1000, [&]() { app.quit(); });
+            QTimer::singleShot(1000, [&]() {
+                app.quit();
+            });
             //Dtk::Widget::moveToCenter(mainWindow);
             return app.exec();
         }
