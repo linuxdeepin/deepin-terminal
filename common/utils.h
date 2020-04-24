@@ -58,6 +58,9 @@ public:
 
     static QString getRandString();
 
+    static QString showDirDialog(QWidget *widget);
+    static QStringList showFilesSelectDialog(QWidget *widget);
+
     static bool showExitConfirmDialog();
     static bool showExitUninstallConfirmDialog();
     static bool showUnistallConfirmDialog();

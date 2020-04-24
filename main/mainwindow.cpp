@@ -71,7 +71,7 @@ void MainWindow::initUI()
     initWindow();
     // Plugin may need centralWidget() to work so make sure initPlugin() is after setCentralWidget()
     // Other place (eg. create titlebar menu) will call plugin method so we should create plugins before init other
-    // parts.    
+    // parts.
     initPlugins();
     initTitleBar();
 
@@ -724,7 +724,7 @@ QString MainWindow::getConfigWindowState()
             windowState = "Halfscreen";
         } else if (state == "normal") {
             windowState = "window_normal";
-        }else if (state == "fullscreen") {
+        } else if (state == "fullscreen") {
             windowState = state;
         } else {
             qDebug() << "error line state set:" << state << "ignore it!";
@@ -1411,11 +1411,14 @@ QShortcut *MainWindow::createNewShotcut(const QString &key)
  */
 void MainWindow::remoteUploadFile()
 {
-    QString fileName = showFileDailog(false);
-    if (!fileName.isNull() && !fileName.isEmpty()) {
+    QStringList fileName = Utils::showFilesSelectDialog(this);
+    if (!fileName.isEmpty()) {
         pressCtrlAt();
         sleep(100);
-        QString strTxt = "sz '" + fileName + "'";
+        QString strTxt = "sz ";
+        for (QString str : fileName) {
+            strTxt += str + " ";
+        }
         currentPage()->sendTextToCurrentTerm(strTxt);
         currentPage()->sendTextToCurrentTerm("\n");
     }
@@ -1426,7 +1429,7 @@ void MainWindow::remoteUploadFile()
  */
 void MainWindow::remoteDownloadFile()
 {
-    downloadFilePath = showFileDailog(true);
+    downloadFilePath = Utils::showDirDialog(this);
 
     if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
         //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
@@ -1459,20 +1462,6 @@ void MainWindow::executeDownloadFile()
 //    currentPage()->sendTextToCurrentTerm("\n");
     downloadFilePath = "";
     //-------------------------------------------
-}
-
-/**
- * Open file dialog
- */
-QString MainWindow::showFileDailog(bool isDir)
-{
-    QString curPath = QDir::currentPath();
-    QString dlgTitle = tr("Select file to upload");
-    if (isDir) {
-        dlgTitle = tr("Select directory to save the file");
-        return DFileDialog::getExistingDirectory(this, dlgTitle, curPath, DFileDialog::DontConfirmOverwrite);
-    }
-    return DFileDialog::getOpenFileName(this, dlgTitle, curPath);
 }
 
 void MainWindow::pressCtrlAt()

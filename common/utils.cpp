@@ -26,6 +26,7 @@
 #include <DLog>
 #include <DMessageBox>
 #include <DLineEdit>
+#include <DFileDialog>
 
 #include <QUrl>
 #include <QDir>
@@ -247,6 +248,20 @@ QString Utils::getRandString()
         str[i] = tmp.at(len);
     }
     return QString(str);
+}
+
+QString Utils::showDirDialog(QWidget *widget)
+{
+    QString curPath = QDir::currentPath();
+    QString dlgTitle = QObject::tr("Select directory to save the file");
+    return DFileDialog::getExistingDirectory(widget, dlgTitle, curPath, DFileDialog::DontConfirmOverwrite);
+}
+
+QStringList Utils::showFilesSelectDialog(QWidget *widget)
+{
+    QString curPath = QDir::currentPath();
+    QString dlgTitle = tr("Select file to upload");
+    return DFileDialog::getOpenFileNames(widget, dlgTitle, curPath);
 }
 
 bool Utils::showExitConfirmDialog()
