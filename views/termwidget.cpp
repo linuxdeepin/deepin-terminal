@@ -253,7 +253,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
 
     menu.addSeparator();
 
-    if (!m_properties[QuakeMode].toBool()) {
+    if (!parentPage()->parentMainWindow()->isQuakeMode()) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
         if (isFullScreen) {
             menu.addAction(tr("Exit Full&screen"), this, [this] {

@@ -4,15 +4,15 @@
 #include <QVariant>
 
 enum TermProperty {
-    SingleFlag,
-    QuakeMode,
-    WorkingDir,
-    ColorScheme,
-    ShellProgram,
-    Execute,
-    StartWindowState,
-    KeepOpen,
-    Script
+    SingleFlag,        // mainwindow使用
+    QuakeMode,         // mainwindow使用, 右键菜单要用到．
+    WorkingDir,    // 每个terminal单独使用
+    ColorScheme,       // 未使用
+    ShellProgram,      // 仅供第一个terminal使用
+    Execute,           // 仅供第一个terminal使用
+    StartWindowState,  // mainwindow使用
+    KeepOpen,          // 仅供第一个terminal使用
+    Script             // 仅供第一个terminal使用
 };
 
 class TermProperties
