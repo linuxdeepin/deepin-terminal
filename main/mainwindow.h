@@ -126,7 +126,6 @@ private:
     void setQuakeWindow();
     void setNormalWindow();
     void setDefaultLocation();
-    void resizeAndMove();
     QString getConfigWindowState();
     QSize halfScreenSize();
     // 加载插件
@@ -216,7 +215,7 @@ private:
     const int m_MinWidth = 450;
     // 窗口最小高度
     const int m_MinHeight = 250;
-    // 是否需要保存位置开关
+    // 是否需要保存位置开关，雷神窗口不关心这个参数
     bool m_IfUseLastSize = false;
 };
 
