@@ -81,6 +81,7 @@ public:
 
     bool hasRunningProcesses();
     void switchFullscreen(bool forceFullscreen = false);
+    bool isQuakeMode();
 
     static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
     static constexpr const char *PLUGIN_TYPE_THEME = "Theme";

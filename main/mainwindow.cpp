@@ -713,6 +713,11 @@ void MainWindow::switchFullscreen(bool forceFullscreen)
     }
 }
 
+bool MainWindow::isQuakeMode()
+{
+    return  m_isQuakeWindow;
+}
+
 void MainWindow::onTermTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
