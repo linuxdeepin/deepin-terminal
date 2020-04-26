@@ -376,11 +376,16 @@ bool MainWindow::isTabChangeColor(int tabSessionId)
 
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
+    if (getAllterminalCount() >= TermWidget::MaxTermwidgetCount) {
+        qDebug() << "addTab failed, can't create number more than 200";
+        return;
+    }
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
     setNewTermPage(termPage, activeTab);
 
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
-    int index = m_tabbar->addTab(termPage->identifier(), "New Terminal Tab");
+    int index = m_tabbar->addTab(termPage->identifier(), m_tabbar->tabText(m_tabbar->currentIndex()));
+    qDebug() << "addTab index" << index;
     if (activeTab) {
         m_tabbar->setCurrentIndex(index);
         m_tabbar->removeNeedChangeTextColor(index);
@@ -493,6 +498,24 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
     if (m_tabbar->count() == 0) {
         qApp->quit();
     }
+}
+/*******************************************************************************
+ 1. @函数:    getAllterminalCount
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-04-26
+ 4. @说明:    获取当前所有终端的最大值．
+*******************************************************************************/
+int MainWindow::getAllterminalCount()
+{
+    int termcount = 0;
+    for (MainWindow *window : m_windowList) {
+        for (int i = 0, count = window->m_termStackWidget->count(); i < count; i++) {
+            TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(window->m_termStackWidget->widget(i));
+            termcount += tabPage->getTerminalCount();
+        }
+    }
+
+    return termcount;
 }
 
 void MainWindow::updateTabStatus()
