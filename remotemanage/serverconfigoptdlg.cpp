@@ -425,14 +425,15 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
 *******************************************************************************/
 void ServerConfigOptDlg::slotFileChooseDialog()
 {
-    QFileDialog *dialog = new QFileDialog(this);
-    dialog->setAcceptMode(QFileDialog::AcceptOpen);
-    dialog->setFileMode(QFileDialog::ExistingFile);
+    QFileDialog dialog(this);
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden);
 
-    int code = dialog->exec();
+    int code = dialog.exec();
 
-    if (code == QDialog::Accepted && !dialog->selectedFiles().isEmpty()) {
-        const QString fileName = dialog->selectedFiles().first();
+    if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
+        const QString fileName = dialog.selectedFiles().first();
 
         m_privateKey->setText(fileName);
     }

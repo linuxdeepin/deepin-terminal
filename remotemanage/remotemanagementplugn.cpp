@@ -98,7 +98,7 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
         fileString.replace("<<PASSWORD>>", password);
         fileString.replace("<<AUTHENTICATION>>", "no");
     } else {
-        fileString.replace("<<PRIVATE_KEY>>", curServer->m_privateKey);
+        fileString.replace("<<PRIVATE_KEY>>", QString("-i " + curServer->m_privateKey));
         fileString.replace("<<PASSWORD>>", "");
         fileString.replace("<<AUTHENTICATION>>", "yes");
     }
