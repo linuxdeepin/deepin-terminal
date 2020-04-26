@@ -77,7 +77,6 @@ void MainWindow::initUI()
 
     // 雷神和普通窗口设置不同
     m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
-    resizeAndMove();
     addTab(m_properties);
 
     //下面代码待处理
@@ -294,9 +293,15 @@ void MainWindow::setQuakeWindow()
     /********************* Modify by m000714 daizhengwen End ************************/
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setMinimumSize(deskRect.size().width(), 60);
-    resize(deskRect.size().width(), deskRect.size().height() / 3);
-    // 雷神窗口默认不使用位置记录功能, 如果要使用，这里打开就行了
-    //m_IfUseLastSize = true;
+
+    int saveHeight = m_winInfoConfig->value("quake_window_Height").toInt();
+    qDebug() << "quake_window_Height: " << saveHeight;
+    // 如果配置文件没有数据
+    if (saveHeight == 0) {
+        saveHeight = deskRect.size().height() / 3;
+    }
+    int saveWidth = deskRect.size().width();
+    resize(QSize(saveWidth, saveHeight));
     move(0, 0);
 }
 /*******************************************************************************
@@ -320,6 +325,21 @@ void MainWindow::setNormalWindow()
         resize(halfScreenSize());
     } else {
         m_IfUseLastSize = true;
+        int saveWidth = m_winInfoConfig->value("save_width").toInt();
+        int saveHeight = m_winInfoConfig->value("save_height").toInt();
+        qDebug() << "saveWidth: " << saveWidth;
+        qDebug() << "saveHeight: " << saveHeight;
+        // 如果配置文件没有数据
+        if (saveWidth == 0 || saveHeight == 0) {
+            saveWidth = 1000;
+            saveHeight = 600;
+        }
+        resize(QSize(saveWidth, saveHeight));
+
+        if (m_properties[SingleFlag].toBool()) {
+            Dtk::Widget::moveToCenter(this);
+            qDebug() << "SingleFlag move" ;
+        }
     }
 }
 /*******************************************************************************
@@ -332,33 +352,6 @@ void MainWindow::setDefaultLocation()
 {
     resize(QSize(1000, 600));
     if (m_properties[SingleFlag].toBool()) {
-        Dtk::Widget::moveToCenter(this);
-        qDebug() << "SingleFlag move" ;
-    }
-}
-/*******************************************************************************
- 1. @函数:    resizeAndMove
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-04-22
- 4. @说明:
-*******************************************************************************/
-void MainWindow::resizeAndMove()
-{
-    // 如果使用位置记录功能
-    if (m_IfUseLastSize) {
-        int saveWidth = m_winInfoConfig->value("save_width").toInt();
-        int saveHeight = m_winInfoConfig->value("save_height").toInt();
-        qDebug() << "saveWidth: " << saveWidth;
-        qDebug() << "saveHeight: " << saveHeight;
-        // 如果配置文件没有数据
-        if (saveWidth == 0 || saveHeight == 0) {
-            saveWidth = 1000;
-            saveHeight = 600;
-        }
-        resize(QSize(saveWidth, saveHeight));
-    }
-
-    if ((m_properties[SingleFlag].toBool()) && ("window_normal" == getConfigWindowState())) {
         Dtk::Widget::moveToCenter(this);
         qDebug() << "SingleFlag move" ;
     }
@@ -544,6 +537,15 @@ void MainWindow::updateTabStatus()
 
 void MainWindow::saveWindowSize()
 {
+    // 雷神窗口保存
+    if(m_isQuakeWindow){
+        // 记录最后一个正常窗口的大小
+        m_winInfoConfig->setValue("quake_window_Height", height());
+        qDebug() << "save quake_window_Height:" << height();
+        return;
+    }
+
+    // 过滤普通模式的特殊窗口
     if (!m_IfUseLastSize) {
         return;
     }
