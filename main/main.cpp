@@ -113,8 +113,9 @@ int main(int argc, char *argv[])
     }
 
     // 雷神窗口特殊处理
+    // TermArgumentParser 一定要在外面定义！！否则obj会消失
+    TermArgumentParser argumentParser;
     if (firstTermProperties[QuakeMode].toBool()) {
-        TermArgumentParser argumentParser;
         if (!argumentParser.initDBus()) {
             // Exit process after 1000ms.
             qDebug() << "deepin termanl start with quakemode init bus failed, now exit!";
