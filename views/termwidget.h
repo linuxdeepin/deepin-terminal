@@ -41,6 +41,10 @@ private slots:
 private:
     TermWidgetPage *m_Page = nullptr;
     TermProperties m_properties;
+
+public:
+    // session支持最大值．再多了就起不来了．
+    static const int MaxTermwidgetCount = 199;
 };
 
 #endif  // TERMWIDGET_H
