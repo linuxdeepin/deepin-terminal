@@ -10,9 +10,10 @@ DWIDGET_USE_NAMESPACE
 TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), m_layout(new QHBoxLayout(this))
 {
     /******** Modify by m000714 daizhengwen 2020-04-15: 标签栏和Dtk标签色保持一致****************/
-    DPalette palette = this->palette();
-    palette.setBrush(DPalette::Background, palette.color(DPalette::Base));
-    this->setPalette(palette);
+//    DPalette palette = this->palette();
+//    palette.setBrush(DPalette::Background, palette.color(DPalette::Base));
+//    this->setPalette(palette);
+    this->setBackgroundRole(DPalette::Base);
     this->setAutoFillBackground(true);
     // daizhengwen fix bug#22927 动画出的矩形框会 -50 设置标题栏为50
     this->setFixedHeight(50);
