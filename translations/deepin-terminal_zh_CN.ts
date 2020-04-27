@@ -173,12 +173,12 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="203"/>
+        <location filename="../main/mainwindow.cpp" line="206"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="225"/>
+        <location filename="../main/mainwindow.cpp" line="228"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
@@ -195,32 +195,32 @@
         <translation type="vanished">高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1400"/>
+        <location filename="../main/mainwindow.cpp" line="1405"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1402"/>
+        <location filename="../main/mainwindow.cpp" line="1407"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1404"/>
+        <location filename="../main/mainwindow.cpp" line="1409"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1417"/>
+        <location filename="../main/mainwindow.cpp" line="1422"/>
         <source>Toggle fullscreen</source>
         <translation>切换全屏</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1425"/>
+        <location filename="../main/mainwindow.cpp" line="1430"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1480"/>
+        <location filename="../main/mainwindow.cpp" line="1485"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
