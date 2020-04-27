@@ -86,9 +86,6 @@ void MainWindow::initUI()
 
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
-
-    //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
-    setAttribute(Qt::WA_Disabled, true);
 }
 void MainWindow::initWindow()
 {
@@ -291,14 +288,15 @@ void MainWindow::setQuakeWindow()
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
-    /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
-    setWindowState(windowState() & ~Qt::WindowFullScreen);
-    /********************* Modify by n014361 wangpeili End ************************/
+    
+    //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
+    setAttribute(Qt::WA_Disabled, true);
+    
     /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
+    setMinimumSize(screenRect.size().width(), 60);
     setMaximumHeight(screenRect.size().height() * 2 / 3);
     /********************* Modify by m000714 daizhengwen End ************************/
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    setMinimumSize(screenRect.size().width(), 60);
 
     connect(desktopWidget, &QDesktopWidget::workAreaResized, this, [this]() {
         qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
@@ -1187,13 +1185,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         /**************** Modify by n013252 wangliang End ****************/
 
         /******** Modify by n014361 wangpeili 2020-01-13:雷神模式隐藏 ****************/
-        //if (Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
-        //---modified by qinyaning(nyq) to slove the realtime hide raytheon_window--//
-        //When the terminal is used for a period of time, open the window of Raytheon and click other places to disappear
         bool auto_hide_raytheon_window = Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool();
-        ifstream in("./QuakeWindowActivated.dat");
-        in >> auto_hide_raytheon_window;
-        in.close();
         if (auto_hide_raytheon_window) {
             //--------------------------------------------------------------------------//
             if (watched == this && event->type() == QEvent::WindowDeactivate) {
@@ -1262,14 +1254,6 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
         return;
     }
 
-    //--added by qinyaning(nyq) to save the param advanced.window.auto_hide_raytheon_window to QuakeWindowActivated.dat
-    if ((keyName == "advanced.window.auto_hide_raytheon_window")) {
-        bool value = Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool();
-        ofstream out("./QuakeWindowActivated.dat");
-        out << value;
-        out.close();
-    }
-    //----------------------------------------------
     // use_on_starting重启生效
     if (keyName == "advanced.window.use_on_starting") {
         QString state = Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
