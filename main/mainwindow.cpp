@@ -284,28 +284,43 @@ MainWindow::~MainWindow()
 *******************************************************************************/
 void MainWindow::setQuakeWindow()
 {
+    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 Begin************************/
     setWindowRadius(0);
-    QRect deskRect = QApplication::desktop()->availableGeometry();
+    //QRect deskRect = QApplication::desktop()->availableGeometry();//获取可用桌面大小
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
     /******** Modify by n014361 wangpeili 2020-02-18: 全屏设置后，启动雷神窗口要强制取消****************/
     setWindowState(windowState() & ~Qt::WindowFullScreen);
     /********************* Modify by n014361 wangpeili End ************************/
     /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
-    setMaximumHeight(deskRect.size().height() * 2 / 3);
+    setMaximumHeight(screenRect.size().height() * 2 / 3);
     /********************* Modify by m000714 daizhengwen End ************************/
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    setMinimumSize(deskRect.size().width(), 60);
+    setMinimumSize(screenRect.size().width(), 60);
+
+    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, [this]() {
+        qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
+        setMinimumSize(QApplication::desktop()->availableGeometry().width(), 60);
+        move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
+        qDebug() << "size" << size();
+        setFixedWidth(QApplication::desktop()->availableGeometry().width());
+        hide();
+        show();
+        return ;
+    });
 
     int saveHeight = m_winInfoConfig->value("quake_window_Height").toInt();
     qDebug() << "quake_window_Height: " << saveHeight;
     // 如果配置文件没有数据
     if (saveHeight == 0) {
-        saveHeight = deskRect.size().height() / 3;
+        saveHeight = screenRect.size().height() / 3;
     }
-    int saveWidth = deskRect.size().width();
+    int saveWidth = screenRect.size().width();
     resize(QSize(saveWidth, saveHeight));
     move(0, 0);
+    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 End  ************************/
 }
 /*******************************************************************************
  1. @函数:    setNormalWindow
