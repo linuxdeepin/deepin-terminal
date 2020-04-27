@@ -977,7 +977,7 @@ void MainWindow::initShortcuts()
     });
 
     // rename_tab
-    connect(createNewShotcut("shortcuts.advanced.rename_tab"), &QShortcut::activated, this, [this]() {
+    connect(createNewShotcut("shortcuts.advanced.rename_title"), &QShortcut::activated, this, [this]() {
         showPlugin(PLUGIN_TYPE_NONE);
         TermWidgetPage *page = currentPage();
         if (page) {
@@ -1397,11 +1397,11 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 
     QString strGroupName = "";
     if (keyCategory == "workspace") {
-        strGroupName =  tr("workspace");
+        strGroupName =  tr("Workspace");
     } else if (keyCategory == "terminal") {
-        strGroupName =  tr("terminal");
+        strGroupName =  tr("Terminal");
     } else if (keyCategory == "advanced") {
-        strGroupName =  tr("advanced");
+        strGroupName =  tr("Advanced");
     } else {
         return;
     }
@@ -1411,7 +1411,7 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     for (auto opt :
             Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
-        qDebug() << opt->name();
+//        qDebug() << opt->name();
         QString name = QObject::tr(opt->name().toUtf8().data());
         if (opt->name() == "Fullscreen")
             name = tr("Toggle fullscreen");
