@@ -221,13 +221,13 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
-    menu.addAction(tr("&Open File Manager"), this, [this] {
+    menu.addAction(tr("&Open file manager"), this, [this] {
         DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
     });
 
     menu.addSeparator();
 
-    menu.addAction(tr("&Horizontal Split"), this, [this] {
+    menu.addAction(tr("&Horizontal split"), this, [this] {
         parentPage()->split(Qt::Horizontal);
     });
 
@@ -236,13 +236,14 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    menu.addAction(tr("Close &Window"), this, [this] {
+    menu.addAction(tr("Close &window"), this, [this] {
         parentPage()->closeSplit(parentPage()->currentTerminal());
     });
     //menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
     if (parentPage()->getTerminalCount() > 1) {
-        menu.addAction(tr("Close &Other &Window"), this, [this] {
-            parentPage()->closeOtherTerminal(); });
+        menu.addAction(tr("Close &other &window"), this, [this] {
+            parentPage()->closeOtherTerminal();
+        });
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
@@ -256,11 +257,13 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     if (!parentPage()->parentMainWindow()->isQuakeMode()) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
         if (isFullScreen) {
-            menu.addAction(tr("Exit Full&screen"), this, [this] {
-                parentPage()->parentMainWindow()->switchFullscreen(); });
+            menu.addAction(tr("Exit full&screen"), this, [this] {
+                parentPage()->parentMainWindow()->switchFullscreen();
+            });
         } else {
             menu.addAction(tr("Full&screen"), this, [this] {
-                parentPage()->parentMainWindow()->switchFullscreen();});
+                parentPage()->parentMainWindow()->switchFullscreen();
+            });
         }
     }
 

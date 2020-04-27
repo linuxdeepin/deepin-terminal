@@ -29,7 +29,7 @@ void GenerateSettingTranslate()
     auto shortcuts_advanced_custom_commandName = QObject::tr("Custom commands");
     auto shortcuts_advanced_display_shortcutsName = QObject::tr("Display shortcuts");
     auto shortcuts_advanced_remote_managementName = QObject::tr("Remote management");
-    auto shortcuts_advanced_rename_tabName = QObject::tr("Rename tab");
+    auto shortcuts_advanced_rename_tabName = QObject::tr("Rename title");
     auto shortcuts_advanced_switch_fullscreenName = QObject::tr("Fullscreen");
     auto shortcuts_terminal_copyName = QObject::tr("Copy");
     auto shortcuts_terminal_default_sizeName = QObject::tr("Default size");

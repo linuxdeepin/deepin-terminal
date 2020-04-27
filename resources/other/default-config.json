@@ -195,8 +195,8 @@
                             "default":  "F11"
                         },
                         {
-                            "key": "rename_tab",
-                            "name": "Rename tab",
+                            "key": "rename_title",
+                            "name": "Rename title",
                             "type": "shortcut",
                             "default":  "F2"
                         },
