@@ -183,6 +183,11 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
             dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
             dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
             dlg.addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
+            if (dlg.exec() == QDialog::Accepted) {
+                ServerConfigManager::instance()->delServerConfig(curItemServer);
+                refreshPanelData(modelIndex);
+                emit listItemCountChange();
+            }
 #endif
         } else {
             //刷新所有数据，待完善

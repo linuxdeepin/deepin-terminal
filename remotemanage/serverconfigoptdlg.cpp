@@ -126,7 +126,7 @@ void ServerConfigOptDlg::initUI()
     m_port->setSingleStep(1);
     m_port->setFixedWidth(70);
     //comment code for old version dtk build
-//    m_port->lineEdit()->setClearButtonEnabled(false);
+    m_port->lineEdit()->setClearButtonEnabled(false);
     // 去除上下按钮
     m_port->setButtonSymbols(DSpinBox::NoButtons);
     // 禁用输入法
@@ -260,7 +260,7 @@ void ServerConfigOptDlg::initUI()
         reject();
     });
     connect(pAddSaveButton, &DPushButton::clicked, this, &ServerConfigOptDlg::slotAddSaveButtonClicked);
-    connect(m_delServer, &DCommandLinkButton::clicked, this, [ = ]() {
+    connect(m_delServer, &TermCommandLinkButton::clicked, this, [ = ]() {
         setDelServer(true);
         accept();
     });
