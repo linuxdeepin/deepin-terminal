@@ -4,6 +4,7 @@
 #include <DSettingsDialog>
 #include <DKeySequenceEdit>
 
+#include <QFileSystemWatcher>
 #include <qsettingbackend.h>
 
 DCORE_USE_NAMESPACE
@@ -28,6 +29,7 @@ public:
     int fontSize();
     bool PressingScroll();
     bool OutputtingScroll();
+    void reload();
 
     // 设置主题
     void setColorScheme(const QString &name);
@@ -81,6 +83,8 @@ private:
 
     Dtk::Core::QSettingBackend *m_backend;
     QString m_configPath;
+    //　配置文件监视
+    QFileSystemWatcher * m_Watcher = nullptr;
 };
 class KeySequenceEdit : public DKeySequenceEdit
 {

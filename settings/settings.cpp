@@ -56,6 +56,15 @@ Settings::Settings() : QObject(qApp)
 
     initConnection();
     loadDefaultsWhenReinstall();
+
+    //增加文件昨监视，以便多进程共享配置文件
+    m_Watcher = new QFileSystemWatcher();
+    m_Watcher->addPath(m_configPath);
+    connect(m_Watcher, &QFileSystemWatcher::fileChanged, this, [this](QString file) {
+        qDebug() << "fileChanged" << file;
+        reload();
+    });
+
 }
 
 Settings *Settings::instance()
@@ -172,6 +181,17 @@ bool Settings::PressingScroll()
 bool Settings::OutputtingScroll()
 {
     return settings->option("advanced.scroll.scroll_on_output")->value().toBool();
+}
+
+void Settings::reload()
+{
+    QSettings  newSettings(m_configPath, QSettings::IniFormat);
+    for (QString key : newSettings.childGroups()) {
+        if (settings->value(key) != newSettings.value(key + "/value")) {
+            settings->option(key)->setValue(newSettings.value(key + "/value"));
+            qDebug() << "reload update:" << key << settings->value(key);
+        }
+    }
 }
 
 int Settings::cursorShape() const
