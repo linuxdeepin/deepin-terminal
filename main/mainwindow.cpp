@@ -86,6 +86,9 @@ void MainWindow::initUI()
 
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
+
+    //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
+    setAttribute(Qt::WA_Disabled, true);
 }
 void MainWindow::initWindow()
 {
@@ -538,7 +541,7 @@ void MainWindow::updateTabStatus()
 void MainWindow::saveWindowSize()
 {
     // 雷神窗口保存
-    if(m_isQuakeWindow){
+    if (m_isQuakeWindow) {
         // 记录最后一个正常窗口的大小
         m_winInfoConfig->setValue("quake_window_Height", height());
         qDebug() << "save quake_window_Height:" << height();
@@ -1145,13 +1148,15 @@ void MainWindow::onCreateNewWindow(QString workingDir)
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (m_isQuakeWindow) {
+        /********** delete begin by ut001121 zhangmeng 2020-04-27 修复bug#22975****************/
         // disable move window
-        if (event->type() == QEvent::MouseMove || event->type() == QEvent::DragMove) {
+        /*if (event->type() == QEvent::MouseMove || event->type() == QEvent::DragMove) {
             if (watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
                 event->ignore();
                 return true;
             }
-        }
+        }*/
+        /********** delete end by ut001121 zhangmeng****************/
 
         /********** Modify by n013252 wangliang 2020-01-14: 雷神窗口从未激活状态恢复****************/
         if (watched == this && event->type() == QEvent::WindowStateChange) {
