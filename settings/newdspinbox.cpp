@@ -31,6 +31,7 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     m_DIconBtnSubtract->setFixedSize(36, 36);
     m_DLineEdit = new DLineEdit();
     m_DLineEdit->setClearButtonEnabled(false);
+    m_DLineEdit->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     QHBoxLayout *pHBoxLayout = new QHBoxLayout();
 
     pHBoxLayout->setSpacing(10);
