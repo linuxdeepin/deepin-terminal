@@ -283,7 +283,7 @@
                         },
                         {
                             "key": "blurred_background",
-                            "text": "Blurred background",
+                            "text": "Blur background",
                             "type": "checkbox",
                             "default": "false"
                         },

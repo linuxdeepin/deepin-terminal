@@ -271,8 +271,9 @@
         <translation type="vanished">光标风格</translation>
     </message>
     <message>
+        <location filename="../settings/settings_translation.cpp" line="14"/>
         <source>Blur background</source>
-        <translation type="vanished">背景模糊</translation>
+        <translation>背景模糊</translation>
     </message>
     <message>
         <location filename="../settings/settings_translation.cpp" line="18"/>
@@ -380,9 +381,8 @@
         <translation>丢失焦点后隐藏雷神窗口</translation>
     </message>
     <message>
-        <location filename="../settings/settings_translation.cpp" line="14"/>
         <source>Blurred background</source>
-        <translation>背景模糊</translation>
+        <translation type="vanished">背景模糊</translation>
     </message>
     <message>
         <source>Rename tab</source>
