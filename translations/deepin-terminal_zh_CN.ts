@@ -195,17 +195,17 @@
         <translation type="vanished">高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1404"/>
+        <location filename="../main/mainwindow.cpp" line="1406"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1406"/>
+        <location filename="../main/mainwindow.cpp" line="1408"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1408"/>
+        <location filename="../main/mainwindow.cpp" line="1410"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
@@ -214,12 +214,12 @@
         <translation type="vanished">切换全屏</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1431"/>
+        <location filename="../main/mainwindow.cpp" line="1433"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1486"/>
+        <location filename="../main/mainwindow.cpp" line="1488"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -1101,8 +1101,12 @@
     </message>
     <message>
         <location filename="../settings/settings.cpp" line="49"/>
-        <source>Halfscreen</source>
+        <source>Split screen</source>
         <translation>分屏</translation>
+    </message>
+    <message>
+        <source>Halfscreen</source>
+        <translation type="vanished">分屏</translation>
     </message>
 </context>
 <context>
@@ -1140,12 +1144,12 @@
 <context>
     <name>TabBar</name>
     <message>
-        <location filename="../views/tabbar.cpp" line="293"/>
+        <location filename="../views/tabbar.cpp" line="299"/>
         <source>Close workspace</source>
         <translation>关闭工作区</translation>
     </message>
     <message>
-        <location filename="../views/tabbar.cpp" line="294"/>
+        <location filename="../views/tabbar.cpp" line="300"/>
         <source>Close other workspace</source>
         <translation>关闭其他工作区</translation>
     </message>

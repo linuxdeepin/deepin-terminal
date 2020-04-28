@@ -336,7 +336,7 @@ void MainWindow::setNormalWindow()
     } else if (windowState == "fullscreen") {
         setDefaultLocation();
         switchFullscreen(true);
-    } else if (windowState == "Halfscreen") {
+    } else if (windowState == "split_screen") {
         setWindowRadius(0);
         resize(halfScreenSize());
     } else {
@@ -766,7 +766,7 @@ QString MainWindow::getConfigWindowState()
         qDebug() << "use line state set:" << state;
         if (state == "maximize") {
             windowState = "window_maximum";
-        } else if (state == "halfscreen") {
+        } else if (state == "split_screen") {
             windowState = "Halfscreen";
         } else if (state == "normal") {
             windowState = "window_normal";
