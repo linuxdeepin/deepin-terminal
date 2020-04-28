@@ -98,7 +98,7 @@ TermWidget *TermWidgetPage::split(Qt::Orientation orientation)
 
 TermWidget *TermWidgetPage::split(TermWidget *term, Qt::Orientation orientation)
 {
-    //parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
+    parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
     Q_CHECK_PTR(parent);
 
