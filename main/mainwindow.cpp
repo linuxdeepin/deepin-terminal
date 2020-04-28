@@ -1246,6 +1246,7 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
     if ((keyName == "advanced.window.auto_hide_raytheon_window") || (keyName == "advanced.window.use_on_starting")) {
         qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                  << ", auto effective when happen";
+        onApplicationStateChanged(QApplication::applicationState());
         return;
     }
 
@@ -1504,14 +1505,15 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
         return;
     }
 
-    // 主窗口未激活，不管．
-    if (this != QApplication::activeWindow()) {
+    // 主窗口因为有弹窗而未激活，不管．
+    if (this != QApplication::activeWindow() && QApplication::activeWindow() != nullptr) {
+        qDebug()<<QApplication::activeWindow();
         return;
     }
 
     // 激活应用的指令传不到这里．传到这里的都是非激活指令．
     hide();
-    qDebug() << "Application not Active ,now hide" << state;
+    qDebug() << "Application not Active,　now hide" << state;
 }
 
 /**
