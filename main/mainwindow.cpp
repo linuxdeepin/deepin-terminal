@@ -565,8 +565,8 @@ void MainWindow::saveWindowSize()
     if (!m_IfUseLastSize) {
         return;
     }
-    // 半屏窗口大小时就不记录了
-    if (size() == halfScreenSize()) {
+    // (真.假)半屏窗口大小时就不记录了
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0,1)))) {
         return;
     }
 
