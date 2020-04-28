@@ -11,7 +11,7 @@ void GenerateSettingTranslate()
     auto advanced_scroll_scroll_on_keyText = QObject::tr("Scroll on keystroke");
     auto advanced_scroll_scroll_on_outputText = QObject::tr("Scroll on output");
     auto advanced_window_auto_hide_raytheon_windowText = QObject::tr("Hide Quake window after losing focus");
-    auto advanced_window_blurred_backgroundText = QObject::tr("Blurred background");
+    auto advanced_window_blurred_backgroundText = QObject::tr("Blur background");
     auto advanced_window_use_on_startingName = QObject::tr("Use on starting");
     auto basic_interface_fontName = QObject::tr("Font");
     auto basic_interface_font_sizeName = QObject::tr("Font size");
