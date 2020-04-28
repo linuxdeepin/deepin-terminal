@@ -64,12 +64,12 @@
         <translation>请输入命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="267"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="273"/>
         <source>The name already exists,</source>
         <translation>该名称已存在，</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="268"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="274"/>
         <source>please input another one.</source>
         <translation>请重新输入</translation>
     </message>
@@ -173,12 +173,12 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="206"/>
+        <location filename="../main/mainwindow.cpp" line="203"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="228"/>
+        <location filename="../main/mainwindow.cpp" line="225"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
@@ -195,32 +195,31 @@
         <translation type="vanished">高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1405"/>
+        <location filename="../main/mainwindow.cpp" line="1404"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1407"/>
+        <location filename="../main/mainwindow.cpp" line="1406"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1409"/>
+        <location filename="../main/mainwindow.cpp" line="1408"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1422"/>
         <source>Toggle fullscreen</source>
-        <translation>切换全屏</translation>
+        <translation type="vanished">切换全屏</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1430"/>
+        <location filename="../main/mainwindow.cpp" line="1431"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1485"/>
+        <location filename="../main/mainwindow.cpp" line="1486"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -1154,17 +1153,17 @@
 <context>
     <name>TermInputDialog</name>
     <message>
-        <location filename="../views/terminputdialog.cpp" line="143"/>
+        <location filename="../views/terminputdialog.cpp" line="148"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../views/terminputdialog.cpp" line="164"/>
+        <location filename="../views/terminputdialog.cpp" line="174"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/terminputdialog.cpp" line="165"/>
+        <location filename="../views/terminputdialog.cpp" line="175"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
