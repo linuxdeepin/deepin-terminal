@@ -56,11 +56,6 @@ public:
 
     ShortcutManager *getShortcutManager();
 
-    /********** Modify by n013252 wangliang 2020-01-14: 是否主动激活主窗口 **********/
-    bool isQuakeWindowActivated();
-    void setQuakeWindowActivated(bool isQuakeWindowActivated);
-    /**************** Modify by n013252 wangliang End ****************/
-
     void executeDownloadFile();
 
     void pressCtrlAt();
@@ -188,7 +183,6 @@ private:
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;
     bool m_isQuakeWindow = false;
-    bool m_isQuakeWindowActivated = false;
     QMap<int, bool> m_tabVisitMap;
     QMap<int, bool> m_tabChangeColorMap;
 

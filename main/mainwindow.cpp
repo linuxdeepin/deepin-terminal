@@ -1213,15 +1213,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     return DMainWindow::eventFilter(watched, event);
 }
 
-bool MainWindow::isQuakeWindowActivated()
-{
-    return m_isQuakeWindowActivated;
-}
-
-void MainWindow::setQuakeWindowActivated(bool isQuakeWindowActivated)
-{
-    m_isQuakeWindowActivated = isQuakeWindowActivated;
-}
 
 /*******************************************************************************
  1. @函数:    onSettingValueChanged
@@ -1520,7 +1511,6 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 
     // 激活应用的指令传不到这里．传到这里的都是非激活指令．
     hide();
-    setQuakeWindowActivated(false);
     qDebug() << "Application not Active ,now hide" << state;
 }
 
