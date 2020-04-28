@@ -1215,19 +1215,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             enterSzCommand = false;
         }
     }
-    /******** Modify by m000714 daizhengwen 2020-04-10: 获取点击事件，隐藏右侧窗口****************/
-    if (m_CurrentShowPlugin != PLUGIN_TYPE_NONE) {
-        if (event->type() == QEvent::MouseButtonPress && watched->objectName() == QLatin1String("QMainWindowClassWindow")) {
-            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-            // 242为RightPanel的的宽度
-            if (mouseEvent->x() < this->width()  - 242) {
-                showPlugin(PLUGIN_TYPE_NONE);
-            }
-        }
-    }
-    /********************* Modify by m000714 daizhengwen End ************************/
 
-    return QObject::eventFilter(watched, event);
+    return DMainWindow::eventFilter(watched, event);
 }
 
 bool MainWindow::isQuakeWindowActivated()
@@ -1293,6 +1282,19 @@ void MainWindow::onShortcutSettingChanged(const QString &keyName)
 void MainWindow::focusOutEvent(QFocusEvent *event)
 {
     Q_UNUSED(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    mousePressEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-04-28
+ 4. @说明:    左键点击隐藏插件
+*******************************************************************************/
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        showPlugin(PLUGIN_TYPE_NONE);
+    }
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)

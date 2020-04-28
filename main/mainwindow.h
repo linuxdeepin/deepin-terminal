@@ -15,6 +15,7 @@
 #include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QSettings>
+#include <QMouseEvent>
 
 #include <functional>
 #include <QShortcut>
@@ -107,6 +108,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
     //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
     /*press Windows+D on the keyboard, the notification bar will

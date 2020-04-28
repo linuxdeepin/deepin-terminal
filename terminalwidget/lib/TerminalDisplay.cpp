@@ -1989,6 +1989,9 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
     else
         emit mouseSignal( 2, charColumn +1, charLine +1 +_scrollBar->value() -_scrollBar->maximum() , 0);
   }
+    /******** Modify by m000714 daizhengwen 2020-04-28: 调用父类的QMousePressEvent****************/
+    QWidget::mousePressEvent(ev);
+    /********************* Modify by m000714 daizhengwen End ************************/
 }
 
 QList<QAction*> TerminalDisplay::filterActions(const QPoint& position)

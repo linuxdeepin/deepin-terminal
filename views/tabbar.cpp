@@ -6,6 +6,7 @@
 #include <DApplicationHelper>
 #include <DFontSizeManager>
 #include <DLog>
+#include <DIconButton>
 
 #include <QStyleOption>
 #include <QStyleOptionTab>
@@ -142,6 +143,11 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setTabHeight(36);
     setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
+
+    DIconButton *addButton = findChild<DIconButton *>("AddButton");
+    if (NULL != addButton) {
+        addButton->setFocusPolicy(Qt::NoFocus);
+    }
 
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);
 }
