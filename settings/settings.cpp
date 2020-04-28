@@ -196,8 +196,8 @@ void Settings::reload()
             continue;
         }
         if (settings->value(key) != newSettings.value(key + "/value")) {
-            settings->option(key)->setValue(newSettings.value(key + "/value"));
             qDebug() << "reload update:" << key << settings->value(key);
+            settings->option(key)->setValue(newSettings.value(key + "/value"));            
         }
     }
 }
