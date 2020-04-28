@@ -63,6 +63,8 @@ Settings::Settings() : QObject(qApp)
     connect(m_Watcher, &QFileSystemWatcher::fileChanged, this, [this](QString file) {
         qDebug() << "fileChanged" << file;
         reload();
+        //监控完一次就不再监控了，所以要再添加
+        m_Watcher->addPath(m_configPath);
     });
 
 }
@@ -187,6 +189,12 @@ void Settings::reload()
 {
     QSettings  newSettings(m_configPath, QSettings::IniFormat);
     for (QString key : newSettings.childGroups()) {
+        //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
+        if (!settings->keys().contains(key)) {
+            qDebug() << "reload failed: system not found " << key << "now remove it";
+            newSettings.remove(key);
+            continue;
+        }
         if (settings->value(key) != newSettings.value(key + "/value")) {
             settings->option(key)->setValue(newSettings.value(key + "/value"));
             qDebug() << "reload update:" << key << settings->value(key);
