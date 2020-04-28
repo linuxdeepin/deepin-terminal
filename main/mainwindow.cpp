@@ -766,8 +766,8 @@ QString MainWindow::getConfigWindowState()
         qDebug() << "use line state set:" << state;
         if (state == "maximize") {
             windowState = "window_maximum";
-        } else if (state == "split_screen") {
-            windowState = "Halfscreen";
+        } else if (state == "splitscreen") {
+            windowState = "split_screen";
         } else if (state == "normal") {
             windowState = "window_normal";
         } else if (state == "fullscreen") {

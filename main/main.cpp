@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
     QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, split screen "),
+                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, splitscreen "),
                                       "state-mode");
     QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
     QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     }
     if (parser.isSet(optWindowState)) {
         firstTermProperties[StartWindowState] = parser.value(optWindowState);
-        QStringList validString = {"maximize", "fullscreen", "split screen", "normal"};
+        QStringList validString = {"maximize", "fullscreen", "splitscreen", "normal"};
         if (!validString.contains(parser.value(optWindowState))) {
             parser.showHelp();
             exit;
