@@ -288,10 +288,10 @@ void MainWindow::setQuakeWindow()
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
-    
+
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setAttribute(Qt::WA_Disabled, true);
-    
+
     /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
     setMinimumSize(screenRect.size().width(), 60);
     setMaximumHeight(screenRect.size().height() * 2 / 3);
@@ -1415,10 +1415,12 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     for (auto opt :
             Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
-//        qDebug() << opt->name();
         QString name = QObject::tr(opt->name().toUtf8().data());
-        if (opt->name() == "Fullscreen")
+        /***del begin by ut001121 zhangmeng 修复BUG#23269 快捷键菜单“切换全屏”显示与文案不一致***/
+        /*if (opt->name() == "Fullscreen")
             name = tr("Toggle fullscreen");
+        */
+        /***del end by ut001121 zhangmeng***/
         jsonItem.insert("name", name);
         jsonItem.insert("value", opt->value().toString());
         JsonArry.append(jsonItem);
