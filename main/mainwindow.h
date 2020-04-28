@@ -102,6 +102,8 @@ public slots:
     void onShortcutSettingChanged(const QString &keyName);
     void remoteUploadFile();
     void remoteDownloadFile();
+    // 处理雷神窗口自动隐藏功能以及window+D一起显示的问题
+    void onApplicationStateChanged(Qt::ApplicationState state);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
