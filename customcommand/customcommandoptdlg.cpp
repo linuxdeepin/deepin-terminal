@@ -246,6 +246,12 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     int icount = 0;
     m_bNeedDel = false;
     if (m_type == CCT_MODIFY) {
+
+        if (strName == m_currItemData->m_cmdName && strCommand == m_currItemData->m_cmdText && keytmp == QKeySequence(m_currItemData->m_cmdShortcut)) {
+            accept();
+            return;
+        }
+
         existAction = ShortcutManager::instance()->checkActionIsExistForModify(*m_newAction);
 
         if (strName != m_currItemData->m_cmdName) {
