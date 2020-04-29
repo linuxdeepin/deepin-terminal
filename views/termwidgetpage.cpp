@@ -125,7 +125,7 @@ TermWidget *TermWidgetPage::split(TermWidget *term, Qt::Orientation orientation)
 
 void TermWidgetPage::closeSplit(TermWidget *term)
 {
-    if (term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
+    if (!term->safeClose()) {
         return;
     }
 
