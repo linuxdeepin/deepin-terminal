@@ -25,6 +25,7 @@ public:
     // 修改光标形状
     void setCursorShape(int shape);
     void setPressingScroll(bool enable);
+    bool safeClose();
 
 public slots:
     void wpasteSelection();
