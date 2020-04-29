@@ -1149,13 +1149,10 @@ QString MainWindow::selectedText(bool preserveLineBreaks)
 
 void MainWindow::onCreateNewWindow(QString workingDir)
 {
-    qDebug() << "************************workingDir:" << workingDir << endl;
-    TermProperties properties;
-    properties.setWorkingDir(workingDir);
-    properties[SingleFlag] = false;
-    properties[QuakeMode] = false;
-    MainWindow *window = new MainWindow(properties);
-    window->show();
+    Q_UNUSED(workingDir);
+    // 调用一个新的进程，开启终端
+    QProcess process;
+    process.startDetached(QApplication::applicationName());
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
