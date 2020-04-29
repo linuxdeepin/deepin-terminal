@@ -767,14 +767,6 @@ void TerminalDisplay::drawCursor(QPainter& painter,
 
        if ( _cursorShape == Emulation::KeyboardCursorShape::BlockCursor )
        {
-            // draw the cursor outline, adjusting the area so that
-            // it is draw entirely inside 'rect'
-            int penWidth = qMax(1,painter.pen().width());
-
-            painter.drawRect(cursorRect.adjusted(penWidth/2,
-                                                 penWidth/2,
-                                                 - penWidth/2 - penWidth%2,
-                                                 - penWidth/2 - penWidth%2));
             if ( hasFocus() )
             {
                 painter.fillRect(cursorRect, _cursorColor.isValid() ? _cursorColor : foregroundColor);
@@ -785,6 +777,17 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                     // the cursor position is readable
                     invertCharacterColor = true;
                 }
+            }
+            else
+            {
+            	// draw the cursor outline, adjusting the area so that
+            	// it is draw entirely inside 'rect'
+                int penWidth = 1;
+
+                painter.drawRect(cursorRect.adjusted(penWidth/2,
+                                                     penWidth/2,
+                                                     - penWidth/2 - penWidth%2,
+                                                     - penWidth/2 - penWidth%2));
             }
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
@@ -1754,8 +1757,8 @@ QRect TerminalDisplay::imageToWidget(const QRect& imageArea) const
 
 void TerminalDisplay::updateCursor()
 {
-  QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
-  update(cursorRect);
+//  QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
+  update();
 }
 
 void TerminalDisplay::blinkCursorEvent()
