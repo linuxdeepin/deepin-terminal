@@ -6,6 +6,7 @@
 #include <DApplicationHelper>
 #include <DFontSizeManager>
 #include <DLog>
+#include <DIconButton>
 
 #include <QStyleOption>
 #include <QStyleOptionTab>
@@ -143,6 +144,11 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
 
+    DIconButton *addButton = findChild<DIconButton *>("AddButton");
+    if (NULL != addButton) {
+        addButton->setFocusPolicy(Qt::NoFocus);
+    }
+
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);
 }
 
@@ -244,23 +250,16 @@ bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
 
     return termFound;
 }
-/*******************************************************************************
- 1. @函数:    closeAllTabs
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-04-29
- 4. @说明:    关闭所有页，
-　　　　　　　　notCloseCurrentTab默认为true ,不关闭当前页
-　　　　　　　　如果是不关闭当前页的，最后回到当前页来．
-*******************************************************************************/
-void TabBar::closeAllTabs(QString id, bool notCloseCurrentTab)
+
+void TabBar::closeOtherTabsExceptCurrent(QString id)
 {
+    if (this->count() < 2) {
+        return;
+    }
+
     QList<QString> closeTabIdList;
     for (int i = 0; i < count(); i++) {
-        if (id == identifier(i)) {
-            if (!notCloseCurrentTab) {
-                closeTabIdList.append(identifier(i));
-            }
-        } else {
+        if (id != identifier(i)) {
             closeTabIdList.append(identifier(i));
         }
     }
@@ -268,12 +267,9 @@ void TabBar::closeAllTabs(QString id, bool notCloseCurrentTab)
         emit closeTabReq(id);
         qDebug() << " close" << id;
     }
-    //如果是不关闭当前页的，最后回到当前页来．
-    if (notCloseCurrentTab) {
-        int newIndex = getIndexByIdentifier(id);
-        if (-1 != newIndex) {
-            setCurrentIndex(newIndex);
-        }
+    int newIndex = getIndexByIdentifier(id);
+    if (-1 != newIndex) {
+        setCurrentIndex(newIndex);
     }
 }
 
@@ -308,7 +304,7 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                 });
 
                 connect(m_closeOtherTabAction, &QAction::triggered, this, [ = ] {
-                    closeAllTabs(identifier(m_rightClickTab));
+                    closeOtherTabsExceptCurrent(identifier(m_rightClickTab));
                 });
 
                 m_rightMenu->addAction(m_closeTabAction);

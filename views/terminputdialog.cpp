@@ -131,7 +131,12 @@ void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffs
 void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
 {
     DLineEdit *lineEdit = new DLineEdit();
-    lineEdit->setFixedSize(360, 36);
+    /***mod begin by ut001121 zhangmeng 20200428 修复BUG#22995 标签截断显示的问题***/
+    /* delete
+     * lineEdit->setFixedSize(360, 36);*/
+    /* add */
+    lineEdit->setFixedWidth(360);
+    /***mod end by ut001121 zhangmeng***/
     lineEdit->setText(oldTitle);
     lineEdit->setClearButtonEnabled(false);
     lineEdit->setFocusPolicy(Qt::ClickFocus);
@@ -141,7 +146,12 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     lineEdit->lineEdit()->selectAll();
 
     DLabel *label = new DLabel(tr("Tab name"));
-    label->setFixedSize(360, 20);
+    /***mod begin by ut001121 zhangmeng 20200428 修复BUG#22995 标签截断显示的问题***/
+    /* delete
+     * label->setFixedSize(360, 20);*/
+    /* add */
+    label->setFixedWidth(360);
+    /***mod end by ut001121 zhangmeng***/
     label->setAlignment(Qt::AlignHCenter);
 
     DPalette palette = label->palette();

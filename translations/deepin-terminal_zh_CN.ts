@@ -64,12 +64,12 @@
         <translation>请输入命令</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="267"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="273"/>
         <source>The name already exists,</source>
         <translation>该名称已存在，</translation>
     </message>
     <message>
-        <location filename="../customcommand/customcommandoptdlg.cpp" line="268"/>
+        <location filename="../customcommand/customcommandoptdlg.cpp" line="274"/>
         <source>please input another one.</source>
         <translation>请重新输入</translation>
     </message>
@@ -173,78 +173,53 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="../main/mainwindow.cpp" line="206"/>
-=======
-        <location filename="../main/mainwindow.cpp" line="869"/>
->>>>>>> Type:chore
+        <location filename="../main/mainwindow.cpp" line="203"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="../main/mainwindow.cpp" line="228"/>
-=======
-        <location filename="../main/mainwindow.cpp" line="892"/>
->>>>>>> Type:chore
+        <location filename="../main/mainwindow.cpp" line="225"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-<<<<<<< HEAD
-=======
-        <location filename="../main/mainwindow.cpp" line="1285"/>
->>>>>>> Type:chore
         <source>workspace</source>
         <translation type="vanished">工作区</translation>
     </message>
     <message>
-<<<<<<< HEAD
-=======
-        <location filename="../main/mainwindow.cpp" line="1287"/>
->>>>>>> Type:chore
         <source>terminal</source>
         <translation type="vanished">终端</translation>
     </message>
     <message>
-<<<<<<< HEAD
-=======
-        <location filename="../main/mainwindow.cpp" line="1289"/>
->>>>>>> Type:chore
         <source>advanced</source>
         <translation type="vanished">高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1405"/>
+        <location filename="../main/mainwindow.cpp" line="1406"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="../main/mainwindow.cpp" line="1407"/>
+        <location filename="../main/mainwindow.cpp" line="1408"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1409"/>
+        <location filename="../main/mainwindow.cpp" line="1410"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1422"/>
         <source>Toggle fullscreen</source>
-        <translation>切换全屏</translation>
+        <translation type="vanished">切换全屏</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1430"/>
+        <location filename="../main/mainwindow.cpp" line="1433"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1485"/>
-=======
-        <location filename="../main/mainwindow.cpp" line="1349"/>
->>>>>>> Type:chore
+        <location filename="../main/mainwindow.cpp" line="1488"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -253,18 +228,10 @@
         <translation type="vanished">请输入下载文件的路径: </translation>
     </message>
     <message>
-<<<<<<< HEAD
-=======
-        <location filename="../main/mainwindow.cpp" line="1384"/>
->>>>>>> Type:chore
         <source>Select file to upload</source>
         <translation type="vanished">选择要上传的文件</translation>
     </message>
     <message>
-<<<<<<< HEAD
-=======
-        <location filename="../main/mainwindow.cpp" line="1386"/>
->>>>>>> Type:chore
         <source>Select directory to save the file</source>
         <translation type="vanished">选择下载文件的保存目录</translation>
     </message>
@@ -847,11 +814,7 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-<<<<<<< HEAD
         <location filename="../remotemanage/remotemanagementpanel.cpp" line="70"/>
-=======
-        <location filename="../remotemanage/remotemanagementpanel.cpp" line="67"/>
->>>>>>> Type:chore
         <source>Add Server</source>
         <translation>添加服务器</translation>
     </message>
@@ -868,7 +831,7 @@
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="104"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="107"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>在您使用右键菜单进行上传和下载文件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
@@ -1138,8 +1101,12 @@
     </message>
     <message>
         <location filename="../settings/settings.cpp" line="49"/>
-        <source>Halfscreen</source>
+        <source>Split screen</source>
         <translation>分屏</translation>
+    </message>
+    <message>
+        <source>Halfscreen</source>
+        <translation type="vanished">分屏</translation>
     </message>
 </context>
 <context>
@@ -1177,12 +1144,12 @@
 <context>
     <name>TabBar</name>
     <message>
-        <location filename="../views/tabbar.cpp" line="293"/>
+        <location filename="../views/tabbar.cpp" line="299"/>
         <source>Close workspace</source>
         <translation>关闭工作区</translation>
     </message>
     <message>
-        <location filename="../views/tabbar.cpp" line="294"/>
+        <location filename="../views/tabbar.cpp" line="300"/>
         <source>Close other workspace</source>
         <translation>关闭其他工作区</translation>
     </message>
@@ -1190,17 +1157,17 @@
 <context>
     <name>TermInputDialog</name>
     <message>
-        <location filename="../views/terminputdialog.cpp" line="143"/>
+        <location filename="../views/terminputdialog.cpp" line="148"/>
         <source>Tab name</source>
         <translation>标题名称</translation>
     </message>
     <message>
-        <location filename="../views/terminputdialog.cpp" line="164"/>
+        <location filename="../views/terminputdialog.cpp" line="174"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/terminputdialog.cpp" line="165"/>
+        <location filename="../views/terminputdialog.cpp" line="175"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>

@@ -414,13 +414,8 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
 //        showPlugin(PLUGIN_TYPE_NONE);
 //    });
     /********************* Modify by m000714 daizhengwen End ************************/
-<<<<<<< HEAD
     connect(this, &MainWindow::showPluginChanged, termPage, [ = ](const QString name) {
         termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentPage() == termPage));
-=======
-    connect(this, &MainWindow::showPluginChanged,  termPage, [ = ](const QString name) {
-        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentTab() == termPage));
->>>>>>> Type: fix bug-19275
     });
 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
@@ -484,12 +479,18 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
         if (tabPage && tabPage->identifier() == identifier) {
             TermWidget *term = tabPage->currentTerminal();
             if (runCheck) {
-                if (!term->safeClose()) {
+                if (term->hasRunningProcess() && !Utils::showExitConfirmDialog()) {
+                    qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
                     return;
                 }
             }
+        }
+    }
 
-            int currSessionId = tabPage->currentTerminal()->getSessionId();
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        if (tabPage && tabPage->identifier() == identifier) {
+            int currSessionId =  tabPage->currentTerminal()->getSessionId();
             m_tabVisitMap.remove(currSessionId);
             m_tabChangeColorMap.remove(currSessionId);
             m_tabbar->removeTab(identifier);
@@ -565,7 +566,7 @@ void MainWindow::saveWindowSize()
         return;
     }
     // (真.假)半屏窗口大小时就不记录了
-    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1)))) {
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0,1)))) {
         return;
     }
 
@@ -585,7 +586,7 @@ void MainWindow::saveWindowSize()
 *******************************************************************************/
 void MainWindow::closeOtherTab(const QString &identifier)
 {
-    m_tabbar->closeAllTabs(identifier);
+    m_tabbar->closeOtherTabsExceptCurrent(identifier);
     return;
 }
 
@@ -655,39 +656,59 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     saveWindowSize();
-
-    // 注销和关机时不需要确认了
-    if (qApp->isSavingSession()) {
-        DMainWindow::closeEvent(event);
+    /********************* Modify by m000714 daizhengwen End ************************/
+    bool hasRunning = closeProtect();
+    //--modified by qinyaning(nyq) to solve After exiting the pop-up interface,
+    /* press Windows+D on the keyboard, the notification bar will
+    *  open the terminal interface to only display the exit
+    *  pop-up, click exit pop-up terminal interface to display abnormal, time: 2020.4.16 13:32
+    */
+    _isClickedExitDlg = hasRunning;
+    if (hasRunning && !Utils::showExitConfirmDialog()) {
+        qDebug() << "close window protect..." << endl;
+        event->ignore();
+        _isClickedExitDlg = false;
+        return;
     }
-    // 一页一页退出，当全部退出以后，mainwindow自然关闭．
-    event->ignore();
-    closeConfirm();
+    _isClickedExitDlg = false;
+    //--------------------------------------------------------
 
-    return;
+    DMainWindow::closeEvent(event);
 }
-/*******************************************************************************
- 1. @函数:    closeConfirm
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-04-29
- 4. @说明:    mainwindow关闭确认
- 　　　　　　　当前方案为一页一页确认
-*******************************************************************************/
-void MainWindow::closeConfirm()
-{
-    // 原来判断运行窗口的接口．保留一下．
-//    TermWidgetPage *tabPage = currentPage();
-//    TermWidget *term = tabPage->currentTerminal();
-//    QList<int> processesRunning = term->getRunningSessionIdList();
-//    qDebug() << "here are " << processesRunning.count() << " processes running in this window. ";
 
-    // 如果不能马上关闭，并且还在没有最小化．
-    if (hasRunningProcesses() && isMinimized()) {
-        qDebug() << "isMinimized........... " << endl;
-        setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+bool MainWindow::closeProtect()
+{
+    // Do not ask for confirmation during log out and power off
+    if (qApp->isSavingSession()) {
+        return false;
     }
 
-    m_tabbar->closeAllTabs(currentPage()->identifier(), false) ;
+    // Check what processes are running, excluding the shell
+    TermWidgetPage *tabPage = currentPage();
+    TermWidget *term = tabPage->currentTerminal();
+    QList<int> processesRunning = term->getRunningSessionIdList();
+    qDebug() << processesRunning << endl;
+
+    // Get number of open tabs
+    const int openTabs = m_termStackWidget->count();
+
+    // If no processes running (except the shell) and no extra tabs, just close
+    if (processesRunning.count() == 0 && openTabs < 2) {
+        return false;
+    }
+
+    // make sure the window is shown on current desktop and is not minimized
+    if (this->isMinimized() && !this->m_isQuakeWindow) {
+        qDebug() << "isMinimized........... " << endl;
+        this->setWindowState((this->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+    }
+
+    if (processesRunning.count() > 0) {
+        qDebug() << "here are " << processesRunning.count() << " processes running in this window. " << endl;
+        return true;
+    }
+
+    return false;
 }
 
 /*******************************************************************************
@@ -1483,7 +1504,7 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 
     // 主窗口因为有弹窗而未激活，不管．
     if (this != QApplication::activeWindow() && QApplication::activeWindow() != nullptr) {
-        qDebug() << QApplication::activeWindow();
+        qDebug()<<QApplication::activeWindow();
         return;
     }
 
@@ -1524,12 +1545,6 @@ void MainWindow::pressCtrlU()
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
-void MainWindow::pressCtrlU()
-{
-    QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
-    QApplication::sendEvent(focusWidget(), &keyPress);
-}
-
 void MainWindow::sleep(unsigned int msec)
 {
     QTime dieTime = QTime::currentTime().addMSecs(msec);
@@ -1548,8 +1563,18 @@ void MainWindow::pressEnterKey(const QString &text)
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
     QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
 }
+//------------------------------------------------
+//--added by qinyaning(nyq) to solve After exiting the pop-up interface,
+/*press Windows+D on the keyboard, the notification bar will
+*open the terminal interface to only display the exit
+*pop-up, click exit pop-up terminal interface to display abnormal
+*/
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
+    if (window()->windowState().testFlag(Qt::WindowMinimized)) {
+        if (_isClickedExitDlg)
+            activateWindow();
+    }
     // 雷神窗口没有其它需要调整的
     if (m_isQuakeWindow) {
         return;
@@ -1561,4 +1586,7 @@ void MainWindow::changeEvent(QEvent * /*event*/)
         titlebar()->setMenuVisible(!isFullscreen);
         titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
     }
+
 }
+//--------------------------------------------------
+

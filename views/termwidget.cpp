@@ -95,10 +95,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // 按键滚动
     if (Settings::instance()->PressingScroll()) {
         qDebug() << "setMotionAfterPasting(2)";
-        //setMotionAfterPasting(2);
+        setMotionAfterPasting(2);
     } else {
         setMotionAfterPasting(0);
-        //qDebug() << "setMotionAfterPasting(0)";
+        qDebug() << "setMotionAfterPasting(0)";
     }
 
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
@@ -434,14 +434,6 @@ void TermWidget::setPressingScroll(bool enable)
     } else {
         setMotionAfterPasting(0);
     }
-}
-
-bool TermWidget::safeClose()
-{
-    if (hasRunningProcess()) {
-        return Utils::showExitConfirmDialog();
-    }
-    return  true;
 }
 
 /*******************************************************************************

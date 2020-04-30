@@ -153,7 +153,7 @@ private:
     /********************* Modify by n014361 wangpeili End ************************/
 
     /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
-    void closeConfirm();
+    bool closeProtect();
     /**************** Modify by n013252 wangliang End ****************/
 
     MainWindowPluginInterface *getPluginByName(const QString &name);
