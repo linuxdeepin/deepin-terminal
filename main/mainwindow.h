@@ -42,6 +42,10 @@ public:
     void closeTab(const QString &identifier, bool runCheck = true);
     int getAllterminalCount();
 
+    /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 Begin************************/
+    QString getCurrTabTitle();
+    /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 End  ************************/
+
     /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
     void closeOtherTab(const QString &identifier);
     /********************* Modify by n014361 wangpeili End ************************/

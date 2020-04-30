@@ -572,6 +572,11 @@ void MainWindow::saveWindowSize()
     }
 }
 
+QString MainWindow::getCurrTabTitle()
+{
+    return m_tabbar->tabText(m_tabbar->currentIndex());
+}
+
 /*******************************************************************************
  1. @函数:     closeOtherTab
  2. @作者:     n014361 王培利

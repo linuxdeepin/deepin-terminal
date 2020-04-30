@@ -296,7 +296,14 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
 
     menu.addAction(tr("Rename title"), this, [this] {
-        QString currTabTitle = this->property("currTabTitle").toString();
+        //QString currTabTitle = this->property("currTabTitle").toString();
+        /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 Begin************************/
+        QString currTabTitle = parentPage()->parentMainWindow()->getCurrTabTitle();
+        if (currTabTitle.isEmpty())
+        {
+            currTabTitle = this->property("currTabTitle").toString();
+        }
+        /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 End  ************************/
         if (currTabTitle.isNull())
         {
             currTabTitle = this->title();
