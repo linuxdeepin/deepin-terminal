@@ -394,7 +394,21 @@ void Pty::dataReceived()
 
     QString recvData = QString(data);
 
-    emit receivedData(data.constData(),data.count());
+    /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
+    // 乱码提示信息不显示
+    if (recvData.contains("bash: $'\\212**0800000000022d'：")
+            || recvData.contains("bash: **0800000000022d：")
+            || recvData.contains("**^XB0800000000022d"))
+        return;
+
+    // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
+    if (recvData.contains("\u008A")) {
+        recvData.replace("\u008A", " ");
+        data = recvData.toUtf8();
+    }
+    /********************* Modify by m000714 daizhengwen End ************************/
+
+    emit receivedData(data.constData(), data.count());
 }
 
 void Pty::lockPty(bool lock)
