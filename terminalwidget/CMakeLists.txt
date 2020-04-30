@@ -39,6 +39,21 @@ set(LXQTBT_MINIMUM_VERSION "0.6.0")
 find_package(Qt5Widgets "${QT_MINIMUM_VERSION}" REQUIRED)
 find_package(Qt5LinguistTools "${QT_MINIMUM_VERSION}" REQUIRED)
 find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(GLIB REQUIRED glib-2.0)
+pkg_check_modules(GIO REQUIRED gio-unix-2.0)
+
+set(INCLUDE_PATHS
+    ${GLIB_INCLUDE_DIRS}
+)
+
+set(LIBS
+    ${GIO_LIBRARIES}
+    ${ZLIB_LIBRARIES}
+    z
+    pthread
+)
 
 if(USE_UTF8PROC)
     find_package(Utf8Proc REQUIRED)
@@ -48,6 +63,7 @@ include(LXQtPreventInSourceBuilds)
 include(LXQtTranslateTs)
 include(LXQtCompilerSettings NO_POLICY_SCOPE)
 include(LXQtCreatePkgConfigFile)
+include_directories(${INCLUDE_PATHS})
 
 if(APPLE)
     if(CMAKE_VERSION VERSION_GREATER 3.9)
@@ -87,6 +103,19 @@ set(SRCS
     lib/TerminalDisplay.cpp
     lib/tools.cpp
     lib/Vt102Emulation.cpp
+
+# vte-lib
+    lib/vte-lib/bidi.cpp
+    lib/vte-lib/ring.cpp
+    lib/vte-lib/pty.cpp
+    lib/vte-lib/ringview.cpp
+    lib/vte-lib/vterowdata.cpp
+    lib/vte-lib/vteunistr.cpp
+    lib/vte-lib/vtetypes.cpp
+    lib/vte-lib/vtestreamfile.cpp
+    lib/vte-lib/vtespawn.cpp
+    lib/vte-lib/vteutils.cpp
+    lib/vte-lib/reaper.cpp
 )
 
 # Only the Headers that need to be moc'd go here
@@ -106,6 +135,32 @@ set(HDRS
     lib/SessionManager.h
     lib/TerminalDisplay.h
     lib/Vt102Emulation.h
+
+# vte-lib
+    lib/vte-lib/bidi.h
+    lib/vte-lib/ring.h
+    lib/vte-lib/pty.h
+    lib/vte-lib/ringview.h
+    lib/vte-lib/vterowdata.h
+    lib/vte-lib/cell.h
+    lib/vte-lib/vteunistr.h
+    lib/vte-lib/vtetypes.h
+    lib/vte-lib/vtedefines.h
+    lib/vte-lib/attr.h
+    lib/vte-lib/vtestreamfile.h
+    lib/vte-lib/vtespawn.h
+    lib/vte-lib/vtemacros.h
+    lib/vte-lib/vteinternal.h
+    lib/vte-lib/vteptyinternal.h
+    lib/vte-lib/vteutils.h
+    lib/vte-lib/reaper.h
+    lib/vte-lib/tabstops.h
+    lib/vte-lib/colortriple.h
+    lib/vte-lib/vte/vte.h
+    lib/vte-lib/vte/vteenums.h
+    lib/vte-lib/vte/vteglobals.h
+    lib/vte-lib/vte/vtepty.h
+    lib/vte-lib/vte/vteregex.h
 )
 
 set(UI
@@ -157,7 +212,7 @@ lxqt_translate_ts(TERMINALWIDGET_QM
 )
 
 add_library(${TERMINALWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS} ${TERMINALWIDGET_QM})
-target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME} Qt5::Widgets readline)
+target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME} Qt5::Widgets ${LIBS} readline glib-2.0 gio-qt)
 set_target_properties( ${TERMINALWIDGET_LIBRARY_NAME} PROPERTIES
                        SOVERSION ${TERMINALWIDGET_VERSION_MAJOR}
                        VERSION ${TERMINALWIDGET_VERSION}
