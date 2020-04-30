@@ -24,6 +24,7 @@
 #include "utils.h"
 
 #include <DLog>
+#include <QToolButton>
 
 #include <QGraphicsOpacityEffect>
 #include <QKeyEvent>
@@ -119,6 +120,24 @@ void PageSearchBar::initSearchEdit()
 {
     m_searchEdit = new DSearchEdit(this);
     m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
+    m_searchEdit->setPlaceHolder("");
+    m_searchEdit->lineEdit()->findChild<QWidget *>("iconWidget")->findChild<DIconButton *>()->setIcon(QIcon(""));
+
+    // 把ＤＴＫ好容易改造的功能，还原了．．．．．．．．
+    // 把那个＂Ｘ＂控件功能还原成仅为清空文本
+    QList<QToolButton *> list = m_searchEdit->lineEdit()->findChildren<QToolButton *>();
+    QAction *clearAction = m_searchEdit->lineEdit()->findChild<QAction *>(QLatin1String("_q_qlineeditclearaction"));
+    for (int i = 0; i < list.count(); i++) {
+        if (list.at(i)->defaultAction() == clearAction) {
+            QToolButton *clearBtn = list.at(i);
+            //屏蔽lineedit清除按钮的槽函数,_q_clearFocus()获得有效的判断条件
+            clearBtn->disconnect(SIGNAL(clicked()));
+            connect(clearBtn, &QToolButton::clicked, [this]() {
+                m_searchEdit->lineEdit()->setText("");
+            });
+        }
+    }
+
     // 需求不让自动查找，这个接口预留
     connect(m_searchEdit, &DSearchEdit::textChanged, this, [this]() {
         emit keywordChanged(m_searchEdit->lineEdit()->text());
