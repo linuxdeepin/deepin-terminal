@@ -290,7 +290,8 @@ void MainWindow::setQuakeWindow()
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
 
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
-    setAttribute(Qt::WA_Disabled, true);
+//    setAttribute(Qt::WA_Disabled, true);
+    setEnableSystemMove(false);
 
     /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
     setMinimumSize(screenRect.size().width(), 60);
