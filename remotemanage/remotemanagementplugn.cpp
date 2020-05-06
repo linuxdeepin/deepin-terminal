@@ -51,7 +51,7 @@ void RemoteManagementPlugn::initRemoteManagementTopPanel()
     connect(m_remoteManagementTopPanel,
             &RemoteManagementTopPanel::doConnectServer,
             this,
-            &RemoteManagementPlugn::doCennectServer);
+            &RemoteManagementPlugn::doCennectServer, Qt::QueuedConnection);
 }
 
 void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
@@ -66,6 +66,11 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
             m_mainWindow->addTab(m_mainWindow->currentPage()->createCurrentTerminalProperties(), true);
         }
         //--------------------------------//
+        /******** Modify by m000714 daizhengwen 2020-04-30: 将当前还没执行的命令清空****************/
+        m_mainWindow->sleep(100);
+        m_mainWindow->pressCtrlU();
+        m_mainWindow->sleep(100);
+        /********************* Modify by m000714 daizhengwen End ************************/
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
         QString encodeString = curServer->m_encoding;
         if (!encodeString.isNull() && !encodeString.isEmpty()) {

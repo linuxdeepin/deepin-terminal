@@ -1131,7 +1131,7 @@ void MainWindow::onCreateNewWindow(QString workingDir)
     Q_UNUSED(workingDir);
     // 调用一个新的进程，开启终端
     QProcess process;
-    process.startDetached(QApplication::applicationName());
+    process.startDetached(QCoreApplication::applicationFilePath());
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)

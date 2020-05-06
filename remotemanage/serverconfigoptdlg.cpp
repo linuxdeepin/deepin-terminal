@@ -126,7 +126,9 @@ void ServerConfigOptDlg::initUI()
     m_port->setSingleStep(1);
     m_port->setFixedWidth(70);
     //comment code for old version dtk build
+#if (DTK_VERSION_MAJOR > 5 || (DTK_VERSION_MAJOR >= 5 && (DTK_VERSION_MINOR > 1 || (DTK_VERSION_MINOR >= 1 && DTK_VERSION_BUILD >= 2))))
     m_port->lineEdit()->setClearButtonEnabled(false);
+#endif
     // 去除上下按钮
     m_port->setButtonSymbols(DSpinBox::NoButtons);
     // 禁用输入法
