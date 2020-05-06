@@ -56,11 +56,19 @@ void ServerConfigManager::initServerConfig()
     for (const QString &serverName : serverGroups) {
         serversSettings.beginGroup(serverName);
         QStringList strList = serverName.split("@");
+        qDebug() << "Group Name : " << serverName;
+        /******** Modify by m000714 daizhengwen 2020-04-17: 兼容旧版本，旧版本GroupName为三个****************/
+        // 不读三个参数的和旧版本互不影响，QSetting写配置文件和旧版本不一致
+        if (strList.count() == 3) {
+            qDebug() << "continue";
+            continue;
+        }
         ServerConfig *pServerConfig = new ServerConfig();
         pServerConfig->m_userName = strList.at(0);
         pServerConfig->m_address = strList.at(1);
         pServerConfig->m_port = strList.at(2);
-        pServerConfig->m_serverName = serversSettings.value("Name").toString();
+        pServerConfig->m_serverName = strList.at(3);
+        /********************* Modify by m000714 daizhengwen End ************************/
         pServerConfig->m_password = serversSettings.value("Password").toString();
         pServerConfig->m_group = serversSettings.value("GroupName").toString();
         pServerConfig->m_command = serversSettings.value("Command").toString();
@@ -70,16 +78,6 @@ void ServerConfigManager::initServerConfig()
         pServerConfig->m_deleteKey = serversSettings.value("Del").toString();
         pServerConfig->m_privateKey = serversSettings.value("PrivateKey").toString();
         serversSettings.endGroup();
-        /******** Modify by m000714 daizhengwen 2020-04-17: 兼容旧版本，旧版本GroupName为三个****************/
-        if (strList.count() == 3) {
-            qDebug() << "Group Name : " << serverName;
-            serversSettings.remove(serverName);
-            QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
-                                             pServerConfig->m_userName).arg(pServerConfig->m_address).arg(pServerConfig->m_port).arg(pServerConfig->m_serverName);
-            settServerConfig(serversSettings, strConfigGroupName, pServerConfig);
-        }
-        /********************* Modify by m000714 daizhengwen End ************************/
-
 
         if (m_serverConfigs.contains(pServerConfig->m_group)) {
             m_serverConfigs[pServerConfig->m_group].append(pServerConfig);
