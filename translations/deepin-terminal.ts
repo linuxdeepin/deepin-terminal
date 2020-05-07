@@ -133,8 +133,12 @@
 <context>
     <name>CustomCommandPlugin</name>
     <message>
-        <location filename="../customcommand/customcommandplugin.cpp" line="39"/>
         <source>Custom Commands</source>
+        <translation type="vanished">自定义命令</translation>
+    </message>
+    <message>
+        <location filename="../customcommand/customcommandplugin.cpp" line="36"/>
+        <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
 </context>
@@ -199,17 +203,17 @@
         <translation type="vanished">高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1369"/>
+        <location filename="../main/mainwindow.cpp" line="1366"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1371"/>
+        <location filename="../main/mainwindow.cpp" line="1368"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1373"/>
+        <location filename="../main/mainwindow.cpp" line="1370"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
@@ -218,12 +222,12 @@
         <translation type="vanished">切换全屏</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1396"/>
+        <location filename="../main/mainwindow.cpp" line="1393"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1451"/>
+        <location filename="../main/mainwindow.cpp" line="1448"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -1102,9 +1106,8 @@
         <translation type="vanished">横向分屏</translation>
     </message>
     <message>
-        <location filename="../views/termwidget.cpp" line="234"/>
         <source>&amp;Vertical Split</source>
-        <translation>纵向分屏</translation>
+        <translation type="vanished">纵向分屏</translation>
     </message>
     <message>
         <source>Close &amp;Window</source>
@@ -1172,6 +1175,11 @@
         <location filename="../views/termwidget.cpp" line="230"/>
         <source>&amp;Horizontal split</source>
         <translation>横向分屏</translation>
+    </message>
+    <message>
+        <location filename="../views/termwidget.cpp" line="234"/>
+        <source>&amp;Vertical split</source>
+        <translation>纵向分屏</translation>
     </message>
     <message>
         <location filename="../views/termwidget.cpp" line="239"/>

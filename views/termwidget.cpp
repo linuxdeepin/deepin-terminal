@@ -231,7 +231,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         parentPage()->split(Qt::Horizontal);
     });
 
-    menu.addAction(tr("&Vertical Split"), this, [this] {
+    menu.addAction(tr("&Vertical split"), this, [this] {
         parentPage()->split(Qt::Vertical);
     });
 

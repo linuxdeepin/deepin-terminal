@@ -42,22 +42,22 @@
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
-        <source>Open Link</source>
+        <source>Open link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
-        <source>Copy Link Address</source>
+        <source>Copy link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
-        <source>Send Email To...</source>
+        <source>Send email to...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
-        <source>Copy Email Address</source>
+        <source>Copy email address</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
