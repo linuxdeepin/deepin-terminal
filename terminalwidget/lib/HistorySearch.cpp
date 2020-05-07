@@ -114,8 +114,11 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             //qDebug() << "===lineStart" << lineStart << "lineEnd" << lineEnd ;
             //assert(lineStart <= lineEnd);
 
-            if (lineStart == -1)lineStart = 0;
-            else lineStart += 1;
+            if (lineStart == -1) {
+                lineStart = 0;
+            } else {
+                lineStart += 1;
+            }
 
             //确定行字符串及中文字符数
             QString lineStr = string.mid(lineStart, lineEnd);
@@ -127,8 +130,9 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             /***add end by ut001121***/
 
             matchStart = string.indexOf(m_regExp, startColumn);
-            if (matchStart >= endPosition - lineChinese)
+            if (matchStart >= endPosition - lineChinese) {
                 matchStart = -1;
+            }
         } else {
 
             /***add begin by ut001121 zhangmeng 20200506 修复BUG22626***/
@@ -151,8 +155,9 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             /***add end by ut001121***/
 
             matchStart = string.lastIndexOf(m_regExp, endPosition - 1);
-            if (matchStart < startColumn)
+            if (matchStart < startColumn) {
                 matchStart = -1;
+            }
         }
 
         if (matchStart > -1) {
@@ -173,8 +178,11 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             //qDebug() << "lineStart" << lineStart << "lineEnd" << lineEnd ;
             //assert(lineStart <= lineEnd);
 
-            if (lineStart == -1)lineStart = 0;
-            else lineStart += 1;
+            if (lineStart == -1) {
+                lineStart = 0;
+            } else {
+                lineStart += 1;
+            }
 
             QString lineStr = string.mid(lineStart, lineEnd - lineStart);
             lineChinese = lineStr.count(regEx);
