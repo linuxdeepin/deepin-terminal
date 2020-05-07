@@ -35,7 +35,7 @@ public:
     QRect GetRect(TermWidget *term);
     QPoint GetComparePoint(TermWidget *term, Qt::Edge dir);
     /********************* Modify by n014361 wangpeili End ************************/
-    bool hasRunningProcess();
+    int runningTerminalCount();
     TermProperties createCurrentTerminalProperties();
 
     void setTerminalOpacity(qreal opacity);

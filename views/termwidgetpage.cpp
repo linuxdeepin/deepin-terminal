@@ -46,16 +46,12 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
         MainWindow *mainWindow = qobject_cast<MainWindow *>(parent);
         if (mainWindow->hasRunningProcesses())
         {
-            if (Utils::showExitUninstallConfirmDialog())
-            {
+            if (Utils::showExitUninstallConfirmDialog()) {
                 return Utils::showUnistallConfirmDialog();
-            }
-            else
-            {
+            } else {
                 return false;
             }
-        }
-        else
+        } else
         {
             return Utils::showUnistallConfirmDialog();
         }
@@ -336,15 +332,16 @@ QPoint TermWidgetPage::GetComparePoint(TermWidget *term, Qt::Edge dir)
     return ret;
 }
 
-bool TermWidgetPage::hasRunningProcess()
+int TermWidgetPage::runningTerminalCount()
 {
+    int count = 0;
     QList<TermWidget *> termList = findChildren<TermWidget *>();
     for (TermWidget *term : termList) {
         if (term->hasRunningProcess()) {
-            return true;
+            count++;
         }
     }
-    return false;
+    return count;
 }
 
 TermProperties TermWidgetPage::createCurrentTerminalProperties()

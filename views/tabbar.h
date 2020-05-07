@@ -56,14 +56,13 @@ public:
     bool isNeedChangeTextColor(int index);
     void setClearTabColor(int index);
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
-    // 关闭所有页，默认不关闭当前页，即为关闭其它页
-    void closeAllTabs(QString id, bool exceptCurrentTab = true);
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
 signals:
     void tabBarClicked(int index);
-    void closeTabReq(QString Identifier);
+    void menuCloseTab(QString Identifier);
+    void menuCloseOtherTab(QString Identifier);
 
 private:
     QAction *m_closeOtherTabAction;

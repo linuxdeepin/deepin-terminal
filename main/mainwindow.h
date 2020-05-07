@@ -39,16 +39,20 @@ public:
     ~MainWindow() override;
 
     void addTab(TermProperties properties, bool activeTab = false);
+
+    /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
+    // 点击，右键，快捷键以及被调用．
     void closeTab(const QString &identifier, bool runCheck = true);
-    int getAllterminalCount();
+    // Tab右键或者快捷键
+    void closeOtherTab(const QString &identifier);
+    // 整体关闭事件
+    void closeAllTab();
+    /********************* Modify by n014361 wangpeili End ************************/
+
 
     /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 Begin************************/
     QString getCurrTabTitle();
     /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 End  ************************/
-
-    /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
-    void closeOtherTab(const QString &identifier);
-    /********************* Modify by n014361 wangpeili End ************************/
 
     void focusPage(const QString &identifier);
     void focusCurrentPage();
@@ -155,7 +159,7 @@ private:
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
     /********************* Modify by n014361 wangpeili End ************************/
-
+    int getAllterminalCount();
     /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
     void closeConfirm();
     /**************** Modify by n013252 wangliang End ****************/

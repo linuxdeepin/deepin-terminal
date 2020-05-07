@@ -124,23 +124,35 @@ void MainWindow::initTitleBar()
         }
     });
 
-    connect(m_tabbar, &DTabBar::tabCloseRequested, this, [this](int index) {
-        closeTab(m_tabbar->identifier(index));
-    }, Qt::QueuedConnection);
+    // 点击TAB上页触发
+    connect(m_tabbar,
+            &DTabBar::currentChanged,
+            this,
+    [this](int index) { focusPage(m_tabbar->identifier(index)); },
+    Qt::QueuedConnection);
+    // 点击TAB上的＂＋＂触发
+    connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() { createNewWorkspace(); }, Qt::QueuedConnection);
 
-    connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() {
-        createNewWorkspace();
-    }, Qt::QueuedConnection);
+    // 点击TAB上的＂X＂触发
+    connect(m_tabbar,
+            &DTabBar::tabCloseRequested,
+            this,
+    [this](int index) { closeTab(m_tabbar->identifier(index)); },
+    Qt::QueuedConnection);
 
-    connect(m_tabbar, &DTabBar::currentChanged, this, [this](int index) {
-        focusPage(m_tabbar->identifier(index));
-    }, Qt::QueuedConnection);
-
-    connect(m_tabbar, &TabBar::closeTabReq, this, [ = ](QString Identifier) {
-        m_tabbar->setCurrentIndex(m_tabbar->getIndexByIdentifier(Identifier));
+    // TAB菜单发来的关闭请求
+    connect(m_tabbar, &TabBar::menuCloseTab, this, [ = ](QString Identifier) {
         closeTab(Identifier);
         return;
     });
+
+    // TAB菜单发来的关闭其它窗口请求,需要逐一关闭
+    connect(m_tabbar, &TabBar::menuCloseOtherTab, this, [ = ](QString Identifier) {
+        closeOtherTab(Identifier);
+        return;
+    });
+
+
 
     // titleba在普通模式和雷神模型不一样的功能
     m_titleBar = new TitleBar(this, m_isQuakeWindow);
@@ -469,31 +481,35 @@ bool MainWindow::hasRunningProcesses()
 
     return false;
 }
-
+/*******************************************************************************
+ 1. @函数:    closeTab
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-05-07
+ 4. @说明:    一个tab只提示一次, 如果不需要提示，runCheck=false即可
+*******************************************************************************/
 void MainWindow::closeTab(const QString &identifier, bool runCheck)
 {
-    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
-        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
-        if (tabPage && tabPage->identifier() == identifier) {
-            TermWidget *term = tabPage->currentTerminal();
-            if (runCheck) {
-                if (!term->safeClose()) {
-                    return;
-                }
-            }
-
-            int currSessionId = tabPage->currentTerminal()->getSessionId();
-            m_tabVisitMap.remove(currSessionId);
-            m_tabChangeColorMap.remove(currSessionId);
-            m_tabbar->removeTab(identifier);
-            m_termStackWidget->removeWidget(tabPage);
-            tabPage->deleteLater();
-            focusCurrentPage();
-
-            break;
+    TermWidgetPage *tabPage = getPageByIdentifier(identifier);
+    if (tabPage == nullptr) {
+        return;
+    }
+    // 关闭前必须要切换过去先
+    if (m_tabbar->currentIndex() != m_tabbar->getIndexByIdentifier(identifier)) {
+        m_tabbar->setCurrentIndex(m_tabbar->getIndexByIdentifier(identifier));
+    }
+    // 默认每个窗口关闭都提示一次．
+    if (tabPage->runningTerminalCount() > 0 && runCheck) {
+        if (!Utils::showExitConfirmDialog()) {
+            return;
         }
     }
-
+    int currSessionId = tabPage->currentTerminal()->getSessionId();
+    m_tabVisitMap.remove(currSessionId);
+    m_tabChangeColorMap.remove(currSessionId);
+    m_tabbar->removeTab(identifier);
+    m_termStackWidget->removeWidget(tabPage);
+    tabPage->deleteLater();
+    focusCurrentPage();
     updateTabStatus();
 
     if (m_tabbar->count() == 0) {
@@ -574,16 +590,63 @@ QString MainWindow::getCurrTabTitle()
 {
     return m_tabbar->tabText(m_tabbar->currentIndex());
 }
+/*******************************************************************************
+ 1. @函数:    closeOtherTab
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-05-07
+ 4. @说明:    关闭其它窗口
+*******************************************************************************/
+void MainWindow::closeOtherTab(const QString &identifier)
+{
+    int runningCount = 0;
+    QList<QString> closeTabIdList;
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        if (tabPage && tabPage->identifier() != identifier) {
+            closeTabIdList.append(tabPage->identifier());
+            runningCount += tabPage->runningTerminalCount();
+        }
+    }
 
+    // 关闭其它窗口，需要检测
+    for (QString id : closeTabIdList) {
+        closeTab(id, true);
+        qDebug() << " close" << id;
+    }
+
+    //如果是不关闭当前页的，最后回到当前页来．
+    m_tabbar->setCurrentIndex(m_tabbar->getIndexByIdentifier(identifier));
+
+    return;
+}
 /*******************************************************************************
  1. @函数:     closeOtherTab
  2. @作者:     n014361 王培利
  3. @日期:     2020-01-10
- 4. @说明:     关闭其它标签页功能
+ 4. @说明:     关闭所有标签页功能
 *******************************************************************************/
-void MainWindow::closeOtherTab(const QString &identifier)
+void MainWindow::closeAllTab()
 {
-    m_tabbar->closeAllTabs(identifier);
+    int runningCount = 0;
+    QList<QString> closeTabIdList;
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        closeTabIdList.append(tabPage->identifier());
+        runningCount += tabPage->runningTerminalCount();
+    }
+
+    // 全部关闭时，仅提示一次．
+    if (runningCount > 0) {
+        if (!Utils::showExitConfirmDialog()) {
+            return;
+        }
+    }
+    // 全部关闭时，不再检测了，
+    for (QString id : closeTabIdList) {
+        closeTab(id, false);
+        qDebug() << " close" << id;
+    }
+
     return;
 }
 
@@ -685,7 +748,7 @@ void MainWindow::closeConfirm()
         setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     }
 
-    m_tabbar->closeAllTabs(currentPage()->identifier(), false) ;
+    closeAllTab();
 }
 
 /*******************************************************************************
