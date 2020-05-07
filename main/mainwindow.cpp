@@ -290,23 +290,20 @@ void MainWindow::setQuakeWindow()
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Dialog);
 
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
-//    setAttribute(Qt::WA_Disabled, true);
-    setEnableSystemMove(false);
+    setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
 
     /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
     setMinimumSize(screenRect.size().width(), 60);
     setMaximumHeight(screenRect.size().height() * 2 / 3);
     /********************* Modify by m000714 daizhengwen End ************************/
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
+    setFixedWidth(QApplication::desktop()->availableGeometry().width());
     connect(desktopWidget, &QDesktopWidget::workAreaResized, this, [this]() {
         qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
         setMinimumSize(QApplication::desktop()->availableGeometry().width(), 60);
         move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
         qDebug() << "size" << size();
         setFixedWidth(QApplication::desktop()->availableGeometry().width());
-        hide();
-        show();
         return ;
     });
 
