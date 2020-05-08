@@ -504,6 +504,9 @@ bool MainWindow::hasRunningProcesses()
 *******************************************************************************/
 void MainWindow::closeTab(const QString &identifier, bool runCheck)
 {
+    /***add by ut001121 zhangmeng 20200508 修复BUG#24457 点击标签栏“x”按钮，右键菜单关闭工作区，关闭其它工作区，自定义命令/编码/远程管理插件未消失***/
+    showPlugin(PLUGIN_TYPE_NONE);
+
     TermWidgetPage *tabPage = getPageByIdentifier(identifier);
     if (tabPage == nullptr) {
         return;
