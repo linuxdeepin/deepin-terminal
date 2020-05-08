@@ -407,6 +407,9 @@ bool MainWindow::isTabChangeColor(int tabSessionId)
 
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
+    /***add by ut001121 zhangmeng 修复BUG#24452 点击“+”按钮新建工作区，自定义命令/编码/远程管理插件未消失***/
+    showPlugin(PLUGIN_TYPE_NONE);
+
     if (getAllterminalCount() >= TermWidget::MaxTermwidgetCount) {
         qDebug() << "addTab failed, can't create number more than 200";
         return;
