@@ -130,8 +130,5 @@ int main(int argc, char *argv[])
 
     w.show();
 
-    // 后面想办法把这个弄到mainwindow里面．．．
-    QObject::connect(&app, &QGuiApplication::applicationStateChanged, &w, &MainWindow::onApplicationStateChanged);
-
     return app.exec();
 }

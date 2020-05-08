@@ -173,12 +173,10 @@ void MainWindow::initTitleBar()
 
         //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
         //handleTitleBarMenuFocusPolicy();
-
-        // mainwindow的设置按钮触发
-        connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
-            showPlugin(PLUGIN_TYPE_NONE);
-        });
     }
+
+    // titlebar所有控件不可获取焦点
+    Utils::clearChildrenFocus(titlebar());
 }
 /*******************************************************************************
  1. @函数:    initOptionButton
@@ -190,7 +188,11 @@ void MainWindow::initOptionButton()
 {
     // 全屏退出按钮
     // DTK的全屏按钮不能满足UI要求，隐去DTK最右侧的全屏
-    titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+    DImageButton *dtkbutton = titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton");
+    if (dtkbutton) {
+        dtkbutton->hide();
+    }
+
     m_exitFullScreen = new DToolButton(this);
     m_exitFullScreen->setCheckable(false);
     m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
@@ -201,6 +203,16 @@ void MainWindow::initOptionButton()
     connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
         switchFullscreen();
     });
+
+    // option button
+    DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
+    if (optionBtn != nullptr) {
+        optionBtn->setFocusPolicy(Qt::NoFocus);
+        // mainwindow的设置按钮触发
+        connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
+            showPlugin(PLUGIN_TYPE_NONE);
+        });
+    }
 }
 /*******************************************************************************
  1. @函数:    initOptionMenu
@@ -647,6 +659,9 @@ void MainWindow::closeAllTab()
         qDebug() << " close" << id;
     }
 
+    if (m_tabbar->count() == 0) {
+        qApp->quit();
+    }
     return;
 }
 
@@ -1103,6 +1118,7 @@ void MainWindow::initConnections()
         //变成自动变色的图标以后，不需要来回变了。
         // applyTheme();
     });
+    connect(qApp, &QGuiApplication::applicationStateChanged, this, &MainWindow::onApplicationStateChanged);
 }
 
 

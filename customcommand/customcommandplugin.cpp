@@ -64,6 +64,7 @@ void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
 {
     if (!strTxt.isEmpty()) {
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
+        m_mainWindow->focusCurrentPage();
     }
     emit doHide();
 }

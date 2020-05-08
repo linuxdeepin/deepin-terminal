@@ -425,4 +425,34 @@ void Utils::showSameNameDialog(const QString &firstLine, const QString &secondLi
     dlg.exec();
 #endif
 }
+/*******************************************************************************
+ 1. @函数:    clearChildrenFocus
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-05-08
+ 4. @说明:    清空控件内部所有子控件的焦点获取
+ 　　　　　　　安全考虑，不要全局使用．仅在个别控件中使用
+*******************************************************************************/
+void Utils::clearChildrenFocus(QObject *objParent)
+{
+    // 可以获取焦点的控件名称列表
+    QStringList foucswidgetlist;
+    foucswidgetlist << "QLineEdit" << "Konsole::TerminalDisplay";
+
+    qDebug() << "checkChildrenFocus start" << objParent->children().size();
+    for (QObject *obj : objParent->children()) {
+        if (!obj->isWidgetType()) {
+            continue;
+        }
+        QWidget *widget = static_cast<QWidget *>(obj);
+        if (Qt::NoFocus != widget->focusPolicy()) {
+            qDebug() << widget << widget->focusPolicy() << widget->metaObject()->className();
+            if (!foucswidgetlist.contains(widget->metaObject()->className())) {
+                widget->setFocusPolicy(Qt::NoFocus);
+            }
+        }
+        clearChildrenFocus(obj);
+    }
+
+    qDebug() << "checkChildrenFocus over" << objParent->children().size();
+}
 

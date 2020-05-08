@@ -70,11 +70,19 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     });
     connect(m_DLineEdit, &DLineEdit::returnPressed, this, [ = ] {
         // 不符合范围的数字不发信号出去
-        m_DLineEdit->setFocus();
+        m_DLineEdit->lineEdit()->setFocus();
     });
     connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
         // 不符合范围的数字不发信号出去
-        m_DLineEdit->setFocus();
+        m_DLineEdit->lineEdit()->setFocus();
+    });
+
+    // 选择即进入
+    connect(m_DLineEdit, &DLineEdit::selectionChanged, this, [ = ] {
+        if (!m_DLineEdit->lineEdit()->hasFocus())
+        {
+            m_DLineEdit->lineEdit()->setFocus();
+        }
     });
 }
 
