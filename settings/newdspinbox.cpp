@@ -46,6 +46,9 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     m_DLineEdit->lineEdit()->setValidator(new QIntValidator(0, m_MaxValue, this));
     m_DLineEdit->setFocusPolicy(Qt::NoFocus);
     connect(m_DIconBtnAdd, &QAbstractButton::clicked, this, [ = ] {
+        /***add by ut001121 zhangmeng 20200509 修复BUG#24848 设置中点击“+”“-”按钮修改字体大小，前方输入框未高亮***/
+        m_DLineEdit->lineEdit()->setFocus();
+
         int value = m_DLineEdit->lineEdit()->text().toInt();
         if (value < m_MaxValue)
         {
@@ -54,6 +57,9 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
         }
     });
     connect(m_DIconBtnSubtract, &QAbstractButton::clicked, this, [ = ] {
+        /***add by ut001121 zhangmeng 20200509 修复BUG#24848 设置中点击“+”“-”按钮修改字体大小，前方输入框未高亮***/
+        m_DLineEdit->lineEdit()->setFocus();
+
         int value = m_DLineEdit->lineEdit()->text().toInt();
         if (value > m_MinValue)
         {

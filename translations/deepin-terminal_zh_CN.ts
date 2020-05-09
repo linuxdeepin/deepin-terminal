@@ -177,12 +177,12 @@
         <translation type="vanished">新建工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="203"/>
+        <location filename="../main/mainwindow.cpp" line="227"/>
         <source>New &amp;window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="225"/>
+        <location filename="../main/mainwindow.cpp" line="249"/>
         <source>&amp;Settings</source>
         <translation>设置</translation>
     </message>
@@ -199,17 +199,17 @@
         <translation type="vanished">高级</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1366"/>
+        <location filename="../main/mainwindow.cpp" line="1451"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1368"/>
+        <location filename="../main/mainwindow.cpp" line="1453"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1370"/>
+        <location filename="../main/mainwindow.cpp" line="1455"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
@@ -218,12 +218,12 @@
         <translation type="vanished">切换全屏</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1393"/>
+        <location filename="../main/mainwindow.cpp" line="1478"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../main/mainwindow.cpp" line="1448"/>
+        <location filename="../main/mainwindow.cpp" line="1533"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -1148,12 +1148,12 @@
 <context>
     <name>TabBar</name>
     <message>
-        <location filename="../views/tabbar.cpp" line="309"/>
+        <location filename="../views/tabbar.cpp" line="277"/>
         <source>Close workspace</source>
         <translation>关闭工作区</translation>
     </message>
     <message>
-        <location filename="../views/tabbar.cpp" line="310"/>
+        <location filename="../views/tabbar.cpp" line="278"/>
         <source>Close other workspace</source>
         <translation>关闭其他工作区</translation>
     </message>
