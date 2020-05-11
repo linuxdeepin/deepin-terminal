@@ -67,6 +67,19 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
             emit valueChanged(m_DLineEdit->lineEdit()->text().toInt());
         }
     });
+
+    // 回车即脱离焦点
+    connect(m_DLineEdit, &DLineEdit::returnPressed, this, [ = ] {
+
+        m_DLineEdit->lineEdit()->clearFocus();
+    });
+
+    // 回车即脱离焦点
+    connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
+        m_DLineEdit->lineEdit()->clearFocus();
+    });
+
+    // 脱离焦点后校正生效．
     connect(m_DLineEdit, &DLineEdit::focusChanged, this, [ = ](bool var) {
         // 退出编辑的时候，数据做个校正
         if (!var) {
@@ -74,15 +87,6 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
             emit valueChanged(m_DLineEdit->lineEdit()->text().toInt());
         }
     });
-    connect(m_DLineEdit, &DLineEdit::returnPressed, this, [ = ] {
-        // 不符合范围的数字不发信号出去
-        m_DLineEdit->lineEdit()->setFocus();
-    });
-    connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
-        // 不符合范围的数字不发信号出去
-        m_DLineEdit->lineEdit()->setFocus();
-    });
-
     // 选择即进入
     connect(m_DLineEdit, &DLineEdit::selectionChanged, this, [ = ] {
         if (!m_DLineEdit->lineEdit()->hasFocus())
@@ -124,3 +128,4 @@ void NewDspinBox::correctValue()
         m_DLineEdit->lineEdit()->setText(QString::number(m_MinValue));
     }
 }
+
