@@ -519,6 +519,11 @@ signals:
 
     bool sessionUninstallTerminal();
 
+    /**
+     * stop file download
+     */
+    void stopDownload();
+
 private slots:
     void done(int);
 

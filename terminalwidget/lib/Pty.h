@@ -194,8 +194,7 @@ Q_OBJECT
 
     bool ptyUninstallTerminal();
 
-  protected:
-      void setupChildProcess();
+    void stopDownload();
 
   private slots:
     // called when data is received from the terminal process

@@ -398,13 +398,30 @@ void Pty::dataReceived()
     // 乱码提示信息不显示
     if (recvData.contains("bash: $'\\212**0800000000022d'：")
             || recvData.contains("bash: **0800000000022d：")
-            || recvData.contains("**^XB0800000000022d"))
+            || recvData.contains("**^XB0800000000022d")
+            || recvData.contains("**\u0018B0800000000022d\r\u008A")
+            || recvData.contains("bash: $'\\212C'")
+            || recvData.startsWith("C\b\b\b\b\b\b\b\b\b\b\b\b\u001B[C\u001B[C\u001B")
+            || recvData.startsWith("\u001B[C\u001B[C\u001B[C\u001B[C\u001B[C\u001B[C\u001B"))
         return;
 
     // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
     if (recvData.contains("\u008A")) {
-        recvData.replace("\u008A", " ");
+        recvData.replace("\u008A", "\b /");
         data = recvData.toUtf8();
+    }
+
+    if (recvData.contains("C\b\b\b\b\b\b\b\b\b\b\b\b\u001B[C\u001B[C\u001B")) {
+        recvData = "\r\r\nTransfer incomplete\r\n";
+        data = recvData.toUtf8();
+    }
+    if (recvData == "rz waiting to receive.") {
+        recvData += "\r\n";
+        data = recvData.toUtf8();
+    }
+
+    if (recvData.contains("Transfer incomplete")) {
+        emit stopDownload();
     }
     /********************* Modify by m000714 daizhengwen End ************************/
 

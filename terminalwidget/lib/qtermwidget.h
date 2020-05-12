@@ -300,6 +300,9 @@ signals:
     // 初始化完成
     void shellStartedFinished();
 
+    // 终止下载 
+    void stopDownload();
+
 public slots:
     // Copy selection to clipboard
     void copyClipboard();

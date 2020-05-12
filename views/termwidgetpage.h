@@ -104,6 +104,7 @@ signals:
     void termGetFocus() const;
     bool uninstallTerminal();
     void showMainWindow();
+    void stopDownload();
 
 private slots:
     void setCurrentTerminal(TermWidget *term);

@@ -111,6 +111,7 @@ Session::Session(QObject* parent) :
 
     connect( _shellProcess,SIGNAL(receivedData(const char *,int)),this,
              SLOT(onReceiveBlock(const char *,int)) );
+    connect(_shellProcess, SIGNAL(stopDownload()), this, SIGNAL(stopDownload()));
     connect( _emulation,SIGNAL(sendData(const char *,int)),_shellProcess,
              SLOT(sendData(const char *,int)) );
     connect( _emulation,SIGNAL(lockPtyRequest(bool)),_shellProcess,SLOT(lockPty(bool)) );

@@ -36,6 +36,7 @@ signals:
     void termIsIdle(int currSessionId, bool bIdle);
     void termTitleChanged(QString titleText);
     void termInitFinished();
+    void stopDownload();
 
 private slots:
     void customContextMenuCall(const QPoint &pos);

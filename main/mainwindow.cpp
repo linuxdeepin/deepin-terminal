@@ -417,8 +417,16 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
     // 将显示窗口信号传递到上层
     connect(termPage, &TermWidgetPage::showMainWindow, this, [ = ]() {
+        qDebug() << "MainWindow index : " << m_index;
         emit showMainWindow(m_index);
     }, Qt::QueuedConnection);
+    connect(termPage, &TermWidgetPage::stopDownload, this, [ = ]() {
+        // 下载失败不会自动退出需要一个Ctrl + C 和一个回车，以后可以用这个信号传不同类型，做不同操作
+        sleep(100);
+        pressCtrlC();
+        sleep(100);
+        currentPage()->sendTextToCurrentTerm("\n");
+    });
     setNewTermPage(termPage, activeTab);
 
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
@@ -1591,9 +1599,8 @@ void MainWindow::executeDownloadFile()
     QString strCd = "cd " + downloadFilePath;
     currentPage()->sendTextToCurrentTerm(strCd);
     //sleep(100);
-    QString strRz = "\r\nrz";
+    QString strRz = "\r\nrz -be";
     currentPage()->sendTextToCurrentTerm(strRz);
-//    currentPage()->sendTextToCurrentTerm("\n");
     downloadFilePath = "";
     //-------------------------------------------
 }
@@ -1607,6 +1614,12 @@ void MainWindow::pressCtrlAt()
 void MainWindow::pressCtrlU()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
+    QApplication::sendEvent(focusWidget(), &keyPress);
+}
+
+void MainWindow::pressCtrlC()
+{
+    QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 

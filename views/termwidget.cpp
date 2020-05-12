@@ -103,6 +103,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, [this](QString value) {
+        Q_UNUSED(value);
         setTrackOutput(Settings::instance()->OutputtingScroll());
     });
 
@@ -146,6 +147,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
     // 收到结束信号
     connect(this, &QTermWidget::shellStartedFinished, this, &TermWidget::termInitFinished, Qt::QueuedConnection);
+    // 终止下载
+    connect(this, &QTermWidget::stopDownload, this, &TermWidget::stopDownload);
 
     startShellProgram();
 
