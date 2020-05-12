@@ -88,6 +88,7 @@ set (DTNG_CPP_FILES
     main/mainwindow.cpp
     main/termproperties.cpp
     main/dterminalsingleapplication.cpp
+    main/dbuslogin.cpp
     quaketerminal/quaketerminaladapter.cpp
     quaketerminal/quaketerminalproxy.cpp
     quaketerminal/termargumentparser.cpp
@@ -144,6 +145,7 @@ set (DTNG_HEADER_FILES
     main/mainwindow.h
     main/mainwindowplugininterface.h
     main/termproperties.h
+    main/dbuslogin.h
     main/dterminalsingleapplication.h
     quaketerminal/quaketerminaladapter.h
     quaketerminal/quaketerminalproxy.h

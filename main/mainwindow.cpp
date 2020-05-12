@@ -415,6 +415,10 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         return;
     }
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
+    // 将显示窗口信号传递到上层
+    connect(termPage, &TermWidgetPage::showMainWindow, this, [ = ]() {
+        emit showMainWindow(m_index);
+    }, Qt::QueuedConnection);
     setNewTermPage(termPage, activeTab);
 
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
@@ -517,7 +521,7 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
     }
     // 默认每个窗口关闭都提示一次．
     if (tabPage->runningTerminalCount() > 0 && runCheck) {
-        if (!Utils::showExitConfirmDialog()) {
+        if (!Utils::showExitConfirmDialog(this)) {
             return;
         }
     }
@@ -531,7 +535,7 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
     updateTabStatus();
 
     if (m_tabbar->count() == 0) {
-        qApp->quit();
+        close();
     }
 }
 /*******************************************************************************
@@ -645,20 +649,12 @@ void MainWindow::closeOtherTab(const QString &identifier)
 *******************************************************************************/
 void MainWindow::closeAllTab()
 {
-    int runningCount = 0;
     QList<QString> closeTabIdList;
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         closeTabIdList.append(tabPage->identifier());
-        runningCount += tabPage->runningTerminalCount();
     }
 
-    // 全部关闭时，仅提示一次．
-    if (runningCount > 0) {
-        if (!Utils::showExitConfirmDialog()) {
-            return;
-        }
-    }
     // 全部关闭时，不再检测了，
     for (QString id : closeTabIdList) {
         closeTab(id, false);
@@ -666,9 +662,8 @@ void MainWindow::closeAllTab()
     }
 
     if (m_tabbar->count() == 0) {
-        qApp->quit();
+        close();
     }
-    return;
 }
 
 void MainWindow::focusPage(const QString &identifier)
@@ -742,11 +737,15 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (qApp->isSavingSession()) {
         DMainWindow::closeEvent(event);
     }
-    // 一页一页退出，当全部退出以后，mainwindow自然关闭．
     event->ignore();
-    closeConfirm();
-
-    return;
+    // 想要删除
+    if (m_isClose) {
+        // 可
+        closeAllTab();
+        DMainWindow::closeEvent(event);
+    } else {
+        closeConfirm();
+    }
 }
 /*******************************************************************************
  1. @函数:    closeConfirm
@@ -763,13 +762,19 @@ void MainWindow::closeConfirm()
 //    QList<int> processesRunning = term->getRunningSessionIdList();
 //    qDebug() << "here are " << processesRunning.count() << " processes running in this window. ";
 
-    // 如果不能马上关闭，并且还在没有最小化．
-    if (hasRunningProcesses() && isMinimized()) {
-        qDebug() << "isMinimized........... " << endl;
-        setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+    // login还不知道要删除 是否有程序在运行
+    if (hasRunningProcesses()) {
+        // 最小化则显示
+        if (isMinimized()) {
+            qDebug() << "isMinimized........... " << endl;
+            setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+        }
+        // 通知想要删除此窗口
+        emit closeWindow(m_index, true);
+    } else {
+        // 通知想要删除此窗口
+        emit closeWindow(m_index, false);
     }
-
-    closeAllTab();
 }
 
 /*******************************************************************************
@@ -795,11 +800,16 @@ bool MainWindow::isQuakeMode()
     return  m_isQuakeWindow;
 }
 
+void MainWindow::setIndex(int index)
+{
+    m_index = index;
+}
+
 void MainWindow::onTermTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
     const bool customName = tabPage->property("TAB_CUSTOM_NAME_PROPERTY").toBool();
-    if (!customName) {
+    if (!customName && customName != m_tabbar->tabText(m_tabbar->currentIndex())) {
         m_tabbar->setTabText(tabPage->identifier(), title);
     }
 }
@@ -1352,7 +1362,7 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 
 void MainWindow::showSettingDialog()
 {
-    DSettingsDialog *dialog = new DSettingsDialog();
+    DSettingsDialog *dialog = new DSettingsDialog(this);
     dialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     dialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
     dialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
@@ -1546,14 +1556,7 @@ void MainWindow::remoteDownloadFile()
 *******************************************************************************/
 void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 {
-    qDebug() << "Application  state " << state << isActiveWindow() << isVisible() << windowState();
-    // 这个逻辑的针对的是在有弹窗情况下，windows+D后，可以让弹窗和主窗口一起弹出．
-    // 如果激活应用，就激活主窗口，可以让弹窗和主窗口一起弹出．注意：不能传给弹窗父指针！！
-    if (state == Qt::ApplicationActive) {
-        activateWindow();
-        return;
-    }
-
+    qDebug() << "Application  state " << m_index << state << isActiveWindow() << isVisible() << windowState();
     // 下面的代码是雷神窗口自动隐藏功能．
     // 不是雷神窗口，不管
     if (!m_isQuakeWindow) {
@@ -1625,6 +1628,17 @@ void MainWindow::pressEnterKey(const QString &text)
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
     QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
 }
+
+void MainWindow::setIsShow(bool isShow)
+{
+    m_isShow = isShow;
+}
+
+void MainWindow::setIsClose(bool isClose)
+{
+    m_isClose = isClose;
+}
+
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
     // 雷神窗口没有其它需要调整的

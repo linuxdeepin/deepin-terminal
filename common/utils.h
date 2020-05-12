@@ -61,7 +61,7 @@ public:
     static QString showDirDialog(QWidget *widget);
     static QStringList showFilesSelectDialog(QWidget *widget);
 
-    static bool showExitConfirmDialog();
+    static bool showExitConfirmDialog(QWidget *);
     static bool showExitUninstallConfirmDialog();
     static bool showUnistallConfirmDialog();
     static bool showShortcutConflictDialog(QString conflictkey);

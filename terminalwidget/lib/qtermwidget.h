@@ -297,6 +297,9 @@ signals:
     // 将库里返回信号透传出来。原来的noMatchFound方法改名为clearSelection
     void sig_noMatchFound();
 
+    // 初始化完成
+    void shellStartedFinished();
+
 public slots:
     // Copy selection to clipboard
     void copyClipboard();

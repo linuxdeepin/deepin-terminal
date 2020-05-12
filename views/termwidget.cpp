@@ -144,6 +144,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
     qDebug() << parentPage << endl;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
+    // 收到结束信号
+    connect(this, &QTermWidget::shellStartedFinished, this, &TermWidget::termInitFinished, Qt::QueuedConnection);
 
     startShellProgram();
 
@@ -446,7 +448,7 @@ void TermWidget::setPressingScroll(bool enable)
 bool TermWidget::safeClose()
 {
     if (hasRunningProcess()) {
-        return Utils::showExitConfirmDialog();
+        return Utils::showExitConfirmDialog(this);
     }
     return  true;
 }

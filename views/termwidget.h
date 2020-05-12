@@ -35,6 +35,7 @@ signals:
     void termRequestRenameTab(QString newTabName);
     void termIsIdle(int currSessionId, bool bIdle);
     void termTitleChanged(QString titleText);
+    void termInitFinished();
 
 private slots:
     void customContextMenuCall(const QPoint &pos);

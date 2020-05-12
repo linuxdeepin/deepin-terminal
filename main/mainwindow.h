@@ -86,6 +86,7 @@ public:
     bool hasRunningProcesses();
     void switchFullscreen(bool forceFullscreen = false);
     bool isQuakeMode();
+    void setIndex(int index);
 
     static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
     static constexpr const char *PLUGIN_TYPE_THEME = "Theme";
@@ -93,11 +94,17 @@ public:
     static constexpr const char *PLUGIN_TYPE_REMOTEMANAGEMENT = "Remote Management";
     static constexpr const char *PLUGIN_TYPE_ENCODING = "Encoding";
     static constexpr const char *PLUGIN_TYPE_NONE = "None";
+    void setIsClose(bool isClose);
+
+    void setIsShow(bool isShow);
+
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
     void showPluginChanged(const QString &name);
     void quakeHidePlugin();
+    void closeWindow(int index, bool isRunning);
+    void showMainWindow(int index);
 
 public slots:
     // void onSettingValueChanged(const int &keyIndex, const QVariant &value);
@@ -210,6 +217,14 @@ private:
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 
     static QList<MainWindow *> m_windowList;
+    // 当前窗口的index
+    int m_index;
+    // 判断是否关闭MainWindow
+    bool m_isClose = false;
+    // 是否显示MainWindow
+    bool m_isShow = false;
+    // 是否需要被激活
+    bool m_isNeedToBeActive = false;
 private:
     //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
     /* press Windows+D on the keyboard, the notification bar will

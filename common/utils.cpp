@@ -264,7 +264,7 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
     return DFileDialog::getOpenFileNames(widget, dlgTitle, curPath);
 }
 
-bool Utils::showExitConfirmDialog()
+bool Utils::showExitConfirmDialog(QWidget *widget)
 {
     /******** Modify by m000714 daizhengwen 2020-04-17: 统一使用dtk Dialog****************/
 #ifndef USE_DTK
@@ -277,7 +277,7 @@ bool Utils::showExitConfirmDialog()
 
     return (optDlg.getConfirmResult() == QDialog::Accepted);
 #else
-    DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to exit?"));
+    DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to exit?"), widget);
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
     dlg.addButton(QString(tr("Exit")), true, DDialog::ButtonWarning);

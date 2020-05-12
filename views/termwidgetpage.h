@@ -103,6 +103,7 @@ signals:
     void termRequestOpenSettings() const;
     void termGetFocus() const;
     bool uninstallTerminal();
+    void showMainWindow();
 
 private slots:
     void setCurrentTerminal(TermWidget *term);

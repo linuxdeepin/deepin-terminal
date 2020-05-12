@@ -3,6 +3,7 @@
 #include "termproperties.h"
 #include "environments.h"
 #include "dterminalsingleapplication.h"
+#include "dbuslogin.h"
 
 //#include <DApplication>
 #include <DApplicationSettings>
@@ -20,7 +21,7 @@ int main(int argc, char *argv[])
     DApplication::loadDXcbPlugin();
 
     //DApplication app(argc, argv);
-    DTerminalSingleApplication app(argc, argv, "deepin-terminal-app");
+    DApplication app(argc, argv);
     app.setOrganizationName("deepin");
     app.setOrganizationDomain("deepin.org");
     app.setApplicationVersion(VERSION);
@@ -106,11 +107,8 @@ int main(int argc, char *argv[])
         firstTermProperties[QuakeMode] = false;
     }
 
-    if (!app.isRunning()) {
-        firstTermProperties[SingleFlag] = true;
-    } else {
-        firstTermProperties[SingleFlag] = false;
-    }
+    firstTermProperties[SingleFlag] = true;
+
 
     // 雷神窗口特殊处理
     // TermArgumentParser 一定要在外面定义！！否则obj会消失
@@ -126,9 +124,13 @@ int main(int argc, char *argv[])
             return app.exec();
         }
     }
-    MainWindow w(firstTermProperties);
 
-    w.show();
+    DBusLogin login;
+    bool isRunning = login.initDBus();
+    login.doCreateNewWindow(firstTermProperties);
+    if (!isRunning) {
+        return 0;
+    }
 
     return app.exec();
 }
