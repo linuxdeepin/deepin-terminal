@@ -197,7 +197,7 @@ void Settings::reload()
         }
         if (settings->value(key) != newSettings.value(key + "/value")) {
             qDebug() << "reload update:" << key << settings->value(key);
-            settings->option(key)->setValue(newSettings.value(key + "/value"));            
+            settings->option(key)->setValue(newSettings.value(key + "/value"));
         }
     }
 }
@@ -278,8 +278,38 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
+    /******** Modify by nt001000 renfeixiang 2020-05-12:将非等宽字体和特殊符号字体屏蔽              ***********×****/
+    //在REPCHAR中增加了一个空格，空格在非等宽字体中长度和字符长度不同
+    char REPCHAR[]  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                      "abcdefgjijklmnopqrstuvwxyz"
+                      "0123456789 ./+@";
     QFontDatabase fontDatabase;
-    comboBox->addItems(fontDatabase.families());
+    QStringList fontLst = fontDatabase.families();
+    QStringList havelist = fontLst;
+    QStringList filter;
+    filter << "webdings" << "Symbol" << "MT Extra [unknown]";
+    for (QString sfont : fontLst) {
+        bool fixedFont = true;
+        QFont font(sfont);
+        QFontMetrics fm(font);
+        int fw = fm.width(REPCHAR[0]);
+        qDebug() << "sfont" << sfont;
+
+        for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
+            if (fw != fm.width(REPCHAR[i])) {
+                fixedFont = false;
+                break;
+            }
+        }
+        if (!fixedFont)
+            havelist.removeOne(sfont);
+
+        if (filter.contains(sfont))
+            havelist.removeOne(sfont);
+
+    }
+    comboBox->addItems(havelist);
+    /******** Modify by nt001000 renfeixiang end              ***********×****/
     // comboBox->setItemDelegate(new FontItemDelegate);
     // comboBox->setFixedSize(240, 36);
 
