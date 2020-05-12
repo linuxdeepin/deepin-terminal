@@ -30,6 +30,7 @@ private slots:
 private:
     bool isValid(TermProperty index, TermProperties &properties);
     void getProperty(TermProperty index, TermProperties &properties, QString args);
+    void onCloseWindow(MainWindow *, bool isRunning);
 
     QList<MainWindow *> m_mainWindowList;
     bool m_createMutex = true;
