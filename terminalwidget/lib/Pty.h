@@ -196,7 +196,11 @@ Q_OBJECT
 
     void stopDownload();
 
-  private slots:
+protected:
+    void setupChildProcess();
+
+
+private slots:
     // called when data is received from the terminal process
     void dataReceived();
 
