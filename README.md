@@ -1,22 +1,44 @@
-DTK + QTermWidget terminal application.
+# Deepin Terminal
 
-## Building from source
+Deepin Terminal is an advanced terminal emulator with workspace , multiple windows, remote management, quake mode and other features.
 
-### Build depts:
+## Dependencies
 
- - CMake
- - Qt >= 5.7.1 (requires QtWidgets)
- - Deepin Toolkit (requires DtkCore and DtkWidgets)
- - QTermWidget5
+### Build dependencies
+* pkg-config
+* cmake
+* Qt5(>= 5.7.1) with modules:
+  - qt5-default
+  - qttools5-dev-tools
+  - qtbase5-private-dev
+* libdtkwidget-dev(>=5.1.0) with modules:
+  - dtkcore-dev
+  - dtkwidget-dev
+  - dtkcore-bin
+* lxqt-build-tools
+* autoconf
+* automake
+* autopoint
+* autotools-dev
+* dh-autoreconf
+* dh-strip-nondeterminism
+* dwz
+* libfile-stripnondeterminism-perl
+* libkf5windowsystem-dev
+* libsigsegv2
+* libtool
+* libutf8proc-dev
+* m4
+* po-debconf
 
-#### Debian based distro for lazy guy
+### Debian based distro for lazy guy
 
 ``` shell
-# apt build-dep qterminal
-# apt build-dep deepin-screenshot
+# cd /path/to/the/source/
+# sudo apt build-dep .
 ```
 
-#### Other distro
+### Other distro
 
 CMake will tell you which package you are missing.
 
@@ -26,40 +48,40 @@ Generic CMake way:
 
 ``` shell
 $ cd /path/to/the/source/
-$ mkdir build && cd $_
-$ cmake ../
-$ make # then you'll got the proper binary to run.
+$ mkdir build && cd build
+$ cmake ..
+$ make
+$ ./deepin-terminal
 ```
 
-### Contribute translations:
 
-Sign up on [Transifex](https://www.transifex.com/blumia/dterm/) and start translating!
+## Config file
 
-If your language is not listed here, feel free to open up an new issue and then I'll add it.
+* Terminal Settings's configure save at:<br/>
+~/.config/deepin/deepin-terminal/config.conf
 
-## TODO
+* Remote Servers' configure save at:<br/>
+~/.config/deepin/deepin-terminal/server-config.conf
 
- - [x] Proper license
- - [x] CLI arguments processing
- - [x] international (translation) support
- - [ ] Custom commands
- - [ ] Drop-down mode (Quake mode in deepin-terminal)
- - [ ] Proper way to implement shortcut support
- - [x] Properties dialog
- - [ ] Color scheme preview from selection panel
- - [ ] Independent terminal config
- - [ ] Proper way to support ZModem / remote connection panel
- - [ ] Command mode (planned feature)
+* Custom Command's configure save at:<br/>
+~/.config/deepin/deepin-terminal/command-config.conf
+
+## Getting help
+
+Any usage issues can ask for help via
+
+* [Gitter](https://gitter.im/orgs/linuxdeepin/rooms)
+* [IRC channel](https://webchat.freenode.net/?channels=deepin)
+* [Forum](https://bbs.deepin.org)
+* [WiKi](https://wiki.deepin.org/)
+
+## Getting involved
+
+We encourage you to report issues and contribute changes
+
+* [Contribution guide for developers](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers-en). (English)
+* [开发者代码贡献指南](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers) (中文)
 
 ## License
 
-This program is released under the terms of the GNU General Public License, version 3.0 or, at your option, any later version, as published by the Free Software Foundation. See the LICENSE file for the full text of the license.
-
-## Disclaimer
-
-"Deepin" is a trademark of Wuhan Deepin Technology.
-
-This project is (currently) not affiliated with, funded, or in any way associated with Wuhan Deepin Technology.
-
-THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OFALL NECESSARY SERVICING, REPAIR OR CORRECTION.
-
+Deepin Terminal is licensed under [GPLv3](LICENSE).

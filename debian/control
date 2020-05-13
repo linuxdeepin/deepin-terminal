@@ -2,7 +2,7 @@ Source: deepin-terminal-reborn
 Section: utils
 Priority: optional
 Maintainer: Deepin Terminal <terminal@deepin.com>
-Build-Depends: debhelper (>= 9), pkg-config, qt5-qmake, libqt5widgets5, libqt5concurrent5, libdtkwidget-dev, qt5-default, qttools5-dev-tools, qtbase5-private-dev, lxqt-build-tools, autoconf, automake, autopoint, autotools-dev, dh-autoreconf, dh-strip-nondeterminism, dwz, libfile-stripnondeterminism-perl, libkf5windowsystem-dev, libsigsegv2, libtool, libutf8proc-dev, m4, po-debconf, libreadline-dev
+Build-Depends: debhelper (>= 9), pkg-config, qt5-default, qttools5-dev-tools, qtbase5-private-dev, libdtkwidget-dev, lxqt-build-tools, autoconf, automake, autopoint, autotools-dev, dh-autoreconf, dh-strip-nondeterminism, dwz, libfile-stripnondeterminism-perl, libkf5windowsystem-dev, libsigsegv2, libtool, libutf8proc-dev, m4, po-debconf
 Standards-Version: 3.9.8
 Homepage: https://www.deepin.com/
 
