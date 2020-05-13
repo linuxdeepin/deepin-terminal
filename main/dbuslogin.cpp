@@ -104,7 +104,25 @@ void DBusLogin::onCreateNewWindow(QList<QVariant> args)
     connect(mainWindow, &MainWindow::showMainWindow, this, &DBusLogin::onShowWindow, Qt::QueuedConnection);
     // 关闭时移除指针
     connect(mainWindow, &MainWindow::closeWindow, this, [ = ](int index, bool isRunning) {
-        onCloseWindow(mainWindow, isRunning);
+        Q_UNUSED(index);
+        if (!isRunning) {
+            // 没程序运行 退出窗口
+            mainWindow->setIsClose(true);
+            mainWindow->close();
+            m_mainWindowList.removeOne(mainWindow);
+            delete mainWindow;
+        }
+        // 有程序运行弹窗提示
+        else if (Utils::showExitConfirmDialog(mainWindow)) {
+            // 退出此窗口
+            mainWindow->setIsClose(true);
+            mainWindow->close();
+            m_mainWindowList.removeOne(mainWindow);
+            delete mainWindow;
+        } else {
+            // 不退出设置不用即时显示
+            mainWindow->activateWindow();
+        }
     }, Qt::QueuedConnection);
     qDebug() << "MainWindow count : " << m_mainWindowList.count();
 }
@@ -113,28 +131,6 @@ void DBusLogin::onShowWindow(int index)
 {
     m_createMutex = true;
     m_mainWindowList.at(index)->show();
-}
-
-void DBusLogin::onCloseWindow(MainWindow *mainWindow, bool isRunning)
-{
-    if (!isRunning) {
-        // 没程序运行 退出窗口
-        mainWindow->setIsClose(true);
-        mainWindow->close();
-        m_mainWindowList.removeOne(mainWindow);
-        delete mainWindow;
-    }
-    // 有程序运行弹窗提示
-    else if (Utils::showExitConfirmDialog(mainWindow)) {
-        // 退出此窗口
-        mainWindow->setIsClose(true);
-        mainWindow->close();
-        m_mainWindowList.removeOne(mainWindow);
-        delete mainWindow;
-    } else {
-        // 不退出设置不用即时显示
-        mainWindow->activateWindow();
-    }
 }
 
 bool DBusLogin::initDBus()
