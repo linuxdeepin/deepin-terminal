@@ -435,7 +435,7 @@ void Pty::dataReceived()
 
     // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
     if (recvData.contains("\u008A")) {
-        recvData.replace("\u008A", "\b \b#");
+        recvData.replace("\u008A", "\b \b #");
         data = recvData.toUtf8();
     }
 
