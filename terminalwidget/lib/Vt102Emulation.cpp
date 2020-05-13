@@ -63,8 +63,10 @@ Vt102Emulation::Vt102Emulation()
      _titleUpdateTimer(new QTimer(this)),
      _reportFocusEvents(false)
 {
-  _titleUpdateTimer->setSingleShot(true);
-  QObject::connect(_titleUpdateTimer , SIGNAL(timeout()) , this , SLOT(updateTitle()));
+    /******** Modify by ut000610 daizhengwen 2020-05-13: 延时会有标题不及时显示卡顿的现象****************/
+//    _titleUpdateTimer->setSingleShot(true);
+//    QObject::connect(_titleUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTitle()));
+    /********************* Modify by m000714 daizhengwen End ************************/
 
   initTokenizer();
   reset();
@@ -419,7 +421,8 @@ void Vt102Emulation::processWindowAttributeChange()
     newValue[j] = tokenBuffer[i+1+j];
 
   _pendingTitleUpdates[attributeToChange] = newValue;
-  _titleUpdateTimer->start(20);
+//    _titleUpdateTimer->start(20);
+    updateTitle();
 }
 
 void Vt102Emulation::updateTitle()
