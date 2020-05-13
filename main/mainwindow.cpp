@@ -811,6 +811,7 @@ bool MainWindow::isQuakeMode()
 void MainWindow::setIndex(int index)
 {
     m_index = index;
+    qDebug()<<"deepin-terminal MainWindow create number = ["<<index <<"]";
 }
 
 void MainWindow::onTermTitleChanged(QString title)

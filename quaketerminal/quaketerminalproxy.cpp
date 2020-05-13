@@ -30,23 +30,23 @@ MainWindow *getMainWindow()
 
 void QuakeTerminalProxy::ShowOrHide()
 {
-    MainWindow *mainWindow = getMainWindow();
-    qDebug() << "ShowOrHide" << mainWindow->winId();
+    MainWindow *quakeWindow = getMainWindow();
+    qDebug() << "ShowOrHide" << quakeWindow->winId();
 
     // 没有显示，就显示．
-    if (!mainWindow->isVisible()) {
-        qDebug() << "!mainWindow  isVisible now show !" << mainWindow->winId();
-        mainWindow->show();
+    if (!quakeWindow->isVisible()) {
+        qDebug() << "!mainWindow  isVisible now show !" << quakeWindow->winId();
+        quakeWindow->show();
     }
 
     // 没有激活就激活
-    if (!mainWindow->isActiveWindow()) {
-        qDebug() << "QuakeWindow is activate, now activateWindow" << mainWindow->winId();
-        mainWindow->activateWindow();
+    if (!quakeWindow->isActiveWindow()) {
+        qDebug() << "QuakeWindow is activate, now activateWindow" << quakeWindow->winId();
+        quakeWindow->activateWindow();
         return;
     }
 
     // 如果已经激活，那么就隐藏
-    qDebug() << "isWinVisible mainWindow->isActiveWindow() : start hide" << mainWindow->winId();
-    mainWindow->hide();
+    qDebug() << "isWinVisible mainWindow->isActiveWindow() : start hide" << quakeWindow->winId();
+    quakeWindow->hide();
 }
