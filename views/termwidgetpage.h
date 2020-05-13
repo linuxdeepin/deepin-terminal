@@ -103,6 +103,8 @@ signals:
     void termRequestOpenSettings() const;
     void termGetFocus() const;
     bool uninstallTerminal();
+    // 下载失败时退出下载
+    void quitDownload();
 
 private slots:
     void setCurrentTerminal(TermWidget *term);

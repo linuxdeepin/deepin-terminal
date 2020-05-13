@@ -106,6 +106,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         setTrackOutput(Settings::instance()->OutputtingScroll());
     });
 
+    connect(this, &TermWidget::receivedData, this, [this](QString value) {
+        if (value.contains("Transfer incomplete")) {
+            emit quitDownload();
+        }
+    });
+
 #if !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
     setBlinkingCursor(Settings::instance()->cursorBlink());
 #endif  // !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))

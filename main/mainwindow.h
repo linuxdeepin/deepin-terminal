@@ -68,6 +68,7 @@ public:
 
     void pressCtrlAt();
     void pressCtrlU();
+    void pressCtrlC();
     void sleep(unsigned int msec);
 
     // 由mainwindow统一指令当前显示哪个插件

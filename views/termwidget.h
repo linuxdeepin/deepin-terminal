@@ -35,6 +35,8 @@ signals:
     void termRequestRenameTab(QString newTabName);
     void termIsIdle(int currSessionId, bool bIdle);
     void termTitleChanged(QString titleText);
+    // 下载失败时退出下载
+    void quitDownload();
 
 private slots:
     void customContextMenuCall(const QPoint &pos);

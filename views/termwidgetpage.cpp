@@ -698,6 +698,7 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
+    connect(term, &TermWidget::quitDownload, this, &TermWidgetPage::quitDownload);
     return term;
 }
 
