@@ -330,6 +330,9 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
         removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageNameList.at(i));
         acceptableList << isPatternAcceptable(strCommand, removePattern);
 
+        removePattern = QString("sudo\\s+dpkg\\s+-r\\s+%1").arg(packageNameList.at(i));
+        acceptableList << isPatternAcceptable(strCommand, removePattern);
+
         removePattern = QString("sudo\\s+rm\\s+.+\\s+/usr/bin/deepin-terminal");
         acceptableList << isPatternAcceptable(strCommand, removePattern);
 
