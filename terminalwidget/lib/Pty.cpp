@@ -315,10 +315,25 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
     QString packageName = "deepin-terminal";
     QString packageNameReborn = "deepin-terminal-reborn";
 
+    if (strCommand.contains(";"))
+    {
+        QStringList cmdList = strCommand.split(";");
+        for(int i=0; i<cmdList.size(); i++)
+        {
+            QString currCmd = cmdList.at(i).trimmed();
+            if (currCmd.length() > 0 && currCmd.contains(packageName))
+            {
+                strCommand = currCmd;
+                break;
+            }
+        }
+    }
+
     QList<bool> acceptableList;
 
     QStringList packageNameList;
     packageNameList << packageName << packageNameReborn;
+
     for(int i=0; i<packageNameList.size(); i++)
     {
         QString removePattern = QString("sudo\\s+apt-get\\s+remove\\s+%1").arg(packageNameList.at(i));
@@ -350,10 +365,22 @@ void Pty::sendData(const char* data, int length)
         return;
     }
 
+    bool isCustomCommand = false;
+    QString currCommand = QString::fromLatin1(data);
+    if (currCommand.length() > 0 && currCommand.endsWith('\n'))
+    {
+        isCustomCommand = true;
+    }
+
     //检测到按了回车键
-    if((*data) == '\r' && _bUninstall == false)
+    if(((*data) == '\r' || isCustomCommand) && _bUninstall == false)
     {
         QString strCurrCommand = SessionManager::instance()->getCurrShellCommand(_sessionId);
+        if (isCustomCommand)
+        {
+            strCurrCommand = currCommand;
+        }
+
         if (!isTerminalRemoved() && bWillRemoveTerminal(strCurrCommand))
         {
             QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::AutoConnection, Q_RETURN_ARG(bool, _bUninstall));
