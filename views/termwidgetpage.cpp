@@ -12,7 +12,7 @@
 TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
-    qDebug()<<"parentTermWidgetPage" <<parentWidget();
+    qDebug() << "parentTermWidgetPage" << parentWidget();
     m_MainWindow = static_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
@@ -20,16 +20,12 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     setProperty("TAB_IDENTIFIER_PROPERTY", QUuid::createUuid().toString());
 
     TermWidget *w = createTerm(properties);
-    DSplitter *splitter = new DSplitter(Qt::Horizontal, this);
-    splitter->setFocusPolicy(Qt::NoFocus);
-    setSplitStyle(splitter);
-    splitter->addWidget(w);
-
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(splitter);
-    setLayout(layout);
+    m_layout = new QVBoxLayout(this);
+    m_layout->setSpacing(0);
+    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->addWidget(w);
+    setLayout(m_layout);
+    qDebug() << "w->parent()" << w->parent();
 
     // Init find bar.
     m_findBar->move(this->x() - 100, this->y() - 100);
@@ -87,36 +83,62 @@ TermWidget *TermWidgetPage::currentTerminal()
     return m_currentTerm;
 }
 
-TermWidget *TermWidgetPage::split(Qt::Orientation orientation)
-{
-    return split(currentTerminal(), orientation);
-}
-
-TermWidget *TermWidgetPage::split(TermWidget *term, Qt::Orientation orientation)
+//TermWidget *TermWidgetPage::split(Qt::Orientation orientation)
+//{
+//    return split(currentTerminal(), orientation);
+//}
+/*******************************************************************************
+ 1. @函数:
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-05-14
+ 4. @说明:
+*******************************************************************************/
+void TermWidgetPage::split(Qt::Orientation orientation)
 {
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
-    QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
-    Q_CHECK_PTR(parent);
+    TermWidget *term = m_currentTerm;
+    if (getTerminalCount() == 1) {
+        qDebug() << "first split";
+        QSplitter *firstSplit = createSubSplit(term, orientation);
+        m_layout->addWidget(firstSplit);
+        return ;
+    }
 
-    int index = parent->indexOf(term);
-    QList<int> parentSizes = parent->sizes();
+    qDebug() << "not first split";
+    QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
+    int index = upSplit->indexOf(term);
+    QList<int> parentSizes = upSplit->sizes();
 
+    // 用新的Split分割布局替换原来的位置
+    QSplitter *subSplit = createSubSplit(term, orientation);
+    upSplit->insertWidget(index, subSplit);
+    upSplit->setSizes(parentSizes);
+    setSplitStyle(upSplit);
+
+    return ;
+}
+/*******************************************************************************
+ 1. @函数:    createSubSplit
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-05-14
+ 4. @说明:    创建分屏
+*******************************************************************************/
+DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orientation)
+{
     TermProperties properties(term->workingDirectory());
-    TermWidget *w = createTerm(properties);
+    term->setParent(nullptr);
+    TermWidget *newTerm  = createTerm(properties);
+
     // 意义与名称是相反的
-    DSplitter *subSplit = new DSplitter(orientation == Qt::Horizontal ? Qt::Vertical : Qt::Horizontal, this);
+    DSplitter *subSplit = new DSplitter(orientation == Qt::Horizontal ? Qt::Vertical : Qt::Horizontal,
+                                        this);
     subSplit->setFocusPolicy(Qt::NoFocus);
     subSplit->insertWidget(0, term);
-    subSplit->insertWidget(1, w);
+    subSplit->insertWidget(1, newTerm);
     subSplit->setSizes({ 1, 1 });
     setSplitStyle(subSplit);
-
-    parent->insertWidget(index, subSplit);
-    parent->setSizes(parentSizes);
-
-    setSplitStyle(parent);
-    w->setFocus(Qt::OtherFocusReason);
-    return w;
+    setCurrentTerminal(newTerm);
+    return subSplit;
 }
 
 void TermWidgetPage::closeSplit(TermWidget *term)
@@ -124,56 +146,41 @@ void TermWidgetPage::closeSplit(TermWidget *term)
     if (!term->safeClose()) {
         return;
     }
-
     qDebug() << "TermWidgetPage::closeSplit:" << term->getSessionId();
-    QSplitter *parent = qobject_cast<QSplitter *>(term->parent());
-    Q_CHECK_PTR(parent);
+    if (getTerminalCount() > 1) {
+        QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
+        term->setParent(nullptr);        
 
-    term->setParent(nullptr);
-    //--midified by qinyaning(nyq) to solve that Create a number of workspaces in the thunder window,
-    /*right click to close the window will close all workspaces, time: 2020.04.17 15:00
-    */
-    static QList<TermWidget *> terms;
-    terms.push_back(term);
-    if(term->getSessionId() == 1) {//当剩下最后一个工作区时
-        for(int i = 0; i < terms.size(); i++)
-            terms[i]->deleteLater();
-    }
-    //---------------------------------------------------------//
-
-    QWidget *nextFocus = nullptr;
-
-    // Collapse splitters containing a single element, excluding the top one.
-    if (parent->count() == 1) {
-        QSplitter *uselessSplitterParent = qobject_cast<QSplitter *>(parent->parent());
-        if (uselessSplitterParent != nullptr) {
-            int index = uselessSplitterParent->indexOf(parent);
-            Q_ASSERT(index != -1);
-            QWidget *singleHeir = parent->widget(0);
-            uselessSplitterParent->insertWidget(index, singleHeir);
-            setSplitStyle(uselessSplitterParent);
-            if (qobject_cast<TermWidget *>(singleHeir)) {
-                nextFocus = singleHeir;
-            } else {
-                nextFocus = singleHeir->findChild<TermWidget *>();
-            }
-            parent->setParent(nullptr);
-            parent->deleteLater();
-            // Make sure there's no access to the removed parent
-            parent = uselessSplitterParent;
+        // 另一个兄弟也可能是终端，也可能是split,
+        QWidget * brother = upSplit->widget(0);
+        TermWidget *nextTerm =  upSplit->findChild<TermWidget *>();
+        // 如果上级是分屏
+        if ("QSplitter" == QString(upSplit->parent()->metaObject()->className())) {
+            QSplitter *upupSplit = qobject_cast<QSplitter *>(upSplit->parent());
+            //兄弟替换parent split
+            upupSplit->replaceWidget(upupSplit->indexOf(upSplit), brother);
         }
-    }
-
-    if (parent->count() > 0) {
-        if (nextFocus) {
-            nextFocus->setFocus(Qt::OtherFocusReason);
-        } else {
-            parent->widget(0)->setFocus(Qt::OtherFocusReason);
+        // 上级不是分屏控件，就是布局在控制了
+        else {
+            qDebug() << "TermWidgetPage only one term exist!";
+            m_layout->addWidget(brother);
         }
-        parent->update();
-    } else {
-        emit lastTermClosed(identifier());
+
+        // 子控件的变化会引起焦点的变化，控制焦点要放在最后
+        if (nextTerm != nullptr) {
+            qDebug()<<"nextTerm change"<<m_currentTerm->getSessionId();
+            nextTerm->setFocus();
+        }
+
+        // 释放控件
+        term->deleteLater();
+        upSplit->setParent(nullptr);
+        upSplit->deleteLater();
+        qDebug()<<"page terminal count ="<<getTerminalCount();
+        return;
     }
+    parentMainWindow()->closeTab(identifier());
+    return;
 }
 
 const QString TermWidgetPage::identifier()
@@ -549,23 +556,6 @@ void TermWidgetPage::showSearchBar(bool enable)
     }
 }
 
-// void TermWidgetPage::setOutputtingScroll(bool enable)
-//{
-//    QList<TermWidgetWrapper *> termList = findChildren<TermWidgetWrapper *>();
-//    for (TermWidgetWrapper *term : termList) {
-//        term->setOutputtingScroll(enable);
-//    }
-//}
-
-void TermWidgetPage::onTermRequestSplit(Qt::Orientation ori)
-{
-    TermWidget *term = qobject_cast<TermWidget *>(sender());
-    if (term) {
-        // toggleShowSearchBar();
-        split(term, ori);
-    }
-}
-
 void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
 {
     if (newTabName.isEmpty()) {
@@ -591,6 +581,7 @@ void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
+    qDebug()<<"onTermGetFocus"<<m_currentTerm->getSessionId();
     m_currentTerm->setFocus(Qt::OtherFocusReason);
     emit termGetFocus();
     m_findBar->hide();
@@ -683,6 +674,7 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     TermWidget *oldTerm = m_currentTerm;
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
+        qDebug()<<"m_currentTerm change"<<m_currentTerm->getSessionId();
         if (m_currentTerm->isTitleChanged()) {
             emit termTitleChanged(m_currentTerm->title());
         } else {
@@ -698,7 +690,7 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
-    connect(term, &TermWidget::quitDownload, this, &TermWidgetPage::quitDownload);
+    qDebug()<<"createTerm"<<term->getSessionId();
     return term;
 }
 

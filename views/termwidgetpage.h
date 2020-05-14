@@ -22,8 +22,10 @@ public:
     // mainwindow指针，parent()会变化？？？所以要在构造的时候保存。
     MainWindow *parentMainWindow();
     TermWidget *currentTerminal();
-    TermWidget *split(Qt::Orientation orientation);
-    TermWidget *split(TermWidget *term, Qt::Orientation orientation);
+
+    // 分屏功能
+    void split(Qt::Orientation orientation);
+    DSplitter *createSubSplit(TermWidget *term, Qt::Orientation orientation);
     void closeSplit(TermWidget *term);
     // 标识page的唯一ID， 和tab匹配，存在tab中，tabid 用的index，是变化的。
     const QString identifier();
@@ -76,7 +78,6 @@ protected:
     virtual void resizeEvent(QResizeEvent *event) override;
 
 public slots:
-    void onTermRequestSplit(Qt::Orientation ori);
     void onTermRequestRenameTab(QString newTabName);
     void onTermTitleChanged(QString title) const;
     void onTermGetFocus();
@@ -116,5 +117,6 @@ private:
     TermWidget *m_currentTerm = nullptr;
     PageSearchBar *m_findBar = nullptr;
     MainWindow *m_MainWindow = nullptr;
+    QVBoxLayout *m_layout = nullptr;
 };
 #endif  // TERMWIDGETPAGE_H
