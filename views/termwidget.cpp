@@ -188,6 +188,9 @@ void TermWidget::handleTermIdle(bool bIdle)
 
 void TermWidget::customContextMenuCall(const QPoint &pos)
 {
+    /***add by ut001121 zhangmeng 20200514 右键获取焦点, 修复BUG#26003***/
+    setFocus();
+
     // 右键清理插件
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
 
