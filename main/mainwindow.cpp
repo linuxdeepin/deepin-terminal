@@ -363,10 +363,12 @@ void MainWindow::setNormalWindow()
         resize(halfScreenSize());
     } else {
         m_IfUseLastSize = true;
-        int saveWidth = m_winInfoConfig->value("save_width").toInt();
-        int saveHeight = m_winInfoConfig->value("save_height").toInt();
-        qDebug() << "saveWidth: " << saveWidth;
-        qDebug() << "saveHeight: " << saveHeight;
+        /******** Modify by nt001000 renfeixiang 2020-05-14: 文件wininfo-config.conf中参数save已被修改成window Begin***************/
+        int saveWidth = m_winInfoConfig->value("window_width").toInt();
+        int saveHeight = m_winInfoConfig->value("window_height").toInt();
+        qDebug() << "window_width: " << saveWidth;
+        qDebug() << "window_height: " << saveHeight;
+        /******** Modify by nt001000 renfeixiang 2020-05-14:文件wininfo-config.conf中参数save已被修改成window End***************/
         // 如果配置文件没有数据
         if (saveWidth == 0 || saveHeight == 0) {
             saveWidth = 1000;
@@ -604,10 +606,12 @@ void MainWindow::saveWindowSize()
     }
 
     if (windowState() == Qt::WindowNoState) {
+        /******** Modify by nt001000 renfeixiang 2020-05-14: 将文件wininfo-config.conf中参数存在save的修改成window Begin***************/
         // 记录最后一个正常窗口的大小
-        m_winInfoConfig->setValue("save_width", width());
-        m_winInfoConfig->setValue("save_height", height());
+        m_winInfoConfig->setValue("window_width", width());
+        m_winInfoConfig->setValue("window_height", height());
         qDebug() << "save windows size:" << width() << height();
+        /******** Modify by nt001000 renfeixiang 2020-05-14: 将文件wininfo-config.conf中参数存在save的修改成window End***************/
     }
 }
 
