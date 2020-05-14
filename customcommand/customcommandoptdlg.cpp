@@ -184,6 +184,13 @@ void CustomCommandOptDlg::initUI()
         if (!ShortcutManager::instance()->isValidShortcut(checkName, sequence.toString())) {
             m_shortCutLineEdit->clear();
             m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
+
+            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 Begin***************/
+            QTimer::singleShot(30, [&]() {
+                m_shortCutLineEdit->setFocus();
+            });
+            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/
+
             return;
         }
         m_lastCmdShortcut = sequence.toString();
@@ -399,7 +406,10 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
     /************************ Add by m000743 sunchengxi 2020-04-21:快捷键编辑结束后，enter按下可以响应校验 Begin************************/
     connect(m_shortCutLineEdit, &DKeySequenceEdit::editingFinished, this, [ = ]() {
         qDebug() << "shourtCut editingFinished";
-        m_confirmBtn->setFocus();
+        /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 Begin***************/
+        //m_confirmBtn->setFocus();
+        m_shortCutLineEdit->setFocus();
+        /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 End***************/
     });
     /************************ Add by m000743 sunchengxi 2020-04-21:快捷键编辑结束后，enter按下可以响应校验 End  ************************/
 
