@@ -61,7 +61,6 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
         m_mainWindow->focusCurrentPage();
         m_mainWindow->pressCtrlU();
         m_mainWindow->sleep(100);
-        qDebug() << "try to Connect to Server!";
         /********************* Modify by m000714 daizhengwen End ************************/
         QString shellFile = createShellFile(curServer);
         QString strTxt = "expect -f " + shellFile + "\n";
