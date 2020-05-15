@@ -46,7 +46,7 @@ public:
     void search();
 
 signals:
-    void matchFound(int startColumn, int startLine, int endColumn, int endLine);
+    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese);
     void noMatchFound();
 
 private:
@@ -64,6 +64,9 @@ private:
     int m_foundStartLine;
     int m_foundEndColumn;
     int m_foundEndLine;
+
+    int m_loseChinese;
+    int m_matchChinese;
 };
 
 #endif	/* TASK_H */

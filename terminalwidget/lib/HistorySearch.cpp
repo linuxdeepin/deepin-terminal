@@ -52,7 +52,7 @@ void HistorySearch::search()
         }
 
         if (found) {
-            emit matchFound(m_foundStartColumn, m_foundStartLine, m_foundEndColumn, m_foundEndLine);
+            emit matchFound(m_foundStartColumn, m_foundStartLine, m_foundEndColumn, m_foundEndLine, m_loseChinese, m_matchChinese);
         } else {
             emit noMatchFound();
         }
@@ -102,58 +102,13 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
         }
 
         // So now we can log for m_regExp in the string between startColumn and endPosition
-        QRegExp regEx("[\\x4e00-\\x9fa5]+");
-        int lineChinese = 0;
-
         int matchStart;
         if (m_forwards) {
-            /***add begin by ut001121 zhangmeng 20200506 修复BUG22626***/
-            //确定行开始及结束位置
-            int lineEnd = startColumn;
-            int lineStart = string.lastIndexOf('\n', lineEnd);
-            //qDebug() << "===lineStart" << lineStart << "lineEnd" << lineEnd ;
-            //assert(lineStart <= lineEnd);
-
-            if (lineStart == -1) {
-                lineStart = 0;
-            } else {
-                lineStart += 1;
-            }
-
-            //确定行字符串及中文字符数
-            QString lineStr = string.mid(lineStart, lineEnd);
-            lineChinese = lineStr.count(regEx);
-            //qDebug() << "lineStr" << lineStr << lineChinese;
-
-            //计算开始位置
-            startColumn -= lineChinese;
-            /***add end by ut001121***/
-
             matchStart = string.indexOf(m_regExp, startColumn);
-            if (matchStart >= endPosition - lineChinese) {
+            if (matchStart >= endPosition) {
                 matchStart = -1;
             }
         } else {
-
-            /***add begin by ut001121 zhangmeng 20200506 修复BUG22626***/
-            //qDebug() << string.mid(startColumn, endPosition);
-
-            //确定匹配位置
-            matchStart = string.lastIndexOf(m_regExp, endPosition - 1);
-            //qDebug() << string.mid(matchStart, endPosition);
-
-            //确定行字符串
-            int lineStart = string.lastIndexOf('\n', matchStart) + 1;
-            QString lineStr = string.mid(lineStart, matchStart - lineStart);
-            //qDebug() << lineStr;
-
-            //计算中文字数
-            lineChinese = lineStr.count(regEx);
-
-            //计算结束位置
-            endPosition -= lineChinese;
-            /***add end by ut001121***/
-
             matchStart = string.lastIndexOf(m_regExp, endPosition - 1);
             if (matchStart < startColumn) {
                 matchStart = -1;
@@ -161,49 +116,82 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
         }
 
         if (matchStart > -1) {
-
-            // 中文字个数统计
-            QString txt = m_regExp.pattern();
-            QRegExp regEx("[\\x4e00-\\x9fa5]+");
-            int ChineseCount = txt.count(regEx);
-            qDebug() << txt << "ChineseCount" << ChineseCount;
-
-            // 中文是宽字条，占两列，需要补充处理
-            int matchEnd = matchStart + m_regExp.matchedLength() - 1 + ChineseCount;
-            qDebug() << "Found in string from" << matchStart << "to" << matchEnd; //在string中的开始和结束位置
-
-            /***mod begin by ut001121 zhangmeng 20200506 修复BUG22626***/
-            int lineEnd = matchStart;
-            int lineStart = string.lastIndexOf('\n', lineEnd);
-            //qDebug() << "lineStart" << lineStart << "lineEnd" << lineEnd ;
-            //assert(lineStart <= lineEnd);
-
-            if (lineStart == -1) {
-                lineStart = 0;
-            } else {
-                lineStart += 1;
-            }
-
-            QString lineStr = string.mid(lineStart, lineEnd - lineStart);
-            lineChinese = lineStr.count(regEx);
-            //qDebug() << "lineStr" << lineStr << lineChinese;
+            int matchEnd = matchStart + m_regExp.matchedLength() - 1;
+            qDebug() << "Found in string from" << matchStart << "to" << matchEnd;
 
             // Translate startPos and endPos to startColum, startLine, endColumn and endLine in history.
             int startLineNumberInString = findLineNumberInString(decoder.linePositions(), matchStart);
-            m_foundStartColumn = matchStart - decoder.linePositions().at(startLineNumberInString) + lineChinese;
+            m_foundStartColumn = matchStart - decoder.linePositions().at(startLineNumberInString);
             m_foundStartLine = startLineNumberInString + startLine + linesRead;
 
             int endLineNumberInString = findLineNumberInString(decoder.linePositions(), matchEnd);
-            m_foundEndColumn = matchEnd - decoder.linePositions().at(endLineNumberInString) + lineChinese;
+            m_foundEndColumn = matchEnd - decoder.linePositions().at(endLineNumberInString);
             m_foundEndLine = endLineNumberInString + startLine + linesRead;
 
-            /***mod end by ut001121 zhangmeng***/
-
             qDebug() << "m_foundStartColumn" << m_foundStartColumn
-                     << "m_foundStartLine" << m_foundEndLine
+                     << "m_foundStartLine" << m_foundStartLine
                      << "m_foundEndColumn" << m_foundEndColumn
                      << "m_foundEndLine" << m_foundEndLine;
 
+            /***add begin by ut001121 zhangmeng 20200515 修复BUG22626***/
+            /**
+              string:   aaa-------------bbbbbbbbbbbbb-------ccc
+                        |              ||           |
+              match pos:|              |matchStart  matchEnd
+              lose pos: loseStart      loseEnd      |
+              line pos: lineStart                   lineEnd
+
+              存在特殊情况:一个完整的物理行显示在终端被分成多个逻辑行
+            */
+            //中文字符正则表达式
+            QRegExp regEx("[\u4E00-\u9FA5，《。》、？；：【】～！￥（）]+");
+
+            //未匹配的串-物理行开始和结束位置
+            int loseEnd = matchStart;
+            int loseStart = string.lastIndexOf('\n', loseEnd) + 1;
+            //qDebug() << "loseStart" << loseStart << "loseEnd" << loseEnd ;
+
+//            if (loseStart < 0 || loseStart > loseEnd) {
+//                qDebug() << "========loseStart and loseEnd is not expected" << loseStart << loseEnd;
+//                exit(-1);
+//            }
+
+            //未匹配的串-物理行字符串
+            QString loseStr = string.mid(loseStart, loseEnd - loseStart);
+            //qDebug() << "loseStr" << loseStr << m_lineChinese;
+
+            //未匹配的串-逻辑行字符串
+            int loseEndLineNumberInString = findLineNumberInString(decoder.linePositions(), loseEnd);
+            int loseEndColumn = matchStart - decoder.linePositions().at(loseEndLineNumberInString);
+            QString logicLoseStr = loseStr.right(loseEndColumn);
+            m_loseChinese = logicLoseStr.count(regEx);
+            //qDebug() << "logicLoseStr" << logicLoseStr << m_lineChinese << loseEndColumn;
+
+            //匹配内容是否跨多个逻辑行
+            if (m_foundStartLine == m_foundEndLine) {
+                /*
+                 * 单逻辑行匹配情况
+                 * 匹配字符的当前逻辑行:(匹配字符-当前逻辑行-开始位置)--->(匹配字符-当前逻辑行-结束位置
+                */
+                //匹配字符包含中文字符数量
+                QString txt = m_regExp.pattern();
+                m_matchChinese = txt.count(regEx);
+                m_matchChinese += m_loseChinese;
+            } else {
+                /*
+                 * 多逻辑行匹配情况
+                 * 匹配字符的尾行逻辑行:(匹配字符-尾行逻辑行-开始位置)--->(匹配字符-尾行逻辑行-结束位置)
+                */
+                QString macthStr = string.mid(loseStart, matchEnd - loseStart + 1);
+                QString tailMacthStr = macthStr.right(m_foundEndColumn + 1);
+                //qDebug() << "tailMacthStr" << tailMacthStr;
+                m_matchChinese = tailMacthStr.count(regEx) ;
+                /*
+                 * 跨行匹配不计算m_loseChinese
+                 * m_matchChinese += m_loseChinese;
+                 */
+            }
+            /***add end by ut001121***/
             return true;
         }
 

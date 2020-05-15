@@ -143,9 +143,23 @@ void QTermWidget::findPrevious()
 
 void QTermWidget::search(bool forwards, bool next)
 {
+    /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
     int startColumn, startLine;
 
-    if (next) {  // search from just after current selection
+    if (m_bHasSelect) {
+        if (next) {
+            startColumn = m_endColumn + 1;
+            startLine = m_endLine;
+        } else {
+            if (m_startColumn == 0) {
+                startColumn = -1;
+                startLine = m_startLine - 1;
+            } else {
+                startColumn = m_startColumn;
+                startLine = m_startLine;
+            }
+        }
+    } else if (next) { // search from just after current selection
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
         startColumn++;
     } else {  // search from start of current selection
@@ -160,23 +174,36 @@ void QTermWidget::search(bool forwards, bool next)
     regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
 
     HistorySearch *historySearch =
-    new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
-    connect(historySearch, SIGNAL(matchFound(int, int, int, int)), this, SLOT(matchFound(int, int, int, int)));
+        new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
+    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int)));
     connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
     connect(historySearch, SIGNAL(sig_noMatchFound()), m_searchBar, SLOT(clearSelection()));
     historySearch->search();
+    /***mod end by ut001121***/
 }
 
 void QTermWidget::search(QString txt, bool forwards, bool next)
 {
+    /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
     int startColumn, startLine;
 
-    if (next)  // search from just after current selection
-    {
+    if (m_bHasSelect) {
+        if (next) {
+            startColumn = m_endColumn + 1;
+            startLine = m_endLine;
+        } else {
+            if (m_startColumn == 0) {
+                startColumn = -1;
+                startLine = m_startLine - 1;
+            } else {
+                startColumn = m_startColumn;
+                startLine = m_startLine;
+            }
+        }
+    } else if (next) { // search from just after current selection
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
         startColumn++;
-    } else  // search from start of current selection
-    {
+    } else { // search from start of current selection
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionStart(startColumn, startLine);
     }
 
@@ -189,33 +216,46 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
     regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
 
     HistorySearch *historySearch =
-    new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
-    connect(historySearch, SIGNAL(matchFound(int, int, int, int)), this, SLOT(matchFound(int, int, int, int)));
+        new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
+    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int)));
     connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
 
     connect(historySearch, &HistorySearch::noMatchFound, this, [this]() { emit sig_noMatchFound(); });
     // connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(noMatchFound()));
     historySearch->search();
+    /***mod end by ut001121***/
 }
 
-void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int endLine)
+void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese)
 {
+    /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
+    m_bHasSelect = true;
+    m_startColumn = startColumn;
+    m_startLine = startLine;
+    m_endColumn = endColumn;
+    m_endLine = endLine;
+
     ScreenWindow *sw = m_impl->m_terminalDisplay->screenWindow();
     qDebug() << "Scroll to" << startLine;
     sw->scrollTo(startLine);
     sw->setTrackOutput(false);
+    sw->setSelectionStart(startColumn + loseChinese, startLine - sw->currentLine(), false);
+    sw->setSelectionEnd(endColumn + matchChinese, endLine - sw->currentLine());
     sw->notifyOutputChanged();
-    sw->setSelectionStart(startColumn, startLine - sw->currentLine(), false);
-    sw->setSelectionEnd(endColumn, endLine - sw->currentLine());
+    /***mod end by ut001121***/
 }
 
 void QTermWidget::clearSelection()
 {
+    /***add by ut001121 zhangmeng 20200515 修复BUG22626***/
+    m_bHasSelect = false;
     m_impl->m_terminalDisplay->screenWindow()->clearSelection();
 }
 
 void QTermWidget::noMatchFound()
 {
+    /***add by ut001121 zhangmeng 20200515 修复BUG22626***/
+    m_bHasSelect = false;
     m_impl->m_terminalDisplay->screenWindow()->clearSelection();
 }
 

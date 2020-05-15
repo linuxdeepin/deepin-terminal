@@ -343,7 +343,7 @@ private slots:
     void find();
     void findNext();
     void findPrevious();
-    void matchFound(int startColumn, int startLine, int endColumn, int endLine);
+    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese);
 
     /**
      * Emulation::cursorChanged() signal propogates to here and QTermWidget
@@ -365,6 +365,12 @@ private:
     QTranslator *m_translator;
     QPointer<Konsole::TerminalDisplay> m_termDisplay;
     QTimer *m_interactionTimer = nullptr;
+
+    bool m_bHasSelect = false;
+    int m_startColumn = 0;
+    int m_startLine = 0;
+    int m_endColumn = 0;
+    int m_endLine = 0;
 };
 
 // Maybe useful, maybe not
