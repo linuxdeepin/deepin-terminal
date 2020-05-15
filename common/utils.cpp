@@ -396,7 +396,7 @@ void Utils::setSpaceInWord(DPushButton *button)
 
 void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
 {
-    TermInputDialog *pDialog = new TermInputDialog();
+    TermInputDialog *pDialog = new TermInputDialog(parentWidget);
     pDialog->setWindowModality(Qt::ApplicationModal);
     pDialog->setFixedSize(380, 180);
     pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
