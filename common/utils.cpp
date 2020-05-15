@@ -22,11 +22,14 @@
 #include "../views/operationconfirmdlg.h"
 #include "warnningdlg.h"
 #include "termwidget.h"
+#include "settings.h"
 
 #include <DLog>
 #include <DMessageBox>
 #include <DLineEdit>
 #include <DFileDialog>
+#include <DSettingsDialog>
+#include <DSettingsWidgetFactory>
 
 #include <QUrl>
 #include <QDir>
@@ -402,6 +405,16 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
     pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
     pDialog->setFocusPolicy(Qt::NoFocus);
     pDialog->showDialog(oldTitle, parentWidget);
+}
+
+void Utils::showSettingDialog(QWidget *widget)
+{
+    static QWidget *singleDialog = nullptr;
+    if (NULL != singleDialog) {
+        singleDialog->hide();
+    }
+    widget->show();
+    singleDialog = widget;
 }
 
 /*******************************************************************************

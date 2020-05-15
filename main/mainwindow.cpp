@@ -74,6 +74,7 @@ void MainWindow::initUI()
     // parts.
     initPlugins();
     initTitleBar();
+    initSettingDialog();
 
     // 雷神和普通窗口设置不同
     m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
@@ -128,16 +129,22 @@ void MainWindow::initTitleBar()
     connect(m_tabbar,
             &DTabBar::currentChanged,
             this,
-    [this](int index) { focusPage(m_tabbar->identifier(index)); },
+    [this](int index) {
+        focusPage(m_tabbar->identifier(index));
+    },
     Qt::QueuedConnection);
     // 点击TAB上的＂＋＂触发
-    connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() { createNewWorkspace(); }, Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() {
+        createNewWorkspace();
+    }, Qt::QueuedConnection);
 
     // 点击TAB上的＂X＂触发
     connect(m_tabbar,
             &DTabBar::tabCloseRequested,
             this,
-    [this](int index) { closeTab(m_tabbar->identifier(index)); },
+    [this](int index) {
+        closeTab(m_tabbar->identifier(index));
+    },
     Qt::QueuedConnection);
 
     // TAB菜单发来的关闭请求
@@ -252,6 +259,16 @@ void MainWindow::initOptionMenu()
     connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
 }
 
+void MainWindow::initSettingDialog()
+{
+    m_settingDialog = new DSettingsDialog(this);
+    m_settingDialog->setWindowModality(Qt::WindowModal);
+    m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
+    m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
+    m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
+    m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
+}
+
 void MainWindow::initPlugins()
 {
     // Todo: real plugin loader and plugin support.
@@ -274,6 +291,10 @@ void MainWindow::initPlugins()
 MainWindow::~MainWindow()
 {
     m_windowList.removeOne(this);
+    // 删除设置
+    if (nullptr != m_settingDialog) {
+        delete m_settingDialog;
+    }
 }
 
 //void MainWindow::addQuakeTerminalShortcut()
@@ -811,7 +832,7 @@ bool MainWindow::isQuakeMode()
 void MainWindow::setIndex(int index)
 {
     m_index = index;
-    qDebug()<<"deepin-terminal MainWindow create number = ["<<index <<"]";
+    qDebug() << "deepin-terminal MainWindow create number = [" << index << "]";
 }
 
 void MainWindow::onTermTitleChanged(QString title)
@@ -1371,15 +1392,9 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 
 void MainWindow::showSettingDialog()
 {
-    DSettingsDialog *dialog = new DSettingsDialog(this);
-    dialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
-    dialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
-    dialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
-    dialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
+    m_settingDialog->updateSettings(Settings::instance()->settings);
 
-    dialog->updateSettings(Settings::instance()->settings);
-    dialog->exec();
-    dialog->deleteLater();
+    Utils::showSettingDialog(m_settingDialog);
 
     /******** Modify by n014361 wangpeili 2020-01-10:修复显示完设置框以后，丢失焦点的问题*/
     TermWidgetPage *page = currentPage();

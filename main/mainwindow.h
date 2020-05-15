@@ -11,6 +11,7 @@
 #include <DToolButton>
 #include <DIconButton>
 #include <DPushButton>
+#include <DSettingsDialog>
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -151,6 +152,7 @@ private:
     void initTitleBar();
     void initOptionButton();
     void initOptionMenu();
+    void initSettingDialog();
 
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 
@@ -198,6 +200,7 @@ private:
     QList<MainWindowPluginInterface *> m_plugins;
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;
+    DSettingsDialog *m_settingDialog = nullptr;
     bool m_isQuakeWindow = false;
     QMap<int, bool> m_tabVisitMap;
     QMap<int, bool> m_tabChangeColorMap;
