@@ -277,14 +277,14 @@ bool Utils::showExitConfirmDialog(ExitType type, int count)
 
     return (optDlg.getConfirmResult() == QDialog::Accepted);
 #else
+    // count < 1 不提示
+    if (count < 1) {
+        return true;
+    }
     QString title;
     QString txt;
     if(type == ExitType_Terminal)
     {
-        // count < 1 不提示
-        if (count < 1) {
-            return true;
-        }
         // 默认的count = 1的提示
         title = QObject::tr("Close this terminal?");
         txt = QObject::tr("There is still a process running in this terminal. "
