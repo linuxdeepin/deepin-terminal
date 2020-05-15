@@ -525,8 +525,8 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
         m_tabbar->setCurrentIndex(m_tabbar->getIndexByIdentifier(identifier));
     }
     // 默认每个窗口关闭都提示一次．
-    if (tabPage->runningTerminalCount() > 0 && runCheck) {
-        if (!Utils::showExitConfirmDialog()) {
+    if (runCheck) {
+        if (!Utils::showExitConfirmDialog(Utils::ExitType_Terminal, tabPage->runningTerminalCount())) {
             return;
         }
     }
@@ -665,10 +665,8 @@ void MainWindow::closeAllTab()
     }
 
     // 全部关闭时，仅提示一次．
-    if (runningCount > 0) {
-        if (!Utils::showExitConfirmDialog()) {
-            return;
-        }
+    if (!Utils::showExitConfirmDialog(Utils::ExitType_Window, runningCount)) {
+        return;
     }
     // 全部关闭时，不再检测了，
     for (QString id : closeTabIdList) {

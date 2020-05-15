@@ -25,7 +25,8 @@ public:
     // 修改光标形状
     void setCursorShape(int shape);
     void setPressingScroll(bool enable);
-    bool safeClose();
+    // 终端安全退出，默认没有检测
+    bool safeClose(bool hasCheck = false);
 
 public slots:
     void wpasteSelection();

@@ -89,7 +89,7 @@ TermWidget *TermWidgetPage::currentTerminal()
 //}
 /*******************************************************************************
  1. @函数:
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-05-14
  4. @说明:
 *******************************************************************************/
@@ -119,7 +119,7 @@ void TermWidgetPage::split(Qt::Orientation orientation)
 }
 /*******************************************************************************
  1. @函数:    createSubSplit
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-05-14
  4. @说明:    创建分屏
 *******************************************************************************/
@@ -140,10 +140,15 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     setCurrentTerminal(newTerm);
     return subSplit;
 }
-
-void TermWidgetPage::closeSplit(TermWidget *term)
+/*******************************************************************************
+ 1. @函数:
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-05-15
+ 4. @说明:
+*******************************************************************************/
+void TermWidgetPage::closeSplit(TermWidget *term, bool hasCheck)
 {
-    if (!term->safeClose()) {
+    if (!term->safeClose(hasCheck)) {
         return;
     }
     qDebug() << "TermWidgetPage::closeSplit:" << term->getSessionId();
@@ -152,7 +157,7 @@ void TermWidgetPage::closeSplit(TermWidget *term)
         term->setParent(nullptr);        
 
         // 另一个兄弟也可能是终端，也可能是split,
-        QWidget * brother = upSplit->widget(0);
+        QWidget *brother = upSplit->widget(0);
         TermWidget *nextTerm =  upSplit->findChild<TermWidget *>();
         // 如果上级是分屏
         if ("QSplitter" == QString(upSplit->parent()->metaObject()->className())) {
@@ -168,7 +173,7 @@ void TermWidgetPage::closeSplit(TermWidget *term)
 
         // 子控件的变化会引起焦点的变化，控制焦点要放在最后
         if (nextTerm != nullptr) {
-            qDebug()<<"nextTerm change"<<m_currentTerm->getSessionId();
+            qDebug() << "nextTerm change" << m_currentTerm->getSessionId();
             nextTerm->setFocus();
         }
 
@@ -176,7 +181,7 @@ void TermWidgetPage::closeSplit(TermWidget *term)
         term->deleteLater();
         upSplit->setParent(nullptr);
         upSplit->deleteLater();
-        qDebug()<<"page terminal count ="<<getTerminalCount();
+        qDebug() << "page terminal count =" << getTerminalCount();
         return;
     }
     parentMainWindow()->closeTab(identifier());
@@ -195,13 +200,19 @@ void TermWidgetPage::focusCurrentTerm()
 
 void TermWidgetPage::closeOtherTerminal()
 {
+    int runningCount = runningTerminalCount() - static_cast<int>(currentTerminal()->hasRunningProcess());
+    if (!Utils::showExitConfirmDialog(Utils::ExitType_Terminal, runningCount)) {
+        return;
+    }
+
     QList<TermWidget *> termList = findChildren<TermWidget *>();
 
     int currSessionId = m_currentTerm->getSessionId();
     //exit protection
     for (TermWidget *term : qAsConst(termList)) {
         if (term->getSessionId() != currSessionId) {
-            closeSplit(term);
+            // 前面已经检测过了，不用重复检测
+            closeSplit(term, true);
         }
     }
 }
@@ -261,7 +272,7 @@ static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
     }
 }
 
-/******** Modify by n014361 wangpeili 2020-01-07:  修改了计算上下左右判断的方法 ********×****/
+/******** Modify by ut000439 wangpeili 2020-01-07:  修改了计算上下左右判断的方法 ********×****/
 void TermWidgetPage::focusNavigation(Qt::Edge dir)
 {
     QPoint comparPoint = GetComparePoint(currentTerminal(), dir);
@@ -281,7 +292,7 @@ void TermWidgetPage::focusNavigation(Qt::Edge dir)
 }
 /*******************************************************************************
  1. @函数:    getTerminalCount
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-02-21
  4. @说明:    获取当前页的终端个数
 *******************************************************************************/
@@ -289,17 +300,16 @@ int TermWidgetPage::getTerminalCount()
 {
     return findChildren<TermWidget *>().size();
 }
-/********************* Modify by n014361 wangpeili End ************************/
+/********************* Modify by ut000439 wangpeili End ************************/
 
 /*******************************************************************************
  1. @函数:  QRect TermWidgetPage::GetRect(TermWidgetWrapper *term)
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明:  获取标签页内所有子窗体的区域
 *******************************************************************************/
 QRect TermWidgetPage::GetRect(TermWidget *term)
 {
-
     QPoint leftTop = term->mapTo(term->window(), QPoint(0, 0));
     QPoint rightBottom = term->mapTo(term->window(), QPoint(term->width(), term->height()));
     QRect rec(leftTop, rightBottom);
@@ -309,7 +319,7 @@ QRect TermWidgetPage::GetRect(TermWidget *term)
 
 /*******************************************************************************
  1. @函数: QPoint TermWidgetPage::GetComparePoint(TermWidgetWrapper *term, Qt::Edge dir)
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-08
  4. @说明:     获取窗口上下左右键需要判断的点位信息
 *******************************************************************************/
@@ -397,7 +407,7 @@ void TermWidgetPage::copyClipboard()
 
 /*******************************************************************************
  1. @函数: void TermWidgetPage::pasteClipboard()
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明: 用户粘贴时候，直接粘贴剪切板内容
 *******************************************************************************/
@@ -435,7 +445,7 @@ void TermWidgetPage::zoomOutCurrentTerminal()
 
 /*******************************************************************************
  1. @函数:   void TermWidgetPage::setFontSize(int fontSize)
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明:    设置字体大小
 *******************************************************************************/
@@ -449,7 +459,7 @@ void TermWidgetPage::setFontSize(int fontSize)
 
 /*******************************************************************************
  1. @函数:   void TermWidgetPage::setFont(QString fontName)
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明:    设置字体
 *******************************************************************************/
@@ -463,7 +473,7 @@ void TermWidgetPage::setFont(QString fontName)
 
 /*******************************************************************************
  1. @函数:   void TermWidgetPage::selectAll()
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明:    全选
 *******************************************************************************/
@@ -477,7 +487,7 @@ void TermWidgetPage::selectAll()
 
 /*******************************************************************************
  1. @函数:   void TermWidgetPage::skipToNextCommand()
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明:    跳转到下一命令
 *******************************************************************************/
@@ -491,7 +501,7 @@ void TermWidgetPage::skipToNextCommand()
 
 /*******************************************************************************
  1. @函数:   void TermWidgetPage::skipToPreCommand()
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明:    跳转到前一命令
 *******************************************************************************/
@@ -505,7 +515,7 @@ void TermWidgetPage::skipToPreCommand()
 
 /*******************************************************************************
  1. @函数:   void TermWidgetPage::setcursorShape()
- 2. @作者:     n014361 王培利
+ 2. @作者:     ut000439 王培利
  3. @日期:     2020-01-10
  4. @说明:    设置鼠标形状
 *******************************************************************************/
@@ -519,7 +529,7 @@ void TermWidgetPage::setcursorShape(int shape)
 
 /*******************************************************************************
  1. @函数:    setBlinkingCursor(bool enable)
- 2. @作者:    王培利n014361
+ 2. @作者:    王培利ut000439
  3. @日期:    2020-01-10
  4. @说明:    设置鼠标闪烁
 *******************************************************************************/
@@ -540,7 +550,7 @@ void TermWidgetPage::setPressingScroll(bool enable)
 }
 /*******************************************************************************
  1. @函数:    showSearchBar(bool enable)
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-02-24
  4. @说明:    是否显示搜索框
 *******************************************************************************/
@@ -581,7 +591,7 @@ void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
-    qDebug()<<"onTermGetFocus"<<m_currentTerm->getSessionId();
+    qDebug() << "onTermGetFocus" << m_currentTerm->getSessionId();
     m_currentTerm->setFocus(Qt::OtherFocusReason);
     emit termGetFocus();
     m_findBar->hide();
@@ -598,7 +608,7 @@ void TermWidgetPage::onTermClosed()
 }
 /*******************************************************************************
  1. @函数:    handleFindNext
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-02-24
  4. @说明:    查找下一个接口
 *******************************************************************************/
@@ -611,7 +621,7 @@ void TermWidgetPage::handleFindNext()
 
 /*******************************************************************************
  1. @函数:    handleFindPrev
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-02-24
  4. @说明:    查找上一个接口
 *******************************************************************************/
@@ -636,7 +646,7 @@ void TermWidgetPage::handleRemoveSearchKeyword()
 }
 /*******************************************************************************
  1. @函数:    handleUpdateSearchKeyword
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-02-24
  4. @说明:    更新key(没有输入回车情况),自动查找接口
 *******************************************************************************/
@@ -652,7 +662,7 @@ void TermWidgetPage::handleUpdateSearchKeyword(const QString &keyword)
 }
 /*******************************************************************************
  1. @函数:    applyTheme
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-03-011
  4. @说明:    非DTK控件手动匹配系统主题的修改
 *******************************************************************************/
@@ -674,7 +684,7 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     TermWidget *oldTerm = m_currentTerm;
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
-        qDebug()<<"m_currentTerm change"<<m_currentTerm->getSessionId();
+        qDebug() << "m_currentTerm change" << m_currentTerm->getSessionId();
         if (m_currentTerm->isTitleChanged()) {
             emit termTitleChanged(m_currentTerm->title());
         } else {
@@ -690,7 +700,7 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
-    qDebug()<<"createTerm"<<term->getSessionId();
+    qDebug() << "createTerm" << term->getSessionId();
     return term;
 }
 
@@ -703,7 +713,7 @@ void TermWidgetPage::setTextCodec(QTextCodec *codec)
 }
 /*******************************************************************************
  1. @函数:    setMismatchAlert
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-02-24
  4. @说明:    是否将输入框标为警告
 *******************************************************************************/
@@ -713,7 +723,7 @@ void TermWidgetPage::setMismatchAlert(bool alert)
 }
 /*******************************************************************************
  1. @函数:    resizeEvent
- 2. @作者:    n014361 王培利
+ 2. @作者:    ut000439 王培利
  3. @日期:    2020-02-24
  4. @说明:    重绘时候，调整查找框的位置
 *******************************************************************************/

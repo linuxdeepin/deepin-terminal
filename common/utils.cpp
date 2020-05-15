@@ -264,7 +264,7 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
     return DFileDialog::getOpenFileNames(widget, dlgTitle, curPath);
 }
 
-bool Utils::showExitConfirmDialog()
+bool Utils::showExitConfirmDialog(ExitType type, int count)
 {
     /******** Modify by m000714 daizhengwen 2020-04-17: 统一使用dtk Dialog****************/
 #ifndef USE_DTK
@@ -277,7 +277,31 @@ bool Utils::showExitConfirmDialog()
 
     return (optDlg.getConfirmResult() == QDialog::Accepted);
 #else
-    DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to exit?"));
+    QString title;
+    QString txt;
+    if(type == ExitType_Terminal)
+    {
+        // count < 1 不提示
+        if (count < 1) {
+            return true;
+        }
+        // 默认的count = 1的提示
+        title = QObject::tr("Close this terminal?");
+        txt = QObject::tr("There is still a process running in this terminal. "
+                                  "Closing the terminal will kill it.");
+        // count > 1 提示
+        if (count > 1) {
+            txt = QObject::tr("There are still %1 processes running in this terminal. "
+                              "Closing the terminal will kill all of them.")
+                  .arg(count);
+        }
+    }
+    else {
+        title = QObject::tr("Close this window?");
+        txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
+    }
+
+    DDialog dlg(title, txt);
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
     dlg.addButton(QString(tr("Exit")), true, DDialog::ButtonWarning);

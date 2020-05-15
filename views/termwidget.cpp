@@ -452,12 +452,12 @@ void TermWidget::setPressingScroll(bool enable)
     }
 }
 
-bool TermWidget::safeClose()
+bool TermWidget::safeClose(bool hasCheck)
 {
-    if (hasRunningProcess()) {
-        return Utils::showExitConfirmDialog();
+    if (hasCheck || !hasRunningProcess()) {
+        return  true;
     }
-    return  true;
+    return Utils::showExitConfirmDialog(Utils::ExitType_Terminal, 1);
 }
 
 /*******************************************************************************

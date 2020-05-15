@@ -26,7 +26,7 @@ public:
     // 分屏功能
     void split(Qt::Orientation orientation);
     DSplitter *createSubSplit(TermWidget *term, Qt::Orientation orientation);
-    void closeSplit(TermWidget *term);
+    void closeSplit(TermWidget *term, bool hasCheck = false);
     // 标识page的唯一ID， 和tab匹配，存在tab中，tabid 用的index，是变化的。
     const QString identifier();
     void focusCurrentTerm();
