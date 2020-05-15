@@ -1,5 +1,6 @@
 #include "quaketerminalproxy.h"
 #include "mainwindow.h"
+#include "utils.h"
 
 #include <DLog>
 
@@ -42,6 +43,11 @@ void QuakeTerminalProxy::ShowOrHide()
     // 没有激活就激活
     if (!mainWindow->isActiveWindow()) {
         qDebug() << "QuakeWindow is activate, now activateWindow" << mainWindow->winId();
+        int index = Utils::callKDECurrentDesktop();
+        if (index != -1 && mainWindow->getDesktopIndex() != index) {
+            // 不在同一个桌面
+            Utils::callKDESetCurrentDesktop(mainWindow->getDesktopIndex());
+        }
         mainWindow->activateWindow();
         return;
     }

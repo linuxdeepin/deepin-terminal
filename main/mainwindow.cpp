@@ -78,6 +78,7 @@ void MainWindow::initUI()
     // 雷神和普通窗口设置不同
     m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
     addTab(m_properties);
+    m_desktopIndex = Utils::callKDECurrentDesktop();
 
     //下面代码待处理
     ShortcutManager::instance()->setMainWindow(this);
@@ -1638,6 +1639,11 @@ void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
     QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
+}
+
+int MainWindow::getDesktopIndex() const
+{
+    return m_desktopIndex;
 }
 void MainWindow::changeEvent(QEvent * /*event*/)
 {

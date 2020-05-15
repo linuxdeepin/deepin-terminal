@@ -94,6 +94,8 @@ public:
     static constexpr const char *PLUGIN_TYPE_REMOTEMANAGEMENT = "Remote Management";
     static constexpr const char *PLUGIN_TYPE_ENCODING = "Encoding";
     static constexpr const char *PLUGIN_TYPE_NONE = "None";
+    int getDesktopIndex() const;
+
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
@@ -225,6 +227,8 @@ private:
     const int m_MinHeight = 250;
     // 是否需要保存位置开关，雷神窗口不关心这个参数
     bool m_IfUseLastSize = false;
+    // 雷神终端所在桌面
+    int m_desktopIndex;
 };
 
 #endif  // MAINWINDOW_H

@@ -34,6 +34,10 @@
 #define USE_DTK
 /********************* Modify by m000714 daizhengwen End ************************/
 
+// kwin dbus
+#define KWinDBusService "org.kde.KWin"
+#define KWinDBusPath "/KWin"
+
 class Utils : public QObject
 {
     Q_OBJECT
@@ -76,6 +80,9 @@ public:
 
     static void showSameNameDialog(const QString &firstLine, const QString &secondLine);
     static void clearChildrenFocus(QObject *objParent);
+
+    static int callKDECurrentDesktop();
+    static void callKDESetCurrentDesktop(int index);
 };
 
 #endif

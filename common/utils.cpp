@@ -28,6 +28,8 @@
 #include <DLineEdit>
 #include <DFileDialog>
 
+#include <QDBusMessage>
+#include <QDBusConnection>
 #include <QUrl>
 #include <QDir>
 #include <QFile>
@@ -478,5 +480,47 @@ void Utils::clearChildrenFocus(QObject *objParent)
     }
 
     qDebug() << "checkChildrenFocus over" << objParent->children().size();
+}
+
+/*******************************************************************************
+ 1. @函数:    callKDECurrentDesktop
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-15
+ 4. @说明:    获取当前桌面index
+*******************************************************************************/
+int Utils::callKDECurrentDesktop()
+{
+    QDBusMessage msg =
+        QDBusMessage::createMethodCall(KWinDBusService, KWinDBusPath, KWinDBusService, "currentDesktop");
+
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call currentDesktop Success!";
+        return response.arguments().takeFirst().toInt();
+    } else {
+        qDebug() << "call currentDesktop Fail!" << response.errorMessage();
+        return -1;
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    callKDESetCurrentDesktop
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-15
+ 4. @说明:    将桌面跳转到index所指桌面
+*******************************************************************************/
+void Utils::callKDESetCurrentDesktop(int index)
+{
+    QDBusMessage msg =
+        QDBusMessage::createMethodCall(KWinDBusService, KWinDBusPath, KWinDBusService, "setCurrentDesktop");
+
+    msg << index;
+
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call setCurrentDesktop Success!";
+    } else {
+        qDebug() << "call setCurrentDesktop Fail!" << response.errorMessage();
+    }
 }
 
