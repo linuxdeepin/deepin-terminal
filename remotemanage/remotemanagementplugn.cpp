@@ -57,20 +57,21 @@ void RemoteManagementPlugn::initRemoteManagementTopPanel()
 void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 {
     if (nullptr != curServer) {
+        /******** Modify by m000714 daizhengwen 2020-04-30: 将当前还没执行的命令清空****************/
+        m_mainWindow->focusCurrentPage();
+        m_mainWindow->pressCtrlU();
+        m_mainWindow->sleep(100);
+        qDebug() << "try to Connect to Server!";
+        /********************* Modify by m000714 daizhengwen End ************************/
         QString shellFile = createShellFile(curServer);
         QString strTxt = "expect -f " + shellFile + "\n";
         //--added by qinyaning(nyq) to solve the probelm which Connecting to the remote server
         /*does not connect to the remote server directly in the new TAB. time: 2020.4.13 18:15
          * */
-        if(m_mainWindow->currentPage()->currentTerminal()->hasRunningProcess()) {
+        if (m_mainWindow->currentPage()->currentTerminal()->hasRunningProcess()) {
             m_mainWindow->addTab(m_mainWindow->currentPage()->createCurrentTerminalProperties(), true);
         }
         //--------------------------------//
-        /******** Modify by m000714 daizhengwen 2020-04-30: 将当前还没执行的命令清空****************/
-        m_mainWindow->sleep(100);
-        m_mainWindow->pressCtrlU();
-        m_mainWindow->sleep(100);
-        /********************* Modify by m000714 daizhengwen End ************************/
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
         QString encodeString = curServer->m_encoding;
         if (!encodeString.isNull() && !encodeString.isEmpty()) {
