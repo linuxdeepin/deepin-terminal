@@ -35,12 +35,6 @@
                             "hide": true,
                             "reset": true,
                             "default": "Linux"
-                        },
-                        {
-                            "key": "encoding",
-                            "hide": true,
-                            "reset": true,
-                            "default": "UTF-8"
                         }
                     ]
                 }

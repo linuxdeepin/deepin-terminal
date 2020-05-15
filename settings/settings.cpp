@@ -162,7 +162,7 @@ QString Settings::colorScheme() const
 
 QString Settings::encoding() const
 {
-    return settings->option("basic.interface.encoding")->value().toString();
+    return m_EncodeName;
 }
 
 QString Settings::fontName()
@@ -223,8 +223,12 @@ void Settings::setColorScheme(const QString &name)
 }
 
 void Settings::setEncoding(const QString &name)
-{
-    settings->option("basic.interface.encoding")->setValue(name);
+{    
+    if(name != m_EncodeName){
+        m_EncodeName = name;
+        emit encodeSettingChanged(name);
+        qDebug()<<"encode changed to"<<name;
+    }
 }
 
 void Settings::setKeyValue(const QString &name, const QString &value)

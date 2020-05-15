@@ -99,7 +99,7 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
         DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
         if (row == index.row()) {
             modelItem->setCheckState(Qt::Checked);
-            // 直接写文件生效。
+            // 修改配置生效。
             Settings::instance()->setEncoding(index.data().toString());
         } else {
             modelItem->setCheckState(Qt::Unchecked);

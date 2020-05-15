@@ -62,6 +62,7 @@ signals:
     void windowSettingChanged(const QString &key);
     void terminalSettingChanged(const QString &key);
     void shortcutSettingChanged(const QString &key);
+    void encodeSettingChanged(const QString &Name);
 
     void opacityChanged(qreal opacity);
     void cursorShapeChanged(int shape);
@@ -85,6 +86,8 @@ private:
     QString m_configPath;
     //　配置文件监视
     QFileSystemWatcher * m_Watcher = nullptr;
+    // 编码格式为当前mainwindow有效参数，不记录在文件中．
+    QString m_EncodeName = "UTF-8";
 };
 class KeySequenceEdit : public DKeySequenceEdit
 {

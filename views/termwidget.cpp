@@ -46,10 +46,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     }
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
-    // 系统初始打开始终为UTF-8格式。中间的这个参数仅用作通讯使用。
-    // 如果需要“记忆”，删除下面这行即可。
-    //setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
-    setTextCodec(QTextCodec::codecForName("UTF-8"));
+    
+    // 这个参数为自定义参数，不记录文件, 如果需要“记忆”,　需要使用DTK配置参数
+    setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
+
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
     setAutoClose(!m_properties.contains(KeepOpen));
     /********************* Modify by n014361 wangpeili End ************************/
@@ -173,6 +173,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
+    // encode为自定义参数
+    connect(Settings::instance(), &Settings::encodeSettingChanged, this, [this](QString name){
+        setTextCodec(QTextCodec::codecForName(name.toUtf8()));
+    });
 }
 
 TermWidgetPage *TermWidget::parentPage()
@@ -517,11 +521,6 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     }
 
     if (keyName == "basic.interface.theme") {
-        return;
-    }
-
-    if (keyName == "basic.interface.encoding") {
-        setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
         return;
     }
     // 这里只是立即生效一次，真正生效起作用的地方在初始的connect中
