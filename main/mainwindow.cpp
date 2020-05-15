@@ -889,9 +889,7 @@ void MainWindow::initShortcuts()
     m_shortcutManager->initShortcuts();
     /******** Modify by n014361 wangpeili 2020-01-10: 增加设置的各种快捷键修改关联***********×****/
     // new_workspace
-    QShortcut *newWorkspaceShortcut = createNewShotcut("shortcuts.workspace.new_workspace");
-    newWorkspaceShortcut->setAutoRepeat(false);
-    connect(newWorkspaceShortcut, &QShortcut::activated, this, [this]() {
+    connect(createNewShotcut("shortcuts.workspace.new_workspace", false), &QShortcut::activated, this, [this]() {
         this->addTab(currentPage()->createCurrentTerminalProperties(), true);
     });
 
@@ -938,7 +936,7 @@ void MainWindow::initShortcuts()
     });
 
     // horionzal_split
-    connect(createNewShotcut("shortcuts.workspace.horionzal_split"), &QShortcut::activated, this, [this]() {
+    connect(createNewShotcut("shortcuts.workspace.horionzal_split", false), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             qDebug() << "horizontal_split";
@@ -947,7 +945,7 @@ void MainWindow::initShortcuts()
     });
 
     // vertical_split
-    connect(createNewShotcut("shortcuts.workspace.vertical_split"), &QShortcut::activated, this, [this]() {
+    connect(createNewShotcut("shortcuts.workspace.vertical_split", false), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             qDebug() << "vertical_split";
@@ -1498,13 +1496,15 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
  1. @函数:    createNewShotcut
  2. @作者:    n014361 王培利
  3. @日期:    2020-02-20
- 4. @说明:    创建内置快捷键管理
+ 4. @说明:    创建内置快捷键管理,
+             AutoRepeat 是否可以连续触发快捷键, 默认可以
 *******************************************************************************/
-QShortcut *MainWindow::createNewShotcut(const QString &key)
+QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 {
     QString value = Settings::instance()->settings->option(key)->value().toString();
     QShortcut *shortcut = new QShortcut(QKeySequence(value), this);
     m_BuiltInShortcut[key] = shortcut;
+    shortcut->setAutoRepeat(AutoRepeat);
     // qDebug() << "createNewShotcut" << key << value;
     return shortcut;
 }

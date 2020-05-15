@@ -174,7 +174,7 @@ private:
     void createJsonGroup(const QString &keyCategory, QJsonArray &jsonGroups);
     /********************* Modify by n014361 wangpeili End ************************/
     /******** Modify by n014361 wangpeili 2020-02-20: 创建快捷键管理 ****************/
-    QShortcut *createNewShotcut(const QString &key);
+    QShortcut *createNewShotcut(const QString &key, bool AutoRepeat = true);
     /********************* Modify by n014361 wangpeili End ************************/
     //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
     void pressEnterKey(const QString &text);
