@@ -20,6 +20,7 @@
 
 #include "utils.h"
 #include "../views/operationconfirmdlg.h"
+#include"views/terminputdialog.h"
 #include "warnningdlg.h"
 #include "termwidget.h"
 #include "settings.h"
@@ -48,7 +49,9 @@
 #include <QTextLayout>
 #include <QTime>
 #include <QFontMetrics>
-#include"views/terminputdialog.h"
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -281,6 +284,7 @@ bool Utils::showExitConfirmDialog(QWidget *widget)
     return (optDlg.getConfirmResult() == QDialog::Accepted);
 #else
     DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to exit?"), widget);
+    dlg.setWindowModality(Qt::WindowModal);
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
     dlg.addButton(QString(tr("Exit")), true, DDialog::ButtonWarning);
@@ -467,5 +471,20 @@ void Utils::clearChildrenFocus(QObject *objParent)
     }
 
     qDebug() << "checkChildrenFocus over" << objParent->children().size();
+}
+
+void Utils::callCloseWindow(int index)
+{
+    QDBusMessage msg =
+        QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "onCloseWindow");
+
+    msg << index;
+
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call callCloseWindow Success!";
+    } else {
+        qDebug() << "call callCloseWindow Fail!" << response.errorMessage();
+    }
 }
 

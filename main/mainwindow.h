@@ -12,6 +12,7 @@
 #include <DIconButton>
 #include <DPushButton>
 #include <DSettingsDialog>
+#include <DDialog>
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -37,7 +38,7 @@ class MainWindow : public DMainWindow
 
 public:
     explicit MainWindow(TermProperties properties, QWidget *parent = nullptr);
-    ~MainWindow() override;
+//    ~MainWindow() override;
 
     void addTab(TermProperties properties, bool activeTab = false);
 
@@ -100,12 +101,14 @@ public:
 
     void setIsShow(bool isShow);
 
+    int getIndex() const;
+
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
     void showPluginChanged(const QString &name);
     void quakeHidePlugin();
-    void closeWindow(int index, bool isRunning);
+    void closeWindow(int index);
     void showMainWindow(int index);
 
 public slots:
@@ -153,6 +156,7 @@ private:
     void initOptionButton();
     void initOptionMenu();
     void initSettingDialog();
+    void initExitDialog();
 
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 
@@ -201,6 +205,7 @@ private:
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;
     DSettingsDialog *m_settingDialog = nullptr;
+    DDialog *m_exitDialog = nullptr;
     bool m_isQuakeWindow = false;
     QMap<int, bool> m_tabVisitMap;
     QMap<int, bool> m_tabChangeColorMap;

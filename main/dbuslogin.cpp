@@ -1,6 +1,7 @@
 #include "dbuslogin.h"
 #include "mainwindow.h"
-#include "utils.h"
+
+#include <DDialog>
 
 #include <QDebug>
 #include <QDBusMessage>
@@ -13,9 +14,9 @@ DBusLogin::DBusLogin()
 
 void DBusLogin::doCreateNewWindow(TermProperties properties)
 {
-    QDBusMessage createNewWindow = QDBusMessage::createMethodCall(DEEPINDEBUSNAME,
-                                                                  "/window",
-                                                                  DEEPINDEBUSNAME,
+    QDBusMessage createNewWindow = QDBusMessage::createMethodCall(TERMINALSERVER,
+                                                                  TERMINALINTERFACE,
+                                                                  TERMINALSERVER,
                                                                   "onCreateNewWindow");
 
     QList<QVariant> args;
@@ -38,7 +39,7 @@ void DBusLogin::doCreateNewWindow(TermProperties properties)
          << QVariant(properties[Script]);
     createNewWindow << args;
     // 发送Message
-    QDBusMessage response = QDBusConnection::sessionBus().call(createNewWindow);
+    QDBusMessage response = QDBusConnection::sessionBus().call(createNewWindow, QDBus::AutoDetect);
     // 判断Method是否被正确返回
     if (response.type() == QDBusMessage::ReplyMessage) {
         // QDBusMessage的arguments不仅可以用来存储发送的参数，也用来存储返回值;
@@ -102,29 +103,24 @@ void DBusLogin::onCreateNewWindow(QList<QVariant> args)
     m_mainWindowList.append(mainWindow);
     mainWindow->setIndex(m_mainWindowList.indexOf(mainWindow));
     connect(mainWindow, &MainWindow::showMainWindow, this, &DBusLogin::onShowWindow, Qt::QueuedConnection);
-    // 关闭时移除指针
-    connect(mainWindow, &MainWindow::closeWindow, this, [ = ](int index, bool isRunning) {
-        Q_UNUSED(index);
-        if (!isRunning) {
-            // 没程序运行 退出窗口
-            mainWindow->setIsClose(true);
-            mainWindow->close();
-            m_mainWindowList.removeOne(mainWindow);
-            delete mainWindow;
-        }
-        // 有程序运行弹窗提示
-        else if (Utils::showExitConfirmDialog(mainWindow)) {
-            // 退出此窗口
-            mainWindow->setIsClose(true);
-            mainWindow->close();
-            m_mainWindowList.removeOne(mainWindow);
-            delete mainWindow;
-        } else {
-            // 不退出设置不用即时显示
-            mainWindow->activateWindow();
-        }
-    }, Qt::QueuedConnection);
     qDebug() << "MainWindow count : " << m_mainWindowList.count();
+}
+
+void DBusLogin::onCloseWindow(int index)
+{
+    MainWindow *mainWindow = nullptr;
+    for (auto item : m_mainWindowList) {
+        // 找到窗口
+        if (item->getIndex() == index) {
+            // 遍历后删除
+            mainWindow = item;
+            item->close();
+            // 列表中清除
+            m_mainWindowList.removeOne(item);
+        }
+    }
+    mainWindow->deleteLater();
+
 }
 
 void DBusLogin::onShowWindow(int index)
@@ -138,12 +134,12 @@ bool DBusLogin::initDBus()
     //用于雷神窗口通信的DBus
     QDBusConnection conn = QDBusConnection::sessionBus();
 
-    if (!conn.registerService(DEEPINDEBUSNAME)) {
+    if (!conn.registerService(TERMINALSERVER)) {
         qDebug() << "Terminal DBus has connected!";
         return false;
     }
 
-    if (!conn.registerObject("/window", this, QDBusConnection::ExportAllSlots)) {
+    if (!conn.registerObject(TERMINALINTERFACE, this, QDBusConnection::ExportAllSlots)) {
         qDebug() << "Terminal DBus creates Object failed!";
         return false;
     }

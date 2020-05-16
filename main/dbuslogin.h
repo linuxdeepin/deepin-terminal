@@ -1,6 +1,7 @@
 #ifndef DBUSLOGIN_H
 #define DBUSLOGIN_H
 #include "termproperties.h"
+#include "utils.h"
 
 #include <QObject>
 #include <QDBusConnection>
@@ -8,13 +9,13 @@
 #include <QList>
 
 #define MAXWINDOWCOUNT 30
-#define DEEPINDEBUSNAME "com.deepin.terminal.reborn"
+
 class TermProperties;
 class MainWindow;
 class DBusLogin : public QObject
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", DEEPINDEBUSNAME)
+    Q_CLASSINFO("D-Bus Interface", TERMINALSERVER)
 public:
     DBusLogin();
     bool initDBus();
@@ -22,6 +23,7 @@ public:
 
 public slots:
     void onCreateNewWindow(QList<QVariant> args);
+    void onCloseWindow(int index);
 
 private slots:
     void onShowWindow(int index);

@@ -136,9 +136,7 @@ int main(int argc, char *argv[])
         // 第一次以后进程均退出，但窗口要打开
         if (!isFirst) {
             qDebug() << "deepin termanl start with normal mode, instance exist, now exit process!";
-            QTimer::singleShot(1000, [&]() {
-                app.quit();
-            });
+            return 0;
         }
     }
 

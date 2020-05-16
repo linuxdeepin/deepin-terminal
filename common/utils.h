@@ -34,6 +34,9 @@
 #define USE_DTK
 /********************* Modify by m000714 daizhengwen End ************************/
 
+#define TERMINALSERVER "com.deepin.terminal.reborn"
+#define TERMINALINTERFACE "/window"
+
 class Utils : public QObject
 {
     Q_OBJECT
@@ -74,6 +77,8 @@ public:
 
     static void showSameNameDialog(const QString &firstLine, const QString &secondLine);
     static void clearChildrenFocus(QObject *objParent);
+
+    static void callCloseWindow(int index);
 };
 
 #endif

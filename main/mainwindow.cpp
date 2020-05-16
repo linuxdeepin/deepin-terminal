@@ -75,6 +75,7 @@ void MainWindow::initUI()
     initPlugins();
     initTitleBar();
     initSettingDialog();
+    initExitDialog();
 
     // 雷神和普通窗口设置不同
     m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
@@ -269,6 +270,28 @@ void MainWindow::initSettingDialog()
     m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
 }
 
+/*******************************************************************************
+ 1. @函数:    initExitDialog
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-16
+ 4. @说明:    关闭所有时使用通用的dialog会阻塞关闭信号
+*******************************************************************************/
+void MainWindow::initExitDialog()
+{
+    m_exitDialog = new DDialog(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to exit?"), this);
+    connect(m_exitDialog, &DDialog::buttonClicked, this, [ = ](int index, const QString & text) {
+        Q_UNUSED(text);
+        if (index == DDialog::Accepted) {
+            m_isClose = true;
+            Utils::callCloseWindow(m_index);
+        }
+    });
+    m_exitDialog->setWindowModality(Qt::WindowModal);
+    m_exitDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+    m_exitDialog->addButton(QString(QObject::tr("Cancel")), false, DDialog::ButtonNormal);
+    m_exitDialog->addButton(QString(QObject::tr("Exit")), true, DDialog::ButtonWarning);
+}
+
 void MainWindow::initPlugins()
 {
     // Todo: real plugin loader and plugin support.
@@ -286,15 +309,6 @@ void MainWindow::initPlugins()
     m_plugins.append(encodePlugin);
     m_plugins.append(customCommandPlugin);
     m_plugins.append(remoteManagPlugin);
-}
-
-MainWindow::~MainWindow()
-{
-    m_windowList.removeOne(this);
-    // 删除设置
-    if (nullptr != m_settingDialog) {
-        delete m_settingDialog;
-    }
 }
 
 //void MainWindow::addQuakeTerminalShortcut()
@@ -767,14 +781,24 @@ void MainWindow::closeEvent(QCloseEvent *event)
         DMainWindow::closeEvent(event);
     }
     event->ignore();
-    // 想要删除
+
+    if (m_isQuakeWindow) {
+        closeAllTab();
+        DMainWindow::closeEvent(event);
+    }
+
     if (m_isClose) {
         // 可
+        // 通知将此窗口删除
+        Utils::callCloseWindow(m_index);
+        // 关闭所有标签
         closeAllTab();
         DMainWindow::closeEvent(event);
     } else {
+        // 弹窗保护
         closeConfirm();
     }
+
 }
 /*******************************************************************************
  1. @函数:    closeConfirm
@@ -798,11 +822,8 @@ void MainWindow::closeConfirm()
             qDebug() << "isMinimized........... " << endl;
             setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
         }
-        // 通知想要删除此窗口
-        emit closeWindow(m_index, true);
-    } else {
-        // 通知想要删除此窗口
-        emit closeWindow(m_index, false);
+        m_exitDialog->show();
+        moveToCenter(m_exitDialog);
     }
 }
 
@@ -1656,6 +1677,11 @@ void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
     QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
+}
+
+int MainWindow::getIndex() const
+{
+    return m_index;
 }
 
 void MainWindow::setIsShow(bool isShow)
