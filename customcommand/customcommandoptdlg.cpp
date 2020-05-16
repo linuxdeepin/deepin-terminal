@@ -44,6 +44,9 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
 
 void CustomCommandOptDlg::initUI()
 {
+    // 设置弹窗模态
+    setWindowModality(Qt::WindowModal);
+
     QWidget *contentFrame = new QWidget;
 
     QVBoxLayout *contentLayout = new QVBoxLayout;

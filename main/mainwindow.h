@@ -38,7 +38,7 @@ class MainWindow : public DMainWindow
 
 public:
     explicit MainWindow(TermProperties properties, QWidget *parent = nullptr);
-//    ~MainWindow() override;
+    ~MainWindow() override;
 
     void addTab(TermProperties properties, bool activeTab = false);
 

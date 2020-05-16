@@ -66,6 +66,11 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     initShortcuts();
 }
 
+MainWindow::~MainWindow()
+{
+    m_windowList.removeOne(this);
+}
+
 void MainWindow::initUI()
 {
     initWindow();
@@ -824,7 +829,11 @@ void MainWindow::closeConfirm()
         }
         m_exitDialog->show();
         moveToCenter(m_exitDialog);
+        return;
     }
+    // 没有正在运行的程序，直接关闭s
+    m_isClose = true;
+    Utils::callCloseWindow(m_index);
 }
 
 /*******************************************************************************

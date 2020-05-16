@@ -44,7 +44,8 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
 
 {
     qDebug() << "ServerConfigOptDlg init";
-    setWindowModality(Qt::ApplicationModal);
+    // 设置弹窗模态
+    setWindowModality(Qt::WindowModal);
     setFixedWidth(459);
     setAutoFillBackground(true);
     initUI();
