@@ -5,6 +5,7 @@
 #include "titlebar.h"
 #include "termwidgetpage.h"
 #include "remotemanagementplugn.h"
+#include "utils.h"
 
 #include <DMainWindow>
 #include <DWidgetUtil>

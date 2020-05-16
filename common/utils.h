@@ -37,6 +37,9 @@
 #define TERMINALSERVER "com.deepin.terminal.reborn"
 #define TERMINALINTERFACE "/window"
 
+#define kQuakeTerminalService "com.deepin.quake_terminal"
+#define kQuakeTerminalIface "/com/deepin/quake_terminal"
+
 class Utils : public QObject
 {
     Q_OBJECT
@@ -79,6 +82,8 @@ public:
     static void clearChildrenFocus(QObject *objParent);
 
     static void callCloseWindow(int index);
+    static void callShoworHidePlugin(int index, const QString &pluginName);
+    static void callHideQuakePlugin();
 };
 
 #endif

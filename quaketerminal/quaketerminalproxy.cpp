@@ -50,3 +50,9 @@ void QuakeTerminalProxy::ShowOrHide()
     qDebug() << "isWinVisible mainWindow->isActiveWindow() : start hide" << quakeWindow->winId();
     quakeWindow->hide();
 }
+
+void QuakeTerminalProxy::hidePlugin()
+{
+    MainWindow *quakeWindow = getMainWindow();
+    quakeWindow->showPluginChanged(MainWindow::PLUGIN_TYPE_NONE);
+}

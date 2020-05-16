@@ -14,7 +14,6 @@
 
 #include "customcommandplugin.h"
 #include "serverconfigmanager.h"
-#include "utils.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -1247,6 +1246,7 @@ void MainWindow::showPlugin(const QString &name)
     m_CurrentShowPlugin = name;
     if (name != PLUGIN_TYPE_NONE) {
         qDebug() << "show Plugin" << name;
+        Utils::callShoworHidePlugin(m_index, name);
     }
 
     emit showPluginChanged(name);

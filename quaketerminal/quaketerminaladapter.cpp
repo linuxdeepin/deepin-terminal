@@ -28,3 +28,9 @@ void QuakeTerminalAdapter::ShowOrHide()
     qDebug() << "QuakeTerminalAdapter::ShowOrHide";
     QMetaObject::invokeMethod(parent(), "ShowOrHide");
 }
+
+void QuakeTerminalAdapter::hidePlugin()
+{
+    qDebug() << "QuakeTerminalAdapter::hidePlugin";
+    QMetaObject::invokeMethod(parent(), "hidePlugin");
+}

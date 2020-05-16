@@ -15,6 +15,7 @@ public:
 
 public slots:
     void ShowOrHide();
+    void hidePlugin();
 };
 
 #endif  // QUAKETERMINALPROXY_H

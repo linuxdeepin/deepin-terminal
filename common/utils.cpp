@@ -488,3 +488,31 @@ void Utils::callCloseWindow(int index)
     }
 }
 
+void Utils::callShoworHidePlugin(int index, const QString &pluginName)
+{
+    QDBusMessage msg =
+        QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "onShoworHidePlugin");
+
+    msg << index << pluginName;
+
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call callShoworHideWindow Success!";
+    } else {
+        qDebug() << "call callShoworHidePlugin Fail!" << response.errorMessage();
+    }
+}
+
+void Utils::callHideQuakePlugin()
+{
+    QDBusMessage msg =
+        QDBusMessage::createMethodCall(kQuakeTerminalService, kQuakeTerminalIface, kQuakeTerminalService, "hidePlugin");
+
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call hidePlugin Success!";
+    } else {
+        qDebug() << "call hidePlugin Fail!" << response.errorMessage();
+    }
+}
+

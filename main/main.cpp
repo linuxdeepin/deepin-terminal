@@ -118,15 +118,14 @@ int main(int argc, char *argv[])
     // 雷神唯一实例
     if (firstTermProperties[QuakeMode].toBool()) {
         if (argumentParser.initDBus()) {
+            app.setApplicationDisplayName(QObject::tr("Quake Terminal"));
             MainWindow *m = new MainWindow(firstTermProperties);
+            m->setIndex(-1);
             m->show();
         } else {
             // Exit process after 1000ms.
             qDebug() << "deepin termanl start with quakemode init bus failed, now exit!";
-            QTimer::singleShot(1000, [&]() {
-                app.quit();
-            });
-            //Dtk::Widget::moveToCenter(mainWindow);
+            return 0;
         }
     }
     // 普通窗口唯一实例

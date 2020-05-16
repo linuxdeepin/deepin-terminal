@@ -24,6 +24,7 @@ public:
 public slots:
     void onCreateNewWindow(QList<QVariant> args);
     void onCloseWindow(int index);
+    void onShoworHidePlugin(int index, const QString &pluginName);
 
 private slots:
     void onShowWindow(int index);

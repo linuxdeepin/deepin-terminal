@@ -123,6 +123,25 @@ void DBusLogin::onCloseWindow(int index)
 
 }
 
+void DBusLogin::onShoworHidePlugin(int index, const QString &pluginName)
+{
+    if (pluginName == MainWindow::PLUGIN_TYPE_SEARCHBAR) {
+        return;
+    }
+
+    for (auto item : m_mainWindowList) {
+        if (item->getIndex() != index) {
+            emit item->showPluginChanged(MainWindow::PLUGIN_TYPE_NONE);
+        }
+    }
+
+    if (index != -1) {
+        // 不是雷神，雷神插件隐藏
+        Utils::callHideQuakePlugin();
+    }
+
+}
+
 void DBusLogin::onShowWindow(int index)
 {
     m_createMutex = true;
