@@ -135,6 +135,8 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 
     installEventFilter(this);
 
+    //启用关闭tab动画效果
+    setEnableCloseTabAnimation(true);
     setTabsClosable(true);
     setVisibleAddButton(true);
     setElideMode(Qt::ElideRight);
@@ -224,6 +226,118 @@ int TabBar::getIndexByIdentifier(QString id)
         }
     }
     return  -1;
+}
+
+/*!
+    Removes the tab at position \a index.
+
+    \sa SelectionBehavior
+ */
+void QTabBar::removeTab(int index)
+{
+    Q_D(QTabBar);
+    if (d->validIndex(index)) {
+        if (d->dragInProgress)
+            d->moveTabFinished(d->pressedIndex);
+
+#ifndef QT_NO_SHORTCUT
+        releaseShortcut(d->tabList.at(index).shortcutId);
+#endif
+        if (d->tabList[index].leftWidget) {
+            d->tabList[index].leftWidget->hide();
+            d->tabList[index].leftWidget->deleteLater();
+            d->tabList[index].leftWidget = 0;
+        }
+        if (d->tabList[index].rightWidget) {
+            d->tabList[index].rightWidget->hide();
+            d->tabList[index].rightWidget->deleteLater();
+            d->tabList[index].rightWidget = 0;
+        }
+
+        int newIndex = d->tabList[index].lastTab;
+        d->tabList.removeAt(index);
+        for (int i = 0; i < d->tabList.count(); ++i) {
+            if (d->tabList[i].lastTab == index)
+                d->tabList[i].lastTab = -1;
+            if (d->tabList[i].lastTab > index)
+                --d->tabList[i].lastTab;
+        }
+        if (index == d->currentIndex) {
+            // The current tab is going away, in order to make sure
+            // we emit that "current has changed", we need to reset this
+            // around.
+            d->currentIndex = -1;
+            if (d->tabList.size() > 0) {
+                switch(d->selectionBehaviorOnRemove) {
+                case SelectPreviousTab:
+                    if (newIndex > index)
+                        newIndex--;
+                    if (d->validIndex(newIndex))
+                        break;
+                    Q_FALLTHROUGH();
+                case SelectRightTab:
+                    newIndex = index;
+                    if (newIndex >= d->tabList.size())
+                        newIndex = d->tabList.size() - 1;
+                    break;
+                case SelectLeftTab:
+                    newIndex = index - 1;
+                    if (newIndex < 0)
+                        newIndex = 0;
+                    break;
+                default:
+                    break;
+                }
+
+                if (d->validIndex(newIndex)) {
+                    // don't loose newIndex's old through setCurrentIndex
+                    int bump = d->tabList[newIndex].lastTab;
+                    setCurrentIndex(newIndex);
+                    d->tabList[newIndex].lastTab = bump;
+                }
+            } else {
+                emit currentChanged(-1);
+            }
+        } else if (index < d->currentIndex) {
+            setCurrentIndex(d->currentIndex - 1);
+        }
+        d->refresh();
+        d->autoHideTabs();
+        if (!d->hoverRect.isEmpty()) {
+            for (int i = 0; i < d->tabList.count(); ++i) {
+                const QRect area = tabRect(i);
+                if (area.contains(mapFromGlobal(QCursor::pos()))) {
+                    d->hoverIndex = i;
+                    d->hoverRect = area;
+                    break;
+                }
+            }
+            update(d->hoverRect);
+        }
+        tabRemoved(index);
+    }
+
+    TabBar *tabBar = qobject_cast<TabBar *>(this->parent());
+
+    if (tabBar && tabBar->isEnableCloseTabAnimation())
+    {
+        //tab关闭动画
+        if (d->rightB->isVisible())
+        {
+            for(int i=0; i<index; i++)
+            {
+                QTabBarPrivate::Tab *tab = &d->tabList[i];
+
+                if (!tab->animation)
+                    tab->animation = reinterpret_cast<QTabBarPrivate::Tab::TabBarAnimation*>(new QTabBarPrivate::Tab::TabBarAnimation(tab, d));
+                tab->animation->setStartValue(-100);
+                tab->animation->setEndValue(0);
+                tab->animation->setEasingCurve(QEasingCurve::OutCubic);
+                tab->animation->setDuration(500);
+                tab->animation->start();
+            }
+        }
+    }
 }
 
 void TabBar::removeTab(const QString &tabIdentifier)
@@ -348,3 +462,12 @@ void TabBar::setTabStatusMap(const QMap<int,int> &tabStatusMap)
     m_tabStatusMap = tabStatusMap;
 }
 
+void TabBar::setEnableCloseTabAnimation(bool bEnableCloseTabAnimation)
+{
+    m_bEnableCloseTabAnimation = bEnableCloseTabAnimation;
+}
+
+bool TabBar::isEnableCloseTabAnimation()
+{
+    return m_bEnableCloseTabAnimation;
+}

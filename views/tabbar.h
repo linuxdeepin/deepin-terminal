@@ -56,6 +56,10 @@ public:
     bool isNeedChangeTextColor(int index);
     void setClearTabColor(int index);
     void setTabStatusMap(const QMap<int,int> &tabStatusMap);
+
+    //设置是否启用关闭tab动画效果
+    void setEnableCloseTabAnimation(bool bEnableCloseTabAnimation);
+    bool isEnableCloseTabAnimation();
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -78,6 +82,8 @@ private:
 
     QMap<int,int> m_tabStatusMap;
     QColor m_tabChangedTextColor;
+
+    bool m_bEnableCloseTabAnimation;
 };
 
 #endif  // TABBAR_H
