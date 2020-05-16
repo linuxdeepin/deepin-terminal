@@ -72,9 +72,9 @@ void DBusLogin::getProperty(TermProperty index, TermProperties &properties, QStr
 void DBusLogin::onCreateNewWindow(QList<QVariant> args)
 {
     // 限制终端个数
-//    if (m_mainWindowList.count() == MAXWINDOWCOUNT) {
-//        return;
-//    }
+    if (m_mainWindowList.count() == MAXWINDOWCOUNT) {
+        return;
+    }
     // 不为真
     if (!m_createMutex) {
         // 退出

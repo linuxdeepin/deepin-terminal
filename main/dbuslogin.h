@@ -8,7 +8,7 @@
 #include <QVariant>
 #include <QList>
 
-#define MAXWINDOWCOUNT 30
+#define MAXWINDOWCOUNT 199
 
 class TermProperties;
 class MainWindow;
