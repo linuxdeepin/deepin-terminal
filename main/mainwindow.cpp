@@ -267,7 +267,9 @@ void MainWindow::initOptionMenu()
 void MainWindow::initSettingDialog()
 {
     m_settingDialog = new DSettingsDialog(this);
-    m_settingDialog->setWindowModality(Qt::WindowModal);
+    if (!m_isQuakeWindow) {
+        m_settingDialog->setWindowModality(Qt::WindowModal);
+    }
     m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
     m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
@@ -1686,6 +1688,11 @@ void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
     QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
+}
+
+DSettingsDialog *MainWindow::getSettingDialog() const
+{
+    return m_settingDialog;
 }
 
 int MainWindow::getIndex() const

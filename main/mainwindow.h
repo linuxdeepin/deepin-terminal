@@ -104,6 +104,8 @@ public:
 
     int getIndex() const;
 
+    DSettingsDialog *getSettingDialog() const;
+
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
