@@ -103,9 +103,6 @@ public:
     void setIsShow(bool isShow);
 
     int getIndex() const;
-
-    DSettingsDialog *getSettingDialog() const;
-
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
@@ -208,6 +205,7 @@ private:
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;
     DSettingsDialog *m_settingDialog = nullptr;
+    bool m_fillSettingDialog = true;
     DDialog *m_exitDialog = nullptr;
     bool m_isQuakeWindow = false;
     QMap<int, bool> m_tabVisitMap;

@@ -269,6 +269,8 @@ void MainWindow::initSettingDialog()
     m_settingDialog = new DSettingsDialog(this);
     if (!m_isQuakeWindow) {
         m_settingDialog->setWindowModality(Qt::WindowModal);
+    } else {
+        m_settingDialog->setWindowModality(Qt::ApplicationModal);
     }
     m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
@@ -1424,9 +1426,13 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 
 void MainWindow::showSettingDialog()
 {
-    m_settingDialog->updateSettings(Settings::instance()->settings);
-
+    /******** Modify by ut000610 daizhengwen 2020-05-18: 设置对话框唯一显示，只加载一次配置****************/
+    if (m_fillSettingDialog) {
+        m_fillSettingDialog = false;
+        m_settingDialog->updateSettings(Settings::instance()->settings);
+    }
     Utils::showSettingDialog(m_settingDialog);
+    /********************* Modify by ut000610 daizhengwen End ************************/
 
     /******** Modify by n014361 wangpeili 2020-01-10:修复显示完设置框以后，丢失焦点的问题*/
     TermWidgetPage *page = currentPage();
@@ -1613,7 +1619,7 @@ void MainWindow::remoteDownloadFile()
 void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 {
     qDebug() << "Application  state " << m_index << state << isActiveWindow() << isVisible() << windowState();
-    // 下面的代码是雷神窗口自动隐藏功能．
+    // 下面的代码是雷神窗口自动隐藏功能．(使用统一接口)
     // 不是雷神窗口，不管
     if (!m_isQuakeWindow) {
         return;
@@ -1629,8 +1635,10 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
         return;
     }
 
-    // 激活应用的指令传不到这里．传到这里的都是非激活指令．
-    hide();
+    // 开关开了，未激活，则隐藏
+    if (isActiveWindow()) {
+        hide();
+    }
     qDebug() << "Application not Active,　now hide" << state;
 }
 
@@ -1688,11 +1696,6 @@ void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
     QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
-}
-
-DSettingsDialog *MainWindow::getSettingDialog() const
-{
-    return m_settingDialog;
 }
 
 int MainWindow::getIndex() const

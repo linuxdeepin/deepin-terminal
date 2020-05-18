@@ -43,11 +43,7 @@ void QuakeTerminalProxy::ShowOrHide()
     // 没有激活就激活
     if (!quakeWindow->isActiveWindow()) {
         qDebug() << "QuakeWindow is activate, now activateWindow" << quakeWindow->winId();
-        DSettingsDialog *settingsDialog = quakeWindow->getSettingDialog();
-        if (!settingsDialog->isVisible() && settingsDialog->isHidden()) {
-            quakeWindow->activateWindow();
-        }
-        qApp->activeWindow();
+        quakeWindow->activateWindow();
         return;
     }
 
