@@ -1,0 +1,6 @@
+   {
+       "type": "opensource",
+       "3rdparty": ["./terminalwidget"],
+       "ignore": [],
+       "license": ["GPLv3"]
+   }
