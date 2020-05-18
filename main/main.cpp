@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
         QStringList validString = {"maximize", "fullscreen", "splitscreen", "normal"};
         if (!validString.contains(parser.value(optWindowState))) {
             parser.showHelp();
-            exit;
+            exit(0);
         }
     }
     if (parser.isSet(optKeepOpen)) {

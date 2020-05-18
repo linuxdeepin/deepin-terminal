@@ -101,7 +101,6 @@ set (DTNG_CPP_FILES
     remotemanage/serverconfiglist.cpp
     remotemanage/serverconfigmanager.cpp
     remotemanage/serverconfigoptdlg.cpp
-    remotemanage/serverconfigoptwidget.cpp
     settings/newdspinbox.cpp
     settings/settings.cpp
     settings/settings_translation.cpp
@@ -158,7 +157,6 @@ set (DTNG_HEADER_FILES
     remotemanage/serverconfiglist.h
     remotemanage/serverconfigmanager.h
     remotemanage/serverconfigoptdlg.h
-    remotemanage/serverconfigoptwidget.h
     settings/newdspinbox.h
     settings/settings.h
     settings/shortcutmanager.h

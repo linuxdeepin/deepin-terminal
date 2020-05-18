@@ -217,6 +217,7 @@ void TermWidgetPage::closeOtherTerminal()
     }
 }
 
+#if 0
 // 待删除
 typedef struct {
     QPoint topLeft;
@@ -271,6 +272,7 @@ static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
         return;
     }
 }
+#endif
 
 /******** Modify by ut000439 wangpeili 2020-01-07:  修改了计算上下左右判断的方法 ********×****/
 void TermWidgetPage::focusNavigation(Qt::Edge dir)

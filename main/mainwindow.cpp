@@ -39,7 +39,7 @@
 
 #include <QVBoxLayout>
 #include <QMap>
-#include<DImageButton>
+#include <DImageButton>
 
 #include <fstream>
 using std::ifstream;
@@ -189,7 +189,7 @@ void MainWindow::initOptionButton()
 {
     // 全屏退出按钮
     // DTK的全屏按钮不能满足UI要求，隐去DTK最右侧的全屏
-    DImageButton *dtkbutton = titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton");
+    QWidget *dtkbutton = titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton");
     if (dtkbutton) {
         dtkbutton->hide();
     }
@@ -1656,6 +1656,6 @@ void MainWindow::changeEvent(QEvent * /*event*/)
         bool isFullscreen = window()->windowState().testFlag(Qt::WindowFullScreen);
         m_exitFullScreen->setVisible(isFullscreen);
         titlebar()->setMenuVisible(!isFullscreen);
-        titlebar()->findChild<DImageButton *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+        titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton")->hide();
     }
 }
