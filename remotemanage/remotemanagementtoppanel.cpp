@@ -125,13 +125,13 @@ void RemoteManagementTopPanel::show()
     m_serverConfigGroupPanel->hide();
     m_remoteManagementSearchPanel->hide();
 }
-
-void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
-{
-    Q_UNUSED(event)
-
-    m_remoteManagementPanel->resize(size());
-}
+/******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/
+//void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
+//{
+//    Q_UNUSED(event)
+//    m_remoteManagementPanel->resize(size());
+//}
+/******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
 
 void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup)
 {

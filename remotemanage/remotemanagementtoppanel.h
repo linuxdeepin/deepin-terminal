@@ -15,7 +15,9 @@ public:
     explicit RemoteManagementTopPanel(QWidget *parent = nullptr);
     void show();
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    /******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/
+    //void resizeEvent(QResizeEvent *event) override;
+    /******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
 signals:
     void focusOut();
     void doConnectServer(ServerConfig *curServer);

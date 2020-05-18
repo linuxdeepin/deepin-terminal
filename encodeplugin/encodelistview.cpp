@@ -19,6 +19,9 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setVerticalScrollMode(ScrollPerItem);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    /******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
+    setViewportMargins(0,20,0,0);//将设置Encode顶上的空白区域放在这里，目前设置大小为20
+    /******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
 
     //add by ameng 设置属性，修复BUG#20074
     setFixedWidth(m_ContentWidth);

@@ -106,7 +106,9 @@ void CustomCommandTopPanel::show()
     m_customCommandSearchPanel->hide();
 }
 
-void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
-{
-    m_customCommandPanel->resize(size());
-}
+/******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/
+//void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
+//{
+//    m_customCommandPanel->resize(size());
+//}
+/******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
