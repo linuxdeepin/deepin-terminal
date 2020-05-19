@@ -85,7 +85,9 @@ set (DTNG_CPP_FILES
     encodeplugin/encodelistview.cpp
     encodeplugin/encodelistmodel.cpp
     main/main.cpp
-    main/mainwindow.cpp
+    main/service.cpp
+    main/windowsmanager.cpp
+    main/mainwindow.cpp    
     main/termproperties.cpp
     main/dterminalsingleapplication.cpp
     quaketerminal/quaketerminaladapter.cpp
@@ -140,8 +142,10 @@ set (DTNG_HEADER_FILES
     encodeplugin/encodepanel.h
     encodeplugin/encodelistview.h
     encodeplugin/encodelistmodel.h
+    main/windowsmanager.h
     main/mainwindow.h
     main/mainwindowplugininterface.h
+    main/service.h
     main/termproperties.h
     main/dterminalsingleapplication.h
     quaketerminal/quaketerminaladapter.h
