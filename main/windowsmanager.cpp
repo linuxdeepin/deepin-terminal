@@ -11,9 +11,9 @@ WindowsManager *WindowsManager::instance()
 }
 
 void WindowsManager::runQuakeWindow(TermProperties properties)
-{    
+{
     if (m_quakeWindow == nullptr) {
-        qDebug()<<"runQuakeWindow :create";
+        qDebug() << "runQuakeWindow :create";
         m_quakeWindow = new MainWindow(properties);
         m_quakeWindow->show();
         return;
@@ -52,7 +52,11 @@ void WindowsManager::quakeWindowShowOrHide()
 
 void WindowsManager::createNormalWindow(TermProperties properties)
 {
-    MainWindow *newWindow = new MainWindow(properties);
+    TermProperties newProperties = properties;
+    if (m_normalWindowList.count() == 0) {
+        newProperties[SingleFlag] = true;
+    }
+    MainWindow *newWindow = new MainWindow(newProperties);
     m_normalWindowList << newWindow;
     qDebug() << "createNormalWindow, cureent count = " << m_normalWindowList.count();
     newWindow->show();

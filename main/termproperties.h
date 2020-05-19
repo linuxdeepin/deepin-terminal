@@ -4,7 +4,7 @@
 #include <QVariant>
 
 enum TermProperty {
-    SingleFlag,        // mainwindow使用
+    SingleFlag,        // mainwindow使用, 默认为false
     QuakeMode,         // mainwindow使用, 右键菜单要用到．
     WorkingDir,    // 每个terminal单独使用
     ColorScheme,       // 未使用

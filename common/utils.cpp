@@ -527,7 +527,7 @@ TermProperties Utils::parseArgument( QStringList arguments)
         firstTermProperties[QuakeMode] = false;
     }
 
-    firstTermProperties[SingleFlag] = true;
+    firstTermProperties[SingleFlag] = false;
     return firstTermProperties;
 }
 
