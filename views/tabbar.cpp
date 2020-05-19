@@ -333,7 +333,7 @@ void QTabBar::removeTab(int index)
                 tab->animation->setStartValue(-100);
                 tab->animation->setEndValue(0);
                 tab->animation->setEasingCurve(QEasingCurve::OutCubic);
-                tab->animation->setDuration(500);
+                tab->animation->setDuration(300);
                 tab->animation->start();
             }
         }
