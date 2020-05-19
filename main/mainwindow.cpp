@@ -14,6 +14,7 @@
 #include "serverconfigmanager.h"
 #include "utils.h"
 #include "dbusmanager.h"
+#include "windowsmanager.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -530,18 +531,21 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
             return;
         }
     }
+    qDebug()<<"Tab closed"<< identifier;
     int currSessionId = tabPage->currentTerminal()->getSessionId();
     m_tabVisitMap.remove(currSessionId);
     m_tabChangeColorMap.remove(currSessionId);
     m_tabbar->removeTab(identifier);
     m_termStackWidget->removeWidget(tabPage);
     tabPage->deleteLater();
-    focusCurrentPage();
-    updateTabStatus();
 
-    if (m_tabbar->count() == 0) {
-        close();
+    if (m_tabbar->count() != 0) {
+        updateTabStatus();
+        focusCurrentPage();
+        return;
     }
+    qDebug()<<"mainwindow close";
+    close();
 }
 /*******************************************************************************
  1. @函数:    getAllterminalCount
@@ -674,9 +678,9 @@ void MainWindow::closeAllTab()
         qDebug() << " close" << id;
     }
 
-    if (m_tabbar->count() == 0) {
-        close();
-    }
+//    if (m_tabbar->count() == 0) {
+//        close();
+//    }
     return;
 }
 
@@ -755,7 +759,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
     event->ignore();
     closeConfirm();
 
-    DMainWindow::closeEvent(event);
+    if (m_tabbar->count() == 0) {
+        DMainWindow::closeEvent(event);
+        emit mainwindowClosed(this);
+    }
 }
 /*******************************************************************************
  1. @函数:    closeConfirm
@@ -1124,6 +1131,7 @@ void MainWindow::initShortcuts()
 
 void MainWindow::initConnections()
 {
+    connect(this, &MainWindow::mainwindowClosed, WindowsManager::instance(), &WindowsManager::onMainwindowClosed);
     connect(Settings::instance(), &Settings::windowSettingChanged, this, &MainWindow::onWindowSettingChanged);
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
@@ -1555,6 +1563,7 @@ void MainWindow::remoteDownloadFile()
 *******************************************************************************/
 void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 {
+    return;
     qDebug() << "Application  state " << state << isActiveWindow() << isVisible() << windowState();
     //这块有问题需要改
     return;

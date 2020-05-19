@@ -101,6 +101,7 @@ signals:
     // !这两个信号被封装了，请不要单独调用！
     void showPluginChanged(const QString &name);
     void quakeHidePlugin();
+    void mainwindowClosed(MainWindow *);
 
 public slots:
     // void onSettingValueChanged(const int &keyIndex, const QVariant &value);

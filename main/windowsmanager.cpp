@@ -62,6 +62,24 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     newWindow->show();
 }
 
+void WindowsManager::onMainwindowClosed(MainWindow * window)
+{
+    if(window->isQuakeMode())
+    {
+        Q_ASSERT(window == m_quakeWindow);
+        m_quakeWindow->deleteLater();
+        m_quakeWindow = nullptr;
+        return;
+    }
+    if(m_normalWindowList.contains(window))
+    {
+        m_normalWindowList.removeOne(window);
+        window->deleteLater();
+        return;
+    }
+    qDebug()<<"unkown windows closed?? "<<window;
+}
+
 WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
 {
 

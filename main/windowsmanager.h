@@ -27,6 +27,7 @@ public:
 signals:
 
 public slots:
+    void onMainwindowClosed(MainWindow *);
 private:
     QList<MainWindow *> m_normalWindowList;
     MainWindow * m_quakeWindow = nullptr;
