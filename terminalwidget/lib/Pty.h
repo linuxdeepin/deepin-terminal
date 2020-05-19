@@ -31,8 +31,6 @@
 #ifndef PTY_H
 #define PTY_H
 
-#include <readline/history.h>
-
 // Qt
 #include <QStringList>
 #include <QVector>
