@@ -19,6 +19,13 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
         if (MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT != name) {
             getRemoteManagementTopPanel()->hideAnim();
         } else {
+            /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，远程连接界面使用不方便，将雷神窗口变大适应正常的远程连接界面 Begin***************/
+            if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < 220) {
+                m_mainWindow->resize(m_mainWindow->width(),220);//首先设置雷神界面的大小
+                m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);//重新打开远程连接界面，当前流程结束
+                return;
+            }
+            /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，远程连接界面使用不方便，将雷神窗口变大适应正常的远程连接界面 End***************/
             getRemoteManagementTopPanel()->show();
         }
     });

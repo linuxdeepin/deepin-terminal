@@ -97,7 +97,7 @@
 <context>
     <name>CustomCommandPlugin</name>
     <message>
-        <location filename="../customcommand/customcommandplugin.cpp" line="36"/>
+        <location filename="../customcommand/customcommandplugin.cpp" line="43"/>
         <source>Custom commands</source>
         <translation type="unfinished"></translation>
     </message>
@@ -113,7 +113,7 @@
 <context>
     <name>EncodePanelPlugin</name>
     <message>
-        <location filename="../encodeplugin/encodepanelplugin.cpp" line="36"/>
+        <location filename="../encodeplugin/encodepanelplugin.cpp" line="43"/>
         <source>Switch &amp;Encoding</source>
         <translation type="unfinished"></translation>
     </message>
@@ -562,12 +562,12 @@
 <context>
     <name>RemoteManagementPlugn</name>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="32"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="39"/>
         <source>Remote management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../remotemanage/remotemanagementplugn.cpp" line="112"/>
+        <location filename="../remotemanage/remotemanagementplugn.cpp" line="119"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -755,46 +755,6 @@
     <message>
         <location filename="../remotemanage/serverconfigoptdlg.cpp" line="393"/>
         <source>please input another one. </source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ServerConfigOptWidget</name>
-    <message>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="23"/>
-        <source>Advanced options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="24"/>
-        <source>Delete server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="39"/>
-        <source>Server name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="42"/>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="47"/>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="59"/>
-        <source>Optional</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="44"/>
-        <source>Address:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="49"/>
-        <source>Port:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../remotemanage/serverconfigoptwidget.cpp" line="56"/>
-        <source>Username:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

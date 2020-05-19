@@ -23,6 +23,13 @@ void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
             getEncodePanel()->hideAnim();
         }
         else {
+            /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 Begin***************/
+            if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < 220) {
+                m_mainWindow->resize(m_mainWindow->width(),220);//首先设置雷神界面的大小
+                m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);//重新打开编码界面，当前流程结束
+                return;
+            }
+            /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 End***************/
             getEncodePanel()->show();
         }
     });

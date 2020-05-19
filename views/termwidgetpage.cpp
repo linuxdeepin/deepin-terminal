@@ -559,6 +559,13 @@ void TermWidgetPage::setPressingScroll(bool enable)
 void TermWidgetPage::showSearchBar(bool enable)
 {
     if (enable) {
+        /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 Begin***************/
+        if (m_MainWindow->isQuakeMode() && m_MainWindow->height() < 220) {
+            m_MainWindow->resize(m_MainWindow->width(), 220); //首先设置雷神界面的大小
+            m_MainWindow->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);//重新打开查询界面，当前流程结束
+            return;
+        }
+        /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 End***************/
         m_findBar->raise();
         m_findBar->show();
         m_findBar->move(width() - 382, 0);
