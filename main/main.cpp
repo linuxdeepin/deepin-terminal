@@ -2,9 +2,11 @@
 #include "termargumentparser.h"
 #include "termproperties.h"
 #include "environments.h"
-#include "dterminalsingleapplication.h"
+#include "dbusmanager.h"
+#include "service.h"
+#include "utils.h"
 
-//#include <DApplication>
+#include <DApplication>
 #include <DApplicationSettings>
 #include <DLog>
 
@@ -20,7 +22,7 @@ int main(int argc, char *argv[])
     DApplication::loadDXcbPlugin();
 
     //DApplication app(argc, argv);
-    DTerminalSingleApplication app(argc, argv, "deepin-terminal-app");
+    DApplication app(argc, argv);
     app.setOrganizationName("deepin");
     app.setOrganizationDomain("deepin.org");
     app.setApplicationVersion(VERSION);
@@ -49,86 +51,24 @@ int main(int argc, char *argv[])
     /********************* Modify by n014361 wangpeili End *****************/
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(appDesc);
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
-    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
-    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
-    QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, splitscreen "),
-                                      "state-mode");
-    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
-    QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
-    //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
-    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
-    //parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
-
-    parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
-    parser.parse(app.arguments());
-
-    qDebug() << "optionWorkDirectory" << parser.value(optWorkDirectory);
-    qDebug() << "optionExecute" << parser.value(optExecute);
-//    qDebug() << "optionExecute2"<<parser.value(optionExecute2);
-    qDebug() << "optionQuakeMode" << parser.isSet(optQuakeMode);
-    qDebug() << "optionWindowState" << parser.isSet(optWindowState);
-    qDebug() << "positionalArguments" << parser.positionalArguments();
-
+    Utils::setCommandLineParser(appDesc, app, parser);
     parser.process(app);
 
-    TermProperties firstTermProperties;
-
-    if (parser.isSet(optExecute)) {
-        firstTermProperties[Execute] = parser.value(optExecute);
-    }
-    if (parser.isSet(optWorkDirectory)) {
-        firstTermProperties[WorkingDir] = parser.value(optWorkDirectory);
-    }
-    if (parser.isSet(optWindowState)) {
-        firstTermProperties[StartWindowState] = parser.value(optWindowState);
-        QStringList validString = {"maximize", "fullscreen", "splitscreen", "normal"};
-        if (!validString.contains(parser.value(optWindowState))) {
-            parser.showHelp();
-            exit(0);
-        }
-    }
-    if (parser.isSet(optKeepOpen)) {
-        firstTermProperties[KeepOpen] = "";
-    }
-    if (parser.isSet(optScript)) {
-        firstTermProperties[Script] = parser.value(optScript);;
+    DBusManager manager;
+    if (!manager.initDBus()) {
+        // 初始化失败，则已经注册过dbus
+        // 调用entry接口
+        DBusManager::callTerminalEntry(app.arguments());
+        return 0;
     }
 
-    if (parser.isSet(optQuakeMode)) {
-        firstTermProperties[QuakeMode] = true;
-    } else {
-        firstTermProperties[QuakeMode] = false;
-    }
-
-    if (!app.isRunning()) {
-        firstTermProperties[SingleFlag] = true;
-    } else {
-        firstTermProperties[SingleFlag] = false;
-    }
-
-    // 雷神窗口特殊处理
-    // TermArgumentParser 一定要在外面定义！！否则obj会消失
-    TermArgumentParser argumentParser;
-    if (firstTermProperties[QuakeMode].toBool()) {
-        if (!argumentParser.initDBus()) {
-            // Exit process after 1000ms.
-            qDebug() << "deepin termanl start with quakemode init bus failed, now exit!";
-            QTimer::singleShot(1000, [&]() {
-                app.quit();
-            });
-            //Dtk::Widget::moveToCenter(mainWindow);
-            return app.exec();
-        }
-    }
-    MainWindow w(firstTermProperties);
-
-    w.show();
+    // 主进程
+    Service *service = Service::instance();
+    service->connect(&manager, &DBusManager::entryArgs, service, &Service::Entry);
+    // 初始化数据
+    service->init();
+    // 创建窗口
+    service->Entry(app.arguments());
 
     return app.exec();
 }

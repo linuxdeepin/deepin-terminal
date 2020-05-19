@@ -20,11 +20,16 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include "settings.h"
+#include "termproperties.h"
 #include <DPushButton>
+#include <DApplication>
 
 #include <QObject>
 #include <QHash>
 #include <QFont>
+#include <QList>
+#include <QVariant>
+#include <QCommandLineParser>
 
 /******** Modify by m000714 daizhengwen 2020-04-03: 自绘的显示控件限制item的宽度****************/
 #define ITEMMAXWIDTH 160
@@ -81,8 +86,9 @@ public:
     static void showSameNameDialog(const QString &firstLine, const QString &secondLine);
     static void clearChildrenFocus(QObject *objParent);
 
-    static int callKDECurrentDesktop();
-    static void callKDESetCurrentDesktop(int index);
+    static QCommandLineParser &setCommandLineParser(QString appDesc, DApplication &app, QCommandLineParser &parser);
+    static TermProperties parseArgument( QStringList arguments);
+
 };
 
 #endif

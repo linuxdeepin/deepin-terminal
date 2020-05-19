@@ -19,12 +19,10 @@ class Service : public QObject
 public:
     static Service * instance();
     void init();
-    void Entry(TermProperties properties);
-
 signals:
 
 public slots:
-
+    void Entry(QStringList arguments);
 private:
     explicit Service(QObject *parent = nullptr);
     static Service * pService ;

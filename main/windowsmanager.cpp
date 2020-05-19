@@ -1,5 +1,7 @@
 #include "windowsmanager.h"
+#include "dbusmanager.h"
 #include "utils.h"
+
 #include <QDebug>
 
 WindowsManager *WindowsManager::pManager = new WindowsManager();
@@ -32,10 +34,10 @@ void WindowsManager::quakeWindowShowOrHide()
     // 没有激活就激活
     if (!m_quakeWindow->isActiveWindow()) {
         qDebug() << "QuakeWindow is activate, now activateWindow" << m_quakeWindow->winId();
-        int index = Utils::callKDECurrentDesktop();
+        int index = DBusManager::callKDECurrentDesktop();
         if (index != -1 && m_quakeWindow->getDesktopIndex() != index) {
             // 不在同一个桌面
-            Utils::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
+            DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
         }
         m_quakeWindow->activateWindow();
         return;
@@ -51,6 +53,7 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     MainWindow *newWindow = new MainWindow(properties);
     m_normalWindowList << newWindow;
     qDebug() << "createNormalWindow, cureent count = " << m_normalWindowList.count();
+    newWindow->show();
 }
 
 WindowsManager::WindowsManager(QObject *parent) : QObject(parent)

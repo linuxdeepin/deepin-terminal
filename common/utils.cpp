@@ -482,45 +482,83 @@ void Utils::clearChildrenFocus(QObject *objParent)
     qDebug() << "checkChildrenFocus over" << objParent->children().size();
 }
 
-/*******************************************************************************
- 1. @函数:    callKDECurrentDesktop
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-05-15
- 4. @说明:    获取当前桌面index
-*******************************************************************************/
-int Utils::callKDECurrentDesktop()
+TermProperties Utils::parseArgument( QStringList arguments)
 {
-    QDBusMessage msg =
-        QDBusMessage::createMethodCall(KWinDBusService, KWinDBusPath, KWinDBusService, "currentDesktop");
+    QCommandLineParser parser;
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call currentDesktop Success!";
-        return response.arguments().takeFirst().toInt();
-    } else {
-        qDebug() << "call currentDesktop Fail!" << response.errorMessage();
-        return -1;
+    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
+    QCommandLineOption optWindowState({ "m", "window-mode" },
+                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, splitscreen "),
+                                      "state-mode");
+    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
+    QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
+    //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
+    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
+    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
+    parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
+    parser.parse(arguments);
+
+    TermProperties firstTermProperties;
+
+    if (parser.isSet(optExecute)) {
+        firstTermProperties[Execute] = parser.value(optExecute);
     }
+    if (parser.isSet(optWorkDirectory)) {
+        firstTermProperties[WorkingDir] = parser.value(optWorkDirectory);
+    }
+    if (parser.isSet(optWindowState)) {
+        firstTermProperties[StartWindowState] = parser.value(optWindowState);
+        QStringList validString = {"maximize", "fullscreen", "splitscreen", "normal"};
+        if (!validString.contains(parser.value(optWindowState))) {
+            parser.showHelp();
+            exit(0);
+        }
+    }
+    if (parser.isSet(optKeepOpen)) {
+        firstTermProperties[KeepOpen] = "";
+    }
+    if (parser.isSet(optScript)) {
+        firstTermProperties[Script] = parser.value(optScript);;
+    }
+
+    if (parser.isSet(optQuakeMode)) {
+        firstTermProperties[QuakeMode] = true;
+    } else {
+        firstTermProperties[QuakeMode] = false;
+    }
+
+    firstTermProperties[SingleFlag] = true;
+    return firstTermProperties;
 }
 
-/*******************************************************************************
- 1. @函数:    callKDESetCurrentDesktop
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-05-15
- 4. @说明:    将桌面跳转到index所指桌面
-*******************************************************************************/
-void Utils::callKDESetCurrentDesktop(int index)
+QCommandLineParser &Utils::setCommandLineParser(QString appDesc, DApplication &app, QCommandLineParser &parser)
 {
-    QDBusMessage msg =
-        QDBusMessage::createMethodCall(KWinDBusService, KWinDBusPath, KWinDBusService, "setCurrentDesktop");
+    parser.setApplicationDescription(appDesc);
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
+    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
+    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
+    QCommandLineOption optWindowState({ "m", "window-mode" },
+                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, splitscreen "),
+                                      "state-mode");
+    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
+    QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
+    //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
+    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
+    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
+    //parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
 
-    msg << index;
+    parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
+    parser.parse(app.arguments());
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call setCurrentDesktop Success!";
-    } else {
-        qDebug() << "call setCurrentDesktop Fail!" << response.errorMessage();
-    }
+    qDebug() << "optionWorkDirectory" << parser.value(optWorkDirectory);
+    qDebug() << "optionExecute" << parser.value(optExecute);
+//    qDebug() << "optionExecute2"<<m_parser.value(optionExecute2);
+    qDebug() << "optionQuakeMode" << parser.isSet(optQuakeMode);
+    qDebug() << "optionWindowState" << parser.isSet(optWindowState);
+    qDebug() << "positionalArguments" << parser.positionalArguments();
+
+    return parser;
 }
 

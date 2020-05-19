@@ -9,12 +9,11 @@
 #include "termwidget.h"
 #include "titlebar.h"
 #include "operationconfirmdlg.h"
-
 #include "encodeplugin/encodepanelplugin.h"
-
 #include "customcommandplugin.h"
 #include "serverconfigmanager.h"
 #include "utils.h"
+#include "dbusmanager.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -78,7 +77,7 @@ void MainWindow::initUI()
     // 雷神和普通窗口设置不同
     m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
     addTab(m_properties);
-    m_desktopIndex = Utils::callKDECurrentDesktop();
+    m_desktopIndex = DBusManager::callKDECurrentDesktop();
 
     //下面代码待处理
     ShortcutManager::instance()->setMainWindow(this);
