@@ -11,9 +11,11 @@ WindowsManager *WindowsManager::instance()
 }
 
 void WindowsManager::runQuakeWindow(TermProperties properties)
-{
+{    
     if (m_quakeWindow == nullptr) {
+        qDebug()<<"runQuakeWindow :create";
         m_quakeWindow = new MainWindow(properties);
+        m_quakeWindow->show();
         return;
     }
     // Alt+F2的显隐功能实现点
