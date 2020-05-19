@@ -1558,10 +1558,11 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
     qDebug() << "Application  state " << state << isActiveWindow() << isVisible() << windowState();
     // 这个逻辑的针对的是在有弹窗情况下，windows+D后，可以让弹窗和主窗口一起弹出．
     // 如果激活应用，就激活主窗口，可以让弹窗和主窗口一起弹出．注意：不能传给弹窗父指针！！
-    if (state == Qt::ApplicationActive) {
-        activateWindow();
-        return;
-    }
+    //这块有问题需要改
+//    if (state == Qt::ApplicationActive) {
+//        activateWindow();
+//        return;
+//    }
 
     // 下面的代码是雷神窗口自动隐藏功能．
     // 不是雷神窗口，不管
