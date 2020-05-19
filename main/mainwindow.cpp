@@ -540,7 +540,7 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
     updateTabStatus();
 
     if (m_tabbar->count() == 0) {
-        qApp->quit();
+        close();
     }
 }
 /*******************************************************************************
@@ -675,7 +675,7 @@ void MainWindow::closeAllTab()
     }
 
     if (m_tabbar->count() == 0) {
-        qApp->quit();
+        close();
     }
     return;
 }
@@ -755,7 +755,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     event->ignore();
     closeConfirm();
 
-    return;
+    DMainWindow::closeEvent(event);
 }
 /*******************************************************************************
  1. @函数:    closeConfirm
@@ -1556,13 +1556,15 @@ void MainWindow::remoteDownloadFile()
 void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 {
     qDebug() << "Application  state " << state << isActiveWindow() << isVisible() << windowState();
+    //这块有问题需要改
+    return;
+
     // 这个逻辑的针对的是在有弹窗情况下，windows+D后，可以让弹窗和主窗口一起弹出．
     // 如果激活应用，就激活主窗口，可以让弹窗和主窗口一起弹出．注意：不能传给弹窗父指针！！
-    //这块有问题需要改
-//    if (state == Qt::ApplicationActive) {
-//        activateWindow();
-//        return;
-//    }
+    if (state == Qt::ApplicationActive) {
+        activateWindow();
+        return;
+    }
 
     // 下面的代码是雷神窗口自动隐藏功能．
     // 不是雷神窗口，不管
@@ -1582,6 +1584,7 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 
     // 激活应用的指令传不到这里．传到这里的都是非激活指令．
     hide();
+
     qDebug() << "Application not Active,　now hide" << state;
 }
 
