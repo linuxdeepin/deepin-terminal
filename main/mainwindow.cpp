@@ -1043,6 +1043,9 @@ void MainWindow::initShortcuts()
         if (page) {
             page->zoomInCurrentTierminal();
         }
+        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
+        setQuakeWindowMinHeight();
+        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
     // zoom_out
@@ -1051,6 +1054,9 @@ void MainWindow::initShortcuts()
         if (page) {
             page->zoomOutCurrentTerminal();
         }
+        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
+        setQuakeWindowMinHeight();
+        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
     // default_size
@@ -1059,6 +1065,9 @@ void MainWindow::initShortcuts()
         if (page) {
             page->setFontSize(Settings::instance()->fontSize());
         }
+        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
+        setQuakeWindowMinHeight();
+        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
     // select_all
