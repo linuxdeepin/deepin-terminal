@@ -5,37 +5,25 @@ Deepin Terminal is an advanced terminal emulator with workspace , multiple windo
 ## Dependencies
 
 ### Build dependencies
-* pkg-config
 * cmake
+* pkg-config
 * Qt5(>= 5.7.1) with modules:
   - qt5-default
-  - qttools5-dev-tools
+  - qtbase5-dev
   - qtbase5-private-dev
+  - qttools5-dev-tools
 * libdtkwidget-dev(>=5.1.0) with modules:
   - dtkcore-dev
   - dtkwidget-dev
-  - dtkcore-bin
-* lxqt-build-tools
-* autoconf
-* automake
-* autopoint
-* autotools-dev
-* dh-autoreconf
-* dh-strip-nondeterminism
-* dwz
-* libfile-stripnondeterminism-perl
-* libkf5windowsystem-dev
-* libsigsegv2
-* libtool
+  - dtkgui-dev
+* lxqt-build-tools(>= 0.6.0)
 * libutf8proc-dev
-* m4
-* po-debconf
 
 ### Debian based distro for lazy guy
 
 ``` shell
-# cd /path/to/the/source/
-# sudo apt build-dep .
+$ cd /path/to/the/source/
+$ sudo apt build-dep .
 ```
 
 ### Other distro
