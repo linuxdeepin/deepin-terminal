@@ -19,26 +19,40 @@ void Service::init()
 {
 
 }
-
+/*******************************************************************************
+ 1. @函数:    showSettingDialog
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-20
+ 4. @说明:    唯一显示设置框
+*******************************************************************************/
 void Service::showSettingDialog()
 {
     if (nullptr == m_settingDialog) {
         m_settingDialog = new DSettingsDialog();
+        // 关闭后将指针置空，下次重新new
         connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
+            // 关闭时置空
             if (result == 0) {
                 m_settingDialog = nullptr;
             }
         });
+        // 关闭时delete
         m_settingDialog->setAttribute(Qt::WA_DeleteOnClose);
         m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
         m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
         m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
         m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
-
+        // 将数据重新读入
         m_settingDialog->updateSettings(Settings::instance()->settings);
+        // 设置窗口模态为没有模态，不阻塞窗口和进程
         m_settingDialog->setWindowModality(Qt::NonModal);
+        // 让设置与窗口等效，隐藏后显示就不会被遮挡
+        m_settingDialog->setWindowFlags(Qt::Window);
+        // 雷神需要让窗口置顶，可是普通窗口不要
+        //m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
         m_settingDialog->show();
     } else {
+        // 若设置窗口已显示，则激活窗口，显示在窗口顶层
         m_settingDialog->activateWindow();
     }
 
