@@ -94,6 +94,11 @@ public:
     static constexpr const char *PLUGIN_TYPE_NONE = "None";
     int getDesktopIndex() const;
 
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 Begin***************/
+    //雷神窗口根据字体和字体大小设置最小高度
+    void setQuakeWindowMinHeight();
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
+
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！

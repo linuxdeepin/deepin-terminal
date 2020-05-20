@@ -81,6 +81,9 @@ void MainWindow::initUI()
     addTab(m_properties);
     m_desktopIndex = DBusManager::callKDECurrentDesktop();
 
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 Begin***************/
+    setQuakeWindowMinHeight();
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 End***************/
     //下面代码待处理
     ShortcutManager::instance()->setMainWindow(this);
     m_shortcutManager = ShortcutManager::instance();
@@ -326,7 +329,10 @@ void MainWindow::setQuakeWindow()
     setFixedWidth(QApplication::desktop()->availableGeometry().width());
     connect(desktopWidget, &QDesktopWidget::workAreaResized, this, [this]() {
         qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
-        setMinimumSize(QApplication::desktop()->availableGeometry().width(), 60);
+        /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
+        setMinimumWidth(QApplication::desktop()->availableGeometry().width());
+        setQuakeWindowMinHeight();
+        /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
         move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
         qDebug() << "size" << size();
         setFixedWidth(QApplication::desktop()->availableGeometry().width());
@@ -335,6 +341,7 @@ void MainWindow::setQuakeWindow()
 
     int saveHeight = m_winInfoConfig->value("quake_window_Height").toInt();
     qDebug() << "quake_window_Height: " << saveHeight;
+    qDebug() << "quake_window_Height: " << minimumSize();
     // 如果配置文件没有数据
     if (saveHeight == 0) {
         saveHeight = screenRect.size().height() / 3;
@@ -1638,6 +1645,25 @@ int MainWindow::getDesktopIndex() const
 {
     return m_desktopIndex;
 }
+
+/*******************************************************************************
+ 1. @函数:    setQuakeWindowMinHeight
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-05-20
+ 4. @说明:    雷神窗口根据字体和字体大小设置最小高度
+*******************************************************************************/
+/******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 Begin***************/
+void MainWindow::setQuakeWindowMinHeight()
+{
+    if(isQuakeMode()){
+        int height = 0;
+        QFontMetrics fm(currentPage()->currentTerminal()->getTerminalFont());
+        height = fm.height();
+        height = 60 + height*2;
+        setMinimumHeight(height);
+    }
+}
+/******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
     // 雷神窗口没有其它需要调整的
