@@ -4,6 +4,7 @@
 #include "utils.h"
 
 #include <DLog>
+#include <DDialog>
 
 #include <QUuid>
 #include <QVBoxLayout>
@@ -146,15 +147,16 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
  3. @日期:    2020-05-15
  4. @说明:
 *******************************************************************************/
-void TermWidgetPage::closeSplit(TermWidget *term, bool hasCheck)
+void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
 {
-    if (!term->safeClose(hasCheck)) {
+    if (!hasConfirmed && term->hasRunningProcess()) {
+        showExitConfirmDialog(Utils::CloseType_Terminal, 1, parentMainWindow());
         return;
     }
     qDebug() << "TermWidgetPage::closeSplit:" << term->getSessionId();
     if (getTerminalCount() > 1) {
         QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
-        term->setParent(nullptr);        
+        term->setParent(nullptr);
 
         // 另一个兄弟也可能是终端，也可能是split,
         QWidget *brother = upSplit->widget(0);
@@ -188,6 +190,50 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasCheck)
     return;
 }
 
+void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWidget *parent)
+{
+    // count < 1 不提示
+    if (count < 1) {
+        return;
+    }
+    QString title;
+    QString txt;
+    Utils::getExitDialogText(type, title, txt, count);
+
+    parentMainWindow()->setEnabled(false);
+    DDialog *dlg = new DDialog(title, txt, parent);
+    dlg->setIcon(QIcon::fromTheme("deepin-terminal"));
+    dlg->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+    dlg->addButton(QString(tr("Exit")), true, DDialog::ButtonWarning);
+    dlg->setWindowModality(Qt::WindowModal);
+    setAttribute(Qt::WA_ShowModal);
+    dlg->show();
+
+    if (type == Utils::CloseType_Terminal) {
+        connect(dlg, &DDialog::finished, this, [this](int result) {
+            qDebug() << result;
+            parentMainWindow()->setEnabled(true);
+            if (result == 1) {
+                //接口二次重入
+                closeSplit(currentTerminal(), true);
+            }
+        });
+    }
+
+    if (type == Utils::CloseType_OtherTerminals) {
+        connect(dlg, &DDialog::finished, this, [this](int result) {
+            qDebug() << result;
+            parentMainWindow()->setEnabled(true);
+            if (result == 1) {
+                //接口二次重入
+                closeOtherTerminal(true);
+            }
+        });
+    }
+
+    return ;
+}
+
 const QString TermWidgetPage::identifier()
 {
     return property("TAB_IDENTIFIER_PROPERTY").toString();
@@ -198,10 +244,11 @@ void TermWidgetPage::focusCurrentTerm()
     m_currentTerm->setFocus();
 }
 
-void TermWidgetPage::closeOtherTerminal()
+void TermWidgetPage::closeOtherTerminal(bool hasConfirmed)
 {
     int runningCount = runningTerminalCount() - static_cast<int>(currentTerminal()->hasRunningProcess());
-    if (!Utils::showExitConfirmDialog(Utils::ExitType_Terminal, runningCount)) {
+    if (!hasConfirmed && runningCount != 0) {
+        showExitConfirmDialog(Utils::CloseType_OtherTerminals, runningCount, parentMainWindow());
         return;
     }
 

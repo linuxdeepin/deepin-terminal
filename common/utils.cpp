@@ -266,7 +266,7 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
     return DFileDialog::getOpenFileNames(widget, dlgTitle, curPath);
 }
 
-bool Utils::showExitConfirmDialog(ExitType type, int count)
+bool Utils::showExitConfirmDialog(CloseType type, int count)
 {
     /******** Modify by m000714 daizhengwen 2020-04-17: 统一使用dtk Dialog****************/
 #ifndef USE_DTK
@@ -285,7 +285,7 @@ bool Utils::showExitConfirmDialog(ExitType type, int count)
     }
     QString title;
     QString txt;
-    if(type == ExitType_Terminal)
+    if(type != CloseType_Window)
     {
         // 默认的count = 1的提示
         title = QObject::tr("Close this terminal?");
@@ -310,6 +310,33 @@ bool Utils::showExitConfirmDialog(ExitType type, int count)
     return (dlg.exec() == DDialog::Accepted);
 #endif
     /********************* Modify by m000714 daizhengwen End ************************/
+}
+
+void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int count)
+{
+    // count < 1 不提示
+    if (count < 1) {
+        return ;
+    }
+    //QString title;
+    //QString txt;
+    if(type == CloseType_Window)
+    {
+        title = QObject::tr("Close this window?");
+        txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
+    }
+    else {
+        // 默认的count = 1的提示
+        title = QObject::tr("Close this terminal?");
+        txt = QObject::tr("There is still a process running in this terminal. "
+                                  "Closing the terminal will kill it.");
+        // count > 1 提示
+        if (count > 1) {
+            txt = QObject::tr("There are still %1 processes running in this terminal. "
+                              "Closing the terminal will kill all of them.")
+                  .arg(count);
+        }
+    }
 }
 
 bool Utils::showExitUninstallConfirmDialog()

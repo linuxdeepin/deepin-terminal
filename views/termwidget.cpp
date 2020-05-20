@@ -457,14 +457,6 @@ void TermWidget::setPressingScroll(bool enable)
     }
 }
 
-bool TermWidget::safeClose(bool hasCheck)
-{
-    if (hasCheck || !hasRunningProcess()) {
-        return  true;
-    }
-    return Utils::showExitConfirmDialog(Utils::ExitType_Terminal, 1);
-}
-
 /*******************************************************************************
  1. @函数:   void TermWidgetWrapper::pasteSelection()
  2. @作者:     n014361 王培利

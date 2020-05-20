@@ -5,6 +5,7 @@
 #include "termproperties.h"
 #include "pagesearchbar.h"
 #include "mainwindow.h"
+#include "utils.h"
 
 #include <DSplitter>
 
@@ -26,11 +27,12 @@ public:
     // 分屏功能
     void split(Qt::Orientation orientation);
     DSplitter *createSubSplit(TermWidget *term, Qt::Orientation orientation);
-    void closeSplit(TermWidget *term, bool hasCheck = false);
+    void closeSplit(TermWidget *term, bool hasConfirmed = false);
+    void showExitConfirmDialog(Utils::CloseType type, int count = 1, QWidget *parent = nullptr);
     // 标识page的唯一ID， 和tab匹配，存在tab中，tabid 用的index，是变化的。
     const QString identifier();
     void focusCurrentTerm();
-    void closeOtherTerminal();
+    void closeOtherTerminal(bool hasConfirmed = false);
     void focusNavigation(Qt::Edge dir);
     int getTerminalCount();
     /******** Modify by n014361 wangpeili 2020-01-08: 计算上下左右判断方法 ******×****/

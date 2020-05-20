@@ -5,6 +5,7 @@
 #include "titlebar.h"
 #include "termwidgetpage.h"
 #include "remotemanagementplugn.h"
+#include "utils.h"
 
 #include <DMainWindow>
 #include <DWidgetUtil>
@@ -42,13 +43,13 @@ public:
 
     /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
     // 点击，右键，快捷键以及被调用．
-    void closeTab(const QString &identifier, bool runCheck = true);
+    void closeTab(const QString &identifier, bool hasConfirmed = false);
     // Tab右键或者快捷键
     void closeOtherTab(const QString &identifier);
     // 整体关闭事件
     void closeAllTab();
     /********************* Modify by n014361 wangpeili End ************************/
-
+    void showExitConfirmDialog(Utils::CloseType type, int count = 1, QWidget *parent = nullptr);
 
     /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 Begin************************/
     QString getCurrTabTitle();
@@ -168,7 +169,7 @@ private:
     /********************* Modify by n014361 wangpeili End ************************/
     int getAllterminalCount();
     /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
-    void closeConfirm();
+    bool closeConfirm();
     /**************** Modify by n013252 wangliang End ****************/
 
     MainWindowPluginInterface *getPluginByName(const QString &name);
@@ -233,6 +234,7 @@ private:
     bool m_IfUseLastSize = false;
     // 雷神终端所在桌面
     int m_desktopIndex;
+    bool m_hasConfirmedClose = false;
 };
 
 #endif  // MAINWINDOW_H

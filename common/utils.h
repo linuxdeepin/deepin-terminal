@@ -50,9 +50,11 @@ class Utils : public QObject
 public:
     Utils(QObject *parent = nullptr);
     ~Utils();
-    enum ExitType {
-        ExitType_Window,
-        ExitType_Terminal
+    enum CloseType {
+        CloseType_Window,
+        CloseType_Tab,
+        CloseType_Terminal,
+        CloseType_OtherTerminals,
     };
 
     static QHash<QString, QPixmap> m_imgCacheHash;
@@ -74,7 +76,8 @@ public:
     static QString showDirDialog(QWidget *widget);
     static QStringList showFilesSelectDialog(QWidget *widget);
 
-    static bool showExitConfirmDialog(ExitType type, int count = 1);
+    static bool showExitConfirmDialog(CloseType type, int count = 1);
+    static void getExitDialogText(CloseType type, QString &title, QString &txt, int count = 1);
     static bool showExitUninstallConfirmDialog();
     static bool showUnistallConfirmDialog();
     static bool showShortcutConflictDialog(QString conflictkey);

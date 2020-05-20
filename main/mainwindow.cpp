@@ -449,7 +449,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
     connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString & identifier) {
-        closeTab(identifier, false);
+        closeTab(identifier);
     });
     /******** Modify by m000714 daizhengwen 2020-03-31: 避免多次菜单弹出****************/
     // 菜单弹出在时间过滤器获取，不需要从terminal事件中获取
@@ -518,9 +518,10 @@ bool MainWindow::hasRunningProcesses()
  1. @函数:    closeTab
  2. @作者:    n014361 王培利
  3. @日期:    2020-05-07
- 4. @说明:    一个tab只提示一次, 如果不需要提示，runCheck=false即可
+ 4. @说明:    一个tab只提示一次, 检测后需要重入，hasCheck=true
+             或者不需要提示，hasCheck=true即可
 *******************************************************************************/
-void MainWindow::closeTab(const QString &identifier, bool runCheck)
+void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
 {
     /***add by ut001121 zhangmeng 20200508 修复BUG#24457 点击标签栏“x”按钮，右键菜单关闭工作区，关闭其它工作区，自定义命令/编码/远程管理插件未消失***/
     showPlugin(PLUGIN_TYPE_NONE);
@@ -534,12 +535,11 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
         m_tabbar->setCurrentIndex(m_tabbar->getIndexByIdentifier(identifier));
     }
     // 默认每个窗口关闭都提示一次．
-    if (runCheck) {
-        if (!Utils::showExitConfirmDialog(Utils::ExitType_Terminal, tabPage->runningTerminalCount())) {
-            return;
-        }
+    if (!hasConfirmed && tabPage->runningTerminalCount() != 0) {
+        showExitConfirmDialog(Utils::CloseType_Tab, tabPage->runningTerminalCount(), this);
+        return;
     }
-    qDebug()<<"Tab closed"<< identifier;
+    qDebug() << "Tab closed" << identifier;
     int currSessionId = tabPage->currentTerminal()->getSessionId();
     m_tabVisitMap.remove(currSessionId);
     m_tabChangeColorMap.remove(currSessionId);
@@ -552,7 +552,7 @@ void MainWindow::closeTab(const QString &identifier, bool runCheck)
         focusCurrentPage();
         return;
     }
-    qDebug()<<"mainwindow close";
+    qDebug() << "mainwindow close";
     close();
 }
 /*******************************************************************************
@@ -651,7 +651,7 @@ void MainWindow::closeOtherTab(const QString &identifier)
 
     // 关闭其它窗口，需要检测
     for (QString id : closeTabIdList) {
-        closeTab(id, true);
+        closeTab(id);
         qDebug() << " close" << id;
     }
 
@@ -668,28 +668,72 @@ void MainWindow::closeOtherTab(const QString &identifier)
 *******************************************************************************/
 void MainWindow::closeAllTab()
 {
-    int runningCount = 0;
     QList<QString> closeTabIdList;
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         closeTabIdList.append(tabPage->identifier());
-        runningCount += tabPage->runningTerminalCount();
     }
 
-    // 全部关闭时，仅提示一次．
-    if (!Utils::showExitConfirmDialog(Utils::ExitType_Window, runningCount)) {
-        return;
-    }
     // 全部关闭时，不再检测了，
     for (QString id : closeTabIdList) {
-        closeTab(id, false);
+        closeTab(id, true);
         qDebug() << " close" << id;
     }
 
-//    if (m_tabbar->count() == 0) {
-//        close();
-//    }
     return;
+}
+
+void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget *parent)
+{
+    // count < 1 不提示
+    if (count < 1) {
+        return;
+    }
+    QString title;
+    QString txt;
+    Utils::getExitDialogText(type, title, txt, count);
+
+    parent->setEnabled(false);
+    DDialog *dlg = new DDialog(title, txt, parent);
+    dlg->setIcon(QIcon::fromTheme("deepin-terminal"));
+    dlg->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+    dlg->addButton(QString(tr("Exit")), true, DDialog::ButtonWarning);
+    dlg->setWindowModality(Qt::WindowModal);
+    setAttribute(Qt::WA_ShowModal);
+    dlg->show();
+
+    if (type == Utils::CloseType_Window) {
+        connect(dlg, &DDialog::finished, this, [this](int result) {
+
+            qDebug() << result;
+            setEnabled(true);
+            if (result == 1) {
+                //接口二次重入
+                m_hasConfirmedClose = true;
+                close();
+            }
+        });
+    }
+    if (type == Utils::CloseType_Tab) {
+        connect(dlg, &DDialog::finished, this, [this](int result) {
+            qDebug() << result;
+            setEnabled(true);
+            if (result == 1) {
+                TermWidgetPage *page = currentPage();
+                if (page) {
+                    //接口二次重入
+                    closeTab(page->identifier(), true);
+                }
+            }
+        });
+    }
+
+    //while (1) {
+    //    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    //}
+    //bool result = (dlg->exec() == DDialog::Accepted);
+    //qDebug()<<"receive result = "<<result;
+    return ;
 }
 
 void MainWindow::focusPage(const QString &identifier)
@@ -765,7 +809,28 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
     // 一页一页退出，当全部退出以后，mainwindow自然关闭．
     event->ignore();
-    closeConfirm();
+
+    int runningCount = 0;
+    QList<QString> closeTabIdList;
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        closeTabIdList.append(tabPage->identifier());
+        runningCount += tabPage->runningTerminalCount();
+    }
+
+    if (!m_hasConfirmedClose && runningCount != 0) {
+        // 如果不能马上关闭，并且还在没有最小化．
+        if (runningCount != 0  && isMinimized()) {
+            qDebug() << "isMinimized........... " << endl;
+            setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+        }
+
+        // 全部关闭时，仅提示一次．
+        showExitConfirmDialog(Utils::CloseType_Window, runningCount, this);
+        return;
+    }
+    closeAllTab();
+
 
     if (m_tabbar->count() == 0) {
         DMainWindow::closeEvent(event);
@@ -779,21 +844,27 @@ void MainWindow::closeEvent(QCloseEvent *event)
  4. @说明:    mainwindow关闭确认
  　　　　　　　当前方案为一页一页确认
 *******************************************************************************/
-void MainWindow::closeConfirm()
+bool MainWindow::closeConfirm()
 {
-    // 原来判断运行窗口的接口．保留一下．
-//    TermWidgetPage *tabPage = currentPage();
-//    TermWidget *term = tabPage->currentTerminal();
-//    QList<int> processesRunning = term->getRunningSessionIdList();
-//    qDebug() << "here are " << processesRunning.count() << " processes running in this window. ";
+    int runningCount = 0;
+    QList<QString> closeTabIdList;
+    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        closeTabIdList.append(tabPage->identifier());
+        runningCount += tabPage->runningTerminalCount();
+    }
 
     // 如果不能马上关闭，并且还在没有最小化．
-    if (hasRunningProcesses() && isMinimized()) {
+    if (runningCount != 0  && isMinimized()) {
         qDebug() << "isMinimized........... " << endl;
         setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     }
-
-    closeAllTab();
+    if (runningCount != 0) {
+        // 全部关闭时，仅提示一次．
+        showExitConfirmDialog(Utils::CloseType_Window, runningCount, this);
+        return false;
+    }
+    return true;
 }
 
 /*******************************************************************************
