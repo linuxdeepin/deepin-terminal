@@ -6,6 +6,7 @@
 #include "shortcutmanager.h"
 #include "operationconfirmdlg.h"
 #include "utils.h"
+#include "service.h"
 
 #include <DDesktopServices>
 #include <DInputDialog>
@@ -350,7 +351,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     menu.addSeparator();
 
     menu.addAction(tr("Settings"), this, [this] {
-        parentPage()->parentMainWindow()->showSettingDialog();
+        Service::instance()->showSettingDialog();
     });
 
     // display the menu.

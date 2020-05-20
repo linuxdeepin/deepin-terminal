@@ -75,8 +75,6 @@ public:
     void showPlugin(const QString &name);
     // 快速隐藏插件
     void hidePlugin();
-    // 显示设置框
-    void showSettingDialog();
     // 新建工作区
     void createNewWorkspace();
     // 由mainwindow统一获取当前选择的文本。

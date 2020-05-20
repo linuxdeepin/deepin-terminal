@@ -15,6 +15,7 @@
 #include "utils.h"
 #include "dbusmanager.h"
 #include "windowsmanager.h"
+#include "service.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -250,7 +251,7 @@ void MainWindow::initOptionMenu()
     QAction *settingAction(new QAction(tr("&Settings"), this));
     m_menu->addAction(settingAction);
     m_menu->addSeparator();
-    connect(settingAction, &QAction::triggered, this, &MainWindow::showSettingDialog);
+    connect(settingAction, &QAction::triggered, Service::instance(), &Service::showSettingDialog);
 }
 
 void MainWindow::initPlugins()
@@ -1363,26 +1364,6 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
     if (activePage) {
         m_termStackWidget->setCurrentWidget(termPage);
     }
-}
-
-void MainWindow::showSettingDialog()
-{
-    DSettingsDialog *dialog = new DSettingsDialog();
-    dialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
-    dialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
-    dialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
-    dialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
-
-    dialog->updateSettings(Settings::instance()->settings);
-    dialog->exec();
-    dialog->deleteLater();
-
-    /******** Modify by n014361 wangpeili 2020-01-10:修复显示完设置框以后，丢失焦点的问题*/
-    TermWidgetPage *page = currentPage();
-    if (page) {
-        page->focusCurrentTerm();
-    }
-    /********************* Modify by n014361 wangpeili End ************************/
 }
 
 void MainWindow::createNewWorkspace()

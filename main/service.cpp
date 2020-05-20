@@ -2,6 +2,11 @@
 #include "windowsmanager.h"
 #include "utils.h"
 
+#include <DSettings>
+#include <DSettingsGroup>
+#include <DSettingsOption>
+#include <DSettingsWidgetFactory>
+
 #include <QDebug>
 
 Service *Service::pService = new Service();
@@ -12,6 +17,30 @@ Service *Service::instance()
 
 void Service::init()
 {
+
+}
+
+void Service::showSettingDialog()
+{
+    if (nullptr == m_settingDialog) {
+        m_settingDialog = new DSettingsDialog();
+        connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
+            if (result == 0) {
+                m_settingDialog = nullptr;
+            }
+        });
+        m_settingDialog->setAttribute(Qt::WA_DeleteOnClose);
+        m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
+        m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
+        m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
+        m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
+
+        m_settingDialog->updateSettings(Settings::instance()->settings);
+        m_settingDialog->setWindowModality(Qt::NonModal);
+        m_settingDialog->show();
+    } else {
+        m_settingDialog->activateWindow();
+    }
 
 }
 

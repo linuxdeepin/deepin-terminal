@@ -9,24 +9,31 @@
 　　　　　　　　管理所有特殊的通知信号
 　　　　　　　　管理所有程序入口
 *******************************************************************************/
-
-#include <QObject>
 #include "termproperties.h"
+#include <DSettingsDialog>
+#include <QObject>
+
+DWIDGET_USE_NAMESPACE
 
 class Service : public QObject
 {
     Q_OBJECT
 public:
-    static Service * instance();
+    static Service *instance();
     void init();
+
+    // 显示设置框
+    void showSettingDialog();
+
 signals:
 
 public slots:
     void Entry(QStringList arguments);
 private:
     explicit Service(QObject *parent = nullptr);
-    static Service * pService ;
-
+    static Service *pService ;
+    // 设置框 全局唯一显示
+    DSettingsDialog *m_settingDialog = nullptr;
 };
 
 #endif // SERVICE_H
