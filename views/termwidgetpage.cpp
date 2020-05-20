@@ -215,6 +215,8 @@ void TermWidgetPage::closeOtherTerminal()
             closeSplit(term, true);
         }
     }
+
+    setTerminalOpacity(Settings::instance()->opacity());
 }
 
 #if 0
