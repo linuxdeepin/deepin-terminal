@@ -27,6 +27,9 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setFixedWidth(m_ContentWidth);
     setItemSize(QSize(m_ContentWidth, m_ContentHeight + m_Space));
 
+    /***add by ut001121 zhangmeng 20200521 设置非编辑模式 修复BUG27443***/
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     initEncodeItems();
     update();
 
