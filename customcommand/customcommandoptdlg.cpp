@@ -174,6 +174,8 @@ void CustomCommandOptDlg::initUI()
         if (sequence.toString() == "Esc") {
             m_shortCutLineEdit->clear();
             m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
+            /***add by ut001121 zhangmeng 20200521 在快捷键编辑框中按下ESC键时退出窗口 修复BUG27554***/
+            close();
             return ;
         }
         QString checkName;
