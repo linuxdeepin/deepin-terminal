@@ -183,7 +183,9 @@ void CustomCommandOptDlg::initUI()
         if (m_type != CCT_ADD) {
             checkName = m_nameLineEdit->text();
         }
-        if (!ShortcutManager::instance()->isValidShortcut(checkName, sequence.toString())) {
+        QString reason;
+        // 判断快捷键是否冲突
+        if (ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
             m_shortCutLineEdit->clear();
             m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
 
@@ -194,6 +196,11 @@ void CustomCommandOptDlg::initUI()
             /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/
 
             return;
+        } else {
+            // 冲突
+            if (sequence.toString() != "Esc") {
+                showShortcutConflictMsgbox(reason);
+            }
         }
         m_lastCmdShortcut = sequence.toString();
     });
@@ -464,6 +471,26 @@ void CustomCommandOptDlg::setConfirmBtnText(const QString &strConfirm)
 {
     m_confirmBtn->setText(strConfirm);
     Utils::setSpaceInWord(m_confirmBtn);
+}
+
+/*******************************************************************************
+ 1. @函数:    showShortcutConflictMsgbox
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-21
+ 4. @说明:    显示快捷键冲突弹窗
+*******************************************************************************/
+void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
+{
+    // 若没有弹窗，初始化
+    if (nullptr == m_shortcutConflictDialog) {
+        m_shortcutConflictDialog = new DDialog(this);
+        m_shortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
+        m_shortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));
+        /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
+        m_shortcutConflictDialog->addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
+    }
+    // 存在后显示
+    m_shortcutConflictDialog->show();
 }
 
 void CustomCommandOptDlg::addContent(QWidget *content)

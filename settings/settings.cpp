@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "shortcutmanager.h"
 #include "../views/operationconfirmdlg.h"
+#include "service.h"
 
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
@@ -438,8 +439,13 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
             rightWidget->setKeySequence(QKeySequence(rightWidget->option()->value().toString()));
             return ;
         }
+
+        QString reason;
         // 有效查询
-        if (!ShortcutManager::instance()->isValidShortcut(rightWidget->option()->key(), sequence.toString())) {
+        if (!ShortcutManager::instance()->checkShortcutValid(rightWidget->option()->key(), sequence.toString(), reason)) {
+            if (sequence.toString() != "Esc") {
+                Service::instance()->showShortcutConflictMsgbox(reason);
+            }
             // 界面数据还原
             rightWidget->clear();
             rightWidget->setKeySequence(QKeySequence(rightWidget->option()->value().toString()));

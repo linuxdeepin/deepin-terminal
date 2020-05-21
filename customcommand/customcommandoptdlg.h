@@ -39,6 +39,8 @@ public:
     void setIconPixmap(const QPixmap &iconPixmap);
     void setCancelBtnText(const QString &strCancel);
     void setConfirmBtnText(const QString &strConfirm);
+    // 快捷键冲突弹窗
+    void showShortcutConflictMsgbox(QString txt);
 
     QDialog::DialogCode getConfirmResult();
     QVBoxLayout *getMainLayout();
@@ -89,6 +91,8 @@ private:
     DSuggestButton *m_confirmBtn = nullptr;
 
     QDialog::DialogCode m_confirmResultCode;
+    // 快捷键冲突弹窗
+    DDialog *m_shortcutConflictDialog = nullptr;
 };
 
 #endif  // CUSTOMCOMMANDOPTDLG_H

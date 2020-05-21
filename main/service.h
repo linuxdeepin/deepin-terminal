@@ -11,6 +11,7 @@
 *******************************************************************************/
 #include "termproperties.h"
 #include <DSettingsDialog>
+#include <DDialog>
 #include <QObject>
 
 DWIDGET_USE_NAMESPACE
@@ -24,6 +25,8 @@ public:
 
     // 显示设置框
     void showSettingDialog();
+    // 显示设置快捷键冲突弹窗
+    void showShortcutConflictMsgbox(QString txt);
 
 signals:
 
@@ -34,6 +37,7 @@ private:
     static Service *pService ;
     // 设置框 全局唯一显示
     DSettingsDialog *m_settingDialog = nullptr;
+    DDialog *m_settingShortcutConflictDialog = nullptr;
 };
 
 #endif // SERVICE_H

@@ -58,6 +58,32 @@ void Service::showSettingDialog()
 
 }
 
+/*******************************************************************************
+ 1. @函数:    showShortcutConflictMsgbox
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-21
+ 4. @说明:    设置弹窗的快捷键冲突弹窗
+*******************************************************************************/
+void Service::showShortcutConflictMsgbox(QString txt)
+{
+    // 若没有设置弹框则退出，谈不上显示设置的快捷键冲突
+    if (nullptr == m_settingDialog) {
+        return;
+    }
+    // 若没有弹窗，初始化
+    if (nullptr == m_settingShortcutConflictDialog) {
+        m_settingShortcutConflictDialog = new DDialog(m_settingDialog);
+        connect(m_settingShortcutConflictDialog, &DDialog::finished, m_settingShortcutConflictDialog, [ = ]() {
+            m_settingShortcutConflictDialog = nullptr;
+        });
+        m_settingShortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
+        /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
+        m_settingShortcutConflictDialog->addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
+    }
+    m_settingShortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));
+    m_settingShortcutConflictDialog->show();
+}
+
 void Service::Entry(QStringList arguments)
 {
     TermProperties properties = Utils::parseArgument( arguments);
