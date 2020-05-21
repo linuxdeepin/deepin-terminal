@@ -306,7 +306,9 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
     DDialog dlg(title, txt);
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
-    dlg.addButton(QString(tr("Exit")), true, DDialog::ButtonWarning);
+    /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close Begin***************/
+    dlg.addButton(QString(tr("Close")), true, DDialog::ButtonWarning);
+    /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
     return (dlg.exec() == DDialog::Accepted);
 #endif
     /********************* Modify by m000714 daizhengwen End ************************/
