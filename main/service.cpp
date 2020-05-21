@@ -47,7 +47,7 @@ void Service::showSettingDialog()
         // 设置窗口模态为没有模态，不阻塞窗口和进程
         m_settingDialog->setWindowModality(Qt::NonModal);
         // 让设置与窗口等效，隐藏后显示就不会被遮挡
-        m_settingDialog->setWindowFlags(Qt::Window);
+        m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
         // 雷神需要让窗口置顶，可是普通窗口不要
         //m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
         m_settingDialog->show();
