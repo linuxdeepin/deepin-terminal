@@ -6,7 +6,6 @@
 #include <DVerticalLine>
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
-#include <DLineEdit>
 
 #include <DLog>
 
@@ -130,20 +129,27 @@ void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffs
 
 void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
 {
-    DLineEdit *lineEdit = new DLineEdit();
+
     /***mod begin by ut001121 zhangmeng 20200428 修复BUG#22995 标签截断显示的问题***/
+    m_lineEdit = new DLineEdit(this);
     /* delete
      * lineEdit->setFixedSize(360, 36);*/
     /* add */
-    lineEdit->setFixedWidth(360);
+    m_lineEdit->setFixedWidth(360);
     /***mod end by ut001121 zhangmeng***/
-    lineEdit->setText(oldTitle);
-    lineEdit->setClearButtonEnabled(false);
-    lineEdit->setFocusPolicy(Qt::ClickFocus);
-    this->setFocusProxy(lineEdit->lineEdit());
+    m_lineEdit->setText(oldTitle);
+    m_lineEdit->setClearButtonEnabled(false);
+    m_lineEdit->setFocusPolicy(Qt::ClickFocus);
+    this->setFocusProxy(m_lineEdit->lineEdit());
 
-    // 初始化重命名窗口全选
-    lineEdit->lineEdit()->selectAll();
+    /******** Modify by ut000610 daizhengwen 2020-05-21: 初始化重命名lineEdit全选****************/
+    connect(m_lineEdit, &DLineEdit::focusChanged, m_lineEdit->lineEdit(), [ = ](bool onFocus) {
+        // 初始化重命名lineEdit全选
+        if (onFocus) {
+            m_lineEdit->lineEdit()->selectAll();
+        }
+    });
+    /********************* Modify by ut000610 daizhengwen End ************************/
 
     DLabel *label = new DLabel(tr("Tab name"));
     /***mod begin by ut001121 zhangmeng 20200428 修复BUG#22995 标签截断显示的问题***/
@@ -165,7 +171,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     contentLayout->setContentsMargins(10, 0, 10, 0);
     contentLayout->addWidget(label, Qt::AlignHCenter);
     contentLayout->addSpacing(8);
-    contentLayout->addWidget(lineEdit, Qt::AlignHCenter);
+    contentLayout->addWidget(m_lineEdit, Qt::AlignHCenter);
     QWidget *contentWidget = new QWidget;
     contentWidget->setLayout(contentLayout);
     this->addContent(contentWidget);
@@ -187,12 +193,23 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
         emit confirmBtnClicked();
 
         TermWidget *termWidget = qobject_cast<TermWidget *>(parentWidget);
-        emit termWidget->termRequestRenameTab(lineEdit->text());
+        emit termWidget->termRequestRenameTab(m_lineEdit->text());
 
         close();
     });
+    // 设置为半模态
+    this->setWindowModality(Qt::WindowModal);
+    // 显示
+    this->show();
+}
 
-    this->exec();
+void TermInputDialog::showDialog(QString oldTitle)
+{
+    // lineEdit不为空，show
+    if (nullptr != m_lineEdit) {
+        m_lineEdit->setText(oldTitle);
+        this->show();
+    }
 }
 
 QVBoxLayout *TermInputDialog::getMainLayout()

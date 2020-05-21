@@ -323,7 +323,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
             currTabTitle = this->title();
         }
         qDebug() << "currTabTitle" << currTabTitle << endl;
-        Utils::showRenameTitleDialog(currTabTitle, this);
+        parentPage()->parentMainWindow()->showRenameTitleDialog(currTabTitle, this);
     });
 
     menu.addAction(tr("&Encoding"), this, [this] {

@@ -6,6 +6,7 @@
 #include <DWindowCloseButton>
 #include <DPushButton>
 #include <DSuggestButton>
+#include <DLineEdit>
 
 #include <QVBoxLayout>
 
@@ -26,6 +27,7 @@ public:
     void setCancelBtnText(const QString &strCancel);
     void setConfirmBtnText(const QString &strConfirm);
     void showDialog(QString oldTitle, QWidget *parentWidget);
+    void showDialog(QString oldTitle);
 
     QDialog::DialogCode getConfirmResult();
     QVBoxLayout *getMainLayout();
@@ -48,6 +50,7 @@ private:
     DIconButton *m_logoIcon = nullptr;
     DLabel  *m_titleText = nullptr;
     DWindowCloseButton *m_closeButton = nullptr;
+    DLineEdit *m_lineEdit = nullptr;
 
     QWidget *m_content = nullptr;
     QVBoxLayout *m_contentLayout = nullptr;
