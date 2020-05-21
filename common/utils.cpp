@@ -414,7 +414,8 @@ bool Utils::showShortcutConflictMsgbox(QString txt)
 //    dlg.setMessage(QObject::tr(" please set another one."));
     dlg.setIcon(QIcon::fromTheme("dialog-warning"));
     dlg.setTitle(QString(txt + QObject::tr("please set another one.")));
-    dlg.addButton(QString(tr("OK")), false, DDialog::ButtonNormal);
+    /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
+    dlg.addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
     dlg.exec();
 #endif
     return  true;
