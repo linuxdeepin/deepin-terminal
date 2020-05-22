@@ -6,6 +6,7 @@
 #include "pagesearchbar.h"
 #include "mainwindow.h"
 #include "utils.h"
+#include "terminputdialog.h"
 
 #include <DSplitter>
 
@@ -75,6 +76,9 @@ public:
     void setTextCodec(QTextCodec *codec);
     void setMismatchAlert(bool alert);
 
+    // 显示重命名弹窗
+    void showRenameTitleDialog(QString oldTitle);
+
 protected:
     //将窗口设置为随着窗口变化而变化
     virtual void resizeEvent(QResizeEvent *event) override;
@@ -120,5 +124,8 @@ private:
     PageSearchBar *m_findBar = nullptr;
     MainWindow *m_MainWindow = nullptr;
     QVBoxLayout *m_layout = nullptr;
+
+    // 重命名弹框
+    TermInputDialog *m_renameDialog = nullptr;
 };
 #endif  // TERMWIDGETPAGE_H

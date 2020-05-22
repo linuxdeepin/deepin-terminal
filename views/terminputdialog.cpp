@@ -192,13 +192,13 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
         m_confirmResultCode = QDialog::Accepted;
         emit confirmBtnClicked();
 
-        TermWidget *termWidget = qobject_cast<TermWidget *>(parentWidget);
-        emit termWidget->termRequestRenameTab(m_lineEdit->text());
+        TermWidgetPage *page = qobject_cast<TermWidgetPage *>(parentWidget);
+        emit page->onTermRequestRenameTab(m_lineEdit->text());
 
         close();
     });
     // 设置为半模态
-    this->setWindowModality(Qt::WindowModal);
+    this->setWindowModality(Qt::NonModal);
     // 显示
     this->show();
 }

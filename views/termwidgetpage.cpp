@@ -626,6 +626,25 @@ void TermWidgetPage::showSearchBar(bool enable)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    showRenameTitleDialog
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-21
+ 4. @说明:    判断是否有重命名弹窗，有则显示，没有则创建
+*******************************************************************************/
+void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
+{
+    if (nullptr == m_renameDialog) {
+        m_renameDialog = new TermInputDialog(this);
+        connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, &TermInputDialog::hide);
+        m_renameDialog->setFixedSize(380, 180);
+        m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+        m_renameDialog->setFocusPolicy(Qt::NoFocus);
+        m_renameDialog->showDialog(oldTitle, this);
+    }
+    m_renameDialog->showDialog(oldTitle);
+}
+
 void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
 {
     if (newTabName.isEmpty()) {

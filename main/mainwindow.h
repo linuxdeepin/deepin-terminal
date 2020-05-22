@@ -6,7 +6,6 @@
 #include "termwidgetpage.h"
 #include "remotemanagementplugn.h"
 #include "utils.h"
-#include "terminputdialog.h"
 
 #include <DMainWindow>
 #include <DWidgetUtil>
@@ -100,8 +99,6 @@ public:
     //雷神窗口根据字体和字体大小设置最小高度
     void setQuakeWindowMinHeight();
     /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
-    // 显示重命名弹窗
-    void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
 
 signals:
     void newWindowRequest(const QString &directory);
@@ -221,9 +218,6 @@ private:
     QSettings *m_winInfoConfig = nullptr;
     /********************* Modify by m000714 daizhengwen End ************************/
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
-
-    // 重命名弹框
-    TermInputDialog *m_renameDialog = nullptr;
 
     static QList<MainWindow *> m_windowList;
 private:

@@ -47,7 +47,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     }
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
-    
+
     // 这个参数启动为默认值UTF-8
     setTextCodec(QTextCodec::codecForName("UTF-8"));
 
@@ -319,7 +319,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
             currTabTitle = this->title();
         }
         qDebug() << "currTabTitle" << currTabTitle << endl;
-        parentPage()->parentMainWindow()->showRenameTitleDialog(currTabTitle, this);
+        parentPage()->showRenameTitleDialog(currTabTitle);
     });
 
     menu.addAction(tr("&Encoding"), this, [this] {

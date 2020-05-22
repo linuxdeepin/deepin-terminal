@@ -746,7 +746,7 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     }
 
     if (type == Utils::CloseType_OtherTab) {
-        connect(dlg, &DDialog::finished, this, [this](int result) {            
+        connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
             setEnabled(true);
             if (result == 1) {
@@ -1191,9 +1191,8 @@ void MainWindow::initShortcuts()
         showPlugin(PLUGIN_TYPE_NONE);
         TermWidgetPage *page = currentPage();
         if (page) {
-            TermWidget *term = page->currentTerminal();
             QString currTabTitle = m_tabbar->tabText(m_tabbar->currentIndex());
-            showRenameTitleDialog(currTabTitle, term);
+            page->showRenameTitleDialog(currTabTitle);
         }
     });
 
@@ -1775,24 +1774,6 @@ void MainWindow::setQuakeWindowMinHeight()
     }
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
-
-/*******************************************************************************
- 1. @函数:    showRenameTitleDialog
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-05-21
- 4. @说明:    判断是否有重命名弹窗，有则显示，没有则创建
-*******************************************************************************/
-void MainWindow::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
-{
-    if (nullptr == m_renameDialog) {
-        m_renameDialog = new TermInputDialog(parentWidget);
-        m_renameDialog->setFixedSize(380, 180);
-        m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
-        m_renameDialog->setFocusPolicy(Qt::NoFocus);
-        m_renameDialog->showDialog(oldTitle, parentWidget);
-    }
-    m_renameDialog->showDialog(oldTitle);
-}
 
 void MainWindow::changeEvent(QEvent * /*event*/)
 {
