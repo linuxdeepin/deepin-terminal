@@ -10,6 +10,7 @@
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
     m_standardModel = new QStandardItemModel;
+    m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
     // init view.
     this->setModel(m_standardModel);
     setBackgroundRole(QPalette::NoRole);
@@ -106,7 +107,7 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
         if (row == index.row()) {
             modelItem->setCheckState(Qt::Checked);
             // 修改配置生效。
-            Settings::instance()->setEncoding(index.data().toString());
+            emit m_Mainwindow->changeEncodeSig(index.data().toString());
         } else {
             modelItem->setCheckState(Qt::Unchecked);
         }

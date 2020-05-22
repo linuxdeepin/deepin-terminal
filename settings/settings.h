@@ -33,7 +33,7 @@ public:
 
     // 设置主题
     void setColorScheme(const QString &name);
-    // 设置编码格式
+    // 设置编码格式, 这个现在限定当前mainwindow生效，不再使用这个全局接口了
     void setEncoding(const QString &name);
     // 通用设置
     void setKeyValue(const QString &name, const QString &value);

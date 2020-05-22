@@ -48,8 +48,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
     
-    // 这个参数为自定义参数，不记录文件, 如果需要“记忆”,　需要使用DTK配置参数
-    setTextCodec(QTextCodec::codecForName(Settings::instance()->encoding().toUtf8()));
+    // 这个参数启动为默认值UTF-8
+    setTextCodec(QTextCodec::codecForName("UTF-8"));
 
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
     setAutoClose(!m_properties.contains(KeepOpen));
@@ -174,10 +174,6 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
-    // encode为自定义参数
-    connect(Settings::instance(), &Settings::encodeSettingChanged, this, [this](QString name){
-        setTextCodec(QTextCodec::codecForName(name.toUtf8()));
-    });
 }
 
 TermWidgetPage *TermWidget::parentPage()

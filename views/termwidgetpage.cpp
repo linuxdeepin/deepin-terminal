@@ -760,6 +760,9 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
+    connect(parentMainWindow(), &MainWindow::changeEncodeSig, term, [term](QString name) {
+        term->setTextCodec(QTextCodec::codecForName(name.toUtf8()));
+    });
     qDebug() << "createTerm" << term->getSessionId();
     return term;
 }

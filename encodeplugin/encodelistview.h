@@ -1,6 +1,7 @@
 #ifndef ENCODELISTVIEW_H
 #define ENCODELISTVIEW_H
 
+#include "mainwindow.h"
 #include <DListView>
 
 DWIDGET_USE_NAMESPACE
@@ -30,6 +31,8 @@ public slots:
 
 private:
     void initEncodeItems();
+
+    MainWindow * m_Mainwindow  = nullptr;
 
     EncodeListModel *m_encodeModel = nullptr;
 

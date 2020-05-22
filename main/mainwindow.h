@@ -109,6 +109,8 @@ signals:
     void showPluginChanged(const QString &name);
     void quakeHidePlugin();
     void mainwindowClosed(MainWindow *);
+    // 编码方式，仅当前mainwindow有效．
+    void changeEncodeSig(const QString &name);
 
 public slots:
     // void onSettingValueChanged(const int &keyIndex, const QVariant &value);
