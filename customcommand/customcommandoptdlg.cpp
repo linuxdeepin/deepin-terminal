@@ -3,6 +3,7 @@
 #include "shortcutmanager.h"
 #include "shortcutmanager.h"
 #include "utils.h"
+#include"service.h"
 
 #include <DButtonBox>
 #include <DPushButton>
@@ -33,13 +34,51 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandIte
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
+    setWindowModality(Qt::WindowModal);
+
     initUITitle();
     initTitleConnections();
     initUI();
+
+    connect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandOptDlg::slotRefreshData);
 }
 
 CustomCommandOptDlg::~CustomCommandOptDlg()
 {
+}
+void CustomCommandOptDlg::slotRefreshData()
+{
+    if (m_type == CCT_ADD) {
+        return;
+    }
+    qDebug() << "slotRefreshData---" <<  m_nameLineEdit->text();
+
+    QString strName = m_nameLineEdit->text();
+    QString strCommand = m_commandLineEdit->text();
+    QAction *currAction = new QAction(this);;
+    currAction->setText(strName);
+    currAction->setData(strCommand);
+    currAction->setShortcut(m_shortCutLineEdit->keySequence());
+
+    QAction *existAction = nullptr;
+    existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
+    if (existAction == nullptr) {
+        if (currAction)
+            delete currAction;
+        //close();
+    } else {
+
+        if (currAction)
+            delete currAction;
+        m_nameLineEdit->setText(existAction->text());
+        m_commandLineEdit->setText(existAction->data().toString());
+        m_shortCutLineEdit->setKeySequence(existAction->shortcut());
+    }
+
+}
+void CustomCommandOptDlg::closeRefreshDataConnection()
+{
+    disconnect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandOptDlg::slotRefreshData);
 }
 
 void CustomCommandOptDlg::initUI()

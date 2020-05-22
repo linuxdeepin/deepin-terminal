@@ -16,9 +16,9 @@ class CustomCommandSearchRstPanel : public CommonPanel
 {
     Q_OBJECT
 public:
-    explicit CustomCommandSearchRstPanel(QWidget *parent = nullptr);
+    explicit CustomCommandSearchRstPanel(bool &NotNeedRefresh, QWidget *parent = nullptr);
     void refreshData(const QString &strFilter);
-
+    bool &m_bNotNeedRefresh;
 signals:
     void handleCustomCurCommand(const QString &strCommand);
     void showCustomCommandPanel();

@@ -4,6 +4,7 @@
 #include "operationconfirmdlg.h"
 #include "shortcutmanager.h"
 #include "utils.h"
+#include"service.h"
 
 #include <DMessageBox>
 #include <DLog>
@@ -12,7 +13,7 @@
 #include<DScrollBar>
 #include<DApplicationHelper>
 
-CustomCommandList::CustomCommandList(QWidget *parent) : DListView(parent)
+CustomCommandList::CustomCommandList(bool &NotNeedRefresh, QWidget *parent) : DListView(parent), m_bNotNeedRefresh(NotNeedRefresh)
 {
     setBackgroundRole(QPalette::NoRole);
     setAutoFillBackground(false);
@@ -105,6 +106,7 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
 void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex)
 {
     CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
+    CustomCommandOptDlg *pdlg = &dlg;
     if (dlg.exec() == QDialog::Accepted) {
         QAction *newAction = dlg.getCurCustomCmd();
         QString strActionShortcut = newAction->shortcut().toString(QKeySequence::NativeText);
@@ -117,18 +119,31 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         newAction->setData(newAction->data());
         newAction->setShortcut(newAction->shortcut());
 
-        if (dlg.m_bNeedDel) {
-            ShortcutManager::instance()->delCustomCommandForModify(itemDel);
-            ShortcutManager::instance()->delCustomCommandForModify(itemData);
-            addNewCustomCommandData(newAction);
-            ShortcutManager::instance()->addCustomCommand(*newAction);
-            removeCommandItem(modelIndex);
-            scrollToBottom();
-        } else {
-            int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(itemData);
-            ShortcutManager::instance()->saveCustomCommandToConfig(newAction, deleteIndex);
-            m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
-        }
+//        if (dlg.m_bNeedDel) {
+//            ShortcutManager::instance()->delCustomCommandForModify(itemDel);
+//            ShortcutManager::instance()->delCustomCommandForModify(itemData);
+//            addNewCustomCommandData(newAction);
+//            ShortcutManager::instance()->addCustomCommand(*newAction);
+//            removeCommandItem(modelIndex);
+//            scrollToBottom();
+//        } else {
+//            int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(itemData);
+//            ShortcutManager::instance()->saveCustomCommandToConfig(newAction, deleteIndex);
+//            m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+//        }
+
+        ShortcutManager::instance()->delCustomCommandForModify(itemDel);
+        ShortcutManager::instance()->delCustomCommandForModify(itemData);
+        addNewCustomCommandData(newAction);
+        ShortcutManager::instance()->addCustomCommand(*newAction);
+        removeCommandItem(modelIndex);
+        scrollToBottom();
+
+        m_bNotNeedRefresh = true;
+        pdlg->closeRefreshDataConnection();
+        emit Service::instance()->refreshCommandPanel();
+
+
         /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 
     } else {
@@ -157,6 +172,10 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                 ShortcutManager::instance()->delCustomCommand(itemData);
                 removeCommandItem(modelIndex);
                 emit listItemCountChange();
+
+                m_bNotNeedRefresh = true;
+                pdlg->closeRefreshDataConnection();
+                emit Service::instance()->refreshCommandPanel();
             }
 #endif
 

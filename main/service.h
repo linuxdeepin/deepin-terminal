@@ -29,6 +29,7 @@ public:
     void showShortcutConflictMsgbox(QString txt);
 
 signals:
+    void refreshCommandPanel();
 
 public slots:
     void Entry(QStringList arguments);

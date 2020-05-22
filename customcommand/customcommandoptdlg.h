@@ -41,6 +41,7 @@ public:
     void setConfirmBtnText(const QString &strConfirm);
     // 快捷键冲突弹窗
     void showShortcutConflictMsgbox(QString txt);
+    void closeRefreshDataConnection();
 
     QDialog::DialogCode getConfirmResult();
     QVBoxLayout *getMainLayout();
@@ -64,6 +65,7 @@ signals:
 private slots:
     void slotAddSaveButtonClicked();
     void slotDelCurCustomCommand();
+    void slotRefreshData();
 
 private:
     void initUI();

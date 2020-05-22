@@ -26,6 +26,7 @@ signals:
 public slots:
     void showCustomCommandPanel();
     void showCustomCommandSearchPanel(const QString &strFilter);
+    void slotsRefreshCommandPanel();
 
 private:
     CustomCommandPanel *m_customCommandPanel = nullptr;
