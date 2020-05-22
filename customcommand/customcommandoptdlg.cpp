@@ -224,7 +224,11 @@ void CustomCommandOptDlg::initUI()
         }
         QString reason;
         // 判断快捷键是否冲突
-        if (ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
+        if (!ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
+            // 冲突
+            if (sequence.toString() != "Esc") {
+                showShortcutConflictMsgbox(reason);
+            }
             m_shortCutLineEdit->clear();
             m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
 
@@ -233,13 +237,7 @@ void CustomCommandOptDlg::initUI()
                 m_shortCutLineEdit->setFocus();
             });
             /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/
-
             return;
-        } else {
-            // 冲突
-            if (sequence.toString() != "Esc") {
-                showShortcutConflictMsgbox(reason);
-            }
         }
         m_lastCmdShortcut = sequence.toString();
     });
@@ -523,12 +521,13 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
     // 若没有弹窗，初始化
     if (nullptr == m_shortcutConflictDialog) {
         m_shortcutConflictDialog = new DDialog(this);
+        connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, &DDialog::hide);
         m_shortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
-        m_shortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));
         /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
         m_shortcutConflictDialog->addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
     }
     // 存在后显示
+    m_shortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));
     m_shortcutConflictDialog->show();
 }
 
