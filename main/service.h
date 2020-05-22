@@ -10,6 +10,7 @@
 　　　　　　　　管理所有程序入口
 *******************************************************************************/
 #include "termproperties.h"
+#include "windowsmanager.h"
 #include <DSettingsDialog>
 #include <DDialog>
 #include <QObject>

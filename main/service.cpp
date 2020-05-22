@@ -86,6 +86,10 @@ void Service::showShortcutConflictMsgbox(QString txt)
 
 void Service::Entry(QStringList arguments)
 {
+    // 到达窗口最大值，则返回，不做创建
+    if (WindowsManager::instance()->widgetCount() == MAXWIDGETCOUNT) {
+        return;
+    }
     TermProperties properties = Utils::parseArgument( arguments);
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {

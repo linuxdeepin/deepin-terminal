@@ -89,7 +89,7 @@ void DBusManager::callTerminalEntry(QStringList args)
 
     msg << args;
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::NoBlock);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qDebug() << "call callTerminalEntry Success!";
     } else {

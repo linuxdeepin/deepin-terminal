@@ -10,7 +10,8 @@ class TermWidget : public QTermWidget
     Q_OBJECT
 public:
     TermWidget(TermProperties properties, QWidget *parent = nullptr);
-    TermWidgetPage * parentPage();
+    ~TermWidget();
+    TermWidgetPage *parentPage();
     bool isInRemoteServer();
 public:
     // 跳转到下一个命令

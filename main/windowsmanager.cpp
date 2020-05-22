@@ -84,3 +84,20 @@ WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
 {
 
 }
+
+int WindowsManager::widgetCount() const
+{
+    return m_widgetCount;
+}
+
+void WindowsManager::windowCountIncrease()
+{
+    ++m_widgetCount;
+    qDebug() << "++ Window Count : " << m_widgetCount;
+}
+
+void WindowsManager::windowCountReduce()
+{
+    --m_widgetCount;
+    qDebug() << "-- Window Count : " << m_widgetCount;
+}

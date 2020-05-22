@@ -7,6 +7,7 @@
 #include "operationconfirmdlg.h"
 #include "utils.h"
 #include "service.h"
+#include "windowsmanager.h"
 
 #include <DDesktopServices>
 #include <DInputDialog>
@@ -27,6 +28,8 @@ DWIDGET_USE_NAMESPACE
 using namespace Konsole;
 TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
+    // 窗口数量加1
+    WindowsManager::instance()->windowCountIncrease();
     //qDebug() << " TermWidgetparent " << parentWidget();
     m_Page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -174,6 +177,13 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
+}
+
+TermWidget::~TermWidget()
+{
+
+    // 窗口减1
+    WindowsManager::instance()->windowCountReduce();
 }
 
 TermWidgetPage *TermWidget::parentPage()

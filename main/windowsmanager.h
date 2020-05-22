@@ -14,6 +14,8 @@
 
 #include <QObject>
 
+// 窗口最大数量
+#define MAXWIDGETCOUNT 200
 
 class WindowsManager : public QObject
 {
@@ -24,6 +26,13 @@ public:
     void quakeWindowShowOrHide();
     void createNormalWindow(TermProperties properties);
 
+    // 窗口数量增加
+    void windowCountIncrease();
+    // 窗口数量减少
+    void windowCountReduce();
+    // 获取当前窗口数量
+    int widgetCount() const;
+
 signals:
 
 public slots:
@@ -33,7 +42,9 @@ private:
     MainWindow * m_quakeWindow = nullptr;
 private:
     explicit WindowsManager(QObject *parent = nullptr);
-    static WindowsManager * pManager;
+    static WindowsManager *pManager;
+    // 窗口数量
+    int m_widgetCount = 0;
 };
 
 #endif // WINDOWSMANAGER_H
