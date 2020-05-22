@@ -642,7 +642,7 @@ QString MainWindow::getCurrTabTitle()
  3. @日期:    2020-05-07
  4. @说明:    关闭其它窗口
 *******************************************************************************/
-void MainWindow::closeOtherTab(const QString &identifier)
+void MainWindow::closeOtherTab(const QString &identifier, bool hasConfirmed)
 {
     int runningCount = 0;
     QList<QString> closeTabIdList;
@@ -654,9 +654,15 @@ void MainWindow::closeOtherTab(const QString &identifier)
         }
     }
 
+    if (!hasConfirmed && runningCount != 0) {
+        // 全部关闭时，仅提示一次．
+        showExitConfirmDialog(Utils::CloseType_OtherTab, runningCount, this);
+        return;
+    }
+
     // 关闭其它窗口，需要检测
     for (QString id : closeTabIdList) {
-        closeTab(id);
+        closeTab(id, true);
         qDebug() << " close" << id;
     }
 
@@ -696,7 +702,12 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     }
     QString title;
     QString txt;
-    Utils::getExitDialogText(type, title, txt, count);
+    Utils::CloseType temtype = type;
+    // 关闭窗口的时候，如果只有一个tab,提示的内容要为终端．
+    if (type == Utils::CloseType_Window && m_tabbar->count() == 1) {
+        temtype = Utils::CloseType_Terminal;
+    }
+    Utils::getExitDialogText(temtype, title, txt, count);
 
     parent->setEnabled(false);
     DDialog *dlg = new DDialog(title, txt, parent);
@@ -706,12 +717,11 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     dlg->addButton(QString(tr("Close")), true, DDialog::ButtonWarning);
     /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
     dlg->setWindowModality(Qt::WindowModal);
-    setAttribute(Qt::WA_ShowModal);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
 
     if (type == Utils::CloseType_Window) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
-
             qDebug() << result;
             setEnabled(true);
             if (result == 1) {
@@ -730,6 +740,20 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
                 if (page) {
                     //接口二次重入
                     closeTab(page->identifier(), true);
+                }
+            }
+        });
+    }
+
+    if (type == Utils::CloseType_OtherTab) {
+        connect(dlg, &DDialog::finished, this, [this](int result) {            
+            qDebug() << result;
+            setEnabled(true);
+            if (result == 1) {
+                TermWidgetPage *page = currentPage();
+                if (page) {
+                    //接口二次重入
+                    closeOtherTab(page->identifier(), true);
                 }
             }
         });

@@ -53,6 +53,7 @@ public:
     enum CloseType {
         CloseType_Window,
         CloseType_Tab,
+        CloseType_OtherTab,
         CloseType_Terminal,
         CloseType_OtherTerminals,
     };

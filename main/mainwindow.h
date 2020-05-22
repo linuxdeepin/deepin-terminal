@@ -46,7 +46,7 @@ public:
     // 点击，右键，快捷键以及被调用．
     void closeTab(const QString &identifier, bool hasConfirmed = false);
     // Tab右键或者快捷键
-    void closeOtherTab(const QString &identifier);
+    void closeOtherTab(const QString &identifier, bool hasConfirmed = false);
     // 整体关闭事件
     void closeAllTab();
     /********************* Modify by n014361 wangpeili End ************************/
