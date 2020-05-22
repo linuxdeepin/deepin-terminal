@@ -1,6 +1,6 @@
    {
-       "type": "opensource",
+       "type": "homebrew",
        "3rdparty": ["./terminalwidget"],
-       "ignore": [],
+       "ignore": ["translations", "debian", "color-schemes", "kb-layouts", "LineFont.src", "CMakeLists.txt", "README", "README.md", "CHANGELOG", "COPYING-CMAKE-SCRIPTS", "LICENSE", "LICENSE.*", "*.keytab", "*.spec", "*.cmake", "*.desktop", "./.tx", "*.qrc", "*.svg", "*.png", "*.qm", "*.ts"],
        "license": ["GPLv3"]
    }
