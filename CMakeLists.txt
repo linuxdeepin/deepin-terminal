@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.9.5)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
-include (DtkSettingsToolsMacros)
+include (src/DtkSettingsToolsMacros)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -14,7 +14,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "-g -Wall")
 set(QT_MINIMUM_VERSION "5.7.1")
 
-configure_file(environments.h.in environments.h @ONLY)
+configure_file(src/environments.h.in environments.h @ONLY)
 
 # Find the QtWidgets library
 
@@ -229,7 +229,7 @@ endif ()
 
 #install(TARGETS deepin-terminal DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal)
 
-install(FILES deepin-terminal.desktop
+install(FILES src/deepin-terminal.desktop
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
 
 install(FILES src/assets/logo/deepin-terminal.svg
