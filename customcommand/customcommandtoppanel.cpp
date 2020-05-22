@@ -125,8 +125,7 @@ void CustomCommandTopPanel::slotsRefreshCommandPanel()
     m_customCommandPanel->resize(size());
     m_customCommandPanel->show();
     m_customCommandPanel->refreshCmdPanel();
-
-
+    m_customCommandSearchPanel->refreshData();
 
 }
 

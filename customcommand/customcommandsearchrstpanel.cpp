@@ -18,6 +18,11 @@ void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
     m_label->setText(QString("搜索：%1").arg(filter));
 }
 
+void CustomCommandSearchRstPanel::refreshData()
+{
+    m_cmdListWidget->refreshCommandListData(m_strFilter);
+}
+
 void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 {
     setSearchFilter(strFilter);
