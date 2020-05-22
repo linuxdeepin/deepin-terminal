@@ -89,7 +89,8 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     });
     // 选择即进入
     connect(m_DLineEdit, &DLineEdit::selectionChanged, this, [ = ] {
-        if (!m_DLineEdit->lineEdit()->hasFocus())
+        if (!m_DLineEdit->lineEdit()->hasFocus()
+                && !m_DLineEdit->lineEdit()->selectedText().isEmpty())
         {
             m_DLineEdit->lineEdit()->setFocus();
         }
