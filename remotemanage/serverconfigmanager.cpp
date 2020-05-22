@@ -112,6 +112,7 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
         configlist.append(config);
         m_serverConfigs[config->m_group] = configlist;
     }
+    emit refreshList();
 }
 
 void ServerConfigManager::delServerConfig(ServerConfig *config)
@@ -127,19 +128,32 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
                                      config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
     //-------------------------
+    // 配置中清除数据
     commandsSettings.remove(strConfigGroupName);
-//    if (m_serverConfigs.contains(config->m_group)) {
-//        m_serverConfigs[config->m_group].removeOne(config);
-//    } else {
-//        m_serverConfigs.remove(config->m_group);
-//    }
-    //待优化
-    m_serverConfigs.clear();
-    initServerConfig();
+    // 待优化 应该传的是同一指针指向的数据
+    //将map中数据清除
+    ServerConfig *pDelete = nullptr;
+    for (auto item : m_serverConfigs[config->m_group]) {
+        if (item->m_serverName == config->m_serverName) {
+            pDelete = item;
+        }
+    }
+    // 删除数据
+    m_serverConfigs[config->m_group].removeOne(pDelete);
+    // 判断组成员
+    if (m_serverConfigs[config->m_group].count() == 0) {
+        // 若组内无成员
+        m_serverConfigs.remove(config->m_group);
+    }
+    if (nullptr != pDelete) {
+        delete config;
+    }
+    emit refreshList();
 }
 
 void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig)
 {
+    // 刷新已有数据
     delServerConfig(oldConfig);
     saveServerConfig(newConfig);
 }

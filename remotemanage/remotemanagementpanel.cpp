@@ -13,7 +13,7 @@ void RemoteManagementPanel::refreshPanel()
 {
     clearSearchInfo();
     //--added byq qinyaning(nyq) to solve the show when not exist the server-config.conf--//
-    ServerConfigManager::instance()->initServerConfig();
+//    ServerConfigManager::instance()->initServerConfig();
     //---------------------------//
     m_listWidget->refreshAllDatas();
     refreshSearchState();
@@ -43,7 +43,7 @@ void RemoteManagementPanel::showAddServerConfigDlg()
 {
     ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
     if (dlg.exec() == QDialog::Accepted) {
-        refreshPanel();
+//        refreshPanel();
         QModelIndex index = m_listWidget->currentIndex(dlg.getServerName());
         m_listWidget->scrollTo(index);
     }
@@ -97,6 +97,11 @@ void RemoteManagementPanel::initUI()
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
     connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementPanel::listItemClicked);
     connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
+    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
+        if (m_isShow) {
+            refreshPanel();
+        }
+    });
 }
 
 void RemoteManagementPanel::listItemClicked(ServerConfig *curItemServer)

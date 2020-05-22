@@ -2,10 +2,12 @@
 #define REMOTEMANAGEMENTTOPPANEL_H
 
 #include "rightpanel.h"
+#include "commonpanel.h"
 #include "remotemanagementpanel.h"
 #include "serverconfiggrouppanel.h"
 #include "remotemanagementsearchpanel.h"
 
+#include <QPropertyAnimation>
 #include <QWidget>
 
 class RemoteManagementTopPanel : public RightPanel
@@ -35,6 +37,9 @@ public slots:
     void slotShowGroupPanelFromSearchPanel(const QString &strGroup);
 
 private:
+    void animationPrepare(CommonPanel *hidePanel, CommonPanel *showPanel);
+    void panelLeftToRight(QPropertyAnimation *animation, QPropertyAnimation *animation1);
+    void panelRightToLeft(QPropertyAnimation *animation, QPropertyAnimation *animation1);
     RemoteManagementPanel *m_remoteManagementPanel = nullptr;
     ServerConfigGroupPanel *m_serverConfigGroupPanel = nullptr;
     RemoteManagementSearchPanel *m_remoteManagementSearchPanel = nullptr;

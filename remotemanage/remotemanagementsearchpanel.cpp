@@ -1,5 +1,6 @@
 #include "remotemanagementsearchpanel.h"
 #include "serverconfigmanager.h"
+#include <QDebug>
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -44,11 +45,21 @@ void RemoteManagementSearchPanel::initUI()
 
     connect(m_backButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
     connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementSearchPanel::listItemClicked);
+    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
+        if (m_isShow) {
+            if (m_isGroupOrNot) {
+                refreshDataByGroupAndFilter(m_strGroupName, m_strFilter);
+            } else {
+                refreshDataByFilter(m_strFilter);
+            }
+        }
+    });
 }
 
 void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &strGroup, const QString &strFilter)
 {
     setSearchFilter(strFilter);
+    m_isGroupOrNot = true;
     m_strGroupName = strGroup;
     m_strFilter = strFilter;
     m_listWidget->clearData();
@@ -58,6 +69,8 @@ void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &str
 void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
 {
     setSearchFilter(strFilter);
+    m_isGroupOrNot = false;
+    m_strFilter = strFilter;
     m_listWidget->clearData();
     m_listWidget->refreshDataByFilter(strFilter);
 }

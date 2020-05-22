@@ -7,10 +7,9 @@
 #include <QDir>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QMutex>
 
-class ServerConfig
-{
-public:
+struct ServerConfig {
     QString m_serverName;
     QString m_address;
     QString m_userName;
@@ -35,6 +34,9 @@ public:
     void delServerConfig(ServerConfig *config);
     void modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig);
     QMap<QString, QList<ServerConfig *>> &getServerConfigs();
+
+signals:
+    void refreshList();
 
 private:
     ServerConfigManager(QObject *parent = nullptr);

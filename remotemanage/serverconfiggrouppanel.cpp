@@ -50,6 +50,11 @@ void ServerConfigGroupPanel::initUI()
     connect(m_listWidget, &ServerConfigList::itemClicked, this, &ServerConfigGroupPanel::listItemClicked);
     connect(m_backButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::showRemoteManagementPanel);
     connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
+    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
+        if (m_isShow) {
+            refreshData(m_groupName);
+        }
+    });
 }
 
 void ServerConfigGroupPanel::refreshData(const QString &groupName)

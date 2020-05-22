@@ -17,7 +17,7 @@ Service *Service::instance()
 
 void Service::init()
 {
-
+    ServerConfigManager::instance()->initServerConfig();
 }
 /*******************************************************************************
  1. @函数:    showSettingDialog

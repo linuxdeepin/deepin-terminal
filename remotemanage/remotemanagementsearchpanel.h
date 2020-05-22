@@ -41,6 +41,8 @@ private:
     RemoteManagementPanelType m_previousPanel;  //用来保存调用当前搜索结果页的对象类型
     QString m_strGroupName;
     QString m_strFilter;
+    // 判断是组内搜索还是组外搜索
+    bool m_isGroupOrNot = false;
 };
 
 #endif  // REMOTEMANAGEMENTSEARCHPANEL_H

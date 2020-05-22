@@ -87,7 +87,6 @@ void MainWindow::initUI()
     //下面代码待处理
     ShortcutManager::instance()->setMainWindow(this);
     m_shortcutManager = ShortcutManager::instance();
-    ServerConfigManager::instance()->initServerConfig();
 
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);

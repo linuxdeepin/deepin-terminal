@@ -85,6 +85,12 @@ void ServerConfigList::refreshDataByGroup(const QString &strGroupName, bool isFr
         state = 2;
     }
     QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
+    // 判断组是否被删除
+    if (!configMap.contains(strGroupName)) {
+        // 已被删除，则返回
+        return;
+    }
+    // 还有，将剩下的添加
     QList<ServerConfig *> &configList = configMap[strGroupName];
     for (auto cfg : configList) {
         ServerConfigItemData itemData = changePointerToObject(cfg);
@@ -103,6 +109,10 @@ void ServerConfigList::refreshDataByGroupAndFilter(const QString &strGroupName, 
     m_GroupName = strGroupName;
     m_Filter = strFilter;
     QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
+    if (!configMap.contains(strGroupName)) {
+        // 若分组不存在则返回
+        return;
+    }
     QList<ServerConfig *> &configList = configMap[strGroupName];
     for (auto cfg : configList) {
         if (cfg->m_serverName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
@@ -185,13 +195,13 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
             dlg.addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
             if (dlg.exec() == QDialog::Accepted) {
                 ServerConfigManager::instance()->delServerConfig(curItemServer);
-                refreshPanelData(modelIndex);
+//                refreshPanelData(modelIndex);
                 emit listItemCountChange();
             }
 #endif
         } else {
             //刷新所有数据，待完善
-            refreshPanelData(modelIndex);
+//            refreshPanelData(modelIndex);
         }
 
         QModelIndex index = currentIndex( dlg.getServerName());
