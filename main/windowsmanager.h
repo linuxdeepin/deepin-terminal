@@ -32,6 +32,8 @@ public:
     void windowCountReduce();
     // 获取当前窗口数量
     int widgetCount() const;
+    // 获取雷神窗口
+    MainWindow *getQuakeWindow() {return m_quakeWindow;}
 
 signals:
 

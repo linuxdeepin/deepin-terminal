@@ -100,6 +100,9 @@ public:
     void setQuakeWindowMinHeight();
     /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
 
+    // 处理雷神窗口丢失焦点自动隐藏功能
+    void onAppFocusChangeForQuake();
+
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
@@ -237,6 +240,8 @@ private:
     // 雷神终端所在桌面
     int m_desktopIndex;
     bool m_hasConfirmedClose = false;
+    // 应用程序状态
+    static Qt::ApplicationState g_appState;
 };
 
 #endif  // MAINWINDOW_H

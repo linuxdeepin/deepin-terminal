@@ -28,6 +28,8 @@ public:
     void showSettingDialog();
     // 显示设置快捷键冲突弹窗
     void showShortcutConflictMsgbox(QString txt);
+    // 设置框是否显示
+    bool isSettingDialogVisible() {return m_settingDialog ? m_settingDialog->isVisible() : false;}
 
 signals:
     void refreshCommandPanel();

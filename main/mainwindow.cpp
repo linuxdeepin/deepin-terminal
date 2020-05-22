@@ -49,6 +49,7 @@ using std::ofstream;
 DWIDGET_USE_NAMESPACE
 
 QList<MainWindow *> MainWindow::m_windowList;
+Qt::ApplicationState MainWindow::g_appState = Qt::ApplicationInactive;
 
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent),
@@ -1661,6 +1662,7 @@ void MainWindow::remoteDownloadFile()
 *******************************************************************************/
 void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 {
+    g_appState = state;
     return;
     qDebug() << "Application  state " << state << isActiveWindow() << isVisible() << windowState();
     //这块有问题需要改
@@ -1775,10 +1777,16 @@ void MainWindow::setQuakeWindowMinHeight()
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
 
-void MainWindow::changeEvent(QEvent * /*event*/)
+void MainWindow::changeEvent(QEvent *event)
 {
+    // 不是激活事件,不处理
+    if (event->type() == QEvent::ActivationChange) {
+        onAppFocusChangeForQuake();
+    }
+
     // 雷神窗口没有其它需要调整的
     if (m_isQuakeWindow) {
+        QMainWindow::changeEvent(event);
         return;
     }
 
@@ -1788,4 +1796,51 @@ void MainWindow::changeEvent(QEvent * /*event*/)
         titlebar()->setMenuVisible(!isFullscreen);
         titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton")->hide();
     }
+
+    QMainWindow::changeEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    onAppFocusChangeForQuake
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-05-22
+ 4. @说明:    处理雷神窗口丢失焦点自动隐藏功能
+*******************************************************************************/
+void MainWindow::onAppFocusChangeForQuake()
+{
+    // 开关关闭，不处理
+    if (!Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+        return;
+    }
+
+    // 设置框弹出,不处理
+    if (Service::instance()->isSettingDialogVisible()) {
+        return;
+    }
+
+    // 不是雷神窗口，不处理
+    if (!m_isQuakeWindow) {
+        // 非雷神窗口被激活,意味着雷神窗口要被隐藏
+        MainWindow *pQuakeWindow = WindowsManager::instance()->getQuakeWindow();
+        if (isActiveWindow() && pQuakeWindow && pQuakeWindow->isVisible()) {
+            pQuakeWindow->hide();
+        }
+        return;
+    }
+
+    // 处于激活状态,不处理
+    if (isActiveWindow()) {
+        return;
+    }
+
+    // 获取应用程序活动窗口
+    QWidget *pWidget = QApplication::activeWindow();
+
+    // 应用程序活动窗口不是MainWindow窗口,不处理
+    if (pWidget && pWidget->metaObject()->className() != QStringLiteral("MainWindow")) {
+        return;
+    }
+
+    // 隐藏雷神窗口
+    hide();
 }
