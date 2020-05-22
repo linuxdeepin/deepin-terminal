@@ -40,21 +40,22 @@ set(TERMINALWIDGET_VERSION_MAJOR ${TerminalWidget5_VERSION_MAJOR})
 set(TERMINALWIDGET_VERSION_MINOR=${TerminalWidget5_VERSION_MINOR})
 set(TERMINALWIDGET_VERSION_PATCH=${TerminalWidget5_VERSION_PATCH})
 
-add_subdirectory(terminalwidget)
+add_subdirectory(3rdparty/terminalwidget)
 
 include_directories(${DtkWidget_INCLUDE_DIRS})
 include_directories(${DtkGui_INCLUDE_DIRS})
 include_directories(${DtkCore_INCLUDE_DIRS})
 
-include_directories("common")
-include_directories("customcommand")
-include_directories("encodeplugin")
-include_directories("main")
-include_directories("quaketerminal")
-include_directories("remotemanage")
-include_directories("settings")
-include_directories("theme")
-include_directories("views")
+include_directories("src/common")
+include_directories("src/customcommand")
+include_directories("src/encodeplugin")
+include_directories("src/main")
+include_directories("src/quaketerminal")
+include_directories("src/remotemanage")
+include_directories("src/settings")
+include_directories("src/theme")
+include_directories("src/views")
+include_directories("3rdparty/terminalwidget/lib")
 
 set(LINK_LIBS
     Qt5::Core
@@ -71,121 +72,121 @@ set(LINK_LIBS
 # Populate a CMake variable with the sources
 # TODO: portable headers?
 set (DTNG_CPP_FILES
-    common/utils.cpp
-    customcommand/customcommanddelegate.cpp
-    customcommand/customcommanditemmodel.cpp
-    customcommand/customcommandlist.cpp
-    customcommand/customcommandoptdlg.cpp
-    customcommand/customcommandpanel.cpp
-    customcommand/customcommandplugin.cpp
-    customcommand/customcommandsearchrstpanel.cpp
-    customcommand/customcommandtoppanel.cpp
-    encodeplugin/encodepanelplugin.cpp
-    encodeplugin/encodepanel.cpp
-    encodeplugin/encodelistview.cpp
-    encodeplugin/encodelistmodel.cpp
-    main/main.cpp
-    main/service.cpp
-    main/windowsmanager.cpp
-    main/mainwindow.cpp    
-    main/termproperties.cpp
-    main/dbusmanager.cpp
-    quaketerminal/quaketerminaladapter.cpp
-    quaketerminal/quaketerminalproxy.cpp
-    quaketerminal/termargumentparser.cpp
-    remotemanage/remotemanagementpanel.cpp
-    remotemanage/remotemanagementplugn.cpp
-    remotemanage/remotemanagementsearchpanel.cpp
-    remotemanage/remotemanagementtoppanel.cpp
-    remotemanage/serverconfigdelegate.cpp
-    remotemanage/serverconfiggrouppanel.cpp
-    remotemanage/serverconfigitemmodel.cpp
-    remotemanage/serverconfiglist.cpp
-    remotemanage/serverconfigmanager.cpp
-    remotemanage/serverconfigoptdlg.cpp
-    settings/newdspinbox.cpp
-    settings/settings.cpp
-    settings/settings_translation.cpp
-    settings/shortcutmanager.cpp
-    theme/themeitemdelegate.cpp
-    theme/themelistmodel.cpp
-    theme/themelistview.cpp
-    theme/themepanel.cpp
-    theme/themepanelplugin.cpp
-    views/commonpanel.cpp
-    views/myiconbutton.cpp
-    views/warnningdlg.cpp
-    views/operationconfirmdlg.cpp
-    views/pagesearchbar.cpp
-    views/rightpanel.cpp
-    views/tabbar.cpp
-    views/termwidget.cpp
-    views/termwidgetpage.cpp
-    views/termbasedialog.cpp
-    views/terminputdialog.cpp
-    views/termcommandlinkbutton.cpp
-    views/titlebar.cpp
+    src/common/utils.cpp
+    src/customcommand/customcommanddelegate.cpp
+    src/customcommand/customcommanditemmodel.cpp
+    src/customcommand/customcommandlist.cpp
+    src/customcommand/customcommandoptdlg.cpp
+    src/customcommand/customcommandpanel.cpp
+    src/customcommand/customcommandplugin.cpp
+    src/customcommand/customcommandsearchrstpanel.cpp
+    src/customcommand/customcommandtoppanel.cpp
+    src/encodeplugin/encodepanelplugin.cpp
+    src/encodeplugin/encodepanel.cpp
+    src/encodeplugin/encodelistview.cpp
+    src/encodeplugin/encodelistmodel.cpp
+    src/main/main.cpp
+    src/main/service.cpp
+    src/main/windowsmanager.cpp
+    src/main/mainwindow.cpp
+    src/main/termproperties.cpp
+    src/main/dbusmanager.cpp
+    src/quaketerminal/quaketerminaladapter.cpp
+    src/quaketerminal/quaketerminalproxy.cpp
+    src/quaketerminal/termargumentparser.cpp
+    src/remotemanage/remotemanagementpanel.cpp
+    src/remotemanage/remotemanagementplugn.cpp
+    src/remotemanage/remotemanagementsearchpanel.cpp
+    src/remotemanage/remotemanagementtoppanel.cpp
+    src/remotemanage/serverconfigdelegate.cpp
+    src/remotemanage/serverconfiggrouppanel.cpp
+    src/remotemanage/serverconfigitemmodel.cpp
+    src/remotemanage/serverconfiglist.cpp
+    src/remotemanage/serverconfigmanager.cpp
+    src/remotemanage/serverconfigoptdlg.cpp
+    src/settings/newdspinbox.cpp
+    src/settings/settings.cpp
+    src/settings/settings_translation.cpp
+    src/settings/shortcutmanager.cpp
+    src/theme/themeitemdelegate.cpp
+    src/theme/themelistmodel.cpp
+    src/theme/themelistview.cpp
+    src/theme/themepanel.cpp
+    src/theme/themepanelplugin.cpp
+    src/views/commonpanel.cpp
+    src/views/myiconbutton.cpp
+    src/views/warnningdlg.cpp
+    src/views/operationconfirmdlg.cpp
+    src/views/pagesearchbar.cpp
+    src/views/rightpanel.cpp
+    src/views/tabbar.cpp
+    src/views/termwidget.cpp
+    src/views/termwidgetpage.cpp
+    src/views/termbasedialog.cpp
+    src/views/terminputdialog.cpp
+    src/views/termcommandlinkbutton.cpp
+    src/views/titlebar.cpp
 )
 
 set (DTNG_HEADER_FILES
-    common/define.h
-    common/utils.h
-    customcommand/customcommanddelegate.h
-    customcommand/customcommanditemmodel.h
-    customcommand/customcommandlist.h
-    customcommand/customcommandoptdlg.h
-    customcommand/customcommandpanel.h
-    customcommand/customcommandplugin.h
-    customcommand/customcommandsearchrstpanel.h
-    customcommand/customcommandtoppanel.h
-    encodeplugin/encodepanelplugin.h
-    encodeplugin/encodepanel.h
-    encodeplugin/encodelistview.h
-    encodeplugin/encodelistmodel.h
-    main/windowsmanager.h
-    main/mainwindow.h
-    main/mainwindowplugininterface.h
-    main/service.h
-    main/termproperties.h
-    main/dbusmanager.h
-    quaketerminal/quaketerminaladapter.h
-    quaketerminal/quaketerminalproxy.h
-    quaketerminal/termargumentparser.h
-    remotemanage/remotemanagementpanel.h
-    remotemanage/remotemanagementplugn.h
-    remotemanage/remotemanagementsearchpanel.h
-    remotemanage/remotemanagementtoppanel.h
-    remotemanage/serverconfigdelegate.h
-    remotemanage/serverconfiggrouppanel.h
-    remotemanage/serverconfigitemmodel.h
-    remotemanage/serverconfiglist.h
-    remotemanage/serverconfigmanager.h
-    remotemanage/serverconfigoptdlg.h
-    settings/newdspinbox.h
-    settings/settings.h
-    settings/shortcutmanager.h
-    theme/themeitemdelegate.h
-    theme/themelistmodel.h
-    theme/themelistview.h
-    theme/themepanel.h
-    theme/themepanelplugin.h
-    views/commonpanel.h
-    views/myiconbutton.h
-    views/operationconfirmdlg.h
-    views/warnningdlg.h
-    views/pagesearchbar.h
-    views/rightpanel.h
-    views/tabbar.h
-    views/termwidget.h
-    views/termwidgetpage.h
-    views/titlebar.h
-    views/termbasedialog.h
-    views/terminputdialog.h
-    views/termcommandlinkbutton.h
+    src/common/define.h
+    src/common/utils.h
+    src/customcommand/customcommanddelegate.h
+    src/customcommand/customcommanditemmodel.h
+    src/customcommand/customcommandlist.h
+    src/customcommand/customcommandoptdlg.h
+    src/customcommand/customcommandpanel.h
+    src/customcommand/customcommandplugin.h
+    src/customcommand/customcommandsearchrstpanel.h
+    src/customcommand/customcommandtoppanel.h
+    src/encodeplugin/encodepanelplugin.h
+    src/encodeplugin/encodepanel.h
+    src/encodeplugin/encodelistview.h
+    src/encodeplugin/encodelistmodel.h
+    src/main/windowsmanager.h
+    src/main/mainwindow.h
+    src/main/mainwindowplugininterface.h
+    src/main/service.h
+    src/main/termproperties.h
+    src/main/dbusmanager.h
+    src/quaketerminal/quaketerminaladapter.h
+    src/quaketerminal/quaketerminalproxy.h
+    src/quaketerminal/termargumentparser.h
+    src/remotemanage/remotemanagementpanel.h
+    src/remotemanage/remotemanagementplugn.h
+    src/remotemanage/remotemanagementsearchpanel.h
+    src/remotemanage/remotemanagementtoppanel.h
+    src/remotemanage/serverconfigdelegate.h
+    src/remotemanage/serverconfiggrouppanel.h
+    src/remotemanage/serverconfigitemmodel.h
+    src/remotemanage/serverconfiglist.h
+    src/remotemanage/serverconfigmanager.h
+    src/remotemanage/serverconfigoptdlg.h
+    src/settings/newdspinbox.h
+    src/settings/settings.h
+    src/settings/shortcutmanager.h
+    src/theme/themeitemdelegate.h
+    src/theme/themelistmodel.h
+    src/theme/themelistview.h
+    src/theme/themepanel.h
+    src/theme/themepanelplugin.h
+    src/views/commonpanel.h
+    src/views/myiconbutton.h
+    src/views/operationconfirmdlg.h
+    src/views/warnningdlg.h
+    src/views/pagesearchbar.h
+    src/views/rightpanel.h
+    src/views/tabbar.h
+    src/views/termwidget.h
+    src/views/termwidgetpage.h
+    src/views/titlebar.h
+    src/views/termbasedialog.h
+    src/views/terminputdialog.h
+    src/views/termcommandlinkbutton.h
 )
 
 set (DTNG_QRC_FILES
-    resources/resources.qrc
+    src/assets/resources.qrc
 )
 
 # Program
@@ -231,11 +232,11 @@ endif ()
 install(FILES deepin-terminal.desktop
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
 
-install(FILES resources/logo/deepin-terminal.svg
+install(FILES src/assets/logo/deepin-terminal.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
 # add this empty file for first install/reinstall judge
-install(FILES resources/other/install_flag
+install(FILES src/assets/other/install_flag
         DESTINATION $ENV{HOME}/.config/deepin/deepin-terminal/)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal

@@ -1,7 +1,5 @@
 #include "encodelistmodel.h"
 
-#include "terminalwidget/lib/qtermwidget.h"
-
 #include <DStandardItem>
 #include <DLog>
 

@@ -47,7 +47,7 @@
 #include <QTextLayout>
 #include <QTime>
 #include <QFontMetrics>
-#include"views/terminputdialog.h"
+#include "terminputdialog.h"
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -285,20 +285,18 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
     }
     QString title;
     QString txt;
-    if(type != CloseType_Window)
-    {
+    if (type != CloseType_Window) {
         // 默认的count = 1的提示
         title = QObject::tr("Close this terminal?");
         txt = QObject::tr("There is still a process running in this terminal. "
-                                  "Closing the terminal will kill it.");
+                          "Closing the terminal will kill it.");
         // count > 1 提示
         if (count > 1) {
             txt = QObject::tr("There are still %1 processes running in this terminal. "
                               "Closing the terminal will kill all of them.")
                   .arg(count);
         }
-    }
-    else {
+    } else {
         title = QObject::tr("Close this window?");
         txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
     }
@@ -322,16 +320,14 @@ void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int 
     }
     //QString title;
     //QString txt;
-    if(type == CloseType_Window)
-    {
+    if (type == CloseType_Window) {
         title = QObject::tr("Close this window?");
         txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
-    }
-    else {
+    } else {
         // 默认的count = 1的提示
         title = QObject::tr("Close this terminal?");
         txt = QObject::tr("There is still a process running in this terminal. "
-                                  "Closing the terminal will kill it.");
+                          "Closing the terminal will kill it.");
         // count > 1 提示
         if (count > 1) {
             txt = QObject::tr("There are still %1 processes running in this terminal. "
@@ -512,7 +508,7 @@ void Utils::clearChildrenFocus(QObject *objParent)
     qDebug() << "checkChildrenFocus over" << objParent->children().size();
 }
 
-TermProperties Utils::parseArgument( QStringList arguments)
+TermProperties Utils::parseArgument(QStringList arguments)
 {
     QCommandLineParser parser;
 

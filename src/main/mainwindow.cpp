@@ -9,7 +9,7 @@
 #include "termwidget.h"
 #include "titlebar.h"
 #include "operationconfirmdlg.h"
-#include "encodeplugin/encodepanelplugin.h"
+#include "encodepanelplugin.h"
 #include "customcommandplugin.h"
 #include "serverconfigmanager.h"
 #include "utils.h"

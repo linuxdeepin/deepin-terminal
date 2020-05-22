@@ -1,7 +1,7 @@
 #ifndef TERMWIDGET_H
 #define TERMWIDGET_H
 
-#include "terminalwidget/lib/qtermwidget.h"
+#include "qtermwidget.h"
 #include "termwidgetpage.h"
 
 class TermProperties;
