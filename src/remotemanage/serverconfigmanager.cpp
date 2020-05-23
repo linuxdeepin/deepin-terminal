@@ -1,4 +1,5 @@
 #include "serverconfigmanager.h"
+#include "serverconfigoptdlg.h"
 
 #include <QDebug>
 
@@ -107,12 +108,14 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     settServerConfig(commandsSettings, strConfigGroupName, config);
     if (m_serverConfigs.contains(config->m_group)) {
         m_serverConfigs[config->m_group].append(config);
+        qDebug() << "append success!" << config->m_group << config->m_serverName;
     } else {
         QList<ServerConfig *> configlist;
         configlist.append(config);
         m_serverConfigs[config->m_group] = configlist;
     }
-    emit refreshList();
+    qDebug() << m_serverConfigs.count() << m_serverConfigs[""].count();
+    emit refreshList(config->m_serverName);
 }
 
 void ServerConfigManager::delServerConfig(ServerConfig *config)
@@ -132,27 +135,22 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     commandsSettings.remove(strConfigGroupName);
     // 待优化 应该传的是同一指针指向的数据
     //将map中数据清除
-    ServerConfig *pDelete = nullptr;
-    for (auto item : m_serverConfigs[config->m_group]) {
-        if (item->m_serverName == config->m_serverName) {
-            pDelete = item;
-        }
-    }
     // 删除数据
-    m_serverConfigs[config->m_group].removeOne(pDelete);
+    m_serverConfigs[config->m_group].removeOne(config);
     // 判断组成员
     if (m_serverConfigs[config->m_group].count() == 0) {
         // 若组内无成员
         m_serverConfigs.remove(config->m_group);
     }
-    if (nullptr != pDelete) {
-        delete config;
-    }
-    emit refreshList();
+    qDebug() << m_serverConfigs.count() << m_serverConfigs[""].count();
+
+    emit refreshList("");
+    delete config;
 }
 
 void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig)
 {
+    SyncData(oldConfig->m_serverName, newConfig);
     // 刷新已有数据
     delServerConfig(oldConfig);
     saveServerConfig(newConfig);
@@ -161,4 +159,82 @@ void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConf
 QMap<QString, QList<ServerConfig *>> &ServerConfigManager::getServerConfigs()
 {
     return m_serverConfigs;
+}
+
+void ServerConfigManager::setModifyDialog(QString key, ServerConfigOptDlg *dlg)
+{
+    if (m_serverConfigDialogMap.contains(key)) {
+        // 若已存在
+        m_serverConfigDialogMap[key].append(dlg);
+
+    } else {
+        // 不存在添加
+        QList<ServerConfigOptDlg *> serverConfigOptDlgList;
+        serverConfigOptDlgList.append(dlg);
+        m_serverConfigDialogMap[key] = serverConfigOptDlgList;
+    }
+    qDebug() << "show edit dialog" << key << m_serverConfigDialogMap[key].count();
+}
+/*******************************************************************************
+ 1. @函数:    removeDialog
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-05-23
+ 4. @说明:    从m_serverConfigDialogMap中将dlg数据删除
+*******************************************************************************/
+void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
+{
+    QString key;
+    ServerConfigOptDlg *removeOne = nullptr;
+    // 1.查找dlg指针
+    // 遍历map
+    for (serverConfigDialogMapIterator item = m_serverConfigDialogMap.begin(); item != m_serverConfigDialogMap.end(); ++item) {
+        //遍历列表
+        for (auto dlgItem : item.value()) {
+            if (dlgItem == dlg) {
+                key = item.key();
+                removeOne = dlgItem;
+            }
+        }
+    }
+    // 2.删除数据
+    if (nullptr != removeOne) {
+        qDebug() << "show delete " << key;
+        m_serverConfigDialogMap[key].removeOne(removeOne);
+    }
+
+    if (m_serverConfigDialogMap[key].count() == 0) {
+        m_serverConfigDialogMap.remove(key);
+    }
+}
+
+void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
+{
+    qDebug() << key << newConfig->m_serverName;
+    //前提是key唯一
+    // serverName被修改
+    if (key != newConfig->m_serverName) {
+        // 将数据放入新的键值对
+        QList<ServerConfigOptDlg *> serverConfigOptDlgList;
+        for (auto item : m_serverConfigDialogMap[key]) {
+            serverConfigOptDlgList.append(item);
+        }
+        m_serverConfigDialogMap[newConfig->m_serverName] = serverConfigOptDlgList;
+        m_serverConfigDialogMap.remove(key);
+    }
+
+
+    for (auto dlg : m_serverConfigDialogMap[newConfig->m_serverName]) {
+        dlg->updataData(newConfig);
+    }
+
+}
+
+void ServerConfigManager::closeAllDialog(QString key)
+{
+    for (auto item : m_serverConfigDialogMap[key]) {
+        if (item != nullptr) {
+            item->reject();
+        }
+    }
+    m_serverConfigDialogMap.remove(key);
 }

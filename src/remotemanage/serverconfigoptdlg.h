@@ -58,6 +58,10 @@ public:
         return m_currentServerName;
     }
 
+    void updataData(ServerConfig *curServer);
+    ServerConfig getData();
+    void resetCurServer(ServerConfig curServer);
+
 private slots:
     void slotClose();
     void slotAddSaveButtonClicked();

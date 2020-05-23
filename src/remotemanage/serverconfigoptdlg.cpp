@@ -44,7 +44,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
 
 {
     qDebug() << "ServerConfigOptDlg init";
-    setWindowModality(Qt::ApplicationModal);
+    setWindowModality(Qt::WindowModal);
     setFixedWidth(459);
     setAutoFillBackground(true);
     initUI();
@@ -354,6 +354,75 @@ void ServerConfigOptDlg::setLabelStyle(DLabel *label)
 
 ServerConfigOptDlg::~ServerConfigOptDlg()
 {
+}
+
+void ServerConfigOptDlg::updataData(ServerConfig *curServer)
+{
+    // 读取配置
+    QList<QString> textCodeList = getTextCodec();
+    QList<QString> backSpaceKeyList = getBackSpaceKey();
+    QList<QString> deleteKeyList = getDeleteKey();
+    // 重置m_curServer
+//    resetCurServer(curServer);
+    m_curServer = curServer;
+    // 设置数据
+    m_serverName->setText(curServer->m_serverName);
+    m_address->setText(curServer->m_address);
+    m_port->setValue(curServer->m_port.toInt());
+    m_userName->setText(curServer->m_userName);
+    m_password->setText(curServer->m_password);
+    m_privateKey->setText(curServer->m_privateKey);
+    m_group->setText(curServer->m_group);
+    m_path->setText(curServer->m_path);
+    m_command->setText(curServer->m_command);
+    if (!curServer->m_encoding.isEmpty()) {
+        int textCodeIndex = textCodeList.indexOf(curServer->m_encoding);
+        m_coding->setCurrentIndex(textCodeIndex);
+    }
+    if (!curServer->m_backspaceKey.isEmpty()) {
+        int backSpaceKeyIndex = backSpaceKeyList.indexOf(curServer->m_backspaceKey);
+        m_backSapceKey->setCurrentIndex(backSpaceKeyIndex);
+    }
+    if (!curServer->m_deleteKey.isEmpty()) {
+        int deleteKeyIndex = deleteKeyList.indexOf(curServer->m_deleteKey);
+        m_deleteKey->setCurrentIndex(deleteKeyIndex);
+    }
+
+    m_currentServerName = m_serverName->text();
+}
+
+ServerConfig ServerConfigOptDlg::getData()
+{
+    ServerConfig config;
+    config.m_serverName = m_serverName->text();
+    config.m_address = m_address->text();
+    config.m_userName = m_userName->text();
+    config.m_password = m_password->text();
+    config.m_privateKey = m_privateKey->text();
+    config.m_port = m_port->text();
+    config.m_group = m_group->text();
+    config.m_path = m_path->text();
+    config.m_command = m_command->text();
+    config.m_encoding = m_coding->currentText();
+    config.m_backspaceKey = m_backSapceKey->currentText();
+    config.m_deleteKey = m_deleteKey->currentText();
+    return config;
+}
+
+void ServerConfigOptDlg::resetCurServer(ServerConfig config)
+{
+    m_curServer->m_serverName = config.m_serverName;
+    m_curServer->m_address = config.m_address;
+    m_curServer->m_userName = config.m_userName;
+    m_curServer->m_password = config.m_password;
+    m_curServer->m_privateKey = config.m_privateKey;
+    m_curServer->m_port = config.m_port;
+    m_curServer->m_group = config.m_group;
+    m_curServer->m_path = config.m_path;
+    m_curServer->m_command = config.m_command;
+    m_curServer->m_encoding = config.m_encoding;
+    m_curServer->m_backspaceKey = config.m_backspaceKey;
+    m_curServer->m_deleteKey = config.m_deleteKey;
 }
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()

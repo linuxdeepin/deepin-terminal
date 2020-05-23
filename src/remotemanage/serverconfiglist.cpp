@@ -173,40 +173,43 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
 
 void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QModelIndex modelIndex)
 {
-    ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
-    if (dlg.exec() == QDialog::Accepted) {
-        if (dlg.isDelServer()) {
-#ifndef USE_DTK
-            OperationConfirmDlg optDlg;
-            optDlg.setFixedSize(380, 160);
-            optDlg.setOperatTypeName(tr("Delete Server"));
-            optDlg.setTipInfo(tr("Do you sure to delete the %1?").arg(curItemServer->m_serverName));
-            optDlg.setOKCancelBtnText(QObject::tr("Delete"), QObject::tr("Cancel"));
-            optDlg.exec();
-            if (optDlg.getConfirmResult() == QDialog::Accepted) {
-                ServerConfigManager::instance()->delServerConfig(curItemServer);
-                refreshPanelData(modelIndex);
-                emit listItemCountChange();
+    Q_UNUSED(modelIndex)
+    // 1.显示弹窗
+    ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
+    connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
+        // 3. 对弹窗操作进行分析
+        // 判断是否删除
+        if (result == ServerConfigOptDlg::Accepted) {
+            // 判断是否需要删除
+            if (dlg->isDelServer()) {
+                DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Do you sure to delete the %1?").arg(dlg->getServerName()), this);
+                deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
+                connect(deleteDialog, &DDialog::finished, this, [ = ](int result) {
+                    // 删除
+                    if (result == DDialog::Accepted) {
+                        ServerConfigManager::instance()->closeAllDialog(dlg->getCurServer()->m_serverName);
+                        ServerConfigManager::instance()->delServerConfig(dlg->getCurServer());
+                        emit listItemCountChange();
+                    }
+                });
+                deleteDialog->setWindowModality(Qt::WindowModal);
+                deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+                deleteDialog->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+                deleteDialog->addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
+                deleteDialog->show();
+            } else {
+                // 不删除，修改
+                // 修改后会有信号刷新列表
+                // 不需要删除，修改了转到这条修改的记录
+                QModelIndex index = currentIndex( dlg->getServerName());
+                scrollTo(index);
             }
-#else
-            DDialog dlg(tr("Delete Server"), tr("Do you sure to delete the %1?").arg(curItemServer->m_serverName));
-            dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
-            dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-            dlg.addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
-            if (dlg.exec() == QDialog::Accepted) {
-                ServerConfigManager::instance()->delServerConfig(curItemServer);
-//                refreshPanelData(modelIndex);
-                emit listItemCountChange();
-            }
-#endif
-        } else {
-            //刷新所有数据，待完善
-//            refreshPanelData(modelIndex);
         }
-
-        QModelIndex index = currentIndex( dlg.getServerName());
-        scrollTo(index);
-    }
+        ServerConfigManager::instance()->removeDialog(dlg);
+    });
+    dlg->show();
+    // 2. 记录弹窗
+    ServerConfigManager::instance()->setModifyDialog(curItemServer->m_serverName, dlg);
 }
 
 /*******************************************************************************
@@ -323,19 +326,14 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
 
     ServerConfigItemData itemData =
         qvariant_cast<ServerConfigItemData>(m_serCfgProxyModel->data(modelIndex));
-    ServerConfig *curItemServer = new ServerConfig();
-    curItemServer->m_userName = itemData.m_userName;
-    curItemServer->m_address = itemData.m_address;
-    curItemServer->m_port = itemData.m_port;
-    curItemServer->m_serverName = itemData.m_serverName;
-    curItemServer->m_password = itemData.m_password;
-    curItemServer->m_group = itemData.m_group;
-    curItemServer->m_command = itemData.m_command;
-    curItemServer->m_path = itemData.m_path;
-    curItemServer->m_encoding = itemData.m_encoding;
-    curItemServer->m_backspaceKey = itemData.m_backspaceKey;
-    curItemServer->m_deleteKey = itemData.m_deleteKey;
-    curItemServer->m_privateKey = itemData.m_privateKey;
+    // 找到配置里这个值
+    ServerConfig *curItemServer = nullptr;
+    QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
+    for (auto item : configMap[itemData.m_group]) {
+        if (item->m_serverName == itemData.m_serverName) {
+            curItemServer = item;
+        }
+    }
 
     if (getModifyIconRectS(rect).contains(clickPoint)) {
         if (state == 1 && !itemData.m_group.isNull() && !itemData.m_group.isEmpty()) {
