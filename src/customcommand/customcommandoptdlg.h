@@ -42,6 +42,7 @@ public:
     // 快捷键冲突弹窗
     void showShortcutConflictMsgbox(QString txt);
     void closeRefreshDataConnection();
+    bool checkSequence(const QKeySequence & sequence);
 
     QDialog::DialogCode getConfirmResult();
     QVBoxLayout *getMainLayout();
@@ -95,6 +96,8 @@ private:
     QDialog::DialogCode m_confirmResultCode;
     // 快捷键冲突弹窗
     DDialog *m_shortcutConflictDialog = nullptr;
+    bool m_bRefreshCheck=false;
+
 };
 
 #endif  // CUSTOMCOMMANDOPTDLG_H

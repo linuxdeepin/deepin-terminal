@@ -51,6 +51,7 @@ void CustomCommandOptDlg::slotRefreshData()
     if (m_type == CCT_ADD) {
         return;
     }
+    m_bRefreshCheck = true;
     qDebug() << "slotRefreshData---" <<  m_nameLineEdit->text();
 
     QString strName = m_nameLineEdit->text();
@@ -300,6 +301,10 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     m_bNeedDel = false;
     if (m_type == CCT_MODIFY) {
 
+        if (m_bRefreshCheck   && (!checkSequence(m_shortCutLineEdit->keySequence()))) {
+            return;
+        }
+
         if (strName == m_currItemData->m_cmdName && strCommand == m_currItemData->m_cmdText && keytmp == QKeySequence(m_currItemData->m_cmdShortcut)) {
             accept();
             return;
@@ -330,6 +335,33 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         accept();
     }
     /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
+}
+
+bool CustomCommandOptDlg::checkSequence(const QKeySequence &sequence)
+{
+    QString checkName = m_nameLineEdit->text();
+
+    if (sequence.toString() == "") {
+        return true;
+    }
+
+    QString reason;
+// 判断快捷键是否冲突
+    if (!ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
+        // 冲突
+        if (sequence.toString() != "Esc") {
+            showShortcutConflictMsgbox(reason);
+        }
+        m_shortCutLineEdit->clear();
+        m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
+
+        QTimer::singleShot(30, [&]() {
+            m_shortCutLineEdit->setFocus();
+        });
+        return false;
+    }
+
+    return true;
 }
 
 void CustomCommandOptDlg::slotDelCurCustomCommand()
