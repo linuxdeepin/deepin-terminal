@@ -5,6 +5,7 @@
 #include "dbusmanager.h"
 #include "service.h"
 #include "utils.h"
+#include "terminalapplication.h"
 
 #include <DApplication>
 #include <DApplicationSettings>
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
     DApplication::loadDXcbPlugin();
 
     //DApplication app(argc, argv);
-    DApplication app(argc, argv);
+    TerminalApplication app(argc, argv);
     app.setOrganizationName("deepin");
     app.setOrganizationDomain("deepin.org");
     app.setApplicationVersion(VERSION);

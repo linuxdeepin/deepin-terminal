@@ -45,7 +45,7 @@ SessionManager::SessionManager()
 
 SessionManager::~SessionManager()
 {
-    closeAllSessions();
+    //closeAllSessions();
 }
 
 void SessionManager::closeAllSessions()
