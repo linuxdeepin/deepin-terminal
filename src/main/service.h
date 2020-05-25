@@ -25,11 +25,15 @@ public:
     void init();
 
     // 显示设置框
-    void showSettingDialog();
+    void showSettingDialog(MainWindow *pOwner);
     // 显示设置快捷键冲突弹窗
     void showShortcutConflictMsgbox(QString txt);
     // 设置框是否显示
     bool isSettingDialogVisible() {return m_settingDialog ? m_settingDialog->isVisible() : false;}
+    //获取设置框的所有者
+    MainWindow *getSettingOwner() {return m_settingOwner;}
+    //重置设置框的所有者
+    void resetSettingOwner() {m_settingOwner = nullptr;}
 
 signals:
     void refreshCommandPanel();
@@ -41,6 +45,8 @@ private:
     static Service *pService ;
     // 设置框 全局唯一显示
     DSettingsDialog *m_settingDialog = nullptr;
+    //设置框的所有者
+    MainWindow *m_settingOwner = nullptr;
     DDialog *m_settingShortcutConflictDialog = nullptr;
 };
 

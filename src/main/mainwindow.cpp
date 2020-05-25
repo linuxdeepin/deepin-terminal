@@ -260,7 +260,9 @@ void MainWindow::initOptionMenu()
     QAction *settingAction(new QAction(tr("&Settings"), this));
     m_menu->addAction(settingAction);
     m_menu->addSeparator();
-    connect(settingAction, &QAction::triggered, Service::instance(), &Service::showSettingDialog);
+    connect(settingAction, &QAction::triggered, Service::instance(), [ = ] {
+        Service::instance()->showSettingDialog(this);
+    });
 }
 
 void MainWindow::initPlugins()

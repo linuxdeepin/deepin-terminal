@@ -25,8 +25,10 @@ void Service::init()
  3. @日期:    2020-05-20
  4. @说明:    唯一显示设置框
 *******************************************************************************/
-void Service::showSettingDialog()
+void Service::showSettingDialog(MainWindow *pOwner)
 {
+    //保存设置框的有拥者
+    m_settingOwner = pOwner;
     if (nullptr == m_settingDialog) {
         m_settingDialog = new DSettingsDialog();
         // 关闭后将指针置空，下次重新new
@@ -34,6 +36,11 @@ void Service::showSettingDialog()
             // 关闭时置空
             if (result == 0) {
                 m_settingDialog = nullptr;
+            }
+            //激活设置框的有拥者
+            if (m_settingOwner) {
+                m_settingOwner->activateWindow();
+                m_settingOwner->focusCurrentPage();
             }
         });
         // 关闭时delete

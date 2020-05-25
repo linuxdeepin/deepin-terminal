@@ -351,7 +351,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
     m_menu->addSeparator();
 
     m_menu->addAction(tr("Settings"), this, [ = ] {
-        Service::instance()->showSettingDialog();
+        Service::instance()->showSettingDialog(parentPage()->parentMainWindow());
     });
 }
 
