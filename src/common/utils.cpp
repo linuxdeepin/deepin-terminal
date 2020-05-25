@@ -458,24 +458,20 @@ void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
 
 /*******************************************************************************
  1. @函数:    showSameNameDialog
- 2. @作者:    m000714 戴正文
+ 2. @作者:    ut000610 戴正文
  3. @日期:    2020-04-16
  4. @说明:    当有相同名称时，弹出弹窗给用户确认
 *******************************************************************************/
-void Utils::showSameNameDialog(const QString &firstLine, const QString &secondLine)
+void Utils::showSameNameDialog(QWidget *parent, const QString &firstLine, const QString &secondLine)
 {
-#ifndef USE_DTK
-    WarnningDlg dlg;
-    dlg.setOperatTypeName(firstLine);
-    dlg.setTipInfo(secondLine);
-    dlg.exec();
-#else
-    DDialog dlg;
-    dlg.setTitle(QString(firstLine + secondLine));
-    dlg.setIcon(QIcon::fromTheme("dialog-warning"));
-    dlg.addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
-    dlg.exec();
-#endif
+    DDialog *dlg = new DDialog(parent);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setWindowModality(Qt::WindowModal);
+    dlg->setTitle(QString(firstLine + secondLine));
+    dlg->setIcon(QIcon::fromTheme("dialog-warning"));
+    dlg->addButton(QString(QObject::tr("OK")), true, DDialog::ButtonNormal);
+    dlg->show();
+    moveToCenter(dlg);
 }
 /*******************************************************************************
  1. @函数:    clearChildrenFocus

@@ -460,7 +460,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
                 if (value[i]->m_serverName.trimmed() == m_serverName->text().trimmed()) { //服务器名相同
                     QString strFirstLine = tr("The server name already exists,");
                     QString strSecondeLine = tr("please input another one. ");
-                    Utils::showSameNameDialog(strFirstLine, strSecondeLine);
+                    Utils::showSameNameDialog(this, strFirstLine, strSecondeLine);
                     return;
                 }
             }

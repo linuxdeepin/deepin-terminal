@@ -87,7 +87,7 @@ public:
 
     static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
 
-    static void showSameNameDialog(const QString &firstLine, const QString &secondLine);
+    static void showSameNameDialog(QWidget *parent, const QString &firstLine, const QString &secondLine);
     static void clearChildrenFocus(QObject *objParent);
 
     static QCommandLineParser &setCommandLineParser(QString appDesc, DApplication &app, QCommandLineParser &parser);

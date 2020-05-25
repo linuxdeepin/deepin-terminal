@@ -330,7 +330,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     if (nullptr != existAction || icount) {
         QString strFistLine = tr("The name already exists,");
         QString strSecondeLine = tr("please input another one.");
-        Utils::showSameNameDialog(strFistLine, strSecondeLine);
+        Utils::showSameNameDialog(this, strFistLine, strSecondeLine);
     } else {
         accept();
     }
