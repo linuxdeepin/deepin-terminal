@@ -635,19 +635,19 @@ void TermWidgetPage::showSearchBar(bool enable)
 void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
 {
     // 设置parent无法点击
-    this->setEnabled(false);
+    window()->setEnabled(false);
     if (nullptr == m_renameDialog) {
         m_renameDialog = new TermInputDialog(this);
+        m_renameDialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, [ = ]() {
-            m_renameDialog->hide();
-            this->setEnabled(true);
+            window()->setEnabled(true);
+            m_renameDialog = nullptr;
         });
         m_renameDialog->setFixedSize(380, 180);
         m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
         m_renameDialog->setFocusPolicy(Qt::NoFocus);
         m_renameDialog->showDialog(oldTitle, this);
     }
-    m_renameDialog->showDialog(oldTitle);
 }
 
 void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
