@@ -149,12 +149,12 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
 *******************************************************************************/
 void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
 {
-    if (!hasConfirmed && term->hasRunningProcess()) {
-        showExitConfirmDialog(Utils::CloseType_Terminal, 1, parentMainWindow());
-        return;
-    }
     qDebug() << "TermWidgetPage::closeSplit:" << term->getSessionId();
     if (getTerminalCount() > 1) {
+        if (!hasConfirmed && term->hasRunningProcess()) {
+            showExitConfirmDialog(Utils::CloseType_Terminal, 1, parentMainWindow());
+            return;
+        }
         QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
         term->setParent(nullptr);
 
