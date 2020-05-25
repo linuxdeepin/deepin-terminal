@@ -83,10 +83,27 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     connect(m_DLineEdit, &DLineEdit::focusChanged, this, [ = ](bool var) {
         // 退出编辑的时候，数据做个校正
         if (!var) {
+            /******** Add by nt001000 renfeixiang 2020-05-25:增加正常数据的过滤不需要处理，textChanged信号已经处理 Begin***************/
+            int value = m_DLineEdit->lineEdit()->text().toInt();
+            if(value >= 5)
+                return ;
+            /******** Add by nt001000 renfeixiang 2020-05-25:增加正常数据的过滤不需要处理，textChanged信号已经处理 End***************/
             correctValue();
             emit valueChanged(m_DLineEdit->lineEdit()->text().toInt());
         }
     });
+
+    /******** Add by nt001000 renfeixiang 2020-05-25:增加m_DLineEdit的textChanged信号的响应 Begin***************/
+    connect(m_DLineEdit, &DLineEdit::textChanged, this, [ = ](const QString &value) {
+        //过滤范围之外的数据
+        if(value.toInt() < 5)
+            return ;
+        // 对输入的数据做个校正
+        //correctValue();
+        emit valueChanged(m_DLineEdit->lineEdit()->text().toInt());
+    });
+    /******** Add by nt001000 renfeixiang 2020-05-25:增加m_DLineEdit的textChanged信号的响应 End***************/
+
     // 选择即进入
     connect(m_DLineEdit, &DLineEdit::selectionChanged, this, [ = ] {
         if (!m_DLineEdit->lineEdit()->hasFocus()

@@ -53,7 +53,9 @@ private:
     DIconButton *m_DIconBtnSubtract = nullptr;
 
     QIntValidator *m_QIntValidator = nullptr;
-    int m_MaxValue = 100;
+    /******** Modify by nt001000 renfeixiang 2020-05-25:从100修改50，设置最大只能输入50 Begin***************/
+    int m_MaxValue = 50;
+    /******** Modify by nt001000 renfeixiang 2020-05-25:从100修改50，设置最大只能输入50 End***************/
     int m_MinValue = 0;
 };
 
