@@ -1,6 +1,7 @@
 #include "remotemanagementpanel.h"
 #include "serverconfigitem.h"
 #include "shortcutmanager.h"
+#include "mainwindow.h"
 
 #include <DLog>
 
@@ -41,12 +42,19 @@ void RemoteManagementPanel::showCurSearchResult()
 
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
-    ServerConfigOptDlg dlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
-    if (dlg.exec() == QDialog::Accepted) {
-//        refreshPanel();
-        QModelIndex index = m_listWidget->currentIndex(dlg.getServerName());
-        m_listWidget->scrollTo(index);
-    }
+    // 禁止父窗口获取焦点
+    window()->setEnabled(false);
+    ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
+    connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
+        window()->setEnabled(true);
+        MainWindow *mainWinodw = static_cast<MainWindow *>(window());
+        mainWinodw->focusCurrentPage();
+        if (result == QDialog::Accepted) {
+            QModelIndex index = m_listWidget->currentIndex(dlg->getServerName());
+            m_listWidget->scrollTo(index);
+        }
+    });
+    dlg->show();
 }
 
 void RemoteManagementPanel::initUI()

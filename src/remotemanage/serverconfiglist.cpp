@@ -5,6 +5,7 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigdelegate.h"
 #include "serverconfigitemmodel.h"
+#include "mainwindow.h"
 #include "utils.h"
 
 #include <DLog>
@@ -173,10 +174,15 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
 
 void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QModelIndex modelIndex)
 {
+    // 禁止父窗口被点击
+    window()->setEnabled(false);
     Q_UNUSED(modelIndex)
     // 1.显示弹窗
     ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
+        window()->setEnabled(true);
+        MainWindow *mainWinodw = static_cast<MainWindow *>(window());
+        mainWinodw->focusCurrentPage();
         // 3. 对弹窗操作进行分析
         // 判断是否删除
         if (result == ServerConfigOptDlg::Accepted) {
