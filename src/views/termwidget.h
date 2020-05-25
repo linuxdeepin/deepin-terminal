@@ -42,9 +42,13 @@ private slots:
     void customContextMenuCall(const QPoint &pos);
     void handleTermIdle(bool bIdle);
 private:
+    /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
+    void addMenuActions(const QPoint &pos);
+
     TermWidgetPage *m_Page = nullptr;
     TermProperties m_properties;
 
+    DMenu *m_menu = nullptr;
 public:
     // session支持最大值．再多了就起不来了．
     static const int MaxTermwidgetCount = 199;

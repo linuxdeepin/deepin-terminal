@@ -107,6 +107,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, [this](QString value) {
+        Q_UNUSED(value)
         setTrackOutput(Settings::instance()->OutputtingScroll());
     });
 
@@ -197,40 +198,33 @@ void TermWidget::handleTermIdle(bool bIdle)
     emit termIsIdle(this->getSessionId(), bIdle);
 }
 
-void TermWidget::customContextMenuCall(const QPoint &pos)
+/*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
+void TermWidget::addMenuActions(const QPoint &pos)
 {
-    /***add by ut001121 zhangmeng 20200514 右键获取焦点, 修复BUG#26003***/
-    setFocus();
-
-    // 右键清理插件
-    parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
-
-    DMenu menu;
-
     bool isRemoting = isInRemoteServer();
 
     QList<QAction *> termActions = filterActions(pos);
     for (QAction *&action : termActions) {
-        menu.addAction(action);
+        m_menu->addAction(action);
     }
 
-    if (!menu.isEmpty()) {
-        menu.addSeparator();
+    if (!m_menu->isEmpty()) {
+        m_menu->addSeparator();
     }
 
     // add other actions here.
     if (!selectedText().isEmpty()) {
 
-        menu.addAction(tr("&Copy"), this, [this] { copyClipboard(); });
+        m_menu->addAction(tr("&Copy"), this, [this] { copyClipboard(); });
     }
     if (!QApplication::clipboard()->text(QClipboard::Clipboard).isEmpty()) {
-        menu.addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
+        m_menu->addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
     }
     /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
     if (!isRemoting && !selectedText().isEmpty()) {
         QFileInfo tempfile(workingDirectory() + "/" + selectedText());
         if (tempfile.exists()) {
-            menu.addAction(tr("&Open"), this, [this] {
+            m_menu->addAction(tr("&Open"), this, [this] {
                 QString file = workingDirectory() + "/" + selectedText();
                 QString cmd = QString("xdg-open ") + file;
                 //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
@@ -241,56 +235,56 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
-    menu.addAction(tr("&Open file manager"), this, [this] {
+    m_menu->addAction(tr("&Open file manager"), this, [this] {
         DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
     });
 
-    menu.addSeparator();
+    m_menu->addSeparator();
 
-    menu.addAction(tr("&Horizontal split"), this, [this] {
+    m_menu->addAction(tr("&Horizontal split"), this, [this] {
         parentPage()->split(Qt::Horizontal);
     });
 
-    menu.addAction(tr("&Vertical split"), this, [this] {
+    m_menu->addAction(tr("&Vertical split"), this, [this] {
         parentPage()->split(Qt::Vertical);
     });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    menu.addAction(tr("Close &window"), this, [this] {
+    m_menu->addAction(tr("Close &window"), this, [this] {
         parentPage()->closeSplit(parentPage()->currentTerminal());
     });
-    //menu.addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
+    //m_menu->addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
     if (parentPage()->getTerminalCount() > 1) {
-        menu.addAction(tr("Close &other &window"), this, [this] {
+        m_menu->addAction(tr("Close &other &window"), this, [this] {
             parentPage()->closeOtherTerminal();
         });
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
-    menu.addSeparator();
-    menu.addAction(tr("New &workspace"), this, [this] {
+    m_menu->addSeparator();
+    m_menu->addAction(tr("New &workspace"), this, [this] {
         parentPage()->parentMainWindow()->createNewWorkspace();
     });
 
-    menu.addSeparator();
+    m_menu->addSeparator();
 
     if (!parentPage()->parentMainWindow()->isQuakeMode()) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
         if (isFullScreen) {
-            menu.addAction(tr("Exit full&screen"), this, [this] {
+            m_menu->addAction(tr("Exit full&screen"), this, [this] {
                 parentPage()->parentMainWindow()->switchFullscreen();
             });
         } else {
-            menu.addAction(tr("Full&screen"), this, [this] {
+            m_menu->addAction(tr("Full&screen"), this, [this] {
                 parentPage()->parentMainWindow()->switchFullscreen();
             });
         }
     }
 
-    menu.addAction(tr("&Find"), this, [this] {
+    m_menu->addAction(tr("&Find"), this, [this] {
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
     });
-    menu.addSeparator();
+    m_menu->addSeparator();
 
     if (!selectedText().isEmpty()) {
         DMenu *search = new DMenu(tr("&Search"), this);
@@ -311,11 +305,11 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
             QString strurl = "https://stackoverflow.com/search?q=" + selectedText();
             QDesktopServices::openUrl(QUrl(strurl));
         });
-        menu.addMenu(search);
-        menu.addSeparator();
+        m_menu->addMenu(search);
+        m_menu->addSeparator();
     }
 
-    menu.addAction(tr("Rename title"), this, [this] {
+    m_menu->addAction(tr("Rename title"), this, [this] {
         //QString currTabTitle = this->property("currTabTitle").toString();
         /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 Begin************************/
         QString currTabTitle = parentPage()->parentMainWindow()->getCurrTabTitle();
@@ -332,36 +326,52 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
         parentPage()->showRenameTitleDialog(currTabTitle);
     });
 
-    menu.addAction(tr("&Encoding"), this, [this] {
+    m_menu->addAction(tr("&Encoding"), this, [this] {
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
     });
 
-    menu.addAction(tr("Custom commands"), this, [this] {
+    m_menu->addAction(tr("Custom commands"), this, [this] {
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
-    menu.addAction(tr("Remote management"), this, [this] {
+    m_menu->addAction(tr("Remote management"), this, [this] {
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
 
     if (isInRemoteServer()) {
-        menu.addSeparator();
-        menu.addAction(tr("Upload file"), this, [this] {
+        m_menu->addSeparator();
+        m_menu->addAction(tr("Upload file"), this, [this] {
             parentPage()->parentMainWindow()->remoteUploadFile();
         });
-        menu.addAction(tr("Download file"), this, [this] {
+        m_menu->addAction(tr("Download file"), this, [this] {
             parentPage()->parentMainWindow()->remoteDownloadFile();
         });
     }
 
-    menu.addSeparator();
+    m_menu->addSeparator();
 
-    menu.addAction(tr("Settings"), this, [this] {
+    m_menu->addAction(tr("Settings"), this, [ = ] {
         Service::instance()->showSettingDialog();
     });
+}
+
+void TermWidget::customContextMenuCall(const QPoint &pos)
+{
+    /***add by ut001121 zhangmeng 20200514 右键获取焦点, 修复BUG#26003***/
+    setFocus();
+
+    // 右键清理插件
+    parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
+
+    /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
+    if (nullptr == m_menu) {
+        m_menu = new DMenu(this);
+
+        addMenuActions(pos);
+    }
 
     // display the menu.
-    menu.exec(mapToGlobal(pos));
+    m_menu->exec(mapToGlobal(pos));
 }
 
 bool TermWidget::isInRemoteServer()
