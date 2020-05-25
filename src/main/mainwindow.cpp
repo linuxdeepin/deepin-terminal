@@ -347,7 +347,9 @@ void MainWindow::setQuakeWindow()
         return ;
     });
 
-    int saveHeight = m_winInfoConfig->value("quake_window_Height").toInt();
+    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
+    int saveHeight = m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();
+    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height End***************/
     qDebug() << "quake_window_Height: " << saveHeight;
     qDebug() << "quake_window_Height: " << minimumSize();
     // 如果配置文件没有数据
@@ -380,12 +382,12 @@ void MainWindow::setNormalWindow()
         resize(halfScreenSize());
     } else {
         m_IfUseLastSize = true;
-        /******** Modify by nt001000 renfeixiang 2020-05-14: 文件wininfo-config.conf中参数save已被修改成window Begin***************/
-        int saveWidth = m_winInfoConfig->value("window_width").toInt();
-        int saveHeight = m_winInfoConfig->value("window_height").toInt();
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
+        int saveWidth = m_winInfoConfig->value(CONFIG_WINDOW_WIDTH).toInt();
+        int saveHeight = m_winInfoConfig->value(CONFIG_WINDOW_HEIGHT).toInt();
         qDebug() << "window_width: " << saveWidth;
         qDebug() << "window_height: " << saveHeight;
-        /******** Modify by nt001000 renfeixiang 2020-05-14:文件wininfo-config.conf中参数save已被修改成window End***************/
+        /******** Modify by nt001000 renfeixiang 2020-05-25:文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
         // 如果配置文件没有数据
         if (saveWidth == 0 || saveHeight == 0) {
             saveWidth = 1000;
@@ -611,7 +613,9 @@ void MainWindow::saveWindowSize()
     // 雷神窗口保存
     if (m_isQuakeWindow) {
         // 记录最后一个正常窗口的大小
-        m_winInfoConfig->setValue("quake_window_Height", height());
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
+        m_winInfoConfig->setValue(CONFIG_QUAKE_WINDOW_HEIGHT, height());
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height End***************/
         qDebug() << "save quake_window_Height:" << height();
         return;
     }
@@ -626,12 +630,12 @@ void MainWindow::saveWindowSize()
     }
 
     if (windowState() == Qt::WindowNoState) {
-        /******** Modify by nt001000 renfeixiang 2020-05-14: 将文件wininfo-config.conf中参数存在save的修改成window Begin***************/
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
         // 记录最后一个正常窗口的大小
-        m_winInfoConfig->setValue("window_width", width());
-        m_winInfoConfig->setValue("window_height", height());
+        m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, width());
+        m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, height());
         qDebug() << "save windows size:" << width() << height();
-        /******** Modify by nt001000 renfeixiang 2020-05-14: 将文件wininfo-config.conf中参数存在save的修改成window End***************/
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
     }
 }
 
@@ -1428,8 +1432,10 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
         QString state = Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
         if ("window_normal" == state) {
             m_IfUseLastSize = true;
-            m_winInfoConfig->setValue("save_width", 1000);
-            m_winInfoConfig->setValue("save_height", 600);
+            /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
+            m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, 1000);
+            m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, 600);
+            /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
         } else {
             m_IfUseLastSize = false;
         }

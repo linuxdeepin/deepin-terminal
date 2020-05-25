@@ -93,6 +93,11 @@ public:
     static constexpr const char *PLUGIN_TYPE_REMOTEMANAGEMENT = "Remote Management";
     static constexpr const char *PLUGIN_TYPE_ENCODING = "Encoding";
     static constexpr const char *PLUGIN_TYPE_NONE = "None";
+    /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 Begin***************/
+    static constexpr const char *CONFIG_WINDOW_WIDTH = "window_width";
+    static constexpr const char *CONFIG_WINDOW_HEIGHT = "window_height";
+    static constexpr const char *CONFIG_QUAKE_WINDOW_HEIGHT = "quake_window_Height";
+    /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
     int getDesktopIndex() const;
 
     /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 Begin***************/
