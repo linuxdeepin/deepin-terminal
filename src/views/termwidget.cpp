@@ -16,6 +16,7 @@
 #include <DDialog>
 
 #include <QApplication>
+#include <QKeyEvent>
 #include <QDesktopServices>
 #include <QMenu>
 #include <QVBoxLayout>
@@ -112,9 +113,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     });
 
     connect(this, &TermWidget::receivedData, this, [this](QString value) {
+        /******** Modify by ut000610 daizhengwen 2020-05-25: quit download****************/
         if (value.contains("Transfer incomplete")) {
-            emit quitDownload();
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
+            QApplication::sendEvent(focusWidget(), &keyPress);
         }
+        /********************* Modify by ut000610 daizhengwen End ************************/
     });
 
 #if !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))

@@ -436,13 +436,6 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         return;
     }
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
-    connect(termPage, &TermWidgetPage::quitDownload, this, [ = ]() {
-        // 下载失败不会自动退出需要一个Ctrl + C，以后可以用这个信号传不同类型，做不同操作
-        qDebug() << "quit Download";
-        sleep(100);
-        pressCtrlC();
-        sleep(100);
-    }, Qt::QueuedConnection);
     setNewTermPage(termPage, activeTab);
 
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
@@ -1400,6 +1393,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                 executeDownloadFile();
                 enterSzCommand = false;
                 QTimer::singleShot(100, [&]() {
+                    focusCurrentPage();
                     pressCtrlU();
                 });
             }
