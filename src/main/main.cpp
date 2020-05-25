@@ -10,6 +10,8 @@
 #include <DApplicationSettings>
 #include <DLog>
 
+#include <QDir>
+#include <QDebug>
 #include <QCommandLineParser>
 #include <QTranslator>
 
@@ -58,7 +60,23 @@ int main(int argc, char *argv[])
     if (!manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
         // 调用entry接口
-        DBusManager::callTerminalEntry(app.arguments());
+        /******** Modify by ut000610 daizhengwen 2020-05-25: 在终端中打开****************/
+        QStringList args = app.arguments();
+        bool isCurrentPaht = false;
+        for (QString arg : args) {
+            // 若已有-w和--work-directory参数，直接将参数传给主进程执行
+            if (arg == "-w" || arg == "--work-directory") {
+                isCurrentPaht = true;
+                break;
+            }
+        }
+        if (!isCurrentPaht) {
+            args += "-w";
+            args += QDir::currentPath();
+        }
+        /********************* Modify by ut000610 daizhengwen End ************************/
+        qDebug() << "app args " << args;
+        DBusManager::callTerminalEntry(args);
         return 0;
     }
 

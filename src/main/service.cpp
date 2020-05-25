@@ -90,6 +90,7 @@ void Service::Entry(QStringList arguments)
     if (WindowsManager::instance()->widgetCount() == MAXWIDGETCOUNT) {
         return;
     }
+    qDebug() << "dzw " << arguments;
     TermProperties properties = Utils::parseArgument( arguments);
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {

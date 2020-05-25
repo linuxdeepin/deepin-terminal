@@ -105,6 +105,7 @@ void DBusManager::callTerminalEntry(QStringList args)
 *******************************************************************************/
 void DBusManager::entry(QStringList args)
 {
+    qDebug() << "recv args" << args;
     emit entryArgs(args);
 }
 
