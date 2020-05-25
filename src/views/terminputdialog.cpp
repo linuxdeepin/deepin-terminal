@@ -198,7 +198,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
         close();
     });
     // 设置为半模态
-    this->setWindowModality(Qt::NonModal);
+    this->setWindowModality(Qt::WindowModal);
     // 显示
     this->show();
 }

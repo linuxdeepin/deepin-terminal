@@ -634,9 +634,14 @@ void TermWidgetPage::showSearchBar(bool enable)
 *******************************************************************************/
 void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
 {
+    // 设置parent无法点击
+    this->setEnabled(false);
     if (nullptr == m_renameDialog) {
         m_renameDialog = new TermInputDialog(this);
-        connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, &TermInputDialog::hide);
+        connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, [ = ]() {
+            m_renameDialog->hide();
+            this->setEnabled(true);
+        });
         m_renameDialog->setFixedSize(380, 180);
         m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
         m_renameDialog->setFocusPolicy(Qt::NoFocus);
