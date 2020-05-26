@@ -651,7 +651,7 @@ void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
         connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, [ = ]() {
             window()->setEnabled(true);
             // 弹窗隐藏或消失
-            Service::instance()->setIsDialogShow(this, false);
+            Service::instance()->setIsDialogShow(window(), false);
             m_renameDialog = nullptr;
         });
         m_renameDialog->setFixedSize(380, 180);

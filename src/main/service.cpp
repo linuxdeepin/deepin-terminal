@@ -106,7 +106,7 @@ void Service::Entry(QStringList arguments)
         return;
     }
     qDebug() << "dzw " << arguments;
-    TermProperties properties = Utils::parseArgument( arguments);
+    TermProperties properties = Utils::parseArgument(arguments);
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {
         WindowsManager::instance()->runQuakeWindow(properties);
@@ -133,6 +133,11 @@ void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
     if (window == WindowsManager::instance()->getQuakeWindow()) {
         qDebug() << "QuakeWindow show or hide dialog " << isDialogShow;
         m_isDialogShow = isDialogShow;
+
+        // 对话框隐藏或关闭,焦点重回终端
+        if (false == m_isDialogShow) {
+            window->focusCurrentPage();
+        }
     }
 
 }

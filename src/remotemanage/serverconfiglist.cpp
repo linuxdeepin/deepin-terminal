@@ -184,8 +184,6 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
         window()->setEnabled(true);
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
-        MainWindow *mainWinodw = static_cast<MainWindow *>(window());
-        mainWinodw->focusCurrentPage();
         // 3. 对弹窗操作进行分析
         // 判断是否删除
         if (result == ServerConfigOptDlg::Accepted) {

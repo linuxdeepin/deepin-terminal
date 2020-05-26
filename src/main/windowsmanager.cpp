@@ -1,6 +1,7 @@
 #include "windowsmanager.h"
 #include "dbusmanager.h"
 #include "utils.h"
+#include "service.h"
 
 #include <QDebug>
 
@@ -47,6 +48,10 @@ void WindowsManager::quakeWindowShowOrHide()
 
     // 如果已经激活，那么就隐藏
     qDebug() << "isWinVisible mainWindow->isActiveWindow() : start hide" << m_quakeWindow->winId();
+    // 设置框或其他弹框弹出,不处理
+    if (Service::instance()->isSettingDialogVisible() || Service::instance()->getIsDialogShow()) {
+        return;
+    }
     m_quakeWindow->hide();
 }
 

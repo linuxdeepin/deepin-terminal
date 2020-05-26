@@ -1815,8 +1815,8 @@ void MainWindow::onAppFocusChangeForQuake()
         return;
     }
 
-    // 设置框弹出,不处理
-    if (Service::instance()->isSettingDialogVisible()) {
+    // 设置框或其他弹框弹出,不处理
+    if (Service::instance()->isSettingDialogVisible() || Service::instance()->getIsDialogShow()) {
         return;
     }
 
@@ -1835,13 +1835,13 @@ void MainWindow::onAppFocusChangeForQuake()
         return;
     }
 
-    // 获取应用程序活动窗口
-    QWidget *pWidget = QApplication::activeWindow();
+//    // 获取应用程序活动窗口
+//    QWidget *pWidget = QApplication::activeWindow();
 
-    // 应用程序活动窗口不是MainWindow窗口,不处理
-    if (pWidget && pWidget->metaObject()->className() != QStringLiteral("MainWindow")) {
-        return;
-    }
+//    // 应用程序活动窗口不是MainWindow窗口,不处理
+//    if (pWidget && pWidget->metaObject()->className() != QStringLiteral("MainWindow")) {
+//        return;
+//    }
 
     // 隐藏雷神窗口
     hide();

@@ -50,8 +50,6 @@ void RemoteManagementPanel::showAddServerConfigDlg()
         window()->setEnabled(true);
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
-        MainWindow *mainWinodw = static_cast<MainWindow *>(window());
-        mainWinodw->focusCurrentPage();
         if (result == QDialog::Accepted) {
             QModelIndex index = m_listWidget->currentIndex(dlg->getServerName());
             m_listWidget->scrollTo(index);

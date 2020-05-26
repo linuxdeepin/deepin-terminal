@@ -60,10 +60,11 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
+        window()->setEnabled(true);
+        // 弹窗隐藏或消失
+        Service::instance()->setIsDialogShow(window(), false);
         if (result == QDialog::Accepted) {
-            window()->setEnabled(true);
-            // 弹窗隐藏或消失
-            Service::instance()->setIsDialogShow(window(), false);
+
             QAction *newAction = m_pdlg->getCurCustomCmd();
             m_cmdListWidget->addNewCustomCommandData(newAction);
             /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
