@@ -59,7 +59,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     m_remoteManagementSearchPanel->resize(size());
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_PANEL);
     m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
-    animationPrepare(m_remoteManagementPanel, m_remoteManagementSearchPanel);
+    animationPrepare(m_serverConfigGroupPanel, m_remoteManagementSearchPanel);
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);

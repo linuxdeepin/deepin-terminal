@@ -53,6 +53,11 @@ void ServerConfigGroupPanel::initUI()
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow) {
             refreshData(m_groupName);
+            QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
+            if (!configMap.contains(m_groupName)) {
+                // 没有这个组 ==> 组内没成员，则返回
+                emit showRemoteManagementPanel();
+            }
         }
     });
 }

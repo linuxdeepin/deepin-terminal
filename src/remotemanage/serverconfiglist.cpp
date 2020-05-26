@@ -340,6 +340,13 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
             curItemServer = item;
         }
     }
+    // 说明是分组，没指到任何数据
+    if (curItemServer == nullptr) {
+        // 取分组的第一个数据
+        if (0 != configMap[itemData.m_group].count()) {
+            curItemServer = configMap[itemData.m_group][0];
+        }
+    }
 
     if (getModifyIconRectS(rect).contains(clickPoint)) {
         if (state == 1 && !itemData.m_group.isNull() && !itemData.m_group.isEmpty()) {
