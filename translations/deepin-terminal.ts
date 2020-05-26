@@ -207,27 +207,27 @@
         <translation type="vanished">高级</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="715"/>
+        <location filename="../src/main/mainwindow.cpp" line="716"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="717"/>
+        <location filename="../src/main/mainwindow.cpp" line="718"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1567"/>
+        <location filename="../src/main/mainwindow.cpp" line="1569"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1569"/>
+        <location filename="../src/main/mainwindow.cpp" line="1571"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1571"/>
+        <location filename="../src/main/mainwindow.cpp" line="1573"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
@@ -236,12 +236,12 @@
         <translation type="vanished">切换全屏</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1594"/>
+        <location filename="../src/main/mainwindow.cpp" line="1596"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1651"/>
+        <location filename="../src/main/mainwindow.cpp" line="1653"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -1274,12 +1274,12 @@
 <context>
     <name>TermWidgetPage</name>
     <message>
-        <location filename="../src/views/termwidgetpage.cpp" line="206"/>
+        <location filename="../src/views/termwidgetpage.cpp" line="207"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidgetpage.cpp" line="208"/>
+        <location filename="../src/views/termwidgetpage.cpp" line="209"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>

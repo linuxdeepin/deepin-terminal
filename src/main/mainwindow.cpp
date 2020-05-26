@@ -436,6 +436,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         return;
     }
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
+    WindowsManager::instance()->setCurrentPage(termPage);
     setNewTermPage(termPage, activeTab);
 
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
@@ -773,6 +774,7 @@ void MainWindow::focusPage(const QString &identifier)
     if (tabPage) {
         m_termStackWidget->setCurrentWidget(tabPage);
         tabPage->focusCurrentTerm();
+        WindowsManager::instance()->setCurrentPage(tabPage);
         return;
     }
     qDebug() << "focusTab nullptr identifier" << identifier;
@@ -785,7 +787,7 @@ void MainWindow::focusCurrentPage()
 
 TermWidgetPage *MainWindow::currentPage()
 {
-    return qobject_cast<TermWidgetPage *>(m_termStackWidget->currentWidget());
+    return WindowsManager::instance()->currentPage();
 }
 
 TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)

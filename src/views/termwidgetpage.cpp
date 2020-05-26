@@ -2,6 +2,7 @@
 #include "termwidget.h"
 #include "settings.h"
 #include "utils.h"
+#include "windowsmanager.h"
 
 #include <DLog>
 #include <DDialog>
@@ -676,6 +677,7 @@ void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
+    WindowsManager::instance()->setCurrentPage(this);
     qDebug() << "onTermGetFocus" << m_currentTerm->getSessionId();
     m_currentTerm->setFocus(Qt::OtherFocusReason);
     emit termGetFocus();

@@ -26,6 +26,9 @@ public:
     void quakeWindowShowOrHide();
     void createNormalWindow(TermProperties properties);
 
+    TermWidgetPage *currentPage();
+    void setCurrentPage(TermWidgetPage *page);
+
     // 窗口数量增加
     void windowCountIncrease();
     // 窗口数量减少
@@ -42,6 +45,7 @@ public slots:
 private:
     QList<MainWindow *> m_normalWindowList;
     MainWindow * m_quakeWindow = nullptr;
+    TermWidgetPage *m_currentPage = nullptr;
 private:
     explicit WindowsManager(QObject *parent = nullptr);
     static WindowsManager *pManager;

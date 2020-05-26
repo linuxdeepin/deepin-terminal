@@ -58,6 +58,7 @@ public:
     void focusPage(const QString &identifier);
     void focusCurrentPage();
     TermWidgetPage *currentPage();
+    void setCurrentPage(TermWidgetPage *page);
     TermWidgetPage *getPageByIdentifier(const QString &identifier);
 
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
