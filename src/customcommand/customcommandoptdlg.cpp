@@ -312,6 +312,17 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
             return;
         }
 
+        if(m_bRefreshCheck)
+        {
+            QAction *refreshExitAction=nullptr;
+            refreshExitAction=ShortcutManager::instance()->checkActionIsExist(*m_newAction);
+            if(refreshExitAction)
+            {
+                accept();
+                return;
+            }
+        }
+
         if (strName == m_currItemData->m_cmdName && strCommand == m_currItemData->m_cmdText && keytmp == QKeySequence(m_currItemData->m_cmdShortcut)) {
             accept();
             return;
