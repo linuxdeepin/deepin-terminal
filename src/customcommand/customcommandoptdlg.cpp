@@ -28,13 +28,16 @@
 CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandItemData *currItemData, QWidget *parent)
     : DAbstractDialog(parent),
       m_type(type),
-      m_currItemData(currItemData),
       m_nameLineEdit(new DLineEdit),
       m_commandLineEdit(new DLineEdit),
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
     setWindowModality(Qt::WindowModal);
+    if (currItemData) {
+        m_currItemData = new CustomCommandItemData;
+        *m_currItemData = *currItemData;
+    }
 
     initUITitle();
     initTitleConnections();
@@ -45,6 +48,10 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandIte
 
 CustomCommandOptDlg::~CustomCommandOptDlg()
 {
+    if (m_currItemData) {
+        delete m_currItemData;
+        m_currItemData = nullptr;
+    }
 }
 void CustomCommandOptDlg::slotRefreshData()
 {
@@ -362,6 +369,11 @@ bool CustomCommandOptDlg::checkSequence(const QKeySequence &sequence)
     }
 
     return true;
+}
+
+void CustomCommandOptDlg::setModelIndex(QModelIndex mi)
+{
+    modelIndex = mi;
 }
 
 void CustomCommandOptDlg::slotDelCurCustomCommand()

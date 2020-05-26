@@ -43,6 +43,7 @@ public:
     void showShortcutConflictMsgbox(QString txt);
     void closeRefreshDataConnection();
     bool checkSequence(const QKeySequence & sequence);
+    void setModelIndex(QModelIndex mi);
 
     QDialog::DialogCode getConfirmResult();
     QVBoxLayout *getMainLayout();
@@ -50,6 +51,9 @@ public:
     QAction *getCurCustomCmd();
     bool isDelCurCommand();
     bool m_bNeedDel = false;
+    CustomCommandItemData *m_currItemData = nullptr;
+    QModelIndex modelIndex;
+
 protected:
     void initUITitle();
     void initTitleConnections();
@@ -73,7 +77,6 @@ private:
     void initCommandFromClipBoardText();
 
     CustomCmdOptType m_type;
-    CustomCommandItemData *m_currItemData = nullptr;
     QAction *m_newAction = nullptr;
     DLineEdit *m_nameLineEdit = nullptr;
     DLineEdit *m_commandLineEdit = nullptr;

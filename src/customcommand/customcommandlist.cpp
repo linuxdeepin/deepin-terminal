@@ -24,6 +24,14 @@ CustomCommandList::CustomCommandList(bool &NotNeedRefresh, QWidget *parent) : DL
     initData();
 }
 
+CustomCommandList::~CustomCommandList()
+{
+    if (m_pdlg) {
+        delete m_pdlg;
+        m_pdlg = nullptr;
+    }
+}
+
 void CustomCommandList::initData()
 {
     m_cmdListModel = new QStandardItemModel;
@@ -105,83 +113,65 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
 
 void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex)
 {
-    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
-    CustomCommandOptDlg *pdlg = &dlg;
-    if (dlg.exec() == QDialog::Accepted) {
-        QAction *newAction = dlg.getCurCustomCmd();
-        QString strActionShortcut = newAction->shortcut().toString(QKeySequence::NativeText);
-        /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
-        CustomCommandItemData itemDel = itemData;
-
-        itemData.m_cmdName = newAction->text();
-        itemData.m_cmdText = newAction->data().toString();
-        itemData.m_cmdShortcut = newAction->shortcut().toString();
-        newAction->setData(newAction->data());
-        newAction->setShortcut(newAction->shortcut());
-
-//        if (dlg.m_bNeedDel) {
-//            ShortcutManager::instance()->delCustomCommandForModify(itemDel);
-//            ShortcutManager::instance()->delCustomCommandForModify(itemData);
-//            addNewCustomCommandData(newAction);
-//            ShortcutManager::instance()->addCustomCommand(*newAction);
-//            removeCommandItem(modelIndex);
-//            scrollToBottom();
-//        } else {
-//            int deleteIndex = ShortcutManager::instance()->delCustomCommandToConfig(itemData);
-//            ShortcutManager::instance()->saveCustomCommandToConfig(newAction, deleteIndex);
-//            m_cmdProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
-//        }
-
-        ShortcutManager::instance()->delCustomCommandForModify(itemDel);
-        ShortcutManager::instance()->delCustomCommandForModify(itemData);
-        addNewCustomCommandData(newAction);
-        ShortcutManager::instance()->addCustomCommand(*newAction);
-        removeCommandItem(modelIndex);
-        scrollToBottom();
-
-        m_bNotNeedRefresh = true;
-        pdlg->closeRefreshDataConnection();
-        emit Service::instance()->refreshCommandPanel();
-
-
-        /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
-
-    } else {
-
-        //Delete custom command
-        if (dlg.isDelCurCommand()) {
-#ifndef USE_DTK
-            OperationConfirmDlg dlg;
-            dlg.setDialogFrameSize(380, 140);
-            dlg.setOperatTypeName(tr("Are you sure to delete?"));
-            dlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
-            dlg.exec();
-            if (dlg.getConfirmResult() == QDialog::Accepted) {
-                ShortcutManager::instance()->delCustomCommand(itemData);
-                removeCommandItem(modelIndex);
-                emit listItemCountChange();
-            }
-
-#else
-            DDialog dlg;
-            dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
-            dlg.setTitle(tr("Are you sure to delete?"));
-            dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-            dlg.addButton(QObject::tr("OK"), false, DDialog::ButtonWarning);
-            if (dlg.exec() == QDialog::Accepted) {
-                ShortcutManager::instance()->delCustomCommand(itemData);
-                removeCommandItem(modelIndex);
-                emit listItemCountChange();
-
-                m_bNotNeedRefresh = true;
-                pdlg->closeRefreshDataConnection();
-                emit Service::instance()->refreshCommandPanel();
-            }
-#endif
-
-        }
-
+    if (m_pdlg) {
+        delete m_pdlg;
+        m_pdlg = nullptr;
     }
+    m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
+    m_pdlg->setModelIndex(modelIndex);
+    connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
+
+        if (result == QDialog::Accepted) {
+            QAction *newAction = m_pdlg->getCurCustomCmd();
+            CustomCommandItemData itemData = *(m_pdlg->m_currItemData);
+            CustomCommandItemData itemDel = itemData;
+
+            itemData.m_cmdName = newAction->text();
+            itemData.m_cmdText = newAction->data().toString();
+            itemData.m_cmdShortcut = newAction->shortcut().toString();
+            newAction->setData(newAction->data());
+            newAction->setShortcut(newAction->shortcut());
+
+            ShortcutManager::instance()->delCustomCommandForModify(itemDel);
+            ShortcutManager::instance()->delCustomCommandForModify(itemData);
+            addNewCustomCommandData(newAction);
+            ShortcutManager::instance()->addCustomCommand(*newAction);
+            removeCommandItem(m_pdlg->modelIndex);
+            scrollToBottom();
+
+            m_bNotNeedRefresh = true;
+            m_pdlg->closeRefreshDataConnection();
+            emit Service::instance()->refreshCommandPanel();
+
+        } else {
+
+            //Delete custom command
+            if (m_pdlg->isDelCurCommand()) {
+                DDialog *dlgDelete = new DDialog(this);
+
+                //dlgDelete->setWindowModality(Qt::WindowModal);
+
+                dlgDelete->setIcon(QIcon::fromTheme("deepin-terminal"));
+                dlgDelete->setTitle(tr("Are you sure to delete?"));
+                dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+                dlgDelete->addButton(QObject::tr("OK"), false, DDialog::ButtonWarning);
+                connect(dlgDelete, &DDialog::finished, this, [ & ](int result) {
+                    if (result == QDialog::Accepted) {
+                        CustomCommandItemData itemData = *(m_pdlg->m_currItemData);
+                        ShortcutManager::instance()->delCustomCommand(*(m_pdlg->m_currItemData));
+                        removeCommandItem(m_pdlg->modelIndex);
+                        emit listItemCountChange();
+
+                        m_bNotNeedRefresh = true;
+                        m_pdlg->closeRefreshDataConnection();
+                        emit Service::instance()->refreshCommandPanel();
+                    }
+                });
+                dlgDelete->show();
+            }
+        }
+    });
+    m_pdlg->show();
 }
 
 void CustomCommandList::removeCommandItem(QModelIndex modelIndex)

@@ -16,11 +16,13 @@ DWIDGET_USE_NAMESPACE
 class CustomCommandDelegate;
 class CustomCommandItemModel;
 class CustomCommandItem;
+class CustomCommandOptDlg;
 class CustomCommandList : public DListView
 {
     Q_OBJECT
 public:
     explicit CustomCommandList(bool &NotNeedRefresh, QWidget *parent = nullptr);
+    ~CustomCommandList();
     void refreshCommandListData(const QString &strFilter);
     void addNewCustomCommandData(QAction *actionData);
     bool &m_bNotNeedRefresh;
@@ -47,6 +49,7 @@ private:
     CustomCommandItemModel *m_cmdProxyModel = nullptr;
     QList<CustomCommandItemData> m_cmdItemDataList;
     bool m_bLeftMouse = true;
+    CustomCommandOptDlg *m_pdlg = nullptr;
 };
 
 #endif  // CUSTOMCOMMANDLIST_H

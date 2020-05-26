@@ -18,7 +18,13 @@ CustomCommandPanel::CustomCommandPanel(bool &NotNeedRefresh, QWidget *parent) : 
 {
     initUI();
 }
-
+CustomCommandPanel::~CustomCommandPanel()
+{
+    if (m_pdlg) {
+        delete m_pdlg;
+        m_pdlg = nullptr;
+    }
+}
 void CustomCommandPanel::showCurSearchResult()
 {
     QString strTxt = m_searchEdit->text();
@@ -29,23 +35,51 @@ void CustomCommandPanel::showCurSearchResult()
 
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
-    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
-    if (dlg.exec() == QDialog::Accepted) {
-        QAction *newAction = dlg.getCurCustomCmd();
-        m_cmdListWidget->addNewCustomCommandData(newAction);
-        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
-        ShortcutManager::instance()->addCustomCommand(*newAction);
-        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
+//    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
+//    if (dlg.exec() == QDialog::Accepted) {
+//        QAction *newAction = dlg.getCurCustomCmd();
+//        m_cmdListWidget->addNewCustomCommandData(newAction);
+//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
+//        ShortcutManager::instance()->addCustomCommand(*newAction);
+//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
 
-        m_bNotNeedRefresh=true;
-        emit Service::instance()->refreshCommandPanel();
+//        m_bNotNeedRefresh=true;
+//        emit Service::instance()->refreshCommandPanel();
 
 
-        refreshCmdSearchState();
-        /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
-        m_cmdListWidget->scrollToBottom();
-        /********************* Modify by m000714 daizhengwen End ************************/
+//        refreshCmdSearchState();
+//        /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
+//        m_cmdListWidget->scrollToBottom();
+//        /********************* Modify by m000714 daizhengwen End ************************/
+//    }
+
+    if (m_pdlg) {
+        delete m_pdlg;
+        m_pdlg = nullptr;
     }
+
+    m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
+    connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
+        if (result == QDialog::Accepted) {
+            QAction *newAction = m_pdlg->getCurCustomCmd();
+            m_cmdListWidget->addNewCustomCommandData(newAction);
+            /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
+            ShortcutManager::instance()->addCustomCommand(*newAction);
+            /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
+
+            m_bNotNeedRefresh = true;
+            emit Service::instance()->refreshCommandPanel();
+
+            refreshCmdSearchState();
+            /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
+            m_cmdListWidget->scrollToBottom();
+            /********************* Modify by m000714 daizhengwen End ************************/
+        }
+    });
+    m_pdlg->show();
+
+
+
 }
 
 void CustomCommandPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)
