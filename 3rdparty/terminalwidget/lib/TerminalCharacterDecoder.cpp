@@ -22,6 +22,9 @@
 // Own
 #include "TerminalCharacterDecoder.h"
 
+// std
+#include <cwctype>
+
 // Qt
 #include <QTextStream>
 
