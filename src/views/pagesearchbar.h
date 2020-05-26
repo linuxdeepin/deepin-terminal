@@ -45,6 +45,10 @@ public:
     void setNoMatchAlert(bool isAlert);
     QString searchKeytxt();
 
+    void saveOldHoldContent();
+    void clearHoldContent();
+    void recoveryHoldConten();
+
 signals:
     void findNext();
     void findPrev();
@@ -73,6 +77,7 @@ private:
     const int iconWidth = 12;
 
     const qreal opacity = 0.9;
+    QString m_originalPlaceHolder; //原文字
 };
 
 #endif

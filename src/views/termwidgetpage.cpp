@@ -618,6 +618,7 @@ void TermWidgetPage::showSearchBar(bool enable)
         }
         /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 End***************/
         m_findBar->raise();
+        m_findBar->clearHoldContent();
         m_findBar->show();
         m_findBar->move(width() - 382, 0);
         QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });

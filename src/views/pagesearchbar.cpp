@@ -69,11 +69,35 @@ void PageSearchBar::focus()
 {
     m_searchEdit->lineEdit()->setFocus();
     m_searchEdit->lineEdit()->selectAll();
+    //　焦点一进入以后，就设置文字和图标，用于失去焦点后显示
+    recoveryHoldConten();
 }
 
 QString PageSearchBar::searchKeytxt()
 {
     return m_searchEdit->text();
+}
+
+void PageSearchBar::saveOldHoldContent()
+{
+    m_originalPlaceHolder = m_searchEdit->placeHolder();
+}
+
+void PageSearchBar::clearHoldContent()
+{
+    // 置空内容
+    m_searchEdit->setPlaceHolder("");
+    m_searchEdit->lineEdit()->findChild<QWidget *>("iconWidget")
+                ->findChild<DIconButton *>()->setIcon(QIcon(""));
+}
+
+void PageSearchBar::recoveryHoldConten()
+{
+    // 还原文本
+    m_searchEdit->setPlaceHolder(m_originalPlaceHolder);
+    // 还原图标
+    m_searchEdit->lineEdit()->findChild<QWidget *>("iconWidget")
+                ->findChild<DIconButton *>()->setIcon(DStyle::SP_IndicatorSearch);
 }
 
 void PageSearchBar::findCancel()
@@ -120,8 +144,11 @@ void PageSearchBar::initSearchEdit()
 {
     m_searchEdit = new DSearchEdit(this);
     m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
-    m_searchEdit->setPlaceHolder("");
-    m_searchEdit->lineEdit()->findChild<QWidget *>("iconWidget")->findChild<DIconButton *>()->setIcon(QIcon(""));
+
+    //　保留原文字，图标
+    saveOldHoldContent();
+    // 置空
+    clearHoldContent();
 
     // 把ＤＴＫ好容易改造的功能，还原了．．．．．．．．
     // 把那个＂Ｘ＂控件功能还原成仅为清空文本
