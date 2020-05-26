@@ -55,14 +55,19 @@ void Service::showSettingDialog(MainWindow *pOwner)
         m_settingDialog->setWindowModality(Qt::NonModal);
         // 让设置与窗口等效，隐藏后显示就不会被遮挡
         m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
-        // 雷神需要让窗口置顶，可是普通窗口不要
-        //m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
-        m_settingDialog->show();
+    }
+    // 雷神需要让窗口置顶，可是普通窗口不要
+    if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
+        m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
     } else {
-        // 若设置窗口已显示，则激活窗口，显示在窗口顶层
+        m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
+    }
+    // 显示窗口
+    m_settingDialog->show();
+    // 若设置窗口已显示，则激活窗口
+    if (!m_settingDialog->isActiveWindow()) {
         m_settingDialog->activateWindow();
     }
-
 }
 
 /*******************************************************************************
