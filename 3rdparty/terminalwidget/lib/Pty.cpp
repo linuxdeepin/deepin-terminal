@@ -315,6 +315,22 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
     QString packageName = "deepin-terminal";
     QString packageNameReborn = "deepin-terminal-reborn";
 
+    QStringList strCommandList;
+    strCommandList.append(strCommand);
+
+    if (strCommand.contains("&&"))
+    {
+        QStringList cmdList = strCommand.split("&&");
+        for(int i=0; i<cmdList.size(); i++)
+        {
+            QString currCmd = cmdList.at(i).trimmed();
+            if (currCmd.length() > 0 && currCmd.contains(packageName))
+            {
+                strCommandList.append(currCmd);
+            }
+        }
+    }
+
     if (strCommand.contains(";"))
     {
         QStringList cmdList = strCommand.split(";");
@@ -323,8 +339,7 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
             QString currCmd = cmdList.at(i).trimmed();
             if (currCmd.length() > 0 && currCmd.contains(packageName))
             {
-                strCommand = currCmd;
-                break;
+                strCommandList.append(currCmd);
             }
         }
     }
@@ -334,25 +349,30 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
     QStringList packageNameList;
     packageNameList << packageName << packageNameReborn;
 
-    for(int i=0; i<packageNameList.size(); i++)
+    for(int i=0; i<strCommandList.size(); i++)
     {
-        QString removePattern = QString("sudo\\s+apt-get\\s+remove\\s+%1").arg(packageNameList.at(i));
-        acceptableList << isPatternAcceptable(strCommand, removePattern);
+        QString strCurrCommand = strCommandList.at(i);
+        for(int j=0; j<packageNameList.size(); j++)
+        {
+            QString packageName = packageNameList.at(j);
+            QString removePattern = QString("sudo\\s+apt-get\\s+remove\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-        removePattern = QString("sudo\\s+apt\\s+remove\\s+%1").arg(packageNameList.at(i));
-        acceptableList << isPatternAcceptable(strCommand, removePattern);
+            removePattern = QString("sudo\\s+apt\\s+remove\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-        removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageNameList.at(i));
-        acceptableList << isPatternAcceptable(strCommand, removePattern);
+            removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-        removePattern = QString("sudo\\s+dpkg\\s+-r\\s+%1").arg(packageNameList.at(i));
-        acceptableList << isPatternAcceptable(strCommand, removePattern);
+            removePattern = QString("sudo\\s+dpkg\\s+-r\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-        removePattern = QString("sudo\\s+rm\\s+.+\\s+/usr/bin/deepin-terminal");
-        acceptableList << isPatternAcceptable(strCommand, removePattern);
+            removePattern = QString("sudo\\s+rm\\s+.+\\s+/usr/bin/deepin-terminal");
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-        removePattern = QString("sudo\\s+rm\\s+/usr/bin/deepin-terminal");
-        acceptableList << isPatternAcceptable(strCommand, removePattern);
+            removePattern = QString("sudo\\s+rm\\s+/usr/bin/deepin-terminal");
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+        }
     }
 
     return acceptableList.contains(true);
