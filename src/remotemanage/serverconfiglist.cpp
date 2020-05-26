@@ -6,6 +6,7 @@
 #include "serverconfigdelegate.h"
 #include "serverconfigitemmodel.h"
 #include "mainwindow.h"
+#include "service.h"
 #include "utils.h"
 
 #include <DLog>
@@ -181,6 +182,8 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
     ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         window()->setEnabled(true);
+        // 弹窗隐藏或消失
+        Service::instance()->setIsDialogShow(window(), false);
         MainWindow *mainWinodw = static_cast<MainWindow *>(window());
         mainWinodw->focusCurrentPage();
         // 3. 对弹窗操作进行分析
@@ -214,6 +217,8 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
         ServerConfigManager::instance()->removeDialog(dlg);
     });
     dlg->show();
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
     // 2. 记录弹窗
     ServerConfigManager::instance()->setModifyDialog(curItemServer->m_serverName, dlg);
 }

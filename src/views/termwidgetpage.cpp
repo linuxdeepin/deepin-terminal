@@ -2,6 +2,7 @@
 #include "termwidget.h"
 #include "settings.h"
 #include "utils.h"
+#include "service.h"
 #include "windowsmanager.h"
 
 #include <DLog>
@@ -211,11 +212,15 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
     dlg->setWindowModality(Qt::WindowModal);
     setAttribute(Qt::WA_ShowModal);
     dlg->show();
+    // 有弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
 
     if (type == Utils::CloseType_Terminal) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
             parentMainWindow()->setEnabled(true);
+            // 有弹窗消失
+            Service::instance()->setIsDialogShow(window(), false);
             if (result == 1) {
                 //接口二次重入
                 closeSplit(currentTerminal(), true);
@@ -227,6 +232,8 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
             parentMainWindow()->setEnabled(true);
+            // 有弹窗消失
+            Service::instance()->setIsDialogShow(window(), false);
             if (result == 1) {
                 //接口二次重入
                 closeOtherTerminal(true);
@@ -643,12 +650,16 @@ void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
         m_renameDialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, [ = ]() {
             window()->setEnabled(true);
+            // 弹窗隐藏或消失
+            Service::instance()->setIsDialogShow(this, false);
             m_renameDialog = nullptr;
         });
         m_renameDialog->setFixedSize(380, 180);
         m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
         m_renameDialog->setFocusPolicy(Qt::NoFocus);
         m_renameDialog->showDialog(oldTitle, this);
+        // 弹窗显示
+        Service::instance()->setIsDialogShow(window(), true);
     }
 }
 

@@ -29,11 +29,23 @@ public:
     // 显示设置快捷键冲突弹窗
     void showShortcutConflictMsgbox(QString txt);
     // 设置框是否显示
-    bool isSettingDialogVisible() {return m_settingDialog ? m_settingDialog->isVisible() : false;}
+    bool isSettingDialogVisible()
+    {
+        return m_settingDialog ? m_settingDialog->isVisible() : false;
+    }
     //获取设置框的所有者
-    MainWindow *getSettingOwner() {return m_settingOwner;}
+    MainWindow *getSettingOwner()
+    {
+        return m_settingOwner;
+    }
     //重置设置框的所有者
-    void resetSettingOwner() {m_settingOwner = nullptr;}
+    void resetSettingOwner()
+    {
+        m_settingOwner = nullptr;
+    }
+
+    bool getIsDialogShow() const;
+    void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
 signals:
     void refreshCommandPanel();
@@ -47,7 +59,10 @@ private:
     DSettingsDialog *m_settingDialog = nullptr;
     //设置框的所有者
     MainWindow *m_settingOwner = nullptr;
+    // 设置框，快捷键冲突弹窗
     DDialog *m_settingShortcutConflictDialog = nullptr;
+    // 雷神用来判断是否有弹窗显示
+    bool m_isDialogShow = false;
 };
 
 #endif // SERVICE_H

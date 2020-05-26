@@ -1,5 +1,6 @@
 #include "service.h"
 #include "windowsmanager.h"
+#include "mainwindow.h"
 #include "utils.h"
 
 #include <DSettings>
@@ -94,6 +95,8 @@ void Service::showShortcutConflictMsgbox(QString txt)
     }
     m_settingShortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));
     m_settingShortcutConflictDialog->show();
+    // 将冲突窗口移到窗口中央
+    moveToCenter(m_settingShortcutConflictDialog);
 }
 
 void Service::Entry(QStringList arguments)
@@ -116,5 +119,20 @@ void Service::Entry(QStringList arguments)
 
 Service::Service(QObject *parent) : QObject(parent)
 {
+
+}
+
+bool Service::getIsDialogShow() const
+{
+    return m_isDialogShow;
+}
+
+void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
+{
+    MainWindow *window = static_cast<MainWindow *>(parent);
+    if (window == WindowsManager::instance()->getQuakeWindow()) {
+        qDebug() << "QuakeWindow show or hide dialog " << isDialogShow;
+        m_isDialogShow = isDialogShow;
+    }
 
 }

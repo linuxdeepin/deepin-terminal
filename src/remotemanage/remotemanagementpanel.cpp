@@ -2,6 +2,7 @@
 #include "serverconfigitem.h"
 #include "shortcutmanager.h"
 #include "mainwindow.h"
+#include "service.h"
 
 #include <DLog>
 
@@ -47,6 +48,8 @@ void RemoteManagementPanel::showAddServerConfigDlg()
     ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         window()->setEnabled(true);
+        // 弹窗隐藏或消失
+        Service::instance()->setIsDialogShow(window(), false);
         MainWindow *mainWinodw = static_cast<MainWindow *>(window());
         mainWinodw->focusCurrentPage();
         if (result == QDialog::Accepted) {
@@ -55,6 +58,8 @@ void RemoteManagementPanel::showAddServerConfigDlg()
         }
     });
     dlg->show();
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
 }
 
 void RemoteManagementPanel::initUI()

@@ -720,11 +720,15 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     dlg->setWindowModality(Qt::WindowModal);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
+    // 有弹窗显示
+    Service::instance()->setIsDialogShow(this, true);
 
     if (type == Utils::CloseType_Window) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
             setEnabled(true);
+            // 弹窗隐藏或消失
+            Service::instance()->setIsDialogShow(this, false);
             if (result == 1) {
                 //接口二次重入
                 m_hasConfirmedClose = true;
@@ -736,6 +740,8 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
             setEnabled(true);
+            // 弹窗隐藏或消失
+            Service::instance()->setIsDialogShow(this, false);
             if (result == 1) {
                 TermWidgetPage *page = currentPage();
                 if (page) {
@@ -750,6 +756,8 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
             setEnabled(true);
+            // 弹窗隐藏或消失
+            Service::instance()->setIsDialogShow(this, false);
             if (result == 1) {
                 TermWidgetPage *page = currentPage();
                 if (page) {
