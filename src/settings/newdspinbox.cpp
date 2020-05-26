@@ -41,9 +41,13 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     pHBoxLayout->addWidget(m_DIconBtnSubtract);
     setLayout(pHBoxLayout);
 
-    m_QIntValidator = new QIntValidator(m_MinValue, m_MaxValue, this);
-    m_DLineEdit->lineEdit()->setValidator(m_QIntValidator);
-    m_DLineEdit->lineEdit()->setValidator(new QIntValidator(0, m_MaxValue, this));
+//    m_QIntValidator = new QIntValidator(m_MinValue, m_MaxValue, this);
+//    m_DLineEdit->lineEdit()->setValidator(m_QIntValidator);
+//    m_DLineEdit->lineEdit()->setValidator(new QIntValidator(0, m_MaxValue, this));
+    /******** Add by nt001000 renfeixiang 2020-05-26:增加正则表达式限制00000现象 Begin***************/
+    QRegExp regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[5-9]$)");
+    m_DLineEdit->lineEdit()->setValidator(new QRegExpValidator(regExp, this));
+    /******** Add by nt001000 renfeixiang 2020-05-26:增加正则表达式限制00000现象 End***************/
     m_DLineEdit->setFocusPolicy(Qt::NoFocus);
     connect(m_DIconBtnAdd, &QAbstractButton::clicked, this, [ = ] {
         /***add by ut001121 zhangmeng 20200509 修复BUG#24848 设置中点击“+”“-”按钮修改字体大小，前方输入框未高亮***/
