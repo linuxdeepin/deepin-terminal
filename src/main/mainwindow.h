@@ -62,7 +62,6 @@ public:
     TermWidgetPage *getPageByIdentifier(const QString &identifier);
 
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
-    void setTitleBarBackgroundColor(QString color);
 
     ShortcutManager *getShortcutManager();
 

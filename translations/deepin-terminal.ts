@@ -217,17 +217,17 @@
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1569"/>
+        <location filename="../src/main/mainwindow.cpp" line="1559"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1571"/>
+        <location filename="../src/main/mainwindow.cpp" line="1561"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1573"/>
+        <location filename="../src/main/mainwindow.cpp" line="1563"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
@@ -236,12 +236,12 @@
         <translation type="vanished">切换全屏</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1596"/>
+        <location filename="../src/main/mainwindow.cpp" line="1586"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1653"/>
+        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>

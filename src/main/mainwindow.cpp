@@ -812,16 +812,6 @@ void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage *)> &func
     }
 }
 
-void MainWindow::setTitleBarBackgroundColor(QString color)
-{
-    // how dde-file-manager make the setting dialog works under dark theme?
-    if (QColor(color).lightness() < 128) {
-        DThemeManager::instance()->setTheme("dark");
-    } else {
-        DThemeManager::instance()->setTheme("light");
-    }
-}
-
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     // 保存窗口位置
