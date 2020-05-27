@@ -781,8 +781,8 @@ void MainWindow::focusPage(const QString &identifier)
     TermWidgetPage *tabPage = getPageByIdentifier(identifier);
     if (tabPage) {
         m_termStackWidget->setCurrentWidget(tabPage);
-        tabPage->focusCurrentTerm();
         WindowsManager::instance()->setCurrentPage(tabPage);
+        tabPage->focusCurrentTerm();
         return;
     }
     qDebug() << "focusTab nullptr identifier" << identifier;
@@ -1392,10 +1392,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                 //-------------------------------------
                 executeDownloadFile();
                 enterSzCommand = false;
-                QTimer::singleShot(100, [&]() {
-                    focusCurrentPage();
-                    pressCtrlU();
-                });
             }
         }
         if ((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_C || keyEvent->key() == Qt::Key_D)) {

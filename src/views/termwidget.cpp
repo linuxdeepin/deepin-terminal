@@ -117,6 +117,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         if (value.contains("Transfer incomplete")) {
             QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
             QApplication::sendEvent(focusWidget(), &keyPress);
+        } else if (value.contains("Transfer complete")) {           // 防止结束有乱码
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
+            QApplication::sendEvent(focusWidget(), &keyPress);
+        } else if (value.endsWith("\b \b #")) {                     // 结束的时候有乱码的话，将它清除
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
+            QApplication::sendEvent(focusWidget(), &keyPress);
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
     });
