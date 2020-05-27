@@ -78,22 +78,26 @@ void WindowsManager::setCurrentPage(TermWidgetPage *page)
     m_currentPage = page;
 }
 
-void WindowsManager::onMainwindowClosed(MainWindow * window)
+void WindowsManager::onMainwindowClosed(MainWindow *window)
 {
-    if(window->isQuakeMode())
-    {
+    /***add begin by ut001121 zhangmeng 20200527 关闭终端窗口时重置设置框所有者 修复BUG28636***/
+    if (window == Service::instance()->getSettingOwner()) {
+        Service::instance()->resetSettingOwner();
+    }
+    /***add end by ut001121 zhangmeng***/
+
+    if (window->isQuakeMode()) {
         Q_ASSERT(window == m_quakeWindow);
         m_quakeWindow->deleteLater();
         m_quakeWindow = nullptr;
         return;
     }
-    if(m_normalWindowList.contains(window))
-    {
+    if (m_normalWindowList.contains(window)) {
         m_normalWindowList.removeOne(window);
         window->deleteLater();
         return;
     }
-    qDebug()<<"unkown windows closed?? "<<window;
+    qDebug() << "unkown windows closed?? " << window;
 }
 
 WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
