@@ -47,9 +47,14 @@ private:
     TermProperties m_properties;
 
     DMenu *m_menu = nullptr;
+    /******** Modify by ut000610 daizhengwen 2020-05-27: 当前窗口是否要进行下载操作****************/
+    bool m_enterSzCommand = false;
+    /********************* Modify by ut000610 daizhengwen End ************************/
 public:
     // session支持最大值．再多了就起不来了．
     static const int MaxTermwidgetCount = 199;
+    bool enterSzCommand() const;
+    void setEnterSzCommand(bool enterSzCommand);
 };
 
 #endif  // TERMWIDGET_H

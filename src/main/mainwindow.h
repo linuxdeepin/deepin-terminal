@@ -216,7 +216,6 @@ private:
     QMap<QString, QShortcut *> m_BuiltInShortcut;
     /********************* Modify by n014361 wangpeili End ************************/
     QString downloadFilePath = "";
-    bool enterSzCommand = false;
     RemoteManagementPlugn *remoteManagPlugin = nullptr;
     CustomCommandPlugin *customCommandPlugin = nullptr;
     QString m_strWindowId;

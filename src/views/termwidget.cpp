@@ -117,10 +117,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         if (value.contains("Transfer incomplete")) {
             QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
             QApplication::sendEvent(focusWidget(), &keyPress);
-        } else if (value.contains("Transfer complete")) {           // 防止结束有乱码
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
-            QApplication::sendEvent(focusWidget(), &keyPress);
-        } else if (value.endsWith("\b \b #")) {                     // 结束的时候有乱码的话，将它清除
+        }
+        if (value.endsWith("\b \b #")) {                     // 结束的时候有乱码的话，将它清除
             QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
             QApplication::sendEvent(focusWidget(), &keyPress);
         }
@@ -363,6 +361,16 @@ void TermWidget::addMenuActions(const QPoint &pos)
     m_menu->addAction(tr("Settings"), this, [ = ] {
         Service::instance()->showSettingDialog(parentPage()->parentMainWindow());
     });
+}
+
+bool TermWidget::enterSzCommand() const
+{
+    return m_enterSzCommand;
+}
+
+void TermWidget::setEnterSzCommand(bool enterSzCommand)
+{
+    m_enterSzCommand = enterSzCommand;
 }
 
 void TermWidget::customContextMenuCall(const QPoint &pos)

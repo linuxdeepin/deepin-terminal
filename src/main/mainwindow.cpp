@@ -1384,18 +1384,21 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     }
 
     if (event->type() == QEvent::KeyPress) {
+        TermWidget *term = currentPage()->currentTerminal();
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-            if (enterSzCommand) {
+            if (term->enterSzCommand()) {
                 //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
                 pressEnterKey("\nsz \"${files[@]}\"");
                 //-------------------------------------
                 executeDownloadFile();
-                enterSzCommand = false;
+                term->setEnterSzCommand(false);
             }
         }
         if ((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_C || keyEvent->key() == Qt::Key_D)) {
-            enterSzCommand = false;
+            if (term->enterSzCommand()) {
+                term->setEnterSzCommand(false);
+            }
         }
     }
 
@@ -1638,6 +1641,7 @@ void MainWindow::remoteUploadFile()
  */
 void MainWindow::remoteDownloadFile()
 {
+    TermWidget *term = currentPage()->currentTerminal();
     downloadFilePath = Utils::showDirDialog(this);
 
     if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
@@ -1648,7 +1652,7 @@ void MainWindow::remoteDownloadFile()
         pressEnterKey(strTxt);
         currentPage()->sendTextToCurrentTerm("\n");
         //-------------------
-        enterSzCommand = true;
+        term->setEnterSzCommand(true);
         //sleep(100);//
     }
 }
