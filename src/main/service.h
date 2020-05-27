@@ -48,7 +48,7 @@ public:
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
 signals:
-    void refreshCommandPanel();
+    void refreshCommandPanel(QString oldCmdName, QString newCmdName);
 
 public slots:
     void Entry(QStringList arguments);

@@ -136,7 +136,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
             newAction->setShortcut(newAction->shortcut());
 
             ShortcutManager::instance()->delCustomCommandForModify(itemDel);
-            ShortcutManager::instance()->delCustomCommandForModify(itemData);
+            //ShortcutManager::instance()->delCustomCommandForModify(itemData);
             addNewCustomCommandData(newAction);
             ShortcutManager::instance()->addCustomCommand(*newAction);
             removeCommandItem(m_pdlg->modelIndex);
@@ -144,7 +144,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
 
             m_bNotNeedRefresh = true;
             m_pdlg->closeRefreshDataConnection();
-            emit Service::instance()->refreshCommandPanel();
+            emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
 
         } else {
 
@@ -167,7 +167,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
 
                         m_bNotNeedRefresh = true;
                         m_pdlg->closeRefreshDataConnection();
-                        emit Service::instance()->refreshCommandPanel();
+                        emit Service::instance()->refreshCommandPanel("", "");
                     }
                 });
                 dlgDelete->show();

@@ -35,23 +35,6 @@ void CustomCommandPanel::showCurSearchResult()
 
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
-//    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
-//    if (dlg.exec() == QDialog::Accepted) {
-//        QAction *newAction = dlg.getCurCustomCmd();
-//        m_cmdListWidget->addNewCustomCommandData(newAction);
-//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
-//        ShortcutManager::instance()->addCustomCommand(*newAction);
-//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
-
-//        m_bNotNeedRefresh=true;
-//        emit Service::instance()->refreshCommandPanel();
-
-
-//        refreshCmdSearchState();
-//        /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
-//        m_cmdListWidget->scrollToBottom();
-//        /********************* Modify by m000714 daizhengwen End ************************/
-//    }
     window()->setEnabled(false);
     if (m_pdlg) {
         delete m_pdlg;
@@ -72,7 +55,7 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
 
             m_bNotNeedRefresh = true;
-            emit Service::instance()->refreshCommandPanel();
+            emit Service::instance()->refreshCommandPanel("", "");
 
             refreshCmdSearchState();
             /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/

@@ -70,7 +70,7 @@ signals:
 private slots:
     void slotAddSaveButtonClicked();
     void slotDelCurCustomCommand();
-    void slotRefreshData();
+    void slotRefreshData(QString oldCmdName,QString newCmdName);
 
 private:
     void initUI();

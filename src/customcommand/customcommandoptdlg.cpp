@@ -53,7 +53,7 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
         m_currItemData = nullptr;
     }
 }
-void CustomCommandOptDlg::slotRefreshData()
+void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName)
 {
     if (m_type == CCT_ADD) {
         return;
@@ -63,7 +63,11 @@ void CustomCommandOptDlg::slotRefreshData()
 
     QString strName = m_nameLineEdit->text();
     QString strCommand = m_commandLineEdit->text();
-    QAction *currAction = new QAction(this);;
+    QAction *currAction = new QAction(this);
+    if (currAction == nullptr) {
+        qDebug() << "slotRefreshData---new QAction error!!!";
+        close();
+    }
     currAction->setText(strName);
     currAction->setData(strCommand);
     currAction->setShortcut(m_shortCutLineEdit->keySequence());
@@ -71,18 +75,29 @@ void CustomCommandOptDlg::slotRefreshData()
     QAction *existAction = nullptr;
     existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
     if (existAction == nullptr) {
-        if (currAction)
+        if (m_currItemData->m_cmdName == oldCmdName) {
+            currAction->setText(newCmdName);
+            existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
+            if (existAction) {
+                m_nameLineEdit->setText(existAction->text());
+                m_commandLineEdit->setText(existAction->data().toString());
+                m_shortCutLineEdit->setKeySequence(existAction->shortcut());
+                m_currItemData->m_cmdName = newCmdName;
+            } else {
+                delete currAction;
+                close();
+            }
+        } else {
             delete currAction;
-        //close();
-    } else {
+            close();
+        }
 
-        if (currAction)
-            delete currAction;
+    } else {
+        delete currAction;
         m_nameLineEdit->setText(existAction->text());
         m_commandLineEdit->setText(existAction->data().toString());
         m_shortCutLineEdit->setKeySequence(existAction->shortcut());
     }
-
 }
 void CustomCommandOptDlg::closeRefreshDataConnection()
 {
@@ -308,9 +323,9 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     m_bNeedDel = false;
     if (m_type == CCT_MODIFY) {
 
-        if (m_bRefreshCheck   && (!checkSequence(m_shortCutLineEdit->keySequence()))) {
-            return;
-        }
+        //if (m_bRefreshCheck   && (!checkSequence(m_shortCutLineEdit->keySequence()))) {
+        //    return;
+        //}
 
         if (m_bRefreshCheck) {
             QAction *refreshExitAction = nullptr;
