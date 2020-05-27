@@ -119,8 +119,10 @@ Session::Session(QObject* parent) :
     connect( _shellProcess,SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(done(int)) );
     // not in kprocess anymore connect( _shellProcess,SIGNAL(done(int)), this, SLOT(done(int)) );
 
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     // 用于卸载终端弹出框提示
-    connect( _shellProcess,SIGNAL(ptyUninstallTerminal()), this, SIGNAL(sessionUninstallTerminal()) );
+    connect( _shellProcess,SIGNAL(ptyUninstallTerminal(QString)), this, SIGNAL(sessionUninstallTerminal(QString)) );
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
     //setup timer for monitoring session activity
     _monitorTimer = new QTimer(this);

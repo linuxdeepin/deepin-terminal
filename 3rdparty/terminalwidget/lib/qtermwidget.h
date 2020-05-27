@@ -271,7 +271,9 @@ signals:
     void activity();
     void silence();
 
-    bool uninstallTerminal();
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
+    bool uninstallTerminal(QString commandname);
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
     /**
      * Emitted when emulator send data to the terminal process

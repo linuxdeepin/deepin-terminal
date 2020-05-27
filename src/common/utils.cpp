@@ -357,7 +357,7 @@ bool Utils::showExitUninstallConfirmDialog()
 #endif
 }
 
-bool Utils::showUnistallConfirmDialog()
+bool Utils::showUnistallConfirmDialog(QString commandname)
 {
 #ifndef USE_DTK
     OperationConfirmDlg dlg;
@@ -369,7 +369,18 @@ bool Utils::showUnistallConfirmDialog()
 
     return (dlg.getConfirmResult() == QDialog::Accepted);
 #else
-    DDialog dlg(QObject::tr("Are you sure you want to uninstall this application?"), QObject::tr("You will not be able to use Terminal any longer."));
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，显示不同的弹框信息 Begin***************/
+    QString title = "", text = "";
+    if(commandname == "remove"){
+        title = QObject::tr("Are you sure you want to uninstall this application?");
+        text = QObject::tr("You will not be able to use Terminal any longer.");
+    }else if(commandname == "purge"){
+        //后面根据产品提供的信息，修改此处purge命令卸载时的弹框信息
+        title = QObject::tr("Are you sure you want to uninstall this application?");
+        text = QObject::tr("You will not be able to use Terminal any longer.");
+    }
+    DDialog dlg(title, text);
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，显示不同的弹框信息 Begin***************/
     dlg.setIcon(QIcon::fromTheme("dialog-warning"));
     dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
     dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);

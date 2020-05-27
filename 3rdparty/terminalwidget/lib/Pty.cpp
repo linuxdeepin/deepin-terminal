@@ -360,9 +360,10 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
 
             removePattern = QString("sudo\\s+apt\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
-
-            removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
-            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+            /******** Modify by nt001000 renfeixiang 2020-05-27:修改 放到bWillPurgeTerminal函数中 Begin***************/
+//            removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
+//            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+            /******** Modify by nt001000 renfeixiang 2020-05-27:修改 放到bWillPurgeTerminal函数中 End***************/
 
             removePattern = QString("sudo\\s+dpkg\\s+-r\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
@@ -377,6 +378,73 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
 
     return acceptableList.contains(true);
 }
+
+/******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 Begin***************/
+bool Pty::bWillPurgeTerminal(QString strCommand)
+{
+    QString packageName = "deepin-terminal";
+    QString packageNameReborn = "deepin-terminal-reborn";
+
+    QStringList strCommandList;
+    strCommandList.append(strCommand);
+
+    if (strCommand.contains("&&"))
+    {
+        QStringList cmdList = strCommand.split("&&");
+        for(int i=0; i<cmdList.size(); i++)
+        {
+            QString currCmd = cmdList.at(i).trimmed();
+            if (currCmd.length() > 0 && currCmd.contains(packageName))
+            {
+                strCommandList.append(currCmd);
+            }
+        }
+    }
+
+    if (strCommand.contains(";"))
+    {
+        QStringList cmdList = strCommand.split(";");
+        for(int i=0; i<cmdList.size(); i++)
+        {
+            QString currCmd = cmdList.at(i).trimmed();
+            if (currCmd.length() > 0 && currCmd.contains(packageName))
+            {
+                strCommandList.append(currCmd);
+            }
+        }
+    }
+
+    QList<bool> acceptableList;
+
+    QStringList packageNameList;
+    packageNameList << packageName << packageNameReborn;
+
+    for(int i=0; i<strCommandList.size(); i++)
+    {
+        QString strCurrCommand = strCommandList.at(i);
+        for(int j=0; j<packageNameList.size(); j++)
+        {
+            QString packageName = packageNameList.at(j);
+            QString removePattern = QString("sudo\\s+apt-get\\s+purge\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
+            removePattern = QString("sudo\\s+apt-get\\s+remove\\s+--purge\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
+            removePattern = QString("sudo\\s+apt\\s+purge\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
+            removePattern = QString("sudo\\s+apt\\s+remove\\s+--purge\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
+            removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+        }
+    }
+
+    return acceptableList.contains(true);
+}
+/******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
 
 void Pty::sendData(const char* data, int length)
 {
@@ -401,9 +469,18 @@ void Pty::sendData(const char* data, int length)
             strCurrCommand = currCommand;
         }
 
-        if (!isTerminalRemoved() && bWillRemoveTerminal(strCurrCommand))
+        /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 Begin***************/
+        bool bPurgeTerminal =  bWillPurgeTerminal(strCurrCommand);
+        bool bRemoveTerminal =  bWillRemoveTerminal(strCurrCommand);
+
+        if (!isTerminalRemoved() && (bPurgeTerminal || bRemoveTerminal))
         {
-            QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::AutoConnection, Q_RETURN_ARG(bool, _bUninstall));
+            QString strname = "remove";
+            if(bPurgeTerminal){
+                strname = "purge";
+            }
+            QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::AutoConnection, Q_RETURN_ARG(bool, _bUninstall), Q_ARG(QString, strname));
+        /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 End***************/
             if (_bUninstall)
             {
                 qDebug() << "确认卸载终端！" << _bUninstall << endl;

@@ -190,7 +190,9 @@ Q_OBJECT
      */
     void receivedData(const char* buffer, int length);
 
-    bool ptyUninstallTerminal();
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
+    bool ptyUninstallTerminal(QString commandname);
+    /******** Modify by nt001000 renfeixiang 2020-05-14:修改 增加参数区别remove和purge卸载命令 End***************/
 
   protected:
       void setupChildProcess();
@@ -203,6 +205,9 @@ Q_OBJECT
     void init();
     bool isTerminalRemoved();
     bool bWillRemoveTerminal(QString strCommand);
+    /******** Add by nt001000 renfeixiang 2020-05-14:增加 Purge卸载命令的判断，显示不同的卸载提示框 Begin***************/
+    bool bWillPurgeTerminal(QString strCommand);
+    /******** Add by nt001000 renfeixiang 2020-05-14:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
 
     // takes a list of key=value pairs and adds them
     // to the environment for the process

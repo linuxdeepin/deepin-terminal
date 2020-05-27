@@ -41,20 +41,22 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
         applyTheme();
     });
 
-    connect(this, &TermWidgetPage::uninstallTerminal, this, [this, parent] {
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
+    connect(this, &TermWidgetPage::uninstallTerminal, this, [this, parent](QString commandname) {
         MainWindow *mainWindow = qobject_cast<MainWindow *>(parent);
         if (mainWindow->hasRunningProcesses())
         {
             if (Utils::showExitUninstallConfirmDialog()) {
-                return Utils::showUnistallConfirmDialog();
+                return Utils::showUnistallConfirmDialog(commandname);
             } else {
                 return false;
             }
         } else
         {
-            return Utils::showUnistallConfirmDialog();
+            return Utils::showUnistallConfirmDialog(commandname);
         }
     });
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
     m_currentTerm = w;
 }

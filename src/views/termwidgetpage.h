@@ -109,7 +109,9 @@ signals:
     void lastTermClosed(QString pageIdentifier) const;
     void termRequestOpenSettings() const;
     void termGetFocus() const;
-    bool uninstallTerminal();
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
+    bool uninstallTerminal(QString commandname);
+    /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     // 下载失败时退出下载
     void quitDownload();
 
