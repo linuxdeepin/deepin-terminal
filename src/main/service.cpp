@@ -79,6 +79,11 @@ void Service::showSettingDialog(MainWindow *pOwner)
 *******************************************************************************/
 void Service::showShortcutConflictMsgbox(QString txt)
 {
+    /******** Modify by ut000610 daizhengwen 2020-05-27: 出现提示和快捷键显示不一致的问题 bug#28507****************/
+    if (txt.contains("Return")) {
+        txt.replace("Return", "Enter");
+    }
+    /********************* Modify by ut000610 daizhengwen End ************************/
     // 若没有设置弹框则退出，谈不上显示设置的快捷键冲突
     if (nullptr == m_settingDialog) {
         return;

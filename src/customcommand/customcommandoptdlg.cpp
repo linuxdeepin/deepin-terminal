@@ -312,12 +312,10 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
             return;
         }
 
-        if(m_bRefreshCheck)
-        {
-            QAction *refreshExitAction=nullptr;
-            refreshExitAction=ShortcutManager::instance()->checkActionIsExist(*m_newAction);
-            if(refreshExitAction)
-            {
+        if (m_bRefreshCheck) {
+            QAction *refreshExitAction = nullptr;
+            refreshExitAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
+            if (refreshExitAction) {
                 accept();
                 return;
             }
@@ -573,6 +571,11 @@ void CustomCommandOptDlg::setConfirmBtnText(const QString &strConfirm)
 *******************************************************************************/
 void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
 {
+    /******** Modify by ut000610 daizhengwen 2020-05-27: 出现提示和快捷键显示不一致的问题 bug#28507****************/
+    if (txt.contains("Return")) {
+        txt.replace("Return", "Enter");
+    }
+    /********************* Modify by ut000610 daizhengwen End ************************/
     // 若没有弹窗，初始化
     if (nullptr == m_shortcutConflictDialog) {
         m_shortcutConflictDialog = new DDialog(this);
