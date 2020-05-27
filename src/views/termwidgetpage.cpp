@@ -204,7 +204,9 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
     QString txt;
     Utils::getExitDialogText(type, title, txt, count);
 
-    parentMainWindow()->setEnabled(false);
+    // 有弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
+
     DDialog *dlg = new DDialog(title, txt, parent);
     dlg->setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
@@ -214,13 +216,11 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
     dlg->setWindowModality(Qt::WindowModal);
     setAttribute(Qt::WA_ShowModal);
     dlg->show();
-    // 有弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
+
 
     if (type == Utils::CloseType_Terminal) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
-            parentMainWindow()->setEnabled(true);
             // 有弹窗消失
             Service::instance()->setIsDialogShow(window(), false);
             if (result == 1) {
@@ -233,7 +233,6 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
     if (type == Utils::CloseType_OtherTerminals) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
-            parentMainWindow()->setEnabled(true);
             // 有弹窗消失
             Service::instance()->setIsDialogShow(window(), false);
             if (result == 1) {
@@ -645,13 +644,13 @@ void TermWidgetPage::showSearchBar(bool enable)
 *******************************************************************************/
 void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
 {
-    // 设置parent无法点击
-    window()->setEnabled(false);
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
+
     if (nullptr == m_renameDialog) {
         m_renameDialog = new TermInputDialog(this);
         m_renameDialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, [ = ]() {
-            window()->setEnabled(true);
             // 弹窗隐藏或消失
             Service::instance()->setIsDialogShow(window(), false);
             m_renameDialog = nullptr;
@@ -660,8 +659,6 @@ void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
         m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
         m_renameDialog->setFocusPolicy(Qt::NoFocus);
         m_renameDialog->showDialog(oldTitle, this);
-        // 弹窗显示
-        Service::instance()->setIsDialogShow(window(), true);
     }
 }
 

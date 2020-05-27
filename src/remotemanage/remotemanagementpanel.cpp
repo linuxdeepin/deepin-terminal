@@ -1,7 +1,6 @@
 #include "remotemanagementpanel.h"
 #include "serverconfigitem.h"
 #include "shortcutmanager.h"
-#include "mainwindow.h"
 #include "service.h"
 
 #include <DLog>
@@ -43,11 +42,11 @@ void RemoteManagementPanel::showCurSearchResult()
 
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
-    // 禁止父窗口获取焦点
-    window()->setEnabled(false);
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
+
     ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_ADD, nullptr, this);
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
-        window()->setEnabled(true);
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
         if (result == QDialog::Accepted) {
@@ -56,8 +55,6 @@ void RemoteManagementPanel::showAddServerConfigDlg()
         }
     });
     dlg->show();
-    // 弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
 }
 
 void RemoteManagementPanel::initUI()

@@ -35,15 +35,33 @@ void CustomCommandPanel::showCurSearchResult()
 
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
-    window()->setEnabled(false);
+//    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
+//    if (dlg.exec() == QDialog::Accepted) {
+//        QAction *newAction = dlg.getCurCustomCmd();
+//        m_cmdListWidget->addNewCustomCommandData(newAction);
+//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
+//        ShortcutManager::instance()->addCustomCommand(*newAction);
+//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
+
+//        m_bNotNeedRefresh=true;
+//        emit Service::instance()->refreshCommandPanel();
+
+
+//        refreshCmdSearchState();
+//        /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
+//        m_cmdListWidget->scrollToBottom();
+//        /********************* Modify by m000714 daizhengwen End ************************/
+//    }
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
     }
 
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
+
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
-        window()->setEnabled(true);
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
         if (result == QDialog::Accepted) {
@@ -64,8 +82,6 @@ void CustomCommandPanel::showAddCustomCommandDlg()
         }
     });
     m_pdlg->show();
-    // 弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
 }
 
 void CustomCommandPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)

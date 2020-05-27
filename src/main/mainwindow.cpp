@@ -710,7 +710,9 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     }
     Utils::getExitDialogText(temtype, title, txt, count);
 
-    parent->setEnabled(false);
+    // 有弹窗显示
+    Service::instance()->setIsDialogShow(this, true);
+
     DDialog *dlg = new DDialog(title, txt, parent);
     dlg->setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
@@ -720,13 +722,11 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     dlg->setWindowModality(Qt::WindowModal);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
-    // 有弹窗显示
-    Service::instance()->setIsDialogShow(this, true);
 
     if (type == Utils::CloseType_Window) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
-            setEnabled(true);
+            //setEnabled(true);
             // 弹窗隐藏或消失
             Service::instance()->setIsDialogShow(this, false);
             if (result == 1) {
@@ -739,7 +739,7 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     if (type == Utils::CloseType_Tab) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
-            setEnabled(true);
+            //setEnabled(true);
             // 弹窗隐藏或消失
             Service::instance()->setIsDialogShow(this, false);
             if (result == 1) {
@@ -755,7 +755,7 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     if (type == Utils::CloseType_OtherTab) {
         connect(dlg, &DDialog::finished, this, [this](int result) {
             qDebug() << result;
-            setEnabled(true);
+            //setEnabled(true);
             // 弹窗隐藏或消失
             Service::instance()->setIsDialogShow(this, false);
             if (result == 1) {

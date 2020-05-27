@@ -5,7 +5,6 @@
 #include "serverconfigoptdlg.h"
 #include "serverconfigdelegate.h"
 #include "serverconfigitemmodel.h"
-#include "mainwindow.h"
 #include "service.h"
 #include "utils.h"
 
@@ -175,13 +174,13 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
 
 void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QModelIndex modelIndex)
 {
-    // 禁止父窗口被点击
-    window()->setEnabled(false);
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
+
     Q_UNUSED(modelIndex)
     // 1.显示弹窗
     ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
-        window()->setEnabled(true);
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
         // 3. 对弹窗操作进行分析
@@ -208,15 +207,13 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
                 // 不删除，修改
                 // 修改后会有信号刷新列表
                 // 不需要删除，修改了转到这条修改的记录
-                QModelIndex index = currentIndex( dlg->getServerName());
+                QModelIndex index = currentIndex(dlg->getServerName());
                 scrollTo(index);
             }
         }
         ServerConfigManager::instance()->removeDialog(dlg);
     });
     dlg->show();
-    // 弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
     // 2. 记录弹窗
     ServerConfigManager::instance()->setModifyDialog(curItemServer->m_serverName, dlg);
 }

@@ -113,15 +113,17 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
 
 void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex)
 {
-    window()->setEnabled(false);
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
     }
+
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
+
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
     m_pdlg->setModelIndex(modelIndex);
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
-        window()->setEnabled(true);
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
         if (result == QDialog::Accepted) {
@@ -175,8 +177,6 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         }
     });
     m_pdlg->show();
-    // 弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
 }
 
 void CustomCommandList::removeCommandItem(QModelIndex modelIndex)

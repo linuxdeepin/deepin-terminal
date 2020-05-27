@@ -138,11 +138,14 @@ void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
     if (window == WindowsManager::instance()->getQuakeWindow()) {
         qDebug() << "QuakeWindow show or hide dialog " << isDialogShow;
         m_isDialogShow = isDialogShow;
-
-        // 对话框隐藏或关闭,焦点重回终端
-        if (false == m_isDialogShow) {
-            window->focusCurrentPage();
-        }
     }
 
+    if (true == isDialogShow) {
+        // 对话框显示,终端窗口禁用
+        window->setEnabled(false);
+    } else {
+        // 对话框隐藏或关闭,终端窗口启用,焦点重回终端
+        window->setEnabled(true);
+        window->focusCurrentPage();
+    }
 }
