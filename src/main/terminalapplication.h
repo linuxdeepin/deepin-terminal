@@ -3,9 +3,6 @@
 
 #include <DApplication>
 
-#include <QSharedMemory>
-#include <QLocalServer>
-
 DWIDGET_USE_NAMESPACE
 
 class TerminalApplication : public DApplication

@@ -1,8 +1,6 @@
 #include "terminalapplication.h"
 #include "mainwindow.h"
-
-#include <QLocalSocket>
-#include <QWindow>
+#include <QDebug>
 
 TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication(argc, argv)
 {
