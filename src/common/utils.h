@@ -28,6 +28,7 @@
 #include <QHash>
 #include <QFont>
 #include <QList>
+#include <QByteArray>
 #include <QVariant>
 #include <QCommandLineParser>
 
@@ -94,6 +95,7 @@ public:
 
     static QCommandLineParser &setCommandLineParser(QString appDesc, DApplication &app, QCommandLineParser &parser);
     static TermProperties parseArgument( QStringList arguments);
+    static QList<QByteArray> encodeList();
 
 };
 

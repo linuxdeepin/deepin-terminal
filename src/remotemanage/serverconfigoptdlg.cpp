@@ -169,6 +169,7 @@ void ServerConfigOptDlg::initUI()
 
     //senior layout
     DWidget *seniorWidget = new DWidget;
+    seniorWidget->setFixedWidth(459);
     seniorWidget->setContentsMargins(0, 0, 0, 0);
     QGridLayout *seniorLayout = new QGridLayout();
     seniorLayout->setAlignment(Qt::AlignTop);
@@ -179,31 +180,37 @@ void ServerConfigOptDlg::initUI()
     setLabelStyle(pGroupLabel);
     seniorLayout->addWidget(pGroupLabel);
     seniorLayout->addWidget(m_group);
+    m_group->setFixedWidth(290);
 
     DLabel *pPathLabel = new DLabel(tr("Path:"));
     setLabelStyle(pPathLabel);
     seniorLayout->addWidget(pPathLabel);
     seniorLayout->addWidget(m_path);
+    m_path->setFixedWidth(290);
 
     DLabel *pCommandLabel = new DLabel(tr("Command:"));
     setLabelStyle(pCommandLabel);
     seniorLayout->addWidget(pCommandLabel);
     seniorLayout->addWidget(m_command);
+    m_command->setFixedWidth(290);
 
     DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
     setLabelStyle(pCodingLabel);
     seniorLayout->addWidget(pCodingLabel);
     seniorLayout->addWidget(m_coding);
+    m_coding->setFixedWidth(290);
 
     DLabel *pBackspaceKeyLabel = new DLabel(tr("Backspace key:"));
     setLabelStyle(pBackspaceKeyLabel);
     seniorLayout->addWidget(pBackspaceKeyLabel);
     seniorLayout->addWidget(m_backSapceKey);
+    m_backSapceKey->setFixedWidth(290);
 
     DLabel *pDeleteKeyLabel = new DLabel(tr("Delete key:"));
     setLabelStyle(pDeleteKeyLabel);
     seniorLayout->addWidget(pDeleteKeyLabel);
     seniorLayout->addWidget(m_deleteKey);
+    m_deleteKey->setFixedWidth(290);
     seniorWidget->setLayout(seniorLayout);
 
     m_VBoxLayout->addLayout(pGridLayout, Qt::AlignHCenter);
@@ -303,7 +310,10 @@ void ServerConfigOptDlg::initData()
 
 QList<QString> ServerConfigOptDlg::getTextCodec()
 {
-    QList<QByteArray> list = QTextCodec::availableCodecs();
+    /******** Modify by ut000610 daizhengwen 2020-05-28: 编码列表和编码插件一致****************/
+    //    QList<QByteArray> list = QTextCodec::availableCodecs();
+    QList<QByteArray> list = Utils::encodeList();
+    /********************* Modify by ut000610 daizhengwen End ************************/
     QList<QString> textCodecList;
     for (QByteArray byteArr : list) {
         QString str = QString(byteArr);
