@@ -507,8 +507,11 @@ bool MainWindow::hasRunningProcesses()
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
-        TermWidget *term = tabPage->currentTerminal();
-        if (term->hasRunningProcess()) {
+        /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 bug#28910 Begin***************/
+        //没有校验当前tab中是否有其它正在执行的分屏
+        //TermWidget *term = tabPage->currentTerminal();
+        if (tabPage->runningTerminalCount() != 0) {
+        /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
             qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
             return true;
         } else {
