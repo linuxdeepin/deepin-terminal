@@ -1481,6 +1481,23 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    showEvent
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-05-28
+ 4. @说明:    窗口显示事件
+*******************************************************************************/
+void MainWindow::showEvent(QShowEvent *event)
+{
+    /***add begin by ut001121 zhangmeng 20200528 重新获取桌面索引 修复BUG29082***/
+    if (m_isQuakeWindow) {
+        m_desktopIndex = DBusManager::callKDECurrentDesktop();
+    }
+    /***add end by ut001121***/
+
+    DMainWindow::showEvent(event);
+}
+
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 {
     m_termStackWidget->addWidget(termPage);

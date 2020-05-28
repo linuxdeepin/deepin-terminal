@@ -132,6 +132,7 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
     //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
     /*press Windows+D on the keyboard, the notification bar will
