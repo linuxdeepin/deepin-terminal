@@ -74,17 +74,6 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     newWindow->show();
 }
 
-TermWidgetPage *WindowsManager::currentPage()
-{
-    return m_currentPage;
-}
-
-void WindowsManager::setCurrentPage(TermWidgetPage *page)
-{
-    qDebug() << "setCurrentPage curr page:" << page << endl;
-    m_currentPage = page;
-}
-
 void WindowsManager::onMainwindowClosed(MainWindow *window)
 {
     /***add begin by ut001121 zhangmeng 20200527 关闭终端窗口时重置设置框所有者 修复BUG28636***/

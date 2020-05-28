@@ -3,6 +3,7 @@
 
 #include "termbasedialog.h"
 #include "customcommanditemmodel.h"
+#include "mainwindow.h"
 
 #include <DDialog>
 #include <DAbstractDialog>
@@ -75,6 +76,8 @@ private slots:
 private:
     void initUI();
     void initCommandFromClipBoardText();
+    MainWindow *getMainWindow();
+
 
     CustomCmdOptType m_type;
     QAction *m_newAction = nullptr;

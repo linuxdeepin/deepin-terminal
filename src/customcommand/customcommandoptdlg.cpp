@@ -4,6 +4,7 @@
 #include "shortcutmanager.h"
 #include "utils.h"
 #include"service.h"
+#include "mainwindow.h"
 
 #include <DButtonBox>
 #include <DPushButton>
@@ -281,9 +282,30 @@ void CustomCommandOptDlg::initUI()
 void CustomCommandOptDlg::initCommandFromClipBoardText()
 {
     if (m_commandLineEdit) {
-        QString clipText = ShortcutManager::instance()->getClipboardCommandData();
-        m_commandLineEdit->setText(clipText.trimmed());
+       // QString clipText = ShortcutManager::instance()->getClipboardCommandData();
+        MainWindow * main = getMainWindow();
+        if(main != nullptr)
+        {
+            QString clipText = main->selectedText(true);
+            m_commandLineEdit->setText(clipText.trimmed());
+        }
     }
+}
+MainWindow *CustomCommandOptDlg::getMainWindow()
+{
+    MainWindow * main = nullptr;
+    QWidget * pWidget = parentWidget();
+    while (pWidget != nullptr) {
+        qDebug()<<pWidget->metaObject()->className();
+        if(QString(pWidget->metaObject()->className()) == "MainWindow")
+        {
+            qDebug()<< "has find MainWindow";
+            main = static_cast<MainWindow *>(pWidget);
+            break;
+        }
+        pWidget = pWidget->parentWidget();
+    }
+    return  main;
 }
 
 QAction *CustomCommandOptDlg::getCurCustomCmd()

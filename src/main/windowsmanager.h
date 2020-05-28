@@ -26,9 +26,6 @@ public:
     void quakeWindowShowOrHide();
     void createNormalWindow(TermProperties properties);
 
-    TermWidgetPage *currentPage();
-    void setCurrentPage(TermWidgetPage *page);
-
     // 窗口数量增加
     void windowCountIncrease();
     // 窗口数量减少
