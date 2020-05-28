@@ -9,6 +9,12 @@ source_file = translations/deepin-terminal.ts
 source_lang = en_US
 type = QT
 
+[deepin-terminal.terminalwidget]
+file_filter = 3rdparty/terminalwidget/lib/translations/terminalwidget_<lang>.ts
+source_file = 3rdparty/terminalwidget/lib/translations/terminalwidget.ts
+source_lang = en_US
+type = QT
+
 [deepin-terminal.deepin-terminal-desktop]
 file_filter = translations/desktop/desktop_<lang>.ts
 source_file = translations/desktop/desktop.ts
