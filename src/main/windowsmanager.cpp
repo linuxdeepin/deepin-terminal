@@ -48,8 +48,15 @@ void WindowsManager::quakeWindowShowOrHide()
 
     // 如果已经激活，那么就隐藏
     qDebug() << "isWinVisible mainWindow->isActiveWindow() : start hide" << m_quakeWindow->winId();
-    // 设置框或其他弹框弹出,不处理
-    if (Service::instance()->isSettingDialogVisible() || Service::instance()->getIsDialogShow()) {
+    // 雷神的普通对话框,不处理
+    if (Service::instance()->getIsDialogShow()) {
+        return;
+    }
+    // 雷神设置框显示,不处理
+    if (Service::instance()->isSettingDialogVisible() && Service::instance()->getSettingOwner() == m_quakeWindow) {
+        if (m_quakeWindow->isActiveWindow()) {
+            Service::instance()->showSettingDialog(m_quakeWindow);
+        }
         return;
     }
     m_quakeWindow->hide();

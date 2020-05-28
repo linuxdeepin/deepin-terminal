@@ -61,6 +61,8 @@ void Service::showSettingDialog(MainWindow *pOwner)
     if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
         m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
     } else {
+        // 雷神窗口失去焦点自动隐藏
+        WindowsManager::instance()->getQuakeWindow()->onAppFocusChangeForQuake();;
         m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
     }
     // 显示窗口

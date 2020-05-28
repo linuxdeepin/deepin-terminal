@@ -1815,20 +1815,29 @@ void MainWindow::onAppFocusChangeForQuake()
         return;
     }
 
-    // 设置框或其他弹框弹出,不处理
-    if (Service::instance()->isSettingDialogVisible() || Service::instance()->getIsDialogShow()) {
+    // 不是雷神窗口或者雷神窗口隐藏，不处理
+    if (!m_isQuakeWindow || !isVisible()) {
         return;
     }
 
-    // 不是雷神窗口，不处理
-    if (!m_isQuakeWindow) {
-        // 非雷神窗口被激活,意味着雷神窗口要被隐藏
-        MainWindow *pQuakeWindow = WindowsManager::instance()->getQuakeWindow();
-        if (isActiveWindow() && pQuakeWindow && pQuakeWindow->isVisible()) {
-            pQuakeWindow->hide();
-        }
+    // 雷神的普通对话框,不处理
+    if (Service::instance()->getIsDialogShow()) {
         return;
     }
+    // 雷神设置框显示,不处理
+    if (Service::instance()->isSettingDialogVisible() && Service::instance()->getSettingOwner() == this) {
+        return;
+    }
+
+//    // 不是雷神窗口，不处理
+//    if (!m_isQuakeWindow) {
+//        // 非雷神窗口被激活,意味着雷神窗口要被隐藏
+//        MainWindow *pQuakeWindow = WindowsManager::instance()->getQuakeWindow();
+//        if (isActiveWindow() && pQuakeWindow && pQuakeWindow->isVisible()) {
+//            pQuakeWindow->hide();
+//        }
+//        return;
+//    }
 
     // 处于激活状态,不处理
     if (isActiveWindow()) {
