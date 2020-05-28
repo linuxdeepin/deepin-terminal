@@ -20,6 +20,9 @@ public:
     void initRemoteManagementTopPanel();
     QString createShellFile(ServerConfig *curServer);
     void hidePlugn();
+
+    // 设置远程编码
+    void setRemoteEncode(QString encode);
 signals:
     void doHide();
 

@@ -53,37 +53,35 @@ using namespace Konsole;
 
 void Pty::setWindowSize(int lines, int cols)
 {
-  _windowColumns = cols;
-  _windowLines = lines;
+    _windowColumns = cols;
+    _windowLines = lines;
 
-  if (pty()->masterFd() >= 0)
-    pty()->setWinSize(lines, cols);
+    if (pty()->masterFd() >= 0)
+        pty()->setWinSize(lines, cols);
 }
 QSize Pty::windowSize() const
 {
-    return QSize(_windowColumns,_windowLines);
+    return QSize(_windowColumns, _windowLines);
 }
 
 void Pty::setFlowControlEnabled(bool enable)
 {
-  _xonXoff = enable;
+    _xonXoff = enable;
 
-  if (pty()->masterFd() >= 0)
-  {
-    struct ::termios ttmode;
-    pty()->tcGetAttr(&ttmode);
-    if (!enable)
-      ttmode.c_iflag &= ~(IXOFF | IXON);
-    else
-      ttmode.c_iflag |= (IXOFF | IXON);
-    if (!pty()->tcSetAttr(&ttmode))
-      qWarning() << "Unable to set terminal attributes.";
-  }
+    if (pty()->masterFd() >= 0) {
+        struct ::termios ttmode;
+        pty()->tcGetAttr(&ttmode);
+        if (!enable)
+            ttmode.c_iflag &= ~(IXOFF | IXON);
+        else
+            ttmode.c_iflag |= (IXOFF | IXON);
+        if (!pty()->tcSetAttr(&ttmode))
+            qWarning() << "Unable to set terminal attributes.";
+    }
 }
 bool Pty::flowControlEnabled() const
 {
-    if (pty()->masterFd() >= 0)
-    {
+    if (pty()->masterFd() >= 0) {
         struct ::termios ttmode;
         pty()->tcGetAttr(&ttmode);
         return ttmode.c_iflag & IXOFF &&
@@ -96,40 +94,37 @@ bool Pty::flowControlEnabled() const
 void Pty::setUtf8Mode(bool enable)
 {
 #ifdef IUTF8 // XXX not a reasonable place to check it.
-  _utf8 = enable;
+    _utf8 = enable;
 
-  if (pty()->masterFd() >= 0)
-  {
-    struct ::termios ttmode;
-    pty()->tcGetAttr(&ttmode);
-    if (!enable)
-      ttmode.c_iflag &= ~IUTF8;
-    else
-      ttmode.c_iflag |= IUTF8;
-    if (!pty()->tcSetAttr(&ttmode))
-      qWarning() << "Unable to set terminal attributes.";
-  }
+    if (pty()->masterFd() >= 0) {
+        struct ::termios ttmode;
+        pty()->tcGetAttr(&ttmode);
+        if (!enable)
+            ttmode.c_iflag &= ~IUTF8;
+        else
+            ttmode.c_iflag |= IUTF8;
+        if (!pty()->tcSetAttr(&ttmode))
+            qWarning() << "Unable to set terminal attributes.";
+    }
 #endif
 }
 
 void Pty::setErase(char erase)
 {
-  _eraseChar = erase;
+    _eraseChar = erase;
 
-  if (pty()->masterFd() >= 0)
-  {
-    struct ::termios ttmode;
-    pty()->tcGetAttr(&ttmode);
-    ttmode.c_cc[VERASE] = erase;
-    if (!pty()->tcSetAttr(&ttmode))
-      qWarning() << "Unable to set terminal attributes.";
-  }
+    if (pty()->masterFd() >= 0) {
+        struct ::termios ttmode;
+        pty()->tcGetAttr(&ttmode);
+        ttmode.c_cc[VERASE] = erase;
+        if (!pty()->tcSetAttr(&ttmode))
+            qWarning() << "Unable to set terminal attributes.";
+    }
 }
 
 char Pty::erase() const
 {
-    if (pty()->masterFd() >= 0)
-    {
+    if (pty()->masterFd() >= 0) {
         struct ::termios ttyAttributes;
         pty()->tcGetAttr(&ttyAttributes);
         return ttyAttributes.c_cc[VERASE];
@@ -138,89 +133,87 @@ char Pty::erase() const
     return _eraseChar;
 }
 
-void Pty::addEnvironmentVariables(const QStringList& environment)
+void Pty::addEnvironmentVariables(const QStringList &environment)
 {
     QListIterator<QString> iter(environment);
-    while (iter.hasNext())
-    {
+    while (iter.hasNext()) {
         QString pair = iter.next();
 
         // split on the first '=' character
         int pos = pair.indexOf(QLatin1Char('='));
 
-        if ( pos >= 0 )
-        {
+        if ( pos >= 0 ) {
             QString variable = pair.left(pos);
-            QString value = pair.mid(pos+1);
+            QString value = pair.mid(pos + 1);
 
-            setEnv(variable,value);
+            setEnv(variable, value);
         }
     }
 }
 
-int Pty::start(const QString& program,
-               const QStringList& programArguments,
-               const QStringList& environment,
+int Pty::start(const QString &program,
+               const QStringList &programArguments,
+               const QStringList &environment,
                ulong winid,
                bool addToUtmp
                //const QString& dbusService,
                //const QString& dbusSession
-               )
+              )
 {
-  clearProgram();
+    clearProgram();
 
-  // For historical reasons, the first argument in programArguments is the
-  // name of the program to execute, so create a list consisting of all
-  // but the first argument to pass to setProgram()
-  Q_ASSERT(programArguments.count() >= 1);
-  setProgram(program, programArguments.mid(1));
+    // For historical reasons, the first argument in programArguments is the
+    // name of the program to execute, so create a list consisting of all
+    // but the first argument to pass to setProgram()
+    Q_ASSERT(programArguments.count() >= 1);
+    setProgram(program, programArguments.mid(1));
 
-  addEnvironmentVariables(environment);
+    addEnvironmentVariables(environment);
 
-  setEnv(QLatin1String("WINDOWID"), QString::number(winid));
+    setEnv(QLatin1String("WINDOWID"), QString::number(winid));
 
-  // unless the LANGUAGE environment variable has been set explicitly
-  // set it to a null string
-  // this fixes the problem where KCatalog sets the LANGUAGE environment
-  // variable during the application's startup to something which
-  // differs from LANG,LC_* etc. and causes programs run from
-  // the terminal to display messages in the wrong language
-  //
-  // this can happen if LANG contains a language which KDE
-  // does not have a translation for
-  //
-  // BR:149300
-  setEnv(QLatin1String("LANGUAGE"),QString(),false /* do not overwrite existing value if any */);
+    // unless the LANGUAGE environment variable has been set explicitly
+    // set it to a null string
+    // this fixes the problem where KCatalog sets the LANGUAGE environment
+    // variable during the application's startup to something which
+    // differs from LANG,LC_* etc. and causes programs run from
+    // the terminal to display messages in the wrong language
+    //
+    // this can happen if LANG contains a language which KDE
+    // does not have a translation for
+    //
+    // BR:149300
+    setEnv(QLatin1String("LANGUAGE"), QString(), false /* do not overwrite existing value if any */);
 
-  setUseUtmp(addToUtmp);
+    setUseUtmp(addToUtmp);
 
-  struct ::termios ttmode;
-  pty()->tcGetAttr(&ttmode);
-  if (!_xonXoff)
-    ttmode.c_iflag &= ~(IXOFF | IXON);
-  else
-    ttmode.c_iflag |= (IXOFF | IXON);
+    struct ::termios ttmode;
+    pty()->tcGetAttr(&ttmode);
+    if (!_xonXoff)
+        ttmode.c_iflag &= ~(IXOFF | IXON);
+    else
+        ttmode.c_iflag |= (IXOFF | IXON);
 #ifdef IUTF8 // XXX not a reasonable place to check it.
-  if (!_utf8)
-    ttmode.c_iflag &= ~IUTF8;
-  else
-    ttmode.c_iflag |= IUTF8;
+    if (!_utf8)
+        ttmode.c_iflag &= ~IUTF8;
+    else
+        ttmode.c_iflag |= IUTF8;
 #endif
 
-  if (_eraseChar != 0)
-      ttmode.c_cc[VERASE] = _eraseChar;
+    if (_eraseChar != 0)
+        ttmode.c_cc[VERASE] = _eraseChar;
 
-  if (!pty()->tcSetAttr(&ttmode))
-    qWarning() << "Unable to set terminal attributes.";
+    if (!pty()->tcSetAttr(&ttmode))
+        qWarning() << "Unable to set terminal attributes.";
 
-  pty()->setWinSize(_windowLines, _windowColumns);
+    pty()->setWinSize(_windowLines, _windowColumns);
 
-  KProcess::start();
+    KProcess::start();
 
-  if (!waitForStarted())
-      return -1;
+    if (!waitForStarted())
+        return -1;
 
-  return 0;
+    return 0;
 }
 
 void Pty::setEmptyPTYProperties()
@@ -228,40 +221,40 @@ void Pty::setEmptyPTYProperties()
     struct ::termios ttmode;
     pty()->tcGetAttr(&ttmode);
     if (!_xonXoff)
-      ttmode.c_iflag &= ~(IXOFF | IXON);
+        ttmode.c_iflag &= ~(IXOFF | IXON);
     else
-      ttmode.c_iflag |= (IXOFF | IXON);
-  #ifdef IUTF8 // XXX not a reasonable place to check it.
+        ttmode.c_iflag |= (IXOFF | IXON);
+#ifdef IUTF8 // XXX not a reasonable place to check it.
     if (!_utf8)
-      ttmode.c_iflag &= ~IUTF8;
+        ttmode.c_iflag &= ~IUTF8;
     else
-      ttmode.c_iflag |= IUTF8;
-  #endif
+        ttmode.c_iflag |= IUTF8;
+#endif
 
     if (_eraseChar != 0)
         ttmode.c_cc[VERASE] = _eraseChar;
 
     if (!pty()->tcSetAttr(&ttmode))
-      qWarning() << "Unable to set terminal attributes.";
+        qWarning() << "Unable to set terminal attributes.";
 }
 
 void Pty::setWriteable(bool writeable)
 {
-  struct stat sbuf;
-  stat(pty()->ttyName(), &sbuf);
-  if (writeable)
-    chmod(pty()->ttyName(), sbuf.st_mode | S_IWGRP);
-  else
-    chmod(pty()->ttyName(), sbuf.st_mode & ~(S_IWGRP|S_IWOTH));
+    struct stat sbuf;
+    stat(pty()->ttyName(), &sbuf);
+    if (writeable)
+        chmod(pty()->ttyName(), sbuf.st_mode | S_IWGRP);
+    else
+        chmod(pty()->ttyName(), sbuf.st_mode & ~(S_IWGRP | S_IWOTH));
 }
 
-Pty::Pty(int masterFd, QObject* parent)
-    : KPtyProcess(masterFd,parent)
+Pty::Pty(int masterFd, QObject *parent)
+    : KPtyProcess(masterFd, parent)
 {
     init();
 }
 
-Pty::Pty(QObject* parent)
+Pty::Pty(QObject *parent)
     : KPtyProcess(parent)
 {
     init();
@@ -269,15 +262,15 @@ Pty::Pty(QObject* parent)
 
 void Pty::init()
 {
-  _windowColumns = 0;
-  _windowLines = 0;
-  _eraseChar = 0;
-  _xonXoff = true;
-  _utf8 = true;
-  _bUninstall = false;
+    _windowColumns = 0;
+    _windowLines = 0;
+    _eraseChar = 0;
+    _xonXoff = true;
+    _utf8 = true;
+    _bUninstall = false;
 
-  connect(pty(), SIGNAL(readyRead()) , this , SLOT(dataReceived()));
-  setPtyChannels(KPtyProcess::AllChannels);
+    connect(pty(), SIGNAL(readyRead()), this, SLOT(dataReceived()));
+    setPtyChannels(KPtyProcess::AllChannels);
 }
 
 Pty::~Pty()
@@ -287,8 +280,7 @@ Pty::~Pty()
 bool Pty::isTerminalRemoved()
 {
     QFile terminalExecFile("/usr/bin/deepin-terminal");
-    if (terminalExecFile.exists())
-    {
+    if (terminalExecFile.exists()) {
         return false;
     }
 
@@ -318,27 +310,21 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
     QStringList strCommandList;
     strCommandList.append(strCommand);
 
-    if (strCommand.contains("&&"))
-    {
+    if (strCommand.contains("&&")) {
         QStringList cmdList = strCommand.split("&&");
-        for(int i=0; i<cmdList.size(); i++)
-        {
+        for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
-            if (currCmd.length() > 0 && currCmd.contains(packageName))
-            {
+            if (currCmd.length() > 0 && currCmd.contains(packageName)) {
                 strCommandList.append(currCmd);
             }
         }
     }
 
-    if (strCommand.contains(";"))
-    {
+    if (strCommand.contains(";")) {
         QStringList cmdList = strCommand.split(";");
-        for(int i=0; i<cmdList.size(); i++)
-        {
+        for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
-            if (currCmd.length() > 0 && currCmd.contains(packageName))
-            {
+            if (currCmd.length() > 0 && currCmd.contains(packageName)) {
                 strCommandList.append(currCmd);
             }
         }
@@ -349,11 +335,9 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
     QStringList packageNameList;
     packageNameList << packageName << packageNameReborn;
 
-    for(int i=0; i<strCommandList.size(); i++)
-    {
+    for (int i = 0; i < strCommandList.size(); i++) {
         QString strCurrCommand = strCommandList.at(i);
-        for(int j=0; j<packageNameList.size(); j++)
-        {
+        for (int j = 0; j < packageNameList.size(); j++) {
             QString packageName = packageNameList.at(j);
             QString removePattern = QString("sudo\\s+apt-get\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
@@ -388,27 +372,21 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
     QStringList strCommandList;
     strCommandList.append(strCommand);
 
-    if (strCommand.contains("&&"))
-    {
+    if (strCommand.contains("&&")) {
         QStringList cmdList = strCommand.split("&&");
-        for(int i=0; i<cmdList.size(); i++)
-        {
+        for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
-            if (currCmd.length() > 0 && currCmd.contains(packageName))
-            {
+            if (currCmd.length() > 0 && currCmd.contains(packageName)) {
                 strCommandList.append(currCmd);
             }
         }
     }
 
-    if (strCommand.contains(";"))
-    {
+    if (strCommand.contains(";")) {
         QStringList cmdList = strCommand.split(";");
-        for(int i=0; i<cmdList.size(); i++)
-        {
+        for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
-            if (currCmd.length() > 0 && currCmd.contains(packageName))
-            {
+            if (currCmd.length() > 0 && currCmd.contains(packageName)) {
                 strCommandList.append(currCmd);
             }
         }
@@ -419,11 +397,9 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
     QStringList packageNameList;
     packageNameList << packageName << packageNameReborn;
 
-    for(int i=0; i<strCommandList.size(); i++)
-    {
+    for (int i = 0; i < strCommandList.size(); i++) {
         QString strCurrCommand = strCommandList.at(i);
-        for(int j=0; j<packageNameList.size(); j++)
-        {
+        for (int j = 0; j < packageNameList.size(); j++) {
             QString packageName = packageNameList.at(j);
             QString removePattern = QString("sudo\\s+apt-get\\s+purge\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
@@ -446,26 +422,22 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
 }
 /******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
 
-void Pty::sendData(const char* data, int length)
+void Pty::sendData(const char *data, int length)
 {
-    if (!length)
-    {
+    if (!length) {
         return;
     }
 
     bool isCustomCommand = false;
     QString currCommand = QString::fromLatin1(data);
-    if (currCommand.length() > 0 && currCommand.endsWith('\n'))
-    {
+    if (currCommand.length() > 0 && currCommand.endsWith('\n')) {
         isCustomCommand = true;
     }
 
     //检测到按了回车键
-    if(((*data) == '\r' || isCustomCommand) && _bUninstall == false)
-    {
+    if (((*data) == '\r' || isCustomCommand) && _bUninstall == false) {
         QString strCurrCommand = SessionManager::instance()->getCurrShellCommand(_sessionId);
-        if (isCustomCommand)
-        {
+        if (isCustomCommand) {
             strCurrCommand = currCommand;
         }
 
@@ -473,43 +445,35 @@ void Pty::sendData(const char* data, int length)
         bool bPurgeTerminal =  bWillPurgeTerminal(strCurrCommand);
         bool bRemoveTerminal =  bWillRemoveTerminal(strCurrCommand);
 
-        if (!isTerminalRemoved() && (bPurgeTerminal || bRemoveTerminal))
-        {
+        if (!isTerminalRemoved() && (bPurgeTerminal || bRemoveTerminal)) {
             QString strname = "remove";
-            if(bPurgeTerminal){
+            if (bPurgeTerminal) {
                 strname = "purge";
             }
             QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::AutoConnection, Q_RETURN_ARG(bool, _bUninstall), Q_ARG(QString, strname));
-        /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 End***************/
-            if (_bUninstall)
-            {
+            /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 End***************/
+            if (_bUninstall) {
                 qDebug() << "确认卸载终端！" << _bUninstall << endl;
-                connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [=](bool isIdle) {
+                connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [ = ](bool isIdle) {
                     //卸载完成，关闭所有终端窗口
-                    if (isIdle)
-                    {
-                        if (isTerminalRemoved())
-                        {
+                    if (isIdle) {
+                        if (isTerminalRemoved()) {
                             pclose(popen("killall deepin-terminal", "r"));
                         }
                     }
 
-                    if (!isTerminalRemoved())
-                    {
+                    if (!isTerminalRemoved()) {
                         _bUninstall = false;
                     }
                 });
-            }
-            else
-            {
+            } else {
                 qDebug() << "不卸载终端！" << _bUninstall << endl;
                 return;
             }
         }
     }
 
-    if (!pty()->write(data,length))
-    {
+    if (!pty()->write(data, length)) {
         qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
         return;
     }
@@ -549,9 +513,9 @@ void Pty::lockPty(bool lock)
     Q_UNUSED(lock);
 
 // TODO: Support for locking the Pty
-  //if (lock)
+    //if (lock)
     //suspend();
-  //else
+    //else
     //resume();
 }
 
@@ -559,8 +523,7 @@ int Pty::foregroundProcessGroup() const
 {
     int pid = tcgetpgrp(pty()->masterFd());
 
-    if ( pid != -1 )
-    {
+    if ( pid != -1 ) {
         return pid;
     }
 
@@ -585,8 +548,8 @@ void Pty::setupChildProcess()
     sigemptyset(&action.sa_mask);
     action.sa_handler = SIG_DFL;
     action.sa_flags = 0;
-    for (int signal=1;signal < NSIG; signal++) {
-        sigaction(signal,&action,0L);
+    for (int signal = 1; signal < NSIG; signal++) {
+        sigaction(signal, &action, 0L);
         sigaddset(&sigset, signal);
     }
     sigprocmask(SIG_UNBLOCK, &sigset, NULL);

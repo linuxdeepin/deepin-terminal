@@ -331,7 +331,7 @@ QList<QString> ServerConfigOptDlg::getBackSpaceKey()
     eraseKeyList.append(tr("auto"));
     eraseKeyList.append(tr("control-h"));
     eraseKeyList.append(tr("escape-sequence"));
-    eraseKeyList.append(tr("ttys"));
+    eraseKeyList.append(tr("tty"));
     return eraseKeyList;
 }
 
@@ -342,7 +342,7 @@ QList<QString> ServerConfigOptDlg::getDeleteKey()
     eraseKeyList.append(tr("ascii-del"));
     eraseKeyList.append(tr("auto"));
     eraseKeyList.append(tr("control-h"));
-    eraseKeyList.append(tr("ttys"));
+    eraseKeyList.append(tr("tty"));
     return eraseKeyList;
 }
 

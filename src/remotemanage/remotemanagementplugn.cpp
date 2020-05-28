@@ -1,10 +1,12 @@
 #include "remotemanagementplugn.h"
 #include "mainwindow.h"
 #include "utils.h"
+#include "service.h"
 
 #include "../views/termwidget.h"//added by nyq
 
 #include <QTextCodec>
+#include <QDebug>
 
 RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPluginInterface(parent)
 {
@@ -80,14 +82,30 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
         m_mainWindow->sleep(100);
         /********************* Modify by m000714 daizhengwen End ************************/
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
-        QString encodeString = curServer->m_encoding;
-        if (!encodeString.isNull() && !encodeString.isEmpty()) {
-            m_mainWindow->currentPage()->setTextCodec(QTextCodec::codecForName(curServer->m_encoding.toLocal8Bit()));
-        }
+        // 等待连接
+        QTimer::singleShot(100, [ = ]() {
+            TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+            // 判断是否连接服务器
+            if (!term->isInRemoteServer()) {
+                // 没有连接上
+                qDebug() << "disconnect to server";
+                return;
+            }
+            // 标记此term连接远程
+            term->setIsConnectRemote(true);
+            qDebug() << "connect to server";
+            // 编码
+            setRemoteEncode(curServer->m_encoding);
+            // 退格键
+            // 删除键
+        });
+
     }
     /******** Modify by m000714 daizhengwen 2020-04-10: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
-    getRemoteManagementTopPanel()->hideAnim();
-    m_mainWindow->currentPage()->currentTerminal()->setFocus();
+    m_mainWindow->hidePlugin();
+    QTimer::singleShot(100, [&]() {
+        m_mainWindow->focusCurrentPage();
+    });
     /********************* Modify by m000714 daizhengwen End ************************/
 }
 
@@ -138,4 +156,18 @@ void RemoteManagementPlugn::hidePlugn()
     if (m_remoteManagementTopPanel && m_remoteManagementTopPanel->isVisible()) {
         m_remoteManagementTopPanel->hide();
     }
+}
+
+void RemoteManagementPlugn::setRemoteEncode(QString encode)
+{
+    TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+    if (!encode.isNull() && !encode.isEmpty()) {
+        // 设置当前窗口的编码
+        term->setTextCodec(QTextCodec::codecForName(encode.toLocal8Bit()));
+        qDebug() << "Remote encode " << encode;
+    }
+    // 记录远程编码
+    term->setRemoteEncode(encode);
+    // 切换编码列表的编码
+    emit Service::instance()->checkEncode(encode);
 }

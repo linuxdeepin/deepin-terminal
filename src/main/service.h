@@ -49,6 +49,10 @@ public:
 
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
+    // 切换编码列表的编码
+    void checkEncode(QString encode);
+    // 当前终端切换
+    void currentTermChange(QWidget *term);
 
 public slots:
     void Entry(QStringList arguments);

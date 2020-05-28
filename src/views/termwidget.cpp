@@ -112,6 +112,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         setTrackOutput(Settings::instance()->OutputtingScroll());
     });
 
+    // 接收到输出
     connect(this, &TermWidget::receivedData, this, [this](QString value) {
         /******** Modify by ut000610 daizhengwen 2020-05-25: quit download****************/
         if (value.contains("Transfer incomplete")) {
@@ -123,6 +124,20 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
             QApplication::sendEvent(focusWidget(), &keyPress);
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
+        // 退出远程后，设置成false
+        if (value.contains("Connection to") && value.contains(" closed.")) {
+            QTimer::singleShot(100, [&]() {
+                // 判断是否此时退出远程
+                if (!isInRemoteServer()) {
+                    qDebug() << "exit remote";
+                    setIsConnectRemote(false);
+                    // 还原编码
+                    setTextCodec(QTextCodec::codecForName(encode().toLocal8Bit()));
+                    qDebug() << "current encode " << encode();
+                    emit Service::instance()->checkEncode(encode());
+                }
+            });
+        }
     });
 
 #if !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
@@ -363,6 +378,36 @@ void TermWidget::addMenuActions(const QPoint &pos)
     });
 }
 
+QString TermWidget::RemoteEncode() const
+{
+    return m_RemoteEncode;
+}
+
+void TermWidget::setRemoteEncode(const QString &RemoteEncode)
+{
+    m_RemoteEncode = RemoteEncode;
+}
+
+QString TermWidget::encode() const
+{
+    return m_encode;
+}
+
+void TermWidget::setEncode(const QString &encode)
+{
+    m_encode = encode;
+}
+
+bool TermWidget::isConnectRemote() const
+{
+    return m_isConnectRemote;
+}
+
+void TermWidget::setIsConnectRemote(bool isConnectRemote)
+{
+    m_isConnectRemote = isConnectRemote;
+}
+
 bool TermWidget::enterSzCommand() const
 {
     return m_enterSzCommand;
@@ -489,6 +534,22 @@ void TermWidget::setPressingScroll(bool enable)
         setMotionAfterPasting(2);
     } else {
         setMotionAfterPasting(0);
+    }
+}
+
+void TermWidget::selectEncode(QString encode)
+{
+    // 直接设置终端
+    setTextCodec(QTextCodec::codecForName(encode.toUtf8()));
+    // 是否连接远程
+    if (!isConnectRemote()) {
+        // 记录当前的encode
+        setEncode(encode);
+        qDebug() << "current encode " << encode;
+    } else {
+        // 记录远程的encode
+        setRemoteEncode(encode);
+        qDebug() << "Remote encode " << encode;
     }
 }
 

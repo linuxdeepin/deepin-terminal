@@ -683,6 +683,7 @@ void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
+    emit Service::instance()->currentTermChange(term);
     qDebug() << "onTermGetFocus" << m_currentTerm->getSessionId();
     m_currentTerm->setFocus(Qt::OtherFocusReason);
     emit termGetFocus();
@@ -792,9 +793,6 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
-    connect(parentMainWindow(), &MainWindow::changeEncodeSig, term, [term](QString name) {
-        term->setTextCodec(QTextCodec::codecForName(name.toUtf8()));
-    });
     qDebug() << "createTerm" << term->getSessionId();
     return term;
 }

@@ -28,11 +28,12 @@ signals:
 
 public slots:
     void onListViewClicked(const QModelIndex &index);
+    void checkEncode(QString encode);
 
 private:
     void initEncodeItems();
 
-    MainWindow * m_Mainwindow  = nullptr;
+    MainWindow *m_Mainwindow  = nullptr;
 
     EncodeListModel *m_encodeModel = nullptr;
 

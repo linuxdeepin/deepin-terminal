@@ -7,7 +7,7 @@ const int animationDuration = 300;
 RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel(parent)
 {
     m_remoteManagementPanel = new RemoteManagementPanel(this);
-    connect(this, &RemoteManagementTopPanel::focusOut, this, &RightPanel::hideAnim);
+//    connect(this, &RemoteManagementTopPanel::focusOut, this, &RightPanel::hideAnim);
     connect(m_remoteManagementPanel,
             &RemoteManagementPanel::showServerConfigGroupPanel,
             this,

@@ -1,11 +1,15 @@
 #include "encodelistview.h"
 #include "encodelistmodel.h"
 #include "settings.h"
+#include "service.h"
+#include "termwidget.h"
 //#include "encodeitemdelegate.h"
 
 #include <DLog>
+
 #include <QScrollBar>
 #include <QStandardItemModel>
+#include <QDebug>
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
@@ -21,7 +25,7 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     /******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
-    setViewportMargins(0,20,0,0);//将设置Encode顶上的空白区域放在这里，目前设置大小为20
+    setViewportMargins(0, 20, 0, 0); //将设置Encode顶上的空白区域放在这里，目前设置大小为20
     /******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
 
     //add by ameng 设置属性，修复BUG#20074
@@ -36,6 +40,7 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
 
     connect(this, &DListView::clicked, this, &EncodeListView::onListViewClicked);
     connect(this, &DListView::activated, this, &QListView::clicked);
+    connect(Service::instance(), &Service::checkEncode, this, &EncodeListView::checkEncode);
 }
 
 void EncodeListView::initEncodeItems()
@@ -100,14 +105,29 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
     if (!index.isValid()) {
         return;
     }
-
+    qDebug() << "check encode " << index.data().toString();
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
     for (int row = 0; row < model->rowCount(); row++) {
         DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
         if (row == index.row()) {
             modelItem->setCheckState(Qt::Checked);
             // 修改配置生效。
-            emit m_Mainwindow->changeEncodeSig(index.data().toString());
+            m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
+        } else {
+            modelItem->setCheckState(Qt::Unchecked);
+        }
+    }
+}
+
+void EncodeListView::checkEncode(QString encode)
+{
+    qDebug() << "check encode " << encode;
+    QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
+    for (int row = 0; row < model->rowCount(); row++) {
+        QModelIndex modelindex = model->index(row, 0);
+        DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
+        if (modelindex.data().toString() == encode) {
+            modelItem->setCheckState(Qt::Checked);
         } else {
             modelItem->setCheckState(Qt::Unchecked);
         }

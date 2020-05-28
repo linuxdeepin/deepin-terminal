@@ -26,6 +26,8 @@ public:
     // 修改光标形状
     void setCursorShape(int shape);
     void setPressingScroll(bool enable);
+    // 设置编码
+    void selectEncode(QString encode);
 
 public slots:
     void wpasteSelection();
@@ -50,11 +52,24 @@ private:
     /******** Modify by ut000610 daizhengwen 2020-05-27: 当前窗口是否要进行下载操作****************/
     bool m_enterSzCommand = false;
     /********************* Modify by ut000610 daizhengwen End ************************/
+    /******** Modify by ut000610 daizhengwen 2020-05-28: 当前窗口是否连接远程服务器****************/
+    bool m_isConnectRemote = false;
+    /********************* Modify by ut000610 daizhengwen End ************************/
+    // 当前编码
+    QString m_encode = "UTF-8";
+    // 远程编码
+    QString m_RemoteEncode = "UTF-8";
 public:
     // session支持最大值．再多了就起不来了．
     static const int MaxTermwidgetCount = 199;
     bool enterSzCommand() const;
     void setEnterSzCommand(bool enterSzCommand);
+    bool isConnectRemote() const;
+    void setIsConnectRemote(bool isConnectRemote);
+    QString encode() const;
+    void setEncode(const QString &encode);
+    QString RemoteEncode() const;
+    void setRemoteEncode(const QString &RemoteEncode);
 };
 
 #endif  // TERMWIDGET_H
