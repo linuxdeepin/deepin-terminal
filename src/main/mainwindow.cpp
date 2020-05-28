@@ -510,7 +510,7 @@ bool MainWindow::hasRunningProcesses()
         //没有校验当前tab中是否有其它正在执行的分屏
         //TermWidget *term = tabPage->currentTerminal();
         if (tabPage->runningTerminalCount() != 0) {
-        /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
+            /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
             qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
             return true;
         } else {
@@ -1441,7 +1441,10 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
     if ((keyName == "advanced.window.auto_hide_raytheon_window") || (keyName == "advanced.window.use_on_starting")) {
         qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                  << ", auto effective when happen";
-        onApplicationStateChanged(QApplication::applicationState());
+        /***mod begin by ut001121 zhangmeng 20200528 修复BUG28920***/
+        //onApplicationStateChanged(QApplication::applicationState());
+        onAppFocusChangeForQuake();
+        /***mod end by ut001121***/
         return;
     }
 
