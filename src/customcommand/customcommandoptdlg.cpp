@@ -255,12 +255,6 @@ void CustomCommandOptDlg::initUI()
             }
             m_shortCutLineEdit->clear();
             m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
-
-            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 Begin***************/
-            QTimer::singleShot(30, [&]() {
-                m_shortCutLineEdit->setFocus();
-            });
-            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/
             return;
         }
         m_lastCmdShortcut = sequence.toString();
@@ -616,7 +610,16 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
     // 若没有弹窗，初始化
     if (nullptr == m_shortcutConflictDialog) {
         m_shortcutConflictDialog = new DDialog(this);
-        connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, &DDialog::hide);
+        /******** Modify by nt001000 renfeixiang 2020-05-29:修改 因为弹框改为非模态之后，快捷框冲突选中快捷框功能移动这 Begin***************/
+        connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, [this](){
+            m_shortcutConflictDialog->hide();
+            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 Begin***************/
+            QTimer::singleShot(30, [&]() {
+                m_shortCutLineEdit->setFocus();
+            });
+            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/
+        });
+        /******** Modify by nt001000 renfeixiang 2020-05-29:修改 修改因为弹框改为非模态之后，快捷框冲突选中快捷框功能移动这 End***************/
         m_shortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
         /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
         m_shortcutConflictDialog->addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
