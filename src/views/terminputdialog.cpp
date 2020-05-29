@@ -151,7 +151,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     });
     /********************* Modify by ut000610 daizhengwen End ************************/
 
-    DLabel *label = new DLabel(tr("Tab name"));
+    DLabel *label = new DLabel(tr("Rename title"));
     /***mod begin by ut001121 zhangmeng 20200428 修复BUG#22995 标签截断显示的问题***/
     /* delete
      * label->setFixedSize(360, 20);*/
@@ -178,7 +178,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
 
     this->addCancelConfirmButtons(170, 36, 15, 10, 9);
     this->setCancelBtnText(tr("Cancel"));
-    this->setConfirmBtnText(tr("OK"));
+    this->setConfirmBtnText(tr("Confirm"));
 
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
         qDebug() << "cancelBtnClicked";

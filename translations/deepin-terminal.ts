@@ -538,19 +538,16 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="511"/>
-        <location filename="../src/common/utils.cpp" line="722"/>
         <source>Set terminal start work directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="513"/>
-        <location filename="../src/common/utils.cpp" line="724"/>
         <source>Set terminal start on window mode: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="515"/>
-        <location filename="../src/common/utils.cpp" line="726"/>
         <source>Execute command in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -562,14 +559,37 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="518"/>
-        <location filename="../src/common/utils.cpp" line="729"/>
         <source>Set terminal start on quake mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="519"/>
-        <location filename="../src/common/utils.cpp" line="730"/>
         <source>Set terminal keep open when finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="722"/>
+        <source>Set the work directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="724"/>
+        <source>Set the window mode on starting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="726"/>
+        <source>Execute a command in the terminal </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="729"/>
+        <source>Run in quake mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="730"/>
+        <source>Keep terminal open when command finishes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -597,7 +617,7 @@
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="107"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="106"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -850,7 +870,7 @@
     <name>TermInputDialog</name>
     <message>
         <location filename="../src/views/terminputdialog.cpp" line="154"/>
-        <source>Tab name</source>
+        <source>Rename title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -860,7 +880,7 @@
     </message>
     <message>
         <location filename="../src/views/terminputdialog.cpp" line="181"/>
-        <source>OK</source>
+        <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -423,7 +423,6 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="511"/>
-        <location filename="../src/common/utils.cpp" line="722"/>
         <source>Set terminal start work directory</source>
         <translation>设置终端的启动目录</translation>
     </message>
@@ -433,13 +432,11 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="513"/>
-        <location filename="../src/common/utils.cpp" line="724"/>
         <source>Set terminal start on window mode: </source>
         <translation>设置终端开启时的模式:</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="515"/>
-        <location filename="../src/common/utils.cpp" line="726"/>
         <source>Execute command in the terminal</source>
         <translation>在终端中运行一个程序</translation>
     </message>
@@ -451,13 +448,11 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="518"/>
-        <location filename="../src/common/utils.cpp" line="729"/>
         <source>Set terminal start on quake mode</source>
         <translation>设置终端以雷神模式启动</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="519"/>
-        <location filename="../src/common/utils.cpp" line="730"/>
         <source>Set terminal keep open when finished</source>
         <translation>设置终端显示命令或脚本执行后的结果</translation>
     </message>
@@ -807,6 +802,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/common/utils.cpp" line="722"/>
+        <source>Set the work directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="724"/>
+        <source>Set the window mode on starting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="726"/>
+        <source>Execute a command in the terminal </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="729"/>
+        <source>Run in quake mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="730"/>
+        <source>Keep terminal open when command finishes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Are you sure you want to uninstall?</source>
         <translation type="vanished">您确定要卸载吗？</translation>
     </message>
@@ -920,7 +940,7 @@
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="107"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="106"/>
         <source>Search</source>
         <translation type="unfinished">搜索</translation>
     </message>
@@ -1271,9 +1291,13 @@
 <context>
     <name>TermInputDialog</name>
     <message>
-        <location filename="../src/views/terminputdialog.cpp" line="154"/>
         <source>Tab name</source>
-        <translation>标题名称</translation>
+        <translation type="vanished">标题名称</translation>
+    </message>
+    <message>
+        <location filename="../src/views/terminputdialog.cpp" line="154"/>
+        <source>Rename title</source>
+        <translation type="unfinished">重命名标题</translation>
     </message>
     <message>
         <location filename="../src/views/terminputdialog.cpp" line="180"/>
@@ -1282,8 +1306,12 @@
     </message>
     <message>
         <location filename="../src/views/terminputdialog.cpp" line="181"/>
+        <source>Confirm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation type="vanished">确定</translation>
     </message>
 </context>
 <context>
