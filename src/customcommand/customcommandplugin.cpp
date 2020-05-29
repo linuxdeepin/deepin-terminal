@@ -73,7 +73,7 @@ void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
         m_mainWindow->focusCurrentPage();
         /******** Add by nt001000 renfeixiang 2020-05-28:增加 使用mainwindow的hideplugin函数隐藏自定义窗口bug#21992 Begin***************/
-        m_mainWindow->hidePlugin();
+        m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
         /******** Add by nt001000 renfeixiang 2020-05-28:增加 使用mainwindow的hideplugin函数隐藏自定义窗口bug#21992 End***************/
     }
     emit doHide();

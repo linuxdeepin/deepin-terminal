@@ -102,10 +102,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 
     }
     /******** Modify by m000714 daizhengwen 2020-04-10: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
-    m_mainWindow->hidePlugin();
-    QTimer::singleShot(100, [&]() {
-        m_mainWindow->focusCurrentPage();
-    });
+    m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     /********************* Modify by m000714 daizhengwen End ************************/
 }
 
