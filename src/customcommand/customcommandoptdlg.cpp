@@ -319,12 +319,12 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     QKeySequence keytmp = m_shortCutLineEdit->keySequence();
 
     if (strName.isEmpty()) {
-        m_nameLineEdit->showAlertMessage(tr("Please enter name"), m_nameLineEdit->parentWidget());
+        m_nameLineEdit->showAlertMessage(tr("Please enter a name"), m_nameLineEdit->parentWidget());
         return;
     }
 
     if (strCommand.isEmpty()) {
-        m_commandLineEdit->showAlertMessage(tr("Please enter command"), m_commandLineEdit->parentWidget());
+        m_commandLineEdit->showAlertMessage(tr("Please enter a command"), m_commandLineEdit->parentWidget());
         return;
     }
 

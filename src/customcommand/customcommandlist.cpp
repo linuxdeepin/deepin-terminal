@@ -157,7 +157,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                 //dlgDelete->setWindowModality(Qt::WindowModal);
 
                 dlgDelete->setIcon(QIcon::fromTheme("deepin-terminal"));
-                dlgDelete->setTitle(tr("Are you sure to delete?"));
+                dlgDelete->setTitle(tr("Are you sure you want to delete %1?").arg(m_pdlg->m_currItemData->m_cmdName));
                 dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
                 dlgDelete->addButton(QObject::tr("OK"), false, DDialog::ButtonWarning);
                 connect(dlgDelete, &DDialog::finished, this, [ & ](int result) {
