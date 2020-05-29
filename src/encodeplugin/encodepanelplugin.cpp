@@ -66,8 +66,9 @@ void EncodePanelPlugin::initEncodePanel()
 {
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
     connect(Service::instance(), &Service::currentTermChange, m_encodePanel, [ = ](QWidget * term) {
+        TermWidget *pterm = m_mainWindow->currentPage()->currentTerminal();
         // 列表显示时，切换了当前终端
-        if (!m_encodePanel->isHidden()) {
+        if (!m_encodePanel->isHidden() && pterm == term) {      // 判断是否是当前页的term
             TermWidget *curterm = qobject_cast<TermWidget *>(term);
             setCurrentTermEncode(curterm);
         }
@@ -82,6 +83,6 @@ void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
     } else {
         encode = term->encode();                      // 终端编码
     }
-    emit Service::instance()->checkEncode(encode);
+    m_encodePanel->updateEncode(encode);
 }
 

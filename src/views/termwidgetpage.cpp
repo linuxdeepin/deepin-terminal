@@ -683,7 +683,7 @@ void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
-    emit Service::instance()->currentTermChange(term);
+    emit Service::instance()->currentTermChange(m_currentTerm);
     qDebug() << "onTermGetFocus" << m_currentTerm->getSessionId();
     m_currentTerm->setFocus(Qt::OtherFocusReason);
     emit termGetFocus();
