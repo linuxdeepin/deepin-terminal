@@ -255,7 +255,7 @@ QString Utils::getRandString()
 QString Utils::showDirDialog(QWidget *widget)
 {
     QString curPath = QDir::currentPath();
-    QString dlgTitle = QObject::tr("Select directory to save the file");
+    QString dlgTitle = QObject::tr("Select a directory to save the file");
     return DFileDialog::getExistingDirectory(widget, dlgTitle, curPath, DFileDialog::DontConfirmOverwrite);
 }
 
@@ -339,22 +339,11 @@ void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int 
 
 bool Utils::showExitUninstallConfirmDialog()
 {
-#ifndef USE_DTK
-    OperationConfirmDlg optDlg;
-    optDlg.setFixedSize(380, 160);
-    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
-    optDlg.setTipInfo(QObject::tr("Are you sure you want to uninstall?"));
-    optDlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
-    optDlg.exec();
-
-    return (optDlg.getConfirmResult() == QDialog::Accepted);
-#else
-    DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to uninstall?"));
+    DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to uninstall it?"));
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
     dlg.addButton(QString(tr("OK")), true, DDialog::ButtonWarning);
     return (dlg.exec() == DDialog::Accepted);
-#endif
 }
 
 bool Utils::showUnistallConfirmDialog(QString commandname)
@@ -371,10 +360,10 @@ bool Utils::showUnistallConfirmDialog(QString commandname)
 #else
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，显示不同的弹框信息 Begin***************/
     QString title = "", text = "";
-    if(commandname == "remove"){
+    if (commandname == "remove") {
         title = QObject::tr("Are you sure you want to uninstall this application?");
         text = QObject::tr("You will not be able to use Terminal any longer.");
-    }else if(commandname == "purge"){
+    } else if (commandname == "purge") {
         //后面根据产品提供的信息，修改此处purge命令卸载时的弹框信息
         title = QObject::tr("Are you sure you want to uninstall this application?");
         text = QObject::tr("You will not be able to use Terminal any longer.");

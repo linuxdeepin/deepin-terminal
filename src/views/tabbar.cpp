@@ -27,7 +27,7 @@ void TermTabStyle::setTabTextColor(const QColor &color)
     m_tabTextColor = color;
 }
 
-void TermTabStyle::setTabStatusMap(const QMap<int,int> &tabStatusMap)
+void TermTabStyle::setTabStatusMap(const QMap<int, int> &tabStatusMap)
 {
     m_tabStatusMap = tabStatusMap;
 }
@@ -37,17 +37,15 @@ QSize TermTabStyle::sizeFromContents(ContentsType type, const QStyleOption *opti
     return QProxyStyle::sizeFromContents(type, option, size, widget);
 }
 
-int TermTabStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption* option, const QWidget* widget) const
+int TermTabStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     return QProxyStyle::pixelMetric(metric, option, widget);
 }
 
 void TermTabStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    if (element == CE_TabBarTabLabel)
-    {
-        if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option))
-        {
+    if (element == CE_TabBarTabLabel) {
+        if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option)) {
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
 
             QTextOption textOption;
@@ -61,48 +59,33 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
             QString content = tab->text;
             QRect tabRect = tab->rect;
 
-            if (m_tabStatusMap.value(tab->row) == 2)
-            {
-                if (tab->state & QStyle::State_Selected)
-                {
+            if (m_tabStatusMap.value(tab->row) == 2) {
+                if (tab->state & QStyle::State_Selected) {
                     DPalette pa = appHelper->standardPalette(appHelper->themeType());
                     painter->setPen(pa.color(DPalette::HighlightedText));
-                }
-                else if(tab->state & QStyle::State_MouseOver)
-                {
+                } else if (tab->state & QStyle::State_MouseOver) {
+                    painter->setPen(m_tabTextColor);
+                } else {
                     painter->setPen(m_tabTextColor);
                 }
-                else
-                {
-                    painter->setPen(m_tabTextColor);
-                }
-            }
-            else
-            {
+            } else {
                 DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                if (tab->state & QStyle::State_Selected)
-                {
+                if (tab->state & QStyle::State_Selected) {
                     painter->setPen(pa.color(DPalette::HighlightedText));
-                }
-                else if(tab->state & QStyle::State_MouseOver)
-                {
+                } else if (tab->state & QStyle::State_MouseOver) {
                     painter->setPen(pa.color(DPalette::TextTitle));
-                }
-                else
-                {
+                } else {
                     painter->setPen(pa.color(DPalette::TextTitle));
                 }
             }
 
             QFontMetrics fontMetric(textFont);
-            QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width()-30, Qt::TextShowMnemonic);
+            QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width() - 30, Qt::TextShowMnemonic);
             painter->drawText(tabRect, elidedText, textOption);
-        }
-        else {
+        } else {
             QProxyStyle::drawControl(element, option, painter, widget);
         }
-    }
-    else {
+    } else {
         QProxyStyle::drawControl(element, option, painter, widget);
     }
 }
@@ -120,7 +103,7 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 
     QRect textRect = style()->subElementRect(QStyle::SE_TabBarTabText, option, this);
     option->text = fontMetrics().elidedText(option->text, d->elideMode, textRect.width(),
-                        Qt::TextShowMnemonic);
+                                            Qt::TextShowMnemonic);
     // 保存tab的索引值到row字段
     option->row = tabIndex;
 }
@@ -268,7 +251,7 @@ void QTabBar::removeTab(int index)
             // around.
             d->currentIndex = -1;
             if (d->tabList.size() > 0) {
-                switch(d->selectionBehaviorOnRemove) {
+                switch (d->selectionBehaviorOnRemove) {
                 case SelectPreviousTab:
                     if (newIndex > index)
                         newIndex--;
@@ -319,17 +302,14 @@ void QTabBar::removeTab(int index)
 
     TabBar *tabBar = qobject_cast<TabBar *>(this->parent());
 
-    if (tabBar && tabBar->isEnableCloseTabAnimation())
-    {
+    if (tabBar && tabBar->isEnableCloseTabAnimation()) {
         //tab关闭动画
-        if (d->rightB->isVisible())
-        {
-            for(int i=0; i<index; i++)
-            {
+        if (d->rightB->isVisible()) {
+            for (int i = 0; i < index; i++) {
                 QTabBarPrivate::Tab *tab = &d->tabList[i];
 
                 if (!tab->animation)
-                    tab->animation = reinterpret_cast<QTabBarPrivate::Tab::TabBarAnimation*>(new QTabBarPrivate::Tab::TabBarAnimation(tab, d));
+                    tab->animation = reinterpret_cast<QTabBarPrivate::Tab::TabBarAnimation *>(new QTabBarPrivate::Tab::TabBarAnimation(tab, d));
                 tab->animation->setStartValue(-100);
                 tab->animation->setEndValue(0);
                 tab->animation->setEasingCurve(QEasingCurve::OutCubic);
@@ -389,7 +369,7 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                 m_rightMenu = new DMenu;
 
                 m_closeTabAction = new QAction(tr("Close workspace"), this);
-                m_closeOtherTabAction = new QAction(tr("Close other workspace"), this);
+                m_closeOtherTabAction = new QAction(tr("Close other workspaces"), this);
 
                 connect(m_closeTabAction, &QAction::triggered, this, [ = ] {
                     Q_EMIT tabCloseRequested(m_rightClickTab);
@@ -457,7 +437,7 @@ void TabBar::setClearTabColor(int index)
     style->polish(this);
 }
 
-void TabBar::setTabStatusMap(const QMap<int,int> &tabStatusMap)
+void TabBar::setTabStatusMap(const QMap<int, int> &tabStatusMap)
 {
     m_tabStatusMap = tabStatusMap;
 }

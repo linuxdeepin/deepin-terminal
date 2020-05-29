@@ -235,7 +235,7 @@ void MainWindow::initOptionMenu()
 {
     titlebar()->setMenu(m_menu);
     /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
-    QAction *newWindowAction(new QAction(tr("New &window"), this));
+    QAction *newWindowAction(new QAction(tr("New window"), this));
     connect(newWindowAction, &QAction::triggered, this, [this]() {
         qDebug() << "menu click new window";
 
@@ -257,7 +257,7 @@ void MainWindow::initOptionMenu()
         }
     }
 
-    QAction *settingAction(new QAction(tr("&Settings"), this));
+    QAction *settingAction(new QAction(tr("Settings"), this));
     m_menu->addAction(settingAction);
     m_menu->addSeparator();
     connect(settingAction, &QAction::triggered, Service::instance(), [ = ] {

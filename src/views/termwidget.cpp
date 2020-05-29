@@ -238,16 +238,16 @@ void TermWidget::addMenuActions(const QPoint &pos)
     // add other actions here.
     if (!selectedText().isEmpty()) {
 
-        m_menu->addAction(tr("&Copy"), this, [this] { copyClipboard(); });
+        m_menu->addAction(tr("Copy"), this, [this] { copyClipboard(); });
     }
     if (!QApplication::clipboard()->text(QClipboard::Clipboard).isEmpty()) {
-        m_menu->addAction(tr("&Paste"), this, [this] { pasteClipboard(); });
+        m_menu->addAction(tr("Paste"), this, [this] { pasteClipboard(); });
     }
     /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
     if (!isRemoting && !selectedText().isEmpty()) {
         QFileInfo tempfile(workingDirectory() + "/" + selectedText());
         if (tempfile.exists()) {
-            m_menu->addAction(tr("&Open"), this, [this] {
+            m_menu->addAction(tr("Open"), this, [this] {
                 QString file = workingDirectory() + "/" + selectedText();
                 QString cmd = QString("xdg-open ") + file;
                 //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
@@ -258,34 +258,34 @@ void TermWidget::addMenuActions(const QPoint &pos)
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
-    m_menu->addAction(tr("&Open file manager"), this, [this] {
+    m_menu->addAction(tr("Open file manager"), this, [this] {
         DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
     });
 
     m_menu->addSeparator();
 
-    m_menu->addAction(tr("&Horizontal split"), this, [this] {
+    m_menu->addAction(tr("Horizontal split"), this, [this] {
         parentPage()->split(Qt::Horizontal);
     });
 
-    m_menu->addAction(tr("&Vertical split"), this, [this] {
+    m_menu->addAction(tr("Vertical split"), this, [this] {
         parentPage()->split(Qt::Vertical);
     });
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    m_menu->addAction(tr("Close &window"), this, [this] {
+    m_menu->addAction(tr("Close window"), this, [this] {
         parentPage()->closeSplit(parentPage()->currentTerminal());
     });
-    //m_menu->addAction(tr("Close &Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
+    //m_menu->addAction(tr("Close Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
     if (parentPage()->getTerminalCount() > 1) {
-        m_menu->addAction(tr("Close &other &window"), this, [this] {
+        m_menu->addAction(tr("Close other windows"), this, [this] {
             parentPage()->closeOtherTerminal();
         });
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
     m_menu->addSeparator();
-    m_menu->addAction(tr("New &workspace"), this, [this] {
+    m_menu->addAction(tr("New workspace"), this, [this] {
         parentPage()->parentMainWindow()->createNewWorkspace();
     });
 
@@ -294,23 +294,23 @@ void TermWidget::addMenuActions(const QPoint &pos)
     if (!parentPage()->parentMainWindow()->isQuakeMode()) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
         if (isFullScreen) {
-            m_menu->addAction(tr("Exit full&screen"), this, [this] {
+            m_menu->addAction(tr("Exit fullscreen"), this, [this] {
                 parentPage()->parentMainWindow()->switchFullscreen();
             });
         } else {
-            m_menu->addAction(tr("Full&screen"), this, [this] {
+            m_menu->addAction(tr("Fullscreen"), this, [this] {
                 parentPage()->parentMainWindow()->switchFullscreen();
             });
         }
     }
 
-    m_menu->addAction(tr("&Find"), this, [this] {
+    m_menu->addAction(tr("Find"), this, [this] {
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
     });
     m_menu->addSeparator();
 
     if (!selectedText().isEmpty()) {
-        DMenu *search = new DMenu(tr("&Search"), this);
+        DMenu *search = new DMenu(tr("Search"), this);
 
         search->addAction("Bing", this, [this] {
             QString strurl = "https://cn.bing.com/search?q=" + selectedText();
@@ -349,7 +349,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
         parentPage()->showRenameTitleDialog(currTabTitle);
     });
 
-    m_menu->addAction(tr("&Encoding"), this, [this] {
+    m_menu->addAction(tr("Encoding"), this, [this] {
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
     });
 

@@ -188,7 +188,7 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
         if (result == ServerConfigOptDlg::Accepted) {
             // 判断是否需要删除
             if (dlg->isDelServer()) {
-                DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Do you sure to delete the %1?").arg(dlg->getServerName()), this);
+                DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(dlg->getServerName()), this);
                 deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
                 connect(deleteDialog, &DDialog::finished, this, [ = ](int result) {
                     // 删除

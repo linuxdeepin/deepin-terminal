@@ -276,10 +276,9 @@ void CustomCommandOptDlg::initUI()
 void CustomCommandOptDlg::initCommandFromClipBoardText()
 {
     if (m_commandLineEdit) {
-       // QString clipText = ShortcutManager::instance()->getClipboardCommandData();
-        MainWindow * main = getMainWindow();
-        if(main != nullptr)
-        {
+        // QString clipText = ShortcutManager::instance()->getClipboardCommandData();
+        MainWindow *main = getMainWindow();
+        if (main != nullptr) {
             QString clipText = main->selectedText(true);
             m_commandLineEdit->setText(clipText.trimmed());
         }
@@ -287,13 +286,12 @@ void CustomCommandOptDlg::initCommandFromClipBoardText()
 }
 MainWindow *CustomCommandOptDlg::getMainWindow()
 {
-    MainWindow * main = nullptr;
-    QWidget * pWidget = parentWidget();
+    MainWindow *main = nullptr;
+    QWidget *pWidget = parentWidget();
     while (pWidget != nullptr) {
-        qDebug()<<pWidget->metaObject()->className();
-        if(QString(pWidget->metaObject()->className()) == "MainWindow")
-        {
-            qDebug()<< "has find MainWindow";
+        qDebug() << pWidget->metaObject()->className();
+        if (QString(pWidget->metaObject()->className()) == "MainWindow") {
+            qDebug() << "has find MainWindow";
             main = static_cast<MainWindow *>(pWidget);
             break;
         }

@@ -245,7 +245,7 @@ void ServerConfigOptDlg::initUI()
     //Add a line by m000750 zhangmeng 2020-04-22设置回车触发默认按钮
     pAddSaveButton->setDefault(true);
     if (m_type == SCT_MODIFY) {
-        m_titleLabel->setText(tr("Edit server"));
+        m_titleLabel->setText(tr("Edit Server"));
         pAddSaveButton->setText(tr("Save"));
     }
     Utils::setSpaceInWord(pCancelButton);
@@ -285,6 +285,7 @@ void ServerConfigOptDlg::initData()
     m_deleteKey->addItems(deleteKeyList);
     if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         m_serverName->setText(m_curServer->m_serverName);
+        m_currentServerName = m_serverName->text();
         m_address->setText(m_curServer->m_address);
         m_port->setValue(m_curServer->m_port.toInt());
         m_userName->setText(m_curServer->m_userName);
@@ -439,25 +440,26 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
     // 服务器名为空
     if (m_serverName->text().trimmed().isEmpty()) {
-        m_serverName->showAlertMessage(tr("Please enter server name!"), m_serverName);
+        m_serverName->showAlertMessage(tr("Please enter a server name"), m_serverName);
         return;
     }
     // 地址为空
     if (m_address->text().trimmed().isEmpty()) {
-        m_address->showAlertMessage(tr("Please enter IP address!"), m_address);
+        m_address->showAlertMessage(tr("Please enter an IP address"), m_address);
         return;
     }
     // 端口为空
     if (m_port->text().trimmed().isEmpty()) {
-        m_address->showAlertMessage(tr("Please enter port!"), m_port);
+        m_address->showAlertMessage(tr("Please enter a port"), m_port);
         return;
     }
 
     //---added by qinyaning(nyq) to show the tip when username is empty---//
     if (m_userName->text().trimmed().isEmpty()) { //如果用户名为空， 提示用户名为空， 添加失败
-        m_userName->showAlertMessage(tr("Please enter user name!"), m_userName);
+        m_userName->showAlertMessage(tr("Please enter a username"), m_userName);
         return;
     }
+    m_currentServerName = m_serverName->text();
     //------------------------------------------------------------------//
     //--added by qinyaning(nyq) to solve the bug 19116: You can create a new remote server with the same name--//
     if ((m_type == SCT_ADD)
@@ -495,7 +497,6 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
-    m_currentServerName = m_serverName->text();
     accept();
 }
 /*******************************************************************************
