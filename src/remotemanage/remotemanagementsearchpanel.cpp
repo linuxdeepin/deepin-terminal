@@ -104,5 +104,5 @@ void RemoteManagementSearchPanel::listItemClicked(ServerConfig *curItemServer)
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)
 {
     m_strFilter = filter;
-    m_label->setText(QString("搜索：%1").arg(filter));
+    m_label->setText(QString("%1：%2").arg(tr("Search")).arg(filter));
 }
