@@ -1224,7 +1224,7 @@ void MainWindow::initShortcuts()
 
     for (int i = 1; i <= 9; i++) {
         QString shortCutStr = QString("alt+%1").arg(i);
-        qDebug() << shortCutStr;
+        //qDebug() << shortCutStr;
         QShortcut *switchTabSC = new QShortcut(QKeySequence(shortCutStr), this);
         connect(switchTabSC, &QShortcut::activated, this, [this, i]() {
             TermWidgetPage *page = currentPage();

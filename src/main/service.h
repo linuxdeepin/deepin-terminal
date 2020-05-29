@@ -11,6 +11,10 @@
 *******************************************************************************/
 #include "termproperties.h"
 #include "windowsmanager.h"
+#include "shortcutmanager.h"
+#include "settings.h"
+
+
 #include <DSettingsDialog>
 #include <DDialog>
 #include <QObject>

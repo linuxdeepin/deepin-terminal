@@ -1,6 +1,4 @@
 #include "service.h"
-#include "windowsmanager.h"
-#include "mainwindow.h"
 #include "utils.h"
 
 #include <DSettings>
@@ -13,12 +11,18 @@
 Service *Service::pService = new Service();
 Service *Service::instance()
 {
-    return  pService;
+    return pService;
 }
 
 void Service::init()
 {
+    // 初始化配置
+    Settings::instance()->init();
+    // 初始化自定义快捷键
+    //ShortcutManager::instance()->initShortcuts();
+    // 初始化远程管理数据
     ServerConfigManager::instance()->initServerConfig();
+    qDebug()<<"All init data complete!";
 }
 /*******************************************************************************
  1. @函数:    showSettingDialog

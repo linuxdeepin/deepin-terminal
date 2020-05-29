@@ -16,6 +16,7 @@ class Settings : public QObject
     Q_OBJECT
 public:
     static Settings *instance();
+    void init();
 
     void initConnection();
 

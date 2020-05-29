@@ -497,7 +497,7 @@ void Utils::clearChildrenFocus(QObject *objParent)
     QStringList foucswidgetlist;
     foucswidgetlist << "QLineEdit" << "Konsole::TerminalDisplay";
 
-    qDebug() << "checkChildrenFocus start" << objParent->children().size();
+    //qDebug() << "checkChildrenFocus start" << objParent->children().size();
     for (QObject *obj : objParent->children()) {
         if (!obj->isWidgetType()) {
             continue;
@@ -512,7 +512,7 @@ void Utils::clearChildrenFocus(QObject *objParent)
         clearChildrenFocus(obj);
     }
 
-    qDebug() << "checkChildrenFocus over" << objParent->children().size();
+    //qDebug() << "checkChildrenFocus over" << objParent->children().size();
 }
 
 TermProperties Utils::parseArgument(QStringList arguments)

@@ -21,9 +21,18 @@
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
-Settings *Settings::m_settings_instance = nullptr;
+Settings *Settings::m_settings_instance = new Settings();
 
 Settings::Settings() : QObject(qApp)
+{
+}
+
+Settings *Settings::instance()
+{
+    return m_settings_instance;
+}
+// 统一初始化以后方可使用。
+void Settings::init()
 {
     m_configPath = QString("%1/%2/%3/config.conf")
                    .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation))
@@ -67,16 +76,6 @@ Settings::Settings() : QObject(qApp)
         //监控完一次就不再监控了，所以要再添加
         m_Watcher->addPath(m_configPath);
     });
-
-}
-
-Settings *Settings::instance()
-{
-    if (!m_settings_instance) {
-        m_settings_instance = new Settings;
-    }
-
-    return m_settings_instance;
 }
 
 //重新安装终端后在这里重置状态
@@ -298,7 +297,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
         QFont font(sfont);
         QFontMetrics fm(font);
         int fw = fm.width(REPCHAR[0]);
-        qDebug() << "sfont" << sfont;
+        //qDebug() << "sfont" << sfont;
 
         for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
             if (fw != fm.width(REPCHAR[i])) {
@@ -410,7 +409,7 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     auto optionValue = option->value();
     auto translateContext = opt->property(PRIVATE_PROPERTY_translateContext).toByteArray();
     QString optname = option->key();
-    qDebug() << "optname" << optname;
+    //qDebug() << "optname" << optname;
 
     // 控件初始加载配置文件的值
     auto updateWidgetValue = [ = ](const QVariant & optionValue, DTK_CORE_NAMESPACE::DSettingsOption * opt) {
@@ -419,7 +418,7 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
         if (keyseq == SHORTCUT_VALUE) {
             return;
         }
-        qDebug() << "sequence set" << sequence;
+        //qDebug() << "sequence set" << sequence;
         rightWidget->setKeySequence(sequence);
     };
     updateWidgetValue(optionValue, option);
