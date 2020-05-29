@@ -70,7 +70,7 @@ void PageSearchBar::focus()
     m_searchEdit->lineEdit()->setFocus();
     m_searchEdit->lineEdit()->selectAll();
     //　焦点一进入以后，就设置文字和图标，用于失去焦点后显示
-    recoveryHoldConten();
+    recoveryHoldContent();
 }
 
 QString PageSearchBar::searchKeytxt()
@@ -83,21 +83,40 @@ void PageSearchBar::saveOldHoldContent()
     m_originalPlaceHolder = m_searchEdit->placeHolder();
 }
 
+//查找DSearchEdit中的DIconButton
+DIconButton *findIconBtn(DSearchEdit *searchEdit)
+{
+    QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
+    if (iconWidget)
+    {
+        DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
+        return iconBtn;
+    }
+    else
+    {
+        return searchEdit->findChild<DIconButton *>();
+    }
+}
+
 void PageSearchBar::clearHoldContent()
 {
     // 置空内容
     m_searchEdit->setPlaceHolder("");
-    m_searchEdit->lineEdit()->findChild<QWidget *>("iconWidget")
-                ->findChild<DIconButton *>()->setIcon(QIcon(""));
+    DIconButton *iconBtn = findIconBtn(m_searchEdit);
+    if (iconBtn) {
+        iconBtn->setIcon(QIcon(""));
+    }
 }
 
-void PageSearchBar::recoveryHoldConten()
+void PageSearchBar::recoveryHoldContent()
 {
     // 还原文本
     m_searchEdit->setPlaceHolder(m_originalPlaceHolder);
-    // 还原图标
-    m_searchEdit->lineEdit()->findChild<QWidget *>("iconWidget")
-                ->findChild<DIconButton *>()->setIcon(DStyle::SP_IndicatorSearch);
+    DIconButton *iconBtn = findIconBtn(m_searchEdit);
+    if (iconBtn) {
+        // 还原图标
+        iconBtn->setIcon(DStyle::SP_IndicatorSearch);
+    }
 }
 
 void PageSearchBar::findCancel()

@@ -47,7 +47,7 @@ public:
 
     void saveOldHoldContent();
     void clearHoldContent();
-    void recoveryHoldConten();
+    void recoveryHoldContent();
 
 signals:
     void findNext();
