@@ -1,6 +1,7 @@
 #include "serverconfiggrouppanel.h"
 #include "serverconfigitem.h"
 
+#include <QDebug>
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
     initUI();
@@ -92,5 +93,7 @@ void ServerConfigGroupPanel::listItemClicked(ServerConfig *curItemServer)
 {
     if (nullptr != curItemServer) {
         emit doConnectServer(curItemServer);
+    } else {
+        qDebug() << "remote item from group is null";
     }
 }

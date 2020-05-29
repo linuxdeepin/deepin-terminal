@@ -38,6 +38,7 @@ protected:
 signals:
     void listItemCountChange();
     void itemClicked(ServerConfig *curItemServer);
+    void groupClicked(QString group);
 
 private slots:
     void handleModifyServerConfig(ServerConfig *curItemServer, QModelIndex modelIndex);

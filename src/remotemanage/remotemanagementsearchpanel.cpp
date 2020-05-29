@@ -45,6 +45,7 @@ void RemoteManagementSearchPanel::initUI()
 
     connect(m_backButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
     connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementSearchPanel::listItemClicked);
+    connect(m_listWidget, &ServerConfigList::groupClicked, this, &RemoteManagementSearchPanel::showServerConfigGroupPanelFromSearch);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow) {
             if (m_isGroupOrNot) {
@@ -92,13 +93,11 @@ void RemoteManagementSearchPanel::setPreviousPanelType(RemoteManagementPanelType
 void RemoteManagementSearchPanel::listItemClicked(ServerConfig *curItemServer)
 {
     if (nullptr != curItemServer) {
-        QString group = curItemServer->m_group;
-        if (!group.isNull() && !group.isEmpty()) {
-            emit showServerConfigGroupPanelFromSearch(group);
-        } else {
-            emit doConnectServer(curItemServer);
-        }
+        emit doConnectServer(curItemServer);
+    } else {
+        qDebug() << "remote item is null";
     }
+
 }
 
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)

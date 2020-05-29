@@ -348,18 +348,20 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
         }
     }
 
+    if (itemData.m_IsGroupItem) {          // 有组进组
+        qDebug() << "remote list click group " <<  itemData.m_group << state;
+        emit groupClicked(itemData.m_group);
+        return DListView::mousePressEvent(event);
+    }
     if (getModifyIconRectS(rect).contains(clickPoint)) {
-        if (state == 1 && !itemData.m_group.isNull() && !itemData.m_group.isEmpty()) {
-            emit itemClicked(curItemServer);
-        } else if (state == 3 && itemData.m_IsGroupItem) {          // 搜索框下的组
-            emit itemClicked(curItemServer);
-        } else {
-            handleModifyServerConfig(curItemServer, modelIndex);
-        }
-//        m_serCfgProxyModel->setData(modelIndex, QVariant::fromValue(itemData), Qt::DisplayRole);
+        qDebug() << "remote list click modify ServerConfig";
+        handleModifyServerConfig(curItemServer, modelIndex);
+        return DListView::mousePressEvent(event);
     } else {
+        qDebug() << "remote list click item " << itemData.m_serverName << state;;
         emit itemClicked(curItemServer);
     }
+    DListView::mousePressEvent(event);
 }
 
 void ServerConfigList::mouseReleaseEvent(QMouseEvent *event)

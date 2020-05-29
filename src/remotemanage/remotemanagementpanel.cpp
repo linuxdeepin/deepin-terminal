@@ -104,6 +104,7 @@ void RemoteManagementPanel::initUI()
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
     connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementPanel::listItemClicked);
+    connect(m_listWidget, &ServerConfigList::groupClicked, this, &RemoteManagementPanel::showServerConfigGroupPanel);
     connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow) {
@@ -115,11 +116,8 @@ void RemoteManagementPanel::initUI()
 void RemoteManagementPanel::listItemClicked(ServerConfig *curItemServer)
 {
     if (nullptr != curItemServer) {
-        QString group = curItemServer->m_group;
-        if (!group.isNull() && !group.isEmpty()) {
-            emit showServerConfigGroupPanel(group);
-        } else {
-            emit doConnectServer(curItemServer);
-        }
+        emit doConnectServer(curItemServer);
+    } else {
+        qDebug() << "remote item from panel is null";
     }
 }
