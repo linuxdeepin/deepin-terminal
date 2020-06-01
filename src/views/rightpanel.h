@@ -13,8 +13,6 @@ public slots:
     void show();
     void hideAnim();
 
-public:
-    bool m_bNotNeedRefresh = false;
 };
 
 #endif  // RIGHTPANEL_H

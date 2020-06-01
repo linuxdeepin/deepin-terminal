@@ -6,8 +6,8 @@
 
 #include <QAction>
 
-CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(bool &NotNeedRefresh, QWidget *parent)
-    : CommonPanel(parent), m_bNotNeedRefresh(NotNeedRefresh), m_cmdListWidget(new CustomCommandList(NotNeedRefresh))
+CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
+    : CommonPanel(parent), m_cmdListWidget(new CustomCommandList())
 {
     initUI();
 }

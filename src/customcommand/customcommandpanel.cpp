@@ -14,7 +14,7 @@
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
 
-CustomCommandPanel::CustomCommandPanel(bool &NotNeedRefresh, QWidget *parent) : CommonPanel(parent), m_bNotNeedRefresh(NotNeedRefresh)
+CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
     initUI();
 }
@@ -35,23 +35,6 @@ void CustomCommandPanel::showCurSearchResult()
 
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
-//    CustomCommandOptDlg dlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
-//    if (dlg.exec() == QDialog::Accepted) {
-//        QAction *newAction = dlg.getCurCustomCmd();
-//        m_cmdListWidget->addNewCustomCommandData(newAction);
-//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
-//        ShortcutManager::instance()->addCustomCommand(*newAction);
-//        /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
-
-//        m_bNotNeedRefresh=true;
-//        emit Service::instance()->refreshCommandPanel();
-
-
-//        refreshCmdSearchState();
-//        /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
-//        m_cmdListWidget->scrollToBottom();
-//        /********************* Modify by m000714 daizhengwen End ************************/
-//    }
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
@@ -72,7 +55,6 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             ShortcutManager::instance()->addCustomCommand(*newAction);
             /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
 
-            m_bNotNeedRefresh = true;
             emit Service::instance()->refreshCommandPanel("", "");
 
             refreshCmdSearchState();
@@ -121,7 +103,7 @@ void CustomCommandPanel::initUI()
     setAutoFillBackground(true);
 
     m_pushButton = new DPushButton();
-    m_cmdListWidget = new CustomCommandList(m_bNotNeedRefresh);
+    m_cmdListWidget = new CustomCommandList();
     m_searchEdit = new DSearchEdit();
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);

@@ -13,8 +13,8 @@ const int iAnimationDuration = 300;
 
 CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
     : RightPanel(parent),
-      m_customCommandPanel(new CustomCommandPanel(m_bNotNeedRefresh, this)),
-      m_customCommandSearchPanel(new CustomCommandSearchRstPanel(m_bNotNeedRefresh, this))
+      m_customCommandPanel(new CustomCommandPanel(this)),
+      m_customCommandSearchPanel(new CustomCommandSearchRstPanel(this))
 {
     setAttribute(Qt::WA_TranslucentBackground);
     connect(m_customCommandPanel,
@@ -120,10 +120,6 @@ void CustomCommandTopPanel::show()
 
 void CustomCommandTopPanel::slotsRefreshCommandPanel()
 {
-//    if (m_bNotNeedRefresh) {
-//        m_bNotNeedRefresh = false;
-//        return;
-//    }
     m_customCommandPanel->resize(size());
     m_customCommandPanel->show();
     m_customCommandPanel->refreshCmdPanel();

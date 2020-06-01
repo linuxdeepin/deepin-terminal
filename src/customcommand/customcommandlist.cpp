@@ -13,7 +13,7 @@
 #include<DScrollBar>
 #include<DApplicationHelper>
 
-CustomCommandList::CustomCommandList(bool &NotNeedRefresh, QWidget *parent) : DListView(parent), m_bNotNeedRefresh(NotNeedRefresh)
+CustomCommandList::CustomCommandList(QWidget *parent) : DListView(parent)
 {
     setBackgroundRole(QPalette::NoRole);
     setAutoFillBackground(false);
@@ -144,7 +144,6 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
             removeCommandItem(m_pdlg->modelIndex);
             scrollToBottom();
 
-            m_bNotNeedRefresh = true;
             m_pdlg->closeRefreshDataConnection();
             emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
 
@@ -167,7 +166,6 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                         removeCommandItem(m_pdlg->modelIndex);
                         emit listItemCountChange();
 
-                        m_bNotNeedRefresh = true;
                         m_pdlg->closeRefreshDataConnection();
                         emit Service::instance()->refreshCommandPanel("", "");
                     }

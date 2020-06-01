@@ -21,11 +21,10 @@ class CustomCommandList : public DListView
 {
     Q_OBJECT
 public:
-    explicit CustomCommandList(bool &NotNeedRefresh, QWidget *parent = nullptr);
+    explicit CustomCommandList(QWidget *parent = nullptr);
     ~CustomCommandList();
     void refreshCommandListData(const QString &strFilter);
     void addNewCustomCommandData(QAction *actionData);
-    bool &m_bNotNeedRefresh;
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);

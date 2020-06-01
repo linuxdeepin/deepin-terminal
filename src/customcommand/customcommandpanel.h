@@ -21,11 +21,10 @@ class CustomCommandPanel : public CommonPanel
 {
     Q_OBJECT
 public:
-    explicit CustomCommandPanel(bool &NotNeedRefresh, QWidget *parent = nullptr);
+    explicit CustomCommandPanel(QWidget *parent = nullptr);
     ~CustomCommandPanel();
     void refreshCmdPanel();
     void refreshCmdSearchState();
-    bool &m_bNotNeedRefresh;
 signals:
     void handleCustomCurCommand(const QString &strCommand);
     void focusOut();
@@ -40,7 +39,7 @@ private:
 
 private:
     CustomCommandList *m_cmdListWidget = nullptr;
-    CustomCommandOptDlg *m_pdlg = nullptr;;
+    CustomCommandOptDlg *m_pdlg = nullptr;
 };
 
 #endif  // CUSTOMCOMMANDPANEL_H
