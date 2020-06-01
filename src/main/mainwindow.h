@@ -84,7 +84,7 @@ public:
     static QList<MainWindow *> getWindowList();
 
     bool hasRunningProcesses();
-    void switchFullscreen(bool forceFullscreen = false);
+    //void switchFullscreen(bool forceFullscreen = false);
     bool isQuakeMode();
 
     static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
@@ -102,11 +102,11 @@ public:
 
     /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 Begin***************/
     //雷神窗口根据字体和字体大小设置最小高度
-    void setQuakeWindowMinHeight();
+    //void setQuakeWindowMinHeight();
     /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
 
     // 处理雷神窗口丢失焦点自动隐藏功能
-    void onAppFocusChangeForQuake();
+    //void onAppFocusChangeForQuake();
 
 signals:
     void newWindowRequest(const QString &directory);
@@ -134,26 +134,26 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-    void showEvent(QShowEvent *event) override;
+    //void showEvent(QShowEvent *event) override;
 
     //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
     /*press Windows+D on the keyboard, the notification bar will
     *open the terminal interface to only display the exit
     *pop-up, click exit pop-up terminal interface to display abnormal
     */
-    void changeEvent(QEvent *event) override;
+    //void changeEvent(QEvent *event) override;
     //------------------------------------------------------------
 protected slots:
     void onTermTitleChanged(QString title);
     void onTabTitleChanged(QString title);
     void onCreateNewWindow(QString workingDir);
 
-private:
+protected:
     void initUI();
     void initWindow();
     // 雷神窗口
-    void setQuakeWindow();
-    void setNormalWindow();
+    //void setQuakeWindow();
+    //void setNormalWindow();
     void setDefaultLocation();
     QString getConfigWindowState();
     QSize halfScreenSize();
@@ -161,7 +161,9 @@ private:
     void initPlugins();
     void initShortcuts();
     void initConnections();
-    void initTitleBar();
+    //void initTitleBar();
+    // 初始化标签
+    void initTabBar();
     void initOptionButton();
     void initOptionMenu();
 
@@ -176,7 +178,7 @@ private:
     bool isTabVisited(int tabSessionId);
     bool isTabChangeColor(int tabSessionId);
     void updateTabStatus();
-    void saveWindowSize();
+    //void saveWindowSize();
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
     /********************* Modify by n014361 wangpeili End ************************/
@@ -200,6 +202,25 @@ private:
     void pressEnterKey(const QString &text);
     //---------------------------------------
 
+protected:
+    // 初始化标题栏
+    virtual void initTitleBar() = 0;
+    // 初始化窗口属性
+    virtual void initWindowAttribute() = 0;
+
+public:
+    // 保存窗口尺寸
+    virtual void saveWindowSize() = 0;
+    // 切换全屏
+    virtual void switchFullscreen(bool forceFullscreen = false) = 0;
+    // 显示快捷键功能
+    virtual QPoint calculateShortcutsPreviewPoint() = 0;
+    // 处理雷神窗口丢失焦点自动隐藏功能
+    virtual void onAppFocusChangeForQuake() = 0;
+    // 根据字体和字体大小设置最小高度
+    virtual void setWindowMinHeightForFont() = 0;
+
+protected:
     QMenu *m_menu = nullptr;
     DToolButton *m_exitFullScreen = nullptr;
     TabBar *m_tabbar = nullptr;
@@ -230,7 +251,7 @@ private:
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 
     static QList<MainWindow *> m_windowList;
-private:
+protected:
     //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
     /* press Windows+D on the keyboard, the notification bar will
     *  open the terminal interface to only display the exit
@@ -249,6 +270,64 @@ private:
     bool m_hasConfirmedClose = false;
     // 应用程序状态
     static Qt::ApplicationState g_appState;
+};
+
+class NormalWindow : public MainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit NormalWindow(TermProperties properties, QWidget *parent = nullptr);
+    ~NormalWindow() override;
+
+protected:
+    // 初始化标题栏
+    virtual void initTitleBar() override;
+    // 初始化窗口属性
+    virtual void initWindowAttribute() override;
+    // 保存窗口尺寸
+    virtual void saveWindowSize() override;
+    // 切换全屏
+    virtual void switchFullscreen(bool forceFullscreen = false) override;
+    // 计算快捷预览显示坐标
+    virtual QPoint calculateShortcutsPreviewPoint() override;
+    // 处理雷神窗口丢失焦点自动隐藏功能
+    virtual void onAppFocusChangeForQuake() override;
+    // 根据字体和字体大小设置最小高度
+    virtual void setWindowMinHeightForFont() override {return;}
+
+protected:
+    void changeEvent(QEvent *event) override;
+};
+
+class QuakeWindow : public MainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit QuakeWindow(TermProperties properties, QWidget *parent = nullptr);
+    ~QuakeWindow() override;
+
+protected:
+    // 初始化标题栏
+    virtual void initTitleBar() override;
+    // 初始化窗口属性
+    virtual void initWindowAttribute() override;
+    // 保存窗口尺寸
+    virtual void saveWindowSize() override;
+    // 切换全屏
+    virtual void switchFullscreen(bool forceFullscreen = false) override;
+    // 计算快捷预览显示坐标
+    virtual QPoint calculateShortcutsPreviewPoint() override;
+    // 处理雷神窗口丢失焦点自动隐藏功能
+    virtual void onAppFocusChangeForQuake() override;
+    // 根据字体和字体大小设置最小高度
+    virtual void setWindowMinHeightForFont() override;
+
+protected:
+    void changeEvent(QEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+
 };
 
 #endif  // MAINWINDOW_H

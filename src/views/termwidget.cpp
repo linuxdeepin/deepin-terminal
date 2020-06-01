@@ -587,7 +587,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     if (keyName == "basic.interface.font") {
         setTermFont(Settings::instance()->fontName());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 Begin***************/
-        m_Page->parentMainWindow()->setQuakeWindowMinHeight();
+        m_Page->parentMainWindow()->setWindowMinHeightForFont();
         //qDebug() << "font_sizefont_sizefont_sizefont_size" << Settings::instance()->fontSize();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 End***************/
         return;
@@ -596,7 +596,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     if (keyName == "basic.interface.font_size") {
         setTermFontSize(Settings::instance()->fontSize());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 Begin***************/
-        m_Page->parentMainWindow()->setQuakeWindowMinHeight();
+        m_Page->parentMainWindow()->setWindowMinHeightForFont();
         //qDebug() << "font_sizefont_sizefont_sizefont_size" << Settings::instance()->fontSize();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 End***************/
         return;

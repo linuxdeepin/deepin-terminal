@@ -62,10 +62,10 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_isQuakeWindow(properties[QuakeMode].toBool()),
       m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat))
 {
-    m_windowList.append(this);
-    initUI();
-    initConnections();
-    initShortcuts();
+//    m_windowList.append(this);
+//    initUI();
+//    initConnections();
+//    initShortcuts();
 }
 
 void MainWindow::initUI()
@@ -75,16 +75,10 @@ void MainWindow::initUI()
     // Other place (eg. create titlebar menu) will call plugin method so we should create plugins before init other
     // parts.
     initPlugins();
+    initTabBar();
     initTitleBar();
+    initWindowAttribute();
 
-    // 雷神和普通窗口设置不同
-    m_isQuakeWindow ? setQuakeWindow() : setNormalWindow();
-    addTab(m_properties);
-    m_desktopIndex = DBusManager::callKDECurrentDesktop();
-
-    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 Begin***************/
-    setQuakeWindowMinHeight();
-    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 End***************/
     //下面代码待处理
     ShortcutManager::instance()->setMainWindow(this);
     m_shortcutManager = ShortcutManager::instance();
@@ -105,13 +99,19 @@ void MainWindow::initWindow()
     m_centralLayout->addWidget(m_termStackWidget);
     setCentralWidget(m_centralWidget);
 }
-/*******************************************************************************
- 1. @函数:    initTitleBar
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-04-22
- 4. @说明:    TitleBar初始化，分雷神窗口和普通窗口
-*******************************************************************************/
-void MainWindow::initTitleBar()
+
+///*******************************************************************************
+// 1. @函数:    initTitleBar
+// 2. @作者:    n014361 王培利
+// 3. @日期:    2020-04-22
+// 4. @说明:    TitleBar初始化，分雷神窗口和普通窗口
+//*******************************************************************************/
+//void MainWindow::initTitleBar()
+//{
+
+//}
+
+void MainWindow::initTabBar()
 {
     m_tabbar = new TabBar(this);
     m_tabbar->setFocusPolicy(Qt::NoFocus);
@@ -163,32 +163,9 @@ void MainWindow::initTitleBar()
         return;
     });
 
-
-
-    // titleba在普通模式和雷神模型不一样的功能
-    m_titleBar = new TitleBar(this, m_isQuakeWindow);
-    m_titleBar->setTabBar(m_tabbar);
-    // 雷神的特殊处理
-    if (m_isQuakeWindow) {
-        titlebar()->setFixedHeight(0);
-        m_centralLayout->addWidget(m_titleBar);
-    } else {
-        titlebar()->setCustomWidget(m_titleBar);
-        titlebar()->setAutoHideOnFullscreen(true);
-        titlebar()->setTitle("");
-
-        //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
-        titlebar()->setFocusPolicy(Qt::NoFocus);
-        initOptionButton();
-        initOptionMenu();
-
-        //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
-        //handleTitleBarMenuFocusPolicy();
-    }
-
-    // titlebar所有控件不可获取焦点
-    Utils::clearChildrenFocus(titlebar());
+    addTab(m_properties);
 }
+
 /*******************************************************************************
  1. @函数:    initOptionButton
  2. @作者:    n014361 王培利
@@ -310,6 +287,11 @@ MainWindow::~MainWindow()
 //        qDebug() << "AddCustomShortcut failed..";
 //    }
 //}
+
+/**
+ del by ut001121 zhangmeng
+*/
+#if 0
 /*******************************************************************************
  1. @函数:    setQuakeWindow
  2. @作者:    n014361 王培利
@@ -401,6 +383,7 @@ void MainWindow::setNormalWindow()
         }
     }
 }
+#endif
 /*******************************************************************************
  1. @函数:    setDefaultLocation
  2. @作者:    n014361 王培利
@@ -604,6 +587,10 @@ void MainWindow::updateTabStatus()
     }
 }
 
+/**
+ del by ut001121 zhangmeng
+*/
+#if 0
 void MainWindow::saveWindowSize()
 {
     // 雷神窗口保存
@@ -634,6 +621,7 @@ void MainWindow::saveWindowSize()
         /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
     }
 }
+#endif
 
 QString MainWindow::getCurrTabTitle()
 {
@@ -899,6 +887,10 @@ bool MainWindow::closeConfirm()
     return true;
 }
 
+/**
+ del by ut001121 zhangmeng
+*/
+#if 0
 /*******************************************************************************
  1. @函数:    switchFullscreen
  2. @作者:    n014361 王培利
@@ -916,6 +908,7 @@ void MainWindow::switchFullscreen(bool forceFullscreen)
         window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
     }
 }
+#endif
 
 bool MainWindow::isQuakeMode()
 {
@@ -1151,7 +1144,7 @@ void MainWindow::initShortcuts()
             page->zoomInCurrentTierminal();
         }
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
-        setQuakeWindowMinHeight();
+        setWindowMinHeightForFont();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
@@ -1162,7 +1155,7 @@ void MainWindow::initShortcuts()
             page->zoomOutCurrentTerminal();
         }
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
-        setQuakeWindowMinHeight();
+        setWindowMinHeightForFont();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
@@ -1173,7 +1166,7 @@ void MainWindow::initShortcuts()
             page->setFontSize(Settings::instance()->fontSize());
         }
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
-        setQuakeWindowMinHeight();
+        setWindowMinHeightForFont();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
@@ -1485,6 +1478,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/**
+ del by ut001121 zhangmeng
+*/
+#if 0
 /*******************************************************************************
  1. @函数:    showEvent
  2. @作者:    ut001121 张猛
@@ -1501,6 +1498,7 @@ void MainWindow::showEvent(QShowEvent *event)
 
     DMainWindow::showEvent(event);
 }
+#endif
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 {
@@ -1549,12 +1547,7 @@ MainWindowPluginInterface *MainWindow::getPluginByName(const QString &name)
 *******************************************************************************/
 void MainWindow::displayShortcuts()
 {
-    QRect rect = window()->geometry();
-    //--added by qinyaning(nyq) to solve the problem of can't show center--//
-    if (m_isQuakeWindow)
-        rect = QApplication::desktop()->availableGeometry();
-    //---------------------------------------------------------------------//
-    QPoint pos(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+    QPoint pos = calculateShortcutsPreviewPoint();
 
     QJsonArray jsonGroups;
     createJsonGroup("terminal", jsonGroups);
@@ -1812,6 +1805,10 @@ int MainWindow::getDesktopIndex() const
     return m_desktopIndex;
 }
 
+/**
+ del by ut001121 zhangmeng
+*/
+#if 0
 /*******************************************************************************
  1. @函数:    setQuakeWindowMinHeight
  2. @作者:    ut001000 任飞翔
@@ -1830,7 +1827,12 @@ void MainWindow::setQuakeWindowMinHeight()
     }
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
+#endif
 
+/**
+ del by ut001121 zhangmeng
+*/
+#if 0
 void MainWindow::changeEvent(QEvent *event)
 {
     // 不是激活事件,不处理
@@ -1906,4 +1908,328 @@ void MainWindow::onAppFocusChangeForQuake()
 
     // 隐藏雷神窗口
     hide();
+}
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ 普通终端窗口
+*/
+NormalWindow::NormalWindow(TermProperties properties, QWidget *parent): MainWindow(properties, parent)
+{
+    Q_ASSERT(m_isQuakeWindow == false);
+    setObjectName("NormalWindow");
+    m_windowList.append(this);
+    initUI();
+    initConnections();
+    initShortcuts();
+}
+
+NormalWindow::~NormalWindow()
+{
+
+}
+
+void NormalWindow::initTitleBar()
+{
+    // titleba在普通模式和雷神模型不一样的功能
+    m_titleBar = new TitleBar(this, false);
+    m_titleBar->setTabBar(m_tabbar);
+
+    titlebar()->setCustomWidget(m_titleBar);
+    titlebar()->setAutoHideOnFullscreen(true);
+    titlebar()->setTitle("");
+
+    //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
+    titlebar()->setFocusPolicy(Qt::NoFocus);
+    initOptionButton();
+    initOptionMenu();
+
+    //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
+    //handleTitleBarMenuFocusPolicy();
+
+    // titlebar所有控件不可获取焦点
+    Utils::clearChildrenFocus(titlebar());
+}
+
+/*******************************************************************************
+ 1. @函数:    initWindowAttribute copy from setNormalWindow
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-04-22
+ 4. @说明:    标准模式的窗口设置
+*******************************************************************************/
+void NormalWindow::initWindowAttribute()
+{
+    // init window state.
+    QString windowState = getConfigWindowState();
+    if (windowState == "window_maximum") {
+        setDefaultLocation();
+        showMaximized();
+    } else if (windowState == "fullscreen") {
+        setDefaultLocation();
+        switchFullscreen(true);
+    } else if (windowState == "split_screen") {
+        setWindowRadius(0);
+        resize(halfScreenSize());
+    } else {
+        m_IfUseLastSize = true;
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
+        int saveWidth = m_winInfoConfig->value(CONFIG_WINDOW_WIDTH).toInt();
+        int saveHeight = m_winInfoConfig->value(CONFIG_WINDOW_HEIGHT).toInt();
+        qDebug() << "window_width: " << saveWidth;
+        qDebug() << "window_height: " << saveHeight;
+        /******** Modify by nt001000 renfeixiang 2020-05-25:文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
+        // 如果配置文件没有数据
+        if (saveWidth == 0 || saveHeight == 0) {
+            saveWidth = 1000;
+            saveHeight = 600;
+        }
+        resize(QSize(saveWidth, saveHeight));
+
+        if (m_properties[SingleFlag].toBool()) {
+            Dtk::Widget::moveToCenter(this);
+            qDebug() << "SingleFlag move" ;
+        }
+    }
+}
+
+void NormalWindow::saveWindowSize()
+{
+    // 过滤普通模式的特殊窗口
+    if (!m_IfUseLastSize) {
+        return;
+    }
+
+    // (真.假)半屏窗口大小时就不记录了
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1)))) {
+        return;
+    }
+
+    if (windowState() == Qt::WindowNoState) {
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
+        // 记录最后一个正常窗口的大小
+        m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, width());
+        m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, height());
+        qDebug() << "save windows size:" << width() << height();
+        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
+    }
+}
+
+void NormalWindow::switchFullscreen(bool forceFullscreen)
+{
+    if (forceFullscreen || !window()->windowState().testFlag(Qt::WindowFullScreen)) {
+        window()->setWindowState(windowState() | Qt::WindowFullScreen);
+    } else {
+        window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
+    }
+}
+
+QPoint NormalWindow::calculateShortcutsPreviewPoint()
+{
+    QRect rect = window()->geometry();
+    return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+}
+
+void NormalWindow::onAppFocusChangeForQuake()
+{
+    return;
+}
+
+void NormalWindow::changeEvent(QEvent *event)
+{
+    if (m_exitFullScreen) {
+        bool isFullscreen = window()->windowState().testFlag(Qt::WindowFullScreen);
+        m_exitFullScreen->setVisible(isFullscreen);
+        titlebar()->setMenuVisible(!isFullscreen);
+        titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+    }
+
+    QMainWindow::changeEvent(event);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ 雷神终端窗口
+*/
+QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow(properties, parent)
+{
+    Q_ASSERT(m_isQuakeWindow == true);
+    setObjectName("QuakeWindow");
+    m_windowList.append(this);
+    initUI();
+    initConnections();
+    initShortcuts();
+}
+
+QuakeWindow::~QuakeWindow()
+{
+
+}
+
+void QuakeWindow::initTitleBar()
+{
+    // titleba在普通模式和雷神模型不一样的功能
+    m_titleBar = new TitleBar(this, true);
+    m_titleBar->setTabBar(m_tabbar);
+
+    titlebar()->setFixedHeight(0);
+    m_centralLayout->addWidget(m_titleBar);
+
+    // titlebar所有控件不可获取焦点
+    Utils::clearChildrenFocus(titlebar());
+}
+
+/*******************************************************************************
+ 1. @函数:    initWindowAttribute copy from setQuakeWindow
+ 2. @作者:    n014361 王培利
+ 3. @日期:    2020-04-22
+ 4. @说明:    雷神窗口的特殊设置
+*******************************************************************************/
+void QuakeWindow::initWindowAttribute()
+{
+    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 Begin************************/
+    setWindowRadius(0);
+    //QRect deskRect = QApplication::desktop()->availableGeometry();//获取可用桌面大小
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+    Qt::WindowFlags windowFlags = this->windowFlags();
+    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint /*| Qt::Dialog*/);
+
+    //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
+    setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
+
+    /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
+    setMinimumSize(screenRect.size().width(), 60);
+    setMaximumHeight(screenRect.size().height() * 2 / 3);
+    /********************* Modify by m000714 daizhengwen End ************************/
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setFixedWidth(QApplication::desktop()->availableGeometry().width());
+    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, [this]() {
+        qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
+        /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
+        setMinimumWidth(QApplication::desktop()->availableGeometry().width());
+        setWindowMinHeightForFont();
+        /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
+        move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
+        qDebug() << "size" << size();
+        setFixedWidth(QApplication::desktop()->availableGeometry().width());
+        return ;
+    });
+
+    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
+    int saveHeight = m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();
+    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height End***************/
+    qDebug() << "quake_window_Height: " << saveHeight;
+    qDebug() << "quake_window_Height: " << minimumSize();
+    // 如果配置文件没有数据
+    if (saveHeight == 0) {
+        saveHeight = screenRect.size().height() / 3;
+    }
+    int saveWidth = screenRect.size().width();
+    resize(QSize(saveWidth, saveHeight));
+    move(0, 0);
+    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 End  ************************/
+
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 Begin***************/
+    setWindowMinHeightForFont();
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 End***************/
+}
+
+void QuakeWindow::saveWindowSize()
+{
+    // 记录最后一个正常窗口的大小
+    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
+    m_winInfoConfig->setValue(CONFIG_QUAKE_WINDOW_HEIGHT, height());
+    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height End***************/
+    qDebug() << "save quake_window_Height:" << height();
+}
+
+void QuakeWindow::switchFullscreen(bool forceFullscreen)
+{
+    return;
+}
+
+QPoint QuakeWindow::calculateShortcutsPreviewPoint()
+{
+    //--added by qinyaning(nyq) to solve the problem of can't show center--//
+    QRect rect = QApplication::desktop()->availableGeometry();
+    //---------------------------------------------------------------------//
+    return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+}
+
+/*******************************************************************************
+ 1. @函数:    onAppFocusChangeForQuake
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-05-22
+ 4. @说明:    处理雷神窗口丢失焦点自动隐藏功能
+*******************************************************************************/
+void QuakeWindow::onAppFocusChangeForQuake()
+{
+    // 开关关闭，不处理
+    if (!Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+        return;
+    }
+
+    // 雷神窗口隐藏，不处理
+    if (!isVisible()) {
+        return;
+    }
+
+    // 雷神的普通对话框,不处理
+    if (Service::instance()->getIsDialogShow()) {
+        return;
+    }
+    // 雷神设置框显示,不处理
+    if (Service::instance()->isSettingDialogVisible() && Service::instance()->getSettingOwner() == this) {
+        return;
+    }
+
+    // 处于激活状态,不处理
+    if (isActiveWindow()) {
+        return;
+    }
+
+    hide();
+}
+
+/*******************************************************************************
+ 1. @函数:    setQuakeWindowMinHeight
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-05-20
+ 4. @说明:    雷神窗口根据字体和字体大小设置最小高度
+*******************************************************************************/
+/******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 Begin***************/
+void QuakeWindow::setWindowMinHeightForFont()
+{
+    int height = 0;
+    QFontMetrics fm(currentPage()->currentTerminal()->getTerminalFont());
+    height = fm.height();
+    height = 60 + height * 2;
+    setMinimumHeight(height);
+}
+/******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
+
+void QuakeWindow::changeEvent(QEvent *event)
+{
+    // 不是激活事件,不处理
+    if (event->type() == QEvent::ActivationChange) {
+        onAppFocusChangeForQuake();
+    }
+
+    return QMainWindow::changeEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    showEvent
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-05-28
+ 4. @说明:    窗口显示事件
+*******************************************************************************/
+void QuakeWindow::showEvent(QShowEvent *event)
+{
+    /***add begin by ut001121 zhangmeng 20200528 重新获取桌面索引 修复BUG29082***/
+    m_desktopIndex = DBusManager::callKDECurrentDesktop();
+    /***add end by ut001121***/
+
+    DMainWindow::showEvent(event);
 }
