@@ -1004,7 +1004,11 @@ void MainWindow::initWindowPosition(MainWindow *mainwindow)
 
 void MainWindow::initShortcuts()
 {
-    m_shortcutManager->initShortcuts();
+    //m_shortcutManager->initShortcuts();
+    ShortcutManager::instance()->initConnect(this);
+    connect(ShortcutManager::instance(), &ShortcutManager::addCustomCommandSignal, this, &MainWindow::addCustomCommandSlot);
+    connect(ShortcutManager::instance(), &ShortcutManager::removeCustomCommandSignal, this, &MainWindow::removeCustomCommandSlot);
+
     /******** Modify by n014361 wangpeili 2020-01-10: 增加设置的各种快捷键修改关联***********×****/
     // new_workspace
     connect(createNewShotcut("shortcuts.workspace.new_workspace", false), &QShortcut::activated, this, [this]() {
@@ -1719,6 +1723,33 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 
     qDebug() << "Application not Active,　now hide" << state;
 }
+
+void MainWindow::addCustomCommandSlot(QAction *newAction)
+{
+    qDebug() << " MainWindow::addCustomCommandSlot";
+
+    QAction *action = newAction;
+    addAction(action);
+
+    connect(action, &QAction::triggered, this, [this, action]() {
+        if (!this->isActiveWindow()) {
+            return ;
+        }
+        QString command = action->data().toString();
+        if (!command.endsWith('\n')) {
+            command.append('\n');
+        }
+        currentPage()->sendTextToCurrentTerm(command);
+    });
+
+}
+
+void MainWindow::removeCustomCommandSlot(QAction *newAction)
+{
+    qDebug() << " MainWindow::removeCustomCommandSlot";
+    removeAction(newAction);
+}
+
 
 /**
  * after sz command,wait input file and download file.

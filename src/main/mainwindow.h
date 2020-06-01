@@ -125,6 +125,8 @@ public slots:
     void remoteDownloadFile();
     // 处理雷神窗口自动隐藏功能以及window+D一起显示的问题
     void onApplicationStateChanged(Qt::ApplicationState state);
+    void addCustomCommandSlot(QAction *newAction);
+    void removeCustomCommandSlot(QAction *newAction);
 
 protected:
     void closeEvent(QCloseEvent *event) override;

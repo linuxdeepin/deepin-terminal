@@ -64,7 +64,7 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
 
     QString strName = m_nameLineEdit->text();
     QString strCommand = m_commandLineEdit->text();
-    QAction *currAction = new QAction(this);
+    QAction *currAction = new QAction(ShortcutManager::instance());
     if (currAction == nullptr) {
         qDebug() << "slotRefreshData---new QAction error!!!";
         close();
@@ -326,7 +326,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         return;
     }
 
-    m_newAction = new QAction(this);
+    m_newAction = new QAction(ShortcutManager::instance());
     m_newAction->setText(strName);
     m_newAction->setData(strCommand);
     m_newAction->setShortcut(m_shortCutLineEdit->keySequence());

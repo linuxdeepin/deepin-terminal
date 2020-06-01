@@ -17,6 +17,7 @@ public:
     void setMainWindow(MainWindow *curMainWindow);
     static ShortcutManager *instance();
     void initShortcuts();
+    void initConnect(MainWindow *mainWindow);
 
     QList<QAction *> createCustomCommandsFromConfig();
     QList<QAction *> createBuiltinShortcutsFromConfig();
@@ -39,6 +40,10 @@ public:
     bool checkShortcutValid(const QString &Name, const QString &Key, QString &Reason);
     // 快捷键是否已被自定义设置
     bool isShortcutConflictInCustom(const QString &Name, const QString &Key);
+
+signals:
+    void addCustomCommandSignal(QAction *newAction );
+    void removeCustomCommandSignal(QAction *newAction );
 
 private:
     MainWindow *m_mainWindow = nullptr;

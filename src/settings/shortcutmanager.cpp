@@ -48,8 +48,27 @@ void ShortcutManager::initShortcuts()
 //    }
 
     m_customCommandActionList = createCustomCommandsFromConfig();
-    m_mainWindow->addActions(m_customCommandActionList);
+    //m_mainWindow->addActions(m_customCommandActionList);
     //m_mainWindow->addActions(m_builtinShortcuts);
+}
+
+void ShortcutManager::initConnect(MainWindow *mainWindow)
+{
+    for (const QAction *commandAction : m_customCommandActionList) {
+        connect(commandAction, &QAction::triggered, this, [ = ]() {
+            qDebug() << "commandAction->data().toString() is triggered" << mainWindow;
+            qDebug() << commandAction->parent();
+            if (!mainWindow->isActiveWindow()) {
+                return ;
+            }
+            QString command = commandAction->data().toString();
+            if (!command.endsWith('\n')) {
+                command.append('\n');
+            }
+            mainWindow->currentPage()->sendTextToCurrentTerm(command);
+        });
+    }
+    mainWindow->addActions(m_customCommandActionList);
 }
 
 QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
@@ -89,13 +108,13 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
 //        if (isShortcutExistInSetting(action->shortcut().toString())) {
 //            action->setEnabled(false);
 //        }
-        connect(action, &QAction::triggered, m_mainWindow, [this, action]() {
-            QString command = action->data().toString();
-            if (!command.endsWith('\n')) {
-                command.append('\n');
-            }
-            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
-        });
+//        connect(action, &QAction::triggered, m_mainWindow, [this, action]() {
+//            QString command = action->data().toString();
+//            if (!command.endsWith('\n')) {
+//                command.append('\n');
+//            }
+//            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
+//        });
         commandsSettings.endGroup();
         actionList.append(action);
     }
@@ -144,15 +163,16 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     addAction->setShortcut(action.shortcut());
     m_customCommandActionList.append(addAction);
     //m_mainWindow->addAction(addAction);
-    mainWindowAddAction(addAction);
-    connect(addAction, &QAction::triggered, m_mainWindow, [this, addAction]() {
-        QString command = addAction->data().toString();
-        if (!command.endsWith('\n')) {
-            command.append('\n');
-        }
-        m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
-    });
+//    mainWindowAddAction(addAction);
+//    connect(addAction, &QAction::triggered, m_mainWindow, [this, addAction]() {
+//        QString command = addAction->data().toString();
+//        if (!command.endsWith('\n')) {
+//            command.append('\n');
+//        }
+//        m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
+//    });
     saveCustomCommandToConfig(addAction, -1);
+    emit addCustomCommandSignal(addAction);
     return addAction;
 }
 
@@ -291,7 +311,7 @@ void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
         if (actionCmdName == currCmdName
                 && actionCmdText == currCmdText
                 && actionKeySeq == currKeySeq) {
-            m_mainWindow->removeAction(m_customCommandActionList.at(i));
+            emit removeCustomCommandSignal(m_customCommandActionList.at(i));//m_mainWindow->removeAction(m_customCommandActionList.at(i));
             m_customCommandActionList.removeAt(i);
             break;
         }
@@ -309,7 +329,7 @@ void ShortcutManager::delCustomCommandForModify(CustomCommandItemData itemData)
         QAction *currAction = m_customCommandActionList.at(i);
         QString currCmdName = currAction->text();
         if (actionCmdName == currCmdName) {
-            m_mainWindow->removeAction(m_customCommandActionList.at(i));
+            emit removeCustomCommandSignal(m_customCommandActionList.at(i));//m_mainWindow->removeAction(m_customCommandActionList.at(i));
             m_customCommandActionList.removeAt(i);
             break;
         }

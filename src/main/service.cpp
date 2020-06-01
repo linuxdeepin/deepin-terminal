@@ -19,7 +19,7 @@ void Service::init()
     // 初始化配置
     Settings::instance()->init();
     // 初始化自定义快捷键
-    //ShortcutManager::instance()->initShortcuts();
+    ShortcutManager::instance()->initShortcuts();
     // 初始化远程管理数据
     ServerConfigManager::instance()->initServerConfig();
     qDebug()<<"All init data complete!";
