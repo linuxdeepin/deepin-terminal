@@ -258,7 +258,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
-    m_menu->addAction(tr("Open file manager"), this, [this] {
+    m_menu->addAction(tr("Open in file manager"), this, [this] {
         DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
     });
 

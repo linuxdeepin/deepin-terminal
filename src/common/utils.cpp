@@ -508,15 +508,16 @@ TermProperties Utils::parseArgument(QStringList arguments)
 {
     QCommandLineParser parser;
 
-    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set terminal start work directory"), "path");
+    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set the work directory"), "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, splitscreen "),
+                                      QString(QObject::tr("Set the window mode on starting") + " (normal, maximize, fullscreen, splitscreen)"),
                                       "state-mode");
-    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
+    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute a command in the terminal "), "command");
     QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
     //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
-    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
+    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Run in quake mode"), "");
+    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Keep terminal open when command finishes"), "");
+    //parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
     parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
     parser.parse(arguments);
 
