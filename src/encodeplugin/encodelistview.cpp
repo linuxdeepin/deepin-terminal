@@ -121,15 +121,18 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
 
 void EncodeListView::checkEncode(QString encode)
 {
-    qDebug() << "check encode " << encode;
-    QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
-    for (int row = 0; row < model->rowCount(); row++) {
-        QModelIndex modelindex = model->index(row, 0);
-        DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
-        if (modelindex.data().toString() == encode) {
-            modelItem->setCheckState(Qt::Checked);
-        } else {
-            modelItem->setCheckState(Qt::Unchecked);
+    // 判断是否是当前窗口
+    if (this->isActiveWindow()) {
+        qDebug() << "check encode " << encode;
+        QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
+        for (int row = 0; row < model->rowCount(); row++) {
+            QModelIndex modelindex = model->index(row, 0);
+            DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
+            if (modelindex.data().toString() == encode) {
+                modelItem->setCheckState(Qt::Checked);
+            } else {
+                modelItem->setCheckState(Qt::Unchecked);
+            }
         }
     }
 }

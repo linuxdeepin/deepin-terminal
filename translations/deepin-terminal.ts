@@ -537,58 +537,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="511"/>
-        <source>Set terminal start work directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="513"/>
-        <source>Set terminal start on window mode: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="515"/>
-        <source>Execute command in the terminal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/common/utils.cpp" line="516"/>
-        <location filename="../src/common/utils.cpp" line="727"/>
+        <location filename="../src/common/utils.cpp" line="728"/>
         <source>Run script string in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="518"/>
-        <source>Set terminal start on quake mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="519"/>
-        <source>Set terminal keep open when finished</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="722"/>
+        <location filename="../src/common/utils.cpp" line="511"/>
+        <location filename="../src/common/utils.cpp" line="723"/>
         <source>Set the work directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="724"/>
+        <location filename="../src/common/utils.cpp" line="513"/>
+        <location filename="../src/common/utils.cpp" line="725"/>
         <source>Set the window mode on starting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="726"/>
+        <location filename="../src/common/utils.cpp" line="515"/>
+        <location filename="../src/common/utils.cpp" line="727"/>
         <source>Execute a command in the terminal </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="729"/>
+        <location filename="../src/common/utils.cpp" line="518"/>
+        <location filename="../src/common/utils.cpp" line="730"/>
         <source>Run in quake mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="730"/>
+        <location filename="../src/common/utils.cpp" line="519"/>
+        <location filename="../src/common/utils.cpp" line="731"/>
         <source>Keep terminal open when command finishes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -908,7 +888,7 @@
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="261"/>
-        <source>Open file manager</source>
+        <source>Open in file manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
