@@ -59,6 +59,9 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
     if (m_type == CCT_ADD) {
         return;
     }
+    if(m_currItemData->m_cmdName !=oldCmdName){
+        return;
+    }
     m_bRefreshCheck = true;
     qDebug() << "slotRefreshData---" <<  m_nameLineEdit->text();
 
