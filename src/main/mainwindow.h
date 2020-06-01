@@ -81,10 +81,7 @@ public:
     // 由mainwindow统一获取当前选择的文本。
     QString selectedText(bool preserveLineBreaks = true);
 
-    static QList<MainWindow *> getWindowList();
-
     bool hasRunningProcesses();
-    //void switchFullscreen(bool forceFullscreen = false);
     bool isQuakeMode();
 
     static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
@@ -99,14 +96,6 @@ public:
     static constexpr const char *CONFIG_QUAKE_WINDOW_HEIGHT = "quake_window_Height";
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
     int getDesktopIndex() const;
-
-    /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 Begin***************/
-    //雷神窗口根据字体和字体大小设置最小高度
-    //void setQuakeWindowMinHeight();
-    /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
-
-    // 处理雷神窗口丢失焦点自动隐藏功能
-    //void onAppFocusChangeForQuake();
 
 signals:
     void newWindowRequest(const QString &directory);
@@ -134,14 +123,7 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-    //void showEvent(QShowEvent *event) override;
 
-    //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
-    /*press Windows+D on the keyboard, the notification bar will
-    *open the terminal interface to only display the exit
-    *pop-up, click exit pop-up terminal interface to display abnormal
-    */
-    //void changeEvent(QEvent *event) override;
     //------------------------------------------------------------
 protected slots:
     void onTermTitleChanged(QString title);
@@ -151,9 +133,6 @@ protected slots:
 protected:
     void initUI();
     void initWindow();
-    // 雷神窗口
-    //void setQuakeWindow();
-    //void setNormalWindow();
     void setDefaultLocation();
     QString getConfigWindowState();
     QSize halfScreenSize();
@@ -173,16 +152,13 @@ protected:
     void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
     int executeCMD(const char *cmd);
-    //void addQuakeTerminalShortcut();
 
     bool isTabVisited(int tabSessionId);
     bool isTabChangeColor(int tabSessionId);
     void updateTabStatus();
-    //void saveWindowSize();
     /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
     void applyTheme();
     /********************* Modify by n014361 wangpeili End ************************/
-    int getAllterminalCount();
     /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
     bool closeConfirm();
     /**************** Modify by n013252 wangliang End ****************/
@@ -250,15 +226,7 @@ protected:
     /********************* Modify by m000714 daizhengwen End ************************/
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 
-    static QList<MainWindow *> m_windowList;
 protected:
-    //--added by qinyaning(nyq) to solve After exiting the pop-up interface,
-    /* press Windows+D on the keyboard, the notification bar will
-    *  open the terminal interface to only display the exit
-    *  pop-up, click exit pop-up terminal interface to display abnormal, time: 2020.4.16 13:32
-    */
-    bool _isClickedExitDlg {false};
-
     // 窗口最小宽度
     const int m_MinWidth = 450;
     // 窗口最小高度
@@ -268,8 +236,6 @@ protected:
     // 雷神终端所在桌面
     int m_desktopIndex;
     bool m_hasConfirmedClose = false;
-    // 应用程序状态
-    static Qt::ApplicationState g_appState;
 };
 
 class NormalWindow : public MainWindow
