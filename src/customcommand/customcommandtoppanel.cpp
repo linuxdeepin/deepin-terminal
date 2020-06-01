@@ -120,10 +120,10 @@ void CustomCommandTopPanel::show()
 
 void CustomCommandTopPanel::slotsRefreshCommandPanel()
 {
-    if (m_bNotNeedRefresh) {
-        m_bNotNeedRefresh = false;
-        return;
-    }
+//    if (m_bNotNeedRefresh) {
+//        m_bNotNeedRefresh = false;
+//        return;
+//    }
     m_customCommandPanel->resize(size());
     m_customCommandPanel->show();
     m_customCommandPanel->refreshCmdPanel();

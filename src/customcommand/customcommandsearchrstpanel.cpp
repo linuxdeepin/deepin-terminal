@@ -61,8 +61,11 @@ void CustomCommandSearchRstPanel::initUI()
     m_cmdListWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->addSpacing(10);
     hlayout->addWidget(m_backButton);
+    hlayout->addSpacing(10);
     hlayout->addWidget(m_label);
+    hlayout->addStretch();
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
 
