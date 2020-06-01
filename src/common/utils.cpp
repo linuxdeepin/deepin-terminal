@@ -503,55 +503,88 @@ void Utils::clearChildrenFocus(QObject *objParent)
 
     //qDebug() << "checkChildrenFocus over" << objParent->children().size();
 }
-
-TermProperties Utils::parseArgument(QStringList arguments)
+/*******************************************************************************
+ 1. @函数:    parseCommandLine
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-01
+ 4. @说明:    函数参数解析
+             appControl = true, 为main函数使用，遇到-h -v 时，整个进程会退出
+             为false时，为唯一进程使用，主要是解析变量出来。
+*******************************************************************************/
+void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, bool appControl)
 {
     QCommandLineParser parser;
-
-    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set the work directory"), "path");
+    parser.setApplicationDescription(qApp->applicationDescription());
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
+    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
+    QCommandLineOption optWorkDirectory({ "w", "work-directory" },
+                                        QObject::tr("Set terminal start work directory"), "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QString(QObject::tr("Set the window mode on starting") + " (normal, maximize, fullscreen, splitscreen)"),
+                                      QString(QObject::tr("Set terminal start on window mode: ")
+                                              + "normal, maximize, fullscreen, splitscreen "),
                                       "state-mode");
-    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute a command in the terminal "), "command");
+    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
     QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
-    //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Run in quake mode"), "");
-    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Keep terminal open when command finishes"), "");
-    //parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
-    parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
+    // QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
+    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
+    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
+    // parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
+
+    parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/
+                        optQuakeMode, optWindowState, optKeepOpen, optScript });
+
+    // 解析参数
     parser.parse(arguments);
 
-    TermProperties firstTermProperties;
+    if (appControl) {
+        // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
+        parser.process(*qApp);
+    } else {
+        qDebug() << "input args:" << arguments;
+        qDebug() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
+        qDebug() << "arg: optionExecute" << parser.value(optExecute);
+        //    qDebug() << "optionExecute2"<<parser.value(optionExecute2);
+        qDebug() << "arg: optionQuakeMode" << parser.isSet(optQuakeMode);
+        qDebug() << "arg: optionWindowState" << parser.isSet(optWindowState);
+        qDebug() << "arg: positionalArguments" << parser.positionalArguments();
+    }
 
     if (parser.isSet(optExecute)) {
-        firstTermProperties[Execute] = parser.value(optExecute);
+        Properties[Execute] = parser.value(optExecute);
     }
     if (parser.isSet(optWorkDirectory)) {
-        firstTermProperties[WorkingDir] = parser.value(optWorkDirectory);
-    }
-    if (parser.isSet(optWindowState)) {
-        firstTermProperties[StartWindowState] = parser.value(optWindowState);
-        QStringList validString = {"maximize", "fullscreen", "splitscreen", "normal"};
-        if (!validString.contains(parser.value(optWindowState))) {
-            parser.showHelp();
-            exit(0);
-        }
+        Properties[WorkingDir] = parser.value(optWorkDirectory);
     }
     if (parser.isSet(optKeepOpen)) {
-        firstTermProperties[KeepOpen] = "";
+        Properties[KeepOpen] = "";
     }
     if (parser.isSet(optScript)) {
-        firstTermProperties[Script] = parser.value(optScript);;
+        Properties[Script] = parser.value(optScript);
     }
 
     if (parser.isSet(optQuakeMode)) {
-        firstTermProperties[QuakeMode] = true;
+        Properties[QuakeMode] = true;
     } else {
-        firstTermProperties[QuakeMode] = false;
+        Properties[QuakeMode] = false;
     }
+    // 默认均为非首个
+    Properties[SingleFlag] = false;
+    if (parser.isSet(optWindowState)) {
+        Properties[StartWindowState] = parser.value(optWindowState);
+        if (appControl) {
+            QStringList validString = { "maximize", "fullscreen", "splitscreen", "normal" };
+            // 参数不合法时，会显示help以后，直接退出。
+            if (!validString.contains(parser.value(optWindowState))) {
+                parser.showHelp();
+                qApp->quit();
+            }
+        }
+    }
+    qDebug() << "parse commandLine is ok";
 
-    firstTermProperties[SingleFlag] = false;
-    return firstTermProperties;
+    return ;
 }
 
 /*******************************************************************************
@@ -712,35 +745,3 @@ QList<QByteArray> Utils::encodeList()
     // 返回需要的值
     return encodeList;
 }
-
-QCommandLineParser &Utils::setCommandLineParser(QString appDesc, DApplication &app, QCommandLineParser &parser)
-{
-    parser.setApplicationDescription(appDesc);
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
-    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
-    QCommandLineOption optWorkDirectory({ "w", "work-directory" }, QObject::tr("Set the work directory"), "path");
-    QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QString(QObject::tr("Set the window mode on starting") + " (normal, maximize, fullscreen, splitscreen)"),
-                                      "state-mode");
-    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute a command in the terminal "), "command");
-    QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
-    //QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Run in quake mode"), "");
-    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Keep terminal open when command finishes"), "");
-    //parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
-
-    parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/ optQuakeMode, optWindowState, optKeepOpen, optScript});
-    parser.parse(app.arguments());
-
-    qDebug() << "optionWorkDirectory" << parser.value(optWorkDirectory);
-    qDebug() << "optionExecute" << parser.value(optExecute);
-//    qDebug() << "optionExecute2"<<m_parser.value(optionExecute2);
-    qDebug() << "optionQuakeMode" << parser.isSet(optQuakeMode);
-    qDebug() << "optionWindowState" << parser.isSet(optWindowState);
-    qDebug() << "positionalArguments" << parser.positionalArguments();
-
-    return parser;
-}
-

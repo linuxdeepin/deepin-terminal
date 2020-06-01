@@ -93,8 +93,8 @@ public:
     static void showSameNameDialog(QWidget *parent, const QString &firstLine, const QString &secondLine);
     static void clearChildrenFocus(QObject *objParent);
 
-    static QCommandLineParser &setCommandLineParser(QString appDesc, DApplication &app, QCommandLineParser &parser);
-    static TermProperties parseArgument( QStringList arguments);
+    static void parseCommandLine(QStringList arguments,  TermProperties &Properties, bool appControl = false);
+
     static QList<QByteArray> encodeList();
 
 };

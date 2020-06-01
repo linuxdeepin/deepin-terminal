@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     app.setOrganizationDomain("deepin.org");
     app.setApplicationVersion(VERSION);
     app.setApplicationName("deepin-terminal");
+    app.setApplicationDisplayName(QObject::tr("Terminal"));
     app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
     app.loadTranslator();
@@ -44,8 +45,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
 #endif  // QT_DEBUG
 
-    app.setApplicationDisplayName(QObject::tr("Terminal"));
-
+    // 这行不要删除
     qputenv("TERM", "xterm-256color");
 
     /******** Modify by n014361 wangpeili 2020-01-10: 增加日志 ***********×****/
@@ -53,9 +53,9 @@ int main(int argc, char *argv[])
     DLogManager::registerFileAppender();
     /********************* Modify by n014361 wangpeili End *****************/
 
-    QCommandLineParser parser;
-    Utils::setCommandLineParser(appDesc, app, parser);
-    parser.process(app);
+    // 参数解析
+    TermProperties Properties;
+    Utils::parseCommandLine(app.arguments(), Properties, true);
 
     DBusManager manager;
     if (!manager.initDBus()) {

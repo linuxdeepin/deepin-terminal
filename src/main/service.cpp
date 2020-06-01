@@ -133,8 +133,10 @@ void Service::Entry(QStringList arguments)
     if (WindowsManager::instance()->widgetCount() == MAXWIDGETCOUNT) {
         return;
     }
-    qDebug() << "dzw " << arguments;
-    TermProperties properties = Utils::parseArgument(arguments);
+
+    TermProperties properties;
+    Utils::parseCommandLine(arguments, properties);
+
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {
         WindowsManager::instance()->runQuakeWindow(properties);
