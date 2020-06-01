@@ -14,7 +14,7 @@ class ShortcutManager : public QObject
     Q_OBJECT
 public:
     ShortcutManager(QObject *parent = nullptr);
-    void setMainWindow(MainWindow *curMainWindow);
+    //void setMainWindow(MainWindow *curMainWindow);
     static ShortcutManager *instance();
     void initShortcuts();
     void initConnect(MainWindow *mainWindow);
@@ -24,7 +24,7 @@ public:
     QList<QAction *> &getCustomCommandActionList();
 
     QAction *addCustomCommand(QAction &action);
-    void mainWindowAddAction(QAction *action);
+    //void mainWindowAddAction(QAction *action);
     void delCustomCommand(CustomCommandItemData itemData);
     void delCustomCommandForModify(CustomCommandItemData itemData);
     void saveCustomCommandToConfig(QAction *action, int saveIndex);
@@ -32,7 +32,7 @@ public:
     // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
     QAction *checkActionIsExistForModify(QAction &action);
-    QString getClipboardCommandData();
+    //QString getClipboardCommandData();
 
     // 判断快捷键是否合法可用，进行界面处理
     bool isValidShortcut(const QString &Name, const QString &Key);

@@ -73,8 +73,8 @@ void MainWindow::initUI()
     initWindowAttribute();
 
     //下面代码待处理
-    ShortcutManager::instance()->setMainWindow(this);
-    m_shortcutManager = ShortcutManager::instance();
+    //ShortcutManager::instance()->setMainWindow(this);
+    //m_shortcutManager = ShortcutManager::instance();
 
     qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
@@ -1295,10 +1295,10 @@ void MainWindow::applyTheme()
     return;
 }
 
-ShortcutManager *MainWindow::getShortcutManager()
-{
-    return m_shortcutManager;
-}
+//ShortcutManager *MainWindow::getShortcutManager()
+//{
+//    return m_shortcutManager;
+//}
 
 MainWindowPluginInterface *MainWindow::getPluginByName(const QString &name)
 {

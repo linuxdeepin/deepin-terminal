@@ -48,8 +48,6 @@ void ShortcutManager::initShortcuts()
 //    }
 
     m_customCommandActionList = createCustomCommandsFromConfig();
-    //m_mainWindow->addActions(m_customCommandActionList);
-    //m_mainWindow->addActions(m_builtinShortcuts);
 }
 
 void ShortcutManager::initConnect(MainWindow *mainWindow)
@@ -151,10 +149,10 @@ QList<QAction *> &ShortcutManager::getCustomCommandActionList()
     return m_customCommandActionList;
 }
 
-void ShortcutManager::setMainWindow(MainWindow *curMainWindow)
-{
-    m_mainWindow = curMainWindow;
-}
+//void ShortcutManager::setMainWindow(MainWindow *curMainWindow)
+//{
+//    m_mainWindow = curMainWindow;
+//}
 
 QAction *ShortcutManager::addCustomCommand(QAction &action)
 {
@@ -176,12 +174,12 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     return addAction;
 }
 
-void ShortcutManager::mainWindowAddAction(QAction *action)
-{
-    //if (!isShortcutExistInSetting(action->shortcut().toString())) {
-    m_mainWindow->addAction(action);
-    //}
-}
+//void ShortcutManager::mainWindowAddAction(QAction *action)
+//{
+//    //if (!isShortcutExistInSetting(action->shortcut().toString())) {
+//    m_mainWindow->addAction(action);
+//    //}
+//}
 
 QAction *ShortcutManager::checkActionIsExist(QAction &action)
 {
@@ -360,17 +358,17 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
         saveAction->setData(action->data());
         saveAction->setShortcut(action->shortcut());
         qDebug() << "old" << m_customCommandActionList[saveIndex]->shortcut();
-        m_mainWindow->removeAction(m_customCommandActionList[saveIndex]);
+        //m_mainWindow->removeAction(m_customCommandActionList[saveIndex]);
         m_customCommandActionList[saveIndex] = saveAction;
         //m_mainWindow->addAction(saveAction);
-        mainWindowAddAction(saveAction);
-        connect(saveAction, &QAction::triggered, m_mainWindow, [this, saveAction]() {
-            QString command = saveAction->data().toString();
-            if (!command.endsWith('\n')) {
-                command.append('\n');
-            }
-            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
-        });
+//        mainWindowAddAction(saveAction);
+//        connect(saveAction, &QAction::triggered, m_mainWindow, [this, saveAction]() {
+//            QString command = saveAction->data().toString();
+//            if (!command.endsWith('\n')) {
+//                command.append('\n');
+//            }
+//            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
+//        });
         qDebug() << "new" << m_customCommandActionList[saveIndex]->shortcut();
     }
 }
@@ -398,9 +396,9 @@ int ShortcutManager::delCustomCommandToConfig(CustomCommandItemData itemData)
     return removeIndex;
 }
 
-QString ShortcutManager::getClipboardCommandData()
-{
-    // 从mainwindwo 绕了一圈过来的数据
-    return m_mainWindow->selectedText(true);
-}
+//QString ShortcutManager::getClipboardCommandData()
+//{
+//    // 从mainwindwo 绕了一圈过来的数据
+//    return m_mainWindow->selectedText(true);
+//}
 

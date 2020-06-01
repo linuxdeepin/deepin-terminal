@@ -54,55 +54,43 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
         m_currItemData = nullptr;
     }
 }
+
 void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName)
 {
     if (m_type == CCT_ADD) {
         return;
     }
-    if(m_currItemData->m_cmdName !=oldCmdName){
+    if(oldCmdName=="" && newCmdName==""){
+        return;
+    }
+    if (m_currItemData->m_cmdName != oldCmdName) {
         return;
     }
     m_bRefreshCheck = true;
     qDebug() << "slotRefreshData---" <<  m_nameLineEdit->text();
 
-    QString strName = m_nameLineEdit->text();
-    QString strCommand = m_commandLineEdit->text();
     QAction *currAction = new QAction(ShortcutManager::instance());
     if (currAction == nullptr) {
         qDebug() << "slotRefreshData---new QAction error!!!";
         close();
     }
-    currAction->setText(strName);
-    currAction->setData(strCommand);
-    currAction->setShortcut(m_shortCutLineEdit->keySequence());
-
+    currAction->setText(newCmdName);
     QAction *existAction = nullptr;
     existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
     if (existAction == nullptr) {
-        if (m_currItemData->m_cmdName == oldCmdName) {
-            currAction->setText(newCmdName);
-            existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
-            if (existAction) {
-                m_nameLineEdit->setText(existAction->text());
-                m_commandLineEdit->setText(existAction->data().toString());
-                m_shortCutLineEdit->setKeySequence(existAction->shortcut());
-                m_currItemData->m_cmdName = newCmdName;
-            } else {
-                delete currAction;
-                close();
-            }
-        } else {
-            delete currAction;
-            close();
-        }
-
-    } else {
+        delete currAction;
+        close();
+    }
+    else {
         delete currAction;
         m_nameLineEdit->setText(existAction->text());
         m_commandLineEdit->setText(existAction->data().toString());
         m_shortCutLineEdit->setKeySequence(existAction->shortcut());
+        m_currItemData->m_cmdName = newCmdName;
     }
+
 }
+
 void CustomCommandOptDlg::closeRefreshDataConnection()
 {
     disconnect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandOptDlg::slotRefreshData);
@@ -612,7 +600,7 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
     if (nullptr == m_shortcutConflictDialog) {
         m_shortcutConflictDialog = new DDialog(this);
         /******** Modify by nt001000 renfeixiang 2020-05-29:修改 因为弹框改为非模态之后，快捷框冲突选中快捷框功能移动这 Begin***************/
-        connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, [this](){
+        connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, [this]() {
             m_shortcutConflictDialog->hide();
             /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 Begin***************/
             QTimer::singleShot(30, [&]() {

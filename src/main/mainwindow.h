@@ -63,7 +63,7 @@ public:
 
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
 
-    ShortcutManager *getShortcutManager();
+    //ShortcutManager *getShortcutManager();
 
     void executeDownloadFile();
 
@@ -204,7 +204,7 @@ protected:
     QVBoxLayout *m_centralLayout = nullptr;
     QStackedWidget *m_termStackWidget = nullptr;
     //QString m_titlebarStyleSheet = nullptr;
-    ShortcutManager *m_shortcutManager = nullptr;
+    //ShortcutManager *m_shortcutManager = nullptr;
     QList<MainWindowPluginInterface *> m_plugins;
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;

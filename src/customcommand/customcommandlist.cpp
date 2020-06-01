@@ -167,7 +167,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                         emit listItemCountChange();
 
                         m_pdlg->closeRefreshDataConnection();
-                        emit Service::instance()->refreshCommandPanel("", "");
+                        emit Service::instance()->refreshCommandPanel(m_pdlg->m_currItemData->m_cmdName, m_pdlg->m_currItemData->m_cmdName);//emit Service::instance()->refreshCommandPanel("", "");
                     }
                 });
                 dlgDelete->show();
