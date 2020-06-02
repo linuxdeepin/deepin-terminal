@@ -19,7 +19,7 @@
  */
 
 #include "utils.h"
-#include "../views/operationconfirmdlg.h"
+#include "operationconfirmdlg.h"
 #include "warnningdlg.h"
 #include "termwidget.h"
 
@@ -745,3 +745,27 @@ QList<QByteArray> Utils::encodeList()
     // 返回需要的值
     return encodeList;
 }
+
+/*******************************************************************************
+ 1. @函数:    getMainWindow
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-06-02
+ 4. @说明:    根据当前窗口获取最外层的主窗口，当前窗口：currWidget，返回值非空就找到最外层主窗口：MainWindow
+*******************************************************************************/
+MainWindow *Utils::getMainWindow(QWidget *currWidget)
+{
+    MainWindow *main = nullptr;
+    QWidget *pWidget = currWidget->parentWidget();
+    while (pWidget != nullptr) {
+        qDebug() << pWidget->metaObject()->className();
+        if ((pWidget->objectName() == "NormalWindow") || (pWidget->objectName() == "QuakeWindow")) {
+            qDebug() << "has find MainWindow";
+            main = static_cast<MainWindow *>(pWidget);
+            break;
+        }
+        pWidget = pWidget->parentWidget();
+    }
+    return  main;
+}
+
+

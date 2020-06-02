@@ -4,7 +4,7 @@
 #include "shortcutmanager.h"
 #include "utils.h"
 #include"service.h"
-#include "mainwindow.h"
+//#include "mainwindow.h"
 
 #include <DButtonBox>
 #include <DPushButton>
@@ -60,7 +60,7 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
     if (m_type == CCT_ADD) {
         return;
     }
-    if(oldCmdName=="" && newCmdName==""){
+    if (oldCmdName == "" && newCmdName == "") {
         return;
     }
     if (m_currItemData->m_cmdName != oldCmdName) {
@@ -80,8 +80,7 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
     if (existAction == nullptr) {
         delete currAction;
         close();
-    }
-    else {
+    } else {
         delete currAction;
         m_nameLineEdit->setText(existAction->text());
         m_commandLineEdit->setText(existAction->data().toString());
@@ -268,27 +267,12 @@ void CustomCommandOptDlg::initCommandFromClipBoardText()
 {
     if (m_commandLineEdit) {
         // QString clipText = ShortcutManager::instance()->getClipboardCommandData();
-        MainWindow *main = getMainWindow();
+        MainWindow *main = Utils::getMainWindow(this);//;getMainWindow();
         if (main != nullptr) {
             QString clipText = main->selectedText(true);
             m_commandLineEdit->setText(clipText.trimmed());
         }
     }
-}
-MainWindow *CustomCommandOptDlg::getMainWindow()
-{
-    MainWindow *main = nullptr;
-    QWidget *pWidget = parentWidget();
-    while (pWidget != nullptr) {
-        qDebug() << pWidget->metaObject()->className();
-        if (QString(pWidget->metaObject()->className()) == "MainWindow") {
-            qDebug() << "has find MainWindow";
-            main = static_cast<MainWindow *>(pWidget);
-            break;
-        }
-        pWidget = pWidget->parentWidget();
-    }
-    return  main;
 }
 
 QAction *CustomCommandOptDlg::getCurCustomCmd()

@@ -3,7 +3,6 @@
 
 #include "termbasedialog.h"
 #include "customcommanditemmodel.h"
-#include "mainwindow.h"
 
 #include <DDialog>
 #include <DAbstractDialog>
@@ -43,7 +42,7 @@ public:
     // 快捷键冲突弹窗
     void showShortcutConflictMsgbox(QString txt);
     void closeRefreshDataConnection();
-    bool checkSequence(const QKeySequence & sequence);
+    bool checkSequence(const QKeySequence &sequence);
     void setModelIndex(QModelIndex mi);
 
     QDialog::DialogCode getConfirmResult();
@@ -71,13 +70,11 @@ signals:
 private slots:
     void slotAddSaveButtonClicked();
     void slotDelCurCustomCommand();
-    void slotRefreshData(QString oldCmdName,QString newCmdName);
+    void slotRefreshData(QString oldCmdName, QString newCmdName);
 
 private:
     void initUI();
     void initCommandFromClipBoardText();
-    MainWindow *getMainWindow();
-
 
     CustomCmdOptType m_type;
     QAction *m_newAction = nullptr;
@@ -102,7 +99,7 @@ private:
     QDialog::DialogCode m_confirmResultCode;
     // 快捷键冲突弹窗
     DDialog *m_shortcutConflictDialog = nullptr;
-    bool m_bRefreshCheck=false;
+    bool m_bRefreshCheck = false;
 
 };
 

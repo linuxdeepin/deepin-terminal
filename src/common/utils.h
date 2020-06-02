@@ -21,6 +21,7 @@
 #define UTILS_H
 #include "settings.h"
 #include "termproperties.h"
+
 #include <DPushButton>
 #include <DApplication>
 
@@ -44,6 +45,7 @@
 #define KWinDBusService "org.kde.KWin"
 #define KWinDBusPath "/KWin"
 
+class MainWindow;
 class Utils : public QObject
 {
     Q_OBJECT
@@ -94,6 +96,8 @@ public:
     static void clearChildrenFocus(QObject *objParent);
 
     static void parseCommandLine(QStringList arguments,  TermProperties &Properties, bool appControl = false);
+
+    static MainWindow *getMainWindow(QWidget * currWidget);
 
     static QList<QByteArray> encodeList();
 
