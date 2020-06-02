@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QWidget>
 
+class TermWidget;
 class MainWindow;
 class RemoteManagementPlugn : public MainWindowPluginInterface
 {
@@ -23,6 +24,10 @@ public:
 
     // 设置远程编码
     void setRemoteEncode(QString encode);
+    // 设置退格模式
+    void setBackspaceKey(TermWidget *term, QString backspaceKey);
+    // 设置删除模式
+    void setDeleteKey(TermWidget *term, QString deleteKey);
 signals:
     void doHide();
 

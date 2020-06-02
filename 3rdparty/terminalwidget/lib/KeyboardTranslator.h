@@ -497,6 +497,10 @@ public:
      */
     QList<QString> allTranslators();
 
+    /******** Modify by ut000610 daizhengwen 2020-06-02: 用于修改数据****************/
+    KeyboardTranslator *getTranslator(const QString &name);
+    /********************* Modify by ut000610 daizhengwen End ************************/
+
     /** Returns the global KeyboardTranslatorManager instance. */
    static KeyboardTranslatorManager* instance();
 

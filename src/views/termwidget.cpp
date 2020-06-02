@@ -37,8 +37,6 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     setHistorySize(5000);
 
-
-
     // set shell program
     QString shell{ getenv("SHELL") };
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
@@ -130,6 +128,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
                     // 还原编码
                     setTextCodec(QTextCodec::codecForName(encode().toLocal8Bit()));
                     qDebug() << "current encode " << encode();
+                    setBackspaceMode(m_backspaceMode);
+                    setDeleteMode(m_deleteMode);
                     emit Service::instance()->checkEncode(encode());
                 }
             });
@@ -382,6 +382,78 @@ QString TermWidget::RemoteEncode() const
 void TermWidget::setRemoteEncode(const QString &RemoteEncode)
 {
     m_RemoteEncode = RemoteEncode;
+}
+
+/*******************************************************************************
+ 1. @函数:    setBackspaceMode
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-06-02
+ 4. @说明:    根据设置的模式改变退格模式
+*******************************************************************************/
+void TermWidget::setBackspaceMode(const EraseMode &backspaceMode)
+{
+    char ch;
+    int length;
+    switch (backspaceMode) {
+    case EraseMode_Auto:
+        ch = getErase();
+        if (ch == 0) {
+            ch = '\010';
+        }
+        length = 1;
+        break;
+    case EraseMode_Control_H:
+        ch = '\010';
+        length = 1;
+        break;
+    case EraseMode_Ascii_Delete:
+        ch = '\177';
+        length = 1;
+        break;
+    case EraseMode_TTY:
+        ch = getErase();
+        length = 1;
+        qDebug() << "tty erase : " << QByteArray(&ch, length).toHex();
+        break;
+    case EraseMode_Escape_Sequeue:
+        length = 4;
+        QTermWidget::setBackspaceMode("\e[3~", 4);
+        return;
+    }
+    QTermWidget::setBackspaceMode(&ch, length);
+}
+
+/*******************************************************************************
+ 1. @函数:    setDeleteMode
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-06-02
+ 4. @说明:    根据设置的模式改变删除模式
+*******************************************************************************/
+void TermWidget::setDeleteMode(const EraseMode &deleteMode)
+{
+    char ch;
+    int length;
+    switch (deleteMode) {
+    case EraseMode_Control_H:
+        ch = '\010';
+        length = 1;
+        break;
+    case EraseMode_Ascii_Delete:
+        ch = '\177';
+        length = 1;
+        break;
+    case EraseMode_TTY:
+        ch = getErase();
+        length = 1;
+        qDebug() << "tty erase : " << QByteArray(&ch, length).toHex();
+        break;
+    case EraseMode_Auto:
+    case EraseMode_Escape_Sequeue:
+        length = 4;
+        QTermWidget::setDeleteMode("\e[3~", 4);
+        return;
+    }
+    QTermWidget::setDeleteMode(&ch, length);
 }
 
 QString TermWidget::encode() const

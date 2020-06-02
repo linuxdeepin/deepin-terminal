@@ -822,6 +822,21 @@ void QTermWidget::getSelectionEnd(int &row, int &column)
     m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(column, row);
 }
 
+char QTermWidget::getErase()
+{
+    return m_impl->m_session->getEraseChar();
+}
+
+void QTermWidget::setDeleteMode(char *key, int length)
+{
+    m_impl->m_session->setDeleteMode(key, length);
+}
+
+void QTermWidget::setBackspaceMode(char *key, int length)
+{
+    m_impl->m_session->setBackspaceMode(key, length);
+}
+
 QString QTermWidget::selectedText(bool preserveLineBreaks)
 {
     return m_impl->m_terminalDisplay->screenWindow()->screen()->selectedText(preserveLineBreaks);

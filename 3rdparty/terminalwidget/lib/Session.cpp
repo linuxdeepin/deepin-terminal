@@ -639,6 +639,16 @@ QString Session::keyBindings() const
     return _emulation->keyBindings();
 }
 
+void Session::setBackspaceMode(char *key, int length)
+{
+    _emulation->setBackspaceMode(key, length);
+}
+
+void Session::setDeleteMode(char *key, int length)
+{
+    _emulation->setDeleteMode(key, length);
+}
+
 QStringList Session::environment() const
 {
     return _environment;
@@ -1071,6 +1081,17 @@ bool Session::updateForegroundProcessInfo()
 int Session::getPtySlaveFd() const
 {
     return ptySlaveFd;
+}
+
+/*******************************************************************************
+ 1. @函数:    getEraseChar
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-06-02
+ 4. @说明:    获取tty的erase的字符
+*******************************************************************************/
+char Session::getEraseChar()
+{
+    return _shellProcess->erase();
 }
 
 SessionGroup::SessionGroup()

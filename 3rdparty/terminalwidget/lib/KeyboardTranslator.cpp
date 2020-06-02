@@ -588,6 +588,34 @@ QList<QString> KeyboardTranslatorManager::allTranslators()
     return _translators.keys();
 }
 
+KeyboardTranslator *KeyboardTranslatorManager::getTranslator(const QString &name)
+{
+    if ( name.isEmpty() ) {
+        // Try to find the default.keytab file if it exists, otherwise
+        // fall back to the hard-coded one
+        KeyboardTranslator *translator = loadTranslator(QLatin1String("default"));
+        if (!translator) {
+            QBuffer textBuffer;
+            textBuffer.setData(defaultTranslatorText);
+            textBuffer.open(QIODevice::ReadOnly);
+            translator = loadTranslator(&textBuffer, QLatin1String("fallback"));
+        }
+        return translator;
+    }
+
+    if ( _translators.contains(name) && _translators[name] != 0 )
+        return _translators[name];
+
+    KeyboardTranslator *translator = loadTranslator(name);
+
+    if ( translator != 0 )
+        _translators[name] = translator;
+    else if ( !name.isEmpty() )
+        qDebug() << "Unable to load translator" << name;
+
+    return translator;
+}
+
 KeyboardTranslator::Entry::Entry()
 : _keyCode(0)
 , _modifiers(Qt::NoModifier)

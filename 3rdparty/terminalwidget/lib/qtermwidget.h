@@ -181,6 +181,14 @@ public:
     /***************** Modify by n014361 End *************************/
     void getSelectionStart(int &row, int &column);
     void getSelectionEnd(int &row, int &column);
+    /******** Modify by ut000610 daizhengwen 2020-06-02: 获得pty erase模式****************/
+    char getErase();
+    /********************* Modify by ut000610 daizhengwen End ************************/
+
+    // 设置删除键模式（修改内存接口）
+    void setDeleteMode(char *key, int length);
+    // 设置退格按键模式（用户选择接口）
+    void setBackspaceMode(char *key, int length);
 
     /**
      * Returns the currently selected text.

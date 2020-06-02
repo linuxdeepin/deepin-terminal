@@ -4,6 +4,15 @@
 #include "qtermwidget.h"
 #include "termwidgetpage.h"
 
+// 删除和退格键可选模式
+enum EraseMode {
+    EraseMode_Auto,
+    EraseMode_Ascii_Delete,
+    EraseMode_Control_H,
+    EraseMode_TTY,
+    EraseMode_Escape_Sequeue
+};
+
 class TermProperties;
 class TermWidget : public QTermWidget
 {
@@ -28,6 +37,26 @@ public:
     void setPressingScroll(bool enable);
     // 设置编码
     void selectEncode(QString encode);
+    // session支持最大值．再多了就起不来了．
+    static const int MaxTermwidgetCount = 199;
+
+    bool enterSzCommand() const;
+    void setEnterSzCommand(bool enterSzCommand);
+
+    bool isConnectRemote() const;
+    void setIsConnectRemote(bool isConnectRemote);
+
+    QString encode() const;
+    void setEncode(const QString &encode);
+
+    QString RemoteEncode() const;
+    void setRemoteEncode(const QString &RemoteEncode);
+
+    // 设置退格键模式（用户选择接口）
+    void setBackspaceMode(const EraseMode &backspaceMode);
+
+    // 设置删除键模式（用户选择接口）
+    void setDeleteMode(const EraseMode &deleteMode);
 
 public slots:
     void wpasteSelection();
@@ -59,17 +88,10 @@ private:
     QString m_encode = "UTF-8";
     // 远程编码
     QString m_RemoteEncode = "UTF-8";
-public:
-    // session支持最大值．再多了就起不来了．
-    static const int MaxTermwidgetCount = 199;
-    bool enterSzCommand() const;
-    void setEnterSzCommand(bool enterSzCommand);
-    bool isConnectRemote() const;
-    void setIsConnectRemote(bool isConnectRemote);
-    QString encode() const;
-    void setEncode(const QString &encode);
-    QString RemoteEncode() const;
-    void setRemoteEncode(const QString &RemoteEncode);
+    // 当前终端退格信号
+    EraseMode m_backspaceMode = EraseMode_Ascii_Delete;
+    // 当前终端删除信号
+    EraseMode m_deleteMode = EraseMode_Escape_Sequeue;
 };
 
 #endif  // TERMWIDGET_H

@@ -255,6 +255,11 @@ public:
     /** Returns the name of the key bindings used by this session. */
     QString keyBindings() const;
 
+    /******** Modify by ut000610 daizhengwen 2020-06-02: 设置删除和退格按钮****************/
+    void setBackspaceMode(char *key, int length);
+    void setDeleteMode(char *key, int length);
+    /********************* Modify by ut000610 daizhengwen End ************************/
+
     /**
      * This enum describes the available title roles.
      */
@@ -396,6 +401,9 @@ public:
      * a remote terminal.
      */
     int getPtySlaveFd() const;
+
+    // 获取此时tty的eraseChar
+    char getEraseChar();
 
 public slots:
 

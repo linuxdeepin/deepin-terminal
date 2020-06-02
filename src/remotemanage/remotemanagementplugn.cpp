@@ -97,7 +97,9 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
             // 编码
             setRemoteEncode(curServer->m_encoding);
             // 退格键
+            setBackspaceKey(term, curServer->m_backspaceKey);
             // 删除键
+            setDeleteKey(term, curServer->m_deleteKey);
         });
 
     }
@@ -167,4 +169,36 @@ void RemoteManagementPlugn::setRemoteEncode(QString encode)
     term->setRemoteEncode(encode);
     // 切换编码列表的编码
     emit Service::instance()->checkEncode(encode);
+}
+
+void RemoteManagementPlugn::setBackspaceKey(TermWidget *term, QString backspaceKey)
+{
+    if (backspaceKey == "control-h") {
+        term->setBackspaceMode(EraseMode_Control_H);
+    } else if (backspaceKey == "auto") {
+        term->setBackspaceMode(EraseMode_Auto);
+    } else if (backspaceKey == "escape-sequence") {
+        term->setBackspaceMode(EraseMode_Escape_Sequeue);
+    } else if (backspaceKey == "ascii-del") {
+        term->setBackspaceMode(EraseMode_Ascii_Delete);
+    } else if (backspaceKey == "tty") {
+        term->setBackspaceMode(EraseMode_TTY);
+    }
+    qDebug() << "backspace mode " << backspaceKey;
+}
+
+void RemoteManagementPlugn::setDeleteKey(TermWidget *term, QString deleteKey)
+{
+    if (deleteKey == "control-h") {
+        term->setDeleteMode(EraseMode_Control_H);
+    } else if (deleteKey == "auto") {
+        term->setDeleteMode(EraseMode_Auto);
+    } else if (deleteKey == "escape-sequence") {
+        term->setDeleteMode(EraseMode_Escape_Sequeue);
+    } else if (deleteKey == "ascii-del") {
+        term->setDeleteMode(EraseMode_Ascii_Delete);
+    } else if (deleteKey == "tty") {
+        term->setDeleteMode(EraseMode_TTY);
+    }
+    qDebug() << "delete mode " << deleteKey;
 }
