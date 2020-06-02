@@ -1188,7 +1188,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         TermWidget *term = currentPage()->currentTerminal();
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-            if (term->enterSzCommand()) {
+            if (term->enterSzCommand() && term->isActiveWindow()) {
                 //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
                 pressEnterKey("\nsz \"${files[@]}\"");
                 //-------------------------------------
