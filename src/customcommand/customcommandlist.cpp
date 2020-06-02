@@ -136,8 +136,8 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
             itemData.m_cmdShortcut = newAction->shortcut().toString();
             newAction->setData(newAction->data());
             newAction->setShortcut(newAction->shortcut());
-
-            ShortcutManager::instance()->delCustomCommandForModify(itemDel);
+            ShortcutManager::instance()->delCustomCommand(itemDel);
+            //ShortcutManager::instance()->delCustomCommandForModify(itemDel);
             //ShortcutManager::instance()->delCustomCommandForModify(itemData);
             addNewCustomCommandData(newAction);
             ShortcutManager::instance()->addCustomCommand(*newAction);

@@ -306,26 +306,9 @@ void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
         QString currCmdName = currAction->text();
         QString currCmdText = currAction->data().toString();
         QString currKeySeq = currAction->shortcut().toString();
-        if (actionCmdName == currCmdName
-                && actionCmdText == currCmdText
-                && actionKeySeq == currKeySeq) {
-            emit removeCustomCommandSignal(m_customCommandActionList.at(i));//m_mainWindow->removeAction(m_customCommandActionList.at(i));
-            m_customCommandActionList.removeAt(i);
-            break;
-        }
-    }
-
-}
-/************************ Add by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
-void ShortcutManager::delCustomCommandForModify(CustomCommandItemData itemData)
-{
-    delCustomCommandToConfig(itemData);
-
-    QString actionCmdName = itemData.m_cmdName;
-
-    for (int i = 0; i < m_customCommandActionList.size(); i++) {
-        QAction *currAction = m_customCommandActionList.at(i);
-        QString currCmdName = currAction->text();
+        //if (actionCmdName == currCmdName
+        //        && actionCmdText == currCmdText
+        //        && actionKeySeq == currKeySeq) {
         if (actionCmdName == currCmdName) {
             emit removeCustomCommandSignal(m_customCommandActionList.at(i));//m_mainWindow->removeAction(m_customCommandActionList.at(i));
             m_customCommandActionList.removeAt(i);
@@ -334,7 +317,7 @@ void ShortcutManager::delCustomCommandForModify(CustomCommandItemData itemData)
     }
 
 }
-/************************ Add by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
+
 void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));

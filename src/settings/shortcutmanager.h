@@ -26,7 +26,6 @@ public:
     QAction *addCustomCommand(QAction &action);
     //void mainWindowAddAction(QAction *action);
     void delCustomCommand(CustomCommandItemData itemData);
-    void delCustomCommandForModify(CustomCommandItemData itemData);
     void saveCustomCommandToConfig(QAction *action, int saveIndex);
     int delCustomCommandToConfig(CustomCommandItemData itemData);
     // check same name of the action is exist
