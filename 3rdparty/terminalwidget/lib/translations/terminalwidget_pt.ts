@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt" version="2.1">
 <context>
     <name>Konsole::TerminalDisplay</name>
     <message>
@@ -16,7 +14,7 @@
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
         <source>&lt;qt&gt;Output has been &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspended&lt;/a&gt; by pressing Ctrl+S.  Press &lt;b&gt;Ctrl+Q&lt;/b&gt; to resume.&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;A saída foi &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt; suspendida&lt;/a&gt; com Ctrl+S. Prima &lt;b&gt;Ctrl+Q&lt;/b&gt; para continuar.&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;A saída foi &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt; suspensa&lt;/a&gt; ao premir Ctrl+S. Prima &lt;b&gt;Ctrl+Q&lt;/b&gt; para continuar.&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -24,7 +22,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>Não há um tradutor de teclado disponível. A informação necessária para converter a pressão da tecla nos caracteres a enviar ao terminal não existe.</translation>
+        <translation>Nenhum tradutor de teclado disponível. A informação necessária para converter a pressão da tecla nos caracteres a enviar ao terminal não existe.</translation>
     </message>
 </context>
 <context>
@@ -42,23 +40,23 @@
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
-        <source>Open Link</source>
+        <source>Open link</source>
         <translation>Abrir ligação</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
-        <source>Copy Link Address</source>
-        <translation>Copiar endereço da ligação</translation>
+        <source>Copy link</source>
+        <translation>Copiar ligação</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
-        <source>Send Email To...</source>
-        <translation>Enviar e-mail para...</translation>
+        <source>Send email to...</source>
+        <translation>Enviar um email a...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
-        <source>Copy Email Address</source>
-        <translation>Copiar endereço de e-mail</translation>
+        <source>Copy email address</source>
+        <translation>Copiar endereço de email</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>Konsole::TerminalDisplay</name>
     <message>
@@ -42,23 +40,23 @@
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
-        <source>Open Link</source>
+        <source>Open link</source>
         <translation>Ouvrir le lien</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
-        <source>Copy Link Address</source>
-        <translation>Copier l&apos;adresse du lien</translation>
+        <source>Copy link</source>
+        <translation>Copier le lien</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
-        <source>Send Email To...</source>
-        <translation>Envoyer un courriel à ...</translation>
+        <source>Send email to...</source>
+        <translation>Envoyer un email à...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
-        <source>Copy Email Address</source>
-        <translation>Copier l&apos;adresse du courriel</translation>
+        <source>Copy email address</source>
+        <translation>Copier l&apos;adresse email</translation>
     </message>
 </context>
 <context>
@@ -76,6 +74,21 @@
 </context>
 <context>
     <name>SearchBar</name>
+    <message>
+        <location filename="../SearchBar.cpp" line="40"/>
+        <source>Match case</source>
+        <translation>Sensible à la casse</translation>
+    </message>
+    <message>
+        <location filename="../SearchBar.cpp" line="46"/>
+        <source>Regular expression</source>
+        <translation>Expression régulière</translation>
+    </message>
+    <message>
+        <location filename="../SearchBar.cpp" line="50"/>
+        <source>Highlight all matches</source>
+        <translation>Surbrillance de toutes les concordances</translation>
+    </message>
     <message>
         <location filename="../SearchBar.ui" line="14"/>
         <source>SearchBar</source>
@@ -105,21 +118,6 @@
         <location filename="../SearchBar.ui" line="66"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../SearchBar.cpp" line="40"/>
-        <source>Match case</source>
-        <translation>Sensible à la casse</translation>
-    </message>
-    <message>
-        <location filename="../SearchBar.cpp" line="46"/>
-        <source>Regular expression</source>
-        <translation>Expression régulière</translation>
-    </message>
-    <message>
-        <location filename="../SearchBar.cpp" line="50"/>
-        <source>Highlight all matches</source>
-        <translation>Surbrillance de toutes les concordances</translation>
     </message>
 </context>
 </TS>

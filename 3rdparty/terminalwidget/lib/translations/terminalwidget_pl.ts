@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>Konsole::TerminalDisplay</name>
     <message>
@@ -42,23 +40,23 @@
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
-        <source>Open Link</source>
-        <translation>Przejdź pod adres</translation>
+        <source>Open link</source>
+        <translation>Otwórz link</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
-        <source>Copy Link Address</source>
-        <translation>Kopiuj adres łącza</translation>
+        <source>Copy link</source>
+        <translation>Kopiuj odnośnik</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
-        <source>Send Email To...</source>
-        <translation>Wyślij e-mail do…</translation>
+        <source>Send email to...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
-        <source>Copy Email Address</source>
-        <translation>Kopiuj adres e-mail</translation>
+        <source>Copy email address</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
