@@ -15,7 +15,7 @@
 // let the caller decided when to create the shortcuts.
 ShortcutManager *ShortcutManager::m_instance = nullptr;
 
-ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent), m_clipboardCommand("")
+ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent)
 {
     // Q_UNUSED(parent);
     // make sure it is NOT a nullptr since we'll use it all the time.
@@ -79,6 +79,7 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
+    qDebug() << "load Custom Commands Config: " << customCommandConfigFilePath;
     if (!QFile::exists(customCommandConfigFilePath)) {
         return actionList;
     }
@@ -89,8 +90,9 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
     // qDebug() << commandGroups.size() << endl;
     for (const QString &commandName : commandGroups) {
         commandsSettings.beginGroup(commandName);
-        if (!commandsSettings.contains("Command"))
+        if (!commandsSettings.contains("Command")) {
             continue;
+        }
         QAction *action = new QAction(commandName, this);
         action->setData(commandsSettings.value("Command").toString());  // make sure it is a QString
         if (commandsSettings.contains("Shortcut")) {
@@ -310,7 +312,8 @@ void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
         //        && actionCmdText == currCmdText
         //        && actionKeySeq == currKeySeq) {
         if (actionCmdName == currCmdName) {
-            emit removeCustomCommandSignal(m_customCommandActionList.at(i));//m_mainWindow->removeAction(m_customCommandActionList.at(i));
+            // m_mainWindow->removeAction(m_customCommandActionList.at(i));
+            emit removeCustomCommandSignal(m_customCommandActionList.at(i));
             m_customCommandActionList.removeAt(i);
             break;
         }

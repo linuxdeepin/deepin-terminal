@@ -31,7 +31,6 @@ public:
     // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
     QAction *checkActionIsExistForModify(QAction &action);
-    //QString getClipboardCommandData();
 
     // 判断快捷键是否合法可用，进行界面处理
     bool isValidShortcut(const QString &Name, const QString &Key);
@@ -45,11 +44,9 @@ signals:
     void removeCustomCommandSignal(QAction *newAction );
 
 private:
-    MainWindow *m_mainWindow = nullptr;
     QList<QAction *> m_customCommandActionList;
     QStringList m_builtinShortcuts;
     static ShortcutManager *m_instance;
-    QString m_clipboardCommand;
 };
 
 #endif  // SHORTCUTMANAGER_H
