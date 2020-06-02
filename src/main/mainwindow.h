@@ -134,6 +134,7 @@ protected:
     void initUI();
     void initWindow();
     void setDefaultLocation();
+    void singleFlagMove();
     QString getConfigWindowState();
     QSize halfScreenSize();
     // 加载插件

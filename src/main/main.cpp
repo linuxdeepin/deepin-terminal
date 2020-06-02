@@ -45,8 +45,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
 #endif  // QT_DEBUG
 
-    // 这行不要删除
-    qputenv("TERM", "xterm-256color");
+
 
     /******** Modify by n014361 wangpeili 2020-01-10: 增加日志 ***********×****/
     DLogManager::registerConsoleAppender();
@@ -80,6 +79,8 @@ int main(int argc, char *argv[])
         DBusManager::callTerminalEntry(args);
         return 0;
     }
+    // 这行不要删除
+    qputenv("TERM", "xterm-256color");
 
     // 主进程
     Service *service = Service::instance();

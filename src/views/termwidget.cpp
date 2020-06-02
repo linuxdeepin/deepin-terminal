@@ -30,12 +30,14 @@ using namespace Konsole;
 TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
     // 窗口数量加1
-    WindowsManager::instance()->windowCountIncrease();
+    WindowsManager::instance()->terminalCountIncrease();
     //qDebug() << " TermWidgetparent " << parentWidget();
     m_Page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     setHistorySize(5000);
+
+
 
     // set shell program
     QString shell{ getenv("SHELL") };
@@ -98,13 +100,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setBlinkingCursor(Settings::instance()->cursorBlink());
 
     // 按键滚动
-    if (Settings::instance()->PressingScroll()) {
-        qDebug() << "setMotionAfterPasting(2)";
-        //setMotionAfterPasting(2);
-    } else {
-        setMotionAfterPasting(0);
-        //qDebug() << "setMotionAfterPasting(0)";
-    }
+    setPressingScroll(Settings::instance()->PressingScroll());
 
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, [this](QString value) {
@@ -176,7 +172,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     });
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
-    qDebug() << parentPage << endl;
+    //qDebug() << parentPage << endl;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
 
     startShellProgram();
@@ -207,7 +203,7 @@ TermWidget::~TermWidget()
 {
 
     // 窗口减1
-    WindowsManager::instance()->windowCountReduce();
+    WindowsManager::instance()->terminalCountReduce();
 }
 
 TermWidgetPage *TermWidget::parentPage()

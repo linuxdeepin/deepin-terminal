@@ -76,7 +76,7 @@ void MainWindow::initUI()
     //ShortcutManager::instance()->setMainWindow(this);
     //m_shortcutManager = ShortcutManager::instance();
 
-    qDebug() << m_termStackWidget->size();
+    //qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
 }
 void MainWindow::initWindow()
@@ -267,6 +267,16 @@ MainWindow::~MainWindow()
 void MainWindow::setDefaultLocation()
 {
     resize(QSize(1000, 600));
+    singleFlagMove();
+}
+/*******************************************************************************
+ 1. @函数:    singleFlagMove
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-02
+ 4. @说明:    首个普通窗口，需要居中显示
+*******************************************************************************/
+void MainWindow::singleFlagMove()
+{
     if (m_properties[SingleFlag].toBool()) {
         Dtk::Widget::moveToCenter(this);
         qDebug() << "SingleFlag move" ;
@@ -1605,8 +1615,8 @@ void NormalWindow::initWindowAttribute()
         /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
         int saveWidth = m_winInfoConfig->value(CONFIG_WINDOW_WIDTH).toInt();
         int saveHeight = m_winInfoConfig->value(CONFIG_WINDOW_HEIGHT).toInt();
-        qDebug() << "window_width: " << saveWidth;
-        qDebug() << "window_height: " << saveHeight;
+        qDebug() << "load window_width: " << saveWidth;
+        qDebug() << "load window_height: " << saveHeight;
         /******** Modify by nt001000 renfeixiang 2020-05-25:文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
         // 如果配置文件没有数据
         if (saveWidth == 0 || saveHeight == 0) {
@@ -1614,11 +1624,7 @@ void NormalWindow::initWindowAttribute()
             saveHeight = 600;
         }
         resize(QSize(saveWidth, saveHeight));
-
-        if (m_properties[SingleFlag].toBool()) {
-            Dtk::Widget::moveToCenter(this);
-            qDebug() << "SingleFlag move" ;
-        }
+        singleFlagMove();
     }
 }
 

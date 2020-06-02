@@ -15,7 +15,7 @@
 TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
-    qDebug() << "parentTermWidgetPage" << parentWidget();
+    //qDebug() << "parentTermWidgetPage" << parentWidget();
     m_MainWindow = static_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
@@ -28,7 +28,7 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     m_layout->setContentsMargins(0, 0, 0, 0);
     m_layout->addWidget(w);
     setLayout(m_layout);
-    qDebug() << "w->parent()" << w->parent();
+    //qDebug() << "w->parent()" << w->parent();
 
     // Init find bar.
     m_findBar->move(this->x() - 100, this->y() - 100);
@@ -793,7 +793,7 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
-    qDebug() << "createTerm" << term->getSessionId();
+    qDebug() << "create Terminal, sessionId = " << term->getSessionId();
     return term;
 }
 

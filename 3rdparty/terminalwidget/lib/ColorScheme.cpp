@@ -594,7 +594,7 @@ ColorSchemeManager::~ColorSchemeManager()
 }
 void ColorSchemeManager::loadAllColorSchemes()
 {
-    qDebug() << "loadAllColorSchemes";
+
     int failed = 0;
 
     QList<QString> nativeColorSchemes = listColorSchemes();
@@ -613,9 +613,13 @@ void ColorSchemeManager::loadAllColorSchemes()
             failed++;
     }
 
-    if ( failed > 0 )
+    if ( failed > 0 ){
         qDebug() << "failed to load " << failed << " color schemes.";
+    }
 
+    qDebug() << "load all color schemes";
+    //qDebug() << "nativeColorSchemes" << nativeColorSchemes ;
+    //qDebug() << "kde3ColorSchemes" << kde3ColorSchemes;
     _haveLoadedAll = true;
 }
 QList<const ColorScheme*> ColorSchemeManager::allColorSchemes()

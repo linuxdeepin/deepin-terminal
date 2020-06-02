@@ -70,7 +70,8 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     }
     MainWindow *newWindow = new NormalWindow(newProperties);
     m_normalWindowList << newWindow;
-    qDebug() << "createNormalWindow, cureent count = " << m_normalWindowList.count();
+    qDebug() << "create NormalWindow, current count =" << m_normalWindowList.count()
+             << ", SingleFlag" << newProperties[SingleFlag].toBool();
     newWindow->show();
 }
 
@@ -106,14 +107,14 @@ int WindowsManager::widgetCount() const
     return m_widgetCount;
 }
 
-void WindowsManager::windowCountIncrease()
+void WindowsManager::terminalCountIncrease()
 {
     ++m_widgetCount;
-    qDebug() << "++ Window Count : " << m_widgetCount;
+    qDebug() << "++ Terminals Count : " << m_widgetCount;
 }
 
-void WindowsManager::windowCountReduce()
+void WindowsManager::terminalCountReduce()
 {
     --m_widgetCount;
-    qDebug() << "-- Window Count : " << m_widgetCount;
+    qDebug() << "-- Terminals Count : " << m_widgetCount;
 }

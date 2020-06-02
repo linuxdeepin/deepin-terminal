@@ -27,9 +27,9 @@ public:
     void createNormalWindow(TermProperties properties);
 
     // 窗口数量增加
-    void windowCountIncrease();
+    void terminalCountIncrease();
     // 窗口数量减少
-    void windowCountReduce();
+    void terminalCountReduce();
     // 获取当前窗口数量
     int widgetCount() const;
     // 获取雷神窗口
