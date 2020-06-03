@@ -517,42 +517,44 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     parser.setApplicationDescription(qApp->applicationDescription());
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
+    parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsOptions);
     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
     QCommandLineOption optWorkDirectory({ "w", "work-directory" },
-                                        QObject::tr("Set terminal start work directory"), "path");
+                                        QObject::tr("Set terminal start work directory"),
+                                        "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QString(QObject::tr("Set terminal start on window mode: ")
-                                              + "normal, maximize, fullscreen, splitscreen "),
+                                      QString(QObject::tr("Set terminal start on window mode: ") + "normal, maximize, fullscreen, splitscreen "),
                                       "state-mode");
-    QCommandLineOption optExecute({ "e", "execute" }, QObject::tr("Execute command in the terminal"), "command");
-    QCommandLineOption optScript({ "c", "run-script" }, QObject::tr("Run script string in the terminal"), "script");
+    QCommandLineOption optExecute({ "e", "execute" },
+                                  QObject::tr("Execute command in the terminal"),
+                                  "command");
+    QCommandLineOption optScript({ "c", "run-script" },
+                                 QObject::tr("Run script string in the terminal"),
+                                 "script");
     // QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
-    QCommandLineOption optQuakeMode({ "q", "quake-mode" }, QObject::tr("Set terminal start on quake mode"), "");
-    QCommandLineOption optKeepOpen("keep-open", QObject::tr("Set terminal keep open when finished"), "");
+    QCommandLineOption optQuakeMode({ "q", "quake-mode" },
+                                    QObject::tr("Set terminal start on quake mode"),
+                                    "");
+    QCommandLineOption optKeepOpen("keep-open",
+                                   QObject::tr("Set terminal keep open when finished"),
+                                   "");
     // parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
 
-    parser.addOptions({ optWorkDirectory, optExecute, /*optionExecute2,*/
-                        optQuakeMode, optWindowState, optKeepOpen, optScript });
+    parser.addOptions({ optWorkDirectory,
+                        optExecute, /*optionExecute2,*/
+                        optQuakeMode,
+                        optWindowState,
+                        optKeepOpen,
+                        optScript });
+    // parser.addPositionalArgument("-e", QObject::tr("Execute command in the terminal"), "command");
 
     // 解析参数
-    parser.parse(arguments);
-
-    if (appControl) {
-        // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
-        parser.process(*qApp);
-    } else {
-        qDebug() << "input args:" << arguments;
-        qDebug() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
-        qDebug() << "arg: optionExecute" << parser.value(optExecute);
-        //    qDebug() << "optionExecute2"<<parser.value(optionExecute2);
-        qDebug() << "arg: optionQuakeMode" << parser.isSet(optQuakeMode);
-        qDebug() << "arg: optionWindowState" << parser.isSet(optWindowState);
-        qDebug() << "arg: positionalArguments" << parser.positionalArguments();
+    if (!parser.parse(arguments)) {
+        qDebug() << "parser error:" << parser.errorText();
     }
 
     if (parser.isSet(optExecute)) {
-        Properties[Execute] = parser.value(optExecute);
+        Properties[Execute] = parseExecutePara(arguments);
     }
     if (parser.isSet(optWorkDirectory)) {
         Properties[WorkingDir] = parser.value(optWorkDirectory);
@@ -582,9 +584,70 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
             }
         }
     }
+
+    if (appControl) {
+        // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
+        parser.process(*qApp);
+    } else {
+        qDebug() << "input args:" << qPrintable(arguments.join(" "));
+        qDebug() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
+        qDebug() << "arg: optionExecute" << Properties[Execute].toStringList().join(" ");
+        //    qDebug() << "optionExecute2"<<parser.value(optionExecute2);
+        qDebug() << "arg: optionQuakeMode" << parser.isSet(optQuakeMode);
+        qDebug() << "arg: optionWindowState" << parser.isSet(optWindowState);
+        // 这个位置参数解析出来是无法匹配的，可是不带前面标识符，无法准确使用。
+        // qDebug() << "arg: positionalArguments" << parser.positionalArguments();
+    }
+
     qDebug() << "parse commandLine is ok";
 
-    return ;
+    return;
+}
+/*******************************************************************************
+ 1. @函数:    parseExecutePara
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-03
+ 4. @说明:    解析execute参数
+             任意长，任意位置
+*******************************************************************************/
+QStringList Utils::parseExecutePara(QStringList arguments)
+{
+    QVector<QString> keys;
+    keys << "-e"
+         << "--execute";
+    keys << "-h"
+         << "--help";
+    keys << "-v"
+         << "--version";
+    keys << "-w"
+         << "--work-directory";
+    keys << "-q"
+         << "--quake-mode";
+    keys << "-m"
+         << "--window-mode";
+    keys << "--keep-open";
+    keys << "-c"
+         << "--run-script";
+
+    int index = arguments.indexOf("-e");
+    if (index == -1) {
+        index = arguments.indexOf("--execute");
+    }
+
+    index++;
+    QStringList paraList;
+    while (index < arguments.size()) {
+        QString str = arguments.at(index);
+        // qDebug()<<"check arg"<<str;
+        // 如果找到下一个指令符就停
+        if (keys.contains(str)) {
+            break;
+        }
+        paraList.append(str);
+        index++;
+    }
+    qDebug() << "-e args :" << paraList;
+    return paraList;
 }
 
 /*******************************************************************************

@@ -65,9 +65,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     }
 
     if (m_properties.contains(Execute)) {
-        QString args = m_properties[Execute].toString();
-        qDebug() << args;
-        QStringList argList = args.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
+        //QString args = m_properties[Execute].toString();
+        //QStringList argList = args.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
+        QStringList argList = m_properties[Execute].toStringList();
+        qDebug() << "Execute args:" << argList;
         if (argList.count() > 0) {
             setShellProgram(argList.at(0));
             argList.removeAt(0);

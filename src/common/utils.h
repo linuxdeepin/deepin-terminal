@@ -96,7 +96,7 @@ public:
     static void clearChildrenFocus(QObject *objParent);
 
     static void parseCommandLine(QStringList arguments,  TermProperties &Properties, bool appControl = false);
-
+    static QStringList parseExecutePara(QStringList arguments);
     static MainWindow *getMainWindow(QWidget * currWidget);
 
     static QList<QByteArray> encodeList();
