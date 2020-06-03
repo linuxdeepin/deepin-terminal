@@ -130,6 +130,7 @@ void EncodeListView::checkEncode(QString encode)
             DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
             if (modelindex.data().toString() == encode) {
                 modelItem->setCheckState(Qt::Checked);
+                scrollTo(modelindex);
             } else {
                 modelItem->setCheckState(Qt::Unchecked);
             }

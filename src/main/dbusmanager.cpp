@@ -93,7 +93,7 @@ void DBusManager::callTerminalEntry(QStringList args)
     if (response.type() == QDBusMessage::ReplyMessage) {
         qDebug() << "call callTerminalEntry Success!";
     } else {
-        qDebug() << "call callTerminalEntry Fail!" << response.errorMessage();
+        qDebug() << "call callTerminalEntry!" << response.errorMessage();
     }
 }
 
