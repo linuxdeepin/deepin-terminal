@@ -256,14 +256,34 @@ QString Utils::showDirDialog(QWidget *widget)
 {
     QString curPath = QDir::currentPath();
     QString dlgTitle = QObject::tr("Select a directory to save the file");
-    return DFileDialog::getExistingDirectory(widget, dlgTitle, curPath, DFileDialog::DontConfirmOverwrite);
+
+    DFileDialog dialog(widget, dlgTitle, curPath);
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    dialog.setFileMode(QFileDialog::Directory);
+    dialog.setOption(DFileDialog::DontConfirmOverwrite);
+    dialog.setLabelText(QFileDialog::Accept, QObject::tr("Select"));
+    int code = dialog.exec();
+
+    if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
+        const QString dirName = dialog.selectedFiles().first();
+        return dirName;
+    } else {
+        return "";
+    }
 }
 
 QStringList Utils::showFilesSelectDialog(QWidget *widget)
 {
     QString curPath = QDir::currentPath();
     QString dlgTitle = QObject::tr("Select file to upload");
-    return DFileDialog::getOpenFileNames(widget, dlgTitle, curPath);
+
+    DFileDialog dialog(widget, dlgTitle, curPath);
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    dialog.setFileMode(QFileDialog::ExistingFiles);
+    dialog.setLabelText(QFileDialog::Accept, QObject::tr("Upload"));
+
+    dialog.exec();
+    return dialog.selectedFiles();
 }
 
 bool Utils::showExitConfirmDialog(CloseType type, int count)
