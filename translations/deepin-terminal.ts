@@ -174,7 +174,6 @@
     <name>QObject</name>
     <message>
         <location filename="../src/views/warnningdlg.cpp" line="103"/>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="161"/>
         <location filename="../src/common/utils.cpp" line="376"/>
         <location filename="../src/common/utils.cpp" line="395"/>
         <location filename="../src/common/utils.cpp" line="492"/>
@@ -580,6 +579,11 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="511"/>
         <source>Select the private key file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="161"/>
+        <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

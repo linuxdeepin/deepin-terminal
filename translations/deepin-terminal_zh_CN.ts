@@ -174,7 +174,6 @@
     <name>QObject</name>
     <message>
         <location filename="../src/views/warnningdlg.cpp" line="103"/>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="161"/>
         <location filename="../src/common/utils.cpp" line="376"/>
         <location filename="../src/common/utils.cpp" line="395"/>
         <location filename="../src/common/utils.cpp" line="492"/>
@@ -544,7 +543,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="549"/>
         <source>Execute a command in the terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>在终端中运⾏⼀个程序</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="552"/>
@@ -585,6 +584,11 @@
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="511"/>
         <source>Select the private key file</source>
         <translation>选择私钥文件</translation>
+    </message>
+    <message>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="161"/>
+        <source>Confirm</source>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
