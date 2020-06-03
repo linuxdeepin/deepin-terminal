@@ -15,13 +15,13 @@
 #include <QObject>
 
 // 窗口最大数量
-#define MAXWIDGETCOUNT 200
+#define MAXWIDGETCOUNT 198
 
 class WindowsManager : public QObject
 {
     Q_OBJECT
 public:
-    static WindowsManager * instance();
+    static WindowsManager *instance();
     void runQuakeWindow(TermProperties properties);
     void quakeWindowShowOrHide();
     void createNormalWindow(TermProperties properties);
@@ -33,7 +33,10 @@ public:
     // 获取当前窗口数量
     int widgetCount() const;
     // 获取雷神窗口
-    MainWindow *getQuakeWindow() {return m_quakeWindow;}
+    MainWindow *getQuakeWindow()
+    {
+        return m_quakeWindow;
+    }
 
 signals:
 
@@ -41,7 +44,7 @@ public slots:
     void onMainwindowClosed(MainWindow *);
 private:
     QList<MainWindow *> m_normalWindowList;
-    MainWindow * m_quakeWindow = nullptr;
+    MainWindow *m_quakeWindow = nullptr;
     TermWidgetPage *m_currentPage = nullptr;
 private:
     explicit WindowsManager(QObject *parent = nullptr);

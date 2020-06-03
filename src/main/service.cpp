@@ -22,7 +22,7 @@ void Service::init()
     ShortcutManager::instance()->initShortcuts();
     // 初始化远程管理数据
     ServerConfigManager::instance()->initServerConfig();
-    qDebug()<<"All init data complete!";
+    qDebug() << "All init data complete!";
 }
 /*******************************************************************************
  1. @函数:    showSettingDialog
@@ -131,7 +131,12 @@ void Service::Entry(QStringList arguments)
 {
     // 到达窗口最大值，则返回，不做创建
     if (WindowsManager::instance()->widgetCount() == MAXWIDGETCOUNT) {
-        return;
+        if (arguments.contains("-q") && WindowsManager::instance()->getQuakeWindow() == nullptr) {
+            qDebug() << "allow create quake window";
+        } else {
+            qDebug() << "Maximum number of windows created" << WindowsManager::instance()->widgetCount();
+            return;
+        }
     }
 
     TermProperties properties;
