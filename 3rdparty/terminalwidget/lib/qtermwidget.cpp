@@ -543,6 +543,7 @@ void QTermWidget::setShellProgram(const QString &progname)
     if (!m_impl->m_session)
         return;
     m_impl->m_session->setProgram(progname);
+    qDebug()<<"set Program"<< progname;
 }
 
 void QTermWidget::setWorkingDirectory(const QString &dir)
@@ -579,6 +580,7 @@ void QTermWidget::setArgs(const QStringList &args)
     if (!m_impl->m_session)
         return;
     m_impl->m_session->setArguments(args);
+    qDebug()<<"set Arguments"<<args;
 }
 
 void QTermWidget::setTextCodec(QTextCodec *codec)

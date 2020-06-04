@@ -96,10 +96,12 @@ public:
     static void clearChildrenFocus(QObject *objParent);
 
     static void parseCommandLine(QStringList arguments,  TermProperties &Properties, bool appControl = false);
-    static QStringList parseExecutePara(QStringList arguments);
+    static QStringList parseExecutePara(QStringList &arguments);
+    static QStringList parseNestedQString(QString str);
     static MainWindow *getMainWindow(QWidget * currWidget);
 
     static QList<QByteArray> encodeList();
+    static const int NOT_FOUND = -1;
 
 };
 

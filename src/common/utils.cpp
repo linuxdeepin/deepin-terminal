@@ -548,7 +548,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     QCommandLineOption optExecute({ "e", "execute" },
                                   QObject::tr("Execute a command in the terminal"),
                                   "command");
-    QCommandLineOption optScript({ "c", "run-script" },
+    QCommandLineOption optScript({ "C", "run-script" },
                                  QObject::tr("Run script string in the terminal"),
                                  "script");
     // QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
@@ -607,7 +607,8 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
 
     if (appControl) {
         // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
-        parser.process(*qApp);
+        qDebug() << "parse commandLine";
+        parser.process(arguments);
     } else {
         qDebug() << "input args:" << qPrintable(arguments.join(" "));
         qDebug() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
@@ -627,10 +628,18 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
  1. @函数:    parseExecutePara
  2. @作者:    ut000439 王培利
  3. @日期:    2020-06-03
- 4. @说明:    解析execute参数
-             任意长，任意位置
+ 4. @说明:    解析execute参数,解析出来后，会从参数表中删除相关内容，防止process异常．
+             任意长，任意位置,
+             支持解析例子：
+            deepin-terminal -e "bash -c 'ping 127.0.0.1 -c 5'" -w /
+            deepin-terminal -e 'bash -c "ping 127.0.0.1 -c 5"' -w /
+            deepin-terminal -e  bash -c 'ping 127.0.0.1 -c 5'  -w /
+            deepin-terminal -e "ping  127.0.0.1  -c 5"
+            deepin-terminal -e "ping  127.0.0.1  -c 5"         -w /
+            deepin-terminal -e  ping  127.0.0.1  -c 5          -w /
+            deepin-terminal -e  ping "127.0.0.1" -c 5          -w /
 *******************************************************************************/
-QStringList Utils::parseExecutePara(QStringList arguments)
+QStringList Utils::parseExecutePara(QStringList &arguments)
 {
     QVector<QString> keys;
     keys << "-e"
@@ -646,15 +655,17 @@ QStringList Utils::parseExecutePara(QStringList arguments)
     keys << "-m"
          << "--window-mode";
     keys << "--keep-open";
-    keys << "-c"
+    keys << "-C"
          << "--run-script";
-
-    int index = arguments.indexOf("-e");
+    QString opt = "-e";
+    int index = arguments.indexOf(opt);
     if (index == -1) {
-        index = arguments.indexOf("--execute");
+        opt = "--execute";
+        index = arguments.indexOf(opt);
     }
 
     index++;
+    int startIndex = index;
     QStringList paraList;
     while (index < arguments.size()) {
         QString str = arguments.at(index);
@@ -663,10 +674,64 @@ QStringList Utils::parseExecutePara(QStringList arguments)
         if (keys.contains(str)) {
             break;
         }
-        paraList.append(str);
+        if(index == startIndex){
+            // 第一个参数，支持嵌入二次解析，其它的参数不支持
+            paraList += parseNestedQString(str);
+        }
+        else {
+            paraList.append(str);
+        }
+
         index++;
     }
-    qDebug() << "-e args :" << paraList;
+    // 将-e 以及后面参数全部删除，防止出现参数被终端捕捉异常情况
+    if(paraList.size() !=0)
+    {
+        for (int i = 0; i < index - startIndex; i++) {
+            arguments.removeAt(startIndex);
+            qDebug()<<arguments.size();
+        }
+        arguments.removeOne("-e");
+        arguments.removeOne("--execute");
+        qDebug() <<  opt << paraList <<"arguments" <<arguments;
+    }
+
+    return paraList;
+}
+/*******************************************************************************
+ 1. @函数:    parseNestedQString
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-04
+ 4. @说明:    解析嵌套的qstring为qstringlist,只支持一级
+             如："bash -c 'ping 127.0.0.1'" -> "bash", "-c", "ping 127.0.0.1"
+             如：'bash -c "ping 127.0.0.1"' -> "bash, "-c", "ping 127.0.0.1"
+             如："bash -c  ping 127.0.0.1"-> "bash, "-c", "ping 127.0.0.1"
+*******************************************************************************/
+QStringList Utils::parseNestedQString(QString str)
+{
+    QStringList paraList;
+    int iLeft = NOT_FOUND;
+    int iRight = NOT_FOUND;
+
+    // 如果只有一个引号
+    if(str.count("\"") >= 1){
+        iLeft = str.indexOf("\"");
+        iRight = str.lastIndexOf("\"");
+    }
+    else if(str.count("\'") >= 1){
+        iLeft = str.indexOf("\'");
+        iRight = str.lastIndexOf("\'");
+    }
+    else {
+        paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+        return  paraList;
+    }
+
+    paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+    paraList.append(str.mid(iLeft+1, iRight - iLeft -1));
+    if(str.size() != iRight +1){
+        paraList.append(str.right(str.size() - iRight -1).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+    }
     return paraList;
 }
 
