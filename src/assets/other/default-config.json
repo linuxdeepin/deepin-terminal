@@ -112,7 +112,7 @@
                         },
                         {
                             "key": "close_other_workspace",
-                            "name": "Close other workspace",
+                            "name": "Close other workspaces",
                             "type": "shortcut",
                             "default":  "Ctrl+W"
                         },
