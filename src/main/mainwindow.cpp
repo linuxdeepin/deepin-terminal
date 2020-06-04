@@ -543,50 +543,55 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
 
-    if (type == Utils::CloseType_Window) {
-        connect(dlg, &DDialog::finished, this, [this](int result) {
-            qDebug() << result;
-            //setEnabled(true);
-            // 弹窗隐藏或消失
-            Service::instance()->setIsDialogShow(this, false);
-            if (result == 1) {
-                //接口二次重入
-                m_hasConfirmedClose = true;
-                close();
-            }
-        });
-    }
-    if (type == Utils::CloseType_Tab) {
-        connect(dlg, &DDialog::finished, this, [this](int result) {
-            qDebug() << result;
-            //setEnabled(true);
-            // 弹窗隐藏或消失
-            Service::instance()->setIsDialogShow(this, false);
-            if (result == 1) {
-                TermWidgetPage *page = currentPage();
-                if (page) {
-                    //接口二次重入
-                    closeTab(page->identifier(), true);
-                }
-            }
-        });
-    }
+    /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中 Begin***************/
+    m_iCloseType = type;
+    connect(dlg, &DDialog::finished, this, &MainWindow::OnHandleCloseType);
+    /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中  End***************/
 
-    if (type == Utils::CloseType_OtherTab) {
-        connect(dlg, &DDialog::finished, this, [this](int result) {
-            qDebug() << result;
-            //setEnabled(true);
-            // 弹窗隐藏或消失
-            Service::instance()->setIsDialogShow(this, false);
-            if (result == 1) {
-                TermWidgetPage *page = currentPage();
-                if (page) {
-                    //接口二次重入
-                    closeOtherTab(page->identifier(), true);
-                }
-            }
-        });
-    }
+//    if (type == Utils::CloseType_Window) {
+//        connect(dlg, &DDialog::finished, this, [this](int result) {
+//            qDebug() << result;
+//            //setEnabled(true);
+//            // 弹窗隐藏或消失
+//            Service::instance()->setIsDialogShow(this, false);
+//            if (result == 1) {
+//                //接口二次重入
+//                m_hasConfirmedClose = true;
+//                close();
+//            }
+//        });
+//    }
+//    if (type == Utils::CloseType_Tab) {
+//        connect(dlg, &DDialog::finished, this, [this](int result) {
+//            qDebug() << result;
+//            //setEnabled(true);
+//            // 弹窗隐藏或消失
+//            Service::instance()->setIsDialogShow(this, false);
+//            if (result == 1) {
+//                TermWidgetPage *page = currentPage();
+//                if (page) {
+//                    //接口二次重入
+//                    closeTab(page->identifier(), true);
+//                }
+//            }
+//        });
+//    }
+
+//    if (type == Utils::CloseType_OtherTab) {
+//        connect(dlg, &DDialog::finished, this, [this](int result) {
+//            qDebug() << result;
+//            //setEnabled(true);
+//            // 弹窗隐藏或消失
+//            Service::instance()->setIsDialogShow(this, false);
+//            if (result == 1) {
+//                TermWidgetPage *page = currentPage();
+//                if (page) {
+//                    //接口二次重入
+//                    closeOtherTab(page->identifier(), true);
+//                }
+//            }
+//        });
+//    }
 
     //while (1) {
     //    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
@@ -1493,6 +1498,49 @@ void MainWindow::removeCustomCommandSlot(QAction *newAction)
     removeAction(newAction);
 }
 
+/*******************************************************************************
+ 1. @函数:    OnHandleCloseType
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-06-03
+ 4. @说明:    处理CloseType的关闭窗口
+*******************************************************************************/
+void MainWindow::OnHandleCloseType(int result)
+{
+    // 弹窗隐藏或消失
+    Service::instance()->setIsDialogShow(this, false);
+    if(result != 1)
+        return;
+
+    if (m_iCloseType == Utils::CloseType_Window) {
+        //接口二次重入
+        m_hasConfirmedClose = true;
+        close();
+        return;
+    }
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        if (m_iCloseType == Utils::CloseType_Tab) {
+            //接口二次重入
+            closeTab(page->identifier(), true);
+            return;
+        }
+
+        if (m_iCloseType == Utils::CloseType_OtherTab) {
+            //接口二次重入
+            closeOtherTab(page->identifier(), true);
+            return;
+        }
+        //Terminal相关的关闭弹框操作
+        if (m_iCloseType == Utils::CloseType_Terminal){
+            page->closeSplit(page->currentTerminal(), true);
+            return;
+        }
+        if (m_iCloseType == Utils::CloseType_OtherTerminals){
+            page->closeOtherTerminal(true);
+            return;
+        }
+    }
+}
 
 /**
  * after sz command,wait input file and download file.

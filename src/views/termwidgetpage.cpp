@@ -192,51 +192,54 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
 
 void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWidget *parent)
 {
-    // count < 1 不提示
-    if (count < 1) {
-        return;
-    }
-    QString title;
-    QString txt;
-    Utils::getExitDialogText(type, title, txt, count);
+    /******** Modify by ut001000 renfeixiang 2020-06-03:修改 直接调用MainWindow中的showExitConfirmDialog函数中 Begin***************/
+    parentMainWindow()->showExitConfirmDialog(type, count, parent);
+    /******** Modify by ut001000 renfeixiang 2020-06-03:修改 直接调用MainWindow中的showExitConfirmDialog函数中 End***************/
+//    // count < 1 不提示
+//    if (count < 1) {
+//        return;
+//    }
+//    QString title;
+//    QString txt;
+//    Utils::getExitDialogText(type, title, txt, count);
 
-    // 有弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
+//    // 有弹窗显示
+//    Service::instance()->setIsDialogShow(window(), true);
 
-    DDialog *dlg = new DDialog(title, txt, parent);
-    dlg->setIcon(QIcon::fromTheme("deepin-terminal"));
-    dlg->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
-    /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close Begin***************/
-    dlg->addButton(QString(tr("Close")), true, DDialog::ButtonWarning);
-    /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
-    dlg->setWindowModality(Qt::WindowModal);
-    setAttribute(Qt::WA_ShowModal);
-    dlg->show();
+//    DDialog *dlg = new DDialog(title, txt, parent);
+//    dlg->setIcon(QIcon::fromTheme("deepin-terminal"));
+//    dlg->addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+//    /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close Begin***************/
+//    dlg->addButton(QString(tr("Close")), true, DDialog::ButtonWarning);
+//    /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
+//    dlg->setWindowModality(Qt::WindowModal);
+//    setAttribute(Qt::WA_ShowModal);
+//    dlg->show();
 
 
-    if (type == Utils::CloseType_Terminal) {
-        connect(dlg, &DDialog::finished, this, [this](int result) {
-            qDebug() << result;
-            // 有弹窗消失
-            Service::instance()->setIsDialogShow(window(), false);
-            if (result == 1) {
-                //接口二次重入
-                closeSplit(currentTerminal(), true);
-            }
-        });
-    }
+//    if (type == Utils::CloseType_Terminal) {
+//        connect(dlg, &DDialog::finished, this, [this](int result) {
+//            qDebug() << result;
+//            // 有弹窗消失
+//            Service::instance()->setIsDialogShow(window(), false);
+//            if (result == 1) {
+//                //接口二次重入
+//                closeSplit(currentTerminal(), true);
+//            }
+//        });
+//    }
 
-    if (type == Utils::CloseType_OtherTerminals) {
-        connect(dlg, &DDialog::finished, this, [this](int result) {
-            qDebug() << result;
-            // 有弹窗消失
-            Service::instance()->setIsDialogShow(window(), false);
-            if (result == 1) {
-                //接口二次重入
-                closeOtherTerminal(true);
-            }
-        });
-    }
+//    if (type == Utils::CloseType_OtherTerminals) {
+//        connect(dlg, &DDialog::finished, this, [this](int result) {
+//            qDebug() << result;
+//            // 有弹窗消失
+//            Service::instance()->setIsDialogShow(window(), false);
+//            if (result == 1) {
+//                //接口二次重入
+//                closeOtherTerminal(true);
+//            }
+//        });
+//    }
 
     return ;
 }

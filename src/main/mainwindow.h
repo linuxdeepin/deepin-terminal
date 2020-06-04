@@ -117,6 +117,11 @@ public slots:
     void addCustomCommandSlot(QAction *newAction);
     void removeCustomCommandSlot(QAction *newAction);
 
+    /******** Add by ut001000 renfeixiang 2020-06-03:增加 Begin***************/
+    //处理关闭类型的参数
+    void OnHandleCloseType(int result);
+    /******** Add by ut001000 renfeixiang 2020-06-03:增加 End***************/
+
 protected:
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
@@ -237,6 +242,8 @@ protected:
     // 雷神终端所在桌面
     int m_desktopIndex;
     bool m_hasConfirmedClose = false;
+
+    int m_iCloseType = -1;
 };
 
 class NormalWindow : public MainWindow
