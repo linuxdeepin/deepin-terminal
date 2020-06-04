@@ -11,7 +11,7 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
     // hide by default.
     QWidget::hide();
 
-    setFixedWidth(240+2);
+    setFixedWidth(240 + 2);
 
     // Init theme panel.
     DAnchorsBase::setAnchor(this, Qt::AnchorTop, parent, Qt::AnchorTop);
@@ -29,8 +29,15 @@ void RightPanel::show()
     QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
-    animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
-    animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    //animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    //animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    if (window()->isFullScreen()) {
+        animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height()));
+        animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height()));
+    } else {
+        animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+        animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    }
     animation->start();
 
     //    connect(animation, &QPropertyAnimation::valueChanged, this, [=] { m_themeView->adjustScrollbarMargins(); });
@@ -44,9 +51,17 @@ void RightPanel::hideAnim()
     QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
-    animation->setStartValue(
-        QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
-    animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    //animation->setStartValue(
+    //    QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    //animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    if (window()->isFullScreen()) {
+        animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height()));
+        animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height()));
+    } else {
+        animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+        animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
+    }
+
 
     animation->start();
 
