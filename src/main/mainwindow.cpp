@@ -542,10 +542,12 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     dlg->setWindowModality(Qt::WindowModal);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
+    dlg->setProperty("type", type);
 
     /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中 Begin***************/
-    m_iCloseType = type;
-    connect(dlg, &DDialog::finished, this, &MainWindow::OnHandleCloseType);
+    connect(dlg, &DDialog::finished, this, [this](int result) {
+        OnHandleCloseType(result, Utils::CloseType(qobject_cast<DDialog *>(sender())->property("type").toInt()));
+    });
     /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中  End***************/
 
 //    if (type == Utils::CloseType_Window) {
@@ -1504,41 +1506,40 @@ void MainWindow::removeCustomCommandSlot(QAction *newAction)
  3. @日期:    2020-06-03
  4. @说明:    处理CloseType的关闭窗口
 *******************************************************************************/
-void MainWindow::OnHandleCloseType(int result)
+void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
 {
+    qDebug() << "OnHandleCloseType type is" << type;
     // 弹窗隐藏或消失
     Service::instance()->setIsDialogShow(this, false);
-    if(result != 1)
-        return;
-
-    if (m_iCloseType == Utils::CloseType_Window) {
-        //接口二次重入
-        m_hasConfirmedClose = true;
-        close();
+    if (result != 1){
+        qDebug() << "user cancle close";
         return;
     }
-    TermWidgetPage *page = currentPage();
-    if (page) {
-        if (m_iCloseType == Utils::CloseType_Tab) {
-            //接口二次重入
-            closeTab(page->identifier(), true);
-            return;
-        }
 
-        if (m_iCloseType == Utils::CloseType_OtherTab) {
-            //接口二次重入
-            closeOtherTab(page->identifier(), true);
-            return;
-        }
-        //Terminal相关的关闭弹框操作
-        if (m_iCloseType == Utils::CloseType_Terminal){
-            page->closeSplit(page->currentTerminal(), true);
-            return;
-        }
-        if (m_iCloseType == Utils::CloseType_OtherTerminals){
-            page->closeOtherTerminal(true);
-            return;
-        }
+    TermWidgetPage *page = currentPage();
+    if (page == nullptr) {
+        qDebug() << "null pointer of currentPage ???";
+        return;
+    }
+
+    //以下所有接口二次重入
+    switch (type) {
+    case Utils::CloseType_Window:
+        m_hasConfirmedClose = true;
+        close();
+        break;
+    case Utils::CloseType_Tab:
+        closeTab(page->identifier(), true);
+        break;
+    case Utils::CloseType_OtherTab:
+        closeOtherTab(page->identifier(), true);
+        break;
+    case Utils::CloseType_Terminal://Terminal相关的关闭弹框操作
+        page->closeSplit(page->currentTerminal(), true);
+        break;
+    case Utils::CloseType_OtherTerminals:
+        page->closeOtherTerminal(true);
+        break;
     }
 }
 
