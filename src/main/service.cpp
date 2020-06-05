@@ -7,11 +7,19 @@
 #include <DSettingsWidgetFactory>
 
 #include <QDebug>
+#include <QDateTime>
 
 Service *Service::pService = new Service();
 Service *Service::instance()
 {
     return pService;
+}
+
+Service::~Service()
+{
+    if (nullptr != m_settingDialog) {
+        delete m_settingDialog;
+    }
 }
 
 void Service::init()
@@ -24,6 +32,43 @@ void Service::init()
     ServerConfigManager::instance()->initServerConfig();
     qDebug() << "All init data complete!";
 }
+
+/*******************************************************************************
+ 1. @函数:    initSetting
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-06-05
+ 4. @说明:    初始化设置框，在窗口现实后初始化，使第一次出现设置框不至于卡顿
+*******************************************************************************/
+void Service::initSetting()
+{
+    if (nullptr != m_settingDialog) {
+        return;
+    }
+    QDateTime startTime = QDateTime::currentDateTime();
+    m_settingDialog = new DSettingsDialog();
+    // 关闭后将指针置空，下次重新new
+    connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
+        //激活设置框的有拥者
+        if (m_settingOwner) {
+            m_settingOwner->activateWindow();
+            m_settingOwner->focusCurrentPage();
+        }
+    });
+    // 关闭时delete
+    m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
+    m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
+    m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
+    m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
+    // 将数据重新读入
+    m_settingDialog->updateSettings(Settings::instance()->settings);
+    // 设置窗口模态为没有模态，不阻塞窗口和进程
+    m_settingDialog->setWindowModality(Qt::NonModal);
+    // 让设置与窗口等效，隐藏后显示就不会被遮挡
+    m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
+    moveToCenter(m_settingDialog);
+    QDateTime endTime = QDateTime::currentDateTime();
+    qDebug() << "Setting init cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
+}
 /*******************************************************************************
  1. @函数:    showSettingDialog
  2. @作者:    ut000610 戴正文
@@ -32,34 +77,12 @@ void Service::init()
 *******************************************************************************/
 void Service::showSettingDialog(MainWindow *pOwner)
 {
+    // 只进行一次设置初始化
+    initSetting();
+    QDateTime startTime = QDateTime::currentDateTime();
     //保存设置框的有拥者
     m_settingOwner = pOwner;
-    if (nullptr == m_settingDialog) {
-        m_settingDialog = new DSettingsDialog();
-        // 关闭后将指针置空，下次重新new
-        connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
-            // 关闭时置空
-            if (result == 0) {
-                m_settingDialog = nullptr;
-            }
-            //激活设置框的有拥者
-            if (m_settingOwner) {
-                m_settingOwner->activateWindow();
-                m_settingOwner->focusCurrentPage();
-            }
-        });
-        // 关闭时delete
-        m_settingDialog->setAttribute(Qt::WA_DeleteOnClose);
-        m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
-        m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
-        m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
-        m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
-        // 将数据重新读入
-        m_settingDialog->updateSettings(Settings::instance()->settings);
-        // 设置窗口模态为没有模态，不阻塞窗口和进程
-        m_settingDialog->setWindowModality(Qt::NonModal);
-        // 让设置与窗口等效，隐藏后显示就不会被遮挡
-        m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
+    if (nullptr != m_settingDialog) {
         //雷神需要让窗口置顶，可是普通窗口不要
         if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
@@ -71,27 +94,19 @@ void Service::showSettingDialog(MainWindow *pOwner)
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
         }
         // 显示窗口
-        m_settingDialog->show();
-    } else {
-        //雷神需要让窗口置顶，可是普通窗口不要
-        if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
-            m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
-        } else {
-            // 雷神窗口失去焦点自动隐藏
-            if (WindowsManager::instance()->getQuakeWindow()) {
-                WindowsManager::instance()->getQuakeWindow()->onAppFocusChangeForQuake();
-            }
-            m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
-        }
-//        // 显示窗口
         m_settingDialog->move(m_settingDialog->pos());
         m_settingDialog->show();
+    } else {
+        qDebug() << "No setting dialog.";
+        return;
     }
 
     // 若设置窗口已显示，则激活窗口
     if (!m_settingDialog->isActiveWindow()) {
         m_settingDialog->activateWindow();
     }
+    QDateTime endTime = QDateTime::currentDateTime();
+    qDebug() << "Setting show cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
 }
 
 /*******************************************************************************
@@ -115,6 +130,7 @@ void Service::showShortcutConflictMsgbox(QString txt)
     if (nullptr == m_settingShortcutConflictDialog) {
         m_settingShortcutConflictDialog = new DDialog(m_settingDialog);
         connect(m_settingShortcutConflictDialog, &DDialog::finished, m_settingShortcutConflictDialog, [ = ]() {
+            delete m_settingShortcutConflictDialog;
             m_settingShortcutConflictDialog = nullptr;
         });
         m_settingShortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));

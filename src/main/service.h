@@ -26,7 +26,10 @@ class Service : public QObject
     Q_OBJECT
 public:
     static Service *instance();
+    ~Service();
     void init();
+    // 初始化设置框
+    void initSetting();
 
     // 显示设置框
     void showSettingDialog(MainWindow *pOwner);
