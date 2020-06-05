@@ -880,7 +880,7 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
     painter.save();
 
     // setup painter
-    const QColor foregroundColor = style->foregroundColor.color(_colorTable);
+    //const QColor foregroundColor = style->foregroundColor.color(_colorTable);
     const QColor backgroundColor = style->backgroundColor.color(_colorTable);
 
     // draw background if different from the display's background color
@@ -895,7 +895,11 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
     if (!_hideCursor)
     {
         if ( style->rendition & RE_CURSOR )
-            drawCursor(painter,rect,foregroundColor,backgroundColor,invertCharacterColor);
+        {
+            const QColor cursorBackground = _colorTable[DEFAULT_BACK_COLOR].color;
+            const QColor cursorForeground = _colorTable[DEFAULT_FORE_COLOR].color;
+            drawCursor(painter,rect,cursorForeground,cursorBackground,invertCharacterColor);
+        }
     }
 
     // draw text
