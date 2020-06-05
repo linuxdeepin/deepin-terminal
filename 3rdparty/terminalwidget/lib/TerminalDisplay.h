@@ -555,8 +555,9 @@ signals:
 
    // qtermwidget signals
 	void copyAvailable(bool);
-	void termGetFocus();
+	void termGetFocus();    
 	void termLostFocus();
+    void leftMouseClick();
 
     void notifyBell(const QString&);
     void usesMouseChanged();

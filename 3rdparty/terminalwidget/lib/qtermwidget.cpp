@@ -453,6 +453,7 @@ void QTermWidget::init(int startnow)
     this->setFocusProxy(m_impl->m_terminalDisplay);
     connect(m_impl->m_terminalDisplay, SIGNAL(copyAvailable(bool)), this, SLOT(selectionChanged(bool)));
     connect(m_impl->m_terminalDisplay, SIGNAL(termGetFocus()), this, SIGNAL(termGetFocus()));
+    connect(m_impl->m_terminalDisplay, SIGNAL(leftMouseClick()), this, SIGNAL(leftMouseClick()));
     connect(m_impl->m_terminalDisplay, SIGNAL(termLostFocus()), this, SIGNAL(termLostFocus()));
     connect(
     m_impl->m_terminalDisplay, SIGNAL(keyPressedSignal(QKeyEvent *)), this, SIGNAL(termKeyPressed(QKeyEvent *)));

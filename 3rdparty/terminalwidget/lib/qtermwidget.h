@@ -269,6 +269,7 @@ signals:
 
     void termGetFocus();
     void termLostFocus();
+    void leftMouseClick();
 
     void termKeyPressed(QKeyEvent *);
 

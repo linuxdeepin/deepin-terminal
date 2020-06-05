@@ -1376,6 +1376,7 @@ void TerminalDisplay::focusOutEvent(QFocusEvent*)
 }
 void TerminalDisplay::focusInEvent(QFocusEvent*)
 {
+    //qDebug()<<"focusInEvent";
     emit termGetFocus();
     if (_hasBlinkingCursor)
     {
@@ -1935,7 +1936,11 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
   {
     _lineSelectionMode = false;
     _wordSelectionMode = false;
-
+    if(!hasFocus())
+    {
+        setFocus();
+    }
+    emit leftMouseClick();
     emit isBusySelecting(true); // Keep it steady...
     // Drag only when the Control key is hold
     bool selected = false;

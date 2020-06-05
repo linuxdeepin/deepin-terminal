@@ -1283,9 +1283,9 @@ void MainWindow::focusOutEvent(QFocusEvent *event)
 *******************************************************************************/
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
-        showPlugin(PLUGIN_TYPE_NONE);
-    }
+//    if (event->button() == Qt::LeftButton) {
+//        //showPlugin(PLUGIN_TYPE_NONE);
+//    }
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
