@@ -58,6 +58,9 @@ public:
     // 设置删除键模式（用户选择接口）
     void setDeleteMode(const EraseMode &deleteMode);
 
+    // 获取该终端距离page的层次
+    int getTermLayer();
+
 public slots:
     void wpasteSelection();
     void onSettingValueChanged(const QString &keyName);

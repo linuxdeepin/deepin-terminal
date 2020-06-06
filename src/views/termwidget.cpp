@@ -261,13 +261,23 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     m_menu->addSeparator();
 
-    m_menu->addAction(tr("Horizontal split"), this, [this] {
-        parentPage()->split(Qt::Horizontal);
-    });
 
-    m_menu->addAction(tr("Vertical split"), this, [this] {
-        parentPage()->split(Qt::Vertical);
-    });
+    Qt::Orientation orientation = static_cast<DSplitter *>(parentWidget())->orientation();
+    int layer = getTermLayer();
+    if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
+        m_menu->addAction(tr("Horizontal split"), this, [this] {
+            getTermLayer();
+            parentPage()->split(Qt::Horizontal);
+        });
+    }
+    if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
+        m_menu->addAction(tr("Vertical split"), this, [this] {
+            getTermLayer();
+            parentPage()->split(Qt::Vertical);
+        });
+    }
+
+
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     m_menu->addAction(tr("Close window"), this, [this] {
@@ -455,6 +465,23 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
         return;
     }
     QTermWidget::setDeleteMode(&ch, length);
+}
+/*******************************************************************************
+ 1. @函数:    getTermLayer
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-06
+ 4. @说明:    获取当前terminal距离page的层次．用于限定分屏．
+*******************************************************************************/
+int TermWidget::getTermLayer()
+{
+    int layer = 1;
+    QWidget *currentW = this;
+    while (currentW->parentWidget() != parentPage()) {
+        layer++;
+        currentW = currentW->parentWidget();
+    }
+    qDebug() << "getTermLayer = " << layer;
+    return  layer;
 }
 
 QString TermWidget::encode() const

@@ -864,18 +864,32 @@ void MainWindow::initShortcuts()
     connect(createNewShotcut("shortcuts.workspace.horionzal_split", false), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
-            qDebug() << "horizontal_split";
-            page->split(Qt::Horizontal);
+            if(page->currentTerminal()){
+                int layer = page->currentTerminal()->getTermLayer();
+                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
+                if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
+                    page->split(Qt::Horizontal);
+                    return ;
+                }
+            }
         }
+        qDebug() << "can't split vertical  again";
     });
 
     // vertical_split
     connect(createNewShotcut("shortcuts.workspace.vertical_split", false), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
-        if (page) {
-            qDebug() << "vertical_split";
-            page->split(Qt::Vertical);
+        if (page) {            
+            if(page->currentTerminal()){
+                int layer = page->currentTerminal()->getTermLayer();
+                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
+                if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
+                    page->split(Qt::Vertical);
+                    return ;
+                }
+            }
         }
+        qDebug() << "can't split vertical  again";
     });
 
     // select_upper_window
