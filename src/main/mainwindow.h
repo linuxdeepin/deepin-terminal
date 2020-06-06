@@ -299,6 +299,11 @@ protected:
 protected:
     void changeEvent(QEvent *event) override;
     void showEvent(QShowEvent *event) override;
+    bool event(QEvent *event) override;
+
+protected:
+    // 切换窗口拉伸属性
+    void switchEnableResize();
 
 };
 

@@ -1525,7 +1525,7 @@ void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
     qDebug() << "OnHandleCloseType type is" << type;
     // 弹窗隐藏或消失
     Service::instance()->setIsDialogShow(this, false);
-    if (result != 1){
+    if (result != 1) {
         qDebug() << "user cancle close";
         return;
     }
@@ -1928,5 +1928,54 @@ void QuakeWindow::showEvent(QShowEvent *event)
     m_desktopIndex = DBusManager::callKDECurrentDesktop();
     /***add end by ut001121***/
 
+    /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
+    switchEnableResize();
+
     DMainWindow::showEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    event
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-06-06
+ 4. @说明:    窗口事件
+*******************************************************************************/
+bool QuakeWindow::event(QEvent *event)
+{
+    /*
+     * 请替我保留
+    if (event->type() == QEvent::CursorChange
+            || event->type() == QEvent::MouseButtonPress
+            || event->type() == QEvent::Leave
+            || event->type() == QEvent::HoverLeave
+            || event->type() == QEvent::HoverMove
+            || event->type() == QEvent::HoverEnter
+            || event->type() == QEvent::MouseMove
+       ) {
+        qDebug() << "----------------" << event;
+    }*/
+
+    /***add begin by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
+    if (event->type() == QEvent::HoverMove) {
+        switchEnableResize();
+    }
+    /***add end by ut001121***/
+
+    return MainWindow::event(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    switchEnableResize
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-06-06
+ 4. @说明:    切换窗口拉伸属性
+*******************************************************************************/
+void QuakeWindow::switchEnableResize()
+{
+    // 如果(桌面光标Y坐标)<=(雷神窗口Y坐标+雷神高度的1/2),则禁用拉伸属性.否则启用拉伸属性
+    if (QCursor::pos().y() <= pos().y() + height() / 2) {
+        setEnableSystemResize(false);
+    } else {
+        setEnableSystemResize(true);
+    }
 }
