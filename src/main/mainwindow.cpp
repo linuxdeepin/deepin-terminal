@@ -864,7 +864,7 @@ void MainWindow::initShortcuts()
     connect(createNewShotcut("shortcuts.workspace.horionzal_split", false), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
-            if(page->currentTerminal()){
+            if (page->currentTerminal()) {
                 int layer = page->currentTerminal()->getTermLayer();
                 Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
                 if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
@@ -879,8 +879,8 @@ void MainWindow::initShortcuts()
     // vertical_split
     connect(createNewShotcut("shortcuts.workspace.vertical_split", false), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
-        if (page) {            
-            if(page->currentTerminal()){
+        if (page) {
+            if (page->currentTerminal()) {
                 int layer = page->currentTerminal()->getTermLayer();
                 Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
                 if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
@@ -1414,6 +1414,58 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
         jsonItem.insert("value", "Alt+1~9");
         JsonArry.append(jsonItem);
     }
+
+    /************************ Add by sunchengxi 2020-06-08:json重新排序，快捷键显示顺序调整 Begin************************/
+    //default-config.json 文件增加的跟此处相关字段，此处相应添加，保证显示。
+    //用三个条件分开，清晰，方便后续调整扩展维护，代码稍微多点。
+    if (keyCategory == "terminal") {
+        QStringList strList;
+        strList << QObject::tr("Copy")  << QObject::tr("Paste") << QObject::tr("Find") << QObject::tr("Zoom in") << QObject::tr("Zoom out") << QObject::tr("Default size") << QObject::tr("Select all");
+        QJsonArray newJsonArry;
+        for (int i = 0; i < strList.size(); i++) {
+            for (int j = 0; j < JsonArry.size(); j++) {
+                QJsonObject jsonItem = JsonArry[j].toObject();
+                if (jsonItem.value("name") == strList[i]) {
+                    newJsonArry.append(jsonItem);
+                    break;
+                }
+            }
+        }
+        JsonArry = newJsonArry;
+    }
+    if (keyCategory == "workspace") {
+        QStringList strList;
+        strList << QObject::tr("New workspace") << QObject::tr("Close workspace") << QObject::tr("Close other workspaces") << QObject::tr("Previous workspace") << QObject::tr("Next workspace")
+                << QObject::tr("Select workspace") << QObject::tr("Vertical split") << QObject::tr("Horizontal split") << QObject::tr("Select upper window") << QObject::tr("Select lower window")
+                << QObject::tr("Select left window") << QObject::tr("Select right window") << QObject::tr("Close window") << QObject::tr("Close other windows");
+        QJsonArray newJsonArry;
+        for (int i = 0; i < strList.size(); i++) {
+            for (int j = 0; j < JsonArry.size(); j++) {
+                QJsonObject jsonItem = JsonArry[j].toObject();
+                if (jsonItem.value("name") == strList[i]) {
+                    newJsonArry.append(jsonItem);
+                    break;
+                }
+            }
+        }
+        JsonArry = newJsonArry;
+    }
+    if (keyCategory == "advanced") {
+        QStringList strList;
+        strList << QObject::tr("Fullscreen") << QObject::tr("Rename title") << QObject::tr("Display shortcuts") << QObject::tr("Custom commands") << QObject::tr("Remote management");
+        QJsonArray newJsonArry;
+        for (int i = 0; i < strList.size(); i++) {
+            for (int j = 0; j < JsonArry.size(); j++) {
+                QJsonObject jsonItem = JsonArry[j].toObject();
+                if (jsonItem.value("name") == strList[i]) {
+                    newJsonArry.append(jsonItem);
+                    break;
+                }
+            }
+        }
+        JsonArry = newJsonArry;
+    }
+    /************************ Add by sunchengxi 2020-06-08:json重新排序，快捷键显示顺序调整   End************************/
 
     QJsonObject JsonGroup;
     JsonGroup.insert("groupName", strGroupName);
