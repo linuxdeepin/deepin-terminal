@@ -104,14 +104,14 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setFont(textFont);
 
         int lineSpace = 8;
-        int offsetY = 8;
+        int offsetY = 22 - textFontSize;
         int leftOffset = cmdIconRect.left() + cmdIconSize + 6;
 
         DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
         DPalette pa = appHelper->standardPalette(appHelper->themeType());
         painter->setPen(pa.color(DPalette::Text));
 
-        QRect serverNameRect = QRect(leftOffset, bgRect.top()+offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
+        QRect serverNameRect = QRect(leftOffset, bgRect.top() + offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
         painter->drawText(serverNameRect, Qt::AlignLeft | Qt::AlignTop, strServerName);
 
         textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));

@@ -90,14 +90,14 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         painter->setFont(textFont);
 
         int lineSpace = 8;
-        int offsetY = 8;
+        int offsetY = 22 - cmdNameFontSize;
         int leftOffset = cmdIconRect.left() + cmdIconSize + 6;
 
         DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
         DPalette pa = appHelper->standardPalette(appHelper->themeType());
         painter->setPen(pa.color(DPalette::Text));
 
-        QRect cmdNameRect = QRect(leftOffset, bgRect.top()+offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
+        QRect cmdNameRect = QRect(leftOffset, bgRect.top() + offsetY, bgRect.width() - cmdIconSize - editIconSize, 35);
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignTop, strCmdName);
 
         textFont.setPixelSize(DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));

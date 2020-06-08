@@ -34,7 +34,7 @@
 #include <QCommandLineParser>
 
 /******** Modify by m000714 daizhengwen 2020-04-03: 自绘的显示控件限制item的宽度****************/
-#define ITEMMAXWIDTH 160
+#define ITEMMAXWIDTH 140
 /********************* Modify by m000714 daizhengwen End ************************/
 
 /******** Modify by m000714 daizhengwen 2020-04-17: 使用DTK的Dialog****************/
@@ -98,7 +98,7 @@ public:
     static void parseCommandLine(QStringList arguments,  TermProperties &Properties, bool appControl = false);
     static QStringList parseExecutePara(QStringList &arguments);
     static QStringList parseNestedQString(QString str);
-    static MainWindow *getMainWindow(QWidget * currWidget);
+    static MainWindow *getMainWindow(QWidget *currWidget);
 
     static QList<QByteArray> encodeList();
     static const int NOT_FOUND = -1;
