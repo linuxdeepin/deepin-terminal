@@ -305,7 +305,6 @@ bool isPatternAcceptable(QString strCommand, QString strPattern)
 bool Pty::bWillRemoveTerminal(QString strCommand)
 {
     QString packageName = "deepin-terminal";
-    QString packageNameReborn = "deepin-terminal-reborn";
 
     QStringList strCommandList;
     strCommandList.append(strCommand);
@@ -333,7 +332,7 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
     QList<bool> acceptableList;
 
     QStringList packageNameList;
-    packageNameList << packageName << packageNameReborn;
+    packageNameList << packageName;
 
     for (int i = 0; i < strCommandList.size(); i++) {
         QString strCurrCommand = strCommandList.at(i);
@@ -367,7 +366,6 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
 bool Pty::bWillPurgeTerminal(QString strCommand)
 {
     QString packageName = "deepin-terminal";
-    QString packageNameReborn = "deepin-terminal-reborn";
 
     QStringList strCommandList;
     strCommandList.append(strCommand);
@@ -395,7 +393,7 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
     QList<bool> acceptableList;
 
     QStringList packageNameList;
-    packageNameList << packageName << packageNameReborn;
+    packageNameList << packageName;
 
     for (int i = 0; i < strCommandList.size(); i++) {
         QString strCurrCommand = strCommandList.at(i);
