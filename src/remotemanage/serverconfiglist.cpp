@@ -49,7 +49,7 @@ void ServerConfigList::refreshAllDatas()
         int count = configMap[iter.key()].count();
         ServerConfigItemData itemData;
         itemData.m_group = iter.key();
-        itemData.m_number = QString(tr("%1 server")).arg(count);
+        itemData.m_number = QString("%1 server").arg(count);
         /******** Modify by m000714 daizhengwen 2020-04-13: 组不为空则以组形式展示****************/
         if (!itemData.m_group.isNull() && !itemData.m_group.isEmpty() && "" != itemData.m_group) {
             itemData.m_IsGroupItem = true;
@@ -88,6 +88,7 @@ void ServerConfigList::refreshDataByGroup(const QString &strGroupName, bool isFr
     QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
     // 判断组是否被删除
     if (!configMap.contains(strGroupName)) {
+        m_serCfgProxyModel->initServerListData(m_serCfgItemDataList);
         // 已被删除，则返回
         return;
     }

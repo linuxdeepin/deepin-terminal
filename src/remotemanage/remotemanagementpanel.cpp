@@ -78,6 +78,7 @@ void RemoteManagementPanel::initUI()
     m_pushButton->setText(tr("Add Server"));
 
     QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->setContentsMargins(0, 0, 0, 0);
     hlayout->addSpacing(10);
     hlayout->addWidget(m_searchEdit);
     hlayout->addSpacing(10);
@@ -85,6 +86,7 @@ void RemoteManagementPanel::initUI()
     hlayout->setMargin(0);
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
+    btnLayout->setContentsMargins(0, 0, 0, 0);
     btnLayout->addSpacing(10);
     btnLayout->addWidget(m_pushButton);
     btnLayout->addSpacing(10);
@@ -92,13 +94,14 @@ void RemoteManagementPanel::initUI()
     btnLayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
+    vlayout->setContentsMargins(0, 0, 0, 0);
     vlayout->addSpacing(10);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
     vlayout->addLayout(btnLayout);
     vlayout->addSpacing(12);
     vlayout->setMargin(0);
-    vlayout->setSpacing(0);
+    vlayout->setSpacing(10);
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);

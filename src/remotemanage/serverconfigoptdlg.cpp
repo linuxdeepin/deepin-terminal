@@ -44,18 +44,15 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_delServer(new TermCommandLinkButton())
 
 {
-    qDebug() << "ServerConfigOptDlg init";
     setWindowModality(Qt::WindowModal);
     setFixedWidth(459);
     setAutoFillBackground(true);
     initUI();
     initData();
-    qDebug() << "ServerConfigOptDlg init finish";
 }
 
 void ServerConfigOptDlg::initUI()
 {
-    qDebug() << "ServerConfigOptDlg init UI";
     //all layout
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
     m_VBoxLayout->setSpacing(10);

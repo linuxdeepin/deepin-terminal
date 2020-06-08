@@ -20,7 +20,6 @@ void ServerConfigGroupPanel::initUI()
     m_backButton->setFixedSize(QSize(36, 36));
     m_backButton->setFocusPolicy(Qt::NoFocus);
 
-    m_searchEdit->setFixedWidth(174);
     m_searchEdit->setClearButtonEnabled(true);
     m_searchEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
 
@@ -31,20 +30,24 @@ void ServerConfigGroupPanel::initUI()
     m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->setContentsMargins(0, 0, 0, 0);
     hlayout->addSpacing(10);
     hlayout->addWidget(m_backButton);
     hlayout->addSpacing(10);
     hlayout->addWidget(m_searchEdit);
+    hlayout->addSpacing(10);
+    // 没有搜索框，返回按钮仍显示在左边
     hlayout->addStretch();
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
+    vlayout->setContentsMargins(0, 0, 0, 0);
     vlayout->addSpacing(10);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
     vlayout->setMargin(0);
-    vlayout->setSpacing(0);
+    vlayout->setSpacing(10);
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
@@ -58,6 +61,7 @@ void ServerConfigGroupPanel::initUI()
             if (!configMap.contains(m_groupName)) {
                 // 没有这个组 ==> 组内没成员，则返回
                 emit showRemoteManagementPanel();
+                m_isShow = false;
             }
         }
     });

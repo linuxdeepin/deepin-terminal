@@ -1,6 +1,7 @@
 #include "remotemanagementtoppanel.h"
 
 #include <QParallelAnimationGroup>
+#include <QDebug>
 
 const int animationDuration = 300;
 
@@ -52,6 +53,7 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
 
 void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &strFilter)
 {
+    qDebug() << __FUNCTION__;
     //--added by qinyaning(nyq) to solve the repeat history recoed--//
     m_remoteManagementPanel->clearSearchInfo();
     m_serverConfigGroupPanel->clearSearchInfo();
@@ -70,6 +72,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
 
 void RemoteManagementTopPanel::showRemotePanelFromGroupPanel()
 {
+    qDebug() << __FUNCTION__;
     //--------------------------------------------------------------//
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->refreshPanel();
@@ -105,6 +108,7 @@ void RemoteManagementTopPanel::show()
 
 void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup)
 {
+    qDebug() << __FUNCTION__;
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
     animationPrepare(m_remoteManagementSearchPanel, m_serverConfigGroupPanel);
@@ -118,6 +122,7 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
 
 void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter)
 {
+    qDebug() << __FUNCTION__;
     m_remoteManagementSearchPanel->resize(size());
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_GROUP);
     m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(strGroup, strFilter);
@@ -132,6 +137,7 @@ void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strG
 }
 void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
 {
+    qDebug() << __FUNCTION__;
     //--------------------------------------------------------------//
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->refreshPanel();
@@ -146,6 +152,7 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
 
 void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &strGroup)
 {
+    qDebug() << __FUNCTION__;
 //    m_remoteManagementPanel->hide();
 //    m_remoteManagementPanel->m_isShow = false;
     //--added by qinyaning(nyq) to solve the repeat history recoed--//
@@ -212,6 +219,7 @@ void RemoteManagementTopPanel::panelRightToLeft(QPropertyAnimation *animation, Q
 
 void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strGroup)
 {
+    qDebug() << __FUNCTION__;
     //--------------------------------------------------------------//
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);

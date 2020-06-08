@@ -37,10 +37,11 @@ void RemoteManagementSearchPanel::initUI()
     hlayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
+    vlayout->addSpacing(10);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
     vlayout->setMargin(0);
-    vlayout->setSpacing(0);
+    vlayout->setSpacing(10);
     setLayout(vlayout);
 
     connect(m_backButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //

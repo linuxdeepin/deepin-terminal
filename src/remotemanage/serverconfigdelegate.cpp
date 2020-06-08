@@ -37,7 +37,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         QRect bgRect;
         bgRect.setX(option.rect.x() + 10);
-        bgRect.setY(option.rect.y() + 10);
+        bgRect.setY(option.rect.y() /*+ 10*/);
         bgRect.setWidth(option.rect.width() - 20);
         bgRect.setHeight(option.rect.height() - 10);
 
