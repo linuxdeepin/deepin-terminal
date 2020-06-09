@@ -402,13 +402,25 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
             QString removePattern = QString("sudo\\s+apt-get\\s+purge\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
+            removePattern = QString("sudo\\s+apt-get\\s+purge\\s+-y\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
             removePattern = QString("sudo\\s+apt-get\\s+remove\\s+--purge\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
+            removePattern = QString("sudo\\s+apt-get\\s+--purge\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
             removePattern = QString("sudo\\s+apt\\s+purge\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
+            removePattern = QString("sudo\\s+apt\\s+purge\\s+-y\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
             removePattern = QString("sudo\\s+apt\\s+remove\\s+--purge\\s+%1").arg(packageName);
+            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
+
+            removePattern = QString("sudo\\s+apt\\s+--purge\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
             removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
