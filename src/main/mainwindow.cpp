@@ -72,11 +72,6 @@ void MainWindow::initUI()
     initTitleBar();
     initWindowAttribute();
 
-    //下面代码待处理
-    //ShortcutManager::instance()->setMainWindow(this);
-    //m_shortcutManager = ShortcutManager::instance();
-
-    //qDebug() << m_termStackWidget->size();
     qApp->installEventFilter(this);
 }
 void MainWindow::initWindow()
@@ -92,17 +87,6 @@ void MainWindow::initWindow()
     m_centralLayout->addWidget(m_termStackWidget);
     setCentralWidget(m_centralWidget);
 }
-
-///*******************************************************************************
-// 1. @函数:    initTitleBar
-// 2. @作者:    n014361 王培利
-// 3. @日期:    2020-04-22
-// 4. @说明:    TitleBar初始化，分雷神窗口和普通窗口
-//*******************************************************************************/
-//void MainWindow::initTitleBar()
-//{
-
-//}
 
 void MainWindow::initTabBar()
 {
@@ -807,7 +791,6 @@ void MainWindow::initWindowPosition(MainWindow *mainwindow)
 
 void MainWindow::initShortcuts()
 {
-    //m_shortcutManager->initShortcuts();
     ShortcutManager::instance()->initConnect(this);
     connect(ShortcutManager::instance(), &ShortcutManager::addCustomCommandSignal, this, &MainWindow::addCustomCommandSlot);
     connect(ShortcutManager::instance(), &ShortcutManager::removeCustomCommandSignal, this, &MainWindow::removeCustomCommandSlot);
@@ -1300,6 +1283,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 //    if (event->button() == Qt::LeftButton) {
 //        //showPlugin(PLUGIN_TYPE_NONE);
 //    }
+    return DMainWindow::mousePressEvent(event);
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
@@ -1325,11 +1309,6 @@ void MainWindow::applyTheme()
     // m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
     return;
 }
-
-//ShortcutManager *MainWindow::getShortcutManager()
-//{
-//    return m_shortcutManager;
-//}
 
 MainWindowPluginInterface *MainWindow::getPluginByName(const QString &name)
 {
@@ -1537,6 +1516,7 @@ void MainWindow::remoteDownloadFile()
 *******************************************************************************/
 void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 {
+    Q_UNUSED(state)
     return;
 }
 
@@ -1646,7 +1626,7 @@ void MainWindow::pressCtrlC()
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
-void MainWindow::sleep(unsigned int msec)
+void MainWindow::sleep(int msec)
 {
     QTime dieTime = QTime::currentTime().addMSecs(msec);
     while (QTime::currentTime() < dieTime) {
@@ -1895,6 +1875,7 @@ void QuakeWindow::saveWindowSize()
 
 void QuakeWindow::switchFullscreen(bool forceFullscreen)
 {
+    Q_UNUSED(forceFullscreen)
     return;
 }
 
@@ -2024,10 +2005,6 @@ bool QuakeWindow::event(QEvent *event)
 *******************************************************************************/
 void QuakeWindow::switchEnableResize()
 {
-    // 如果(桌面光标Y坐标)<=(雷神窗口Y坐标+雷神高度的1/2),则禁用拉伸属性.否则启用拉伸属性
-    if (QCursor::pos().y() <= pos().y() + height() / 2) {
-        setEnableSystemResize(false);
-    } else {
-        setEnableSystemResize(true);
-    }
+    // 如果(桌面光标Y坐标)>(雷神窗口Y坐标+雷神高度的1/2),则启用拉伸属性.否则禁用拉伸属性
+    setEnableSystemResize(QCursor::pos().y() > pos().y() + height() / 2);
 }

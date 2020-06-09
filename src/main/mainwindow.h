@@ -70,7 +70,7 @@ public:
     void pressCtrlAt();
     void pressCtrlU();
     void pressCtrlC();
-    void sleep(unsigned int msec);
+    void sleep(int msec);
 
     // 由mainwindow统一指令当前显示哪个插件
     void showPlugin(const QString &name);
@@ -146,7 +146,6 @@ protected:
     void initPlugins();
     void initShortcuts();
     void initConnections();
-    //void initTitleBar();
     // 初始化标签
     void initTabBar();
     void initOptionButton();
@@ -209,8 +208,6 @@ protected:
     QWidget *m_centralWidget = nullptr;
     QVBoxLayout *m_centralLayout = nullptr;
     QStackedWidget *m_termStackWidget = nullptr;
-    //QString m_titlebarStyleSheet = nullptr;
-    //ShortcutManager *m_shortcutManager = nullptr;
     QList<MainWindowPluginInterface *> m_plugins;
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;
@@ -303,7 +300,7 @@ protected:
 
 protected:
     // 切换窗口拉伸属性
-    void switchEnableResize();
+    inline void switchEnableResize();
 
 };
 
