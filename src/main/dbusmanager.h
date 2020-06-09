@@ -14,6 +14,10 @@
 #define KWinDBusService "org.kde.KWin"
 #define KWinDBusPath "/KWin"
 
+// deepin Appearance
+#define AppearanceService "com.deepin.daemon.Appearance"
+#define AppearancePath "/com/deepin/daemon/Appearance"
+
 class DBusManager : public QObject
 {
     Q_OBJECT
@@ -26,6 +30,10 @@ public:
     // kwin dbus
     static int callKDECurrentDesktop();
     static void callKDESetCurrentDesktop(int index);
+
+    // Appearance
+    static QStringList callAppearanceFont(QString fontType);
+
     // deepin terminal
     static void callTerminalEntry(QStringList args);
 
