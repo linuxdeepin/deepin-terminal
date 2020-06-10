@@ -1157,37 +1157,6 @@ void MainWindow::onCreateNewWindow(QString workingDir)
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    //这里调试用
-    if ((event->type() != QEvent::Paint)
-            && (event->type() != QEvent::MetaCall)
-            && (event->type() != QEvent::UpdateRequest)
-            && (event->type() != QEvent::LayoutRequest)
-            && (event->type() != QEvent::Timer)
-            && (event->type() != QEvent::Leave)
-            && (event->type() != QEvent::HoverLeave)
-            && (event->type() != QEvent::CursorChange)
-            && (event->type() != QEvent::MouseMove)
-            && (event->type() != QEvent::LanguageChange)
-            && (event->type() != QEvent::PolishRequest)
-            && (event->type() != QEvent::DynamicPropertyChange)
-            && (event->type() != QEvent::Resize)
-            && (event->type() != QEvent::MouseButtonPress)
-            && (event->type() != QEvent::UpdateLater)
-            && (event->type() != QEvent::StatusTip)
-            && (event->type() != QEvent::DeferredDelete)
-            && (event->type() != QEvent::Polish)
-            && (event->type() != QEvent::UpdateLater)
-            && (event->type() != QEvent::HoverMove)
-            && (event->type() != QEvent::Enter)
-            && (event->type() != QEvent::KeyRelease)
-            && (event->type() != QEvent::HoverEnter)
-            && (event->type() != QEvent::MouseButtonRelease)
-            && (event->type() != QEvent::HoverEnter)
-            && (event->type() != QEvent::WindowDeactivate)
-            && (event->type() != QEvent::InputMethodQuery)) {
-        //qDebug() << "event" << event->type() << watched;
-    }
-
     if (event->type() == QEvent::KeyPress) {
         TermWidget *term = currentPage()->currentTerminal();
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
@@ -1267,25 +1236,6 @@ void MainWindow::onShortcutSettingChanged(const QString &keyName)
     qDebug() << "Shortcut[" << keyName << "] changed is unknown!";
 }
 
-void MainWindow::focusOutEvent(QFocusEvent *event)
-{
-    Q_UNUSED(event);
-}
-
-/*******************************************************************************
- 1. @函数:    mousePressEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-04-28
- 4. @说明:    左键点击隐藏插件
-*******************************************************************************/
-void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-//    if (event->button() == Qt::LeftButton) {
-//        //showPlugin(PLUGIN_TYPE_NONE);
-//    }
-    return DMainWindow::mousePressEvent(event);
-}
-
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 {
     m_termStackWidget->addWidget(termPage);
@@ -1306,7 +1256,6 @@ void MainWindow::createNewWorkspace()
 *******************************************************************************/
 void MainWindow::applyTheme()
 {
-    // m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
     return;
 }
 
@@ -1975,19 +1924,6 @@ void QuakeWindow::showEvent(QShowEvent *event)
 *******************************************************************************/
 bool QuakeWindow::event(QEvent *event)
 {
-    /*
-     * 请替我保留
-    if (event->type() == QEvent::CursorChange
-            || event->type() == QEvent::MouseButtonPress
-            || event->type() == QEvent::Leave
-            || event->type() == QEvent::HoverLeave
-            || event->type() == QEvent::HoverMove
-            || event->type() == QEvent::HoverEnter
-            || event->type() == QEvent::MouseMove
-       ) {
-        qDebug() << "----------------" << event;
-    }*/
-
     /***add begin by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
     if (event->type() == QEvent::HoverMove) {
         switchEnableResize();

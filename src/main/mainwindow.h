@@ -126,8 +126,6 @@ protected:
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
-    void focusOutEvent(QFocusEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
 
     //------------------------------------------------------------
 protected slots:
