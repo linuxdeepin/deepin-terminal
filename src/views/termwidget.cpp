@@ -428,7 +428,8 @@ void TermWidget::setBackspaceMode(const EraseMode &backspaceMode)
         break;
     case EraseMode_Escape_Sequeue:
         length = 4;
-        QTermWidget::setBackspaceMode("\e[3~", 4);
+        char sequeue[] = "\e[3~";
+        QTermWidget::setBackspaceMode(sequeue, 4);
         return;
     }
     QTermWidget::setBackspaceMode(&ch, length);
@@ -461,7 +462,8 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
     case EraseMode_Auto:
     case EraseMode_Escape_Sequeue:
         length = 4;
-        QTermWidget::setDeleteMode("\e[3~", 4);
+        char sequeue[] = "\e[3~";
+        QTermWidget::setDeleteMode(sequeue, 4);
         return;
     }
     QTermWidget::setDeleteMode(&ch, length);

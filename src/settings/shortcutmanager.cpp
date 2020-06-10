@@ -266,7 +266,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
         }
     }
     // 小键盘单键都不允许
-    QRegExp regexpNum("^Num\+.*");
+    QRegExp regexpNum("^Num+.*");
     if (Key.contains(regexpNum)) {
         qDebug() << Key << "is invalid!";
         Reason = tr("The shortcut %1 is invalid, ")
