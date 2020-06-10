@@ -16,6 +16,7 @@
     Boston, MA 02110-1301, USA.
 */
 
+
 #ifndef _Q_TERM_WIDGET
 #define _Q_TERM_WIDGET
 
@@ -31,7 +32,7 @@
 #endif
 
 class QVBoxLayout;
-struct TermWidgetImpl;
+class TermWidgetImpl;
 class SearchBar;
 class QUrl;
 namespace Konsole
@@ -58,22 +59,22 @@ public:
 
     using KeyboardCursorShape = Konsole::Emulation::KeyboardCursorShape;
 
-    // Creation of widget
-    QTermWidget(int startnow,  // 1 = start shell programm immediatelly
-                QWidget *parent = 0);
+    //Creation of widget
+    QTermWidget(int startnow, // 1 = start shell programm immediatelly
+                QWidget * parent = nullptr);
     // A dummy constructor for Qt Designer. startnow is 1 by default
-    QTermWidget(QWidget *parent = 0);
+    QTermWidget(QWidget *parent = nullptr);
 
-    virtual ~QTermWidget();
+    ~QTermWidget() override;
 
-    // Initial size
-    QSize sizeHint() const;
+    //Initial size
+    QSize sizeHint() const override;
 
     // expose TerminalDisplay::TerminalSizeHint, setTerminalSizeHint
     void setTerminalSizeHint(bool on);
     bool terminalSizeHint();
 
-    // start shell program if it was not started in constructor
+    //start shell program if it was not started in constructor
     void startShellProgram();
 
     // Returns session id list of processes running in the terminal window
@@ -145,7 +146,10 @@ public:
     /********************* Modify by n014361 wangpeili End ************************/
 
     // Send some text to terminal
-    void sendText(const QString &text);
+    void sendText(const QString & text);
+
+    // Send key event to terminal
+    void sendKeyEvent(QKeyEvent* e);
 
     // Sets whether flow control is enabled
     void setFlowControlEnabled(bool enabled);
@@ -263,6 +267,8 @@ public:
 
     /** Get the foreground pid in terminal */
     int getForegroundProcessId() const;
+
+    void setDrawLineChars(bool drawLineChars);
 signals:
     void finished();
     void copyAvailable(bool);
@@ -343,8 +349,9 @@ public slots:
     void noMatchFound();
     /********************* Modify by n014361 wangpeili End ************************/
 
+    void saveHistory(QIODevice *device);
 protected:
-    virtual void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent *) override;
 
 protected slots:
     void sessionFinished();
@@ -389,7 +396,7 @@ private:
 #ifdef __cplusplus
 extern "C"
 #endif
-void *
-createTermWidget(int startnow, void *parent);
+void * createTermWidget(int startnow, void *parent);
 
 #endif
+

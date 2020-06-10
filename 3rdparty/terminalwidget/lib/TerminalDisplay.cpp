@@ -82,17 +82,17 @@ const ColorEntry Konsole::base_color_table[TABLE_COLORS] =
 {
   // Fixme: could add faint colors here, also.
   // normal
-  ColorEntry(QColor(0x00,0x00,0x00), 0), ColorEntry( QColor(0xB2,0xB2,0xB2), 1), // Dfore, Dback
-  ColorEntry(QColor(0x00,0x00,0x00), 0), ColorEntry( QColor(0xB2,0x18,0x18), 0), // Black, Red
-  ColorEntry(QColor(0x18,0xB2,0x18), 0), ColorEntry( QColor(0xB2,0x68,0x18), 0), // Green, Yellow
-  ColorEntry(QColor(0x18,0x18,0xB2), 0), ColorEntry( QColor(0xB2,0x18,0xB2), 0), // Blue, Magenta
-  ColorEntry(QColor(0x18,0xB2,0xB2), 0), ColorEntry( QColor(0xB2,0xB2,0xB2), 0), // Cyan, White
+  ColorEntry(QColor(0x00,0x00,0x00), false), ColorEntry( QColor(0xB2,0xB2,0xB2), true), // Dfore, Dback
+  ColorEntry(QColor(0x00,0x00,0x00), false), ColorEntry( QColor(0xB2,0x18,0x18), false), // Black, Red
+  ColorEntry(QColor(0x18,0xB2,0x18), false), ColorEntry( QColor(0xB2,0x68,0x18), false), // Green, Yellow
+  ColorEntry(QColor(0x18,0x18,0xB2), false), ColorEntry( QColor(0xB2,0x18,0xB2), false), // Blue, Magenta
+  ColorEntry(QColor(0x18,0xB2,0xB2), false), ColorEntry( QColor(0xB2,0xB2,0xB2), false), // Cyan, White
   // intensiv
-  ColorEntry(QColor(0x00,0x00,0x00), 0), ColorEntry( QColor(0xFF,0xFF,0xFF), 1),
-  ColorEntry(QColor(0x68,0x68,0x68), 0), ColorEntry( QColor(0xFF,0x54,0x54), 0),
-  ColorEntry(QColor(0x54,0xFF,0x54), 0), ColorEntry( QColor(0xFF,0xFF,0x54), 0),
-  ColorEntry(QColor(0x54,0x54,0xFF), 0), ColorEntry( QColor(0xFF,0x54,0xFF), 0),
-  ColorEntry(QColor(0x54,0xFF,0xFF), 0), ColorEntry( QColor(0xFF,0xFF,0xFF), 0)
+  ColorEntry(QColor(0x00,0x00,0x00), false), ColorEntry( QColor(0xFF,0xFF,0xFF), true),
+  ColorEntry(QColor(0x68,0x68,0x68), false), ColorEntry( QColor(0xFF,0x54,0x54), false),
+  ColorEntry(QColor(0x54,0xFF,0x54), false), ColorEntry( QColor(0xFF,0xFF,0x54), false),
+  ColorEntry(QColor(0x54,0x54,0xFF), false), ColorEntry( QColor(0xFF,0x54,0xFF), false),
+  ColorEntry(QColor(0x54,0xFF,0xFF), false), ColorEntry( QColor(0xFF,0xFF,0xFF), false)
 };
 
 // scroll increment used when dragging selection at top/bottom of window.
@@ -128,7 +128,7 @@ void TerminalDisplay::setScreenWindow(ScreenWindow* window)
     // disconnect existing screen window if any
     if ( _screenWindow )
     {
-        disconnect( _screenWindow , 0 , this , 0 );
+        disconnect( _screenWindow , nullptr , this , nullptr );
     }
 
     _screenWindow = window;
@@ -194,10 +194,12 @@ void TerminalDisplay::setColorTable(const ColorEntry table[])
    QCodec.
 */
 
-static inline bool isLineChar(wchar_t c) { return ((c & 0xFF80) == 0x2500);}
-static inline bool isLineCharString(const std::wstring& string)
-{
-        return (string.length() > 0) && (isLineChar(string[0]));
+bool TerminalDisplay::isLineChar(wchar_t c) const {
+    return _drawLineChars && ((c & 0xFF80) == 0x2500);
+}
+
+bool TerminalDisplay::isLineCharString(const std::wstring& string) const {
+    return (string.length() > 0) && (isLineChar(string[0]));
 }
 
 
@@ -315,9 +317,9 @@ void TerminalDisplay::setFont(const QFont &)
 
 TerminalDisplay::TerminalDisplay(QWidget *parent)
 :QWidget(parent)
-,_screenWindow(0)
+,_screenWindow(nullptr)
 ,_allowBell(true)
-,_gridLayout(0)
+,_gridLayout(nullptr)
 ,_fontHeight(1)
 ,_fontWidth(1)
 ,_fontAscent(1)
@@ -328,7 +330,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_usedColumns(1)
 ,_contentHeight(1)
 ,_contentWidth(1)
-,_image(0)
+,_image(nullptr)
 ,_randomSeed(0)
 ,_resizing(false)
 ,_terminalSizeHint(false)
@@ -352,11 +354,11 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_tripleClickMode(SelectWholeLine)
 ,_isFixedSize(false)
 ,_possibleTripleClick(false)
-,_resizeWidget(0)
-,_resizeTimer(0)
+,_resizeWidget(nullptr)
+,_resizeTimer(nullptr)
 ,_flowControlWarningEnabled(false)
 ,_hideCursor(false)
-,_outputSuspendedLabel(0)
+,_outputSuspendedLabel(nullptr)
 ,_lineSpacing(0)
 ,_colorsInverted(false)
 ,_blendColor(qRgba(0,0,0,0xff))
@@ -365,6 +367,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,mMotionAfterPasting(NoMoveScreenWindow)
 ,_leftBaseMargin(1)
 ,_topBaseMargin(1)
+,_drawLineChars(true)
 {
   // variables for draw text
   _drawTextAdditionHeight = 0;
@@ -755,7 +758,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QColor& /*backgroundColor*/,
                                  bool& invertCharacterColor)
 {
-    QRect cursorRect = rect;
+    QRectF cursorRect = rect;
     cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
 
     if (!_cursorBlinking)
@@ -956,7 +959,7 @@ void TerminalDisplay::scrollImage(int lines , const QRect& screenWindowRegion)
 
     // return if there is nothing to do
     if (    lines == 0
-         || _image == 0
+         || _image == nullptr
          || !region.isValid()
          || (region.top() + abs(lines)) >= region.bottom()
          || this->_lines <= region.height() ) return;
@@ -975,8 +978,10 @@ void TerminalDisplay::scrollImage(int lines , const QRect& screenWindowRegion)
     // Set the QT_FLUSH_PAINT environment variable to '1' before starting the
     // application to monitor repainting.
     //
-    int scrollBarWidth = _scrollBar->isHidden() ? 0 : _scrollBar->width();
-    const int SCROLLBAR_CONTENT_GAP = 1;
+    int scrollBarWidth = _scrollBar->isHidden() ? 0 :
+                         _scrollBar->style()->styleHint(QStyle::SH_ScrollBar_Transient, nullptr, _scrollBar) ?
+                         0 : _scrollBar->width();
+    const int SCROLLBAR_CONTENT_GAP = scrollBarWidth == 0 ? 0 : 1;
     QRect scrollRect;
     if ( _scrollbarLocation == QTermWidget::ScrollBarLeft )
     {
@@ -1115,7 +1120,6 @@ void TerminalDisplay::updateImage()
   Character* const newimg = _screenWindow->getImage();
   int lines = _screenWindow->windowLines();
   int columns = _screenWindow->windowColumns();
-
 
   setScroll( _screenWindow->currentLine() , _screenWindow->lineCount() );
   //--added by qinyaning(nyq) to slove the problem of scroll init show--/
@@ -1408,18 +1412,16 @@ void TerminalDisplay::paintEvent( QPaintEvent* pe )
   {
     calDrawTextAdditionHeight(paint);
   }
-  else
+
+  const auto rects = (pe->region() & contentsRect()).rects();
+  for (const QRect &rect : rects)
   {
-      const auto rects = (pe->region() & contentsRect()).rects();
-      for (const QRect &rect : rects)
-      {
-        drawBackground(paint,rect,palette().background().color(),
-                       true /* use opacity setting */);
-        drawContents(paint, rect);
-      }
-      drawInputMethodPreeditString(paint,preeditRect());
-      paintFilters(paint);
+    drawBackground(paint,rect,palette().background().color(),
+                   true /* use opacity setting */);
+    drawContents(paint, rect);
   }
+  drawInputMethodPreeditString(paint,preeditRect());
+  paintFilters(paint);
 }
 
 QPoint TerminalDisplay::cursorPosition() const
@@ -1427,7 +1429,7 @@ QPoint TerminalDisplay::cursorPosition() const
     if (_screenWindow)
         return _screenWindow->cursorPosition();
     else
-        return QPoint(0,0);
+        return {0,0};
 }
 
 QRect TerminalDisplay::preeditRect() const
@@ -1435,7 +1437,7 @@ QRect TerminalDisplay::preeditRect() const
     const int preeditLength = string_width(_inputMethodData.preeditString);
 
     if ( preeditLength == 0 )
-        return QRect();
+        return {};
 
     return QRect(_leftMargin + _fontWidth*cursorPosition().x(),
                  _topMargin + _fontHeight*cursorPosition().y(),
@@ -1597,10 +1599,10 @@ QRect TerminalDisplay::calculateTextArea(int topLeftX, int topLeftY, int startCo
   int left = _fixedFont ? _fontWidth * startColumn : textWidth(0, startColumn, line);
   int top = _fontHeight * line;
   int width = _fixedFont ? _fontWidth * length : textWidth(startColumn, length, line);
-  return QRect(_leftMargin + topLeftX + left,
+  return {_leftMargin + topLeftX + left,
                _topMargin + topLeftY + top,
                width,
-               _fontHeight);
+               _fontHeight};
 }
 
 void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
@@ -2390,25 +2392,23 @@ void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
 void TerminalDisplay::getCharacterPosition(const QPoint& widgetPoint,int& line,int& column) const
 {
     line = (widgetPoint.y()-contentsRect().top()-_topMargin) / _fontHeight;
+    if (line < 0)
+        line = 0;
+    if (line >= _usedLines)
+        line = _usedLines - 1;
 
+    int x = widgetPoint.x() + _fontWidth / 2 - contentsRect().left() - _leftMargin;
     if ( _fixedFont )
-        column = (widgetPoint.x() + _fontWidth/2 -contentsRect().left()-_leftMargin) / _fontWidth;
+        column = x / _fontWidth;
     else
     {
-        int x = contentsRect().left() + widgetPoint.x() - _fontWidth/2;
         column = 0;
-
-        while(x > textWidth(0, column, line))
+        while(column + 1 < _usedColumns && x > textWidth(0, column + 1, line))
             column++;
     }
 
-    if ( line < 0 )
-        line = 0;
     if ( column < 0 )
         column = 0;
-
-    if ( line >= _usedLines )
-        line = _usedLines-1;
 
     // the column value returned can be equal to _usedColumns, which
     // is the position just after the last character displayed in a line.

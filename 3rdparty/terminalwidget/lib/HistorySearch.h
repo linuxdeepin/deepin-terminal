@@ -23,8 +23,8 @@
 #include <QPointer>
 #include <QMap>
 
-#include "Session.h"
-#include "ScreenWindow.h"
+#include <Session.h>
+#include <ScreenWindow.h>
 
 #include "Emulation.h"
 #include "TerminalCharacterDecoder.h"
@@ -41,7 +41,7 @@ public:
     explicit HistorySearch(EmulationPtr emulation, QRegExp regExp, bool forwards,
                            int startColumn, int startLine, QObject* parent);
 
-    ~HistorySearch();
+    ~HistorySearch() override;
 
     void search();
 

@@ -34,13 +34,20 @@
 #include "SearchBar.h"
 #include "qtermwidget.h"
 
+#ifdef Q_OS_MACOS
+// Qt does not support fontconfig on macOS, so we need to use a "real" font name.
+#define DEFAULT_FONT_FAMILY                   "Menlo"
+#else
+#define DEFAULT_FONT_FAMILY                   "Monospace"
+#endif
+
 #define STEP_ZOOM 1
 
 using namespace Konsole;
 
 void *createTermWidget(int startnow, void *parent)
 {
-    return ( void * )new QTermWidget(startnow, ( QWidget * )parent);
+    return (void*) new QTermWidget(startnow, (QWidget*)parent);
 }
 
 struct TermWidgetImpl
@@ -76,7 +83,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
      * By setting it to $SHELL right away we actually make the first filecheck obsolete.
      * But as iam not sure if you want to do anything else ill just let both checks in and set this to $SHELL anyway.
      */
-    // session->setProgram("/bin/bash");
+    //session->setProgram("/bin/bash");
 
     session->setProgram(QString::fromLocal8Bit(qgetenv("SHELL")));
 
@@ -97,7 +104,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
 
 TerminalDisplay *TermWidgetImpl::createTerminalDisplay(Session *session, QWidget *parent)
 {
-    //    TerminalDisplay* display = new TerminalDisplay(this);
+    //TerminalDisplay* display = new TerminalDisplay(this);
     TerminalDisplay *display = new TerminalDisplay(parent);
 
     display->setBellMode(TerminalDisplay::NotifyBell);
@@ -399,7 +406,7 @@ void QTermWidget::init(int startnow)
 
     m_translator = new QTranslator(this);
 
-    for (const QString &dir : dirs) {
+    for (const QString &dir : qAsConst(dirs)) {
         qDebug() << "Trying to load translation file from dir" << dir;
         if (m_translator->load(
             QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
@@ -460,7 +467,7 @@ void QTermWidget::init(int startnow)
     //    m_impl->m_terminalDisplay->setSize(80, 40);
 
     QFont font = QApplication::font();
-    font.setFamily(QLatin1String("Monospace"));
+    font.setFamily(QLatin1String(DEFAULT_FONT_FAMILY));
     font.setPointSize(10);
     font.setStyleHint(QFont::TypeWriter);
     setTerminalFont(font);
@@ -593,7 +600,7 @@ void QTermWidget::setTextCodec(QTextCodec *codec)
 
 void QTermWidget::setColorScheme(const QString &origName)
 {
-    const ColorScheme *cs = 0;
+    const ColorScheme *cs = nullptr;
 
     const bool isFile = QFile::exists(origName);
     const QString &name = isFile ? QFileInfo(origName).baseName() : origName;
@@ -671,6 +678,11 @@ void QTermWidget::setTrackOutput(bool enable)
 void QTermWidget::sendText(const QString &text)
 {
     m_impl->m_session->sendText(text);
+}
+
+void QTermWidget::sendKeyEvent(QKeyEvent *e)
+{
+    m_impl->m_session->sendKeyEvent(e);
 }
 
 void QTermWidget::resizeEvent(QResizeEvent *)
@@ -945,7 +957,21 @@ int QTermWidget::getMargin() const
     return m_impl->m_terminalDisplay->margin();
 }
 
+void QTermWidget::saveHistory(QIODevice *device)
+{
+    QTextStream stream(device);
+    PlainTextDecoder decoder;
+    decoder.begin(&stream);
+    m_impl->m_session->emulation()->writeToStream(&decoder, 0, m_impl->m_session->emulation()->lineCount());
+}
+
+void QTermWidget::setDrawLineChars(bool drawLineChars)
+{
+    m_impl->m_terminalDisplay->setDrawLineChars(drawLineChars);
+}
+
 int QTermWidget::getForegroundProcessId() const
 {
     return m_impl->m_session->foregroundProcessId();
 }
+

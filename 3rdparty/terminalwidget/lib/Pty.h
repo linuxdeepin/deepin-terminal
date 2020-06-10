@@ -70,15 +70,15 @@ Q_OBJECT
      * To start the terminal process, call the run() method with the
      * name of the program to start and appropriate arguments.
      */
-    explicit Pty(QObject* parent = 0);
+    explicit Pty(QObject* parent = nullptr);
 
     /**
      * Construct a process using an open pty master.
      * See KPtyProcess::KPtyProcess()
      */
-    explicit Pty(int ptyMasterFd, QObject* parent = 0);
+    explicit Pty(int ptyMasterFd, QObject* parent = nullptr);
 
-    ~Pty();
+    ~Pty() override;
 
     /**
      * Starts the terminal process.
@@ -195,7 +195,7 @@ Q_OBJECT
     /******** Modify by nt001000 renfeixiang 2020-05-14:修改 增加参数区别remove和purge卸载命令 End***************/
 
   protected:
-      void setupChildProcess();
+      void setupChildProcess() override;
 
   private slots:
     // called when data is received from the terminal process

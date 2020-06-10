@@ -72,8 +72,8 @@ public:
      * falls back to using the program specified in the SHELL environment
      * variable.
      */
-    Session(QObject* parent = 0);
-    virtual ~Session();
+    Session(QObject* parent = nullptr);
+    ~Session() override;
 
     /**
      * Returns true if the session is currently running.  This will be true
@@ -319,6 +319,8 @@ public:
      * Sends @p text to the current foreground terminal program.
      */
     void sendText(const QString & text) const;
+
+    void sendKeyEvent(QKeyEvent* e) const;
 
     /** Returns dynamic process name. */
     QString getDynamicProcessName();
@@ -632,7 +634,7 @@ public:
     /** Constructs an empty session group. */
     SessionGroup();
     /** Destroys the session group and removes all connections between master and slave sessions. */
-    ~SessionGroup();
+    ~SessionGroup() override;
 
     /** Adds a session to the group. */
     void addSession( Session * session );
