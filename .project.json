@@ -1,6 +1,6 @@
    {
        "type": "homebrew",
        "3rdparty": ["./3rdparty"],
-       "ignore": ["translations", "debian", "color-schemes", "kb-layouts", "LineFont.src", "CMakeLists.txt.user", "README", "README.md", "CHANGELOG", "COPYING-CMAKE-SCRIPTS", "LICENSE", "LICENSE.*", "*.keytab", "*.spec", "*.cmake", "*.desktop", "./.tx", "*.qrc", "*.svg", "*.png", "*.qm", "*.ts"],
+       "ignore": [".git", "translations", "debian", "color-schemes", "kb-layouts", "LineFont.src", "CMakeLists.txt.user", "README", "README.md", "CHANGELOG", "COPYING-CMAKE-SCRIPTS", "LICENSE", "LICENSE.*", "*.keytab", "*.spec", "*.cmake", "*.desktop", "./.tx", "*.qrc", "*.svg", "*.png", "*.qm", "*.ts"],
        "license": ["GPLv3"]
    }
