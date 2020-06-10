@@ -27,7 +27,7 @@
 #include <QtDebug>
 
 
-#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
+#if defined(__FreeBSD__) || defined(__DragonFly__)
 #define HAVE_LOGIN
 #define HAVE_LIBUTIL_H
 #endif
@@ -35,6 +35,12 @@
 #if defined(__OpenBSD__)
 #define HAVE_LOGIN
 #define HAVE_UTIL_H
+#endif
+
+#if defined(__NetBSD__)
+#define HAVE_LOGIN
+#define HAVE_UTIL_H
+#define HAVE_OPENPTY
 #endif
 
 #if defined(__APPLE__)
@@ -70,12 +76,12 @@
 #include <sys/stat.h>
 #include <sys/param.h>
 
-#include <errno.h>
+#include <cerrno>
 #include <fcntl.h>
-#include <time.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <ctime>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <unistd.h>
 #include <grp.h>
 
@@ -174,14 +180,12 @@ KPtyPrivate::~KPtyPrivate()
 {
 }
 
-#ifndef HAVE_OPENPTY
 bool KPtyPrivate::chownpty(bool)
 {
 //    return !QProcess::execute(KStandardDirs::findExe("kgrantpty"),
 //        QStringList() << (grant?"--grant":"--revoke") << QString::number(masterFd));
     return true;
 }
-#endif
 
 /////////////////////////////
 // public member functions //
@@ -281,8 +285,8 @@ bool KPty::open()
     // Linux device names, FIXME: Trouble on other systems?
     for (const char * s3 = "pqrstuvwxyzabcde"; *s3; s3++) {
         for (const char * s4 = "0123456789abcdef"; *s4; s4++) {
-            ptyName = QString().sprintf("/dev/pty%c%c", *s3, *s4).toUtf8();
-            d->ttyName = QString().sprintf("/dev/tty%c%c", *s3, *s4).toUtf8();
+            ptyName = QByteArrayLiteral("/dev/pty") + *s3 + *s4;
+            d->ttyName = QByteArrayLiteral("/dev/tty") + *s3 + *s4;
 
             d->masterFd = ::open(ptyName.data(), O_RDWR);
             if (d->masterFd >= 0) {
@@ -395,8 +399,12 @@ bool KPty::open(int fd)
 # else
     int ptyno;
     if (!ioctl(fd, TIOCGPTN, &ptyno)) {
-        char buf[32];
-        sprintf(buf, "/dev/pts/%d", ptyno);
+        const size_t sz = 32;
+        char buf[sz];
+        const size_t r = snprintf(buf, sz, "/dev/pts/%d", ptyno);
+        if (sz <= r) {
+            qWarning("KPty::open: Buffer too small\n");
+        }
         d->ttyName = buf;
 # endif
     } else {
@@ -546,7 +554,7 @@ void KPty::login(const char * user, const char * remotehost)
 # ifdef HAVE_UTMPX
     gettimeofday(&l_struct.ut_tv, 0);
 # else
-    l_struct.ut_time = time(0);
+    l_struct.ut_time = time(nullptr);
 # endif
 
 # ifdef HAVE_LOGIN
@@ -648,7 +656,7 @@ void KPty::logout()
     }
     endutxent();
 #  else
-    ut->ut_time = time(0);
+    ut->ut_time = time(nullptr);
     pututline(ut);
 }
 endutent();

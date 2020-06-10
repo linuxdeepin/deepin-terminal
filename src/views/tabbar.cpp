@@ -130,7 +130,7 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setTabItemMaxWidth(450);
 
     DIconButton *addButton = findChild<DIconButton *>("AddButton");
-    if (NULL != addButton) {
+    if (nullptr != addButton) {
         addButton->setFocusPolicy(Qt::NoFocus);
     }
 
@@ -229,12 +229,12 @@ void QTabBar::removeTab(int index)
         if (d->tabList[index].leftWidget) {
             d->tabList[index].leftWidget->hide();
             d->tabList[index].leftWidget->deleteLater();
-            d->tabList[index].leftWidget = 0;
+            d->tabList[index].leftWidget = nullptr;
         }
         if (d->tabList[index].rightWidget) {
             d->tabList[index].rightWidget->hide();
             d->tabList[index].rightWidget->deleteLater();
-            d->tabList[index].rightWidget = 0;
+            d->tabList[index].rightWidget = nullptr;
         }
 
         int newIndex = d->tabList[index].lastTab;
@@ -267,8 +267,6 @@ void QTabBar::removeTab(int index)
                     newIndex = index - 1;
                     if (newIndex < 0)
                         newIndex = 0;
-                    break;
-                default:
                     break;
                 }
 

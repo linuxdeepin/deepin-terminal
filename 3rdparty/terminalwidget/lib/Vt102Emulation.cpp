@@ -38,7 +38,7 @@
 #endif
 
 // Standard
-#include <stdio.h>
+#include <cstdio>
 #include <unistd.h>
 
 // Qt
@@ -343,7 +343,7 @@ void Vt102Emulation::receiveChar(wchar_t cc)
 
     if (epe(   )) { processToken( TY_CSI_PE(cc), 0, 0); resetTokenizer(); return; }
     if (ees(DIG)) { addDigit(cc-'0'); return; }
-    if (eec(';')) { addArgument();    return; }
+    if (eec(';') || eec(':')) { addArgument(); return; }
     for (int i=0;i<=argc;i++)
     {
         if (epp())
@@ -413,10 +413,10 @@ void Vt102Emulation::processWindowAttributeChange()
     return;
   }
 
-  QString newValue;
-  newValue.reserve(tokenBufferPos-i-2);
-  for (int j = 0; j < tokenBufferPos-i-2; j++)
-    newValue[j] = tokenBuffer[i+1+j];
+  // copy from the first char after ';', and skipping the ending delimiter
+  // 0x07 or 0x92. Note that as control characters in OSC text parts are
+  // ignored, only the second char in ST ("\e\\") is appended to tokenBuffer.
+  QString newValue = QString::fromWCharArray(tokenBuffer + i + 1, tokenBufferPos-i-2);
 
   _pendingTitleUpdates[attributeToChange] = newValue;
   _titleUpdateTimer->start(20);
@@ -870,8 +870,12 @@ void Vt102Emulation::sendString(const char* s , int length)
 
 void Vt102Emulation::reportCursorPosition()
 {
-  char tmp[20];
-  sprintf(tmp,"\033[%d;%dR",_currentScreen->getCursorY()+1,_currentScreen->getCursorX()+1);
+  const size_t sz = 20;
+  char tmp[sz];
+  const size_t r = snprintf(tmp, sz, "\033[%d;%dR",_currentScreen->getCursorY()+1,_currentScreen->getCursorX()+1);
+  if (sz <= r) {
+    qWarning("Vt102Emulation::reportCursorPosition: Buffer too small\n");
+  }
   sendString(tmp);
 }
 
@@ -901,8 +905,12 @@ void Vt102Emulation::reportSecondaryAttributes()
 void Vt102Emulation::reportTerminalParms(int p)
 // DECREPTPARM
 {
-  char tmp[100];
-  sprintf(tmp,"\033[%d;1;1;112;112;1;0x",p); // not really true.
+  const size_t sz = 100;
+  char tmp[sz];
+  const size_t r = snprintf(tmp, sz, "\033[%d;1;1;112;112;1;0x",p); // not really true.
+  if (sz <= r) {
+    qWarning("Vt102Emulation::reportTerminalParms: Buffer too small\n");
+  }
   sendString(tmp);
 }
 
@@ -1025,7 +1033,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
         states |= KeyboardTranslator::ApplicationKeypadState;
 
     // check flow control state
-    if (modifiers & Qt::ControlModifier)
+    if (modifiers & KeyboardTranslator::CTRL_MOD)
     {
         switch (event->key()) {
         case Qt::Key_S:
@@ -1080,7 +1088,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
         {
             textToSend += _codec->fromUnicode(QString::fromUtf8(entry.text(true,modifiers)));
         }
-        else if((modifiers & Qt::ControlModifier) && event->key() >= 0x40 && event->key() < 0x5f) {
+        else if((modifiers & KeyboardTranslator::CTRL_MOD) && event->key() >= 0x40 && event->key() < 0x5f) {
             textToSend += (event->key() & 0x1f);
         }
         else if(event->key() == Qt::Key_Tab) {
@@ -1341,8 +1349,8 @@ char Vt102Emulation::eraseChar() const
 {
   KeyboardTranslator::Entry entry = _keyTranslator->findEntry(
                                             Qt::Key_Backspace,
-                                            0,
-                                            0);
+                                            nullptr,
+                                            nullptr);
   if ( entry.text().count() > 0 )
       return entry.text().at(0);
   else

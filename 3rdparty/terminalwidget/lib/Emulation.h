@@ -24,7 +24,7 @@
 #define EMULATION_H
 
 // System
-#include <stdio.h>
+#include <cstdio>
 
 // Qt
 #include <QKeyEvent>
@@ -33,9 +33,7 @@
 #include <QTextStream>
 #include <QTimer>
 
-// Konsole
-//#include "konsole_export.h"
-#define KONSOLEPRIVATE_EXPORT
+#include "qtermwidget_export.h"
 
 namespace Konsole {
 
@@ -118,7 +116,7 @@ enum {
  * how long the emulation has been active/idle for and also respond to
  * a 'bell' event in different ways.
  */
-class KONSOLEPRIVATE_EXPORT Emulation : public QObject
+class TERMINALWIDGET_EXPORT Emulation : public QObject
 {
     Q_OBJECT
 
@@ -146,7 +144,7 @@ public:
 
     /** Constructs a new terminal emulation */
     Emulation();
-    ~Emulation();
+    ~Emulation() override;
 
     /**
      * Creates a new window onto the output from this emulation.  The contents

@@ -48,27 +48,27 @@ const ColorEntry ColorScheme::defaultTable[TABLE_COLORS] =
  // gamma correction for the dim colors to compensate for bright X screens.
  // It contains the 8 ansiterm/xterm colors in 2 intensities.
 {
-    ColorEntry( QColor(0x00,0x00,0x00), 0), ColorEntry(
-QColor(0xFF,0xFF,0xFF), 1), // Dfore, Dback
-    ColorEntry( QColor(0x00,0x00,0x00), 0), ColorEntry(
-QColor(0xB2,0x18,0x18), 0), // Black, Red
-    ColorEntry( QColor(0x18,0xB2,0x18), 0), ColorEntry(
-QColor(0xB2,0x68,0x18), 0), // Green, Yellow
-    ColorEntry( QColor(0x18,0x18,0xB2), 0), ColorEntry(
-QColor(0xB2,0x18,0xB2), 0), // Blue, Magenta
-    ColorEntry( QColor(0x18,0xB2,0xB2), 0), ColorEntry(
-QColor(0xB2,0xB2,0xB2), 0), // Cyan, White
+    ColorEntry( QColor(0x00,0x00,0x00), false), ColorEntry(
+QColor(0xFF,0xFF,0xFF), true), // Dfore, Dback
+    ColorEntry( QColor(0x00,0x00,0x00), false), ColorEntry(
+QColor(0xB2,0x18,0x18), false), // Black, Red
+    ColorEntry( QColor(0x18,0xB2,0x18), false), ColorEntry(
+QColor(0xB2,0x68,0x18), false), // Green, Yellow
+    ColorEntry( QColor(0x18,0x18,0xB2), false), ColorEntry(
+QColor(0xB2,0x18,0xB2), false), // Blue, Magenta
+    ColorEntry( QColor(0x18,0xB2,0xB2), false), ColorEntry(
+QColor(0xB2,0xB2,0xB2), false), // Cyan, White
     // intensive
-    ColorEntry( QColor(0x00,0x00,0x00), 0), ColorEntry(
-QColor(0xFF,0xFF,0xFF), 1),
-    ColorEntry( QColor(0x68,0x68,0x68), 0), ColorEntry(
-QColor(0xFF,0x54,0x54), 0),
-    ColorEntry( QColor(0x54,0xFF,0x54), 0), ColorEntry(
-QColor(0xFF,0xFF,0x54), 0),
-    ColorEntry( QColor(0x54,0x54,0xFF), 0), ColorEntry(
-QColor(0xFF,0x54,0xFF), 0),
-    ColorEntry( QColor(0x54,0xFF,0xFF), 0), ColorEntry(
-QColor(0xFF,0xFF,0xFF), 0)
+    ColorEntry( QColor(0x00,0x00,0x00), false), ColorEntry(
+QColor(0xFF,0xFF,0xFF), true),
+    ColorEntry( QColor(0x68,0x68,0x68), false), ColorEntry(
+QColor(0xFF,0x54,0x54), false),
+    ColorEntry( QColor(0x54,0xFF,0x54), false), ColorEntry(
+QColor(0xFF,0xFF,0x54), false),
+    ColorEntry( QColor(0x54,0x54,0xFF), false), ColorEntry(
+QColor(0xFF,0x54,0xFF), false),
+    ColorEntry( QColor(0x54,0xFF,0xFF), false), ColorEntry(
+QColor(0xFF,0xFF,0xFF), false)
 };
 
 const char* const ColorScheme::colorNames[TABLE_COLORS] =
@@ -122,25 +122,25 @@ const char* const ColorScheme::translatedColorNames[TABLE_COLORS] =
 
 ColorScheme::ColorScheme()
 {
-    _table = 0;
-    _randomTable = 0;
+    _table = nullptr;
+    _randomTable = nullptr;
     _opacity = 1.0;
 }
 ColorScheme::ColorScheme(const ColorScheme& other)
       : _opacity(other._opacity)
-       ,_table(0)
-       ,_randomTable(0)
+       ,_table(nullptr)
+       ,_randomTable(nullptr)
 {
     setName(other.name());
     setDescription(other.description());
 
-    if ( other._table != 0 )
+    if ( other._table != nullptr )
     {
         for ( int i = 0 ; i < TABLE_COLORS ; i++ )
             setColorTableEntry(i,other._table[i]);
     }
 
-    if ( other._randomTable != 0 )
+    if ( other._randomTable != nullptr )
     {
         for ( int i = 0 ; i < TABLE_COLORS ; i++ )
         {
@@ -185,7 +185,7 @@ ColorEntry ColorScheme::colorEntry(int index , uint randomSeed) const
     ColorEntry entry = colorTable()[index];
 
     if ( randomSeed != 0 &&
-        _randomTable != 0 &&
+        _randomTable != nullptr &&
         !_randomTable[index].isNull() )
     {
         const RandomizationRange& range = _randomTable[index];
@@ -213,7 +213,7 @@ void ColorScheme::getColorTable(ColorEntry* table , uint randomSeed) const
 }
 bool ColorScheme::randomizedBackgroundColor() const
 {
-    return _randomTable == 0 ? false : !_randomTable[1].isNull();
+    return _randomTable == nullptr ? false : !_randomTable[1].isNull();
 }
 void ColorScheme::setRandomizedBackgroundColor(bool randomize)
 {
@@ -238,7 +238,7 @@ void ColorScheme::setRandomizationRange( int index , quint16 hue , quint8 satura
     Q_ASSERT( hue <= MAX_HUE );
     Q_ASSERT( index >= 0 && index < TABLE_COLORS );
 
-    if ( _randomTable == 0 )
+    if ( _randomTable == nullptr )
         _randomTable = new RandomizationRange[TABLE_COLORS];
 
     _randomTable[index].hue = hue;
@@ -594,7 +594,6 @@ ColorSchemeManager::~ColorSchemeManager()
 }
 void ColorSchemeManager::loadAllColorSchemes()
 {
-
     int failed = 0;
 
     QList<QString> nativeColorSchemes = listColorSchemes();
@@ -734,7 +733,7 @@ QList<QString> ColorSchemeManager::listKDE3ColorSchemes()
         QStringList filters;
         filters << QLatin1String("*.schema");
         dir.setNameFilters(filters);
-        QStringList list = dir.entryList(filters);
+        const QStringList list = dir.entryList(filters);
         for (const QString &i : list)
             ret << dname + QLatin1Char('/') + i;
     }
@@ -754,7 +753,7 @@ QList<QString> ColorSchemeManager::listColorSchemes()
         QStringList filters;
         filters << QLatin1String("*.colorscheme");
         dir.setNameFilters(filters);
-        QStringList list = dir.entryList(filters);
+        const QStringList list = dir.entryList(filters);
         for (const QString &i : list)
             ret << dname + QLatin1Char('/') + i;
     }
@@ -825,7 +824,7 @@ const ColorScheme* ColorSchemeManager::findColorScheme(const QString& name)
 
         qDebug() << "Could not find color scheme - " << name;
 
-        return 0;
+        return nullptr;
     }
 }
 Q_GLOBAL_STATIC(ColorSchemeManager, theColorSchemeManager)
