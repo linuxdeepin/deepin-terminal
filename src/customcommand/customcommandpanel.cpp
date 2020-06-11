@@ -92,8 +92,10 @@ void CustomCommandPanel::refreshCmdSearchState()
         m_searchEdit->clearEdit();
         /************************ Add by m000743 sunchengxi 2020-04-22:自定义命令搜索显示异常  End ************************/
         m_searchEdit->show();
+        m_vlayout->setContentsMargins(0, 10, 0, 0);
     } else {
         m_searchEdit->hide();
+        m_vlayout->setContentsMargins(0, 0, 0, 0);
     }
 }
 
@@ -131,10 +133,11 @@ void CustomCommandPanel::initUI()
     hlayout->addSpacing(10);
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
+    m_vlayout=vlayout;
     vlayout->setSpacing(0);
     vlayout->setMargin(0);
     vlayout->setContentsMargins(0, 0, 0, 0);
-    vlayout->addSpacing(10);
+    //vlayout->addSpacing(10);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_cmdListWidget);
     vlayout->addLayout(btnLayout);

@@ -70,6 +70,7 @@ void CustomCommandSearchRstPanel::initUI()
     hlayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
+    vlayout->addSpacing(10);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_cmdListWidget);
     vlayout->setMargin(0);
