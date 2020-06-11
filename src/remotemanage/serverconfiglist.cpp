@@ -313,6 +313,10 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
     }
 
     DListView::mousePressEvent(event);
+    // 不是左键点击，不响应
+    if (!m_bLeftMouse) {
+        return;
+    }
 
     if (m_serCfgListModel && m_serCfgListModel->rowCount() == 0) {
         return;
@@ -362,7 +366,6 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
         qDebug() << "remote list click item " << itemData.m_serverName << state;;
         emit itemClicked(curItemServer);
     }
-    DListView::mousePressEvent(event);
 }
 
 void ServerConfigList::mouseReleaseEvent(QMouseEvent *event)
