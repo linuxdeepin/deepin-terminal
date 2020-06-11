@@ -222,6 +222,10 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
 
     DListView::mousePressEvent(event);
 
+    if (false == m_bLeftMouse) {
+        return;
+    }
+
     if (m_cmdListModel && m_cmdListModel->rowCount() == 0) {
         return;
     }

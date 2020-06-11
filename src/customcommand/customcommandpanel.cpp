@@ -133,7 +133,7 @@ void CustomCommandPanel::initUI()
     hlayout->addSpacing(10);
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
-    m_vlayout=vlayout;
+    m_vlayout = vlayout;
     vlayout->setSpacing(0);
     vlayout->setMargin(0);
     vlayout->setContentsMargins(0, 0, 0, 0);

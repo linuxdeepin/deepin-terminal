@@ -40,7 +40,7 @@ private:
 private:
     CustomCommandList *m_cmdListWidget = nullptr;
     CustomCommandOptDlg *m_pdlg = nullptr;
-    QVBoxLayout *m_vlayout=nullptr;
+    QVBoxLayout *m_vlayout = nullptr;
 };
 
 #endif  // CUSTOMCOMMANDPANEL_H
