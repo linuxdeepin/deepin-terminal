@@ -589,6 +589,8 @@ void Session::sendKeyEvent(QKeyEvent* e) const
 Session::~Session()
 {
     _wantedClose = true;
+    delete _foregroundProcessInfo;
+    delete _sessionProcessInfo;
     delete _emulation;
     delete _shellProcess;
 //  delete _zmodemProc;

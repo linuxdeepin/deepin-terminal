@@ -962,7 +962,7 @@ void Vt102Emulation::sendMouseEvent( int cb, int cx, int cy , int eventType )
     if (getMode(MODE_Mouse1006)) {
         snprintf(command, sizeof(command), "\033[<%d;%d;%d%c", cb, cx, cy, eventType == 2 ? 'm' : 'M');
     } else if (getMode(MODE_Mouse1015)) {
-        snprintf(command, sizeof(command), "\033[%d;%d;%dM", cb + 0x20, cx, cy);
+        snprintf(command, sizeof(command), "\033[%d;%d;%dM", static_cast<short>(cb) + 0x20, cx, cy);
     } else if (getMode(MODE_Mouse1005)) {
         if (cx <= 2015 && cy <= 2015) {
             // The xterm extension uses UTF-8 (up to 2 bytes) to encode

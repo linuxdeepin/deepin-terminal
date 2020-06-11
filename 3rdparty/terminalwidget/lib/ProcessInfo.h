@@ -69,8 +69,9 @@ namespace Konsole {
  *   }
  * @endcode
  */
-class ProcessInfo
+class ProcessInfo : QObject
 {
+    Q_OBJECT
 public:
     /**
      * Constructs a new instance of a suitable ProcessInfo sub-class for
@@ -82,9 +83,7 @@ public:
      */
     static ProcessInfo *newInstance(int pid, const QString &titleFormat);
 
-    virtual ~ProcessInfo()
-    {
-    }
+    virtual ~ProcessInfo();
 
     /**
      * Updates the information about the process.  This must
@@ -182,7 +181,7 @@ public:
         CURRENT_DIR = 32,
         UID = 64
     };
-    Q_DECLARE_FLAGS(Fields, Field)
+    typedef QFlags<Field> Fields;
 
     // takes a full directory path and returns a
     // shortened version suitable for display in
@@ -282,34 +281,9 @@ private:
     bool _userNameRequired;
 
     QVector<QString> _arguments;
-
-    static QSet<QString> commonDirNames();
-    static QSet<QString> _commonDirNames;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(ProcessInfo::Fields)
 
-/**
- * Implementation of ProcessInfo which does nothing.
- * Used on platforms where a suitable ProcessInfo subclass is not
- * available.
- *
- * isValid() will always return false for instances of NullProcessInfo
- */
-class NullProcessInfo : public ProcessInfo
-{
-public:
-    /**
-     * Constructs a new NullProcessInfo instance.
-     * See ProcessInfo::newInstance()
-     */
-    explicit NullProcessInfo(int pid, const QString &titleFormat);
-protected:
-    void readProcessInfo(int pid) Q_DECL_OVERRIDE;
-    bool readCurrentDir(int pid) Q_DECL_OVERRIDE;
-    void readUserName(void) Q_DECL_OVERRIDE;
-};
-
-#if !defined(Q_OS_WIN)
 /**
  * Implementation of ProcessInfo for Unix platforms which uses
  * the /proc filesystem
@@ -347,65 +321,21 @@ private:
      */
     virtual bool readArguments(int pid) = 0;
 };
-#endif
 
-/**
- * Lightweight class which provides additional information about SSH processes.
- */
-class SSHProcessInfo
+class LinuxProcessInfo : public UnixProcessInfo
 {
 public:
-    /**
-     * Constructs a new SSHProcessInfo instance which provides additional
-     * information about the specified SSH process.
-     *
-     * @param process A ProcessInfo instance for a SSH process.
-     */
-    explicit SSHProcessInfo(const ProcessInfo &process);
+    LinuxProcessInfo(int pid, const QString &titleFormat);
 
-    /**
-     * Returns the user name which the user initially logged into on
-     * the remote computer.
-     */
-    QString userName() const;
-
-    /**
-     * Returns the host which the user has connected to.
-     */
-    QString host() const;
-
-    /**
-     * Returns the port on host which the user has connected to.
-     */
-    QString port() const;
-
-    /**
-     * Returns the command which the user specified to execute on the
-     * remote computer when starting the SSH process.
-     */
-    QString command() const;
-
-    /**
-     * Operates in the same way as ProcessInfo::format(), except
-     * that the set of markers understood is different:
-     *
-     * %u - Replaced with user name which the user initially logged
-     *      into on the remote computer.
-     * %h - Replaced with the first part of the host name which
-     *      is connected to.
-     * %H - Replaced with the full host name of the computer which
-     *      is connected to.
-     * %c - Replaced with the command which the user specified
-     *      to execute when starting the SSH process.
-     */
-    QString format(const QString &input) const;
+protected:
+    bool readCurrentDir(int pid) Q_DECL_OVERRIDE;
 
 private:
-    const ProcessInfo &_process;
-    QString _user;
-    QString _host;
-    QString _port;
-    QString _command;
+    bool readProcInfo(int pid) Q_DECL_OVERRIDE;
+
+    bool readArguments(int pid) Q_DECL_OVERRIDE;
 };
+
+
 }
 #endif //PROCESSINFO_H
