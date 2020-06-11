@@ -54,6 +54,9 @@ public:
     bool getIsDialogShow() const;
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
+    bool getEnable() const;
+    void setEnable(bool enable);
+
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
@@ -74,6 +77,8 @@ private:
     DDialog *m_settingShortcutConflictDialog = nullptr;
     // 雷神用来判断是否有弹窗显示
     bool m_isDialogShow = false;
+    // 是否允许创建新的窗口
+    bool m_enable = false;
 };
 
 #endif // SERVICE_H

@@ -35,8 +35,7 @@ class QVBoxLayout;
 class TermWidgetImpl;
 class SearchBar;
 class QUrl;
-namespace Konsole
-{
+namespace Konsole {
 class TerminalDisplay;
 }
 
@@ -47,8 +46,7 @@ public:
     /**
      * This enum describes the location where the scroll bar is positioned in the display widget.
      */
-    enum ScrollBarPosition
-    {
+    enum ScrollBarPosition {
         /** Do not show the scroll bar. */
         NoScrollBar = 0,
         /** Show the scroll bar on the left side of the display. */
@@ -61,7 +59,7 @@ public:
 
     //Creation of widget
     QTermWidget(int startnow, // 1 = start shell programm immediatelly
-                QWidget * parent = nullptr);
+                QWidget *parent = nullptr);
     // A dummy constructor for Qt Designer. startnow is 1 by default
     QTermWidget(QWidget *parent = nullptr);
 
@@ -146,10 +144,10 @@ public:
     /********************* Modify by n014361 wangpeili End ************************/
 
     // Send some text to terminal
-    void sendText(const QString & text);
+    void sendText(const QString &text);
 
     // Send key event to terminal
-    void sendKeyEvent(QKeyEvent* e);
+    void sendKeyEvent(QKeyEvent *e);
 
     // Sets whether flow control is enabled
     void setFlowControlEnabled(bool enabled);
@@ -290,6 +288,9 @@ signals:
     bool uninstallTerminal(QString commandname);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
+    /******** Modify by ut000610 daizhengwen 2020-06-11: QProcess start finished signal****************/
+    void processStarted();
+    /********************* Modify by ut000610 daizhengwen End ************************/
     /**
      * Emitted when emulator send data to the terminal process
      * (redirected for external recipient). It can be used for
@@ -396,7 +397,7 @@ private:
 #ifdef __cplusplus
 extern "C"
 #endif
-void * createTermWidget(int startnow, void *parent);
+void *createTermWidget(int startnow, void *parent);
 
 #endif
 

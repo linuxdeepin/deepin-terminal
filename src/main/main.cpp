@@ -59,6 +59,10 @@ int main(int argc, char *argv[])
     DBusManager manager;
     if (!manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
+        if (!DBusManager::callCreateReuqest()) {
+            qDebug() << "Window is creating, drop this create request!";
+            return 0;
+        }
         // 调用entry接口
         /******** Modify by ut000610 daizhengwen 2020-05-25: 在终端中打开****************/
         QStringList args = app.arguments();

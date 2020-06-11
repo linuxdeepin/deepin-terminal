@@ -1,6 +1,6 @@
 #ifndef DBUSMANAGER_H
 #define DBUSMANAGER_H
-#include "termproperties.h"
+#include "service.h"
 
 #include <QObject>
 #include <QList>
@@ -24,6 +24,7 @@ class DBusManager : public QObject
     Q_CLASSINFO("D-Bus Interface", TERMINALSERVER)
 public:
     DBusManager();
+    ~DBusManager();
     // 初始化terminal相关dbus
     bool initDBus();
 
@@ -35,14 +36,19 @@ public:
     static QStringList callAppearanceFont(QString fontType);
 
     // deepin terminal
+    // 获取能否创建窗口的状态值
+    static bool callCreateReuqest();
+    // 创建窗口
     static void callTerminalEntry(QStringList args);
+
+public slots:
+    void entry(QStringList args);
+    // 获取状态值
+    bool createReuqest();
 
 signals:
     // To Service entry function
     void entryArgs(QStringList args);
-
-public slots:
-    void entry(QStringList args);
 };
 
 #endif // DBUSMANAGER_H

@@ -47,11 +47,10 @@ using namespace Konsole;
 
 void *createTermWidget(int startnow, void *parent)
 {
-    return (void*) new QTermWidget(startnow, (QWidget*)parent);
+    return (void *) new QTermWidget(startnow, (QWidget *)parent);
 }
 
-struct TermWidgetImpl
-{
+struct TermWidgetImpl {
     TermWidgetImpl(QWidget *parent = 0);
 
     TerminalDisplay *m_terminalDisplay;
@@ -385,7 +384,7 @@ void QTermWidget::startTerminalTeletype()
     m_impl->m_session->runEmptyPTY();
     // redirect data from TTY to external recipient
     connect(
-    m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int)), this, SIGNAL(sendData(const char *, int)));
+        m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int)), this, SIGNAL(sendData(const char *, int)));
 }
 
 void QTermWidget::init(int startnow)
@@ -409,7 +408,7 @@ void QTermWidget::init(int startnow)
     for (const QString &dir : qAsConst(dirs)) {
         qDebug() << "Trying to load translation file from dir" << dir;
         if (m_translator->load(
-            QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
+                    QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
             qApp->installTranslator(m_translator);
             qDebug() << "Translations found in" << dir;
             break;
@@ -426,12 +425,13 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, SIGNAL(silence()), this, SIGNAL(silence()));
     connect(m_impl->m_session, &Session::profileChangeCommandReceived, this, &QTermWidget::profileChanged);
     connect(m_impl->m_session, &Session::receivedData, this, &QTermWidget::receivedData);
+    connect(m_impl->m_session, &Session::started, this, &QTermWidget::processStarted);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     // 用于卸载终端弹出框提示
     connect(m_impl->m_session, SIGNAL(sessionUninstallTerminal(QString)), this, SIGNAL(uninstallTerminal(QString)));
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
-    connect(m_impl->m_session, &Session::titleChanged, this, [=] {
+    connect(m_impl->m_session, &Session::titleChanged, this, [ = ] {
         m_impl->m_terminalDisplay->setHideCursor(false);
     });
 
@@ -463,7 +463,7 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_terminalDisplay, SIGNAL(leftMouseClick()), this, SIGNAL(leftMouseClick()));
     connect(m_impl->m_terminalDisplay, SIGNAL(termLostFocus()), this, SIGNAL(termLostFocus()));
     connect(
-    m_impl->m_terminalDisplay, SIGNAL(keyPressedSignal(QKeyEvent *)), this, SIGNAL(termKeyPressed(QKeyEvent *)));
+        m_impl->m_terminalDisplay, SIGNAL(keyPressedSignal(QKeyEvent *)), this, SIGNAL(termKeyPressed(QKeyEvent *)));
     //    m_impl->m_terminalDisplay->setSize(80, 40);
 
     QFont font = QApplication::font();
@@ -551,7 +551,7 @@ void QTermWidget::setShellProgram(const QString &progname)
     if (!m_impl->m_session)
         return;
     m_impl->m_session->setProgram(progname);
-    qDebug()<<"set Program"<< progname;
+    qDebug() << "set Program" << progname;
 }
 
 void QTermWidget::setWorkingDirectory(const QString &dir)
@@ -588,7 +588,7 @@ void QTermWidget::setArgs(const QStringList &args)
     if (!m_impl->m_session)
         return;
     m_impl->m_session->setArguments(args);
-    qDebug()<<"set Arguments"<<args;
+    qDebug() << "set Arguments" << args;
 }
 
 void QTermWidget::setTextCodec(QTextCodec *codec)
@@ -708,8 +708,7 @@ void QTermWidget::copyClipboard()
 
 void QTermWidget::pasteClipboard()
 {
-    if(m_impl->m_terminalDisplay->hasFocus())
-    {
+    if (m_impl->m_terminalDisplay->hasFocus()) {
         m_impl->m_terminalDisplay->pasteClipboard();
     }
 }
@@ -789,7 +788,7 @@ void QTermWidget::setEnvironment(const QStringList &environment)
 
 void QTermWidget::setMotionAfterPasting(int action)
 {
-    m_impl->m_terminalDisplay->setMotionAfterPasting(( Konsole::MotionAfterPasting )action);
+    m_impl->m_terminalDisplay->setMotionAfterPasting((Konsole::MotionAfterPasting)action);
 }
 
 int QTermWidget::historyLinesCount()

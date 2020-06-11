@@ -15,7 +15,7 @@
 #include <QObject>
 
 // 窗口最大数量
-#define MAXWIDGETCOUNT 198
+#define MAXWIDGETCOUNT 197
 
 class WindowsManager : public QObject
 {

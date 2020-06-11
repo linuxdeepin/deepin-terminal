@@ -145,22 +145,19 @@ void Service::showShortcutConflictMsgbox(QString txt)
 
 void Service::Entry(QStringList arguments)
 {
-    // 到达窗口最大值，则返回，不做创建
-    if (WindowsManager::instance()->widgetCount() == MAXWIDGETCOUNT) {
-        if (arguments.contains("-q") && WindowsManager::instance()->getQuakeWindow() == nullptr) {
-            qDebug() << "allow create quake window";
-        } else {
-            qDebug() << "Maximum number of windows created" << WindowsManager::instance()->widgetCount();
-            return;
-        }
-    }
-
     TermProperties properties;
     Utils::parseCommandLine(arguments, properties);
 
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {
         WindowsManager::instance()->runQuakeWindow(properties);
+        return;
+    }
+
+    // 到达窗口最大值，则返回，不做创建
+    if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
+        // 当前不创建，要将enable还原
+        Service::instance()->setEnable(true);
         return;
     }
     // 普通窗口处理入口
@@ -171,6 +168,16 @@ void Service::Entry(QStringList arguments)
 Service::Service(QObject *parent) : QObject(parent)
 {
 
+}
+
+bool Service::getEnable() const
+{
+    return m_enable;
+}
+
+void Service::setEnable(bool enable)
+{
+    m_enable = enable;
 }
 
 bool Service::getIsDialogShow() const

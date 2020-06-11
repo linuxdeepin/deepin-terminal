@@ -3,12 +3,23 @@
 
 #include <QDBusMessage>
 #include <QDBusConnection>
+#include <QDBusInterface>
 
 #include <QDebug>
 
 DBusManager::DBusManager()
 {
 
+}
+
+DBusManager::~DBusManager()
+{
+    // 注销时结束连接dbus
+    QDBusConnection conn = QDBusConnection::sessionBus();
+    if (conn.registerService(TERMINALSERVER)) {
+        conn.unregisterService(TERMINALSERVER);
+        qDebug() << "Terminal DBus disconnected!";
+    }
 }
 
 /*******************************************************************************
@@ -31,6 +42,7 @@ bool DBusManager::initDBus()
         qDebug() << "Terminal DBus creates Object failed!";
         return false;
     }
+
     return true;
 }
 
@@ -111,6 +123,21 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
     return fontList;
 }
 
+bool DBusManager::callCreateReuqest()
+{
+    QDBusMessage msg =
+        QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "createReuqest");
+
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::AutoDetect);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call createReuqest Success!" << response.arguments().takeFirst().toBool();
+        return response.arguments().takeFirst().toBool();
+    } else {
+        qDebug() << "call createReuqest!" << response.errorMessage();
+        return false;
+    }
+}
+
 /*******************************************************************************
  1. @函数:    callTerminalEntry
  2. @作者:    ut000610 戴正文
@@ -142,6 +169,27 @@ void DBusManager::entry(QStringList args)
 {
     qDebug() << "recv args" << args;
     emit entryArgs(args);
+}
+
+/*******************************************************************************
+ 1. @函数:    createReuqest
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-06-11
+ 4. @说明:    判断当前是否允许创建窗口
+             true 允许
+             false 不允许
+             返回true需要将他置为false,阻止其他窗口创建
+             用于新建窗口
+*******************************************************************************/
+bool DBusManager::createReuqest()
+{
+    bool result = Service::instance()->getEnable();
+    if (result) {
+        // 允许当前请求创建，阻止其他窗口创建
+        Service::instance()->setEnable(false);
+    }
+    qDebug() << "create enable " << result;
+    return result;
 }
 
 

@@ -175,6 +175,13 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
     //qDebug() << parentPage << endl;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
+    /******** Modify by ut000610 daizhengwen 2020-06-11: 启动成功，则允许下一个窗口创建****************/
+    connect(this, &TermWidget::processStarted, Service::instance(), [ = ]() {
+        QTimer::singleShot(200, [ = ]() {
+            Service::instance()->setEnable(true);
+        });
+    });
+    /********************* Modify by ut000610 daizhengwen End ************************/
 
     startShellProgram();
 
