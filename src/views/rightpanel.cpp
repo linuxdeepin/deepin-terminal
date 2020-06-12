@@ -14,9 +14,10 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
     setFixedWidth(240 + 2);
 
     // Init theme panel.
-    DAnchorsBase::setAnchor(this, Qt::AnchorTop, parent, Qt::AnchorTop);
-    DAnchorsBase::setAnchor(this, Qt::AnchorBottom, parent, Qt::AnchorBottom);
-    DAnchorsBase::setAnchor(this, Qt::AnchorRight, parent, Qt::AnchorRight);
+    // 插件不支持resize,下面代码不需要了
+//    DAnchorsBase::setAnchor(this, Qt::AnchorTop, parent, Qt::AnchorTop);
+//    DAnchorsBase::setAnchor(this, Qt::AnchorBottom, parent, Qt::AnchorBottom);
+//    DAnchorsBase::setAnchor(this, Qt::AnchorRight, parent, Qt::AnchorRight);
 }
 
 void RightPanel::show()
