@@ -38,10 +38,9 @@ void RightPanel::show()
         animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
         animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), windowRect.height() - 50));
     }
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     //    connect(animation, &QPropertyAnimation::valueChanged, this, [=] { m_themeView->adjustScrollbarMargins(); });
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 }
 
 void RightPanel::hideAnim()
@@ -67,8 +66,7 @@ void RightPanel::hideAnim()
     }
 
 
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     connect(animation, &QPropertyAnimation::finished, this, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
 }

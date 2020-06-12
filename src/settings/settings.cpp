@@ -34,6 +34,19 @@ Settings *Settings::instance()
 {
     return m_settings_instance;
 }
+
+Settings::~Settings()
+{
+    if(nullptr != m_Watcher){
+        m_Watcher->deleteLater();
+    }
+    if(nullptr != m_backend){
+        m_backend->deleteLater();
+    }
+    if(nullptr != settings){
+        settings->deleteLater();
+    }
+}
 // 统一初始化以后方可使用。
 void Settings::init()
 {
@@ -69,7 +82,8 @@ void Settings::init()
 
     initConnection();
     loadDefaultsWhenReinstall();
-
+    /******** Modify by ut000439 wangpeili 2020-06-12: 多进程模式，暂时取消使用*********/
+    /*
     //增加文件昨监视，以便多进程共享配置文件
     m_Watcher = new QFileSystemWatcher();
     m_Watcher->addPath(m_configPath);
@@ -79,6 +93,8 @@ void Settings::init()
         //监控完一次就不再监控了，所以要再添加
         m_Watcher->addPath(m_configPath);
     });
+    */
+    /********************* Modify by n014361 wangpeili End ************************/
 }
 
 //重新安装终端后在这里重置状态

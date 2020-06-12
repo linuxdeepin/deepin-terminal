@@ -193,10 +193,11 @@ void RemoteManagementTopPanel::panelLeftToRight(QPropertyAnimation *animation, Q
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
-    QParallelAnimationGroup *group = new QParallelAnimationGroup;
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
     group->addAnimation(animation);
     group->addAnimation(animation1);
-    group->start();
+    // 已验证：这个设定，会释放group以及所有组内动画。
+    group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void RemoteManagementTopPanel::panelRightToLeft(QPropertyAnimation *animation, QPropertyAnimation *animation1)
@@ -211,10 +212,11 @@ void RemoteManagementTopPanel::panelRightToLeft(QPropertyAnimation *animation, Q
     animation1->setEasingCurve(QEasingCurve::OutQuad);
     animation1->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
-    QParallelAnimationGroup *group = new QParallelAnimationGroup;
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
     group->addAnimation(animation);
     group->addAnimation(animation1);
-    group->start();
+    // 已验证：这个设定，会释放group以及所有组内动画。
+    group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strGroup)

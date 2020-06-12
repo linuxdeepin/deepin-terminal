@@ -57,7 +57,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_termStackWidget(new QStackedWidget),
       m_properties(properties),
       m_isQuakeWindow(properties[QuakeMode].toBool()),
-      m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat))
+      m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
 {
 }
 

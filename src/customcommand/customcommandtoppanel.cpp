@@ -64,10 +64,11 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
 
-    QParallelAnimationGroup *group = new QParallelAnimationGroup;
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
     group->addAnimation(animation);
     group->addAnimation(animation1);
-    group->start();
+    // 已验证：这个设定，会释放group以及所有组内动画。
+    group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilter)
@@ -94,10 +95,11 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
     connect(animation1, &QPropertyAnimation::finished, m_customCommandPanel, &QWidget::hide);
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
 
-    QParallelAnimationGroup *group = new QParallelAnimationGroup;
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
     group->addAnimation(animation1);
     group->addAnimation(animation);
-    group->start();
+    // 已验证：这个设定，会释放group以及所有组内动画。
+    group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void CustomCommandTopPanel::show()

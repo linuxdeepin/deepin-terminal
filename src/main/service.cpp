@@ -20,6 +20,13 @@ Service::~Service()
     if (nullptr != m_settingDialog) {
         delete m_settingDialog;
     }
+    if (nullptr != m_settingOwner) {
+        delete m_settingOwner;
+    }
+    if (nullptr != m_settingShortcutConflictDialog) {
+        delete m_settingShortcutConflictDialog;
+    }
+
 }
 
 void Service::init()

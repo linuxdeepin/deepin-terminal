@@ -34,7 +34,7 @@ CustomCommandList::~CustomCommandList()
 
 void CustomCommandList::initData()
 {
-    m_cmdListModel = new QStandardItemModel;
+    m_cmdListModel = new QStandardItemModel(this);
     m_cmdProxyModel = new CustomCommandItemModel(this);
     m_cmdProxyModel->setSourceModel(m_cmdListModel);
     m_cmdProxyModel->setFilterRole(Qt::UserRole);

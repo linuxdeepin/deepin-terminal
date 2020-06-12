@@ -80,13 +80,7 @@ void ServerConfigManager::initServerConfig()
         pServerConfig->m_privateKey = serversSettings.value("PrivateKey").toString();
         serversSettings.endGroup();
 
-        if (m_serverConfigs.contains(pServerConfig->m_group)) {
-            m_serverConfigs[pServerConfig->m_group].append(pServerConfig);
-        } else {
-            QList<ServerConfig *> configlist;
-            configlist.append(pServerConfig);
-            m_serverConfigs[pServerConfig->m_group] = configlist;
-        }
+        m_serverConfigs[pServerConfig->m_group].append(pServerConfig);
     }
 
     return;
