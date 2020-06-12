@@ -24,7 +24,7 @@ ServerConfigList::ServerConfigList(QWidget *parent) : DListView(parent)
 
 void ServerConfigList::initData()
 {
-    m_serCfgListModel = new QStandardItemModel;
+    m_serCfgListModel = new QStandardItemModel(this);
     m_serCfgProxyModel = new ServerConfigItemModel(this);
     m_serCfgProxyModel->setSourceModel(m_serCfgListModel);
     m_serCfgProxyModel->setFilterRole(Qt::UserRole);
