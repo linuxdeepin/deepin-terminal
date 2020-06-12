@@ -177,8 +177,8 @@ void Emulation::setBackspaceMode(char *key, int length)
 {
     KeyboardTranslator::Entry entry = _keyTranslator->findEntry(
                                           Qt::Key_Backspace,
-                                          0,
-                                          0);
+                                          nullptr,
+                                          nullptr);
 
     KeyboardTranslator::Entry newEntry;
     KeyboardTranslator::States flags = KeyboardTranslator::NoState;

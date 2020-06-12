@@ -93,7 +93,11 @@ void EncodeListView::showEvent(QShowEvent *e)
     DListView::showEvent(e);
 }
 
-void EncodeListView::resizeContents(int width, int height) {}
+void EncodeListView::resizeContents(int width, int height)
+{
+    Q_UNUSED(width)
+    Q_UNUSED(height)
+}
 
 QSize EncodeListView::contentsSize() const
 {

@@ -45,7 +45,7 @@ function(DTK_CREATE_I18N_FROM_JSON _generated_file_list _input_json_file _output
             DEPENDS ${_input_json_abs_path} VERBATIM)
         list(APPEND generated_file_list ${_output_cpp_abs_path})
     else ()
-        message (WARNING "dtk-settings-tools could not be found at ${DTK_SETTINGS_TOOLS_EXECUTABLE}")
+        message ("dtk-settings-tools could not be found at ${DTK_SETTINGS_TOOLS_EXECUTABLE}")
     endif ()
 
     set(${_generated_file_list} ${generated_file_list} PARENT_SCOPE)

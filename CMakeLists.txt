@@ -6,12 +6,18 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 include (src/DtkSettingsToolsMacros)
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+
+set(CMAKE_CXX_FLAGS "-g -Wall -Wextra")
+
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_FLAGS "-g -Wall")
+
 set(QT_MINIMUM_VERSION "5.7.1")
 
 configure_file(src/environments.h.in environments.h @ONLY)
@@ -35,9 +41,9 @@ pkg_search_module(DtkCore REQUIRED dtkcore)
 
 # Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
-set(TERMINALWIDGET_VERSION_MAJOR ${TerminalWidget5_VERSION_MAJOR})
-set(TERMINALWIDGET_VERSION_MINOR=${TerminalWidget5_VERSION_MINOR})
-set(TERMINALWIDGET_VERSION_PATCH=${TerminalWidget5_VERSION_PATCH})
+set(TERMINALWIDGET_VERSION_MAJOR "0")
+set(TERMINALWIDGET_VERSION_MINOR "14")
+set(TERMINALWIDGET_VERSION_PATCH "1")
 
 add_subdirectory(3rdparty/terminalwidget)
 

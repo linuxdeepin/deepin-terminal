@@ -38,7 +38,7 @@ class PageSearchBar : public DFloatingWidget
 {
     Q_OBJECT
 public:
-    PageSearchBar(QWidget *parent = 0);
+    PageSearchBar(QWidget *parent = nullptr);
 
     bool isFocus();
     void focus();

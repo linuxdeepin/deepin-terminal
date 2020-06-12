@@ -55,6 +55,7 @@ void Service::initSetting()
     m_settingDialog = new DSettingsDialog();
     // 关闭后将指针置空，下次重新new
     connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
+        Q_UNUSED(result)
         //激活设置框的有拥者
         if (m_settingOwner) {
             m_settingOwner->activateWindow();

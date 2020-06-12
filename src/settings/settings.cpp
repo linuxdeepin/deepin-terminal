@@ -117,6 +117,7 @@ void Settings::loadDefaultsWhenReinstall()
 void Settings::initConnection()
 {
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
+        Q_UNUSED(value)
         if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.")) {
             emit terminalSettingChanged(key);
         } else if (key.contains("shortcuts.")) {
@@ -528,6 +529,7 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
 
     // 控件初始加载配置文件的值
     auto updateWidgetValue = [ = ](const QVariant & optionValue, DTK_CORE_NAMESPACE::DSettingsOption * opt) {
+        Q_UNUSED(opt)
         QKeySequence sequence(optionValue.toString());
         QString keyseq = sequence.toString();
         if (keyseq == SHORTCUT_VALUE) {

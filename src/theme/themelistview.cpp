@@ -18,11 +18,14 @@ void ThemeListView::selectionChanged(const QItemSelection &selected, const QItem
 {
     // Theme changed.
     QModelIndexList list = selected.indexes();
-    for (const QModelIndex &index : list) {
-        const QString &themeName = index.data(1919810).toString();
-        emit themeChanged(themeName);
-        break;
-    }
+    const QModelIndex &index = list.first();
+    const QString &themeName = index.data(1919810).toString();
+    emit themeChanged(themeName);
+//    for (const QModelIndex &index : list) {
+//        const QString &themeName = index.data(1919810).toString();
+//        emit themeChanged(themeName);
+//        break;
+//    }
 
     QListView::selectionChanged(selected, deselected);
 }

@@ -137,10 +137,6 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
 
-#if !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
-    setBlinkingCursor(Settings::instance()->cursorBlink());
-#endif  // !(TERMINALWIDGET_VERSION <= QT_VERSION_CHECK(0, 7, 1))
-
     connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
             QDesktopServices::openUrl(url);

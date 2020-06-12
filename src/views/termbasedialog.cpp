@@ -14,6 +14,8 @@ static void palrtteTransparency(QWidget *widget, qint8 alphaFloat)
 //fix bug 23481 主菜单切换主题，弹框字体颜色没有随主题及时变换
 void QWidget::paintEvent(QPaintEvent *e)
 {
+    Q_UNUSED(e)
+
     if (strcmp(this->metaObject()->className(), "Dtk::Widget::DDialog") != 0)
     {
         return;

@@ -152,7 +152,7 @@ void Vt102Emulation::reset()
 
 */
 
-#define TY_CONSTRUCT(T,A,N) ( ((((int)N) & 0xffff) << 16) | ((((int)A) & 0xff) << 8) | (((int)T) & 0xff) )
+#define TY_CONSTRUCT(T,A,N) ( (((static_cast<int>(N)) & 0xffff) << 16) | (((static_cast<int>(A)) & 0xff) << 8) | ((static_cast<int>(T)) & 0xff) )
 
 #define TY_CHR(   )     TY_CONSTRUCT(0,0,0)
 #define TY_CTL(A  )     TY_CONSTRUCT(1,A,0)
@@ -219,24 +219,24 @@ void Vt102Emulation::addToCurrentToken(wchar_t cc)
 void Vt102Emulation::initTokenizer()
 {
   int i;
-  quint8* s;
+  const char* s;
   for(i = 0;i < 256; ++i)
     charClass[i] = 0;
   for(i = 0;i < 32; ++i)
     charClass[i] |= CTL;
   for(i = 32;i < 256; ++i)
     charClass[i] |= CHR;
-  for(s = (quint8*)"@ABCDGHILMPSTXZbcdfry"; *s; ++s)
-    charClass[*s] |= CPN;
+  for(s = "@ABCDGHILMPSTXZbcdfry"; *s; ++s)
+    charClass[static_cast<int>(*s)] |= CPN;
   // resize = \e[8;<row>;<col>t
-  for(s = (quint8*)"t"; *s; ++s)
-    charClass[*s] |= CPS;
-  for(s = (quint8*)"0123456789"; *s; ++s)
-    charClass[*s] |= DIG;
-  for(s = (quint8*)"()+*%"; *s; ++s)
-    charClass[*s] |= SCS;
-  for(s = (quint8*)"()+*#[]%"; *s; ++s)
-    charClass[*s] |= GRP;
+  for(s = "t"; *s; ++s)
+    charClass[static_cast<int>(*s)] |= CPS;
+  for(s = "0123456789"; *s; ++s)
+    charClass[static_cast<int>(*s)] |= DIG;
+  for(s = "()+*%"; *s; ++s)
+    charClass[static_cast<int>(*s)] |= SCS;
+  for(s = "()+*#[]%"; *s; ++s)
+    charClass[static_cast<int>(*s)] |= GRP;
 
   resetTokenizer();
 }
@@ -865,14 +865,14 @@ void Vt102Emulation::sendString(const char* s , int length)
   if ( length >= 0 )
     emit sendData(s,length);
   else
-    emit sendData(s,strlen(s));
+    emit sendData(s,static_cast<int>(strlen(s)));
 }
 
 void Vt102Emulation::reportCursorPosition()
 {
-  const size_t sz = 20;
+  const int sz = 20;
   char tmp[sz];
-  const size_t r = snprintf(tmp, sz, "\033[%d;%dR",_currentScreen->getCursorY()+1,_currentScreen->getCursorX()+1);
+  const int r = snprintf(tmp, sz, "\033[%d;%dR",_currentScreen->getCursorY()+1,_currentScreen->getCursorX()+1);
   if (sz <= r) {
     qWarning("Vt102Emulation::reportCursorPosition: Buffer too small\n");
   }
@@ -905,9 +905,9 @@ void Vt102Emulation::reportSecondaryAttributes()
 void Vt102Emulation::reportTerminalParms(int p)
 // DECREPTPARM
 {
-  const size_t sz = 100;
+  const int sz = 100;
   char tmp[sz];
-  const size_t r = snprintf(tmp, sz, "\033[%d;1;1;112;112;1;0x",p); // not really true.
+  const int r = snprintf(tmp, sz, "\033[%d;1;1;112;112;1;0x",p); // not really true.
   if (sz <= r) {
     qWarning("Vt102Emulation::reportTerminalParms: Buffer too small\n");
   }
@@ -1174,13 +1174,15 @@ void Vt102Emulation::resetCharset(int scrno)
 
 void Vt102Emulation::setCharset(int n, int cs) // on both screens.
 {
-  _charset[0].charset[n&3] = cs; useCharset(_charset[0].cu_cs);
-  _charset[1].charset[n&3] = cs; useCharset(_charset[1].cu_cs);
+  _charset[0].charset[n&3] = static_cast<char>(cs);
+  useCharset(_charset[0].cu_cs);
+  _charset[1].charset[n&3] = static_cast<char>(cs);
+  useCharset(_charset[1].cu_cs);
 }
 
 void Vt102Emulation::setAndUseCharset(int n, int cs)
 {
-  CHARSET.charset[n&3] = cs;
+  CHARSET.charset[n&3] = static_cast<char>(cs);
   useCharset(n&3);
 }
 

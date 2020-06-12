@@ -284,11 +284,11 @@ void UnixProcessInfo::readUserName()
         getpwBufferSize = 16384;
     }
 
-    getpwBuffer = new char[getpwBufferSize];
+    getpwBuffer = new char[static_cast<unsigned>(getpwBufferSize)];
     if (getpwBuffer == nullptr) {
         return;
     }
-    getpwStatus = getpwuid_r(uid, &passwdStruct, getpwBuffer, getpwBufferSize, &getpwResult);
+    getpwStatus = getpwuid_r(static_cast<__uid_t>(uid), &passwdStruct, getpwBuffer, static_cast<size_t>(getpwBufferSize), &getpwResult);
     if ((getpwStatus == 0) && (getpwResult != nullptr)) {
         setUserName(QLatin1String(passwdStruct.pw_name));
     } else {

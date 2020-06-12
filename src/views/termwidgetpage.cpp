@@ -403,9 +403,6 @@ QPoint TermWidgetPage::GetComparePoint(TermWidget *term, Qt::Edge dir)
     case Qt::BottomEdge:
         ret = leftBottom + QPoint(1, 1);
         break;
-    default:
-        qFatal("Invalid navigation");
-        break;
     }
     return ret;
 }
@@ -827,6 +824,7 @@ void TermWidgetPage::setMismatchAlert(bool alert)
 *******************************************************************************/
 void TermWidgetPage::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event)
     //qDebug() << "resizeEvent" << x() << y();
     this->m_findBar->move(width() - 382, 0);
 }

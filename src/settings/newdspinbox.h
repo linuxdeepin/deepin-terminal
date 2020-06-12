@@ -36,7 +36,7 @@ class NewDspinBox : public DWidget
 {
     Q_OBJECT
 public:
-    explicit NewDspinBox(QWidget *parent = 0);
+    explicit NewDspinBox(QWidget *parent = nullptr);
     void setValue(int val);
     void setMaximum(int val);
     void setMinimum(int val);
