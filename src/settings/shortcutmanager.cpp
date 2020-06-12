@@ -51,10 +51,7 @@ void ShortcutManager::initShortcuts()
 }
 ShortcutManager::~ShortcutManager()
 {
-    int size = m_customCommandActionList.size();
-    for (int i = 0; i < size; i++) {
-        delete m_customCommandActionList.at(i);
-    }
+    qDeleteAll(m_customCommandActionList.begin(), m_customCommandActionList.end());
     m_customCommandActionList.clear();
 }
 
