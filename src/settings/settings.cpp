@@ -305,7 +305,22 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     QStringList Whitelist;
     /******** Add by ut001000 renfeixiang 2020-06-08:增加 Begin***************/
     Whitelist = DBusManager::callAppearanceFont("monospacefont");
-    qDebug() << "createFontComBoBoxHandle get system monospacefont" << Whitelist;
+
+    for (int i = 0; i < Whitelist.count(); ++i) {
+        QString name = Whitelist.at(i);
+        QFont font(name);
+        QFontInfo info(font);
+        if (name != info.family()) {
+            qDebug() << "set family name " << info.family();
+            Whitelist.replace(i, info.family());
+        }
+    }
+    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
+        QCollator qc;
+        return qc.compare(str1, str2) < 0;
+    });
+
+    qDebug() << "createFontComBoBoxHandle get system monospacefont";
     if (Whitelist.size() <= 0) {
         //一般不会走这个分支，除非DBUS出现问题
         qDebug() << "DBusManager::callAppearanceFont failed, get control font failed.";
