@@ -46,6 +46,10 @@ void RightPanel::show()
 
 void RightPanel::hideAnim()
 {
+    // 隐藏状态不处理
+    if (!isVisible()) {
+        return;
+    }
     QRect rect = geometry();
     QRect windowRect = window()->geometry();
     QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
