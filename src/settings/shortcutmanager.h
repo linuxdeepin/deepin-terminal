@@ -16,10 +16,11 @@ public:
     ShortcutManager(QObject *parent = nullptr);
     //void setMainWindow(MainWindow *curMainWindow);
     static ShortcutManager *instance();
+    ~ShortcutManager();
     void initShortcuts();
     void initConnect(MainWindow *mainWindow);
 
-    QList<QAction *> createCustomCommandsFromConfig();
+    void createCustomCommandsFromConfig();
     QList<QAction *> createBuiltinShortcutsFromConfig();
     QList<QAction *> &getCustomCommandActionList();
 
@@ -40,8 +41,8 @@ public:
     bool isShortcutConflictInCustom(const QString &Name, const QString &Key);
 
 signals:
-    void addCustomCommandSignal(QAction *newAction );
-    void removeCustomCommandSignal(QAction *newAction );
+    void addCustomCommandSignal(QAction *newAction);
+    void removeCustomCommandSignal(QAction *newAction);
 
 private:
     QList<QAction *> m_customCommandActionList;

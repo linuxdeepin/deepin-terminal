@@ -47,7 +47,15 @@ void ShortcutManager::initShortcuts()
 //        m_GloableShortctus[QString("builtin_%1").arg(i)] = m_builtinShortcuts.at(i);
 //    }
 
-    m_customCommandActionList = createCustomCommandsFromConfig();
+    createCustomCommandsFromConfig();
+}
+ShortcutManager::~ShortcutManager()
+{
+    int size = m_customCommandActionList.size();
+    for (int i = 0; i < size; i++) {
+        delete m_customCommandActionList.at(i);
+    }
+    m_customCommandActionList.clear();
 }
 
 void ShortcutManager::initConnect(MainWindow *mainWindow)
@@ -69,19 +77,17 @@ void ShortcutManager::initConnect(MainWindow *mainWindow)
     mainWindow->addActions(m_customCommandActionList);
 }
 
-QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
+void ShortcutManager::createCustomCommandsFromConfig()
 {
-    QList<QAction *> actionList;
-
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists()) {
-        return actionList;
+        return ;
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     qDebug() << "load Custom Commands Config: " << customCommandConfigFilePath;
     if (!QFile::exists(customCommandConfigFilePath)) {
-        return actionList;
+        return ;
     }
 
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
@@ -116,10 +122,8 @@ QList<QAction *> ShortcutManager::createCustomCommandsFromConfig()
 //            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
 //        });
         commandsSettings.endGroup();
-        actionList.append(action);
+        m_customCommandActionList.append(action);
     }
-
-    return actionList;
 }
 
 QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
@@ -314,6 +318,7 @@ void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
         if (actionCmdName == currCmdName) {
             // m_mainWindow->removeAction(m_customCommandActionList.at(i));
             emit removeCustomCommandSignal(m_customCommandActionList.at(i));
+            m_customCommandActionList.at(i)->deleteLater();
             m_customCommandActionList.removeAt(i);
             break;
         }
