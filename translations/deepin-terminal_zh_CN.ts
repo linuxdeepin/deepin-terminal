@@ -264,7 +264,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="24"/>
         <source>Interface</source>
-        <translation>接口</translation>
+        <translation>界⾯</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="25"/>
@@ -618,7 +618,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1367"/>
         <source>Select workspace</source>
-        <translation type="unfinished">选择工作区</translation>
+        <translation>选择工作区</translation>
     </message>
 </context>
 <context>
