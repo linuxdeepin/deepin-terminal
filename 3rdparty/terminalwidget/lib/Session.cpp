@@ -589,10 +589,18 @@ void Session::sendKeyEvent(QKeyEvent* e) const
 Session::~Session()
 {
     _wantedClose = true;
-    delete _foregroundProcessInfo;
-    delete _sessionProcessInfo;
-    delete _emulation;
-    delete _shellProcess;
+    if(nullptr != _foregroundProcessInfo){
+        delete _foregroundProcessInfo;
+    }
+    if(nullptr != _sessionProcessInfo){
+        delete _sessionProcessInfo;
+    }
+    if(nullptr != _emulation){
+        delete _emulation;
+    }
+    if(nullptr != _shellProcess){
+        delete _shellProcess;
+    }
 //  delete _zmodemProc;
 }
 
@@ -1068,7 +1076,10 @@ bool Session::updateForegroundProcessInfo()
 
     const int foregroundPid = _shellProcess->foregroundProcessGroup();
     if (foregroundPid != _foregroundPid) {
-        delete _foregroundProcessInfo;
+        if(nullptr != _foregroundProcessInfo){
+            delete _foregroundProcessInfo;
+        }
+
         _foregroundProcessInfo = ProcessInfo::newInstance(foregroundPid,
                                                           tabTitleFormat(Session::LocalTabTitle));
         _foregroundPid = foregroundPid;
