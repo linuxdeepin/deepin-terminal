@@ -14,6 +14,7 @@
 #include <DCommandLinkButton>
 #include <DDialogCloseButton>
 #include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DWidgetUtil>
 #include <DLog>
 #include <DFontSizeManager>
@@ -528,6 +529,19 @@ void CustomCommandOptDlg::initTitleConnections()
 {
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
         this->close();
+    });
+    // 字体颜色随主题变化变化
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
+        DPalette palette = m_titleText->palette();
+        //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
+        QColor color;
+        if (themeType == DApplicationHelper::DarkType) {
+            color = QColor::fromRgb(192, 198, 212, 255);
+        } else {
+            color = QColor::fromRgb(0, 26, 46, 255);
+        }
+        palette.setBrush(QPalette::WindowText, color);
+        m_titleText->setPalette(palette);
     });
 }
 

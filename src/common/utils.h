@@ -69,7 +69,7 @@ public:
     static QString suffixList();
     static QPixmap renderSVG(const QString &filePath, const QSize &size);
     static QString loadFontFamilyFromFiles(const QString &fontFileName);
-    static QString getElidedText(QFont font, QString str, int MaxWith);
+    static QString getElidedText(QFont font, QString str, int MaxWith, Qt::TextElideMode elideMode = Qt::ElideRight);
 
     static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
 

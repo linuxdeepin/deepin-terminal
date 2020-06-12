@@ -1,5 +1,10 @@
 #include "remotemanagementsearchpanel.h"
 #include "serverconfigmanager.h"
+#include "utils.h"
+
+#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
+
 #include <QDebug>
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
@@ -20,6 +25,16 @@ void RemoteManagementSearchPanel::initUI()
     m_listWidget = new ServerConfigList(this);
     m_label = new DLabel(this);
     m_label->setAlignment(Qt::AlignCenter);
+    // 字体颜色随主题变化而变化
+    DPalette palette = m_label->palette();
+    QColor color;
+    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+        color = QColor::fromRgb(192, 198, 212, 102);
+    } else {
+        color = QColor::fromRgb(85, 85, 85, 102);
+    }
+    palette.setBrush(QPalette::Text, color);
+    m_label->setPalette(palette);
 
     m_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
     m_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
@@ -30,9 +45,9 @@ void RemoteManagementSearchPanel::initUI()
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addSpacing(10);
     hlayout->addWidget(m_backButton);
-    hlayout->addSpacing(10);
-    hlayout->addWidget(m_label);
-    hlayout->addStretch();
+//    hlayout->addSpacing(10);
+    hlayout->addWidget(m_label, 0, Qt::AlignCenter);
+//    hlayout->addStretch();
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
 
@@ -55,6 +70,18 @@ void RemoteManagementSearchPanel::initUI()
                 refreshDataByFilter(m_strFilter);
             }
         }
+    });
+    // 字体颜色随主题变化变化
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
+        DPalette palette = m_label->palette();
+        QColor color;
+        if (themeType == DApplicationHelper::DarkType) {
+            color = QColor::fromRgb(192, 198, 212, 102);
+        } else {
+            color = QColor::fromRgb(85, 85, 85, 102);
+        }
+        palette.setBrush(QPalette::Text, color);
+        m_label->setPalette(palette);
     });
 }
 
@@ -104,5 +131,7 @@ void RemoteManagementSearchPanel::listItemClicked(ServerConfig *curItemServer)
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)
 {
     m_strFilter = filter;
-    m_label->setText(QString("%1：%2").arg(tr("Search")).arg(filter));
+    QString showText = filter;
+    showText = Utils::getElidedText(m_label->font(), showText, ITEMMAXWIDTH, Qt::ElideMiddle);
+    m_label->setText(QString("%1：%2").arg(tr("Search")).arg(showText));
 }

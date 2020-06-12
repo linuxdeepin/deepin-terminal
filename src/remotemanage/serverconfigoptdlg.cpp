@@ -9,6 +9,7 @@
 #include <DSuggestButton>
 #include <DVerticalLine>
 #include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DFileDialog>
 
 #include <QGridLayout>
@@ -270,6 +271,19 @@ void ServerConfigOptDlg::initUI()
     connect(m_delServer, &TermCommandLinkButton::clicked, this, [ = ]() {
         setDelServer(true);
         accept();
+    });
+    // 字体颜色随主题变化变化
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleLabel, [ = ](DGuiApplicationHelper::ColorType themeType) {
+        DPalette palette = m_titleLabel->palette();
+        //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
+        QColor color;
+        if (themeType == DApplicationHelper::DarkType) {
+            color = QColor::fromRgb(192, 198, 212, 255);
+        } else {
+            color = QColor::fromRgb(0, 26, 46, 255);
+        }
+        palette.setBrush(QPalette::WindowText, color);
+        m_titleLabel->setPalette(palette);
     });
 }
 

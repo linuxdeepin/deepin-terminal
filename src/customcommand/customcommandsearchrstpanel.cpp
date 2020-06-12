@@ -2,6 +2,8 @@
 #include "customcommandoptdlg.h"
 #include "shortcutmanager.h"
 
+#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DMessageBox>
 
 #include <QAction>
@@ -15,7 +17,9 @@ CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
 void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
 {
     m_strFilter = filter;
-    m_label->setText(QString("%1：%2").arg(tr("Search")).arg(filter));
+    QString showText = filter;
+    showText = Utils::getElidedText(m_label->font(), showText, ITEMMAXWIDTH, Qt::ElideMiddle);
+    m_label->setText(QString("%1：%2").arg(tr("Search")).arg(showText));
 }
 
 void CustomCommandSearchRstPanel::refreshData()
@@ -53,6 +57,16 @@ void CustomCommandSearchRstPanel::initUI()
 
     m_label = new DLabel(this);
     m_label->setAlignment(Qt::AlignCenter);
+    // 字体颜色随主题变化变化
+    DPalette palette = m_label->palette();
+    QColor color;
+    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+        color = QColor::fromRgb(192, 198, 212, 102);
+    } else {
+        color = QColor::fromRgb(85, 85, 85, 102);
+    }
+    palette.setBrush(QPalette::Text, color);
+    m_label->setPalette(palette);
 
     m_cmdListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     m_cmdListWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
@@ -63,9 +77,8 @@ void CustomCommandSearchRstPanel::initUI()
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addSpacing(10);
     hlayout->addWidget(m_backButton);
-    hlayout->addSpacing(10);
-    hlayout->addWidget(m_label);
-    hlayout->addStretch();
+    // 搜索框居中显示
+    hlayout->addWidget(m_label, 0, Qt::AlignCenter);
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
 
@@ -78,4 +91,16 @@ void CustomCommandSearchRstPanel::initUI()
     setLayout(vlayout);
     connect(m_cmdListWidget, &CustomCommandList::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
+    // 字体颜色随主题变化变化
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
+        DPalette palette = m_label->palette();
+        QColor color;
+        if (themeType == DApplicationHelper::DarkType) {
+            color = QColor::fromRgb(192, 198, 212, 102);
+        } else {
+            color = QColor::fromRgb(85, 85, 85, 102);
+        }
+        palette.setBrush(QPalette::Text, color);
+        m_label->setPalette(palette);
+    });
 }

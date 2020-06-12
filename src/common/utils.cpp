@@ -135,7 +135,7 @@ QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
     return fontFamilyName;
 }
 
-QString Utils::getElidedText(QFont font, QString text, int MaxWith)
+QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElideMode elideMode)
 {
     if (text.isEmpty()) {
         return "";
@@ -149,7 +149,7 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith)
     // 当字符串宽度大于最大宽度时进行转换
     if (width >= MaxWith) {
         // 右部显示省略号
-        text = fontWidth.elidedText(text, Qt::ElideRight, MaxWith);
+        text = fontWidth.elidedText(text, elideMode, MaxWith);
     }
 
     return text;
@@ -674,26 +674,24 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
         if (keys.contains(str)) {
             break;
         }
-        if(index == startIndex){
+        if (index == startIndex) {
             // 第一个参数，支持嵌入二次解析，其它的参数不支持
             paraList += parseNestedQString(str);
-        }
-        else {
+        } else {
             paraList.append(str);
         }
 
         index++;
     }
     // 将-e 以及后面参数全部删除，防止出现参数被终端捕捉异常情况
-    if(paraList.size() !=0)
-    {
+    if (paraList.size() != 0) {
         for (int i = 0; i < index - startIndex; i++) {
             arguments.removeAt(startIndex);
-            qDebug()<<arguments.size();
+            qDebug() << arguments.size();
         }
         arguments.removeOne("-e");
         arguments.removeOne("--execute");
-        qDebug() <<  opt << paraList <<"arguments" <<arguments;
+        qDebug() <<  opt << paraList << "arguments" << arguments;
     }
 
     return paraList;
@@ -714,23 +712,21 @@ QStringList Utils::parseNestedQString(QString str)
     int iRight = NOT_FOUND;
 
     // 如果只有一个引号
-    if(str.count("\"") >= 1){
+    if (str.count("\"") >= 1) {
         iLeft = str.indexOf("\"");
         iRight = str.lastIndexOf("\"");
-    }
-    else if(str.count("\'") >= 1){
+    } else if (str.count("\'") >= 1) {
         iLeft = str.indexOf("\'");
         iRight = str.lastIndexOf("\'");
-    }
-    else {
+    } else {
         paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
         return  paraList;
     }
 
     paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
-    paraList.append(str.mid(iLeft+1, iRight - iLeft -1));
-    if(str.size() != iRight +1){
-        paraList.append(str.right(str.size() - iRight -1).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+    paraList.append(str.mid(iLeft + 1, iRight - iLeft - 1));
+    if (str.size() != iRight + 1) {
+        paraList.append(str.right(str.size() - iRight - 1).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
     }
     return paraList;
 }
