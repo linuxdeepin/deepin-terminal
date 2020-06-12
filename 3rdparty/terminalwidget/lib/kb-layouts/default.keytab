@@ -34,9 +34,12 @@ key Return+Shift         : "\EOM"
 
 # Backspace and Delete codes are preserving CTRL-H.
 #
+# old
 # Backspace without CTRL sends '^H'; this matches XTerm behaviour
 # BS, hex \x08, \b
-key Backspace -Control : "\b"
+# new
+# Backspace without CTRL sends '^?'; this matches gnome-terminal
+key Backspace -Control : "\x7f"
 
 # Match xterm behaviour: Backspace sends '^?' when Control is pressed
 key Backspace +Control : "\x7f"
