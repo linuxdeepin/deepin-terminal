@@ -54,6 +54,9 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
         delete m_currItemData;
         m_currItemData = nullptr;
     }
+    if (m_newAction) {
+        delete  m_newAction;
+    }
 }
 
 void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName)
