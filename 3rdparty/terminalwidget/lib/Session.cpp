@@ -511,7 +511,8 @@ void Session::updateTerminalSize()
     // minimum number of lines and columns that views require for
     // their size to be taken into consideration ( to avoid problems
     // with new view widgets which haven't yet been set to their correct size )
-    const int VIEW_LINES_THRESHOLD = 2;
+    /***mod by ut001121 zhangmeng 20200615 修改变量属性 修复BUG32779, BUG32778***/
+    static /*const */ int VIEW_LINES_THRESHOLD = 2;
     const int VIEW_COLUMNS_THRESHOLD = 2;
 
     //select largest number of lines and columns that will fit in all visible views
@@ -530,6 +531,12 @@ void Session::updateTerminalSize()
         _emulation->setImageSize( minLines , minColumns );
         _shellProcess->setWindowSize( minLines , minColumns );
     }
+
+    /***add begin ut001121 zhangmeng 20200615 将终端显示内容由最少两行改为最少一行 修复BUG32779, BUG32778***/
+    if(VIEW_LINES_THRESHOLD == 2){
+        VIEW_LINES_THRESHOLD = 1;
+    }
+    /***add end by ut001121***/
 }
 
 void Session::refresh()
