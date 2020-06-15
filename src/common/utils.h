@@ -45,6 +45,8 @@
 #define KWinDBusService "org.kde.KWin"
 #define KWinDBusPath "/KWin"
 
+#define MAX_NAME_LEN 32
+
 class MainWindow;
 class Utils : public QObject
 {

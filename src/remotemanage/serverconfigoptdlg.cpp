@@ -455,6 +455,14 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
         m_serverName->showAlertMessage(tr("Please enter a server name"), m_serverName);
         return;
     }
+
+    /***add begin by ut001121 zhangmeng 20200615 限制名称字符长度 修复BUG31286***/
+    if (m_serverName->text().length() > MAX_NAME_LEN) {
+        m_serverName->showAlertMessage(QObject::tr("The name should be no more than 32 characters"), m_serverName);
+        return;
+    }
+    /***add end by ut001121***/
+
     // 地址为空
     if (m_address->text().trimmed().isEmpty()) {
         m_address->showAlertMessage(tr("Please enter an IP address"), m_address);

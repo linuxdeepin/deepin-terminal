@@ -297,6 +297,13 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         return;
     }
 
+    /***add begin by ut001121 zhangmeng 20200615 限制名称字符长度 修复BUG31286***/
+    if (strName.length() > MAX_NAME_LEN) {
+        m_nameLineEdit->showAlertMessage(QObject::tr("The name should be no more than 32 characters"), m_nameLineEdit->parentWidget());
+        return;
+    }
+    /***add end by ut001121***/
+
     if (strCommand.isEmpty()) {
         m_commandLineEdit->showAlertMessage(tr("Please enter a command"), m_commandLineEdit->parentWidget());
         return;
