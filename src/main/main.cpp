@@ -59,7 +59,9 @@ int main(int argc, char *argv[])
     DBusManager manager;
     if (!manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
-        if (!DBusManager::callCreateReuqest()) {
+        // 判断是否能创建新的的窗口
+        // 不是雷神且正在创建
+        if (!Properties[QuakeMode].toBool() && !DBusManager::callCreateReuqest()) {
             qDebug() << "Window is creating, drop this create request!";
             return 0;
         }

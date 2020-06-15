@@ -176,6 +176,21 @@ void MainWindow::initOptionButton()
         // mainwindow的设置按钮触发
         connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
             showPlugin(PLUGIN_TYPE_NONE);
+            // 判断是否超过最大数量限制
+            QList<QAction *> actionList = m_menu->actions();
+            for (auto item : actionList) {
+                qDebug() << item->text();
+                if (item->text() == tr("New window")) {
+                    if (!Service::instance()->isCountEnable()) {
+                        // 无法点击的菜单项置灰
+                        item->setEnabled(false);
+                    } else {
+                        // 还原
+                        item->setEnabled(true);
+                    }
+                }
+            }
+
         });
     }
 }
@@ -852,14 +867,17 @@ void MainWindow::initShortcuts()
 
     // horionzal_split
     connect(createNewShotcut("shortcuts.workspace.horionzal_split", false), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            if (page->currentTerminal()) {
-                int layer = page->currentTerminal()->getTermLayer();
-                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
-                if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
-                    page->split(Qt::Horizontal);
-                    return ;
+        // 判读数量是否允许分屏
+        if (Service::instance()->isCountEnable()) {
+            TermWidgetPage *page = currentPage();
+            if (page) {
+                if (page->currentTerminal()) {
+                    int layer = page->currentTerminal()->getTermLayer();
+                    Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
+                    if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
+                        page->split(Qt::Horizontal);
+                        return ;
+                    }
                 }
             }
         }
@@ -868,14 +886,17 @@ void MainWindow::initShortcuts()
 
     // vertical_split
     connect(createNewShotcut("shortcuts.workspace.vertical_split", false), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            if (page->currentTerminal()) {
-                int layer = page->currentTerminal()->getTermLayer();
-                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
-                if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
-                    page->split(Qt::Vertical);
-                    return ;
+        // 判读数量是否允许分屏
+        if (Service::instance()->isCountEnable()) {
+            TermWidgetPage *page = currentPage();
+            if (page) {
+                if (page->currentTerminal()) {
+                    int layer = page->currentTerminal()->getTermLayer();
+                    Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
+                    if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
+                        page->split(Qt::Vertical);
+                        return ;
+                    }
                 }
             }
         }

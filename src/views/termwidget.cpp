@@ -267,6 +267,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     Qt::Orientation orientation = static_cast<DSplitter *>(parentWidget())->orientation();
     int layer = getTermLayer();
+
     if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
         m_menu->addAction(tr("Horizontal split"), this, [this] {
             getTermLayer();
@@ -279,8 +280,6 @@ void TermWidget::addMenuActions(const QPoint &pos)
             parentPage()->split(Qt::Vertical);
         });
     }
-
-
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     m_menu->addAction(tr("Close window"), this, [this] {
@@ -386,6 +385,17 @@ void TermWidget::addMenuActions(const QPoint &pos)
     m_menu->addAction(tr("Settings"), this, [ = ] {
         Service::instance()->showSettingDialog(parentPage()->parentMainWindow());
     });
+
+    // 判断是否到达最大数量
+    if (!Service::instance()->isCountEnable()) {
+        QList<QAction *> actionList = m_menu->actions();
+        for (auto item : actionList) {
+            if (item->text() == tr("New workspace") || item->text() == tr("Horizontal split") || item->text() == tr("Vertical split")) {
+                // 无法点击的菜单项置灰
+                item->setEnabled(false);
+            }
+        }
+    }
 }
 
 QString TermWidget::RemoteEncode() const

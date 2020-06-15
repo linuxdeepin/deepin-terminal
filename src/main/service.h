@@ -51,6 +51,9 @@ public:
         m_settingOwner = nullptr;
     }
 
+    // 是否允许继续创建
+    bool isCountEnable();
+
     bool getIsDialogShow() const;
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 

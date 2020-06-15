@@ -790,7 +790,7 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termRequestRenameTab, this, &TermWidgetPage::onTermRequestRenameTab);
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
-    connect(term, &TermWidget::leftMouseClick, this, [this](){
+    connect(term, &TermWidget::leftMouseClick, this, [this]() {
         parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     });
 

@@ -151,6 +151,17 @@ void Service::showShortcutConflictMsgbox(QString txt)
     moveToCenter(m_settingShortcutConflictDialog);
 }
 
+/*******************************************************************************
+ 1. @函数:    isCountEnable
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-06-15
+ 4. @说明:    从term数量的角度判断是否允许继续创建
+*******************************************************************************/
+bool Service::isCountEnable()
+{
+    return WindowsManager::instance()->widgetCount() < MAXWIDGETCOUNT;
+}
+
 void Service::Entry(QStringList arguments)
 {
     TermProperties properties;
@@ -162,12 +173,12 @@ void Service::Entry(QStringList arguments)
         return;
     }
 
-    // 到达窗口最大值，则返回，不做创建
-    if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
-        // 当前不创建，要将enable还原
-        Service::instance()->setEnable(true);
-        return;
-    }
+//    // 到达窗口最大值，则返回，不做创建
+//    if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
+//        // 当前不创建，要将enable还原
+//        Service::instance()->setEnable(true);
+//        return;
+//    }
     // 普通窗口处理入口
     WindowsManager::instance()->createNormalWindow(properties);
     return;
@@ -180,7 +191,7 @@ Service::Service(QObject *parent) : QObject(parent)
 
 bool Service::getEnable() const
 {
-    return m_enable;
+    return (m_enable && Service::instance()->isCountEnable());
 }
 
 void Service::setEnable(bool enable)
