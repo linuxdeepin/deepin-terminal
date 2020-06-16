@@ -47,7 +47,7 @@ void ServerConfigManager::initServerConfig()
     }
 
     QString serverConfigFilePath(serverConfigBasePath.filePath("server-config.conf"));
-    qDebug()<<"load Server Config: "<< serverConfigFilePath;
+    qDebug() << "load Server Config: " << serverConfigFilePath;
     if (!QFile::exists(serverConfigFilePath)) {
         return;
     }
@@ -136,7 +136,6 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
         // 若组内无成员
         m_serverConfigs.remove(config->m_group);
     }
-    qDebug() << m_serverConfigs.count() << m_serverConfigs[""].count();
 
     emit refreshList("");
     delete config;
@@ -199,6 +198,8 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     if (m_serverConfigDialogMap[key].count() == 0) {
         m_serverConfigDialogMap.remove(key);
     }
+
+    delete removeOne;
 }
 
 void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
@@ -225,10 +226,18 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 
 void ServerConfigManager::closeAllDialog(QString key)
 {
+    QList<ServerConfigOptDlg *> deleteList;
     for (auto item : m_serverConfigDialogMap[key]) {
         if (item != nullptr) {
             item->reject();
+            deleteList.append(item);
         }
     }
     m_serverConfigDialogMap.remove(key);
+    // 删除相关dlg
+    int count = deleteList.count();
+    for (int i = 0; i < count; ++i) {
+        delete deleteList.at(i);
+    }
+
 }
