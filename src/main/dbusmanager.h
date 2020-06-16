@@ -37,14 +37,14 @@ public:
 
     // deepin terminal
     // 获取能否创建窗口的状态值
-    static bool callCreateReuqest();
+    static bool callCreateRequest();
     // 创建窗口
     static void callTerminalEntry(QStringList args);
 
 public slots:
     void entry(QStringList args);
     // 获取状态值
-    bool createReuqest();
+    bool createRequest();
 
 signals:
     // To Service entry function

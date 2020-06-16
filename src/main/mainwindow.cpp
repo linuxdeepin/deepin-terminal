@@ -179,15 +179,9 @@ void MainWindow::initOptionButton()
             // 判断是否超过最大数量限制
             QList<QAction *> actionList = m_menu->actions();
             for (auto item : actionList) {
-                qDebug() << item->text();
                 if (item->text() == tr("New window")) {
-                    if (!Service::instance()->isCountEnable()) {
-                        // 无法点击的菜单项置灰
-                        item->setEnabled(false);
-                    } else {
-                        // 还原
-                        item->setEnabled(true);
-                    }
+                    // 菜单根据数量自动设置true or false
+                    item->setEnabled(Service::instance()->isCountEnable());
                 }
             }
 
@@ -298,12 +292,10 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     showPlugin(PLUGIN_TYPE_NONE);
 
     if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
-        // 没有雷神，且是雷神
-        if (nullptr == WindowsManager::instance()->getQuakeWindow() && m_isQuakeWindow) {
-            // 此时已经超出最大限制，雷神只能开启一个，且不能影响正常计数
-            WindowsManager::instance()->terminalCountReduce();
-        } else {
-            qDebug() << "addTab failed, can't create number more than 200";
+        // 没有雷神，且是雷神让通过，不然不让通过
+        if (!(nullptr == WindowsManager::instance()->getQuakeWindow() && m_isQuakeWindow)) {
+            // 非雷神窗口不得超过MAXWIDGETCOUNT
+            qDebug() << "addTab failed, can't create number more than " << MAXWIDGETCOUNT;
             return;
         }
     }

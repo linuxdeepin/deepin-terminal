@@ -123,17 +123,17 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
     return fontList;
 }
 
-bool DBusManager::callCreateReuqest()
+bool DBusManager::callCreateRequest()
 {
     QDBusMessage msg =
-        QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "createReuqest");
+        QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "createRequest");
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::AutoDetect);
     if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call createReuqest Success!" << response.arguments().takeFirst().toBool();
+        qDebug() << "call createRequest Success!" << response.arguments().takeFirst().toBool();
         return response.arguments().takeFirst().toBool();
     } else {
-        qDebug() << "call createReuqest!" << response.errorMessage();
+        qDebug() << "call createRequest!" << response.errorMessage();
         return false;
     }
 }
@@ -172,7 +172,7 @@ void DBusManager::entry(QStringList args)
 }
 
 /*******************************************************************************
- 1. @函数:    createReuqest
+ 1. @函数:    createRequest
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-06-11
  4. @说明:    判断当前是否允许创建窗口
@@ -181,7 +181,7 @@ void DBusManager::entry(QStringList args)
              返回true需要将他置为false,阻止其他窗口创建
              用于新建窗口
 *******************************************************************************/
-bool DBusManager::createReuqest()
+bool DBusManager::createRequest()
 {
     bool result = Service::instance()->getEnable();
     if (result) {

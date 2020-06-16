@@ -104,7 +104,13 @@ WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
 
 int WindowsManager::widgetCount() const
 {
-    return m_widgetCount;
+    if (nullptr == WindowsManager::instance()->getQuakeWindow()) {
+        return m_widgetCount;
+    } else {
+        // 不将雷神统计在内
+        return m_widgetCount - 1;
+    }
+
 }
 
 void WindowsManager::terminalCountIncrease()
