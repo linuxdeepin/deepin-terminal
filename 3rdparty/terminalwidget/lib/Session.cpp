@@ -523,6 +523,11 @@ void Session::updateTerminalSize()
                 view->columns() >= VIEW_COLUMNS_THRESHOLD ) {
             minLines = (minLines == -1) ? view->lines() : qMin( minLines , view->lines() );
             minColumns = (minColumns == -1) ? view->columns() : qMin( minColumns , view->columns() );
+            /***add begin ut001121 zhangmeng 20200615 将终端显示内容由最少两行改为最少一行 修复BUG32779, BUG32778***/
+            if(VIEW_LINES_THRESHOLD == 2){
+                VIEW_LINES_THRESHOLD = 1;
+            }
+            /***add end by ut001121***/
         }
     }
 
@@ -532,11 +537,7 @@ void Session::updateTerminalSize()
         _shellProcess->setWindowSize( minLines , minColumns );
     }
 
-    /***add begin ut001121 zhangmeng 20200615 将终端显示内容由最少两行改为最少一行 修复BUG32779, BUG32778***/
-    if(VIEW_LINES_THRESHOLD == 2){
-        VIEW_LINES_THRESHOLD = 1;
-    }
-    /***add end by ut001121***/
+
 }
 
 void Session::refresh()

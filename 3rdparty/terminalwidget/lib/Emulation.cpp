@@ -200,8 +200,8 @@ void Emulation::setDeleteMode(char *key, int length)
 {
     KeyboardTranslator::Entry entry = _keyTranslator->findEntry(
                                           Qt::Key_Delete,
-                                          0,
-                                          0);
+                                          nullptr,
+                                          nullptr);
 
     KeyboardTranslator::Entry newEntry;
     KeyboardTranslator::States flags = KeyboardTranslator::NoState;
