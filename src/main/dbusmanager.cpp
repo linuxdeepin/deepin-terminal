@@ -6,6 +6,9 @@
 #include <QDBusInterface>
 
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 DBusManager::DBusManager()
 {
@@ -114,14 +117,51 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
         fonts.replace("\"", "");
         // 用逗号分隔
         fontList = fonts.split(",");
-        for (QString font : fontList) {
-            qDebug() << fontType << " : " << font;
-        }
+//        for (QString font : fontList) {
+//            qDebug() << fontType << " : " << font;
+//        }
+        fontList = callAppearanceShowFont(fontList, fontType);
     } else {
         qDebug() << "call List Fail!" << response.errorMessage();
     }
     return fontList;
 }
+
+/******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList Begin***************/
+//将QJsonArray文件转换成QStringList
+QStringList DBusManager::converToList(const QString &type, const QJsonArray &array)
+{
+    QStringList list;
+    for (int i = 0; i != array.size(); i++) {
+        QJsonObject object = array.at(i).toObject();
+        object.insert("type", QJsonValue(type));
+        list.append(object["Name"].toString());
+    }
+    return list;
+}
+
+//调用DBUS的SHow方法
+QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fontType)
+{
+    QStringList List;
+    QDBusMessage msg =
+        QDBusMessage::createMethodCall(AppearanceService, AppearancePath, AppearanceService, "Show");
+
+    msg << fontType << fontList;
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call Show Success!";
+        QString fonts = response.arguments().takeFirst().toString();
+        QJsonArray array = QJsonDocument::fromJson(fonts.toLocal8Bit().data()).array();
+
+        List = converToList(fontType, array);
+        qDebug() << "Show value" << List;
+    } else {
+        qDebug() << "call Show Fail!" << response.errorMessage();
+    }
+    return List;
+}
+/******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
 
 bool DBusManager::callCreateRequest()
 {

@@ -103,6 +103,10 @@ void Service::showSettingDialog(MainWindow *pOwner)
         }
         // 显示窗口
         m_settingDialog->move(m_settingDialog->pos());
+        /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置窗口时，执行等宽字体出来 Begin***************/
+        Settings::instance()->HandleWidthFont();
+        FontFilter::instance()->HandleWidthFont();
+        /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置窗口时，执行等宽字体出来 End***************/
         m_settingDialog->show();
     } else {
         qDebug() << "No setting dialog.";

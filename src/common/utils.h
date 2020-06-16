@@ -107,4 +107,21 @@ public:
 
 };
 
+/******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 Begin***************/
+class FontFilter : public QObject
+{
+    Q_OBJECT
+public:
+    static FontFilter * instance();
+    FontFilter();
+    ~FontFilter();
+    //启动thread，打印等宽字体函数
+    void HandleWidthFont();
+
+private:
+    //打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
+    void CompareWhiteList();
+};
+/******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/
+
 #endif

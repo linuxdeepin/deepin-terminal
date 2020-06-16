@@ -7,6 +7,8 @@
 #include <QFileSystemWatcher>
 #include <qsettingbackend.h>
 
+#include <DComboBox>
+
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
@@ -41,11 +43,18 @@ public:
     void setKeyValue(const QString &name, const QString &value);
 
     DSettings *settings;
+    /******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox改成成员变量 Begin***************/
+    static DComboBox *comboBox;
+    /******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox改成成员变量 End***************/
     /******** Modify by n014361 wangpeili 2020-01-04: 获取当前配置粘贴是否为选择内容 *************×****/
     bool IsPasteSelection();
 
     // 与设置里的快捷键冲突检测
     bool isShortcutConflict(const QString &Name, const QString &Key);
+
+    /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
+    void HandleWidthFont();
+    /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
 
 public:
     QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);

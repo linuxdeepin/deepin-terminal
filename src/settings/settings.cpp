@@ -11,7 +11,6 @@
 #include <DSlider>
 #include <DApplicationHelper>
 #include <DKeySequenceEdit>
-#include <DComboBox>
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -25,6 +24,9 @@
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
 Settings *Settings::m_settings_instance = new Settings();
+/******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox初始化 Begin***************/
+DComboBox *Settings::comboBox = nullptr;
+/******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox初始化 Begin***************/
 
 Settings::Settings() : QObject(qApp)
 {
@@ -286,6 +288,41 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
     return  false;
 }
 
+/******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
+void Settings::HandleWidthFont()
+{
+    QStringList Whitelist;
+    Whitelist = DBusManager::callAppearanceFont("monospacefont");
+
+    //将新安装的字体，加载到字体库中
+    QFontDatabase base;
+    for (int i = 0; i < Whitelist.count(); ++i) {
+        QString name = Whitelist.at(i);
+//        qDebug() << "find combox font" << comboBox->findText(name);
+        if (-1 == comboBox->findText(name)) {
+            QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/" + name + ".ttf";
+//            qDebug() << "load font path" << fontpath;
+            int ret = base.addApplicationFont(fontpath);
+            if(-1 == ret){
+                qDebug() << "load " << name << " font faild";
+            }
+        }
+    }
+    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
+        QCollator qc;
+        return qc.compare(str1, str2) < 0;
+    });
+
+    QString fontname = comboBox->currentText();
+    comboBox->clear();
+    comboBox->addItems(Whitelist);
+    qDebug() << "HandleWidthFont has update";
+    if (Whitelist.contains(fontname)) {
+        comboBox->setCurrentText(fontname);
+    }
+}
+/******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/
+
 QString Settings::getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName)
 {
     return settings->option(QString("shortcuts.%1.%2").arg(keyCategory).arg(keyName))->value().toString();
@@ -296,26 +333,17 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
-    DComboBox *comboBox = new DComboBox;
+    /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 Begin***************/
+    comboBox = new DComboBox;
+    //DComboBox *comboBox = new DComboBox;
     // QWidget *optionWidget = DSettingsWidgetFactory::createTwoColumWidget(option, comboBox);
 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
-    /******** Modify by nt001000 renfeixiang 2020-05-12:将非等宽字体和特殊符号字体屏蔽     2020-06-05:优化增加黑白名单，减少for循环          ***********×****/
     QStringList Whitelist;
-    /******** Add by ut001000 renfeixiang 2020-06-08:增加 Begin***************/
     Whitelist = DBusManager::callAppearanceFont("monospacefont");
 
-    for (int i = 0; i < Whitelist.count(); ++i) {
-        QString name = Whitelist.at(i);
-        QFont font(name);
-        QFontInfo info(font);
-        if (name != info.family()) {
-            qDebug() << "set family name " << info.family();
-            Whitelist.replace(i, info.family());
-        }
-    }
     std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
         QCollator qc;
         return qc.compare(str1, str2) < 0;
@@ -325,111 +353,14 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     if (Whitelist.size() <= 0) {
         //一般不会走这个分支，除非DBUS出现问题
         qDebug() << "DBusManager::callAppearanceFont failed, get control font failed.";
-        //在REPCHAR中增加了一个空格，空格在非等宽字体中长度和字符长度不同
-        char REPCHAR[]  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                          "abcdefgjijklmnopqrstuvwxyz"
-                          "0123456789 ./+@";
-        QFontDatabase fontDatabase;
-        QStringList fontLst = fontDatabase.families();
-        //QStringList Whitelist;
-        Whitelist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono" << "Monospace"
-                  << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP" << "Noto Sans Mono CJK JP Bold"
-                  << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK KR Bold" << "Noto Sans Mono CJK SC"
-                  << "Noto Sans Mono CJK SC Bold" << "Noto Sans Mono CJK TC" << "Noto Sans Mono CJK TC Bold" << "Unifont";
-        QStringList Blacklist;
-        Blacklist << "webdings" << "Symbol" << "MT Extra [unknown]" << "Bitstream Charter" << "CESI仿宋-GB13000" << "CESI仿宋-GB18030"
-                  << "CESI仿宋-GB2312" << "CESI宋体-GB13000" << "CESI宋体-GB18030" << "CESI宋体-GB2312" << "CESI小标宋-GB13000"
-                  << "CESI小标宋-GB18030" << "CESI小标宋-GB2312" << "CESI楷体-GB13000" << "CESI楷体-GB18030" << "CESI楷体-GB2312" << "CESI黑体-GB13000"
-                  << "CESI黑体-GB18030" << "CESI黑体-GB2312" << "DejaVu Math TeX Gyre" << "DejaVu Sans" << "DejaVu Serif" << "Liberation Sans"
-                  << "Liberation Sans Narrow" << "Liberation Serif" << "Lohit Devanagari" << "MT Extra [PfEd]" << "Noto Kufi Arabic" << "Noto Music"
-                  << "Noto Naskh Arabic" << "Noto Nastaliq Urdu" << "Noto Sans" << "Noto Sans Adlam" << "Noto Sans Adlam Unjoined"
-                  << "Noto Sans Anatolian Hieroglyphs" << "Noto Sans Arabic" << "Noto Sans Armenian" << "Noto Sans Avestan" << "Noto Sans Bamum"
-                  << "Noto Sans Bassa Vah" << "Noto Sans Batak" << "Noto Sans Bengali" << "Noto Sans Bhaiksuki" << "Noto Sans Brahmi"
-                  << "Noto Sans Buginese" << "Noto Sans Buhid" << "Noto Sans Canadian Aboriginal" << "Noto Sans Carian" << "Noto Sans Caucasian Albanian"
-                  << "Noto Sans Chakma" << "Noto Sans Cham" << "Noto Sans Cherokee" << "Noto Sans CJK JP" << "Noto Sans CJK JP Bold" << "Noto Sans CJK KR"
-                  << "Noto Sans CJK KR Bold" << "Noto Sans CJK SC" << "Noto Sans CJK SC Bold" << "Noto Sans CJK TC" << "Noto Sans CJK TC Bold"
-                  << "Noto Sans Coptic" << "Noto Sans Cuneiform" << "Noto Sans Cypriot" << "Noto Sans Deseret" << "Noto Sans Devanagari" << "Noto Sans Display"
-                  << "Noto Sans Duployan" << "Noto Sans Egyptian Hieroglyphs" << "Noto Sans Elbasan" << "Noto Sans Ethiopic" << "Noto Sans Georgian"
-                  << "Noto Sans Glagolitic" << "Noto Sans Gothic" << "Noto Sans Grantha" << "Noto Sans Gujarati" << "Noto Sans Gurmukhi" << "Noto Sans Hanunoo"
-                  << "Noto Sans Hatran" << "Noto Sans Hebrew" << "Noto Sans Imperial Aramaic" << "Noto Sans Inscriptional Pahlavi" << "Noto Sans Inscriptional Parthian"
-                  << "Noto Sans Javanese" << "Noto Sans Kaithi" << "Noto Sans Kannada" << "Noto Sans Kayah Li" << "Noto Sans Kharoshthi" << "Noto Sans Khmer"
-                  << "Noto Sans Khojki" << "Noto Sans Khudawadi" << "Noto Sans Lao" << "Noto Sans Lepcha" << "Noto Sans Limbu" << "Noto Sans Linear A"
-                  << "Noto Sans Linear B" << "Noto Sans Lisu" << "Noto Sans Lycian" << "Noto Sans Lydian" << "Noto Sans Mahajani" << "Noto Sans Malayalam"
-                  << "Noto Sans Mandaic" << "Noto Sans Manichaean" << "Noto Sans Marchen" << "Noto Sans Math" << "Noto Sans Meetei Mayek" << "Noto Sans Mende Kikakui"
-                  << "Noto Sans Meroitic" << "Noto Sans Miao" << "Noto Sans Modi" << "Noto Sans Mongolian" << "Noto Sans Mro" << "Noto Sans Multani" << "Noto Sans Myanmar"
-                  << "Noto Sans Nabataean" << "Noto Sans New Tai Lue" << "Noto Sans Newa" << "Noto Sans NKo" << "Noto Sans Ogham" << "Noto Sans Ol Chiki"
-                  << "Noto Sans Old Hungarian" << "Noto Sans Old Italic" << "Noto Sans Old North Arabian" << "Noto Sans Old Permic" << "Noto Sans Old Persian"
-                  << "Noto Sans Old South Arabian" << "Noto Sans Old Turkic" << "Noto Sans Oriya" << "Noto Sans Osage" << "Noto Sans Osmanya" << "Noto Sans Pahawh Hmong"
-                  << "Noto Sans Palmyrene" << "Noto Sans Pau Cin Hau" << "Noto Sans PhagsPa" << "Noto Sans Phoenician" << "Noto Sans Psalter Pahlavi" << "Noto Sans Rejang"
-                  << "Noto Sans Runic" << "Noto Sans Samaritan" << "Noto Sans Saurashtra" << "Noto Sans Sharada" << "Noto Sans Shavian" << "Noto Sans Sinhala"
-                  << "Noto Sans Sora Sompeng" << "Noto Sans Sundanese" << "Noto Sans Syloti Nagri" << "Noto Sans Symbols" << "Noto Sans Symbols2" << "Noto Sans Syriac"
-                  << "Noto Sans Syriac Eastern" << "Noto Sans Syriac Estrangela" << "Noto Sans Syriac Western" << "Noto Sans Tagalog" << "Noto Sans Tagbanwa"
-                  << "Noto Sans Tai Le" << "Noto Sans Tai Tham" << "Noto Sans Tai Viet" << "Noto Sans Takri" << "Noto Sans Tamil" << "Noto Sans Telugu" << "Noto Sans Thaana"
-                  << "Noto Sans Thai" << "Noto Sans Tibetan" << "Noto Sans Tifinagh" << "Noto Sans Tirhuta" << "Noto Sans Ugaritic" << "Noto Sans Vai"
-                  << "Noto Sans Warang Citi" << "Noto Sans Yi" << "Noto Serif" << "Noto Serif Ahom" << "Noto Serif Armenian" << "Noto Serif Balinese"
-                  << "Noto Serif Bengali" << "Noto Serif CJK JP" << "Noto Serif CJK KR" << "Noto Serif CJK SC" << "Noto Serif CJK TC" << "Noto Serif Devanagari"
-                  << "Noto Serif Display" << "Noto Serif Ethiopic" << "Noto Serif Georgian" << "Noto Serif Gujarati" << "Noto Serif Gurmukhi" << "Noto Serif Hebrew"
-                  << "Noto Serif Kannada" << "Noto Serif Khmer" << "Noto Serif Lao" << "Noto Serif Malayalam" << "Noto Serif Myanmar" << "Noto Serif Sinhala"
-                  << "Noto Serif Tamil" << "Noto Serif Tamil Slanted" << "Noto Serif Telugu" << "Noto Serif Thai" << "Noto Serif Tibetan" << "Sans Serif" << "Serif"
-                  << "Symbola" << "Unifont CSUR" << "Unifont Upper" << "Wingdings" << "Wingdings 2" << "Wingdings 3";
-
-        QDir WhiteFontPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-        if (!WhiteFontPath.exists()) {
-            WhiteFontPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-        }
-
-        QString FontFilePath(WhiteFontPath.filePath("fontList.conf"));
-        QSettings mSettings(FontFilePath, QSettings::IniFormat);
-        if (!mSettings.value("List/White").isNull()) {
-            Whitelist.clear();
-            Whitelist = mSettings.value("List/White").toStringList();
-        }
-        if (!mSettings.value("List/Black").isNull()) {
-            Blacklist.clear();
-            Blacklist = mSettings.value("List/Black").toStringList();
-        }
-
-        QStringList tmpWhitelist;
-        QStringList tmpBlacklist;
-        for (QString sfont : fontLst) {
-            if (Whitelist.contains(sfont)) {
-                tmpWhitelist.append(sfont);
-                continue;
-            }
-            if (Blacklist.contains(sfont)) {
-                tmpBlacklist.append(sfont);
-                continue;
-            }
-            bool fixedFont = true;
-            QFont font(sfont);
-            QFontMetrics fm(font);
-            int fw = fm.width(REPCHAR[0]);
-            qDebug() << "sfont" << sfont;
-
-            for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
-                if (fw != fm.width(QLatin1Char(REPCHAR[i]))) {
-                    fixedFont = false;
-                    break;
-                }
-            }
-            if (fixedFont) {
-                tmpWhitelist.append(sfont);
-            } else {
-                tmpBlacklist.append(sfont);
-            }
-        }
-
-        mSettings.beginGroup("List");
-        mSettings.setValue("White", tmpWhitelist);
-        mSettings.setValue("Black", tmpBlacklist);
-        mSettings.endGroup();
-
-        Whitelist = tmpWhitelist;
-
+        //DBUS获取字体失败后，设置系统默认的等宽字体
+        Whitelist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
+                  << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
+                  << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
+                  << "Noto Sans Mono CJK TC";
     }
-    /******** Modify by ut001000 renfeixiang 2020-06-08:修改 End***************/
     comboBox->addItems(Whitelist);
-    /******** Modify by nt001000 renfeixiang end              ***********×****/
+    /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 End***************/
     // comboBox->setItemDelegate(new FontItemDelegate);
     // comboBox->setFixedSize(240, 36);
 

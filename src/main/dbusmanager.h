@@ -35,6 +35,13 @@ public:
     // Appearance
     static QStringList callAppearanceFont(QString fontType);
 
+    /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList Begin***************/
+    //将QJsonArray文件转换成QStringList
+    static QStringList converToList(const QString &type, const QJsonArray &array);
+    //调用DBUS的SHow方法
+    static QStringList callAppearanceShowFont(QStringList fontList, QString fontType);
+    /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
+
     // deepin terminal
     // 获取能否创建窗口的状态值
     static bool callCreateRequest();
