@@ -394,11 +394,13 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
 
 QSize TabBar::minimumTabSizeHint(int index) const
 {
+    Q_UNUSED(index)
     return QSize(m_tabItemMinWidth, m_tabHeight);
 }
 
 QSize TabBar::maximumTabSizeHint(int index) const
 {
+    Q_UNUSED(index)
     return QSize(m_tabItemMaxWidth, m_tabHeight);
 }
 

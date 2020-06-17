@@ -134,6 +134,24 @@ TerminalImageFilterChain::~TerminalImageFilterChain()
     delete _linePositions;
 }
 
+//判断是否包含>=两种类型的提示符结尾字符(比如: root@zhangsan-PC# echo $ XXXXX 这种情况)
+//防止截取shell提示符出错，比如将'root@zhangsan-PC# echo $ XXXXX'中的'root@zhangsan-PC# echo '截取出来当作提示符
+bool isContainOtherPromptEnd(QString promptLine, QString currPromptEnd)
+{
+    //四不同类型的提示符结尾字符
+    QString promptEnds = QString("$#%>");
+    promptEnds.remove(currPromptEnd);
+
+    for (int i=0; i<promptEnds.length(); i++)
+    {
+        if (promptLine.contains(promptEnds.at(i)))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void TerminalImageFilterChain::setImage(const Character *const image, int lines, int columns, const QVector<LineProperty> &lineProperties)
 {
     if (empty())
@@ -160,6 +178,7 @@ void TerminalImageFilterChain::setImage(const Character *const image, int lines,
     QTextStream lineStream(_buffer);
     decoder.begin(&lineStream);
 
+    QString lastLine = "";
     for (int i = 0 ; i < lines ; i++) {
         _linePositions->append(_buffer->length());
         decoder.decodeLine(image + i * columns, columns, LINE_DEFAULT);
@@ -177,27 +196,46 @@ void TerminalImageFilterChain::setImage(const Character *const image, int lines,
         if (!(lineProperties.value(i, LINE_DEFAULT) & LINE_WRAPPED))
             lineStream << QLatin1Char('\n');
 
-        QString tempLine = lineStream.readAll().trimmed();
-        if (tempLine.count("$") == 1 && tempLine.endsWith("$")) {
-            SessionManager::instance()->saveCurrShellPrompt(_sessionId, tempLine);
-        } else if (tempLine.count("#") == 1 && tempLine.endsWith("#")) {
-            SessionManager::instance()->saveCurrShellPrompt(_sessionId, tempLine);
-        }
+         QString tempLine = lineStream.readAll().trimmed();
+         if (tempLine.length() > 0) {
+             lastLine = tempLine;
+         }
     }
     decoder.end();
 
+    /* fix bug 33638 使用sudo apt-get install csh ksh zsh tcsh安装其它shell后，执行卸载终端未弹出卸载弹框 */
+
+    if (lastLine.length() > 0) {
+        //优化了截取并保存当前shell提示符的判断，暂时没有考虑PS1被修改的情况（若考虑的话实现起来太复杂）
+        //目前针对sh/bash/csh/tcsh/ksh/zsh这几种类型的shell做了处理
+        QString promptEnds = QString("$#%>");
+        for (int i=0; i<promptEnds.length(); i++) {
+            QString promptEnd = promptEnds.at(i);
+
+            if (!isContainOtherPromptEnd(lastLine, promptEnd)
+                    && lastLine.count(promptEnd) == 1
+                    && lastLine.endsWith(promptEnd)) {
+                SessionManager::instance()->saveCurrShellPrompt(_sessionId, lastLine);
+                break;
+            }
+        }
+    }
+
     QString strShellPrompt = SessionManager::instance()->getCurrShellPrompt(_sessionId);
-    QString strBuffer = *_buffer;
-    if (strBuffer.length() > 0) {
-        QString rootPromptEnd = QString("# ");
-        if (strBuffer.contains(rootPromptEnd)) {
-            QString strCommand = strBuffer.split(strShellPrompt).last();
+
+    bool isRootUser = strShellPrompt.endsWith("#");
+
+    QString strCurrBuffer = (*_buffer).trimmed();
+    if (strCurrBuffer.length() > 0) {
+        //获取并保存当前正在输入的命令
+        if (isRootUser) {
+            QString strCommand = strCurrBuffer.split(strShellPrompt).last();
             if (!strCommand.contains("sudo ")) {
                 strCommand = QString("sudo %1").arg(strCommand);
             }
             SessionManager::instance()->saveCurrShellCommand(_sessionId, strCommand);
         } else {
-            QString strCommand = strBuffer.split(strShellPrompt).last();
+            QString strCommand = strCurrBuffer.split(strShellPrompt).last();
             SessionManager::instance()->saveCurrShellCommand(_sessionId, strCommand);
         }
     }

@@ -120,6 +120,7 @@ Session *SessionManager::idToSession(int id)
 
 void SessionManager::saveCurrShellPrompt(int sessionId, QString strPrompt)
 {
+    strPrompt = strPrompt.trimmed();
     _shellPromptSessionMap.insert(sessionId, strPrompt);
 }
 
