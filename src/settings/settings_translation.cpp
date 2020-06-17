@@ -23,7 +23,7 @@ void GenerateSettingTranslate()
     auto group_basicName = QObject::tr("Basic");
     auto group_basic_interfaceName = QObject::tr("Interface");
     auto group_shortcutsName = QObject::tr("Shortcuts");
-    auto group_shortcuts_advancedName = QObject::tr("Advanced");
+    auto group_shortcuts_advancedName = QObject::tr("Others");
     auto group_shortcuts_terminalName = QObject::tr("Terminal");
     auto group_shortcuts_workspaceName = QObject::tr("Workspace");
     auto shortcuts_advanced_custom_commandName = QObject::tr("Custom commands");

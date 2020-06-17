@@ -180,7 +180,7 @@
                 },
                 {
                     "key" : "advanced",
-                    "name" : "Advanced",
+                    "name" : "Others",
                     "options" : [
                         {
                             "key": "switch_fullscreen",

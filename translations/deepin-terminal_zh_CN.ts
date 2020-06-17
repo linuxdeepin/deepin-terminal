@@ -146,19 +146,20 @@
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1334"/>
         <source>Workspace</source>
-        <translation>工作区</translation>
+        <translation type="vanished">工作区</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1336"/>
         <source>Terminal</source>
-        <translation>终端</translation>
+        <translation type="vanished">终端</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1338"/>
+        <source>Others</source>
+        <translation type="obsolete">其他</translation>
+    </message>
+    <message>
         <source>Advanced</source>
-        <translation>高级设置</translation>
+        <translation type="vanished">高级设置</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1361"/>
@@ -238,7 +239,6 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="19"/>
-        <location filename="../src/settings/settings_translation.cpp" line="26"/>
         <source>Advanced</source>
         <translation>高级设置</translation>
     </message>
@@ -273,13 +273,21 @@
         <translation>快捷键</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="26"/>
+        <location filename="../src/main/mainwindow.cpp" line="1338"/>
+        <source>Others</source>
+        <translation>其他</translation>
+    </message>
+    <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
+        <location filename="../src/main/mainwindow.cpp" line="1336"/>
         <location filename="../src/main/main.cpp" line="34"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="28"/>
+        <location filename="../src/main/mainwindow.cpp" line="1334"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>

@@ -146,21 +146,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1334"/>
-        <source>Workspace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main/mainwindow.cpp" line="1336"/>
-        <source>Terminal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main/mainwindow.cpp" line="1338"/>
-        <source>Advanced</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/main/mainwindow.cpp" line="1361"/>
         <source>Select workspace</source>
         <translation type="unfinished"></translation>
@@ -238,7 +223,6 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="19"/>
-        <location filename="../src/settings/settings_translation.cpp" line="26"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
@@ -273,13 +257,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="26"/>
+        <location filename="../src/main/mainwindow.cpp" line="1338"/>
+        <source>Others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
+        <location filename="../src/main/mainwindow.cpp" line="1336"/>
         <location filename="../src/main/main.cpp" line="34"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="28"/>
+        <location filename="../src/main/mainwindow.cpp" line="1334"/>
         <source>Workspace</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1331,11 +1331,11 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 
     QString strGroupName = "";
     if (keyCategory == "workspace") {
-        strGroupName =  tr("Workspace");
+        strGroupName =  QObject::tr("Workspace");
     } else if (keyCategory == "terminal") {
-        strGroupName =  tr("Terminal");
+        strGroupName =  QObject::tr("Terminal");
     } else if (keyCategory == "advanced") {
-        strGroupName =  tr("Advanced");
+        strGroupName =  QObject::tr("Others");
     } else {
         return;
     }
