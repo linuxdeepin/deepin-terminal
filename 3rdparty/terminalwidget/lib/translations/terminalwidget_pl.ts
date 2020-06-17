@@ -51,12 +51,12 @@
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation type="unfinished"/>
+        <translation>Wyślij email do...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation type="unfinished"/>
+        <translation>Skopiuj adres e-mail</translation>
     </message>
 </context>
 <context>
