@@ -74,7 +74,7 @@ void Settings::init()
                           << "window_maximum"
                           << "fullscreen");
     windowStateMap.insert("values",
-                          QStringList() << tr("Normal") << tr("Split screen") << tr("Maximum") << tr("Fullscreen"));
+                          QStringList() << tr("Normal window") << tr("Split screen") << tr("Maximum") << tr("Fullscreen"));
     windowState->setData("items", windowStateMap);
 
     for (QString key : settings->keys()) {

@@ -4,7 +4,7 @@
 <context>
     <name>CustomCommandList</name>
     <message>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="162"/>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="163"/>
         <source>Are you sure you want to delete %1?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12,80 +12,80 @@
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="129"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="134"/>
         <source>Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="131"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="136"/>
         <source>Command:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="133"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="138"/>
         <source>Shortcuts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="139"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="140"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="161"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="168"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="144"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="145"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="166"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="173"/>
         <source>Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="175"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="180"/>
         <source>Add Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="181"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="186"/>
         <source>Edit Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="190"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="195"/>
         <source>Delete Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="215"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="220"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="217"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="222"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="219"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="224"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="300"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="305"/>
         <source>Please enter a name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="312"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="317"/>
         <source>Please enter a command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="363"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="368"/>
         <source>The name already exists,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="364"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="369"/>
         <source>please input another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="623"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="628"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -442,7 +442,7 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfiglist.cpp" line="207"/>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="163"/>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="164"/>
         <location filename="../src/common/utils.cpp" line="299"/>
         <location filename="../src/common/utils.cpp" line="378"/>
         <location filename="../src/common/utils.cpp" line="396"/>
@@ -457,7 +457,7 @@
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="152"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="626"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="631"/>
         <location filename="../src/common/utils.cpp" line="429"/>
         <location filename="../src/common/utils.cpp" line="436"/>
         <source>please set another one.</source>
@@ -590,7 +590,7 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="461"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="306"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="311"/>
         <source>The name should be no more than 32 characters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -606,7 +606,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="164"/>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="165"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -840,11 +840,6 @@
     <name>Settings</name>
     <message>
         <location filename="../src/settings/settings.cpp" line="77"/>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/settings/settings.cpp" line="77"/>
         <source>Split screen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -856,6 +851,11 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="77"/>
         <source>Fullscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings.cpp" line="77"/>
+        <source>Normal window</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
