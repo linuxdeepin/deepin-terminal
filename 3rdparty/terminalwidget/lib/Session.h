@@ -554,7 +554,7 @@ private slots:
 
 private:
 
-    void updateTerminalSize();
+    void updateTerminalSize(int height, int width);
     WId windowId() const;
 
     int            _uniqueIdentifier;

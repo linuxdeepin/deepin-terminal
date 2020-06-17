@@ -492,16 +492,16 @@ void Session::activityStateSet(int state)
     emit stateChanged(state);
 }
 
-void Session::onViewSizeChange(int /*height*/, int /*width*/)
+void Session::onViewSizeChange(int height, int width)
 {
-    updateTerminalSize();
+    updateTerminalSize(height, width);
 }
 void Session::onEmulationSizeChange(QSize size)
 {
     setSize(size);
 }
 
-void Session::updateTerminalSize()
+void Session::updateTerminalSize(int height, int width)
 {
     QListIterator<TerminalDisplay *> viewIter(_views);
 
@@ -511,8 +511,8 @@ void Session::updateTerminalSize()
     // minimum number of lines and columns that views require for
     // their size to be taken into consideration ( to avoid problems
     // with new view widgets which haven't yet been set to their correct size )
-    /***mod by ut001121 zhangmeng 20200615 修改变量属性 修复BUG32779, BUG32778***/
-    static /*const */ int VIEW_LINES_THRESHOLD = 2;
+    /***mod by ut001121 zhangmeng 20200615 窗口初始化完成之后修改终端显示内容为最小一行 修复BUG32779, BUG32778***/
+    const int VIEW_LINES_THRESHOLD = (height==1 || width==1) ? 2 : 1;
     const int VIEW_COLUMNS_THRESHOLD = 2;
 
     //select largest number of lines and columns that will fit in all visible views
@@ -523,11 +523,6 @@ void Session::updateTerminalSize()
                 view->columns() >= VIEW_COLUMNS_THRESHOLD ) {
             minLines = (minLines == -1) ? view->lines() : qMin( minLines , view->lines() );
             minColumns = (minColumns == -1) ? view->columns() : qMin( minColumns , view->columns() );
-            /***add begin ut001121 zhangmeng 20200615 将终端显示内容由最少两行改为最少一行 修复BUG32779, BUG32778***/
-            if(VIEW_LINES_THRESHOLD == 2){
-                VIEW_LINES_THRESHOLD = 1;
-            }
-            /***add end by ut001121***/
         }
     }
 
