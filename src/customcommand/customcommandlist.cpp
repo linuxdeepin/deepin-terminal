@@ -113,6 +113,7 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
 
 void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex)
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
@@ -127,6 +128,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
         if (result == QDialog::Accepted) {
+            qDebug() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
             QAction *newAction = m_pdlg->getCurCustomCmd();
             CustomCommandItemData itemData = *(m_pdlg->m_currItemData);
             CustomCommandItemData itemDel = itemData;
@@ -151,6 +153,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
 
             //Delete custom command
             if (m_pdlg->isDelCurCommand()) {
+                qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
                 DDialog *dlgDelete = new DDialog(this);
 
                 //dlgDelete->setWindowModality(Qt::WindowModal);
@@ -179,6 +182,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
 
 void CustomCommandList::removeCommandItem(QModelIndex modelIndex)
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     Q_UNUSED(modelIndex)
     if (m_cmdListModel && m_cmdListModel->rowCount() == 0) {
         return;

@@ -35,6 +35,7 @@ void CustomCommandPanel::showCurSearchResult()
 
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
@@ -68,6 +69,7 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
 void CustomCommandPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     Q_UNUSED(index)
 
     QString strCommand = itemData.m_cmdText;
@@ -79,6 +81,7 @@ void CustomCommandPanel::doCustomCommand(CustomCommandItemData itemData, QModelI
 
 void CustomCommandPanel::refreshCmdPanel()
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     clearSearchInfo();
     m_cmdListWidget->refreshCommandListData("");
     refreshCmdSearchState();

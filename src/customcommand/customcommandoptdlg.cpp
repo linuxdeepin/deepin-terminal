@@ -291,6 +291,7 @@ bool CustomCommandOptDlg::isDelCurCommand()
 
 void CustomCommandOptDlg::slotAddSaveButtonClicked()
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     QString strName = m_nameLineEdit->text();
     QString strCommand = m_commandLineEdit->text();
     QKeySequence keytmp = m_shortCutLineEdit->keySequence();

@@ -159,6 +159,7 @@ QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 
 QAction *ShortcutManager::addCustomCommand(QAction &action)
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     QAction *addAction = new QAction(action.text(), this);
     addAction->setData(action.data());
     addAction->setShortcut(action.shortcut());
@@ -298,6 +299,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
 }
 void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     delCustomCommandToConfig(itemData);
 
     QString actionCmdName = itemData.m_cmdName;
@@ -325,6 +327,7 @@ void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
 
 void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists()) {
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -363,6 +366,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 
 int ShortcutManager::delCustomCommandToConfig(CustomCommandItemData itemData)
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists()) {
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
