@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
     app.setApplicationDisplayName(QObject::tr("Terminal"));
     app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
+    /***add by ut001121 zhangmeng 20200617 禁用应用程序自动退出 修复BUG33541***/
+    app.setQuitOnLastWindowClosed(false);
 
     QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace"
                                   ", multiple windows, remote management, quake mode and other features.");

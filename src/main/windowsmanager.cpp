@@ -83,18 +83,27 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
     }
     /***add end by ut001121 zhangmeng***/
 
-    if (window->isQuakeMode()) {
-        Q_ASSERT(window == m_quakeWindow);
-        m_quakeWindow->deleteLater();
+    /***mod begin by ut001121 zhangmeng 20200617 应用程序主动控制退出 修复BUG33541***/
+    if (window == m_quakeWindow) {
+        Q_ASSERT(window->isQuakeMode() == true);
         m_quakeWindow = nullptr;
-        return;
     }
-    if (m_normalWindowList.contains(window)) {
+    else if (m_normalWindowList.contains(window)) {
+        Q_ASSERT(window->isQuakeMode() == false);
         m_normalWindowList.removeOne(window);
-        window->deleteLater();
-        return;
     }
-    qDebug() << "unkown windows closed?? " << window;
+    else {
+        Q_ASSERT(false);
+        qDebug() << "unkown windows closed " << window;
+    }
+
+    window->deleteLater();
+
+    // 程序退出判断 add by ut001121
+    if(m_normalWindowList.size() == 0 && m_quakeWindow == nullptr){
+        qApp->quit();
+    }
+    /***mod end by ut001121***/
 }
 
 WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
