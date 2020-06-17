@@ -300,7 +300,11 @@ void Settings::HandleWidthFont()
         QString name = Whitelist.at(i);
 //        qDebug() << "find combox font" << comboBox->findText(name);
         if (-1 == comboBox->findText(name)) {
-            QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/" + name + ".ttf";
+            QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/";// + name + ".ttf";
+            QDir dir(fontpath);
+            if(dir.count() > 2){
+                fontpath = fontpath + dir[2];
+            }
 //            qDebug() << "load font path" << fontpath;
             int ret = base.addApplicationFont(fontpath);
             if(-1 == ret){
