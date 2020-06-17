@@ -149,14 +149,15 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
             m_pdlg->closeRefreshDataConnection();
             emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
 
-        } else {
+        } else if (result == QDialog::Rejected) {
 
             //Delete custom command
             if (m_pdlg->isDelCurCommand()) {
                 qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
                 DDialog *dlgDelete = new DDialog(this);
-
-                //dlgDelete->setWindowModality(Qt::WindowModal);
+                dlgDelete->setAttribute(Qt::WA_DeleteOnClose);
+                dlgDelete->setWindowModality(Qt::WindowModal);
+                m_pdlg->m_dlgDelete = dlgDelete;
 
                 dlgDelete->setIcon(QIcon::fromTheme("deepin-terminal"));
                 dlgDelete->setTitle(tr("Are you sure you want to delete %1?").arg(m_pdlg->m_currItemData->m_cmdName));

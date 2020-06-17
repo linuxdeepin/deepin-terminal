@@ -53,6 +53,7 @@ public:
     bool m_bNeedDel = false;
     CustomCommandItemData *m_currItemData = nullptr;
     QModelIndex modelIndex;
+    DDialog *m_dlgDelete = nullptr;
 
 protected:
     void initUITitle();

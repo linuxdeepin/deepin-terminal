@@ -83,6 +83,11 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
     existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
     if (existAction == nullptr) {
         delete currAction;
+        if (m_dlgDelete && m_dlgDelete->isVisible()) {
+            m_dlgDelete->close();
+            m_dlgDelete = nullptr;
+        }
+
         close();
     } else {
         delete currAction;
