@@ -17,6 +17,7 @@ Service *Service::instance()
 
 Service::~Service()
 {
+    releaseShareMemory();
     if (nullptr != m_settingDialog) {
         delete m_settingDialog;
     }
@@ -37,6 +38,16 @@ void Service::init()
     ShortcutManager::instance()->initShortcuts();
     // 初始化远程管理数据
     ServerConfigManager::instance()->initServerConfig();
+
+    // 主进程：共享内存如果不存在即创建
+    if (!m_enableShareMemory->attach()) {
+        m_enableShareMemory->create(1);
+        qDebug() << "m_enableShareMemory create";
+    }
+    // 创建好以后，保持共享内存连接，防止释放。
+    m_enableShareMemory->attach();
+    // 主进程：首次连接设置默认值为false
+    setMemoryEnable(false);
     qDebug() << "All init data complete!";
 }
 
@@ -190,17 +201,87 @@ void Service::Entry(QStringList arguments)
 
 Service::Service(QObject *parent) : QObject(parent)
 {
-
+    m_enableShareMemory = new QSharedMemory(QString("enableCreateTerminal"));
 }
 
+/*******************************************************************************
+ 1. @函数:    getEnable
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-17
+ 4. @说明:    子进程获取是否可以创建窗口许可，获取到权限立即将标志位置为false
+*******************************************************************************/
 bool Service::getEnable() const
 {
-    return (m_enable && Service::instance()->isCountEnable());
+    if (!Service::instance()->isCountEnable()) {
+        return false;
+    }
+    // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
+    if (!m_enableShareMemory->attach()) {
+        qDebug() << "m_enableShareMemory  can't attach";
+        return  false;
+    }
+    // 如果标志位为false，则表示正在创建窗口，不可以再创建
+    if (!Service::instance()->getMemoryEnable()) {
+        Service::instance()->releaseShareMemory();
+        qDebug() << "server m_enableShareMemory  is busy create!";
+        return false;
+    }
+    // 可以创建了，立马将标识位置为false.
+    Service::instance()->setMemoryEnable(false);
+    Service::instance()->releaseShareMemory();
+    return true;
 }
-
-void Service::setEnable(bool enable)
+/*******************************************************************************
+ 1. @函数:    setMemoryEnable
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-17
+ 4. @说明:    设置共享内存信息，1=true,0=false
+*******************************************************************************/
+bool Service::setMemoryEnable(bool enable)
 {
-    m_enable = enable;
+    //m_enable = enable;
+    if (!m_enableShareMemory->isAttached()) {
+        qDebug() << "m_enableShareMemory  isAttached failed?????";
+        return false;
+    }
+    char *data = static_cast<char *>(m_enableShareMemory->data());
+    if (enable) {
+        memcpy(data, "1", 1);
+        qDebug() << "m_enableShareMemory  set  true";
+    } else {
+        memcpy(data, "0", 1);
+        qDebug() << "m_enableShareMemory  set  false";
+    }
+    return  true;
+}
+/*******************************************************************************
+ 1. @函数:    releaseShareMemory
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-17
+ 4. @说明:    释放共享内存连接
+*******************************************************************************/
+bool Service::releaseShareMemory()
+{
+    qDebug() << "sub app m_enableShareMemory  is release";
+    m_enableShareMemory->detach();
+    m_enableShareMemory->deleteLater();
+}
+/*******************************************************************************
+ 1. @函数:    getMemoryEnable
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-06-17
+ 4. @说明:    获取共享内存标志， 1=true,0=false
+*******************************************************************************/
+bool Service::getMemoryEnable()
+{
+    char *data = static_cast<char *>(m_enableShareMemory->data());
+    if (*data == '0') {
+        qDebug() << "current m_enableShareMemory is false";
+        return false;
+    } else {
+        qDebug() << "current m_enableShareMemory is true";
+        return  true;
+    }
 }
 
 bool Service::getIsDialogShow() const

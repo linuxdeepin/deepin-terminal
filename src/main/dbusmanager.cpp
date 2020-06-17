@@ -226,7 +226,7 @@ bool DBusManager::createRequest()
     bool result = Service::instance()->getEnable();
     if (result) {
         // 允许当前请求创建，阻止其他窗口创建
-        Service::instance()->setEnable(false);
+        Service::instance()->setMemoryEnable(false);
     }
     qDebug() << "create enable " << result;
     return result;

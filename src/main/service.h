@@ -18,6 +18,7 @@
 #include <DSettingsDialog>
 #include <DDialog>
 #include <QObject>
+#include <QSharedMemory>
 
 DWIDGET_USE_NAMESPACE
 
@@ -58,7 +59,9 @@ public:
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
     bool getEnable() const;
-    void setEnable(bool enable);
+    bool setMemoryEnable(bool enable);
+    bool releaseShareMemory();
+    bool getMemoryEnable();
 
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
@@ -82,6 +85,7 @@ private:
     bool m_isDialogShow = false;
     // 是否允许创建新的窗口
     bool m_enable = false;
+    QSharedMemory *m_enableShareMemory = nullptr;
 };
 
 #endif // SERVICE_H

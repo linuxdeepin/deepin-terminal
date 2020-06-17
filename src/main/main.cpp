@@ -22,6 +22,8 @@ DCORE_USE_NAMESPACE
 /********************* Modify by n014361 wangpeili End ************************/
 int main(int argc, char *argv[])
 {
+    //计时
+    qint64 starttime = QDateTime::currentMSecsSinceEpoch();
     DApplication::loadDXcbPlugin();
 
     //DApplication app(argc, argv);
@@ -47,8 +49,6 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
 #endif  // QT_DEBUG
 
-
-
     /******** Modify by n014361 wangpeili 2020-01-10: 增加日志 ***********×****/
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
@@ -63,10 +63,13 @@ int main(int argc, char *argv[])
         // 初始化失败，则已经注册过dbus
         // 判断是否能创建新的的窗口
         // 不是雷神且正在创建
-        if (!Properties[QuakeMode].toBool() && !DBusManager::callCreateRequest()) {
-            qDebug() << "Window is creating, drop this create request!";
+        if (!Properties[QuakeMode].toBool() && !Service::instance()->getEnable()) {
+            qint64 endtime = QDateTime::currentMSecsSinceEpoch();
+            qDebug() << starttime << "[sub app] Window is creating, drop this create request! time use "
+                     << endtime - starttime <<"ms";
             return 0;
         }
+
         // 调用entry接口
         /******** Modify by ut000610 daizhengwen 2020-05-25: 在终端中打开****************/
         QStringList args = app.arguments();
@@ -83,8 +86,11 @@ int main(int argc, char *argv[])
             args += QDir::currentPath();
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
-        qDebug() << "app args " << args;
+        qDebug() << "[sub app] start to call main terminal entry! app args " << args;
         DBusManager::callTerminalEntry(args);
+        qint64 endtime2 = QDateTime::currentMSecsSinceEpoch();
+        qDebug() << "[sub app] task complete! sub app quit, time use "
+                 << endtime2 - starttime<<"ms";
         return 0;
     }
     // 这行不要删除
@@ -97,6 +103,8 @@ int main(int argc, char *argv[])
     service->init();
     // 创建窗口
     service->Entry(app.arguments());
+    qint64 endtime3 = QDateTime::currentMSecsSinceEpoch();
+    qDebug() << "First Terminal Window create complete! time use " << endtime3 - starttime <<"ms";
 
     return app.exec();
 }

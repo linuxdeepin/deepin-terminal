@@ -174,7 +174,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     /******** Modify by ut000610 daizhengwen 2020-06-11: 启动成功，则允许下一个窗口创建****************/
     connect(this, &TermWidget::processStarted, Service::instance(), [ = ]() {
         QTimer::singleShot(200, [ = ]() {
-            Service::instance()->setEnable(true);
+            Service::instance()->setMemoryEnable(true);
         });
     });
     /********************* Modify by ut000610 daizhengwen End ************************/
