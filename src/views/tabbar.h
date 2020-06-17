@@ -62,6 +62,8 @@ public:
     bool isEnableCloseTabAnimation();
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
+    QSize minimumTabSizeHint(int index) const;
+    QSize maximumTabSizeHint(int index) const;
 
 signals:
     void tabBarClicked(int index);

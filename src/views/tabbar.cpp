@@ -162,9 +162,6 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 {
     int index = DTabBar::addTab(tabName);
     setTabData(index, QVariant::fromValue(tabIdentifier));
-    //设置标签的最大/最小size
-    DTabBar::setTabMinimumSize(index, QSize(m_tabItemMinWidth, m_tabHeight));
-    DTabBar::setTabMaximumSize(index, QSize(m_tabItemMaxWidth, m_tabHeight));
 
     return index;
 }
@@ -393,6 +390,16 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
     }
 
     return false;
+}
+
+QSize TabBar::minimumTabSizeHint(int index) const
+{
+    return QSize(m_tabItemMinWidth, m_tabHeight);
+}
+
+QSize TabBar::maximumTabSizeHint(int index) const
+{
+    return QSize(m_tabItemMaxWidth, m_tabHeight);
 }
 
 void TabBar::setNeedChangeTextColor(int index, const QColor &color)
