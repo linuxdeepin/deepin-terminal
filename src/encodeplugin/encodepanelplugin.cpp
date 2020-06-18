@@ -44,7 +44,7 @@ void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 
 QAction *EncodePanelPlugin::titlebarMenu(MainWindow *mainWindow)
 {
-    QAction *switchThemeAction(new QAction("Switch Encoding", mainWindow));
+    QAction *switchThemeAction(new QAction("Switch Encoding"));
 
     connect(switchThemeAction, &QAction::triggered, mainWindow, [mainWindow]() {
         mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
