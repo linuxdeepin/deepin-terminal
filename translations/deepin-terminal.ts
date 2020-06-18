@@ -265,7 +265,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <location filename="../src/main/mainwindow.cpp" line="1336"/>
-        <location filename="../src/main/main.cpp" line="34"/>
+        <location filename="../src/main/main.cpp" line="36"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -456,7 +456,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="152"/>
+        <location filename="../src/main/service.cpp" line="163"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="631"/>
         <location filename="../src/common/utils.cpp" line="429"/>
         <location filename="../src/common/utils.cpp" line="436"/>
@@ -464,7 +464,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="40"/>
+        <location filename="../src/main/main.cpp" line="42"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -831,7 +831,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="150"/>
+        <location filename="../src/main/service.cpp" line="161"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -845,17 +845,17 @@
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="77"/>
-        <source>Maximum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/settings/settings.cpp" line="77"/>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="77"/>
         <source>Normal window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings.cpp" line="77"/>
+        <source>Maximum</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

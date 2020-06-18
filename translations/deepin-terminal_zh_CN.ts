@@ -146,22 +146,6 @@
         <translation>关闭</translation>
     </message>
     <message>
-        <source>Workspace</source>
-        <translation type="vanished">工作区</translation>
-    </message>
-    <message>
-        <source>Terminal</source>
-        <translation type="vanished">终端</translation>
-    </message>
-    <message>
-        <source>Others</source>
-        <translation type="obsolete">其他</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation type="vanished">高级设置</translation>
-    </message>
-    <message>
         <location filename="../src/main/mainwindow.cpp" line="1361"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
@@ -281,7 +265,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <location filename="../src/main/mainwindow.cpp" line="1336"/>
-        <location filename="../src/main/main.cpp" line="34"/>
+        <location filename="../src/main/main.cpp" line="36"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
@@ -472,7 +456,7 @@
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="152"/>
+        <location filename="../src/main/service.cpp" line="163"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="631"/>
         <location filename="../src/common/utils.cpp" line="429"/>
         <location filename="../src/common/utils.cpp" line="436"/>
@@ -480,7 +464,7 @@
         <translation>请重新设置</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="40"/>
+        <location filename="../src/main/main.cpp" line="42"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation>终端是⼀款集⼯作区、多窗⼝、远程管理、雷神模式等功能的⾼级终端模拟器。</translation>
     </message>
@@ -736,7 +720,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="184"/>
         <source>Path:</source>
-        <translation>文件路径：</translation>
+        <translation>路径：</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="190"/>
@@ -847,7 +831,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="150"/>
+        <location filename="../src/main/service.cpp" line="161"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -855,18 +839,9 @@
 <context>
     <name>Settings</name>
     <message>
-        <source>Normal</source>
-        <translation type="vanished">正常</translation>
-    </message>
-    <message>
         <location filename="../src/settings/settings.cpp" line="77"/>
         <source>Split screen</source>
         <translation>分屏</translation>
-    </message>
-    <message>
-        <location filename="../src/settings/settings.cpp" line="77"/>
-        <source>Maximum</source>
-        <translation>最⼤化</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="77"/>
@@ -877,6 +852,11 @@
         <location filename="../src/settings/settings.cpp" line="77"/>
         <source>Normal window</source>
         <translation>正常窗口</translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings.cpp" line="77"/>
+        <source>Maximum</source>
+        <translation>最⼤化</translation>
     </message>
 </context>
 <context>
