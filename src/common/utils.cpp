@@ -609,7 +609,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
 
     if (appControl) {
         // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
-        qDebug() << "parse commandLine";
+        //qDebug() << "parse commandLine";
         parser.process(arguments);
     } else {
         qDebug() << "input args:" << qPrintable(arguments.join(" "));
