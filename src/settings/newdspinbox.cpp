@@ -21,6 +21,10 @@
  */
 
 #include "newdspinbox.h"
+#include <private/qtextengine_p.h>
+#include <private/qfontengine_p.h>
+#include <private/qpainter_p.h>
+
 #include <DLog>
 
 NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
@@ -149,5 +153,73 @@ void NewDspinBox::correctValue()
     if (val < m_MinValue) {
         m_DLineEdit->lineEdit()->setText(QString::number(m_MinValue));
     }
+}
+
+//拷贝了Qt QTextLayout类的源码
+void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition, int width) const
+{
+    Q_UNUSED(width)
+
+    if (d->lines.isEmpty())
+        return;
+
+    if (!d->layoutData)
+        d->itemize();
+
+    QPointF position = pos + d->position;
+
+    cursorPosition = qBound(0, cursorPosition, d->layoutData->string.length());
+    int line = d->lineNumberForTextPosition(cursorPosition);
+    if (line < 0)
+        line = 0;
+    if (line >= d->lines.size())
+        return;
+
+    QTextLine l(line, d);
+    const QScriptLine &sl = d->lines.at(line);
+
+    qreal x = position.x() + l.cursorToX(cursorPosition);
+
+    int itm;
+
+    if (d->visualCursorMovement()) {
+        if (cursorPosition == sl.from + sl.length)
+            cursorPosition--;
+        itm = d->findItem(cursorPosition);
+    } else
+        itm = d->findItem(cursorPosition - 1);
+
+    QFixed base = sl.base();
+    QFixed descent = sl.descent;
+    bool rightToLeft = d->isRightToLeft();
+    if (itm >= 0) {
+        const QScriptItem &si = d->layoutData->items.at(itm);
+        if (si.ascent > 0)
+            base = si.ascent;
+        if (si.descent > 0)
+            descent = si.descent;
+        rightToLeft = si.analysis.bidiLevel % 2;
+    }
+    qreal y = position.y() + (sl.y + sl.base() - base).toReal();
+    bool toggleAntialiasing = !(p->renderHints() & QPainter::Antialiasing)
+                              && (p->transform().type() > QTransform::TxTranslate);
+    if (toggleAntialiasing)
+        p->setRenderHint(QPainter::Antialiasing);
+    QPainter::CompositionMode origCompositionMode = p->compositionMode();
+    if (p->paintEngine()->hasFeature(QPaintEngine::RasterOpModes))
+        p->setCompositionMode(QPainter::RasterOp_NotDestination);
+    //fix bug 25203 字体输入框的光标显示较粗
+    //直接将原有的qreal(width) 替换成了0.1
+    p->fillRect(QRectF(x, y, 0.1, (base + descent).toReal()), p->pen().brush());
+    p->setCompositionMode(origCompositionMode);
+    if (toggleAntialiasing)
+        p->setRenderHint(QPainter::Antialiasing, false);
+    if (d->layoutData->hasBidi) {
+        const int arrow_extent = 4;
+        int sign = rightToLeft ? -1 : 1;
+        p->drawLine(QLineF(x, y, x + (sign * arrow_extent/2), y + arrow_extent/2));
+        p->drawLine(QLineF(x, y+arrow_extent, x + (sign * arrow_extent/2), y + arrow_extent/2));
+    }
+    return;
 }
 
