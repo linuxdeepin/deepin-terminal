@@ -133,7 +133,7 @@ void PageSearchBar::initFindPrevButton()
 
     connect(m_findPrevButton, &QAbstractButton::clicked, this, [this]() { emit findPrev(); });
 
-    QAction *action = new QAction(this);
+    QAction *action = new QAction();
     QList<QKeySequence> lstShortcut;
     lstShortcut << QKeySequence("Shift+Enter") << QKeySequence("Shift+Return");
     action->setShortcuts(lstShortcut);
@@ -151,7 +151,7 @@ void PageSearchBar::initFindNextButton()
 
     // 界面上输入回车就相当于直接点击下一个:Key_Enter OR Key_Return
     // 控件本身不支持设置多个快捷键
-    QAction *action = new QAction(this);
+    QAction *action = new QAction();
     QList<QKeySequence> lstShortcut;
     lstShortcut << QKeySequence(Qt::Key_Enter) << QKeySequence(Qt::Key_Return);
     action->setShortcuts(lstShortcut);
