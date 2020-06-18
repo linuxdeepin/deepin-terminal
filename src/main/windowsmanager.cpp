@@ -93,7 +93,7 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
         m_normalWindowList.removeOne(window);
     }
     else {
-        Q_ASSERT(false);
+        //Q_ASSERT(false);
         qDebug() << "unkown windows closed " << window;
     }
 
