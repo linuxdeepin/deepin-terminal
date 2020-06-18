@@ -87,13 +87,10 @@ void PageSearchBar::saveOldHoldContent()
 DIconButton *findIconBtn(DSearchEdit *searchEdit)
 {
     QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
-    if (iconWidget)
-    {
+    if (iconWidget) {
         DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
         return iconBtn;
-    }
-    else
-    {
+    } else {
         return searchEdit->findChild<DIconButton *>();
     }
 }
@@ -131,13 +128,17 @@ void PageSearchBar::initFindPrevButton()
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
     m_findPrevButton->setFocusPolicy(Qt::NoFocus);
 
-    connect(m_findPrevButton, &QAbstractButton::clicked, this, [this]() { emit findPrev(); });
+    connect(m_findPrevButton, &QAbstractButton::clicked, this, [this]() {
+        if (!m_searchEdit->lineEdit()->text().isEmpty()) {
+            emit findPrev();
+        }
+    });
 
-    QAction *action = new QAction();
+    QAction *action = new QAction(m_findPrevButton);
     QList<QKeySequence> lstShortcut;
     lstShortcut << QKeySequence("Shift+Enter") << QKeySequence("Shift+Return");
     action->setShortcuts(lstShortcut);
-    m_findNextButton->addAction(action);
+    m_findPrevButton->addAction(action);
     connect(action, &QAction::triggered, this, [this]() { m_findPrevButton->animateClick(80); });
 }
 
@@ -147,11 +148,15 @@ void PageSearchBar::initFindNextButton()
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
     m_findNextButton->setFocusPolicy(Qt::NoFocus);
 
-    connect(m_findNextButton, &QAbstractButton::clicked, this, [this]() { emit findNext(); });
+    connect(m_findNextButton, &QAbstractButton::clicked, this, [this]() {
+        if (!m_searchEdit->lineEdit()->text().isEmpty()) {
+            emit findNext();
+        }
+    });
 
     // 界面上输入回车就相当于直接点击下一个:Key_Enter OR Key_Return
     // 控件本身不支持设置多个快捷键
-    QAction *action = new QAction();
+    QAction *action = new QAction(m_findNextButton);
     QList<QKeySequence> lstShortcut;
     lstShortcut << QKeySequence(Qt::Key_Enter) << QKeySequence(Qt::Key_Return);
     action->setShortcuts(lstShortcut);

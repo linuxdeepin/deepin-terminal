@@ -33,6 +33,7 @@ class TabBar : public DTabBar
     Q_OBJECT
 public:
     explicit TabBar(QWidget *parent = nullptr);
+    ~TabBar();
 
     const QString identifier(int index) const;
 
@@ -71,9 +72,9 @@ signals:
     void menuCloseOtherTab(QString Identifier);
 
 private:
-    QAction *m_closeOtherTabAction;
-    QAction *m_closeTabAction;
-    DMenu *m_rightMenu;
+    QAction *m_closeOtherTabAction = nullptr;
+    QAction *m_closeTabAction = nullptr;
+    DMenu *m_rightMenu = nullptr;
     int m_rightClickTab;
     int m_tabHeight;
     int m_tabItemMinWidth;

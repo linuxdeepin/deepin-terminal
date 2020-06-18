@@ -137,6 +137,13 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);
 }
 
+TabBar::~TabBar()
+{
+    if(m_rightMenu != nullptr){
+        m_rightMenu->deleteLater();
+    }
+}
+
 void TabBar::setTabHeight(int tabHeight)
 {
     m_tabHeight = tabHeight;
@@ -361,10 +368,16 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
 
             // popup right menu on tab.
             if (m_rightClickTab >= 0) {
-                m_rightMenu = new DMenu;
+                if(m_rightMenu == nullptr){
+                    m_rightMenu = new DMenu(this);
+                }
+                else{
+                    m_rightMenu->clear();
+                }
+                // 同名，同父QAction 反复new并不会新增内存
+                m_closeTabAction = new QAction(tr("Close workspace"), m_rightMenu);
+                m_closeOtherTabAction = new QAction(tr("Close other workspaces"), m_rightMenu);
 
-                m_closeTabAction = new QAction(tr("Close workspace"), this);
-                m_closeOtherTabAction = new QAction(tr("Close other workspaces"), this);
 
                 connect(m_closeTabAction, &QAction::triggered, this, [ = ] {
                     Q_EMIT tabCloseRequested(m_rightClickTab);
