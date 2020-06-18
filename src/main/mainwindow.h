@@ -93,7 +93,8 @@ public:
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 Begin***************/
     static constexpr const char *CONFIG_WINDOW_WIDTH = "window_width";
     static constexpr const char *CONFIG_WINDOW_HEIGHT = "window_height";
-    static constexpr const char *CONFIG_QUAKE_WINDOW_HEIGHT = "quake_window_Height";
+    //Modify by ut001000 renfeixiang 2020-06-18:修改quake_window_Height为quake_window_height bug#33779
+    static constexpr const char *CONFIG_QUAKE_WINDOW_HEIGHT = "quake_window_height";
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
     int getDesktopIndex() const;
 
