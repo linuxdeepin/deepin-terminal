@@ -125,11 +125,13 @@ int WindowsManager::widgetCount() const
 void WindowsManager::terminalCountIncrease()
 {
     ++m_widgetCount;
+    Service::instance()->updateShareMemoryCount(m_widgetCount);
     qDebug() << "++ Terminals Count : " << m_widgetCount;
 }
 
 void WindowsManager::terminalCountReduce()
 {
     --m_widgetCount;
+    Service::instance()->updateShareMemoryCount(m_widgetCount);
     qDebug() << "-- Terminals Count : " << m_widgetCount;
 }

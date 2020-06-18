@@ -21,6 +21,10 @@
 #include <QSharedMemory>
 
 DWIDGET_USE_NAMESPACE
+struct ShareMemoryInfo{
+    int enableCreateTerminal = 0;
+    int TerminalsCount = 0;
+};
 
 class Service : public QObject
 {
@@ -58,10 +62,12 @@ public:
     bool getIsDialogShow() const;
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
-    bool getEnable() const;
+    bool getEnable() ;
+    void updateShareMemoryCount(int count);
+    int  getShareMemoryCount();
     bool setMemoryEnable(bool enable);
-    bool releaseShareMemory();
     bool getMemoryEnable();
+    void releaseShareMemory();
 
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
@@ -86,6 +92,8 @@ private:
     // 是否允许创建新的窗口
     bool m_enable = false;
     QSharedMemory *m_enableShareMemory = nullptr;
+    // 这个指针实际上与上面指针指向同一地址，不需要二次释放
+    ShareMemoryInfo *m_pShareMemoryInfo = nullptr;
 };
 
 #endif // SERVICE_H

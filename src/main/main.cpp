@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         // 不是雷神且正在创建
         if (!Properties[QuakeMode].toBool() && !Service::instance()->getEnable()) {
             qint64 endtime = QDateTime::currentMSecsSinceEpoch();
-            qDebug() << starttime << "[sub app] Window is creating, drop this create request! time use "
+            qDebug() << "[sub app] Server can't create, drop this create request! time use "
                      << endtime - starttime <<"ms";
             return 0;
         }

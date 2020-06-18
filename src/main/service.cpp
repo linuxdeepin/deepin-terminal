@@ -41,11 +41,13 @@ void Service::init()
 
     // 主进程：共享内存如果不存在即创建
     if (!m_enableShareMemory->attach()) {
-        m_enableShareMemory->create(1);
+        m_enableShareMemory->create(sizeof(ShareMemoryInfo));
         qDebug() << "m_enableShareMemory create";
     }
     // 创建好以后，保持共享内存连接，防止释放。
     m_enableShareMemory->attach();
+    // 主进程：首次赋值m_pShareMemoryInfo
+    m_pShareMemoryInfo = static_cast<ShareMemoryInfo *>(m_enableShareMemory->data());
     // 主进程：首次连接设置默认值为false
     setMemoryEnable(false);
     qDebug() << "All init data complete!";
@@ -210,20 +212,28 @@ Service::Service(QObject *parent) : QObject(parent)
  3. @日期:    2020-06-17
  4. @说明:    子进程获取是否可以创建窗口许可，获取到权限立即将标志位置为false
 *******************************************************************************/
-bool Service::getEnable() const
+bool Service::getEnable()
 {
     if (!Service::instance()->isCountEnable()) {
         return false;
     }
     // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
     if (!m_enableShareMemory->attach()) {
-        qDebug() << "m_enableShareMemory  can't attach";
+        qDebug() << "[sub app] m_enableShareMemory  can't attach";
         return  false;
     }
+    // sub app首次赋值m_pShareMemoryInfo
+    m_pShareMemoryInfo = static_cast<ShareMemoryInfo *>(m_enableShareMemory->data());
+    if (Service::instance()->getShareMemoryCount() >= MAXWIDGETCOUNT) {
+        qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->TerminalsCount
+                 << ", can't create terminal any more.";
+        return false;
+    }
+    qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->TerminalsCount;
     // 如果标志位为false，则表示正在创建窗口，不可以再创建
     if (!Service::instance()->getMemoryEnable()) {
         Service::instance()->releaseShareMemory();
-        qDebug() << "server m_enableShareMemory  is busy create!";
+        qDebug() << "[sub app] server m_enableShareMemory  is busy create!";
         return false;
     }
     // 可以创建了，立马将标识位置为false.
@@ -231,27 +241,42 @@ bool Service::getEnable() const
     Service::instance()->releaseShareMemory();
     return true;
 }
+
+void Service::updateShareMemoryCount(int count)
+{
+    if (!m_enableShareMemory->isAttached()) {
+        qDebug() << "m_enableShareMemory  isAttached failed?????";
+        return ;
+    }
+
+    m_pShareMemoryInfo->TerminalsCount = count;
+    qDebug() << "[main app] TerminalsCount  set " << count;
+
+    return  ;
+}
+
+int Service::getShareMemoryCount()
+{
+    return m_pShareMemoryInfo->TerminalsCount;
+}
 /*******************************************************************************
  1. @函数:    setMemoryEnable
  2. @作者:    ut000439 王培利
  3. @日期:    2020-06-17
- 4. @说明:    设置共享内存信息，1=true,0=false
+ 4. @说明:    设置共享内存信息，1=true(主进程), 0=false(主进程首次或子进程获得许可以后)
 *******************************************************************************/
 bool Service::setMemoryEnable(bool enable)
 {
-    //m_enable = enable;
     if (!m_enableShareMemory->isAttached()) {
         qDebug() << "m_enableShareMemory  isAttached failed?????";
         return false;
     }
-    char *data = static_cast<char *>(m_enableShareMemory->data());
     if (enable) {
-        memcpy(data, "1", 1);
-        qDebug() << "m_enableShareMemory  set  true";
+        m_pShareMemoryInfo->enableCreateTerminal = 1;
     } else {
-        memcpy(data, "0", 1);
-        qDebug() << "m_enableShareMemory  set  false";
+        m_pShareMemoryInfo->enableCreateTerminal = 0;
     }
+    qDebug() << "m_enableShareMemory set" << enable << m_pShareMemoryInfo->enableCreateTerminal;
     return  true;
 }
 /*******************************************************************************
@@ -260,9 +285,9 @@ bool Service::setMemoryEnable(bool enable)
  3. @日期:    2020-06-17
  4. @说明:    释放共享内存连接
 *******************************************************************************/
-bool Service::releaseShareMemory()
+void Service::releaseShareMemory()
 {
-    qDebug() << "sub app m_enableShareMemory  is release";
+    qDebug() << "[sub app] m_enableShareMemory released";
     m_enableShareMemory->detach();
     m_enableShareMemory->deleteLater();
 }
@@ -274,14 +299,12 @@ bool Service::releaseShareMemory()
 *******************************************************************************/
 bool Service::getMemoryEnable()
 {
-    char *data = static_cast<char *>(m_enableShareMemory->data());
-    if (*data == '0') {
-        qDebug() << "current m_enableShareMemory is false";
+    if (m_pShareMemoryInfo->enableCreateTerminal == 0) {
+        qDebug() << "[sub app] current m_enableShareMemory is false" << m_pShareMemoryInfo->enableCreateTerminal;
         return false;
-    } else {
-        qDebug() << "current m_enableShareMemory is true";
-        return  true;
     }
+    qDebug() << "[sub app] current m_enableShareMemory is true" << m_pShareMemoryInfo->enableCreateTerminal;
+    return  true;
 }
 
 bool Service::getIsDialogShow() const
