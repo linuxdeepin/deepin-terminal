@@ -372,9 +372,10 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                     m_rightMenu = new DMenu(this);
                 }
                 else{
+                    // clear时，对于绑在menu下面的action会自动释放，无需单独处理action释放
                     m_rightMenu->clear();
                 }
-                // 同名，同父QAction 反复new并不会新增内存
+
                 m_closeTabAction = new QAction(tr("Close workspace"), m_rightMenu);
                 m_closeOtherTabAction = new QAction(tr("Close other workspaces"), m_rightMenu);
 
