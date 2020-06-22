@@ -284,8 +284,13 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
     dialog.setFileMode(QFileDialog::ExistingFiles);
     dialog.setLabelText(QFileDialog::Accept, QObject::tr("Upload"));
 
-    dialog.exec();
-    return dialog.selectedFiles();
+    // 选择文件，却点击了叉号
+    int code = dialog.exec();
+    if (code == QDialog::Accepted) {
+        return dialog.selectedFiles();
+    } else {
+        return QStringList();
+    }
 }
 
 bool Utils::showExitConfirmDialog(CloseType type, int count)
