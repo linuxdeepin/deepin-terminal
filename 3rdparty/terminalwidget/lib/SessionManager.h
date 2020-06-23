@@ -24,6 +24,7 @@
 #define SESSIONMANAGER_H
 
 // Qt
+#include <QObject>
 #include <QHash>
 #include <QList>
 

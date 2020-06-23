@@ -7,6 +7,7 @@
 #include <DStyleHelper>
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QPixmap>
 #include <DLog>
 
