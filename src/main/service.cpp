@@ -98,12 +98,18 @@ void Service::initSetting()
 *******************************************************************************/
 void Service::showSettingDialog(MainWindow *pOwner)
 {
-    // 只进行一次设置初始化
+    // 第一次初始化dialog
     initSetting();
     QDateTime startTime = QDateTime::currentDateTime();
     //保存设置框的有拥者
     m_settingOwner = pOwner;
     if (nullptr != m_settingDialog) {
+        /******** Modify by ut000610 daizhengwen 2020-06-23:每当点击设置，都重新new一个settingDialog Begin***************/
+        delete m_settingDialog;
+        m_settingDialog = nullptr;
+        // 重新new dialog  ----由于设置文字大小，窗口不会自适应，所以需要重新new，如果dtk设置框随设置变化大小，此处可去
+        initSetting();
+        /********************* Modify by ut000610 daizhengwen End ************************/
         //雷神需要让窗口置顶，可是普通窗口不要
         if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
