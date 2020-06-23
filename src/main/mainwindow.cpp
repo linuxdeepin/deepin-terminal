@@ -1666,6 +1666,7 @@ void NormalWindow::initWindowAttribute()
     // init window state.
     QString windowState = getConfigWindowState();
     if (windowState == "window_maximum") {
+        show();
         setDefaultLocation();
         showMaximized();
     } else if (windowState == "fullscreen") {
