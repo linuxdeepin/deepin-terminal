@@ -1104,7 +1104,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
             textToSend += _codec->fromUnicode(event->text());
         }
 
-        sendData( textToSend.constData() , textToSend.length() );
+        Q_EMIT sendData( textToSend.constData() , textToSend.length() );
     }
     else
     {
@@ -1351,8 +1351,8 @@ char Vt102Emulation::eraseChar() const
 {
   KeyboardTranslator::Entry entry = _keyTranslator->findEntry(
                                             Qt::Key_Backspace,
-                                            nullptr,
-                                            nullptr);
+                                            Qt::NoModifier,
+                                            KeyboardTranslator::NoState);
   if ( entry.text().count() > 0 )
       return entry.text().at(0);
   else

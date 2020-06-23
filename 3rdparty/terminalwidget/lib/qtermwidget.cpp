@@ -969,6 +969,11 @@ void QTermWidget::setDrawLineChars(bool drawLineChars)
     m_impl->m_terminalDisplay->setDrawLineChars(drawLineChars);
 }
 
+void QTermWidget::setBoldIntense(bool boldIntense)
+{
+    m_impl->m_terminalDisplay->setBoldIntense(boldIntense);
+}
+
 int QTermWidget::getForegroundProcessId() const
 {
     return m_impl->m_session->foregroundProcessId();

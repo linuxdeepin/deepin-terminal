@@ -267,6 +267,8 @@ public:
     int getForegroundProcessId() const;
 
     void setDrawLineChars(bool drawLineChars);
+
+    void setBoldIntense(bool boldIntense);
 signals:
     void finished();
     void copyAvailable(bool);
