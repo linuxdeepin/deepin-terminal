@@ -2072,6 +2072,15 @@ void TerminalDisplay::mouseMoveEvent(QMouseEvent* ev)
         _mouseOverHotspotArea = QRegion();
   }
 
+  /***add begin by ut001121 zhangmeng 20200623 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
+  if(spot && spot->type() == Filter::HotSpot::Link){
+      if(cursor().shape() != Qt::PointingHandCursor) setCursor(Qt::PointingHandCursor);
+  }
+  else if(cursor().shape() != Qt::IBeamCursor){
+      setCursor(Qt::IBeamCursor);
+  }
+  /***add end by ut001121***/
+
   // for auto-hiding the cursor, we need mouseTracking
   if (ev->buttons() == Qt::NoButton ) return;
 
