@@ -386,6 +386,10 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
   // create scroll bar for scrolling output up and down
   // set the scroll bar's slider to occupy the whole area of the scroll bar initially
   _scrollBar = new QScrollBar(this);
+  /******** Modify by ut000439 wangpeili 2020-06-24: 适应窗口特效圆角 ****************/
+  _scrollBar->setStyleSheet("margin: 0px 0 5px 0;");
+  /********************* Modify by n014361 wangpeili End ************************/
+
   // since the contrast with the terminal background may not be enough,
   // the scrollbar should be auto-filled if not transient
   if (!_scrollBar->style()->styleHint(QStyle::SH_ScrollBar_Transient, nullptr, _scrollBar))
