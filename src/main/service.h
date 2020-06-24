@@ -20,6 +20,13 @@
 #include <QObject>
 #include <QSharedMemory>
 
+#include <com_deepin_wmswitcher.h>
+
+using WMSwitcher = com::deepin::WMSwitcher;
+#define WMSwitcherService "com.deepin.WMSwitcher"
+#define WMSwitcherPath "/com/deepin/WMSwitcher"
+
+
 DWIDGET_USE_NAMESPACE
 struct ShareMemoryInfo{
     int enableCreateTerminal = 0;
@@ -69,6 +76,9 @@ public:
     bool getMemoryEnable();
     void releaseShareMemory();
 
+    //判断当前是否开启窗口特效  开启-true 关闭-false
+    bool isWindowEffectEnabled();
+
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
@@ -76,13 +86,24 @@ signals:
     // 当前终端切换
     void currentTermChange(QWidget *term);
 
+    void onWindowEffectEnabled(bool isEnabled);
+
 public slots:
     void Entry(QStringList arguments);
 private:
     explicit Service(QObject *parent = nullptr);
+    //隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用
+    void hideOpacityAndBlurOptions();
+    //监听窗口特效开关对应DBus信号，并实时禁用/启用透明度和背景模糊选项
+    void listenWindowEffectSwitcher();
+    //根据是否开启窗口特效开关，禁用/启用透明度和背景模糊选项
+    void changeSettingControlStatus(bool isWindowEffectEnabled);
+
     static Service *pService ;
     // 设置框 全局唯一显示
     DSettingsDialog *m_settingDialog = nullptr;
+
+    WMSwitcher *m_wmSwitcher = nullptr;
     //设置框的所有者
     MainWindow *m_settingOwner = nullptr;
     // 设置框，快捷键冲突弹窗

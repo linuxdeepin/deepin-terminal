@@ -5,9 +5,12 @@
 #include <DSettingsGroup>
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
+#include <DSysInfo>
 
 #include <QDebug>
 #include <QDateTime>
+#include <QCheckBox>
+#include <QLabel>
 
 Service *Service::pService = new Service();
 Service *Service::instance()
@@ -51,6 +54,9 @@ void Service::init()
     // 主进程：首次连接设置默认值为false
     setMemoryEnable(false);
     qDebug() << "All init data complete!";
+
+    //监听窗口特效变化
+    listenWindowEffectSwitcher();
 }
 
 /*******************************************************************************
@@ -89,7 +95,133 @@ void Service::initSetting()
     moveToCenter(m_settingDialog);
     QDateTime endTime = QDateTime::currentDateTime();
     qDebug() << "Setting init cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
+
+    //判断为UOS服务器版本时，隐藏透明度/背景模糊选项
+    if (DSysInfo::deepinType() == DSysInfo::DeepinServer) {
+        hideOpacityAndBlurOptions();
+    }
+
+    changeSettingControlStatus(isWindowEffectEnabled());
 }
+
+/*******************************************************************************
+ 1. @函数:    hideOpacityAndBlurOptions
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-06-24
+ 4. @说明:   隐藏设置的透明度和背景模糊选项-- 仅UOS服务器版本使用
+*******************************************************************************/
+void Service::hideOpacityAndBlurOptions()
+{
+    QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
+    QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
+
+    for(int i=0; i<rightWidgetList.size(); i++) {
+        QWidget *widget = rightWidgetList.at(i);
+        if (strcmp(widget->metaObject()->className(), "QCheckBox") == 0) {
+            QString checkText = (qobject_cast<QCheckBox*>(widget))->text();
+            if (checkText == QObject::tr("Blur background")) {
+                widget->hide();
+            }
+        }
+        else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
+            widget->hide();
+        }
+        else if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
+            QString lblText = (qobject_cast<QLabel*>(widget))->text();
+            if (lblText == QObject::tr("Opacity")) {
+                widget->hide();
+            }
+        }
+        else {
+            //do nothing
+        }
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    listenWindowEffectSwitcher
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-06-24
+ 4. @说明:   监听窗口特效开关对应DBus信号，并实时禁用/启用设置的透明度和背景模糊选项
+*******************************************************************************/
+void Service::listenWindowEffectSwitcher()
+{
+    if (nullptr == m_wmSwitcher) {
+        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
+        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, [this](const QString &wmName){
+
+            qDebug() << "changed wm name:" << wmName;
+            bool isWinEffectEnabled = false;
+            if (wmName == "deepin wm") {
+                isWinEffectEnabled = true;
+            }
+
+            changeSettingControlStatus(isWinEffectEnabled);
+
+            emit Service::instance()->onWindowEffectEnabled(isWinEffectEnabled);
+        });
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    changeSettingControlStatus
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-06-24
+ 4. @说明:   根据是否开启窗口特效开关，禁用/启用透明度和背景模糊选项
+*******************************************************************************/
+void Service::changeSettingControlStatus(bool isWindowEffectEnabled)
+{
+    QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
+    QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
+
+    for(int i=0; i<rightWidgetList.size(); i++) {
+        QWidget *widget = rightWidgetList.at(i);
+        if (strcmp(widget->metaObject()->className(), "QCheckBox") == 0 ) {
+            QString checkText = (qobject_cast<QCheckBox*>(widget))->text();
+            if (checkText == QObject::tr("Blur background")) {
+                widget->setEnabled(isWindowEffectEnabled);
+            }
+        }
+        else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
+            widget->setEnabled(isWindowEffectEnabled);
+        }
+        else if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
+            QString lblText = (qobject_cast<QLabel*>(widget))->text();
+            if (lblText == QObject::tr("Opacity")) {
+                widget->setEnabled(isWindowEffectEnabled);
+            }
+        }
+        else {
+            //do nothing
+        }
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    isWindowEffectEnabled
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-06-24
+ 4. @说明:   判断当前是否开启窗口特效  开启-true 关闭-false
+*******************************************************************************/
+bool Service::isWindowEffectEnabled()
+{
+    QDBusMessage msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
+
+    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        QString wmName = response.arguments().first().toString();
+        if (wmName == "deepin wm") {
+            qDebug() << "窗口特效已开启";
+            return true;
+        }
+    } else {
+        qDebug() << "call CurrentWM Fail!" << response.errorMessage();
+    }
+
+    qDebug() << "窗口特效已关闭";
+    return false;
+}
+
 /*******************************************************************************
  1. @函数:    showSettingDialog
  2. @作者:    ut000610 戴正文

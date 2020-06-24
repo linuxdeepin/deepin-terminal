@@ -40,7 +40,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // set shell program
     QString shell{ getenv("SHELL") };
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
-    setTerminalOpacity(Settings::instance()->opacity());
+    setTermOpacity(Settings::instance()->opacity());
     //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
@@ -201,6 +201,16 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
+
+    //窗口特效开启则使用设置的透明度，窗口特效关闭时直接把窗口置为不透明
+    connect(Service::instance(), &Service::onWindowEffectEnabled, this, [this](bool isWinEffectEnabled){
+        if (isWinEffectEnabled) {
+            this->setTermOpacity(Settings::instance()->opacity());
+        }
+        else {
+            this->setTermOpacity(1.0);
+        }
+    });
 }
 
 TermWidget::~TermWidget()
@@ -570,7 +580,13 @@ bool TermWidget::isInRemoteServer()
 
 void TermWidget::setTermOpacity(qreal opacity)
 {
-    setTerminalOpacity(opacity);
+    //这里再次判断一遍，因为刚启动时，还是需要判断一次当前是否开启了窗口特效
+    qreal termOpacity = opacity;
+    if (!Service::instance()->isWindowEffectEnabled()) {
+        termOpacity = 1.0;
+    }
+
+    setTerminalOpacity(termOpacity);
     /******* Modify by n014361 wangpeili 2020-01-04: 修正实时设置透明度问题************/
     hide();
     show();

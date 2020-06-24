@@ -54,6 +54,7 @@ find_package(Qt5Network REQUIRED)
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
 pkg_search_module(DtkCore REQUIRED dtkcore)
+pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 
 # Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
@@ -88,6 +89,7 @@ set(LINK_LIBS
     ${DtkWidget_LIBRARIES}
     ${DtkCore_LIBRARIES}
     ${DtkGUI_LIBRARIES}
+    ${DFrameworkDBus_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources
@@ -238,7 +240,8 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
                                               ${PROJECT_BINARY_DIR}
                                               ${DtkWidget_INCLUDE_DIRS}
                                               ${DtkCore_LIBRARIES}
-                                              ${DtkGUI_INCLUDE_DIRS})
+                                              ${DtkGUI_INCLUDE_DIRS}
+                                              ${DFrameworkDBus_INCLUDE_DIRS})
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
