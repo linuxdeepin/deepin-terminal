@@ -117,7 +117,7 @@
 <context>
     <name>DSettingsDialog</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="410"/>
+        <location filename="../src/common/utils.cpp" line="415"/>
         <source>This shortcut conflicts with %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,9 +160,9 @@
     <name>QObject</name>
     <message>
         <location filename="../src/views/warnningdlg.cpp" line="103"/>
-        <location filename="../src/common/utils.cpp" line="378"/>
-        <location filename="../src/common/utils.cpp" line="397"/>
-        <location filename="../src/common/utils.cpp" line="494"/>
+        <location filename="../src/common/utils.cpp" line="383"/>
+        <location filename="../src/common/utils.cpp" line="402"/>
+        <location filename="../src/common/utils.cpp" line="499"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -443,10 +443,10 @@
     <message>
         <location filename="../src/remotemanage/serverconfiglist.cpp" line="207"/>
         <location filename="../src/customcommand/customcommandlist.cpp" line="164"/>
-        <location filename="../src/common/utils.cpp" line="299"/>
-        <location filename="../src/common/utils.cpp" line="378"/>
-        <location filename="../src/common/utils.cpp" line="396"/>
-        <location filename="../src/common/utils.cpp" line="418"/>
+        <location filename="../src/common/utils.cpp" line="304"/>
+        <location filename="../src/common/utils.cpp" line="383"/>
+        <location filename="../src/common/utils.cpp" line="401"/>
+        <location filename="../src/common/utils.cpp" line="423"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -456,10 +456,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="163"/>
+        <location filename="../src/main/service.cpp" line="171"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="631"/>
-        <location filename="../src/common/utils.cpp" line="429"/>
-        <location filename="../src/common/utils.cpp" line="436"/>
+        <location filename="../src/common/utils.cpp" line="434"/>
+        <location filename="../src/common/utils.cpp" line="441"/>
         <source>please set another one.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -479,48 +479,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="297"/>
-        <location filename="../src/common/utils.cpp" line="364"/>
+        <location filename="../src/common/utils.cpp" line="302"/>
+        <location filename="../src/common/utils.cpp" line="369"/>
         <source>Programs are still running in terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="298"/>
+        <location filename="../src/common/utils.cpp" line="303"/>
         <source>Are you sure you want to exit?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="299"/>
+        <location filename="../src/common/utils.cpp" line="304"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="312"/>
-        <location filename="../src/common/utils.cpp" line="350"/>
-        <source>Close this terminal?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="313"/>
-        <location filename="../src/common/utils.cpp" line="351"/>
-        <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="317"/>
         <location filename="../src/common/utils.cpp" line="355"/>
-        <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
+        <source>Close this terminal?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="318"/>
+        <location filename="../src/common/utils.cpp" line="356"/>
+        <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="322"/>
-        <location filename="../src/common/utils.cpp" line="346"/>
+        <location filename="../src/common/utils.cpp" line="360"/>
+        <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="327"/>
+        <location filename="../src/common/utils.cpp" line="351"/>
         <source>Close this window?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="323"/>
-        <location filename="../src/common/utils.cpp" line="347"/>
+        <location filename="../src/common/utils.cpp" line="328"/>
+        <location filename="../src/common/utils.cpp" line="352"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -530,61 +530,61 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="364"/>
+        <location filename="../src/common/utils.cpp" line="369"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="376"/>
-        <location filename="../src/common/utils.cpp" line="386"/>
-        <location filename="../src/common/utils.cpp" line="390"/>
+        <location filename="../src/common/utils.cpp" line="381"/>
+        <location filename="../src/common/utils.cpp" line="391"/>
+        <location filename="../src/common/utils.cpp" line="395"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="377"/>
-        <location filename="../src/common/utils.cpp" line="387"/>
-        <location filename="../src/common/utils.cpp" line="391"/>
+        <location filename="../src/common/utils.cpp" line="382"/>
+        <location filename="../src/common/utils.cpp" line="392"/>
+        <location filename="../src/common/utils.cpp" line="396"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="417"/>
+        <location filename="../src/common/utils.cpp" line="422"/>
         <source>Click on Add to make this shortcut effective immediately</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="418"/>
+        <location filename="../src/common/utils.cpp" line="423"/>
         <source>Replace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="551"/>
+        <location filename="../src/common/utils.cpp" line="556"/>
         <source>Execute a command in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="554"/>
+        <location filename="../src/common/utils.cpp" line="559"/>
         <source>Run script string in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="545"/>
+        <location filename="../src/common/utils.cpp" line="550"/>
         <source>Set the work directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="548"/>
+        <location filename="../src/common/utils.cpp" line="553"/>
         <source>Set the window mode on starting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="558"/>
+        <location filename="../src/common/utils.cpp" line="563"/>
         <source>Run in quake mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="561"/>
+        <location filename="../src/common/utils.cpp" line="566"/>
         <source>Keep terminal open when command finishes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -831,7 +831,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="161"/>
+        <location filename="../src/main/service.cpp" line="169"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -878,12 +878,12 @@
 <context>
     <name>TabBar</name>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="366"/>
+        <location filename="../src/views/tabbar.cpp" line="379"/>
         <source>Close workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="367"/>
+        <location filename="../src/views/tabbar.cpp" line="380"/>
         <source>Close other workspaces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1015,19 +1015,19 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="328"/>
-        <location filename="../src/common/utils.cpp" line="366"/>
+        <location filename="../src/common/utils.cpp" line="333"/>
+        <location filename="../src/common/utils.cpp" line="371"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="330"/>
+        <location filename="../src/common/utils.cpp" line="335"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="367"/>
-        <location filename="../src/common/utils.cpp" line="438"/>
+        <location filename="../src/common/utils.cpp" line="372"/>
+        <location filename="../src/common/utils.cpp" line="443"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
