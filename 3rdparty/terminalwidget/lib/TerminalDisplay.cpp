@@ -261,19 +261,19 @@ void TerminalDisplay::fontChange(const QFont&)
 void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
 {
     QRect test_rect, feedback_rect;
-	test_rect.setRect(1, 1, _fontWidth * 4, _fontHeight);
+    test_rect.setRect(1, 1, _fontWidth * 4, _fontHeight);
     painter.drawText(test_rect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + QLatin1String("Mq"), &feedback_rect);
 
-	//qDebug() << "test_rect:" << test_rect << "feeback_rect:" << feedback_rect;
+    //qDebug() << "test_rect:" << test_rect << "feeback_rect:" << feedback_rect;
 
-	_drawTextAdditionHeight = (feedback_rect.height() - _fontHeight) / 2;
-	if(_drawTextAdditionHeight < 0) {
-	  _drawTextAdditionHeight = 0;
-	}
+    _drawTextAdditionHeight = (feedback_rect.height() - _fontHeight) / 2;
+    if(_drawTextAdditionHeight < 0) {
+      _drawTextAdditionHeight = 0;
+    }
 
-	// update the original content
+    // update the original content
     _drawTextTestFlag = false;
-	update();
+    update();
 }
 
 void TerminalDisplay::setVTFont(const QFont& f)
@@ -791,8 +791,8 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             }
             else
             {
-            	// draw the cursor outline, adjusting the area so that
-            	// it is draw entirely inside 'rect'
+                // draw the cursor outline, adjusting the area so that
+                // it is draw entirely inside 'rect'
                 int penWidth = 1;
 
                 painter.drawRect(cursorRect.adjusted(penWidth/2,
@@ -1494,6 +1494,9 @@ void TerminalDisplay::paintFilters(QPainter& painter)
 
     painter.setPen( QPen(cursorCharacter.foregroundColor.color(colorTable())) );
 
+    /***add begin by ut001121 zhangmeng 20200624 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
+    bool bDrawLineForHotSpotLink = false;
+
     // iterate over hotspots identified by the display's currently active filters
     // and draw appropriate visuals to indicate the presence of the hotspot
 
@@ -1580,6 +1583,8 @@ void TerminalDisplay::paintFilters(QPainter& painter)
                 if ( region.contains( mapFromGlobal(QCursor::pos()) ) ){
                     painter.drawLine( r.left() , underlinePos ,
                                       r.right() , underlinePos );
+                    /***add begin by ut001121 zhangmeng 20200624 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
+                    bDrawLineForHotSpotLink = true;
                 }
             }
             // Marker hotspots simply have a transparent rectanglular shape
@@ -1591,6 +1596,15 @@ void TerminalDisplay::paintFilters(QPainter& painter)
             }
         }
     }
+
+    /***add begin by ut001121 zhangmeng 20200624 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
+    if(bDrawLineForHotSpotLink){
+        if(cursor().shape() != Qt::PointingHandCursor) setCursor(Qt::PointingHandCursor);
+    }
+    else if(cursor().shape() != Qt::IBeamCursor){
+        setCursor(Qt::IBeamCursor);
+    }
+    /***add end by ut001121***/
 }
 
 int TerminalDisplay::textWidth(const int startColumn, const int length, const int line) const
@@ -2079,15 +2093,6 @@ void TerminalDisplay::mouseMoveEvent(QMouseEvent* ev)
         // set hotspot area to an invalid rectangle
         _mouseOverHotspotArea = QRegion();
   }
-
-  /***add begin by ut001121 zhangmeng 20200623 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
-  if(spot && spot->type() == Filter::HotSpot::Link){
-      if(cursor().shape() != Qt::PointingHandCursor) setCursor(Qt::PointingHandCursor);
-  }
-  else if(cursor().shape() != Qt::IBeamCursor){
-      setCursor(Qt::IBeamCursor);
-  }
-  /***add end by ut001121***/
 
   // for auto-hiding the cursor, we need mouseTracking
   if (ev->buttons() == Qt::NoButton ) return;
