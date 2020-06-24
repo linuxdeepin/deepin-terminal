@@ -216,7 +216,8 @@ unsigned short Konsole::vt100_graphics[32] =
 void TerminalDisplay::fontChange(const QFont&)
 {
   QFontMetrics fm(font());
-  _fontHeight = fm.height() + _lineSpacing;
+  /******** Modify by ut001000 renfeixiang 2020-06-24:修改字体高度的获取方法，由QFontMetrics的height获取，改成_fontWidth + font().pointSize() bug#34902 Begin***************/
+  //_fontHeight = fm.height() + _lineSpacing; //条幅黑体字体使用QFontMetrics的height获取字体高度是统一的1值，显示字体失败，现在忽略字体原有高度
 
   // waba TerminalDisplay 1.123:
   // "Base character width on widest ASCII character. This prevents too wide
@@ -224,6 +225,9 @@ void TerminalDisplay::fontChange(const QFont&)
   // Get the width from representative normal width characters
   _fontWidth = qRound((double)fm.width(QLatin1String(REPCHAR))/(double)qstrlen(REPCHAR));
 
+  //修改方法：修改字体高度的获取方法，修改成字体宽度+字体的大小：_fontWidth + font().pointSize()
+  _fontHeight = _fontWidth + font().pointSize() + _lineSpacing;
+  /******** Modify by ut001000 renfeixiang 2020-06-24: bug#34902 End***************/
   _fixedFont = true;
 
   int fw = fm.width(QLatin1Char(REPCHAR[0]));
