@@ -31,6 +31,8 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     //add by ameng 设置属性，修复BUG#20074
     setFixedWidth(m_ContentWidth);
     setItemSize(QSize(m_ContentWidth, m_ContentHeight + m_Space));
+    /***add by ut001121 zhangmeng 20200628 设置视图边距,留出空间给滚动条显示 修复BUG35378***/
+    setViewportMargins(5,10,10,10);
 
     /***add by ut001121 zhangmeng 20200521 设置非编辑模式 修复BUG27443***/
     setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -74,23 +76,6 @@ void EncodeListView::selectionChanged(const QItemSelection &selected, const QIte
 void EncodeListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
     DListView::setSelection(rect, command);
-}
-
-/*******************************************************************************
- 1. @函数:    setLabelStyle
- 2. @作者:    m000750 zhangmeng
- 3. @日期:    2020-04-23
- 4. @说明:    用于移动滚动条位置，修复BUG#20074
-*******************************************************************************/
-void EncodeListView::showEvent(QShowEvent *e)
-{
-    static bool moveScrollBar = true;
-    if (moveScrollBar == true) {
-        moveScrollBar = false;
-        QScrollBar *pScrollBar = verticalScrollBar();
-        pScrollBar->move(pScrollBar->x() + 5, pScrollBar->y());
-    }
-    DListView::showEvent(e);
 }
 
 void EncodeListView::resizeContents(int width, int height)
