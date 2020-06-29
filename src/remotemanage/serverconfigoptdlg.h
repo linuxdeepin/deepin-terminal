@@ -63,7 +63,6 @@ public:
     void resetCurServer(ServerConfig curServer);
 
 private slots:
-    void slotClose();
     void slotAddSaveButtonClicked();
     void slotFileChooseDialog();
 

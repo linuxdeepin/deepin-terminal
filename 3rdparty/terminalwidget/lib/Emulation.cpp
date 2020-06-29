@@ -177,8 +177,8 @@ void Emulation::setBackspaceMode(char *key, int length)
 {
     KeyboardTranslator::Entry entry = _keyTranslator->findEntry(
                                           Qt::Key_Backspace,
-                                          nullptr,
-                                          nullptr);
+                                          Qt::NoModifier,
+                                          KeyboardTranslator::NoState);
 
     KeyboardTranslator::Entry newEntry;
     KeyboardTranslator::States flags = KeyboardTranslator::NoState;
@@ -200,8 +200,8 @@ void Emulation::setDeleteMode(char *key, int length)
 {
     KeyboardTranslator::Entry entry = _keyTranslator->findEntry(
                                           Qt::Key_Delete,
-                                          nullptr,
-                                          nullptr);
+                                          Qt::NoModifier,
+                                          KeyboardTranslator::NoState);
 
     KeyboardTranslator::Entry newEntry;
     KeyboardTranslator::States flags = KeyboardTranslator::NoState;

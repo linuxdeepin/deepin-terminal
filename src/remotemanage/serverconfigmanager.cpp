@@ -114,6 +114,11 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
 
 void ServerConfigManager::delServerConfig(ServerConfig *config)
 {
+    // 防止重复删除
+    if (nullptr == config) {
+        return;
+    }
+    // 读写配置文件
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists()) {
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -127,7 +132,6 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     //-------------------------
     // 配置中清除数据
     commandsSettings.remove(strConfigGroupName);
-    // 待优化 应该传的是同一指针指向的数据
     //将map中数据清除
     // 删除数据
     m_serverConfigs[config->m_group].removeOne(config);
@@ -138,6 +142,7 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     }
 
     emit refreshList("");
+    // 所有弹窗都消失才能delete config
     delete config;
 }
 
@@ -156,17 +161,9 @@ QMap<QString, QList<ServerConfig *>> &ServerConfigManager::getServerConfigs()
 
 void ServerConfigManager::setModifyDialog(QString key, ServerConfigOptDlg *dlg)
 {
-    if (m_serverConfigDialogMap.contains(key)) {
-        // 若已存在
-        m_serverConfigDialogMap[key].append(dlg);
-
-    } else {
-        // 不存在添加
-        QList<ServerConfigOptDlg *> serverConfigOptDlgList;
-        serverConfigOptDlgList.append(dlg);
-        m_serverConfigDialogMap[key] = serverConfigOptDlgList;
-    }
-    qDebug() << "show edit dialog" << key << m_serverConfigDialogMap[key].count();
+    // 添加编辑弹窗
+    m_serverConfigDialogMap[key].append(dlg);
+    qDebug() << "show edit dialog" << key << m_serverConfigDialogMap[key].count() << dlg;
 }
 /*******************************************************************************
  1. @函数:    removeDialog
@@ -191,15 +188,19 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     }
     // 2.删除数据
     if (nullptr != removeOne) {
-        qDebug() << "show delete " << key;
+        qDebug() << "delete dialog from remote name : " << key;
         m_serverConfigDialogMap[key].removeOne(removeOne);
     }
 
     if (m_serverConfigDialogMap[key].count() == 0) {
+        qDebug() << "remote dialog is 0, remove remote name : " << key;
         m_serverConfigDialogMap.remove(key);
     }
 
-    delete removeOne;
+    if (nullptr != removeOne) {
+        removeOne->deleteLater();
+    }
+    removeOne = nullptr;
 }
 
 void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
@@ -226,18 +227,21 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 
 void ServerConfigManager::closeAllDialog(QString key)
 {
-    QList<ServerConfigOptDlg *> deleteList;
-    for (auto item : m_serverConfigDialogMap[key]) {
-        if (item != nullptr) {
-            item->reject();
-            deleteList.append(item);
-        }
-    }
-    m_serverConfigDialogMap.remove(key);
-    // 删除相关dlg
-    int count = deleteList.count();
-    for (int i = 0; i < count; ++i) {
-        delete deleteList.at(i);
+    qDebug() << __FUNCTION__ << "remote name : " <<  key << m_serverConfigDialogMap.count();
+    // 判读此时这个key是否存在
+    if (!m_serverConfigDialogMap.contains(key)) {
+        // 不存在退出
+        qDebug() << __FUNCTION__ << "not contains " <<  key;
+        return;
     }
 
+    for (auto item : m_serverConfigDialogMap[key]) {
+        if (item != nullptr) {
+            qDebug() << __FUNCTION__ << "reject : " <<  item;
+            // reject就会把当前的窗口删除
+            item->reject();
+        }
+    }
+    // removeDialog会做此操作
+    // m_serverConfigDialogMap.remove(key);
 }

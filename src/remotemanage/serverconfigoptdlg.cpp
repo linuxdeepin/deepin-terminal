@@ -233,7 +233,7 @@ void ServerConfigOptDlg::initUI()
         if (m_type == SCT_MODIFY) {
             m_delServer->show();
             this->setFixedHeight(670);
-            qDebug() << "ServerConfigOptDlg init delet show";
+            qDebug() << "remote dialog show advance options";
         } else {
             this->setFixedHeight(630);
         }
@@ -540,9 +540,4 @@ void ServerConfigOptDlg::slotFileChooseDialog()
 
         m_privateKey->setText(fileName);
     }
-}
-
-void ServerConfigOptDlg::slotClose()
-{
-    reject();
 }

@@ -189,11 +189,13 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
         if (result == ServerConfigOptDlg::Accepted) {
             // 判断是否需要删除
             if (dlg->isDelServer()) {
+                qDebug() << "delete " << dlg->getCurServer()->m_serverName << dlg;
                 DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(dlg->getServerName()), dlg);
                 deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
-                connect(deleteDialog, &DDialog::finished, this, [ = ](int result) {
+                connect(deleteDialog, &DDialog::finished, this, [ = ](int result2) {
                     // 删除
-                    if (result == DDialog::Accepted) {
+                    if (result2 == DDialog::Accepted) {
+                        // 关闭所有相关弹窗
                         ServerConfigManager::instance()->closeAllDialog(dlg->getCurServer()->m_serverName);
                         ServerConfigManager::instance()->delServerConfig(dlg->getCurServer());
                         emit listItemCountChange();
@@ -216,12 +218,15 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
                 // 关闭后及时将弹窗删除
                 ServerConfigManager::instance()->removeDialog(dlg);
             }
+        } else {
+            // 取消后及时将弹窗删除
+            ServerConfigManager::instance()->removeDialog(dlg);
         }
 
     });
-    dlg->show();
     // 2. 记录弹窗
     ServerConfigManager::instance()->setModifyDialog(curItemServer->m_serverName, dlg);
+    dlg->show();
 }
 
 /*******************************************************************************
