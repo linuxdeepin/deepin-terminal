@@ -753,7 +753,7 @@ QString MainWindow::getConfigWindowState()
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
         qDebug() << "use line state set:" << state;
-        if (state == "maximize") {
+        if (state == "maximum") {
             windowState = "window_maximum";
         } else if (state == "splitscreen") {
             windowState = "split_screen";

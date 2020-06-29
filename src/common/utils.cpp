@@ -550,7 +550,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
                                         QObject::tr("Set the work directory"),
                                         "path");
     QCommandLineOption optWindowState({ "m", "window-mode" },
-                                      QString(QObject::tr("Set the window mode on starting") + " (normal, maximize, fullscreen, splitscreen)"),
+                                      QString(QObject::tr("Set the window mode on starting") + " (normal, maximum, fullscreen, splitscreen)"),
                                       "state-mode");
     QCommandLineOption optExecute({ "e", "execute" },
                                   QObject::tr("Execute a command in the terminal"),
@@ -603,7 +603,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     if (parser.isSet(optWindowState)) {
         Properties[StartWindowState] = parser.value(optWindowState);
         if (appControl) {
-            QStringList validString = { "maximize", "fullscreen", "splitscreen", "normal" };
+            QStringList validString = { "maximum", "fullscreen", "splitscreen", "normal" };
             // 参数不合法时，会显示help以后，直接退出。
             if (!validString.contains(parser.value(optWindowState))) {
                 parser.showHelp();
@@ -938,7 +938,7 @@ FontFilter::FontFilter()
 
 FontFilter::~FontFilter()
 {
-    if(m_thread != nullptr){
+    if (m_thread != nullptr) {
         setStop(true);
         m_thread->quit();
         m_thread->wait();
@@ -950,7 +950,7 @@ FontFilter::~FontFilter()
 //启动thread，打印等宽字体函数
 void FontFilter::HandleWidthFont()
 {
-    if(!m_thread->isRunning()){
+    if (!m_thread->isRunning()) {
         m_thread->start();
         return;
     }
@@ -1021,7 +1021,7 @@ void FontFilter::CompareWhiteList()
               << "Symbola" << "Unifont CSUR" << "Unifont Upper" << "Wingdings" << "Wingdings 2" << "Wingdings 3";
 
     for (QString sfont : fontLst) {
-        if(m_bstop){
+        if (m_bstop) {
             break;
         }
         if (Whitelist.contains(sfont) | Blacklist.contains(sfont)) {
