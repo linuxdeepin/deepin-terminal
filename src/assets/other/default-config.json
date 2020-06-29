@@ -66,7 +66,7 @@
                             "key": "find",
                             "name": "Find",
                             "type": "shortcut",
-                            "default":  "Ctrl+F"
+                            "default":  "Ctrl+Alt+F"
                         },
                         {
                             "key": "zoom_in",
@@ -108,13 +108,13 @@
                             "key": "close_workspace",
                             "name": "Close workspace",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+W"
+                            "default":  "Alt+W"
                         },
                         {
                             "key": "close_other_workspace",
                             "name": "Close other workspaces",
                             "type": "shortcut",
-                            "default":  "Ctrl+W"
+                            "default":  "Ctrl+Alt+W"
                         },
                         {
                             "key": "previous_workspace",
@@ -144,37 +144,37 @@
                             "key": "select_upper_window",
                             "name": "Select upper window",
                             "type": "shortcut",
-                            "default":  "Alt+K"
+                            "default":  "Alt+Up"
                         },
                         {
                             "key": "select_lower_window",
                             "name": "Select lower window",
                             "type": "shortcut",
-                            "default":  "Alt+J"
+                            "default":  "Alt+Down"
                         },
                         {
                             "key": "select_left_window",
                             "name": "Select left window",
                             "type": "shortcut",
-                            "default":  "Alt+H"
+                            "default":  "Alt+Left"
                         },
                         {
                             "key": "select_right_window",
                             "name": "Select right window",
                             "type": "shortcut",
-                            "default":  "Alt+L"
+                            "default":  "Alt+Right"
                         },
                         {
                             "key": "close_window",
                             "name": "Close window",
                             "type": "shortcut",
-                            "default":  "Ctrl+Alt+Q"
+                            "default":  "Alt+Q"
                         },
                         {
                             "key": "close_other_windows",
                             "name": "Close other windows",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+Q"
+                            "default":  "Ctrl+Alt+Q"
                         }
                     ]
                 },
@@ -204,13 +204,13 @@
                             "key": "custom_command",
                             "name": "Custom commands",
                             "type": "shortcut",
-                            "default":  "Ctrl+["
+                            "default":  "Ctrl+Ins"
                         },
                         {
                             "key": "remote_management",
                             "name": "Remote management",
                             "type": "shortcut",
-                            "default":  "Ctrl+/"
+                            "default":  "Ctrl+Del"
                         }
                     ]
                 }

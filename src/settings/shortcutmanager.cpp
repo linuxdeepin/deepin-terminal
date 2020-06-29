@@ -39,7 +39,7 @@ void ShortcutManager::initShortcuts()
     m_builtinShortcuts << "Ctrl+C";
     m_builtinShortcuts << "Ctrl+D";
     for (int i = 0; i <= 9; i++) {
-        m_builtinShortcuts << QString("Alt+%1").arg(i);
+        m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
     }
 
 //    for(int i = 0; i < m_builtinShortcuts.size(); i++)

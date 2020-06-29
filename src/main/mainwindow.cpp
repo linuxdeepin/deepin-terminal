@@ -1047,7 +1047,7 @@ void MainWindow::initShortcuts()
     /********************* Modify by n014361 wangpeili End ************************/
 
     for (int i = 1; i <= 9; i++) {
-        QString shortCutStr = QString("alt+%1").arg(i);
+        QString shortCutStr = QString("ctrl+shift+%1").arg(i);
         //qDebug() << shortCutStr;
         QShortcut *switchTabSC = new QShortcut(QKeySequence(shortCutStr), this);
         connect(switchTabSC, &QShortcut::activated, this, [this, i]() {
