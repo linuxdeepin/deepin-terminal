@@ -58,7 +58,7 @@ ShortcutManager::~ShortcutManager()
 void ShortcutManager::initConnect(MainWindow *mainWindow)
 {
     for (const QAction *commandAction : m_customCommandActionList) {
-        connect(commandAction, &QAction::triggered, this, [ = ]() {
+        connect(commandAction, &QAction::triggered, mainWindow, [ = ]() {
             qDebug() << "commandAction->data().toString() is triggered" << mainWindow;
             qDebug() << commandAction->parent();
             if (!mainWindow->isActiveWindow()) {
