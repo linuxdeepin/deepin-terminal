@@ -204,13 +204,13 @@
                             "key": "custom_command",
                             "name": "Custom commands",
                             "type": "shortcut",
-                            "default":  "Ctrl+Ins"
+                            "default":  "Alt+Ins"
                         },
                         {
                             "key": "remote_management",
                             "name": "Remote management",
                             "type": "shortcut",
-                            "default":  "Ctrl+Del"
+                            "default":  "Alt+Del"
                         }
                     ]
                 }
