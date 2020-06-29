@@ -326,7 +326,6 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
     QAction *existAction = nullptr;
     int icount = 0;
-    m_bNeedDel = false;
     if (m_type == CCT_MODIFY) {
 
         //if (m_bRefreshCheck   && (!checkSequence(m_shortCutLineEdit->keySequence()))) {
@@ -350,7 +349,6 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         existAction = ShortcutManager::instance()->checkActionIsExistForModify(*m_newAction);
 
         if (strName != m_currItemData->m_cmdName) {
-            m_bNeedDel = true;
             QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
             for (int i = 0; i < customCommandActionList.size(); i++) {
                 QAction *curAction = customCommandActionList[i];

@@ -72,7 +72,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         int cmdIconSize = 44;
         int editIconSize = 20;
 
-        QRect cmdIconRect = QRect(bgRect.left() + 6, bgRect.top() + (bgRect.height() - cmdIconSize) / 2,                                  cmdIconSize, cmdIconSize);
+        QRect cmdIconRect = QRect(bgRect.left() + 6, bgRect.top() + (bgRect.height() - cmdIconSize) / 2, cmdIconSize, cmdIconSize);
         painter->drawPixmap(cmdIconRect, QIcon::fromTheme("dt_command").pixmap(QSize(cmdIconSize, cmdIconSize)));
 
         if (option.state & QStyle::State_MouseOver) {
