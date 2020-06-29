@@ -928,24 +928,39 @@ FontFilter *FontFilter::instance()
 
 FontFilter::FontFilter()
 {
-
+    m_thread = new QThread();
+    this->moveToThread(m_thread);
+    QObject::connect(m_thread, &QThread::started, this, [ = ]() {
+        CompareWhiteList();
+        m_thread->quit();
+    });
 }
 
 FontFilter::~FontFilter()
 {
-
+    if(m_thread != nullptr){
+        setStop(true);
+        m_thread->quit();
+        m_thread->wait();
+        delete m_thread;
+        m_thread = nullptr;
+    }
 }
 
 //启动thread，打印等宽字体函数
 void FontFilter::HandleWidthFont()
 {
-    QThread *thread = new QThread(this);
-    this->moveToThread(thread);
-    QObject::connect(thread, &QThread::started, this, [ = ]() {
-        CompareWhiteList();
-        thread->quit();
-    });
-    thread->start();
+    if(!m_thread->isRunning()){
+        m_thread->start();
+        return;
+    }
+    qDebug() << "m_thread is Running";
+}
+
+//设置线程结束标志 true = 结束 false = 正常
+void FontFilter::setStop(bool stop)
+{
+    m_bstop = stop;
 }
 
 //打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
@@ -1006,6 +1021,9 @@ void FontFilter::CompareWhiteList()
               << "Symbola" << "Unifont CSUR" << "Unifont Upper" << "Wingdings" << "Wingdings 2" << "Wingdings 3";
 
     for (QString sfont : fontLst) {
+        if(m_bstop){
+            break;
+        }
         if (Whitelist.contains(sfont) | Blacklist.contains(sfont)) {
             continue;
         }

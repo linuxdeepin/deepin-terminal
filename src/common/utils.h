@@ -117,10 +117,16 @@ public:
     ~FontFilter();
     //启动thread，打印等宽字体函数
     void HandleWidthFont();
+    //设置线程结束标志 true = 结束 false = 正常
+    void setStop(bool stop);
 
 private:
     //打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
     void CompareWhiteList();
+    //线程成员变量
+    QThread *m_thread = nullptr;
+    //线程结束标志位
+    bool m_bstop = false;
 };
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/
 
