@@ -108,7 +108,8 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
         configlist.append(config);
         m_serverConfigs[config->m_group] = configlist;
     }
-    qDebug() << m_serverConfigs.count() << m_serverConfigs[""].count();
+    // 现实当前分组和没有分组的远程个数
+    //qDebug() << m_serverConfigs.count() << m_serverConfigs[""].count();
     emit refreshList(config->m_serverName);
 }
 
@@ -198,6 +199,7 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     }
 
     if (nullptr != removeOne) {
+        qDebug() << "delete remote dialog" << removeOne;
         removeOne->deleteLater();
     }
     removeOne = nullptr;

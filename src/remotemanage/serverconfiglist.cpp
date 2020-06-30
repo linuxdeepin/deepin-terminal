@@ -175,6 +175,7 @@ void ServerConfigList::refreshDataByFilter(const QString &strFilter)
 
 void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QModelIndex modelIndex)
 {
+    qDebug() << __FUNCTION__ << "modify remote " << curItemServer->m_serverName;
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
 

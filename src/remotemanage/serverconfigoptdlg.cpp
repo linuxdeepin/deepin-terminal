@@ -517,7 +517,9 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
+    qDebug() << __FUNCTION__ << "add or save remote config";
     accept();
+    qDebug() << __FUNCTION__ << "add or save remote config finish";
 }
 /*******************************************************************************
  1. @函数:    slotFileChooseDialog
