@@ -391,7 +391,10 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
   // set the scroll bar's slider to occupy the whole area of the scroll bar initially
   _scrollBar = new QScrollBar(this);
   /******** Modify by ut000439 wangpeili 2020-06-24: 适应窗口特效圆角 ****************/
-  _scrollBar->setStyleSheet("margin: 0px 0 5px 0;");
+  //qDebug()<<"_scrollBar->width()"<<_scrollBar->width();
+  // 设置15px宽度＝6?
+  _scrollBar->setStyleSheet("margin: 0px 0 15px 0;width: 15");
+  //qDebug()<<"_scrollBar->width()"<<_scrollBar->width();
   /********************* Modify by n014361 wangpeili End ************************/
 
   // since the contrast with the terminal background may not be enough,
