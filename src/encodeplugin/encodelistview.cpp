@@ -24,15 +24,13 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setVerticalScrollMode(ScrollPerItem);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    /******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
-    setViewportMargins(0, 20, 0, 0); //将设置Encode顶上的空白区域放在这里，目前设置大小为20
-    /******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
 
     //add by ameng 设置属性，修复BUG#20074
-    setFixedWidth(m_ContentWidth);
+    setFixedWidth(m_ContentWidth+20);
     setItemSize(QSize(m_ContentWidth, m_ContentHeight + m_Space));
+
     /***add by ut001121 zhangmeng 20200628 设置视图边距,留出空间给滚动条显示 修复BUG35378***/
-    setViewportMargins(5,10,10,10);
+    setViewportMargins(10,10,10,10);
 
     /***add by ut001121 zhangmeng 20200521 设置非编辑模式 修复BUG27443***/
     setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -76,6 +74,20 @@ void EncodeListView::selectionChanged(const QItemSelection &selected, const QIte
 void EncodeListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
     DListView::setSelection(rect, command);
+}
+
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-07-01
+ 4. @说明:    处理尺寸变化事件
+*******************************************************************************/
+void EncodeListView::resizeEvent(QResizeEvent *event)
+{
+    /***add by ut001121 zhangmeng 20200701 修改滚动条高度,解决滚动条被窗口特效圆角切割的问题***/
+    verticalScrollBar()->setFixedHeight(height()-10);
+
+    return DListView::resizeEvent(event);
 }
 
 void EncodeListView::resizeContents(int width, int height)
