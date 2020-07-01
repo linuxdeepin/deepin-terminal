@@ -123,7 +123,7 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
     }
 
     fileString.replace("<<USER>>", curServer->m_userName);
-    fileString.replace("<<SERVER>>", curServer->m_address);
+    fileString.replace("<<SERVER>>", curServer->m_address.trimmed());
     fileString.replace("<<PORT>>", curServer->m_port);
     if (curServer->m_privateKey.isNull() || curServer->m_privateKey.isEmpty()) {
         fileString.replace("<<PRIVATE_KEY>>", "");
