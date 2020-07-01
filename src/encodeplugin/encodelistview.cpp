@@ -13,7 +13,7 @@
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
-    m_standardModel = new QStandardItemModel;
+    m_standardModel = new QStandardItemModel(this);
     m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
     // init view.
     this->setModel(m_standardModel);

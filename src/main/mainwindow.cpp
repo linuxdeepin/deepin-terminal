@@ -50,7 +50,7 @@ DWIDGET_USE_NAMESPACE
 
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent),
-      m_menu(new QMenu),
+      m_menu(new QMenu(this)),
       m_tabbar(nullptr),
       m_centralWidget(new QWidget(this)),
       m_centralLayout(new QVBoxLayout(m_centralWidget)),
