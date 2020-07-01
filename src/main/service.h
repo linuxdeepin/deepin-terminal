@@ -92,12 +92,10 @@ public slots:
     void Entry(QStringList arguments);
 private:
     explicit Service(QObject *parent = nullptr);
-    //隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用
-    void hideOpacityAndBlurOptions();
-    //监听窗口特效开关对应DBus信号，并实时禁用/启用透明度和背景模糊选项
+    //显示/隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用
+    void showHideOpacityAndBlurOptions(bool isShow);
+    //监听窗口特效开关对应DBus信号，并实时显示/隐藏透明度和背景模糊选项
     void listenWindowEffectSwitcher();
-    //根据是否开启窗口特效开关，禁用/启用透明度和背景模糊选项
-    void changeSettingControlStatus(bool isWindowEffectEnabled);
 
     static Service *pService ;
     // 设置框 全局唯一显示
