@@ -97,7 +97,7 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
     QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
-                                     config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
+                                     config->m_userName, config->m_address, config->m_port, config->m_serverName);
     //------------------------------
     settServerConfig(commandsSettings, strConfigGroupName, config);
     if (m_serverConfigs.contains(config->m_group)) {
@@ -129,7 +129,7 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
     QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
-                                     config->m_userName).arg(config->m_address).arg(config->m_port).arg(config->m_serverName);
+                                     config->m_userName, config->m_address, config->m_port, config->m_serverName);
     //-------------------------
     // 配置中清除数据
     commandsSettings.remove(strConfigGroupName);
@@ -180,7 +180,7 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     // 遍历map
     for (serverConfigDialogMapIterator item = m_serverConfigDialogMap.begin(); item != m_serverConfigDialogMap.end(); ++item) {
         //遍历列表
-        for (auto dlgItem : item.value()) {
+        for (auto &dlgItem : item.value()) {
             if (dlgItem == dlg) {
                 key = item.key();
                 removeOne = dlgItem;
@@ -213,7 +213,7 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
     if (key != newConfig->m_serverName) {
         // 将数据放入新的键值对
         QList<ServerConfigOptDlg *> serverConfigOptDlgList;
-        for (auto item : m_serverConfigDialogMap[key]) {
+        for (auto &item : m_serverConfigDialogMap[key]) {
             serverConfigOptDlgList.append(item);
         }
         m_serverConfigDialogMap[newConfig->m_serverName] = serverConfigOptDlgList;
@@ -221,7 +221,7 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
     }
 
 
-    for (auto dlg : m_serverConfigDialogMap[newConfig->m_serverName]) {
+    for (auto &dlg : m_serverConfigDialogMap[newConfig->m_serverName]) {
         dlg->updataData(newConfig);
     }
 
@@ -237,7 +237,7 @@ void ServerConfigManager::closeAllDialog(QString key)
         return;
     }
 
-    for (auto item : m_serverConfigDialogMap[key]) {
+    for (auto &item : m_serverConfigDialogMap[key]) {
         if (item != nullptr) {
             qDebug() << __FUNCTION__ << "reject : " <<  item;
             // reject就会把当前的窗口删除

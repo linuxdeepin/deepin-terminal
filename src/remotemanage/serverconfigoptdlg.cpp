@@ -328,7 +328,7 @@ QList<QString> ServerConfigOptDlg::getTextCodec()
     QList<QByteArray> list = Utils::encodeList();
     /********************* Modify by ut000610 daizhengwen End ************************/
     QList<QString> textCodecList;
-    for (QByteArray byteArr : list) {
+    for (QByteArray &byteArr : list) {
         QString str = QString(byteArr);
         if (!textCodecList.contains(str)) {
             textCodecList.append(str);
@@ -538,7 +538,8 @@ void ServerConfigOptDlg::slotFileChooseDialog()
     int code = dialog.exec();
 
     if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
-        const QString fileName = dialog.selectedFiles().first();
+        QStringList list = dialog.selectedFiles();
+        const QString fileName = list.first();
 
         m_privateKey->setText(fileName);
     }

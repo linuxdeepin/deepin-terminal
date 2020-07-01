@@ -183,7 +183,7 @@ void PageSearchBar::initSearchEdit()
             QToolButton *clearBtn = list.at(i);
             //屏蔽lineedit清除按钮的槽函数,_q_clearFocus()获得有效的判断条件
             clearBtn->disconnect(SIGNAL(clicked()));
-            connect(clearBtn, &QToolButton::clicked, [this]() {
+            connect(clearBtn, &QToolButton::clicked, this, [this]() {
                 m_searchEdit->lineEdit()->setText("");
             });
         }

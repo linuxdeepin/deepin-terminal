@@ -209,7 +209,7 @@ void MainWindow::initOptionMenu()
     });
     m_menu->addAction(newWindowAction);
     /********************* Modify by m000714 daizhengwen End ************************/
-    for (MainWindowPluginInterface *plugin : m_plugins) {
+    for (auto &plugin : m_plugins) {
         QAction *pluginMenu = plugin->titlebarMenu(this);
         // 取消Encoding插件的菜单展示
         if (plugin->getPluginName() == PLUGIN_TYPE_ENCODING) {
@@ -480,7 +480,7 @@ void MainWindow::closeOtherTab(const QString &identifier, bool hasConfirmed)
     }
 
     // 关闭其它窗口，需要检测
-    for (QString id : closeTabIdList) {
+    for (QString &id : closeTabIdList) {
         closeTab(id, true);
         qDebug() << " close" << id;
     }
@@ -505,7 +505,7 @@ void MainWindow::closeAllTab()
     }
 
     // 全部关闭时，不再检测了，
-    for (QString id : closeTabIdList) {
+    for (QString &id : closeTabIdList) {
         closeTab(id, true);
         qDebug() << " close" << id;
     }
@@ -1309,7 +1309,8 @@ void MainWindow::displayShortcuts()
     QJsonDocument doc(shortcutObj);
 
     QStringList shortcutString;
-    QString param1 = "-j=" + QString(doc.toJson().data());
+    QByteArray array = doc.toJson();
+    QString param1 = "-j=" + QString(array.data());
     QString param2 = "-p=" + QString::number(pos.x()) + "," + QString::number(pos.y());
     shortcutString << param1 << param2;
 
@@ -1342,7 +1343,7 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     QString groupname = "shortcuts." + keyCategory;
 
     QJsonArray JsonArry;
-    for (auto opt :
+    for (auto &opt :
             Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
         QString name = QObject::tr(opt->name().toUtf8().data());
@@ -1448,7 +1449,7 @@ void MainWindow::remoteUploadFile()
         pressCtrlAt();
         sleep(100);
         QString strTxt = "sz ";
-        for (QString str : fileName) {
+        for (QString &str : fileName) {
             strTxt += str + " ";
         }
         currentPage()->sendTextToCurrentTerm(strTxt);

@@ -339,7 +339,7 @@ void TermWidgetPage::focusNavigation(Qt::Edge dir)
     QPoint comparPoint = GetComparePoint(currentTerminal(), dir);
     TermWidget *dst = nullptr;
     QList<TermWidget *> termList = findChildren<TermWidget *>();
-    QMap<TermWidget *, QRect> mapTermRect;
+    //QMap<TermWidget *, QRect> mapTermRect;
     for (TermWidget *term : qAsConst(termList)) {
         if (GetRect(term).contains(comparPoint)) {
             qDebug() << "yes!" << comparPoint.x() << comparPoint.y();

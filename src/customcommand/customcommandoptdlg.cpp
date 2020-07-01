@@ -225,7 +225,7 @@ void CustomCommandOptDlg::initUI()
     }
     m_lastCmdShortcut = m_shortCutLineEdit->keySequence().toString();
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
-    connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, [ = ](const QKeySequence & sequence) {
+    connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, this, [ = ](const QKeySequence & sequence) {
         //删除
         if (sequence.toString() == "Backspace") {
             m_shortCutLineEdit->clear();
@@ -390,7 +390,7 @@ bool CustomCommandOptDlg::checkSequence(const QKeySequence &sequence)
         m_shortCutLineEdit->clear();
         m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
 
-        QTimer::singleShot(30, [&]() {
+        QTimer::singleShot(30, this, [&]() {
             m_shortCutLineEdit->setFocus();
         });
         return false;
@@ -615,7 +615,7 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
         connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, [this]() {
             m_shortcutConflictDialog->hide();
             /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 Begin***************/
-            QTimer::singleShot(30, [&]() {
+            QTimer::singleShot(30, this, [&]() {
                 m_shortCutLineEdit->setFocus();
             });
             /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/

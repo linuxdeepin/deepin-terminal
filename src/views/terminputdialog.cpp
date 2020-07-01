@@ -193,7 +193,8 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
         emit confirmBtnClicked();
 
         TermWidgetPage *page = qobject_cast<TermWidgetPage *>(parentWidget);
-        emit page->onTermRequestRenameTab(m_lineEdit->text());
+        //emit page->onTermRequestRenameTab(m_lineEdit->text());
+        page->onTermRequestRenameTab(m_lineEdit->text());
 
         close();
     });

@@ -81,7 +81,7 @@ void ServerConfigDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->drawPixmap(cmdIconRect, cmdIconPixmap);
 
         QString strServerName = itemData.m_serverName;
-        QString strAddress = QString("%1@%2").arg(itemData.m_userName).arg(itemData.m_address);
+        QString strAddress = QString("%1@%2").arg(itemData.m_userName, itemData.m_address);
 
         if (isgroup) {
             strServerName = itemData.m_group;

@@ -121,7 +121,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         /********************* Modify by ut000610 daizhengwen End ************************/
         // 退出远程后，设置成false
         if (value.contains("Connection to") && value.contains(" closed.")) {
-            QTimer::singleShot(100, [&]() {
+            QTimer::singleShot(100, this, [&]() {
                 // 判断是否此时退出远程
                 if (!isInRemoteServer()) {
                     qDebug() << "exit remote";
@@ -173,7 +173,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
     /******** Modify by ut000610 daizhengwen 2020-06-11: 启动成功，则允许下一个窗口创建****************/
     connect(this, &TermWidget::processStarted, Service::instance(), [ = ]() {
-        QTimer::singleShot(200, [ = ]() {
+        QTimer::singleShot(200, this, [ = ]() {
             Service::instance()->setMemoryEnable(true);
         });
     });

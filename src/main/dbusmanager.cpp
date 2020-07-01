@@ -63,7 +63,8 @@ int DBusManager::callKDECurrentDesktop()
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qDebug() << "call currentDesktop Success!";
-        return response.arguments().takeFirst().toInt();
+        QList<QVariant> list = response.arguments();
+        return list.takeFirst().toInt();
     } else {
         qDebug() << "call currentDesktop Fail!" << response.errorMessage();
         return -1;
@@ -110,7 +111,8 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qDebug() << "call List Success!";
-        QString fonts = response.arguments().takeFirst().toString();
+        QList<QVariant> list = response.arguments();
+        QString fonts = list.takeFirst().toString();
         // 原本的返回值为QDBusPendingReply<QString> => QString
         fonts.replace("[", "");
         fonts.replace("]", "");
@@ -151,7 +153,8 @@ QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fo
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qDebug() << "call Show Success!";
-        QString fonts = response.arguments().takeFirst().toString();
+        QList<QVariant> list = response.arguments();
+        QString fonts = list.takeFirst().toString();
         QJsonArray array = QJsonDocument::fromJson(fonts.toLocal8Bit().data()).array();
 
         List = converToList(fontType, array);
@@ -170,8 +173,9 @@ bool DBusManager::callCreateRequest()
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::AutoDetect);
     if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call createRequest Success!" << response.arguments().takeFirst().toBool();
-        return response.arguments().takeFirst().toBool();
+        QList<QVariant> list = response.arguments();
+        qDebug() << "call createRequest Success!" << list.takeFirst().toBool();
+        return list.takeFirst().toBool();
     } else {
         qDebug() << "call createRequest!" << response.errorMessage();
         return false;

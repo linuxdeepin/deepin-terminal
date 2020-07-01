@@ -163,11 +163,11 @@ void EncodeListModel::initEncodeData()
 
 
     // 自定义的名称，系统里不一定大小写完全一样，再同步一下。
-    for (QByteArray name : showEncodeList) {
+    for (QByteArray &name : showEncodeList) {
         QString strname1 = name;
         bool bFind = false;
         QByteArray encodename;
-        for (QByteArray name2 : all) {
+        for (QByteArray &name2 : all) {
             QString strname2 = name2;
             if (strname1.compare(strname2, Qt::CaseInsensitive) == 0) {
                 bFind = true;

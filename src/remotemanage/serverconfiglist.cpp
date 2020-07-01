@@ -351,7 +351,7 @@ void ServerConfigList::mousePressEvent(QMouseEvent *event)
     // 找到配置里这个值
     ServerConfig *curItemServer = nullptr;
     QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
-    for (auto item : configMap[itemData.m_group]) {
+    for (auto &item : configMap[itemData.m_group]) {
         if (item->m_serverName == itemData.m_serverName) {
             curItemServer = item;
         }

@@ -57,7 +57,7 @@ ShortcutManager::~ShortcutManager()
 
 void ShortcutManager::initConnect(MainWindow *mainWindow)
 {
-    for (const QAction *commandAction : m_customCommandActionList) {
+    for (auto &commandAction : m_customCommandActionList) {
         connect(commandAction, &QAction::triggered, mainWindow, [ = ]() {
             qDebug() << "commandAction->data().toString() is triggered" << mainWindow;
             qDebug() << commandAction->parent();
@@ -218,7 +218,7 @@ QAction *ShortcutManager::checkActionIsExistForModify(QAction &action)
 bool ShortcutManager::isShortcutConflictInCustom(const QString &Name, const QString &Key)
 {
     //qDebug()<<"isShortcutConflictInCustom";
-    for (QAction *currAction : m_customCommandActionList) {
+    for (auto &currAction : m_customCommandActionList) {
         if (Key == currAction->shortcut().toString()) {
             if (Name != currAction->text()) {
                 qDebug() << Name << Key << "is conflict with custom shortcut!";
@@ -303,14 +303,14 @@ void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
     delCustomCommandToConfig(itemData);
 
     QString actionCmdName = itemData.m_cmdName;
-    QString actionCmdText = itemData.m_cmdText;
-    QString actionKeySeq = itemData.m_cmdShortcut;
+    //QString actionCmdText = itemData.m_cmdText;
+    //QString actionKeySeq = itemData.m_cmdShortcut;
 
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList.at(i);
         QString currCmdName = currAction->text();
-        QString currCmdText = currAction->data().toString();
-        QString currKeySeq = currAction->shortcut().toString();
+        //QString currCmdText = currAction->data().toString();
+        //QString currKeySeq = currAction->shortcut().toString();
         //if (actionCmdName == currCmdName
         //        && actionCmdText == currCmdText
         //        && actionKeySeq == currKeySeq) {
@@ -338,7 +338,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     commandsSettings.setIniCodec(INI_FILE_CODEC);
     commandsSettings.beginGroup(action->text());
     commandsSettings.setValue("Command", action->data());
-    QString tmp = action->shortcut().toString();
+    //QString tmp = action->shortcut().toString();
     commandsSettings.setValue("Shortcut", action->shortcut().toString());
     commandsSettings.endGroup();
 

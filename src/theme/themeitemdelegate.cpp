@@ -57,7 +57,7 @@ void ThemeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 
     // draw color theme prevew text.
     painter->setOpacity(1);
-    QFontMetrics fm(font);
+    //QFontMetrics fm(font);
     int lineHeight = 20;
 
     int nameX = paddingX + 8;

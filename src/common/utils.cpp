@@ -76,8 +76,10 @@ QString Utils::getQssContent(const QString &filePath)
 
 QString Utils::getConfigPath()
 {
+    static QStringList list = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
+    const QString path = list.first();
     QDir dir(
-        QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()).filePath(qApp->organizationName()));
+        QDir(path).filePath(qApp->organizationName()));
 
     return dir.filePath(qApp->applicationName());
 }
@@ -251,7 +253,7 @@ QString Utils::getRandString()
         int len = qrand() % tmp.length();
         str[i] = tmp.at(len);
     }
-    return QString(str);
+    return str;
 }
 
 QString Utils::showDirDialog(QWidget *widget)
@@ -267,7 +269,8 @@ QString Utils::showDirDialog(QWidget *widget)
     int code = dialog.exec();
 
     if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
-        const QString dirName = dialog.selectedFiles().first();
+        QStringList list = dialog.selectedFiles();
+        const QString dirName = list.first();
         return dirName;
     } else {
         return "";
@@ -875,11 +878,11 @@ QList<QByteArray> Utils::encodeList()
 
     QList<QByteArray> encodeList;
     // 自定义的名称，系统里不一定大小写完全一样，再同步一下。
-    for (QByteArray name : showEncodeList) {
+    for (QByteArray &name : showEncodeList) {
         QString strname1 = name;
         bool bFind = false;
         QByteArray encodename;
-        for (QByteArray name2 : all) {
+        for (QByteArray &name2 : all) {
             QString strname2 = name2;
             if (strname1.compare(strname2, Qt::CaseInsensitive) == 0) {
                 bFind = true;
@@ -1020,7 +1023,7 @@ void FontFilter::CompareWhiteList()
               << "Noto Serif Tamil" << "Noto Serif Tamil Slanted" << "Noto Serif Telugu" << "Noto Serif Thai" << "Noto Serif Tibetan" << "Sans Serif" << "Serif"
               << "Symbola" << "Unifont CSUR" << "Unifont Upper" << "Wingdings" << "Wingdings 2" << "Wingdings 3";
 
-    for (QString sfont : fontLst) {
+    for (QString &sfont : fontLst) {
         if (m_bstop) {
             break;
         }

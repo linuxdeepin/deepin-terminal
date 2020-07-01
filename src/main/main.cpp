@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         /******** Modify by ut000610 daizhengwen 2020-05-25: 在终端中打开****************/
         QStringList args = app.arguments();
         bool isCurrentPaht = false;
-        for (QString arg : args) {
+        for (QString &arg : args) {
             // 若已有-w和--work-directory参数，直接将参数传给主进程执行
             if (arg == "-w" || arg == "--work-directory") {
                 isCurrentPaht = true;

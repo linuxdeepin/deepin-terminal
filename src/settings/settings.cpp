@@ -53,9 +53,7 @@ Settings::~Settings()
 void Settings::init()
 {
     m_configPath = QString("%1/%2/%3/config.conf")
-                   .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation))
-                   .arg(qApp->organizationName())
-                   .arg(qApp->applicationName());
+                   .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
     m_backend = new QSettingBackend(m_configPath);
 
     // 默认配置
@@ -77,7 +75,7 @@ void Settings::init()
                           QStringList() << tr("Normal window") << tr("Split screen") << tr("Maximum") << tr("Fullscreen"));
     windowState->setData("items", windowStateMap);
 
-    for (QString key : settings->keys()) {
+    for (QString &key : settings->keys()) {
         qDebug() << key << settings->value(key);
     }
     /********************* Modify by n014361 wangpeili End ************************/
@@ -210,7 +208,7 @@ bool Settings::OutputtingScroll()
 void Settings::reload()
 {
     QSettings  newSettings(m_configPath, QSettings::IniFormat);
-    for (QString key : newSettings.childGroups()) {
+    for (QString &key : newSettings.childGroups()) {
         //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
         if (!settings->keys().contains(key)) {
             qDebug() << "reload failed: system not found " << key << "now remove it";
@@ -277,7 +275,7 @@ bool Settings::IsPasteSelection()
 *******************************************************************************/
 bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 {
-    for (QString tmpKey : settings->keys()) {
+    for (QString &tmpKey : settings->keys()) {
         if (settings->value(tmpKey).toString() == Key) {
             if (Name != tmpKey) {
                 qDebug() << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
@@ -329,7 +327,7 @@ void Settings::HandleWidthFont()
 
 QString Settings::getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName)
 {
-    return settings->option(QString("shortcuts.%1.%2").arg(keyCategory).arg(keyName))->value().toString();
+    return settings->option(QString("shortcuts.%1.%2").arg(keyCategory, keyName))->value().toString();
 }
 
 /******** Modify by n014361 wangpeili 2020-01-04: 创建Combox控件        ***********×****/
@@ -459,7 +457,7 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
 
     auto optionValue = option->value();
     auto translateContext = opt->property(PRIVATE_PROPERTY_translateContext).toByteArray();
-    QString optname = option->key();
+    //QString optname = option->key();
     //qDebug() << "optname" << optname;
 
     // 控件初始加载配置文件的值
@@ -476,7 +474,7 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     updateWidgetValue(optionValue, option);
 
     // 控件输入
-    option->connect(rightWidget, &KeySequenceEdit::editingFinished, [ = ](const QKeySequence & sequence) {
+    option->connect(rightWidget, &KeySequenceEdit::editingFinished, rightWidget, [ = ](const QKeySequence & sequence) {
         rightWidget->clearFocus();
         // 删除
         if (sequence.toString() == "Backspace") {

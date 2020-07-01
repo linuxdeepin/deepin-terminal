@@ -209,7 +209,8 @@ bool Service::isWindowEffectEnabled()
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
-        QString wmName = response.arguments().first().toString();
+        QList<QVariant> list = response.arguments();
+        QString wmName = list.first().toString();
         if (wmName == "deepin wm") {
             qDebug() << "窗口特效已开启";
             return true;

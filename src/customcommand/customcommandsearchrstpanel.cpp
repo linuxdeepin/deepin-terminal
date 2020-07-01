@@ -19,7 +19,7 @@ void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
     m_strFilter = filter;
     QString showText = filter;
     showText = Utils::getElidedText(m_label->font(), showText, ITEMMAXWIDTH, Qt::ElideMiddle);
-    m_label->setText(QString("%1：%2").arg(tr("Search")).arg(showText));
+    m_label->setText(QString("%1：%2").arg(tr("Search"), showText));
 }
 
 void CustomCommandSearchRstPanel::refreshData()

@@ -83,7 +83,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
         /********************* Modify by m000714 daizhengwen End ************************/
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
         // 等待连接
-        QTimer::singleShot(100, [ = ]() {
+        QTimer::singleShot(100, this, [ = ]() {
             TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
             // 判断是否连接服务器
             if (!term->isInRemoteServer()) {
@@ -105,7 +105,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
     }
     /******** Modify by ut000610 daizhengwen 2020-06-04: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
     m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
-    QTimer::singleShot(100, [&]() {
+    QTimer::singleShot(100, this, [&]() {
         if (m_mainWindow->isActiveWindow()) {
             m_mainWindow->focusCurrentPage();
         }
