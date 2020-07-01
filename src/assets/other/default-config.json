@@ -114,7 +114,7 @@
                             "key": "close_other_workspace",
                             "name": "Close other workspaces",
                             "type": "shortcut",
-                            "default":  "Ctrl+Alt+W"
+                            "default":  "Ctrl+Shift+W"
                         },
                         {
                             "key": "previous_workspace",
@@ -174,7 +174,7 @@
                             "key": "close_other_windows",
                             "name": "Close other windows",
                             "type": "shortcut",
-                            "default":  "Ctrl+Alt+Q"
+                            "default":  "Ctrl+Shift+Q"
                         }
                     ]
                 },
