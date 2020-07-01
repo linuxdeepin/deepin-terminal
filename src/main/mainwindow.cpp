@@ -1359,7 +1359,7 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     if (keyCategory == "workspace") {
         QJsonObject jsonItem;
         jsonItem.insert("name", tr("Select workspace"));
-        jsonItem.insert("value", "Alt+1~9");
+        jsonItem.insert("value", "Ctrl+Shift+1~9");
         JsonArry.append(jsonItem);
     }
 
