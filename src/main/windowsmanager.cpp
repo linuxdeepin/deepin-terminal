@@ -17,6 +17,8 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
         qDebug() << "runQuakeWindow :create";
         m_quakeWindow = new QuakeWindow(properties);
         m_quakeWindow->show();
+        // 雷神创建的第一个时候，m_quakeWindow仍为null，需要在这里更正一下．
+        Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr? m_widgetCount: m_widgetCount -1);
         return;
     }
     // Alt+F2的显隐功能实现点
@@ -125,13 +127,14 @@ int WindowsManager::widgetCount() const
 void WindowsManager::terminalCountIncrease()
 {
     ++m_widgetCount;
-    Service::instance()->updateShareMemoryCount(m_widgetCount);
+    // 雷神首次创建的时候m_quakeWindow　= nullptr,　统计数据会多出来一个,后面流程会修正．
+    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr? m_widgetCount: m_widgetCount -1);
     qDebug() << "++ Terminals Count : " << m_widgetCount;
 }
 
 void WindowsManager::terminalCountReduce()
 {
     --m_widgetCount;
-    Service::instance()->updateShareMemoryCount(m_widgetCount);
+    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr? m_widgetCount: m_widgetCount -1);
     qDebug() << "-- Terminals Count : " << m_widgetCount;
 }

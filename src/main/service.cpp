@@ -384,7 +384,12 @@ bool Service::getEnable()
     Service::instance()->releaseShareMemory();
     return true;
 }
-
+/*******************************************************************************
+ 1. @函数:    updateShareMemoryCount
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-02
+ 4. @说明:    ShareMemoryCount这个为当前总的终端数，但是雷神创建的第一个不包括在内
+*******************************************************************************/
 void Service::updateShareMemoryCount(int count)
 {
     if (!m_enableShareMemory->isAttached()) {
