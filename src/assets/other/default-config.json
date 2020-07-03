@@ -20,7 +20,7 @@
                             "key": "font",
                             "name": "Font",
                             "type": "fontcombobox",
-                            "default": "Noto Mono"
+                            "default": "Noto Sans Mono"
                         },
                         {
                             "key": "font_size",
