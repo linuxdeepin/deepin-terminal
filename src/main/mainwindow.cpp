@@ -1223,6 +1223,7 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
             m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, 1000);
             m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, 600);
             /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
+            qDebug() << "change value change value change value";
         } else {
             m_IfUseLastSize = false;
         }
@@ -1702,7 +1703,11 @@ void NormalWindow::saveWindowSize()
     }
 
     // (真.假)半屏窗口大小时就不记录了
-    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1)))) {
+    /******** Modify by ut001000 renfeixiang 2020-07-03:fix# 36482 ***************/
+    // 1.高度-1,如果不-1,最大后无法正常还原
+    // 2.+ QSize(0, 1) 适应原始高度
+    // 3.- QSize(0, 1) 适应关闭窗口特效， 半屏后无法还原
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1)))|| (size() == (halfScreenSize() - QSize(0, 1)))) {
         return;
     }
 
