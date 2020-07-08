@@ -40,7 +40,19 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // set shell program
     QString shell{ getenv("SHELL") };
     setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
-    setTermOpacity(Settings::instance()->opacity());
+    /******** Modify by ut000610 daizhengwen 2020-07-08:初始化透明度 Begin***************/
+    // 若没有窗口特效，则不生效
+    // 若有窗口特效，生效
+
+    // 此方法会丢失焦点（show hide方法丢失焦点）
+    // setTermOpacity(Settings::instance()->opacity());
+
+    // 底层方法，设置当前窗口的透明度
+    if (Service::instance()->isWindowEffectEnabled()) {
+        // 判断当前是否有窗口特效
+        setTerminalOpacity(Settings::instance()->opacity());
+    }
+    /********************* Modify by ut000610 daizhengwen End ************************/
     //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
@@ -203,11 +215,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
 
     //窗口特效开启则使用设置的透明度，窗口特效关闭时直接把窗口置为不透明
-    connect(Service::instance(), &Service::onWindowEffectEnabled, this, [this](bool isWinEffectEnabled){
+    connect(Service::instance(), &Service::onWindowEffectEnabled, this, [this](bool isWinEffectEnabled) {
         if (isWinEffectEnabled) {
             this->setTermOpacity(Settings::instance()->opacity());
-        }
-        else {
+        } else {
             this->setTermOpacity(1.0);
         }
     });
