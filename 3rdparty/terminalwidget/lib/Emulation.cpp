@@ -293,48 +293,48 @@ void Emulation::receiveData(const char *text, int length)
     QString utf16Text = _decoder->toUnicode(text, length);
 
     /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 Begin ***************/
-    int maxPathDepth = 1;
-    bool bWindowResizing = false;
-    QList<Session *> allSession = SessionManager::instance()->sessions();
-    for (int i = 0; i < allSession.size(); ++i) {
-        Session *session = allSession.at(i);
-        int currSessionId = session->sessionId();
-        //遍历所有Session, 如果有一个控件正在resize，则标记为窗口整体正在resize
-        if (SessionManager::instance()->isTerminalResizing(currSessionId)) {
-            bWindowResizing = true;
-        }
+//    int maxPathDepth = 1;
+//    bool bWindowResizing = false;
+//    QList<Session *> allSession = SessionManager::instance()->sessions();
+//    for (int i = 0; i < allSession.size(); ++i) {
+//        Session *session = allSession.at(i);
+//        int currSessionId = session->sessionId();
+//        //遍历所有Session, 如果有一个控件正在resize，则标记为窗口整体正在resize
+//        if (SessionManager::instance()->isTerminalResizing(currSessionId)) {
+//            bWindowResizing = true;
+//        }
 
-        //获取所有Session中shell提示符路径最长的那个对应路径的路径深度
-        int currPathDepth = SessionManager::instance()->getTerminalPathDepth(currSessionId);
-        if (currPathDepth >= maxPathDepth) {
-            maxPathDepth = currPathDepth;
-        }
-    }
+//        //获取所有Session中shell提示符路径最长的那个对应路径的路径深度
+//        int currPathDepth = SessionManager::instance()->getTerminalPathDepth(currSessionId);
+//        if (currPathDepth >= maxPathDepth) {
+//            maxPathDepth = currPathDepth;
+//        }
+//    }
 
-    //判断是bash发送过来的提示符数据[utf16Text.startsWith("\r\u001B[K\u001B")], 且当前正在调整窗口大小resizing时，才进行下面的处理
-    if (utf16Text.length() > 0 && utf16Text.startsWith("\r\u001B[K\u001B") && bWindowResizing) {
-        //用于后面构造使用的转移字符，主要是通过对比bash5.0.3和bash4.4.x版本接收到的utf16Text差异得到
-        QString codeLine = "\u001B[A";
-        int pathDepth = utf16Text.count("/");
-        //存储终端控件当前shell提示符的路径深度(比如/home/test 路径深度为2)
-        SessionManager::instance()->setTerminalPathDepth(_sessionId, pathDepth);
+//    //判断是bash发送过来的提示符数据[utf16Text.startsWith("\r\u001B[K\u001B")], 且当前正在调整窗口大小resizing时，才进行下面的处理
+//    if (utf16Text.length() > 0 && utf16Text.startsWith("\r\u001B[K\u001B") && bWindowResizing) {
+//        //用于后面构造使用的转移字符，主要是通过对比bash5.0.3和bash4.4.x版本接收到的utf16Text差异得到
+//        QString codeLine = "\u001B[A";
+//        int pathDepth = utf16Text.count("/");
+//        //存储终端控件当前shell提示符的路径深度(比如/home/test 路径深度为2)
+//        SessionManager::instance()->setTerminalPathDepth(_sessionId, pathDepth);
 
-        //取shell提示符路最大的那个路径深度
-        if (pathDepth < maxPathDepth) {
-            pathDepth = maxPathDepth;
-        }
+//        //取shell提示符路最大的那个路径深度
+//        if (pathDepth < maxPathDepth) {
+//            pathDepth = maxPathDepth;
+//        }
 
-        //发现了一个规律，路径深度越深，需要加入的\u001B[A越多才能够较好清除重复的shell提示符
-        QString insertCode = codeLine;
-        if (pathDepth > 0) {
-            int codeLineCount = pathDepth;
-            for (int i=0; i<codeLineCount; i++) {
-                insertCode.append(codeLine);
-            }
-        }
-        //将\u001B[A转移字符插入到bash发送过来的数据中，参考了bash4.4.x版本接收的数据格式
-        utf16Text = utf16Text.replace("\r\u001B[K", QString("\r\u001B[K%1").arg(insertCode));
-    }
+//        //发现了一个规律，路径深度越深，需要加入的\u001B[A越多才能够较好清除重复的shell提示符
+//        QString insertCode = codeLine;
+//        if (pathDepth > 0) {
+//            int codeLineCount = pathDepth;
+//            for (int i=0; i<codeLineCount; i++) {
+//                insertCode.append(codeLine);
+//            }
+//        }
+//        //将\u001B[A转移字符插入到bash发送过来的数据中，参考了bash4.4.x版本接收的数据格式
+//        utf16Text = utf16Text.replace("\r\u001B[K", QString("\r\u001B[K%1").arg(insertCode));
+//    }
     /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 End ***************/
 
     std::wstring unicodeText = utf16Text.toStdWString();
