@@ -251,6 +251,8 @@ public:
     void setDeleteMode(char *key, int length);
     /********************* Modify by ut000610 daizhengwen End ************************/
 
+    //用于保存当前Emulator对应的sessionId
+    void setSessionId(int sessionId);
 
 public slots:
 
@@ -525,6 +527,7 @@ private:
     QTimer _bulkTimer1;
     QTimer _bulkTimer2;
 
+    int _sessionId;
 };
 
 }

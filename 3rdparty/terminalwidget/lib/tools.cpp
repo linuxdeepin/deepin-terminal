@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QtDebug>
+#include <QToolButton>
 
 
 /*! Helper function to get possible location of layout files.
@@ -101,4 +102,21 @@ const QStringList get_color_schemes_dirs()
     }
 #endif
     return rval;
+}
+
+TerminalHeaderBar::TerminalHeaderBar(QWidget *parent)
+    : QWidget(parent)
+{
+    m_boxLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    m_boxLayout->setSpacing(0);
+    m_boxLayout->setContentsMargins(0, 0, 0, 0);
+
+    //通过查看Konsole 20.04.2版本源码发现加QToolButton作为Header放在TerminalDisplay控件布局顶部，
+    //可以在分屏拖拽的时候减少提示符出现残存在界面上的情况
+    for(int i=0; i<6; i++) {
+        QToolButton *toolBtn = new QToolButton(this);
+        toolBtn->setFixedHeight(1);
+        m_boxLayout->addWidget(toolBtn);
+    }
+    setLayout(m_boxLayout);
 }

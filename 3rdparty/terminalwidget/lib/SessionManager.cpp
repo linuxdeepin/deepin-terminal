@@ -139,3 +139,23 @@ QString SessionManager::getCurrShellCommand(int sessionId)
 {
     return _shellCommandSessionMap.value(sessionId);
 }
+
+void SessionManager::setTerminalResizing(int sessionId, bool bTerminalResizing)
+{
+    _terminalResizeStateMap.insert(sessionId, bTerminalResizing);
+}
+
+bool SessionManager::isTerminalResizing(int sessionId)
+{
+    return _terminalResizeStateMap.value(sessionId);
+}
+
+void SessionManager::setTerminalPathDepth(int sessionId, int pathDepth)
+{
+    _terminalPathDepthMap.insert(sessionId, pathDepth);
+}
+
+int SessionManager::getTerminalPathDepth(int sessionId)
+{
+    return _terminalPathDepthMap.value(sessionId);
+}

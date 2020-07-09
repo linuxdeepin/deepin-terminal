@@ -87,6 +87,7 @@ Session::Session(QObject* parent) :
 
     //create emulation backend
     _emulation = new Vt102Emulation();
+    _emulation->setSessionId(_sessionId);
 
     connect( _emulation, SIGNAL( titleChanged( int, const QString & ) ),
              this, SLOT( setUserTitle( int, const QString & ) ) );

@@ -31,6 +31,8 @@
 #include "Character.h"
 #include "qtermwidget.h"
 //#include "konsole_export.h"
+#include "tools.h"
+
 #define KONSOLEPRIVATE_EXPORT
 
 class QDrag;
@@ -795,6 +797,7 @@ private:
                                // after QApplication::doubleClickInterval() delay
 
 
+    bool m_bUserIsResizing;  //用于判断当前控件是否正在resize
     QLabel* _resizeWidget;
     QTimer* _resizeTimer;
 
@@ -846,6 +849,8 @@ private:
 
     int _sessionId;
     bool _drawLineChars;
+
+    TerminalHeaderBar *_headerBar;
 
 public:
     static void setTransparencyEnabled(bool enable)

@@ -22,6 +22,7 @@
 
 // Own
 #include "TerminalDisplay.h"
+#include "SessionManager.h"
 
 // Qt
 #include <QApplication>
@@ -372,6 +373,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_leftBaseMargin(1)
 ,_topBaseMargin(1)
 ,_drawLineChars(true)
+,_headerBar(new TerminalHeaderBar(this))
 {
   // variables for draw text
   _drawTextAdditionHeight = 0;
@@ -437,10 +439,13 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 
   _gridLayout = new QGridLayout(this);
   _gridLayout->setContentsMargins(0, 0, 0, 0);
+  _gridLayout->addWidget(_headerBar);
 
   setLayout( _gridLayout );
 
   new AutoScrollHandler(this);
+
+  m_bUserIsResizing = false;
 }
 
 TerminalDisplay::~TerminalDisplay()
@@ -1326,14 +1331,21 @@ void TerminalDisplay::showResizeNotification()
 
         _resizeTimer = new QTimer(this);
         _resizeTimer->setSingleShot(true);
-        connect(_resizeTimer, SIGNAL(timeout()), _resizeWidget, SLOT(hide()));
+        connect(_resizeTimer, &QTimer::timeout, this, [this](){
+            //计时器timeout，终端控件结束调整大小
+            this->m_bUserIsResizing = false;
+            SessionManager::instance()->setTerminalResizing(_sessionId, m_bUserIsResizing);
+        });
      }
+     //显示resizeWidget的时候，标记当前session对应终端控件正在调整大小
+     SessionManager::instance()->setTerminalResizing(_sessionId, true);
      _resizeWidget->setText(tr("Size: %1 x %2").arg(_columns).arg(_lines));
      _resizeWidget->move((width()-_resizeWidget->width())/2,
                          (height()-_resizeWidget->height())/2+20);
 
      //fix bug 17684 在放大，正常窗口，最大化之间切换，终端窗口会显示ｓｉｚｅ
      _resizeWidget->hide();
+     _resizeTimer->start(1000);
   }
 }
 
