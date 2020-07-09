@@ -54,6 +54,8 @@ find_package(Qt5Network REQUIRED)
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
 pkg_search_module(DtkCore REQUIRED dtkcore)
+pkg_search_module(atspi-2 REQUIRED atspi-2)
+pkg_search_module(gobject-2.0 REQUIRED gobject-2.0)
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 
 # Compile definitions for TerminalWidget
@@ -90,6 +92,8 @@ set(LINK_LIBS
     ${DtkCore_LIBRARIES}
     ${DtkGUI_LIBRARIES}
     ${DFrameworkDBus_LIBRARIES}
+    ${atspi-2_LIBRARIES}
+    ${gobject-2.0_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources
@@ -115,6 +119,7 @@ set (DTNG_CPP_FILES
     src/main/terminalapplication.cpp
     src/main/termproperties.cpp    
     src/main/dbusmanager.cpp
+    src/main/atspidesktop.cpp
     src/quaketerminal/quaketerminaladapter.cpp
     src/quaketerminal/quaketerminalproxy.cpp
     src/quaketerminal/termargumentparser.cpp
@@ -174,6 +179,7 @@ set (DTNG_HEADER_FILES
     src/main/terminalapplication.h
     src/main/termproperties.h
     src/main/dbusmanager.h
+    src/main/atspidesktop.h
     src/quaketerminal/quaketerminaladapter.h
     src/quaketerminal/quaketerminalproxy.h
     src/quaketerminal/termargumentparser.h
@@ -241,7 +247,9 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
                                               ${DtkWidget_INCLUDE_DIRS}
                                               ${DtkCore_LIBRARIES}
                                               ${DtkGUI_INCLUDE_DIRS}
-                                              ${DFrameworkDBus_INCLUDE_DIRS})
+                                              ${DFrameworkDBus_INCLUDE_DIRS}
+                                              ${atspi-2_INCLUDE_DIRS}
+                                              ${gobject-2.0_INCLUDE_DIRS})
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 

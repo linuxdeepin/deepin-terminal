@@ -20,6 +20,12 @@ Service *Service::instance()
 
 Service::~Service()
 {
+    qDebug() << __FUNCTION__;
+    if (nullptr != m_atspiThread) {
+        // 结束线程
+        m_atspiThread->stopThread();
+        delete m_atspiThread;
+    }
     releaseShareMemory();
     if (nullptr != m_settingDialog) {
         delete m_settingDialog;
@@ -30,11 +36,18 @@ Service::~Service()
     if (nullptr != m_settingShortcutConflictDialog) {
         delete m_settingShortcutConflictDialog;
     }
-
+    qDebug() << "service release finish!";
 }
 
 void Service::init()
 {
+    /******** Modify by ut000610 daizhengwen 2020-07-09:在linux上兼容快捷键 Begin***************/
+    // 初始化qt-at-spi
+    // 该线程负责在linux上兼容快捷键，如ctrl+shift+? （服务器版暂不支持此兼容）
+    m_atspiThread = new AtspiDesktop;
+    // 运行线程
+    m_atspiThread->start();
+    /********************* Modify by ut000610 daizhengwen End ************************/
     // 初始化配置
     Settings::instance()->init();
     // 初始化自定义快捷键
@@ -120,10 +133,10 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 
     QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
 
-    for(int i=0; i<rightWidgetList.size(); i++) {
+    for (int i = 0; i < rightWidgetList.size(); i++) {
         QWidget *widget = rightWidgetList.at(i);
         if (strcmp(widget->metaObject()->className(), "QCheckBox") == 0) {
-            QString checkText = (qobject_cast<QCheckBox*>(widget))->text();
+            QString checkText = (qobject_cast<QCheckBox *>(widget))->text();
             if (checkText == QObject::tr("Blur background")) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
@@ -133,13 +146,11 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
                 }
                 if (isShow) {
                     optionWidget->show();
-                }
-                else {
+                } else {
                     optionWidget->hide();
                 }
             }
-        }
-        else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
+        } else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
             QWidget *optionWidget = widget;
             QWidget *parentWidget = widget->parentWidget();
             qDebug() << parentWidget << endl;
@@ -148,13 +159,11 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             }
             if (isShow) {
                 optionWidget->show();
-            }
-            else {
+            } else {
                 optionWidget->hide();
             }
-        }
-        else if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
-            QString lblText = (qobject_cast<QLabel*>(widget))->text();
+        } else if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
+            QString lblText = (qobject_cast<QLabel *>(widget))->text();
             if (lblText == QObject::tr("Opacity")) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
@@ -164,13 +173,11 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
                 }
                 if (isShow) {
                     optionWidget->show();
-                }
-                else {
+                } else {
                     optionWidget->hide();
                 }
             }
-        }
-        else {
+        } else {
             //do nothing
         }
     }
@@ -186,7 +193,7 @@ void Service::listenWindowEffectSwitcher()
 {
     if (nullptr == m_wmSwitcher) {
         m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
-        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, [this](const QString &wmName){
+        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, [this](const QString & wmName) {
 
             qDebug() << "changed wm name:" << wmName;
             bool isWinEffectEnabled = false;

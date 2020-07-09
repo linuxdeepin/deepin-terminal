@@ -13,7 +13,7 @@
 #include "windowsmanager.h"
 #include "shortcutmanager.h"
 #include "settings.h"
-
+#include "atspidesktop.h"
 
 #include <DSettingsDialog>
 #include <DDialog>
@@ -28,7 +28,7 @@ using WMSwitcher = com::deepin::WMSwitcher;
 
 
 DWIDGET_USE_NAMESPACE
-struct ShareMemoryInfo{
+struct ShareMemoryInfo {
     int enableCreateTerminal = 0;
     int TerminalsCount = 0;
 };
@@ -113,6 +113,8 @@ private:
     QSharedMemory *m_enableShareMemory = nullptr;
     // 这个指针实际上与上面指针指向同一地址，不需要二次释放
     ShareMemoryInfo *m_pShareMemoryInfo = nullptr;
+    // 初始化和运行无障碍辅助工具的线程
+    AtspiDesktop *m_atspiThread = nullptr;
 };
 
 #endif // SERVICE_H
