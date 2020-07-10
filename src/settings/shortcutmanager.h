@@ -40,6 +40,9 @@ public:
     // 快捷键是否已被自定义设置
     bool isShortcutConflictInCustom(const QString &Name, const QString &Key);
 
+    // 快捷键显示映射 如：Return 显示成 Enter
+    QMap<QString, QString> m_mapReplaceText;
+
 signals:
     void addCustomCommandSignal(QAction *newAction);
     void removeCustomCommandSignal(QAction *newAction);
