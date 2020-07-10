@@ -38,6 +38,16 @@ void ShortcutManager::initShortcuts()
     m_builtinShortcuts << "F1";
     m_builtinShortcuts << "Ctrl+C";
     m_builtinShortcuts << "Ctrl+D";
+    // 切换标签页，防止和ctrl+shift+1等冲突（无法识别）
+    m_builtinShortcuts << "Ctrl+Shift+!";
+    m_builtinShortcuts << "ctrl+Shift+@";
+    m_builtinShortcuts << "Ctrl+Shift+#";
+    m_builtinShortcuts << "Ctrl+Shift+$";
+    m_builtinShortcuts << "Ctrl+Shift+%";
+    m_builtinShortcuts << "Ctrl+Shift+^";
+    m_builtinShortcuts << "Ctrl+Shift+&";
+    m_builtinShortcuts << "Ctrl+Shift+*";
+    m_builtinShortcuts << "Ctrl+Shift+(";
     for (int i = 0; i <= 9; i++) {
         m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
     }
@@ -48,6 +58,16 @@ void ShortcutManager::initShortcuts()
 //    }
 
     createCustomCommandsFromConfig();
+    m_mapReplaceText.insert("Ctrl+Shift+!", "Ctrl+Shift+1");
+    m_mapReplaceText.insert("Ctrl+Shift+@", "Ctrl+Shift+2");
+    m_mapReplaceText.insert("Ctrl+Shift+#", "Ctrl+Shift+3");
+    m_mapReplaceText.insert("Ctrl+Shift+$", "Ctrl+Shift+4");
+    m_mapReplaceText.insert("Ctrl+Shift+%", "Ctrl+Shift+5");
+    m_mapReplaceText.insert("Ctrl+Shift+^", "Ctrl+Shift+6");
+    m_mapReplaceText.insert("Ctrl+Shift+&", "Ctrl+Shift+7");
+    m_mapReplaceText.insert("Ctrl+Shift+*", "Ctrl+Shift+8");
+    m_mapReplaceText.insert("Ctrl+Shift+(", "Ctrl+Shift+9");
+    m_mapReplaceText.insert("Return", "Enter");
 }
 ShortcutManager::~ShortcutManager()
 {
@@ -255,7 +275,16 @@ bool ShortcutManager::isValidShortcut(const QString &Name, const QString &Key)
 *******************************************************************************/
 bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key, QString &Reason)
 {
-    QString style = QString("<span style=\"color: rgba(255, 87, 54, 1);\">%1</span>").arg(Key);
+    /******** Modify by ut000610 daizhengwen 2020-07-10:给'<'做兼容 html中'<'的转译为 &lt; Begin***************/
+    QString key = Key;
+    if (key.contains("<")) {
+        // 用<>断开 &lt; 与+号  +&lt; 会显示错误
+        key.replace("<", "<>&lt;");
+    }
+    /********************* Modify by ut000610 daizhengwen End ************************/
+    QString style = QString("<span style=\"color: rgba(255, 87, 54, 1);\">%1</span>").arg(key);
+    qDebug() << style;
+
     // 单键
     if (Key.count("+") == 0) {
         //F1-F12是允许的，这个正则不够精确，但是没关系。
