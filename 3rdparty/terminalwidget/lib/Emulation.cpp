@@ -78,6 +78,10 @@ Emulation::Emulation() :
         emit titleChanged(50, QString(QLatin1String("CursorShape=%1;BlinkingCursorEnabled=%2"))
                           .arg(static_cast<int>(cursorShape)).arg(blinkingCursorEnabled));
     });
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加初始化保存开始的屏幕行列数 Begin***************/
+    _lastcol = _currentScreen->getColumns();
+    _lastline = _currentScreen->getLines();
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 }
 
 bool Emulation::programUsesMouse() const
@@ -292,6 +296,12 @@ void Emulation::receiveData(const char *text, int length)
      */
     QString utf16Text = _decoder->toUnicode(text, length);
 
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 过滤收到的数据中的“\r\n\r”，“\r\n\r”在不同的bash版本可能不同，需要修改 Begin***************/
+    if (utf16Text.contains("[00m$") && utf16Text.contains("\r\n\r")) {
+            utf16Text.replace("\r\n\r", "");
+    }
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
+
     /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 Begin ***************/
 //    int maxPathDepth = 1;
 //    bool bWindowResizing = false;
@@ -338,6 +348,14 @@ void Emulation::receiveData(const char *text, int length)
     /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 End ***************/
 
     std::wstring unicodeText = utf16Text.toStdWString();
+
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 当终端宽高度变化时，收到数据，显示之前先清空界面上的信息 Begin***************/
+    if(_lastcol != _currentScreen->getColumns() || _lastline != _currentScreen->getLines()){
+        _currentScreen->clearAllScreen();
+    }
+    _lastcol = _currentScreen->getColumns();
+    _lastline = _currentScreen->getLines();
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 
     //send characters to terminal emulator
     for (size_t i = 0; i < unicodeText.length(); i++)
