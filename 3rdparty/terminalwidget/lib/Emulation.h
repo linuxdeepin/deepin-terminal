@@ -528,6 +528,11 @@ private:
     QTimer _bulkTimer2;
 
     int _sessionId;
+
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加保存上一次的屏幕行列数，用于比较终端屏宽是否发生变化 Begin***************/
+    int _lastcol = 0;
+    int _lastline = 0;
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 };
 
 }
