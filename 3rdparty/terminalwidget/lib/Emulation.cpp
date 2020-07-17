@@ -297,9 +297,9 @@ void Emulation::receiveData(const char *text, int length)
     QString utf16Text = _decoder->toUnicode(text, length);
 
     /******** Add by ut001000 renfeixiang 2020-07-16:增加 过滤收到的数据中的“\r\n\r”，“\r\n\r”在不同的bash版本可能不同，需要修改 Begin***************/
-    if (utf16Text.contains("[00m$") && utf16Text.contains("\r\n\r")) {
-            utf16Text.replace("\r\n\r", "");
-    }
+//    if (utf16Text.contains("[00m$") && utf16Text.contains("\r\n\r")) {
+//            utf16Text.replace("\r\n\r", "");
+//    }//清除\r\n\r会引起光标的上一行突然被清除，在一直按上键，看历史命令时，光标会往上跑
     /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 
     /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 Begin ***************/
