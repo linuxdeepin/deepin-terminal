@@ -1226,10 +1226,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     }
 
     //if (watched == this) {
-        if (event->type() == QEvent::KeyPress) {
-            //将事件转化为键盘事件
-            QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
-            //按下Tab键执行焦点切换事件
+    if (event->type() == QEvent::KeyPress) {
+        //将事件转化为键盘事件
+        QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
+        //按下Tab键执行焦点切换事件，如果个别控件需要特殊处理TAB的话，在这里加代码
 //            if (key_event->key() == Qt::Key_Tab) {
 //                bool realm_edit_focus = false;  //= realm_line_edit->hasFocus();
 //                bool user_edit_focus = false;   // user_line_edit->hasFocus();
@@ -1242,21 +1242,43 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 //                return true;
 //            }
-            //按下Tab键执行焦点切换事件
-            if (key_event->key() == Qt::Key_Escape) {
+        // 全局按下ESC键返回终端，过滤掉个别情况
+        if (key_event->key() == Qt::Key_Escape) {
+            QString filterReason; // 过滤原因
+            do {
+                // 不干扰其它对话框使用ESC（一般框会遮盖enable false)
+                if (!this->isEnabled()) {
+                    filterReason = "mainwidow is disable";
+                    break;
+                }
+                // 未激活不生效
+                if (!this->isActiveWindow()) {
+                    filterReason = "mainwidow is not active";
+                    break;
+                }
+                // 不干扰终端使用ESC
+                if (QString(qApp->focusWidget()->metaObject()->className()) == "Konsole::TerminalDisplay") {
+                    filterReason = "focusWidget is terminnal";
+                    break;
+                }
+                // 如果有菜单出现的时候，ESC无效
+                for (QWidget *top : qApp->topLevelWidgets()) {
+                    if (QString(top->metaObject()->className()) == "QMenu" && top->isVisible()) {
+                        filterReason = QString(top->metaObject()->className()) + " is display";
+                        break;
+                    }
+                }
+            } while (false);
+
+            if (!filterReason.isEmpty()) {
+                qDebug() << "Esc is not effect, reason:" << filterReason;
+            } else {
                 focusCurrentPage();
                 showPlugin(PLUGIN_TYPE_NONE);
                 return  true;
             }
-//            //按下Tab键执行焦点切换事件
-//            if (key_event->key() == Qt::Key_Escape) {
-//                focusCurrentPage();
-//                return  true;
-//            }
-
-
         }
-   // }
+    }
 
     return DMainWindow::eventFilter(watched, event);
 }
@@ -1622,7 +1644,8 @@ void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
     }
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event) {
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
 
 }
 
@@ -1774,7 +1797,7 @@ void NormalWindow::saveWindowSize()
     // 1.高度-1,如果不-1,最大后无法正常还原
     // 2.+ QSize(0, 1) 适应原始高度
     // 3.- QSize(0, 1) 适应关闭窗口特效， 半屏后无法还原
-    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1)))|| (size() == (halfScreenSize() - QSize(0, 1)))) {
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1))) || (size() == (halfScreenSize() - QSize(0, 1)))) {
         return;
     }
 
