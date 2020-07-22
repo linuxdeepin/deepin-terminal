@@ -22,6 +22,8 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setBackgroundRole(QPalette::NoRole);
     setAutoFillBackground(false);
 
+    /** add by ut001121 zhangmeng 20200722 for sp3 keyboard interaction */
+    setFocusPolicy(Qt::TabFocus);
     /** mod by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
     setSelectionMode(QListView::SingleSelection);
     setVerticalScrollMode(ScrollPerItem);
@@ -85,7 +87,6 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
 
 void EncodeListView::focusOutEvent(QFocusEvent *event)
 {
-    qDebug()<<"EncodeListView::focusOutEvent";
     /** add by ut001121 zhangmeng 20200718 for sp3 keyboard interaction*/
     m_foucusReason = Qt::NoFocusReason;
 
