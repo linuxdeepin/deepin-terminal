@@ -16,7 +16,7 @@ void RemoteManagementPanel::refreshPanel()
     //--added byq qinyaning(nyq) to solve the show when not exist the server-config.conf--//
 //    ServerConfigManager::instance()->initServerConfig();
     //---------------------------//
-    m_listWidget->refreshAllDatas();
+    ServerConfigManager::instance()->refreshServerList(PanelType_Manage, m_listWidget);
     refreshSearchState();
 }
 
@@ -32,8 +32,27 @@ void RemoteManagementPanel::refreshSearchState()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    onItemClicked
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-21
+ 4. @说明:    远程项被点击，连接远程管理
+*******************************************************************************/
+void RemoteManagementPanel::onItemClicked(const QString &key)
+{
+    // 获取远程信息
+    ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
+    if (nullptr != remote) {
+        emit doConnectServer(remote);
+    } else {
+        qDebug() << "can't connect to remote" << key;
+    }
+}
+
 void RemoteManagementPanel::showCurSearchResult()
 {
+//    // 清除当前焦点
+//    clearFocus();
     QString strTxt = m_searchEdit->text();
     if (strTxt.isEmpty())
         return;
@@ -50,8 +69,8 @@ void RemoteManagementPanel::showAddServerConfigDlg()
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
         if (result == QDialog::Accepted) {
-            QModelIndex index = m_listWidget->currentIndex(dlg->getServerName());
-            m_listWidget->scrollTo(index);
+//            QModelIndex index = m_listWidget->currentIndex(dlg->getServerName());
+//            m_listWidget->scrollTo(index);
         }
     });
     dlg->show();
@@ -63,16 +82,11 @@ void RemoteManagementPanel::initUI()
     this->setAutoFillBackground(true);
 
     m_searchEdit = new DSearchEdit(this);
-    m_listWidget = new ServerConfigList(this);
+//    m_listWidget = new ServerConfigList(this);
+    m_listWidget = new ListView(ListType_Remote, this);
     m_pushButton = new DPushButton(this);
 
     m_searchEdit->setClearButtonEnabled(true);
-
-    m_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    m_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
-    m_listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    m_listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
 
     m_pushButton->setFixedHeight(36);
     m_pushButton->setText(tr("Add Server"));
@@ -106,13 +120,17 @@ void RemoteManagementPanel::initUI()
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
-    connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementPanel::listItemClicked);
-    connect(m_listWidget, &ServerConfigList::groupClicked, this, &RemoteManagementPanel::showServerConfigGroupPanel);
-    connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
+//    connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementPanel::listItemClicked);
+    connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementPanel::onItemClicked);
+    connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementPanel::showServerConfigGroupPanel);
+    connect(m_listWidget, &ListView::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow) {
             refreshPanel();
         }
+    });
+    connect(m_listWidget, &ListView::focusOut, this, [ = ]() {
+        m_pushButton->setFocus();
     });
 }
 

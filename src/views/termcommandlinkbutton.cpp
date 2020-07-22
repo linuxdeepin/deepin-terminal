@@ -10,5 +10,5 @@ TermCommandLinkButton::TermCommandLinkButton(QWidget *parent)
     this->setPalette(palette);
 
     this->setFlat(true);
-    this->setFocusPolicy(Qt::NoFocus);
+    this->setFocusPolicy(Qt::TabFocus);
 }

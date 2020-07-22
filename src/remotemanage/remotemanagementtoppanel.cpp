@@ -72,8 +72,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
 
 void RemoteManagementTopPanel::showRemotePanelFromGroupPanel()
 {
-    qDebug() << __FUNCTION__;
-    //--------------------------------------------------------------//
+    qDebug() << __FUNCTION__ ;
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->refreshPanel();
     animationPrepare(m_remoteManagementSearchPanel, m_remoteManagementPanel);
@@ -106,11 +105,15 @@ void RemoteManagementTopPanel::show()
 //}
 /******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
 
-void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup)
+void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup, bool isKeyPress)
 {
     qDebug() << __FUNCTION__;
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
+    m_remoteManagementPanel->clearFocus();
+    if (isKeyPress) {
+        m_serverConfigGroupPanel->onFocusInBackButton();
+    }
     animationPrepare(m_remoteManagementSearchPanel, m_serverConfigGroupPanel);
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
@@ -150,18 +153,15 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
     panelLeftToRight(animation, animation1);
 }
 
-void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &strGroup)
+void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress)
 {
     qDebug() << __FUNCTION__;
-//    m_remoteManagementPanel->hide();
-//    m_remoteManagementPanel->m_isShow = false;
-    //--added by qinyaning(nyq) to solve the repeat history recoed--//
-//    m_serverConfigGroupPanel->clearSearchInfo();
-    //--------------------------------------------------------------//
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
-//    m_serverConfigGroupPanel->show();
-//    m_serverConfigGroupPanel->m_isShow = true;
+    m_remoteManagementSearchPanel->clearFocus();
+    if (isKeyPress) {
+        m_serverConfigGroupPanel->onFocusInBackButton();
+    }
     animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
@@ -219,12 +219,15 @@ void RemoteManagementTopPanel::panelRightToLeft(QPropertyAnimation *animation, Q
     group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strGroup)
+void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress)
 {
     qDebug() << __FUNCTION__;
-    //--------------------------------------------------------------//
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
+    m_remoteManagementSearchPanel->clearFocus();
+    if (isKeyPress) {
+        m_serverConfigGroupPanel->onFocusInBackButton();
+    }
     animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);

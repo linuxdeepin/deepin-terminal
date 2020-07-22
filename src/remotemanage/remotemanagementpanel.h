@@ -4,6 +4,7 @@
 #include "commonpanel.h"
 #include "serverconfiglist.h"
 #include "serverconfigoptdlg.h"
+#include "listview.h"
 
 #include <QWidget>
 
@@ -16,7 +17,7 @@ public:
 
 signals:
     void showSearchPanel(const QString &strFilter);
-    void showServerConfigGroupPanel(const QString &strGroup);
+    void showServerConfigGroupPanel(const QString &strGroup, bool isKeyPress);
     void doConnectServer(ServerConfig *curItemServer);
 
 public slots:
@@ -24,12 +25,15 @@ public slots:
     void showAddServerConfigDlg();
     void listItemClicked(ServerConfig *curItemServer);
     void refreshSearchState();
+    // 处理连接远程操作
+    void onItemClicked(const QString &key);
 
 private:
     void initUI();
 
 private:
-    ServerConfigList *m_listWidget = nullptr;
+//    ServerConfigList *m_listWidget = nullptr;
+    ListView *m_listWidget = nullptr;
 };
 
 #endif  // REMOTEMANAGEMENTPANEL_H

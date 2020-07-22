@@ -26,15 +26,15 @@ signals:
 
 public slots:
     void showSearchPanelFromRemotePanel(const QString &strFilter);
-    void showServerConfigGroupPanelFromRemotePanel(const QString &strGroup);
+    void showServerConfigGroupPanelFromRemotePanel(const QString &strGroup, bool isKeyPress);
 
     void showRemotePanelFromGroupPanel();
     void showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter);
 
-    void showGroupPanelFromSearchPanel(const QString &strGroup);
+    void showGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress);
     void showRemoteManagementPanelFromSearchPanel();
 
-    void slotShowGroupPanelFromSearchPanel(const QString &strGroup);
+    void slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress);
 
 private:
     void animationPrepare(CommonPanel *hidePanel, CommonPanel *showPanel);

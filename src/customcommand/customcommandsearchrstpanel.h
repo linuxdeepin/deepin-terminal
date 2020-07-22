@@ -3,6 +3,7 @@
 
 #include "rightpanel.h"
 #include "commonpanel.h"
+#include "customcommandlist.h"
 
 #include <DPushButton>
 #include <DIconButton>

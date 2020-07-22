@@ -2,7 +2,7 @@
 #define COMMONPANEL_H
 
 #include "rightpanel.h"
-#include "customcommandlist.h"
+#include "iconbutton.h"
 
 #include <DPushButton>
 #include <DIconButton>
@@ -21,11 +21,16 @@ public:
     explicit CommonPanel(QWidget *parent = nullptr);
     void clearSearchInfo();
 
+public slots:
+    // 返回键被选中
+    void onFocusInBackButton();
+
 signals:
     void focusOut();
 
 public:
     DIconButton *m_backButton = nullptr;
+    IconButton *m_rebackButton = nullptr;
     DSearchEdit *m_searchEdit = nullptr;
     DPushButton *m_pushButton = nullptr;
     DLabel *m_label = nullptr;

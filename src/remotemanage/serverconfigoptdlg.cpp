@@ -11,6 +11,7 @@
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
 #include <DFileDialog>
+#include <DPalette>
 
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -19,6 +20,8 @@
 #include <QSpacerItem>
 #include <iterator>//added byq qinyaning
 #include <QDebug>
+
+DGUI_USE_NAMESPACE
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
     : DAbstractDialog(parent),
@@ -41,7 +44,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_coding(new DComboBox),
       m_backSapceKey(new DComboBox),
       m_deleteKey(new DComboBox),
-      m_advancedOptions(new DCommandLinkButton(tr("Advanced options"))),
+      m_advancedOptions(new DPushButton(tr("Advanced options"))),
       m_delServer(new TermCommandLinkButton())
 
 {
@@ -65,7 +68,7 @@ void ServerConfigOptDlg::initUI()
     m_titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     //m_titleLabel->setFixedWidth(85);
 
-    m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setFocusPolicy(Qt::TabFocus);
     m_closeButton->setFixedWidth(50);
     m_closeButton->setIconSize(QSize(50, 50));
 
@@ -104,6 +107,7 @@ void ServerConfigOptDlg::initUI()
     setLabelStyle(pServerNameLabel);
 
     m_serverName->lineEdit()->setPlaceholderText(tr("Required"));
+    m_serverName->setFocus();
     pGridLayout->addWidget(pServerNameLabel);
     pGridLayout->addWidget(m_serverName);
 
@@ -215,6 +219,14 @@ void ServerConfigOptDlg::initUI()
     m_VBoxLayout->addLayout(pGridLayout, Qt::AlignHCenter);
     QSpacerItem *upItem = new QSpacerItem(this->width(), 10);
     m_VBoxLayout->addSpacerItem(upItem);
+
+    palette = DApplicationHelper::instance()->palette(m_advancedOptions);
+    palette.setColor(DPalette::ButtonText, palette.color(DPalette::Highlight));
+    m_advancedOptions->setPalette(palette);
+
+    m_advancedOptions->setFlat(true);
+    m_advancedOptions->setFocusPolicy(Qt::TabFocus);
+
     m_VBoxLayout->addWidget(m_advancedOptions, 0, Qt::AlignHCenter);
     QSpacerItem *downItem = new QSpacerItem(this->width(), 10);
     m_VBoxLayout->addSpacerItem(downItem);
@@ -226,8 +238,9 @@ void ServerConfigOptDlg::initUI()
 
     DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
     connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
-        m_advancedOptions->hide();
         seniorWidget->show();
+        setTabOrder(m_advancedOptions, m_group);
+        m_advancedOptions->hide();
         upItem->changeSize(this->width(), 0);
         downItem->changeSize(this->width(), 0);
         if (m_type == SCT_MODIFY) {
@@ -284,7 +297,14 @@ void ServerConfigOptDlg::initUI()
         }
         palette.setBrush(QPalette::WindowText, color);
         m_titleLabel->setPalette(palette);
+
+        palette = DApplicationHelper::instance()->palette(m_delServer);
+        palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
+        m_delServer->setPalette(palette);
     });
+
+    // 设置焦点顺序
+    setTabOrder(pAddSaveButton, m_closeButton);
 }
 
 void ServerConfigOptDlg::initData()

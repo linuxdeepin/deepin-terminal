@@ -6,6 +6,7 @@
 
 #include <QWidget>
 
+class ListView;
 class ServerConfigGroupPanel : public CommonPanel
 {
     Q_OBJECT
@@ -22,12 +23,14 @@ public slots:
     void handleShowSearchResult();
     void refreshSearchState();
     void listItemClicked(ServerConfig *curItemServer);
+    // 列表项被点击
+    void onItemClicked(const QString &key);
 
 private:
     void initUI();
 
 private:
-    ServerConfigList *m_listWidget = nullptr;
+    ListView *m_listWidget = nullptr;
     QString m_groupName;
 };
 

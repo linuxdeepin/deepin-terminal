@@ -157,6 +157,10 @@ set (DTNG_CPP_FILES
     src/views/terminputdialog.cpp
     src/views/termcommandlinkbutton.cpp
     src/views/titlebar.cpp
+    src/views/itemwidget.cpp
+    src/views/focusframe.cpp
+    src/views/iconbutton.cpp
+    src/views/listview.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -216,6 +220,10 @@ set (DTNG_HEADER_FILES
     src/views/termbasedialog.h
     src/views/terminputdialog.h
     src/views/termcommandlinkbutton.h
+    src/views/itemwidget.h
+    src/views/focusframe.h
+    src/views/iconbutton.h
+    src/views/listview.h
 )
 
 set (DTNG_QRC_FILES

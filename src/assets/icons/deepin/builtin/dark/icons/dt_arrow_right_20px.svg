@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>arrow/right_dark</title>
+    <g id="light" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="arrow/right_dark-3" stroke="#C0C6D4">
+            <g id="arrow/right/dark" transform="translate(4.000000, 4.000000)">
+                <polyline id="arrow_right" points="4 1 8.82600378 5.94974747 4 10.8994949"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>

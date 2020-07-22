@@ -1,5 +1,8 @@
 #include "serverconfiggrouppanel.h"
 #include "serverconfigitem.h"
+#include "listview.h"
+#include "serverconfigmanager.h"
+#include "iconbutton.h"
 
 #include <QDebug>
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
@@ -12,27 +15,21 @@ void ServerConfigGroupPanel::initUI()
     this->setBackgroundRole(QPalette::Base);
     this->setAutoFillBackground(true);
 
-    m_backButton = new DIconButton(this);
+    m_rebackButton = new IconButton(this);
     m_searchEdit = new DSearchEdit(this);
-    m_listWidget = new ServerConfigList(this);
+    m_listWidget = new ListView(ListType_Remote, this);
 
-    m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
-    m_backButton->setFixedSize(QSize(36, 36));
-    m_backButton->setFocusPolicy(Qt::NoFocus);
+    m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
+    m_rebackButton->setFixedSize(QSize(36, 36));
+//    m_backButton->setFocusPolicy(Qt::NoFocus);
 
     m_searchEdit->setClearButtonEnabled(true);
-    m_searchEdit->lineEdit()->setFocusPolicy(Qt::ClickFocus);
-
-    m_listWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    m_listWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
-    m_listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    m_listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_listWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+//    m_searchEdit->setFocusPolicy(Qt::NoFocus);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setContentsMargins(0, 0, 0, 0);
     hlayout->addSpacing(10);
-    hlayout->addWidget(m_backButton);
+    hlayout->addWidget(m_rebackButton);
     hlayout->addSpacing(10);
     hlayout->addWidget(m_searchEdit);
     hlayout->addSpacing(10);
@@ -51,9 +48,9 @@ void ServerConfigGroupPanel::initUI()
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
-    connect(m_listWidget, &ServerConfigList::itemClicked, this, &ServerConfigGroupPanel::listItemClicked);
-    connect(m_backButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::showRemoteManagementPanel);
-    connect(m_listWidget, &ServerConfigList::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
+    connect(m_listWidget, &ListView::itemClicked, this, &ServerConfigGroupPanel::onItemClicked);
+    connect(m_listWidget, &ListView::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
+    connect(m_rebackButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::showRemoteManagementPanel);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow) {
             refreshData(m_groupName);
@@ -65,13 +62,16 @@ void ServerConfigGroupPanel::initUI()
             }
         }
     });
+    // 设置焦点顺序
+    setTabOrder(m_rebackButton, m_searchEdit);
 }
 
 void ServerConfigGroupPanel::refreshData(const QString &groupName)
 {
     m_groupName = groupName;
     m_listWidget->clearData();
-    m_listWidget->refreshDataByGroup(groupName, true);
+//    m_listWidget->refreshDataByGroup(groupName, true);
+    ServerConfigManager::instance()->refreshServerList(PanelType_Group, m_listWidget, "", groupName);
     refreshSearchState();
 }
 
@@ -99,5 +99,22 @@ void ServerConfigGroupPanel::listItemClicked(ServerConfig *curItemServer)
         emit doConnectServer(curItemServer);
     } else {
         qDebug() << "remote item from group is null";
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    onItemClicked
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-22
+ 4. @说明:    列表项被点击， 连接远程
+*******************************************************************************/
+void ServerConfigGroupPanel::onItemClicked(const QString &key)
+{
+    // 获取远程信息
+    ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
+    if (nullptr != remote) {
+        emit doConnectServer(remote);
+    } else {
+        qDebug() << "can't connect to remote" << key;
     }
 }

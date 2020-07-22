@@ -1,5 +1,6 @@
 #include "serverconfigmanager.h"
 #include "serverconfigoptdlg.h"
+#include "listview.h"
 
 #include <QDebug>
 
@@ -27,6 +28,105 @@ void ServerConfigManager::settServerConfig(QSettings &commandsSettings, const QS
     commandsSettings.setValue("Del", config->m_deleteKey);
     commandsSettings.setValue("PrivateKey", config->m_privateKey);
     commandsSettings.endGroup();
+}
+
+/*******************************************************************************
+ 1. @函数:    initMainPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-20
+ 4. @说明:    初始化主界面，将数据填充进去
+*******************************************************************************/
+void ServerConfigManager::fillManagePanel(ListView *listview)
+{
+    listview->clearData();
+    for (QString key : m_serverConfigs.keys()) {
+        // key有效
+        if (!key.isEmpty() && !key.isNull()) {
+            // 添加组
+            listview->addItem(ItemFuncType_Group, key);
+        } else if (key == "") {
+            // 添加项
+            for (ServerConfig *item : m_serverConfigs[key]) {
+                listview->addItem(ItemFuncType_Item, item->m_serverName, QString("%1@%2").arg(item->m_userName).arg(item->m_address));
+            }
+        }
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    fillSearchPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-22
+ 4. @说明:    填充搜索界面
+ 1）参数1 需要填充的列表
+ 2）参数2 需要过滤的条件
+ 3) 参数3 需要过滤的组，有组 组内搜索 没组 全局搜索
+*******************************************************************************/
+void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &filter, const QString &group)
+{
+    listview->clearData();
+    // 判断是否是组内搜索
+    if (group.isEmpty() || group.isNull()) {
+        // 没有组，全局搜索
+        for (QString key : m_serverConfigs.keys()) {
+            // key有效
+            if (!key.isEmpty() && !key.isNull()) {
+                // 组匹配
+                if (key.contains(filter, Qt::CaseSensitivity::CaseInsensitive)) {
+                    // 添加组
+                    listview->addItem(ItemFuncType_Group, key);
+                }
+            }
+            // 组内匹配
+            for (ServerConfig *item : m_serverConfigs[key]) {
+                if (item->m_serverName.contains(filter, Qt::CaseSensitivity::CaseInsensitive)
+                        || item->m_userName.contains(filter, Qt::CaseSensitivity::CaseInsensitive)
+                        || item->m_address.contains(filter, Qt::CaseSensitivity::CaseInsensitive))
+                    // 添加项
+                    listview->addItem(ItemFuncType_Item, item->m_serverName, QString("%1@%2").arg(item->m_userName).arg(item->m_address));
+            }
+        }
+    } else {
+        for (QString key : m_serverConfigs.keys()) {
+            // 找到分组
+            if (key != group) {
+                continue;
+            }
+            // 组内匹配
+            for (ServerConfig *item : m_serverConfigs[key]) {
+                if (item->m_serverName.contains(filter, Qt::CaseSensitivity::CaseInsensitive)
+                        || item->m_userName.contains(filter, Qt::CaseSensitivity::CaseInsensitive)
+                        || item->m_address.contains(filter, Qt::CaseSensitivity::CaseInsensitive))
+                    // 添加项
+                    listview->addItem(ItemFuncType_Item, item->m_serverName, QString("%1@%2").arg(item->m_userName).arg(item->m_address));
+            }
+        }
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    fillGroupPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-22
+ 4. @说明:    根据分组填充列表
+*******************************************************************************/
+void ServerConfigManager::fillGroupPanel(ListView *listview, const QString &group)
+{
+    listview->clearData();
+    // 遍历
+    for (QString key : m_serverConfigs.keys()) {
+        // 找到分组
+        if (key != group) {
+            continue;
+        }
+        qDebug() << "_________" << group;
+        // 组内匹配
+        for (ServerConfig *item : m_serverConfigs[key]) {
+            // 添加项
+            listview->addItem(ItemFuncType_Item, item->m_serverName, QString("%1@%2").arg(item->m_userName).arg(item->m_address));
+        }
+    }
 }
 
 ServerConfigManager *ServerConfigManager::instance()
@@ -160,6 +260,32 @@ QMap<QString, QList<ServerConfig *>> &ServerConfigManager::getServerConfigs()
     return m_serverConfigs;
 }
 
+/*******************************************************************************
+ 1. @函数:    refreshServerList
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-20
+ 4. @说明:    根据类型填充面板
+ 1) 参数1  初始界面 PanelType_Manage 分组界面    PanelType_Group 搜索界 PanelType_Search
+ 2）参数2  所需填充的列表
+ 3) 参数3  分组界面的组名 搜索界面的搜索条件
+*******************************************************************************/
+void ServerConfigManager::refreshServerList(PanelType type, ListView *listview, const QString &key, const QString &group)
+{
+    switch (type) {
+    case PanelType_Manage:
+        fillManagePanel(listview);
+        break;
+    case PanelType_Group:
+        fillGroupPanel(listview, group);
+        break;
+    case PanelType_Search:
+        fillSearchPanel(listview, key, group);
+        break;
+    default:
+        break;
+    }
+}
+
 void ServerConfigManager::setModifyDialog(QString key, ServerConfigOptDlg *dlg)
 {
     // 添加编辑弹窗
@@ -220,7 +346,6 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
         m_serverConfigDialogMap.remove(key);
     }
 
-
     for (auto &dlg : m_serverConfigDialogMap[newConfig->m_serverName]) {
         dlg->updataData(newConfig);
     }
@@ -246,4 +371,48 @@ void ServerConfigManager::closeAllDialog(QString key)
     }
     // removeDialog会做此操作
     // m_serverConfigDialogMap.remove(key);
+}
+
+/*******************************************************************************
+ 1. @函数:    getServerCount
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-21
+ 4. @说明:    根据组名获得组内服务器个数
+*******************************************************************************/
+int ServerConfigManager::getServerCount(const QString &strGroupName)
+{
+    if (strGroupName.isEmpty() || strGroupName.isNull()) {
+        qDebug() << "enter error group name:" << strGroupName << "! please confirm again!";
+        return -1;
+    }
+    if (m_serverConfigs.contains(strGroupName)) {
+        // 返回组个数
+        return m_serverConfigs[strGroupName].count();
+    }
+    // 不包含
+    return 0;
+}
+
+/*******************************************************************************
+ 1. @函数:    getServerConfig
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-21
+ 4. @说明:    根据关键值获取远程配置信息
+*******************************************************************************/
+ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
+{
+    // 遍历查找
+    for (const QString &groupName : m_serverConfigs.keys()) {
+        for (ServerConfig *item : m_serverConfigs[groupName]) {
+            if (item->m_serverName == key) {
+                // 找到返回值
+                return item;
+            } else {
+                qDebug() << item->m_serverName << key;
+            }
+        }
+    }
+    // 没找到返回空
+    qDebug() << "can't find remote key : " << key;
+    return nullptr;
 }

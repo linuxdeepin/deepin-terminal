@@ -16,6 +16,7 @@
 #include <DLineEdit>
 #include <DPasswordEdit>
 #include <DSuggestButton>
+#include <DPushButton>
 #include <dfilechooseredit.h>
 
 #include <QAction>
@@ -86,7 +87,8 @@ private:
     DComboBox *m_coding = nullptr;
     DComboBox *m_backSapceKey = nullptr;
     DComboBox *m_deleteKey = nullptr;
-    DCommandLinkButton *m_advancedOptions = nullptr;
+//    DCommandLinkButton *m_advancedOptions = nullptr;
+    DPushButton *m_advancedOptions = nullptr;
     TermCommandLinkButton *m_delServer = nullptr;
     bool m_bDelOpt = false;
 
