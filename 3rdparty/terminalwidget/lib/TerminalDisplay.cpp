@@ -143,6 +143,7 @@ void TerminalDisplay::setScreenWindow(ScreenWindow* window)
         connect( _screenWindow , SIGNAL(outputChanged()) , this , SLOT(updateImage()) );
         connect( _screenWindow , SIGNAL(outputChanged()) , this , SLOT(updateFilters()) );
         connect( _screenWindow , SIGNAL(scrolled(int)) , this , SLOT(updateFilters()) );
+        connect( _screenWindow, SIGNAL(selectionCleared()), this, SLOT(selectionCleared()) );
         window->setWindowLines(_lines);
     }
 }
@@ -810,16 +811,17 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             }
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
-            painter.drawLine(cursorRect.left(),
-                             cursorRect.bottom(),
-                             cursorRect.right(),
-                             cursorRect.bottom());
+            painter.drawLine(QLineF(
+                                 QPointF(cursorRect.left(),
+                                         cursorRect.bottom()),
+                                 QPointF(cursorRect.right(),
+                                         cursorRect.bottom())));
        else if ( _cursorShape == Emulation::KeyboardCursorShape::IBeamCursor )
-            painter.drawLine(cursorRect.left(),
-                             cursorRect.top(),
-                             cursorRect.left(),
-                             cursorRect.bottom());
-
+            painter.drawLine(QLineF(
+                                QPointF(cursorRect.left(),
+                             		cursorRect.top()),
+                                QPointF(cursorRect.left(),
+                             		cursorRect.bottom())));
     }
 }
 
@@ -1959,6 +1961,30 @@ void TerminalDisplay::setScrollBarPosition(QTermWidget::ScrollBarPosition positi
   update();
 }
 
+void TerminalDisplay::initSelectionStates()
+{
+    qDebug() << __FUNCTION__ << endl;
+
+    if (!_screenWindow)
+    {
+        return;
+    }
+
+    _selStartColumn = _screenWindow->cursorPosition().x();
+    _selStartLine = _screenWindow->cursorPosition().y();
+
+    _selEndColumn = _selStartColumn;
+    _selEndLine = _selStartLine;
+}
+
+void TerminalDisplay::initKeyBoardSelection()
+{
+    _selBegin = false;
+
+    qDebug() << __FUNCTION__ << endl;
+    initSelectionStates();
+}
+
 void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
 {
   if ( _possibleTripleClick && (ev->button()==Qt::LeftButton) ) {
@@ -2845,6 +2871,17 @@ int TerminalDisplay::motionAfterPasting()
     return mMotionAfterPasting;
 }
 
+//在使用键盘选择文字之前，判断如果光标位置不是当前已选择区域的起点，则重新初始化选择状态
+void TerminalDisplay::checkAndInitSelectionState()
+{
+    if (_selStartColumn != _screenWindow->cursorPosition().x()
+            || _selStartLine != _screenWindow->cursorPosition().y() )
+    {
+        qDebug() << "checkAndInitSelectionState!" << endl;
+        initKeyBoardSelection();
+    }
+}
+
 void TerminalDisplay::keyPressEvent( QKeyEvent* event )
 {
     bool emitKeyPressSignal = true;
@@ -2854,6 +2891,10 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
     {
         bool update = true;
 
+        //行列的index从0开始，所以最大index需要减1
+        int maxColumnIndex = _screenWindow->columnCount() - 1;
+        int maxLineIndex = _screenWindow->lineCount() - 1;
+
         if ( event->key() == Qt::Key_PageUp )
         {
             _screenWindow->scrollBy( ScreenWindow::ScrollPages , -1 );
@@ -2861,6 +2902,72 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
         else if ( event->key() == Qt::Key_PageDown )
         {
             _screenWindow->scrollBy( ScreenWindow::ScrollPages , 1 );
+        }
+        else if ( event->key() == Qt::Key_Left )
+        {
+            qDebug() << "Key_Left: _selStartColumn" << _selStartColumn
+                        << "_selStartLine" << _selStartLine
+                        << "_selEndColumn" << _selEndColumn
+                        << "_selEndLine" << _selEndLine;
+            if (!_selBegin)
+            {
+                checkAndInitSelectionState();
+
+                _selBegin = true;
+
+		//键盘按下时设置--开始选择
+                _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+            }
+            else
+            {
+		//每一格设置一次选择结束状态，这样才能看到选择的区域;键盘一直按住则一直选
+                _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            }
+
+            //向左选择
+            if (_selEndColumn >= 1)
+            {
+                _selEndColumn--;
+            }
+            //左键选择到最左边的时候，向上选中上一行末尾（如果当前没到第一行的话）
+            else if (_selEndLine > 0)
+            {
+                _selEndColumn = maxColumnIndex;
+                _selEndLine--;
+            }
+        }
+        else if ( event->key() == Qt::Key_Right )
+        {
+            if (!_selBegin)
+            {
+                checkAndInitSelectionState();
+
+                _selBegin = true;
+                _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+            }
+            else
+            {
+                _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            }
+
+            //向右选择
+            if (_selEndColumn < maxColumnIndex)
+            {
+                _selEndColumn++;
+            }
+	    //右边到了最右边时，向下选中下一行的开头(如果当前没到最后一行的话)
+            else if (_selEndLine < maxLineIndex)
+            {
+                _selEndColumn = 0;
+                _selEndLine++;
+            }
+            qDebug() << "Key_Right: _selStartColumn" << _selStartColumn
+                        << "_selStartLine" << _selStartLine
+                        << "_selEndColumn" << _selEndColumn
+                        << "_selEndLine" << _selEndLine;
+            qDebug() << "_screenWindow->lineCount(): " << _screenWindow->lineCount();
+            qDebug() << "_screenWindow->columnCount(): " << _screenWindow->columnCount();
+            qDebug() << "_selEndColumn:" << _selEndColumn << "," << "_selCurLine:" << _selEndLine;
         }
         else if ( event->key() == Qt::Key_Up )
         {
@@ -2936,6 +3043,29 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
     }
 
     event->accept();
+}
+
+void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
+{
+    //处理使用Shift+左右键选择文字，处理键盘释放的情况
+    if ( event->modifiers() == Qt::ShiftModifier )
+    {
+        if ( event->key() == Qt::Key_Left )
+        {
+            _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+        }
+        else if ( event->key() == Qt::Key_Right)
+        {
+            _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+        }
+        else
+        {
+	    //如果Shift组合按了其他键，则标记选择状态为false，表示还未准备开始选择
+            _selBegin = false;
+        }
+    }
+
+    QWidget::keyReleaseEvent(event);
 }
 
 void TerminalDisplay::inputMethodEvent( QInputMethodEvent* event )
@@ -3094,6 +3224,12 @@ void TerminalDisplay::bell(const QString& message)
 void TerminalDisplay::selectionChanged()
 {
     emit copyAvailable(_screenWindow->selectedText(false).isEmpty() == false);
+}
+
+void TerminalDisplay::selectionCleared()
+{
+    qDebug() << "selection cleared!!!!!!!!!!!!!" << endl;
+    initKeyBoardSelection();
 }
 
 void TerminalDisplay::swapColorTable()

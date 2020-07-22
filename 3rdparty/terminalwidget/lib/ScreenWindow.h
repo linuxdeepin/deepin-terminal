@@ -244,6 +244,9 @@ signals:
     /** Emitted when the selection is changed. */
     void selectionChanged();
 
+    /** Emitted when the selection is cleared. */
+    void selectionCleared();
+
 private:
     int endWindowLine() const;
     void fillUnusedArea();

@@ -521,6 +521,8 @@ public slots:
 
     void selectionChanged();
 
+    void selectionCleared();
+
 signals:
 
     /**
@@ -583,6 +585,7 @@ protected:
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent* ev) override;
     void mousePressEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
@@ -596,6 +599,10 @@ protected:
     void dragEnterEvent(QDragEnterEvent* event) override;
     void dropEvent(QDropEvent* event) override;
     void doDrag();
+    void initSelectionStates();
+    void initKeyBoardSelection();
+    void checkAndInitSelectionState();
+
     enum DragState { diNone, diPending, diDragging };
 
     struct _dragInfo {
@@ -851,6 +858,13 @@ private:
     bool _drawLineChars;
 
     TerminalHeaderBar *_headerBar;
+
+    int _selStartLine = 0;
+    int _selStartColumn = 0;
+    int _selEndLine = 0;
+    int _selEndColumn = 0;
+
+    bool _selBegin = false;
 
 public:
     static void setTransparencyEnabled(bool enable)

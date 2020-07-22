@@ -169,6 +169,7 @@ void ScreenWindow::clearSelection()
     _screen->clearSelection();
 
     emit selectionChanged();
+    emit selectionCleared();
 }
 
 void ScreenWindow::setWindowLines(int lines)
