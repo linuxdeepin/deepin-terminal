@@ -55,7 +55,11 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     m_DLineEdit->setFocusPolicy(Qt::NoFocus);
     connect(m_DIconBtnAdd, &QAbstractButton::clicked, this, [ = ] {
         /***add by ut001121 zhangmeng 20200509 修复BUG#24848 设置中点击“+”“-”按钮修改字体大小，前方输入框未高亮***/
-        m_DLineEdit->lineEdit()->setFocus();
+        /** mod by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
+        if(false == m_DIconBtnAdd->hasFocus()){
+            m_DLineEdit->lineEdit()->setFocus();
+        }
+
 
         int value = m_DLineEdit->lineEdit()->text().toInt();
         if (value < m_MaxValue)
@@ -66,7 +70,11 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     });
     connect(m_DIconBtnSubtract, &QAbstractButton::clicked, this, [ = ] {
         /***add by ut001121 zhangmeng 20200509 修复BUG#24848 设置中点击“+”“-”按钮修改字体大小，前方输入框未高亮***/
-        m_DLineEdit->lineEdit()->setFocus();
+        /** mod by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
+        if(false == m_DIconBtnSubtract->hasFocus()){
+            m_DLineEdit->lineEdit()->setFocus();
+        }
+
 
         int value = m_DLineEdit->lineEdit()->text().toInt();
         if (value > m_MinValue)
@@ -76,6 +84,8 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
         }
     });
 
+    /**
+     * del by ut001121 zhangmeng 20200718 for sp3 keyboard interaction
     // 回车即脱离焦点
     connect(m_DLineEdit, &DLineEdit::returnPressed, this, [ = ] {
 
@@ -86,7 +96,7 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
         m_DLineEdit->lineEdit()->clearFocus();
     });
-
+   */
     // 脱离焦点后校正生效．
     connect(m_DLineEdit, &DLineEdit::focusChanged, this, [ = ](bool var) {
         // 退出编辑的时候，数据做个校正

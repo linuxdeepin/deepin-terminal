@@ -18,6 +18,16 @@
 #define AppearanceService "com.deepin.daemon.Appearance"
 #define AppearancePath "/com/deepin/daemon/Appearance"
 
+// sound effect 音效服务
+#define SOUND_EFFECT_SERVICE    "com.deepin.daemon.SoundEffect"
+#define SOUND_EFFECT_PATH       "/com/deepin/daemon/SoundEffect"
+#define SOUND_EFFECT_INTERFACE  "com.deepin.daemon.SoundEffect"
+#define SOUND_EFFECT_METHOD(method) QDBusMessage::createMethodCall(SOUND_EFFECT_SERVICE, SOUND_EFFECT_PATH, SOUND_EFFECT_INTERFACE, (method))
+
+#define dbusPlaySound(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("PlaySound")<<(sound))
+#define dbusIsSoundEnabled(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("IsSoundEnabled")<<(sound))
+#define dbusEnableSound(sound, enable) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("EnableSound")<<(sound)<<(enable))
+
 class DBusManager : public QObject
 {
     Q_OBJECT
@@ -47,6 +57,10 @@ public:
     static bool callCreateRequest();
     // 创建窗口
     static void callTerminalEntry(QStringList args);
+
+
+    /** add by ut001121 zhangmeng 20200720 for sp3 keyboard interaction*/
+    static void callSystemSound(const QString& sound = "dialog-error");
 
 public slots:
     void entry(QStringList args);

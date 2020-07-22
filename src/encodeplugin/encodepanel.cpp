@@ -16,7 +16,11 @@ EncodePanel::EncodePanel(QWidget *parent)
 
     setFocusProxy(m_encodeView);
     /******** Modify by m000714 daizhengwen 2020-03-31: 设置本窗口不获得主场口的焦点****************/
-    setFocusPolicy(Qt::NoFocus);
+    /**
+     * del by ut001121 zhangmeng 20200718 for sp3 keyboard interaction
+     * setFocusPolicy(Qt::NoFocus);
+    */
+
     /********************* Modify by m000714 daizhengwen End ************************/
     QScroller::grabGesture(m_encodeView, QScroller::TouchGesture);
 

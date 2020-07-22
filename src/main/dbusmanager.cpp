@@ -236,4 +236,25 @@ bool DBusManager::createRequest()
     return result;
 }
 
-
+/*******************************************************************************
+ 1. @函数:    callSystemSound
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-07-20
+ 4. @说明:    调用系统音效
+ 5. @参数:    音效名称
+             错误提示:dialog-error
+             通   知:message
+             唤   醒:suspend-resume
+             音量调节:audio-volume-change
+             设备接入:device-added
+             设备拔出:device-removed
+*******************************************************************************/
+void DBusManager::callSystemSound(const QString& sound)
+{
+    QDBusMessage response = dbusPlaySound(sound);
+    if (response.type() == QDBusMessage::ReplyMessage) {
+        qDebug() << "call dbusPlaySound Success!";
+    } else {
+        qDebug() << "call dbusPlaySound!" << response.errorMessage();
+    }
+}
