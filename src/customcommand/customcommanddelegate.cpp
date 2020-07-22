@@ -148,10 +148,6 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
                 painter->setPen(framePen);
                 painter->drawPath(modifyPath);
 
-                //绘制编辑笔
-                QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2, editIconSize, editIconSize);
-                painter->drawPixmap(editIconRect, QIcon::fromTheme("dt_edit").pixmap(QSize(editIconSize, editIconSize)));
-
             } else {
                 //绘制列表项外框
                 int paddingX = 10;
@@ -173,6 +169,9 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
                 painter->drawPath(path);
             }
 
+            //绘制编辑笔
+            QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2, editIconSize, editIconSize);
+            painter->drawPixmap(editIconRect, QIcon::fromTheme("dt_edit").pixmap(QSize(editIconSize, editIconSize)));
         }
 
         painter->restore();
