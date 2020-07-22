@@ -53,7 +53,9 @@ void CustomCommandSearchRstPanel::initUI()
     m_backButton = new DIconButton(this);
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(40, 40));
-    m_backButton->setFocusPolicy(Qt::NoFocus);
+    m_backButton->setFocusPolicy(Qt::TabFocus);//m_backButton->setFocusPolicy(Qt::NoFocus);
+    m_backButton->setFocus();
+    setTabOrder(m_backButton, m_cmdListWidget);
 
     m_label = new DLabel(this);
     m_label->setAlignment(Qt::AlignCenter);
@@ -68,7 +70,7 @@ void CustomCommandSearchRstPanel::initUI()
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
 
-    m_cmdListWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    m_cmdListWidget->setSelectionMode(QAbstractItemView::SingleSelection);//m_cmdListWidget->setSelectionMode(QAbstractItemView::NoSelection);
     m_cmdListWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
     m_cmdListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     m_cmdListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

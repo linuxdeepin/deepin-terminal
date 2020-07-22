@@ -54,11 +54,12 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         path.arcTo(bgRect.right() - cornerSize, bgRect.bottom() - cornerSize, cornerSize, cornerSize, 270.0, 90.0);
         path.lineTo(bgRect.right(), bgRect.top() + arcRadius);
         path.arcTo(bgRect.right() - cornerSize, bgRect.top(), cornerSize, cornerSize, 0.0, 90.0);
+        path.lineTo(bgRect.left() + arcRadius, bgRect.top());
 
         if (option.state & QStyle::State_MouseOver) {
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
-            fillColor.setAlphaF(0.3);
+            fillColor.setAlphaF(0.1);//fillColor.setAlphaF(0.3);
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
         } else {
@@ -71,6 +72,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         int cmdIconSize = 44;
         int editIconSize = 20;
+        QRect modifyRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2, editIconSize, editIconSize);
 
         QRect cmdIconRect = QRect(bgRect.left() + 6, bgRect.top() + (bgRect.height() - cmdIconSize) / 2, cmdIconSize, cmdIconSize);
         painter->drawPixmap(cmdIconRect, QIcon::fromTheme("dt_command").pixmap(QSize(cmdIconSize, cmdIconSize)));
@@ -110,6 +112,68 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         QRect cmdShortcutRect = QRect(leftOffset, cmdNameRect.top() + cmdNameFontSize + lineSpace, bgRect.width() - cmdIconSize - editIconSize, 35);
         painter->drawText(cmdShortcutRect, Qt::AlignLeft | Qt::AlignTop, strCmdShortcut);
+
+        //tab键选择，绘制列表项外框
+        if ((!m_bMouseOpt) && (option.state & QStyle::State_Selected)) {
+            if (m_bModifyCheck) {
+                //绘制编辑笔的选中框
+                int paddingX = 10;
+                int paddingY = 10;
+                int frameRadius = 8;
+                QRect rect = modifyRect;
+                QPainterPath modifyPath;
+                int cornerSize = 16;
+                int arcRadius = 8;
+
+                modifyPath.moveTo(rect.left() + arcRadius, rect.top());
+                modifyPath.arcTo(rect.left(), rect.top(), cornerSize, cornerSize, 90.0, 90.0);
+                modifyPath.lineTo(rect.left(), rect.bottom() - arcRadius);
+                modifyPath.arcTo(rect.left(), rect.bottom() - cornerSize, cornerSize, cornerSize, 180.0, 90.0);
+                modifyPath.lineTo(rect.right() - arcRadius, rect.bottom());
+                modifyPath.arcTo(rect.right() - cornerSize, rect.bottom() - cornerSize, cornerSize, cornerSize, 270.0, 90.0);
+                modifyPath.lineTo(rect.right(), rect.top() + arcRadius);
+                modifyPath.arcTo(rect.right() - cornerSize, rect.top(), cornerSize, cornerSize, 0.0, 90.0);
+                modifyPath.lineTo(rect.left() + arcRadius, rect.top());
+
+                QPainterPath framePath;
+                framePath.addRoundedRect(
+                    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2 - 1, rect.height() - paddingY - 1),
+                    frameRadius,
+                    frameRadius);
+                QPen framePen;
+
+                DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
+                painter->setOpacity(1);
+                framePen = QPen(pax.color(DPalette::Highlight), 2);
+                painter->setPen(framePen);
+                painter->drawPath(modifyPath);
+
+                //绘制编辑笔
+                QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2, editIconSize, editIconSize);
+                painter->drawPixmap(editIconRect, QIcon::fromTheme("dt_edit").pixmap(QSize(editIconSize, editIconSize)));
+
+            } else {
+                //绘制列表项外框
+                int paddingX = 10;
+                int paddingY = 10;
+                int frameRadius = 8;
+                QRect rect = bgRect;
+                QPainterPath framePath;
+                framePath.addRoundedRect(
+                    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2 - 1, rect.height() - paddingY - 1),
+                    frameRadius,
+                    frameRadius);
+                QPen framePen;
+
+                DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
+                painter->setOpacity(1);
+                framePen = QPen(pax.color(DPalette::Highlight), 2);
+
+                painter->setPen(framePen);
+                painter->drawPath(path);
+            }
+
+        }
 
         painter->restore();
     } else {

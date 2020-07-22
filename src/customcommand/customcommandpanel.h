@@ -37,10 +37,11 @@ public slots:
 private:
     void initUI();
 
-private:
+public://private:
     CustomCommandList *m_cmdListWidget = nullptr;
     CustomCommandOptDlg *m_pdlg = nullptr;
     QVBoxLayout *m_vlayout = nullptr;
+    bool m_bpushButtonHaveFocus = false;
 };
 
 #endif  // CUSTOMCOMMANDPANEL_H

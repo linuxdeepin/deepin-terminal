@@ -13,6 +13,7 @@ class CustomCommandTopPanel : public RightPanel
 public:
     explicit CustomCommandTopPanel(QWidget *parent = nullptr);
     void show();
+    void tabControlFocus();
 
 protected:
     /******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/

@@ -47,6 +47,8 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandPanel->show();
 
+    tabControlFocus();
+
     QPropertyAnimation *animation = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
     animation->setDuration(iAnimationDuration);
     animation->setEasingCurve(QEasingCurve::OutQuad);
@@ -76,7 +78,7 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
     qDebug() << "showCustomCommandSearchPanel" << endl;
     m_customCommandSearchPanel->refreshData(strFilter);
     m_customCommandSearchPanel->show();
-    m_customCommandSearchPanel->setFocus();
+    m_customCommandSearchPanel->m_backButton->setFocus();//m_customCommandSearchPanel->setFocus();
 
     QPropertyAnimation *animation = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
     animation->setDuration(iAnimationDuration);
@@ -111,6 +113,8 @@ void CustomCommandTopPanel::show()
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandSearchPanel->resize(size());
     m_customCommandSearchPanel->hide();
+
+    tabControlFocus();
 }
 
 /******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/
@@ -128,4 +132,23 @@ void CustomCommandTopPanel::slotsRefreshCommandPanel()
     m_customCommandSearchPanel->refreshData();
 
 }
+
+/*******************************************************************************
+ 1. @函数:    tabControlFocus
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-20
+ 4. @说明:    tab键盘控制焦点位置
+*******************************************************************************/
+void CustomCommandTopPanel::tabControlFocus()
+{
+    int listCount = m_customCommandPanel->m_cmdListWidget->count();
+    if (listCount >= 2) {
+        m_customCommandPanel->m_searchEdit->lineEdit()->setFocus();
+    } else if (listCount == 1) {
+        m_customCommandPanel->m_cmdListWidget->setFocus();
+    } else {
+        m_customCommandPanel->m_pushButton->setFocus();
+    }
+}
+
 

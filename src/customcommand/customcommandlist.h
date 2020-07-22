@@ -31,12 +31,21 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
     void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command);
 
+    void focusInEvent(QFocusEvent *event);
+    void focusOutEvent(QFocusEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+
 signals:
     void listItemCountChange();
     void itemClicked(CustomCommandItemData itemData, QModelIndex modelIndex);
 
 private slots:
     void handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex);
+
+public:
+    bool m_bTabModify = false;
+    int m_currentRow = 0;
+    bool m_bSearchRstPanelList = true;// 是否是显示查找结果面板里的的list
 
 private:
     void initData();

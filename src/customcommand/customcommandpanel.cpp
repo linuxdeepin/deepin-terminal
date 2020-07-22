@@ -36,18 +36,35 @@ void CustomCommandPanel::showCurSearchResult()
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
+
+    if (m_pushButton->hasFocus()) {
+        qDebug() << "------------------------hasFocus";
+        m_bpushButtonHaveFocus = true;
+    } else {
+        qDebug() << "------------------------ not         hasFocus";
+        m_bpushButtonHaveFocus = false;
+    }
+
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
     }
 
     // 弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
+    //Service::instance()->setIsDialogShow(window(), true);
+    if (!m_bpushButtonHaveFocus) {
+        Service::instance()->setIsDialogShow(window(), true);
+    }
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
         // 弹窗隐藏或消失
-        Service::instance()->setIsDialogShow(window(), false);
+        //Service::instance()->setIsDialogShow(window(), false);
+        if (!m_bpushButtonHaveFocus) {
+            Service::instance()->setIsDialogShow(window(), false);
+        }
+        qDebug() << "finished" << result;
+
         if (result == QDialog::Accepted) {
 
             QAction *newAction = m_pdlg->getCurCustomCmd();
@@ -62,6 +79,14 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
             m_cmdListWidget->scrollToBottom();
             /********************* Modify by m000714 daizhengwen End ************************/
+
+            static int i = 0;
+            if (m_bpushButtonHaveFocus && result != -1) {
+                qDebug() << "---------------------button---hasFocus" << i++;
+                QTimer::singleShot(100, this, [&]() {
+                    m_pushButton->setFocus(Qt::TabFocusReason);
+                });
+            }
         }
     });
     m_pdlg->show();
@@ -109,11 +134,13 @@ void CustomCommandPanel::initUI()
 
     m_pushButton = new DPushButton();
     m_cmdListWidget = new CustomCommandList();
+    m_cmdListWidget->m_bSearchRstPanelList = false;
     m_searchEdit = new DSearchEdit();
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
 
-    m_cmdListWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    m_cmdListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_cmdListWidget->setFocusPolicy(Qt::TabFocus);
     m_cmdListWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
     m_cmdListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     m_cmdListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

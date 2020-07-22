@@ -14,7 +14,7 @@ void CustomCommandItemModel::initCommandListData(const QList<CustomCommandItemDa
     for (int i = 0; i < cmdListData.size(); i++) {
         CustomCommandItemData itemData = cmdListData.at(i);
         QStandardItem *item = new QStandardItem;
-        item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
+        item->setFlags(item->flags() | Qt::ItemIsSelectable);//item->setFlags(item->flags() & ~Qt::ItemIsSelectable & ~Qt::ItemIsEnabled);
         item->setData(QVariant::fromValue(itemData), Qt::DisplayRole);
         sourceModel->appendRow(item);
     }

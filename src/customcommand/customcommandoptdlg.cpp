@@ -141,6 +141,10 @@ void CustomCommandOptDlg::initUI()
     m_commandLineEdit->setFixedWidth(285);
     m_shortCutLineEdit->setFixedWidth(285);
 
+    QTimer::singleShot(30, this, [&]() {
+        m_nameLineEdit->lineEdit()->selectAll();
+    });
+
     m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     m_shortCutLineEdit->ShortcutDirection(Qt::AlignLeft);
@@ -192,6 +196,7 @@ void CustomCommandOptDlg::initUI()
         deleteCmdLayout->setSpacing(0);
         deleteCmdLayout->setContentsMargins(0, 0, 0, 0);
         TermCommandLinkButton *deleteCmdBtn = new TermCommandLinkButton();
+        deleteCmdBtn->setFocusPolicy(Qt::TabFocus);
         deleteCmdBtn->setText(tr("Delete Command"));
 
         deleteCmdLayout->addStretch();
@@ -431,7 +436,7 @@ void CustomCommandOptDlg::initUITitle()
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     m_closeButton = new DWindowCloseButton(this);
-    m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setFocusPolicy(Qt::TabFocus);//m_closeButton->setFocusPolicy(Qt::NoFocus);
     m_closeButton->setIconSize(QSize(50, 50));
 
     m_titleText = new DLabel(this);
@@ -491,6 +496,8 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
 
     //设置回车键默认响应的按钮
     m_confirmBtn->setDefault(true);
+
+    setTabOrder(m_confirmBtn, m_closeButton);//设置右上角关闭按钮的tab键控制顺序
 
     DVerticalLine *verticalLine = new DVerticalLine(this);
     DPalette pa = DApplicationHelper::instance()->palette(verticalLine);

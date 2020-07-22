@@ -16,6 +16,11 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option,
                    const QModelIndex &index) const Q_DECL_OVERRIDE;
 
+public:
+    bool m_bModifyCheck = false;    //自定义命令列表项是否被选中
+    bool m_bMouseOpt = false;       //是否是鼠标操作
+    int m_iMouseOptRow = -1;        //鼠标操作的自定义列表项的行位置
+
 private:
     QAbstractItemView *m_parentView = nullptr;
 };

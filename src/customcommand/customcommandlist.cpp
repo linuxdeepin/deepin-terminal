@@ -120,13 +120,20 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
     }
 
     // 弹窗显示
-    Service::instance()->setIsDialogShow(window(), true);
+    //Service::instance()->setIsDialogShow(window(), true);
+    if (!m_bTabModify) {
+        Service::instance()->setIsDialogShow(window(), true);
+    }
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
     m_pdlg->setModelIndex(modelIndex);
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
         // 弹窗隐藏或消失
-        Service::instance()->setIsDialogShow(window(), false);
+        //Service::instance()->setIsDialogShow(window(), false);
+        if (!m_bTabModify) {
+            Service::instance()->setIsDialogShow(window(), false);
+        }
+
         if (result == QDialog::Accepted) {
             qDebug() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
             QAction *newAction = m_pdlg->getCurCustomCmd();
@@ -219,6 +226,8 @@ void CustomCommandList::mouseMoveEvent(QMouseEvent *event)
 
 void CustomCommandList::mousePressEvent(QMouseEvent *event)
 {
+    m_cmdDelegate->m_bMouseOpt = true;
+    m_cmdDelegate->m_iMouseOptRow = -1;
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
     } else {
@@ -251,6 +260,8 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     CustomCommandItemData itemData =
         qvariant_cast<CustomCommandItemData>(m_cmdProxyModel->data(modelIndex));
 
+    m_cmdDelegate->m_iMouseOptRow = modelIndex.row();
+
     if (getModifyIconRect(rect).contains(clickPoint)) {
         handleModifyCustomCommand(itemData, modelIndex);
 
@@ -268,3 +279,118 @@ void CustomCommandList::setSelection(const QRect &rect, QItemSelectionModel::Sel
 {
     DListView::setSelection(rect, command);
 }
+
+/*******************************************************************************
+ 1. @函数:    focusInEvent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-17
+ 4. @说明:    第一次获得焦点触发
+*******************************************************************************/
+void CustomCommandList::focusInEvent(QFocusEvent *event)
+{
+    qDebug() << "count=" << this->count() << ",currentIndex()=" << currentIndex().row() << ",event->reason():" << event->reason(); //-1
+
+    //当不是tab键盘按下，比如方向键按下进来的，不处理 // 其实焦点已经过来了在index为-1处而已，需要其他操作 //tab键盘和 shift+tab键盘操作 好像天然 就是和方向键盘左右是通用的，在同级别的没有子控件的情况
+//    if (Qt::TabFocusReason != event->reason()) {
+
+//        return;
+//    }
+    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason || event->reason() == Qt::ActiveWindowFocusReason) {
+        m_cmdDelegate->m_bModifyCheck = false;
+        m_cmdDelegate->m_bMouseOpt = false;
+
+    }
+
+    //列表有记录，在第一次tab键获得焦点，默认选中第一个记录项
+    if (m_cmdItemDataList.size()) {
+        QModelIndex qindex = m_cmdProxyModel->index(0, 0);
+        setCurrentIndex(qindex);
+
+    } else {
+        focusNextPrevChild(!m_bSearchRstPanelList);//在列表数据被清空时，插件栏的选中框选中的位置，显示界面是，“添加”按钮，查找界面是“返回”按钮
+    }
+
+    if (m_bTabModify) {
+        m_bTabModify = false;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    focusInEvent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-17
+ 4. @说明:    焦点丢失触发
+*******************************************************************************/
+void CustomCommandList::focusOutEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    qDebug() <<  __FUNCTION__ << __LINE__;
+    //tab键控制列表丢失焦点后，取消列表项的选中状态
+    if (m_cmdItemDataList.size()) {
+        QModelIndex qindex = m_cmdProxyModel->index(-1, 0);
+        setCurrentIndex(qindex);
+
+    }
+    if (m_bTabModify) {
+        setFocus();
+
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-20
+ 4. @说明:    过滤键盘按下，方向键控制列表项操作
+*******************************************************************************/
+void CustomCommandList::keyPressEvent(QKeyEvent *event)
+{
+    static int is = 0;
+    qDebug() << "CustomCommandList::keyPressEvent-" << is++;
+
+    bool bNeedUpdate = false;
+    switch (event->key()) {
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+    case Qt::Key_Left:
+        if (m_cmdDelegate->m_bModifyCheck != false) {
+            bNeedUpdate = true;
+        }
+        m_cmdDelegate->m_bModifyCheck = false;
+        break;
+    case Qt::Key_Right:
+        if (m_cmdDelegate->m_bModifyCheck != true) {
+            bNeedUpdate = true;
+        }
+        m_cmdDelegate->m_bModifyCheck = true;
+        break;
+    case Qt::Key_Return:
+    //case Qt::Key_Enter:
+    case Qt::Key_Space: {
+        qDebug() << "Key_Return   or  Key_Space  press";
+        CustomCommandItemData itemData = qvariant_cast<CustomCommandItemData>(m_cmdProxyModel->data(this->currentIndex()));
+        if (m_cmdDelegate->m_bModifyCheck) {
+            m_bTabModify = true;
+            m_cmdDelegate->m_bModifyCheck = false;
+            m_currentRow = this->currentIndex().row();
+            handleModifyCustomCommand(itemData, this->currentIndex());
+        } else {
+            emit itemClicked(itemData, this->currentIndex());
+        }
+        m_cmdDelegate->m_bMouseOpt = false;
+        break;
+    }
+
+    default:
+        break;
+    }
+    if (bNeedUpdate) {
+        update();
+    }
+    return DListView::keyPressEvent(event);
+}
+
+
+
