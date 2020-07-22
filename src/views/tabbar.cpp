@@ -123,7 +123,7 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setTabsClosable(true);
     setVisibleAddButton(true);
     setElideMode(Qt::ElideRight);
-    setFocusPolicy(Qt::NoFocus);
+    setFocusPolicy(Qt::TabFocus);
 
     setTabHeight(36);
     setTabItemMinWidth(110);
@@ -131,7 +131,7 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 
     DIconButton *addButton = findChild<DIconButton *>("AddButton");
     if (nullptr != addButton) {
-        addButton->setFocusPolicy(Qt::NoFocus);
+        addButton->setFocusPolicy(Qt::TabFocus);
     }
 
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);

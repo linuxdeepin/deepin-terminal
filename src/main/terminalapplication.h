@@ -15,6 +15,7 @@ public:
 protected:
     // 重写了app.quit为当前窗口close.
     void handleQuitAction() override;
+    bool notify(QObject *object, QEvent *event);
 private:
 };
 

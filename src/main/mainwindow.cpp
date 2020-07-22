@@ -72,6 +72,24 @@ void MainWindow::initUI()
     initTitleBar();
     initWindowAttribute();
 
+    /******** Modify by ut000439 wangpeili 2020-07-22:  SP3.1 DTK TAB控件 ****************/
+    // 待二次整理代码
+    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
+    addButton->setFocusPolicy(Qt::TabFocus);
+    DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
+    optionBtn->setFocusPolicy(Qt::TabFocus);
+    DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
+    minBtn->setFocusPolicy(Qt::TabFocus);
+    DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
+    maxBtn->setFocusPolicy(Qt::TabFocus);
+    DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
+    closeBtn->setFocusPolicy(Qt::TabFocus);
+    QWidget::setTabOrder(addButton, optionBtn);
+    QWidget::setTabOrder(optionBtn, minBtn);
+    QWidget::setTabOrder(minBtn, maxBtn);
+    QWidget::setTabOrder(maxBtn, closeBtn);
+
+    /********************* Modify by n014361 wangpeili End ************************/
     qApp->installEventFilter(this);
 }
 void MainWindow::initWindow()
@@ -1046,6 +1064,17 @@ void MainWindow::initShortcuts()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
+    /******** Modify by ut000439 wangpeili 2020-07-17:              ****************/
+    QShortcut *shortCutFoucusOut = new QShortcut(QKeySequence(QKEYSEQUENCE_FOCUSOUT_TIMINAL), this);
+    connect(shortCutFoucusOut, &QShortcut::activated, this, [this]() {
+        qDebug() << "qkeysequence focusout timinal is activated!";
+        // DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
+        DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
+        addButton->setFocus();
+        // focusCurrentPage();
+    });
+    /********************* Modify by n014361 wangpeili End ************************/
+
     for (int i = 1; i <= 9; i++) {
         QString shortCutStr = QString("ctrl+shift+%1").arg(i);
         //qDebug() << shortCutStr;
@@ -1195,6 +1224,39 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             }
         }
     }
+
+    //if (watched == this) {
+        if (event->type() == QEvent::KeyPress) {
+            //将事件转化为键盘事件
+            QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
+            //按下Tab键执行焦点切换事件
+//            if (key_event->key() == Qt::Key_Tab) {
+//                bool realm_edit_focus = false;  //= realm_line_edit->hasFocus();
+//                bool user_edit_focus = false;   // user_line_edit->hasFocus();
+//                focusNextChild();
+//                if (realm_edit_focus) {
+//                    // user_line_edit->setFocus();
+//                } else {
+//                    // password_line_edit->setFocus();
+//                }
+
+//                return true;
+//            }
+            //按下Tab键执行焦点切换事件
+            if (key_event->key() == Qt::Key_Escape) {
+                focusCurrentPage();
+                showPlugin(PLUGIN_TYPE_NONE);
+                return  true;
+            }
+//            //按下Tab键执行焦点切换事件
+//            if (key_event->key() == Qt::Key_Escape) {
+//                focusCurrentPage();
+//                return  true;
+//            }
+
+
+        }
+   // }
 
     return DMainWindow::eventFilter(watched, event);
 }
@@ -1560,6 +1622,10 @@ void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
     }
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+
+}
+
 /**
  * after sz command,wait input file and download file.
  */
@@ -1655,6 +1721,7 @@ void NormalWindow::initTitleBar()
 
     // titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
+    Utils::clearChildrenFocus(m_tabbar);
 }
 
 /*******************************************************************************

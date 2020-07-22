@@ -115,6 +115,7 @@ TerminalHeaderBar::TerminalHeaderBar(QWidget *parent)
     //可以在分屏拖拽的时候减少提示符出现残存在界面上的情况
     for(int i=0; i<6; i++) {
         QToolButton *toolBtn = new QToolButton(this);
+        toolBtn->setFocusPolicy(Qt::NoFocus);
         toolBtn->setFixedHeight(1);
         m_boxLayout->addWidget(toolBtn);
     }

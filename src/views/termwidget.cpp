@@ -222,6 +222,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
             this->setTermOpacity(1.0);
         }
     });
+
+    setFocusPolicy( Qt::NoFocus );
 }
 
 TermWidget::~TermWidget()

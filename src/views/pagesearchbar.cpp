@@ -31,6 +31,7 @@
 #include <QShortcut>
 #include <QApplication>
 #include <QAction>
+#include <mainwindow.h>
 
 PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
 {
@@ -56,12 +57,17 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     setLayout(m_layout);
 
     // Esc隐藏
-    QShortcut *shortcut = new QShortcut(QKeySequence::Cancel, this);
-    connect(shortcut, &QShortcut::activated, this, [this]() { findCancel(); });
+   // QShortcut *shortcut = new QShortcut(QKeySequence::Cancel, this);
+   // connect(shortcut, &QShortcut::activated, this, [this]() { findCancel(); });
 }
 
 bool PageSearchBar::isFocus()
 {
+    MainWindow * minwindow = Utils::getMainWindow(this);
+    DIconButton *addButton = minwindow->findChild<DIconButton *>("AddButton");
+    QWidget::setTabOrder(m_findNextButton, addButton);
+    //QWidget::setTabOrder(m_findPrevButton, m_findNextButton);
+
     return m_searchEdit->lineEdit()->hasFocus();
 }
 
@@ -126,7 +132,7 @@ void PageSearchBar::initFindPrevButton()
 {
     m_findPrevButton = new DIconButton(QStyle::SP_ArrowUp);
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
-    m_findPrevButton->setFocusPolicy(Qt::NoFocus);
+    m_findPrevButton->setFocusPolicy(Qt::TabFocus);
 
     connect(m_findPrevButton, &QAbstractButton::clicked, this, [this]() {
         if (!m_searchEdit->lineEdit()->text().isEmpty()) {
@@ -146,7 +152,7 @@ void PageSearchBar::initFindNextButton()
 {
     m_findNextButton = new DIconButton(QStyle::SP_ArrowDown);
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
-    m_findNextButton->setFocusPolicy(Qt::NoFocus);
+    m_findNextButton->setFocusPolicy(Qt::TabFocus);
 
     connect(m_findNextButton, &QAbstractButton::clicked, this, [this]() {
         if (!m_searchEdit->lineEdit()->text().isEmpty()) {

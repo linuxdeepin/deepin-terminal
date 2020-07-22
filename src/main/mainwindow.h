@@ -96,6 +96,7 @@ public:
     //Modify by ut001000 renfeixiang 2020-06-18:修改quake_window_Height为quake_window_height bug#33779
     static constexpr const char *CONFIG_QUAKE_WINDOW_HEIGHT = "quake_window_height";
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
+    static constexpr const char *QKEYSEQUENCE_FOCUSOUT_TIMINAL = "Meta+Tab";
     int getDesktopIndex() const;
 
 signals:
@@ -124,6 +125,7 @@ public slots:
     /******** Add by ut001000 renfeixiang 2020-06-03:增加 End***************/
 
 protected:
+    void keyPressEvent(QKeyEvent *event);
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
