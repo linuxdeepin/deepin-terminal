@@ -864,6 +864,12 @@ private:
     int _selEndLine = 0;
     int _selEndColumn = 0;
 
+    int _lastLeftEndColumn = 0;
+    int _lastLeftEndLine = 0;
+    int _lastRightEndColumn = 0;
+    int _lastRightEndLine = 0;
+    int _lastEndColumn = 0;
+
     bool _selBegin = false;
 
 public:

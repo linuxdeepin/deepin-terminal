@@ -2905,22 +2905,23 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
         }
         else if ( event->key() == Qt::Key_Left )
         {
-            qDebug() << "Key_Left: _selStartColumn" << _selStartColumn
-                        << "_selStartLine" << _selStartLine
-                        << "_selEndColumn" << _selEndColumn
-                        << "_selEndLine" << _selEndLine;
             if (!_selBegin)
             {
                 checkAndInitSelectionState();
 
                 _selBegin = true;
 
-		//键盘按下时设置--开始选择
-                _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+                //键盘按下时设置--开始选择
+                //判断只有开始结束选择位置相等时，才允许开始选择
+                if (_selStartLine == _selEndLine && _selStartColumn == _selEndColumn)
+                {
+                    qDebug() << "left selection start";
+                    _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+                }
             }
             else
             {
-		//每一格设置一次选择结束状态，这样才能看到选择的区域;键盘一直按住则一直选
+                //每一格设置一次选择结束状态，这样才能看到选择的区域;键盘一直按住则一直选
                 _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             }
 
@@ -2935,6 +2936,10 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 _selEndColumn = maxColumnIndex;
                 _selEndLine--;
             }
+            qDebug() << "left: _selStartColumn" << _selStartColumn
+                        << "_selStartLine" << _selStartLine
+                        << "_selEndColumn" << _selEndColumn
+                        << "_selEndLine" << _selEndLine;
         }
         else if ( event->key() == Qt::Key_Right )
         {
@@ -2943,7 +2948,12 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 checkAndInitSelectionState();
 
                 _selBegin = true;
-                _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+                //键盘按下时设置--开始选择
+                if (_selStartLine == _selEndLine && _selStartColumn == _selEndColumn)
+                {
+                    qDebug() << "right selection start";
+                    _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+                }
             }
             else
             {
@@ -2955,19 +2965,16 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
             {
                 _selEndColumn++;
             }
-	    //右边到了最右边时，向下选中下一行的开头(如果当前没到最后一行的话)
+            //右边到了最右边时，向下选中下一行的开头(如果当前没到最后一行的话)
             else if (_selEndLine < maxLineIndex)
             {
                 _selEndColumn = 0;
                 _selEndLine++;
             }
-            qDebug() << "Key_Right: _selStartColumn" << _selStartColumn
+            qDebug() << "right: _selStartColumn" << _selStartColumn
                         << "_selStartLine" << _selStartLine
                         << "_selEndColumn" << _selEndColumn
                         << "_selEndLine" << _selEndLine;
-            qDebug() << "_screenWindow->lineCount(): " << _screenWindow->lineCount();
-            qDebug() << "_screenWindow->columnCount(): " << _screenWindow->columnCount();
-            qDebug() << "_selEndColumn:" << _selEndColumn << "," << "_selCurLine:" << _selEndLine;
         }
         else if ( event->key() == Qt::Key_Up )
         {
@@ -3052,16 +3059,32 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
     {
         if ( event->key() == Qt::Key_Left )
         {
+            //由于会有一定概率出现，长按后再同时短按一次Shift+左或者右方向键，出现一次选择两个字符的情况
+            //这里做了一个数据纠正
+            if (2 == abs(_lastLeftEndColumn - _selEndColumn))
+            {
+                _selEndColumn = _lastEndColumn;
+            }
+
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            _lastLeftEndColumn = _selEndColumn;
         }
         else if ( event->key() == Qt::Key_Right)
         {
+            //由于会有一定概率出现，长按后再短按Shift+左或者右方向键，出现一次选择两个字符的情况
+            //这里做了一个数据纠正
+            if (2 == abs(_lastRightEndColumn - _selEndColumn))
+            {
+                _selEndColumn = _lastEndColumn;
+            }
+
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            _lastRightEndColumn = _selEndColumn;
         }
         else
         {
-	    //如果Shift组合按了其他键，则标记选择状态为false，表示还未准备开始选择
             _selBegin = false;
+            _lastEndColumn = _selEndColumn;
         }
     }
 
