@@ -1876,9 +1876,14 @@ void QuakeWindow::initTitleBar()
     m_titleBar = new TitleBar(this, true);
     m_titleBar->setTabBar(m_tabbar);
 
+    /** add by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */
+    //雷神终端设置系统标题栏为禁用状态,使其不获取焦点,不影响键盘交互操作.
+    titlebar()->setEnabled(false);
     titlebar()->setFixedHeight(0);
     m_centralLayout->addWidget(m_titleBar);
 
+    /** del by ut001121 zhangmeng 20200723 for sp3 keyboard interaction*/
+#if 0
     // titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
     Utils::clearChildrenFocus(m_tabbar);
@@ -1902,6 +1907,7 @@ void QuakeWindow::initTitleBar()
     QWidget::setTabOrder(minBtn, maxBtn);
     QWidget::setTabOrder(maxBtn, closeBtn);*/
     /********************* Modify by n014361 wangpeili End ************************/
+#endif
 }
 
 /*******************************************************************************
