@@ -60,8 +60,15 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     // 修改列表
     // connect(itemWidget, &ItemWidget::itemModify, this, &ListView::itemModify);
     connect(itemWidget, &ItemWidget::itemModify, this, &ListView::onItemModify);
-    // 焦点切出
-    connect(itemWidget, &ItemWidget::focusOut, this, &ListView::focusOut);
+    // 焦点切出 Tab切出不返回
+    connect(itemWidget, &ItemWidget::focusOut, this, [ = ](Qt::FocusReason type) {
+        emit focusOut(type);
+        if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
+//            m_focusState = false;
+            m_currentIndex = -1;
+            qDebug() << "currentIndex " << m_currentIndex << "return to -1";
+        };
+    });
     // 列表被点击，编辑按钮隐藏
     connect(itemWidget, &ItemWidget::itemClicked, this, [ = ]() {
         lostFocus(m_currentIndex);
@@ -147,26 +154,61 @@ void ListView::clearData()
 }
 
 /*******************************************************************************
- 1. @函数:    currentIndex
+ 1. @函数:    indexFromString
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-21
  4. @说明:    根据名称获取现有列表的index
 *******************************************************************************/
-int ListView::currentIndex(const QString &key)
+int ListView::indexFromString(const QString &key, ItemFuncType type)
 {
     // 遍历布局
     for (int i = 0; i < m_mainLayout->count(); ++i) {
         // 获取每个窗口
         QLayoutItem *item = m_mainLayout->itemAt(i);
         ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
-        // 比较是否相等
-        if (widget->isEqual(ItemFuncType_Item, key)) {
-            // 相等 返回index
-            return i;
+        if (nullptr != widget) {
+            // 比较是否相等
+            if (widget->isEqual(type, key)) {
+                // 相等 返回index
+                return i;
+            }
         }
     }
     // 没找到，返回-1
     return -1;
+}
+
+/*******************************************************************************
+ 1. @函数:    setCurrentIndex
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:    设置当前焦点
+*******************************************************************************/
+void ListView::setCurrentIndex(int currentIndex)
+{
+    // 首先判断currentIndex的有效性
+    if (!indexIsValid(currentIndex)) {
+        // 无效，返回
+        qDebug() << "index : " << currentIndex << " is wrong";
+        return;
+    }
+    qDebug() << __FUNCTION__ << currentIndex;
+    // 之前的焦点丢失
+    if (currentIndex != m_currentIndex) {
+        lostFocus(m_currentIndex);
+    }
+    // 设置焦点
+    QLayoutItem *item = m_mainLayout->itemAt(currentIndex);
+    ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
+    if (item != nullptr) {
+        // 设置焦点
+        widget->getFocus();
+        // Todo 让焦点不要进入主窗口
+        widget->setFocus();
+    }
+    // 设置滚动条
+    setScroll(currentIndex);
+    m_currentIndex = currentIndex;
 }
 
 /*******************************************************************************
@@ -175,7 +217,7 @@ int ListView::currentIndex(const QString &key)
  3. @日期:    2020-07-21
  4. @说明:    列表项被修改，弹出弹窗给用户修改
 *******************************************************************************/
-void ListView::onItemModify(const QString &key)
+void ListView::onItemModify(const QString &key, bool isClicked)
 {
     // 弹窗出，丢失焦点
     lostFocus(m_currentIndex);
@@ -184,12 +226,26 @@ void ListView::onItemModify(const QString &key)
     qDebug() << __FUNCTION__ << "modify remote " << curItemServer->m_serverName;
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
+    // 根据点击事件还是键盘事件设置焦点状态
+    if (isClicked) {
+        // 键盘
+        m_focusState = true;
+    } else {
+        // 鼠标
+        m_focusState = false;
+        m_currentIndex = -1;
+    }
 
     // 1.显示弹窗
     m_configDialog = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
     connect(m_configDialog, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
+        // 回到列表,仅回到大的列表，没有回到具体的哪个点
+        if (m_focusState) {
+            qDebug() << m_focusState;
+            setFocus();
+        }
         // 3. 对弹窗操作进行分析
         // 判断是否删除
         if (result == ServerConfigOptDlg::Accepted) {
@@ -204,6 +260,7 @@ void ListView::onItemModify(const QString &key)
                         // 关闭所有相关弹窗
                         ServerConfigManager::instance()->closeAllDialog(m_configDialog->getCurServer()->m_serverName);
                         ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
+                        emit ServerConfigManager::instance()->refreshList("");
                         emit listItemCountChange();
                     } else {
                         // 关闭后及时将弹窗删除
@@ -221,7 +278,7 @@ void ListView::onItemModify(const QString &key)
                 // 修改后会有信号刷新列表
                 // 不需要删除，修改了转到这条修改的记录
                 // 获取index
-                int index = currentIndex(m_configDialog->getCurServer()->m_serverName);
+                int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 // 设置滚轮
                 if (-1 == index) {
                     qDebug() << "can't scroll to item " << m_configDialog->getCurServer()->m_serverName;
@@ -229,7 +286,11 @@ void ListView::onItemModify(const QString &key)
                     qDebug() << "scroll to " << index << m_configDialog->getCurServer()->m_serverName;
                     setScroll(index);
                 }
-                // Todo : 焦点返回当前
+                // 焦点返回当前选中项
+                if (m_focusState) {
+                    qDebug() << "current Index ListView" << m_currentIndex;
+                    setCurrentIndex(index);
+                }
                 // 关闭后及时将弹窗删除
                 ServerConfigManager::instance()->removeDialog(m_configDialog);
             }
@@ -254,15 +315,15 @@ void ListView::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Up:
-        setFocus(m_currentIndex, true);
-        return;
+        setFocusFromeIndex(m_currentIndex, true);
         break;
     case Qt::Key_Down:
-        setFocus(m_currentIndex, false);
-        return;
+        setFocusFromeIndex(m_currentIndex, false);
+        break;
+    default:
+        QScrollArea::keyPressEvent(event);
         break;
     }
-    QScrollArea::keyPressEvent(event);
 }
 
 /*******************************************************************************
@@ -273,11 +334,12 @@ void ListView::keyPressEvent(QKeyEvent *event)
 *******************************************************************************/
 void ListView::focusInEvent(QFocusEvent *event)
 {
-    if (event->reason() == Qt::TabFocusReason) {
-        setFocus(0, true);
+    if (m_currentIndex == -1) {
         m_currentIndex = 0;
     }
-    qDebug() << "current index : " << m_currentIndex;
+    setCurrentIndex(m_currentIndex);
+    qDebug() << "ListView current index : " << m_currentIndex << event->reason();
+    m_focusState = true;
     QScrollArea::focusInEvent(event);
 }
 
@@ -360,14 +422,14 @@ int ListView::getWidgetIndex(ItemWidget *itemWidget)
 }
 
 /*******************************************************************************
- 1. @函数:    switchFocus
+ 1. @函数:    setFocusFromeIndex
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-20
  4. @说明:    根据index切换焦点
  1)参数1 currentIndex 当前项的值
  2)参数2 UpOrDown 向上或者向下 true 上  false 下
 *******************************************************************************/
-void ListView::setFocus(int currentIndex, bool UpOrDown)
+void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
 {
     verticalScrollBar()->setRange(0, height() + 15);
     // 之前焦点所在位置丢失焦点
@@ -431,7 +493,7 @@ void ListView::lostFocus(int preIndex)
 
     QLayoutItem *item = m_mainLayout->itemAt(preIndex);
     ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
-    if (item != nullptr) {
+    if (widget != nullptr) {
         // 丢失焦点
         widget->lostFocus();
     }
@@ -463,4 +525,16 @@ void ListView::setScroll(int currentIndex)
             qDebug() << "scrollPostion " << m_scrollPostion;
         }
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    indexIsValid
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:    判断index的有效性
+*******************************************************************************/
+bool ListView::indexIsValid(int index)
+{
+    qDebug() << index << m_itemList.count();
+    return (index >= 0 && index < m_itemList.count());
 }

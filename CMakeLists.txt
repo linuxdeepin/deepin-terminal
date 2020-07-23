@@ -129,10 +129,7 @@ set (DTNG_CPP_FILES
     src/remotemanage/remotemanagementplugn.cpp
     src/remotemanage/remotemanagementsearchpanel.cpp
     src/remotemanage/remotemanagementtoppanel.cpp
-    src/remotemanage/serverconfigdelegate.cpp
     src/remotemanage/serverconfiggrouppanel.cpp
-    src/remotemanage/serverconfigitemmodel.cpp
-    src/remotemanage/serverconfiglist.cpp
     src/remotemanage/serverconfigmanager.cpp
     src/remotemanage/serverconfigoptdlg.cpp
     src/settings/newdspinbox.cpp
@@ -193,10 +190,7 @@ set (DTNG_HEADER_FILES
     src/remotemanage/remotemanagementplugn.h
     src/remotemanage/remotemanagementsearchpanel.h
     src/remotemanage/remotemanagementtoppanel.h
-    src/remotemanage/serverconfigdelegate.h
     src/remotemanage/serverconfiggrouppanel.h
-    src/remotemanage/serverconfigitemmodel.h
-    src/remotemanage/serverconfiglist.h
     src/remotemanage/serverconfigmanager.h
     src/remotemanage/serverconfigoptdlg.h
     src/settings/newdspinbox.h

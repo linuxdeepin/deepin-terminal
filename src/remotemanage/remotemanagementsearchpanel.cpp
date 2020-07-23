@@ -1,5 +1,4 @@
 #include "remotemanagementsearchpanel.h"
-#include "serverconfigmanager.h"
 #include "utils.h"
 #include "listview.h"
 #include "iconbutton.h"
@@ -53,7 +52,8 @@ void RemoteManagementSearchPanel::initUI()
     vlayout->setSpacing(10);
     setLayout(vlayout);
 
-    connect(m_rebackButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);  //
+    // 返回键被点击 搜索界面，返回焦点返回搜索框
+    connect(m_rebackButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);
     connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementSearchPanel::onItemClicked);
     connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementSearchPanel::showServerConfigGroupPanelFromSearch);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
@@ -103,7 +103,7 @@ void RemoteManagementSearchPanel::showPreviousPanel()
         emit showRemoteManagementPanel();
     }
     if (m_previousPanel == REMOTE_MANAGEMENT_GROUP) {
-        emit showServerConfigGroupPanel(m_strGroupName, false);
+        emit showServerConfigGroupPanel(m_strGroupName, true);
     }
 }
 
@@ -129,15 +129,6 @@ void RemoteManagementSearchPanel::setPreviousPanelType(RemoteManagementPanelType
     m_previousPanel = type;
 }
 
-void RemoteManagementSearchPanel::listItemClicked(ServerConfig *curItemServer)
-{
-    if (nullptr != curItemServer) {
-        emit doConnectServer(curItemServer);
-    } else {
-        qDebug() << "remote item is null";
-    }
-
-}
 
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)
 {

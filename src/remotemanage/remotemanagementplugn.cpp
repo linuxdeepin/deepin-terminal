@@ -29,6 +29,9 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
             }
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，远程连接界面使用不方便，将雷神窗口变大适应正常的远程连接界面 End***************/
             getRemoteManagementTopPanel()->show();
+            if (bSetFocus) {
+                getRemoteManagementTopPanel()->setFocusInPanel();
+            }
         }
     });
     connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {

@@ -66,12 +66,12 @@ public:
 
 public slots:
     // 处理功能键被点击的点击事件
-    void onFuncButtonClicked();
+    void onFuncButtonClicked(bool isClicked);
     // 处理图标被点击的事件
     void onIconButtonClicked();
     // 处理焦点出事件
     void onFocusReback();
-    void onFocusOut();
+    void onFocusOut(Qt::FocusReason type);
 
 signals:
     // 功能按钮被点击
@@ -81,9 +81,9 @@ signals:
     // 显示分组
     void groupClicked(const QString &strName, bool isKeyPress = false);
     // 修改项
-    void itemModify(const QString &strName);
+    void itemModify(const QString &strName, bool isClicked = false);
     // 焦点从控件中出
-    void focusOut();
+    void focusOut(Qt::FocusReason type);
 
 protected:
     // 初始化UI界面
@@ -99,6 +99,9 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     // 键盘事件
     void keyPressEvent(QKeyEvent *event) override;
+    // 焦点出入
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 private:
     // 主窗口布局

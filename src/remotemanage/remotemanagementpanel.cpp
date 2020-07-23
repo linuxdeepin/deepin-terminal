@@ -1,6 +1,4 @@
 #include "remotemanagementpanel.h"
-#include "serverconfigitem.h"
-#include "shortcutmanager.h"
 #include "service.h"
 
 #include <DLog>
@@ -12,12 +10,53 @@ RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(pare
 
 void RemoteManagementPanel::refreshPanel()
 {
+    // 清空搜索框
     clearSearchInfo();
-    //--added byq qinyaning(nyq) to solve the show when not exist the server-config.conf--//
-//    ServerConfigManager::instance()->initServerConfig();
-    //---------------------------//
+    // 初始化列表
     ServerConfigManager::instance()->refreshServerList(PanelType_Manage, m_listWidget);
+    // 刷新搜索框状态
     refreshSearchState();
+}
+
+/*******************************************************************************
+ 1. @函数:    setFocusInPane
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:    将焦点设置进入panel，有搜索框焦点进搜索框，没搜索框，焦点进入列表，没列表，焦点进添加按钮
+*******************************************************************************/
+void RemoteManagementPanel::setFocusInPanel()
+{
+    if (m_searchEdit->isVisible()) {
+        // 搜索框显示
+        // 设置焦点
+        m_searchEdit->lineEdit()->setFocus();
+    } else if (m_listWidget->isVisible()) {
+        // 列表显示
+        // 将焦点设置在列表里的第一项
+        m_listWidget->setFocusFromeIndex(0, true);
+    } else {
+        // 将焦点显示在添加按钮上
+        m_pushButton->setFocus();
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    setFocusBack
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:    从分组中返回
+*******************************************************************************/
+void RemoteManagementPanel::setFocusBack(const QString &strGroup)
+{
+    int count = ServerConfigManager::instance()->getServerCount(strGroup);
+    if (count < 0) {
+        // 若count为0
+        // 分组已经被删除 设置焦点回到 下一个
+        m_listWidget->setCurrentIndex(0);
+        return;
+    }
+    int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
+    m_listWidget->setCurrentIndex(index);
 }
 
 void RemoteManagementPanel::refreshSearchState()
@@ -68,9 +107,13 @@ void RemoteManagementPanel::showAddServerConfigDlg()
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
+        // 让焦点在平面上
+        setFocus();
         if (result == QDialog::Accepted) {
-//            QModelIndex index = m_listWidget->currentIndex(dlg->getServerName());
-//            m_listWidget->scrollTo(index);
+            // 添加完，将焦点设置在添加按钮上
+            m_pushButton->setFocus();
+            int index = m_listWidget->indexFromString(dlg->getServerName());
+            m_listWidget->setScroll(index);
         }
     });
     dlg->show();
@@ -129,8 +172,16 @@ void RemoteManagementPanel::initUI()
             refreshPanel();
         }
     });
-    connect(m_listWidget, &ListView::focusOut, this, [ = ]() {
-        m_pushButton->setFocus();
+    connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
+        if (type == Qt::TabFocusReason) {
+            m_pushButton->setFocus();
+        } else if (type == Qt::BacktabFocusReason) {
+            // 判断是否可见，可见设置焦点
+            if (m_searchEdit->isVisible()) {
+                m_searchEdit->lineEdit()->setFocus();
+            }
+        }
+
     });
 }
 

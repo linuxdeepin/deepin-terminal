@@ -2,7 +2,7 @@
 #define REMOTEMANAGEMENTSEARCHPANEL_H
 
 #include "commonpanel.h"
-#include "serverconfiglist.h"
+#include "serverconfigmanager.h"
 
 #include <QWidget>
 
@@ -29,7 +29,6 @@ signals:
     void showServerConfigGroupPanel(const QString &strGroup, bool isKeyPress);
 
 public slots:
-    void listItemClicked(ServerConfig *curItemServer);
     //显示调用本搜索页面的前置页面
     void showPreviousPanel();
     // 处理连接远程操作

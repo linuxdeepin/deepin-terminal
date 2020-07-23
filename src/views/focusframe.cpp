@@ -18,6 +18,25 @@ FocusFrame::FocusFrame(QWidget *parent)
 }
 
 /*******************************************************************************
+ 1. @函数:    setIsFocus
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:    主动设置焦点状态
+*******************************************************************************/
+void FocusFrame::setIsFocus(bool isFocus)
+{
+    m_isFocus = isFocus;
+    update();
+    if (isFocus) {
+        emit focusIn();
+        setFocus();
+    } else {
+//        emit focusOut();
+    }
+
+}
+
+/*******************************************************************************
  1. @函数:    paintEvent
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-16
@@ -115,11 +134,9 @@ void FocusFrame::leaveEvent(QEvent *event)
 *******************************************************************************/
 void FocusFrame::focusInEvent(QFocusEvent *event)
 {
-//    qDebug() << __FUNCTION__ << event << event->reason();
+    qDebug() << __FUNCTION__ << event << event->reason();
     // 焦点入
-    if (Qt::ActiveWindowFocusReason != event->reason()) {
-        m_isFocus = true;
-    }
+    m_isFocus = true;
 
     DFrame::focusInEvent(event);
 }
@@ -132,12 +149,10 @@ void FocusFrame::focusInEvent(QFocusEvent *event)
 *******************************************************************************/
 void FocusFrame::focusOutEvent(QFocusEvent *event)
 {
-    // qDebug() << __FUNCTION__ << event << event->reason();
+    qDebug() << __FUNCTION__ << event << event->reason();
     // 焦点Tab出
     m_isFocus = false;
-    if (Qt::TabFocusReason == event->reason()) {
-        emit focusOut();
-    }
+    emit focusOut(event->reason());
     DFrame::focusOutEvent(event);
 }
 

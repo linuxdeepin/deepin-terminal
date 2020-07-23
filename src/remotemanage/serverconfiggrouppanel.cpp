@@ -1,5 +1,4 @@
 #include "serverconfiggrouppanel.h"
-#include "serverconfigitem.h"
 #include "listview.h"
 #include "serverconfigmanager.h"
 #include "iconbutton.h"
@@ -21,10 +20,8 @@ void ServerConfigGroupPanel::initUI()
 
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_rebackButton->setFixedSize(QSize(36, 36));
-//    m_backButton->setFocusPolicy(Qt::NoFocus);
 
     m_searchEdit->setClearButtonEnabled(true);
-//    m_searchEdit->setFocusPolicy(Qt::NoFocus);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setContentsMargins(0, 0, 0, 0);
@@ -50,14 +47,17 @@ void ServerConfigGroupPanel::initUI()
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
     connect(m_listWidget, &ListView::itemClicked, this, &ServerConfigGroupPanel::onItemClicked);
     connect(m_listWidget, &ListView::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
-    connect(m_rebackButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::showRemoteManagementPanel);
-    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
+    connect(m_rebackButton, &DIconButton::clicked, this, [ = ]() {
+        emit showRemoteManagementPanel(m_groupName);
+    });
+    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ](QString str) {
+        Q_UNUSED(str);
         if (m_isShow) {
             refreshData(m_groupName);
             QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
             if (!configMap.contains(m_groupName)) {
                 // 没有这个组 ==> 组内没成员，则返回
-                emit showRemoteManagementPanel();
+                emit showRemoteManagementPanel(m_groupName);
                 m_isShow = false;
             }
         }
@@ -68,11 +68,35 @@ void ServerConfigGroupPanel::initUI()
 
 void ServerConfigGroupPanel::refreshData(const QString &groupName)
 {
+    qDebug() << __FUNCTION__;
     m_groupName = groupName;
     m_listWidget->clearData();
 //    m_listWidget->refreshDataByGroup(groupName, true);
     ServerConfigManager::instance()->refreshServerList(PanelType_Group, m_listWidget, "", groupName);
     refreshSearchState();
+}
+
+/*******************************************************************************
+ 1. @函数:    setFocusBack
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:    设置焦点返回的位置
+ position -1 搜索框
+其他 列表位置
+ 返回键按键不是这边设置
+*******************************************************************************/
+void ServerConfigGroupPanel::setFocusBack(int position)
+{
+    if (position == -1) {
+        // -1 设置焦点到搜索框
+        if (m_searchEdit->isVisible()) {
+            // 显示搜索框
+            m_searchEdit->lineEdit()->setFocus();
+        }
+    } else {
+        int index = m_listWidget->indexFromString(m_groupName);
+        m_listWidget->setCurrentIndex(index);
+    }
 }
 
 void ServerConfigGroupPanel::handleShowSearchResult()

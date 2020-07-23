@@ -27,6 +27,11 @@ void IconButton::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Left:
         emit preFocus();
         break;
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+    case Qt::Key_Space:
+        emit clicked(true);
+        break;
     default:
         DIconButton::keyPressEvent(event);
         break;
@@ -41,8 +46,9 @@ void IconButton::keyPressEvent(QKeyEvent *event)
 *******************************************************************************/
 void IconButton::focusOutEvent(QFocusEvent *event)
 {
+    qDebug() << event->reason() << "IconButton";
     if (event->reason() == Qt::TabFocusReason) {
-        emit focusOut();
+        emit focusOut(Qt::TabFocusReason);
     }
     DIconButton::focusOutEvent(event);
 }

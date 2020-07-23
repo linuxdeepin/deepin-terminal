@@ -87,6 +87,7 @@ void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &fil
             }
         }
     } else {
+        // 组内搜索
         for (QString key : m_serverConfigs.keys()) {
             // 找到分组
             if (key != group) {
@@ -113,6 +114,7 @@ void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &fil
 *******************************************************************************/
 void ServerConfigManager::fillGroupPanel(ListView *listview, const QString &group)
 {
+    qDebug() << __FUNCTION__;
     listview->clearData();
     // 遍历
     for (QString key : m_serverConfigs.keys()) {
@@ -120,7 +122,6 @@ void ServerConfigManager::fillGroupPanel(ListView *listview, const QString &grou
         if (key != group) {
             continue;
         }
-        qDebug() << "_________" << group;
         // 组内匹配
         for (ServerConfig *item : m_serverConfigs[key]) {
             // 添加项
@@ -241,8 +242,6 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
         // 若组内无成员
         m_serverConfigs.remove(config->m_group);
     }
-
-    emit refreshList("");
     // 所有弹窗都消失才能delete config
     delete config;
 }
@@ -407,8 +406,6 @@ ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
             if (item->m_serverName == key) {
                 // 找到返回值
                 return item;
-            } else {
-                qDebug() << item->m_serverName << key;
             }
         }
     }

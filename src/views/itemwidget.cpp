@@ -122,10 +122,11 @@ bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
  1. @函数:    getFocus
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-20
- 4. @说明:    获取焦点，显示编辑按钮
+ 4. @说明:    获取焦点，显示编辑按钮, 这是键盘获取焦点
 *******************************************************************************/
 void ItemWidget::getFocus()
 {
+    setIsFocus(true);
     m_isFocus = true;
     // 项显示功能键
     if (m_functType == ItemFuncType_Item) {
@@ -141,6 +142,7 @@ void ItemWidget::getFocus()
 *******************************************************************************/
 void ItemWidget::lostFocus()
 {
+    setIsFocus(false);
     m_isFocus = false;
     // 项影藏功能键
     if (m_functType == ItemFuncType_Item) {
@@ -194,7 +196,7 @@ bool operator <(const ItemWidget &item1, const ItemWidget &item2)
               1) 分组=>显示分组所有的项
               2) 项=>修改项
 *******************************************************************************/
-void ItemWidget::onFuncButtonClicked()
+void ItemWidget::onFuncButtonClicked(bool isClicked)
 {
     // 判断类型执行操作
     switch (m_functType) {
@@ -206,7 +208,7 @@ void ItemWidget::onFuncButtonClicked()
     case ItemFuncType_Item:
         // 修改项
         qDebug() << "modify item" << m_firstText;
-        itemModify(m_firstText);
+        itemModify(m_firstText, isClicked);
         break;
     default:
         break;
@@ -257,13 +259,19 @@ void ItemWidget::onFocusReback()
  3. @日期:    2020-07-21
  4. @说明:    焦点从功能键切出，切不在当前控件上
 *******************************************************************************/
-void ItemWidget::onFocusOut()
+void ItemWidget::onFocusOut(Qt::FocusReason type)
 {
+    // Tab切出
+    if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
+        emit focusOut(type);
+    }
     // 项
     if (m_functType == ItemFuncType_Item) {
-        m_funcButton->hide();
+        if (type != Qt::OtherFocusReason) {
+            m_funcButton->hide();
+        }
     }
-    emit focusOut();
+
 }
 
 /*******************************************************************************
@@ -451,6 +459,38 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
 }
 
 /*******************************************************************************
+ 1. @函数:    focusInEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:
+*******************************************************************************/
+void ItemWidget::focusInEvent(QFocusEvent *event)
+{
+    m_isFocus = true;
+    if (m_functType == ItemFuncType_Item) {
+        m_funcButton->show();
+    }
+    FocusFrame::focusInEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    __FUNCTION__
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-23
+ 4. @说明:
+*******************************************************************************/
+void ItemWidget::focusOutEvent(QFocusEvent *event)
+{
+    m_isFocus = false;
+    if (m_functType == ItemFuncType_Item) {
+        if (event->reason() != Qt::OtherFocusReason) {
+            m_funcButton->hide();
+        }
+    }
+    FocusFrame::focusOutEvent(event);
+}
+
+/*******************************************************************************
 1. @函数:    setFont
 2. @作者:    ut000610 戴正文
 3. @日期:    2020 - 07 - 08
@@ -542,6 +582,7 @@ void ItemWidget::rightKeyPress()
     case ItemFuncType_Item:
         // 编辑按钮获得焦点
         qDebug() << "item get focus" << m_firstText;
+        m_funcButton->show();
         m_funcButton->setFocus();
         break;
     default:

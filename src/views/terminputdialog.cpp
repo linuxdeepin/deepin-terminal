@@ -42,7 +42,7 @@ void TermInputDialog::initUI()
     m_logoIcon->hide();
 
     m_closeButton = new DWindowCloseButton(this);
-    m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setFocusPolicy(Qt::TabFocus);
     m_closeButton->setIconSize(QSize(50, 50));
 
     m_titleText = new DLabel(this);
@@ -97,6 +97,8 @@ void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffs
 
     //设置回车键默认响应的按钮
     m_confirmBtn->setDefault(true);
+    // 设置焦点顺序
+    setTabOrder(m_confirmBtn, m_closeButton);
 
     DVerticalLine *verticalLine = new DVerticalLine(this);
     verticalLine->setFixedSize(1, 28);
@@ -141,7 +143,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     m_lineEdit->setClearButtonEnabled(false);
     m_lineEdit->setFocusPolicy(Qt::ClickFocus);
     this->setFocusProxy(m_lineEdit->lineEdit());
-
+    m_lineEdit->lineEdit()->setFocus();
     /******** Modify by ut000610 daizhengwen 2020-05-21: 初始化重命名lineEdit全选****************/
     connect(m_lineEdit, &DLineEdit::focusChanged, m_lineEdit->lineEdit(), [ = ](bool onFocus) {
         // 初始化重命名lineEdit全选

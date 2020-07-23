@@ -42,11 +42,19 @@ public:
     // 清空数据
     void clearData();
     // 根据名称获取index
-    int currentIndex(const QString &key);
+    int indexFromString(const QString &key, ItemFuncType type = ItemFuncType_Item);
+    // 设置当前焦点
+    void setCurrentIndex(int currentIndex);
+    // 切换焦点
+    void setFocusFromeIndex(int currentIndex, bool UpOrDown);
+    // 丢失焦点
+    void lostFocus(int preIndex);
+    // 设置滚轮
+    void setScroll(int currentIndex);
 
 public slots:
     // 列表项被修改
-    void onItemModify(const QString &key);
+    void onItemModify(const QString &key, bool isClicked);
 
 signals:
     // 列表数量变化
@@ -58,7 +66,7 @@ signals:
     // 列表项要被修改
     // void itemModify(const QString &key);
     // 焦点Tab出
-    void focusOut();
+    void focusOut(Qt::FocusReason type);
 
 protected:
     // 键盘事件
@@ -69,8 +77,8 @@ protected:
 private:
     // 列表类型
     ListType m_type;
-    // 焦点切出还是进入 true 进入  false 出去
-    bool m_focusState = true;
+    // 焦点切出还是进入 true 焦点在  false 焦点不在
+    bool m_focusState = false;
     // 当前焦点
     int m_currentIndex = -1;
     // 当前滚轮位置
@@ -89,12 +97,8 @@ private:
     void setItemIcon(ItemFuncType type, ItemWidget *item);
     // 添加项到布局
     int getWidgetIndex(ItemWidget *itemWidget);
-    // 切换焦点
-    void setFocus(int currentIndex, bool UpOrDown);
-    // 丢失焦点
-    void lostFocus(int preIndex);
-    // 设置滚轮
-    void setScroll(int currentIndex);
+    // 判断index的有效性
+    bool indexIsValid(int index);
 };
 
 #endif // LISTVIEW_H

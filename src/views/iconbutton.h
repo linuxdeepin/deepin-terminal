@@ -19,7 +19,7 @@ signals:
     // 焦点交给前一个
     void preFocus();
     // 焦点出
-    void focusOut();
+    void focusOut(Qt::FocusReason type);
     // 被键盘点击
     void keyPressClicked();
 
