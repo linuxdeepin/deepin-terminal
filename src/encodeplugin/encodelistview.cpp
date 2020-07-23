@@ -81,7 +81,7 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
     m_foucusReason = event->reason();
 
     // 判断焦点
-    if(getFocusReason() == Qt::TabFocusReason){
+    if(getFocusReason() == Qt::TabFocusReason || getFocusReason() == Qt::BacktabFocusReason){
         setCurrentIndex(m_standardModel->index(m_checkedIndex, 0));
     }
     /** add end by ut001121 zhangmeng 20200718 */
