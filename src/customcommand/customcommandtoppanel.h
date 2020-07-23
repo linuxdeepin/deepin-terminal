@@ -12,7 +12,7 @@ class CustomCommandTopPanel : public RightPanel
     Q_OBJECT
 public:
     explicit CustomCommandTopPanel(QWidget *parent = nullptr);
-    void show();
+    void show(bool bSetFocus = false);
     void tabControlFocus();
 
 protected:
@@ -32,6 +32,7 @@ public slots:
 private:
     CustomCommandPanel *m_customCommandPanel = nullptr;
     CustomCommandSearchRstPanel *m_customCommandSearchPanel = nullptr;
+    bool m_bSetFocus;   //打开自定义命令插件时，是否获得焦点
 };
 
 #endif  // CUSTOMCOMMANDTOPPANEL_H

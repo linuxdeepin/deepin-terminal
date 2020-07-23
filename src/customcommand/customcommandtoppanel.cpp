@@ -104,7 +104,7 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
     group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void CustomCommandTopPanel::show()
+void CustomCommandTopPanel::show(bool bSetFocus)
 {
     RightPanel::show();
     m_customCommandPanel->resize(size());
@@ -113,8 +113,11 @@ void CustomCommandTopPanel::show()
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandSearchPanel->resize(size());
     m_customCommandSearchPanel->hide();
+    m_bSetFocus = bSetFocus;
+    if (m_bSetFocus) {
+        tabControlFocus();
+    }
 
-    tabControlFocus();
 }
 
 /******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/

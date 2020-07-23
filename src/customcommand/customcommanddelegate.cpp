@@ -117,48 +117,17 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         if ((!m_bMouseOpt) && (option.state & QStyle::State_Selected)) {
             if (m_bModifyCheck) {
                 //绘制编辑笔的选中框
-                int paddingX = 10;
-                int paddingY = 10;
-                int frameRadius = 8;
+
                 QRect rect = modifyRect;
-                QPainterPath modifyPath;
-                int cornerSize = 16;
-                int arcRadius = 8;
-
-                modifyPath.moveTo(rect.left() + arcRadius, rect.top());
-                modifyPath.arcTo(rect.left(), rect.top(), cornerSize, cornerSize, 90.0, 90.0);
-                modifyPath.lineTo(rect.left(), rect.bottom() - arcRadius);
-                modifyPath.arcTo(rect.left(), rect.bottom() - cornerSize, cornerSize, cornerSize, 180.0, 90.0);
-                modifyPath.lineTo(rect.right() - arcRadius, rect.bottom());
-                modifyPath.arcTo(rect.right() - cornerSize, rect.bottom() - cornerSize, cornerSize, cornerSize, 270.0, 90.0);
-                modifyPath.lineTo(rect.right(), rect.top() + arcRadius);
-                modifyPath.arcTo(rect.right() - cornerSize, rect.top(), cornerSize, cornerSize, 0.0, 90.0);
-                modifyPath.lineTo(rect.left() + arcRadius, rect.top());
-
-                QPainterPath framePath;
-                framePath.addRoundedRect(
-                    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2 - 1, rect.height() - paddingY - 1),
-                    frameRadius,
-                    frameRadius);
                 QPen framePen;
-
                 DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
                 painter->setOpacity(1);
                 framePen = QPen(pax.color(DPalette::Highlight), 2);
                 painter->setPen(framePen);
-                painter->drawPath(modifyPath);
+                painter->drawEllipse(rect.left() + 1, rect.bottom() - rect.height() + 2, 18, 18);
 
             } else {
                 //绘制列表项外框
-                int paddingX = 10;
-                int paddingY = 10;
-                int frameRadius = 8;
-                QRect rect = bgRect;
-                QPainterPath framePath;
-                framePath.addRoundedRect(
-                    QRect(rect.x() + paddingX, rect.y() + paddingY, rect.width() - paddingX * 2 - 1, rect.height() - paddingY - 1),
-                    frameRadius,
-                    frameRadius);
                 QPen framePen;
 
                 DPalette pax = DApplicationHelper::instance()->palette(m_parentView);

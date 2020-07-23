@@ -30,7 +30,7 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
                 return;
             }
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，自定义界面使用不方便，将雷神窗口变大适应正常的自定义界面 End***************/
-            getCustomCommandTopPanel()->show();
+            getCustomCommandTopPanel()->show(bSetFocus);
             //getCustomCommandTopPanel()->setFocus();
         }
     });
