@@ -102,7 +102,7 @@ public:
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
-    void showPluginChanged(const QString &name);
+    void showPluginChanged(const QString &name, bool bSetFocus = false);
     void quakeHidePlugin();
     void mainwindowClosed(MainWindow *);
     // 编码方式，仅当前mainwindow有效．

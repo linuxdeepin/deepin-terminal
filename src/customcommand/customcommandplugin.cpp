@@ -19,7 +19,7 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
     initCustomCommandTopPanel();
-    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name) {
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
         if (MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name) {
             getCustomCommandTopPanel()->hideAnim();
         } else {
@@ -31,6 +31,7 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
             }
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，自定义界面使用不方便，将雷神窗口变大适应正常的自定义界面 End***************/
             getCustomCommandTopPanel()->show();
+            //getCustomCommandTopPanel()->setFocus();
         }
     });
     connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {

@@ -1161,12 +1161,20 @@ int MainWindow::executeCMD(const char *cmd)
 *******************************************************************************/
 void MainWindow::showPlugin(const QString &name)
 {
-    m_CurrentShowPlugin = name;
-    if (name != PLUGIN_TYPE_NONE) {
-        qDebug() << "show Plugin" << name;
+    bool bSetFocus = false;
+    // 当焦点不在终端时，调用插件，并直接进入焦点
+    if (qApp->focusWidget() != nullptr) {
+        if (QString(qApp->focusWidget()->metaObject()->className()) != "Konsole::TerminalDisplay") {
+            bSetFocus = true;
+        }
     }
 
-    emit showPluginChanged(name);
+    m_CurrentShowPlugin = name;
+    if (name != PLUGIN_TYPE_NONE) {
+        qDebug() << "show Plugin" << name << bSetFocus;
+    }
+
+    emit showPluginChanged(name, bSetFocus);
 }
 /*******************************************************************************
  1. @函数:    hidePlugin

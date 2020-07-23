@@ -20,7 +20,7 @@ void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
     initEncodePanel();
-    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name) {
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
         if (MainWindow::PLUGIN_TYPE_ENCODING != name) {
             getEncodePanel()->hideAnim();
         } else {
