@@ -26,6 +26,7 @@
 #include <private/qpainter_p.h>
 
 #include <DLog>
+#include <QAction>
 
 NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
 {
@@ -49,17 +50,42 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
 //    m_DLineEdit->lineEdit()->setValidator(m_QIntValidator);
 //    m_DLineEdit->lineEdit()->setValidator(new QIntValidator(0, m_MaxValue, this));
     /******** Add by nt001000 renfeixiang 2020-05-26:增加正则表达式限制00000现象 Begin***************/
-    QRegExp regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[5-9]$)");
+    QRegExp regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[1-9]$)");
     m_DLineEdit->lineEdit()->setValidator(new QRegExpValidator(regExp, this));
     /******** Add by nt001000 renfeixiang 2020-05-26:增加正则表达式限制00000现象 End***************/
     m_DLineEdit->setFocusPolicy(Qt::NoFocus);
+
+    /** add begin by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */
+    // "+"和"-"按钮不接受Tab焦点
+    m_DIconBtnAdd->setFocusPolicy(Qt::NoFocus);
+    m_DIconBtnSubtract->setFocusPolicy(Qt::NoFocus);
+
+    // 实现上键调整字体
+    QAction *actionAdd = new QAction(m_DIconBtnAdd);
+    QList<QKeySequence> listKeyseq;
+    listKeyseq << QKeySequence("Up");
+    actionAdd->setShortcuts(listKeyseq);
+    m_DIconBtnAdd->addAction(actionAdd);
+    connect(actionAdd, &QAction::triggered, this, [this]() { m_DIconBtnAdd->animateClick(80); });
+
+    // 实现下键调整字体
+    QAction *actionSub = new QAction(m_DIconBtnSubtract);
+    QList<QKeySequence> listKeyseqSub;
+    listKeyseqSub << QKeySequence("Down");
+    actionSub->setShortcuts(listKeyseqSub);
+    m_DIconBtnSubtract->addAction(actionSub);
+    connect(actionSub, &QAction::triggered, this, [this]() { m_DIconBtnSubtract->animateClick(80); });
+
+    // 完成输入后矫正数据并发送信号
+    connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
+        correctValue();
+        emit valueChanged(m_DLineEdit->lineEdit()->text().toInt());
+    });
+    /** add end by ut001121 zhangmeng 20200723 */
+
     connect(m_DIconBtnAdd, &QAbstractButton::clicked, this, [ = ] {
         /***add by ut001121 zhangmeng 20200509 修复BUG#24848 设置中点击“+”“-”按钮修改字体大小，前方输入框未高亮***/
-        /** mod by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
-        if(false == m_DIconBtnAdd->hasFocus()){
-            m_DLineEdit->lineEdit()->setFocus();
-        }
-
+        m_DLineEdit->lineEdit()->setFocus();
 
         int value = m_DLineEdit->lineEdit()->text().toInt();
         if (value < m_MaxValue)
@@ -70,11 +96,7 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     });
     connect(m_DIconBtnSubtract, &QAbstractButton::clicked, this, [ = ] {
         /***add by ut001121 zhangmeng 20200509 修复BUG#24848 设置中点击“+”“-”按钮修改字体大小，前方输入框未高亮***/
-        /** mod by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
-        if(false == m_DIconBtnSubtract->hasFocus()){
-            m_DLineEdit->lineEdit()->setFocus();
-        }
-
+        m_DLineEdit->lineEdit()->setFocus();
 
         int value = m_DLineEdit->lineEdit()->text().toInt();
         if (value > m_MinValue)
@@ -95,8 +117,8 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     // 回车即脱离焦点
     connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
         m_DLineEdit->lineEdit()->clearFocus();
-    });
-   */
+    });*/
+
     // 脱离焦点后校正生效．
     connect(m_DLineEdit, &DLineEdit::focusChanged, this, [ = ](bool var) {
         // 退出编辑的时候，数据做个校正
