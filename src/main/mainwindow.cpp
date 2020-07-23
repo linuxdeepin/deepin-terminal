@@ -72,24 +72,7 @@ void MainWindow::initUI()
     initTitleBar();
     initWindowAttribute();
 
-    /******** Modify by ut000439 wangpeili 2020-07-22:  SP3.1 DTK TAB控件 ****************/
-    // 待二次整理代码
-    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-    addButton->setFocusPolicy(Qt::TabFocus);
-    DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
-    optionBtn->setFocusPolicy(Qt::TabFocus);
-    DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
-    minBtn->setFocusPolicy(Qt::TabFocus);
-    DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
-    maxBtn->setFocusPolicy(Qt::TabFocus);
-    DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-    closeBtn->setFocusPolicy(Qt::TabFocus);
-    QWidget::setTabOrder(addButton, optionBtn);
-    QWidget::setTabOrder(optionBtn, minBtn);
-    QWidget::setTabOrder(minBtn, maxBtn);
-    QWidget::setTabOrder(maxBtn, closeBtn);
 
-    /********************* Modify by n014361 wangpeili End ************************/
     qApp->installEventFilter(this);
 }
 void MainWindow::initWindow()
@@ -190,7 +173,7 @@ void MainWindow::initOptionButton()
     // option button
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
     if (optionBtn != nullptr) {
-        optionBtn->setFocusPolicy(Qt::NoFocus);
+        //optionBtn->setFocusPolicy(Qt::TabFocus);
         // mainwindow的设置按钮触发
         connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
             showPlugin(PLUGIN_TYPE_NONE);
@@ -1750,9 +1733,27 @@ void NormalWindow::initTitleBar()
     //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
     //handleTitleBarMenuFocusPolicy();
 
-    // titlebar所有控件不可获取焦点
+    /******** Modify by ut000439 wangpeili 2020-07-22:  SP3.1 DTK TAB控件 ****************/
+    // 清理titlebar、titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
-    Utils::clearChildrenFocus(m_tabbar);
+    Utils::clearChildrenFocus(m_tabbar);    
+    // 重新设置可见控件焦点
+    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
+    addButton->setFocusPolicy(Qt::TabFocus);
+    DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
+    optionBtn->setFocusPolicy(Qt::TabFocus);
+    DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
+    minBtn->setFocusPolicy(Qt::TabFocus);
+    DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
+    maxBtn->setFocusPolicy(Qt::TabFocus);
+    DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
+    closeBtn->setFocusPolicy(Qt::TabFocus);
+    QWidget::setTabOrder(addButton, optionBtn);
+    QWidget::setTabOrder(optionBtn, minBtn);
+    QWidget::setTabOrder(minBtn, maxBtn);
+    QWidget::setTabOrder(maxBtn, closeBtn);
+
+    /********************* Modify by n014361 wangpeili End ************************/
 }
 
 /*******************************************************************************
@@ -1880,6 +1881,27 @@ void QuakeWindow::initTitleBar()
 
     // titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
+    Utils::clearChildrenFocus(m_tabbar);
+
+    /******** Modify by ut000439 wangpeili 2020-07-22:  SP3.1 DTK TAB控件 ****************/
+    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
+    addButton->setFocusPolicy(Qt::TabFocus);
+
+    // 雷神下其它控件一律没有焦点
+    DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
+    optionBtn->setFocusPolicy(Qt::NoFocus);
+    DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
+    minBtn->setFocusPolicy(Qt::NoFocus);
+    DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
+    maxBtn->setFocusPolicy(Qt::NoFocus);
+    DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
+    closeBtn->setFocusPolicy(Qt::NoFocus);
+
+    /*QWidget::setTabOrder(addButton, optionBtn);
+    QWidget::setTabOrder(optionBtn, minBtn);
+    QWidget::setTabOrder(minBtn, maxBtn);
+    QWidget::setTabOrder(maxBtn, closeBtn);*/
+    /********************* Modify by n014361 wangpeili End ************************/
 }
 
 /*******************************************************************************
