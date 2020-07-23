@@ -43,6 +43,10 @@ public:
 
 signals:
     void valueChanged(int value);
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private:
     void correctValue();
 

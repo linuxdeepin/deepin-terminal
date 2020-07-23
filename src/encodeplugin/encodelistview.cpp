@@ -293,7 +293,8 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
 
         // draw the border
-        if ((option.state & QStyle::State_Selected) && ((EncodeListView*)m_parentView)->getFocusReason() == Qt::TabFocusReason) {
+        Qt::FocusReason focusReason = ((EncodeListView*)m_parentView)->getFocusReason();
+        if ((option.state & QStyle::State_Selected) && (focusReason == Qt::TabFocusReason || focusReason == Qt::BacktabFocusReason)) {
              QPen framePen;
              DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
              if (option.state & QStyle::State_Selected) {

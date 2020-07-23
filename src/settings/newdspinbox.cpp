@@ -60,21 +60,8 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     m_DIconBtnAdd->setFocusPolicy(Qt::NoFocus);
     m_DIconBtnSubtract->setFocusPolicy(Qt::NoFocus);
 
-    // 实现上键调整字体
-    QAction *actionAdd = new QAction(m_DIconBtnAdd);
-    QList<QKeySequence> listKeyseq;
-    listKeyseq << QKeySequence("Up");
-    actionAdd->setShortcuts(listKeyseq);
-    m_DIconBtnAdd->addAction(actionAdd);
-    connect(actionAdd, &QAction::triggered, this, [this]() { m_DIconBtnAdd->animateClick(80); });
-
-    // 实现下键调整字体
-    QAction *actionSub = new QAction(m_DIconBtnSubtract);
-    QList<QKeySequence> listKeyseqSub;
-    listKeyseqSub << QKeySequence("Down");
-    actionSub->setShortcuts(listKeyseqSub);
-    m_DIconBtnSubtract->addAction(actionSub);
-    connect(actionSub, &QAction::triggered, this, [this]() { m_DIconBtnSubtract->animateClick(80); });
+    //安装事件过滤器
+    m_DLineEdit->installEventFilter(this);
 
     // 完成输入后矫正数据并发送信号
     connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
@@ -152,6 +139,36 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
             m_DLineEdit->lineEdit()->setFocus();
         }
     });
+}
+
+/*******************************************************************************
+ 1. @函数:    eventFilter
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-07-23
+ 4. @说明:    事件过滤器
+*******************************************************************************/
+bool NewDspinBox::eventFilter(QObject *watched, QEvent *event)
+{
+    /** add begin ut001121 zhangmeng 20200723 for sp3 keyboard interaction */
+    // 处理编辑框上键事件,调整字体大小
+    if(watched == m_DLineEdit && event->type() == QEvent::KeyPress){
+        QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
+        switch (key_event->key()) {
+        case Qt::Key_Up:
+            m_DIconBtnAdd->animateClick(80);
+            return true;
+
+        case Qt::Key_Down:
+            m_DIconBtnSubtract->animateClick(80);
+            return true;
+
+        default:
+            break;
+        }
+    }
+    /** add end ut001121 zhangmeng 20200723 */
+
+    return DWidget::eventFilter(watched, event);
 }
 
 void NewDspinBox::setValue(int val)
