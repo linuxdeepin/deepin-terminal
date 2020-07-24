@@ -131,6 +131,7 @@ void ItemWidget::getFocus()
     // 项显示功能键
     if (m_functType == ItemFuncType_Item) {
         m_funcButton->show();
+        qDebug() << "edit button show";
     }
 }
 
@@ -404,7 +405,7 @@ void ItemWidget::enterEvent(QEvent *event)
 void ItemWidget::leaveEvent(QEvent *event)
 {
     // 判断焦点是否是选中状态，不是的话，清除选中效果
-    if (!m_isFocus) {
+    if (!m_isFocus && !m_funcButton->hasFocus()) {
         // 编辑按钮出
         if (m_functType == ItemFuncType_Item) {
             m_funcButton->hide();

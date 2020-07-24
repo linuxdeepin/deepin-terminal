@@ -2,7 +2,12 @@
 #include "listview.h"
 #include "serverconfigmanager.h"
 #include "iconbutton.h"
+#include "utils.h"
+#include "mainwindow.h"
 
+#include <QKeyEvent>
+#include <QApplication>
+#include <QCoreApplication>
 #include <QDebug>
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -47,26 +52,43 @@ void ServerConfigGroupPanel::initUI()
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
     connect(m_listWidget, &ListView::itemClicked, this, &ServerConfigGroupPanel::onItemClicked);
     connect(m_listWidget, &ListView::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
+    connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
+        if (type == Qt::TabFocusReason) {
+//            m_rebackButton->setFocus();
+            qDebug() << "group focus out!";
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        } else if (type == Qt::BacktabFocusReason) {
+            // 判断是否可见，可见设置焦点
+            if (m_searchEdit->isVisible()) {
+                m_searchEdit->lineEdit()->setFocus();
+            } else {
+                m_rebackButton->setFocus();
+            }
+        }
+
+    });
     connect(m_rebackButton, &DIconButton::clicked, this, [ = ]() {
-        emit showRemoteManagementPanel(m_groupName);
+        emit showRemoteManagementPanel(m_groupName, m_rebackButton->hasFocus());
     });
     connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
-        emit showRemoteManagementPanel(m_groupName);
+        emit showRemoteManagementPanel(m_groupName, true);
     });
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ](QString str) {
         Q_UNUSED(str);
         if (m_isShow) {
             refreshData(m_groupName);
+            m_listWidget->setFocus();
             QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
             if (!configMap.contains(m_groupName)) {
                 // 没有这个组 ==> 组内没成员，则返回
-                emit showRemoteManagementPanel(m_groupName);
+                emit showRemoteManagementPanel(m_groupName, m_rebackButton->hasFocus());
                 m_isShow = false;
             }
         }
     });
     // 设置焦点顺序
-    setTabOrder(m_rebackButton, m_searchEdit);
+//    setTabOrder(m_rebackButton, m_searchEdit);
 }
 
 void ServerConfigGroupPanel::refreshData(const QString &groupName)

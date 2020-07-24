@@ -46,17 +46,31 @@ void RemoteManagementPanel::setFocusInPanel()
  3. @日期:    2020-07-23
  4. @说明:    从分组中返回
 *******************************************************************************/
-void RemoteManagementPanel::setFocusBack(const QString &strGroup)
+void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn)
 {
+    qDebug() << __FUNCTION__;
+    if (!isFoucsOn) {
+        // 获取列表的状态
+        if (!m_listWidget->getFocusState()) {
+            qDebug() << "foucs is not on widget";
+            // 焦点回终端
+            Utils::getMainWindow(this)->focusCurrentPage();
+            return;
+        }
+    }
+    setFocus();
+    // 获取分组的数量
     int count = ServerConfigManager::instance()->getServerCount(strGroup);
-    if (count < 0) {
+    if (count <= 0) {
         // 若count为0
         // 分组已经被删除 设置焦点回到 下一个
-        m_listWidget->setCurrentIndex(0);
+        int index = m_listWidget->getNextIndex(0);
+        m_listWidget->setCurrentIndex(index);
         return;
     }
     int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
     m_listWidget->setCurrentIndex(index);
+    qDebug() << __FUNCTION__ << "index " << index;
 }
 
 void RemoteManagementPanel::refreshSearchState()
@@ -180,6 +194,7 @@ void RemoteManagementPanel::initUI()
     connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
         if (type == Qt::TabFocusReason) {
             m_pushButton->setFocus();
+            qDebug() << "set focus on add pushButton";
         } else if (type == Qt::BacktabFocusReason) {
             // 判断是否可见，可见设置焦点
             if (m_searchEdit->isVisible()) {

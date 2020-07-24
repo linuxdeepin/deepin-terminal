@@ -53,6 +53,10 @@ public:
     void lostFocus(int preIndex);
     // 设置滚轮
     void setScroll(int currentIndex);
+    // 获取焦点状态
+    bool getFocusState() const;
+    // 设置焦点状态
+    void setFocusState(bool focusState);
 
 public slots:
     // 列表项被修改

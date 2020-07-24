@@ -64,10 +64,13 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     // 焦点切出 Tab切出不返回
     connect(itemWidget, &ItemWidget::focusOut, this, [ = ](Qt::FocusReason type) {
         emit focusOut(type);
+        lostFocus(m_currentIndex);
+        m_focusState = false;
         if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
 //            m_focusState = false;
-            m_currentIndex = -1;
             qDebug() << "currentIndex " << m_currentIndex << "return to -1";
+            m_currentIndex = -1;
+
         };
     });
     // 列表被点击，编辑按钮隐藏
@@ -219,6 +222,8 @@ void ListView::setCurrentIndex(int currentIndex)
     if (!indexIsValid(currentIndex)) {
         // 无效，返回
         qDebug() << "index : " << currentIndex << " is wrong";
+        emit focusOut(Qt::TabFocusReason);
+        m_focusState = false;
         return;
     }
     qDebug() << __FUNCTION__ << currentIndex;
@@ -232,8 +237,10 @@ void ListView::setCurrentIndex(int currentIndex)
     if (item != nullptr) {
         // 设置焦点
         widget->getFocus();
+        qDebug() << widget << "get focus";
         // Todo 让焦点不要进入主窗口
         widget->setFocus();
+        m_focusState = true;
     }
     // 设置滚动条
     setScroll(currentIndex);
@@ -264,8 +271,6 @@ void ListView::onItemModify(const QString &key, bool isClicked)
         m_focusState = false;
         m_currentIndex = -1;
     }
-    // 获取index
-    int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
 
     // 1.显示弹窗
     m_configDialog = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
@@ -286,6 +291,8 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                 DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), m_configDialog);
                 deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
                 connect(deleteDialog, &DDialog::finished, this, [ = ](int result2) {
+                    // 获取index
+                    int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                     // 删除
                     if (result2 == DDialog::Accepted) {
                         // 关闭所有相关弹窗
@@ -293,10 +300,18 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                         ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
                         emit ServerConfigManager::instance()->refreshList("");
                         emit listItemCountChange();
-                        // Todo : 焦点返回下一个
                     } else {
                         // 关闭后及时将弹窗删除
                         ServerConfigManager::instance()->removeDialog(m_configDialog);
+                    }
+                    // Todo : 焦点返回下一个
+                    index = getNextIndex(index);
+                    if (m_focusState) {
+                        if (index >= 0) {
+                            setCurrentIndex(index);
+                        } else {
+                            m_focusState = false;
+                        }
                     }
                 });
                 deleteDialog->setWindowModality(Qt::WindowModal);
@@ -309,6 +324,8 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                 // 修改后会有信号刷新列表
                 // 不需要删除，修改了转到这条修改的记录
                 // 设置滚轮
+                // 获取index
+                int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 if (-1 == index) {
                     qDebug() << "can't scroll to item " << m_configDialog->getCurServer()->m_serverName;
                 } else {
@@ -324,6 +341,11 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                 ServerConfigManager::instance()->removeDialog(m_configDialog);
             }
         } else {
+            if (m_focusState) {
+                int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
+                qDebug() << "current Index ListView" << m_currentIndex;
+                setCurrentIndex(index);
+            }
             // 取消后及时将弹窗删除
             ServerConfigManager::instance()->removeDialog(m_configDialog);
         }
@@ -363,6 +385,7 @@ void ListView::keyPressEvent(QKeyEvent *event)
 *******************************************************************************/
 void ListView::focusInEvent(QFocusEvent *event)
 {
+    qDebug() << __FUNCTION__;
     if (m_currentIndex == -1) {
         m_currentIndex = 0;
     }
@@ -370,6 +393,28 @@ void ListView::focusInEvent(QFocusEvent *event)
     qDebug() << "ListView current index : " << m_currentIndex << event->reason();
     m_focusState = true;
     QScrollArea::focusInEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    setFocusState
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-24
+ 4. @说明:    设置焦点状态
+*******************************************************************************/
+void ListView::setFocusState(bool focusState)
+{
+    m_focusState = focusState;
+}
+
+/*******************************************************************************
+ 1. @函数:    getFocusState
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-24
+ 4. @说明:    获得焦点状态
+*******************************************************************************/
+bool ListView::getFocusState() const
+{
+    return m_focusState;
 }
 
 /*******************************************************************************
@@ -517,6 +562,7 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
 *******************************************************************************/
 void ListView::lostFocus(int preIndex)
 {
+    qDebug() << __FUNCTION__;
     // 没有前一个
     if (preIndex == -1) {
         return;
@@ -527,6 +573,7 @@ void ListView::lostFocus(int preIndex)
     if (widget != nullptr) {
         // 丢失焦点
         widget->lostFocus();
+        qDebug() << widget << "lost focus";
     }
 }
 

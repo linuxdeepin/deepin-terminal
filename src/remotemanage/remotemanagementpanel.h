@@ -16,7 +16,7 @@ public:
     // 设置焦点进入控件
     void setFocusInPanel();
     // 设置焦点从分组界面返回时的位置
-    void setFocusBack(const QString &strGroup);
+    void setFocusBack(const QString &strGroup, bool isFocusOn);
 
 signals:
     // 搜索框有焦点，显示搜索框

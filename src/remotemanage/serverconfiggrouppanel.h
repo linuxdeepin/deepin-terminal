@@ -22,7 +22,7 @@ signals:
     void showSearchResult(const QString &strGroup, const QString &strFilter);
     void doConnectServer(ServerConfig *curServer);
     // 显示远程管理主界面，需要知道是否有焦点
-    void showRemoteManagementPanel(const QString &strGoupName);
+    void showRemoteManagementPanel(const QString &strGoupName, bool isFocusOn);
 
 public slots:
     void handleShowSearchResult();

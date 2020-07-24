@@ -4,7 +4,7 @@
 <context>
     <name>CustomCommandList</name>
     <message>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="163"/>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="171"/>
         <source>Are you sure you want to delete %1?</source>
         <translation>您确定要删除 %1 吗？</translation>
     </message>
@@ -27,65 +27,65 @@
         <translation>快捷键：</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="144"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="145"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="166"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="173"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="148"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="149"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="170"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="177"/>
         <source>Required</source>
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="180"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="184"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="186"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="190"/>
         <source>Edit Command</source>
         <translation>编辑命令</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="195"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="200"/>
         <source>Delete Command</source>
         <translation>删除命令</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="220"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="225"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="222"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="227"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="224"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="229"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="305"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="310"/>
         <source>Please enter a name</source>
         <translation>请输入名称</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="317"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="322"/>
         <source>Please enter a command</source>
         <translation>请输入命令</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="366"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="371"/>
         <source>The name already exists,</source>
         <translation>该名称已存在，</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="367"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="372"/>
         <source>please input another one.</source>
         <translation>请重新输入</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="626"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="636"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -93,7 +93,7 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandpanel.cpp" line="123"/>
+        <location filename="../src/customcommand/customcommandpanel.cpp" line="150"/>
         <source>Add Command</source>
         <translation>添加命令</translation>
     </message>
@@ -101,7 +101,7 @@
 <context>
     <name>CustomCommandPlugin</name>
     <message>
-        <location filename="../src/customcommand/customcommandplugin.cpp" line="43"/>
+        <location filename="../src/customcommand/customcommandplugin.cpp" line="44"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
@@ -123,35 +123,48 @@
     </message>
 </context>
 <context>
+    <name>ListView</name>
+    <message>
+        <location filename="../src/views/listview.cpp" line="291"/>
+        <source>Delete Server</source>
+        <translation>删除服务器</translation>
+    </message>
+    <message>
+        <location filename="../src/views/listview.cpp" line="291"/>
+        <source>Are you sure you want to delete %1?</source>
+        <translation>您确定要删除 %1 吗？</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="182"/>
-        <location filename="../src/main/mainwindow.cpp" line="201"/>
+        <location filename="../src/main/mainwindow.cpp" line="183"/>
+        <location filename="../src/main/mainwindow.cpp" line="202"/>
         <source>New window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="223"/>
+        <location filename="../src/main/mainwindow.cpp" line="224"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="536"/>
+        <location filename="../src/main/mainwindow.cpp" line="537"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="538"/>
+        <location filename="../src/main/mainwindow.cpp" line="539"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1363"/>
+        <location filename="../src/main/mainwindow.cpp" line="1438"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1473"/>
+        <location filename="../src/main/mainwindow.cpp" line="1548"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
@@ -260,68 +273,68 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="44"/>
-        <location filename="../src/main/mainwindow.cpp" line="1340"/>
+        <location filename="../src/main/mainwindow.cpp" line="1415"/>
         <source>Others</source>
         <translation>其他</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="46"/>
-        <location filename="../src/main/mainwindow.cpp" line="1338"/>
+        <location filename="../src/main/mainwindow.cpp" line="1413"/>
         <location filename="../src/main/main.cpp" line="36"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="48"/>
-        <location filename="../src/main/mainwindow.cpp" line="1336"/>
+        <location filename="../src/main/mainwindow.cpp" line="1411"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="50"/>
-        <location filename="../src/main/mainwindow.cpp" line="1405"/>
+        <location filename="../src/main/mainwindow.cpp" line="1480"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="52"/>
-        <location filename="../src/main/mainwindow.cpp" line="1405"/>
+        <location filename="../src/main/mainwindow.cpp" line="1480"/>
         <source>Display shortcuts</source>
         <translation>显示快捷键</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="54"/>
-        <location filename="../src/main/mainwindow.cpp" line="1405"/>
+        <location filename="../src/main/mainwindow.cpp" line="1480"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="56"/>
-        <location filename="../src/main/mainwindow.cpp" line="1405"/>
+        <location filename="../src/main/mainwindow.cpp" line="1480"/>
         <source>Rename title</source>
         <translation>重命名标题</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="58"/>
-        <location filename="../src/main/mainwindow.cpp" line="1405"/>
+        <location filename="../src/main/mainwindow.cpp" line="1480"/>
         <source>Fullscreen</source>
         <translation>全屏</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="60"/>
-        <location filename="../src/main/mainwindow.cpp" line="1373"/>
+        <location filename="../src/main/mainwindow.cpp" line="1448"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="62"/>
-        <location filename="../src/main/mainwindow.cpp" line="1373"/>
+        <location filename="../src/main/mainwindow.cpp" line="1448"/>
         <source>Default size</source>
         <translation>默认大小</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="64"/>
-        <location filename="../src/main/mainwindow.cpp" line="1373"/>
+        <location filename="../src/main/mainwindow.cpp" line="1448"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
@@ -332,7 +345,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="68"/>
-        <location filename="../src/main/mainwindow.cpp" line="1373"/>
+        <location filename="../src/main/mainwindow.cpp" line="1448"/>
         <source>Select all</source>
         <translation>全选</translation>
     </message>
@@ -348,103 +361,103 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="74"/>
-        <location filename="../src/main/mainwindow.cpp" line="1373"/>
+        <location filename="../src/main/mainwindow.cpp" line="1448"/>
         <source>Zoom in</source>
         <translation>放大</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="76"/>
-        <location filename="../src/main/mainwindow.cpp" line="1373"/>
+        <location filename="../src/main/mainwindow.cpp" line="1448"/>
         <source>Zoom out</source>
         <translation>缩小</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="78"/>
-        <location filename="../src/main/mainwindow.cpp" line="1390"/>
+        <location filename="../src/main/mainwindow.cpp" line="1465"/>
         <source>Close other windows</source>
         <translation>关闭其他窗口</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="80"/>
-        <location filename="../src/main/mainwindow.cpp" line="1388"/>
+        <location filename="../src/main/mainwindow.cpp" line="1463"/>
         <source>Close other workspaces</source>
         <translation>关闭其他工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="82"/>
-        <location filename="../src/main/mainwindow.cpp" line="1390"/>
+        <location filename="../src/main/mainwindow.cpp" line="1465"/>
         <source>Close window</source>
         <translation>关闭窗口</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="84"/>
-        <location filename="../src/main/mainwindow.cpp" line="1388"/>
+        <location filename="../src/main/mainwindow.cpp" line="1463"/>
         <source>Close workspace</source>
         <translation>关闭工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="86"/>
-        <location filename="../src/main/mainwindow.cpp" line="1389"/>
+        <location filename="../src/main/mainwindow.cpp" line="1464"/>
         <source>Horizontal split</source>
         <translation>横向分屏</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="88"/>
-        <location filename="../src/main/mainwindow.cpp" line="1388"/>
+        <location filename="../src/main/mainwindow.cpp" line="1463"/>
         <source>New workspace</source>
         <translation>新建工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="90"/>
-        <location filename="../src/main/mainwindow.cpp" line="1388"/>
+        <location filename="../src/main/mainwindow.cpp" line="1463"/>
         <source>Next workspace</source>
         <translation>下一个工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="92"/>
-        <location filename="../src/main/mainwindow.cpp" line="1388"/>
+        <location filename="../src/main/mainwindow.cpp" line="1463"/>
         <source>Previous workspace</source>
         <translation>上一个工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="94"/>
-        <location filename="../src/main/mainwindow.cpp" line="1390"/>
+        <location filename="../src/main/mainwindow.cpp" line="1465"/>
         <source>Select left window</source>
         <translation>选择左边的窗口</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="96"/>
-        <location filename="../src/main/mainwindow.cpp" line="1389"/>
+        <location filename="../src/main/mainwindow.cpp" line="1464"/>
         <source>Select lower window</source>
         <translation>选择下面的窗口</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="98"/>
-        <location filename="../src/main/mainwindow.cpp" line="1390"/>
+        <location filename="../src/main/mainwindow.cpp" line="1465"/>
         <source>Select right window</source>
         <translation>选择右边的窗口</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="100"/>
-        <location filename="../src/main/mainwindow.cpp" line="1389"/>
+        <location filename="../src/main/mainwindow.cpp" line="1464"/>
         <source>Select upper window</source>
         <translation>选择上面的窗口</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="102"/>
-        <location filename="../src/main/mainwindow.cpp" line="1389"/>
+        <location filename="../src/main/mainwindow.cpp" line="1464"/>
         <source>Vertical split</source>
         <translation>纵向分屏</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="104"/>
-        <location filename="../src/main/mainwindow.cpp" line="1373"/>
+        <location filename="../src/main/mainwindow.cpp" line="1448"/>
         <source>Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfiglist.cpp" line="210"/>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="164"/>
+        <location filename="../src/views/listview.cpp" line="319"/>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="172"/>
         <location filename="../src/common/utils.cpp" line="307"/>
         <location filename="../src/common/utils.cpp" line="386"/>
         <location filename="../src/common/utils.cpp" line="404"/>
@@ -453,13 +466,13 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfiglist.cpp" line="211"/>
+        <location filename="../src/views/listview.cpp" line="320"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="315"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="629"/>
+        <location filename="../src/main/service.cpp" line="318"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="639"/>
         <location filename="../src/common/utils.cpp" line="437"/>
         <location filename="../src/common/utils.cpp" line="444"/>
         <source>please set another one.</source>
@@ -591,29 +604,29 @@
         <translation>设置终端显示命令或脚本执行后的结果</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="461"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="311"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="481"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="316"/>
         <source>The name should be no more than 32 characters</source>
         <translation>名称长度不得超过32个字符</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="536"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="556"/>
         <location filename="../src/common/utils.cpp" line="268"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="532"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="552"/>
         <source>Select the private key file</source>
         <translation>选择私钥文件</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandlist.cpp" line="165"/>
+        <location filename="../src/customcommand/customcommandlist.cpp" line="173"/>
         <source>Confirm</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1389"/>
+        <location filename="../src/main/mainwindow.cpp" line="1464"/>
         <source>Select workspace</source>
         <translation>选择工作区</translation>
     </message>
@@ -621,7 +634,7 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="78"/>
+        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="154"/>
         <source>Add Server</source>
         <translation>添加服务器</translation>
     </message>
@@ -629,12 +642,12 @@
 <context>
     <name>RemoteManagementPlugn</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="41"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="44"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="142"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="145"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>在您使⽤右键菜单进⾏上传和下载⽂件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
@@ -642,7 +655,7 @@
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="136"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="148"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
@@ -650,182 +663,179 @@
 <context>
     <name>ServerConfigList</name>
     <message>
-        <location filename="../src/remotemanage/serverconfiglist.cpp" line="147"/>
         <source>%1 server</source>
-        <translation>%1服务器</translation>
+        <translation type="vanished">%1服务器</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfiglist.cpp" line="194"/>
         <source>Delete Server</source>
-        <translation>删除服务器</translation>
+        <translation type="vanished">删除服务器</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfiglist.cpp" line="194"/>
         <source>Are you sure you want to delete %1?</source>
-        <translation>您确定要删除 %1 吗？</translation>
+        <translation type="vanished">您确定要删除 %1 吗？</translation>
     </message>
 </context>
 <context>
     <name>ServerConfigOptDlg</name>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="44"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="47"/>
         <source>Advanced options</source>
         <translation>高级选项</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="64"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="67"/>
         <source>Add Server</source>
         <translation>添加服务器</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="103"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="106"/>
         <source>Server name:</source>
         <translation>服务器名：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="106"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="112"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="141"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="109"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="116"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="145"/>
         <source>Required</source>
         <translation>必填</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="110"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="114"/>
         <source>Address:</source>
         <translation>地址：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="118"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="122"/>
         <source>Port:</source>
         <translation>端口：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="139"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="143"/>
         <source>Username:</source>
         <translation>用户名：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="145"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="149"/>
         <source>Password:</source>
         <translation>密码：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="152"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="156"/>
         <source>Certificate:</source>
         <translation>证书：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="178"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="182"/>
         <source>Group:</source>
         <translation>分组：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="184"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="188"/>
         <source>Path:</source>
         <translation>路径：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="190"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="194"/>
         <source>Command:</source>
         <translation>命令：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="196"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="200"/>
         <source>Encoding:</source>
         <translation>编码：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="202"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="206"/>
         <source>Backspace key:</source>
         <translation>退格键：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="208"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="212"/>
         <source>Delete key:</source>
         <translation>删除键：</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="222"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="234"/>
         <source>Delete server</source>
         <translation>删除服务器</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="242"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="255"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="243"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="256"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="247"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="260"/>
         <source>Edit Server</source>
         <translation>编辑服务器</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="347"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="358"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="367"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="378"/>
         <source>tty</source>
         <translation>tty</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="455"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="475"/>
         <source>Please enter a server name</source>
         <translation>请输入服务器名称</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="468"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="488"/>
         <source>Please enter an IP address</source>
         <translation>请输入IP地址</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="473"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="493"/>
         <source>Please enter a port</source>
         <translation>请输入端口</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="479"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="499"/>
         <source>Please enter a username</source>
         <translation>请输入用户名</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="248"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="261"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="343"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="355"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="363"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="375"/>
         <source>ascii-del</source>
         <translation>ascii-del</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="344"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="356"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="364"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="376"/>
         <source>auto</source>
         <translation>auto</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="345"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="357"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="365"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="377"/>
         <source>control-h</source>
         <translation>control-h</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="346"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="354"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="366"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="374"/>
         <source>escape-sequence</source>
         <translation>escape-sequence</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="493"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="513"/>
         <source>The server name already exists,</source>
         <translation>该服务器名已存在，</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="494"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="514"/>
         <source>please input another one. </source>
         <translation>请重新输入</translation>
     </message>
@@ -833,7 +843,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="313"/>
+        <location filename="../src/main/service.cpp" line="316"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -864,15 +874,15 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="265"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="274"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="306"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>%1为无效快捷键，</translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="281"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="288"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="294"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="313"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="320"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="326"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>快捷键%1已被占用，</translation>
     </message>
@@ -893,17 +903,17 @@
 <context>
     <name>TermInputDialog</name>
     <message>
-        <location filename="../src/views/terminputdialog.cpp" line="154"/>
+        <location filename="../src/views/terminputdialog.cpp" line="156"/>
         <source>Rename title</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../src/views/terminputdialog.cpp" line="180"/>
+        <location filename="../src/views/terminputdialog.cpp" line="182"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/views/terminputdialog.cpp" line="181"/>
+        <location filename="../src/views/terminputdialog.cpp" line="183"/>
         <source>Confirm</source>
         <translation>确定</translation>
     </message>
@@ -911,105 +921,105 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="365"/>
+        <location filename="../src/views/termwidget.cpp" line="374"/>
         <source>Rename title</source>
         <translation>重命名标题</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="262"/>
+        <location filename="../src/views/termwidget.cpp" line="264"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="265"/>
+        <location filename="../src/views/termwidget.cpp" line="267"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="271"/>
+        <location filename="../src/views/termwidget.cpp" line="273"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="282"/>
+        <location filename="../src/views/termwidget.cpp" line="284"/>
         <source>Open in file manager</source>
         <translation>在文件管理器中打开</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="293"/>
-        <location filename="../src/views/termwidget.cpp" line="414"/>
+        <location filename="../src/views/termwidget.cpp" line="295"/>
+        <location filename="../src/views/termwidget.cpp" line="423"/>
         <source>Horizontal split</source>
         <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="299"/>
-        <location filename="../src/views/termwidget.cpp" line="414"/>
+        <location filename="../src/views/termwidget.cpp" line="305"/>
+        <location filename="../src/views/termwidget.cpp" line="423"/>
         <source>Vertical split</source>
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="306"/>
+        <location filename="../src/views/termwidget.cpp" line="315"/>
         <source>Close window</source>
         <translation>关闭窗口</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="311"/>
+        <location filename="../src/views/termwidget.cpp" line="320"/>
         <source>Close other windows</source>
         <translation>关闭其他窗口</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="318"/>
-        <location filename="../src/views/termwidget.cpp" line="414"/>
+        <location filename="../src/views/termwidget.cpp" line="327"/>
+        <location filename="../src/views/termwidget.cpp" line="423"/>
         <source>New workspace</source>
         <translation>新建工作区</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="327"/>
+        <location filename="../src/views/termwidget.cpp" line="336"/>
         <source>Exit fullscreen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="331"/>
+        <location filename="../src/views/termwidget.cpp" line="340"/>
         <source>Fullscreen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="337"/>
+        <location filename="../src/views/termwidget.cpp" line="346"/>
         <source>Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="343"/>
+        <location filename="../src/views/termwidget.cpp" line="352"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="382"/>
+        <location filename="../src/views/termwidget.cpp" line="391"/>
         <source>Encoding</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="386"/>
+        <location filename="../src/views/termwidget.cpp" line="395"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="390"/>
+        <location filename="../src/views/termwidget.cpp" line="399"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="396"/>
+        <location filename="../src/views/termwidget.cpp" line="405"/>
         <source>Upload file</source>
         <translation>上传文件</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="399"/>
+        <location filename="../src/views/termwidget.cpp" line="408"/>
         <source>Download file</source>
         <translation>下载文件</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="406"/>
+        <location filename="../src/views/termwidget.cpp" line="415"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

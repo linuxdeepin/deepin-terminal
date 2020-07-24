@@ -73,13 +73,13 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     panelRightToLeft(animation, animation1);
 }
 
-void RemoteManagementTopPanel::showRemotePanelFromGroupPanel(const QString &strGoupName)
+void RemoteManagementTopPanel::showRemotePanelFromGroupPanel(const QString &strGoupName, bool isFocusOn)
 {
     qDebug() << __FUNCTION__ ;
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->refreshPanel();
     animationPrepare(m_remoteManagementSearchPanel, m_remoteManagementPanel);
-    m_remoteManagementPanel->setFocusBack(strGoupName);
+    m_remoteManagementPanel->setFocusBack(strGoupName, isFocusOn);
     QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);

@@ -2,10 +2,14 @@
 #include "utils.h"
 #include "listview.h"
 #include "iconbutton.h"
+#include "mainwindow.h"
 
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
 
+#include <QKeyEvent>
+#include <QApplication>
+#include <QCoreApplication>
 #include <QDebug>
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
@@ -65,6 +69,11 @@ void RemoteManagementSearchPanel::initUI()
                 refreshDataByFilter(m_strFilter);
             }
         }
+    });
+    connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
+        Q_UNUSED(type);
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+        QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
     });
     // 字体颜色随主题变化变化
     connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {

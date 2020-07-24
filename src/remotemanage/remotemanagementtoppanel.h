@@ -31,7 +31,7 @@ public slots:
     void showSearchPanelFromRemotePanel(const QString &strFilter);
     void showServerConfigGroupPanelFromRemotePanel(const QString &strGroup, bool isKeyPress);
 
-    void showRemotePanelFromGroupPanel(const QString &strGoupName);
+    void showRemotePanelFromGroupPanel(const QString &strGoupName, bool isFocusOn);
     void showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter);
 
     void showGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress);
