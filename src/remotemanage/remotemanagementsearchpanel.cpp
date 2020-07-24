@@ -73,8 +73,15 @@ void RemoteManagementSearchPanel::initUI()
     });
     connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
         Q_UNUSED(type);
-        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-        QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        if (Qt::TabFocusReason == type) {
+            // tab 进入 +
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        } else if (Qt::BacktabFocusReason == type) {
+            // shift + tab 返回 返回键
+            m_rebackButton->setFocus();
+        }
+
     });
     // 字体颜色随主题变化变化
     connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
