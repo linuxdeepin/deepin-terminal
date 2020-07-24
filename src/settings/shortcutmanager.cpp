@@ -40,7 +40,7 @@ void ShortcutManager::initShortcuts()
     m_builtinShortcuts << "Ctrl+D";
     // 切换标签页，防止和ctrl+shift+1等冲突（无法识别）
     m_builtinShortcuts << "Ctrl+Shift+!";
-    m_builtinShortcuts << "ctrl+Shift+@";
+    m_builtinShortcuts << "Ctrl+Shift+@";
     m_builtinShortcuts << "Ctrl+Shift+#";
     m_builtinShortcuts << "Ctrl+Shift+$";
     m_builtinShortcuts << "Ctrl+Shift+%";
