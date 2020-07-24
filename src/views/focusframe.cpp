@@ -53,10 +53,10 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     // 焦点若在，则画边框
     if (m_isFocus) {
         // 白底
-        QPainterPath backgroundPath;
-        QRect backgroundRect(0, 0, 220, 60);
-        backgroundPath.addRect(backgroundRect);
-        painter.fillPath(backgroundPath, QBrush(pa.color(DPalette::TextLively)));
+        // QPainterPath backgroundPath;
+        // QRect backgroundRect(0, 0, 220, 60);
+        // backgroundPath.addRect(backgroundRect);
+        // painter.fillPath(backgroundPath, QBrush(pa.color(DPalette::TextLively)));
 
         // 边框
         QPainterPath FramePath;
