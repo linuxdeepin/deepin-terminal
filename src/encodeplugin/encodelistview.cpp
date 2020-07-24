@@ -3,10 +3,8 @@
 #include "settings.h"
 #include "service.h"
 #include "termwidget.h"
-//#include "encodeitemdelegate.h"
 
 #include <DLog>
-
 #include <QScrollBar>
 #include <QStandardItemModel>
 #include <QDebug>
@@ -65,7 +63,7 @@ void EncodeListView::initEncodeItems()
     }
     // 默认起动选择第一个。
     m_standardModel->item(0)->setCheckState(Qt::Checked);
-    //setCurrentIndex(m_standardModel->index(0, 0));
+    m_modelIndexChecked = m_standardModel->index(0, 0);
 }
 
 /*******************************************************************************
@@ -82,7 +80,7 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
 
     // 判断焦点
     if(getFocusReason() == Qt::TabFocusReason || getFocusReason() == Qt::BacktabFocusReason){
-        setCurrentIndex(m_standardModel->index(m_checkedIndex, 0));
+        setCurrentIndex(m_modelIndexChecked);
     }
     /** add end by ut001121 zhangmeng 20200718 */
     DListView::focusInEvent(event);
@@ -147,14 +145,12 @@ void EncodeListView::keyPressEvent(QKeyEvent *event)
         if(0 == currentIndex().row()){
             DBusManager::callSystemSound();
         }
-        //scrollTo(currentIndex());
         break;
     case Qt::Key_Down:
         //下键到底发出提示音
         if(m_encodeModel->listData().size()-1 == currentIndex().row()){
             DBusManager::callSystemSound();
         }
-        //scrollTo(currentIndex());
         break;
     default:
         break;
@@ -179,19 +175,16 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
     if (!index.isValid()) {
         return;
     }
-    qDebug() << "check encode " << index.data().toString();
+
+    //当前Checked子项改为Unchecked状态
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
-    for (int row = 0; row < model->rowCount(); row++) {
-        DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
-        if (row == index.row()) {
-            modelItem->setCheckState(Qt::Checked);
-            m_checkedIndex = row;
-            // 修改配置生效。
-            m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
-        } else {
-            modelItem->setCheckState(Qt::Unchecked);
-        }
-    }
+    DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(m_modelIndexChecked.row()));
+    modelItem->setCheckState(Qt::Unchecked);
+
+    //当前激活的子项改为Checked状态
+    m_modelIndexChecked = model->index(index.row(), 0);
+    modelItem = dynamic_cast<DStandardItem *>(model->item(m_modelIndexChecked.row()));
+    modelItem->setCheckState(Qt::Checked);
 }
 
 void EncodeListView::checkEncode(QString encode)
@@ -205,7 +198,7 @@ void EncodeListView::checkEncode(QString encode)
             DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
             if (modelindex.data().toString() == encode) {
                 modelItem->setCheckState(Qt::Checked);
-                m_checkedIndex = row;
+                m_modelIndexChecked = modelindex;
                 scrollTo(modelindex);
             } else {
                 modelItem->setCheckState(Qt::Unchecked);
@@ -293,7 +286,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
 
         // draw the border
-        Qt::FocusReason focusReason = ((EncodeListView*)m_parentView)->getFocusReason();
+        Qt::FocusReason focusReason = qobject_cast<EncodeListView *>(m_parentView)->getFocusReason();
         if ((option.state & QStyle::State_Selected) && (focusReason == Qt::TabFocusReason || focusReason == Qt::BacktabFocusReason)) {
              QPen framePen;
              DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
@@ -307,7 +300,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
          }
 
         // draw the check mark
-        QStandardItemModel *model = (QStandardItemModel *)(index.model());
+        const QStandardItemModel *model = qobject_cast<const QStandardItemModel *>(index.model());
         DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(index.row()));
         if (modelItem->checkState() & Qt::CheckState::Checked ) {
             QRect editIconRect = QRect(bgRect.right() - checkIconSize - 6, bgRect.top() + (bgRect.height() - checkIconSize) / 2,

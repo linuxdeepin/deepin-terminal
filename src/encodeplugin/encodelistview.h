@@ -49,7 +49,7 @@ private:
     const int m_ListLenth = 1500;
 
     Qt::FocusReason m_foucusReason = Qt::NoFocusReason;
-    int m_checkedIndex = 0;
+    QModelIndex m_modelIndexChecked;
 
 };
 

@@ -1884,6 +1884,9 @@ void QuakeWindow::initTitleBar()
 
     /** del by ut001121 zhangmeng 20200723 for sp3 keyboard interaction*/
 #if 0
+    //设置titlebar焦点策略为不抢占焦点策略
+    titlebar()->setFocusPolicy(Qt::NoFocus);
+
     // titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
     Utils::clearChildrenFocus(m_tabbar);
