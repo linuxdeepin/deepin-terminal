@@ -104,7 +104,7 @@ const QStringList get_color_schemes_dirs()
     return rval;
 }
 
-TerminalHeaderBar::TerminalHeaderBar(QWidget *parent)
+/*TerminalHeaderBar::TerminalHeaderBar(QWidget *parent)
     : QWidget(parent)
 {
     m_boxLayout = new QBoxLayout(QBoxLayout::LeftToRight);
@@ -120,4 +120,4 @@ TerminalHeaderBar::TerminalHeaderBar(QWidget *parent)
         m_boxLayout->addWidget(toolBtn);
     }
     setLayout(m_boxLayout);
-}
+}*/

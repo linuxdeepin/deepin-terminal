@@ -857,7 +857,7 @@ private:
     int _sessionId;
     bool _drawLineChars;
 
-    TerminalHeaderBar *_headerBar;
+    //TerminalHeaderBar *_headerBar;
 
     int _selStartLine = 0;
     int _selStartColumn = 0;
