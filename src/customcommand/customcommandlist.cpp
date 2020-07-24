@@ -5,6 +5,7 @@
 #include "shortcutmanager.h"
 #include "utils.h"
 #include"service.h"
+#include "dbusmanager.h"
 
 #include <DMessageBox>
 #include <DLog>
@@ -354,12 +355,18 @@ void CustomCommandList::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_Up:
     case Qt::Key_Down:
-    case Qt::Key_Left:
+    case Qt::Key_Left: {
+        //上键到顶发出提示音 //下键到底发出提示音
+        if ((Qt::Key_Up == event->key() && 0 == currentIndex().row()) || (Qt::Key_Down == event->key() && this->count() - 1 == currentIndex().row())) {
+            DBusManager::callSystemSound();
+        }
+
         if (m_cmdDelegate->m_bModifyCheck != false) {
             bNeedUpdate = true;
         }
         m_cmdDelegate->m_bModifyCheck = false;
         break;
+    }
     case Qt::Key_Right:
         if (m_cmdDelegate->m_bModifyCheck != true) {
             bNeedUpdate = true;
