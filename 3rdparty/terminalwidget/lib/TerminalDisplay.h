@@ -850,7 +850,7 @@ private:
     int _sessionId;
     bool _drawLineChars;
 
-    TerminalHeaderBar *_headerBar;
+    //TerminalHeaderBar *_headerBar;
 
 public:
     static void setTransparencyEnabled(bool enable)

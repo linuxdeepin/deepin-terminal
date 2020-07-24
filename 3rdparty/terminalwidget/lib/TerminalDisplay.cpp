@@ -373,7 +373,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_leftBaseMargin(1)
 ,_topBaseMargin(1)
 ,_drawLineChars(true)
-,_headerBar(new TerminalHeaderBar(this))
+//,_headerBar(new TerminalHeaderBar(this))
 {
   // variables for draw text
   _drawTextAdditionHeight = 0;
@@ -439,7 +439,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 
   _gridLayout = new QGridLayout(this);
   _gridLayout->setContentsMargins(0, 0, 0, 0);
-  _gridLayout->addWidget(_headerBar);
+  //_gridLayout->addWidget(_headerBar);
 
   setLayout( _gridLayout );
 
