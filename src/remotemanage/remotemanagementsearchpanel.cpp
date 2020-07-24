@@ -63,6 +63,7 @@ void RemoteManagementSearchPanel::initUI()
     connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementSearchPanel::showServerConfigGroupPanelFromSearch);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow) {
+            m_listWidget->setFocus();
             if (m_isGroupOrNot) {
                 refreshDataByGroupAndFilter(m_strGroupName, m_strFilter);
             } else {
