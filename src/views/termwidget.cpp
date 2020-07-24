@@ -294,13 +294,20 @@ void TermWidget::addMenuActions(const QPoint &pos)
     if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
         m_menu->addAction(tr("Horizontal split"), this, [this] {
             getTermLayer();
-            parentPage()->split(Qt::Horizontal);
+            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
+            QTimer::singleShot(10, this, [ = ]() {
+               parentPage()->split(Qt::Horizontal);
+            });
+
         });
     }
     if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
         m_menu->addAction(tr("Vertical split"), this, [this] {
             getTermLayer();
-            parentPage()->split(Qt::Vertical);
+            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
+            QTimer::singleShot(10, this, [ = ]() {
+               parentPage()->split(Qt::Vertical);
+            });
         });
     }
 

@@ -62,23 +62,29 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             uKey += Qt::ALT;
 
         QString keyString2 = QKeySequence(uKey).toString(QKeySequence::PortableText);
-        qDebug() << keyevent->type() << keyString2 << keyString << object << keyevent->spontaneous() << n<<keyevent->key()
-                 <<keyevent->nativeScanCode()<<keyevent->nativeVirtualKey()<<keyevent->nativeModifiers();
+        qDebug() << keyevent->type() << keyString2 << keyString << object << keyevent->spontaneous() << n << keyevent->key()
+                 << keyevent->nativeScanCode() << keyevent->nativeVirtualKey() << keyevent->nativeModifiers();
 
 
-        if ((keyevent->modifiers() == Qt::AltModifier ) && keyevent->key() == Qt::Key_M)
-        {
-            qDebug()<<"Alt+M has triggerd";
-            QPoint pos= QPoint(qApp->inputMethod()->cursorRectangle().x(), qApp->inputMethod()->cursorRectangle().y());
-            QMouseEvent event1(QEvent::MouseButtonPress, pos, Qt::RightButton, Qt::RightButton, Qt::NoModifier);
-            QCoreApplication::sendEvent(object, &event1);
+        if ((keyevent->modifiers() == Qt::AltModifier) && keyevent->key() == Qt::Key_M) {
+            // 光标中心点
+            QPoint pos = QPoint(qApp->inputMethod()->cursorRectangle().x() + qApp->inputMethod()->cursorRectangle().width() / 2
+                                , qApp->inputMethod()->cursorRectangle().y() + qApp->inputMethod()->cursorRectangle().height() / 2);
+
+            qDebug() << "Alt+M has triggerd" << pos << qApp->inputMethod();
+            // QPoint(0,0) 表示无法获取光标位置
+            if (pos != QPoint(0, 0)) {
+                QMouseEvent event1(QEvent::MouseButtonPress, pos, Qt::RightButton, Qt::NoButton,  Qt::NoModifier);
+                QCoreApplication::sendEvent(object, &event1);
+            }
+
             return true;
         }
 
         return QApplication::notify(object, event);
     }
     if (event->type() == QEvent::FocusIn) {
-       // qDebug() <<"FocusIn:"<<object;
+        // qDebug() <<"FocusIn:"<<object;
     }
     // qDebug() <<event->type()<< s<<n;
     return QApplication::notify(object, event);
