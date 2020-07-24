@@ -1,6 +1,7 @@
 #include "listview.h"
 #include "service.h"
 #include "serverconfigmanager.h"
+#include "dbusmanager.h"
 
 // qt
 #include <QDebug>
@@ -179,6 +180,34 @@ int ListView::indexFromString(const QString &key, ItemFuncType type)
 }
 
 /*******************************************************************************
+ 1. @函数:    getNextIndex
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-24
+ 4. @说明:    获取当前下一个的index 实质判断现在此index是否可用
+*******************************************************************************/
+int ListView::getNextIndex(int index)
+{
+    if (index < 0) {
+        // 输入错误的index
+        qDebug() << __FUNCTION__ << "input wrong index" << index;
+        return -1;
+    }
+    int count = m_itemList.count();
+    // index小于列表最大数量
+    if (index < count) {
+        return index;
+    }
+    // index大于最大数量,且列表数量不为0
+    if (index >= count && m_itemList.count() != 0) {
+        index = count - 1;
+        return index;
+    } else {
+        // 列表没有项
+        return -2;
+    }
+}
+
+/*******************************************************************************
  1. @函数:    setCurrentIndex
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-23
@@ -235,6 +264,8 @@ void ListView::onItemModify(const QString &key, bool isClicked)
         m_focusState = false;
         m_currentIndex = -1;
     }
+    // 获取index
+    int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
 
     // 1.显示弹窗
     m_configDialog = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
@@ -262,11 +293,11 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                         ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
                         emit ServerConfigManager::instance()->refreshList("");
                         emit listItemCountChange();
+                        // Todo : 焦点返回下一个
                     } else {
                         // 关闭后及时将弹窗删除
                         ServerConfigManager::instance()->removeDialog(m_configDialog);
                     }
-                    // Todo : 焦点返回下一个
                 });
                 deleteDialog->setWindowModality(Qt::WindowModal);
                 deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
@@ -277,8 +308,6 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                 // 不删除，修改
                 // 修改后会有信号刷新列表
                 // 不需要删除，修改了转到这条修改的记录
-                // 获取index
-                int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 // 设置滚轮
                 if (-1 == index) {
                     qDebug() << "can't scroll to item " << m_configDialog->getCurServer()->m_serverName;
@@ -444,11 +473,15 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
     if (currentIndex <= 0) {
         currentIndex = 0;
         m_scrollPostion = 0;
+        // 提示音
+        DBusManager::callSystemSound();
     }
     // 最下
     if (currentIndex == m_itemList.count()) {
         --currentIndex;
         m_scrollPostion = verticalScrollBar()->value();
+        // 提示音
+        DBusManager::callSystemSound();
     }
     if (currentIndex == -1) {
         // 若是为-1,上下键无效，Tab切出
@@ -470,8 +503,6 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
             }
             verticalScrollBar()->setValue(m_scrollPostion);
         }
-    } else {
-        // 提示音
     }
     // 需要让m_currentIndex于焦点所在位置同步
     m_currentIndex = currentIndex;

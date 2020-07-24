@@ -50,6 +50,9 @@ void ServerConfigGroupPanel::initUI()
     connect(m_rebackButton, &DIconButton::clicked, this, [ = ]() {
         emit showRemoteManagementPanel(m_groupName);
     });
+    connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
+        emit showRemoteManagementPanel(m_groupName);
+    });
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ](QString str) {
         Q_UNUSED(str);
         if (m_isShow) {

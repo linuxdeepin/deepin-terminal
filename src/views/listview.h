@@ -29,7 +29,7 @@ class ListView : public QScrollArea
     Q_OBJECT
 public:
     ListView(ListType type, QWidget *parent = nullptr);
-    ~ListView();
+    ~ListView() override;
 
     // 添加项
     void addItem(ItemFuncType type, const QString &key, const QString &strDescription = "");
@@ -43,6 +43,8 @@ public:
     void clearData();
     // 根据名称获取index
     int indexFromString(const QString &key, ItemFuncType type = ItemFuncType_Item);
+    // 获取下一个的index
+    int getNextIndex(int index);
     // 设置当前焦点
     void setCurrentIndex(int currentIndex);
     // 切换焦点

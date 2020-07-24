@@ -100,6 +100,8 @@ void RemoteManagementPanel::showCurSearchResult()
 
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
+    // 判断控件是否有焦点
+    bool focusState = m_pushButton->hasFocus();
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
 
@@ -107,11 +109,14 @@ void RemoteManagementPanel::showAddServerConfigDlg()
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
-        // 让焦点在平面上
-        setFocus();
-        if (result == QDialog::Accepted) {
+        // 先判断是否要焦点
+        if (focusState) {
+            // 让焦点在平面上
+            setFocus();
             // 添加完，将焦点设置在添加按钮上
             m_pushButton->setFocus();
+        }
+        if (result == QDialog::Accepted) {
             int index = m_listWidget->indexFromString(dlg->getServerName());
             m_listWidget->setScroll(index);
         }
