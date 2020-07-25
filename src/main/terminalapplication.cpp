@@ -7,7 +7,26 @@
 
 TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication(argc, argv)
 {
+    loadTranslator();
+    setOrganizationName("deepin");
+    setOrganizationDomain("deepin.org");
+    setApplicationVersion(VERSION);
+    setApplicationName("deepin-terminal");
+    setApplicationDisplayName(QObject::tr("Terminal"));
+    setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+    setProductIcon(QIcon::fromTheme("deepin-terminal"));
+    QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace"
+                                  ", multiple windows, remote management, quake mode and other features.");
+    setApplicationDescription(appDesc);
 
+    /***add by ut001121 zhangmeng 20200617 禁用应用程序自动退出 修复BUG33541***/
+    setQuitOnLastWindowClosed(false);
+
+#ifdef QT_DEBUG
+    QTranslator translator;
+    translator.load(QString("deepin-terminal_%1").arg(QLocale::system().name()));
+    installTranslator(&translator);
+#endif  // QT_DEBUG
 }
 
 TerminalApplication::~TerminalApplication()

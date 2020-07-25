@@ -1,6 +1,8 @@
 #ifndef TERMINALAPPLICATION_H
 #define TERMINALAPPLICATION_H
 
+#include "environments.h"
+
 #include <DApplication>
 
 DWIDGET_USE_NAMESPACE

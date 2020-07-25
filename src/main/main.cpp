@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "terminalapplication.h"
 
+
 #include <DApplication>
 #include <DApplicationSettings>
 #include <DLog>
@@ -15,6 +16,7 @@
 #include <QDebug>
 #include <QCommandLineParser>
 #include <QTranslator>
+#include <QTime>
 
 DWIDGET_USE_NAMESPACE
 /******** Modify by n014361 wangpeili 2020-01-10:增加日志需要 ***********×****/
@@ -22,51 +24,31 @@ DCORE_USE_NAMESPACE
 /********************* Modify by n014361 wangpeili End ************************/
 int main(int argc, char *argv[])
 {
-    //计时
-    qint64 starttime = QDateTime::currentMSecsSinceEpoch();
-    DApplication::loadDXcbPlugin();
+    // 应用计时
+    QTime useTime;
+    useTime.start();
 
-    //DApplication app(argc, argv);
     TerminalApplication app(argc, argv);
-    app.loadTranslator();
-    app.setOrganizationName("deepin");
-    app.setOrganizationDomain("deepin.org");
-    app.setApplicationVersion(VERSION);
-    app.setApplicationName("deepin-terminal");
-    app.setApplicationDisplayName(QObject::tr("Terminal"));
-    app.setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-    app.setProductIcon(QIcon::fromTheme("deepin-terminal"));
-    /***add by ut001121 zhangmeng 20200617 禁用应用程序自动退出 修复BUG33541***/
-    app.setQuitOnLastWindowClosed(false);
-
-    QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace"
-                                  ", multiple windows, remote management, quake mode and other features.");
-    app.setApplicationDescription(appDesc);
     DApplicationSettings set(&app);
-#ifdef QT_DEBUG
-    QTranslator translator;
-    translator.load(QString("deepin-terminal_%1").arg(QLocale::system().name()));
-    app.installTranslator(&translator);
-#endif  // QT_DEBUG
 
-    /******** Modify by n014361 wangpeili 2020-01-10: 增加日志 ***********×****/
+    // 系统日志
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
-    /********************* Modify by n014361 wangpeili End *****************/
 
     // 参数解析
-    TermProperties Properties;
-    Utils::parseCommandLine(app.arguments(), Properties, true);
+    TermProperties properties;
+    Utils::parseCommandLine(app.arguments(), properties, true);
 
+    qDebug()<<endl<<endl<<endl;
+    qDebug()<<"new terminal start run";
     DBusManager manager;
     if (!manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
         // 判断是否能创建新的的窗口
         // 不是雷神且正在创建
-        if (!Properties[QuakeMode].toBool() && !Service::instance()->getEnable()) {
-            qint64 endtime = QDateTime::currentMSecsSinceEpoch();
+        if (!properties[QuakeMode].toBool() && !Service::instance()->getEnable()) {
             qDebug() << "[sub app] Server can't create, drop this create request! time use "
-                     << endtime - starttime <<"ms";
+                     << useTime.elapsed() <<"ms";
             return 0;
         }
 
@@ -88,9 +70,8 @@ int main(int argc, char *argv[])
         /********************* Modify by ut000610 daizhengwen End ************************/
         qDebug() << "[sub app] start to call main terminal entry! app args " << args;
         DBusManager::callTerminalEntry(args);
-        qint64 endtime2 = QDateTime::currentMSecsSinceEpoch();
         qDebug() << "[sub app] task complete! sub app quit, time use "
-                 << endtime2 - starttime<<"ms";
+                 << useTime.elapsed()<<"ms";
         return 0;
     }
     // 这行不要删除
@@ -103,8 +84,7 @@ int main(int argc, char *argv[])
     service->init();
     // 创建窗口
     service->Entry(app.arguments());
-    qint64 endtime3 = QDateTime::currentMSecsSinceEpoch();
-    qDebug() << "First Terminal Window create complete! time use " << endtime3 - starttime <<"ms";
+    qDebug() << "First Terminal Window create complete! time use " << useTime.elapsed() <<"ms";
 
     return app.exec();
 }

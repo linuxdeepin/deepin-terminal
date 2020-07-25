@@ -630,7 +630,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
         // qDebug() << "arg: positionalArguments" << parser.positionalArguments();
     }
 
-    qDebug() << "parse commandLine is ok";
+    //qDebug() << "parse commandLine is ok";
 
     return;
 }
