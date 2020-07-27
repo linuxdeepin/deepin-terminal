@@ -53,6 +53,7 @@ public:
     CustomCommandItemData *m_currItemData = nullptr;
     QModelIndex modelIndex;
     DDialog *m_dlgDelete = nullptr;
+    unsigned int  m_iTabModifyTime = 0;
 
 protected:
     void initUITitle();

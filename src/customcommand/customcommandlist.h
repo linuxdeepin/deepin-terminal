@@ -13,6 +13,12 @@
 
 DWIDGET_USE_NAMESPACE
 
+enum TabModifyType {
+    TMT_NOTMOD,     //tab键盘控制，无修改操作
+    TMT_MOD,        //tab键盘控制，修改操作
+    TMT_DEL         //tab键盘控制，删除操作
+};
+
 class CustomCommandDelegate;
 class CustomCommandItemModel;
 class CustomCommandItem;
@@ -38,14 +44,18 @@ protected:
 signals:
     void listItemCountChange();
     void itemClicked(CustomCommandItemData itemData, QModelIndex modelIndex);
+    void resetTabModifyControlPositionSignal(unsigned int iTabModifyTime, TabModifyType tabModifyType);
 
 private slots:
     void handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex);
+    void resetTabModifyControlPositionSlot(unsigned int iTabModifyTime, TabModifyType tabModifyType);
 
 public:
     bool m_bTabModify = false;
-    int m_currentRow = 0;
-    bool m_bSearchRstPanelList = true;// 是否是显示查找结果面板里的的list
+    int m_currentTabRow = 0;                // tab键盘控制时，列表项的行号
+    bool m_bSearchRstPanelList = true;      // 是否是显示查找结果面板里的的list
+    unsigned int  m_iTabModifyTime = 0;     //tab键盘操作的时间戳
+    TabModifyType m_tabModType = TMT_NOTMOD;
 
 private:
     void initData();

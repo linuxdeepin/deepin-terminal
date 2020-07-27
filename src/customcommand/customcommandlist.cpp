@@ -44,6 +44,8 @@ void CustomCommandList::initData()
     m_cmdDelegate = new CustomCommandDelegate(this);
     this->setModel(m_cmdProxyModel);
     this->setItemDelegate(m_cmdDelegate);
+
+    connect(this, SIGNAL(resetTabModifyControlPositionSignal(unsigned int, TabModifyType)), this, SLOT(resetTabModifyControlPositionSlot(unsigned int, TabModifyType)));
 }
 
 void CustomCommandList::refreshCommandListData(const QString &strFilter)
@@ -126,9 +128,15 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         Service::instance()->setIsDialogShow(window(), true);
     }
 
+    qDebug() << "modelIndex.row()=" << modelIndex.row() << ",this->count()=" << this->count();
+
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
     m_pdlg->setModelIndex(modelIndex);
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
+
+        int tempResult = result;
+        m_pdlg->m_iTabModifyTime = this->m_iTabModifyTime;
+
         // 弹窗隐藏或消失
         //Service::instance()->setIsDialogShow(window(), false);
         if (!m_bTabModify) {
@@ -172,6 +180,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                 dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
                 dlgDelete->addButton(QObject::tr("Confirm"), true, DDialog::ButtonWarning);
                 connect(dlgDelete, &DDialog::finished, this, [ & ](int result) {
+                    tempResult = result;
                     if (result == QDialog::Accepted) {
                         CustomCommandItemData itemData = *(m_pdlg->m_currItemData);
                         ShortcutManager::instance()->delCustomCommand(*(m_pdlg->m_currItemData));
@@ -181,10 +190,27 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                         m_pdlg->closeRefreshDataConnection();
                         emit Service::instance()->refreshCommandPanel(m_pdlg->m_currItemData->m_cmdName, m_pdlg->m_currItemData->m_cmdName);//emit Service::instance()->refreshCommandPanel("", "");
                     }
+
+                    if (result == QDialog::Accepted) {
+                        emit this->resetTabModifyControlPositionSignal(m_pdlg->m_iTabModifyTime, TMT_DEL);
+                    } else {
+                        emit this->resetTabModifyControlPositionSignal(m_pdlg->m_iTabModifyTime, TMT_NOTMOD);
+                    }
                 });
                 dlgDelete->show();
             }
         }
+        qDebug() << "================================tempResult=" << tempResult;
+        if (!m_pdlg->isDelCurCommand()) {
+
+            if (tempResult == QDialog::Accepted) {
+                //修改
+                emit this->resetTabModifyControlPositionSignal(this->m_iTabModifyTime, TMT_MOD);
+            } else {
+                emit this->resetTabModifyControlPositionSignal(this->m_iTabModifyTime, TMT_NOTMOD);
+            }
+        }
+
     });
     m_pdlg->show();
 }
@@ -257,6 +283,10 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     if (!modelIndex.isValid()) {
         return;
     }
+
+    m_bTabModify = false;
+    //m_cmdDelegate->m_bMouseOpt = true;
+    //m_cmdDelegate->m_iMouseOptRow = -1;
 
     CustomCommandItemData itemData =
         qvariant_cast<CustomCommandItemData>(m_cmdProxyModel->data(modelIndex));
@@ -381,7 +411,9 @@ void CustomCommandList::keyPressEvent(QKeyEvent *event)
         if (m_cmdDelegate->m_bModifyCheck) {
             m_bTabModify = true;
             m_cmdDelegate->m_bModifyCheck = false;
-            m_currentRow = this->currentIndex().row();
+            m_currentTabRow = this->currentIndex().row();
+            QDateTime time = QDateTime::currentDateTime();   //获取当前时间
+            m_iTabModifyTime = time.toTime_t();   //将当前时间转为时间戳
             handleModifyCustomCommand(itemData, this->currentIndex());
         } else {
             emit itemClicked(itemData, this->currentIndex());
@@ -399,5 +431,61 @@ void CustomCommandList::keyPressEvent(QKeyEvent *event)
     return DListView::keyPressEvent(event);
 }
 
+void CustomCommandList::resetTabModifyControlPositionSlot(unsigned int iTabModifyTime, TabModifyType tabModifyType)
+{
+    static int i = 0;
+    if (m_iTabModifyTime && (m_iTabModifyTime == iTabModifyTime)) {
+        qDebug() << "resetTabModifyControlPositionSlot---" << i++ << ",time=" << iTabModifyTime << ",~" << tabModifyType << ",listCount=" << this->count();
+    } else {
+        return;
+    }
+
+    if (tabModifyType == TMT_NOTMOD && m_iTabModifyTime) {
+        m_iTabModifyTime = 0;
+
+        if (this->count()) {
+            qDebug() << "m_currentTabRow-----------" << m_currentTabRow;
+            QTimer::singleShot(30, this, [&]() {
+                QModelIndex qindex = m_cmdProxyModel->index(m_currentTabRow, 0);
+                setCurrentIndex(qindex);
+                update();
+            });
+        }
+    }
+
+    if (tabModifyType == TMT_MOD && m_iTabModifyTime) {
+        m_iTabModifyTime = 0;
+        if (this->count()) {
+            qDebug() << "modify -----------";
+            QTimer::singleShot(30, this, [&]() {
+                QModelIndex qindex = m_cmdProxyModel->index(this->count() - 1, 0);
+                setCurrentIndex(qindex);
+                update();
+            });
+        }
+    }
+
+    if (tabModifyType == TMT_DEL && m_iTabModifyTime) {
+        m_iTabModifyTime = 0;
+        if (this->count()) {
+            qDebug() << "modify -----------";
+            QTimer::singleShot(30, this, [&]() {
+
+                int iIndex = 0;
+                if (m_currentTabRow >= this->count() - 1) {
+                    iIndex = this->count() - 1;
+                } else {
+                    iIndex = m_currentTabRow;
+                }
+                if (0 == this->count()) {
+                    return;
+                }
+                QModelIndex qindex = m_cmdProxyModel->index(iIndex, 0);
+                setCurrentIndex(qindex);
+                update();
+            });
+        }
+    }
+}
 
 
