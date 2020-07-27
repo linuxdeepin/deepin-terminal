@@ -1,6 +1,7 @@
 #include "customcommandsearchrstpanel.h"
 #include "customcommandoptdlg.h"
 #include "shortcutmanager.h"
+#include "iconbutton.h"
 
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
@@ -50,7 +51,8 @@ void CustomCommandSearchRstPanel::initUI()
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
-    m_backButton = new DIconButton(this);
+    m_rebackButton = new IconButton(this);
+    m_backButton = m_rebackButton;//m_backButton = new DIconButton(this);
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(40, 40));
     m_backButton->setFocusPolicy(Qt::TabFocus);//m_backButton->setFocusPolicy(Qt::NoFocus);
@@ -93,6 +95,9 @@ void CustomCommandSearchRstPanel::initUI()
     setLayout(vlayout);
     connect(m_cmdListWidget, &CustomCommandList::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
+    connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
+        m_rebackButton->click();
+    });
     // 字体颜色随主题变化变化
     connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
         DPalette palette = m_label->palette();
