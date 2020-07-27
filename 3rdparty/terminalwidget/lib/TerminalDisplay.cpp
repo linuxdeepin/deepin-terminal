@@ -1821,6 +1821,7 @@ void TerminalDisplay::blinkCursorEvent()
 
 void TerminalDisplay::resizeEvent(QResizeEvent*)
 {
+  initKeyBoardSelection();
   updateImageSize();
   processFilters();
 }
@@ -1987,6 +1988,9 @@ void TerminalDisplay::initKeyBoardSelection()
 
 void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
 {
+  //判断有鼠标点击的时候，初始化键盘选择状态
+  initKeyBoardSelection();
+
   if ( _possibleTripleClick && (ev->button()==Qt::LeftButton) ) {
     mouseTripleClickEvent(ev);
     return;
@@ -2602,6 +2606,9 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
 
 void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 {
+  //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
+  initKeyBoardSelection();
+
   if (ev->orientation() != Qt::Vertical)
     return;
 
@@ -2891,16 +2898,23 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
     {
         bool update = true;
 
-        //行列的index从0开始，所以最大index需要减1
-        int maxColumnIndex = _screenWindow->columnCount() - 1;
-        int maxLineIndex = _screenWindow->lineCount() - 1;
+        //列的index从0开始，所以最大index需要减1
+        int maxColumnIndex = _screenWindow->windowColumns() - 1;
 
         if ( event->key() == Qt::Key_PageUp )
         {
+            if (_scrollBar->value() != _scrollBar->maximum())
+            {
+                initKeyBoardSelection();
+            }
             _screenWindow->scrollBy( ScreenWindow::ScrollPages , -1 );
         }
         else if ( event->key() == Qt::Key_PageDown )
         {
+            if (_scrollBar->value() != _scrollBar->maximum())
+            {
+                initKeyBoardSelection();
+            }
             _screenWindow->scrollBy( ScreenWindow::ScrollPages , 1 );
         }
         else if ( event->key() == Qt::Key_Left )
@@ -2915,6 +2929,7 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 //判断只有开始结束选择位置相等时，才允许开始选择
                 if (_selStartLine == _selEndLine && _selStartColumn == _selEndColumn)
                 {
+                    _screenWindow->scrollTo(_scrollBar->maximum());
                     qDebug() << "left selection start";
                     _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
                 }
@@ -2951,6 +2966,10 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 //键盘按下时设置--开始选择
                 if (_selStartLine == _selEndLine && _selStartColumn == _selEndColumn)
                 {
+                    //滚动到光标所在位置开始选择
+                    _screenWindow->scrollTo(_scrollBar->maximum());
+
+                    //开始选择
                     qDebug() << "right selection start";
                     _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
                 }
@@ -2960,6 +2979,8 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             }
 
+            //向右选择，最大行数为屏幕当前显示的最大行数（即屏幕当前显示了多少行就算多少行，并不包含历史行的行数）
+            int maxLineIndex = _screenWindow->windowLines() - 1;
             //向右选择
             if (_selEndColumn < maxColumnIndex)
             {
@@ -2971,6 +2992,7 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 _selEndColumn = 0;
                 _selEndLine++;
             }
+            qDebug() << "maxLineIndex: " << maxLineIndex << endl;
             qDebug() << "right: _selStartColumn" << _selStartColumn
                         << "_selStartLine" << _selStartLine
                         << "_selEndColumn" << _selEndColumn
@@ -2978,10 +3000,14 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
         }
         else if ( event->key() == Qt::Key_Up )
         {
+            //使用了Shift+上下键，由于屏幕发生滚动，会导致计算的行列位置不对，需要重新初始化选择状态
+            initKeyBoardSelection();
             _screenWindow->scrollBy( ScreenWindow::ScrollLines , -1 );
         }
         else if ( event->key() == Qt::Key_Down )
         {
+            //使用了Shift+上下键，由于屏幕发生滚动，会导致计算的行列位置不对，需要重新初始化选择状态
+             initKeyBoardSelection();
             _screenWindow->scrollBy( ScreenWindow::ScrollLines , 1 );
         }
         else if ( event->key() == Qt::Key_End)
@@ -2990,10 +3016,14 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
         }
         else if ( event->key() == Qt::Key_Home)
         {
+            //使用了Shift+Home键，由于屏幕发生滚动，会导致计算的行列位置不对，需要重新初始化选择状态
+            initKeyBoardSelection();
             _screenWindow->scrollTo(0);
         }
         else
+        {
             update = false;
+        }
 
         if ( update )
         {
@@ -3005,6 +3035,10 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
             // do not send key press to terminal
             emitKeyPressSignal = false;
         }
+    }
+    else
+    {
+        initKeyBoardSelection();
     }
 
     _actSel=0; // Key stroke implies a screen update, so TerminalDisplay won't
