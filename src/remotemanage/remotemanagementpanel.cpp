@@ -32,8 +32,10 @@ void RemoteManagementPanel::setFocusInPanel()
         m_searchEdit->lineEdit()->setFocus();
     } else if (m_listWidget->isVisible()) {
         // 列表显示
+        /******** Modify by ut000610 daizhengwen 2020-07-27:bug#39775 Begin***************/
         // 将焦点设置在列表里的第一项
         m_listWidget->setCurrentIndex(0);
+        /********************* Modify by ut000610 daizhengwen End ************************/
     } else {
         // 将焦点显示在添加按钮上
         m_pushButton->setFocus();
