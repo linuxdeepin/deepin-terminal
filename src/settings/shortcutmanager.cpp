@@ -38,6 +38,11 @@ void ShortcutManager::initShortcuts()
     m_builtinShortcuts << "F1";
     m_builtinShortcuts << "Ctrl+C";
     m_builtinShortcuts << "Ctrl+D";
+
+    /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
+    m_builtinShortcuts << QString(MainWindow::QKEYSEQUENCE_PASTE_BUILTIN);
+    /********************* Modify by n014361 wangpeili End ************************/
+
     /******** Modify by ut000439 wangpeili 2020-07-20:  SP3 右键快捷键被内置   ****************/
     m_builtinShortcuts << "Alt+M";
     /********************* Modify by n014361 wangpeili End ************************/
