@@ -244,8 +244,8 @@ void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strG
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
     m_remoteManagementSearchPanel->clearFocus();
-    m_serverConfigGroupPanel->setFocusBack(-1);
     animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
+    m_serverConfigGroupPanel->setFocusBack(-1);
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);

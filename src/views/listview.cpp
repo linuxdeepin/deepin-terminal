@@ -66,11 +66,12 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
         emit focusOut(type);
         lostFocus(m_currentIndex);
         m_focusState = false;
-        if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
+        // Tab 和 Shift+Tab退出当前列表 点击激活别的窗口 清空列表
+        if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason /*|| type == Qt::ActiveWindowFocusReason*/) {
 //            m_focusState = false;
             qDebug() << "currentIndex " << m_currentIndex << "return to -1";
             m_currentIndex = -1;
-
+            clearFocus();
         };
     });
     // 列表被点击，编辑按钮隐藏
@@ -237,7 +238,7 @@ void ListView::setCurrentIndex(int currentIndex)
     if (item != nullptr) {
         // 设置焦点
         widget->getFocus();
-        qDebug() << widget << "get focus";
+        qDebug() << widget << "get focus" << "current index" << currentIndex;
         // Todo 让焦点不要进入主窗口
         widget->setFocus();
         m_focusState = true;
@@ -277,11 +278,7 @@ void ListView::onItemModify(const QString &key, bool isClicked)
     connect(m_configDialog, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
-        // 回到列表,仅回到大的列表，没有回到具体的哪个点
-        if (m_focusState) {
-            qDebug() << m_focusState;
-            setFocus();
-        }
+        qDebug() << "focus state " << m_focusState;
         // 3. 对弹窗操作进行分析
         // 判断是否删除
         if (result == ServerConfigOptDlg::Accepted) {
@@ -307,9 +304,14 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                     // Todo : 焦点返回下一个
                     index = getNextIndex(index);
                     if (m_focusState) {
+                        // 回到列表,仅回到大的列表，没有回到具体的哪个点
+                        setFocus();
+                        // 根据返回值判断焦点位置
                         if (index >= 0) {
+                            // 列表不为空
                             setCurrentIndex(index);
                         } else {
+                            // 列表为空焦点自动往下
                             m_focusState = false;
                         }
                     }
@@ -385,7 +387,7 @@ void ListView::keyPressEvent(QKeyEvent *event)
 *******************************************************************************/
 void ListView::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __FUNCTION__ << event->reason();
     if (m_currentIndex == -1) {
         m_currentIndex = 0;
     }
@@ -505,52 +507,66 @@ int ListView::getWidgetIndex(ItemWidget *itemWidget)
 *******************************************************************************/
 void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
 {
-    verticalScrollBar()->setRange(0, height() + 15);
-    // 之前焦点所在位置丢失焦点
-    lostFocus(currentIndex);
+    int count = m_itemList.count();
+
+    int index = currentIndex;
     if (UpOrDown) {
-        --currentIndex;
+        --index;
     } else {
-        ++currentIndex;
+        ++index;
     }
     // index >= 0 < 最大数量
     // 最上
-    if (currentIndex <= 0) {
-        currentIndex = 0;
+    if (index < 0) {
+        index = 0;
         m_scrollPostion = 0;
         // 提示音
         DBusManager::callSystemSound();
     }
+    // 之前焦点所在位置丢失焦点
+    if (index != currentIndex && index != count) {
+        // 不是到头的情况下，前一个丢失焦点
+        lostFocus(currentIndex);
+    }
     // 最下
-    if (currentIndex == m_itemList.count()) {
-        --currentIndex;
+    if (index == count) {
+        // 让index恢复正常
+        --index;
         m_scrollPostion = verticalScrollBar()->value();
         // 提示音
         DBusManager::callSystemSound();
-    }
-    if (currentIndex == -1) {
-        // 若是为-1,上下键无效，Tab切出
-    }
-    QLayoutItem *item = m_mainLayout->itemAt(currentIndex);
-    ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
-    if (item != nullptr) {
-        // 设置焦点
-        widget->setFocus();
-        widget->getFocus();
-        // 设置滚动条 上下移动
-        if (widget->y() + widget->height() < height()) {
-            verticalScrollBar()->setValue(0);
-        } else {
-            if (UpOrDown) {
-                m_scrollPostion -= 70;
+    } else {
+        QLayoutItem *item = m_mainLayout->itemAt(index);
+        ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
+        if (item != nullptr) {
+            // 设置焦点
+            widget->setFocus();
+            widget->getFocus();
+            int widget_y1 = widget->y();
+            int widget_y2 = widget->y() + widget->height();
+            qDebug() << "y1" << widget_y1;
+            qDebug() << "y2" << widget_y2;
+            qDebug() << "height" << height();
+            // 设置滚动条 上下移动
+            if (widget->y() + widget->height() < height()) {
+                verticalScrollBar()->setValue(0);
             } else {
-                m_scrollPostion += 70;
+                if (UpOrDown) {
+                    m_scrollPostion -= 70;
+                } else if (currentIndex < count/* - 1*/) {
+                    m_scrollPostion += 70;
+                }
             }
-            verticalScrollBar()->setValue(m_scrollPostion);
         }
     }
+    // 计算range
+    int range = calculateRange(height());
+    verticalScrollBar()->setRange(0, range);
+    verticalScrollBar()->setValue(m_scrollPostion);
+    qDebug() << "up down scrollPostion : " << m_scrollPostion << verticalScrollBar()->value();
+
     // 需要让m_currentIndex于焦点所在位置同步
-    m_currentIndex = currentIndex;
+    m_currentIndex = index;
     qDebug() << "current index : " << m_currentIndex;
 }
 
@@ -585,7 +601,10 @@ void ListView::lostFocus(int preIndex)
 *******************************************************************************/
 void ListView::setScroll(int currentIndex)
 {
-    verticalScrollBar()->setRange(0, height() + 15);
+    qDebug() << __FUNCTION__;
+    // 计算range
+    int range = calculateRange(height());
+    verticalScrollBar()->setRange(0, range);
     QLayoutItem *item = m_mainLayout->itemAt(currentIndex);
     if (item != nullptr) {
         int postion = currentIndex  * 70;
@@ -615,4 +634,17 @@ bool ListView::indexIsValid(int index)
 {
     qDebug() << index << m_itemList.count();
     return (index >= 0 && index < m_itemList.count());
+}
+
+/*******************************************************************************
+ 1. @函数:    calculateRange
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-27
+ 4. @说明:    计算滚动条的range
+*******************************************************************************/
+int ListView::calculateRange(int height)
+{
+    int count = m_itemList.count();
+    int range  = count * 70 - 10 - height;
+    return range;
 }

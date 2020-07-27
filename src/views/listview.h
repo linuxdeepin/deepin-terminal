@@ -105,6 +105,8 @@ private:
     int getWidgetIndex(ItemWidget *itemWidget);
     // 判断index的有效性
     bool indexIsValid(int index);
+    // 计算range
+    int calculateRange(int height);
 };
 
 #endif // LISTVIEW_H

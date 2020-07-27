@@ -44,6 +44,7 @@ void TerminalApplication::handleQuitAction()
 // 该部分代码，大都 用于调试，待整理
 bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
+#if 0
     bool s = event->spontaneous();
     QString n = object->metaObject()->className();
     if ((event->type() == QEvent::KeyPress || event->type() == QEvent::Shortcut)
@@ -106,5 +107,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
         // qDebug() <<"FocusIn:"<<object;
     }
     // qDebug() <<event->type()<< s<<n;
+#endif
     return QApplication::notify(object, event);
+
 }
