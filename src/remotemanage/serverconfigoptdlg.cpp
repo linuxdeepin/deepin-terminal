@@ -19,6 +19,7 @@
 #include <QTextCodec>
 #include <QSpacerItem>
 #include <iterator>//added byq qinyaning
+#include <QTimer>
 #include <QDebug>
 
 DGUI_USE_NAMESPACE
@@ -107,7 +108,9 @@ void ServerConfigOptDlg::initUI()
     setLabelStyle(pServerNameLabel);
 
     m_serverName->lineEdit()->setPlaceholderText(tr("Required"));
-    m_serverName->setFocus();
+    QTimer::singleShot(30, this, [&]() {
+        m_serverName->lineEdit()->selectAll();
+    });
     pGridLayout->addWidget(pServerNameLabel);
     pGridLayout->addWidget(m_serverName);
 
