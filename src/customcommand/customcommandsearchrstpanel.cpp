@@ -96,7 +96,7 @@ void CustomCommandSearchRstPanel::initUI()
     connect(m_cmdListWidget, &CustomCommandList::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
     connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
-        m_rebackButton->click();
+        m_rebackButton->click();// 在派生类捕获方向键盘左键按下，转化为鼠标点击。
     });
     // 字体颜色随主题变化变化
     connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
