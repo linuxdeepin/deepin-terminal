@@ -1077,13 +1077,23 @@ void MainWindow::initShortcuts()
     /********************* Modify by n014361 wangpeili End ************************/
 
     /******** Modify by ut000439 wangpeili 2020-07-17:              ****************/
-    QShortcut *shortCutFoucusOut = new QShortcut(QKeySequence(QKEYSEQUENCE_FOCUSOUT_TIMINAL), this);
-    connect(shortCutFoucusOut, &QShortcut::activated, this, [this]() {
-        qDebug() << "qkeysequence focusout timinal is activated!";
-        // DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
+    QShortcut *shortcutFoucusOut = new QShortcut(QKeySequence(QKEYSEQUENCE_FOCUSOUT_TIMINAL), this);
+    connect(shortcutFoucusOut, &QShortcut::activated, this, [this]() {
+        qDebug() << "focusout timinal is activated!"<<QKEYSEQUENCE_FOCUSOUT_TIMINAL;
         DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-        addButton->setFocus();
-        // focusCurrentPage();
+        if(addButton != nullptr){
+            addButton->setFocus();
+        }
+    });
+    /********************* Modify by n014361 wangpeili End ************************/
+    /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
+    QShortcut *shortcutBuiltinPaste = new QShortcut(QKeySequence(QKEYSEQUENCE_PASTE_BUILTIN), this);
+    connect(shortcutBuiltinPaste, &QShortcut::activated, this, [this]() {
+        qDebug() << "built in paste shortcut is activated!"<<QKEYSEQUENCE_PASTE_BUILTIN;
+        TermWidgetPage *page = currentPage();
+        if (page) {
+            page->pasteClipboard();
+        }
     });
     /********************* Modify by n014361 wangpeili End ************************/
 

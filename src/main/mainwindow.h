@@ -97,6 +97,7 @@ public:
     static constexpr const char *CONFIG_QUAKE_WINDOW_HEIGHT = "quake_window_height";
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
     static constexpr const char *QKEYSEQUENCE_FOCUSOUT_TIMINAL = "Meta+Tab";
+    static constexpr const char *QKEYSEQUENCE_PASTE_BUILTIN = "Shift+Ins";
     int getDesktopIndex() const;
 
 signals:
