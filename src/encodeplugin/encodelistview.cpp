@@ -185,6 +185,9 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
     m_modelIndexChecked = model->index(index.row(), 0);
     modelItem = dynamic_cast<DStandardItem *>(model->item(m_modelIndexChecked.row()));
     modelItem->setCheckState(Qt::Checked);
+
+    /***add by ut001121 zhangmeng 20200727 修改编码配置后使其生效 修复BUG39694***/
+    m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
 }
 
 void EncodeListView::checkEncode(QString encode)
