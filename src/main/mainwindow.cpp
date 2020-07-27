@@ -1046,6 +1046,17 @@ void MainWindow::initShortcuts()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
+    /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
+    QShortcut *shortcutBuiltinPaste = new QShortcut(QKeySequence(QKEYSEQUENCE_PASTE_BUILTIN), this);
+    connect(shortcutBuiltinPaste, &QShortcut::activated, this, [this]() {
+        qDebug() << "built in paste shortcut is activated!"<<QKEYSEQUENCE_PASTE_BUILTIN;
+        TermWidgetPage *page = currentPage();
+        if (page) {
+            page->pasteClipboard();
+        }
+    });
+    /********************* Modify by n014361 wangpeili End ************************/
+
     for (int i = 1; i <= 9; i++) {
         QString shortCutStr = QString("ctrl+shift+%1").arg(i);
         //qDebug() << shortCutStr;
