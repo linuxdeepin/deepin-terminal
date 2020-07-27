@@ -139,6 +139,10 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     subSplit->setSizes({ 1, 1 });
     setSplitStyle(subSplit);
     setCurrentTerminal(newTerm);
+    /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
+    subSplit->setChildrenCollapsible(false);
+    /********************* Modify by n014361 wangpeili End ************************/
+
     return subSplit;
 }
 /*******************************************************************************
