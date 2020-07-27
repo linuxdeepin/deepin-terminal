@@ -113,6 +113,11 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // 按键滚动
     setPressingScroll(Settings::instance()->PressingScroll());
 
+    /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
+    // 以最小mainwindow分4屏为标准的最小大小
+    setMinimumSize(225, 100);
+    /********************* Modify by n014361 wangpeili End ************************/
+
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, [this](QString value) {
         Q_UNUSED(value)
