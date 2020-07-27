@@ -529,6 +529,17 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     }
     Utils::getExitDialogText(temtype, title, txt, count);
 
+    /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
+    // 关闭确认窗口前确认焦点位置是否在close button上，并且发起了关闭窗口
+    bool closeBtnHasfocus = false;
+    DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
+    if(closeBtn != nullptr && closeBtn->hasFocus() && type == Utils::CloseType_Window){
+        closeBtnHasfocus = true;
+        qDebug()<<"before close window, focus widget is close button. ";
+    }
+    /********************* Modify by n014361 wangpeili End ************************/
+
+
     // 有弹窗显示
     Service::instance()->setIsDialogShow(this, true);
 
@@ -543,9 +554,27 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     dlg->show();
     dlg->setProperty("type", type);
 
+    /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
+    if(closeBtnHasfocus){
+        dlg->setProperty("focusCloseBtn",  true);
+    }
+    else {
+        dlg->setProperty("focusCloseBtn",  false);
+    }
+    /********************* Modify by n014361 wangpeili End ************************/
+
     /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中 Begin***************/
     connect(dlg, &DDialog::finished, this, [this](int result) {
         OnHandleCloseType(result, Utils::CloseType(qobject_cast<DDialog *>(sender())->property("type").toInt()));
+        /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
+        if(result != 1 && qobject_cast<DDialog *>(sender())->property("focusCloseBtn").toBool())        {
+            DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
+            if(closeBtn != nullptr){
+                closeBtn->setFocus();
+                qDebug()<<"close button setFocus";
+            }
+        }
+        /********************* Modify by n014361 wangpeili End ************************/
     });
     /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中  End***************/
 
