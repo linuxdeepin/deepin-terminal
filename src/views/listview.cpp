@@ -223,7 +223,7 @@ void ListView::setCurrentIndex(int currentIndex)
     if (!indexIsValid(currentIndex)) {
         // 无效，返回
         qDebug() << "index : " << currentIndex << " is wrong";
-        emit focusOut(Qt::TabFocusReason);
+        emit focusOut(Qt::NoFocusReason);
         m_focusState = false;
         return;
     }

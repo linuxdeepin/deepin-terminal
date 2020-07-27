@@ -46,9 +46,7 @@ void IconButton::keyPressEvent(QKeyEvent *event)
 *******************************************************************************/
 void IconButton::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << event->reason() << "IconButton";
-    if (event->reason() == Qt::TabFocusReason) {
-        emit focusOut(Qt::TabFocusReason);
-    }
+    qDebug() << event->reason() << "IconButton" << this;
+    emit focusOut(event->reason());
     DIconButton::focusOutEvent(event);
 }

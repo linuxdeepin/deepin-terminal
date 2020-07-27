@@ -60,14 +60,16 @@ void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn
             return;
         }
     }
-    setFocus();
+
     // 获取分组的数量
     int count = ServerConfigManager::instance()->getServerCount(strGroup);
     if (count <= 0) {
         // 若count为0
         // 分组已经被删除 设置焦点回到 下一个
         int index = m_listWidget->getNextIndex(0);
+        m_listWidget->setFocus();
         m_listWidget->setCurrentIndex(index);
+        qDebug() << "index" << index;
         return;
     }
     int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
@@ -194,7 +196,8 @@ void RemoteManagementPanel::initUI()
         }
     });
     connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
-        if (type == Qt::TabFocusReason) {
+        if (type == Qt::TabFocusReason || type == Qt::NoFocusReason) {
+            // 下一个 或 列表为空， 焦点定位到添加按钮上
             m_pushButton->setFocus();
             qDebug() << "set focus on add pushButton";
         } else if (type == Qt::BacktabFocusReason) {

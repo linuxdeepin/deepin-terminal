@@ -65,6 +65,14 @@ void ServerConfigGroupPanel::initUI()
             } else {
                 m_rebackButton->setFocus();
             }
+        } else if (type == Qt::NoFocusReason) {
+            int isFocus = false;
+            // 列表没有内容，焦点返回到返回键上
+            if (m_listWidget->hasFocus() || m_rebackButton->hasFocus()) {
+                isFocus  = true;
+            }
+            emit showRemoteManagementPanel(m_groupName, isFocus);
+            qDebug() << "showRemoteManagementPanel" << isFocus;
         }
 
     });
