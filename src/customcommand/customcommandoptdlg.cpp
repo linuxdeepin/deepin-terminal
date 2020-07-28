@@ -140,6 +140,7 @@ void CustomCommandOptDlg::initUI()
     m_nameLineEdit->setFixedWidth(285);
     m_commandLineEdit->setFixedWidth(285);
     m_shortCutLineEdit->setFixedWidth(285);
+    m_shortCutLineEdit->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 
     QTimer::singleShot(30, this, [&]() {
         m_nameLineEdit->lineEdit()->selectAll();
