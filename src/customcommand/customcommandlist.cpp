@@ -252,7 +252,7 @@ void CustomCommandList::mouseMoveEvent(QMouseEvent *event)
 
 void CustomCommandList::mousePressEvent(QMouseEvent *event)
 {
-    m_cmdDelegate->m_bMouseOpt = true;
+    //m_cmdDelegate->m_bMouseOpt = true;
     m_cmdDelegate->m_iMouseOptRow = -1;
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
@@ -263,6 +263,7 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     DListView::mousePressEvent(event);
 
     if (false == m_bLeftMouse) {
+        m_cmdDelegate->m_bMouseOpt = true;
         return;
     }
 
@@ -284,7 +285,7 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     }
 
     m_bTabModify = false;
-    //m_cmdDelegate->m_bMouseOpt = true;
+    m_cmdDelegate->m_bMouseOpt = true;
     //m_cmdDelegate->m_iMouseOptRow = -1;
 
     CustomCommandItemData itemData =
@@ -394,7 +395,10 @@ void CustomCommandList::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Left: {
         //上键到顶发出提示音 //下键到底发出提示音
         if ((Qt::Key_Up == event->key() && 0 == currentIndex().row()) || (Qt::Key_Down == event->key() && this->count() - 1 == currentIndex().row())) {
-            DBusManager::callSystemSound();
+            //排除鼠标点击列表空白项的干扰
+            if (!m_cmdDelegate->m_bMouseOpt) {
+                DBusManager::callSystemSound();
+            }
         }
 
         if (m_cmdDelegate->m_bModifyCheck != false) {
