@@ -253,6 +253,7 @@ void CustomCommandList::mouseMoveEvent(QMouseEvent *event)
 void CustomCommandList::mousePressEvent(QMouseEvent *event)
 {
     //m_cmdDelegate->m_bMouseOpt = true;
+    m_cmdDelegate->m_bMouseOpt = false;
     m_cmdDelegate->m_iMouseOptRow = -1;
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
@@ -263,7 +264,7 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     DListView::mousePressEvent(event);
 
     if (false == m_bLeftMouse) {
-        m_cmdDelegate->m_bMouseOpt = true;
+        //m_cmdDelegate->m_bMouseOpt = false;//m_cmdDelegate->m_bMouseOpt = true;
         return;
     }
 
@@ -326,15 +327,23 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
 
 //        return;
 //    }
-    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason || event->reason() == Qt::ActiveWindowFocusReason) {
+
+
+    //if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason || event->reason() == Qt::ActiveWindowFocusReason) {
+    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason) {
         m_cmdDelegate->m_bModifyCheck = false;
         m_cmdDelegate->m_bMouseOpt = false;
 
     }
-
     //列表有记录，在第一次tab键获得焦点，默认选中第一个记录项
     if (m_cmdItemDataList.size()) {
-        QModelIndex qindex = m_cmdProxyModel->index(0, 0);
+        QModelIndex qindex;
+        if (event->reason() == Qt::ActiveWindowFocusReason) {
+            qindex = m_cmdProxyModel->index(m_currentTabRow, 0);
+            qDebug() << "------------m_currentTabRow=" << m_currentTabRow;
+        } else {
+            qindex = m_cmdProxyModel->index(0, 0);
+        }
         setCurrentIndex(qindex);
 
     } else {
@@ -370,10 +379,10 @@ void CustomCommandList::focusOutEvent(QFocusEvent *event)
         setCurrentIndex(qindex);
 
     }
-    if (m_bTabModify) {
-        setFocus();
+//    if (m_bTabModify) {
+//        setFocus();
 
-    }
+//    }
 
 }
 
@@ -405,12 +414,15 @@ void CustomCommandList::keyPressEvent(QKeyEvent *event)
             bNeedUpdate = true;
         }
         m_cmdDelegate->m_bModifyCheck = false;
+
+        m_currentTabRow = this->currentIndex().row();
         break;
     }
     case Qt::Key_Right:
         if (m_cmdDelegate->m_bModifyCheck != true) {
             bNeedUpdate = true;
         }
+        m_currentTabRow = this->currentIndex().row();
         m_cmdDelegate->m_bModifyCheck = true;
         break;
     case Qt::Key_Return:
@@ -469,6 +481,7 @@ void CustomCommandList::resetTabModifyControlPositionSlot(unsigned int iTabModif
             qDebug() << "modify -----------";
             QTimer::singleShot(30, this, [&]() {
                 QModelIndex qindex = m_cmdProxyModel->index(this->count() - 1, 0);
+                m_currentTabRow = this->count() - 1;
                 setCurrentIndex(qindex);
                 update();
             });
@@ -491,6 +504,7 @@ void CustomCommandList::resetTabModifyControlPositionSlot(unsigned int iTabModif
                     return;
                 }
                 QModelIndex qindex = m_cmdProxyModel->index(iIndex, 0);
+                m_currentTabRow = iIndex;
                 setCurrentIndex(qindex);
                 update();
             });
