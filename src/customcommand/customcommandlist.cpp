@@ -259,6 +259,7 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
         m_bLeftMouse = true;
     } else {
         m_bLeftMouse = false;
+        return;
     }
 
     DListView::mousePressEvent(event);
