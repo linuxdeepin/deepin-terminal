@@ -67,12 +67,12 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
         lostFocus(m_currentIndex);
         m_focusState = false;
         // Tab 和 Shift+Tab退出当前列表 点击激活别的窗口 清空列表
-        if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason /*|| type == Qt::ActiveWindowFocusReason*/) {
-//            m_focusState = false;
-            qDebug() << "currentIndex " << m_currentIndex << "return to -1";
-            m_currentIndex = -1;
-            clearFocus();
-        };
+//        if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason /*|| type == Qt::ActiveWindowFocusReason*/) {
+////            m_focusState = false;
+//            qDebug() << "currentIndex " << m_currentIndex << "return to -1";
+//            m_currentIndex = -1;
+//            clearFocus();
+//        };
     });
     // 列表被点击，编辑按钮隐藏
     connect(itemWidget, &ItemWidget::itemClicked, this, [ = ]() {
@@ -249,6 +249,18 @@ void ListView::setCurrentIndex(int currentIndex)
 }
 
 /*******************************************************************************
+ 1. @函数:    clearIndex
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-28
+ 4. @说明:    清空index
+*******************************************************************************/
+void ListView::clearIndex()
+{
+    m_currentIndex = -1;
+    qDebug() << __FUNCTION__ << "clear index to  -1";
+}
+
+/*******************************************************************************
  1. @函数:    onItemModify
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-21
@@ -304,10 +316,10 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                     // Todo : 焦点返回下一个
                     index = getNextIndex(index);
                     if (m_focusState) {
-                        // 回到列表,仅回到大的列表，没有回到具体的哪个点
-                        setFocus();
                         // 根据返回值判断焦点位置
                         if (index >= 0) {
+                            // 回到列表,仅回到大的列表，没有回到具体的哪个点
+                            setFocus();
                             // 列表不为空
                             setCurrentIndex(index);
                         } else {
@@ -336,6 +348,8 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                 }
                 // 焦点返回当前选中项
                 if (m_focusState) {
+                    // 回到列表,仅回到大的列表，没有回到具体的哪个点
+                    setFocus();
                     qDebug() << "current Index ListView" << m_currentIndex;
                     setCurrentIndex(index);
                 }
@@ -345,6 +359,8 @@ void ListView::onItemModify(const QString &key, bool isClicked)
         } else {
             if (m_focusState) {
                 int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
+                // 回到列表,仅回到大的列表，没有回到具体的哪个点
+                setFocus();
                 qDebug() << "current Index ListView" << m_currentIndex;
                 setCurrentIndex(index);
             }
@@ -515,6 +531,7 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
     } else {
         ++index;
     }
+
     // index >= 0 < 最大数量
     // 最上
     if (index < 0) {
@@ -524,7 +541,7 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
         DBusManager::callSystemSound();
     }
     // 之前焦点所在位置丢失焦点
-    if (index != currentIndex && index != count) {
+    if (index != currentIndex && index != count && index >= 0) {
         // 不是到头的情况下，前一个丢失焦点
         lostFocus(currentIndex);
     }
@@ -562,6 +579,9 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
     // 计算range
     int range = calculateRange(height());
     verticalScrollBar()->setRange(0, range);
+    if (index == 0) {
+        m_scrollPostion = 0;
+    }
     verticalScrollBar()->setValue(m_scrollPostion);
     qDebug() << "up down scrollPostion : " << m_scrollPostion << verticalScrollBar()->value();
 

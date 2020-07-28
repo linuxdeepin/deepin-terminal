@@ -77,6 +77,17 @@ void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn
     qDebug() << __FUNCTION__ << "index " << index;
 }
 
+/*******************************************************************************
+ 1. @函数:    clearListFocus
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-28
+ 4. @说明:    清空列表的选中状态
+*******************************************************************************/
+void RemoteManagementPanel::clearListFocus()
+{
+    m_listWidget->clearIndex();
+}
+
 void RemoteManagementPanel::refreshSearchState()
 {
     if (m_listWidget->count() >= 2) {
@@ -199,11 +210,13 @@ void RemoteManagementPanel::initUI()
         if (type == Qt::TabFocusReason || type == Qt::NoFocusReason) {
             // 下一个 或 列表为空， 焦点定位到添加按钮上
             m_pushButton->setFocus();
+            m_listWidget->clearIndex();
             qDebug() << "set focus on add pushButton";
         } else if (type == Qt::BacktabFocusReason) {
             // 判断是否可见，可见设置焦点
             if (m_searchEdit->isVisible()) {
                 m_searchEdit->lineEdit()->setFocus();
+                m_listWidget->clearIndex();
             }
         }
 

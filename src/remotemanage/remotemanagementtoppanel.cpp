@@ -56,14 +56,9 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
 void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &strFilter)
 {
     qDebug() << __FUNCTION__;
-    //--added by qinyaning(nyq) to solve the repeat history recoed--//
-    m_remoteManagementPanel->clearSearchInfo();
-    m_serverConfigGroupPanel->clearSearchInfo();
-    //--------------------------------------------------------------//
     m_remoteManagementSearchPanel->resize(size());
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_PANEL);
     m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
-    m_remoteManagementSearchPanel->onFocusInBackButton();
     animationPrepare(m_serverConfigGroupPanel, m_remoteManagementSearchPanel);
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
@@ -71,6 +66,9 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
     panelRightToLeft(animation, animation1);
+    m_remoteManagementPanel->clearSearchInfo();
+    m_serverConfigGroupPanel->clearSearchInfo();
+    m_remoteManagementSearchPanel->onFocusInBackButton();
 }
 
 void RemoteManagementTopPanel::showRemotePanelFromGroupPanel(const QString &strGoupName, bool isFocusOn)
@@ -93,6 +91,8 @@ void RemoteManagementTopPanel::show()
     RightPanel::show();
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->move(0, 0);
+    // 每次显示前清空之前的记录
+    m_remoteManagementPanel->clearListFocus();
     m_remoteManagementPanel->show();
     m_remoteManagementPanel->m_isShow = true;
     m_remoteManagementPanel->refreshPanel();
@@ -153,7 +153,6 @@ void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strG
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
     panelRightToLeft(animation, animation1);
-
 }
 void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
 {

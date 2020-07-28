@@ -47,6 +47,8 @@ public:
     int getNextIndex(int index);
     // 设置当前焦点
     void setCurrentIndex(int currentIndex);
+    // 清空焦点
+    void clearIndex();
     // 切换焦点
     void setFocusFromeIndex(int currentIndex, bool UpOrDown);
     // 丢失焦点

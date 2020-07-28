@@ -484,7 +484,7 @@ void ItemWidget::focusOutEvent(QFocusEvent *event)
 {
     m_isFocus = false;
     if (m_functType == ItemFuncType_Item) {
-        if (event->reason() != Qt::OtherFocusReason) {
+        if (!m_funcButton->hasFocus()) {
             m_funcButton->hide();
         }
     }

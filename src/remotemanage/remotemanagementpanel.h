@@ -17,6 +17,8 @@ public:
     void setFocusInPanel();
     // 设置焦点从分组界面返回时的位置
     void setFocusBack(const QString &strGroup, bool isFocusOn);
+    // 清除
+    void clearListFocus();
 
 signals:
     // 搜索框有焦点，显示搜索框

@@ -58,6 +58,7 @@ void ServerConfigGroupPanel::initUI()
             qDebug() << "group focus out!";
             QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
             QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+            m_listWidget->clearIndex();
         } else if (type == Qt::BacktabFocusReason) {
             // 判断是否可见，可见设置焦点
             if (m_searchEdit->isVisible()) {
@@ -65,14 +66,19 @@ void ServerConfigGroupPanel::initUI()
             } else {
                 m_rebackButton->setFocus();
             }
+            m_listWidget->clearIndex();
         } else if (type == Qt::NoFocusReason) {
             int isFocus = false;
             // 列表没有内容，焦点返回到返回键上
             if (m_listWidget->hasFocus() || m_rebackButton->hasFocus()) {
                 isFocus  = true;
             }
-            emit showRemoteManagementPanel(m_groupName, isFocus);
-            qDebug() << "showRemoteManagementPanel" << isFocus;
+            int count  = ServerConfigManager::instance()->getServerCount(m_groupName);
+            if (count == 0) {
+                emit showRemoteManagementPanel(m_groupName, isFocus);
+                qDebug() << "showRemoteManagementPanel" << isFocus << count;
+            }
+            m_listWidget->clearIndex();
         }
 
     });

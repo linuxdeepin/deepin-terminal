@@ -78,9 +78,11 @@ void RemoteManagementSearchPanel::initUI()
             QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
             QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
             qDebug() << "search panel focus on '+'";
+            m_listWidget->clearIndex();
         } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
             // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
             m_rebackButton->setFocus();
+            m_listWidget->clearIndex();
         }
 
     });
