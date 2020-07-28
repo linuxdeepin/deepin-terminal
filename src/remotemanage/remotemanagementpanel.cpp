@@ -50,7 +50,7 @@ void RemoteManagementPanel::setFocusInPanel()
 *******************************************************************************/
 void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __FUNCTION__ << isFoucsOn;
     if (!isFoucsOn) {
         // 获取列表的状态
         if (!m_listWidget->getFocusState()) {

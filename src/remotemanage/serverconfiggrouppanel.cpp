@@ -127,15 +127,24 @@ void ServerConfigGroupPanel::refreshData(const QString &groupName)
 *******************************************************************************/
 void ServerConfigGroupPanel::setFocusBack(int position)
 {
+    qDebug() << __FUNCTION__;
     if (position == -1) {
         // -1 设置焦点到搜索框
         if (m_searchEdit->isVisible()) {
             // 显示搜索框
             m_searchEdit->lineEdit()->setFocus();
+        } else {
+            setFocus();
+            if (ServerConfigManager::instance()->getServerCount(m_groupName)) {
+                // 没有搜索框,焦点落到列表中
+                m_listWidget->setCurrentIndex(0);
+            } else {
+                // 没有列表，直接显示远程主界面
+                emit showRemoteManagementPanel(m_groupName, true);
+                // 不接受刷新信号的操作
+                m_isShow = false;
+            }
         }
-    } else {
-        int index = m_listWidget->indexFromString(m_groupName);
-        m_listWidget->setCurrentIndex(index);
     }
 }
 

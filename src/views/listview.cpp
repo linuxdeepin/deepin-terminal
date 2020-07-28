@@ -55,7 +55,11 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     emit listItemCountChange();
 
     // 分组项被点击
-    connect(itemWidget, &ItemWidget::groupClicked, this, &ListView::groupClicked);
+    connect(itemWidget, &ItemWidget::groupClicked, this, [ = ](const QString & strName, bool isKeyPress = false) {
+        emit groupClicked(strName, isKeyPress);
+        // 改变焦点状态，判断是否有点击，有点击，清除状态标记
+        m_focusState = isKeyPress;
+    });
     // 列表项被点击
     connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::itemClicked);
     // 修改列表
@@ -647,7 +651,7 @@ void ListView::setScroll(int currentIndex)
     if (item != nullptr) {
         int postion = currentIndex  * 70;
         qDebug() << "postion : " << postion;
-        if (postion < height()) {
+        if (postion + 60 < height()) {
             verticalScrollBar()->setValue(0);
             m_scrollPostion = 0;
         } else {
@@ -657,8 +661,8 @@ void ListView::setScroll(int currentIndex)
             int magn = distance / 10 + 1;
             m_scrollPostion = 0 + magn * 70;
             verticalScrollBar()->setValue(m_scrollPostion);
-            qDebug() << "scrollPostion " << m_scrollPostion;
         }
+        qDebug() << "scrollPostion " << m_scrollPostion;
     }
 }
 

@@ -152,6 +152,7 @@ void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strG
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_GROUP);
     m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(strGroup, strFilter);
     m_remoteManagementSearchPanel->onFocusInBackButton();
+    m_serverConfigGroupPanel->m_isShow = false;
     animationPrepare(m_remoteManagementPanel, m_remoteManagementSearchPanel);
     m_serverConfigGroupPanel->setFocusBack(-1);
     QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
@@ -252,10 +253,13 @@ void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strG
     m_remoteManagementSearchPanel->clearFocus();
     animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
     m_serverConfigGroupPanel->setFocusBack(-1);
-    QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-    panelLeftToRight(animation, animation1);
+    // 若从搜索界面返回后，分组为空，该页面不做动画展示
+    if (ServerConfigManager::instance()->getServerCount(strGroup) != 0) {
+        QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
+        connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
+        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+        QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
+        connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+        panelLeftToRight(animation, animation1);
+    }
 }
