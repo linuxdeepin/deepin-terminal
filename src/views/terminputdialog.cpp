@@ -198,6 +198,14 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
 
         close();
     });
+
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
+        // 标题栏颜色随主题变化而变化
+        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+        DPalette textPalette = appHelper->standardPalette(appHelper->themeType());
+        textPalette.setColor(DPalette::WindowText, textPalette.color(DPalette::BrightText));
+        DApplicationHelper::instance()->setPalette(label, textPalette);
+    });
     // 设置为半模态
     this->setWindowModality(Qt::WindowModal);
     // 显示
