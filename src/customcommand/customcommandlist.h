@@ -56,6 +56,7 @@ public:
     bool m_bSearchRstPanelList = true;      // 是否是显示查找结果面板里的的list
     unsigned int  m_iTabModifyTime = 0;     //tab键盘操作的时间戳
     TabModifyType m_tabModType = TMT_NOTMOD;
+    bool m_bforSearchPanel = false;
 
 private:
     void initData();

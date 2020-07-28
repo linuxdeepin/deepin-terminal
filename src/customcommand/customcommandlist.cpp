@@ -346,13 +346,28 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
             qindex = m_cmdProxyModel->index(0, 0);
         }
         setCurrentIndex(qindex);
+        m_bforSearchPanel = true;
 
     } else {
         //focusNextPrevChild(!m_bSearchRstPanelList);//在列表数据被清空时，插件栏的选中框选中的位置，显示界面是，“添加”按钮，查找界面是“返回”按钮
         if (m_bSearchRstPanelList) {
-            // tab 进入 +
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+
+//            // tab 进入 +
+//            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+//            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+            if (m_bforSearchPanel) {
+                // 焦点落到 返回按钮
+                QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
+                QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+                m_bforSearchPanel = false;
+            } else {
+                // tab 进入 +
+                QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+                QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+            }
+
+
+
         } else {
             focusNextPrevChild(!m_bSearchRstPanelList);
         }
