@@ -17,24 +17,6 @@ FocusFrame::FocusFrame(QWidget *parent)
     setFocusPolicy(Qt::TabFocus);
 }
 
-/*******************************************************************************
- 1. @函数:    setIsFocus
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-23
- 4. @说明:    主动设置焦点状态
-*******************************************************************************/
-void FocusFrame::setIsFocus(bool isFocus)
-{
-    m_isFocus = isFocus;
-    update();
-    if (isFocus) {
-        emit focusIn();
-        setFocus();
-    } else {
-//        emit focusOut();
-    }
-
-}
 
 /*******************************************************************************
  1. @函数:    paintEvent

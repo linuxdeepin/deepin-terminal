@@ -225,6 +225,7 @@ void RemoteManagementPanel::initUI()
             if (m_searchEdit->isVisible()) {
                 m_searchEdit->lineEdit()->setFocus();
                 m_listWidget->clearIndex();
+                qDebug() << "set focus on add search edit";
             }
         }
 

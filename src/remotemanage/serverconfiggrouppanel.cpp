@@ -26,6 +26,7 @@ void ServerConfigGroupPanel::initUI()
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_rebackButton->setFixedSize(QSize(36, 36));
 
+    m_searchEdit->setFixedWidth(172);
     m_searchEdit->setClearButtonEnabled(true);
 
     QHBoxLayout *hlayout = new QHBoxLayout();

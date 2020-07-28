@@ -126,7 +126,6 @@ bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
 *******************************************************************************/
 void ItemWidget::getFocus()
 {
-    setIsFocus(true);
     m_isFocus = true;
     // 项显示功能键
     if (m_functType == ItemFuncType_Item) {
@@ -143,7 +142,6 @@ void ItemWidget::getFocus()
 *******************************************************************************/
 void ItemWidget::lostFocus()
 {
-    setIsFocus(false);
     m_isFocus = false;
     // 项影藏功能键
     if (m_functType == ItemFuncType_Item) {

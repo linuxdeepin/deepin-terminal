@@ -248,7 +248,7 @@ void ListView::setCurrentIndex(int currentIndex)
     ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
     if (item != nullptr) {
         // 设置焦点
-        widget->getFocus();
+//        widget->getFocus();
         qDebug() << widget << "get focus" << "current index" << currentIndex;
         // Todo 让焦点不要进入主窗口
         widget->setFocus();
@@ -279,8 +279,10 @@ void ListView::clearIndex()
 *******************************************************************************/
 void ListView::onItemModify(const QString &key, bool isClicked)
 {
+    int curIndex = m_currentIndex;
     // 弹窗出，丢失焦点
     lostFocus(m_currentIndex);
+    m_currentIndex = curIndex;
     // 弹窗显示
     ServerConfig *curItemServer = ServerConfigManager::instance()->getServerConfig(key);
     qDebug() << __FUNCTION__ << "modify remote " << curItemServer->m_serverName;
@@ -353,6 +355,8 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                 int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 if (-1 == index) {
                     qDebug() << "can't scroll to item " << m_configDialog->getCurServer()->m_serverName;
+                    index = getNextIndex(m_currentIndex);
+                    setScroll(index);
                 } else {
                     qDebug() << "scroll to " << index << m_configDialog->getCurServer()->m_serverName;
                     setScroll(index);
@@ -573,7 +577,6 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
         if (item != nullptr) {
             // 设置焦点
             widget->setFocus();
-            widget->getFocus();
             int widget_y1 = widget->y();
             int widget_y2 = widget->y() + widget->height();
             qDebug() << "y1" << widget_y1;

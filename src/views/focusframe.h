@@ -17,14 +17,10 @@ class FocusFrame : public DFrame
     Q_OBJECT
 public:
     FocusFrame(QWidget *parent = nullptr);
-    // 设置焦点状态
-    void setIsFocus(bool isFocus);
 
 signals:
     // 焦点出
     void focusOut(Qt::FocusReason type);
-    // 焦点入
-    void focusIn();
 
 protected:
     // 处理重绘事件
