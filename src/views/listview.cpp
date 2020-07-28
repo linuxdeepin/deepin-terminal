@@ -184,6 +184,17 @@ int ListView::indexFromString(const QString &key, ItemFuncType type)
 }
 
 /*******************************************************************************
+ 1. @函数:    currentIndex
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-28
+ 4. @说明:    返回焦点选中的index
+*******************************************************************************/
+int ListView::currentIndex()
+{
+    return m_currentIndex;
+}
+
+/*******************************************************************************
  1. @函数:    getNextIndex
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-24
@@ -407,7 +418,11 @@ void ListView::focusInEvent(QFocusEvent *event)
     if (m_currentIndex == -1) {
         m_currentIndex = 0;
     }
-    setCurrentIndex(m_currentIndex);
+    if (event->reason() == Qt::TabFocusReason) {
+        setCurrentIndex(0);
+    } else {
+        setCurrentIndex(m_currentIndex);
+    }
     qDebug() << "ListView current index : " << m_currentIndex << event->reason();
     m_focusState = true;
     QScrollArea::focusInEvent(event);

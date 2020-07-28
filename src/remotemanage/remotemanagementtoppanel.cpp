@@ -59,6 +59,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     m_remoteManagementSearchPanel->resize(size());
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_PANEL);
     m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
+    m_remoteManagementPanel->clearListFocus();
     animationPrepare(m_serverConfigGroupPanel, m_remoteManagementSearchPanel);
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
@@ -76,6 +77,7 @@ void RemoteManagementTopPanel::showRemotePanelFromGroupPanel(const QString &strG
     qDebug() << __FUNCTION__ ;
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->refreshPanel();
+    m_remoteManagementPanel->clearListFocus();
     animationPrepare(m_remoteManagementSearchPanel, m_remoteManagementPanel);
     QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
@@ -125,7 +127,7 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
     qDebug() << __FUNCTION__;
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
-    m_remoteManagementPanel->clearFocus();
+    m_remoteManagementPanel->clearListFocus();
     if (isKeyPress) {
         m_serverConfigGroupPanel->onFocusInBackButton();
     }

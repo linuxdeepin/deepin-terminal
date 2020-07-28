@@ -73,8 +73,13 @@ void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn
         return;
     }
     int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
-    m_listWidget->setCurrentIndex(index);
-    qDebug() << __FUNCTION__ << "index " << index;
+    if (index == m_listWidget->currentIndex()) {
+        m_listWidget->setCurrentIndex(index);
+        qDebug() << __FUNCTION__ << "index " << index;
+    } else {
+        qDebug() << "focus state is not focus on this group";
+    }
+
 }
 
 /*******************************************************************************
@@ -85,6 +90,9 @@ void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn
 *******************************************************************************/
 void RemoteManagementPanel::clearListFocus()
 {
+    m_pushButton->clearFocus();
+    m_listWidget->clearFocus();
+    m_searchEdit->clearFocus();
     m_listWidget->clearIndex();
 }
 

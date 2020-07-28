@@ -26,6 +26,7 @@ void CommonPanel::clearSearchInfo()
 *******************************************************************************/
 void CommonPanel::onFocusInBackButton()
 {
+    qDebug() << __FUNCTION__;
     if (m_rebackButton) {
         // 焦点进入后，选择到返回键上
         m_rebackButton->setFocus();
