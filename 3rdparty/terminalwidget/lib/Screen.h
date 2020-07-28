@@ -428,7 +428,7 @@ public:
     /***************** Modify by n014361 End *************************/
 
     /******** Add by ut001000 renfeixiang 2020-07-16:新增 一个清理全屏数据，并设置到起点的函数，不影响其它功能 Begin***************/
-    void clearAllScreen();
+//    void clearAllScreen();
     /******** Add by ut001000 renfeixiang 2020-07-16:新增 End***************/
 
     /**

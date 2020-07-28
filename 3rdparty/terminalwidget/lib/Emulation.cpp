@@ -79,8 +79,8 @@ Emulation::Emulation() :
                           .arg(static_cast<int>(cursorShape)).arg(blinkingCursorEnabled));
     });
     /******** Add by ut001000 renfeixiang 2020-07-16:增加初始化保存开始的屏幕行列数 Begin***************/
-    _lastcol = _currentScreen->getColumns();
-    _lastline = _currentScreen->getLines();
+//    _lastcol = _currentScreen->getColumns();
+//    _lastline = _currentScreen->getLines();
     /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 }
 
@@ -350,11 +350,11 @@ void Emulation::receiveData(const char *text, int length)
     std::wstring unicodeText = utf16Text.toStdWString();
 
     /******** Add by ut001000 renfeixiang 2020-07-16:增加 当终端宽高度变化时，收到数据，显示之前先清空界面上的信息 Begin***************/
-    if(_lastcol != _currentScreen->getColumns() || _lastline != _currentScreen->getLines()){
-        _currentScreen->clearAllScreen();
-    }
-    _lastcol = _currentScreen->getColumns();
-    _lastline = _currentScreen->getLines();
+//    if(_lastcol != _currentScreen->getColumns() || _lastline != _currentScreen->getLines()){
+//        _currentScreen->clearAllScreen();
+//    }
+//    _lastcol = _currentScreen->getColumns();
+//    _lastline = _currentScreen->getLines();
     /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 
     //send characters to terminal emulator

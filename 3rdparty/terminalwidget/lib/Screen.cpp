@@ -957,12 +957,12 @@ void Screen::clearToBeginOfScreen()
 }
 
 /******** Add by ut001000 renfeixiang 2020-07-16:新增 一个清理全屏数据，并设置到起点的函数，不影响其它功能 Begin***************/
-void Screen::clearAllScreen()
-{
-    clearImage(loc(0, 0), loc(columns-1, lines-1), ' ');
-    cuX = 0;
-    cuY = 0;
-}
+//void Screen::clearAllScreen()
+//{
+//    clearImage(loc(0, 0), loc(columns-1, lines-1), ' ');
+//    cuX = 0;
+//    cuY = 0;
+//}
 /******** Add by ut001000 renfeixiang 2020-07-16:新增 End***************/
 
 void Screen::clearEntireScreen()
