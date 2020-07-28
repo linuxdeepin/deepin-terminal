@@ -63,6 +63,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
 //    m_remoteManagementPanel->clearListFocus();
     animationPrepare(m_serverConfigGroupPanel, m_remoteManagementSearchPanel);
+    m_remoteManagementPanel->m_isShow = false;
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
@@ -81,6 +82,7 @@ void RemoteManagementTopPanel::showRemotePanelFromGroupPanel(const QString &strG
     m_remoteManagementPanel->refreshPanel();
 //    m_remoteManagementPanel->clearListFocus();
     animationPrepare(m_remoteManagementSearchPanel, m_remoteManagementPanel);
+    m_serverConfigGroupPanel->m_isShow = false;
     QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
@@ -137,6 +139,7 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
         qDebug() << "show group but not focus in group";
     }
     animationPrepare(m_remoteManagementSearchPanel, m_serverConfigGroupPanel);
+    m_remoteManagementPanel->m_isShow = false;
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
@@ -170,6 +173,7 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
     m_remoteManagementPanel->refreshPanel();
     animationPrepare(m_serverConfigGroupPanel, m_remoteManagementPanel);
     m_remoteManagementPanel->setFocusInPanel();
+    m_remoteManagementSearchPanel->m_isShow = false;
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
@@ -188,6 +192,7 @@ void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &
         m_serverConfigGroupPanel->onFocusInBackButton();
     }
     animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
+    m_remoteManagementSearchPanel->m_isShow = false;
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
@@ -252,6 +257,7 @@ void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strG
     m_serverConfigGroupPanel->refreshData(strGroup);
     m_remoteManagementSearchPanel->clearFocus();
     animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
+    m_remoteManagementSearchPanel->m_isShow = false;
     m_serverConfigGroupPanel->setFocusBack(-1);
     // 若从搜索界面返回后，分组为空，该页面不做动画展示
     if (ServerConfigManager::instance()->getServerCount(strGroup) != 0) {
