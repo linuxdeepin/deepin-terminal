@@ -341,7 +341,7 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
         QModelIndex qindex;
         if (event->reason() == Qt::ActiveWindowFocusReason || event->reason() == Qt::OtherFocusReason) {
             if (m_currentTabRow >= this->count()) {
-                m_currentTabRow = 0;
+                m_currentTabRow = this->count() - 1;
             }
             qindex = m_cmdProxyModel->index(m_currentTabRow, 0);
             qDebug() << "------------m_currentTabRow=" << m_currentTabRow;
