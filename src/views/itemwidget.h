@@ -66,7 +66,7 @@ public:
 
 public slots:
     // 处理功能键被点击的点击事件
-    void onFuncButtonClicked(bool isClicked);
+    void onFuncButtonClicked();
     // 处理图标被点击的事件
     void onIconButtonClicked();
     // 处理焦点出事件
@@ -79,9 +79,9 @@ signals:
     // 执行项
     void itemClicked(const QString &strName);
     // 显示分组
-    void groupClicked(const QString &strName, bool isKeyPress = false);
+    void groupClicked(const QString &strName, bool isFocus = false);
     // 修改项
-    void itemModify(const QString &strName, bool isClicked = false);
+    void itemModify(const QString &strName, bool isFocus = false);
     // 焦点从控件中出
     void focusOut(Qt::FocusReason type);
 
@@ -140,7 +140,7 @@ private:
     // 处理键盘事件
     void rightKeyPress();
     // 项被点击
-    void onItemClicked(bool isKeyPress = false);
+    void onItemClicked();
 private slots:
     // 设置颜色随主题变化变化（部分组件不支持，需要手动变色）
     void slotThemeChange(DGuiApplicationHelper::ColorType themeType);

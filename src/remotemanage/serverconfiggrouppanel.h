@@ -16,6 +16,8 @@ public:
     // 设置焦点
     // 从搜索框返回
     void setFocusBack(int position);
+    // 清除所有焦点
+    void clearAllFocus();
 
 signals:
     // 显示搜索结果，搜索框有焦点

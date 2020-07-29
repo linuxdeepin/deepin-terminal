@@ -64,7 +64,7 @@ public:
 
 public slots:
     // 列表项被修改
-    void onItemModify(const QString &key, bool isClicked);
+    void onItemModify(const QString &key, bool isFocusOn);
 
 signals:
     // 列表数量变化
@@ -72,7 +72,7 @@ signals:
     // 列表项被点击
     void itemClicked(const QString &key);
     // 分组项被点击
-    void groupClicked(const QString &key, bool isKeyPress);
+    void groupClicked(const QString &key, bool isFocus);
     // 列表项要被修改
     // void itemModify(const QString &key);
     // 焦点Tab出

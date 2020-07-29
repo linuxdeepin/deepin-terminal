@@ -211,7 +211,7 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     }
     // 现实当前分组和没有分组的远程个数
     //qDebug() << m_serverConfigs.count() << m_serverConfigs[""].count();
-    emit refreshList(config->m_serverName);
+//    emit refreshList(config->m_serverName);
 }
 
 void ServerConfigManager::delServerConfig(ServerConfig *config)

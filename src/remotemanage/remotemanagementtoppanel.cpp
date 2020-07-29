@@ -89,6 +89,7 @@ void RemoteManagementTopPanel::showRemotePanelFromGroupPanel(const QString &strG
     QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
     panelLeftToRight(animation, animation1);
+    m_serverConfigGroupPanel->clearAllFocus();
     m_remoteManagementPanel->setFocusBack(strGoupName, isFocusOn);
 }
 
@@ -126,15 +127,19 @@ void RemoteManagementTopPanel::setFocusInPanel()
 //}
 /******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
 
-void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup, bool isKeyPress)
+void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup, bool isFocusOn)
 {
     qDebug() << __FUNCTION__;
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
 //    m_remoteManagementPanel->clearListFocus();
-    if (isKeyPress) {
+    // 判断是否是鼠标点击
+    if (isFocusOn) {
+        // 1）不是鼠标点击，焦点落在返回键上
+        // 2）是鼠标点击，但是焦点在组上，焦点也要落在返回键上
         m_serverConfigGroupPanel->onFocusInBackButton();
     } else {
+        // 是鼠标点击，当前项没有焦点
         Utils::getMainWindow(this)->focusCurrentPage();
         qDebug() << "show group but not focus in group";
     }

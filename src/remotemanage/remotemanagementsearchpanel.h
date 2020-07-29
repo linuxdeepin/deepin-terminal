@@ -21,6 +21,8 @@ public:
     void refreshDataByGroupAndFilter(const QString &strGroup, const QString &strFilter);
     void refreshDataByFilter(const QString &strFilter);
     void setPreviousPanelType(RemoteManagementPanelType type);
+    // 清除界面所有焦点
+    void clearAllFocus();
 
 signals:
     void showServerConfigGroupPanelFromSearch(const QString &strGroup, bool isKeyPress);

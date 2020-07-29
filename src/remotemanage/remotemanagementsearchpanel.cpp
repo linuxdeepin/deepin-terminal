@@ -150,6 +150,19 @@ void RemoteManagementSearchPanel::setPreviousPanelType(RemoteManagementPanelType
     m_previousPanel = type;
 }
 
+/*******************************************************************************
+ 1. @函数:    clearAllFocus
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-29
+ 4. @说明:    清除界面所有的焦点
+*******************************************************************************/
+void RemoteManagementSearchPanel::clearAllFocus()
+{
+    m_rebackButton->clearFocus();
+    m_listWidget->clearFocus();
+    m_label->clearFocus();
+}
+
 
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)
 {

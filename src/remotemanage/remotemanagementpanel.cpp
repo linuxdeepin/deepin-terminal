@@ -51,15 +51,15 @@ void RemoteManagementPanel::setFocusInPanel()
 void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn)
 {
     qDebug() << __FUNCTION__ << isFoucsOn;
-    if (!isFoucsOn) {
-        // 获取列表的状态
-        if (!m_listWidget->getFocusState()) {
-            qDebug() << "foucs is not on widget";
-            // 焦点回终端
-            Utils::getMainWindow(this)->focusCurrentPage();
-            return;
-        }
-    }
+//    if (!isFoucsOn) {
+//        // 获取列表的状态
+//        if (!m_listWidget->getFocusState()) {
+//            qDebug() << "foucs is not on widget";
+//            // 焦点回终端
+//            Utils::getMainWindow(this)->focusCurrentPage();
+//            return;
+//        }
+//    }
 
     // 获取分组的数量
     int count = ServerConfigManager::instance()->getServerCount(strGroup);
@@ -78,6 +78,7 @@ void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn
         qDebug() << __FUNCTION__ << "index " << index;
     } else {
         qDebug() << "focus state is not focus on this group";
+        Utils::getMainWindow(this)->focusCurrentPage();
     }
 
 }

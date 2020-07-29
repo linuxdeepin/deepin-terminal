@@ -69,6 +69,7 @@ void ServerConfigGroupPanel::initUI()
             }
             m_listWidget->clearIndex();
         } else if (type == Qt::NoFocusReason) {
+            qDebug() << "group NoFocusReason";
             int isFocus = false;
             // 列表没有内容，焦点返回到返回键上
             if (m_listWidget->hasFocus() || m_rebackButton->hasFocus()) {
@@ -91,6 +92,7 @@ void ServerConfigGroupPanel::initUI()
     });
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ](QString str) {
         Q_UNUSED(str);
+        qDebug() << "group refresh list";
         if (m_isShow) {
             refreshData(m_groupName);
             m_listWidget->setFocus();
@@ -146,6 +148,19 @@ void ServerConfigGroupPanel::setFocusBack(int position)
             }
         }
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    clearAllFocus
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-29
+ 4. @说明:    清除所有焦点
+*******************************************************************************/
+void ServerConfigGroupPanel::clearAllFocus()
+{
+    m_rebackButton->clearFocus();
+    m_searchEdit->clearFocus();
+    m_listWidget->clearFocus();
 }
 
 void ServerConfigGroupPanel::handleShowSearchResult()

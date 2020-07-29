@@ -55,10 +55,13 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     emit listItemCountChange();
 
     // 分组项被点击
-    connect(itemWidget, &ItemWidget::groupClicked, this, [ = ](const QString & strName, bool isKeyPress = false) {
-        emit groupClicked(strName, isKeyPress);
-        // 改变焦点状态，判断是否有点击，有点击，清除状态标记
-        m_focusState = isKeyPress;
+    connect(itemWidget, &ItemWidget::groupClicked, this, [ = ](const QString & strName, bool isFocus = false) {
+        emit groupClicked(strName, isFocus);
+        // 若焦点不在项上
+        if (!isFocus) {
+            // 清空index记录
+            clearIndex();
+        }
     });
     // 列表项被点击
     connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::itemClicked);
@@ -281,7 +284,7 @@ void ListView::clearIndex()
  3. @日期:    2020-07-21
  4. @说明:    列表项被修改，弹出弹窗给用户修改
 *******************************************************************************/
-void ListView::onItemModify(const QString &key, bool isClicked)
+void ListView::onItemModify(const QString &key, bool isFocusOn)
 {
     int curIndex = m_currentIndex;
     // 弹窗出，丢失焦点
@@ -293,7 +296,7 @@ void ListView::onItemModify(const QString &key, bool isClicked)
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
     // 根据点击事件还是键盘事件设置焦点状态
-    if (isClicked) {
+    if (isFocusOn) {
         // 键盘
         m_focusState = true;
     } else {
@@ -355,6 +358,10 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                 // 修改后会有信号刷新列表
                 // 不需要删除，修改了转到这条修改的记录
                 // 设置滚轮
+                // 关闭后及时将弹窗删除
+                ServerConfigManager::instance()->removeDialog(m_configDialog);
+                // 刷新列表
+                emit ServerConfigManager::instance()->refreshList("");
                 // 获取index
                 int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 if (-1 == index) {
@@ -372,8 +379,7 @@ void ListView::onItemModify(const QString &key, bool isClicked)
                     qDebug() << "current Index ListView" << m_currentIndex;
                     setCurrentIndex(index);
                 }
-                // 关闭后及时将弹窗删除
-                ServerConfigManager::instance()->removeDialog(m_configDialog);
+
             }
         } else {
             if (m_focusState) {

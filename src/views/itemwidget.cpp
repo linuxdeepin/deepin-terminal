@@ -195,20 +195,27 @@ bool operator <(const ItemWidget &item1, const ItemWidget &item2)
               1) 分组=>显示分组所有的项
               2) 项=>修改项
 *******************************************************************************/
-void ItemWidget::onFuncButtonClicked(bool isClicked)
+void ItemWidget::onFuncButtonClicked()
 {
     // 判断类型执行操作
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
         qDebug() << "group show" << m_firstText;
-        emit groupClicked(m_firstText);
+        // 第一个参数是分组名，第二个参数是当前是否有焦点
+        emit groupClicked(m_firstText, m_isFocus);
         break;
-    case ItemFuncType_Item:
+    case ItemFuncType_Item: {
         // 修改项
         qDebug() << "modify item" << m_firstText;
-        itemModify(m_firstText, isClicked);
-        break;
+        bool isFocusOn = false;
+        if (m_funcButton->hasFocus() || m_isFocus) {
+            // 焦点在大框或者编辑按钮上
+            isFocusOn = true;
+        }
+        itemModify(m_firstText, isFocusOn);
+    }
+    break;
     default:
         break;
     }
@@ -229,7 +236,8 @@ void ItemWidget::onIconButtonClicked()
     case ItemFuncType_Group:
         // 显示分组
         qDebug() << "group show" << m_firstText;
-        emit groupClicked(m_firstText);
+        // 第一个参数是分组名，第二个参数是当前是否有焦点
+        emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item:
         // 项被点击
@@ -448,7 +456,7 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Return:
     case Qt::Key_Space:
         // 项被点击执行
-        onItemClicked(true);
+        onItemClicked();
         break;
     default:
         FocusFrame::keyPressEvent(event);
@@ -480,6 +488,7 @@ void ItemWidget::focusInEvent(QFocusEvent *event)
 *******************************************************************************/
 void ItemWidget::focusOutEvent(QFocusEvent *event)
 {
+    qDebug() << "ItemWidget" << __FUNCTION__ << event->reason();
     m_isFocus = false;
     if (m_functType == ItemFuncType_Item) {
         if (!m_funcButton->hasFocus()) {
@@ -595,13 +604,14 @@ void ItemWidget::rightKeyPress()
  3. @日期:    2020-07-22
  4. @说明:    根据类型发送不同的点击信号
 *******************************************************************************/
-void ItemWidget::onItemClicked(bool isKeyPress)
+void ItemWidget::onItemClicked()
 {
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
         qDebug() << "group show" << m_firstText;
-        emit groupClicked(m_firstText, isKeyPress);
+        // 第一个参数是分组名，第二个参数是当前是否有焦点
+        emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item:
         // 项被点击
