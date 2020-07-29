@@ -313,8 +313,8 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         return;
     }
     /***add end by ut001121***/
-    strCommand = strCommand.trimmed();//空格的命令是无效的，剔除命令前后的空格
-    if (strCommand.isEmpty()) {
+    QString strCommandtemp = strCommand.trimmed();//空格的命令是无效的
+    if (strCommandtemp.isEmpty()) {
         m_commandLineEdit->showAlertMessage(tr("Please enter a command"), m_commandLineEdit->parentWidget());
         return;
     }
