@@ -301,6 +301,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     QString strCommand = m_commandLineEdit->text();
     QKeySequence keytmp = m_shortCutLineEdit->keySequence();
 
+    strName = strName.trimmed();//空格的名称是无效的，剔除名称前后的空格
     if (strName.isEmpty()) {
         m_nameLineEdit->showAlertMessage(tr("Please enter a name"), m_nameLineEdit->parentWidget());
         return;
@@ -312,7 +313,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         return;
     }
     /***add end by ut001121***/
-
+    strCommand = strCommand.trimmed();//空格的命令是无效的，剔除命令前后的空格
     if (strCommand.isEmpty()) {
         m_commandLineEdit->showAlertMessage(tr("Please enter a command"), m_commandLineEdit->parentWidget());
         return;
