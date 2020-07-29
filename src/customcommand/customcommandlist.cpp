@@ -321,7 +321,7 @@ void CustomCommandList::setSelection(const QRect &rect, QItemSelectionModel::Sel
 *******************************************************************************/
 void CustomCommandList::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << "count=" << this->count() << ",currentIndex()=" << currentIndex().row() << ",event->reason():" << event->reason(); //-1
+    qDebug() << "count=" << this->count() << ",currentIndex()=" << currentIndex().row() << ",m_currentTabRow=" << m_currentTabRow << ",event->reason():" << event->reason(); //-1
 
     //当不是tab键盘按下，比如方向键按下进来的，不处理 // 其实焦点已经过来了在index为-1处而已，需要其他操作 //tab键盘和 shift+tab键盘操作 好像天然 就是和方向键盘左右是通用的，在同级别的没有子控件的情况
 //    if (Qt::TabFocusReason != event->reason()) {
@@ -331,7 +331,7 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
 
 
     //if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason || event->reason() == Qt::ActiveWindowFocusReason) {
-    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason) {
+    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason || event->reason() == Qt::OtherFocusReason) {
         m_cmdDelegate->m_bModifyCheck = false;
         m_cmdDelegate->m_bMouseOpt = false;
 
@@ -339,7 +339,10 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
     //列表有记录，在第一次tab键获得焦点，默认选中第一个记录项
     if (m_cmdItemDataList.size()) {
         QModelIndex qindex;
-        if (event->reason() == Qt::ActiveWindowFocusReason) {
+        if (event->reason() == Qt::ActiveWindowFocusReason || event->reason() == Qt::OtherFocusReason) {
+            if (m_currentTabRow >= this->count()) {
+                m_currentTabRow = 0;
+            }
             qindex = m_cmdProxyModel->index(m_currentTabRow, 0);
             qDebug() << "------------m_currentTabRow=" << m_currentTabRow;
         } else {
