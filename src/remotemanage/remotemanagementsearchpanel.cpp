@@ -59,6 +59,15 @@ void RemoteManagementSearchPanel::initUI()
     // 返回键被点击 搜索界面，返回焦点返回搜索框
     connect(m_rebackButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);
     connect(m_rebackButton, &IconButton::preFocus, this, &RemoteManagementSearchPanel::showPreviousPanel);
+    connect(m_rebackButton, &IconButton::focusOut, this, [ = ](Qt::FocusReason type) {
+        // 焦点切出，没值的时候
+        if (type == Qt::TabFocusReason && m_listWidget->count() == 0) {
+            // tab 进入 +
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+            qDebug() << "search panel focus to '+'";
+        }
+    });
     connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementSearchPanel::onItemClicked);
     connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementSearchPanel::showServerConfigGroupPanelFromSearch);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
@@ -83,6 +92,7 @@ void RemoteManagementSearchPanel::initUI()
             // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
             m_rebackButton->setFocus();
             m_listWidget->clearIndex();
+            qDebug() << "search panel type" << type;
         }
 
     });

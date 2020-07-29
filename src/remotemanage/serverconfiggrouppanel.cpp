@@ -95,7 +95,7 @@ void ServerConfigGroupPanel::initUI()
         qDebug() << "group refresh list";
         if (m_isShow) {
             refreshData(m_groupName);
-            m_listWidget->setFocus();
+//            m_listWidget->setFocus();
             QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
             if (!configMap.contains(m_groupName)) {
                 // 没有这个组 ==> 组内没成员，则返回
