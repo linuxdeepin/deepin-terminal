@@ -258,9 +258,12 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         path.lineTo(bgRect.left()+ arcRadius, bgRect.top());
 
         if (option.state & QStyle::State_MouseOver) {
+            /*** mod begin by ut001121 zhangmeng 20200729 鼠标悬浮在编码插件时使用突出背景处理 修复BUG40078***/
+            DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
-            QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
-            fillColor.setAlphaF(0.3);
+            QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ObviousBackground);
+            //fillColor.setAlphaF(0.1);
+            /*** mod end by ut001121 zhangmeng 20200729***/
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
         } else {
