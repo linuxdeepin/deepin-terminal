@@ -537,6 +537,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     config->m_deleteKey = m_deleteKey->currentText();
     if (m_type == SCT_ADD) {
         ServerConfigManager::instance()->saveServerConfig(config);
+        ServerConfigManager::instance()->refreshList("");
     } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
