@@ -106,5 +106,6 @@ int main(int argc, char *argv[])
     qint64 endtime3 = QDateTime::currentMSecsSinceEpoch();
     qDebug() << "First Terminal Window create complete! time use " << endtime3 - starttime <<"ms";
 
+
     return app.exec();
 }
