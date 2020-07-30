@@ -661,11 +661,14 @@ void ListView::setScroll(int currentIndex)
             verticalScrollBar()->setValue(0);
             m_scrollPostion = 0;
         } else {
+            m_scrollPostion = 0;
             // 差的距离
             int distance = postion - height();
-            // 倍率
-            int magn = distance / 10 + 1;
-            m_scrollPostion = 0 + magn * 70;
+            if (distance >= 0) {
+                // 倍率
+                int magn = distance / 10 + 1;
+                m_scrollPostion = 0 + magn * 70;
+            }
             verticalScrollBar()->setValue(m_scrollPostion);
         }
         qDebug() << "scrollPostion " << m_scrollPostion;
