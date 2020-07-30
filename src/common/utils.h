@@ -47,6 +47,8 @@
 
 #define MAX_NAME_LEN 32
 
+#define LISTMINHEIGHT 222
+
 class MainWindow;
 class Utils : public QObject
 {
@@ -112,7 +114,7 @@ class FontFilter : public QObject
 {
     Q_OBJECT
 public:
-    static FontFilter * instance();
+    static FontFilter *instance();
     FontFilter();
     ~FontFilter();
     //启动thread，打印等宽字体函数

@@ -18,10 +18,6 @@ class FocusFrame : public DFrame
 public:
     FocusFrame(QWidget *parent = nullptr);
 
-signals:
-    // 焦点出
-    void focusOut(Qt::FocusReason type);
-
 protected:
     // 处理重绘事件
     void paintEvent(QPaintEvent *event) override;

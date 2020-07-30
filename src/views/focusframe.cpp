@@ -34,12 +34,6 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing);
     // 焦点若在，则画边框
     if (m_isFocus) {
-        // 白底
-        // QPainterPath backgroundPath;
-        // QRect backgroundRect(0, 0, 220, 60);
-        // backgroundPath.addRect(backgroundRect);
-        // painter.fillPath(backgroundPath, QBrush(pa.color(DPalette::TextLively)));
-
         // 边框
         QPainterPath FramePath;
         paintRoundedRect(FramePath, QRect(2, 2, 218, 58));
@@ -112,14 +106,13 @@ void FocusFrame::leaveEvent(QEvent *event)
  1. @函数:    focusInEvent
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-16
- 4. @说明:    焦点进入，显示DPalette::ObviousBackground背景色
+ 4. @说明:    焦点进入
 *******************************************************************************/
 void FocusFrame::focusInEvent(QFocusEvent *event)
 {
     qDebug() << __FUNCTION__ << event << event->reason();
     // 焦点入
     m_isFocus = true;
-
     DFrame::focusInEvent(event);
 }
 
@@ -127,14 +120,13 @@ void FocusFrame::focusInEvent(QFocusEvent *event)
  1. @函数:    focusOutEvent
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-16
- 4. @说明:    焦点移除，显示DPalette::ItemBackground背景色，若此时鼠标悬浮，则不执行移除操作
+ 4. @说明:    焦点移除
 *******************************************************************************/
 void FocusFrame::focusOutEvent(QFocusEvent *event)
 {
     qDebug() << __FUNCTION__ << event << event->reason();
     // 焦点Tab出
     m_isFocus = false;
-    emit focusOut(event->reason());
     DFrame::focusOutEvent(event);
 }
 

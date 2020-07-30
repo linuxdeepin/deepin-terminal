@@ -168,39 +168,21 @@ void RemoteManagementPanel::initUI()
     this->setAutoFillBackground(true);
 
     m_searchEdit = new DSearchEdit(this);
-//    m_listWidget = new ServerConfigList(this);
     m_listWidget = new ListView(ListType_Remote, this);
     m_pushButton = new DPushButton(this);
 
+    m_searchEdit->setFixedHeight(36);
     m_searchEdit->setClearButtonEnabled(true);
 
     m_pushButton->setFixedHeight(36);
     m_pushButton->setText(tr("Add Server"));
 
-    QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->setContentsMargins(0, 0, 0, 0);
-    hlayout->addSpacing(10);
-    hlayout->addWidget(m_searchEdit);
-    hlayout->addSpacing(10);
-    hlayout->setSpacing(0);
-    hlayout->setMargin(0);
-
-    QHBoxLayout *btnLayout = new QHBoxLayout();
-    btnLayout->setContentsMargins(0, 0, 0, 0);
-    btnLayout->addSpacing(10);
-    btnLayout->addWidget(m_pushButton);
-    btnLayout->addSpacing(10);
-    btnLayout->setSpacing(0);
-    btnLayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->setContentsMargins(0, 0, 0, 0);
-    vlayout->addSpacing(10);
-    vlayout->addLayout(hlayout);
+    vlayout->setContentsMargins(10, 10, 10, 10);
+    vlayout->addWidget(m_searchEdit);
     vlayout->addWidget(m_listWidget);
-    vlayout->addLayout(btnLayout);
-    vlayout->addSpacing(12);
-    vlayout->setMargin(0);
+    vlayout->addWidget(m_pushButton);
     vlayout->setSpacing(10);
     setLayout(vlayout);
 

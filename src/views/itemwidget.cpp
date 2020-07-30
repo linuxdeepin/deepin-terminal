@@ -272,6 +272,11 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
     if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
         emit focusOut(type);
     }
+    if (type == Qt::ActiveWindowFocusReason) {
+        // 例如:super后返回都需要将焦点返回项
+        setFocus();
+        qDebug() << "set focus back itemwidget";
+    }
     // 项
     if (m_functType == ItemFuncType_Item) {
         if (type != Qt::OtherFocusReason) {
@@ -357,8 +362,6 @@ void ItemWidget::initConnections()
     connect(m_funcButton, &IconButton::preFocus, this, &ItemWidget::onFocusReback);
     // 焦点从小图标切出，不在控件上
     connect(m_funcButton, &IconButton::focusOut, this, &ItemWidget::onFocusOut);
-    // 焦点切出，，不在控件上
-    connect(this, &FocusFrame::focusOut, this, &ItemWidget::onFocusOut);
     // 图标被点击
     connect(m_iconButton, &DIconButton::clicked, this, &ItemWidget::onIconButtonClicked);
 
@@ -489,8 +492,16 @@ void ItemWidget::focusInEvent(QFocusEvent *event)
 void ItemWidget::focusOutEvent(QFocusEvent *event)
 {
     qDebug() << "ItemWidget" << __FUNCTION__ << event->reason();
+
     m_isFocus = false;
+    // Tab切出
+    Qt::FocusReason type = event->reason();
+    if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
+        emit focusOut(type);
+    }
+
     if (m_functType == ItemFuncType_Item) {
+        // 编辑按钮也没焦点，则隐藏编辑按钮
         if (!m_funcButton->hasFocus()) {
             m_funcButton->hide();
         }
