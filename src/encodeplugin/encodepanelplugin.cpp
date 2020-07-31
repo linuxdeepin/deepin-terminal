@@ -1,5 +1,25 @@
-#include "encodepanelplugin.h"
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:zhangmeng@uniontech.com
+ *
+ * Maintainer:编码列表插件
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+#include "encodepanelplugin.h"
 #include "mainwindow.h"
 #include "encodepanel.h"
 #include "termwidgetpage.h"
@@ -8,7 +28,6 @@
 #include "service.h"
 
 #include <DLog>
-
 #include <QDebug>
 
 EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
@@ -68,7 +87,8 @@ void EncodePanelPlugin::initEncodePanel()
     connect(Service::instance(), &Service::currentTermChange, m_encodePanel, [ = ](QWidget * term) {
         TermWidget *pterm = m_mainWindow->currentPage()->currentTerminal();
         // 列表显示时，切换了当前终端
-        if (!m_encodePanel->isHidden() && pterm == term) {      // 判断是否是当前页的term
+        // 判断是否是当前页的term
+        if (!m_encodePanel->isHidden() && pterm == term) {
             TermWidget *curterm = qobject_cast<TermWidget *>(term);
             setCurrentTermEncode(curterm);
         }
@@ -78,10 +98,13 @@ void EncodePanelPlugin::initEncodePanel()
 void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
 {
     QString encode;
+    // 是否连接远程
     if (term->isConnectRemote()) {
-        encode = term->RemoteEncode();                // 远程编码
+        // 远程编码
+        encode = term->RemoteEncode();
     } else {
-        encode = term->encode();                      // 终端编码
+        // 终端编码
+        encode = term->encode();
     }
     m_encodePanel->updateEncode(encode);
 }

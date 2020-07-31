@@ -1,3 +1,24 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:zhangmeng@uniontech.com
+ *
+ * Maintainer:编码插件列表面板
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "encodepanel.h"
 
 #include "encodelistview.h"
@@ -13,29 +34,22 @@ EncodePanel::EncodePanel(QWidget *parent)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
-
     setFocusProxy(m_encodeView);
-    /******** Modify by m000714 daizhengwen 2020-03-31: 设置本窗口不获得主场口的焦点****************/
-    /**
-     * del by ut001121 zhangmeng 20200718 for sp3 keyboard interaction
-     * setFocusPolicy(Qt::NoFocus);
-    */
 
     /********************* Modify by m000714 daizhengwen End ************************/
     QScroller::grabGesture(m_encodeView, QScroller::TouchGesture);
 
     QHBoxLayout *hLayout = new QHBoxLayout();
-//    hLayout->addSpacing(10);
+    /*hLayout->addSpacing(10);*/
     hLayout->addWidget(m_encodeView);
-//    hLayout->addSpacing(10);
+    /*hLayout->addSpacing(10);*/
 
     // init layout.
     QVBoxLayout *layout = new QVBoxLayout(this);
     /******** Modify by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
-    //layout->addSpacing(10);//增加的spacing会影响m_encodeView的高度
+    /*layout->addSpacing(10);增加的spacing会影响m_encodeView的高度*/
     layout->addLayout(hLayout);
     layout->addStretch();
-
     layout->setMargin(0);//增加的Margin会影响m_encodeView的高度
     layout->setSpacing(0);
     /******** Modify by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
@@ -43,8 +57,12 @@ EncodePanel::EncodePanel(QWidget *parent)
     connect(m_encodeView, &EncodeListView::focusOut, this, &RightPanel::hideAnim);
 }
 
-/******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
-//增加一个show函数，设置m_encodeView的大小
+/*******************************************************************************
+ 1. @函数:    show
+ 2. @作者:    nt001000 renfeixiang
+ 3. @日期:    2020-05-16
+ 4. @说明:    处理显示(设置m_encodeView的大小)
+*******************************************************************************/
 void EncodePanel::show()
 {
     RightPanel::show();
@@ -59,4 +77,4 @@ void EncodePanel::updateEncode(QString encode)
 {
     m_encodeView->checkEncode(encode);
 }
-/******** Add by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 End***************/
+

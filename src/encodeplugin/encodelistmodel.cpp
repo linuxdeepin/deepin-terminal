@@ -1,3 +1,24 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:zhangmeng@uniontech.com
+ *
+ * Maintainer:编码插件列表模型
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "encodelistmodel.h"
 
 #include <DStandardItem>
@@ -37,36 +58,6 @@ void EncodeListModel::initEncodeData()
     QList<QByteArray> all = QTextCodec::availableCodecs();
     // m_encodeData = QTextCodec::availableCodecs().toSet().toList();
     QList<QByteArray> showEncodeList;
-    // 这是ubuntu18.04支持的编码格式，按国家排列的
-//    showEncodeList << "GB18030" << "GB2312" << "GBK"
-//                   << "BIG5" << "BIG5-HKSCS" << "EUC-TW"
-//                   << "EUC-JP" << "ISO-2022-JP" << "SHIFT_JIS"
-//                   << "EUC-KR" << "ISO-2022-KR" << "UHC"
-//                   << "IBM864" << "ISO-8859-6" << "MAC_ARABIC" << "WINDOWS-1256"
-//                   << "ARMSCII-8"
-//                   << "ISO-8859-13" << "ISO-8859-4" << "WINDOWS-1257"
-//                   << "ISO-8859-14"
-//                   << "IBM-852" << "ISO-8859-2" << "MAC_CE" << "WINDOWS-1250"
-//                   << "MAC_CROATIAN"
-//                   << "IBM855" << "ISO-8859-5" << "ISO-IR-111" << "ISO-IR-111" << "KOI8-R" << "MAC-CYRILLIC" << "WINDOWS-1251"
-//                   << "CP866"
-//                   << "KOI8-U" << "MAC_UKRAINIAN"
-//                   << "GEORGIAN-PS"
-//                   << "ISO-8859-7" << "MAC_GREEK" << "WINDOWS-1253"
-//                   << "MAC_GUJARATI"
-//                   << "MAC_GURMUKHI"
-//                   << "IBM862" << "ISO-8859-8-I" << "MAC_HEBREW" << "WINDOWS-1255"
-//                   << "ISO-8859-8"
-//                   << "MAC_DEVANAGARI"
-//                   << "MAC_ICELANDIC"
-//                   << "ISO-8859-10"
-//                   << "MAC_FARSI"
-//                   << "ISO-8859-16" << "MAC_ROMANIAN"
-//                   << "ISO-8859-3"
-//                   << "TIS-620"
-//                   << "IBM857" << "ISO-8859-9" << "MAC_TURKISH" << "WINDOWS-1254"
-//                   << "TCVN" << "VISCII" << "WINDOWS-1258"
-//                   << "IBM850" << "ISO-8859-1" << "ISO-8859-15" << "MAC_ROMAN" << "WINDOWS-1252";
     showEncodeList << "UTF-8" << "GB18030" << "GB2312" << "GBK" /*简体中文*/
                    << "BIG5" << "BIG5-HKSCS" //<< "EUC-TW"      /*繁体中文*/
                    << "EUC-JP"  << "SHIFT_JIS"  //<< "ISO-2022-JP"/*日语*/
@@ -97,71 +88,6 @@ void EncodeListModel::initEncodeData()
                    << "WINDOWS-1258" //<< "TCVN" << "VISCII"  /*越南语*/
                    << "IBM850" << "ISO-8859-1" << "ISO-8859-15" << "x-ROMAN8" << "WINDOWS-1252"; /*西方国家*/
 
-
-    // meld提供的编码格式,按名称排列的
-//    showEncodeList<<"UTF-8"
-//                 <<"ISO-8859-1"
-//                 <<"ISO-8859-2"
-//                 <<"ISO-8859-3"
-//                 <<"ISO-8859-4"
-//                 <<"ISO-8859-5"
-//                 <<"ISO-8859-6"
-//                 <<"ISO-8859-7"
-//                 <<"ISO-8859-8"
-//                 <<"ISO-8859-9"
-//                 <<"ISO-8859-10"
-//                 <<"ISO-8859-13"
-//                 <<"ISO-8859-14"
-//                 <<"ISO-8859-15"
-//                 //<<"ISO-8859-16"
-//                 <<"UTF-7"
-//                 <<"UTF-16"
-//                 <<"UTF-16BE"
-//                 <<"UTF-16LE"
-//                 <<"UTF-32"
-//                 <<"UCS-2"
-//                 <<"UCS-4"
-//                 //<<"ARMSCII-8"
-//                 <<"BIG5"
-//                 <<"BIG5-HKSCS"
-//                 <<"CP866"
-//                 <<"EUC-JP"
-//                 //<<"EUC-JP-MS"
-//                 <<"CP932"
-//                 <<"EUC-KR"
-//                 //<<"EUC-TW"
-//                 <<"GB18030"
-//                 <<"GB2312"
-//                 <<"GBK"
-//                 //<<"GEORGIAN-ACADEMY"
-//                 <<"IBM850"
-//                 <<"IBM852"
-//                 <<"IBM855"
-//                 <<"IBM857"
-//                 <<"IBM862"
-//                 <<"IBM864"
-//                 <<"ISO-2022-JP"
-//                 <<"ISO-2022-KR"
-//                 //<<"ISO-IR-111"
-//                 //<<"JOHAB"
-//                 <<"KOI8-R"
-//                 <<"KOI8-U"
-//                 <<"SHIFT_JIS"
-//                 //<<"TCVN"
-//                 <<"TIS-620"
-//                 //<<"UHC"
-//                 //<<"VISCII"
-//                 <<"WINDOWS-1250"
-//                 <<"WINDOWS-1251"
-//                 <<"WINDOWS-1252"
-//                 <<"WINDOWS-1253"
-//                 <<"WINDOWS-1254"
-//                 <<"WINDOWS-1255"
-//                 <<"WINDOWS-1256"
-//                 <<"WINDOWS-1257"
-//                 <<"WINDOWS-1258";
-
-
     // 自定义的名称，系统里不一定大小写完全一样，再同步一下。
     for (QByteArray &name : showEncodeList) {
         QString strname1 = name;
@@ -181,7 +107,6 @@ void EncodeListModel::initEncodeData()
             m_encodeData << encodename;
         }
     }
-    //qDebug()<<"all encode name :"<<all;
-    //m_encodeData = showEncodeList;
+
     qDebug() << "QTextCodec::availableCodecs" << m_encodeData.count();
 }

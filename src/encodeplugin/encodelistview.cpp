@@ -1,3 +1,24 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:zhangmeng@uniontech.com
+ *
+ * Maintainer:编码插件列表视图
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "encodelistview.h"
 #include "encodelistmodel.h"
 #include "settings.h"
@@ -52,13 +73,15 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
 void EncodeListView::initEncodeItems()
 {
     QList<QByteArray> encodeDataList = m_encodeModel->listData();
+    // 遍历编码
     for (int i = 0; i < encodeDataList.size(); i++) {
         QByteArray encodeData = encodeDataList.at(i);
-
         QString strEncode = QString(encodeData);
+        // 构造子项
         DStandardItem *item = new DStandardItem;
         item->setText(strEncode);
         item->setCheckable(true);
+        // 插入子项
         m_standardModel->appendRow(item);
     }
     // 默认起动选择第一个。
@@ -96,16 +119,6 @@ void EncodeListView::focusOutEvent(QFocusEvent *event)
     //emit focusOut();
 
     DListView::focusOutEvent(event);
-}
-
-void EncodeListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
-{
-    DListView::selectionChanged(selected, deselected);
-}
-
-void EncodeListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
-{
-    DListView::setSelection(rect, command);
 }
 
 /*******************************************************************************
@@ -196,14 +209,18 @@ void EncodeListView::checkEncode(QString encode)
     if (this->isActiveWindow()) {
         qDebug() << "check encode " << encode;
         QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
+        // 遍历编码
         for (int row = 0; row < model->rowCount(); row++) {
             QModelIndex modelindex = model->index(row, 0);
             DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(row));
+            // 判断编码是否一致
             if (modelindex.data().toString() == encode) {
+                //设置Checked状态
                 modelItem->setCheckState(Qt::Checked);
                 m_modelIndexChecked = modelindex;
                 scrollTo(modelindex);
             } else {
+                //设置Unchecked状态
                 modelItem->setCheckState(Qt::Unchecked);
             }
         }
@@ -234,19 +251,19 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             cg = DPalette::Inactive;
         }
 
-        // background rect
+        // 背景区域
         QRect bgRect;
         bgRect.setX(option.rect.x()+1/* + 10*/);
         bgRect.setY(option.rect.y()+1/* + 10*/);
         bgRect.setWidth(option.rect.width() - 1);
         bgRect.setHeight(option.rect.height() - 10);
 
-        // define the painter path
+        // 绘画路径
         QPainterPath path;
         int cornerSize = 16;
         int arcRadius = 8;
 
-        // construct the painter path
+        // 构造路径
         path.moveTo(bgRect.left() + arcRadius, bgRect.top());
         path.arcTo(bgRect.left(), bgRect.top(), cornerSize, cornerSize, 90.0, 90.0);
         path.lineTo(bgRect.left(), bgRect.bottom() - arcRadius);
@@ -257,6 +274,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         path.arcTo(bgRect.right() - cornerSize, bgRect.top(), cornerSize, cornerSize, 0.0, 90.0);
         path.lineTo(bgRect.left()+ arcRadius, bgRect.top());
 
+        // 悬浮状态
         if (option.state & QStyle::State_MouseOver) {
             /*** mod begin by ut001121 zhangmeng 20200729 鼠标悬浮在编码插件时使用突出背景处理 修复BUG40078***/
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
@@ -274,24 +292,24 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             painter->fillPath(path, fillColor);
         }
 
-        // set font for painter
+        // 设置字体
         QFont textFont = painter->font();
         int cmdNameFontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
         textFont.setPixelSize(cmdNameFontSize);
         painter->setFont(textFont);
 
-        // set pen for painter
+        // 设置画笔
         DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
         DPalette pa = appHelper->standardPalette(appHelper->themeType());
         painter->setPen(pa.color(DPalette::Text));
 
-        // draw the text
+        // 绘画文本
         int checkIconSize = 15;
         QString strCmdName = index.data().toString();
         QRect cmdNameRect = QRect(10, bgRect.top(), bgRect.width() - checkIconSize, 50);
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
 
-        // draw the border
+        // 绘画边框
         Qt::FocusReason focusReason = qobject_cast<EncodeListView *>(m_parentView)->getFocusReason();
         if ((option.state & QStyle::State_Selected) && (focusReason == Qt::TabFocusReason || focusReason == Qt::BacktabFocusReason)) {
              QPen framePen;
@@ -305,16 +323,18 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
              painter->drawPath(path);
          }
 
-        // draw the check mark
+        // 判断状态
         const QStandardItemModel *model = qobject_cast<const QStandardItemModel *>(index.model());
         DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(index.row()));
         if (modelItem->checkState() & Qt::CheckState::Checked ) {
+            // 计算区域
             QRect editIconRect = QRect(bgRect.right() - checkIconSize - 6, bgRect.top() + (bgRect.height() - checkIconSize) / 2,
                                        checkIconSize, checkIconSize);
             //QIcon icon(":/icons/deepin/builtin/ok.svg");
             //QIcon icon = QIcon::fromTheme("emblem-checked");
             //painter->drawPixmap(editIconRect, icon.pixmap(QSize(checkIconSize, checkIconSize)));
 
+            // 设置模式
             QStyleOptionViewItem opt(option);
             const QWidget *widget = option.widget;
             QStyle *style = widget ? widget->style() : QApplication::style();
@@ -323,6 +343,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             opt.state = opt.state & ~QStyle::State_HasFocus;
             opt.state |= QStyle::State_On;
 
+            // 绘画对勾
             style->drawPrimitive(QStyle::PE_IndicatorViewItemCheck, &opt, painter, widget);
         }
 
