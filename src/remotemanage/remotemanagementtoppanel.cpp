@@ -10,7 +10,6 @@ const int animationDuration = 300;
 RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel(parent)
 {
     m_remoteManagementPanel = new RemoteManagementPanel(this);
-//    connect(this, &RemoteManagementTopPanel::focusOut, this, &RightPanel::hideAnim);
     connect(m_remoteManagementPanel,
             &RemoteManagementPanel::showServerConfigGroupPanel,
             this,
@@ -156,13 +155,19 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
 void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter)
 {
     qDebug() << __FUNCTION__;
+    // 调整窗口大小
     m_remoteManagementSearchPanel->resize(size());
+    // 设置前一个窗口
     m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_GROUP);
+    // 刷新列表
     m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(strGroup, strFilter);
-    m_remoteManagementSearchPanel->onFocusInBackButton();
+    // 前一个列表不用刷新
     m_serverConfigGroupPanel->m_isShow = false;
+    // 设置动画效果的准备工作
     animationPrepare(m_remoteManagementPanel, m_remoteManagementSearchPanel);
-    m_serverConfigGroupPanel->setFocusBack(-1);
+    // 将将焦点设置到返回键上
+    m_remoteManagementSearchPanel->onFocusInBackButton();
+    // 动画效果的设置
     QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);

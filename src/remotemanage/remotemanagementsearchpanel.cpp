@@ -24,7 +24,7 @@ void RemoteManagementSearchPanel::initUI()
 
     m_rebackButton = new IconButton(this);
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
-    m_rebackButton->setFixedSize(QSize(40, 40));
+    m_rebackButton->setFixedSize(QSize(ICONSIZE_36, ICONSIZE_36));
     m_rebackButton->setFocusPolicy(Qt::TabFocus);
 
     m_listWidget = new ListView(ListType_Remote, this);
@@ -42,18 +42,18 @@ void RemoteManagementSearchPanel::initUI()
     m_label->setPalette(palette);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->addSpacing(10);
+    hlayout->addSpacing(SPACEWIDTH);
     hlayout->addWidget(m_rebackButton);
     hlayout->addWidget(m_label, 0, Qt::AlignCenter);
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->addSpacing(10);
+    vlayout->addSpacing(SPACEHEIGHT);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
     vlayout->setMargin(0);
-    vlayout->setSpacing(10);
+    vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 
     // 返回键被点击 搜索界面，返回焦点返回搜索框
@@ -117,7 +117,7 @@ void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &str
     m_strGroupName = strGroup;
     m_strFilter = strFilter;
     m_listWidget->clearData();
-    ServerConfigManager::instance()->refreshServerList(PanelType_Search, m_listWidget, strFilter, strGroup);
+    ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Search, m_listWidget, strFilter, strGroup);
 }
 
 void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
@@ -126,7 +126,7 @@ void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
     m_isGroupOrNot = false;
     m_strFilter = strFilter;
     m_listWidget->clearData();
-    ServerConfigManager::instance()->refreshServerList(PanelType_Search, m_listWidget, strFilter);
+    ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Search, m_listWidget, strFilter);
 }
 void RemoteManagementSearchPanel::showPreviousPanel()
 {

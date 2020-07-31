@@ -1,3 +1,28 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     daizhengwen@uniontech.com
+ *
+ * Maintainer: daizhengwen@uniontech.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * 远程管理对话框（弹窗）
+ * 负责添加和修改时给用户提供界面操作的对话框
+ */
 #ifndef SERVERCONFIGOPTDLG_H
 #define SERVERCONFIGOPTDLG_H
 
@@ -23,6 +48,11 @@
 #include <QWidget>
 
 DWIDGET_USE_NAMESPACE
+
+// 默认端口
+#define DEFAULTPORT 22
+// 控件默认高度
+#define DEFAULTHEIGHT 290
 
 class TermCommandLinkButton;
 
@@ -98,7 +128,7 @@ private:
     QList<QString> getBackSpaceKey();
     QList<QString> getDeleteKey();
 
-    QString m_currentServerName = "";
+    QString m_currentServerName;
 
     inline void setLabelStyle(DLabel *);
 

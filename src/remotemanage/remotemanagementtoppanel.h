@@ -1,3 +1,28 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     daizhengwen@uniontech.com
+ *
+ * Maintainer: daizhengwen@uniontech.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * 远程管理界面管理类
+ * 主要负责界面切换和动画效果
+ */
 #ifndef REMOTEMANAGEMENTTOPPANEL_H
 #define REMOTEMANAGEMENTTOPPANEL_H
 
@@ -46,10 +71,6 @@ private:
     RemoteManagementPanel *m_remoteManagementPanel = nullptr;
     ServerConfigGroupPanel *m_serverConfigGroupPanel = nullptr;
     RemoteManagementSearchPanel *m_remoteManagementSearchPanel = nullptr;
-    // 当前页面
-    PanelType m_currentType;
-    // 前一个页面
-    PanelType m_preType;
     // 搜索条件
     QString m_filter;
     // 分组条件

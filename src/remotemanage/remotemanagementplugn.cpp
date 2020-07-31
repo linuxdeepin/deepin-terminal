@@ -85,9 +85,14 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
         m_mainWindow->sleep(100);
         /********************* Modify by m000714 daizhengwen End ************************/
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
-        // 等待连接
+        // 等待连接 100ms等待命令发过去正常立即执行，100ms足够，一下的信号槽只是判断是否开启另一个程序去连接
+        // 若有程序去连接，则判断已连接，若连接失败，则判断为断开连接
         QTimer::singleShot(100, this, [ = ]() {
             TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+            if (!term) {
+                // 若term为空
+                qDebug() << "current terminal is null";
+            }
             // 判断是否连接服务器
             if (!term->isInRemoteServer()) {
                 // 没有连接上
@@ -108,6 +113,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
     }
     /******** Modify by ut000610 daizhengwen 2020-06-04: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
     m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
+    // 隐藏列表后，将焦点设置到主窗口 100ms足够
     QTimer::singleShot(100, this, [&]() {
         if (m_mainWindow->isActiveWindow()) {
             m_mainWindow->focusCurrentPage();
@@ -116,18 +122,30 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
     /********************* Modify by ut000610 daizhengwen End ************************/
 }
 
+/*******************************************************************************
+ 1. @函数:    createShellFile
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-31
+ 4. @说明:    创建连接远程的的临时shell文件
+*******************************************************************************/
 QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
 {
+    // 首先读取通用模板
     QFile sourceFile(":/other/ssh_login.sh");
     QString fileString;
+    // 打开文件
     if (sourceFile.open(QIODevice::ReadOnly)) {
+        //读取文件
         fileString = sourceFile.readAll();
+        // 关闭文件
         sourceFile.close();
     }
 
+    // 用远程管理数据替换文件内的关键字
     fileString.replace("<<USER>>", curServer->m_userName);
     fileString.replace("<<SERVER>>", curServer->m_address.trimmed());
     fileString.replace("<<PORT>>", curServer->m_port);
+    // 根据是否有证书，替换关键字
     if (curServer->m_privateKey.isNull() || curServer->m_privateKey.isEmpty()) {
         fileString.replace("<<PRIVATE_KEY>>", "");
         QRegExp rx("([\"$\\\\])");
@@ -142,6 +160,7 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
     }
     QString path = curServer->m_path;
     QString command = curServer->m_command;
+    // 添加远程提示
     QString remote_command = "echo " + tr("Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.") + " && ";
     if (!path.isNull() && !path.isEmpty()) {
         remote_command = remote_command + "cd " + path + " && ";
@@ -151,10 +170,13 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
     }
     fileString.replace("<<REMOTE_COMMAND>>", remote_command);
 
+    // 创建临时文件
     QString toFileStr = "/tmp/terminal-" + Utils::getRandString();
     QFile toFile(toFileStr);
     toFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    // 写文件
     toFile.write(fileString.toUtf8());
+    // 退出文件
     toFile.close();
     return toFileStr;
 }
@@ -179,6 +201,12 @@ void RemoteManagementPlugn::setRemoteEncode(QString encode)
     emit Service::instance()->checkEncode(encode);
 }
 
+/*******************************************************************************
+ 1. @函数:    setBackspaceKey
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置退格键的模式
+*******************************************************************************/
 void RemoteManagementPlugn::setBackspaceKey(TermWidget *term, QString backspaceKey)
 {
     if (backspaceKey == "control-h") {
@@ -195,6 +223,12 @@ void RemoteManagementPlugn::setBackspaceKey(TermWidget *term, QString backspaceK
     qDebug() << "backspace mode " << backspaceKey;
 }
 
+/*******************************************************************************
+ 1. @函数:    setDeleteKey
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置删除键的模式
+*******************************************************************************/
 void RemoteManagementPlugn::setDeleteKey(TermWidget *term, QString deleteKey)
 {
     if (deleteKey == "control-h") {

@@ -73,13 +73,6 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
         emit focusOut(type);
         lostFocus(m_currentIndex);
         m_focusState = false;
-        // Tab 和 Shift+Tab退出当前列表 点击激活别的窗口 清空列表
-//        if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason /*|| type == Qt::ActiveWindowFocusReason*/) {
-////            m_focusState = false;
-//            qDebug() << "currentIndex " << m_currentIndex << "return to -1";
-//            m_currentIndex = -1;
-//            clearFocus();
-//        };
     });
     // 列表被点击，编辑按钮隐藏
     connect(itemWidget, &ItemWidget::itemClicked, this, [ = ]() {
@@ -327,7 +320,7 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
                         // 关闭所有相关弹窗
                         ServerConfigManager::instance()->closeAllDialog(m_configDialog->getCurServer()->m_serverName);
                         ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
-                        emit ServerConfigManager::instance()->refreshList("");
+                        emit ServerConfigManager::instance()->refreshList();
                         emit listItemCountChange();
                     } else {
                         // 关闭后及时将弹窗删除
@@ -361,7 +354,7 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
                 // 关闭后及时将弹窗删除
                 ServerConfigManager::instance()->removeDialog(m_configDialog);
                 // 刷新列表
-                emit ServerConfigManager::instance()->refreshList("");
+                emit ServerConfigManager::instance()->refreshList();
                 // 获取index
                 int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 if (-1 == index) {

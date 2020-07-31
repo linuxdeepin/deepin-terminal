@@ -47,7 +47,18 @@
 
 #define MAX_NAME_LEN 32
 
+// 列表最小高度
 #define LISTMINHEIGHT 222
+
+// 行间空格间距
+#define SPACEHEIGHT 10
+#define SPACEWIDTH 10
+// 控件通用高度
+#define COMMONHEIGHT 36
+// 图标大小
+#define ICONSIZE_50 50
+#define ICONSIZE_36 36
+#define ICONSIZE_20 20
 
 class MainWindow;
 class Utils : public QObject

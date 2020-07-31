@@ -1,5 +1,6 @@
 #include "remotemanagementpanel.h"
 #include "service.h"
+#include "utils.h"
 
 #include <DLog>
 
@@ -13,7 +14,7 @@ void RemoteManagementPanel::refreshPanel()
     // 清空搜索框
     clearSearchInfo();
     // 初始化列表
-    ServerConfigManager::instance()->refreshServerList(PanelType_Manage, m_listWidget);
+    ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Manage, m_listWidget);
     // 刷新搜索框状态
     refreshSearchState();
 }
@@ -51,15 +52,6 @@ void RemoteManagementPanel::setFocusInPanel()
 void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn)
 {
     qDebug() << __FUNCTION__ << isFoucsOn;
-//    if (!isFoucsOn) {
-//        // 获取列表的状态
-//        if (!m_listWidget->getFocusState()) {
-//            qDebug() << "foucs is not on widget";
-//            // 焦点回终端
-//            Utils::getMainWindow(this)->focusCurrentPage();
-//            return;
-//        }
-//    }
 
     // 获取分组的数量
     int count = ServerConfigManager::instance()->getServerCount(strGroup);
@@ -131,8 +123,9 @@ void RemoteManagementPanel::showCurSearchResult()
 //    // 清除当前焦点
 //    clearFocus();
     QString strTxt = m_searchEdit->text();
-    if (strTxt.isEmpty())
+    if (strTxt.isEmpty()) {
         return;
+    }
     emit showSearchPanel(strTxt);
 }
 
@@ -171,19 +164,19 @@ void RemoteManagementPanel::initUI()
     m_listWidget = new ListView(ListType_Remote, this);
     m_pushButton = new DPushButton(this);
 
-    m_searchEdit->setFixedHeight(36);
+    m_searchEdit->setFixedHeight(COMMONHEIGHT);
     m_searchEdit->setClearButtonEnabled(true);
 
-    m_pushButton->setFixedHeight(36);
+    m_pushButton->setFixedHeight(COMMONHEIGHT);
     m_pushButton->setText(tr("Add Server"));
 
 
     QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->setContentsMargins(10, 10, 10, 10);
+    vlayout->setContentsMargins(SPACEHEIGHT, SPACEWIDTH, SPACEHEIGHT, SPACEWIDTH);
     vlayout->addWidget(m_searchEdit);
     vlayout->addWidget(m_listWidget);
     vlayout->addWidget(m_pushButton);
-    vlayout->setSpacing(10);
+    vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);

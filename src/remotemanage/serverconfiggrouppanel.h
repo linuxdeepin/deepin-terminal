@@ -1,3 +1,30 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     daizhengwen@uniontech.com
+ *
+ * Maintainer: daizhengwen@uniontech.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * 远程管理分组界面
+ * 主要有返回按钮，搜索框和分组列表构成
+ * 搜索框只有两个以上的选项时才显示
+ * 搜索结果为组内搜索
+ */
 #ifndef SERVERCONFIGGROUPPANEL_H
 #define SERVERCONFIGGROUPPANEL_H
 

@@ -41,6 +41,8 @@ void ServerConfigManager::fillManagePanel(ListView *listview)
     listview->clearData();
     for (QString key : m_serverConfigs.keys()) {
         // key有效
+        // 先后添加组和项对顺序没影响
+        // 此处先后顺序只是符合界面显示顺序，方便阅读 判断key 是否为""，只是为了严格判断是否是没有分组的项
         if (!key.isEmpty() && !key.isNull()) {
             // 添加组
             listview->addItem(ItemFuncType_Group, key);
@@ -161,7 +163,7 @@ void ServerConfigManager::initServerConfig()
         qDebug() << "Group Name : " << serverName;
         /******** Modify by m000714 daizhengwen 2020-04-17: 兼容旧版本，旧版本GroupName为三个****************/
         // 不读三个参数的和旧版本互不影响，QSetting写配置文件和旧版本不一致
-        if (strList.count() == 3) {
+        if (strList.count() == OLD_VERTIONCOUNT) {
             qDebug() << "continue";
             continue;
         }
@@ -209,9 +211,6 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
         configlist.append(config);
         m_serverConfigs[config->m_group] = configlist;
     }
-    // 现实当前分组和没有分组的远程个数
-    //qDebug() << m_serverConfigs.count() << m_serverConfigs[""].count();
-//    emit refreshList(config->m_serverName);
 }
 
 void ServerConfigManager::delServerConfig(ServerConfig *config)
@@ -305,7 +304,7 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     // 遍历map
     for (serverConfigDialogMapIterator item = m_serverConfigDialogMap.begin(); item != m_serverConfigDialogMap.end(); ++item) {
         //遍历列表
-        for (auto &dlgItem : item.value()) {
+        for (ServerConfigOptDlg *dlgItem : item.value()) {
             if (dlgItem == dlg) {
                 key = item.key();
                 removeOne = dlgItem;

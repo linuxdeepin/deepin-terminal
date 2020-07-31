@@ -9,6 +9,9 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDebug>
+
+#define GROUPSEARCHWIDTH 172
+
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
     initUI();
@@ -24,18 +27,18 @@ void ServerConfigGroupPanel::initUI()
     m_listWidget = new ListView(ListType_Remote, this);
 
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
-    m_rebackButton->setFixedSize(QSize(36, 36));
+    m_rebackButton->setFixedSize(QSize(ICONSIZE_36, ICONSIZE_36));
 
-    m_searchEdit->setFixedWidth(172);
+    m_searchEdit->setFixedWidth(GROUPSEARCHWIDTH);
     m_searchEdit->setClearButtonEnabled(true);
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setContentsMargins(0, 0, 0, 0);
-    hlayout->addSpacing(10);
+    hlayout->addSpacing(SPACEWIDTH);
     hlayout->addWidget(m_rebackButton);
-    hlayout->addSpacing(10);
+    hlayout->addSpacing(SPACEWIDTH);
     hlayout->addWidget(m_searchEdit);
-    hlayout->addSpacing(10);
+    hlayout->addSpacing(SPACEWIDTH);
     // 没有搜索框，返回按钮仍显示在左边
     hlayout->addStretch();
     hlayout->setSpacing(0);
@@ -43,11 +46,11 @@ void ServerConfigGroupPanel::initUI()
 
     QVBoxLayout *vlayout = new QVBoxLayout();
     vlayout->setContentsMargins(0, 0, 0, 0);
-    vlayout->addSpacing(10);
+    vlayout->addSpacing(SPACEHEIGHT);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
     vlayout->setMargin(0);
-    vlayout->setSpacing(10);
+    vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
@@ -90,8 +93,7 @@ void ServerConfigGroupPanel::initUI()
     connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
         emit showRemoteManagementPanel(m_groupName, true);
     });
-    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ](QString str) {
-        Q_UNUSED(str);
+    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         qDebug() << "group refresh list";
         if (m_isShow) {
             refreshData(m_groupName);
@@ -114,7 +116,7 @@ void ServerConfigGroupPanel::refreshData(const QString &groupName)
     m_groupName = groupName;
     m_listWidget->clearData();
 //    m_listWidget->refreshDataByGroup(groupName, true);
-    ServerConfigManager::instance()->refreshServerList(PanelType_Group, m_listWidget, "", groupName);
+    ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Group, m_listWidget, "", groupName);
     refreshSearchState();
 }
 

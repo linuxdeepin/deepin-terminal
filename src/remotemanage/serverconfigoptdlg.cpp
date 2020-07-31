@@ -60,18 +60,18 @@ void ServerConfigOptDlg::initUI()
 {
     //all layout
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
-    m_VBoxLayout->setSpacing(10);
-    m_VBoxLayout->setContentsMargins(0, 0, 0, 10);
+    m_VBoxLayout->setSpacing(SPACEHEIGHT);
+    m_VBoxLayout->setContentsMargins(0, 0, 0, SPACEHEIGHT);
     this->setFixedHeight(392);
     //head layout
-    m_iconLabel->setFixedSize(50, 50);
+    m_iconLabel->setFixedSize(ICONSIZE_50, ICONSIZE_50);
     m_titleLabel->setText(tr("Add Server"));
     m_titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     //m_titleLabel->setFixedWidth(85);
 
     m_closeButton->setFocusPolicy(Qt::TabFocus);
-    m_closeButton->setFixedWidth(50);
-    m_closeButton->setIconSize(QSize(50, 50));
+    m_closeButton->setFixedWidth(ICONSIZE_50);
+    m_closeButton->setIconSize(QSize(ICONSIZE_50, ICONSIZE_50));
 
     // 字体
     DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5, QFont::DemiBold);
@@ -98,12 +98,12 @@ void ServerConfigOptDlg::initUI()
         reject();
     });
     m_VBoxLayout->addLayout(headLayout, Qt::AlignTop);
-    m_VBoxLayout->addStretch(10);
+    m_VBoxLayout->addStretch(SPACEHEIGHT);
     //main layout
     QGridLayout *pGridLayout = new QGridLayout();
     pGridLayout->setColumnStretch(1, 1);
     pGridLayout->setContentsMargins(28, 0, 30, 0);
-    pGridLayout->setSpacing(10);
+    pGridLayout->setSpacing(SPACEHEIGHT);
     DLabel *pServerNameLabel = new DLabel(tr("Server name:"));
     setLabelStyle(pServerNameLabel);
 
@@ -128,7 +128,7 @@ void ServerConfigOptDlg::initUI()
     pPortLabel->setFixedWidth(40);
     DFontSizeManager::instance()->bind(pPortLabel, DFontSizeManager::T6);
     m_port->setRange(0, 65535);
-    m_port->setValue(22);
+    m_port->setValue(DEFAULTPORT);
     m_port->setSingleStep(1);
     m_port->setFixedWidth(70);
     //comment code for old version dtk build
@@ -186,37 +186,37 @@ void ServerConfigOptDlg::initUI()
     setLabelStyle(pGroupLabel);
     seniorLayout->addWidget(pGroupLabel);
     seniorLayout->addWidget(m_group);
-    m_group->setFixedWidth(290);
+    m_group->setFixedWidth(DEFAULTHEIGHT);
 
     DLabel *pPathLabel = new DLabel(tr("Path:"));
     setLabelStyle(pPathLabel);
     seniorLayout->addWidget(pPathLabel);
     seniorLayout->addWidget(m_path);
-    m_path->setFixedWidth(290);
+    m_path->setFixedWidth(DEFAULTHEIGHT);
 
     DLabel *pCommandLabel = new DLabel(tr("Command:"));
     setLabelStyle(pCommandLabel);
     seniorLayout->addWidget(pCommandLabel);
     seniorLayout->addWidget(m_command);
-    m_command->setFixedWidth(290);
+    m_command->setFixedWidth(DEFAULTHEIGHT);
 
     DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
     setLabelStyle(pCodingLabel);
     seniorLayout->addWidget(pCodingLabel);
     seniorLayout->addWidget(m_coding);
-    m_coding->setFixedWidth(290);
+    m_coding->setFixedWidth(DEFAULTHEIGHT);
 
     DLabel *pBackspaceKeyLabel = new DLabel(tr("Backspace key:"));
     setLabelStyle(pBackspaceKeyLabel);
     seniorLayout->addWidget(pBackspaceKeyLabel);
     seniorLayout->addWidget(m_backSapceKey);
-    m_backSapceKey->setFixedWidth(290);
+    m_backSapceKey->setFixedWidth(DEFAULTHEIGHT);
 
     DLabel *pDeleteKeyLabel = new DLabel(tr("Delete key:"));
     setLabelStyle(pDeleteKeyLabel);
     seniorLayout->addWidget(pDeleteKeyLabel);
     seniorLayout->addWidget(m_deleteKey);
-    m_deleteKey->setFixedWidth(290);
+    m_deleteKey->setFixedWidth(DEFAULTHEIGHT);
     seniorWidget->setLayout(seniorLayout);
 
     m_VBoxLayout->addLayout(pGridLayout, Qt::AlignHCenter);
@@ -537,7 +537,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     config->m_deleteKey = m_deleteKey->currentText();
     if (m_type == SCT_ADD) {
         ServerConfigManager::instance()->saveServerConfig(config);
-        ServerConfigManager::instance()->refreshList("");
+        ServerConfigManager::instance()->refreshList();
     } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }

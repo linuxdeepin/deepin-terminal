@@ -1,3 +1,29 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     daizhengwen@uniontech.com
+ *
+ * Maintainer: daizhengwen@uniontech.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * 有选中效果的Frame
+ * 提供带边框的Frame，圆角效果比DFrame好一点
+ * 主要处理焦点和悬浮时Frame的边框和背景色
+ */
 #ifndef FOCUSFRAME_H
 #define FOCUSFRAME_H
 // dtk
