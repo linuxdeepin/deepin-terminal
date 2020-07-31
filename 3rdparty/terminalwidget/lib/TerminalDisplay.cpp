@@ -3102,6 +3102,8 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
 
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             _lastLeftEndColumn = _selEndColumn;
+
+            setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
         }
         else if ( event->key() == Qt::Key_Right)
         {
@@ -3114,6 +3116,8 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
 
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             _lastRightEndColumn = _selEndColumn;
+
+            setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
         }
         else
         {
@@ -3122,7 +3126,7 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
         }
     }
 
-    QWidget::keyReleaseEvent(event);
+    event->accept();
 }
 
 void TerminalDisplay::inputMethodEvent( QInputMethodEvent* event )
