@@ -1,10 +1,9 @@
-/* -*- Mode: C++; indent-tabs-mode: nil; tab-width: 4 -*-
- * -*- coding: utf-8 -*-
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
  *
- * Copyright (C) 2011 ~ 2018 Deepin, Inc.
+ * Author:     wangpeili <wangpeili@uniontech.com>
  *
- * Author:     Wang Yong <wangpeili@deepin.com>
- * Maintainer: Rekols    <rekols@foxmail.com>
+ * Maintainer: wangpeili <wangpeili@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef NEWDSPINBOX_H
 #define NEWDSPINBOX_H
 
@@ -32,6 +32,12 @@
 
 DWIDGET_USE_NAMESPACE
 
+/*******************************************************************************
+ 1. @类名:    NewDspinBox
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置里面重新写的spinBox
+*******************************************************************************/
 class NewDspinBox : public DWidget
 {
     Q_OBJECT

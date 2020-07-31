@@ -13,6 +13,13 @@ DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
 class DSettingsWidgetFactoryPrivate;
+/*******************************************************************************
+ 1. @类名:    Settings
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-31
+ 4. @说明:    系统设置
+             配置文件：.config/deepin/deepin-terminal/config.conf
+*******************************************************************************/
 class Settings : public QObject
 {
     Q_OBJECT
@@ -43,18 +50,12 @@ public:
     void setKeyValue(const QString &name, const QString &value);
 
     DSettings *settings;
-    /******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox改成成员变量 Begin***************/
     static DComboBox *comboBox;
-    /******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox改成成员变量 End***************/
-    /******** Modify by n014361 wangpeili 2020-01-04: 获取当前配置粘贴是否为选择内容 *************×****/
     bool IsPasteSelection();
 
     // 与设置里的快捷键冲突检测
     bool isShortcutConflict(const QString &Name, const QString &Key);
-
-    /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
     void HandleWidthFont();
-    /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
 
 public:
     QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);
@@ -66,7 +67,6 @@ public:
     static QPair<QWidget *, QWidget *> createSpinButtonHandle(QObject *obj);
     // 新增自定义ShortcutEdit控件处理
     static QPair<QWidget *, QWidget *> createShortcutEditOptionHandle(QObject *opt);
-    /******** Modify by n014361 wangpeili 2020-01-04:              ****************/
 
 signals:
     // void settingValueChanged(const QString &key, const QVariant &value);
@@ -81,11 +81,8 @@ signals:
     void backgroundBlurChanged(bool enabled);
     void pressingScrollChanged(bool enabled);
     void OutputScrollChanged(bool enabled);
-
-    /******** Modify by n014361 wangpeili 2020-01-06:字体，字体大小修改功能 ******×****/
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
-    /********************* Modify by n014361 wangpeili End ************************/
 
 private:
     Settings();
@@ -114,6 +111,7 @@ public:
 private:
     DTK_CORE_NAMESPACE::DSettingsOption *m_poption = nullptr;
 };
+
 QPair<QWidget *, QWidget *> createShortcutEditOptionHandle(DSettingsWidgetFactoryPrivate *p, QObject *opt);
 #define SHORTCUT_VALUE "shortcut_null"
 #endif  // SETTINGS_H

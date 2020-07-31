@@ -4,6 +4,7 @@
 #include "shortcutmanager.h"
 #include "../views/operationconfirmdlg.h"
 #include "service.h"
+#include "dbusmanager.h"
 
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
@@ -14,19 +15,13 @@
 
 #include <QApplication>
 #include <QStandardPaths>
-/******** Modify by n014361 wangpeili 2020-01-04:              ***********×****/
 #include <QFontDatabase>
-/********************* Modify by n014361 wangpeili End ************************/
-/******** Add by ut001000 renfeixiang 2020-06-08:增加 Begin***************/
-#include "dbusmanager.h"
-/******** Add by ut001000 renfeixiang 2020-06-08:增加 End***************/
+
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
 Settings *Settings::m_settings_instance = new Settings();
-/******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox初始化 Begin***************/
 DComboBox *Settings::comboBox = nullptr;
-/******** Add by ut001000 renfeixiang 2020-06-15:增加 将comboBox初始化 Begin***************/
 
 Settings::Settings() : QObject(qApp)
 {
@@ -83,7 +78,7 @@ void Settings::init()
     initConnection();
     loadDefaultsWhenReinstall();
     /******** Modify by ut000439 wangpeili 2020-06-12: 多进程模式，暂时取消使用*********/
-    /*
+# if 0
     //增加文件昨监视，以便多进程共享配置文件
     m_Watcher = new QFileSystemWatcher();
     m_Watcher->addPath(m_configPath);
@@ -93,8 +88,7 @@ void Settings::init()
         //监控完一次就不再监控了，所以要再添加
         m_Watcher->addPath(m_configPath);
     });
-    */
-    /********************* Modify by n014361 wangpeili End ************************/
+#endif
 }
 
 //重新安装终端后在这里重置状态
