@@ -457,6 +457,42 @@ QString MainWindow::getCurrTabTitle()
 {
     return m_tabbar->tabText(m_tabbar->currentIndex());
 }
+
+/*******************************************************************************
+ 1. @函数:    isFocusOnList
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-31
+ 4. @说明:    焦点是否在列表上
+*******************************************************************************/
+bool MainWindow::isFocusOnList()
+{
+    bool isFocus = true;
+    DIconButton *button = m_tabbar->findChild<DIconButton *>("AddButton");
+    // 判断是否找到
+    if (button) {
+        // 判断按钮是否有焦点
+        if (button->hasFocus()) {
+            isFocus = false;
+            qDebug() << "focus on AddButton";
+        }
+    }
+
+    QList<QString> buttonList = {"DTitlebarDWindowOptionButton", "DTitlebarDWindowMinButton", "DTitlebarDWindowMaxButton", "DTitlebarDWindowCloseButton"};
+    for (const QString &objectName : buttonList) {
+        DIconButton *button = titlebar()->findChild<DIconButton *>(objectName);
+        // 判断是否找到
+        if (button) {
+            // 判断按钮是否有焦点
+            if (button->hasFocus()) {
+                isFocus = false;
+                qDebug() << "focus on " << objectName;
+            }
+        }
+    }
+    qDebug() << "focus on list : " << isFocus;
+    return isFocus;
+
+}
 /*******************************************************************************
  1. @函数:    closeOtherTab
  2. @作者:    n014361 王培利

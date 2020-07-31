@@ -54,6 +54,8 @@ public:
     /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 Begin************************/
     QString getCurrTabTitle();
     /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 End  ************************/
+    // 焦点是否在列表上
+    bool isFocusOnList();
 
     void focusPage(const QString &identifier);
     void focusCurrentPage();

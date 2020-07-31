@@ -35,6 +35,11 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
         }
     });
     connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
+        // 焦点在列表上，隐藏时，焦点现在当前窗口上
+        if (m_mainWindow->isFocusOnList()) {
+            m_mainWindow->focusCurrentPage();
+            qDebug() << "focus on remote list, hide remote list and set foucs on terminal";
+        }
         getRemoteManagementTopPanel()->hide();
     });
 }
