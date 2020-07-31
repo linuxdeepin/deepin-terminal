@@ -166,6 +166,7 @@ void MainWindow::initOptionButton()
     m_exitFullScreen->setFixedSize(QSize(36, 36));
     titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
     m_exitFullScreen->setVisible(false);
+    m_exitFullScreen->setFocusPolicy(Qt::TabFocus);
     connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
         switchFullscreen();
     });
@@ -533,9 +534,9 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     // 关闭确认窗口前确认焦点位置是否在close button上，并且发起了关闭窗口
     bool closeBtnHasfocus = false;
     DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-    if(closeBtn != nullptr && closeBtn->hasFocus() && type == Utils::CloseType_Window){
+    if (closeBtn != nullptr && closeBtn->hasFocus() && type == Utils::CloseType_Window) {
         closeBtnHasfocus = true;
-        qDebug()<<"before close window, focus widget is close button. ";
+        qDebug() << "before close window, focus widget is close button. ";
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -555,10 +556,9 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     dlg->setProperty("type", type);
 
     /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
-    if(closeBtnHasfocus){
+    if (closeBtnHasfocus) {
         dlg->setProperty("focusCloseBtn",  true);
-    }
-    else {
+    } else {
         dlg->setProperty("focusCloseBtn",  false);
     }
     /********************* Modify by n014361 wangpeili End ************************/
@@ -567,11 +567,11 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     connect(dlg, &DDialog::finished, this, [this](int result) {
         OnHandleCloseType(result, Utils::CloseType(qobject_cast<DDialog *>(sender())->property("type").toInt()));
         /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
-        if(result != 1 && qobject_cast<DDialog *>(sender())->property("focusCloseBtn").toBool())        {
+        if (result != 1 && qobject_cast<DDialog *>(sender())->property("focusCloseBtn").toBool())        {
             DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-            if(closeBtn != nullptr){
+            if (closeBtn != nullptr) {
                 closeBtn->setFocus();
-                qDebug()<<"close button setFocus";
+                qDebug() << "close button setFocus";
             }
         }
         /********************* Modify by n014361 wangpeili End ************************/
@@ -1079,9 +1079,9 @@ void MainWindow::initShortcuts()
     /******** Modify by ut000439 wangpeili 2020-07-17:              ****************/
     QShortcut *shortcutFoucusOut = new QShortcut(QKeySequence(QKEYSEQUENCE_FOCUSOUT_TIMINAL), this);
     connect(shortcutFoucusOut, &QShortcut::activated, this, [this]() {
-        qDebug() << "focusout timinal is activated!"<<QKEYSEQUENCE_FOCUSOUT_TIMINAL;
+        qDebug() << "focusout timinal is activated!" << QKEYSEQUENCE_FOCUSOUT_TIMINAL;
         DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-        if(addButton != nullptr){
+        if (addButton != nullptr) {
             addButton->setFocus();
         }
     });
@@ -1089,7 +1089,7 @@ void MainWindow::initShortcuts()
     /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
     QShortcut *shortcutBuiltinPaste = new QShortcut(QKeySequence(QKEYSEQUENCE_PASTE_BUILTIN), this);
     connect(shortcutBuiltinPaste, &QShortcut::activated, this, [this]() {
-        qDebug() << "built in paste shortcut is activated!"<<QKEYSEQUENCE_PASTE_BUILTIN;
+        qDebug() << "built in paste shortcut is activated!" << QKEYSEQUENCE_PASTE_BUILTIN;
         TermWidgetPage *page = currentPage();
         if (page) {
             page->pasteClipboard();
@@ -1775,7 +1775,7 @@ void NormalWindow::initTitleBar()
     /******** Modify by ut000439 wangpeili 2020-07-22:  SP3.1 DTK TAB控件 ****************/
     // 清理titlebar、titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
-    Utils::clearChildrenFocus(m_tabbar);    
+    Utils::clearChildrenFocus(m_tabbar);
     // 重新设置可见控件焦点
     DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
     addButton->setFocusPolicy(Qt::TabFocus);
@@ -1866,6 +1866,9 @@ void NormalWindow::switchFullscreen(bool forceFullscreen)
     } else {
         window()->setWindowState(windowState() & ~Qt::WindowFullScreen);
     }
+
+    // 全屏和取消全屏后，都将焦点设置回终端
+    focusCurrentPage();
 }
 
 QPoint NormalWindow::calculateShortcutsPreviewPoint()
