@@ -1964,8 +1964,6 @@ void TerminalDisplay::setScrollBarPosition(QTermWidget::ScrollBarPosition positi
 
 void TerminalDisplay::initSelectionStates()
 {
-    qDebug() << __FUNCTION__ << endl;
-
     if (!_screenWindow)
     {
         return;
@@ -1982,7 +1980,6 @@ void TerminalDisplay::initKeyBoardSelection()
 {
     _selBegin = false;
 
-    qDebug() << __FUNCTION__ << endl;
     initSelectionStates();
 }
 
