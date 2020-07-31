@@ -321,52 +321,12 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString & identifier) {
         closeTab(identifier);
     });
-    /******** Modify by m000714 daizhengwen 2020-03-31: 避免多次菜单弹出****************/
-    // 菜单弹出在时间过滤器获取，不需要从terminal事件中获取
-//    connect(termPage, &TermWidgetPage::termGetFocus, this, [ = ]() {
-//        showPlugin(PLUGIN_TYPE_NONE);
-//    });
-    /********************* Modify by m000714 daizhengwen End ************************/
+
     connect(this, &MainWindow::showPluginChanged, termPage, [ = ](const QString name) {
         termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentPage() == termPage));
     });
 
-    connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, [ = ](int currSessionId, bool bIdle) {
-
-        int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
-
-        //如果标签被点过，移除标签颜色
-        if (isTabVisited(currSessionId) && bIdle) {
-            m_tabVisitMap.insert(currSessionId, false);
-            m_tabChangeColorMap.insert(currSessionId, false);
-            m_tabbar->removeNeedChangeTextColor(tabIndex);
-            return;
-        }
-
-        if (bIdle) {
-            //空闲状态如果标签被标记变色，则改变标签颜色
-            if (m_tabbar->isNeedChangeTextColor(tabIndex)) {
-                m_tabChangeColorMap.insert(currSessionId, true);
-                m_tabbar->setChangeTextColor(tabIndex);
-            }
-        } else {
-
-            //如果当前标签是活动标签，移除变色请求
-            int activeTabIndex = m_tabbar->currentIndex();
-            if (activeTabIndex == tabIndex) {
-                m_tabVisitMap.insert(currSessionId, false);
-                m_tabChangeColorMap.insert(currSessionId, false);
-                m_tabbar->removeNeedChangeTextColor(tabIndex);
-                return;
-            }
-
-            //标记变色，发起请求，稍后等空闲状态变色
-            m_tabChangeColorMap.insert(currSessionId, false);
-            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
-            DPalette pa = appHelper->standardPalette(appHelper->themeType());
-            m_tabbar->setNeedChangeTextColor(tabIndex, pa.color(DPalette::Highlight));
-        }
-    });
+    connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
 }
 
 bool MainWindow::hasRunningProcesses()
@@ -550,7 +510,12 @@ void MainWindow::closeAllTab()
 
     return;
 }
-
+/*******************************************************************************
+ 1. @函数:    showExitConfirmDialog
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-31
+ 4. @说明:    关闭窗口、终端时，显示确认提示框
+*******************************************************************************/
 void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget *parent)
 {
     // count < 1 不提示
@@ -612,61 +577,15 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
         }
         /********************* Modify by n014361 wangpeili End ************************/
     });
-    /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中  End***************/
 
-//    if (type == Utils::CloseType_Window) {
-//        connect(dlg, &DDialog::finished, this, [this](int result) {
-//            qDebug() << result;
-//            //setEnabled(true);
-//            // 弹窗隐藏或消失
-//            Service::instance()->setIsDialogShow(this, false);
-//            if (result == 1) {
-//                //接口二次重入
-//                m_hasConfirmedClose = true;
-//                close();
-//            }
-//        });
-//    }
-//    if (type == Utils::CloseType_Tab) {
-//        connect(dlg, &DDialog::finished, this, [this](int result) {
-//            qDebug() << result;
-//            //setEnabled(true);
-//            // 弹窗隐藏或消失
-//            Service::instance()->setIsDialogShow(this, false);
-//            if (result == 1) {
-//                TermWidgetPage *page = currentPage();
-//                if (page) {
-//                    //接口二次重入
-//                    closeTab(page->identifier(), true);
-//                }
-//            }
-//        });
-//    }
-
-//    if (type == Utils::CloseType_OtherTab) {
-//        connect(dlg, &DDialog::finished, this, [this](int result) {
-//            qDebug() << result;
-//            //setEnabled(true);
-//            // 弹窗隐藏或消失
-//            Service::instance()->setIsDialogShow(this, false);
-//            if (result == 1) {
-//                TermWidgetPage *page = currentPage();
-//                if (page) {
-//                    //接口二次重入
-//                    closeOtherTab(page->identifier(), true);
-//                }
-//            }
-//        });
-//    }
-
-    //while (1) {
-    //    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-    //}
-    //bool result = (dlg->exec() == DDialog::Accepted);
-    //qDebug()<<"receive result = "<<result;
     return ;
 }
-
+/*******************************************************************************
+ 1. @函数:    focusPage
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-31
+ 4. @说明:    焦点切换到某个PAGE页
+*******************************************************************************/
 void MainWindow::focusPage(const QString &identifier)
 {
     TermWidgetPage *tabPage = getPageByIdentifier(identifier);
@@ -710,6 +629,43 @@ void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage *)> &func
     }
 }
 
+void MainWindow::onTermIsIdle(int currSessionId, bool bIdle)
+{
+    int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
+
+    //如果标签被点过，移除标签颜色
+    if (isTabVisited(currSessionId) && bIdle) {
+        m_tabVisitMap.insert(currSessionId, false);
+        m_tabChangeColorMap.insert(currSessionId, false);
+        m_tabbar->removeNeedChangeTextColor(tabIndex);
+        return;
+    }
+
+    if (bIdle) {
+        //空闲状态如果标签被标记变色，则改变标签颜色
+        if (m_tabbar->isNeedChangeTextColor(tabIndex)) {
+            m_tabChangeColorMap.insert(currSessionId, true);
+            m_tabbar->setChangeTextColor(tabIndex);
+        }
+    } else {
+
+        //如果当前标签是活动标签，移除变色请求
+        int activeTabIndex = m_tabbar->currentIndex();
+        if (activeTabIndex == tabIndex) {
+            m_tabVisitMap.insert(currSessionId, false);
+            m_tabChangeColorMap.insert(currSessionId, false);
+            m_tabbar->removeNeedChangeTextColor(tabIndex);
+            return;
+        }
+
+        //标记变色，发起请求，稍后等空闲状态变色
+        m_tabChangeColorMap.insert(currSessionId, false);
+        DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+        DPalette pa = appHelper->standardPalette(appHelper->themeType());
+        m_tabbar->setNeedChangeTextColor(tabIndex, pa.color(DPalette::Highlight));
+    }
+}
+
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     // 保存窗口位置
@@ -733,7 +689,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
     int runningCount = 0;
     QList<QString> closeTabIdList;
-    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
+    int count = m_termStackWidget->count();
+    for (int i = 0 ; i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         closeTabIdList.append(tabPage->identifier());
         runningCount += tabPage->runningTerminalCount();
@@ -1171,31 +1128,12 @@ void MainWindow::initConnections()
     });
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &MainWindow::onApplicationStateChanged);
 }
-
-
-void MainWindow::handleTitleBarMenuFocusPolicy()
-{
-    QLayout *layout = titlebar()->layout();
-    for (int i = 0; i < layout->count(); ++i) {
-        QWidget *widget = layout->itemAt(i)->widget();
-        if (widget != nullptr && QString(widget->metaObject()->className()) ==  QString("QWidget")) {
-            QLayout *widgetLayout = widget->layout();
-            for (int j = 0; j < widgetLayout->count(); ++j) {
-                QWidget *widget = widgetLayout->itemAt(j)->widget();
-                if (widget != nullptr && QString(widget->metaObject()->className()) ==  QString("QWidget")) {
-                    QLayout *wLayout = widget->layout();
-                    for (int k = 0; k < wLayout->count(); ++k) {
-                        QWidget *widget = wLayout->itemAt(k)->widget();
-                        if (widget != nullptr && QString(widget->metaObject()->className()).contains("Button")) {
-                            widget->setFocusPolicy(Qt::NoFocus);
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
+/*******************************************************************************
+ 1. @函数:    executeCMD
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-31
+ 4. @说明:    运行终端命令
+*******************************************************************************/
 int MainWindow::executeCMD(const char *cmd)
 {
     char *result;
@@ -1296,18 +1234,20 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         //将事件转化为键盘事件
         QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
         //按下Tab键执行焦点切换事件，如果个别控件需要特殊处理TAB的话，在这里加代码
-//            if (key_event->key() == Qt::Key_Tab) {
-//                bool realm_edit_focus = false;  //= realm_line_edit->hasFocus();
-//                bool user_edit_focus = false;   // user_line_edit->hasFocus();
-//                focusNextChild();
-//                if (realm_edit_focus) {
-//                    // user_line_edit->setFocus();
-//                } else {
-//                    // password_line_edit->setFocus();
-//                }
+#if 0
+        if (key_event->key() == Qt::Key_Tab) {
+            bool realm_edit_focus = false;  //= realm_line_edit->hasFocus();
+            bool user_edit_focus = false;   // user_line_edit->hasFocus();
+            focusNextChild();
+            if (realm_edit_focus) {
+                // user_line_edit->setFocus();
+            } else {
+                // password_line_edit->setFocus();
+            }
 
-//                return true;
-//            }
+            return true;
+        }
+#endif
         // 全局按下ESC键返回终端，过滤掉个别情况
         if (key_event->key() == Qt::Key_Escape) {
             QString filterReason; // 过滤原因
@@ -1590,9 +1530,13 @@ QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 }
 
 
-/**
- * Upload file to remote server
- */
+
+/*******************************************************************************
+ 1. @函数:    remoteUploadFile
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-31
+ 4. @说明:    (远程）上传文件到服务器端
+*******************************************************************************/
 void MainWindow::remoteUploadFile()
 {
     QStringList fileName = Utils::showFilesSelectDialog(this);
@@ -1715,9 +1659,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 }
 
-/**
- * after sz command,wait input file and download file.
- */
+/*******************************************************************************
+ 1. @函数:    executeDownloadFile
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-07-31
+ 4. @说明:    sz命令之后，等待输入文件信息，并下载文件
+*******************************************************************************/
 void MainWindow::executeDownloadFile()
 {
     //--modified by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
@@ -1853,12 +1800,10 @@ void NormalWindow::initWindowAttribute()
         resize(halfScreenSize());
     } else {
         m_IfUseLastSize = true;
-        /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
         int saveWidth = m_winInfoConfig->value(CONFIG_WINDOW_WIDTH).toInt();
         int saveHeight = m_winInfoConfig->value(CONFIG_WINDOW_HEIGHT).toInt();
         qDebug() << "load window_width: " << saveWidth;
         qDebug() << "load window_height: " << saveHeight;
-        /******** Modify by nt001000 renfeixiang 2020-05-25:文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
         // 如果配置文件没有数据
         if (saveWidth == 0 || saveHeight == 0) {
             saveWidth = 1000;

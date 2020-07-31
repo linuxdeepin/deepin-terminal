@@ -1,14 +1,26 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:  <wangpeili@uniontech.com>
+ *
+ * Maintainer:<wangpeili@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef SERVICE_H
 #define SERVICE_H
-/*******************************************************************************
- 1. @类名:    Service
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-05-19
- 4. @说明:    全局的后台服务类．
-　　　　　　　　管理所有底层数据的加载
-　　　　　　　　管理所有特殊的通知信号
-　　　　　　　　管理所有程序入口
-*******************************************************************************/
+
 #include "termproperties.h"
 #include "windowsmanager.h"
 #include "shortcutmanager.h"
@@ -32,7 +44,15 @@ struct ShareMemoryInfo {
     int enableCreateTerminal = 0;
     int TerminalsCount = 0;
 };
-
+/*******************************************************************************
+ 1. @类名:    Service
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-05-19
+ 4. @说明:    全局的后台服务类．
+　　　　　　　　管理所有底层数据的加载
+　　　　　　　　管理所有特殊的通知信号
+　　　　　　　　管理所有程序入口
+*******************************************************************************/
 class Service : public QObject
 {
     Q_OBJECT

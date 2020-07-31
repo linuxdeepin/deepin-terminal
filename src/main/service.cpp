@@ -223,14 +223,14 @@ bool Service::isWindowEffectEnabled()
         QList<QVariant> list = response.arguments();
         QString wmName = list.first().toString();
         if (wmName == "deepin wm") {
-            qDebug() << "窗口特效已开启";
+            qDebug() << "The window effects is on";
             return true;
         }
     } else {
         qDebug() << "call CurrentWM Fail!" << response.errorMessage();
     }
 
-    qDebug() << "窗口特效已关闭";
+    qDebug() << "The window effects is off";
     return false;
 }
 
