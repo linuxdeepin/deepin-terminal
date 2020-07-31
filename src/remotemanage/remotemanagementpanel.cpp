@@ -170,12 +170,30 @@ void RemoteManagementPanel::initUI()
     m_pushButton->setFixedHeight(COMMONHEIGHT);
     m_pushButton->setText(tr("Add Server"));
 
+    QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->setContentsMargins(0, 0, 0, 0);
+    hlayout->addSpacing(SPACEWIDTH);
+    hlayout->addWidget(m_searchEdit);
+    hlayout->addSpacing(SPACEWIDTH);
+    hlayout->setSpacing(0);
+    hlayout->setMargin(0);
+
+    QHBoxLayout *btnLayout = new QHBoxLayout();
+    btnLayout->setContentsMargins(0, 0, 0, 0);
+    btnLayout->addSpacing(SPACEWIDTH);
+    btnLayout->addWidget(m_pushButton);
+    btnLayout->addSpacing(SPACEWIDTH);
+    btnLayout->setSpacing(0);
+    btnLayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->setContentsMargins(SPACEHEIGHT, SPACEWIDTH, SPACEHEIGHT, SPACEWIDTH);
-    vlayout->addWidget(m_searchEdit);
+    vlayout->setContentsMargins(0, 0, 0, 0);
+    vlayout->addSpacing(SPACEHEIGHT);
+    vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
-    vlayout->addWidget(m_pushButton);
+    vlayout->addLayout(btnLayout);
+    vlayout->addSpacing(SPACEHEIGHT);
+    vlayout->setMargin(0);
     vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 

@@ -468,7 +468,7 @@ void ListView::initUI()
     // 间隔
     setContentsMargins(0, 0, 0, 0);
     //布局
-    m_mainLayout->setContentsMargins(0, 0, 0, 0);
+    m_mainLayout->setContentsMargins(10, 0, 10, 0);
     m_mainLayout->setSpacing(10);
     m_mainLayout->addStretch();
     // 焦点策略

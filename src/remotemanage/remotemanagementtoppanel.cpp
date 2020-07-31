@@ -70,6 +70,7 @@ void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &str
     connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
     panelRightToLeft(animation, animation1);
     m_remoteManagementPanel->clearSearchInfo();
+    m_remoteManagementPanel->clearListFocus();
     m_serverConfigGroupPanel->clearSearchInfo();
     m_remoteManagementSearchPanel->onFocusInBackButton();
 }
@@ -192,17 +193,22 @@ void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
     panelLeftToRight(animation, animation1);
 }
 
-void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress)
+void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isFocusOn)
 {
     qDebug() << __FUNCTION__;
     m_serverConfigGroupPanel->resize(size());
     m_serverConfigGroupPanel->refreshData(strGroup);
     m_remoteManagementSearchPanel->clearFocus();
-    if (isKeyPress) {
+    if (isFocusOn) {
+        // 焦点在，则设置焦点
         m_serverConfigGroupPanel->onFocusInBackButton();
+    } else {
+        // 焦点不在，则把焦点设置到主屏幕上
+        Utils::getMainWindow(this)->focusCurrentPage();
     }
     animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
     m_remoteManagementSearchPanel->m_isShow = false;
+    m_remoteManagementSearchPanel->clearAllFocus();
     QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
     connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
     connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);

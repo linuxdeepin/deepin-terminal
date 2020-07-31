@@ -62,7 +62,7 @@ public slots:
     void showGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress);
     void showRemoteManagementPanelFromSearchPanel();
 
-    void slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress);
+    void slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isFocusOn);
 
 private:
     void animationPrepare(CommonPanel *hidePanel, CommonPanel *showPanel);
