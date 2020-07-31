@@ -24,13 +24,12 @@
 #include "settings.h"
 #include "service.h"
 #include "termwidget.h"
+#include "dbusmanager.h"
 
 #include <DLog>
 #include <QScrollBar>
 #include <QStandardItemModel>
 #include <QDebug>
-
-#include "dbusmanager.h"
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
@@ -112,8 +111,8 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
 void EncodeListView::focusOutEvent(QFocusEvent *event)
 {
     /** add by ut001121 zhangmeng 20200718 for sp3 keyboard interaction*/
-    // 重置焦点
-    m_foucusReason = Qt::NoFocusReason;
+    // mod by ut001121 zhangmeng 20200731 设置无效焦点原因 修复BUG40390
+    m_foucusReason = INVALID_FOCUS_REASON;
 
     /** del by ut001121 zhangmeng 20200723 for sp3 keyboard interaction*/
     //emit focusOut();
@@ -311,7 +310,8 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         // 绘画边框
         Qt::FocusReason focusReason = qobject_cast<EncodeListView *>(m_parentView)->getFocusReason();
-        if ((option.state & QStyle::State_Selected) && (focusReason == Qt::TabFocusReason || focusReason == Qt::BacktabFocusReason)) {
+        // mod by ut001121 zhangmeng 20200731 有效效焦点原因下绘制边框 修复BUG40390
+        if ((option.state & QStyle::State_Selected) && (focusReason != INVALID_FOCUS_REASON)) {
              QPen framePen;
              DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
              if (option.state & QStyle::State_Selected) {

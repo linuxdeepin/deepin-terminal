@@ -28,6 +28,9 @@
 
 DWIDGET_USE_NAMESPACE
 
+// add by ut001121 zhangmeng 20200731 定义无效焦点原因 修复BUG40390
+#define INVALID_FOCUS_REASON Qt::MouseFocusReason
+
 class EncodeListModel;
 class EncodeListView : public DListView
 {
@@ -67,7 +70,7 @@ private:
     const int m_ContentHeight = 50;
     const int m_ListLenth = 1500;
 
-    Qt::FocusReason m_foucusReason = Qt::NoFocusReason;
+    Qt::FocusReason m_foucusReason = INVALID_FOCUS_REASON;
     QModelIndex m_modelIndexChecked;
 
 };
