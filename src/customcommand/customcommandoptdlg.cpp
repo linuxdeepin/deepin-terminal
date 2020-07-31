@@ -59,76 +59,37 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
     }
 }
 
-void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName)
-{
-    if (m_type == CCT_ADD) {
-        return;
-    }
-    if (oldCmdName == "" && newCmdName == "") {
-        return;
-    }
-    if (m_currItemData->m_cmdName != oldCmdName) {
-        return;
-    }
-    m_bRefreshCheck = true;
-    qDebug() << "slotRefreshData---" <<  m_nameLineEdit->text();
-
-    QAction *currAction = new QAction(ShortcutManager::instance());
-    if (currAction == nullptr) {
-        qDebug() << "slotRefreshData---new QAction error!!!";
-        close();
-    }
-    currAction->setText(newCmdName);
-    QAction *existAction = nullptr;
-    existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
-    if (existAction == nullptr) {
-        delete currAction;
-        if (m_dlgDelete && m_dlgDelete->isVisible()) {
-            m_dlgDelete->close();
-            m_dlgDelete = nullptr;
-        }
-
-        close();
-    } else {
-        delete currAction;
-        m_nameLineEdit->setText(existAction->text());
-        m_commandLineEdit->setText(existAction->data().toString());
-        m_shortCutLineEdit->setKeySequence(existAction->shortcut());
-        m_currItemData->m_cmdName = newCmdName;
-    }
-
-}
-
-void CustomCommandOptDlg::closeRefreshDataConnection()
-{
-    disconnect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandOptDlg::slotRefreshData);
-}
-
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    初始化自定义命令操作窗口界面布局
+*******************************************************************************/
 void CustomCommandOptDlg::initUI()
 {
     QWidget *contentFrame = new QWidget;
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
-    contentLayout->setSpacing(10);
-    contentLayout->setContentsMargins(0, 0, 0, 0);
+    contentLayout->setSpacing(m_iSpaceSizeTen);
+    contentLayout->setContentsMargins(m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero);
 
     QWidget *nameFrame = new QWidget;
-    nameFrame->setFixedWidth(459);
+    nameFrame->setFixedWidth(m_iFixedWidth);
     QHBoxLayout *nameLayout = new QHBoxLayout;
-    nameLayout->setSpacing(0);
-    nameLayout->setContentsMargins(28, 0, 30, 0);
+    nameLayout->setSpacing(m_iSpaceSizeZero);
+    nameLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
     nameFrame->setLayout(nameLayout);
 
     QWidget *cmdFrame = new QWidget;
     QHBoxLayout *cmdLayout = new QHBoxLayout;
-    cmdLayout->setSpacing(0);
-    cmdLayout->setContentsMargins(28, 0, 30, 0);
+    cmdLayout->setSpacing(m_iSpaceSizeZero);
+    cmdLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
     cmdFrame->setLayout(cmdLayout);
 
     QWidget *scFrame = new QWidget;
     QHBoxLayout *scLayout = new QHBoxLayout;
-    scLayout->setSpacing(0);
-    scLayout->setContentsMargins(28, 0, 30, 0);
+    scLayout->setSpacing(m_iSpaceSizeZero);
+    scLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
     scFrame->setLayout(scLayout);
 
     DLabel *nameLabel = new DLabel(tr("Name:"));
@@ -137,12 +98,12 @@ void CustomCommandOptDlg::initUI()
 
     DLabel *shortCutLabel = new DLabel(tr("Shortcuts:"));
 
-    m_nameLineEdit->setFixedWidth(285);
-    m_commandLineEdit->setFixedWidth(285);
-    m_shortCutLineEdit->setFixedWidth(285);
+    m_nameLineEdit->setFixedWidth(m_iLineEditWidth);
+    m_commandLineEdit->setFixedWidth(m_iLineEditWidth);
+    m_shortCutLineEdit->setFixedWidth(m_iLineEditWidth);
     m_shortCutLineEdit->setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 
-    QTimer::singleShot(30, this, [&]() {
+    QTimer::singleShot(m_iSingleShotTime, this, [&]() {
         m_nameLineEdit->lineEdit()->selectAll();
     });
 
@@ -180,22 +141,23 @@ void CustomCommandOptDlg::initUI()
     });
 
     addContent(contentFrame);
-    if (m_type == CCT_ADD) {
-        setFixedSize(459, 262);
+    //判断是添加操作窗口还是修改操作窗口
+    if (CCT_ADD == m_type) {
+        setFixedSize(m_iFixedWidth, m_iFixedHeightAddSize);
         setTitle(tr("Add Command"));
         initCommandFromClipBoardText();
 
-        getMainLayout()->addSpacing(18);
+        getMainLayout()->addSpacing(m_iSpaceSizeEighteen);
     } else {
-        setFixedSize(459, 296);
+        setFixedSize(m_iFixedWidth, m_iFixedHeightEditSize);
         setTitle(tr("Edit Command"));
 
         QWidget *deleteCmdWidget = new QWidget;
-        deleteCmdWidget->setFixedHeight(54);
+        deleteCmdWidget->setFixedHeight(m_iFixedHeight);
 
         QHBoxLayout *deleteCmdLayout = new QHBoxLayout();
-        deleteCmdLayout->setSpacing(0);
-        deleteCmdLayout->setContentsMargins(0, 0, 0, 0);
+        deleteCmdLayout->setSpacing(m_iSpaceSizeZero);
+        deleteCmdLayout->setContentsMargins(m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero);
         TermCommandLinkButton *deleteCmdBtn = new TermCommandLinkButton();
         deleteCmdBtn->setFocusPolicy(Qt::TabFocus);
         deleteCmdBtn->setText(tr("Delete Command"));
@@ -224,7 +186,7 @@ void CustomCommandOptDlg::initUI()
 
     addCancelConfirmButtons();
     setCancelBtnText(tr("Cancel"));
-    if (m_type == CCT_ADD) {
+    if (CCT_ADD == m_type) {
         setConfirmBtnText(tr("Add"));
     } else {
         setConfirmBtnText(tr("Save"));
@@ -233,13 +195,13 @@ void CustomCommandOptDlg::initUI()
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
     connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, this, [ = ](const QKeySequence & sequence) {
         //删除
-        if (sequence.toString() == "Backspace") {
+        if ("Backspace" == sequence.toString()) {
             m_shortCutLineEdit->clear();
             m_lastCmdShortcut = "";
             return ;
         }
         // 取消
-        if (sequence.toString() == "Esc") {
+        if ("Esc" == sequence.toString()) {
             m_shortCutLineEdit->clear();
             m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
             /***add by ut001121 zhangmeng 20200521 在快捷键编辑框中按下ESC键时退出窗口 修复BUG27554***/
@@ -277,11 +239,107 @@ void CustomCommandOptDlg::initUI()
 #endif
 }
 
-// fix bug 18366 终端中选中内容，创建自定义命令，选中内容没有自动粘贴到命令输入框
+/*******************************************************************************
+ 1. @函数:    initUITitle
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    初始化操作界面的标题布局
+*******************************************************************************/
+void CustomCommandOptDlg::initUITitle()
+{
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(0, 0, 0, 10);
+
+    QHBoxLayout *titleLayout = new QHBoxLayout();
+    titleLayout->setSpacing(0);
+    titleLayout->setContentsMargins(0, 0, 0, 0);
+
+    m_titleBar = new QWidget(this);
+    m_titleBar->setFixedHeight(50);
+    m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_titleBar->setLayout(titleLayout);
+
+    m_logoIcon = new DLabel(this);
+    m_logoIcon->setFixedSize(QSize(50, 50));
+    m_logoIcon->setFocusPolicy(Qt::NoFocus);
+    m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+    m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setFocusPolicy(Qt::TabFocus);//m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setIconSize(QSize(50, 50));
+
+    m_titleText = new DLabel(this);
+    m_titleText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_titleText->setAlignment(Qt::AlignCenter);
+    DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5, QFont::DemiBold);
+    // 字色
+    DPalette palette = m_titleText->palette();
+//    palette.setColor(QPalette::WindowText, palette.color(DPalette::TextTitle));
+    QColor color;
+    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
+        color = QColor::fromRgb(192, 198, 212, 255);
+    } else {
+        color = QColor::fromRgb(0, 26, 46, 255);
+    }
+    palette.setBrush(QPalette::WindowText, color);
+    m_titleText->setPalette(palette);
+
+    titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    titleLayout->addWidget(m_titleText, 0, Qt::AlignHCenter);
+    titleLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignTop);
+
+    //Dialog content
+    m_contentLayout = new QVBoxLayout();
+    m_contentLayout->setSpacing(0);
+    m_contentLayout->setContentsMargins(0, 0, 0, 0);
+
+    m_content = new QWidget(this);
+    m_content->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_content->setLayout(m_contentLayout);
+
+    mainLayout->addWidget(m_titleBar, 0, Qt::AlignTop);
+    mainLayout->addWidget(m_content);
+    setLayout(mainLayout);
+
+    m_mainLayout = mainLayout;
+}
+
+/*******************************************************************************
+ 1. @函数:    initTitleConnections
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    字体颜色跟随主题变化响应槽初始化
+*******************************************************************************/
+void CustomCommandOptDlg::initTitleConnections()
+{
+    connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
+        this->close();
+    });
+    // 字体颜色随主题变化变化
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
+        DPalette palette = m_titleText->palette();
+        //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
+        QColor color;
+        if (DApplicationHelper::DarkType == themeType) {
+            color = QColor::fromRgb(192, 198, 212, 255);
+        } else {
+            color = QColor::fromRgb(0, 26, 46, 255);
+        }
+        palette.setBrush(QPalette::WindowText, color);
+        m_titleText->setPalette(palette);
+    });
+}
+
+/*******************************************************************************
+ 1. @函数:    initCommandFromClipBoardText
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    终端中选中内容，创建自定义命令，选中内容没有自动粘贴到命令输入框
+*******************************************************************************/
 void CustomCommandOptDlg::initCommandFromClipBoardText()
 {
     if (m_commandLineEdit) {
-        // QString clipText = ShortcutManager::instance()->getClipboardCommandData();
         MainWindow *main = Utils::getMainWindow(this);//;getMainWindow();
         if (main != nullptr) {
             QString clipText = main->selectedText(true);
@@ -290,16 +348,34 @@ void CustomCommandOptDlg::initCommandFromClipBoardText()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getCurCustomCmd
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    获取当前快捷键
+*******************************************************************************/
 QAction *CustomCommandOptDlg::getCurCustomCmd()
 {
     return m_newAction;
 }
 
+/*******************************************************************************
+ 1. @函数:    isDelCurCommand
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    判断是否是删除操作
+*******************************************************************************/
 bool CustomCommandOptDlg::isDelCurCommand()
 {
     return m_bDelOpt;
 }
 
+/*******************************************************************************
+ 1. @函数:    slotAddSaveButtonClicked
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    自定义命令操作确认按钮响应槽
+*******************************************************************************/
 void CustomCommandOptDlg::slotAddSaveButtonClicked()
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
@@ -333,11 +409,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
     QAction *existAction = nullptr;
     int icount = 0;
-    if (m_type == CCT_MODIFY) {
-
-        //if (m_bRefreshCheck   && (!checkSequence(m_shortCutLineEdit->keySequence()))) {
-        //    return;
-        //}
+    if (CCT_MODIFY == m_type) {
 
         if (m_bRefreshCheck) {
             QAction *refreshExitAction = nullptr;
@@ -379,16 +451,22 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 }
 
+/*******************************************************************************
+ 1. @函数:    checkSequence
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    快捷键冲突判断
+*******************************************************************************/
 bool CustomCommandOptDlg::checkSequence(const QKeySequence &sequence)
 {
     QString checkName = m_nameLineEdit->text();
 
-    if (sequence.toString() == "") {
+    if ("" == sequence.toString()) {
         return true;
     }
 
     QString reason;
-// 判断快捷键是否冲突
+    // 判断快捷键是否冲突
     if (!ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
         // 冲突
         if (sequence.toString() != "Esc") {
@@ -406,77 +484,35 @@ bool CustomCommandOptDlg::checkSequence(const QKeySequence &sequence)
     return true;
 }
 
+/*******************************************************************************
+ 1. @函数:    setModelIndex
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置模型索引
+*******************************************************************************/
 void CustomCommandOptDlg::setModelIndex(QModelIndex mi)
 {
     modelIndex = mi;
 }
 
+/*******************************************************************************
+ 1. @函数:    slotDelCurCustomCommand
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    删除按钮触发响应槽
+*******************************************************************************/
 void CustomCommandOptDlg::slotDelCurCustomCommand()
 {
     m_bDelOpt = true;
     reject();
 }
 
-void CustomCommandOptDlg::initUITitle()
-{
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(0, 0, 0, 10);
-
-    QHBoxLayout *titleLayout = new QHBoxLayout();
-    titleLayout->setSpacing(0);
-    titleLayout->setContentsMargins(0, 0, 0, 0);
-
-    m_titleBar = new QWidget(this);
-    m_titleBar->setFixedHeight(50);
-    m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_titleBar->setLayout(titleLayout);
-
-    m_logoIcon = new DLabel(this);
-    m_logoIcon->setFixedSize(QSize(50, 50));
-    m_logoIcon->setFocusPolicy(Qt::NoFocus);
-    m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
-
-    m_closeButton = new DWindowCloseButton(this);
-    m_closeButton->setFocusPolicy(Qt::TabFocus);//m_closeButton->setFocusPolicy(Qt::NoFocus);
-    m_closeButton->setIconSize(QSize(50, 50));
-
-    m_titleText = new DLabel(this);
-    m_titleText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    m_titleText->setAlignment(Qt::AlignCenter);
-    DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5, QFont::DemiBold);
-    // 字色
-    DPalette palette = m_titleText->palette();
-//    palette.setColor(QPalette::WindowText, palette.color(DPalette::TextTitle));
-    QColor color;
-    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
-        color = QColor::fromRgb(192, 198, 212, 255);
-    } else {
-        color = QColor::fromRgb(0, 26, 46, 255);
-    }
-    palette.setBrush(QPalette::WindowText, color);
-    m_titleText->setPalette(palette);
-
-    titleLayout->addWidget(m_logoIcon, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    titleLayout->addWidget(m_titleText, 0, Qt::AlignHCenter);
-    titleLayout->addWidget(m_closeButton, 0, Qt::AlignRight | Qt::AlignTop);
-
-    //Dialog content
-    m_contentLayout = new QVBoxLayout();
-    m_contentLayout->setSpacing(0);
-    m_contentLayout->setContentsMargins(0, 0, 0, 0);
-
-    m_content = new QWidget(this);
-    m_content->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    m_content->setLayout(m_contentLayout);
-
-    mainLayout->addWidget(m_titleBar, 0, Qt::AlignTop);
-    mainLayout->addWidget(m_content);
-    setLayout(mainLayout);
-
-    m_mainLayout = mainLayout;
-}
-
+/*******************************************************************************
+ 1. @函数:    addCancelConfirmButtons
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    操作界面增加取消和确认按钮布局
+*******************************************************************************/
 void CustomCommandOptDlg::addCancelConfirmButtons()
 {
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
@@ -543,36 +579,34 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
     m_mainLayout->addLayout(buttonsLayout);
 }
 
+/*******************************************************************************
+ 1. @函数:    getMainLayout
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    获取主布局
+*******************************************************************************/
 QVBoxLayout *CustomCommandOptDlg::getMainLayout()
 {
     return m_mainLayout;
 }
 
-void CustomCommandOptDlg::initTitleConnections()
-{
-    connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
-        this->close();
-    });
-    // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
-        DPalette palette = m_titleText->palette();
-        //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
-        QColor color;
-        if (themeType == DApplicationHelper::DarkType) {
-            color = QColor::fromRgb(192, 198, 212, 255);
-        } else {
-            color = QColor::fromRgb(0, 26, 46, 255);
-        }
-        palette.setBrush(QPalette::WindowText, color);
-        m_titleText->setPalette(palette);
-    });
-}
-
+/*******************************************************************************
+ 1. @函数:    getConfirmResult
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    获取返回结果
+*******************************************************************************/
 QDialog::DialogCode CustomCommandOptDlg::getConfirmResult()
 {
     return m_confirmResultCode;
 }
 
+/*******************************************************************************
+ 1. @函数:    setLogoVisable
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置自定义命令操作窗口的图标是否可见
+*******************************************************************************/
 void CustomCommandOptDlg::setLogoVisable(bool visible)
 {
     if (nullptr != m_logoIcon) {
@@ -580,6 +614,12 @@ void CustomCommandOptDlg::setLogoVisable(bool visible)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setTitle
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置自定义命令操作窗口的标题
+*******************************************************************************/
 void CustomCommandOptDlg::setTitle(const QString &title)
 {
     if (nullptr != m_titleText) {
@@ -587,17 +627,35 @@ void CustomCommandOptDlg::setTitle(const QString &title)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getContentLayout
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    获取自定义命令操作窗口的内容布局
+*******************************************************************************/
 QLayout *CustomCommandOptDlg::getContentLayout()
 {
     return m_contentLayout;
 }
 
+/*******************************************************************************
+ 1. @函数:    setCancelBtnText
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置取消按钮的内容文本
+*******************************************************************************/
 void CustomCommandOptDlg::setCancelBtnText(const QString &strCancel)
 {
     m_cancelBtn->setText(strCancel);
     Utils::setSpaceInWord(m_cancelBtn);
 }
 
+/*******************************************************************************
+ 1. @函数:    setConfirmBtnText
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置确认按钮的内容文本
+*******************************************************************************/
 void CustomCommandOptDlg::setConfirmBtnText(const QString &strConfirm)
 {
     m_confirmBtn->setText(strConfirm);
@@ -642,6 +700,12 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
     m_shortcutConflictDialog->show();
 }
 
+/*******************************************************************************
+ 1. @函数:    addContent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    增加内容布局
+*******************************************************************************/
 void CustomCommandOptDlg::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
@@ -649,6 +713,12 @@ void CustomCommandOptDlg::addContent(QWidget *content)
     getContentLayout()->addWidget(content);
 }
 
+/*******************************************************************************
+ 1. @函数:    setIconPixmap
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置标题图标
+*******************************************************************************/
 void CustomCommandOptDlg::setIconPixmap(const QPixmap &iconPixmap)
 {
     if (nullptr != m_logoIcon) {
@@ -657,6 +727,12 @@ void CustomCommandOptDlg::setIconPixmap(const QPixmap &iconPixmap)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    closeEvent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    自定义命令操作触感口关闭事件
+*******************************************************************************/
 void CustomCommandOptDlg::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event)
@@ -664,4 +740,66 @@ void CustomCommandOptDlg::closeEvent(QCloseEvent *event)
     done(-1);
 
     Q_EMIT closed();
+}
+
+/*******************************************************************************
+ 1. @函数:    slotRefreshData
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    刷新数据槽
+*******************************************************************************/
+void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName)
+{
+    if (CCT_ADD == m_type) {
+        return;
+    }
+    //不进行刷新操作
+    if ("" == oldCmdName && "" == newCmdName) {
+        return;
+    }
+    //当前的自定义命令的名称 不是被修改的自定义名称时，不进行刷新操作
+    if (m_currItemData->m_cmdName != oldCmdName) {
+        return;
+    }
+    m_bRefreshCheck = true;
+    qDebug() << "slotRefreshData---" <<  m_nameLineEdit->text();
+
+    QAction *currAction = new QAction(ShortcutManager::instance());
+    if (nullptr == currAction) {
+        qDebug() << "slotRefreshData---new QAction error!!!";
+        close();
+    }
+    currAction->setText(newCmdName);
+    QAction *existAction = nullptr;
+    existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);
+    //根据 newCmdName 查找自定义命令
+    if (nullptr == existAction) {
+        //不存在，则认为当前自定义命令在其他编辑窗口中删除了，如果打开了删除确认界面，则关闭删除确认界面。关闭当前编辑窗口
+        delete currAction;
+        if (m_dlgDelete && m_dlgDelete->isVisible()) {
+            m_dlgDelete->close();
+            m_dlgDelete = nullptr;
+        }
+
+        close();
+    } else {
+        //当前自定义命令在其他窗口修改，则更新数据
+        delete currAction;
+        m_nameLineEdit->setText(existAction->text());
+        m_commandLineEdit->setText(existAction->data().toString());
+        m_shortCutLineEdit->setKeySequence(existAction->shortcut());
+        m_currItemData->m_cmdName = newCmdName;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    closeRefreshDataConnection
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    关闭信号槽关联
+*******************************************************************************/
+void CustomCommandOptDlg::closeRefreshDataConnection()
+{
+    disconnect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandOptDlg::slotRefreshData);
 }

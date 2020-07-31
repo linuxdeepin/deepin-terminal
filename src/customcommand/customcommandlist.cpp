@@ -9,7 +9,6 @@
 
 #include <DMessageBox>
 #include <DLog>
-
 #include <QAction>
 #include<DScrollBar>
 #include<DApplicationHelper>
@@ -33,6 +32,12 @@ CustomCommandList::~CustomCommandList()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    initData
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    初始化
+*******************************************************************************/
 void CustomCommandList::initData()
 {
     m_cmdListModel = new QStandardItemModel(this);
@@ -48,6 +53,12 @@ void CustomCommandList::initData()
     connect(this, SIGNAL(resetTabModifyControlPositionSignal(unsigned int, TabModifyType)), this, SLOT(resetTabModifyControlPositionSlot(unsigned int, TabModifyType)));
 }
 
+/*******************************************************************************
+ 1. @函数:    initData
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    刷新数据
+*******************************************************************************/
 void CustomCommandList::refreshCommandListData(const QString &strFilter)
 {
     m_cmdListModel->clear();
@@ -55,7 +66,7 @@ void CustomCommandList::refreshCommandListData(const QString &strFilter)
 
     QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
     qDebug() << __FUNCTION__ << strFilter  << " : " << customCommandActionList.size();
-
+    //根据条件进行刷新，strFilter 为空时 全部刷新，根据名称或者命令模糊匹配到strFilter的条件进行刷新
     if (strFilter.isEmpty()) {
         for (int i = 0; i < customCommandActionList.size(); i++) {
             QAction *curAction = customCommandActionList[i];
@@ -94,6 +105,12 @@ void CustomCommandList::refreshCommandListData(const QString &strFilter)
     m_cmdProxyModel->initCommandListData(m_cmdItemDataList);
 }
 
+/*******************************************************************************
+ 1. @函数:    addNewCustomCommandData
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    列表中新增一条自定义命令项
+*******************************************************************************/
 void CustomCommandList::addNewCustomCommandData(QAction *actionData)
 {
     if (actionData == nullptr) {
@@ -114,6 +131,12 @@ void CustomCommandList::addNewCustomCommandData(QAction *actionData)
     m_cmdProxyModel->addNewCommandData(itemData);
 }
 
+/*******************************************************************************
+ 1. @函数:    handleModifyCustomCommand
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    修改自定义命令响应槽函数
+*******************************************************************************/
 void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemData, QModelIndex modelIndex)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
@@ -123,7 +146,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
     }
 
     // 弹窗显示
-    //Service::instance()->setIsDialogShow(window(), true);
+    //Service::instance()->setIsDialogShow(window(), true); //暂时保留
     if (!m_bTabModify) {
         Service::instance()->setIsDialogShow(window(), true);
     }
@@ -143,7 +166,8 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
             Service::instance()->setIsDialogShow(window(), false);
         }
 
-        if (result == QDialog::Accepted) {
+        if (QDialog::Accepted == result) {
+            //确认修改处理
             qDebug() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
             QAction *newAction = m_pdlg->getCurCustomCmd();
             CustomCommandItemData itemData = *(m_pdlg->m_currItemData);
@@ -155,8 +179,6 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
             newAction->setData(newAction->data());
             newAction->setShortcut(newAction->shortcut());
             ShortcutManager::instance()->delCustomCommand(itemDel);
-            //ShortcutManager::instance()->delCustomCommandForModify(itemDel);
-            //ShortcutManager::instance()->delCustomCommandForModify(itemData);
             addNewCustomCommandData(newAction);
             ShortcutManager::instance()->addCustomCommand(*newAction);
             removeCommandItem(m_pdlg->modelIndex);
@@ -165,9 +187,9 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
             m_pdlg->closeRefreshDataConnection();
             emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
 
-        } else if (result == QDialog::Rejected) {
+        } else if (QDialog::Rejected == result) {
 
-            //Delete custom command
+            //Delete custom command 删除自定义命令处理
             if (m_pdlg->isDelCurCommand()) {
                 qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
                 DDialog *dlgDelete = new DDialog(this);
@@ -180,7 +202,8 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                 dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
                 dlgDelete->addButton(QObject::tr("Confirm"), true, DDialog::ButtonWarning);
                 connect(dlgDelete, &DDialog::finished, this, [ & ](int result) {
-                    if (result == QDialog::Accepted) {
+                    //是否删除自定义命令再次确认操作
+                    if (QDialog::Accepted == result) {
                         CustomCommandItemData itemData = *(m_pdlg->m_currItemData);
                         ShortcutManager::instance()->delCustomCommand(*(m_pdlg->m_currItemData));
                         removeCommandItem(m_pdlg->modelIndex);
@@ -190,7 +213,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
                         emit Service::instance()->refreshCommandPanel(m_pdlg->m_currItemData->m_cmdName, m_pdlg->m_currItemData->m_cmdName);//emit Service::instance()->refreshCommandPanel("", "");
                     }
 
-                    if (result == QDialog::Accepted) {
+                    if (QDialog::Accepted == result) {
                         emit this->resetTabModifyControlPositionSignal(m_pdlg->m_iTabModifyTime, TMT_DEL);
                     } else {
                         emit this->resetTabModifyControlPositionSignal(m_pdlg->m_iTabModifyTime, TMT_NOTMOD);
@@ -202,10 +225,11 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
         qDebug() << "================================tempResult=" << tempResult;
         if (!m_pdlg->isDelCurCommand()) {
 
-            if (tempResult == QDialog::Accepted) {
-                //修改
+            if (QDialog::Accepted == tempResult) {
+                //修改操作，仅键盘操作时有效
                 emit this->resetTabModifyControlPositionSignal(this->m_iTabModifyTime, TMT_MOD);
             } else {
+                //未修改操作，仅键盘操作时有效
                 emit this->resetTabModifyControlPositionSignal(this->m_iTabModifyTime, TMT_NOTMOD);
             }
         }
@@ -214,6 +238,7 @@ void CustomCommandList::handleModifyCustomCommand(CustomCommandItemData &itemDat
     m_pdlg->show();
 }
 
+// 仅仅刷新自定义列表数据
 void CustomCommandList::removeCommandItem(QModelIndex modelIndex)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
@@ -222,10 +247,16 @@ void CustomCommandList::removeCommandItem(QModelIndex modelIndex)
         return;
     }
 
-//    m_cmdProxyModel->removeRow(modelIndex.row(), modelIndex.parent());
+    //    m_cmdProxyModel->removeRow(modelIndex.row(), modelIndex.parent()); //暂时保留
     refreshCommandListData("");
 }
 
+/*******************************************************************************
+ 1. @函数:    getItemRow
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    获取自定义列表数据的行id
+*******************************************************************************/
 int CustomCommandList::getItemRow(CustomCommandItemData itemData)
 {
     for (int i = 0; i < count(); i++) {
@@ -239,22 +270,38 @@ int CustomCommandList::getItemRow(CustomCommandItemData itemData)
     return -1;
 }
 
+/*******************************************************************************
+ 1. @函数:    getModifyIconRect
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    获取自定义列表项的编辑笔的区域
+*******************************************************************************/
 QRect getModifyIconRect(QRect visualRect)
 {
     int modifyIconSize = 30;
     return QRect(visualRect.right() - modifyIconSize - 10, visualRect.top() + (visualRect.height() - modifyIconSize) / 2, modifyIconSize, modifyIconSize);
 }
 
+/*******************************************************************************
+ 1. @函数:    mouseMoveEvent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    鼠标移动事件响应函数
+*******************************************************************************/
 void CustomCommandList::mouseMoveEvent(QMouseEvent *event)
 {
     DListView::mouseMoveEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    mousePressEvent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    鼠标按下事件响应函数
+*******************************************************************************/
 void CustomCommandList::mousePressEvent(QMouseEvent *event)
 {
-    //m_cmdDelegate->m_bMouseOpt = true;
-    m_cmdDelegate->m_bMouseOpt = false;
-    m_cmdDelegate->m_iMouseOptRow = -1;
+    m_cmdDelegate->m_bMouseOpt = false;//除了点击修改按钮和点击执行自定义命令，其他的都认为是无效的鼠标操作
     if (event->button() == Qt::LeftButton) {
         m_bLeftMouse = true;
     } else {
@@ -265,7 +312,6 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     DListView::mousePressEvent(event);
 
     if (false == m_bLeftMouse) {
-        //m_cmdDelegate->m_bMouseOpt = false;//m_cmdDelegate->m_bMouseOpt = true;
         return;
     }
 
@@ -288,13 +334,10 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
 
     m_bTabModify = false;
     m_cmdDelegate->m_bMouseOpt = true;
-    //m_cmdDelegate->m_iMouseOptRow = -1;
 
-    CustomCommandItemData itemData =
-        qvariant_cast<CustomCommandItemData>(m_cmdProxyModel->data(modelIndex));
+    CustomCommandItemData itemData = qvariant_cast<CustomCommandItemData>(m_cmdProxyModel->data(modelIndex));
 
-    m_cmdDelegate->m_iMouseOptRow = modelIndex.row();
-
+    //鼠标点击自定义命令列表项，是进行修改操作还是执行自定义命令操作
     if (getModifyIconRect(rect).contains(clickPoint)) {
         handleModifyCustomCommand(itemData, modelIndex);
 
@@ -303,11 +346,23 @@ void CustomCommandList::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    mouseReleaseEvent
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    鼠标按键弹起响应处理
+*******************************************************************************/
 void CustomCommandList::mouseReleaseEvent(QMouseEvent *event)
 {
     DListView::mouseReleaseEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    setSelection
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    列表项数据选中设置
+*******************************************************************************/
 void CustomCommandList::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 {
     DListView::setSelection(rect, command);
@@ -323,15 +378,8 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
 {
     qDebug() << "count=" << this->count() << ",currentIndex()=" << currentIndex().row() << ",m_currentTabRow=" << m_currentTabRow << ",event->reason():" << event->reason(); //-1
 
-    //当不是tab键盘按下，比如方向键按下进来的，不处理 // 其实焦点已经过来了在index为-1处而已，需要其他操作 //tab键盘和 shift+tab键盘操作 好像天然 就是和方向键盘左右是通用的，在同级别的没有子控件的情况
-//    if (Qt::TabFocusReason != event->reason()) {
-
-//        return;
-//    }
-
-
-    //if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason || event->reason() == Qt::ActiveWindowFocusReason) {
-    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason || event->reason() == Qt::OtherFocusReason) {
+    if (event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason
+            || event->reason() == Qt::OtherFocusReason) {
         m_cmdDelegate->m_bModifyCheck = false;
         m_cmdDelegate->m_bMouseOpt = false;
 
@@ -340,12 +388,14 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
     if (m_cmdItemDataList.size()) {
         QModelIndex qindex;
         if (event->reason() == Qt::ActiveWindowFocusReason || event->reason() == Qt::OtherFocusReason) {
+            //自定义命令列表，非tab键盘操作获得焦点
             if (m_currentTabRow >= this->count()) {
                 m_currentTabRow = this->count() - 1;
             }
             qindex = m_cmdProxyModel->index(m_currentTabRow, 0);
             qDebug() << "------------m_currentTabRow=" << m_currentTabRow;
         } else {
+            //自定义命令列表，tab键盘操作获得焦点
             qindex = m_cmdProxyModel->index(0, 0);
         }
         setCurrentIndex(qindex);
@@ -354,10 +404,6 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
     } else {
         //focusNextPrevChild(!m_bSearchRstPanelList);//在列表数据被清空时，插件栏的选中框选中的位置，显示界面是，“添加”按钮，查找界面是“返回”按钮
         if (m_bSearchRstPanelList) {
-
-//            // tab 进入 +
-//            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-//            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
             if (m_bforSearchPanel) {
                 // 焦点落到 返回按钮
                 QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
@@ -369,17 +415,14 @@ void CustomCommandList::focusInEvent(QFocusEvent *event)
                 QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
             }
 
-
-
         } else {
-            focusNextPrevChild(!m_bSearchRstPanelList);
+            focusNextPrevChild(!m_bSearchRstPanelList);//自定义命令显示面板中的增加自定义命令按钮获取焦点
         }
     }
 
     if (m_bTabModify) {
         m_bTabModify = false;
     }
-
 }
 
 /*******************************************************************************
@@ -396,13 +439,7 @@ void CustomCommandList::focusOutEvent(QFocusEvent *event)
     if (m_cmdItemDataList.size()) {
         QModelIndex qindex = m_cmdProxyModel->index(-1, 0);
         setCurrentIndex(qindex);
-
     }
-//    if (m_bTabModify) {
-//        setFocus();
-
-//    }
-
 }
 
 /*******************************************************************************
@@ -481,6 +518,7 @@ void CustomCommandList::resetTabModifyControlPositionSlot(unsigned int iTabModif
         return;
     }
 
+    //未进行修改操作处理
     if (tabModifyType == TMT_NOTMOD && m_iTabModifyTime) {
         m_iTabModifyTime = 0;
 
@@ -493,7 +531,7 @@ void CustomCommandList::resetTabModifyControlPositionSlot(unsigned int iTabModif
             });
         }
     }
-
+    //进行修改操作处理
     if (tabModifyType == TMT_MOD && m_iTabModifyTime) {
         m_iTabModifyTime = 0;
         if (this->count()) {
@@ -506,7 +544,7 @@ void CustomCommandList::resetTabModifyControlPositionSlot(unsigned int iTabModif
             });
         }
     }
-
+    //进行删除操作处理
     if (tabModifyType == TMT_DEL && m_iTabModifyTime) {
         m_iTabModifyTime = 0;
         if (this->count()) {

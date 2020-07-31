@@ -49,26 +49,26 @@ void CustomCommandTopPanel::showCustomCommandPanel()
 
     tabControlFocus();
 
-    QPropertyAnimation *animation = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
-    animation->setDuration(iAnimationDuration);
-    animation->setEasingCurve(QEasingCurve::OutQuad);
+    QPropertyAnimation *animationCommandSearchPanel = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
+    animationCommandSearchPanel->setDuration(iAnimationDuration);
+    animationCommandSearchPanel->setEasingCurve(QEasingCurve::OutQuad);
 
     QRect rect = geometry();
-    animation->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
-    animation->setEndValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
-    connect(animation, &QPropertyAnimation::finished, m_customCommandSearchPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+    animationCommandSearchPanel->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
+    animationCommandSearchPanel->setEndValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
+    connect(animationCommandSearchPanel, &QPropertyAnimation::finished, m_customCommandSearchPanel, &QWidget::hide);
+    connect(animationCommandSearchPanel, &QPropertyAnimation::finished, animationCommandSearchPanel, &QPropertyAnimation::deleteLater);
 
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_customCommandPanel, "geometry");
-    animation1->setDuration(iAnimationDuration);
-    animation1->setEasingCurve(QEasingCurve::OutQuad);
-    animation1->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
-    animation1->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+    QPropertyAnimation *animationCommandPanel = new QPropertyAnimation(m_customCommandPanel, "geometry");
+    animationCommandPanel->setDuration(iAnimationDuration);
+    animationCommandPanel->setEasingCurve(QEasingCurve::OutQuad);
+    animationCommandPanel->setStartValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
+    animationCommandPanel->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
+    connect(animationCommandPanel, &QPropertyAnimation::finished, animationCommandPanel, &QPropertyAnimation::deleteLater);
 
     QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
-    group->addAnimation(animation);
-    group->addAnimation(animation1);
+    group->addAnimation(animationCommandSearchPanel);
+    group->addAnimation(animationCommandPanel);
     // 已验证：这个设定，会释放group以及所有组内动画。
     group->start(QAbstractAnimation::DeleteWhenStopped);
 }
@@ -80,26 +80,26 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
     m_customCommandSearchPanel->show();
     m_customCommandSearchPanel->m_backButton->setFocus();//m_customCommandSearchPanel->setFocus();
 
-    QPropertyAnimation *animation = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
-    animation->setDuration(iAnimationDuration);
-    animation->setEasingCurve(QEasingCurve::OutQuad);
+    QPropertyAnimation *animationCommandSearchPanel = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
+    animationCommandSearchPanel->setDuration(iAnimationDuration);
+    animationCommandSearchPanel->setEasingCurve(QEasingCurve::OutQuad);
 
     QRect rect = geometry();
-    animation->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
-    animation->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+    animationCommandSearchPanel->setStartValue(QRect(rect.width(), rect.y(), rect.width(), rect.height()));
+    animationCommandSearchPanel->setEndValue(QRect(0, rect.y(), rect.width(), rect.height()));
+    connect(animationCommandSearchPanel, &QPropertyAnimation::finished, animationCommandSearchPanel, &QPropertyAnimation::deleteLater);
 
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_customCommandPanel, "geometry");
-    animation1->setDuration(iAnimationDuration);
-    animation->setEasingCurve(QEasingCurve::OutQuad);
-    animation1->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
-    animation1->setEndValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
-    connect(animation1, &QPropertyAnimation::finished, m_customCommandPanel, &QWidget::hide);
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+    QPropertyAnimation *animationCommandPanel = new QPropertyAnimation(m_customCommandPanel, "geometry");
+    animationCommandPanel->setDuration(iAnimationDuration);
+    animationCommandSearchPanel->setEasingCurve(QEasingCurve::OutQuad);
+    animationCommandPanel->setStartValue(QRect(0, rect.y(), rect.width(), rect.height()));
+    animationCommandPanel->setEndValue(QRect(-rect.width(), rect.y(), rect.width(), rect.height()));
+    connect(animationCommandPanel, &QPropertyAnimation::finished, m_customCommandPanel, &QWidget::hide);
+    connect(animationCommandPanel, &QPropertyAnimation::finished, animationCommandPanel, &QPropertyAnimation::deleteLater);
 
     QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
-    group->addAnimation(animation1);
-    group->addAnimation(animation);
+    group->addAnimation(animationCommandPanel);
+    group->addAnimation(animationCommandSearchPanel);
     // 已验证：这个设定，会释放group以及所有组内动画。
     group->start(QAbstractAnimation::DeleteWhenStopped);
 }

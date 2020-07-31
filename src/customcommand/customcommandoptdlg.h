@@ -1,3 +1,31 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     sunchengxi <sunchengxi@uniontech.com>
+ *
+ * Maintainer: sunchengxi <sunchengxi@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*******************************************************************************
+ 1. @类名:    CustomCommandOptDlg
+ 2. @作者:    ut000125 孙成熙
+ 3. @日期:    2020-07-31
+ 4. @说明:    自定义命令操作窗口，进行删除和修改操作
+*******************************************************************************/
+
 #ifndef CUSTOMCOMMANDOPTDLG_H
 #define CUSTOMCOMMANDOPTDLG_H
 
@@ -31,7 +59,7 @@ public:
     explicit CustomCommandOptDlg(CustomCmdOptType type = CCT_ADD,
                                  CustomCommandItemData *currItemData = nullptr,
                                  QWidget *parent = nullptr);
-    ~CustomCommandOptDlg();
+    ~CustomCommandOptDlg()override;
 
     void addContent(QWidget *content);
     void addCancelConfirmButtons();
@@ -50,10 +78,10 @@ public:
 
     QAction *getCurCustomCmd();
     bool isDelCurCommand();
-    CustomCommandItemData *m_currItemData = nullptr;
-    QModelIndex modelIndex;
-    DDialog *m_dlgDelete = nullptr;
-    unsigned int  m_iTabModifyTime = 0;
+    CustomCommandItemData *m_currItemData = nullptr;    //当前自定义列表项数据指针
+    QModelIndex modelIndex;                             //模型索引
+    DDialog *m_dlgDelete = nullptr;                     //删除确认窗口指针
+    unsigned int  m_iTabModifyTime = 0;                 //键盘操作进行修改的时间戳
 
 protected:
     void initUITitle();
@@ -101,6 +129,26 @@ private:
     // 快捷键冲突弹窗
     DDialog *m_shortcutConflictDialog = nullptr;
     bool m_bRefreshCheck = false;
+
+
+    //数字常量
+    const int m_iLayoutSizeZero = 0;
+    const int m_iLayoutLeftSize = 28;
+    const int m_iLayoutRightSize = 30;
+
+    const int m_iFixedWidth = 459;
+    const int m_iFixedHeight = 54;
+
+    const int m_iFixedHeightAddSize = 262;
+    const int m_iFixedHeightEditSize = 296;
+
+    const int m_iLineEditWidth = 285;
+
+    const int m_iSpaceSizeZero = 0;
+    const int m_iSpaceSizeTen = 10;
+    const int m_iSpaceSizeEighteen = 18;
+
+    const int m_iSingleShotTime = 30;
 
 };
 

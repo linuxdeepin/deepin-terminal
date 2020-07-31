@@ -22,6 +22,7 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
                                   const QModelIndex &index) const
 {
     if (index.isValid()) {
+        //对有效的索引进行重绘处理
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -57,12 +58,14 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         path.lineTo(bgRect.left() + arcRadius, bgRect.top());
 
         if (option.state & QStyle::State_MouseOver) {
+            //鼠标悬浮在item上的状态，填充绘制背景
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), DPalette::ToolTipText);
             fillColor.setAlphaF(0.1);//fillColor.setAlphaF(0.3);
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
         } else {
+            //鼠标未悬浮在item上的状态，填充绘制背景
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
@@ -72,7 +75,8 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         int cmdIconSize = 44;
         int editIconSize = 20;
-        QRect modifyRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2, editIconSize, editIconSize);
+        QRect modifyRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
+                                 editIconSize, editIconSize);
 
         QRect cmdIconRect = QRect(bgRect.left() + 6, bgRect.top() + (bgRect.height() - cmdIconSize) / 2, cmdIconSize, cmdIconSize);
         painter->drawPixmap(cmdIconRect, QIcon::fromTheme("dt_command").pixmap(QSize(cmdIconSize, cmdIconSize)));
@@ -110,14 +114,14 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         DPalette palette = DApplicationHelper::instance()->palette(m_parentView);
         painter->setPen(QPen(styleHelper.getColor(static_cast<const QStyleOption *>(&option), palette, DPalette::TextTips)));
 
-        QRect cmdShortcutRect = QRect(leftOffset, cmdNameRect.top() + cmdNameFontSize + lineSpace, bgRect.width() - cmdIconSize - editIconSize, 35);
+        QRect cmdShortcutRect = QRect(leftOffset, cmdNameRect.top() + cmdNameFontSize + lineSpace,
+                                      bgRect.width() - cmdIconSize - editIconSize, 35);
         painter->drawText(cmdShortcutRect, Qt::AlignLeft | Qt::AlignTop, strCmdShortcut);
 
         //tab键选择，绘制列表项外框
         if ((!m_bMouseOpt) && (option.state & QStyle::State_Selected)) {
             if (m_bModifyCheck) {
                 //绘制编辑笔的选中框
-
                 QRect rect = modifyRect;
                 QPen framePen;
                 DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
@@ -139,7 +143,8 @@ void CustomCommandDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
             }
 
             //绘制编辑笔
-            QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2, editIconSize, editIconSize);
+            QRect editIconRect = QRect(bgRect.right() - editIconSize - 6, bgRect.top() + (bgRect.height() - editIconSize) / 2,
+                                       editIconSize, editIconSize);
             painter->drawPixmap(editIconRect, QIcon::fromTheme("dt_edit").pixmap(QSize(editIconSize, editIconSize)));
         }
 

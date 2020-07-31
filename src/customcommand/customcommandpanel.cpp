@@ -28,8 +28,9 @@ CustomCommandPanel::~CustomCommandPanel()
 void CustomCommandPanel::showCurSearchResult()
 {
     QString strTxt = m_searchEdit->text();
-    if (strTxt.isEmpty())
+    if (strTxt.isEmpty()) {
         return;
+    }
     emit showSearchResult(strTxt);
 }
 
@@ -133,8 +134,10 @@ void CustomCommandPanel::initUI()
     setAutoFillBackground(true);
 
     m_pushButton = new DPushButton();
+
     m_cmdListWidget = new CustomCommandList();
     m_cmdListWidget->m_bSearchRstPanelList = false;
+
     m_searchEdit = new DSearchEdit();
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
@@ -154,25 +157,24 @@ void CustomCommandPanel::initUI()
     btnLayout->addWidget(m_pushButton);
     btnLayout->addSpacing(10);
 
-    QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->setSpacing(0);
-    hlayout->setMargin(0);
-    hlayout->setContentsMargins(0, 0, 0, 0);
-    hlayout->addSpacing(10);
-    hlayout->addWidget(m_searchEdit);
-    hlayout->addSpacing(10);
+    QHBoxLayout *hLayout = new QHBoxLayout();
+    hLayout->setSpacing(0);
+    hLayout->setMargin(0);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->addSpacing(10);
+    hLayout->addWidget(m_searchEdit);
+    hLayout->addSpacing(10);
 
-    QVBoxLayout *vlayout = new QVBoxLayout(this);
-    m_vlayout = vlayout;
-    vlayout->setSpacing(0);
-    vlayout->setMargin(0);
-    vlayout->setContentsMargins(0, 0, 0, 0);
-    //vlayout->addSpacing(10);
-    vlayout->addLayout(hlayout);
-    vlayout->addWidget(m_cmdListWidget);
-    vlayout->addLayout(btnLayout);
-    vlayout->addSpacing(12);
-    setLayout(vlayout);
+    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    m_vlayout = vLayout;
+    vLayout->setSpacing(0);
+    vLayout->setMargin(0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
+    vLayout->addLayout(hLayout);
+    vLayout->addWidget(m_cmdListWidget);
+    vLayout->addLayout(btnLayout);
+    vLayout->addSpacing(12);
+    setLayout(vLayout);
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);  //
     connect(m_pushButton, &DPushButton::clicked, this, &CustomCommandPanel::showAddCustomCommandDlg);

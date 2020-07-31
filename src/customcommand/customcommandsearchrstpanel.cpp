@@ -15,43 +15,19 @@ CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
     initUI();
 }
 
-void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
-{
-    m_strFilter = filter;
-    QString showText = filter;
-    showText = Utils::getElidedText(m_label->font(), showText, ITEMMAXWIDTH, Qt::ElideMiddle);
-    m_label->setText(QString("%1：%2").arg(tr("Search"), showText));
-}
-
-void CustomCommandSearchRstPanel::refreshData()
-{
-    m_cmdListWidget->refreshCommandListData(m_strFilter);
-}
-
-void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
-{
-    setSearchFilter(strFilter);
-    m_cmdListWidget->refreshCommandListData(strFilter);
-}
-
-void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)
-{
-    Q_UNUSED(index)
-
-    QString strCommand = itemData.m_cmdText;
-    if (!strCommand.endsWith('\n')) {
-        strCommand.append('\n');
-    }
-    emit handleCustomCurCommand(strCommand);
-    emit focusOut();
-}
-
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    初始化自定义搜索面板界面
+*******************************************************************************/
 void CustomCommandSearchRstPanel::initUI()
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
     m_rebackButton = new IconButton(this);
+
     m_backButton = m_rebackButton;//m_backButton = new DIconButton(this);
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(40, 40));
@@ -93,6 +69,7 @@ void CustomCommandSearchRstPanel::initUI()
     vlayout->setMargin(0);
     vlayout->setSpacing(0);
     setLayout(vlayout);
+
     connect(m_cmdListWidget, &CustomCommandList::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
     connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
@@ -111,3 +88,58 @@ void CustomCommandSearchRstPanel::initUI()
         m_label->setPalette(palette);
     });
 }
+
+/*******************************************************************************
+ 1. @函数:    setSearchFilter
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    设置搜索过滤条件及显示文本
+*******************************************************************************/
+void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
+{
+    m_strFilter = filter;
+    QString showText = Utils::getElidedText(m_label->font(), filter, ITEMMAXWIDTH, Qt::ElideMiddle);
+    m_label->setText(QString("%1：%2").arg(tr("Search"), showText));
+}
+
+/*******************************************************************************
+ 1. @函数:    refreshData
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    根据 m_strFilter 刷新搜索面板自定义列表
+*******************************************************************************/
+void CustomCommandSearchRstPanel::refreshData()
+{
+    m_cmdListWidget->refreshCommandListData(m_strFilter);
+}
+
+/*******************************************************************************
+ 1. @函数:    refreshData
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    根据 strFilter 刷新搜索面板自定义列表
+*******************************************************************************/
+void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
+{
+    setSearchFilter(strFilter);
+    m_cmdListWidget->refreshCommandListData(strFilter);
+}
+
+/*******************************************************************************
+ 1. @函数:    doCustomCommand
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-07-31
+ 4. @说明:    执行当前搜索面板自定义命令列表中itemData 中的自定义命令
+*******************************************************************************/
+void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)
+{
+    Q_UNUSED(index)
+
+    QString strCommand = itemData.m_cmdText;
+    if (!strCommand.endsWith('\n')) {
+        strCommand.append('\n');
+    }
+    emit handleCustomCurCommand(strCommand);
+    emit focusOut();
+}
+

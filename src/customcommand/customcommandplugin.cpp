@@ -7,9 +7,6 @@
 #include "shortcutmanager.h"
 #include "utils.h"
 
-#include <QPropertyAnimation>
-#include <QParallelAnimationGroup>
-#include <QLabel>
 
 CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
