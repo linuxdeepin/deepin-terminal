@@ -47,6 +47,29 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
     // ALT+M = 右键
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
+
+        /***add begin by ut001121 zhangmeng 20200801 截获DPushButton控件回车按键事件并模拟空格键点击事件,用以解决回车键不响应的问题***/
+        if(object->metaObject()->className() == QStringLiteral("QPushButton")
+                && (keyevent->key() == Qt::Key_Return || keyevent->key() == Qt::Key_Enter))
+        {
+            DPushButton* pushButton = static_cast<DPushButton*>(object);
+#if 0
+            pushButton->animateClick(80);
+#else
+            // 模拟空格键按下事件
+            QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
+            QApplication::sendEvent(pushButton, &pressSpace);
+            // 设置定时
+            QTimer::singleShot(80, this, [pushButton]() {
+                // 模拟空格键松开事件
+                QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
+                QApplication::sendEvent(pushButton, &releaseSpace);
+            });
+#endif
+            return true;
+        }
+        /***add end by ut001121***/
+
         if ((keyevent->modifiers() == Qt::AltModifier) && keyevent->key() == Qt::Key_M) {
             // 光标中心点
             QPoint pos = QPoint(qApp->inputMethod()->cursorRectangle().x() + qApp->inputMethod()->cursorRectangle().width() / 2,
