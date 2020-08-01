@@ -9,6 +9,7 @@ class RightPanel : public QWidget
 public:
     explicit RightPanel(QWidget *parent = nullptr);
 
+    void hideEvent(QHideEvent *event) override;
 public slots:
     void show();
     void hideAnim();
