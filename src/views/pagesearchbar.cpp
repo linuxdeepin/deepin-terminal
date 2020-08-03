@@ -57,13 +57,13 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     setLayout(m_layout);
 
     // Esc隐藏
-   // QShortcut *shortcut = new QShortcut(QKeySequence::Cancel, this);
-   // connect(shortcut, &QShortcut::activated, this, [this]() { findCancel(); });
+    // QShortcut *shortcut = new QShortcut(QKeySequence::Cancel, this);
+    // connect(shortcut, &QShortcut::activated, this, [this]() { findCancel(); });
 }
 
 bool PageSearchBar::isFocus()
 {
-    MainWindow * minwindow = Utils::getMainWindow(this);
+    MainWindow *minwindow = Utils::getMainWindow(this);
     DIconButton *addButton = minwindow->findChild<DIconButton *>("AddButton");
     QWidget::setTabOrder(m_findNextButton, addButton);
     //QWidget::setTabOrder(m_findPrevButton, m_findNextButton);
@@ -128,24 +128,51 @@ void PageSearchBar::findCancel()
     emit closeSearchBar();
 }
 
+/*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-03
+ 4. @说明:    键盘事件，处理Enter, shift Enter事件
+*******************************************************************************/
+void PageSearchBar::keyPressEvent(QKeyEvent *event)
+{
+    qDebug() << event;
+    switch (event->key()) {
+    case Qt::Key_Enter:
+    case Qt::Key_Return: {
+        // 搜索框有焦点的情况下
+        if (m_searchEdit->lineEdit()->hasFocus()) {
+            Qt::KeyboardModifiers modify = event->modifiers();
+            // 有shift修饰， Qt::KeypadModifier 修饰是否是小键盘
+            if (modify == Qt::ShiftModifier
+                    || modify  == (Qt::ShiftModifier | Qt::KeypadModifier)) {
+                // shift + enter 查找前一个
+                m_findPrevButton->animateClick(80);
+            }
+            // 没有shift修饰
+            else if (modify == Qt::NoModifier || modify == Qt::KeypadModifier)
+                // 查找下一个
+                m_findNextButton->animateClick(80);
+        }
+    }
+    break;
+    default:
+        DFloatingWidget::keyPressEvent(event);
+        break;
+    }
+}
+
 void PageSearchBar::initFindPrevButton()
 {
     m_findPrevButton = new DIconButton(QStyle::SP_ArrowUp);
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
     m_findPrevButton->setFocusPolicy(Qt::TabFocus);
 
-    connect(m_findPrevButton, &QAbstractButton::clicked, this, [this]() {
+    connect(m_findPrevButton, &DIconButton::clicked, this, [this]() {
         if (!m_searchEdit->lineEdit()->text().isEmpty()) {
             emit findPrev();
         }
     });
-
-    QAction *action = new QAction(m_findPrevButton);
-    QList<QKeySequence> lstShortcut;
-    lstShortcut << QKeySequence("Shift+Enter") << QKeySequence("Shift+Return");
-    action->setShortcuts(lstShortcut);
-    m_findPrevButton->addAction(action);
-    connect(action, &QAction::triggered, this, [this]() { m_findPrevButton->animateClick(80); });
 }
 
 void PageSearchBar::initFindNextButton()
@@ -154,20 +181,11 @@ void PageSearchBar::initFindNextButton()
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
     m_findNextButton->setFocusPolicy(Qt::TabFocus);
 
-    connect(m_findNextButton, &QAbstractButton::clicked, this, [this]() {
+    connect(m_findNextButton, &DIconButton::clicked, this, [this]() {
         if (!m_searchEdit->lineEdit()->text().isEmpty()) {
             emit findNext();
         }
     });
-
-    // 界面上输入回车就相当于直接点击下一个:Key_Enter OR Key_Return
-    // 控件本身不支持设置多个快捷键
-    QAction *action = new QAction(m_findNextButton);
-    QList<QKeySequence> lstShortcut;
-    lstShortcut << QKeySequence(Qt::Key_Enter) << QKeySequence(Qt::Key_Return);
-    action->setShortcuts(lstShortcut);
-    m_findNextButton->addAction(action);
-    connect(action, &QAction::triggered, this, [this]() { m_findNextButton->animateClick(80); });
 }
 
 void PageSearchBar::initSearchEdit()

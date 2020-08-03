@@ -23,6 +23,7 @@
 #ifndef PAGESEARCHBAR_H
 #define PAGESEARCHBAR_H
 
+// dtk
 #include <DIconButton>
 #include <DApplicationHelper>
 #include <DFloatingWidget>
@@ -30,7 +31,9 @@
 #include <DSearchEdit>
 #include <DPushButton>
 
+// qt
 #include <QHBoxLayout>
+#include <QKeyEvent>
 
 DWIDGET_USE_NAMESPACE
 
@@ -57,6 +60,9 @@ signals:
 
 public slots:
     void findCancel();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     void initFindPrevButton();
