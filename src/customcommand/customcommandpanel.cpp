@@ -179,14 +179,14 @@ void CustomCommandPanel::initUI()
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
+
     m_searchEdit = new DSearchEdit(this);
-    m_cmdListWidget = new ListView(ListType_Custom, this);
-    m_pushButton = new DPushButton(this);
-
-
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
 
+    m_cmdListWidget = new ListView(ListType_Custom, this);
+
+    m_pushButton = new DPushButton(this);
     m_pushButton->setFixedHeight(36);
     m_pushButton->setText(tr("Add Command"));
 

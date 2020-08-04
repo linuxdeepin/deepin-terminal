@@ -3,16 +3,21 @@
 #include "shortcutmanager.h"
 #include "iconbutton.h"
 #include "listview.h"
+#include "utils.h"
+#include "mainwindow.h"
 
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
 #include <DMessageBox>
 
 #include <QAction>
+#include <QKeyEvent>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDebug>
 
 CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
-    : CommonPanel(parent),
-      m_cmdListWidget(new ListView(ListType_Custom, this))
+    : CommonPanel(parent)
 {
     initUI();
 }
@@ -29,13 +34,11 @@ void CustomCommandSearchRstPanel::initUI()
     setAutoFillBackground(true);
 
     m_rebackButton = new IconButton(this);
-
-    m_backButton = m_rebackButton;//m_backButton = new DIconButton(this);
+    m_backButton = m_rebackButton;
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
-    m_backButton->setFixedSize(QSize(40, 40));
-    m_backButton->setFocusPolicy(Qt::TabFocus);//m_backButton->setFocusPolicy(Qt::NoFocus);
+    m_backButton->setFixedSize(QSize(36, 36));
+    m_backButton->setFocusPolicy(Qt::TabFocus);
     m_backButton->setFocus();
-    //setTabOrder(m_backButton, m_cmdListWidget);
 
     m_label = new DLabel(this);
     m_label->setAlignment(Qt::AlignCenter);
@@ -50,6 +53,8 @@ void CustomCommandSearchRstPanel::initUI()
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
 
+    m_cmdListWidget = new ListView(ListType_Custom, this);
+
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addSpacing(10);
     hlayout->addWidget(m_backButton);
@@ -63,7 +68,7 @@ void CustomCommandSearchRstPanel::initUI()
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_cmdListWidget);
     vlayout->setMargin(0);
-    vlayout->setSpacing(0);
+    vlayout->setSpacing(10);
     setLayout(vlayout);
 
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
@@ -82,6 +87,33 @@ void CustomCommandSearchRstPanel::initUI()
         }
         palette.setBrush(QPalette::Text, color);
         m_label->setPalette(palette);
+    });
+
+    connect(m_rebackButton, &IconButton::focusOut, this, [ = ](Qt::FocusReason type) {
+        // 焦点切出，没值的时候
+        if (type == Qt::TabFocusReason && m_cmdListWidget->count() == 0) {
+            // tab 进入 +
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+            qDebug() << "search panel focus to '+'";
+        }
+    });
+
+    connect(m_cmdListWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
+        Q_UNUSED(type);
+        if (Qt::TabFocusReason == type) {
+            // tab 进入 +
+            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+            qDebug() << "search panel focus on '+'";
+            m_cmdListWidget->clearIndex();
+        } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
+            // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
+            m_rebackButton->setFocus();
+            m_cmdListWidget->clearIndex();
+            qDebug() << "search panel type" << type;
+        }
+
     });
 }
 
