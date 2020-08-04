@@ -50,6 +50,7 @@ enum ListType {
 };
 
 class ServerConfigOptDlg;
+class CustomCommandOptDlg;
 class ListView : public QScrollArea
 {
     Q_OBJECT
@@ -121,8 +122,10 @@ private:
     int m_scrollPostion = 0;
     // 幕布
     DWidget *m_mainWidget = nullptr;
-    // 弹窗
+    // 远程弹窗
     ServerConfigOptDlg *m_configDialog = nullptr;
+    // 自定义弹窗
+    CustomCommandOptDlg *m_pdlg = nullptr;
     // 主布局
     QVBoxLayout *m_mainLayout = nullptr;
     // 列表项数据
@@ -137,6 +140,10 @@ private:
     bool indexIsValid(int index);
     // 计算range
     int calculateRange(int height);
+    // 远程管理修改项
+    void onRemoteItemModify(const QString &key, bool isFocusOn);
+    // 自定义修改项
+    void onCustomItemModify(const QString &key, bool isFocusOn);
 };
 
 #endif // LISTVIEW_H

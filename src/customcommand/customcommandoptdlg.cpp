@@ -1,7 +1,5 @@
 #include "customcommandoptdlg.h"
 #include "termcommandlinkbutton.h"
-#include "shortcutmanager.h"
-#include "shortcutmanager.h"
 #include "utils.h"
 #include"service.h"
 //#include "mainwindow.h"
@@ -27,7 +25,7 @@
 #include <QApplication>
 #include <QClipboard>
 
-CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandItemData *currItemData, QWidget *parent)
+CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandData *currItemData, QWidget *parent)
     : DAbstractDialog(parent),
       m_type(type),
       m_nameLineEdit(new DLineEdit),
@@ -37,7 +35,7 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandIte
 {
     setWindowModality(Qt::WindowModal);
     if (currItemData) {
-        m_currItemData = new CustomCommandItemData;
+        m_currItemData = new CustomCommandData;
         *m_currItemData = *currItemData;
     }
 

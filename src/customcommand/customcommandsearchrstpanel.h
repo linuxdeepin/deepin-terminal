@@ -3,7 +3,6 @@
 
 #include "rightpanel.h"
 #include "commonpanel.h"
-#include "customcommandlist.h"
 
 #include <DPushButton>
 #include <DIconButton>
@@ -13,6 +12,7 @@
 DWIDGET_USE_NAMESPACE
 
 class CustomCommandItem;
+class ListView;
 class CustomCommandSearchRstPanel : public CommonPanel
 {
     Q_OBJECT
@@ -25,14 +25,14 @@ signals:
     void showCustomCommandPanel();
 
 public slots:
-    void doCustomCommand(CustomCommandItemData itemData, QModelIndex index);
+    void doCustomCommand(const QString &strKey);
 
 private:
     void initUI();
     void setSearchFilter(const QString &filter);
     void showPreviousPanel();
 
-    CustomCommandList *m_cmdListWidget = nullptr;
+    ListView *m_cmdListWidget = nullptr;
     QString m_strFilter;
 };
 

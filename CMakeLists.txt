@@ -102,9 +102,6 @@ set(LINK_LIBS
 # TODO: portable headers?
 set (DTNG_CPP_FILES
     src/common/utils.cpp
-    src/customcommand/customcommanddelegate.cpp
-    src/customcommand/customcommanditemmodel.cpp
-    src/customcommand/customcommandlist.cpp
     src/customcommand/customcommandoptdlg.cpp
     src/customcommand/customcommandpanel.cpp
     src/customcommand/customcommandplugin.cpp
@@ -163,9 +160,6 @@ set (DTNG_CPP_FILES
 set (DTNG_HEADER_FILES
     src/common/define.h
     src/common/utils.h
-    src/customcommand/customcommanddelegate.h
-    src/customcommand/customcommanditemmodel.h
-    src/customcommand/customcommandlist.h
     src/customcommand/customcommandoptdlg.h
     src/customcommand/customcommandpanel.h
     src/customcommand/customcommandplugin.h

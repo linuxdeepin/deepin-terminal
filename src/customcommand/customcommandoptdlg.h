@@ -30,7 +30,7 @@
 #define CUSTOMCOMMANDOPTDLG_H
 
 #include "termbasedialog.h"
-#include "customcommanditemmodel.h"
+#include "shortcutmanager.h"
 
 #include <DDialog>
 #include <DAbstractDialog>
@@ -47,6 +47,8 @@
 
 DWIDGET_USE_NAMESPACE
 
+Q_DECLARE_METATYPE(CustomCommandData)
+
 class CustomCommandOptDlg : public DAbstractDialog
 {
     Q_OBJECT
@@ -57,7 +59,7 @@ public:
     };
 
     explicit CustomCommandOptDlg(CustomCmdOptType type = CCT_ADD,
-                                 CustomCommandItemData *currItemData = nullptr,
+                                 CustomCommandData *currItemData = nullptr,
                                  QWidget *parent = nullptr);
     ~CustomCommandOptDlg()override;
 
@@ -78,7 +80,7 @@ public:
 
     QAction *getCurCustomCmd();
     bool isDelCurCommand();
-    CustomCommandItemData *m_currItemData = nullptr;    //当前自定义列表项数据指针
+    CustomCommandData *m_currItemData = nullptr;    //当前自定义列表项数据指针
     QModelIndex modelIndex;                             //模型索引
     DDialog *m_dlgDelete = nullptr;                     //删除确认窗口指针
     unsigned int  m_iTabModifyTime = 0;                 //键盘操作进行修改的时间戳

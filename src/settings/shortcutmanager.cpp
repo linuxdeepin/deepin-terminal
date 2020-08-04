@@ -2,6 +2,7 @@
 #include "termwidgetpage.h"
 #include "mainwindow.h"
 #include "settings.h"
+#include "listview.h"
 
 #include <QStandardPaths>
 #include <QTextCodec>
@@ -236,6 +237,62 @@ QAction *ShortcutManager::checkActionIsExistForModify(QAction &action)
     }
     return nullptr;
 }
+
+/*******************************************************************************
+ 1. @函数:    findActionByKey
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-03
+ 4. @说明:    通过key值找到快捷键
+*******************************************************************************/
+QAction *ShortcutManager::findActionByKey(const QString &strKey)
+{
+    for (QAction *action : m_customCommandActionList) {
+        if (action->text() == strKey) {
+            qDebug() << "find action " << action;
+            return action;
+        }
+    }
+
+    qDebug() << "not find action name " << strKey;
+    return nullptr;
+}
+
+/*******************************************************************************
+ 1. @函数:    fillCommandListData
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-03
+ 4. @说明:    填充列表
+*******************************************************************************/
+void ShortcutManager::fillCommandListData(ListView *listview, const QString &strFilter)
+{
+    listview->clearData();
+    QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
+    qDebug() << __FUNCTION__ << strFilter  << " : " << customCommandActionList.size();
+    //根据条件进行刷新，strFilter 为空时 全部刷新，根据名称或者命令模糊匹配到strFilter的条件进行刷新
+    if (strFilter.isEmpty()) {
+        for (int i = 0; i < customCommandActionList.size(); i++) {
+            QAction *curAction = customCommandActionList[i];
+            QString strCmdName = curAction->text();
+            QString strCmdShortcut = curAction->shortcut().toString();
+
+            listview->addItem(ItemFuncType_Item, strCmdName, strCmdShortcut);
+        }
+    } else {
+        for (int i = 0; i < customCommandActionList.size(); i++) {
+            QAction *curAction = customCommandActionList[i];
+            QString strCmdName = curAction->text();
+            QString strCmdText = curAction->data().toString();
+            QKeySequence keySeq = curAction->shortcut();
+            QString strKeySeq = keySeq.toString();
+            if (strCmdName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
+                    || strCmdText.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
+                    || strKeySeq.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
+                listview->addItem(ItemFuncType_Item, strCmdName, strKeySeq);
+            }
+        }
+    }
+    qDebug() << "fill list data";
+}
 /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 /*******************************************************************************
  1. @函数:    isShortcutConflictInCustom
@@ -334,7 +391,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     }
     return true;
 }
-void ShortcutManager::delCustomCommand(CustomCommandItemData itemData)
+void ShortcutManager::delCustomCommand(CustomCommandData itemData)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
     delCustomCommandToConfig(itemData);
@@ -401,7 +458,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     }
 }
 
-int ShortcutManager::delCustomCommandToConfig(CustomCommandItemData itemData)
+int ShortcutManager::delCustomCommandToConfig(CustomCommandData itemData)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));

@@ -46,6 +46,8 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     m_customCommandPanel->resize(size());
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandPanel->show();
+    m_customCommandPanel->m_isShow = true;
+    m_customCommandSearchPanel->m_isShow = false;
 
     tabControlFocus();
 
@@ -115,7 +117,8 @@ void CustomCommandTopPanel::show(bool bSetFocus)
     m_customCommandSearchPanel->hide();
     m_bSetFocus = bSetFocus;
     if (m_bSetFocus) {
-        tabControlFocus();
+        // 讲焦点设置在平面上
+        m_customCommandPanel->setFocusInPanel();
     }
 
 }
@@ -144,14 +147,7 @@ void CustomCommandTopPanel::slotsRefreshCommandPanel()
 *******************************************************************************/
 void CustomCommandTopPanel::tabControlFocus()
 {
-    int listCount = m_customCommandPanel->m_cmdListWidget->count();
-    if (listCount >= 2) {
-        m_customCommandPanel->m_searchEdit->lineEdit()->setFocus();
-    } else if (listCount == 1) {
-        m_customCommandPanel->m_cmdListWidget->setFocus();
-    } else {
-        m_customCommandPanel->m_pushButton->setFocus();
-    }
+    m_customCommandPanel->setFocusInPanel();
 }
 
 

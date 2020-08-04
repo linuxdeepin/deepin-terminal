@@ -2,6 +2,7 @@
 #include "customcommandoptdlg.h"
 #include "shortcutmanager.h"
 #include "iconbutton.h"
+#include "listview.h"
 
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
@@ -10,7 +11,8 @@
 #include <QAction>
 
 CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
-    : CommonPanel(parent), m_cmdListWidget(new CustomCommandList())
+    : CommonPanel(parent),
+      m_cmdListWidget(new ListView(ListType_Custom, this))
 {
     initUI();
 }
@@ -48,12 +50,6 @@ void CustomCommandSearchRstPanel::initUI()
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
 
-    m_cmdListWidget->setSelectionMode(QAbstractItemView::SingleSelection);//m_cmdListWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    m_cmdListWidget->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
-    m_cmdListWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    m_cmdListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_cmdListWidget->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
-
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addSpacing(10);
     hlayout->addWidget(m_backButton);
@@ -70,7 +66,7 @@ void CustomCommandSearchRstPanel::initUI()
     vlayout->setSpacing(0);
     setLayout(vlayout);
 
-    connect(m_cmdListWidget, &CustomCommandList::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
+    connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
     connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
         m_rebackButton->click();// 在派生类捕获方向键盘左键按下，转化为鼠标点击。
@@ -110,7 +106,7 @@ void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
 *******************************************************************************/
 void CustomCommandSearchRstPanel::refreshData()
 {
-    m_cmdListWidget->refreshCommandListData(m_strFilter);
+    ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, m_strFilter);
 }
 
 /*******************************************************************************
@@ -122,7 +118,7 @@ void CustomCommandSearchRstPanel::refreshData()
 void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 {
     setSearchFilter(strFilter);
-    m_cmdListWidget->refreshCommandListData(strFilter);
+    ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, strFilter);
 }
 
 /*******************************************************************************
@@ -131,11 +127,10 @@ void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
  3. @日期:    2020-07-31
  4. @说明:    执行当前搜索面板自定义命令列表中itemData 中的自定义命令
 *******************************************************************************/
-void CustomCommandSearchRstPanel::doCustomCommand(CustomCommandItemData itemData, QModelIndex index)
+void CustomCommandSearchRstPanel::doCustomCommand(const QString &strKey)
 {
-    Q_UNUSED(index)
-
-    QString strCommand = itemData.m_cmdText;
+    QAction *item = ShortcutManager::instance()->findActionByKey(strKey);
+    QString strCommand = item->data().toString();
     if (!strCommand.endsWith('\n')) {
         strCommand.append('\n');
     }

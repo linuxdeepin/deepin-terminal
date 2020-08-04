@@ -2,6 +2,8 @@
 #include "service.h"
 #include "serverconfigmanager.h"
 #include "dbusmanager.h"
+#include "customcommandoptdlg.h"
+#include "serverconfigoptdlg.h"
 
 // qt
 #include <QDebug>
@@ -279,6 +281,28 @@ void ListView::clearIndex()
 *******************************************************************************/
 void ListView::onItemModify(const QString &key, bool isFocusOn)
 {
+    switch (m_type) {
+    case ListType_Remote:
+        onRemoteItemModify(key, isFocusOn);
+        break;
+    case ListType_Custom:
+        onCustomItemModify(key, isFocusOn);
+        break;
+    default:
+        qDebug() << "";
+        break;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    onRemoteItemModify
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-03
+ 4. @说明:    处理远程管理修改项的弹窗操作
+*******************************************************************************/
+void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
+{
     int curIndex = m_currentIndex;
     // 弹窗出，丢失焦点
     lostFocus(m_currentIndex);
@@ -390,6 +414,120 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
     // 2. 记录弹窗
     ServerConfigManager::instance()->setModifyDialog(curItemServer->m_serverName, m_configDialog);
     m_configDialog->show();
+}
+
+/*******************************************************************************
+ 1. @函数:    onCustomItemModify
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-03
+ 4. @说明:    修改自定义项处理弹窗的操作
+*******************************************************************************/
+void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
+{
+    qDebug() <<  __FUNCTION__ << __LINE__;
+    if (m_pdlg) {
+        delete m_pdlg;
+        m_pdlg = nullptr;
+    }
+
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true); //暂时保留
+
+    qDebug() << "this->count()=" << this->count();
+
+    // 获取数据
+    QAction *itemAction = ShortcutManager::instance()->findActionByKey(key);
+    CustomCommandData itemData;
+    itemData.m_cmdName = itemAction->text();
+    itemData.m_cmdText = itemAction->data().toString();
+    itemData.m_cmdShortcut = itemAction->shortcut().toString();
+
+    m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
+    connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
+
+        int tempResult = result;
+
+        // 弹窗隐藏或消失
+        Service::instance()->setIsDialogShow(window(), false);
+
+        if (QDialog::Accepted == result) {
+            //确认修改处理
+            qDebug() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
+            QAction *newAction = m_pdlg->getCurCustomCmd();
+            CustomCommandData itemData = *(m_pdlg->m_currItemData);
+            CustomCommandData itemDel = itemData;
+
+            itemData.m_cmdName = newAction->text();
+            itemData.m_cmdText = newAction->data().toString();
+            itemData.m_cmdShortcut = newAction->shortcut().toString();
+            newAction->setData(newAction->data());
+            newAction->setShortcut(newAction->shortcut());
+            ShortcutManager::instance()->delCustomCommand(itemDel);
+            ShortcutManager::instance()->addCustomCommand(*newAction);
+            // 更新列表项
+            updateItem(ItemFuncType_Item, itemData.m_cmdName, itemData.m_cmdShortcut);
+            // 找到值
+            int index = indexFromString(itemData.m_cmdName);
+            if (isFocusOn) {
+                // 将焦点落回
+                // 滚轮滚动到最新的位置
+                setCurrentIndex(index);
+            } else {
+                // 滚轮滚动到最新的位置
+                setScroll(index);
+            }
+
+
+            m_pdlg->closeRefreshDataConnection();
+            emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
+
+        } else if (QDialog::Rejected == result) {
+
+            //Delete custom command 删除自定义命令处理
+            if (m_pdlg->isDelCurCommand()) {
+                qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
+                DDialog *dlgDelete = new DDialog(this);
+                dlgDelete->setAttribute(Qt::WA_DeleteOnClose);
+                dlgDelete->setWindowModality(Qt::WindowModal);
+                m_pdlg->m_dlgDelete = dlgDelete;
+
+                dlgDelete->setIcon(QIcon::fromTheme("deepin-terminal"));
+                dlgDelete->setTitle(tr("Are you sure you want to delete %1?").arg(m_pdlg->m_currItemData->m_cmdName));
+                dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+                dlgDelete->addButton(QObject::tr("Confirm"), true, DDialog::ButtonWarning);
+                connect(dlgDelete, &DDialog::finished, this, [ & ](int result) {
+                    //是否删除自定义命令再次确认操作
+                    if (QDialog::Accepted == result) {
+                        // 删除前获取位置
+                        int index = indexFromString(m_pdlg->m_currItemData->m_cmdName);
+                        ShortcutManager::instance()->delCustomCommand(*(m_pdlg->m_currItemData));
+                        // 删除项
+                        removeItem(ItemFuncType_Item, m_pdlg->m_currItemData->m_cmdName);
+                        emit listItemCountChange();
+                        // 删除后焦点位置
+                        if (isFocusOn) {
+                            // 获取下一个的位置
+                            index = getNextIndex(index);
+                            if (index >= 0) {
+                                // 找的到
+                                setCurrentIndex(index);
+                            } else {
+                                // 找不到
+                                qDebug() << "can't find index" << index;
+                            }
+                        }
+                        m_pdlg->closeRefreshDataConnection();
+                        emit Service::instance()->refreshCommandPanel(m_pdlg->m_currItemData->m_cmdName, m_pdlg->m_currItemData->m_cmdName);//emit Service::instance()->refreshCommandPanel("", "");
+                    }
+
+                });
+                dlgDelete->show();
+            }
+        }
+        qDebug() << "================================tempResult=" << tempResult;
+
+    });
+    m_pdlg->show();
 }
 
 /*******************************************************************************

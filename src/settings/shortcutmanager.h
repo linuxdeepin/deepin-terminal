@@ -23,13 +23,19 @@
 #define SHORTCUTMANAGER_H
 
 #include "define.h"
-#include "customcommanditemmodel.h"
 #include "utils.h"
 
 #include <QList>
 #include <QAction>
 
+struct CustomCommandData {
+    QString m_cmdName;
+    QString m_cmdText;
+    QString m_cmdShortcut;
+};
+
 class MainWindow;
+class ListView;
 /*******************************************************************************
  1. @类名:    ShortcutManager
  2. @作者:    ut000439 王培利
@@ -54,12 +60,16 @@ public:
 
     QAction *addCustomCommand(QAction &action);
     //void mainWindowAddAction(QAction *action);
-    void delCustomCommand(CustomCommandItemData itemData);
+    void delCustomCommand(CustomCommandData itemData);
     void saveCustomCommandToConfig(QAction *action, int saveIndex);
-    int delCustomCommandToConfig(CustomCommandItemData itemData);
+    int delCustomCommandToConfig(CustomCommandData itemData);
     // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
     QAction *checkActionIsExistForModify(QAction &action);
+    // 通过快捷键的唯一值找到action
+    QAction *findActionByKey(const QString &strKey);
+    // 填充列表项
+    void fillCommandListData(ListView *listview, const QString &strFilter = "");
 
     // 判断快捷键是否合法可用，进行界面处理
     bool isValidShortcut(const QString &Name, const QString &Key);
