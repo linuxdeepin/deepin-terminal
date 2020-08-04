@@ -144,7 +144,7 @@ void ItemWidget::lostFocus()
 {
     m_isFocus = false;
     // 项影藏功能键
-    if (m_functType == ItemFuncType_Item) {
+    if (m_functType == ItemFuncType_Item && !m_isHover) {
         m_funcButton->hide();
     }
 }
@@ -279,7 +279,7 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
     }
     // 项
     if (m_functType == ItemFuncType_Item) {
-        if (type != Qt::OtherFocusReason) {
+        if (type != Qt::OtherFocusReason && !m_isHover) {
             m_funcButton->hide();
         }
     }
@@ -502,7 +502,7 @@ void ItemWidget::focusOutEvent(QFocusEvent *event)
 
     if (m_functType == ItemFuncType_Item) {
         // 编辑按钮也没焦点，则隐藏编辑按钮
-        if (!m_funcButton->hasFocus()) {
+        if (!m_funcButton->hasFocus() && !m_isHover) {
             m_funcButton->hide();
         }
     }

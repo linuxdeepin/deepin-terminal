@@ -43,6 +43,8 @@ class FocusFrame : public DFrame
     Q_OBJECT
 public:
     FocusFrame(QWidget *parent = nullptr);
+    // 鼠标是否悬浮
+    bool m_isHover = false;
 
 protected:
     // 处理重绘事件
@@ -57,8 +59,6 @@ protected:
 private:
     // 焦点是否在 用于背景和边框
     bool m_isFocus = false;
-    // 鼠标是否悬浮
-    bool m_isHover = false;
     // 画一个圆角矩形路径
     void paintRoundedRect(QPainterPath &path, const QRect &background);
     // 设置背景色
