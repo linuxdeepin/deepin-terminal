@@ -44,15 +44,16 @@ public:
     // 设置焦点进入控件
     void setFocusInPanel();
     // 设置焦点从分组界面返回时的位置
-    void setFocusBack(const QString &strGroup, bool isFocusOn);
+    void setFocusBack(const QString &strGroup);
     // 清除
     void clearListFocus();
 
 signals:
-    // 搜索框有焦点，显示搜索框
+    // 显示搜索界面
     void showSearchPanel(const QString &strFilter);
     // 显示分组,根据布尔值判断是否有焦点
-    void showServerConfigGroupPanel(const QString &strGroup, bool isKeyPress);
+    void showGroupPanel(const QString &strGroup, bool isFocusOn);
+    // 连接远程
     void doConnectServer(ServerConfig *curItemServer);
 
 public slots:

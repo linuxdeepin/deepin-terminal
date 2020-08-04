@@ -42,16 +42,16 @@ public:
     void refreshData(const QString &groupName);
     // 设置焦点
     // 从搜索框返回
-    void setFocusBack(int position);
+    void setFocusBack();
     // 清除所有焦点
     void clearAllFocus();
 
 signals:
     // 显示搜索结果，搜索框有焦点
-    void showSearchResult(const QString &strGroup, const QString &strFilter);
+    void showSearchPanel(const QString &strFilter);
     void doConnectServer(ServerConfig *curServer);
-    // 显示远程管理主界面，需要知道是否有焦点
-    void showRemoteManagementPanel(const QString &strGoupName, bool isFocusOn);
+    // 返回前一个界面
+    void rebackPrevPanel();
 
 public slots:
     void handleShowSearchResult();

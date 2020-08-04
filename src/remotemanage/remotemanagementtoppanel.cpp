@@ -9,88 +9,22 @@ const int animationDuration = 300;
 
 RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel(parent)
 {
+    // 远程主界面
     m_remoteManagementPanel = new RemoteManagementPanel(this);
-    connect(m_remoteManagementPanel,
-            &RemoteManagementPanel::showServerConfigGroupPanel,
-            this,
-            &RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel);
-    connect(m_remoteManagementPanel,
-            &RemoteManagementPanel::showSearchPanel,
-            this,
-            &RemoteManagementTopPanel::showSearchPanelFromRemotePanel);
-    connect(
-        m_remoteManagementPanel, &RemoteManagementPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
-
+    connect(m_remoteManagementPanel, &RemoteManagementPanel::showSearchPanel, this, &RemoteManagementTopPanel::showSearchPanel);
+    connect(m_remoteManagementPanel, &RemoteManagementPanel::showGroupPanel, this, &RemoteManagementTopPanel::showGroupPanel);
+    // 远程分组界面
     m_serverConfigGroupPanel = new ServerConfigGroupPanel(this);
-    connect(m_serverConfigGroupPanel,
-            &ServerConfigGroupPanel::showRemoteManagementPanel,
-            this,
-            &RemoteManagementTopPanel::showRemotePanelFromGroupPanel);
-    connect(m_serverConfigGroupPanel,
-            &ServerConfigGroupPanel::showSearchResult,
-            this,
-            &RemoteManagementTopPanel::showSearchPanelFromGroupPanel);
-    connect(
-        m_serverConfigGroupPanel, &ServerConfigGroupPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
-
+    connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::showSearchPanel, this, &RemoteManagementTopPanel::showSearchPanel);
+    connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::rebackPrevPanel, this, &RemoteManagementTopPanel::showPrevPanel);
+    // 远程搜索界面
     m_remoteManagementSearchPanel = new RemoteManagementSearchPanel(this);
-    connect(m_remoteManagementSearchPanel,
-            &RemoteManagementSearchPanel::showRemoteManagementPanel,
-            this,
-            &RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel);
-    // 搜索里显示分组
-    connect(m_remoteManagementSearchPanel,
-            &RemoteManagementSearchPanel::showServerConfigGroupPanelFromSearch,
-            this,
-            &RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel);
-    // 搜索返回分组
-    connect(m_remoteManagementSearchPanel,
-            &RemoteManagementSearchPanel::showServerConfigGroupPanel,
-            this,
-            &RemoteManagementTopPanel::showGroupPanelFromSearchPanel);
-    connect(
-        m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
+    connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::showGroupPanel, this, &RemoteManagementTopPanel::showGroupPanel);
+    connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::rebackPrevPanel, this, &RemoteManagementTopPanel::showPrevPanel);
+    // 界面先隐藏
     m_serverConfigGroupPanel->hide();
     m_remoteManagementSearchPanel->hide();
-}
-
-void RemoteManagementTopPanel::showSearchPanelFromRemotePanel(const QString &strFilter)
-{
-    qDebug() << __FUNCTION__;
-    m_remoteManagementSearchPanel->resize(size());
-    m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_PANEL);
-    m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
-//    m_remoteManagementPanel->clearListFocus();
-    animationPrepare(m_serverConfigGroupPanel, m_remoteManagementSearchPanel);
-    m_remoteManagementPanel->m_isShow = false;
-    QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-    panelRightToLeft(animation, animation1);
-    m_remoteManagementPanel->clearSearchInfo();
-    m_remoteManagementPanel->clearListFocus();
-    m_serverConfigGroupPanel->clearSearchInfo();
-    m_remoteManagementSearchPanel->onFocusInBackButton();
-}
-
-void RemoteManagementTopPanel::showRemotePanelFromGroupPanel(const QString &strGoupName, bool isFocusOn)
-{
-    qDebug() << __FUNCTION__ ;
-    m_remoteManagementPanel->resize(size());
-    m_remoteManagementPanel->refreshPanel();
-//    m_remoteManagementPanel->clearListFocus();
-    animationPrepare(m_remoteManagementSearchPanel, m_remoteManagementPanel);
-    m_serverConfigGroupPanel->m_isShow = false;
-    QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-    panelLeftToRight(animation, animation1);
-    m_serverConfigGroupPanel->clearAllFocus();
-    m_remoteManagementPanel->setFocusBack(strGoupName, isFocusOn);
+    m_remoteManagementPanel->hide();
 }
 
 void RemoteManagementTopPanel::show()
@@ -100,13 +34,20 @@ void RemoteManagementTopPanel::show()
     m_remoteManagementPanel->move(0, 0);
     // 每次显示前清空之前的记录
     m_remoteManagementPanel->clearListFocus();
+    // 显示远程主界面
     m_remoteManagementPanel->show();
-    m_remoteManagementPanel->m_isShow = true;
-    m_remoteManagementPanel->refreshPanel();
+    // 其他界面影藏
     m_serverConfigGroupPanel->hide();
-    m_serverConfigGroupPanel->m_isShow = false;
     m_remoteManagementSearchPanel->hide();
+    // 刷新列表
+    m_remoteManagementPanel->refreshPanel();
+    // 记录界面状态
+    m_remoteManagementPanel->m_isShow = true;
+    m_serverConfigGroupPanel->m_isShow = false;
     m_remoteManagementSearchPanel->m_isShow = false;
+    // 记录当前窗口
+    m_currentPanelType = ServerConfigManager::PanelType_Manage;
+    m_prevPanelStack.push_back(m_currentPanelType);
 }
 
 /*******************************************************************************
@@ -119,21 +60,104 @@ void RemoteManagementTopPanel::setFocusInPanel()
 {
     m_remoteManagementPanel->setFocusInPanel();
 }
-/******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/
-//void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
-//{
-//    Q_UNUSED(event)
-//    m_remoteManagementPanel->resize(size());
-//}
-/******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
 
-void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const QString &strGroup, bool isFocusOn)
+/*******************************************************************************
+ 1. @函数:    showSearchPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-04
+ 4. @说明:    显示搜索界面
+ 若当前界面为主界面 => 全局搜索
+ 若当前界面为分组界面 => 组内搜索
+*******************************************************************************/
+void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 {
-    qDebug() << __FUNCTION__;
+    // 记录搜索界面的搜索条件
+    m_filter = strFilter;
+    // 设置搜索界面大小
+    m_remoteManagementSearchPanel->resize(size());
+    // 显示搜索界面
+    m_remoteManagementSearchPanel->show();
+
+    // 动画效果
+    QPropertyAnimation *animation;
+    QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
+    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+    // 判读当前窗口是主界面还是分组界面
+    // 刷新搜索界面的列表
+    if (m_currentPanelType == ServerConfigManager::PanelType_Group) {
+        // 组内搜索
+        m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(m_group, m_filter);
+
+        // 动画效果的设置
+        animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
+        connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
+        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+
+    } else if (m_currentPanelType == ServerConfigManager::PanelType_Manage) {
+        // 全局搜索
+        m_remoteManagementSearchPanel->refreshDataByFilter(m_filter);
+
+        // 动画效果的设置
+        animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
+        connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
+        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+
+    } else {
+        qDebug() << "unknow current panel!";
+    }
+    // 执行动画
+    panelRightToLeft(animation, animation1);
+
+    // 搜索界面设置焦点
+    m_remoteManagementSearchPanel->onFocusInBackButton();
+    // 记录当前窗口为前一个窗口
+    m_prevPanelStack.push_back(m_currentPanelType);
+    // 修改当前窗口
+    m_currentPanelType = ServerConfigManager::PanelType_Search;
+    // 设置平面状态
+    setPanelShowState(m_currentPanelType);
+}
+
+/*******************************************************************************
+ 1. @函数:    showGroupPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-04
+ 4. @说明:    显示分组平面
+*******************************************************************************/
+void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool isFocusOn)
+{
+    // 记录当前分组
+    m_group = strGroupName;
+    // 设置分组界面大小
     m_serverConfigGroupPanel->resize(size());
-    m_serverConfigGroupPanel->refreshData(strGroup);
-//    m_remoteManagementPanel->clearListFocus();
-    // 判断是否是鼠标点击
+    // 刷新分组界面
+    m_serverConfigGroupPanel->refreshData(strGroupName);
+    // 显示分组界面
+    m_serverConfigGroupPanel->show();
+
+    // 动画效果
+    QPropertyAnimation *animation;
+    QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
+    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+    if (m_currentPanelType == ServerConfigManager::PanelType_Search) {
+        // 动画效果的设置
+        animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
+        connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
+        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+
+    } else if (m_currentPanelType == ServerConfigManager::PanelType_Manage) {
+        // 动画效果的设置
+        animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
+        connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
+        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+    } else {
+        qDebug() << "unknow current panel!";
+    }
+    // 执行动画
+    panelRightToLeft(animation, animation1);
+
+
+    // 分组界面设置焦点
     if (isFocusOn) {
         // 1）不是鼠标点击，焦点落在返回键上
         // 2）是鼠标点击，但是焦点在组上，焦点也要落在返回键上
@@ -143,88 +167,138 @@ void RemoteManagementTopPanel::showServerConfigGroupPanelFromRemotePanel(const Q
         Utils::getMainWindow(this)->focusCurrentPage();
         qDebug() << "show group but not focus in group";
     }
-    animationPrepare(m_remoteManagementSearchPanel, m_serverConfigGroupPanel);
-    m_remoteManagementPanel->m_isShow = false;
-    QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-    panelRightToLeft(animation, animation1);
+
+    // 记录当前窗口为前一个窗口
+    m_prevPanelStack.push_back(m_currentPanelType);
+    // 修改当前窗口
+    m_currentPanelType = ServerConfigManager::PanelType_Group;
+    // 设置平面状态
+    setPanelShowState(m_currentPanelType);
 }
 
-void RemoteManagementTopPanel::showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter)
+/*******************************************************************************
+ 1. @函数:    showPrevPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-04
+ 4. @说明:    显示前一个界面
+*******************************************************************************/
+void RemoteManagementTopPanel::showPrevPanel()
 {
-    qDebug() << __FUNCTION__;
-    // 调整窗口大小
-    m_remoteManagementSearchPanel->resize(size());
-    // 设置前一个窗口
-    m_remoteManagementSearchPanel->setPreviousPanelType(RemoteManagementSearchPanel::REMOTE_MANAGEMENT_GROUP);
-    // 刷新列表
-    m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(strGroup, strFilter);
-    // 前一个列表不用刷新
-    m_serverConfigGroupPanel->m_isShow = false;
-    // 设置动画效果的准备工作
-    animationPrepare(m_remoteManagementPanel, m_remoteManagementSearchPanel);
-    // 将将焦点设置到返回键上
-    m_remoteManagementSearchPanel->onFocusInBackButton();
-    // 动画效果的设置
-    QPropertyAnimation *animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-    panelRightToLeft(animation, animation1);
-}
-void RemoteManagementTopPanel::showRemoteManagementPanelFromSearchPanel()
-{
-    qDebug() << __FUNCTION__;
-    //--------------------------------------------------------------//
-    m_remoteManagementPanel->resize(size());
-    m_remoteManagementPanel->refreshPanel();
-    animationPrepare(m_serverConfigGroupPanel, m_remoteManagementPanel);
-    m_remoteManagementPanel->setFocusInPanel();
-    m_remoteManagementSearchPanel->m_isShow = false;
-    QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-    panelLeftToRight(animation, animation1);
-}
-
-void RemoteManagementTopPanel::slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isFocusOn)
-{
-    qDebug() << __FUNCTION__;
-    m_serverConfigGroupPanel->resize(size());
-    m_serverConfigGroupPanel->refreshData(strGroup);
-    m_remoteManagementSearchPanel->clearFocus();
-    if (isFocusOn) {
-        // 焦点在，则设置焦点
-        m_serverConfigGroupPanel->onFocusInBackButton();
-    } else {
-        // 焦点不在，则把焦点设置到主屏幕上
-        Utils::getMainWindow(this)->focusCurrentPage();
+    // 栈为空
+    if (m_prevPanelStack.isEmpty()) {
+        // 返回
+        qDebug() << "stack is empty!";
+        return;
     }
-    animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
-    m_remoteManagementSearchPanel->m_isShow = false;
-    m_remoteManagementSearchPanel->clearAllFocus();
-    QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-    connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
-    connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-    QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-    connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-    panelRightToLeft(animation, animation1);
+    // 获取前一个界面的类型，此界面为现在要显示的界面
+    ServerConfigManager::PanelType prevType = m_prevPanelStack.pop();
+    // 动画效果 要隐藏的界面
+    QPropertyAnimation *animation;
+    if (m_currentPanelType == ServerConfigManager::PanelType_Search) {
+        // 动画效果的设置
+        animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
+        connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
+        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+    } else if (m_currentPanelType == ServerConfigManager::PanelType_Group) {
+        // 动画效果的设置
+        animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
+        connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
+        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
+    } else {
+        qDebug() << "unknow panel to hide!" << m_currentPanelType;
+    }
+
+    // 动画效果 要显示的界面
+    QPropertyAnimation *animation1;
+    switch (prevType) {
+    case ServerConfigManager::PanelType_Manage:
+        // 刷新主界面
+        m_remoteManagementPanel->refreshPanel();
+        // 显示主界面
+        m_remoteManagementPanel->show();
+        // 动画效果的设置
+        animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
+        connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+        break;
+    case ServerConfigManager::PanelType_Group:
+        // 刷新分组列表
+        m_serverConfigGroupPanel->refreshData(m_group);
+        // 显示分组
+        m_serverConfigGroupPanel->show();
+        // 动画效果的设置
+        animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
+        connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+        break;
+    case ServerConfigManager::PanelType_Search:
+        // 刷新列表 => 搜索框能被返回，只能是全局搜索
+        m_remoteManagementSearchPanel->refreshDataByFilter(m_filter);
+        // 显示搜索框
+        m_remoteManagementSearchPanel->show();
+        // 动画效果的设置
+        animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
+        connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+        break;
+    default:
+        qDebug() << "unknow current panel to show!" << prevType;
+        break;
+    }
+    // 执行动画
+    panelLeftToRight(animation, animation1);
+
+    // 焦点返回
+    if (m_currentPanelType  == ServerConfigManager::PanelType_Search) {
+        // 搜索返回
+        if (prevType == ServerConfigManager::PanelType_Manage) {
+            // 返回主界面
+            m_remoteManagementPanel->setFocusInPanel();
+        } else {
+            // 返回分组
+            m_serverConfigGroupPanel->setFocusBack();
+        }
+    } else {
+        // 分组返回
+        if (prevType == ServerConfigManager::PanelType_Manage) {
+            // 返回主界面
+            m_remoteManagementPanel->setFocusBack(m_group);
+        } else {
+            // 返回搜索界面
+            m_remoteManagementSearchPanel->setFocusBack(m_group);
+        }
+    }
+
+    // 修改当前窗口
+    m_currentPanelType = prevType;
+    // 设置平面状态
+    setPanelShowState(m_currentPanelType);
 }
 
-void RemoteManagementTopPanel::animationPrepare(CommonPanel *hidePanel, CommonPanel *showPanel)
+/*******************************************************************************
+ 1. @函数:    setPanelShowState
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-04
+ 4. @说明:    设置平面状态
+*******************************************************************************/
+void RemoteManagementTopPanel::setPanelShowState(ServerConfigManager::PanelType panelType)
 {
-    hidePanel->hide();
-    hidePanel->m_isShow = false;
-    hidePanel->clearSearchInfo();
-    showPanel->show();
-    showPanel->m_isShow = true;
-    m_remoteManagementPanel->refreshPanel();
+    // 设置平面状态
+    m_remoteManagementPanel->m_isShow = false;
+    m_serverConfigGroupPanel->m_isShow = false;
+    m_remoteManagementSearchPanel->m_isShow = false;
+
+    switch (panelType) {
+    case ServerConfigManager::PanelType_Manage:
+        m_remoteManagementPanel->m_isShow = true;
+        break;
+    case ServerConfigManager::PanelType_Group:
+        m_serverConfigGroupPanel->m_isShow = true;
+        break;
+    case ServerConfigManager::PanelType_Search:
+        m_remoteManagementSearchPanel->m_isShow = true;
+        break;
+    default:
+        qDebug() << "panelType is wrong!";
+        break;
+    }
 }
 
 void RemoteManagementTopPanel::panelLeftToRight(QPropertyAnimation *animation, QPropertyAnimation *animation1)
@@ -263,25 +337,4 @@ void RemoteManagementTopPanel::panelRightToLeft(QPropertyAnimation *animation, Q
     group->addAnimation(animation1);
     // 已验证：这个设定，会释放group以及所有组内动画。
     group->start(QAbstractAnimation::DeleteWhenStopped);
-}
-
-void RemoteManagementTopPanel::showGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress)
-{
-    qDebug() << __FUNCTION__;
-    Q_UNUSED(isKeyPress);
-    m_serverConfigGroupPanel->resize(size());
-    m_serverConfigGroupPanel->refreshData(strGroup);
-    m_remoteManagementSearchPanel->clearFocus();
-    animationPrepare(m_remoteManagementPanel, m_serverConfigGroupPanel);
-    m_remoteManagementSearchPanel->m_isShow = false;
-    m_serverConfigGroupPanel->setFocusBack(-1);
-    // 若从搜索界面返回后，分组为空，该页面不做动画展示
-    if (ServerConfigManager::instance()->getServerCount(strGroup) != 0) {
-        QPropertyAnimation *animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
-        connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
-        connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-        QPropertyAnimation *animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
-        connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-        panelLeftToRight(animation, animation1);
-    }
 }

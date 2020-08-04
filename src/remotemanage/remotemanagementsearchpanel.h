@@ -36,30 +36,30 @@ class RemoteManagementSearchPanel : public CommonPanel
 {
     Q_OBJECT
 public:
-    enum RemoteManagementPanelType {
-        REMOTE_MANAGEMENT_PANEL = 0,  //远程管理主界面，对应RemoteManagementPanel类
-        REMOTE_MANAGEMENT_GROUP,      //远程管理分组面，对应ServerConfigGroupPanel类
-        REMOTE_MANAGEMENT_SERARCH,    //远程管理搜索结果界面，对应RemoteManagementSearchPanel类
-    };
 
     explicit RemoteManagementSearchPanel(QWidget *parent = nullptr);
     void refreshDataByGroupAndFilter(const QString &strGroup, const QString &strFilter);
     void refreshDataByFilter(const QString &strFilter);
-    void setPreviousPanelType(RemoteManagementPanelType type);
     // 清除界面所有焦点
     void clearAllFocus();
+    // 设置焦点返回
+    void setFocusBack(const QString &strGroup);
 
 signals:
-    void showServerConfigGroupPanelFromSearch(const QString &strGroup, bool isKeyPress);
+    // 连接远程
     void doConnectServer(ServerConfig *curItemServer);
-    void showRemoteManagementPanel();
-    void showServerConfigGroupPanel(const QString &strGroup, bool isKeyPress);
+    // 显示远程分组界面
+    void showGroupPanel(const QString &strGroup, bool isFocusOn);
+    // 返回前一个页面
+    void rebackPrevPanel();
 
 public slots:
-    //显示调用本搜索页面的前置页面
-    void showPreviousPanel();
     // 处理连接远程操作
     void onItemClicked(const QString &key);
+    // 处理焦点出列表的事件
+    void onFocusOutList(Qt::FocusReason type);
+    // 处理刷新列表信号
+    void onRefreshList();
 
 private:
     void initUI();
@@ -67,7 +67,7 @@ private:
 
 private:
     ListView *m_listWidget;
-    RemoteManagementPanelType m_previousPanel;  //用来保存调用当前搜索结果页的对象类型
+//    RemoteManagementPanelType m_previousPanel;  //用来保存调用当前搜索结果页的对象类型
     QString m_strGroupName;
     QString m_strFilter;
     // 判断是组内搜索还是组外搜索

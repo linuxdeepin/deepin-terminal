@@ -57,31 +57,13 @@ void RemoteManagementSearchPanel::initUI()
     setLayout(vlayout);
 
     // 返回键被点击 搜索界面，返回焦点返回搜索框
-    connect(m_rebackButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::showPreviousPanel);
-    connect(m_rebackButton, &IconButton::preFocus, this, &RemoteManagementSearchPanel::showPreviousPanel);
-    connect(m_rebackButton, &IconButton::focusOut, this, [ = ](Qt::FocusReason type) {
-        // 焦点切出，没值的时候
-        if (type == Qt::TabFocusReason && m_listWidget->count() == 0) {
-            // tab 进入 +
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-            qDebug() << "search panel focus to '+'";
-        }
-    });
+    connect(m_rebackButton, &DIconButton::clicked, this, &RemoteManagementSearchPanel::rebackPrevPanel);
+    connect(m_rebackButton, &IconButton::preFocus, this, &RemoteManagementSearchPanel::rebackPrevPanel);
+    connect(m_rebackButton, &IconButton::focusOut, this, &RemoteManagementSearchPanel::onFocusOutList);
     connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementSearchPanel::onItemClicked);
-    connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementSearchPanel::showServerConfigGroupPanelFromSearch);
-    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
-        if (m_isShow) {
-            m_listWidget->setFocus();
-            if (m_isGroupOrNot) {
-                refreshDataByGroupAndFilter(m_strGroupName, m_strFilter);
-            } else {
-                refreshDataByFilter(m_strFilter);
-            }
-        }
-    });
+    connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementSearchPanel::showGroupPanel);
+    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, &RemoteManagementSearchPanel::onRefreshList);
     connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
-        Q_UNUSED(type);
         if (Qt::TabFocusReason == type) {
             // tab 进入 +
             QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
@@ -128,15 +110,6 @@ void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
     m_listWidget->clearData();
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Search, m_listWidget, strFilter);
 }
-void RemoteManagementSearchPanel::showPreviousPanel()
-{
-    if (m_previousPanel == REMOTE_MANAGEMENT_PANEL) {
-        emit showRemoteManagementPanel();
-    }
-    if (m_previousPanel == REMOTE_MANAGEMENT_GROUP) {
-        emit showServerConfigGroupPanel(m_strGroupName, true);
-    }
-}
 
 /*******************************************************************************
  1. @函数:    onItemClicked
@@ -155,10 +128,43 @@ void RemoteManagementSearchPanel::onItemClicked(const QString &key)
     }
 }
 
-void RemoteManagementSearchPanel::setPreviousPanelType(RemoteManagementPanelType type)
+/*******************************************************************************
+ 1. @函数:    onFocusOutList
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-04
+ 4. @说明:    焦点从列表中出的事件
+*******************************************************************************/
+void RemoteManagementSearchPanel::onFocusOutList(Qt::FocusReason type)
 {
-    m_previousPanel = type;
+    // 焦点切出，没值的时候
+    if (type == Qt::TabFocusReason && m_listWidget->count() == 0) {
+        // tab 进入 +
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+        QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        qDebug() << "search panel focus to '+'";
+    }
 }
+
+/*******************************************************************************
+ 1. @函数:    onRefrushList
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-04
+ 4. @说明:    处理刷新列表信号
+*******************************************************************************/
+void RemoteManagementSearchPanel::onRefreshList()
+{
+    // 判断是否显示
+    if (m_isShow) {
+        if (m_isGroupOrNot) {
+            // 刷新分组下搜索列表
+            refreshDataByGroupAndFilter(m_strGroupName, m_strFilter);
+        } else {
+            // 刷新搜索列表
+            refreshDataByFilter(m_strFilter);
+        }
+    }
+}
+
 
 /*******************************************************************************
  1. @函数:    clearAllFocus
@@ -171,6 +177,38 @@ void RemoteManagementSearchPanel::clearAllFocus()
     m_rebackButton->clearFocus();
     m_listWidget->clearFocus();
     m_label->clearFocus();
+}
+
+/*******************************************************************************
+ 1. @函数:    setFocusBack
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-04
+ 4. @说明:    设置焦点返回，从分组返回
+*******************************************************************************/
+void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup)
+{
+    // 返回前判断之前是否要有焦点
+    if (m_listWidget->getFocusState()) {
+        // 要有焦点
+        // 找到分组的新位置
+        int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
+        if (index < 0) {
+            // 小于0代表没找到 获取下一个
+            index = m_listWidget->getNextIndex(m_listWidget->currentIndex());
+        }
+
+        if (index >= 0) {
+            // 找得到, 设置焦点
+            m_listWidget->setCurrentIndex(index);
+        } else {
+            // 没找到焦点设置到添加按钮
+            m_pushButton->setFocus();
+        }
+    }
+    // 不要焦点
+    else {
+        Utils::getMainWindow(this)->focusCurrentPage();
+    }
 }
 
 

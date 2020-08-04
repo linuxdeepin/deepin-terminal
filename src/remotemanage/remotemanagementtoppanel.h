@@ -35,6 +35,7 @@
 
 #include <QPropertyAnimation>
 #include <QWidget>
+#include <QStack>
 
 class RemoteManagementTopPanel : public RightPanel
 {
@@ -44,37 +45,41 @@ public:
     void show();
     // 根据插件给的条件值设置焦点
     void setFocusInPanel();
-protected:
-    /******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/
-    //void resizeEvent(QResizeEvent *event) override;
-    /******** Modify by nt001000 renfeixiang 2020-05-14:修改远程管理界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
+
+public slots:
+    // 显示搜索框
+    void showSearchPanel(const QString &strFilter);
+    // 显示分组界面
+    void showGroupPanel(const QString &strGroupName, bool isFocusOn);
+    // 显示前一个界面（返回）
+    void showPrevPanel();
+
 signals:
     void focusOut();
     void doConnectServer(ServerConfig *curServer);
 
-public slots:
-    void showSearchPanelFromRemotePanel(const QString &strFilter);
-    void showServerConfigGroupPanelFromRemotePanel(const QString &strGroup, bool isFocusOn);
-
-    void showRemotePanelFromGroupPanel(const QString &strGoupName, bool isFocusOn);
-    void showSearchPanelFromGroupPanel(const QString &strGroup, const QString &strFilter);
-
-    void showGroupPanelFromSearchPanel(const QString &strGroup, bool isKeyPress);
-    void showRemoteManagementPanelFromSearchPanel();
-
-    void slotShowGroupPanelFromSearchPanel(const QString &strGroup, bool isFocusOn);
-
 private:
-    void animationPrepare(CommonPanel *hidePanel, CommonPanel *showPanel);
-    void panelLeftToRight(QPropertyAnimation *animation, QPropertyAnimation *animation1);
-    void panelRightToLeft(QPropertyAnimation *animation, QPropertyAnimation *animation1);
+    // 远程主界面
     RemoteManagementPanel *m_remoteManagementPanel = nullptr;
+    // 远程分组界面
     ServerConfigGroupPanel *m_serverConfigGroupPanel = nullptr;
+    // 远程搜索界面
     RemoteManagementSearchPanel *m_remoteManagementSearchPanel = nullptr;
     // 搜索条件
     QString m_filter;
     // 分组条件
     QString m_group;
+    // 当前界面
+    ServerConfigManager::PanelType m_currentPanelType;
+    // 记录前一个界面
+    QStack<ServerConfigManager::PanelType> m_prevPanelStack;
+
+    // 设置平面显示状态
+    void setPanelShowState(ServerConfigManager::PanelType panelType);
+    // 平面从左向右显示
+    void panelLeftToRight(QPropertyAnimation *animation, QPropertyAnimation *animation1);
+    // 平面从右向左显示
+    void panelRightToLeft(QPropertyAnimation *animation, QPropertyAnimation *animation1);
 };
 
 #endif  // REMOTEMANAGEMENTTOPPANEL_H

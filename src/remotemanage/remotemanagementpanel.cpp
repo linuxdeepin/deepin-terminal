@@ -49,30 +49,30 @@ void RemoteManagementPanel::setFocusInPanel()
  3. @日期:    2020-07-23
  4. @说明:    从分组中返回
 *******************************************************************************/
-void RemoteManagementPanel::setFocusBack(const QString &strGroup, bool isFoucsOn)
+void RemoteManagementPanel::setFocusBack(const QString &strGroup)
 {
-    qDebug() << __FUNCTION__ << isFoucsOn;
+    // 返回前判断之前是否要有焦点
+    if (m_listWidget->getFocusState()) {
+        // 要有焦点
+        // 找到分组的新位置
+        int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
+        if (index < 0) {
+            // 小于0代表没找到 获取下一个
+            index = m_listWidget->getNextIndex(m_listWidget->currentIndex());
+        }
 
-    // 获取分组的数量
-    int count = ServerConfigManager::instance()->getServerCount(strGroup);
-    if (count <= 0) {
-        // 若count为0
-        // 分组已经被删除 设置焦点回到 下一个
-        int index = m_listWidget->getNextIndex(0);
-        m_listWidget->setFocus();
-        m_listWidget->setCurrentIndex(index);
-        qDebug() << "index" << index;
-        return;
+        if (index >= 0) {
+            // 找得到, 设置焦点
+            m_listWidget->setCurrentIndex(index);
+        } else {
+            // 没找到焦点设置到添加按钮
+            m_pushButton->setFocus();
+        }
     }
-    int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
-    if (index == m_listWidget->currentIndex()) {
-        m_listWidget->setCurrentIndex(index);
-        qDebug() << __FUNCTION__ << "index " << index;
-    } else {
-        qDebug() << "focus state is not focus on this group";
+    // 不要焦点
+    else {
         Utils::getMainWindow(this)->focusCurrentPage();
     }
-
 }
 
 /*******************************************************************************
@@ -201,7 +201,7 @@ void RemoteManagementPanel::initUI()
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
 //    connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementPanel::listItemClicked);
     connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementPanel::onItemClicked);
-    connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementPanel::showServerConfigGroupPanel);
+    connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementPanel::showGroupPanel);
     connect(m_listWidget, &ListView::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow) {

@@ -63,6 +63,8 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
         if (!isFocus) {
             // 清空index记录
             clearIndex();
+            // 焦点状态为false
+            m_focusState = false;
         }
     });
     // 列表项被点击
@@ -250,7 +252,6 @@ void ListView::setCurrentIndex(int currentIndex)
     ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
     if (item != nullptr) {
         // 设置焦点
-//        widget->getFocus();
         qDebug() << widget << "get focus" << "current index" << currentIndex;
         // Todo 让焦点不要进入主窗口
         widget->setFocus();
@@ -316,8 +317,10 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
     if (isFocusOn) {
         // 键盘
         m_focusState = true;
+        qDebug() << "keyboard clicked";
     } else {
         // 鼠标
+        qDebug() << "mouse press";
         m_focusState = false;
         m_currentIndex = -1;
     }
@@ -333,6 +336,7 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
         if (result == ServerConfigOptDlg::Accepted) {
             // 判断是否需要删除
             if (m_configDialog->isDelServer()) {
+                // 弹出删除弹窗
                 qDebug() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
                 DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), m_configDialog);
                 deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -376,29 +380,42 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
                 // 不需要删除，修改了转到这条修改的记录
                 // 设置滚轮
                 // 关闭后及时将弹窗删除
+                // 记住修改前的位置 m_currentIndex
+                qDebug() << "index before modify " << m_currentIndex;
                 ServerConfigManager::instance()->removeDialog(m_configDialog);
                 // 刷新列表
                 emit ServerConfigManager::instance()->refreshList();
                 // 获取index
                 int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-                if (-1 == index) {
-                    qDebug() << "can't scroll to item " << m_configDialog->getCurServer()->m_serverName;
+                // 若找不到
+                if (index  < 0) {
+                    // 旧位置的下一个
                     index = getNextIndex(m_currentIndex);
-                    setScroll(index);
-                } else {
-                    qDebug() << "scroll to " << index << m_configDialog->getCurServer()->m_serverName;
-                    setScroll(index);
                 }
-                // 焦点返回当前选中项
-                if (m_focusState) {
-                    // 回到列表,仅回到大的列表，没有回到具体的哪个点
-                    setFocus();
-                    qDebug() << "current Index ListView" << m_currentIndex;
-                    setCurrentIndex(index);
+                // 依旧没有找到啦
+                if (index < 0) {
+                    qDebug() << "no next item";
+                    if (m_focusState) {
+                        // 有焦点，焦点出
+                        emit focusOut(Qt::NoFocusReason);
+                    }
                 }
-
+                // 找的到
+                else {
+                    if (m_focusState) {
+                        // 设置焦点
+                        setFocus();
+                        // 有焦点，设置焦点
+                        setCurrentIndex(index);
+                    } else {
+                        // 没焦点,设置滚轮
+                        setScroll(index);
+                    }
+                }
             }
-        } else {
+        }
+        // 不接受，reject 修改弹窗
+        else {
             if (m_focusState) {
                 int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 // 回到列表,仅回到大的列表，没有回到具体的哪个点
