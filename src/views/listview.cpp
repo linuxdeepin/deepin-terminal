@@ -453,7 +453,7 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
     m_currentIndex = curIndex;
 
     // 弹窗显示
-    Service::instance()->setIsDialogShow(window(), true); //暂时保留
+    Service::instance()->setIsDialogShow(window(), true);
 
     qDebug() << "this->count()=" << this->count();
     // 根据点击事件还是键盘事件设置焦点状态
@@ -479,7 +479,7 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
         int tempResult = result;
 
         // 弹窗隐藏或消失
-        Service::instance()->setIsDialogShow(window(), false);
+        //Service::instance()->setIsDialogShow(window(), false);//暂时保留
 
         if (QDialog::Accepted == result) {
             //确认修改处理
@@ -561,7 +561,10 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
                 });
                 dlgDelete->show();
             }
-        } //else if (-1 == result) {
+        }
+
+        Service::instance()->setIsDialogShow(window(), false);
+
         if (m_focusState) {
             // 将焦点落回
             setCurrentIndex(m_currentIndex);
@@ -570,7 +573,7 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
             setScroll(m_currentIndex);
             setFocus();
         }
-        //}
+
         qDebug() << "================================tempResult=" << tempResult;
 
     });
