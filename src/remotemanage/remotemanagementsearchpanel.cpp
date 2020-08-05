@@ -185,16 +185,16 @@ void RemoteManagementSearchPanel::clearAllFocus()
  3. @日期:    2020-08-04
  4. @说明:    设置焦点返回，从分组返回
 *******************************************************************************/
-void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup)
+void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup, bool isFocusOn, int prevIndex)
 {
     // 返回前判断之前是否要有焦点
-    if (m_listWidget->getFocusState()) {
+    if (isFocusOn) {
         // 要有焦点
         // 找到分组的新位置
         int index = m_listWidget->indexFromString(strGroup, ItemFuncType_Group);
         if (index < 0) {
             // 小于0代表没找到 获取下一个
-            index = m_listWidget->getNextIndex(m_listWidget->currentIndex());
+            index = m_listWidget->getNextIndex(prevIndex);
         }
 
         if (index >= 0) {
@@ -202,13 +202,25 @@ void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup)
             m_listWidget->setCurrentIndex(index);
         } else {
             // 没找到焦点设置到添加按钮
-            m_pushButton->setFocus();
+            m_rebackButton->setFocus();
         }
     }
     // 不要焦点
     else {
         Utils::getMainWindow(this)->focusCurrentPage();
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    getListIndex
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-05
+ 4. @说明:    获取列表当前的焦点
+*******************************************************************************/
+int RemoteManagementSearchPanel::getListIndex()
+{
+    qDebug() << __FUNCTION__ << "current index : " << m_listWidget->currentIndex();
+    return m_listWidget->currentIndex();
 }
 
 

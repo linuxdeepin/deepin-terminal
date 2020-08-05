@@ -43,7 +43,9 @@ public:
     // 清除界面所有焦点
     void clearAllFocus();
     // 设置焦点返回
-    void setFocusBack(const QString &strGroup);
+    void setFocusBack(const QString &strGroup, bool isFocusOn, int prevIndex);
+    // 获取列表的index
+    int getListIndex();
 
 signals:
     // 连接远程

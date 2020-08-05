@@ -47,6 +47,8 @@ public:
     void setFocusBack(const QString &strGroup);
     // 清除
     void clearListFocus();
+    // 获取列表中当前焦点的位置
+    int getListIndex();
 
 signals:
     // 显示搜索界面

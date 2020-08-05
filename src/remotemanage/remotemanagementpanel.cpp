@@ -89,6 +89,18 @@ void RemoteManagementPanel::clearListFocus()
     m_listWidget->clearIndex();
 }
 
+/*******************************************************************************
+ 1. @函数:    getListIndex
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-05
+ 4. @说明:    获取列表中当前焦点的位置
+*******************************************************************************/
+int RemoteManagementPanel::getListIndex()
+{
+    qDebug() << __FUNCTION__ << "current index : " << m_listWidget->currentIndex();
+    return m_listWidget->currentIndex();
+}
+
 void RemoteManagementPanel::refreshSearchState()
 {
     if (m_listWidget->count() >= 2) {

@@ -50,7 +50,10 @@ void RemoteManagementTopPanel::show()
     m_remoteManagementSearchPanel->m_isShow = false;
     // 记录当前窗口
     m_currentPanelType = ServerConfigManager::PanelType_Manage;
-    m_prevPanelStack.push_back(m_currentPanelType);
+    // 清空栈
+    m_filterStack.clear();
+    m_prevPanelStack.clear();
+    qDebug() << "show remote panel! stack clear";
 }
 
 /*******************************************************************************
@@ -75,7 +78,7 @@ void RemoteManagementTopPanel::setFocusInPanel()
 void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 {
     // 记录搜索界面的搜索条件
-    m_filter = strFilter;
+    m_filterStack.push_back(strFilter);
     // 设置搜索界面大小
     m_remoteManagementSearchPanel->resize(size());
     // 显示搜索界面
@@ -89,7 +92,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
     // 刷新搜索界面的列表
     if (m_currentPanelType == ServerConfigManager::PanelType_Group) {
         // 组内搜索
-        m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(m_group, m_filter);
+        m_remoteManagementSearchPanel->refreshDataByGroupAndFilter(m_group, strFilter);
 
         // 动画效果的设置
         animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
@@ -98,7 +101,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 
     } else if (m_currentPanelType == ServerConfigManager::PanelType_Manage) {
         // 全局搜索
-        m_remoteManagementSearchPanel->refreshDataByFilter(m_filter);
+        m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
 
         // 动画效果的设置
         animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
@@ -114,7 +117,9 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
     // 搜索界面设置焦点
     m_remoteManagementSearchPanel->onFocusInBackButton();
     // 记录当前窗口为前一个窗口
-    m_prevPanelStack.push_back(m_currentPanelType);
+    PanelState panelState;
+    panelState.m_type = m_currentPanelType;
+    m_prevPanelStack.push_back(panelState);
     // 修改当前窗口
     m_currentPanelType = ServerConfigManager::PanelType_Search;
     // 设置平面状态
@@ -172,7 +177,18 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
     }
 
     // 记录当前窗口为前一个窗口
-    m_prevPanelStack.push_back(m_currentPanelType);
+    PanelState panelState;
+    panelState.m_type = m_currentPanelType;
+    panelState.m_isFocusOn = isFocusOn;
+    // 若有焦点，记录焦点位置
+    if (isFocusOn) {
+        if (m_currentPanelType == ServerConfigManager::PanelType_Search) {
+            panelState.m_currentListIndex = m_remoteManagementSearchPanel->getListIndex();
+        } else {
+            panelState.m_currentListIndex = m_remoteManagementPanel->getListIndex();
+        }
+    }
+    m_prevPanelStack.push_back(panelState);
     // 修改当前窗口
     m_currentPanelType = ServerConfigManager::PanelType_Group;
     // 设置平面状态
@@ -187,14 +203,21 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
 *******************************************************************************/
 void RemoteManagementTopPanel::showPrevPanel()
 {
+    PanelState state;
+    ServerConfigManager::PanelType prevType;
     // 栈为空
     if (m_prevPanelStack.isEmpty()) {
         // 返回
-        qDebug() << "stack is empty!";
-        return;
+        qDebug() << "stack is empty! return to remote first panel";
+        // 栈为空，返回主界面
+        prevType = ServerConfigManager::PanelType_Manage;
+    } else {
+        // 获取前一个界面的类型，此界面为现在要显示的界面
+        state = m_prevPanelStack.pop();
+        prevType = state.m_type;
+        qDebug() << "prevType" << prevType;
     }
-    // 获取前一个界面的类型，此界面为现在要显示的界面
-    ServerConfigManager::PanelType prevType = m_prevPanelStack.pop();
+
     // 动画效果 要隐藏的界面
     QPropertyAnimation *animation;
     if (m_currentPanelType == ServerConfigManager::PanelType_Search) {
@@ -219,6 +242,10 @@ void RemoteManagementTopPanel::showPrevPanel()
         m_remoteManagementPanel->refreshPanel();
         // 显示主界面
         m_remoteManagementPanel->show();
+        // 清空栈
+        m_prevPanelStack.clear();
+        m_filterStack.clear();
+        qDebug() << "remote clear stack";
         // 动画效果的设置
         animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
         connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
@@ -232,15 +259,25 @@ void RemoteManagementTopPanel::showPrevPanel()
         animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
         connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
         break;
-    case ServerConfigManager::PanelType_Search:
+    case ServerConfigManager::PanelType_Search: {
         // 刷新列表 => 搜索框能被返回，只能是全局搜索
-        m_remoteManagementSearchPanel->refreshDataByFilter(m_filter);
+        if (m_filterStack.isEmpty()) {
+            qDebug() << "error: filter stack is empty!";
+            return;
+        }
+        // 取最上一个
+        const QString &strFilter = m_filterStack.at(0);
+        // 清空栈
+        m_filterStack.clear();
+        // 刷新列表
+        m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
         // 显示搜索框
         m_remoteManagementSearchPanel->show();
         // 动画效果的设置
         animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
         connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
-        break;
+    }
+    break;
     default:
         qDebug() << "unknow current panel to show!" << prevType;
         break;
@@ -248,24 +285,29 @@ void RemoteManagementTopPanel::showPrevPanel()
     // 执行动画
     panelLeftToRight(animation, animation1);
 
-    // 焦点返回
-    if (m_currentPanelType  == ServerConfigManager::PanelType_Search) {
-        // 搜索返回
-        if (prevType == ServerConfigManager::PanelType_Manage) {
-            // 返回主界面
-            m_remoteManagementPanel->setFocusInPanel();
+    // 焦点在列表上
+    if (Utils::getMainWindow(this)->isFocusOnList()) {
+        // 焦点返回
+        if (m_currentPanelType  == ServerConfigManager::PanelType_Search) {
+            // 搜索返回
+            if (prevType == ServerConfigManager::PanelType_Manage) {
+                // 返回主界面
+                m_remoteManagementPanel->setFocusInPanel();
+            } else if (prevType == ServerConfigManager::PanelType_Group) {
+                // 返回分组
+                m_serverConfigGroupPanel->setFocusBack();
+            }
+        } else if (m_currentPanelType == ServerConfigManager::PanelType_Group) {
+            // 分组返回
+            if (prevType == ServerConfigManager::PanelType_Manage) {
+                // 返回主界面
+                m_remoteManagementPanel->setFocusBack(m_group);
+            } else if (prevType == ServerConfigManager::PanelType_Search) {
+                // 返回搜索界面
+                m_remoteManagementSearchPanel->setFocusBack(m_group, state.m_isFocusOn, state.m_currentListIndex);
+            }
         } else {
-            // 返回分组
-            m_serverConfigGroupPanel->setFocusBack();
-        }
-    } else {
-        // 分组返回
-        if (prevType == ServerConfigManager::PanelType_Manage) {
-            // 返回主界面
-            m_remoteManagementPanel->setFocusBack(m_group);
-        } else {
-            // 返回搜索界面
-            m_remoteManagementSearchPanel->setFocusBack(m_group);
+            qDebug() << "unknow panel";
         }
     }
 

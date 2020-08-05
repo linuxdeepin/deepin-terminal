@@ -37,6 +37,16 @@
 #include <QWidget>
 #include <QStack>
 
+// 记录平面的状态
+struct PanelState {
+    // 平面的类型
+    ServerConfigManager::PanelType m_type;
+    // 平面的返回是否需要有焦点
+    bool m_isFocusOn = false;
+    // 若返回需要有焦点，则记录index
+    int m_currentListIndex = -1;
+};
+
 class RemoteManagementTopPanel : public RightPanel
 {
     Q_OBJECT
@@ -66,13 +76,13 @@ private:
     // 远程搜索界面
     RemoteManagementSearchPanel *m_remoteManagementSearchPanel = nullptr;
     // 搜索条件
-    QString m_filter;
+    QStack<QString> m_filterStack;
     // 分组条件
     QString m_group;
     // 当前界面
     ServerConfigManager::PanelType m_currentPanelType;
     // 记录前一个界面
-    QStack<ServerConfigManager::PanelType> m_prevPanelStack;
+    QStack<PanelState> m_prevPanelStack;
 
     // 设置平面显示状态
     void setPanelShowState(ServerConfigManager::PanelType panelType);
