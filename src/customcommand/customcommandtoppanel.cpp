@@ -44,7 +44,7 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
  1. @函数:    showCustomCommandPanel
  2. @作者:    sunchengxi
  3. @日期:    2020-08-05
- 4. @说明:    显示自定义命令面板的槽函数
+ 4. @说明:    显示自定义命令面板的槽函数,从自定义搜索面板切换到自定义命令面板
 *******************************************************************************/
 void CustomCommandTopPanel::showCustomCommandPanel()
 {
@@ -55,7 +55,14 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     m_customCommandPanel->m_isShow = true;
     m_customCommandSearchPanel->m_isShow = false;
 
-    m_customCommandPanel->setFocusInPanel();
+    //从自定义搜索面板返回到自定义列表面板时，如果搜索面板存在焦点，则切换后光标焦点依然在自定义列表面板上
+    MainWindow *main = Utils::getMainWindow(this);
+    if (main != nullptr) {
+        if (main->isFocusOnList()) {
+            m_customCommandPanel->setFocusInPanel();
+            qDebug() << "custom command panel has focus";
+        }
+    }
 
     QPropertyAnimation *animationCommandSearchPanel = new QPropertyAnimation(m_customCommandSearchPanel, "geometry");
     animationCommandSearchPanel->setDuration(iAnimationDuration);
