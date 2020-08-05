@@ -500,13 +500,13 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     }
     //-------------------------------------------------------------------//
     ServerConfig *config = new ServerConfig();
-    config->m_serverName = m_serverName->text();
-    config->m_address = m_address->text();
-    config->m_userName = m_userName->text();
+    config->m_serverName = m_serverName->text().trimmed();
+    config->m_address = m_address->text().trimmed();
+    config->m_userName = m_userName->text().trimmed();
     config->m_password = m_password->text();
     config->m_privateKey = m_privateKey->text();
     config->m_port = m_port->text();
-    config->m_group = m_group->text();
+    config->m_group = m_group->text().trimmed();
     config->m_path = m_path->text();
     config->m_command = m_command->text();
     config->m_encoding = m_coding->currentText();
