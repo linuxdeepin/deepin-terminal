@@ -13,6 +13,12 @@ CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInte
     m_pluginName = "Custom Command";
 }
 
+/*******************************************************************************
+ 1. @函数:    initPlugin
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-08-05
+ 4. @说明:    初始化自定义命令插件
+*******************************************************************************/
 void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
@@ -37,6 +43,12 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    titlebarMenu
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-08-05
+ 4. @说明:    初始化窗口菜单栏里的自定义命令快捷键
+*******************************************************************************/
 QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *customCommandAction(new QAction(tr("Custom commands"), mainWindow));
@@ -48,6 +60,12 @@ QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
     return customCommandAction;
 }
 
+/*******************************************************************************
+ 1. @函数:    getCustomCommandTopPanel
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-08-05
+ 4. @说明:    初始化自定义命令面板
+*******************************************************************************/
 void CustomCommandPlugin::initCustomCommandTopPanel()
 {
     m_customCommandTopPanel = new CustomCommandTopPanel(m_mainWindow->centralWidget());
@@ -57,6 +75,12 @@ void CustomCommandPlugin::initCustomCommandTopPanel()
             &CustomCommandPlugin::doCustomCommand);
 }
 
+/*******************************************************************************
+ 1. @函数:    getCustomCommandTopPanel
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-08-05
+ 4. @说明:    获取当前插件的自定义命令面板指针
+*******************************************************************************/
 CustomCommandTopPanel *CustomCommandPlugin::getCustomCommandTopPanel()
 {
     if (!m_customCommandTopPanel) {
@@ -66,6 +90,12 @@ CustomCommandTopPanel *CustomCommandPlugin::getCustomCommandTopPanel()
     return m_customCommandTopPanel;
 }
 
+/*******************************************************************************
+ 1. @函数:    doCustomCommand
+ 2. @作者:    sunchengxi
+ 3. @日期:    2020-08-05
+ 4. @说明:    执行自定义命令，并隐藏右侧插件面板
+*******************************************************************************/
 void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
 {
     if (!strTxt.isEmpty()) {
@@ -78,6 +108,7 @@ void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
     emit doHide();
 }
 
+//不再使用，暂保留
 void CustomCommandPlugin::hidePlugn()
 {
     if (m_customCommandTopPanel && m_customCommandTopPanel->isVisible()) {

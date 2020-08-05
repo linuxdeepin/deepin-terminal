@@ -729,7 +729,7 @@ void CustomCommandOptDlg::setIconPixmap(const QPixmap &iconPixmap)
  1. @函数:    closeEvent
  2. @作者:    sunchengxi
  3. @日期:    2020-07-31
- 4. @说明:    自定义命令操作触感口关闭事件
+ 4. @说明:    自定义命令操作关闭事件
 *******************************************************************************/
 void CustomCommandOptDlg::closeEvent(QCloseEvent *event)
 {
