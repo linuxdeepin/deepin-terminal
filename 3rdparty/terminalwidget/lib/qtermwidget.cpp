@@ -218,8 +218,8 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
 
     QRegExp regExp(txt);
     // qDebug() << "regExp??????" << regExp.isEmpty();
-    regExp.setPatternSyntax(m_searchBar->useRegularExpression() ? QRegExp::RegExp : QRegExp::FixedString);
-    regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
+    regExp.setPatternSyntax(QRegExp::RegExp);
+    regExp.setCaseSensitivity(Qt::CaseSensitive);
 
     HistorySearch *historySearch =
         new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
@@ -441,13 +441,13 @@ void QTermWidget::init(int startnow)
     m_impl->m_terminalDisplay->filterChain()->addFilter(urlFilter);
     m_impl->m_terminalDisplay->filterChain()->setSessionId(m_impl->m_session->sessionId());
 
-    m_searchBar = new SearchBar(this);
-    m_searchBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
-    connect(m_searchBar, SIGNAL(searchCriteriaChanged()), this, SLOT(find()));
-    connect(m_searchBar, SIGNAL(findNext()), this, SLOT(findNext()));
-    connect(m_searchBar, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
-    m_layout->addWidget(m_searchBar);
-    m_searchBar->hide();
+//    m_searchBar = new SearchBar(this);
+//    m_searchBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
+//    connect(m_searchBar, SIGNAL(searchCriteriaChanged()), this, SLOT(find()));
+//    connect(m_searchBar, SIGNAL(findNext()), this, SLOT(findNext()));
+//    connect(m_searchBar, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
+//    m_layout->addWidget(m_searchBar);
+//    m_searchBar->hide();
 
     if (startnow && m_impl->m_session) {
         m_impl->m_session->run();
@@ -471,7 +471,7 @@ void QTermWidget::init(int startnow)
     font.setPointSize(10);
     font.setStyleHint(QFont::TypeWriter);
     setTerminalFont(font);
-    m_searchBar->setFont(font);
+//    m_searchBar->setFont(font);
 
     setScrollBarPosition(NoScrollBar);
     setKeyboardCursorShape(Emulation::KeyboardCursorShape::BlockCursor);
