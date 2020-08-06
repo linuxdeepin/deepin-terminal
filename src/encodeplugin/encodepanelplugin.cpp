@@ -26,6 +26,7 @@
 #include "termwidget.h"
 #include "settings.h"
 #include "service.h"
+#include "utils.h"
 
 #include <DLog>
 #include <QDebug>
@@ -38,7 +39,7 @@ EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterfac
 void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
-    //initEncodePanel();
+//    initEncodePanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name) {
         if (MainWindow::PLUGIN_TYPE_ENCODING != name) {
             // 判断插件是否显示
@@ -55,11 +56,12 @@ void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
                 return;
             }
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 End***************/
-            /******** Modify by ut000610 daizhengwen 2020-05-28: 判断此时是服务器还是终端****************/
-            TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
-            setCurrentTermEncode(term);
             getEncodePanel()->show();
             m_isShow = true;
+            // 先初始化列表后，才能设置焦点
+            TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+            setCurrentTermEncode(term);
+
         }
     });
     connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
