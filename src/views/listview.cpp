@@ -366,6 +366,7 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
                         } else {
                             // 列表为空焦点自动往下
                             m_focusState = false;
+                            emit focusOut(Qt::NoFocusReason);
                         }
                     }
                 });
@@ -552,6 +553,9 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
                             } else {
                                 // 找不到
                                 qDebug() << "can't find index" << index;
+                                if (m_itemList.count() == 0) {
+                                    emit focusOut(Qt::NoFocusReason);
+                                }
                             }
                         }
                         m_pdlg->closeRefreshDataConnection();

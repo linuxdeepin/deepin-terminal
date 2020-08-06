@@ -37,6 +37,10 @@ void RemoteManagementTopPanel::show()
     m_remoteManagementPanel->move(0, 0);
     // 每次显示前清空之前的记录
     m_remoteManagementPanel->clearListFocus();
+    // 记录界面状态
+    m_remoteManagementPanel->m_isShow = true;
+    m_serverConfigGroupPanel->m_isShow = false;
+    m_remoteManagementSearchPanel->m_isShow = false;
     // 显示远程主界面
     m_remoteManagementPanel->show();
     // 其他界面影藏
@@ -44,10 +48,6 @@ void RemoteManagementTopPanel::show()
     m_remoteManagementSearchPanel->hide();
     // 刷新列表
     m_remoteManagementPanel->refreshPanel();
-    // 记录界面状态
-    m_remoteManagementPanel->m_isShow = true;
-    m_serverConfigGroupPanel->m_isShow = false;
-    m_remoteManagementSearchPanel->m_isShow = false;
     // 记录当前窗口
     m_currentPanelType = ServerConfigManager::PanelType_Manage;
     // 清空栈

@@ -38,7 +38,6 @@ void CustomCommandSearchRstPanel::initUI()
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(36, 36));
     m_backButton->setFocusPolicy(Qt::TabFocus);
-    m_backButton->setFocus();
 
     m_label = new DLabel(this);
     m_label->setAlignment(Qt::AlignCenter);
