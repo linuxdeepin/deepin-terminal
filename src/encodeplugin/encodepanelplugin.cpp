@@ -38,14 +38,19 @@ EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterfac
 void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
-    initEncodePanel();
-    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
+    //initEncodePanel();
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name) {
         if (MainWindow::PLUGIN_TYPE_ENCODING != name) {
-            getEncodePanel()->hideAnim();
+            // 判断插件是否显示
+            if (m_isShow) {
+                // 插件显示，则隐藏
+                getEncodePanel()->hideAnim();
+                m_isShow = false;
+            }
         } else {
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 Begin***************/
-            if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < 220) {
-                m_mainWindow->resize(m_mainWindow->width(), 220); //首先设置雷神界面的大小
+            if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < LISTMINHEIGHT) {
+                m_mainWindow->resize(m_mainWindow->width(), LISTMINHEIGHT); //首先设置雷神界面的大小
                 m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);//重新打开编码界面，当前流程结束
                 return;
             }
@@ -54,6 +59,7 @@ void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
             TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
             setCurrentTermEncode(term);
             getEncodePanel()->show();
+            m_isShow = true;
         }
     });
     connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
@@ -83,6 +89,7 @@ EncodePanel *EncodePanelPlugin::getEncodePanel()
 
 void EncodePanelPlugin::initEncodePanel()
 {
+    qDebug() << __FUNCTION__;
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
     connect(Service::instance(), &Service::currentTermChange, m_encodePanel, [ = ](QWidget * term) {
         TermWidget *pterm = m_mainWindow->currentPage()->currentTerminal();

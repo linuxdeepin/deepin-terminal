@@ -16,10 +16,16 @@ RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPlugin
 void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
-    initRemoteManagementTopPanel();
+    //initRemoteManagementTopPanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
         if (MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT != name) {
-            getRemoteManagementTopPanel()->hideAnim();
+            // 判断窗口是否已经显示
+            if (m_isShow) {
+                // 若显示，则隐藏
+                getRemoteManagementTopPanel()->hideAnim();
+                m_isShow = false;
+            }
+
         } else {
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，远程连接界面使用不方便，将雷神窗口变大适应正常的远程连接界面 Begin***************/
             if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < LISTMINHEIGHT) {
@@ -29,8 +35,13 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
             }
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，远程连接界面使用不方便，将雷神窗口变大适应正常的远程连接界面 End***************/
             getRemoteManagementTopPanel()->show();
+            m_isShow = true;
             if (bSetFocus) {
+                // 若焦点不在终端上，焦点落入平面
                 getRemoteManagementTopPanel()->setFocusInPanel();
+            } else {
+                // 若焦点在终端上，焦点落回终端
+                m_mainWindow->focusCurrentPage();
             }
         }
     });
@@ -64,6 +75,7 @@ RemoteManagementTopPanel *RemoteManagementPlugn::getRemoteManagementTopPanel()
 
 void RemoteManagementPlugn::initRemoteManagementTopPanel()
 {
+    qDebug() << __FUNCTION__;
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
     connect(m_remoteManagementTopPanel,
             &RemoteManagementTopPanel::doConnectServer,

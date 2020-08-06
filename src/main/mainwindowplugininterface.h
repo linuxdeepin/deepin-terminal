@@ -33,15 +33,21 @@ public:
     {
     }
 
+    // 初始化插件
     virtual void initPlugin(MainWindow *mainWindow) = 0;
+    // 设置标题上的菜单
     virtual QAction *titlebarMenu(MainWindow *mainWindow) = 0;
 
+    // 获取标题名称
     QString getPluginName()
     {
         return m_pluginName;
     }
 
+    // 插件名称
     QString m_pluginName;
+    // 当前插件状态
+    bool m_isShow = false;
 };
 
 #endif  // MAINWINDOWPLUGININTERFACE_H

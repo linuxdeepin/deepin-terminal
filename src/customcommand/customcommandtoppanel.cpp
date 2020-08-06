@@ -36,7 +36,8 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
     /******** Modify by nt001000 renfeixiang 2020-05-28:修改将该行隐藏，RightPanel::hideAnim函数不会将自定义窗口标志设置未PLUGIN_TYPE_NONEbug#21992 Begin***************/
     //    connect(this, &CustomCommandTopPanel::handleCustomCurCommand, this, &RightPanel::hideAnim);
     /******** Modify by nt001000 renfeixiang 2020-05-28:修改将该行隐藏，RightPanel::hideAnim函数不会将自定义窗口标志设置未PLUGIN_TYPE_NONEbug#21992 Begin***************/
-
+    m_customCommandPanel->hide();
+    m_customCommandSearchPanel->hide();
     connect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandTopPanel::slotsRefreshCommandPanel);
 }
 
@@ -143,8 +144,11 @@ void CustomCommandTopPanel::show(bool bSetFocus)
     m_customCommandSearchPanel->hide();
     m_bSetFocus = bSetFocus;
     if (m_bSetFocus) {
-        // 讲焦点设置在平面上
+        // 将焦点设置在平面上
         m_customCommandPanel->setFocusInPanel();
+    } else {
+        // 将焦点落回终端
+        Utils::getMainWindow(this)->focusCurrentPage();
     }
 
 }

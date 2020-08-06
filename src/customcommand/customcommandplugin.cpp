@@ -7,6 +7,8 @@
 #include "shortcutmanager.h"
 #include "utils.h"
 
+//qt
+#include <QDebug>
 
 CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
@@ -22,10 +24,14 @@ CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInte
 void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
-    initCustomCommandTopPanel();
+    //initCustomCommandTopPanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
         if (MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name) {
-            getCustomCommandTopPanel()->hideAnim();
+            // 若插件已经显示，则隐藏
+            if (m_isShow) {
+                getCustomCommandTopPanel()->hideAnim();
+                m_isShow = false;
+            }
         } else {
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，自定义界面使用不方便，将雷神窗口变大适应正常的自定义界面 Begin***************/
             if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < LISTMINHEIGHT) {
@@ -35,6 +41,7 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
             }
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，自定义界面使用不方便，将雷神窗口变大适应正常的自定义界面 End***************/
             getCustomCommandTopPanel()->show(bSetFocus);
+            m_isShow = true;
             //getCustomCommandTopPanel()->setFocus();
         }
     });
@@ -61,13 +68,14 @@ QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
 }
 
 /*******************************************************************************
- 1. @函数:    getCustomCommandTopPanel
+ 1. @函数:    initCustomCommandTopPanel
  2. @作者:    sunchengxi
  3. @日期:    2020-08-05
  4. @说明:    初始化自定义命令面板
 *******************************************************************************/
 void CustomCommandPlugin::initCustomCommandTopPanel()
 {
+    qDebug() << __FUNCTION__;
     m_customCommandTopPanel = new CustomCommandTopPanel(m_mainWindow->centralWidget());
     connect(m_customCommandTopPanel,
             &CustomCommandTopPanel::handleCustomCurCommand,

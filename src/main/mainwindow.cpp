@@ -1165,6 +1165,12 @@ void MainWindow::showPlugin(const QString &name)
         }
     }
 
+    if (m_CurrentShowPlugin == name && m_CurrentShowPlugin == PLUGIN_TYPE_NONE) {
+        // 目前没有列表显示，直接返回
+        qDebug() << "no plugin show!";
+        return;
+    }
+
     m_CurrentShowPlugin = name;
     if (name != PLUGIN_TYPE_NONE) {
         qDebug() << "show Plugin" << name << bSetFocus;
