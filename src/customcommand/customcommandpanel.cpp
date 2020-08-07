@@ -65,18 +65,13 @@ void CustomCommandPanel::showAddCustomCommandDlg()
     }
 
     // 弹窗显示
-    //Service::instance()->setIsDialogShow(window(), true);
-    if (!m_bpushButtonHaveFocus) {
-        Service::instance()->setIsDialogShow(window(), true);
-    }
+    Service::instance()->setIsDialogShow(window(), true);
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
         // 弹窗隐藏或消失
-        //Service::instance()->setIsDialogShow(window(), false);
-        if (!m_bpushButtonHaveFocus) {
-            Service::instance()->setIsDialogShow(window(), false);
-        }
+        Service::instance()->setIsDialogShow(window(), false);
+
         qDebug() << "finished" << result;
 
         if (result == QDialog::Accepted) {
@@ -95,14 +90,12 @@ void CustomCommandPanel::showAddCustomCommandDlg()
             m_cmdListWidget->setScroll(index);
             /********************* Modify by m000714 daizhengwen End ************************/
 
-            static int i = 0;
-            if (m_bpushButtonHaveFocus && result != -1) {
-                qDebug() << "---------------------button---hasFocus" << i++;
-                QTimer::singleShot(100, this, [&]() {
-                    m_pushButton->setFocus(Qt::TabFocusReason);
-                });
-            }
         }
+
+        if (m_bpushButtonHaveFocus) {
+            m_pushButton->setFocus(Qt::TabFocusReason);
+        }
+
     });
     m_pdlg->show();
 }
