@@ -110,6 +110,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 
     } else {
         qDebug() << "unknow current panel!";
+        return;
     }
     // 执行动画
     panelRightToLeft(animation, animation1);
@@ -160,6 +161,7 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
         qDebug() << "unknow current panel!";
+        return;
     }
     // 执行动画
     panelRightToLeft(animation, animation1);
@@ -219,7 +221,7 @@ void RemoteManagementTopPanel::showPrevPanel()
     }
 
     // 动画效果 要隐藏的界面
-    QPropertyAnimation *animation;
+    QPropertyAnimation *animation = nullptr;
     if (m_currentPanelType == ServerConfigManager::PanelType_Search) {
         // 动画效果的设置
         animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
@@ -235,7 +237,7 @@ void RemoteManagementTopPanel::showPrevPanel()
     }
 
     // 动画效果 要显示的界面
-    QPropertyAnimation *animation1;
+    QPropertyAnimation *animation1 = nullptr;
     switch (prevType) {
     case ServerConfigManager::PanelType_Manage:
         // 刷新主界面
@@ -282,6 +284,11 @@ void RemoteManagementTopPanel::showPrevPanel()
         qDebug() << "unknow current panel to show!" << prevType;
         break;
     }
+    if (nullptr == animation || nullptr == animation1) {
+        qDebug() << "do not has animation";
+        return;
+    }
+
     // 执行动画
     panelLeftToRight(animation, animation1);
 
