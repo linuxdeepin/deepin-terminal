@@ -46,6 +46,10 @@
 using std::ifstream;
 using std::ofstream;
 
+/******** Add by ut001000 renfeixiang 2020-08-07:将最小宽度和高度设置成全局变量***************/
+const int MainWindow::m_MinWidth = 450;
+const int MainWindow::m_MinHeight = 250;
+
 DWIDGET_USE_NAMESPACE
 
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
@@ -379,6 +383,9 @@ void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
     m_tabbar->removeTab(identifier);
     m_termStackWidget->removeWidget(tabPage);
     tabPage->deleteLater();
+
+    /******** Add by ut001000 renfeixiang 2020-08-07:关闭tab时改变大小，bug#41436***************/
+    updateMinHeight();
 
     if (m_tabbar->count() != 0) {
         updateTabStatus();
@@ -995,6 +1002,8 @@ void MainWindow::initShortcuts()
         }
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
         setWindowMinHeightForFont();
+        /******** Add by ut001000 renfeixiang 2020-08-07:zoom_in时改变大小，bug#41436***************/
+        updateMinHeight();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
@@ -1006,6 +1015,8 @@ void MainWindow::initShortcuts()
         }
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
         setWindowMinHeightForFont();
+        /******** Add by ut001000 renfeixiang 2020-08-07:zoom_out时改变大小，bug#41436***************/
+        updateMinHeight();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
@@ -1017,6 +1028,8 @@ void MainWindow::initShortcuts()
         }
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
         setWindowMinHeightForFont();
+        /******** Add by ut001000 renfeixiang 2020-08-07:default_size时改变大小，bug#41436***************/
+        updateMinHeight();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
     });
 
@@ -1972,6 +1985,8 @@ void QuakeWindow::initWindowAttribute()
         /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
         setMinimumWidth(QApplication::desktop()->availableGeometry().width());
         setWindowMinHeightForFont();
+        /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
+        updateMinHeight();
         /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
         move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
         qDebug() << "size" << size();
@@ -2066,12 +2081,44 @@ void QuakeWindow::onAppFocusChangeForQuake()
 void QuakeWindow::setWindowMinHeightForFont()
 {
     int height = 0;
-    QFontMetrics fm(currentPage()->currentTerminal()->getTerminalFont());
-    height = fm.height();
-    height = 60 + height * 2;
+    //根据内部term的最小高度设置雷神终端的最小高度, (m_MinHeight-50)/2是内部term的最小高度，50是雷神窗口的标题栏高度
+    //add by ut001000 renfeixiang 2020-08-07
+    height = (m_MinHeight-50)/2 + 50;
     setMinimumHeight(height);
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
+
+/*******************************************************************************
+ 1. @函数:    updateMinHeight
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-07
+ 4. @说明:    用于雷神窗口增加和减少横向分屏时，对雷神窗口的自小高进行修改，bug#41436
+*******************************************************************************/
+void QuakeWindow::updateMinHeight()
+{
+    qDebug() << "start updateMinHeight";
+    bool hasHorizontalSplit = false;
+    int count = m_termStackWidget->count();
+    for (int i = 0; i < count; i++) {
+        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
+        if (tabPage->hasHasHorizontalSplit()) {
+            hasHorizontalSplit = true;
+            break;
+        }
+    }
+    if(hasHorizontalSplit)
+    {
+        if(minimumHeight() != m_MinHeight){
+            qDebug() << "set has Vertical split MinHeight";
+            setMinimumHeight(m_MinHeight);
+        }
+    }else {
+        if(minimumHeight() == m_MinHeight){
+            qDebug() << "set not has Vertical split MinHeight";
+            setWindowMinHeightForFont();
+        }
+    }
+}
 
 void QuakeWindow::changeEvent(QEvent *event)
 {

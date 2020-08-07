@@ -36,6 +36,8 @@ public:
     void closeOtherTerminal(bool hasConfirmed = false);
     void focusNavigation(Qt::Edge dir);
     int getTerminalCount();
+    /******** Add by ut001000 renfeixiang 2020-08-07:用于查找当前所有term中是否含有水平分屏线，有返回true，反之false，#bug#41436***************/
+    bool hasHasHorizontalSplit();
     /******** Modify by n014361 wangpeili 2020-01-08: 计算上下左右判断方法 ******×****/
     QRect GetRect(TermWidget *term);
     QPoint GetComparePoint(TermWidget *term, Qt::Edge dir);

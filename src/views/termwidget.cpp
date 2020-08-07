@@ -115,7 +115,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
     // 以最小mainwindow分4屏为标准的最小大小
-    setMinimumSize(225, 100);
+    /******** Modify by ut001000 renfeixiang 2020-08-07:修改成根据全局变量m_MinWidth，m_MinHeight计算出term的最小高度和宽度***************/
+    setMinimumSize(MainWindow::m_MinWidth/2, (MainWindow::m_MinHeight-50)/2);
     /********************* Modify by n014361 wangpeili End ************************/
 
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
@@ -740,7 +741,8 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
         setTermFont(Settings::instance()->fontName());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 Begin***************/
         m_Page->parentMainWindow()->setWindowMinHeightForFont();
-        //qDebug() << "font_sizefont_sizefont_sizefont_size" << Settings::instance()->fontSize();
+        /******** Add by ut001000 renfeixiang 2020-08-07:字体改变时改变大小，bug#41436***************/
+        m_Page->parentMainWindow()->updateMinHeight();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 End***************/
         return;
     }
@@ -749,7 +751,8 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
         setTermFontSize(Settings::instance()->fontSize());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 Begin***************/
         m_Page->parentMainWindow()->setWindowMinHeightForFont();
-        //qDebug() << "font_sizefont_sizefont_sizefont_size" << Settings::instance()->fontSize();
+        /******** Add by ut001000 renfeixiang 2020-08-07:字体大小改变时改变大小，bug#41436***************/
+        m_Page->parentMainWindow()->updateMinHeight();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 End***************/
         return;
     }

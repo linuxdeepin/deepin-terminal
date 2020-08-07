@@ -133,6 +133,13 @@ public:
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
     static constexpr const char *QKEYSEQUENCE_FOCUSOUT_TIMINAL = "Meta+Tab";
     static constexpr const char *QKEYSEQUENCE_PASTE_BUILTIN = "Shift+Ins";
+
+    /******** Add by ut001000 renfeixiang 2020-08-07:将m_MinWidth和m_MinHeight设置成全局变量***************/
+    // 窗口最小宽度
+    static const int m_MinWidth;
+    // 窗口最小高度
+    static const int m_MinHeight;
+
     int getDesktopIndex() const;
 
 signals:
@@ -237,6 +244,8 @@ public:
     virtual void onAppFocusChangeForQuake() = 0;
     // 根据字体和字体大小设置最小高度
     virtual void setWindowMinHeightForFont() = 0;
+    /******** Add by ut001000 renfeixiang 2020-08-07:基类中定义更新最小高度函数的纯虚函数***************/
+    virtual void updateMinHeight() = 0;
 
 protected:
     QMenu *m_menu = nullptr;
@@ -267,10 +276,6 @@ protected:
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 
 protected:
-    // 窗口最小宽度
-    const int m_MinWidth = 450;
-    // 窗口最小高度
-    const int m_MinHeight = 250;
     // 是否需要保存位置开关，雷神窗口不关心这个参数
     bool m_IfUseLastSize = false;
     // 雷神终端所在桌面
@@ -285,6 +290,8 @@ class NormalWindow : public MainWindow
 public:
     explicit NormalWindow(TermProperties properties, QWidget *parent = nullptr);
     ~NormalWindow() override;
+    /******** Add by ut001000 renfeixiang 2020-08-07:普通窗口不做处理***************/
+    virtual void updateMinHeight() override {return;}
 
 protected:
     // 初始化标题栏
@@ -313,6 +320,9 @@ class QuakeWindow : public MainWindow
 public:
     explicit QuakeWindow(TermProperties properties, QWidget *parent = nullptr);
     ~QuakeWindow() override;
+
+    /******** Add by ut001000 renfeixiang 2020-08-07:用于雷神窗口增加和减少横向分屏时，对雷神窗口的自小高进行修改，bug#41436***************/
+    virtual void updateMinHeight() override;
 
 protected:
     // 初始化标题栏

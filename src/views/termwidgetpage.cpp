@@ -102,20 +102,22 @@ void TermWidgetPage::split(Qt::Orientation orientation)
         qDebug() << "first split";
         QSplitter *firstSplit = createSubSplit(term, orientation);
         m_layout->addWidget(firstSplit);
-        return ;
+        //return ;
+    } else {
+        qDebug() << "not first split";
+        QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
+        int index = upSplit->indexOf(term);
+        QList<int> parentSizes = upSplit->sizes();
+
+        // 用新的Split分割布局替换原来的位置
+        QSplitter *subSplit = createSubSplit(term, orientation);
+        upSplit->insertWidget(index, subSplit);
+        upSplit->setSizes(parentSizes);
+        setSplitStyle(upSplit);
     }
 
-    qDebug() << "not first split";
-    QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
-    int index = upSplit->indexOf(term);
-    QList<int> parentSizes = upSplit->sizes();
-
-    // 用新的Split分割布局替换原来的位置
-    QSplitter *subSplit = createSubSplit(term, orientation);
-    upSplit->insertWidget(index, subSplit);
-    upSplit->setSizes(parentSizes);
-    setSplitStyle(upSplit);
-
+    /******** Add by ut001000 renfeixiang 2020-08-07:新增分屏时改变大小，bug#41436***************/
+    parentMainWindow()->updateMinHeight();
     return ;
 }
 /*******************************************************************************
@@ -133,6 +135,7 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     // 意义与名称是相反的
     DSplitter *subSplit = new DSplitter(orientation == Qt::Horizontal ? Qt::Vertical : Qt::Horizontal,
                                         this);
+
     subSplit->setFocusPolicy(Qt::NoFocus);
     subSplit->insertWidget(0, term);
     subSplit->insertWidget(1, newTerm);
@@ -188,6 +191,8 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
         upSplit->setParent(nullptr);
         upSplit->deleteLater();
         qDebug() << "page terminal count =" << getTerminalCount();
+        /******** Add by ut001000 renfeixiang 2020-08-07:关闭分屏时改变大小，bug#41436***************/
+        parentMainWindow()->updateMinHeight();
         return;
     }
     parentMainWindow()->closeTab(identifier());
@@ -364,6 +369,23 @@ void TermWidgetPage::focusNavigation(Qt::Edge dir)
 int TermWidgetPage::getTerminalCount()
 {
     return findChildren<TermWidget *>().size();
+}
+/*******************************************************************************
+ 1. @函数:    hasHasHorizontalSplit
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-07
+ 4. @说明:    用于查找当前所有term中是否含有水平分屏线，有返回true，反之false，#bug#41436
+*******************************************************************************/
+bool TermWidgetPage::hasHasHorizontalSplit()
+{
+    qDebug() << "start hasHasHorizontalSplit";
+    QList<QSplitter *> splitList = findChildren<QSplitter  *>();
+    for (QSplitter *split : splitList) {
+        if (split->orientation() == Qt::Vertical) {
+            return  true;
+        }
+    }
+    return  false;
 }
 /********************* Modify by ut000439 wangpeili End ************************/
 
