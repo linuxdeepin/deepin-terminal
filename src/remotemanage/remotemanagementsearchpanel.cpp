@@ -23,6 +23,7 @@ void RemoteManagementSearchPanel::initUI()
     this->setAutoFillBackground(true);
 
     m_rebackButton = new IconButton(this);
+    m_rebackButton->setObjectName("RemoteSearchRebackButton");
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_rebackButton->setFixedSize(QSize(ICONSIZE_36, ICONSIZE_36));
     m_rebackButton->setFocusPolicy(Qt::TabFocus);

@@ -28,6 +28,7 @@ void ServerConfigGroupPanel::initUI()
 
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_rebackButton->setFixedSize(QSize(ICONSIZE_36, ICONSIZE_36));
+    m_rebackButton->setObjectName("RemoteGroupRebackButton");
 
     m_searchEdit->setFixedWidth(GROUPSEARCHWIDTH);
     m_searchEdit->setClearButtonEnabled(true);

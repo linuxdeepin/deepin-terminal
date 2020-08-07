@@ -49,31 +49,30 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
         QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
 
         /***add begin by ut001121 zhangmeng 20200801 截获DPushButton控件回车按键事件并模拟空格键点击事件,用以解决回车键不响应的问题***/
-        if(object->metaObject()->className() == QStringLiteral("QPushButton")
-                && (keyevent->key() == Qt::Key_Return || keyevent->key() == Qt::Key_Enter))
-        {
-            DPushButton* pushButton = static_cast<DPushButton*>(object);
-#if 0
-            pushButton->animateClick(80);
-#else
+        if ((object->metaObject()->className() == QStringLiteral("QPushButton")
+                || object->metaObject()->className() == QStringLiteral("IconButton"))
+                && (keyevent->key() == Qt::Key_Return || keyevent->key() == Qt::Key_Enter)) {
+            DPushButton *pushButton = static_cast<DPushButton *>(object);
             // 模拟空格键按下事件
-            QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
-            QApplication::sendEvent(pushButton, &pressSpace);
-            // 设置定时
-            QTimer::singleShot(80, this, [pushButton]() {
-                // 模拟空格键松开事件
-                QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
-                QApplication::sendEvent(pushButton, &releaseSpace);
-            });
-#endif
+            pressSpace(pushButton);
             return true;
         }
         /***add end by ut001121***/
 
+        if ((object->objectName() == QStringLiteral("CustomRebackButton")
+                || object->objectName() == QStringLiteral("RemoteSearchRebackButton")
+                || object->objectName() == QStringLiteral("RemoteGroupRebackButton"))
+                && keyevent->key() == Qt::Key_Left) {
+            DPushButton *pushButton = static_cast<DPushButton *>(object);
+            // 模拟空格键按下事件
+            pressSpace(pushButton);
+            return true;
+        }
+
         if ((keyevent->modifiers() == Qt::AltModifier) && keyevent->key() == Qt::Key_M) {
             // 光标中心点
             QPoint pos = QPoint(qApp->inputMethod()->cursorRectangle().x() + qApp->inputMethod()->cursorRectangle().width() / 2,
-                             qApp->inputMethod()->cursorRectangle().y() + qApp->inputMethod()->cursorRectangle().height() / 2);
+                                qApp->inputMethod()->cursorRectangle().y() + qApp->inputMethod()->cursorRectangle().height() / 2);
 
             qDebug() << "Alt+M has triggerd" << pos << qApp->inputMethod();
             // QPoint(0,0) 表示无法获取光标位置
@@ -142,4 +141,23 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 #endif
 
     return QApplication::notify(object, event);
+}
+
+/*******************************************************************************
+ 1. @函数:    pressSpace
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-06
+ 4. @说明:    模拟键盘space按压效果
+*******************************************************************************/
+void TerminalApplication::pressSpace(DPushButton *pushButton)
+{
+    // 模拟空格键按下事件
+    QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
+    QApplication::sendEvent(pushButton, &pressSpace);
+    // 设置定时
+    QTimer::singleShot(80, this, [pushButton]() {
+        // 模拟空格键松开事件
+        QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
+        QApplication::sendEvent(pushButton, &releaseSpace);
+    });
 }

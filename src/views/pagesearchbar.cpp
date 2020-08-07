@@ -136,7 +136,6 @@ void PageSearchBar::findCancel()
 *******************************************************************************/
 void PageSearchBar::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << event;
     switch (event->key()) {
     case Qt::Key_Enter:
     case Qt::Key_Return: {

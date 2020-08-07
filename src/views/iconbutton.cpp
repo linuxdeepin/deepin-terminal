@@ -27,11 +27,6 @@ void IconButton::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Left:
         emit preFocus();
         break;
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
-    case Qt::Key_Space:
-        emit clicked(true);
-        break;
     default:
         DIconButton::keyPressEvent(event);
         break;

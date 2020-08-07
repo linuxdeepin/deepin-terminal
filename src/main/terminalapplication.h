@@ -25,6 +25,7 @@
 #include "environments.h"
 
 #include <DApplication>
+#include <DPushButton>
 
 DWIDGET_USE_NAMESPACE
 
@@ -45,6 +46,8 @@ protected:
     void handleQuitAction() override;
     bool notify(QObject *object, QEvent *event);
 private:
+    // 模拟键盘space键按压
+    void pressSpace(DPushButton *pushButton);
 };
 
 #endif // TERMINALAPPLICATION_H

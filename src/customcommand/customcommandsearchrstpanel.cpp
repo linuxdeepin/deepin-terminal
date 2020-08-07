@@ -14,6 +14,7 @@
 #include <QKeyEvent>
 #include <QApplication>
 #include <QCoreApplication>
+#include <QTimer>
 #include <QDebug>
 
 CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
@@ -34,6 +35,7 @@ void CustomCommandSearchRstPanel::initUI()
     setAutoFillBackground(true);
 
     m_rebackButton = new IconButton(this);
+    m_rebackButton->setObjectName("CustomRebackButton");
     m_backButton = m_rebackButton;
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(36, 36));
@@ -72,9 +74,17 @@ void CustomCommandSearchRstPanel::initUI()
 
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
-    connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
-        m_rebackButton->click();// 在派生类捕获方向键盘左键按下，转化为鼠标点击。
-    });
+//    connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
+//        // 在派生类捕获方向键盘左键按下，转化为鼠标点击。
+//        QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier);
+//        QApplication::sendEvent(m_rebackButton, &pressSpace);
+//        // 设置定时
+//        QTimer::singleShot(80, this, [ = ]() {
+//            // 模拟空格键松开事件
+//            QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier);
+//            QApplication::sendEvent(m_rebackButton, &releaseSpace);
+//        });
+//    });
     // 字体颜色随主题变化变化
     connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
         DPalette palette = m_label->palette();
