@@ -27,8 +27,12 @@ int main(int argc, char *argv[])
     // 应用计时
     QTime useTime;
     useTime.start();
+    //为了更精准，起动就度量时间
+    qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
+    // 启动应用
     TerminalApplication app(argc, argv);
+    app.setStartTime(startTime);
     DApplicationSettings set(&app);
 
     // 系统日志
@@ -46,7 +50,7 @@ int main(int argc, char *argv[])
         // 初始化失败，则已经注册过dbus
         // 判断是否能创建新的的窗口
         // 不是雷神且正在创建
-        if (!properties[QuakeMode].toBool() && !Service::instance()->getEnable()) {
+        if (!properties[QuakeMode].toBool() && !Service::instance()->getEnable(startTime)) {
             qDebug() << "[sub app] Server can't create, drop this create request! time use "
                      << useTime.elapsed() <<"ms";
             return 0;

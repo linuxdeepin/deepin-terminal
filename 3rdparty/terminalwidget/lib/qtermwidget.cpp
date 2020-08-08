@@ -403,16 +403,20 @@ void QTermWidget::init(int startnow)
     }
     dirs.append(QFile::decodeName(TRANSLATIONS_DIR));
 
-    m_translator = new QTranslator(this);
-
-    for (const QString &dir : qAsConst(dirs)) {
-        qDebug() << "Trying to load translation file from dir" << dir;
-        if (m_translator->load(
-                    QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
-            qApp->installTranslator(m_translator);
-            qDebug() << "Translations found in" << dir;
-            break;
+    // 语言，整个应用程序只需要设置一次
+    static bool hasLoad = false;
+    if(!hasLoad){
+        m_translator = new QTranslator(this);
+        for (const QString &dir : qAsConst(dirs)) {
+            qDebug() << "Trying to load translation file from dir" << dir;
+            if (m_translator->load(
+                        QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
+                qApp->installTranslator(m_translator);
+                qDebug() << "Translations found in" << dir;
+                break;
+            }
         }
+        hasLoad = true;
     }
 
     m_impl = new TermWidgetImpl(this);

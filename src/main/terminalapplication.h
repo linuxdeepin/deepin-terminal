@@ -41,6 +41,9 @@ class TerminalApplication : public DApplication
 public:
     TerminalApplication(int &argc, char *argv[]);
     ~TerminalApplication();
+    // 为了更精确的测算时间，单独设置
+    void setStartTime(qint64 time);
+    qint64 getStartTime();
 protected:
     // 重写了app.quit为当前窗口close.
     void handleQuitAction() override;
@@ -48,6 +51,10 @@ protected:
 private:
     // 模拟键盘space键按压
     void pressSpace(DPushButton *pushButton);
+
+    // APP启动时间
+    // 子进程该数据时间会通过共享内存传给对应的maindow
+    qint64 m_AppStartTime = 0;
 };
 
 #endif // TERMINALAPPLICATION_H

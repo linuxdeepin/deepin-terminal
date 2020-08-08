@@ -43,6 +43,7 @@ DWIDGET_USE_NAMESPACE
 struct ShareMemoryInfo {
     int enableCreateTerminal = 0;
     int TerminalsCount = 0;
+    qint64 appStartTime = 0; //sub app 启动的时间
 };
 /*******************************************************************************
  1. @类名:    Service
@@ -89,7 +90,13 @@ public:
     bool getIsDialogShow() const;
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
-    bool getEnable() ;
+    // 主进程是否允许创建新的窗口，如果允许，把子进程的创建时间设置到共享内存传递过去。
+    bool getEnable(qint64 time) ;
+    // 设置子进程启动时间到共享内存
+    void setSubAppStartTime(qint64);
+    // 获取子进程在共享的启动时间
+    qint64 getSubAppStartTime();
+
     void updateShareMemoryCount(int count);
     int  getShareMemoryCount();
     bool setMemoryEnable(bool enable);
@@ -98,6 +105,8 @@ public:
 
     //判断当前是否开启窗口特效  开启-true 关闭-false
     bool isWindowEffectEnabled();
+    // 获取主程序初始进入的时间
+    qint64 getEntryTime();
 
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
@@ -135,6 +144,9 @@ private:
     ShareMemoryInfo *m_pShareMemoryInfo = nullptr;
     // 初始化和运行无障碍辅助工具的线程
     AtspiDesktop *m_atspiThread = nullptr;
+
+    // 记录进入的时间，只有创建窗口时，才会来取用这个时间
+    qint64 m_EntryTime = 0;
 };
 
 #endif // SERVICE_H

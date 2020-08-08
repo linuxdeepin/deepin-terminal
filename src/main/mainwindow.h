@@ -205,27 +205,28 @@ protected:
     bool isTabVisited(int tabSessionId);
     bool isTabChangeColor(int tabSessionId);
     void updateTabStatus();
-    /******** Modify by n014361 wangpeili 2020-03-09: 非DTK控件手动匹配系统主题的修改 **********/
+    // 非DTK控件手动匹配系统主题的修改
     void applyTheme();
-    /********************* Modify by n014361 wangpeili End ************************/
-    /**************** Modify by n013252 wangliang 2020-01-20: 终端退出保护 ****************/
+
+    // 终端退出保护
     bool closeConfirm();
-    /**************** Modify by n013252 wangliang End ****************/
 
     MainWindowPluginInterface *getPluginByName(const QString &name);
 
-    /******** Modify by n014361 wangpeili 2020-01-06:增加显示快捷键功能***********×****/
     // 显示快捷键功能
     void displayShortcuts();
     // 创建Json组信息
     void createJsonGroup(const QString &keyCategory, QJsonArray &jsonGroups);
-    /********************* Modify by n014361 wangpeili End ************************/
-    /******** Modify by n014361 wangpeili 2020-02-20: 创建快捷键管理 ****************/
+    // 创建快捷键管理
     QShortcut *createNewShotcut(const QString &key, bool AutoRepeat = true);
-    /********************* Modify by n014361 wangpeili End ************************/
     //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
     void pressEnterKey(const QString &text);
-    //---------------------------------------
+
+    // mainwindow创建结束记录
+    void createWindowComplete();
+    // 首个终端创建成功结束
+    void firstTerminalComplete();
+
 
 protected:
     // 初始化标题栏
@@ -281,6 +282,20 @@ protected:
     // 雷神终端所在桌面
     int m_desktopIndex;
     bool m_hasConfirmedClose = false;
+
+    // 对应的程序启动时间，主进程或子进程
+    qint64 m_ReferedAppStartTime = 0;
+    // MainWindow开始创建的时间
+    qint64 m_CreateWindowTime = 0;
+    // MainWindow创建结束的时间
+    qint64 m_WindowCompleteTime = 0;
+    // 第一个Terminal创建完成时间
+    qint64 m_FirstTerminalCompleteTime = 0;
+
+    // ID
+    int m_MainWindowID = 0;
+    // 创建第一个终端完成时，需要记录
+    bool hasCreateFirstTermialComplete = false;
 };
 
 class NormalWindow : public MainWindow

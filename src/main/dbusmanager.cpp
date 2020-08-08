@@ -227,7 +227,7 @@ void DBusManager::entry(QStringList args)
 *******************************************************************************/
 bool DBusManager::createRequest()
 {
-    bool result = Service::instance()->getEnable();
+    bool result = Service::instance()->getEnable(0);
     if (result) {
         // 允许当前请求创建，阻止其他窗口创建
         Service::instance()->setMemoryEnable(false);

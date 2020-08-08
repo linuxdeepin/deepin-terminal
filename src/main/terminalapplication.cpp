@@ -36,6 +36,26 @@ TerminalApplication::~TerminalApplication()
         delete Service::instance();
     }
 }
+/*******************************************************************************
+ 1. @函数:    setStartTime
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-08-08
+ 4. @说明:    把main初始的时间，设置为应用启动时间
+*******************************************************************************/
+void TerminalApplication::setStartTime(qint64 time)
+{
+    m_AppStartTime = time;
+}
+/*******************************************************************************
+ 1. @函数:    getStartTime
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-08-08
+ 4. @说明:    只有主进程在创建mainwindow的时候会用到。
+*******************************************************************************/
+qint64 TerminalApplication::getStartTime()
+{
+    return m_AppStartTime;
+}
 void TerminalApplication::handleQuitAction()
 {
     qDebug() << "handleQuitAction";

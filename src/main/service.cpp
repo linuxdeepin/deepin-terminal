@@ -66,6 +66,8 @@ void Service::init()
     m_pShareMemoryInfo = static_cast<ShareMemoryInfo *>(m_enableShareMemory->data());
     // 主进程：首次连接设置默认值为false
     setMemoryEnable(false);
+    // 清理共享内存
+    setSubAppStartTime(0);
     qDebug() << "All init data complete!";
 
     //监听窗口特效变化
@@ -234,6 +236,11 @@ bool Service::isWindowEffectEnabled()
     return false;
 }
 
+qint64 Service::getEntryTime()
+{
+    return m_EntryTime;
+}
+
 /*******************************************************************************
  1. @函数:    showSettingDialog
  2. @作者:    ut000610 戴正文
@@ -333,7 +340,8 @@ bool Service::isCountEnable()
 }
 
 void Service::Entry(QStringList arguments)
-{
+{    
+    m_EntryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     TermProperties properties;
     Utils::parseCommandLine(arguments, properties);
 
@@ -343,12 +351,6 @@ void Service::Entry(QStringList arguments)
         return;
     }
 
-//    // 到达窗口最大值，则返回，不做创建
-//    if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
-//        // 当前不创建，要将enable还原
-//        Service::instance()->setEnable(true);
-//        return;
-//    }
     // 普通窗口处理入口
     WindowsManager::instance()->createNormalWindow(properties);
     return;
@@ -368,10 +370,11 @@ Service::Service(QObject *parent) : QObject(parent)
  2. @作者:    ut000439 王培利
  3. @日期:    2020-06-17
  4. @说明:    子进程获取是否可以创建窗口许可，获取到权限立即将标志位置为false
+              增加子进程启动的时间，如果可以创建，把该时间写入共享内存，当创建mainwindow的时候，取走这个数据
 *******************************************************************************/
-bool Service::getEnable()
+bool Service::getEnable(qint64 time)
 {
-    if (!Service::instance()->isCountEnable()) {
+    if (!isCountEnable()) {
         return false;
     }
     // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
@@ -381,22 +384,52 @@ bool Service::getEnable()
     }
     // sub app首次赋值m_pShareMemoryInfo
     m_pShareMemoryInfo = static_cast<ShareMemoryInfo *>(m_enableShareMemory->data());
-    if (Service::instance()->getShareMemoryCount() >= MAXWIDGETCOUNT) {
+    if (getShareMemoryCount() >= MAXWIDGETCOUNT) {
         qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->TerminalsCount
                  << ", can't create terminal any more.";
         return false;
     }
     qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->TerminalsCount;
     // 如果标志位为false，则表示正在创建窗口，不可以再创建
-    if (!Service::instance()->getMemoryEnable()) {
-        Service::instance()->releaseShareMemory();
+    if (!getMemoryEnable()) {
+        releaseShareMemory();
         qDebug() << "[sub app] server m_enableShareMemory  is busy create!";
         return false;
     }
     // 可以创建了，立马将标识位置为false.
-    Service::instance()->setMemoryEnable(false);
-    Service::instance()->releaseShareMemory();
+    setMemoryEnable(false);
+    setSubAppStartTime(time);
+    releaseShareMemory();
     return true;
+}
+/*******************************************************************************
+ 1. @函数:    setSubAppStartTime
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-08-08
+ 4. @说明:    设置子进程启动时间到共享内存
+*******************************************************************************/
+void Service::setSubAppStartTime(qint64 time)
+{
+    // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
+    if (!m_enableShareMemory->isAttached()) {
+        qDebug() << "m_enableShareMemory  isAttached failed?????";
+        return ;
+    }
+
+    m_pShareMemoryInfo->appStartTime = time;
+    qDebug() << "[sub app] app Start Time = " << m_pShareMemoryInfo->appStartTime;
+
+    return ;
+}
+/*******************************************************************************
+ 1. @函数:    getSubAppStartTime
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-08-08
+ 4. @说明:    获取子进程在共享的启动时间
+*******************************************************************************/
+qint64 Service::getSubAppStartTime()
+{
+    return  m_pShareMemoryInfo->appStartTime;
 }
 /*******************************************************************************
  1. @函数:    updateShareMemoryCount

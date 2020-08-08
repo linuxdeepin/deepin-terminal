@@ -16,6 +16,7 @@
 #include "dbusmanager.h"
 #include "windowsmanager.h"
 #include "service.h"
+#include "terminalapplication.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -63,6 +64,26 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_isQuakeWindow(properties[QuakeMode].toBool()),
       m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
 {
+    static int id = 0;
+    m_MainWindowID = ++id;
+    // 首先到 “此刻的共享内存”里面找，如果找不到内容，说明这个不是子进程
+    m_ReferedAppStartTime = Service::instance()->getSubAppStartTime();
+    if (m_ReferedAppStartTime == 0)
+    {
+        // 主进程的启动时间存在APP中
+        TerminalApplication *app = static_cast<TerminalApplication *>(qApp);
+        m_ReferedAppStartTime = app->getStartTime();
+        qDebug() << "[main app] Start Time = "
+                 << QDateTime::fromMSecsSinceEpoch(m_ReferedAppStartTime).toString("yyyy-MM-dd hh:mm:ss:zzz");
+    }
+    else
+    {
+        qDebug() << "[sub app] Start Time = "
+                 << QDateTime::fromMSecsSinceEpoch(m_ReferedAppStartTime).toString("yyyy-MM-dd hh:mm:ss:zzz");
+    }
+    m_CreateWindowTime = Service::instance()->getEntryTime();
+    qDebug() << "MainWindow Create Time = "
+             << QDateTime::fromMSecsSinceEpoch(m_CreateWindowTime).toString("yyyy-MM-dd hh:mm:ss:zzz");
 }
 
 void MainWindow::initUI()
@@ -763,6 +784,15 @@ void MainWindow::onTermTitleChanged(QString title)
     const bool customName = tabPage->property("TAB_CUSTOM_NAME_PROPERTY").toBool();
     if (!customName) {
         m_tabbar->setTabText(tabPage->identifier(), title);
+    }
+
+    // 判定第一次修改标题的时候，认为终端已经创建成功
+    // 以此认为第一次打开终端窗口结束，记录时间    
+    if (!hasCreateFirstTermialComplete)
+    {
+        Service::instance()->setMemoryEnable(true);
+        firstTerminalComplete();
+        hasCreateFirstTermialComplete = true;
     }
 }
 
@@ -1732,6 +1762,32 @@ void MainWindow::pressEnterKey(const QString &text)
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
     QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
 }
+/*******************************************************************************
+ 1. @函数:    createWindowComplete
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-08-08
+ 4. @说明:    mainwindow创建结束记录
+*******************************************************************************/
+void MainWindow::createWindowComplete()
+{
+    m_WindowCompleteTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    // qDebug()<<"MainWindow Create complete, Time use"<<m_WindowCompleteTime - m_CreateWindowTime;
+}
+/*******************************************************************************
+ 1. @函数:    firstTerminalComplete
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-08-08
+ 4. @说明:    首个终端创建成功结束, 统计各个时间
+*******************************************************************************/
+void MainWindow::firstTerminalComplete()
+{
+    m_FirstTerminalCompleteTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    qDebug() << "app create all complete," << "MainWindowID = "<< m_MainWindowID <<",all time use" << m_FirstTerminalCompleteTime - m_ReferedAppStartTime << "ms";
+    qDebug() << "before entry use" << m_CreateWindowTime - m_ReferedAppStartTime << "ms";
+    // 创建mainwidow时间，这个时候terminal并没有创建好，不能代表什么。
+    //qDebug() << "create mainwidow use " << m_WindowCompleteTime - m_CreateWindowTime << "ms";
+    qDebug() << "cretae first Terminal use" << m_FirstTerminalCompleteTime - m_CreateWindowTime << "ms";
+}
 
 int MainWindow::getDesktopIndex() const
 {
@@ -1749,6 +1805,7 @@ NormalWindow::NormalWindow(TermProperties properties, QWidget *parent): MainWind
     initUI();
     initConnections();
     initShortcuts();
+    createWindowComplete();
 }
 
 NormalWindow::~NormalWindow()
@@ -1905,6 +1962,7 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     initUI();
     initConnections();
     initShortcuts();
+    createWindowComplete();
 }
 
 QuakeWindow::~QuakeWindow()
