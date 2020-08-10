@@ -27,6 +27,7 @@
 #include "termwidgetpage.h"
 #include "remotemanagementplugn.h"
 #include "utils.h"
+#include "define.h"
 
 #include <DMainWindow>
 #include <DWidgetUtil>

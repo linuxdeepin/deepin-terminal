@@ -514,7 +514,7 @@ void Utils::clearChildrenFocus(QObject *objParent)
 {
     // 可以获取焦点的控件名称列表
     QStringList foucswidgetlist;
-    foucswidgetlist << "QLineEdit" << "Konsole::TerminalDisplay";
+    foucswidgetlist << "QLineEdit" << TERM_WIDGET_NAME;
 
     //qDebug() << "checkChildrenFocus start" << objParent->children().size();
     for (QObject *obj : objParent->children()) {

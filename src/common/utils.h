@@ -21,6 +21,7 @@
 #define UTILS_H
 #include "settings.h"
 #include "termproperties.h"
+#include "define.h"
 
 #include <DPushButton>
 #include <DApplication>

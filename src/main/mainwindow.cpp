@@ -68,16 +68,13 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     m_MainWindowID = ++id;
     // 首先到 “此刻的共享内存”里面找，如果找不到内容，说明这个不是子进程
     m_ReferedAppStartTime = Service::instance()->getSubAppStartTime();
-    if (m_ReferedAppStartTime == 0)
-    {
+    if (m_ReferedAppStartTime == 0) {
         // 主进程的启动时间存在APP中
         TerminalApplication *app = static_cast<TerminalApplication *>(qApp);
         m_ReferedAppStartTime = app->getStartTime();
         qDebug() << "[main app] Start Time = "
                  << QDateTime::fromMSecsSinceEpoch(m_ReferedAppStartTime).toString("yyyy-MM-dd hh:mm:ss:zzz");
-    }
-    else
-    {
+    } else {
         qDebug() << "[sub app] Start Time = "
                  << QDateTime::fromMSecsSinceEpoch(m_ReferedAppStartTime).toString("yyyy-MM-dd hh:mm:ss:zzz");
     }
@@ -787,9 +784,8 @@ void MainWindow::onTermTitleChanged(QString title)
     }
 
     // 判定第一次修改标题的时候，认为终端已经创建成功
-    // 以此认为第一次打开终端窗口结束，记录时间    
-    if (!hasCreateFirstTermialComplete)
-    {
+    // 以此认为第一次打开终端窗口结束，记录时间
+    if (!hasCreateFirstTermialComplete) {
         Service::instance()->setMemoryEnable(true);
         firstTerminalComplete();
         hasCreateFirstTermialComplete = true;
@@ -1203,7 +1199,7 @@ void MainWindow::showPlugin(const QString &name)
     bool bSetFocus = false;
     // 当焦点不在终端时，调用插件，并直接进入焦点
     if (qApp->focusWidget() != nullptr) {
-        if (QString(qApp->focusWidget()->metaObject()->className()) != "Konsole::TerminalDisplay") {
+        if (QString(qApp->focusWidget()->metaObject()->className()) != TERM_WIDGET_NAME) {
             bSetFocus = true;
         }
     }
@@ -1312,7 +1308,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                     break;
                 }
                 // 不干扰终端使用ESC
-                if (QString(qApp->focusWidget()->metaObject()->className()) == "Konsole::TerminalDisplay") {
+                if (QString(qApp->focusWidget()->metaObject()->className()) == TERM_WIDGET_NAME) {
                     filterReason = "focusWidget is terminnal";
                     break;
                 }
@@ -1782,7 +1778,7 @@ void MainWindow::createWindowComplete()
 void MainWindow::firstTerminalComplete()
 {
     m_FirstTerminalCompleteTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    qDebug() << "app create all complete," << "MainWindowID = "<< m_MainWindowID <<",all time use" << m_FirstTerminalCompleteTime - m_ReferedAppStartTime << "ms";
+    qDebug() << "app create all complete," << "MainWindowID = " << m_MainWindowID << ",all time use" << m_FirstTerminalCompleteTime - m_ReferedAppStartTime << "ms";
     qDebug() << "before entry use" << m_CreateWindowTime - m_ReferedAppStartTime << "ms";
     // 创建mainwidow时间，这个时候terminal并没有创建好，不能代表什么。
     //qDebug() << "create mainwidow use " << m_WindowCompleteTime - m_CreateWindowTime << "ms";
@@ -2141,7 +2137,7 @@ void QuakeWindow::setWindowMinHeightForFont()
     int height = 0;
     //根据内部term的最小高度设置雷神终端的最小高度, (m_MinHeight-50)/2是内部term的最小高度，50是雷神窗口的标题栏高度
     //add by ut001000 renfeixiang 2020-08-07
-    height = (m_MinHeight-50)/2 + 50;
+    height = (m_MinHeight - 50) / 2 + 50;
     setMinimumHeight(height);
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
@@ -2164,14 +2160,13 @@ void QuakeWindow::updateMinHeight()
             break;
         }
     }
-    if(hasHorizontalSplit)
-    {
-        if(minimumHeight() != m_MinHeight){
+    if (hasHorizontalSplit) {
+        if (minimumHeight() != m_MinHeight) {
             qDebug() << "set has Vertical split MinHeight";
             setMinimumHeight(m_MinHeight);
         }
-    }else {
-        if(minimumHeight() == m_MinHeight){
+    } else {
+        if (minimumHeight() == m_MinHeight) {
             qDebug() << "set not has Vertical split MinHeight";
             setWindowMinHeightForFont();
         }
