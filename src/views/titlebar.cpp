@@ -1,6 +1,8 @@
 #include "titlebar.h"
+#include "utils.h"
 
 #include <DApplication>
+#include <DIconButton>
 
 #include <QIcon>
 #include <QLabel>
@@ -26,11 +28,11 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
 
     if (DApplication::isDXcbPlatform()) {
 
-        QPixmap iconPixmap = QIcon::fromTheme("deepin-terminal").pixmap(36, 36);
-        QLabel *iconLabel = new QLabel(this);
-        iconLabel->setFixedSize(36, 36);
-        iconLabel->setPixmap(iconPixmap);
-
+        DIconButton *iconLabel = new DIconButton(this);
+        iconLabel->setIcon(QIcon::fromTheme("deepin-terminal"));
+        iconLabel->setIconSize(QSize(ICONSIZE_36, ICONSIZE_36));
+        iconLabel->setFocusPolicy(Qt::NoFocus);
+        iconLabel->setFlat(true);
 
         m_layout->addSpacing(10);
 
