@@ -44,6 +44,7 @@
 #include <QUrl>
 #include <QMimeData>
 #include <QDrag>
+#include <QScroller>
 
 // KDE
 //#include <kshell.h>
@@ -3286,7 +3287,6 @@ void TerminalDisplay::selectionChanged()
 
 void TerminalDisplay::selectionCleared()
 {
-    qDebug() << "selection cleared!!!!!!!!!!!!!" << endl;
     initKeyBoardSelection();
 }
 
@@ -3599,3 +3599,252 @@ bool AutoScrollHandler::eventFilter(QObject* watched,QEvent* event)
 }
 
 //#include "TerminalDisplay.moc"
+
+//用于触摸屏的类，实现了单指上下滑动，双指捏合放大缩小，选择单指选择文字
+TerminalScreen::TerminalScreen(QWidget *parent):TerminalDisplay (parent)
+{
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    grabGesture(Qt::TapGesture);
+    grabGesture(Qt::TapAndHoldGesture);
+    grabGesture(Qt::PanGesture);
+    grabGesture(Qt::PinchGesture);
+    grabGesture(Qt::SwipeGesture);
+
+    QTapAndHoldGesture::setTimeout(100);
+
+    QFont font = getVTFont();
+    m_scaleFactor = font.pointSize();
+
+    QScroller::grabGesture(this, QScroller::TouchGesture);
+
+    m_gestureAction = GA_null;
+}
+
+TerminalScreen::~TerminalScreen()
+{
+
+}
+
+bool TerminalScreen::gestureEvent(QGestureEvent *event)
+{
+    if (QGesture *tap = event->gesture(Qt::TapGesture))
+    {
+        tapGestureTriggered(static_cast<QTapGesture *>(tap));
+    }
+    else if (QGesture *tapAndHold = event->gesture(Qt::TapAndHoldGesture))
+    {
+        tapAndHoldGestureTriggered(static_cast<QTapAndHoldGesture *>(tapAndHold));
+    }
+    else if (QGesture *pinch = event->gesture(Qt::PinchGesture))
+    {
+        pinchTriggered(static_cast<QPinchGesture *>(pinch));
+    }
+
+    return true;
+}
+
+void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
+{
+    qDebug() << "------"<<"TerminalScreen::tapGestureTriggered" << tap ;
+    m_gestureStatus = tap->state();
+    //滑动事件
+    if (m_gestureStatus == Qt::GestureStarted)
+    {
+        qDebug() << "tag gesture started";
+        if (QScroller::hasScroller(getScrollBar()))
+        {
+            QScroller::scroller(getScrollBar())->deleteLater();
+        }
+    }
+    else if (m_gestureStatus == Qt::GestureCanceled)
+    {
+        //根据时间长短区分滑动翻滚和滑动选择
+        if(m_touchStop - m_touchBegin < 300)
+        {
+            m_strGestureAction = "slide";
+            qDebug() << "slide start" << m_touchStop - m_touchBegin;
+            m_gestureAction = GA_slide;
+            m_lastGestureAction = GA_slide;
+        } else {
+            m_strGestureAction = "null";
+            m_gestureAction = GA_null;
+            m_lastGestureAction = GA_null;
+            qDebug() << "select start" << m_touchStop - m_touchBegin;
+        }
+    }
+    else if (m_gestureStatus == Qt::GestureFinished)
+    {
+        m_strGestureAction = "click";
+        m_gestureAction = GA_click;
+        m_lastGestureAction = GA_click;
+        qDebug() << "clicked start" << m_touchStop - m_touchBegin;
+    }
+}
+
+void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
+{
+    qDebug() << "------" << "TerminalScreen::tapAndHoldGestureTriggered" << tapAndHold;
+    m_gestureStatus = tapAndHold->state();
+    if (m_gestureStatus == Qt::GestureStarted)
+    {
+        qDebug() << "tap and Hold Started";
+        m_gestureAction = GA_select;
+        m_isLastGestureFinished = false;
+    }
+    else if (m_gestureStatus == Qt::GestureUpdated)
+    {
+        qDebug() << "tap and Hold GestureUpdated" << m_touchStop - m_touchBegin;
+    }
+    else if (m_gestureStatus == Qt::GestureFinished)
+    {
+        qDebug() << "tap and Hold finished" << m_touchStop - m_touchBegin;
+        m_isLastGestureFinished = true;
+        m_lastGestureAction = GA_select;
+    }
+}
+
+void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
+{
+    qDebug() << "------" << "TerminalScreen::pinchTriggered" << pinch;
+    QPinchGesture::ChangeFlags changeFlags = pinch->changeFlags();
+    if (changeFlags & QPinchGesture::ScaleFactorChanged)
+    {
+        m_currentStepScaleFactor = pinch->totalScaleFactor();
+        m_isLastGestureFinished = false;
+    }
+
+    m_gestureStatus = pinch->state();
+    if(m_gestureStatus == Qt::GestureStarted)
+    {
+        m_strGestureAction = "pinch";
+        qDebug() << "pinch start" << m_touchStop - m_touchBegin;
+        m_isLastGestureFinished = false;
+    }
+    else if (m_gestureStatus == Qt::GestureFinished)
+    {
+        m_strGestureAction = "null";
+        m_scaleFactor *= m_currentStepScaleFactor;
+        m_currentStepScaleFactor = 1;
+        m_isLastGestureFinished = true;
+
+        m_lastGestureAction = GA_pinch;
+    }
+
+    QFont font = getVTFont();
+    int size = static_cast<int>(m_scaleFactor*m_currentStepScaleFactor);
+    font.setPointSize(size);
+    setVTFont(font);
+}
+
+bool TerminalScreen::event(QEvent* event)
+{
+    QTouchEvent *touchEvent = static_cast<QTouchEvent *>(event);
+    switch (event->type())
+    {
+        case QEvent::TouchBegin:
+        {
+            m_touchBegin = touchEvent->timestamp();
+            m_strGestureAction = "touch";
+            qDebug() << "TerminalScreen::event touch Begin =====================================";
+            break;
+        }
+        default:
+            break;
+    }
+
+    //仅用于触发单指上下滑动
+    if (GA_select != m_lastGestureAction && m_isLastGestureFinished)
+    {
+        switch (event->type())
+        {
+            case QEvent::ScrollPrepare:
+            {
+                m_isLastGestureFinished = false;
+
+                qDebug() << "prepare scrolling..." << m_strGestureAction;
+                QScrollPrepareEvent *se = static_cast<QScrollPrepareEvent *>(event);
+                se->setViewportSize(QSizeF(size()));
+                QRectF boundingRect = this->rect();
+                se->setContentPosRange(QRectF(0.0,
+                                              0.0,
+                                              qMax(0.0, boundingRect.width()-getContentWidth()),
+                                              qMax(0.0, boundingRect.height()-getContentHeight())));
+                se->setContentPos(this->pos());
+                se->accept();
+                return true;
+            }
+            case QEvent::Scroll:
+            {
+                qDebug() << "scrolling..." << m_strGestureAction;
+                QScrollEvent *se = static_cast<QScrollEvent *>(event);
+                QPointF scrollPos = -se->contentPos() - se->overshootDistance();
+                int deltaMove = static_cast<int>(scrollPos.y() / 30);
+                getScrollBar()->setValue(getScrollBar()->value() - deltaMove);
+                se->accept();
+                return true;
+            }
+            default:
+                break;
+        }
+    }
+
+    if (event->type() == QEvent::Gesture)
+    {
+        return gestureEvent(static_cast<QGestureEvent*>(event));
+    }
+
+    QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+    if (event->type() == QEvent::MouseButtonRelease && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    {
+        qDebug() << "TerminalScreen::MouseButtonRelease *** " << "action is over" << m_strGestureAction;
+        m_strGestureAction = "null";
+        m_gestureAction = GA_null;
+
+        if (!m_isLastGestureFinished)
+        {
+            m_lastGestureAction = GA_null;
+            m_isLastGestureFinished = true;
+        }
+    }
+
+    if (event->type() == QEvent::MouseButtonPress && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    {
+        m_touchStop = mouseEvent->timestamp();
+    }
+
+    if (event->type() == QEvent::MouseMove && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    {
+        m_touchStop = mouseEvent->timestamp();
+    }
+
+    return TerminalDisplay::event(event);
+}
+
+void TerminalScreen::mousePressEvent(QMouseEvent* event)
+{
+    return TerminalDisplay::mousePressEvent(event);
+}
+
+void TerminalScreen::mouseReleaseEvent(QMouseEvent* event)
+{
+    return TerminalDisplay::mouseReleaseEvent(event);
+}
+
+void TerminalScreen::mouseMoveEvent(QMouseEvent* event)
+{
+    if(m_strGestureAction != "null")
+    {
+        selectionCleared();
+        return;
+    }
+
+    //判断捏合手势，禁止选择文字
+    if (m_gestureAction == GA_pinch)
+    {
+        selectionCleared();
+        return;
+    }
+
+    m_lastGestureAction = GA_select;
+    return TerminalDisplay::mouseMoveEvent(event);
+}

@@ -33,6 +33,13 @@
 //#include "konsole_export.h"
 #include "tools.h"
 
+#include <QGesture>
+#include <QPanGesture>
+#include <QSwipeGesture>
+#include <QPinchGesture>
+#include <QTapAndHoldGesture>
+#include <QGestureEvent>
+
 #define KONSOLEPRIVATE_EXPORT
 
 class QDrag;
@@ -877,6 +884,21 @@ public:
     {
         HAVE_TRANSPARENCY = enable;
     }
+
+    QScrollBar* getScrollBar()
+    {
+        return _scrollBar;
+    }
+
+    int getContentWidth()
+    {
+        return _contentWidth;
+    }
+
+    int getContentHeight()
+    {
+        return _contentHeight;
+    }
 };
 
 class AutoScrollHandler : public QObject
@@ -893,6 +915,45 @@ private:
     int _timerId;
 };
 
+class KONSOLEPRIVATE_EXPORT TerminalScreen : public TerminalDisplay{
+    Q_OBJECT
+
+ public:
+     TerminalScreen(QWidget *parent=nullptr);
+     ~TerminalScreen() override;
+
+protected:
+    bool event(QEvent* evt) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+
+private:
+    bool gestureEvent(QGestureEvent *event);
+    void tapGestureTriggered(QTapGesture*);
+    void tapAndHoldGestureTriggered(QTapAndHoldGesture*);
+    void pinchTriggered(QPinchGesture*);
+
+    enum GestureAction{
+        GA_null,
+        GA_click,
+        GA_slide,
+        GA_select,
+        GA_pinch
+    };
+
+    qreal m_scaleFactor = 1;
+    qreal m_currentStepScaleFactor = 1;
+
+    ulong m_touchBegin = 0;
+    ulong m_touchStop = 0;
+
+    Qt::GestureState m_gestureStatus = Qt::NoGesture;
+    GestureAction m_gestureAction = GA_null;
+    GestureAction m_lastGestureAction = GA_null;
+    bool m_isLastGestureFinished = true;
+    QString m_strGestureAction = "null";
+};
 }
 
 #endif // TERMINALDISPLAY_H

@@ -104,7 +104,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
 TerminalDisplay *TermWidgetImpl::createTerminalDisplay(Session *session, QWidget *parent)
 {
     //TerminalDisplay* display = new TerminalDisplay(this);
-    TerminalDisplay *display = new TerminalDisplay(parent);
+    TerminalDisplay *display = new TerminalScreen(parent);
 
     display->setBellMode(TerminalDisplay::NotifyBell);
     display->setTerminalSizeHint(true);
