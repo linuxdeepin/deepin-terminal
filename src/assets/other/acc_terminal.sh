@@ -1,16 +1,40 @@
 #!/usr/bin/bash 
 
-version=5.1.1
 
+#检查有没有deepin-terminal终端被安装
+dt=`which deepin-terminal`
+echo $dt
+if [ ! $dt ] ; then
+    echo "没有发现 deepin-terminal 终端被安装" 
+    exit 0
+fi
+
+
+version=`deepin-terminal -v`
+
+version=$(echo $version | sed -e 's/\(.*\)deepin-terminal\(.*\)/\2/g' -e 's/ //g')
+
+if [ ! "$version" ]; then
+#  version=5.2.19
+  echo "deepin-terminal 没有获取到相应的版本号"
+  exit 0
+fi
+
+version=$(echo $version | sed -e 's/\([0-9]*\.[0-9]*\.[0-9]*\).*/\1/g')
+
+echo $version
 #固定的头查询
-fixhead="parse commandLine is ok" 
-#fixhead="new terminal start run" 
+#fixhead="parse commandLine is ok" 
+fixhead="new terminal start run" 
 #固定的尾查询
 fixtail="m_enableShareMemory set true 1" 
 #创建终端延时时间
 creat_term_delay=0.5
 #cpu采样次数
 cpu_resample_number=10
+
+#用于5.2.19版本
+fixid="app create all complete, MainWindowID = "
 
 
 #打开log日志
@@ -37,15 +61,6 @@ if [ -f $dtl ] ; then
 fi
 
 
-
-
-#检查有没有deepin-terminal终端被安装
-dt=`which deepin-terminal`
-echo $dt
-if [ ! $dt ] ; then
-    echo "没有发现 deepin-terminal 终端被安装" 
-    exit 0
-fi
 
 #默认100个终端
 count=10
@@ -101,6 +116,7 @@ pid=$(ps -eo pid,comm | grep 'deepin-terminal' | awk '{print $1}')
 #echo "TermPid:  $pid" >> $accfile
 #启动终端数
 #echo "启动终端总数:  $tn" >> $accfile
+echo "终端版本:  $version" >> $accfile
 echo "CPU平台:  $(uname -a|cut -d " " -f 3)" >> $accfile
 #启止时间
 starttime=$(head -n +1 $dtl)
@@ -191,58 +207,80 @@ tcount=$(grep -c "create NormalWindow, current count" $dtl)
 tottime=0
 mintime=999999999999
 maxtime=0
-for (( ii = 1; ii <= tcount; ii++ )); do
-    orgStr="create NormalWindow, current count = $ii , SingleFlag"
-    line=$(grep -n "$orgStr" $dtl | cut -d ":" -f 1)
-   # echo "$line"
-    for(( ik=line; ik > 0 ; ik-- ));do
-    #   str=$(head -n +$ik $dtl)
-        str=$(sed -n $ik\p $dtl)
-       #if [[ $str =~ "parse commandLine is ok" ]] 
-       if [[ $str =~ $fixhead ]] 
-       then
-        #    tendtime=$(grep "create NormalWindow, current count = $ii , SingleFlag" $dtl)
-            tstarttime=${str%%[*}
-            tstarttime=${tstarttime/, / }
-            tstarttime=$(date -d "$tstarttime" +%s%N)
-            
-          #  tendtime=${tendtime%%[*}
-          #  tendtime=${tendtime/, / }
-          #  tendtime=$(date -d "$tendtime" +%s%N)
-       #     echo "WhichTerm:  $ii" >> $accfile
-       #     echo "  StartTime:  $tstarttime" >> $accfile
-       #     echo "  EndTime:    $tendtime" >> $accfile
-         #  tmptime=$[tendtime-tstarttime]
-         # tottime=$[tottime+tmptime]
-           break
-       fi
-   done
 
-   for(( ik=line; ; ik++ )); do                                                                      
-    str=$(sed -n $ik\p $dtl)                                                                         
-    if [[ $str =~ $fixtail ]]                                                
-    then                                                                                             
-        tendtime=${str%%[*}                                                                          
-        tendtime=${tendtime/, / }                                                                    
-        tendtime=$(date -d "$tendtime" +%s%N)
-        break                                                                                        
-     fi                                                                                              
- done                                                                                                
+cmpversion=$(echo "$version" | sed 's/\.//g')
 
-    echo "终端创建开始时间:  $tstarttime"                                                                    
-    echo "终端创建结束时间:  $tendtime"                                                                       
-    if [ $tstarttime -a $tendtime ] ; then                                                           
-        tmptime=$[tendtime-tstarttime]                             
+if [ $cmpversion -ge 5219 ] ; then
+    for(( i =1; i <= tcount; i++ )); do
+        orgStr=$(grep "$fixid $i ," $dtl)
+        echo $orgStr
+        tmptime=$(echo $orgStr | sed 's/\(.*\)all time use \(.*\) ms/\2/g') 
         tottime=$[tottime+tmptime]
+
         if [ $maxtime -lt $tmptime ]; then
             maxtime=$tmptime
         fi
+
         if [ $tmptime -lt $mintime ]; then
             mintime=$tmptime
         fi
-    fi 
+    done
+    tottime=$[tottime*1000000]
+    mintime=$[mintime*1000000]
+    maxtime=$[maxtime*1000000]
 
-done
+else
+
+    for (( ii = 1; ii <= tcount; ii++ )); do
+        orgStr="create NormalWindow, current count = $ii , SingleFlag"
+        line=$(grep -n "$orgStr" $dtl | cut -d ":" -f 1)
+        for(( ik=line; ik > 0 ; ik-- )); do
+            #   str=$(head -n +$ik $dtl)
+            str=$(sed -n $ik\p $dtl)
+            #if [[ $str =~ "parse commandLine is ok" ]] 
+            if [[ $str =~ $fixhead ]]; then
+                #    tendtime=$(grep "create NormalWindow, current count = $ii , SingleFlag" $dtl)
+                tstarttime=${str%%[*}
+                tstarttime=${tstarttime/, / }
+                tstarttime=$(date -d "$tstarttime" +%s%N)
+
+          #  tendtime=${tendtime%%[*}
+          #  tendtime=${tendtime/, / }
+          #  tendtime=$(date -d "$tendtime" +%s%N)
+          #     echo "WhichTerm:  $ii" >> $accfile
+          #     echo "  StartTime:  $tstarttime" >> $accfile
+          #     echo "  EndTime:    $tendtime" >> $accfile
+          #  tmptime=$[tendtime-tstarttime]
+          # tottime=$[tottime+tmptime]
+          break
+            fi
+        done
+
+        for(( ik=line; ; ik++ )); do                                                                      
+            str=$(sed -n $ik\p $dtl)                                                                         
+            if [[ $str =~ $fixtail ]]                                                
+            then                                                                                             
+                tendtime=${str%%[*}                                                                          
+                tendtime=${tendtime/, / }                                                                    
+                tendtime=$(date -d "$tendtime" +%s%N)
+                break                                                                                        
+            fi                                                                                              
+        done                                                                                                
+
+        echo "终端创建开始时间:  $tstarttime"                                                                    
+        echo "终端创建结束时间:  $tendtime"                                                                       
+        if [ $tstarttime -a $tendtime ] ; then                                                           
+            tmptime=$[tendtime-tstarttime]                             
+            tottime=$[tottime+tmptime]
+            if [ $maxtime -lt $tmptime ]; then
+                maxtime=$tmptime
+            fi
+            if [ $tmptime -lt $mintime ]; then
+                mintime=$tmptime
+            fi
+            fi 
+        done
+fi
 
 echo "终端最小启动时间:  $[mintime/1000000] 毫秒" >> $accfile
 echo "终端最大启动时间:  $[maxtime/1000000] 毫秒" >> $accfile
