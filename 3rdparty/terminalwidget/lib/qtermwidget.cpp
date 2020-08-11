@@ -218,7 +218,7 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
 
     QRegExp regExp(txt);
     // qDebug() << "regExp??????" << regExp.isEmpty();
-    regExp.setPatternSyntax(QRegExp::RegExp);
+    regExp.setPatternSyntax(QRegExp::FixedString);
     regExp.setCaseSensitivity(Qt::CaseSensitive);
 
     HistorySearch *historySearch =
@@ -405,7 +405,7 @@ void QTermWidget::init(int startnow)
 
     // 语言，整个应用程序只需要设置一次
     static bool hasLoad = false;
-    if(!hasLoad){
+    if (!hasLoad) {
         m_translator = new QTranslator(this);
         for (const QString &dir : qAsConst(dirs)) {
             qDebug() << "Trying to load translation file from dir" << dir;
