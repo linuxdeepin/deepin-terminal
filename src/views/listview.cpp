@@ -349,7 +349,6 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
     m_configDialog = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
     connect(m_configDialog, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         // 弹窗隐藏或消失
-        Service::instance()->setIsDialogShow(window(), false);
         qDebug() << "focus state " << m_focusState;
         // 3. 对弹窗操作进行分析
         // 判断是否删除
@@ -447,6 +446,8 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
             // 取消后及时将弹窗删除
             ServerConfigManager::instance()->removeDialog(m_configDialog);
         }
+        // 等待处理完成再释放窗口
+        Service::instance()->setIsDialogShow(window(), false);
 
     });
     // 2. 记录弹窗
