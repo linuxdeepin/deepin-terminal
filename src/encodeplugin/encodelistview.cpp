@@ -30,6 +30,7 @@
 #include <QScrollBar>
 #include <QStandardItemModel>
 #include <QDebug>
+#include <QScroller>
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
@@ -44,7 +45,9 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setFocusPolicy(Qt::TabFocus);
     /** mod by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
     setSelectionMode(QListView::SingleSelection);
+    /** del by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction
     setVerticalScrollMode(ScrollPerItem);
+    */
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -67,6 +70,9 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
 
     /** add by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
     setItemDelegate(new EncodeDelegate(this));
+
+    /** add by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
+    QScroller::grabGesture(this, QScroller::TouchGesture);
 }
 
 void EncodeListView::initEncodeItems()
@@ -169,6 +175,39 @@ void EncodeListView::keyPressEvent(QKeyEvent *event)
     }
     /** add end ut001121 zhangmeng 20200718 */
     return DListView::keyPressEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-08-11
+ 4. @说明:    处理鼠标按下事件
+*******************************************************************************/
+void EncodeListView::mousePressEvent(QMouseEvent *event)
+{
+    /** add by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
+    m_tapTimeSpace = event->timestamp();
+
+    return DListView::mousePressEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-08-11
+ 4. @说明:    处理鼠标抬起事件
+*******************************************************************************/
+void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
+{
+    /** add begin by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
+    if(event->timestamp() - m_tapTimeSpace>TAP_TIME_SPACE
+            && Qt::MouseEventSynthesizedByQt == event->source()){
+        event->accept();
+        return;
+    }
+    /** add end by ut001121 */
+
+    return DListView::mouseReleaseEvent(event);
 }
 
 void EncodeListView::resizeContents(int width, int height)

@@ -31,6 +31,8 @@ DWIDGET_USE_NAMESPACE
 // add by ut001121 zhangmeng 20200731 定义无效焦点原因 修复BUG40390
 #define INVALID_FOCUS_REASON Qt::MouseFocusReason
 
+#define TAP_TIME_SPACE 80
+
 class EncodeListModel;
 class EncodeListView : public DListView
 {
@@ -44,6 +46,8 @@ protected:
     void focusOutEvent(QFocusEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
 
     void resizeContents(int width, int height);
     QSize contentsSize() const;
@@ -73,6 +77,7 @@ private:
     Qt::FocusReason m_foucusReason = INVALID_FOCUS_REASON;
     QModelIndex m_modelIndexChecked;
 
+    ulong m_tapTimeSpace = 0;
 };
 
 class EncodeDelegate : public DStyledItemDelegate
