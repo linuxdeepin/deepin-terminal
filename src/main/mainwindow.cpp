@@ -103,6 +103,12 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
              << QDateTime::fromMSecsSinceEpoch(m_CreateWindowTime).toString("yyyy-MM-dd hh:mm:ss:zzz");
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类初始化UI界面
+*******************************************************************************/
 void MainWindow::initUI()
 {
     initWindow();
@@ -117,6 +123,12 @@ void MainWindow::initUI()
 
     qApp->installEventFilter(this);
 }
+/*******************************************************************************
+ 1. @函数:    initWindow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类初始化窗口
+*******************************************************************************/
 void MainWindow::initWindow()
 {
     setAttribute(Qt::WA_TranslucentBackground);
@@ -131,6 +143,12 @@ void MainWindow::initWindow()
     setCentralWidget(m_centralWidget);
 }
 
+/*******************************************************************************
+ 1. @函数:    initTabBar
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类初始化标签栏
+*******************************************************************************/
 void MainWindow::initTabBar()
 {
     m_tabbar = new TabBar(this);
@@ -272,6 +290,12 @@ void MainWindow::initOptionMenu()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    initPlugins
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类初始化插件
+*******************************************************************************/
 void MainWindow::initPlugins()
 {
     // Todo: real plugin loader and plugin support.
@@ -320,16 +344,34 @@ void MainWindow::singleFlagMove()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    isTabVisited
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类判断标签是否访问了
+*******************************************************************************/
 bool MainWindow::isTabVisited(int tabSessionId)
 {
     return m_tabVisitMap.value(tabSessionId);
 }
 
+/*******************************************************************************
+ 1. @函数:    isTabChangeColor
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类判断是否是标签更改颜色
+*******************************************************************************/
 bool MainWindow::isTabChangeColor(int tabSessionId)
 {
     return m_tabChangeColorMap.value(tabSessionId);
 }
 
+/*******************************************************************************
+ 1. @函数:    addTab
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类增加标签
+*******************************************************************************/
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
     /***add by ut001121 zhangmeng 修复BUG#24452 点击“+”按钮新建工作区，自定义命令/编码/远程管理插件未消失***/
@@ -384,6 +426,12 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
 }
 
+/*******************************************************************************
+ 1. @函数:    hasRunningProcesses
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    是否有正在执行的进程
+*******************************************************************************/
 bool MainWindow::hasRunningProcesses()
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
@@ -447,6 +495,12 @@ void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
     close();
 }
 
+/*******************************************************************************
+ 1. @函数:    updateTabStatus
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    更新标签页状态
+*******************************************************************************/
 void MainWindow::updateTabStatus()
 {
     for (int i = 0; i < m_tabbar->count(); i++) {
@@ -471,6 +525,12 @@ void MainWindow::updateTabStatus()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getCurrTabTitle
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取当前便签的标题
+*******************************************************************************/
 QString MainWindow::getCurrTabTitle()
 {
     return m_tabbar->tabText(m_tabbar->currentIndex());
@@ -655,16 +715,34 @@ void MainWindow::focusPage(const QString &identifier)
     qDebug() << "focusTab nullptr identifier" << identifier;
 }
 
+/*******************************************************************************
+ 1. @函数:    focusCurrentPage
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类聚焦到当前页面
+*******************************************************************************/
 void MainWindow::focusCurrentPage()
 {
     focusPage(m_tabbar->identifier(m_tabbar->currentIndex()));
 }
 
+/*******************************************************************************
+ 1. @函数:    currentPage
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类获取当前页面
+*******************************************************************************/
 TermWidgetPage *MainWindow::currentPage()
 {
     return qobject_cast<TermWidgetPage *>(m_termStackWidget->currentWidget());
 }
 
+/*******************************************************************************
+ 1. @函数:    getPageByIdentifier
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类通过标识符获取页面
+*******************************************************************************/
 TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
@@ -677,6 +755,12 @@ TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)
     return nullptr;
 }
 
+/*******************************************************************************
+ 1. @函数:    forAllTabPage
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类对所有标签页执行func
+*******************************************************************************/
 void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage *)> &func)
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
@@ -687,6 +771,12 @@ void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage *)> &func
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    onTermIsIdle
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类终端是否闲置响应函数
+*******************************************************************************/
 void MainWindow::onTermIsIdle(int currSessionId, bool bIdle)
 {
     int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
@@ -724,6 +814,12 @@ void MainWindow::onTermIsIdle(int currSessionId, bool bIdle)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类调整大小事件
+*******************************************************************************/
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     // 保存窗口位置
@@ -734,6 +830,12 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     DMainWindow::resizeEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    closeEvent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类关闭事件
+*******************************************************************************/
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     saveWindowSize();
@@ -803,11 +905,23 @@ bool MainWindow::closeConfirm()
     return true;
 }
 
+/*******************************************************************************
+ 1. @函数:    isQuakeMode
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类判断是否是雷神窗口
+*******************************************************************************/
 bool MainWindow::isQuakeMode()
 {
     return  m_isQuakeWindow;
 }
 
+/*******************************************************************************
+ 1. @函数:    onTermTitleChanged
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类终端标题变化响应函数
+*******************************************************************************/
 void MainWindow::onTermTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
@@ -825,6 +939,12 @@ void MainWindow::onTermTitleChanged(QString title)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    onTabTitleChanged
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类标签标题变化响应函数
+*******************************************************************************/
 void MainWindow::onTabTitleChanged(QString title)
 {
     TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
@@ -833,6 +953,12 @@ void MainWindow::onTabTitleChanged(QString title)
     m_tabbar->setTabText(tabPage->identifier(), title);
 }
 
+/*******************************************************************************
+ 1. @函数:    getConfigWindowState
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类获取配置窗口状态
+*******************************************************************************/
 QString MainWindow::getConfigWindowState()
 {
     QString windowState =
@@ -873,6 +999,12 @@ QSize MainWindow::halfScreenSize()
     return size;
 }
 
+/*******************************************************************************
+ 1. @函数:    getWinInfoConfigPath
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类获取窗口信息配置路径
+*******************************************************************************/
 QString MainWindow::getWinInfoConfigPath()
 {
     QDir winInfoPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -884,6 +1016,12 @@ QString MainWindow::getWinInfoConfigPath()
     return winInfoFilePath;
 }
 
+/*******************************************************************************
+ 1. @函数:    initWindowPosition
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类初始化窗口位置
+*******************************************************************************/
 void MainWindow::initWindowPosition(MainWindow *mainwindow)
 {
     int m_WindowNumber = executeCMD(cmd);
@@ -892,6 +1030,12 @@ void MainWindow::initWindowPosition(MainWindow *mainwindow)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    initShortcuts
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类初始化快捷键
+*******************************************************************************/
 void MainWindow::initShortcuts()
 {
     ShortcutManager::instance()->initConnect(this);
@@ -1188,6 +1332,12 @@ void MainWindow::initShortcuts()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    initConnections
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类初始化连接
+*******************************************************************************/
 void MainWindow::initConnections()
 {
     connect(this, &MainWindow::mainwindowClosed, WindowsManager::instance(), &WindowsManager::onMainwindowClosed);
@@ -1266,6 +1416,12 @@ void MainWindow::hidePlugin()
     emit quakeHidePlugin();
 }
 
+/*******************************************************************************
+ 1. @函数:    selectedText
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类选择文本
+*******************************************************************************/
 QString MainWindow::selectedText(bool preserveLineBreaks)
 {
     TermWidgetPage *page = currentPage();
@@ -1278,6 +1434,12 @@ QString MainWindow::selectedText(bool preserveLineBreaks)
     return  "";
 }
 
+/*******************************************************************************
+ 1. @函数:    onCreateNewWindow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类创建新窗口响应函数
+*******************************************************************************/
 void MainWindow::onCreateNewWindow(QString workingDir)
 {
     Q_UNUSED(workingDir);
@@ -1286,6 +1448,12 @@ void MainWindow::onCreateNewWindow(QString workingDir)
     process.startDetached(QCoreApplication::applicationFilePath());
 }
 
+/*******************************************************************************
+ 1. @函数:    eventFilter
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类事件过滤器
+*******************************************************************************/
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::KeyPress) {
@@ -1413,6 +1581,12 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
     qDebug() << "settingValue[" << keyName << "] changed is not effective";
 }
 
+/*******************************************************************************
+ 1. @函数:    onShortcutSettingChanged
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类快捷键设置变化响应函数
+*******************************************************************************/
 void MainWindow::onShortcutSettingChanged(const QString &keyName)
 {
     qDebug() << "Shortcut[" << keyName << "] changed";
@@ -1425,6 +1599,12 @@ void MainWindow::onShortcutSettingChanged(const QString &keyName)
     qDebug() << "Shortcut[" << keyName << "] changed is unknown!";
 }
 
+/*******************************************************************************
+ 1. @函数:    setNewTermPage
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类设置新终端页面
+*******************************************************************************/
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 {
     m_termStackWidget->addWidget(termPage);
@@ -1433,6 +1613,12 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    createNewWorkspace
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类创建新工作区域
+*******************************************************************************/
 void MainWindow::createNewWorkspace()
 {
     addTab(currentPage()->createCurrentTerminalProperties(), true);
@@ -1448,6 +1634,12 @@ void MainWindow::applyTheme()
     return;
 }
 
+/*******************************************************************************
+ 1. @函数:    getPluginByName
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类通过名字获取面板
+*******************************************************************************/
 MainWindowPluginInterface *MainWindow::getPluginByName(const QString &name)
 {
     for (int i = 0; i < m_plugins.count(); i++) {
@@ -1633,6 +1825,12 @@ void MainWindow::remoteUploadFile()
 /**
  * Download file from remote server
  */
+/*******************************************************************************
+ 1. @函数:    remoteDownloadFile
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类从远程服务下载文件
+*******************************************************************************/
 void MainWindow::remoteDownloadFile()
 {
     TermWidget *term = currentPage()->currentTerminal();
@@ -1663,6 +1861,12 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
     return;
 }
 
+/*******************************************************************************
+ 1. @函数:    addCustomCommandSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类增加自定义命令响应函数
+*******************************************************************************/
 void MainWindow::addCustomCommandSlot(QAction *newAction)
 {
     qDebug() << " MainWindow::addCustomCommandSlot";
@@ -1683,6 +1887,12 @@ void MainWindow::addCustomCommandSlot(QAction *newAction)
 
 }
 
+/*******************************************************************************
+ 1. @函数:    removeCustomCommandSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类删除自定义命令响应函数
+*******************************************************************************/
 void MainWindow::removeCustomCommandSlot(QAction *newAction)
 {
     qDebug() << " MainWindow::removeCustomCommandSlot";
@@ -1732,6 +1942,12 @@ void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    按键响应事件，是空函数
+*******************************************************************************/
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
 
@@ -1759,24 +1975,48 @@ void MainWindow::executeDownloadFile()
     //-------------------------------------------
 }
 
+/*******************************************************************************
+ 1. @函数:    pressCtrlAt
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类按下Ctrl+@函数
+*******************************************************************************/
 void MainWindow::pressCtrlAt()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_At, Qt::ControlModifier);
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
+/*******************************************************************************
+ 1. @函数:    pressCtrlU
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类按下Ctrl+U函数
+*******************************************************************************/
 void MainWindow::pressCtrlU()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
+/*******************************************************************************
+ 1. @函数:    pressCtrlC
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类按下Ctrl+C函数
+*******************************************************************************/
 void MainWindow::pressCtrlC()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
+/*******************************************************************************
+ 1. @函数:    sleep
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类睡眠函数
+*******************************************************************************/
 void MainWindow::sleep(int msec)
 {
     QTime dieTime = QTime::currentTime().addMSecs(msec);
@@ -1786,6 +2026,12 @@ void MainWindow::sleep(int msec)
 }
 
 //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+/*******************************************************************************
+ 1. @函数:    pressEnterKey
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类按下Enter键函数
+*******************************************************************************/
 void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
@@ -1818,6 +2064,12 @@ void MainWindow::firstTerminalComplete()
     qDebug() << "cretae first Terminal use" << m_FirstTerminalCompleteTime - m_CreateWindowTime << "ms";
 }
 
+/*******************************************************************************
+ 1. @函数:    getDesktopIndex
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    基类获取桌面索引
+*******************************************************************************/
 int MainWindow::getDesktopIndex() const
 {
     return m_desktopIndex;
@@ -1842,6 +2094,12 @@ NormalWindow::~NormalWindow()
 
 }
 
+/*******************************************************************************
+ 1. @函数:    initTitleBar
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    普通终端窗口初始化标题栏
+*******************************************************************************/
 void NormalWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
@@ -1919,6 +2177,12 @@ void NormalWindow::initWindowAttribute()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    saveWindowSize
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    普通窗口保存窗口大小
+*******************************************************************************/
 void NormalWindow::saveWindowSize()
 {
     // 过滤普通模式的特殊窗口
@@ -1945,6 +2209,12 @@ void NormalWindow::saveWindowSize()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    switchFullscreen
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    普通窗口全屏切换
+*******************************************************************************/
 void NormalWindow::switchFullscreen(bool forceFullscreen)
 {
     if (forceFullscreen || !window()->windowState().testFlag(Qt::WindowFullScreen)) {
@@ -1957,17 +2227,35 @@ void NormalWindow::switchFullscreen(bool forceFullscreen)
     focusCurrentPage();
 }
 
+/*******************************************************************************
+ 1. @函数:    calculateShortcutsPreviewPoint
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    普通窗口计算快捷方式预览点
+*******************************************************************************/
 QPoint NormalWindow::calculateShortcutsPreviewPoint()
 {
     QRect rect = window()->geometry();
     return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 }
 
+/*******************************************************************************
+ 1. @函数:    onAppFocusChangeForQuake
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    普通窗口处理雷神窗口丢失焦点自动隐藏功能，普通窗口不用该函数
+*******************************************************************************/
 void NormalWindow::onAppFocusChangeForQuake()
 {
     return;
 }
 
+/*******************************************************************************
+ 1. @函数:    changeEvent
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    普通窗口变化事件
+*******************************************************************************/
 void NormalWindow::changeEvent(QEvent *event)
 {
     if (m_exitFullScreen) {
@@ -1999,6 +2287,12 @@ QuakeWindow::~QuakeWindow()
 
 }
 
+/*******************************************************************************
+ 1. @函数:    initTitleBar
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    雷神窗口初始化标题栏
+*******************************************************************************/
 void QuakeWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
@@ -2100,6 +2394,12 @@ void QuakeWindow::initWindowAttribute()
     /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 End***************/
 }
 
+/*******************************************************************************
+ 1. @函数:    saveWindowSize
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    雷神窗口保存雷神窗口大小
+*******************************************************************************/
 void QuakeWindow::saveWindowSize()
 {
     // 记录最后一个正常窗口的大小
@@ -2109,12 +2409,24 @@ void QuakeWindow::saveWindowSize()
     qDebug() << "save quake_window_Height:" << height();
 }
 
+/*******************************************************************************
+ 1. @函数:    switchFullscreen
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    全屏切换，雷神窗口不用
+*******************************************************************************/
 void QuakeWindow::switchFullscreen(bool forceFullscreen)
 {
     Q_UNUSED(forceFullscreen)
     return;
 }
 
+/*******************************************************************************
+ 1. @函数:    calculateShortcutsPreviewPoint
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    雷神窗口计算快捷键预览位置
+*******************************************************************************/
 QPoint QuakeWindow::calculateShortcutsPreviewPoint()
 {
     //--added by qinyaning(nyq) to solve the problem of can't show center--//
@@ -2206,6 +2518,12 @@ void QuakeWindow::updateMinHeight()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    changeEvent
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    雷神窗口变化事件
+*******************************************************************************/
 void QuakeWindow::changeEvent(QEvent *event)
 {
     // 不是激活事件,不处理

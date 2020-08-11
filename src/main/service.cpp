@@ -59,6 +59,12 @@ Service::~Service()
     qDebug() << "service release finish!";
 }
 
+/*******************************************************************************
+ 1. @函数:    init
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化
+*******************************************************************************/
 void Service::init()
 {
     /******** Modify by ut000610 daizhengwen 2020-07-09:在linux上兼容快捷键 Begin***************/
@@ -256,6 +262,12 @@ bool Service::isWindowEffectEnabled()
     return false;
 }
 
+/*******************************************************************************
+ 1. @函数:    getEntryTime
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取主程序初始进入的时间
+*******************************************************************************/
 qint64 Service::getEntryTime()
 {
     return m_EntryTime;
@@ -359,6 +371,12 @@ bool Service::isCountEnable()
     return WindowsManager::instance()->widgetCount() < MAXWIDGETCOUNT;
 }
 
+/*******************************************************************************
+ 1. @函数:    Entry
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    Service进入接口
+*******************************************************************************/
 void Service::Entry(QStringList arguments)
 {    
     m_EntryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
@@ -470,6 +488,12 @@ void Service::updateShareMemoryCount(int count)
     return  ;
 }
 
+/*******************************************************************************
+ 1. @函数:    getShareMemoryCount
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取共享内存计数
+*******************************************************************************/
 int Service::getShareMemoryCount()
 {
     return m_pShareMemoryInfo->TerminalsCount;
@@ -522,11 +546,23 @@ bool Service::getMemoryEnable()
     return  true;
 }
 
+/*******************************************************************************
+ 1. @函数:    getIsDialogShow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取是否是对话框显示
+*******************************************************************************/
 bool Service::getIsDialogShow() const
 {
     return m_isDialogShow;
 }
 
+/*******************************************************************************
+ 1. @函数:    setIsDialogShow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置是否对话框显示
+*******************************************************************************/
 void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 {
     MainWindow *window = static_cast<MainWindow *>(parent);

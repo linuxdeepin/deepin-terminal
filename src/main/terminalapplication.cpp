@@ -76,12 +76,24 @@ qint64 TerminalApplication::getStartTime()
 {
     return m_AppStartTime;
 }
+/*******************************************************************************
+ 1. @函数:    handleQuitAction
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    重写了app.quit为当前窗口close.
+*******************************************************************************/
 void TerminalApplication::handleQuitAction()
 {
     qDebug() << "handleQuitAction";
     activeWindow()->close();
 }
-// 该部分代码，大都 用于调试，待整理
+
+/*******************************************************************************
+ 1. @函数:    notify
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    // 该部分代码，大都 用于调试，待整理
+*******************************************************************************/
 bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
     // ALT+M = 右键

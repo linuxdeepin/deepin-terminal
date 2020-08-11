@@ -299,6 +299,12 @@ protected:
     bool hasCreateFirstTermialComplete = false;
 };
 
+/*******************************************************************************
+ 1. @类名:    NormalWindow
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    普通终端窗口
+*******************************************************************************/
 class NormalWindow : public MainWindow
 {
     Q_OBJECT
@@ -329,6 +335,12 @@ protected:
     void changeEvent(QEvent *event) override;
 };
 
+/*******************************************************************************
+ 1. @类名:    QuakeWindow
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    雷神终端窗口
+*******************************************************************************/
 class QuakeWindow : public MainWindow
 {
     Q_OBJECT

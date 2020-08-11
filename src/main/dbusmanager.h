@@ -49,6 +49,13 @@
 #define dbusIsSoundEnabled(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("IsSoundEnabled")<<(sound))
 #define dbusEnableSound(sound, enable) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("EnableSound")<<(sound)<<(enable))
 
+/*******************************************************************************
+ 1. @类名:    DBusManager
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:
+*******************************************************************************/
+
 class DBusManager : public QObject
 {
     Q_OBJECT

@@ -31,6 +31,12 @@ WindowsManager *WindowsManager::instance()
     return  pManager;
 }
 
+/*******************************************************************************
+ 1. @函数:    runQuakeWindow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    运行雷神窗口
+*******************************************************************************/
 void WindowsManager::runQuakeWindow(TermProperties properties)
 {
     if (m_quakeWindow == nullptr) {
@@ -45,6 +51,12 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
     quakeWindowShowOrHide();
 }
 
+/*******************************************************************************
+ 1. @函数:    quakeWindowShowOrHide
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    雷神窗口显示或者隐藏
+*******************************************************************************/
 void WindowsManager::quakeWindowShowOrHide()
 {
     //MainWindow *mainWindow = getMainWindow();
@@ -84,6 +96,12 @@ void WindowsManager::quakeWindowShowOrHide()
     m_quakeWindow->hide();
 }
 
+/*******************************************************************************
+ 1. @函数:    createNormalWindow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    创建普通窗口
+*******************************************************************************/
 void WindowsManager::createNormalWindow(TermProperties properties)
 {
     TermProperties newProperties = properties;
@@ -97,6 +115,12 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     newWindow->show();
 }
 
+/*******************************************************************************
+ 1. @函数:    onMainwindowClosed
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    主窗口关闭响应函数
+*******************************************************************************/
 void WindowsManager::onMainwindowClosed(MainWindow *window)
 {
     /***add begin by ut001121 zhangmeng 20200527 关闭终端窗口时重置设置框所有者 修复BUG28636***/
@@ -128,11 +152,23 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
     /***mod end by ut001121***/
 }
 
+/*******************************************************************************
+ 1. @函数:    WindowsManager
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    窗口管理，空函数
+*******************************************************************************/
 WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
 {
 
 }
 
+/*******************************************************************************
+ 1. @函数:    widgetCount
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    终端界面计数
+*******************************************************************************/
 int WindowsManager::widgetCount() const
 {
     if (nullptr == WindowsManager::instance()->getQuakeWindow()) {
@@ -144,6 +180,12 @@ int WindowsManager::widgetCount() const
 
 }
 
+/*******************************************************************************
+ 1. @函数:    terminalCountIncrease
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    终端界面计数增加
+*******************************************************************************/
 void WindowsManager::terminalCountIncrease()
 {
     ++m_widgetCount;
@@ -152,6 +194,12 @@ void WindowsManager::terminalCountIncrease()
     qDebug() << "++ Terminals Count : " << m_widgetCount;
 }
 
+/*******************************************************************************
+ 1. @函数:    terminalCountReduce
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    终端界面计数减少
+*******************************************************************************/
 void WindowsManager::terminalCountReduce()
 {
     --m_widgetCount;

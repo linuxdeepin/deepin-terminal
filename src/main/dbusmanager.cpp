@@ -150,7 +150,12 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList Begin***************/
-//将QJsonArray文件转换成QStringList
+/*******************************************************************************
+ 1. @函数:    converToList
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-11
+ 4. @说明:    将QJsonArray文件转换成QStringList
+*******************************************************************************/
 QStringList DBusManager::converToList(const QString &type, const QJsonArray &array)
 {
     QStringList list;
@@ -162,7 +167,12 @@ QStringList DBusManager::converToList(const QString &type, const QJsonArray &arr
     return list;
 }
 
-//调用DBUS的SHow方法
+/*******************************************************************************
+ 1. @函数:    callAppearanceShowFont
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-11
+ 4. @说明:    调用DBUS的SHow方法
+*******************************************************************************/
 QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fontType)
 {
     QStringList List;
@@ -186,6 +196,12 @@ QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fo
 }
 /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
 
+/*******************************************************************************
+ 1. @函数:    callCreateRequest
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    调用DBUS创建请求
+*******************************************************************************/
 bool DBusManager::callCreateRequest()
 {
     QDBusMessage msg =
