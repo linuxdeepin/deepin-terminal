@@ -1,7 +1,7 @@
 /*
  *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
  *
- * Author:zhangmeng@uniontech.com
+ * Author:     zhangmeng <zhangmeng@uniontech.com>
  *
  * Maintainer:编码插件列表模型
  *
