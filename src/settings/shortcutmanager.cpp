@@ -51,6 +51,12 @@ ShortcutManager *ShortcutManager::instance()
     return m_instance;
 }
 
+/*******************************************************************************
+ 1. @函数:    initShortcuts
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化快捷键
+*******************************************************************************/
 void ShortcutManager::initShortcuts()
 {
     //m_builtinShortcuts = createBuiltinShortcutsFromConfig();  // use QAction or QShortcut ?
@@ -104,6 +110,12 @@ ShortcutManager::~ShortcutManager()
     m_customCommandActionList.clear();
 }
 
+/*******************************************************************************
+ 1. @函数:    initConnect
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    快捷键初始化链接
+*******************************************************************************/
 void ShortcutManager::initConnect(MainWindow *mainWindow)
 {
     for (auto &commandAction : m_customCommandActionList) {
@@ -123,6 +135,12 @@ void ShortcutManager::initConnect(MainWindow *mainWindow)
     mainWindow->addActions(m_customCommandActionList);
 }
 
+/*******************************************************************************
+ 1. @函数:    createCustomCommandsFromConfig
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    从配置创建自定义命令
+*******************************************************************************/
 void ShortcutManager::createCustomCommandsFromConfig()
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -172,6 +190,12 @@ void ShortcutManager::createCustomCommandsFromConfig()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    createBuiltinShortcutsFromConfig
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    从配置创建内置快捷方式
+*******************************************************************************/
 QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
 {
     QList<QAction *> actionList;
@@ -195,6 +219,12 @@ QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
     return actionList;
 }
 
+/*******************************************************************************
+ 1. @函数:    getCustomCommandActionList
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取自定义命令操作列表
+*******************************************************************************/
 QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 {
     qDebug() << __FUNCTION__ << m_customCommandActionList;
@@ -206,6 +236,12 @@ QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 //    m_mainWindow = curMainWindow;
 //}
 
+/*******************************************************************************
+ 1. @函数:    addCustomCommand
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    增加自定义命令
+*******************************************************************************/
 QAction *ShortcutManager::addCustomCommand(QAction &action)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
@@ -234,6 +270,12 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
 //    //}
 //}
 
+/*******************************************************************************
+ 1. @函数:    checkActionIsExist
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    检查操作是否存在
+*******************************************************************************/
 QAction *ShortcutManager::checkActionIsExist(QAction &action)
 {
     QString strNewActionName = action.text();
@@ -246,6 +288,12 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
     return nullptr;
 }
 /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 Begin************************/
+/*******************************************************************************
+ 1. @函数:    checkActionIsExistForModify
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-08-11
+ 4. @说明:    检查是否存在修改操作
+*******************************************************************************/
 QAction *ShortcutManager::checkActionIsExistForModify(QAction &action)
 {
     QString strNewActionName = action.text();
@@ -411,6 +459,13 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     }
     return true;
 }
+
+/*******************************************************************************
+ 1. @函数:    delCustomCommand
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-08-11
+ 4. @说明:    删除自定义命令
+*******************************************************************************/
 void ShortcutManager::delCustomCommand(CustomCommandData itemData)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
@@ -439,6 +494,12 @@ void ShortcutManager::delCustomCommand(CustomCommandData itemData)
 
 }
 
+/*******************************************************************************
+ 1. @函数:    saveCustomCommandToConfig
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-08-11
+ 4. @说明:    保存自定义命令到配置
+*******************************************************************************/
 void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
@@ -478,6 +539,12 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    delCustomCommandToConfig
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-08-11
+ 4. @说明:    从配置中删除自定义命令
+*******************************************************************************/
 int ShortcutManager::delCustomCommandToConfig(CustomCommandData itemData)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;

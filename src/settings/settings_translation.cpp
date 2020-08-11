@@ -22,6 +22,12 @@
 
 #include <DSettings>
 
+/*******************************************************************************
+ 1. @函数:    GenerateSettingTranslate
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    生成设置翻译
+*******************************************************************************/
 void GenerateSettingTranslate()
 {
     auto advanced_cursor_auto_copy_selectionText = QObject::tr("Copy on select");

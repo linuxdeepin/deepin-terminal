@@ -171,11 +171,23 @@ bool NewDspinBox::eventFilter(QObject *watched, QEvent *event)
     return DWidget::eventFilter(watched, event);
 }
 
+/*******************************************************************************
+ 1. @函数:    setValue
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面设置值
+*******************************************************************************/
 void NewDspinBox::setValue(int val)
 {
     m_DLineEdit->setText(QString::number(val));
 }
 
+/*******************************************************************************
+ 1. @函数:    setMaximum
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面设置最大值
+*******************************************************************************/
 void NewDspinBox::setMaximum(int val)
 {
     if (val > m_MinValue) {
@@ -185,6 +197,12 @@ void NewDspinBox::setMaximum(int val)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setMinimum
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面设置最小值
+*******************************************************************************/
 void NewDspinBox::setMinimum(int val)
 {
     if (val < m_MaxValue) {
@@ -193,6 +211,13 @@ void NewDspinBox::setMinimum(int val)
         // m_DLineEdit->lineEdit()->setValidator(m_QIntValidator);
     }
 }
+
+/*******************************************************************************
+ 1. @函数:    correctValue
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面检测当前值是否在最小值和最大值范围内
+*******************************************************************************/
 void NewDspinBox::correctValue()
 {
     int val = m_DLineEdit->text().toInt();
@@ -204,6 +229,12 @@ void NewDspinBox::correctValue()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    drawCursor
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:
+*******************************************************************************/
 //拷贝了Qt QTextLayout类的源码
 void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition, int width) const
 {

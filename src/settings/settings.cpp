@@ -64,6 +64,13 @@ Settings::~Settings()
         settings->deleteLater();
     }
 }
+
+/*******************************************************************************
+ 1. @函数:    init
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面初始化
+*******************************************************************************/
 // 统一初始化以后方可使用。
 void Settings::init()
 {
@@ -111,6 +118,12 @@ void Settings::init()
 #endif
 }
 
+/*******************************************************************************
+ 1. @函数:    loadDefaultsWhenReinstall
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    重新安装终端后在这里重置状态
+*******************************************************************************/
 //重新安装终端后在这里重置状态
 void Settings::loadDefaultsWhenReinstall()
 {
@@ -128,6 +141,12 @@ void Settings::loadDefaultsWhenReinstall()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    initConnection
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面初始化连接
+*******************************************************************************/
 void Settings::initConnection()
 {
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
@@ -184,41 +203,89 @@ void Settings::initConnection()
     /********************* Modify by n014361 wangpeili End ************************/
 }
 
+/*******************************************************************************
+ 1. @函数:    opacity
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取透明度的值
+*******************************************************************************/
 qreal Settings::opacity() const
 {
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
 }
 
+/*******************************************************************************
+ 1. @函数:    colorScheme
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取主题颜色
+*******************************************************************************/
 QString Settings::colorScheme() const
 {
     return settings->option("basic.interface.theme")->value().toString();
 }
 
+/*******************************************************************************
+ 1. @函数:    encoding
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取编码
+*******************************************************************************/
 QString Settings::encoding() const
 {
     return m_EncodeName;
 }
 
+/*******************************************************************************
+ 1. @函数:    fontName
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取字体名称
+*******************************************************************************/
 QString Settings::fontName()
 {
     return settings->option("basic.interface.font")->value().toString();
 }
 
+/*******************************************************************************
+ 1. @函数:    fontSize
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取字体大小
+*******************************************************************************/
 int Settings::fontSize()
 {
     return settings->option("basic.interface.font_size")->value().toInt();
 }
 
+/*******************************************************************************
+ 1. @函数:    PressingScroll
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取按键时是否是滚动
+*******************************************************************************/
 bool Settings::PressingScroll()
 {
     return settings->option("advanced.scroll.scroll_on_key")->value().toBool();
 }
 
+/*******************************************************************************
+ 1. @函数:    OutputtingScroll
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取输出时是否是滚动
+*******************************************************************************/
 bool Settings::OutputtingScroll()
 {
     return settings->option("advanced.scroll.scroll_on_output")->value().toBool();
 }
 
+/*******************************************************************************
+ 1. @函数:    reload
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面重新加载设置的键值
+*******************************************************************************/
 void Settings::reload()
 {
     QSettings  newSettings(m_configPath, QSettings::IniFormat);
@@ -236,26 +303,56 @@ void Settings::reload()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    cursorShape
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取光标形状
+*******************************************************************************/
 int Settings::cursorShape() const
 {
     return settings->option("advanced.cursor.cursor_shape")->value().toInt();
 }
 
+/*******************************************************************************
+ 1. @函数:    cursorBlink
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取光标闪烁属性
+*******************************************************************************/
 bool Settings::cursorBlink() const
 {
     return settings->option("advanced.cursor.cursor_blink")->value().toBool();
 }
 
+/*******************************************************************************
+ 1. @函数:    backgroundBlur
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面获取背景模糊属性
+*******************************************************************************/
 bool Settings::backgroundBlur() const
 {
     return settings->option("advanced.window.blurred_background")->value().toBool();
 }
 
+/*******************************************************************************
+ 1. @函数:    setColorScheme
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面设置主题颜色
+*******************************************************************************/
 void Settings::setColorScheme(const QString &name)
 {
     return settings->option("basic.interface.theme")->setValue(name);
 }
 
+/*******************************************************************************
+ 1. @函数:    setEncoding
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面设置编码
+*******************************************************************************/
 void Settings::setEncoding(const QString &name)
 {
     if (name != m_EncodeName) {
@@ -265,6 +362,12 @@ void Settings::setEncoding(const QString &name)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setKeyValue
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面设置键值
+*******************************************************************************/
 void Settings::setKeyValue(const QString &name, const QString &value)
 {
     settings->option(name)->setValue(value);
@@ -301,6 +404,12 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
+/*******************************************************************************
+ 1. @函数:    HandleWidthFont
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-11
+ 4. @说明:    每次显示设置界面时，更新设置的等宽字体
+*******************************************************************************/
 void Settings::HandleWidthFont()
 {
     QStringList Whitelist;
@@ -339,12 +448,24 @@ void Settings::HandleWidthFont()
 }
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/
 
+/*******************************************************************************
+ 1. @函数:    getKeyshortcutFromKeymap
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置界面从键盘映射获取密钥快捷方式
+*******************************************************************************/
 QString Settings::getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName)
 {
     return settings->option(QString("shortcuts.%1.%2").arg(keyCategory, keyName))->value().toString();
 }
 
 /******** Modify by n014361 wangpeili 2020-01-04: 创建Combox控件        ***********×****/
+/*******************************************************************************
+ 1. @函数:    createFontComBoBoxHandle
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    创建Combox控件
+*******************************************************************************/
 QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
@@ -432,6 +553,12 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     return optionWidget;
 }
 
+/*******************************************************************************
+ 1. @函数:    createSpinButtonHandle
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    自定义SpinButton控件样式
+*******************************************************************************/
 QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
@@ -461,6 +588,12 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     return optionWidget;
 } /********************* Modify by n014361 wangpeili End ************************/
 
+/*******************************************************************************
+ 1. @函数:    createShortcutEditOptionHandle
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    自定义ShortcutEdit控件样式
+*******************************************************************************/
 QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettingsWidgetFactoryPrivate *p,*/ QObject *opt)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(opt);
