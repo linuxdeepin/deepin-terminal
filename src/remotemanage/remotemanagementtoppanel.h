@@ -19,10 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * 远程管理界面管理类
- * 主要负责界面切换和动画效果
- */
+/*******************************************************************************
+ 1. @类名:    RemoteManagementTopPanel
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理界面管理类
+             主要负责界面切换和动画效果
+*******************************************************************************/
 #ifndef REMOTEMANAGEMENTTOPPANEL_H
 #define REMOTEMANAGEMENTTOPPANEL_H
 

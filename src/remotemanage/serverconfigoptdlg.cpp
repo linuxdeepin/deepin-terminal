@@ -76,6 +76,12 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     initData();
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项初始化UI界面
+*******************************************************************************/
 void ServerConfigOptDlg::initUI()
 {
     //all layout
@@ -330,6 +336,12 @@ void ServerConfigOptDlg::initUI()
     setTabOrder(pAddSaveButton, m_closeButton);
 }
 
+/*******************************************************************************
+ 1. @函数:    initData
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项初始化数据
+*******************************************************************************/
 void ServerConfigOptDlg::initData()
 {
     QList<QString> textCodeList = getTextCodec();
@@ -364,6 +376,12 @@ void ServerConfigOptDlg::initData()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getTextCodec
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项获取文本的编码
+*******************************************************************************/
 QList<QString> ServerConfigOptDlg::getTextCodec()
 {
     /******** Modify by ut000610 daizhengwen 2020-05-28: 编码列表和编码插件一致****************/
@@ -380,6 +398,12 @@ QList<QString> ServerConfigOptDlg::getTextCodec()
     return textCodecList;
 }
 
+/*******************************************************************************
+ 1. @函数:    getBackSpaceKey
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项获取退格键
+*******************************************************************************/
 QList<QString> ServerConfigOptDlg::getBackSpaceKey()
 {
     QList<QString> eraseKeyList;
@@ -391,6 +415,12 @@ QList<QString> ServerConfigOptDlg::getBackSpaceKey()
     return eraseKeyList;
 }
 
+/*******************************************************************************
+ 1. @函数:    getDeleteKey
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项获取删除键
+*******************************************************************************/
 QList<QString> ServerConfigOptDlg::getDeleteKey()
 {
     QList<QString> eraseKeyList;
@@ -422,6 +452,12 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 {
 }
 
+/*******************************************************************************
+ 1. @函数:    updataData
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项更新数据
+*******************************************************************************/
 void ServerConfigOptDlg::updataData(ServerConfig *curServer)
 {
     // 读取配置
@@ -457,6 +493,12 @@ void ServerConfigOptDlg::updataData(ServerConfig *curServer)
     m_currentServerName = m_serverName->text();
 }
 
+/*******************************************************************************
+ 1. @函数:    getData
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项获取数据
+*******************************************************************************/
 ServerConfig ServerConfigOptDlg::getData()
 {
     ServerConfig config;
@@ -475,6 +517,12 @@ ServerConfig ServerConfigOptDlg::getData()
     return config;
 }
 
+/*******************************************************************************
+ 1. @函数:    resetCurServer
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项重置当前服务器
+*******************************************************************************/
 void ServerConfigOptDlg::resetCurServer(ServerConfig config)
 {
     m_curServer->m_serverName = config.m_serverName;
@@ -491,6 +539,12 @@ void ServerConfigOptDlg::resetCurServer(ServerConfig config)
     m_curServer->m_deleteKey = config.m_deleteKey;
 }
 
+/*******************************************************************************
+ 1. @函数:    slotAddSaveButtonClicked
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置选项增加和保存按钮点击响应函数
+*******************************************************************************/
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
     // 服务器名为空

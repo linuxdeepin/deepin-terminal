@@ -19,10 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * 远程管理搜索界面
- * 主要由返回按钮， 搜索条件显示框和搜索结果列表构成
- */
+/*******************************************************************************
+ 1. @类名:    RemoteManagementSearchPanel
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理搜索界面
+             主要由返回按钮， 搜索条件显示框和搜索结果列表构成
+*******************************************************************************/
 #ifndef REMOTEMANAGEMENTSEARCHPANEL_H
 #define REMOTEMANAGEMENTSEARCHPANEL_H
 

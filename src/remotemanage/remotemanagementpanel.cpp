@@ -29,6 +29,12 @@ RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(pare
     initUI();
 }
 
+/*******************************************************************************
+ 1. @函数:    refreshPanel
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    刷新远程管理面板
+*******************************************************************************/
 void RemoteManagementPanel::refreshPanel()
 {
     // 清空搜索框
@@ -121,6 +127,12 @@ int RemoteManagementPanel::getListIndex()
     return m_listWidget->currentIndex();
 }
 
+/*******************************************************************************
+ 1. @函数:    refreshSearchState
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    刷新远程管理搜索状态
+*******************************************************************************/
 void RemoteManagementPanel::refreshSearchState()
 {
     if (m_listWidget->count() >= 2) {
@@ -150,6 +162,12 @@ void RemoteManagementPanel::onItemClicked(const QString &key)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    showCurSearchResult
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示远程管理当前搜索结果
+*******************************************************************************/
 void RemoteManagementPanel::showCurSearchResult()
 {
 //    // 清除当前焦点
@@ -161,6 +179,12 @@ void RemoteManagementPanel::showCurSearchResult()
     emit showSearchPanel(strTxt);
 }
 
+/*******************************************************************************
+ 1. @函数:    showAddServerConfigDlg
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示远程管理添加服务器配置界面
+*******************************************************************************/
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
     // 判断控件是否有焦点
@@ -187,6 +211,12 @@ void RemoteManagementPanel::showAddServerConfigDlg()
     dlg->show();
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化远程管理UI界面
+*******************************************************************************/
 void RemoteManagementPanel::initUI()
 {
     this->setBackgroundRole(QPalette::Base);
@@ -258,6 +288,12 @@ void RemoteManagementPanel::initUI()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    listItemClicked
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理列表项点击响应函数
+*******************************************************************************/
 void RemoteManagementPanel::listItemClicked(ServerConfig *curItemServer)
 {
     if (nullptr != curItemServer) {

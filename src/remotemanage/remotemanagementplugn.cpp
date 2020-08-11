@@ -33,6 +33,12 @@ RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPlugin
     m_pluginName = "Remote Management";
 }
 
+/*******************************************************************************
+ 1. @函数:    initPlugin
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理初始化插件
+*******************************************************************************/
 void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
@@ -75,6 +81,12 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    titlebarMenu
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理标题栏菜单
+*******************************************************************************/
 QAction *RemoteManagementPlugn::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *remoteManagementAction(new QAction(tr("Remote management"), mainWindow));
@@ -85,6 +97,12 @@ QAction *RemoteManagementPlugn::titlebarMenu(MainWindow *mainWindow)
     return remoteManagementAction;
 }
 
+/*******************************************************************************
+ 1. @函数:    getRemoteManagementTopPanel
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取远程管理顶部面板
+*******************************************************************************/
 RemoteManagementTopPanel *RemoteManagementPlugn::getRemoteManagementTopPanel()
 {
     if (nullptr == m_remoteManagementTopPanel) {
@@ -93,6 +111,12 @@ RemoteManagementTopPanel *RemoteManagementPlugn::getRemoteManagementTopPanel()
     return m_remoteManagementTopPanel;
 }
 
+/*******************************************************************************
+ 1. @函数:    initRemoteManagementTopPanel
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化远程管理顶部面板
+*******************************************************************************/
 void RemoteManagementPlugn::initRemoteManagementTopPanel()
 {
     qDebug() << __FUNCTION__;
@@ -103,6 +127,12 @@ void RemoteManagementPlugn::initRemoteManagementTopPanel()
             &RemoteManagementPlugn::doCennectServer, Qt::QueuedConnection);
 }
 
+/*******************************************************************************
+ 1. @函数:    doCennectServer
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理做连接服务器
+*******************************************************************************/
 void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 {
     if (nullptr != curServer) {
@@ -217,6 +247,13 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
     toFile.close();
     return toFileStr;
 }
+
+/*******************************************************************************
+ 1. @函数:    hidePlugn
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理隐藏面板，暂时不使用，待处理
+*******************************************************************************/
 void RemoteManagementPlugn::hidePlugn()
 {
     if (m_remoteManagementTopPanel && m_remoteManagementTopPanel->isVisible()) {
@@ -224,6 +261,12 @@ void RemoteManagementPlugn::hidePlugn()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setRemoteEncode
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置远程管理编码
+*******************************************************************************/
 void RemoteManagementPlugn::setRemoteEncode(QString encode)
 {
     TermWidget *term = m_mainWindow->currentPage()->currentTerminal();

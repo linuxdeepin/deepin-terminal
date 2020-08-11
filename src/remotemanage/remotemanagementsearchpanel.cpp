@@ -37,6 +37,12 @@ RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : Comm
     initUI();
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理搜索面板初始化UI界面
+*******************************************************************************/
 void RemoteManagementSearchPanel::initUI()
 {
     this->setBackgroundRole(QPalette::Base);
@@ -113,6 +119,12 @@ void RemoteManagementSearchPanel::initUI()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    refreshDataByGroupAndFilter
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理搜索面板按组和过滤器刷新数据
+*******************************************************************************/
 void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &strGroup, const QString &strFilter)
 {
     setSearchFilter(strFilter);
@@ -123,6 +135,12 @@ void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &str
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Search, m_listWidget, strFilter, strGroup);
 }
 
+/*******************************************************************************
+ 1. @函数:    refreshDataByFilter
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理搜索面板按过滤器刷新数据
+*******************************************************************************/
 void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
 {
     setSearchFilter(strFilter);
@@ -244,7 +262,12 @@ int RemoteManagementSearchPanel::getListIndex()
     return m_listWidget->currentIndex();
 }
 
-
+/*******************************************************************************
+ 1. @函数:    setSearchFilter
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置远程管理搜索的过滤器
+*******************************************************************************/
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)
 {
     m_strFilter = filter;

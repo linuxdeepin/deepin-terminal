@@ -37,6 +37,12 @@ ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(pa
     initUI();
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置组面板初始化UI界面
+*******************************************************************************/
 void ServerConfigGroupPanel::initUI()
 {
     this->setBackgroundRole(QPalette::Base);
@@ -132,6 +138,12 @@ void ServerConfigGroupPanel::initUI()
 //    setTabOrder(m_rebackButton, m_searchEdit);
 }
 
+/*******************************************************************************
+ 1. @函数:    refreshData
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置组面板刷新数据
+*******************************************************************************/
 void ServerConfigGroupPanel::refreshData(const QString &groupName)
 {
     qDebug() << __FUNCTION__;
@@ -186,12 +198,24 @@ void ServerConfigGroupPanel::clearAllFocus()
     m_listWidget->clearFocus();
 }
 
+/*******************************************************************************
+ 1. @函数:    handleShowSearchResult
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置组面板处理显示搜索到的结果
+*******************************************************************************/
 void ServerConfigGroupPanel::handleShowSearchResult()
 {
     QString strFilter = m_searchEdit->text();
     emit showSearchPanel(strFilter);
 }
 
+/*******************************************************************************
+ 1. @函数:    refreshSearchState
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置组面板刷新搜索状态
+*******************************************************************************/
 void ServerConfigGroupPanel::refreshSearchState()
 {
     if (m_listWidget->count() >= 2) {
@@ -204,6 +228,12 @@ void ServerConfigGroupPanel::refreshSearchState()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    listItemClicked
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器配置组面板列表项点击响应函数
+*******************************************************************************/
 void ServerConfigGroupPanel::listItemClicked(ServerConfig *curItemServer)
 {
     if (nullptr != curItemServer) {

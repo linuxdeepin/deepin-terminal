@@ -160,6 +160,12 @@ ServerConfigManager *ServerConfigManager::instance()
     return m_instance;
 }
 
+/*******************************************************************************
+ 1. @函数:    initServerConfig
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化服务器配置
+*******************************************************************************/
 void ServerConfigManager::initServerConfig()
 {
     m_serverConfigs.clear();
@@ -209,6 +215,12 @@ void ServerConfigManager::initServerConfig()
     return;
 }
 
+/*******************************************************************************
+ 1. @函数:    saveServerConfig
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    保存服务器配置
+*******************************************************************************/
 void ServerConfigManager::saveServerConfig(ServerConfig *config)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -233,6 +245,12 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    delServerConfig
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    删除服务器配置
+*******************************************************************************/
 void ServerConfigManager::delServerConfig(ServerConfig *config)
 {
     // 防止重复删除
@@ -265,6 +283,12 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     delete config;
 }
 
+/*******************************************************************************
+ 1. @函数:    modifyServerConfig
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    修改服务器配置
+*******************************************************************************/
 void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig)
 {
     SyncData(oldConfig->m_serverName, newConfig);
@@ -273,6 +297,12 @@ void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConf
     saveServerConfig(newConfig);
 }
 
+/*******************************************************************************
+ 1. @函数:    getServerConfigs
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取服务器配置
+*******************************************************************************/
 QMap<QString, QList<ServerConfig *>> &ServerConfigManager::getServerConfigs()
 {
     return m_serverConfigs;
@@ -304,6 +334,12 @@ void ServerConfigManager::refreshServerList(PanelType type, ListView *listview, 
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setModifyDialog
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    服务器设置修改对话框
+*******************************************************************************/
 void ServerConfigManager::setModifyDialog(QString key, ServerConfigOptDlg *dlg)
 {
     // 添加编辑弹窗
@@ -349,6 +385,12 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     removeOne = nullptr;
 }
 
+/*******************************************************************************
+ 1. @函数:    SyncData
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    同步弹窗数据
+*******************************************************************************/
 void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 {
     qDebug() << key << newConfig->m_serverName;
@@ -370,6 +412,12 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 
 }
 
+/*******************************************************************************
+ 1. @函数:    closeAllDialog
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    删除数据，关闭所有同类弹窗
+*******************************************************************************/
 void ServerConfigManager::closeAllDialog(QString key)
 {
     qDebug() << __FUNCTION__ << "remote name : " <<  key << m_serverConfigDialogMap.count();

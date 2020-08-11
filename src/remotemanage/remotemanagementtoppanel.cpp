@@ -50,6 +50,12 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
     m_remoteManagementPanel->hide();
 }
 
+/*******************************************************************************
+ 1. @函数:    show
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理顶部面板显示
+*******************************************************************************/
 void RemoteManagementTopPanel::show()
 {
     RightPanel::show();
@@ -373,6 +379,12 @@ void RemoteManagementTopPanel::setPanelShowState(ServerConfigManager::PanelType 
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    panelLeftToRight
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理顶部面板从左到右动画
+*******************************************************************************/
 void RemoteManagementTopPanel::panelLeftToRight(QPropertyAnimation *animation, QPropertyAnimation *animation1)
 {
     animation->setDuration(animationDuration);
@@ -392,6 +404,12 @@ void RemoteManagementTopPanel::panelLeftToRight(QPropertyAnimation *animation, Q
     group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
+/*******************************************************************************
+ 1. @函数:    panelRightToLeft
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    远程管理顶部面板从右到左动画
+*******************************************************************************/
 void RemoteManagementTopPanel::panelRightToLeft(QPropertyAnimation *animation, QPropertyAnimation *animation1)
 {
     animation->setDuration(animationDuration);
