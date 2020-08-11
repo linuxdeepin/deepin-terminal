@@ -61,7 +61,12 @@ Utils::Utils(QObject *parent) : QObject(parent)
 Utils::~Utils()
 {
 }
-
+/*******************************************************************************
+ 1. @函数:    getQssContent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取QSS中内容
+*******************************************************************************/
 QString Utils::getQssContent(const QString &filePath)
 {
     QFile file(filePath);
@@ -73,7 +78,12 @@ QString Utils::getQssContent(const QString &filePath)
 
     return qss;
 }
-
+/*******************************************************************************
+ 1. @函数:    getConfigPath
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取config的路径
+*******************************************************************************/
 QString Utils::getConfigPath()
 {
     static QStringList list = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
@@ -83,12 +93,22 @@ QString Utils::getConfigPath()
 
     return dir.filePath(qApp->applicationName());
 }
-
+/*******************************************************************************
+ 1. @函数:    suffixList
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置后缀列表只包含*.ttf *.ttc *.otf格式
+*******************************************************************************/
 QString Utils::suffixList()
 {
     return QString("Font Files (*.ttf *.ttc *.otf)");
 }
-
+/*******************************************************************************
+ 1. @函数:    renderSVG
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:
+*******************************************************************************/
 QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 {
     if (m_imgCacheHash.contains(filePath)) {
@@ -113,7 +133,12 @@ QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
 
     return pixmap;
 }
-
+/*******************************************************************************
+ 1. @函数:    loadFontFamilyFromFiles
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    从文件中加载字体系列
+*******************************************************************************/
 QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
 {
     if (m_fontNameCache.contains(fontFileName)) {
@@ -138,7 +163,12 @@ QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
     m_fontNameCache.insert(fontFileName, fontFamilyName);
     return fontFamilyName;
 }
-
+/*******************************************************************************
+ 1. @函数:    getElidedText
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取删除的文字
+*******************************************************************************/
 QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElideMode elideMode)
 {
     if (text.isEmpty()) {
@@ -158,7 +188,12 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElid
 
     return text;
 }
-
+/*******************************************************************************
+ 1. @函数:    holdTextInRect
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    在矩形中保留文本
+*******************************************************************************/
 const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize &size)
 {
     QFontMetrics fm(font);
@@ -208,7 +243,12 @@ const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize
 
     return lines.join("");
 }
-
+/*******************************************************************************
+ 1. @函数:    convertToPreviewString
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    转换为预览字符串
+*******************************************************************************/
 QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
 {
     if (fontFilePath.isEmpty()) {
@@ -240,7 +280,12 @@ QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
 
     return strFontPreview;
 }
-
+/*******************************************************************************
+ 1. @函数:    getRandString
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取随机字符串
+*******************************************************************************/
 QString Utils::getRandString()
 {
     int max = 6;  //字符串长度
@@ -255,7 +300,12 @@ QString Utils::getRandString()
     }
     return str;
 }
-
+/*******************************************************************************
+ 1. @函数:    showDirDialog
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示目录对话框
+*******************************************************************************/
 QString Utils::showDirDialog(QWidget *widget)
 {
     QString curPath = QDir::currentPath();
@@ -276,7 +326,12 @@ QString Utils::showDirDialog(QWidget *widget)
         return "";
     }
 }
-
+/*******************************************************************************
+ 1. @函数:    showFilesSelectDialog
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示文件选择对话框
+*******************************************************************************/
 QStringList Utils::showFilesSelectDialog(QWidget *widget)
 {
     QString curPath = QDir::currentPath();
@@ -295,7 +350,12 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
         return QStringList();
     }
 }
-
+/*******************************************************************************
+ 1. @函数:    showExitConfirmDialog
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示退出确认对话框
+*******************************************************************************/
 bool Utils::showExitConfirmDialog(CloseType type, int count)
 {
     /******** Modify by m000714 daizhengwen 2020-04-17: 统一使用dtk Dialog****************/
@@ -341,7 +401,12 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
 #endif
     /********************* Modify by m000714 daizhengwen End ************************/
 }
-
+/*******************************************************************************
+ 1. @函数:    getExitDialogText
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取退出对话框文本
+*******************************************************************************/
 void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int count)
 {
     // count < 1 不提示
@@ -366,7 +431,12 @@ void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int 
         }
     }
 }
-
+/*******************************************************************************
+ 1. @函数:    showExitUninstallConfirmDialog
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示退出卸载确认对话框
+*******************************************************************************/
 bool Utils::showExitUninstallConfirmDialog()
 {
     DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to uninstall it?"));
@@ -375,7 +445,13 @@ bool Utils::showExitUninstallConfirmDialog()
     dlg.addButton(QString(tr("OK")), true, DDialog::ButtonWarning);
     return (dlg.exec() == DDialog::Accepted);
 }
-
+/*******************************************************************************
+ 1. @函数:    showUnistallConfirmDialog
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示卸载确认对话框
+*******************************************************************************/
+//单词可能拼错了showUninstallConfirmDialog
 bool Utils::showUnistallConfirmDialog(QString commandname)
 {
 #ifndef USE_DTK
@@ -428,7 +504,12 @@ bool Utils::showShortcutConflictDialog(QString conflictkey)
     optDlg.exec();
     return optDlg.getConfirmResult() == QDialog::Accepted;
 }
-
+/*******************************************************************************
+ 1. @函数:    showShortcutConflictMsgbox
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示快捷方式冲突消息框
+*******************************************************************************/
 bool Utils::showShortcutConflictMsgbox(QString txt)
 {
 #ifndef USE_DTK
@@ -475,7 +556,12 @@ void Utils::setSpaceInWord(DPushButton *button)
         button->setText(QString().append(text.at(0)).append(QChar::Nbsp).append(text.at(1)));
     }
 }
-
+/*******************************************************************************
+ 1. @函数:    showRenameTitleDialog
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示重命名标题对话框
+*******************************************************************************/
 void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
 {
     TermInputDialog *pDialog = new TermInputDialog(parentWidget);
@@ -950,7 +1036,12 @@ FontFilter::~FontFilter()
     }
 }
 
-//启动thread，打印等宽字体函数
+/*******************************************************************************
+ 1. @函数:    HandleWidthFont
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-11
+ 4. @说明:    启动thread，打印等宽字体函数
+*******************************************************************************/
 void FontFilter::HandleWidthFont()
 {
     if (!m_thread->isRunning()) {
@@ -960,13 +1051,23 @@ void FontFilter::HandleWidthFont()
     qDebug() << "m_thread is Running";
 }
 
-//设置线程结束标志 true = 结束 false = 正常
+/*******************************************************************************
+ 1. @函数:    setStop
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置线程结束标志 true = 结束 false = 正常
+*******************************************************************************/
 void FontFilter::setStop(bool stop)
 {
     m_bstop = stop;
 }
 
-//打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
+/*******************************************************************************
+ 1. @函数:    CompareWhiteList
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-11
+ 4. @说明:    打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
+*******************************************************************************/
 void FontFilter::CompareWhiteList()
 {
     QStringList DBUSWhitelist = DBusManager::callAppearanceFont("monospacefont");
