@@ -41,6 +41,12 @@ int EncodeListModel::rowCount(const QModelIndex &parent) const
     return m_encodeData.count();
 }
 
+/*******************************************************************************
+ 1. @函数:    data
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    根据行信息获取当前编码内容
+*******************************************************************************/
 QVariant EncodeListModel::data(const QModelIndex &index, int role) const
 {
     Q_UNUSED(role);
@@ -48,11 +54,23 @@ QVariant EncodeListModel::data(const QModelIndex &index, int role) const
     return m_encodeData[row];
 }
 
+/*******************************************************************************
+ 1. @函数:    listData
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    返回编码数据列表
+*******************************************************************************/
 QList<QByteArray> EncodeListModel::listData()
 {
     return  m_encodeData;
 }
 
+/*******************************************************************************
+ 1. @函数:    initEncodeData
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化编码数据
+*******************************************************************************/
 void EncodeListModel::initEncodeData()
 {
     QList<QByteArray> all = QTextCodec::availableCodecs();

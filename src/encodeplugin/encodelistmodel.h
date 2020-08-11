@@ -24,6 +24,13 @@
 
 #include <QStandardItemModel>
 
+/*******************************************************************************
+ 1. @类名:    EncodeListModel
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:
+*******************************************************************************/
+
 class EncodeListModel : public QStandardItemModel
 {
     Q_OBJECT

@@ -73,6 +73,12 @@ void EncodePanel::show()
     //解决Alt+F2显示Encode时，高度变长的问题 End
 }
 
+/*******************************************************************************
+ 1. @函数:    updateEncode
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    更新编码
+*******************************************************************************/
 void EncodePanel::updateEncode(QString encode)
 {
     m_encodeView->checkEncode(encode);

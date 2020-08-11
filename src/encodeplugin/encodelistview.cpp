@@ -75,6 +75,12 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     QScroller::grabGesture(this, QScroller::TouchGesture);
 }
 
+/*******************************************************************************
+ 1. @函数:    initEncodeItems
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化编码项
+*******************************************************************************/
 void EncodeListView::initEncodeItems()
 {
     QList<QByteArray> encodeDataList = m_encodeModel->listData();
@@ -114,6 +120,12 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
     DListView::focusInEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    focusOutEvent
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    处理焦点离开事件
+*******************************************************************************/
 void EncodeListView::focusOutEvent(QFocusEvent *event)
 {
     /** add by ut001121 zhangmeng 20200718 for sp3 keyboard interaction*/
@@ -210,17 +222,35 @@ void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
     return DListView::mouseReleaseEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    resizeContents
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    空函数
+*******************************************************************************/
 void EncodeListView::resizeContents(int width, int height)
 {
     Q_UNUSED(width)
     Q_UNUSED(height)
 }
 
+/*******************************************************************************
+ 1. @函数:    contentsSize
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    返回内容大小
+*******************************************************************************/
 QSize EncodeListView::contentsSize() const
 {
     return itemSize();
 }
 
+/*******************************************************************************
+ 1. @函数:    onListViewClicked
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    列表视图上单击响应函数
+*******************************************************************************/
 void EncodeListView::onListViewClicked(const QModelIndex &index)
 {
     if (!index.isValid()) {
@@ -241,6 +271,12 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
     m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
 }
 
+/*******************************************************************************
+ 1. @函数:    checkEncode
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    查询编码
+*******************************************************************************/
 void EncodeListView::checkEncode(QString encode)
 {
     // 判断是否是当前窗口
@@ -392,6 +428,12 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    sizeHint
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    尺寸提示
+*******************************************************************************/
 QSize EncodeDelegate::sizeHint(const QStyleOptionViewItem &option,
                                const QModelIndex &index) const
 {
