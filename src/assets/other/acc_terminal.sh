@@ -207,7 +207,8 @@ tcount=$(grep -c "create NormalWindow, current count" $dtl)
 tottime=0
 mintime=999999999999
 maxtime=0
-
+firsttime=0
+lasttime=0
 cmpversion=$(echo "$version" | sed 's/\.//g')
 
 if [ $cmpversion -ge 5219 ] ; then
@@ -216,6 +217,14 @@ if [ $cmpversion -ge 5219 ] ; then
         echo $orgStr
         tmptime=$(echo $orgStr | sed 's/\(.*\)all time use \(.*\) ms/\2/g') 
         tottime=$[tottime+tmptime]
+        
+        if [ $i -eq 1 ]; then
+            firsttime=$tmptime
+        fi
+
+        if [ $i -eq $tcount ] ; then
+            lasttime=$tmptime
+        fi
 
         if [ $maxtime -lt $tmptime ]; then
             maxtime=$tmptime
@@ -228,7 +237,8 @@ if [ $cmpversion -ge 5219 ] ; then
     tottime=$[tottime*1000000]
     mintime=$[mintime*1000000]
     maxtime=$[maxtime*1000000]
-
+    firsttime=$[firsttime*1000000]
+    lasttime=$[lasttime*1000000]
 else
 
     for (( ii = 1; ii <= tcount; ii++ )); do
@@ -268,13 +278,27 @@ else
         done                                                                                                
 
         echo "终端创建开始时间:  $tstarttime"                                                                    
-        echo "终端创建结束时间:  $tendtime"                                                                       
+        echo "终端创建结束时间:  $tendtime"  
+
         if [ $tstarttime -a $tendtime ] ; then                                                           
             tmptime=$[tendtime-tstarttime]                             
             tottime=$[tottime+tmptime]
+            
+            #首次启动时间
+            if [ $firsttime -eq 0 ]; then
+                firsttime=$tmptime 
+            fi
+                
+            if [ $ii -eq $tcount ]; then
+                lasttime=$tmptime
+            fi
+
+
+            #最大启动时间
             if [ $maxtime -lt $tmptime ]; then
                 maxtime=$tmptime
             fi
+            #最小启动时间
             if [ $tmptime -lt $mintime ]; then
                 mintime=$tmptime
             fi
@@ -282,6 +306,8 @@ else
         done
 fi
 
+echo "首个终端启动时间:  $[firsttime/1000000] 毫秒" >> $accfile
+echo "末尾终端启动时间:  $[lasttime/1000000] 毫秒" >> $accfile
 echo "终端最小启动时间:  $[mintime/1000000] 毫秒" >> $accfile
 echo "终端最大启动时间:  $[maxtime/1000000] 毫秒" >> $accfile
 tottime=$[tottime/1000000]
