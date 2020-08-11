@@ -365,7 +365,20 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     });
 
     connect(this, &MainWindow::showPluginChanged, termPage, [ = ](const QString name) {
-        termPage->showSearchBar(PLUGIN_TYPE_SEARCHBAR == name && (this->currentPage() == termPage));
+        // 判断是否是当前页，不是当前页不用管
+        if (this->currentPage() == termPage) {
+            // 显示和隐藏搜索框
+            if (PLUGIN_TYPE_SEARCHBAR == name) {
+                // 显示搜索框
+                termPage->showSearchBar(SearchBar_Show);
+            } else if (PLUGIN_TYPE_NONE == name) {
+                // 隐藏搜索框，焦点落回终端
+                termPage->showSearchBar(SearchBar_FocusOut);
+            } else {
+                // 隐藏搜索框
+                termPage->showSearchBar(SearchBar_Hide);
+            }
+        }
     });
 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);

@@ -93,7 +93,7 @@ public:
     // 设置光标闪烁
     void setBlinkingCursor(bool enable);
     void setPressingScroll(bool enable);
-    void showSearchBar(bool enable);
+    void showSearchBar(int state);
     /********************* Modify by n014361 wangpeili End ************************/
     void setTextCodec(QTextCodec *codec);
     void setMismatchAlert(bool alert);

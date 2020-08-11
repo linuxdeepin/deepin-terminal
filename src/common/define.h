@@ -29,4 +29,14 @@
 
 const QString TERM_WIDGET_NAME = "Konsole::TerminalScreen";
 
+// 搜索框焦点状态
+enum SearchBar_State {
+    // 显示搜索框，焦点落入搜索框
+    SearchBar_Show = 0,
+    // 隐藏搜索框，显示其他控件
+    SearchBar_Hide = 1,
+    // 隐藏搜索框，焦点落回终端
+    SearchBar_FocusOut = 2
+};
+
 #endif // DTNG_DEFINE_H

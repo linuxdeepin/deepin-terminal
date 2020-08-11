@@ -399,7 +399,7 @@ int TermWidgetPage::getTerminalCount()
 bool TermWidgetPage::hasHasHorizontalSplit()
 {
     qDebug() << "start hasHasHorizontalSplit";
-    QList<QSplitter *> splitList = findChildren<QSplitter  *>();
+    QList<QSplitter *> splitList = findChildren<QSplitter *>();
     for (QSplitter *split : splitList) {
         if (split->orientation() == Qt::Vertical) {
             return  true;
@@ -657,10 +657,14 @@ void TermWidgetPage::setPressingScroll(bool enable)
  2. @作者:    ut000439 王培利
  3. @日期:    2020-02-24
  4. @说明:    是否显示搜索框
+ 参数：state
+ 1) 显示搜索框                                       0 SearchBar_Show
+ 2) 隐藏搜索框 => 显示其他列表框，焦点顺移               1 SearchBar_Hide
+ 3) 隐藏搜索框 => 焦点返回终端                         2 SearchBar_FocusOut
 *******************************************************************************/
-void TermWidgetPage::showSearchBar(bool enable)
+void TermWidgetPage::showSearchBar(int state)
 {
-    if (enable) {
+    if (SearchBar_Show == state) {
         /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 Begin***************/
         if (m_MainWindow->isQuakeMode() && m_MainWindow->height() < 220) {
             m_MainWindow->resize(m_MainWindow->width(), 220); //首先设置雷神界面的大小
@@ -672,9 +676,15 @@ void TermWidgetPage::showSearchBar(bool enable)
         m_findBar->clearHoldContent();
         m_findBar->show();
         m_findBar->move(width() - 382, 0);
+        qDebug() << __FUNCTION__ << "show search bar!";
         QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });
-    } else {
+    } else if (SearchBar_Hide == state) {
         m_findBar->hide();
+        qDebug() << __FUNCTION__ << "hide search bar!";
+    } else if (SearchBar_FocusOut == state) {
+        m_findBar->hide();
+        qDebug() << __FUNCTION__ << "hide search bar! focus in term!";
+        Utils::getMainWindow(this)->focusCurrentPage();
     }
 }
 
