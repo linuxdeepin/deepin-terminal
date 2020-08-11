@@ -423,6 +423,15 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         }
     });
 
+    // 快速隐藏搜索框
+    connect(this, &MainWindow::quakeHidePlugin, termPage, [ = ]() {
+        // 判断是否是当前页，不是当前页不用管
+        if (this->currentPage() == termPage) {
+            // 隐藏搜索框
+            termPage->showSearchBar(SearchBar_Hide);
+        }
+    });
+
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
 }
 
