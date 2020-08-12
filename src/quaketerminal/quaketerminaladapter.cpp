@@ -43,6 +43,12 @@ QuakeTerminalAdapter::~QuakeTerminalAdapter()
     // destructor
 }
 
+/*******************************************************************************
+ 1. @函数:    ShowOrHide
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    显示或隐藏
+*******************************************************************************/
 void QuakeTerminalAdapter::ShowOrHide()
 {
     qDebug() << "QuakeTerminalAdapter::ShowOrHide";

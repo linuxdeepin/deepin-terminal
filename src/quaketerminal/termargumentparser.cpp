@@ -39,6 +39,12 @@ TermArgumentParser::~TermArgumentParser()
 {
 }
 
+/*******************************************************************************
+ 1. @函数:    parseArguments
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    解析参数
+*******************************************************************************/
 bool TermArgumentParser::parseArguments(MainWindow *mainWindow, bool isQuakeMode)
 {
     if (isQuakeMode) {
@@ -59,6 +65,12 @@ bool TermArgumentParser::parseArguments(MainWindow *mainWindow, bool isQuakeMode
     return false;
 }
 //--解决窗口不居中问题 added by nyq
+/*******************************************************************************
+ 1. @函数:    ParseArguments
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    解析参数
+*******************************************************************************/
 bool TermArgumentParser::ParseArguments(MainWindow *mainWindow, bool isQuakeMode, bool isSingleApp)
 {
     bool res = parseArguments(mainWindow, isQuakeMode);
@@ -72,6 +84,12 @@ bool TermArgumentParser::ParseArguments(MainWindow *mainWindow, bool isQuakeMode
 }
 //--
 
+/*******************************************************************************
+ 1. @函数:    initDBus
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    初始化DBUS
+*******************************************************************************/
 bool TermArgumentParser::initDBus()
 {
     //用于雷神窗口通信的DBus
@@ -94,6 +112,12 @@ bool TermArgumentParser::initDBus()
     return true;
 }
 
+/*******************************************************************************
+ 1. @函数:    showOrHideQuakeTerminal
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    显示或隐藏雷神终端
+*******************************************************************************/
 void TermArgumentParser::showOrHideQuakeTerminal()
 {
     QDBusMessage msg =

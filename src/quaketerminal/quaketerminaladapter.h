@@ -30,6 +30,14 @@
 /*
  * Adaptor class for interface com.deepin.quake_terminal
  */
+
+/*******************************************************************************
+ 1. @类名:    QuakeTerminalAdapter
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:
+*******************************************************************************/
+
 class QuakeTerminalAdapter : public QDBusAbstractAdaptor
 {
     Q_OBJECT

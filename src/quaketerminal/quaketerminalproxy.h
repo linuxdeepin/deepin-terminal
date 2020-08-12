@@ -26,6 +26,13 @@
 #include <QDBusConnection>
 #include <QObject>
 
+/*******************************************************************************
+ 1. @类名:    QuakeTerminalProxy
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:
+*******************************************************************************/
+
 class QuakeTerminalProxy : public QObject
 {
     Q_OBJECT

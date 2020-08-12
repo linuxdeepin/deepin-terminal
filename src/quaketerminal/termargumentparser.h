@@ -26,6 +26,13 @@
 
 #include <QObject>
 
+/*******************************************************************************
+ 1. @类名:    TermArgumentParser
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:
+*******************************************************************************/
+
 class QuakeTerminalProxy;
 class TermArgumentParser : public QObject
 {

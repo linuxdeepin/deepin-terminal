@@ -38,6 +38,12 @@ QuakeTerminalProxy::~QuakeTerminalProxy()
 {
 }
 
+/*******************************************************************************
+ 1. @函数:    getMainWindow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取主窗口
+*******************************************************************************/
 MainWindow *getMainWindow()
 {
     MainWindow *mainWin = nullptr;
@@ -50,6 +56,12 @@ MainWindow *getMainWindow()
     return nullptr;
 }
 
+/*******************************************************************************
+ 1. @函数:    ShowOrHide
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    显示或隐藏
+*******************************************************************************/
 void QuakeTerminalProxy::ShowOrHide()
 {
     MainWindow *mainWindow = getMainWindow();
