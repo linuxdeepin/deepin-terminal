@@ -3609,8 +3609,6 @@ TerminalScreen::TerminalScreen(QWidget *parent):TerminalDisplay (parent)
     grabGesture(Qt::PinchGesture);
     grabGesture(Qt::SwipeGesture);
 
-    QFont font = getVTFont();
-    m_scaleFactor = font.pointSize();
     m_SpeedTest = new QTimer(this);
     m_SpeedTest->setSingleShot(true);
     connect(m_SpeedTest,&QTimer::timeout, this ,[this]()
@@ -3754,6 +3752,13 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
     if(m_tapStatus == Qt::GestureStarted){
         m_gestureAction = GA_pinch;
         qDebug() << "pinch start" << m_touchStop - m_touchBegin;
+
+        /**add begin by ut001121 zhangmeng 20200812 捏合手势触发时判断是否重新获取字体大小 修复BUG42424 */
+        QFont font = getVTFont();
+        if(static_cast<int>(m_scaleFactor) != font.pointSize()){
+            m_scaleFactor = font.pointSize();
+        }
+        /**add end by ut001121 */
     }
     if (pinch->state() == Qt::GestureFinished) {
         m_gestureAction = GA_null;
