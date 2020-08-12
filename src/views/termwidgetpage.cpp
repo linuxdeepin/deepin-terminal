@@ -222,6 +222,8 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
         if (nextTerm != nullptr) {
             qDebug() << "nextTerm change" << m_currentTerm->getSessionId();
             nextTerm->setFocus();
+        } else {
+            qDebug() << "can not found nextTerm in TermWidget";
         }
 
         // 释放控件

@@ -217,6 +217,8 @@ void MainWindow::initOptionButton()
     QWidget *dtkbutton = titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton");
     if (dtkbutton != nullptr) {
         dtkbutton->hide();
+    } else {
+        qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
     }
 
     m_exitFullScreen = new DToolButton(this);
@@ -236,21 +238,20 @@ void MainWindow::initOptionButton()
     if (optionBtn != nullptr) {
         //optionBtn->setFocusPolicy(Qt::TabFocus);
         // mainwindow的设置按钮触发
-        //判断titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton")不为空在增加connect
-        if(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton") != nullptr){
-            connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
-                showPlugin(PLUGIN_TYPE_NONE);
-                // 判断是否超过最大数量限制
-                QList<QAction *> actionList = m_menu->actions();
-                for (auto item : actionList) {
-                    if (item->text() == tr("New window")) {
-                        // 菜单根据数量自动设置true or false
-                        item->setEnabled(Service::instance()->isCountEnable());
-                    }
+        connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
+            showPlugin(PLUGIN_TYPE_NONE);
+            // 判断是否超过最大数量限制
+            QList<QAction *> actionList = m_menu->actions();
+            for (auto item : actionList) {
+                if (item->text() == tr("New window")) {
+                    // 菜单根据数量自动设置true or false
+                    item->setEnabled(Service::instance()->isCountEnable());
                 }
+            }
 
-            });
-        }
+        });
+    } else {
+        qDebug() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
     }
 }
 /*******************************************************************************
@@ -565,6 +566,8 @@ bool MainWindow::isFocusOnList()
             isFocus = false;
             qDebug() << "focus on AddButton";
         }
+    } else {
+        qDebug() << "can not found AddButton in DIconButton";
     }
 
     QList<QString> buttonList = {"DTitlebarDWindowOptionButton", "DTitlebarDWindowMinButton", "DTitlebarDWindowMaxButton", "DTitlebarDWindowCloseButton"};
@@ -577,6 +580,8 @@ bool MainWindow::isFocusOnList()
                 isFocus = false;
                 qDebug() << "focus on " << objectName;
             }
+        } else {
+            qDebug() << "can not found objectName in DIconButton";
         }
     }
     qDebug() << "focus on list : " << isFocus;
@@ -669,6 +674,10 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
         closeBtnHasfocus = true;
         qDebug() << "before close window, focus widget is close button. ";
     }
+
+    if(closeBtn == nullptr){
+        qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
+    }
     /********************* Modify by n014361 wangpeili End ************************/
 
 
@@ -703,6 +712,8 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
             if (closeBtn != nullptr) {
                 closeBtn->setFocus();
                 qDebug() << "close button setFocus";
+            } else {
+                qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
             }
         }
         /********************* Modify by n014361 wangpeili End ************************/
@@ -1304,6 +1315,8 @@ void MainWindow::initShortcuts()
         DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
         if (addButton != nullptr) {
             addButton->setFocus();
+        } else {
+            qDebug() << "can not found AddButton in DIconButton";
         }
     });
     /********************* Modify by n014361 wangpeili End ************************/
@@ -2136,26 +2149,36 @@ void NormalWindow::initTitleBar()
     Utils::clearChildrenFocus(m_tabbar);
     // 重新设置可见控件焦点
     DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-    if(addButton != nullptr){
+    if (addButton != nullptr) {
         addButton->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found AddButton in DIconButton";
     }
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
-    if(optionBtn != nullptr){
+    if (optionBtn != nullptr) {
         optionBtn->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
     }
     DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
-    if(minBtn != nullptr){
+    if (minBtn != nullptr) {
         minBtn->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowMinButton in DTitlebar";
     }
     DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
-    if(maxBtn != nullptr){
+    if (maxBtn != nullptr) {
         maxBtn->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowMaxButton in DTitlebar";
     }
     DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-    if(closeBtn != nullptr){
+    if (closeBtn != nullptr) {
         closeBtn->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
     }
-    if(addButton != nullptr && optionBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr){
+    if (addButton != nullptr && optionBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
         QWidget::setTabOrder(addButton, optionBtn);
         QWidget::setTabOrder(optionBtn, minBtn);
         QWidget::setTabOrder(minBtn, maxBtn);
@@ -2286,8 +2309,10 @@ void NormalWindow::changeEvent(QEvent *event)
         bool isFullscreen = window()->windowState().testFlag(Qt::WindowFullScreen);
         m_exitFullScreen->setVisible(isFullscreen);
         titlebar()->setMenuVisible(!isFullscreen);
-        if(titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton") != nullptr){
+        if (titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton") != nullptr) {
             titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton")->hide();
+        } else {
+            qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
         }
     }
 
@@ -2342,26 +2367,36 @@ void QuakeWindow::initTitleBar()
 
     /******** Modify by ut000439 wangpeili 2020-07-22:  SP3.1 DTK TAB控件 ****************/
     DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-    if(addButton != nullptr){
+    if (addButton != nullptr) {
         addButton->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found AddButton in DIconButton";
     }
 
     // 雷神下其它控件一律没有焦点
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
-    if(optionBtn != nullptr){
+    if (optionBtn != nullptr) {
         optionBtn->setFocusPolicy(Qt::NoFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
     }
     DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
-    if(minBtn != nullptr){
+    if (minBtn != nullptr) {
         minBtn->setFocusPolicy(Qt::NoFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowMinButton in DTitlebar";
     }
     DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
-    if(maxBtn != nullptr){
+    if (maxBtn != nullptr) {
         maxBtn->setFocusPolicy(Qt::NoFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowMaxButton in DTitlebar";
     }
     DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-    if(closeBtn != nullptr){
+    if (closeBtn != nullptr) {
         closeBtn->setFocusPolicy(Qt::NoFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
     }
 
     /*QWidget::setTabOrder(addButton, optionBtn);

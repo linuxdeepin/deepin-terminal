@@ -156,6 +156,7 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 {
     QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
     if (nullptr == rightFrame) {
+        qDebug() << "can not found RightFrame in QWidget";
         return;
     }
 

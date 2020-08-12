@@ -73,6 +73,8 @@ bool PageSearchBar::isFocus()
     DIconButton *addButton = minwindow->findChild<DIconButton *>("AddButton");
     if(addButton != nullptr){
         QWidget::setTabOrder(m_findNextButton, addButton);
+    } else {
+        qDebug() << "can not found AddButton in DIconButton";
     }
     //QWidget::setTabOrder(m_findPrevButton, m_findNextButton);
 
@@ -127,8 +129,15 @@ DIconButton *findIconBtn(DSearchEdit *searchEdit)
     QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
     if (iconWidget != nullptr) {
         DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
+        if(iconBtn == nullptr){
+            qDebug() << "can not found iconBtn in DIconButton";
+        }
         return iconBtn;
     } else {
+        qDebug() << "can not found iconWidget in QWidget";
+        if(searchEdit->findChild<DIconButton *>() == nullptr){
+            qDebug() << "can not found searchEdit in DIconButton";
+        }
         return searchEdit->findChild<DIconButton *>();
     }
 }
@@ -269,15 +278,19 @@ void PageSearchBar::initSearchEdit()
     // 把那个＂Ｘ＂控件功能还原成仅为清空文本
     QList<QToolButton *> list = m_searchEdit->lineEdit()->findChildren<QToolButton *>();
     QAction *clearAction = m_searchEdit->lineEdit()->findChild<QAction *>(QLatin1String("_q_qlineeditclearaction"));
-    for (int i = 0; i < list.count(); i++) {
-        if (list.at(i)->defaultAction() == clearAction) {
-            QToolButton *clearBtn = list.at(i);
-            //屏蔽lineedit清除按钮的槽函数,_q_clearFocus()获得有效的判断条件
-            clearBtn->disconnect(SIGNAL(clicked()));
-            connect(clearBtn, &QToolButton::clicked, this, [this]() {
-                m_searchEdit->lineEdit()->setText("");
-            });
+    if(clearAction != nullptr){
+        for (int i = 0; i < list.count(); i++) {
+            if (list.at(i)->defaultAction() == clearAction) {
+                QToolButton *clearBtn = list.at(i);
+                //屏蔽lineedit清除按钮的槽函数,_q_clearFocus()获得有效的判断条件
+                clearBtn->disconnect(SIGNAL(clicked()));
+                connect(clearBtn, &QToolButton::clicked, this, [this]() {
+                    m_searchEdit->lineEdit()->setText("");
+                });
+            }
         }
+    } else {
+        qDebug() << "can not found _q_qlineeditclearaction in QAction";
     }
 
     // 需求不让自动查找，这个接口预留

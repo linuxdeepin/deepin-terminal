@@ -194,6 +194,8 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     DIconButton *addButton = findChild<DIconButton *>("AddButton");
     if (nullptr != addButton) {
         addButton->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found AddButton in DIconButton";
     }
 
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);

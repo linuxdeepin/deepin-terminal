@@ -22,6 +22,7 @@
 
 #include <QLabel>
 #include <DApplicationHelper>
+#include <QDebug>
 
 /*******************************************************************************
  1. @函数:    palrtteTransparency
@@ -59,10 +60,14 @@ void QWidget::paintEvent(QPaintEvent *e)
     if (titleLabel != nullptr)
     {
         palrtteTransparency(titleLabel, -10);
+    } else {
+        qDebug() << "can not found TitleLabel in QLabel";
     }
 
     if (messageLabel != nullptr)
     {
         palrtteTransparency(messageLabel, -30);
+    } else {
+        qDebug() << "can not found MessageLabel in QLabel";
     }
 }
