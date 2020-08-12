@@ -885,20 +885,7 @@ public:
         HAVE_TRANSPARENCY = enable;
     }
 
-    QScrollBar* getScrollBar()
-    {
-        return _scrollBar;
-    }
-
-    int getContentWidth()
-    {
-        return _contentWidth;
-    }
-
-    int getContentHeight()
-    {
-        return _contentHeight;
-    }
+    QScrollBar* getScrollBar() {return _scrollBar;}
 };
 
 class AutoScrollHandler : public QObject
@@ -924,18 +911,19 @@ class KONSOLEPRIVATE_EXPORT TerminalScreen : public TerminalDisplay{
 
 protected:
     bool event(QEvent* evt) override;
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
     bool gestureEvent(QGestureEvent *event);
     void tapGestureTriggered(QTapGesture*);
     void tapAndHoldGestureTriggered(QTapAndHoldGesture*);
+    void panTriggered(QPanGesture*);
     void pinchTriggered(QPinchGesture*);
+    void swipeTriggered(QSwipeGesture*);
+    void scrollReduceSpeed(int val);
 
     enum GestureAction{
         GA_null,
+        GA_touch,
         GA_click,
         GA_slide,
         GA_select,
@@ -948,11 +936,24 @@ private:
     ulong m_touchBegin = 0;
     ulong m_touchStop = 0;
 
-    Qt::GestureState m_gestureStatus = Qt::NoGesture;
+    Qt::GestureState m_tapStatus = Qt::NoGesture;
     GestureAction m_gestureAction = GA_null;
-    GestureAction m_lastGestureAction = GA_null;
-    bool m_isLastGestureFinished = true;
-    QString m_strGestureAction = "null";
+
+    //-----
+    QPoint m_lastTouchBeginPos;
+
+    QTimer  *m_SpeedTest = nullptr;
+    QTimer  *m_ReduceSpeed = nullptr;
+    int m_StartValue = 0;
+    int m_EndValue = 0;
+    int m_Speed = 0; //放大100倍传输
+    int m_PerReduce = 0;//
+
+    const int m_ReduceTime = 1000;
+    const int m_ReduceTimerInterval = 20;
+    const int m_SpeedTestInterval = 100;
+    const float m_SpeedScale = 1.0;
+    bool m_StartReduce = false;
 };
 }
 
