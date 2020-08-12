@@ -1,9 +1,9 @@
 /*
  *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
  *
- * Author:     daizhengwen <daizhengwen@uniontech.com>
+ * Author:     wangpeili <wangpeili@uniontech.com>
  *
- * Maintainer: daizhengwen <daizhengwen@uniontech.com>
+ * Maintainer: wangpeili <wangpeili@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,12 +77,24 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     m_currentTerm = w;
 }
 
+/*******************************************************************************
+ 1. @函数:    parentMainWindow
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取父主窗口
+*******************************************************************************/
 MainWindow *TermWidgetPage::parentMainWindow()
 {
     //qDebug()<<"parentMainWindow" <<parentWidget();
     return m_MainWindow;
 }
 
+/*******************************************************************************
+ 1. @函数:    setSplitStyle
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置分割线样式
+*******************************************************************************/
 void TermWidgetPage::setSplitStyle(DSplitter *splitter)
 {
     splitter->setHandleWidth(1);
@@ -99,6 +111,12 @@ void TermWidgetPage::setSplitStyle(DSplitter *splitter)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    currentTerminal
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取当前终端
+*******************************************************************************/
 TermWidget *TermWidgetPage::currentTerminal()
 {
     return m_currentTerm;
@@ -109,10 +127,10 @@ TermWidget *TermWidgetPage::currentTerminal()
 //    return split(currentTerminal(), orientation);
 //}
 /*******************************************************************************
- 1. @函数:
+ 1. @函数:    split
  2. @作者:    ut000439 王培利
  3. @日期:    2020-05-14
- 4. @说明:
+ 4. @说明:    分屏
 *******************************************************************************/
 void TermWidgetPage::split(Qt::Orientation orientation)
 {
@@ -169,10 +187,10 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     return subSplit;
 }
 /*******************************************************************************
- 1. @函数:
+ 1. @函数:    closeSplit
  2. @作者:    ut000439 王培利
  3. @日期:    2020-05-15
- 4. @说明:
+ 4. @说明:    关闭分屏
 *******************************************************************************/
 void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
 {
@@ -219,6 +237,12 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
     return;
 }
 
+/*******************************************************************************
+ 1. @函数:    showExitConfirmDialog
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    显示退出确认对话框
+*******************************************************************************/
 void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWidget *parent)
 {
     /******** Modify by ut001000 renfeixiang 2020-06-03:修改 直接调用MainWindow中的showExitConfirmDialog函数中 Begin***************/
@@ -273,16 +297,34 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
     return ;
 }
 
+/*******************************************************************************
+ 1. @函数:    identifier
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取识别码
+*******************************************************************************/
 const QString TermWidgetPage::identifier()
 {
     return property("TAB_IDENTIFIER_PROPERTY").toString();
 }
 
+/*******************************************************************************
+ 1. @函数:    focusCurrentTerm
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置焦点到当前终端
+*******************************************************************************/
 void TermWidgetPage::focusCurrentTerm()
 {
     m_currentTerm->setFocus();
 }
 
+/*******************************************************************************
+ 1. @函数:    closeOtherTerminal
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    关闭其它终端
+*******************************************************************************/
 void TermWidgetPage::closeOtherTerminal(bool hasConfirmed)
 {
     int runningCount = runningTerminalCount() - static_cast<int>(currentTerminal()->hasRunningProcess());
@@ -363,6 +405,12 @@ static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
 #endif
 
 /******** Modify by ut000439 wangpeili 2020-01-07:  修改了计算上下左右判断的方法 ********×****/
+/*******************************************************************************
+ 1. @函数:    focusNavigation
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    焦点导航
+*******************************************************************************/
 void TermWidgetPage::focusNavigation(Qt::Edge dir)
 {
     QPoint comparPoint = GetComparePoint(currentTerminal(), dir);
@@ -453,6 +501,12 @@ QPoint TermWidgetPage::GetComparePoint(TermWidget *term, Qt::Edge dir)
     return ret;
 }
 
+/*******************************************************************************
+ 1. @函数:    runningTerminalCount
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取正在执行的终端个数
+*******************************************************************************/
 int TermWidgetPage::runningTerminalCount()
 {
     int count = 0;
@@ -465,6 +519,12 @@ int TermWidgetPage::runningTerminalCount()
     return count;
 }
 
+/*******************************************************************************
+ 1. @函数:    createCurrentTerminalProperties
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    创建当前终端属性
+*******************************************************************************/
 TermProperties TermWidgetPage::createCurrentTerminalProperties()
 {
     TermProperties properties;
@@ -477,6 +537,12 @@ TermProperties TermWidgetPage::createCurrentTerminalProperties()
     return properties;
 }
 
+/*******************************************************************************
+ 1. @函数:    setTerminalOpacity
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置当前终端的透明度
+*******************************************************************************/
 void TermWidgetPage::setTerminalOpacity(qreal opacity)
 {
     QList<TermWidget *> termList = findChildren<TermWidget *>();
@@ -485,6 +551,12 @@ void TermWidgetPage::setTerminalOpacity(qreal opacity)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setColorScheme
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置主题
+*******************************************************************************/
 void TermWidgetPage::setColorScheme(const QString &name)
 {
     QList<TermWidget *> termList = findChildren<TermWidget *>();
@@ -493,6 +565,12 @@ void TermWidgetPage::setColorScheme(const QString &name)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    sendTextToCurrentTerm
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    发送文本到当前终端
+*******************************************************************************/
 void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
 {
     TermWidget *term = currentTerminal();
@@ -501,6 +579,12 @@ void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    copyClipboard
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    复制到剪贴板
+*******************************************************************************/
 void TermWidgetPage::copyClipboard()
 {
     TermWidget *term = currentTerminal();
@@ -523,6 +607,12 @@ void TermWidgetPage::pasteClipboard()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    toggleShowSearchBar
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    切换显示搜索栏
+*******************************************************************************/
 void TermWidgetPage::toggleShowSearchBar()
 {
     TermWidget *term = currentTerminal();
@@ -531,6 +621,12 @@ void TermWidgetPage::toggleShowSearchBar()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    zoomInCurrentTierminal
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    放大当前端子
+*******************************************************************************/
 void TermWidgetPage::zoomInCurrentTierminal()
 {
     TermWidget *term = currentTerminal();
@@ -539,6 +635,12 @@ void TermWidgetPage::zoomInCurrentTierminal()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    zoomOutCurrentTerminal
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    缩小当前端子
+*******************************************************************************/
 void TermWidgetPage::zoomOutCurrentTerminal()
 {
     TermWidget *term = currentTerminal();
@@ -645,6 +747,12 @@ void TermWidgetPage::setBlinkingCursor(bool enable)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setPressingScroll
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置按键时是否滚动
+*******************************************************************************/
 void TermWidgetPage::setPressingScroll(bool enable)
 {
     QList<TermWidget *> termList = findChildren<TermWidget *>();
@@ -714,6 +822,12 @@ void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    onTermRequestRenameTab
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    终端请求重命名便签响应
+*******************************************************************************/
 void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
 {
     if (newTabName.isEmpty()) {
@@ -727,6 +841,12 @@ void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    onTermTitleChanged
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    终端标题变化响应函数
+*******************************************************************************/
 void TermWidgetPage::onTermTitleChanged(QString title) const
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
@@ -735,6 +855,12 @@ void TermWidgetPage::onTermTitleChanged(QString title) const
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    onTermGetFocus
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    终端获取焦点响应函数
+*******************************************************************************/
 void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
@@ -744,6 +870,12 @@ void TermWidgetPage::onTermGetFocus()
     emit termGetFocus();
 }
 
+/*******************************************************************************
+ 1. @函数:    onTermClosed
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    终端关闭响应函数
+*******************************************************************************/
 void TermWidgetPage::onTermClosed()
 {
     TermWidget *w = qobject_cast<TermWidget *>(sender());
@@ -778,6 +910,12 @@ void TermWidgetPage::handleFindPrev()
     m_currentTerm->search(m_findBar->searchKeytxt(), false, false);
 }
 
+/*******************************************************************************
+ 1. @函数:    slotFindbarClose
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    空函数，待处理
+*******************************************************************************/
 void TermWidgetPage::slotFindbarClose()
 {
     //    EditWrapper *wrapper = currentWrapper();
@@ -787,6 +925,12 @@ void TermWidgetPage::slotFindbarClose()
     //    }
 }
 
+/*******************************************************************************
+ 1. @函数:    handleRemoveSearchKeyword
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    空函数，待处理
+*******************************************************************************/
 void TermWidgetPage::handleRemoveSearchKeyword()
 {
     //    currentWrapper()->textEditor()->removeKeywords();
@@ -818,6 +962,12 @@ void TermWidgetPage::applyTheme()
     updateSplitStyle();
 }
 
+/*******************************************************************************
+ 1. @函数:    updateSplitStyle
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    更新分屏样式
+*******************************************************************************/
 void TermWidgetPage::updateSplitStyle()
 {
     QList<DSplitter *> splitList = findChildren<DSplitter *>();
@@ -826,6 +976,12 @@ void TermWidgetPage::updateSplitStyle()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setCurrentTerminal
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置当前终端标题
+*******************************************************************************/
 void TermWidgetPage::setCurrentTerminal(TermWidget *term)
 {
     TermWidget *oldTerm = m_currentTerm;
@@ -840,6 +996,12 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    createTerm
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    创建终端
+*******************************************************************************/
 TermWidget *TermWidgetPage::createTerm(TermProperties properties)
 {
     TermWidget *term = new TermWidget(properties, this);
@@ -855,6 +1017,12 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     return term;
 }
 
+/*******************************************************************************
+ 1. @函数:    setTextCodec
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置文本编解码器
+*******************************************************************************/
 void TermWidgetPage::setTextCodec(QTextCodec *codec)
 {
     TermWidget *term = currentTerminal();

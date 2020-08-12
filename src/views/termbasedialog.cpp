@@ -23,6 +23,12 @@
 #include <QLabel>
 #include <DApplicationHelper>
 
+/*******************************************************************************
+ 1. @函数:    palrtteTransparency
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    调色板透明度
+*******************************************************************************/
 static void palrtteTransparency(QWidget *widget, qint8 alphaFloat)
 {
     QPalette palette = widget->palette();
@@ -32,6 +38,12 @@ static void palrtteTransparency(QWidget *widget, qint8 alphaFloat)
 }
 
 //fix bug 23481 主菜单切换主题，弹框字体颜色没有随主题及时变换
+/*******************************************************************************
+ 1. @函数:    paintEvent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    绘画事件
+*******************************************************************************/
 void QWidget::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)

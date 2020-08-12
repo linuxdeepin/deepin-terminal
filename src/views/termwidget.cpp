@@ -1,3 +1,23 @@
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     wangpeili <wangpeili@uniontech.com>
+ *
+ * Maintainer: wangpeili <wangpeili@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "termwidget.h"
 #include "define.h"
 #include "settings.h"
@@ -239,18 +259,36 @@ TermWidget::~TermWidget()
     WindowsManager::instance()->terminalCountReduce();
 }
 
+/*******************************************************************************
+ 1. @函数:    parentPage
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取父页面
+*******************************************************************************/
 TermWidgetPage *TermWidget::parentPage()
 {
     //qDebug() << "parentPage" << parentWidget();
     return  m_Page;
 }
 
+/*******************************************************************************
+ 1. @函数:    handleTermIdle
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    处理终端空闲
+*******************************************************************************/
 void TermWidget::handleTermIdle(bool bIdle)
 {
     emit termIsIdle(this->getSessionId(), bIdle);
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
+/*******************************************************************************
+ 1. @函数:    addMenuActions
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    添加菜单操作
+*******************************************************************************/
 void TermWidget::addMenuActions(const QPoint &pos)
 {
     bool isRemoting = isInRemoteServer();
@@ -434,11 +472,23 @@ void TermWidget::addMenuActions(const QPoint &pos)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    RemoteEncode
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取远程管理的编码
+*******************************************************************************/
 QString TermWidget::RemoteEncode() const
 {
     return m_RemoteEncode;
 }
 
+/*******************************************************************************
+ 1. @函数:    setRemoteEncode
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置远程管理的编码
+*******************************************************************************/
 void TermWidget::setRemoteEncode(const QString &RemoteEncode)
 {
     m_RemoteEncode = RemoteEncode;
@@ -535,36 +585,78 @@ int TermWidget::getTermLayer()
     return  layer;
 }
 
+/*******************************************************************************
+ 1. @函数:    encode
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取编码
+*******************************************************************************/
 QString TermWidget::encode() const
 {
     return m_encode;
 }
 
+/*******************************************************************************
+ 1. @函数:    setEncode
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置编码
+*******************************************************************************/
 void TermWidget::setEncode(const QString &encode)
 {
     m_encode = encode;
 }
 
+/*******************************************************************************
+ 1. @函数:    isConnectRemote
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    是否连接远程管理
+*******************************************************************************/
 bool TermWidget::isConnectRemote() const
 {
     return m_isConnectRemote;
 }
 
+/*******************************************************************************
+ 1. @函数:    setIsConnectRemote
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置连接远程管理
+*******************************************************************************/
 void TermWidget::setIsConnectRemote(bool isConnectRemote)
 {
     m_isConnectRemote = isConnectRemote;
 }
 
+/*******************************************************************************
+ 1. @函数:    enterSzCommand
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    是否进行下载
+*******************************************************************************/
 bool TermWidget::enterSzCommand() const
 {
     return m_enterSzCommand;
 }
 
+/*******************************************************************************
+ 1. @函数:    setEnterSzCommand
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置进行下载
+*******************************************************************************/
 void TermWidget::setEnterSzCommand(bool enterSzCommand)
 {
     m_enterSzCommand = enterSzCommand;
 }
 
+/*******************************************************************************
+ 1. @函数:    customContextMenuCall
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-08-11
+ 4. @说明:    自定义上下文菜单调用
+*******************************************************************************/
 void TermWidget::customContextMenuCall(const QPoint &pos)
 {
     /***add by ut001121 zhangmeng 20200514 右键获取焦点, 修复BUG#26003***/
@@ -585,6 +677,12 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     m_menu->exec(mapToGlobal(pos));
 }
 
+/*******************************************************************************
+ 1. @函数:    isInRemoteServer
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    是否在远程服务器中
+*******************************************************************************/
 bool TermWidget::isInRemoteServer()
 {
     int pid = getForegroundProcessId();
@@ -604,6 +702,12 @@ bool TermWidget::isInRemoteServer()
     return false;
 }
 
+/*******************************************************************************
+ 1. @函数:    setTermOpacity
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置不透明度
+*******************************************************************************/
 void TermWidget::setTermOpacity(qreal opacity)
 {
     //这里再次判断一遍，因为刚启动时，还是需要判断一次当前是否开启了窗口特效
@@ -681,6 +785,12 @@ void TermWidget::setCursorShape(int shape)
     setKeyboardCursorShape(cursorShape);
 }
 
+/*******************************************************************************
+ 1. @函数:    setPressingScroll
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置按键时是否滚动
+*******************************************************************************/
 void TermWidget::setPressingScroll(bool enable)
 {
     if (enable) {
@@ -690,6 +800,12 @@ void TermWidget::setPressingScroll(bool enable)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    selectEncode
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    选择编码
+*******************************************************************************/
 void TermWidget::selectEncode(QString encode)
 {
     // 直接设置终端

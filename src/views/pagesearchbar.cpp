@@ -61,6 +61,12 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     // connect(shortcut, &QShortcut::activated, this, [this]() { findCancel(); });
 }
 
+/*******************************************************************************
+ 1. @函数:    isFocus
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    是否存在焦点
+*******************************************************************************/
 bool PageSearchBar::isFocus()
 {
     MainWindow *minwindow = Utils::getMainWindow(this);
@@ -71,6 +77,12 @@ bool PageSearchBar::isFocus()
     return m_searchEdit->lineEdit()->hasFocus();
 }
 
+/*******************************************************************************
+ 1. @函数:    focus
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    焦点一进入以后，就设置文字和图标，用于失去焦点后显示
+*******************************************************************************/
 void PageSearchBar::focus()
 {
     m_searchEdit->lineEdit()->setFocus();
@@ -79,17 +91,35 @@ void PageSearchBar::focus()
     recoveryHoldContent();
 }
 
+/*******************************************************************************
+ 1. @函数:    searchKeytxt
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取搜索框内信息
+*******************************************************************************/
 QString PageSearchBar::searchKeytxt()
 {
     return m_searchEdit->text();
 }
 
+/*******************************************************************************
+ 1. @函数:    saveOldHoldContent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    保存旧保留内容
+*******************************************************************************/
 void PageSearchBar::saveOldHoldContent()
 {
     m_originalPlaceHolder = m_searchEdit->placeHolder();
 }
 
 //查找DSearchEdit中的DIconButton
+/*******************************************************************************
+ 1. @函数:    findIconBtn
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    查找DSearchEdit中的DIconButton
+*******************************************************************************/
 DIconButton *findIconBtn(DSearchEdit *searchEdit)
 {
     QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
@@ -101,6 +131,12 @@ DIconButton *findIconBtn(DSearchEdit *searchEdit)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    clearHoldContent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    清除保留内容
+*******************************************************************************/
 void PageSearchBar::clearHoldContent()
 {
     // 置空内容
@@ -111,6 +147,12 @@ void PageSearchBar::clearHoldContent()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    recoveryHoldContent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    恢复保留内容
+*******************************************************************************/
 void PageSearchBar::recoveryHoldContent()
 {
     // 还原文本
@@ -122,6 +164,12 @@ void PageSearchBar::recoveryHoldContent()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    findCancel
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:    查找取消按钮
+*******************************************************************************/
 void PageSearchBar::findCancel()
 {
     QWidget::hide();
@@ -161,6 +209,12 @@ void PageSearchBar::keyPressEvent(QKeyEvent *event)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    initFindPrevButton
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化查找上一个按钮
+*******************************************************************************/
 void PageSearchBar::initFindPrevButton()
 {
     m_findPrevButton = new DIconButton(QStyle::SP_ArrowUp);
@@ -174,6 +228,12 @@ void PageSearchBar::initFindPrevButton()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    initFindNextButton
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化查找下一个按钮
+*******************************************************************************/
 void PageSearchBar::initFindNextButton()
 {
     m_findNextButton = new DIconButton(QStyle::SP_ArrowDown);
@@ -187,6 +247,12 @@ void PageSearchBar::initFindNextButton()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    initSearchEdit
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化搜索
+*******************************************************************************/
 void PageSearchBar::initSearchEdit()
 {
     m_searchEdit = new DSearchEdit(this);
@@ -218,6 +284,12 @@ void PageSearchBar::initSearchEdit()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    setNoMatchAlert
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置不匹配警报
+*******************************************************************************/
 void PageSearchBar::setNoMatchAlert(bool isAlert)
 {
     m_searchEdit->setAlert(isAlert);

@@ -38,6 +38,12 @@ TermInputDialog::TermInputDialog(QWidget *parent)
     initConnections();
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化UI
+*******************************************************************************/
 void TermInputDialog::initUI()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -96,6 +102,12 @@ void TermInputDialog::initUI()
     m_mainLayout = mainLayout;
 }
 
+/*******************************************************************************
+ 1. @函数:    addCancelConfirmButtons
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    添加取消确认按钮
+*******************************************************************************/
 void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffset, int outerSpace, int innerSpace)
 {
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
@@ -149,6 +161,12 @@ void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffs
     m_mainLayout->addLayout(buttonsLayout);
 }
 
+/*******************************************************************************
+ 1. @函数:    showDialog
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示对话框
+*******************************************************************************/
 void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
 {
 
@@ -234,6 +252,12 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     this->show();
 }
 
+/*******************************************************************************
+ 1. @函数:    showDialog
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    显示对话框
+*******************************************************************************/
 void TermInputDialog::showDialog(QString oldTitle)
 {
     // lineEdit不为空，show
@@ -243,11 +267,23 @@ void TermInputDialog::showDialog(QString oldTitle)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getMainLayout
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取主窗口布局
+*******************************************************************************/
 QVBoxLayout *TermInputDialog::getMainLayout()
 {
     return m_mainLayout;
 }
 
+/*******************************************************************************
+ 1. @函数:    initConnections
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化连接
+*******************************************************************************/
 void TermInputDialog::initConnections()
 {
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
@@ -255,11 +291,23 @@ void TermInputDialog::initConnections()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    getConfirmResult
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取确认结果
+*******************************************************************************/
 QDialog::DialogCode TermInputDialog::getConfirmResult()
 {
     return m_confirmResultCode;
 }
 
+/*******************************************************************************
+ 1. @函数:    setLogoVisable
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置徽标可见
+*******************************************************************************/
 void TermInputDialog::setLogoVisable(bool visible)
 {
     if (nullptr != m_logoIcon) {
@@ -267,6 +315,12 @@ void TermInputDialog::setLogoVisable(bool visible)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setTitle
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标题
+*******************************************************************************/
 void TermInputDialog::setTitle(const QString &title)
 {
     if (nullptr != m_titleText) {
@@ -274,23 +328,47 @@ void TermInputDialog::setTitle(const QString &title)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getContentLayout
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取内容布局
+*******************************************************************************/
 QLayout *TermInputDialog::getContentLayout()
 {
     return m_contentLayout;
 }
 
+/*******************************************************************************
+ 1. @函数:    setCancelBtnText
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置取消按钮内容
+*******************************************************************************/
 void TermInputDialog::setCancelBtnText(const QString &strCancel)
 {
     m_cancelBtn->setText(strCancel);
     Utils::setSpaceInWord(m_cancelBtn);
 }
 
+/*******************************************************************************
+ 1. @函数:    setConfirmBtnText
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置确认按钮内容
+*******************************************************************************/
 void TermInputDialog::setConfirmBtnText(const QString &strConfirm)
 {
     m_confirmBtn->setText(strConfirm);
     Utils::setSpaceInWord(m_confirmBtn);
 }
 
+/*******************************************************************************
+ 1. @函数:    addContent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    增加内容
+*******************************************************************************/
 void TermInputDialog::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
@@ -298,6 +376,12 @@ void TermInputDialog::addContent(QWidget *content)
     getContentLayout()->addWidget(content);
 }
 
+/*******************************************************************************
+ 1. @函数:    setIcon
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置图标
+*******************************************************************************/
 void TermInputDialog::setIcon(const QIcon &icon)
 {
     if (nullptr != m_logoIcon) {
@@ -306,6 +390,12 @@ void TermInputDialog::setIcon(const QIcon &icon)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    closeEvent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    关闭事件
+*******************************************************************************/
 void TermInputDialog::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event)

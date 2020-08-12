@@ -42,26 +42,56 @@ TermTabStyle::~TermTabStyle()
 {
 }
 
+/*******************************************************************************
+ 1. @函数:    setTabTextColor
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标签文本颜色
+*******************************************************************************/
 void TermTabStyle::setTabTextColor(const QColor &color)
 {
     m_tabTextColor = color;
 }
 
+/*******************************************************************************
+ 1. @函数:    setTabStatusMap
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标签状态图
+*******************************************************************************/
 void TermTabStyle::setTabStatusMap(const QMap<int, int> &tabStatusMap)
 {
     m_tabStatusMap = tabStatusMap;
 }
 
+/*******************************************************************************
+ 1. @函数:    sizeFromContents
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取内容大小
+*******************************************************************************/
 QSize TermTabStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
 {
     return QProxyStyle::sizeFromContents(type, option, size, widget);
 }
 
+/*******************************************************************************
+ 1. @函数:    pixelMetric
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    像素指标
+*******************************************************************************/
 int TermTabStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     return QProxyStyle::pixelMetric(metric, option, widget);
 }
 
+/*******************************************************************************
+ 1. @函数:    drawControl
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    绘制控件
+*******************************************************************************/
 void TermTabStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     if (element == CE_TabBarTabLabel) {
@@ -110,12 +140,24 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    drawPrimitive
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    绘制原始
+*******************************************************************************/
 void TermTabStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 //TermTabStyle end
 
+/*******************************************************************************
+ 1. @函数:    initStyleOption
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化样式选项
+*******************************************************************************/
 void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 {
     Q_D(const QTabBar);
@@ -164,27 +206,57 @@ TabBar::~TabBar()
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setTabHeight
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标签高度
+*******************************************************************************/
 void TabBar::setTabHeight(int tabHeight)
 {
     m_tabHeight = tabHeight;
     setFixedHeight(tabHeight);
 }
 
+/*******************************************************************************
+ 1. @函数:    setTabItemMinWidth
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标签项最小宽度
+*******************************************************************************/
 void TabBar::setTabItemMinWidth(int tabItemMinWidth)
 {
     m_tabItemMinWidth = tabItemMinWidth;
 }
 
+/*******************************************************************************
+ 1. @函数:    setTabItemMaxWidth
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标签项最大宽度
+*******************************************************************************/
 void TabBar::setTabItemMaxWidth(int tabItemMaxWidth)
 {
     m_tabItemMaxWidth = tabItemMaxWidth;
 }
 
+/*******************************************************************************
+ 1. @函数:    identifier
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取识别码
+*******************************************************************************/
 const QString TabBar::identifier(int index) const
 {
     return tabData(index).toString();
 }
 
+/*******************************************************************************
+ 1. @函数:    addTab
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    增加标签
+*******************************************************************************/
 int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 {
     int index = DTabBar::addTab(tabName);
@@ -193,21 +265,45 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
     return index;
 }
 
+/*******************************************************************************
+ 1. @函数:    saveSessionIdWithTabIndex
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    使用标签索引保存会话ID
+*******************************************************************************/
 void TabBar::saveSessionIdWithTabIndex(int sessionId, int index)
 {
     m_sessionIdTabIndexMap.insert(sessionId, index);
 }
 
+/*******************************************************************************
+ 1. @函数:    saveSessionIdWithTabId
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    使用标签ID保存会话ID
+*******************************************************************************/
 void TabBar::saveSessionIdWithTabId(int sessionId, const QString &tabIdentifier)
 {
     m_sessionIdTabIdMap.insert(sessionId, tabIdentifier);
 }
 
+/*******************************************************************************
+ 1. @函数:    getSessionIdTabIndexMap
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取会话ID和标签索引map
+*******************************************************************************/
 QMap<int, int> TabBar::getSessionIdTabIndexMap()
 {
     return m_sessionIdTabIndexMap;
 }
 
+/*******************************************************************************
+ 1. @函数:    queryIndexBySessionId
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    按会话ID查询索引
+*******************************************************************************/
 int TabBar::queryIndexBySessionId(int sessionId)
 {
     if (m_sessionIdTabIndexMap.isEmpty()) {
@@ -225,6 +321,12 @@ int TabBar::queryIndexBySessionId(int sessionId)
     return -1;
 }
 
+/*******************************************************************************
+ 1. @函数:    getIndexByIdentifier
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    通过标识符获取索引
+*******************************************************************************/
 int TabBar::getIndexByIdentifier(QString id)
 {
     for (int i = 0; i < count(); i++) {
@@ -240,6 +342,12 @@ int TabBar::getIndexByIdentifier(QString id)
 
     \sa SelectionBehavior
  */
+/*******************************************************************************
+ 1. @函数:    removeTab
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    通过索引删除标签
+*******************************************************************************/
 void QTabBar::removeTab(int index)
 {
     Q_D(QTabBar);
@@ -342,6 +450,12 @@ void QTabBar::removeTab(int index)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    removeTab
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    通过标识码删除标签
+*******************************************************************************/
 void TabBar::removeTab(const QString &tabIdentifier)
 {
     for (int i = 0; i < count(); i++) {
@@ -352,6 +466,12 @@ void TabBar::removeTab(const QString &tabIdentifier)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setTabText
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标签文本
+*******************************************************************************/
 bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
 {
     bool termFound = false;
@@ -367,6 +487,12 @@ bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
     return termFound;
 }
 
+/*******************************************************************************
+ 1. @函数:    eventFilter
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    事件过滤器
+*******************************************************************************/
 bool TabBar::eventFilter(QObject *watched, QEvent *event)
 {
     Q_UNUSED(watched)
@@ -426,24 +552,48 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
     return false;
 }
 
+/*******************************************************************************
+ 1. @函数:    minimumTabSizeHint
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    返回最小标签的大小
+*******************************************************************************/
 QSize TabBar::minimumTabSizeHint(int index) const
 {
     Q_UNUSED(index)
     return QSize(m_tabItemMinWidth, m_tabHeight);
 }
 
+/*******************************************************************************
+ 1. @函数:    maximumTabSizeHint
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    返回最大标签的大小
+*******************************************************************************/
 QSize TabBar::maximumTabSizeHint(int index) const
 {
     Q_UNUSED(index)
     return QSize(m_tabItemMaxWidth, m_tabHeight);
 }
 
+/*******************************************************************************
+ 1. @函数:    setNeedChangeTextColor
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置需要更改文本颜色
+*******************************************************************************/
 void TabBar::setNeedChangeTextColor(int index, const QColor &color)
 {
     m_tabStatusMap.insert(index, 1);
     m_tabChangedTextColor = color;
 }
 
+/*******************************************************************************
+ 1. @函数:    removeNeedChangeTextColor
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    删除需要更改文本颜色
+*******************************************************************************/
 void TabBar::removeNeedChangeTextColor(int index)
 {
     m_tabStatusMap.remove(index);
@@ -453,6 +603,12 @@ void TabBar::removeNeedChangeTextColor(int index)
     style->polish(this);
 }
 
+/*******************************************************************************
+ 1. @函数:    setChangeTextColor
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置更改文字颜色
+*******************************************************************************/
 void TabBar::setChangeTextColor(int index)
 {
     m_tabStatusMap.insert(index, 2);
@@ -464,11 +620,23 @@ void TabBar::setChangeTextColor(int index)
     style->polish(this);
 }
 
+/*******************************************************************************
+ 1. @函数:    isNeedChangeTextColor
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    是否需要更改文字颜色
+*******************************************************************************/
 bool TabBar::isNeedChangeTextColor(int index)
 {
     return (m_tabStatusMap.value(index) == 1);
 }
 
+/*******************************************************************************
+ 1. @函数:    setClearTabColor
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置清除标签颜色
+*******************************************************************************/
 void TabBar::setClearTabColor(int index)
 {
     m_tabStatusMap.insert(index, 0);
@@ -478,16 +646,34 @@ void TabBar::setClearTabColor(int index)
     style->polish(this);
 }
 
+/*******************************************************************************
+ 1. @函数:    setTabStatusMap
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标签状态图
+*******************************************************************************/
 void TabBar::setTabStatusMap(const QMap<int, int> &tabStatusMap)
 {
     m_tabStatusMap = tabStatusMap;
 }
 
+/*******************************************************************************
+ 1. @函数:    setEnableCloseTabAnimation
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置启用关闭标签动画
+*******************************************************************************/
 void TabBar::setEnableCloseTabAnimation(bool bEnableCloseTabAnimation)
 {
     m_bEnableCloseTabAnimation = bEnableCloseTabAnimation;
 }
 
+/*******************************************************************************
+ 1. @函数:    isEnableCloseTabAnimation
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    是启用关闭标签动画
+*******************************************************************************/
 bool TabBar::isEnableCloseTabAnimation()
 {
     return m_bEnableCloseTabAnimation;

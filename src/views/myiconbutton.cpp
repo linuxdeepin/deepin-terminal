@@ -26,12 +26,24 @@ MyIconButton::MyIconButton(QWidget *parent) : DIconButton(parent)
 {
 }
 
+/*******************************************************************************
+ 1. @函数:    enterEvent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    进入事件
+*******************************************************************************/
 void MyIconButton::enterEvent(QEvent *event)
 {
     setIcon(QIcon(":/icons/deepin/builtin/focus/edit_press.svg"));
     DIconButton::enterEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    leaveEvent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    离开事件
+*******************************************************************************/
 void MyIconButton::leaveEvent(QEvent *event)
 {
     setIcon(QIcon(":/icons/deepin/builtin/hover/edit_hover.svg"));

@@ -39,6 +39,12 @@ WarnningDlg::WarnningDlg(QWidget *parent)
     initConnections();
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    初始化UI
+*******************************************************************************/
 void WarnningDlg::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
@@ -90,6 +96,12 @@ void WarnningDlg::initUI()
     setLayout(mainLayout);
 }
 
+/*******************************************************************************
+ 1. @函数:    initContentLayout
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    初始化内容布局
+*******************************************************************************/
 void WarnningDlg::initContentLayout()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -135,11 +147,23 @@ void WarnningDlg::initContentLayout()
     addContent(mainFrame);
 }
 
+/*******************************************************************************
+ 1. @函数:    setDialogFrameSize
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置对话框框架大小
+*******************************************************************************/
 void WarnningDlg::setDialogFrameSize(int width, int height)
 {
     setFixedSize(width, height);
 }
 
+/*******************************************************************************
+ 1. @函数:    initConnections
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    初始化连接
+*******************************************************************************/
 void WarnningDlg::initConnections()
 {
     connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
@@ -153,6 +177,12 @@ void WarnningDlg::initConnections()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    closeEvent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    关闭事件
+*******************************************************************************/
 void WarnningDlg::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event)
@@ -161,6 +191,12 @@ void WarnningDlg::closeEvent(QCloseEvent *event)
     Q_EMIT closed();
 }
 
+/*******************************************************************************
+ 1. @函数:    setTitle
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置标题
+*******************************************************************************/
 void WarnningDlg::setTitle(const QString &title)
 {
     if (nullptr != m_titleText) {
@@ -168,11 +204,23 @@ void WarnningDlg::setTitle(const QString &title)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getContentLayout
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取内容布局
+*******************************************************************************/
 QLayout *WarnningDlg::getContentLayout()
 {
     return m_contentLayout;
 }
 
+/*******************************************************************************
+ 1. @函数:    addContent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    增加内容
+*******************************************************************************/
 void WarnningDlg::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
@@ -180,6 +228,12 @@ void WarnningDlg::addContent(QWidget *content)
     getContentLayout()->addWidget(content);
 }
 
+/*******************************************************************************
+ 1. @函数:    setIconPixmap
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置图标像素图
+*******************************************************************************/
 void WarnningDlg::setIconPixmap(const QPixmap &iconPixmap)
 {
     if (nullptr != m_logoIcon) {
@@ -187,16 +241,34 @@ void WarnningDlg::setIconPixmap(const QPixmap &iconPixmap)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setOperatTypeName
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置操作类型名称
+*******************************************************************************/
 void WarnningDlg::setOperatTypeName(const QString &strName)
 {
     m_operateTypeName->setText(strName);
 }
 
+/*******************************************************************************
+ 1. @函数:    setTipInfo
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置提示信息
+*******************************************************************************/
 void WarnningDlg::setTipInfo(const QString &strInfo)
 {
     m_tipInfo->setText(strInfo);
 }
 
+/*******************************************************************************
+ 1. @函数:    setOKBtnText
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-12
+ 4. @说明:    设置ok按钮文本
+*******************************************************************************/
 void WarnningDlg::setOKBtnText(const QString &strConfirm)
 {
     m_confirmBtn->setText(strConfirm);

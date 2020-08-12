@@ -19,11 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * 有选中效果的Frame
- * 提供带边框的Frame，圆角效果比DFrame好一点
- * 主要处理焦点和悬浮时Frame的边框和背景色
- */
+/*******************************************************************************
+ 1. @类名:    FocusFrame
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    有选中效果的Frame
+             提供带边框的Frame，圆角效果比DFrame好一点
+             主要处理焦点和悬浮时Frame的边框和背景色
+*******************************************************************************/
 #ifndef FOCUSFRAME_H
 #define FOCUSFRAME_H
 // dtk

@@ -38,6 +38,12 @@ OperationConfirmDlg::OperationConfirmDlg(QWidget *parent)
     initConnections();
 }
 
+/*******************************************************************************
+ 1. @函数:    initUI
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化UI
+*******************************************************************************/
 void OperationConfirmDlg::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
@@ -89,6 +95,12 @@ void OperationConfirmDlg::initUI()
     setLayout(mainLayout);
 }
 
+/*******************************************************************************
+ 1. @函数:    initContentLayout
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化内容布局
+*******************************************************************************/
 void OperationConfirmDlg::initContentLayout()
 {
     m_mainLayout = new QVBoxLayout();
@@ -151,11 +163,23 @@ void OperationConfirmDlg::initContentLayout()
     addContent(mainFrame);
 }
 
+/*******************************************************************************
+ 1. @函数:    setDialogFrameSize
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置对话框框架大小
+*******************************************************************************/
 void OperationConfirmDlg::setDialogFrameSize(int width, int height)
 {
     setFixedSize(width, height);
 }
 
+/*******************************************************************************
+ 1. @函数:    initConnections
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    初始化连接
+*******************************************************************************/
 void OperationConfirmDlg::initConnections()
 {
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
@@ -177,6 +201,12 @@ void OperationConfirmDlg::initConnections()
     });
 }
 
+/*******************************************************************************
+ 1. @函数:    closeEvent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    关闭事件
+*******************************************************************************/
 void OperationConfirmDlg::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event)
@@ -185,6 +215,12 @@ void OperationConfirmDlg::closeEvent(QCloseEvent *event)
     Q_EMIT closed();
 }
 
+/*******************************************************************************
+ 1. @函数:    setTitle
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置标题名
+*******************************************************************************/
 void OperationConfirmDlg::setTitle(const QString &title)
 {
     if (nullptr != m_titleText) {
@@ -192,11 +228,23 @@ void OperationConfirmDlg::setTitle(const QString &title)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    getContentLayout
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    获取内容布局
+*******************************************************************************/
 QLayout *OperationConfirmDlg::getContentLayout()
 {
     return m_contentLayout;
 }
 
+/*******************************************************************************
+ 1. @函数:    addContent
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    增加内容
+*******************************************************************************/
 void OperationConfirmDlg::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
@@ -204,6 +252,12 @@ void OperationConfirmDlg::addContent(QWidget *content)
     getContentLayout()->addWidget(content);
 }
 
+/*******************************************************************************
+ 1. @函数:    setIconPixmap
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置图标像素图
+*******************************************************************************/
 void OperationConfirmDlg::setIconPixmap(const QPixmap &iconPixmap)
 {
     if (nullptr != m_logoIcon) {
@@ -211,6 +265,12 @@ void OperationConfirmDlg::setIconPixmap(const QPixmap &iconPixmap)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    setOperatTypeName
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置操作类型名称
+*******************************************************************************/
 void OperationConfirmDlg::setOperatTypeName(const QString &strName)
 {
     m_mainLayout->addWidget(m_operateTypeName, 0,  Qt::AlignVCenter | Qt::AlignHCenter);
@@ -218,6 +278,12 @@ void OperationConfirmDlg::setOperatTypeName(const QString &strName)
     m_operateTypeName->setText(strName);
 }
 
+/*******************************************************************************
+ 1. @函数:    setTipInfo
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置提示信息
+*******************************************************************************/
 void OperationConfirmDlg::setTipInfo(const QString &strInfo)
 {
 
@@ -226,6 +292,12 @@ void OperationConfirmDlg::setTipInfo(const QString &strInfo)
     m_tipInfo->setText(strInfo);
 }
 
+/*******************************************************************************
+ 1. @函数:    setOKCancelBtnText
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    设置确定取消按钮文本
+*******************************************************************************/
 void OperationConfirmDlg::setOKCancelBtnText(const QString &strConfirm, const QString &strCancel)
 {
     m_mainLayout->addLayout(m_actionLayout);
@@ -235,7 +307,12 @@ void OperationConfirmDlg::setOKCancelBtnText(const QString &strConfirm, const QS
     Utils::setSpaceInWord(m_cancelBtn);
 }
 
-
+/*******************************************************************************
+ 1. @函数:    getConfirmResult
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    得到确认结果
+*******************************************************************************/
 QDialog::DialogCode OperationConfirmDlg::getConfirmResult()
 {
     return m_confirmResultCode;

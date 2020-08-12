@@ -41,6 +41,12 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
 //    DAnchorsBase::setAnchor(this, Qt::AnchorRight, parent, Qt::AnchorRight);
 }
 
+/*******************************************************************************
+ 1. @函数:    show
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    动画显示
+*******************************************************************************/
 void RightPanel::show()
 {
     QWidget::show();
@@ -65,6 +71,12 @@ void RightPanel::show()
     //    connect(animation, &QPropertyAnimation::valueChanged, this, [=] { m_themeView->adjustScrollbarMargins(); });
 }
 
+/*******************************************************************************
+ 1. @函数:    hideAnim
+ 2. @作者:    ut000610 daizhengwen
+ 3. @日期:    2020-08-11
+ 4. @说明:    动画隐藏
+*******************************************************************************/
 void RightPanel::hideAnim()
 {
     // 隐藏状态不处理

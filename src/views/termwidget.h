@@ -1,9 +1,9 @@
 /*
  *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
  *
- * Author:     daizhengwen <daizhengwen@uniontech.com>
+ * Author:     wangpeili <wangpeili@uniontech.com>
  *
- * Maintainer: daizhengwen <daizhengwen@uniontech.com>
+ * Maintainer: wangpeili <wangpeili@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,13 @@
 
 #include "qtermwidget.h"
 #include "termwidgetpage.h"
+
+/*******************************************************************************
+ 1. @类名:    TermWidget
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-11
+ 4. @说明:
+*******************************************************************************/
 
 // 删除和退格键可选模式
 enum EraseMode {
