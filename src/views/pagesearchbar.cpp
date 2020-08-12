@@ -71,7 +71,9 @@ bool PageSearchBar::isFocus()
 {
     MainWindow *minwindow = Utils::getMainWindow(this);
     DIconButton *addButton = minwindow->findChild<DIconButton *>("AddButton");
-    QWidget::setTabOrder(m_findNextButton, addButton);
+    if(addButton != nullptr){
+        QWidget::setTabOrder(m_findNextButton, addButton);
+    }
     //QWidget::setTabOrder(m_findPrevButton, m_findNextButton);
 
     return m_searchEdit->lineEdit()->hasFocus();
@@ -123,7 +125,7 @@ void PageSearchBar::saveOldHoldContent()
 DIconButton *findIconBtn(DSearchEdit *searchEdit)
 {
     QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
-    if (iconWidget) {
+    if (iconWidget != nullptr) {
         DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
         return iconBtn;
     } else {
@@ -142,7 +144,7 @@ void PageSearchBar::clearHoldContent()
     // 置空内容
     m_searchEdit->setPlaceHolder("");
     DIconButton *iconBtn = findIconBtn(m_searchEdit);
-    if (iconBtn) {
+    if (iconBtn != nullptr) {
         iconBtn->setIcon(QIcon(""));
     }
 }
@@ -158,7 +160,7 @@ void PageSearchBar::recoveryHoldContent()
     // 还原文本
     m_searchEdit->setPlaceHolder(m_originalPlaceHolder);
     DIconButton *iconBtn = findIconBtn(m_searchEdit);
-    if (iconBtn) {
+    if (iconBtn != nullptr) {
         // 还原图标
         iconBtn->setIcon(DStyle::SP_IndicatorSearch);
     }

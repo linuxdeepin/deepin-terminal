@@ -163,6 +163,9 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 
     for (int i = 0; i < rightWidgetList.size(); i++) {
         QWidget *widget = rightWidgetList.at(i);
+        if(widget == nullptr){
+            continue;
+        }
         if (strcmp(widget->metaObject()->className(), "QCheckBox") == 0) {
             QString checkText = (qobject_cast<QCheckBox *>(widget))->text();
             if (checkText == QObject::tr("Blur background")) {

@@ -56,12 +56,12 @@ void QWidget::paintEvent(QPaintEvent *e)
     QLabel *titleLabel = this->findChild<QLabel *>("TitleLabel");
     QLabel *messageLabel = this->findChild<QLabel *>("MessageLabel");
 
-    if (titleLabel)
+    if (titleLabel != nullptr)
     {
         palrtteTransparency(titleLabel, -10);
     }
 
-    if (messageLabel)
+    if (messageLabel != nullptr)
     {
         palrtteTransparency(messageLabel, -30);
     }
