@@ -198,7 +198,9 @@ void EncodeListView::keyPressEvent(QKeyEvent *event)
 void EncodeListView::mousePressEvent(QMouseEvent *event)
 {
     /** add by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
-    m_tapTimeSpace = event->timestamp();
+    if(Qt::MouseEventSynthesizedByQt == event->source()){
+        m_lastPressPosY = event->y();
+    }
 
     return DListView::mousePressEvent(event);
 }
@@ -212,8 +214,8 @@ void EncodeListView::mousePressEvent(QMouseEvent *event)
 void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
 {
     /** add begin by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
-    if(event->timestamp() - m_tapTimeSpace>TAP_TIME_SPACE
-            && Qt::MouseEventSynthesizedByQt == event->source()){
+    if(Qt::MouseEventSynthesizedByQt == event->source()
+            && abs(event->y() - m_lastPressPosY)>COORDINATE_ERROR_Y){
         event->accept();
         return;
     }

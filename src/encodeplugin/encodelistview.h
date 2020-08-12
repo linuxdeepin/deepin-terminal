@@ -31,7 +31,7 @@ DWIDGET_USE_NAMESPACE
 // add by ut001121 zhangmeng 20200731 定义无效焦点原因 修复BUG40390
 #define INVALID_FOCUS_REASON Qt::MouseFocusReason
 
-#define TAP_TIME_SPACE 80
+#define COORDINATE_ERROR_Y  10
 
 /*******************************************************************************
  1. @类名:    EncodeListView
@@ -85,6 +85,8 @@ private:
     QModelIndex m_modelIndexChecked;
 
     ulong m_tapTimeSpace = 0;
+    //记录触摸屏下点击时Y轴坐标
+    int m_lastPressPosY = 0;
 };
 
 /*******************************************************************************
