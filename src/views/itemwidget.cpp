@@ -454,12 +454,34 @@ void ItemWidget::leaveEvent(QEvent *event)
 *******************************************************************************/
 void ItemWidget::mousePressEvent(QMouseEvent *event)
 {
+//    // 判断类型执行操作
+//    onItemClicked();
+//    // 捕获事件
+//    event->accept();
+    //记录鼠标点击时的时间戳
+    m_tapTimeSpace = event->timestamp();
+}
+
+/*******************************************************************************
+ 1. @函数:    mouseReleaseEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-13
+ 4. @说明:    处理item的点击事件
+*******************************************************************************/
+void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    //根据鼠标按下弹起的差值判断是否触发点击事件
+    if (event->timestamp() - m_tapTimeSpace > TAP_TIME_SPACE_T
+            && Qt::MouseEventSynthesizedByQt == event->source()) {
+        event->accept();
+        return;
+    }
+
     // 判断类型执行操作
     onItemClicked();
     // 捕获事件
     event->accept();
 }
-
 
 /*******************************************************************************
  1. @函数:    keyPressEvent

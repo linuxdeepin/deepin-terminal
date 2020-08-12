@@ -905,3 +905,47 @@ int ListView::calculateRange(int height)
     int range  = count * 70 - 10 - height;
     return range;
 }
+
+/*******************************************************************************
+ 1. @函数:    mousePressEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-27
+ 4. @说明:    鼠标按下
+*******************************************************************************/
+void ListView::mousePressEvent(QMouseEvent *event)
+{
+    //获取鼠标按下的点坐标
+    m_tempPoint = event->pos();
+    //return QScrollArea::mousePressEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    mouseMoveEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-27
+ 4. @说明:    鼠标移动
+*******************************************************************************/
+void ListView::mouseMoveEvent(QMouseEvent *event)
+{
+    //移动位置记录
+    auto pos = event->pos();
+    //纵向滚动条获取
+    auto vbar = this->verticalScrollBar();
+    //移动距离差值计算
+    auto offset = m_tempPoint.y() - pos.y();
+    //当前滚动条位置
+    auto val = vbar->value();
+    //滚动条pagetemp区域高度
+    auto step = vbar->pageStep();
+    //移动位置计算
+    auto move = offset * step / m_mainWidget->height();
+
+    if (move + val < 0 || move + val > m_mainWidget->height()) {
+        return;
+    }
+    //滚轮位置设置
+    vbar->setValue(move + val);
+
+}
+
+

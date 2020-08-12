@@ -52,6 +52,8 @@
 
 DWIDGET_USE_NAMESPACE
 
+#define TAP_TIME_SPACE_T 80
+
 // 功能键类型
 enum ItemFuncType {
     // 项按钮（编辑按钮）
@@ -127,6 +129,8 @@ protected:
     void leaveEvent(QEvent *event) override;
     // 鼠标点击事件
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
     // 键盘事件
     void keyPressEvent(QKeyEvent *event) override;
     // 焦点出入
@@ -158,6 +162,9 @@ private:
     int m_functType;
     // 焦点是否在窗口上 用于编辑按钮是否显示
     bool m_isFocus = false;
+
+    //时间戳
+    ulong m_tapTimeSpace = 0;
 
     // 设置文字大小和颜色
     void setFont(DLabel *label, DFontSizeManager::SizeType fontSize, ItemTextColor colorType);

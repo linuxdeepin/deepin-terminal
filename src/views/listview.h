@@ -114,6 +114,9 @@ protected:
     // 焦点事件
     void focusInEvent(QFocusEvent *event) override;
 
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mousePressEvent(QMouseEvent *) override;
+
 private:
     // 列表类型
     ListType m_type;
@@ -133,6 +136,9 @@ private:
     QVBoxLayout *m_mainLayout = nullptr;
     // 列表项数据
     QList<ItemWidget *> m_itemList;
+    // 临时鼠标点坐标
+    QPoint m_tempPoint;
+
     // 初始化界面
     void initUI();
     // 设置项图标
