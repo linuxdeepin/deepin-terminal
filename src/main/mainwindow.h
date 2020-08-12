@@ -267,7 +267,7 @@ protected:
     QMap<QString, QShortcut *> m_BuiltInShortcut;
     /********************* Modify by n014361 wangpeili End ************************/
     QString downloadFilePath = "";
-    RemoteManagementPlugn *remoteManagPlugin = nullptr;
+    RemoteManagementPlugin *remoteManagPlugin = nullptr;
     CustomCommandPlugin *customCommandPlugin = nullptr;
     QString m_strWindowId;
     const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";

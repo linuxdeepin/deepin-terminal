@@ -307,7 +307,7 @@ void MainWindow::initPlugins()
     customCommandPlugin = new CustomCommandPlugin(this);
     customCommandPlugin->initPlugin(this);
 
-    remoteManagPlugin = new RemoteManagementPlugn(this);
+    remoteManagPlugin = new RemoteManagementPlugin(this);
     remoteManagPlugin->initPlugin(this);
 
     m_plugins.append(encodePlugin);

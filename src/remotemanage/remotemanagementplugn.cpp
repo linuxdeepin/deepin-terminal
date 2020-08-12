@@ -28,7 +28,7 @@
 #include <QTextCodec>
 #include <QDebug>
 
-RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPluginInterface(parent)
+RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
     m_pluginName = "Remote Management";
 }
@@ -39,7 +39,7 @@ RemoteManagementPlugn::RemoteManagementPlugn(QObject *parent) : MainWindowPlugin
  3. @日期:    2020-08-11
  4. @说明:    远程管理初始化插件
 *******************************************************************************/
-void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
+void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
     //initRemoteManagementTopPanel();
@@ -87,7 +87,7 @@ void RemoteManagementPlugn::initPlugin(MainWindow *mainWindow)
  3. @日期:    2020-08-11
  4. @说明:    远程管理标题栏菜单
 *******************************************************************************/
-QAction *RemoteManagementPlugn::titlebarMenu(MainWindow *mainWindow)
+QAction *RemoteManagementPlugin::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *remoteManagementAction(new QAction(tr("Remote management"), mainWindow));
 
@@ -103,7 +103,7 @@ QAction *RemoteManagementPlugn::titlebarMenu(MainWindow *mainWindow)
  3. @日期:    2020-08-11
  4. @说明:    获取远程管理顶部面板
 *******************************************************************************/
-RemoteManagementTopPanel *RemoteManagementPlugn::getRemoteManagementTopPanel()
+RemoteManagementTopPanel *RemoteManagementPlugin::getRemoteManagementTopPanel()
 {
     if (nullptr == m_remoteManagementTopPanel) {
         initRemoteManagementTopPanel();
@@ -117,14 +117,14 @@ RemoteManagementTopPanel *RemoteManagementPlugn::getRemoteManagementTopPanel()
  3. @日期:    2020-08-11
  4. @说明:    初始化远程管理顶部面板
 *******************************************************************************/
-void RemoteManagementPlugn::initRemoteManagementTopPanel()
+void RemoteManagementPlugin::initRemoteManagementTopPanel()
 {
     qDebug() << __FUNCTION__;
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
     connect(m_remoteManagementTopPanel,
             &RemoteManagementTopPanel::doConnectServer,
             this,
-            &RemoteManagementPlugn::doCennectServer, Qt::QueuedConnection);
+            &RemoteManagementPlugin::doCennectServer, Qt::QueuedConnection);
 }
 
 /*******************************************************************************
@@ -133,7 +133,7 @@ void RemoteManagementPlugn::initRemoteManagementTopPanel()
  3. @日期:    2020-08-11
  4. @说明:    远程管理做连接服务器
 *******************************************************************************/
-void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
+void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
 {
     if (nullptr != curServer) {
 
@@ -195,7 +195,7 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
  3. @日期:    2020-07-31
  4. @说明:    创建连接远程的的临时shell文件
 *******************************************************************************/
-QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
+QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 {
     // 首先读取通用模板
     QFile sourceFile(":/other/ssh_login.sh");
@@ -254,7 +254,7 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
  3. @日期:    2020-08-11
  4. @说明:    远程管理隐藏面板，暂时不使用，待处理
 *******************************************************************************/
-void RemoteManagementPlugn::hidePlugn()
+void RemoteManagementPlugin::hidePlugn()
 {
     if (m_remoteManagementTopPanel && m_remoteManagementTopPanel->isVisible()) {
         m_remoteManagementTopPanel->hide();
@@ -267,7 +267,7 @@ void RemoteManagementPlugn::hidePlugn()
  3. @日期:    2020-08-11
  4. @说明:    设置远程管理编码
 *******************************************************************************/
-void RemoteManagementPlugn::setRemoteEncode(QString encode)
+void RemoteManagementPlugin::setRemoteEncode(QString encode)
 {
     TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
     if (!encode.isNull() && !encode.isEmpty()) {
@@ -287,7 +287,7 @@ void RemoteManagementPlugn::setRemoteEncode(QString encode)
  3. @日期:    2020-07-31
  4. @说明:    设置退格键的模式
 *******************************************************************************/
-void RemoteManagementPlugn::setBackspaceKey(TermWidget *term, QString backspaceKey)
+void RemoteManagementPlugin::setBackspaceKey(TermWidget *term, QString backspaceKey)
 {
     if (backspaceKey == "control-h") {
         term->setBackspaceMode(EraseMode_Control_H);
@@ -309,7 +309,7 @@ void RemoteManagementPlugn::setBackspaceKey(TermWidget *term, QString backspaceK
  3. @日期:    2020-07-31
  4. @说明:    设置删除键的模式
 *******************************************************************************/
-void RemoteManagementPlugn::setDeleteKey(TermWidget *term, QString deleteKey)
+void RemoteManagementPlugin::setDeleteKey(TermWidget *term, QString deleteKey)
 {
     if (deleteKey == "control-h") {
         term->setDeleteMode(EraseMode_Control_H);

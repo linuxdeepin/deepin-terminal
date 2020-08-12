@@ -40,11 +40,11 @@
 
 class TermWidget;
 class MainWindow;
-class RemoteManagementPlugn : public MainWindowPluginInterface
+class RemoteManagementPlugin : public MainWindowPluginInterface
 {
     Q_OBJECT
 public:
-    explicit RemoteManagementPlugn(QObject *parent = nullptr);
+    explicit RemoteManagementPlugin(QObject *parent = nullptr);
     void initPlugin(MainWindow *mainWindow) override;
     QAction *titlebarMenu(MainWindow *mainWindow) override;
 
