@@ -117,6 +117,13 @@ private:
     // 编码格式为当前mainwindow有效参数，不记录在文件中．
     QString m_EncodeName = "UTF-8";
 };
+
+/*******************************************************************************
+ 1. @类名:    KeySequenceEdit
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-12
+ 4. @说明:
+*******************************************************************************/
 class KeySequenceEdit : public DKeySequenceEdit
 {
 public:

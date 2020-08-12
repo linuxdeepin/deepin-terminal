@@ -492,7 +492,7 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
  1. @函数:    focusInEvent
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-23
- 4. @说明:
+ 4. @说明:    焦点进入事件
 *******************************************************************************/
 void ItemWidget::focusInEvent(QFocusEvent *event)
 {
@@ -507,7 +507,7 @@ void ItemWidget::focusInEvent(QFocusEvent *event)
  1. @函数:    __FUNCTION__
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-23
- 4. @说明:
+ 4. @说明:    焦点丢失事件
 *******************************************************************************/
 void ItemWidget::focusOutEvent(QFocusEvent *event)
 {
