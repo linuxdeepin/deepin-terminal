@@ -23,6 +23,13 @@
 
 #include "mainwindowplugininterface.h"
 
+/*******************************************************************************
+ 1. @函数:    ThemePanelPlugin
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:
+*******************************************************************************/
+
 class ThemePanel;
 class MainWindow;
 class ThemePanelPlugin : public MainWindowPluginInterface

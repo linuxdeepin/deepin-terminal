@@ -29,6 +29,12 @@
 #include <QScroller>
 #include <QVBoxLayout>
 
+/*******************************************************************************
+ 1. @函数:    ThemePanel
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    构造函数
+*******************************************************************************/
 ThemePanel::ThemePanel(QWidget *parent)
     : RightPanel(parent),
       m_themeView(new ThemeListView(this)),

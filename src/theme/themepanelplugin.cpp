@@ -30,11 +30,23 @@ ThemePanelPlugin::ThemePanelPlugin(QObject *parent) : MainWindowPluginInterface(
     m_pluginName = "Theme";
 }
 
+/*******************************************************************************
+ 1. @函数:    initPlugin
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    初始化插件
+*******************************************************************************/
 void ThemePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
 }
 
+/*******************************************************************************
+ 1. @函数:    titlebarMenu
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    标题栏菜单
+*******************************************************************************/
 QAction *ThemePanelPlugin::titlebarMenu(MainWindow *mainWindow)
 {
     QAction *switchThemeAction(new QAction("Switch theme", mainWindow));
@@ -46,6 +58,12 @@ QAction *ThemePanelPlugin::titlebarMenu(MainWindow *mainWindow)
     return switchThemeAction;
 }
 
+/*******************************************************************************
+ 1. @函数:    getThemePanel
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取主题模板
+*******************************************************************************/
 ThemePanel *ThemePanelPlugin::getThemePanel()
 {
     if (!m_themePanel) {
@@ -55,6 +73,12 @@ ThemePanel *ThemePanelPlugin::getThemePanel()
     return m_themePanel;
 }
 
+/*******************************************************************************
+ 1. @函数:    getThemePanel
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    初始化主题模板
+*******************************************************************************/
 void ThemePanelPlugin::initThemePanel()
 {
     m_themePanel = new ThemePanel(m_mainWindow->centralWidget());

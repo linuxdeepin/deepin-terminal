@@ -27,6 +27,12 @@ ThemeListView::ThemeListView(QWidget *parent) : QListView(parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
+/*******************************************************************************
+ 1. @函数:    focusOutEvent
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    焦点丢失事件
+*******************************************************************************/
 void ThemeListView::focusOutEvent(QFocusEvent *event)
 {
     emit focusOut();
@@ -34,6 +40,12 @@ void ThemeListView::focusOutEvent(QFocusEvent *event)
     QListView::focusOutEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    selectionChanged
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    选择已更改
+*******************************************************************************/
 void ThemeListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     // Theme changed.

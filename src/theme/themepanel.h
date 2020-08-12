@@ -23,6 +23,13 @@
 
 #include "rightpanel.h"
 
+/*******************************************************************************
+ 1. @类名:    ThemePanel
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:
+*******************************************************************************/
+
 class ThemeListView;
 class ThemeListModel;
 class ThemePanel : public RightPanel

@@ -27,6 +27,12 @@ ThemeItemDelegate::ThemeItemDelegate(QAbstractItemView *parent) : DStyledItemDel
 {
 }
 
+/*******************************************************************************
+ 1. @函数:    paint
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    绘制
+*******************************************************************************/
 void ThemeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     const QRect &rect = option.rect;
@@ -87,6 +93,12 @@ void ThemeItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     QRect(rect.x() + nameX, rect.y() + nameY, rect.width(), lineHeight), Qt::AlignLeft | Qt::AlignTop, themeName);
 }
 
+/*******************************************************************************
+ 1. @函数:    sizeHint
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    大小提示
+*******************************************************************************/
 QSize ThemeItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(option)

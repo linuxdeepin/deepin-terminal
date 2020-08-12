@@ -27,12 +27,24 @@ ThemeListModel::ThemeListModel(QObject *parent) : QAbstractListModel(parent)
     initThemeData();
 }
 
+/*******************************************************************************
+ 1. @函数:    rowCount
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    行数
+*******************************************************************************/
 int ThemeListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return m_themeData.count();
 }
 
+/*******************************************************************************
+ 1. @函数:    data
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    获取数据
+*******************************************************************************/
 QVariant ThemeListModel::data(const QModelIndex &index, int role) const
 {
     Q_UNUSED(role);
@@ -40,6 +52,12 @@ QVariant ThemeListModel::data(const QModelIndex &index, int role) const
     return m_themeData[row];
 }
 
+/*******************************************************************************
+ 1. @函数:    initThemeData
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-08-12
+ 4. @说明:    初始化主题数据
+*******************************************************************************/
 void ThemeListModel::initThemeData()
 {
     m_themeData = QTermWidget::availableColorSchemes();
