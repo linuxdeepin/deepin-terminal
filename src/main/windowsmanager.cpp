@@ -77,6 +77,8 @@ void WindowsManager::quakeWindowShowOrHide()
             DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
         }
         m_quakeWindow->activateWindow();
+        // fix#42497 防止隐藏显示后"+"号高亮
+        m_quakeWindow->focusCurrentPage();
         return;
     }
 
