@@ -251,6 +251,12 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
+#Unit Test
+option(BUILD_TESTS "Build tests." TRUE)
+if(BUILD_TESTS)
+    add_subdirectory(unit-test)
+endif()
+
 # Install settings
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)

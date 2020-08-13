@@ -746,7 +746,14 @@ void MainWindow::focusPage(const QString &identifier)
 *******************************************************************************/
 void MainWindow::focusCurrentPage()
 {
-    focusPage(m_tabbar->identifier(m_tabbar->currentIndex()));
+    //如果不加这个判断，会导致运行单元测试UT_CustomCommandPanel_Test时出现段错误
+    if (m_tabbar
+            && m_tabbar->currentIndex() >= 0
+            && m_tabbar->currentIndex() < m_tabbar->count()
+            && m_tabbar->identifier(m_tabbar->currentIndex()).length() > 0)
+    {
+        focusPage(m_tabbar->identifier(m_tabbar->currentIndex()));
+    }
 }
 
 /*******************************************************************************
