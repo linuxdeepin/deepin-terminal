@@ -36,6 +36,8 @@
 
 CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "CustomCommandPanel-objectname" << objectName();
     initUI();
 }
 CustomCommandPanel::~CustomCommandPanel()

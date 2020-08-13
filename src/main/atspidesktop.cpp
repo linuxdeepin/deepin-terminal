@@ -22,10 +22,12 @@
 
 //qt
 #include <QDebug>
+#include "utils.h"
 
 AtspiDesktop::AtspiDesktop()
 {
-
+    Utils::set_Object_Name(this);
+    //qDebug() << "AtspiDesktop-objectname" << objectName();
 }
 
 /*******************************************************************************

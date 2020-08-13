@@ -32,6 +32,7 @@
 QuakeTerminalProxy::QuakeTerminalProxy(QObject *parent) : QObject(parent)
 {
     this->setObjectName("QuakeTerminalProxy");
+    //qDebug() << "QuakeTerminalProxy-objectname" << objectName();
 }
 
 QuakeTerminalProxy::~QuakeTerminalProxy()

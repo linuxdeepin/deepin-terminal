@@ -987,6 +987,19 @@ QList<QByteArray> Utils::encodeList()
 }
 
 /*******************************************************************************
+ 1. @函数:    set_Object_Name
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-08-13
+ 4. @说明:    设置类的objectname,统一成一个函数
+*******************************************************************************/
+void Utils::set_Object_Name(QObject *object)
+{
+    if(object != nullptr){
+        object->setObjectName(object->metaObject()->className());
+    }
+}
+
+/*******************************************************************************
  1. @函数:    getMainWindow
  2. @作者:    ut000125 sunchengxi
  3. @日期:    2020-06-02

@@ -35,6 +35,8 @@
 TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "TermWidgetPage-objectname" << objectName();
     //qDebug() << "parentTermWidgetPage" << parentWidget();
     m_MainWindow = static_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);

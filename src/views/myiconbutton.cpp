@@ -21,9 +21,12 @@
 #include "myiconbutton.h"
 
 #include <DLog>
+#include <utils.h>
 
 MyIconButton::MyIconButton(QWidget *parent) : DIconButton(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "MyIconButton-objectname" << objectName();
 }
 
 /*******************************************************************************

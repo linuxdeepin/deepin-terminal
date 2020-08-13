@@ -38,6 +38,8 @@ ShortcutManager *ShortcutManager::m_instance = nullptr;
 
 ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ShortcutManager-objectname" << objectName();
     // Q_UNUSED(parent);
     // make sure it is NOT a nullptr since we'll use it all the time.
     // Q_CHECK_PTR(parent);

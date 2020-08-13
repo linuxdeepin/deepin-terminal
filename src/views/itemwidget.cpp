@@ -42,6 +42,8 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
       m_funcButton(new IconButton(this)),
       m_functType(itemType)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ItemWidget-objectname" << objectName();
     // 界面初始化
     initUI();
     // 信号槽初始化

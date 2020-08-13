@@ -32,6 +32,8 @@
 
 CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "CustomCommandPlugin-objectname" << objectName();
     m_pluginName = "Custom Command";
 }
 

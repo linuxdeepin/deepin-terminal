@@ -40,6 +40,8 @@
 CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
     : CommonPanel(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "set_Object_Name-objectname" << objectName();
     initUI();
 }
 

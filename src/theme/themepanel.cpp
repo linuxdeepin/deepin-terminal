@@ -28,6 +28,7 @@
 
 #include <QScroller>
 #include <QVBoxLayout>
+#include "utils.h"
 
 /*******************************************************************************
  1. @函数:    ThemePanel
@@ -40,6 +41,8 @@ ThemePanel::ThemePanel(QWidget *parent)
       m_themeView(new ThemeListView(this)),
       m_themeModel(new ThemeListModel(this))
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "set_Object_Name-objectname" << objectName();
     // init view.
     m_themeView->setModel(m_themeModel);
     m_themeView->setItemDelegate(new ThemeItemDelegate(m_themeView));

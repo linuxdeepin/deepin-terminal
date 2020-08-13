@@ -53,6 +53,8 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandDat
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "CustomCommandOptDlg-objectname" << objectName();
     setWindowModality(Qt::WindowModal);
     if (currItemData) {
         m_currItemData = new CustomCommandData;

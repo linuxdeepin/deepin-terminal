@@ -27,10 +27,14 @@
 #include <QIcon>
 #include <QLabel>
 
+#include <QDebug>
+
 DWIDGET_USE_NAMESPACE
 
 TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), m_layout(new QHBoxLayout(this))
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "TitleBar-objectname" << objectName();
     /******** Modify by m000714 daizhengwen 2020-04-15: 标签栏和Dtk标签色保持一致****************/
 //    DPalette palette = this->palette();
 //    palette.setBrush(DPalette::Background, palette.color(DPalette::Base));

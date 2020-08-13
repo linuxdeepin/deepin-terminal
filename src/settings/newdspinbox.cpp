@@ -27,9 +27,12 @@
 
 #include <DLog>
 #include <QAction>
+#include "utils.h"
 
 NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "set_Object_Name-objectname" << objectName();
     m_DIconBtnAdd = new DIconButton(DStyle::SP_IncreaseElement);
     m_DIconBtnAdd->setFixedSize(36, 36);
     m_DIconBtnSubtract = new DIconButton(DStyle::SP_DecreaseElement);

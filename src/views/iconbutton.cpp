@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "iconbutton.h"
+#include "utils.h"
 
 //qt
 #include <QDebug>
@@ -26,7 +27,8 @@
 IconButton::IconButton(QWidget *parent)
     : DIconButton(parent)
 {
-
+    Utils::set_Object_Name(this);
+    //qDebug() << "IconButton-objectname" << objectName();
 }
 
 /*******************************************************************************

@@ -126,6 +126,9 @@ public:
     static QList<QByteArray> encodeList();
     static const int NOT_FOUND = -1;
 
+    //设置类的objectname
+    static void set_Object_Name(QObject *object);
+
 };
 
 /*******************************************************************************

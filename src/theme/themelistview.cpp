@@ -19,9 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "themelistview.h"
+#include "utils.h"
+#include <QDebug>
 
 ThemeListView::ThemeListView(QWidget *parent) : QListView(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ThemeListView-objectname" << objectName();
     setVerticalScrollMode(ScrollPerPixel);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

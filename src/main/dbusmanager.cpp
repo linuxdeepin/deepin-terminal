@@ -32,7 +32,8 @@
 
 DBusManager::DBusManager()
 {
-
+    Utils::set_Object_Name(this);
+    //qDebug() << "DBusManager-objectname" << objectName();
 }
 
 DBusManager::~DBusManager()
