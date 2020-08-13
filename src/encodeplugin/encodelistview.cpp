@@ -204,8 +204,10 @@ void EncodeListView::mousePressEvent(QMouseEvent *event)
 {
     /** add by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
     if(Qt::MouseEventSynthesizedByQt == event->source()){
-        m_lastPressPosY = event->y();
+        m_touchPressPosY = event->y();
+        m_touchSlideMaxY = -1;
     }
+    /** add end by ut001121 */
 
     return DListView::mousePressEvent(event);
 }
@@ -219,14 +221,33 @@ void EncodeListView::mousePressEvent(QMouseEvent *event)
 void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
 {
     /** add begin by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
+    /***add mod by ut001121 zhangmeng 20200813 触摸屏下移动距离超过COORDINATE_ERROR_Y则认为是滑动事件 修复BUG42261***/
     if(Qt::MouseEventSynthesizedByQt == event->source()
-            && abs(event->y() - m_lastPressPosY)>COORDINATE_ERROR_Y){
+            && m_touchSlideMaxY > COORDINATE_ERROR_Y){
         event->accept();
         return;
     }
+    /***add mod by ut001121***/
     /** add end by ut001121 */
 
     return DListView::mouseReleaseEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    mouseMoveEvent
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-08-13
+ 4. @说明:    处理鼠标移动事件
+*******************************************************************************/
+void EncodeListView::mouseMoveEvent(QMouseEvent *event)
+{
+    /***add begin by ut001121 zhangmeng 20200813 记录触摸屏下移动最大距离 修复BUG42261***/
+    if(Qt::MouseEventSynthesizedByQt == event->source()){
+        m_touchSlideMaxY = qMax(m_touchSlideMaxY, qAbs(event->y() - m_touchPressPosY));
+    }
+    /***add end by ut001121***/
+
+    return DListView::mouseMoveEvent(event);
 }
 
 /*******************************************************************************

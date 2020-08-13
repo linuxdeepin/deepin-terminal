@@ -55,6 +55,7 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void mousePressEvent(QMouseEvent *) override;
     void mouseReleaseEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
 
     void resizeContents(int width, int height);
     QSize contentsSize() const;
@@ -84,9 +85,10 @@ private:
     Qt::FocusReason m_foucusReason = INVALID_FOCUS_REASON;
     QModelIndex m_modelIndexChecked;
 
-    ulong m_tapTimeSpace = 0;
     //记录触摸屏下点击时Y轴坐标
-    int m_lastPressPosY = 0;
+    int m_touchPressPosY = 0;
+    //记录触摸屏下滑动时Y轴移动最大距离
+    int m_touchSlideMaxY = 0;
 };
 
 /*******************************************************************************
