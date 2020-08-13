@@ -400,6 +400,8 @@ void Service::Entry(QStringList arguments)
 
 Service::Service(QObject *parent) : QObject(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "Service-objectname" << objectName();
     // 不同用户不能交叉使用共享内存，以及dbus, 所以共享内存的名字和登陆使用的用户有关。
     // 如sudo 用户名为root, 使用的配置也是root的配置。
     QString ShareMemoryName = QString(getenv("LOGNAME")) + "_enableCreateTerminal";

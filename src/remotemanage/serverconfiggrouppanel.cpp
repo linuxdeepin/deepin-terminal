@@ -34,6 +34,8 @@
 
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ServerConfigGroupPanel-objectname" << objectName();
     initUI();
 }
 

@@ -34,6 +34,8 @@
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "RemoteManagementSearchPanel-objectname" << objectName();
     initUI();
 }
 

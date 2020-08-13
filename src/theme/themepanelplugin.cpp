@@ -25,8 +25,12 @@
 #include "termwidgetpage.h"
 #include "settings.h"
 
+#include <QDebug>
+
 ThemePanelPlugin::ThemePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ThemePanelPlugin-objectname" << objectName();
     m_pluginName = "Theme";
 }
 

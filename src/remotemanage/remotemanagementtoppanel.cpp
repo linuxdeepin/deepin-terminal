@@ -29,6 +29,8 @@ const int animationDuration = 300;
 
 RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "RemoteManagementTopPanel-objectname" << objectName();
     // 远程主界面
     m_remoteManagementPanel = new RemoteManagementPanel(this);
     connect(m_remoteManagementPanel, &RemoteManagementPanel::showSearchPanel, this, &RemoteManagementTopPanel::showSearchPanel);

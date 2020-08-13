@@ -33,6 +33,8 @@
 
 EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "EncodePanelPlugin-objectname" << objectName();
     m_pluginName = "Encoding";
 }
 

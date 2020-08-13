@@ -33,6 +33,8 @@
 OperationConfirmDlg::OperationConfirmDlg(QWidget *parent)
     : DAbstractDialog(parent)
 {
+    Utils::set_Object_Name(this);
+    qDebug() << "OperationConfirmDlg" << objectName();
     initUI();
     initContentLayout();
     initConnections();

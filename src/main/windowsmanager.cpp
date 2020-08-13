@@ -160,7 +160,8 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
 *******************************************************************************/
 WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
 {
-
+    Utils::set_Object_Name(this);
+    //qDebug() << "WindowsManager-objectname" << objectName();
 }
 
 /*******************************************************************************

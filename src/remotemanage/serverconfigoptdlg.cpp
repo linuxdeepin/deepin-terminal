@@ -69,6 +69,8 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_delServer(new TermCommandLinkButton())
 
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ServerConfigOptDlg-objectname" << objectName();
     setWindowModality(Qt::WindowModal);
     setFixedWidth(459);
     setAutoFillBackground(true);

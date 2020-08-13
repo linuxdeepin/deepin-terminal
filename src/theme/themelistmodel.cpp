@@ -21,9 +21,13 @@
 #include "themelistmodel.h"
 
 #include "qtermwidget.h"
+#include "utils.h"
+#include <QDebug>
 
 ThemeListModel::ThemeListModel(QObject *parent) : QAbstractListModel(parent)
 {
+    Utils::set_Object_Name(this);
+    qDebug() << "ThemeListModel-objcetname" << objectName();
     initThemeData();
 }
 

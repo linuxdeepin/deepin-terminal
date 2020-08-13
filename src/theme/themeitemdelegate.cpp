@@ -22,9 +22,13 @@
 
 #include <QPainter>
 #include <QPainterPath>
+#include "utils.h"
+#include <QDebug>
 
 ThemeItemDelegate::ThemeItemDelegate(QAbstractItemView *parent) : DStyledItemDelegate(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ThemeItemDelegate-objectname" << objectName();
 }
 
 /*******************************************************************************

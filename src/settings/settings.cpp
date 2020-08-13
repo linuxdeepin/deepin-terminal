@@ -20,7 +20,7 @@
  */
 #include "settings.h"
 #include "newdspinbox.h"
-#include "utils.h"
+//#include "utils.h"
 #include "shortcutmanager.h"
 #include "../views/operationconfirmdlg.h"
 #include "service.h"
@@ -45,6 +45,8 @@ DComboBox *Settings::comboBox = nullptr;
 
 Settings::Settings() : QObject(qApp)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "Settings-objectname" << objectName();
 }
 
 Settings *Settings::instance()

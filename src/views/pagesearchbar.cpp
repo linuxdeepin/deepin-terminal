@@ -35,6 +35,8 @@
 
 PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "PageSearchBar-objectname" << objectName();
     // Init
     hide();
     setFixedSize(barWidth, barHight + 12);

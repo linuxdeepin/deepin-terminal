@@ -27,6 +27,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
+#include "utils.h"
 
 /*
  * Implementation of adaptor class QuakeTerminalAdapter
@@ -34,6 +35,8 @@
 
 QuakeTerminalAdapter::QuakeTerminalAdapter(QObject *parent) : QDBusAbstractAdaptor(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "QuakeTerminalAdapter-objectname" << objectName();
     // constructor
     setAutoRelaySignals(true);
 }

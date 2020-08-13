@@ -21,6 +21,8 @@
 #include "termcommandlinkbutton.h"
 
 #include <DApplicationHelper>
+#include "utils.h"
+#include <QDebug>
 
 /*******************************************************************************
  1. @函数:    TermCommandLinkButton
@@ -32,6 +34,8 @@
 TermCommandLinkButton::TermCommandLinkButton(QWidget *parent)
     : DPushButton(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "TermCommandLinkButton-objectname" << objectName();
     DPalette palette = DApplicationHelper::instance()->palette(this);
     palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
     this->setPalette(palette);

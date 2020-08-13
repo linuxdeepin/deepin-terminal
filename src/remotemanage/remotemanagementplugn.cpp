@@ -30,6 +30,8 @@
 
 RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "RemoteManagementPlugin-objectname" << objectName();
     m_pluginName = "Remote Management";
 }
 

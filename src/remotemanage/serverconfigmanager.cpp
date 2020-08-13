@@ -21,6 +21,7 @@
 #include "serverconfigmanager.h"
 #include "serverconfigoptdlg.h"
 #include "listview.h"
+#include "utils.h"
 
 #include <QDebug>
 
@@ -28,6 +29,8 @@ ServerConfigManager *ServerConfigManager::m_instance = nullptr;
 
 ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "ServerConfigManager-objectname" << objectName();
 }
 /*******************************************************************************
  1. @函数:    settServerConfig

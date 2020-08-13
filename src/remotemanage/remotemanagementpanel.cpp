@@ -26,6 +26,8 @@
 
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "RemoteManagementPanel-objectname" << objectName();
     initUI();
 }
 

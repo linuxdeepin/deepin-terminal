@@ -2108,6 +2108,7 @@ NormalWindow::NormalWindow(TermProperties properties, QWidget *parent): MainWind
 {
     Q_ASSERT(m_isQuakeWindow == false);
     setObjectName("NormalWindow");
+    //qDebug() << "MainWindow-objectname" << objectName();
     initUI();
     initConnections();
     initShortcuts();
@@ -2327,6 +2328,7 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
 {
     Q_ASSERT(m_isQuakeWindow == true);
     setObjectName("QuakeWindow");
+    //qDebug() << "MainWindow-objectname" << objectName();
     initUI();
     initConnections();
     initShortcuts();

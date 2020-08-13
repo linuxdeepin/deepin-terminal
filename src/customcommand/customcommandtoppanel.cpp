@@ -36,6 +36,8 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
       m_customCommandPanel(new CustomCommandPanel(this)),
       m_customCommandSearchPanel(new CustomCommandSearchRstPanel(this))
 {
+    Utils::set_Object_Name(this);
+    //qDebug() << "CustomCommandTopPanel-objectname" << objectName();
     setAttribute(Qt::WA_TranslucentBackground);
     connect(m_customCommandPanel,
             &CustomCommandPanel::showSearchResult,
