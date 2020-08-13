@@ -113,8 +113,9 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     // 焦点事件
     void focusInEvent(QFocusEvent *event) override;
-
+    // 鼠标移动
     void mouseMoveEvent(QMouseEvent *) override;
+    // 鼠标按下
     void mousePressEvent(QMouseEvent *) override;
 
 private:

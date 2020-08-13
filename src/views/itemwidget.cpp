@@ -460,6 +460,8 @@ void ItemWidget::mousePressEvent(QMouseEvent *event)
 //    event->accept();
     //记录鼠标点击时的时间戳
     m_tapTimeSpace = event->timestamp();
+
+    FocusFrame::mousePressEvent(event);
 }
 
 /*******************************************************************************
@@ -472,7 +474,7 @@ void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     //根据鼠标按下弹起的差值判断是否触发点击事件
     if (event->timestamp() - m_tapTimeSpace > TAP_TIME_SPACE_T
-            && Qt::MouseEventSynthesizedByQt == event->source()) {
+            && (Qt::MouseEventNotSynthesized == event->source() || Qt::MouseEventSynthesizedByQt == event->source())) {
         event->accept();
         return;
     }
@@ -481,6 +483,8 @@ void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
     onItemClicked();
     // 捕获事件
     event->accept();
+
+    FocusFrame::mouseReleaseEvent(event);
 }
 
 /*******************************************************************************
