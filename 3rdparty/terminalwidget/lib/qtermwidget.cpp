@@ -153,18 +153,20 @@ void QTermWidget::search(bool forwards, bool next)
     int startColumn, startLine;
 
     if (m_bHasSelect) {
+        /***mod begin by ut001121 zhangmeng 20200814 修复BUG40895***/
         if (next) {
             startColumn = m_endColumn + 1;
             startLine = m_endLine;
         } else {
             if (m_startColumn == 0) {
                 startColumn = -1;
-                startLine = m_startLine - 1;
+                startLine = m_startLine>0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
             } else {
                 startColumn = m_startColumn;
                 startLine = m_startLine;
             }
         }
+        /***mod end by ut001121 zhangmeng 20200814***/
     } else if (next) { // search from just after current selection
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
         startColumn++;
@@ -194,18 +196,20 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
     int startColumn, startLine;
 
     if (m_bHasSelect) {
+        /***mod begin by ut001121 zhangmeng 20200814 修复BUG40895***/
         if (next) {
             startColumn = m_endColumn + 1;
             startLine = m_endLine;
         } else {
             if (m_startColumn == 0) {
                 startColumn = -1;
-                startLine = m_startLine - 1;
+                startLine = m_startLine>0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
             } else {
                 startColumn = m_startColumn;
                 startLine = m_startLine;
             }
         }
+        /***mod end by ut001121 zhangmeng 20200814***/
     } else if (next) { // search from just after current selection
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
         startColumn++;
