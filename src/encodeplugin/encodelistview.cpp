@@ -34,13 +34,15 @@
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "EncodeListView-objectname" << objectName();
+    m_encodeModel->setObjectName("EncodeencodeModel");
     m_standardModel = new QStandardItemModel(this);
-    if (parentWidget() && parentWidget()->parentWidget() && parentWidget()->parentWidget()->parentWidget())
-    {
-        m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
-    }
+    m_standardModel->setObjectName("EncodestandardModel");
+    qDebug() << "EncodeencodeModel EncodestandardModel-objectname" << m_encodeModel->objectName() << m_standardModel->objectName();
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
+    m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
     // init view.
     this->setModel(m_standardModel);
     setBackgroundRole(QPalette::NoRole);
@@ -296,10 +298,7 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
     modelItem->setCheckState(Qt::Checked);
 
     /***add by ut001121 zhangmeng 20200727 修改编码配置后使其生效 修复BUG39694***/
-    if (m_Mainwindow && m_Mainwindow->currentPage() && m_Mainwindow->currentPage()->currentTerminal())
-    {
-        m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
-    }
+    m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
 }
 
 /*******************************************************************************

@@ -35,6 +35,7 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
 {
     Utils::set_Object_Name(this);
     //qDebug() << "TitleBar-objectname" << objectName();
+    m_layout->setObjectName("layout");//Add by ut001000 renfeixiang 2020-08-13
     /******** Modify by m000714 daizhengwen 2020-04-15: 标签栏和Dtk标签色保持一致****************/
 //    DPalette palette = this->palette();
 //    palette.setBrush(DPalette::Background, palette.color(DPalette::Base));

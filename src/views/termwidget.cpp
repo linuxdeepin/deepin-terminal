@@ -670,6 +670,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     if (nullptr == m_menu) {
         m_menu = new DMenu(this);
+        m_menu->setObjectName("menu");//Add by ut001000 renfeixiang 2020-08-13
     }
 
     m_menu->clear();

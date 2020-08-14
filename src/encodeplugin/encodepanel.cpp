@@ -32,8 +32,12 @@
 EncodePanel::EncodePanel(QWidget *parent)
     : RightPanel(parent), m_encodeView(new EncodeListView(this))
 {
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "EncodePanel-objectname" << objectName();
+    m_encodeView->setObjectName("EncodeencodeView");
+    qDebug() << "EncodeencodeView-objectname" << m_encodeView->objectName();
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
     setFocusProxy(m_encodeView);

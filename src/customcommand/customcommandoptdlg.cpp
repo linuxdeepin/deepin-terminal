@@ -53,8 +53,15 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandDat
       m_shortCutLineEdit(new DKeySequenceEdit),
       m_bDelOpt(false)
 {
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "CustomCommandOptDlg-objectname" << objectName();
+    m_nameLineEdit->setObjectName("CustomnameLineEdit");
+    m_commandLineEdit->setObjectName("CustomcommandLineEdit");
+    m_shortCutLineEdit->setObjectName("CustomshortCutLineEdit");
+    qDebug() << "CustomnameLineEdit CustomcommandLineEdit CustomshortCutLineEdit-objectname" << m_nameLineEdit->objectName()
+             << m_commandLineEdit->objectName() << m_shortCutLineEdit->objectName();
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     setWindowModality(Qt::WindowModal);
     if (currItemData) {
         m_currItemData = new CustomCommandData;
@@ -276,20 +283,28 @@ void CustomCommandOptDlg::initUITitle()
     titleLayout->setContentsMargins(0, 0, 0, 0);
 
     m_titleBar = new QWidget(this);
+    m_titleBar->setObjectName("CustomtitleBar");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "CustomtitleBar-objectname" << m_titleBar->objectName();
     m_titleBar->setFixedHeight(50);
     m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_titleBar->setLayout(titleLayout);
 
     m_logoIcon = new DLabel(this);
+    m_logoIcon->setObjectName("CustomlogoIcon");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "CustomlogoIcon-objectname" << m_logoIcon->objectName();
     m_logoIcon->setFixedSize(QSize(50, 50));
     m_logoIcon->setFocusPolicy(Qt::NoFocus);
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setObjectName("CustomcloseButton");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "CustomcloseButton-objectname" << m_closeButton->objectName();
     m_closeButton->setFocusPolicy(Qt::TabFocus);//m_closeButton->setFocusPolicy(Qt::NoFocus);
     m_closeButton->setIconSize(QSize(50, 50));
 
     m_titleText = new DLabel(this);
+    m_titleText->setObjectName("CustomtitleText");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "CustomtitleText-objectname" << m_titleText->objectName();
     m_titleText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_titleText->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5, QFont::DemiBold);
@@ -311,10 +326,14 @@ void CustomCommandOptDlg::initUITitle()
 
     //Dialog content
     m_contentLayout = new QVBoxLayout();
+    m_contentLayout->setObjectName("CustomcontentLayout");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "CustomcontentLayout-objectname" << m_contentLayout->objectName();
     m_contentLayout->setSpacing(0);
     m_contentLayout->setContentsMargins(0, 0, 0, 0);
 
     m_content = new QWidget(this);
+    m_content->setObjectName("Customcontent");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "Customcontent-objectname" << m_content->objectName();
     m_content->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_content->setLayout(m_contentLayout);
 
@@ -422,6 +441,8 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     }
 
     m_newAction = new QAction(ShortcutManager::instance());
+    m_newAction->setObjectName("QAction");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "QAction-objectname" << m_newAction->objectName();
     m_newAction->setText(strName);
     m_newAction->setData(strCommand);
     m_newAction->setShortcut(m_shortCutLineEdit->keySequence());
@@ -541,12 +562,16 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
 
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
+    m_cancelBtn->setObjectName("CustomcancelBtn");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "CustomcancelBtn-objectname" << m_cancelBtn->objectName();
     m_cancelBtn->setFixedWidth(209);
     m_cancelBtn->setFixedHeight(36);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DSuggestButton(this);
+    m_confirmBtn->setObjectName("CustomconfirmBtn");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "CustomconfirmBtn-objectname" << m_confirmBtn->objectName();
     m_confirmBtn->setFixedWidth(209);
     m_confirmBtn->setFixedHeight(36);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -701,6 +726,8 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
     // 若没有弹窗，初始化
     if (nullptr == m_shortcutConflictDialog) {
         m_shortcutConflictDialog = new DDialog(this);
+        m_shortcutConflictDialog->setObjectName("CustomshortcutConflictDialog");//Add by ut001000 renfeixiang 2020-08-13
+        qDebug() << "CustomshortcutConflictDialog-objectname" << m_shortcutConflictDialog->objectName();
         /******** Modify by nt001000 renfeixiang 2020-05-29:修改 因为弹框改为非模态之后，快捷框冲突选中快捷框功能移动这 Begin***************/
         connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, [this]() {
             m_shortcutConflictDialog->hide();

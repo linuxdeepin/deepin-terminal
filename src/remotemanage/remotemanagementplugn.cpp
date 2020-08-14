@@ -123,6 +123,8 @@ void RemoteManagementPlugin::initRemoteManagementTopPanel()
 {
     qDebug() << __FUNCTION__;
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
+    m_remoteManagementTopPanel->setObjectName("RemoteremoteManagementTopPanel");//Add by ut001000 renfeixiang 2020-08-14
+    qDebug() << "RemoteremoteManagementTopPanel-objectname" << m_remoteManagementTopPanel->objectName();
     connect(m_remoteManagementTopPanel,
             &RemoteManagementTopPanel::doConnectServer,
             this,

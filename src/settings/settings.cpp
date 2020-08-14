@@ -79,6 +79,8 @@ void Settings::init()
     m_configPath = QString("%1/%2/%3/config.conf")
                    .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
     m_backend = new QSettingBackend(m_configPath);
+    m_backend->setObjectName("Settingsbackend");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "Settingsbackend" << m_backend->objectName();
 
     // 默认配置
     settings = DSettings::fromJsonFile(":/other/default-config.json");
@@ -474,6 +476,8 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 Begin***************/
     comboBox = new DComboBox;
+    comboBox->setObjectName("SettingscomboBox");//Add by ut001000 renfeixiang 2020-08-14
+    qDebug() << "SettingscomboBox" << comboBox->objectName();
     //DComboBox *comboBox = new DComboBox;
     // QWidget *optionWidget = DSettingsWidgetFactory::createTwoColumWidget(option, comboBox);
 

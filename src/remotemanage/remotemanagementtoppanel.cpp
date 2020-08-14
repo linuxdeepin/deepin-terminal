@@ -33,16 +33,22 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
     //qDebug() << "RemoteManagementTopPanel-objectname" << objectName();
     // 远程主界面
     m_remoteManagementPanel = new RemoteManagementPanel(this);
+    m_remoteManagementPanel->setObjectName("RemoteremoteManagementPanel");//Add by ut001000 renfeixiang 2020-08-14
+    qDebug() << "RemoteremoteManagementPanel-objectname" << m_remoteManagementPanel->objectName();
     connect(m_remoteManagementPanel, &RemoteManagementPanel::showSearchPanel, this, &RemoteManagementTopPanel::showSearchPanel);
     connect(m_remoteManagementPanel, &RemoteManagementPanel::showGroupPanel, this, &RemoteManagementTopPanel::showGroupPanel);
     connect(m_remoteManagementPanel, &RemoteManagementPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
     // 远程分组界面
     m_serverConfigGroupPanel = new ServerConfigGroupPanel(this);
+    m_serverConfigGroupPanel->setObjectName("RemoteserverConfigGroupPanel");//Add by ut001000 renfeixiang 2020-08-14
+    qDebug() << "RemoteserverConfigGroupPanel-objectname" << m_serverConfigGroupPanel->objectName();
     connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::showSearchPanel, this, &RemoteManagementTopPanel::showSearchPanel);
     connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::rebackPrevPanel, this, &RemoteManagementTopPanel::showPrevPanel);
     connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
     // 远程搜索界面
     m_remoteManagementSearchPanel = new RemoteManagementSearchPanel(this);
+    m_remoteManagementSearchPanel->setObjectName("RemoteremoteManagementSearchPanel");//Add by ut001000 renfeixiang 2020-08-14
+    qDebug() << "RemoteremoteManagementSearchPanel-objectname" << m_remoteManagementSearchPanel->objectName();
     connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::showGroupPanel, this, &RemoteManagementTopPanel::showGroupPanel);
     connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::rebackPrevPanel, this, &RemoteManagementTopPanel::showPrevPanel);
     connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);

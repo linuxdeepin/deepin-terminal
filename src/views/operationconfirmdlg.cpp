@@ -60,21 +60,25 @@ void OperationConfirmDlg::initUI()
     titleLayout->setContentsMargins(10, 0, 0, 0);
 
     m_titleBar = new QWidget(this);
+    m_titleBar->setObjectName("titleBar");//Add by ut001000 renfeixiang 2020-08-13
     m_titleBar->setFixedHeight(50);
     m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_titleBar->setLayout(titleLayout);
 
     m_logoIcon = new DLabel(this);
+    m_logoIcon->setObjectName("logoIcon");//Add by ut001000 renfeixiang 2020-08-13
     m_logoIcon->setFixedSize(QSize(32, 32));
     m_logoIcon->setFocusPolicy(Qt::NoFocus);
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
     m_logoIcon->setPixmap(QIcon::fromTheme("deepin-terminal").pixmap(QSize(32, 32)));
 
     m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setObjectName("closeButton");//Add by ut001000 renfeixiang 2020-08-13
     m_closeButton->setFocusPolicy(Qt::NoFocus);
     m_closeButton->setIconSize(QSize(50, 50));
 
     m_titleText = new DLabel(this);
+    m_titleText->setObjectName("titleText");//Add by ut001000 renfeixiang 2020-08-13
     m_titleText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_titleText->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T6);
@@ -85,10 +89,12 @@ void OperationConfirmDlg::initUI()
 
     //Dialog content
     m_contentLayout = new QVBoxLayout();
+    m_contentLayout->setObjectName("contentLayout");//Add by ut001000 renfeixiang 2020-08-13
     m_contentLayout->setSpacing(0);
     m_contentLayout->setContentsMargins(0, 0, 0, 0);
 
     m_content = new QWidget(this);
+    m_content->setObjectName("content");//Add by ut001000 renfeixiang 2020-08-13
     m_content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_content->setLayout(m_contentLayout);
 
@@ -106,6 +112,7 @@ void OperationConfirmDlg::initUI()
 void OperationConfirmDlg::initContentLayout()
 {
     m_mainLayout = new QVBoxLayout();
+    m_mainLayout->setObjectName("mainLayout");//Add by ut001000 renfeixiang 2020-08-13
     m_mainLayout->setSpacing(0);
     m_mainLayout->setContentsMargins(10, 0, 10, 10);
 
@@ -113,6 +120,7 @@ void OperationConfirmDlg::initContentLayout()
     mainFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_operateTypeName = new DLabel(this);
+    m_operateTypeName->setObjectName("operateTypeName");//Add by ut001000 renfeixiang 2020-08-13
     //m_operateTypeName->setFixedHeight(20);
     m_operateTypeName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // 字色
@@ -123,6 +131,7 @@ void OperationConfirmDlg::initContentLayout()
     DFontSizeManager::instance()->bind(m_operateTypeName, DFontSizeManager::T6, QFont::Medium);
 
     m_tipInfo = new DLabel(this);
+    m_tipInfo->setObjectName("tipInfo");//Add by ut001000 renfeixiang 2020-08-13
     //m_tipInfo->setFixedHeight(20);
     m_tipInfo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // 字号
@@ -134,16 +143,19 @@ void OperationConfirmDlg::initContentLayout()
     m_tipInfo->setPalette(palette);
 
     m_actionLayout = new QHBoxLayout();
+    m_actionLayout->setObjectName("actionLayout");//Add by ut001000 renfeixiang 2020-08-13
     m_actionLayout->setSpacing(0);
     m_actionLayout->setContentsMargins(0, 0, 0, 0);
 
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
+    m_cancelBtn->setObjectName("cancelBtn");//Add by ut001000 renfeixiang 2020-08-13
     m_cancelBtn->setFixedHeight(38);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DWarningButton(this);
+    m_confirmBtn->setObjectName("confirmBtn");//Add by ut001000 renfeixiang 2020-08-13
     m_confirmBtn->setFixedHeight(38);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setFont(btnFont);

@@ -57,11 +57,13 @@ void TermInputDialog::initUI()
     titleLayout->setContentsMargins(0, 0, 0, 0);
 
     m_titleBar = new QWidget(this);
+    m_titleBar->setObjectName("titleBar");//Add by ut001000 renfeixiang 2020-08-13
     m_titleBar->setFixedHeight(50);
     m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_titleBar->setLayout(titleLayout);
 
     m_logoIcon = new DIconButton(this);
+    m_logoIcon->setObjectName("logoIcon");//Add by ut001000 renfeixiang 2020-08-13
     m_logoIcon->setIconSize(QSize(32, 32));
     m_logoIcon->setWindowFlags(Qt::WindowTransparentForInput);
     m_logoIcon->setFocusPolicy(Qt::NoFocus);
@@ -70,10 +72,12 @@ void TermInputDialog::initUI()
     m_logoIcon->hide();
 
     m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setObjectName("closeButton");//Add by ut001000 renfeixiang 2020-08-13
     m_closeButton->setFocusPolicy(Qt::TabFocus);
     m_closeButton->setIconSize(QSize(50, 50));
 
     m_titleText = new DLabel(this);
+    m_titleText->setObjectName("titleText");//Add by ut001000 renfeixiang 2020-08-13
     m_titleText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_titleText->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_titleText, DFontSizeManager::T5, QFont::DemiBold);
@@ -90,10 +94,12 @@ void TermInputDialog::initUI()
 
     //Dialog content
     m_contentLayout = new QVBoxLayout();
+    m_contentLayout->setObjectName("contentLayout");//Add by ut001000 renfeixiang 2020-08-13
     m_contentLayout->setSpacing(0);
     m_contentLayout->setContentsMargins(0, 0, 0, 0);
 
     m_content = new QWidget(this);
+    m_content->setObjectName("content");//Add by ut001000 renfeixiang 2020-08-13
     m_content->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_content->setLayout(m_contentLayout);
 
@@ -118,12 +124,14 @@ void TermInputDialog::addCancelConfirmButtons(int width, int height, int topOffs
 
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
+    m_cancelBtn->setObjectName("cancelBtn");//Add by ut001000 renfeixiang 2020-08-13
     m_cancelBtn->setFixedWidth(width);
     m_cancelBtn->setFixedHeight(height);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DSuggestButton(this);
+    m_confirmBtn->setObjectName("confirmBtn");//Add by ut001000 renfeixiang 2020-08-13
     m_confirmBtn->setFixedWidth(width);
     m_confirmBtn->setFixedHeight(height);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -174,6 +182,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
 
     /***mod begin by ut001121 zhangmeng 20200428 修复BUG#22995 标签截断显示的问题***/
     m_lineEdit = new DLineEdit(this);
+    m_lineEdit->setObjectName("lineEdit");//Add by ut001000 renfeixiang 2020-08-13
     /* delete
      * lineEdit->setFixedSize(360, 36);*/
     /* add */
