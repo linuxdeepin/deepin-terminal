@@ -1,16 +1,12 @@
 
-#ifndef UT_UTILS_TEST_H
-#define UT_UTILS_TEST_H
+#include "shortcutmanager.h"
 
-#include "utils.h"
-
-#include <QObject>
 #include <gtest/gtest.h>
 
-class UT_Utils_Test : public ::testing::Test
+class UT_CustomCommandPanel_Test : public ::testing::Test
 {
 public:
-    UT_Utils_Test();
+    UT_CustomCommandPanel_Test();
 
 public:
     //这里的几个函数都会自动调用
@@ -23,7 +19,7 @@ public:
 
     //在这里编写单元测试代码
     void initTest();
+
+    Settings *m_settings;
+    ShortcutManager *m_scManager;
 };
-
-#endif // UT_UTILS_TEST_H
-

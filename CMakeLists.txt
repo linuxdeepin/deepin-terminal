@@ -47,6 +47,8 @@ find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5Test REQUIRED)
+add_definitions(${Qt5Test_DEFINITIONS})
 #find_package(DtkWidget REQUIRED)
 #find_package(DtkCore REQUIRED)
 #find_package(DtkGui REQUIRED)
@@ -89,6 +91,7 @@ set(LINK_LIBS
     Qt5::Widgets
     Qt5::WidgetsPrivate
     Qt5::Network
+    Qt5::Test
 
     ${DtkWidget_LIBRARIES}
     ${DtkCore_LIBRARIES}
@@ -251,12 +254,6 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
-#Unit Test
-option(BUILD_TESTS "Build tests." TRUE)
-if(BUILD_TESTS)
-    add_subdirectory(unit-test)
-endif()
-
 # Install settings
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -284,3 +281,123 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         WORLD_READ WORLD_EXECUTE)
 
 install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)
+
+
+
+#For Unit Test
+
+FILE(GLOB allSource
+    src/common/*.cpp
+    src/customcommand/*.cpp
+    src/encodeplugin/*.cpp
+    src/quaketerminal/*.cpp
+    src/remotemanage/*.cpp
+    src/settings/*.cpp
+    src/theme/*.cpp
+    src/views/*.cpp
+    src/main/service.cpp
+    src/main/windowsmanager.cpp
+    src/main/mainwindow.cpp
+    src/main/terminalapplication.cpp
+    src/main/termproperties.cpp
+    src/main/dbusmanager.cpp
+    src/main/atspidesktop.cpp
+)
+
+FILE(GLOB allHeaders
+    src/common/*.h
+    src/customcommand/*.h
+    src/encodeplugin/*.h
+    src/main/*.h
+    src/quaketerminal/*.h
+    src/remotemanage/*.h
+    src/settings/*.h
+    src/theme/*.h
+    src/views/*.h
+)
+
+FILE(GLOB qrcFiles
+    src/assets/resources.qrc
+)
+
+include_directories(googletest)
+include_directories(googletest/googlemock/include)
+include_directories(googletest/googletest/include)
+
+#GTest & GMock
+add_subdirectory(googletest)
+
+set(PROJECT_NAME_TEST ${PROJECT_NAME}_test)
+
+FILE(GLOB allTestSource
+    unit-test/test/common/*.cpp
+    unit-test/test/customcommand/*.cpp
+    unit-test/test/main/test_main.cpp
+    unit-test/test/views/*.cpp
+)
+
+add_executable(${PROJECT_NAME_TEST}
+    ${allHeaders}
+    ${allSource}
+    ${allTestSource}
+    ${qrcFiles}
+)
+
+target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
+                                                        ${Qt5DBus_LIBRARIES}
+                                                        ${Qt5TestLib_LIBRARIES}
+                                                        ${Qt5Widgets_PRIVATE_INCLUDE_DIRS}
+                                                        ${Qt5Core_PRIVATE_INCLUDE_DIRS}
+                                                        ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
+                                                        ${PROJECT_BINARY_DIR}
+                                                        ${DtkWidget_INCLUDE_DIRS}
+                                                        ${DtkCore_LIBRARIES}
+                                                        ${DtkGUI_INCLUDE_DIRS}
+                                                        ${DFrameworkDBus_INCLUDE_DIRS}
+                                                        ${ATSPI2_INCLUDE_DIRS}
+                                                        ${GOBJECT_INCLUDE_DIRS})
+
+target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} terminalwidget5 gmock gmock_main gtest gtest_main)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage -O0")
+
+
+
+#------------------------------ 创建'make test'指令---------------------------------------
+add_custom_target(test
+    #执行mkdir -p 创建 coverageResult
+    COMMAND mkdir -p coverageResult
+    #设置工作目录
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_custom_command(TARGET test
+    COMMAND echo " =================== CREAT LCOV REPROT BEGIN ==================== "
+
+    #1.清理原先的gcov信息
+    COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
+    COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME}.dir --zerocounters
+    COMMAND ./${PROJECT_NAME_TEST}
+
+    #2.收集gcov信息到.info文件中
+    COMMAND lcov --directory . --capture --output-file ./coverageResult/${PROJECT_NAME}_Coverage.info
+
+    #3.过滤一些我们不感兴趣的文件的覆盖率信息
+    COMMAND echo " =================== do filter begin ==================== "
+    COMMAND lcov --remove ./coverageResult/${PROJECT_NAME}_Coverage.info
+    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/src/*' '*/googletest/*'
+    -o ./coverageResult/${PROJECT_NAME}_Coverage.info
+    COMMAND echo " =================== do filter end ==================== "
+
+    #3.将.info信息生成报告到reprot文件夹中
+    COMMAND genhtml -o ./coverageResult/report ./coverageResult/${PROJECT_NAME}_Coverage.info
+
+    COMMAND echo " =================== CREAT LCOV REPROT END ==================== "
+
+    COMMAND echo " Coverage files have been output to ${CMAKE_BINARY_DIR}/coverageResult/report "
+
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+#'make test'命令依赖与我们的测试程序
+add_dependencies(test ${PROJECT_NAME_TEST})

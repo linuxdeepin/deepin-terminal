@@ -53,7 +53,7 @@ public:
     ~CustomCommandPanel();
     void refreshCmdPanel();
     void refreshCmdSearchState();
-    // 设置焦点进入平面
+    // 设置焦点进入平refreshCmdSearchState面
     void setFocusInPanel();
 signals:
     void handleCustomCurCommand(const QString &strCommand);

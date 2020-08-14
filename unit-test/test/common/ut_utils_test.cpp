@@ -1,7 +1,5 @@
 #include "ut_utils_test.h"
 
-#include "utils.h"
-
 #include <QString>
 #include <QDebug>
 #include <QtGui>
@@ -12,15 +10,19 @@
 //Qt单元测试相关头文件
 #include <QTest>
 
-void UT_Utils_Test::init()
+UT_Utils_Test::UT_Utils_Test()
 {
 }
 
-void UT_Utils_Test::cleanup()
+void UT_Utils_Test::SetUp()
 {
 }
 
-void UT_Utils_Test::testMethods()
+void UT_Utils_Test::TearDown()
+{
+}
+
+TEST_F(UT_Utils_Test, initTest)
 {
     for(int i=0; i<100; i++)
     {
@@ -29,10 +31,5 @@ void UT_Utils_Test::testMethods()
 
         qDebug() << str << endl;
         //加个延时用于提高Utils::getRandString()函数生成的随机性，因为随机函数使用时间作为随机数的种子
-        QTest::qWait(10);
     }
 }
-
-QTEST_MAIN(UT_Utils_Test)
-
-#include "ut_utils_test.moc"
