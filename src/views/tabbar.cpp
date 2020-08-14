@@ -523,6 +523,7 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
             if (m_rightClickTab >= 0) {
                 if(m_rightMenu == nullptr){
                     m_rightMenu = new DMenu(this);
+                    m_rightMenu->setObjectName("rightMenu");//Add by ut001000 renfeixiang 2020-08-13
                 }
                 else{
                     // clear时，对于绑在menu下面的action会自动释放，无需单独处理action释放
@@ -530,7 +531,9 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                 }
 
                 m_closeTabAction = new QAction(tr("Close workspace"), m_rightMenu);
+                m_closeTabAction->setObjectName("closeTabAction");//Add by ut001000 renfeixiang 2020-08-13
                 m_closeOtherTabAction = new QAction(tr("Close other workspaces"), m_rightMenu);
+                m_closeOtherTabAction->setObjectName("closeOtherTabAction");//Add by ut001000 renfeixiang 2020-08-13
 
 
                 connect(m_closeTabAction, &QAction::triggered, this, [ = ] {

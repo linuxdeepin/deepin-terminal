@@ -34,10 +34,16 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     Utils::set_Object_Name(this);
     //qDebug() << "set_Object_Name-objectname" << objectName();
     m_DIconBtnAdd = new DIconButton(DStyle::SP_IncreaseElement);
+    m_DIconBtnAdd->setObjectName("NewDspinBoxDIconBtnAdd");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "NewDspinBoxDIconBtnAdd" << m_DIconBtnAdd->objectName();
     m_DIconBtnAdd->setFixedSize(36, 36);
     m_DIconBtnSubtract = new DIconButton(DStyle::SP_DecreaseElement);
+    m_DIconBtnSubtract->setObjectName("NewDspinBoxDIconBtnSubtract");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "NewDspinBoxDIconBtnSubtract" << m_DIconBtnSubtract->objectName();
     m_DIconBtnSubtract->setFixedSize(36, 36);
     m_DLineEdit = new DLineEdit();
+    m_DLineEdit->setObjectName("NewDspinBoxDLineEdit");//Add by ut001000 renfeixiang 2020-08-13
+    qDebug() << "NewDspinBoxDLineEdit" << m_DLineEdit->objectName();
     m_DLineEdit->setClearButtonEnabled(false);
     m_DLineEdit->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     QHBoxLayout *pHBoxLayout = new QHBoxLayout();

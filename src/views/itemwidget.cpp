@@ -42,8 +42,22 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
       m_funcButton(new IconButton(this)),
       m_functType(itemType)
 {
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "ItemWidget-objectname" << objectName();
+    m_mainLayout->setObjectName("ItemWidgetmainLayout");
+    m_iconLayout->setObjectName("ItemWidgeticonLayout");
+    m_textLayout->setObjectName("ItemWidgettextLayout");
+    m_funcLayout->setObjectName("ItemWidgetfuncLayout");
+    m_iconButton->setObjectName("ItemWidgeticonButton");
+    m_firstline->setObjectName("ItemWidgetfirstline");
+    m_secondline->setObjectName("ItemWidgetsecondline");
+
+    qDebug() << "ItemWidgetmainLayout ItemWidgeticonLayout ItemWidgettextLayout ItemWidgetfuncLayout ItemWidgeticonButton"
+                "ItemWidgetfirstline ItemWidgetsecondline"
+             << m_mainLayout->objectName() << m_iconLayout->objectName() << m_textLayout->objectName() << m_funcLayout->objectName()
+             << m_iconButton->objectName() << m_firstline->objectName() << m_secondline->objectName();
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     // 界面初始化
     initUI();
     // 信号槽初始化

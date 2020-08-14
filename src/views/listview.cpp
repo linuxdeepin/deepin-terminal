@@ -34,8 +34,12 @@ ListView::ListView(ListType type, QWidget *parent)
       m_mainWidget(new DWidget(this)),
       m_mainLayout(new QVBoxLayout(m_mainWidget))
 {
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "ListView-objectname" << objectName();
+    m_mainWidget->setObjectName("mainWidget");
+    m_mainLayout->setObjectName("mainLayout");
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     // 初始化界面
     initUI();
 }

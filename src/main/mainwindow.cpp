@@ -84,6 +84,13 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_isQuakeWindow(properties[QuakeMode].toBool()),
       m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
 {
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
+    m_menu->setObjectName("menu");
+    m_centralWidget->setObjectName("centralWidget");
+    m_centralLayout->setObjectName("centralLayout");
+    m_termStackWidget->setObjectName("termStackWidget");
+    m_winInfoConfig->setObjectName("winInfoConfig");
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     static int id = 0;
     m_MainWindowID = ++id;
     // 首先到 “此刻的共享内存”里面找，如果找不到内容，说明这个不是子进程
@@ -222,6 +229,7 @@ void MainWindow::initOptionButton()
     }
 
     m_exitFullScreen = new DToolButton(this);
+    m_exitFullScreen->setObjectName("exitFullScreen");//Add by ut001000 renfeixiang 2020-08-13
     m_exitFullScreen->setCheckable(false);
     m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
     m_exitFullScreen->setIconSize(QSize(36, 36));
@@ -2130,6 +2138,8 @@ void NormalWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
     m_titleBar = new TitleBar(this, false);
+    m_titleBar->setObjectName("NormalWindowtitleBar");//Add by ut001000 renfeixiang 2020-08-14
+    qDebug() << "NormalWindowtitleBar-objectname" << m_titleBar->objectName();
     m_titleBar->setTabBar(m_tabbar);
 
     titlebar()->setCustomWidget(m_titleBar);
@@ -2350,6 +2360,8 @@ void QuakeWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
     m_titleBar = new TitleBar(this, true);
+    m_titleBar->setObjectName("QuakeWindowtitleBar");//Add by ut001000 renfeixiang 2020-08-14
+    qDebug() << "QuakeWindowtitleBar-objectname" << m_titleBar->objectName();
     m_titleBar->setTabBar(m_tabbar);
 
     /** add by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */

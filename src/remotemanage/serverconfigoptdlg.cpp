@@ -69,8 +69,36 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_delServer(new TermCommandLinkButton())
 
 {
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "ServerConfigOptDlg-objectname" << objectName();
+    m_titleLabel->setObjectName("ServertitleLabel");
+    m_iconLabel->setObjectName("ServericonLabel");
+    m_closeButton->setObjectName("ServercloseButton");
+    m_serverName->setObjectName("ServerserverName");
+    m_address->setObjectName("Serveraddress");
+    m_port->setObjectName("Serverport");
+    m_userName->setObjectName("ServeruserName");
+    m_password->setObjectName("Serverpassword");
+    m_privateKey->setObjectName("ServerprivateKey");
+    m_fileDialog->setObjectName("ServerfileDialog");
+    m_group->setObjectName("Servergroup");
+    m_path->setObjectName("Serverpath");
+    m_command->setObjectName("Servercommand");
+    m_coding->setObjectName("Servercoding");
+    m_backSapceKey->setObjectName("ServerbackSapceKey");
+    m_deleteKey->setObjectName("ServerdeleteKey");
+    m_advancedOptions->setObjectName("ServeradvancedOptions");
+
+    qDebug() << "ServertitleLabel ServericonLabel ServercloseButton ServerserverName Serveraddress"
+                "Serverport ServeruserName Serverpassword ServerprivateKey ServerfileDialog Servergroup"
+                "Serverpath Servercommand Servercoding ServerbackSapceKey ServerdeleteKey ServeradvancedOptions-objectname"
+             << m_titleLabel->objectName() << m_iconLabel->objectName() << m_closeButton->objectName() << m_serverName->objectName()
+             << m_address->objectName() << m_port->objectName() << m_userName->objectName() << m_password->objectName()
+             << m_privateKey->objectName() << m_fileDialog->objectName() << m_group->objectName() << m_path->objectName()
+             << m_command->objectName() << m_coding->objectName() << m_backSapceKey->objectName() << m_advancedOptions->objectName();
+
+    /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     setWindowModality(Qt::WindowModal);
     setFixedWidth(459);
     setAutoFillBackground(true);

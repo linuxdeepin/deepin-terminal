@@ -113,6 +113,7 @@ void Service::initSetting()
     }
     QDateTime startTime = QDateTime::currentDateTime();
     m_settingDialog = new DSettingsDialog();
+    m_settingDialog->setObjectName("settingDialog");//Add by ut001000 renfeixiang 2020-08-13
     // 关闭后将指针置空，下次重新new
     connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
         Q_UNUSED(result)
@@ -225,6 +226,7 @@ void Service::listenWindowEffectSwitcher()
 {
     if (nullptr == m_wmSwitcher) {
         m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
+        m_wmSwitcher->setObjectName("wmSwitcher");//Add by ut001000 renfeixiang 2020-08-13
         connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, [this](const QString & wmName) {
 
             qDebug() << "changed wm name:" << wmName;
@@ -350,6 +352,8 @@ void Service::showShortcutConflictMsgbox(QString txt)
     // 若没有弹窗，初始化
     if (nullptr == m_settingShortcutConflictDialog) {
         m_settingShortcutConflictDialog = new DDialog(m_settingDialog);
+        m_settingShortcutConflictDialog->setObjectName("ServicesettingShortcutConflictDialog");// Add by ut001000 renfeixiang 2020-08-13
+        qDebug() << "ServicesettingShortcutConflictDialog-objectname" << m_settingShortcutConflictDialog->objectName();
         connect(m_settingShortcutConflictDialog, &DDialog::finished, m_settingShortcutConflictDialog, [ = ]() {
             delete m_settingShortcutConflictDialog;
             m_settingShortcutConflictDialog = nullptr;
@@ -407,6 +411,7 @@ Service::Service(QObject *parent) : QObject(parent)
     QString ShareMemoryName = QString(getenv("LOGNAME")) + "_enableCreateTerminal";
     qDebug() << "ShareMemoryName: " << ShareMemoryName;
     m_enableShareMemory = new QSharedMemory(ShareMemoryName);
+    m_enableShareMemory->setObjectName("enableShareMemory");// Add by ut001000 renfeixiang 2020-08-13
 }
 
 /*******************************************************************************

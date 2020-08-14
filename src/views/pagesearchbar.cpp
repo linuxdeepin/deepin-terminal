@@ -231,6 +231,7 @@ void PageSearchBar::keyPressEvent(QKeyEvent *event)
 void PageSearchBar::initFindPrevButton()
 {
     m_findPrevButton = new DIconButton(QStyle::SP_ArrowUp);
+    m_findNextButton->setObjectName("findNextButton");//Add by ut001000 renfeixiang 2020-08-13
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
     m_findPrevButton->setFocusPolicy(Qt::TabFocus);
 
@@ -250,6 +251,7 @@ void PageSearchBar::initFindPrevButton()
 void PageSearchBar::initFindNextButton()
 {
     m_findNextButton = new DIconButton(QStyle::SP_ArrowDown);
+    m_findNextButton->setObjectName("findNextButton");//Add by ut001000 renfeixiang 2020-08-13
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
     m_findNextButton->setFocusPolicy(Qt::TabFocus);
 
@@ -269,6 +271,7 @@ void PageSearchBar::initFindNextButton()
 void PageSearchBar::initSearchEdit()
 {
     m_searchEdit = new DSearchEdit(this);
+    m_searchEdit->setObjectName("searchEdit");//Add by ut001000 renfeixiang 2020-08-13
     m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
 
     //　保留原文字，图标

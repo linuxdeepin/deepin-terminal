@@ -36,8 +36,14 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
       m_customCommandPanel(new CustomCommandPanel(this)),
       m_customCommandSearchPanel(new CustomCommandSearchRstPanel(this))
 {
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "CustomCommandTopPanel-objectname" << objectName();
+    m_customCommandPanel->setObjectName("CustomcustomCommandPanel");
+    m_customCommandSearchPanel->setObjectName("CustomcustomCommandSearchPanel");
+    qDebug() << "CustomcustomCommandPanel CustomcustomCommandSearchPanel-objectname" << m_customCommandPanel->objectName()
+             << m_customCommandSearchPanel->objectName();
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     setAttribute(Qt::WA_TranslucentBackground);
     connect(m_customCommandPanel,
             &CustomCommandPanel::showSearchResult,

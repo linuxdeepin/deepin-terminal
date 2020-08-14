@@ -41,8 +41,13 @@ ThemePanel::ThemePanel(QWidget *parent)
       m_themeView(new ThemeListView(this)),
       m_themeModel(new ThemeListModel(this))
 {
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "set_Object_Name-objectname" << objectName();
+    m_themeView->setObjectName("ThemePanelthemeView");
+    m_themeModel->setObjectName("ThemePanelthemeModel");
+    qDebug() << "ThemePanelthemeView ThemePanelthemeModel-objectname" << m_themeView->objectName() << m_themeModel->objectName();
+    /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     // init view.
     m_themeView->setModel(m_themeModel);
     m_themeView->setItemDelegate(new ThemeItemDelegate(m_themeView));
