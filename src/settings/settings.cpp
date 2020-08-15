@@ -56,13 +56,13 @@ Settings *Settings::instance()
 
 Settings::~Settings()
 {
-    if(nullptr != m_Watcher){
+    if (nullptr != m_Watcher) {
         m_Watcher->deleteLater();
     }
-    if(nullptr != m_backend){
+    if (nullptr != m_backend) {
         m_backend->deleteLater();
     }
-    if(nullptr != settings){
+    if (nullptr != settings) {
         settings->deleteLater();
     }
 }
@@ -79,8 +79,8 @@ void Settings::init()
     m_configPath = QString("%1/%2/%3/config.conf")
                    .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
     m_backend = new QSettingBackend(m_configPath);
-    m_backend->setObjectName("Settingsbackend");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "Settingsbackend" << m_backend->objectName();
+    m_backend->setObjectName("SettingsQSettingBackend");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "Settingsbackend" << m_backend->objectName();
 
     // 默认配置
     settings = DSettings::fromJsonFile(":/other/default-config.json");
@@ -427,12 +427,12 @@ void Settings::HandleWidthFont()
         if (-1 == comboBox->findText(name)) {
             QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/";// + name + ".ttf";
             QDir dir(fontpath);
-            if(dir.count() > 2){
+            if (dir.count() > 2) {
                 fontpath = fontpath + dir[2];
             }
 //            qDebug() << "load font path" << fontpath;
             int ret = base.addApplicationFont(fontpath);
-            if(-1 == ret){
+            if (-1 == ret) {
                 qDebug() << "load " << name << " font faild";
             }
         }
@@ -476,8 +476,8 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 Begin***************/
     comboBox = new DComboBox;
-    comboBox->setObjectName("SettingscomboBox");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "SettingscomboBox" << comboBox->objectName();
+    comboBox->setObjectName("SettingsFontFamilyComboBox");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "SettingscomboBox" << comboBox->objectName();
     //DComboBox *comboBox = new DComboBox;
     // QWidget *optionWidget = DSettingsWidgetFactory::createTwoColumWidget(option, comboBox);
 

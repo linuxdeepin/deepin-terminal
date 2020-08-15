@@ -85,11 +85,11 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
       m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
-    m_menu->setObjectName("menu");
-    m_centralWidget->setObjectName("centralWidget");
-    m_centralLayout->setObjectName("centralLayout");
-    m_termStackWidget->setObjectName("termStackWidget");
-    m_winInfoConfig->setObjectName("winInfoConfig");
+    m_menu->setObjectName("MainWindowQMenu");
+    m_centralWidget->setObjectName("MainWindowCentralQWidget");
+    m_centralLayout->setObjectName("MainWindowCentralLayout");
+    m_termStackWidget->setObjectName("MainWindowTermQStackedWidget");
+    m_winInfoConfig->setObjectName("MainWindowWindowQSettings");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     static int id = 0;
     m_MainWindowID = ++id;
@@ -229,7 +229,7 @@ void MainWindow::initOptionButton()
     }
 
     m_exitFullScreen = new DToolButton(this);
-    m_exitFullScreen->setObjectName("exitFullScreen");//Add by ut001000 renfeixiang 2020-08-13
+    m_exitFullScreen->setObjectName("MainWindowExitFullScreenDToolButton");//Add by ut001000 renfeixiang 2020-08-13
     m_exitFullScreen->setCheckable(false);
     m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
     m_exitFullScreen->setIconSize(QSize(36, 36));
@@ -683,7 +683,7 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
         qDebug() << "before close window, focus widget is close button. ";
     }
 
-    if(closeBtn == nullptr){
+    if (closeBtn == nullptr) {
         qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
     }
     /********************* Modify by n014361 wangpeili End ************************/
@@ -2145,8 +2145,8 @@ void NormalWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
     m_titleBar = new TitleBar(this, false);
-    m_titleBar->setObjectName("NormalWindowtitleBar");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "NormalWindowtitleBar-objectname" << m_titleBar->objectName();
+    m_titleBar->setObjectName("NormalWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "NormalWindowtitleBar-objectname" << m_titleBar->objectName();
     m_titleBar->setTabBar(m_tabbar);
 
     titlebar()->setCustomWidget(m_titleBar);
@@ -2367,8 +2367,8 @@ void QuakeWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
     m_titleBar = new TitleBar(this, true);
-    m_titleBar->setObjectName("QuakeWindowtitleBar");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "QuakeWindowtitleBar-objectname" << m_titleBar->objectName();
+    m_titleBar->setObjectName("QuakeWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "QuakeWindowtitleBar-objectname" << m_titleBar->objectName();
     m_titleBar->setTabBar(m_tabbar);
 
     /** add by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */

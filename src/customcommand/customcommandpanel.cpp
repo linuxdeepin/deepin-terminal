@@ -90,8 +90,8 @@ void CustomCommandPanel::showAddCustomCommandDlg()
     Service::instance()->setIsDialogShow(window(), true);
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
-    m_pdlg->setObjectName("Custompdlg");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "Custompdlg-objectname" << m_pdlg->objectName();
+    m_pdlg->setObjectName("CustomAddCommandDialog");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "Custompdlg-objectname" << m_pdlg->objectName();
     connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
@@ -235,18 +235,18 @@ void CustomCommandPanel::initUI()
     setAutoFillBackground(true);
 
     m_searchEdit = new DSearchEdit(this);
-    m_searchEdit->setObjectName("CustomsearchEdit");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "CustomsearchEdit-objectname" << m_searchEdit->objectName();
+    m_searchEdit->setObjectName("CustomSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "CustomsearchEdit-objectname" << m_searchEdit->objectName();
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
 
     m_cmdListWidget = new ListView(ListType_Custom, this);
-    m_cmdListWidget->setObjectName("CustomListWidget");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "CustomListWidget-objectname" << m_cmdListWidget->objectName();
+    m_cmdListWidget->setObjectName("CustomCommandListWidget");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "CustomListWidget-objectname" << m_cmdListWidget->objectName();
 
     m_pushButton = new DPushButton(this);
-    m_pushButton->setObjectName("CustompushButton");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "CustompushButton-objectname" << m_pushButton->objectName();
+    m_pushButton->setObjectName("CustomAddCommandButton");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "CustompushButton-objectname" << m_pushButton->objectName();
     m_pushButton->setFixedHeight(36);
     m_pushButton->setText(tr("Add Command"));
 

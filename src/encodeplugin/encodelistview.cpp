@@ -37,10 +37,10 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "EncodeListView-objectname" << objectName();
-    m_encodeModel->setObjectName("EncodeencodeModel");
+    m_encodeModel->setObjectName("EncodeListModel");
     m_standardModel = new QStandardItemModel(this);
-    m_standardModel->setObjectName("EncodestandardModel");
-    qDebug() << "EncodeencodeModel EncodestandardModel-objectname" << m_encodeModel->objectName() << m_standardModel->objectName();
+    m_standardModel->setObjectName("EncodeStandardModel");
+//    qDebug() << "EncodeencodeModel EncodestandardModel-objectname" << m_encodeModel->objectName() << m_standardModel->objectName();
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
     // init view.
@@ -59,11 +59,11 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //add by ameng 设置属性，修复BUG#20074
-    setFixedWidth(m_ContentWidth+20);
+    setFixedWidth(m_ContentWidth + 20);
     setItemSize(QSize(m_ContentWidth, m_ContentHeight + m_Space));
 
     /***add by ut001121 zhangmeng 20200628 设置视图边距,留出空间给滚动条显示 修复BUG35378***/
-    setViewportMargins(10,10,10,10);
+    setViewportMargins(10, 10, 10, 10);
 
     /***add by ut001121 zhangmeng 20200521 设置非编辑模式 修复BUG27443***/
     setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -120,7 +120,7 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
     m_foucusReason = event->reason();
 
     // 判断焦点
-    if(getFocusReason() == Qt::TabFocusReason || getFocusReason() == Qt::BacktabFocusReason){
+    if (getFocusReason() == Qt::TabFocusReason || getFocusReason() == Qt::BacktabFocusReason) {
         setCurrentIndex(m_modelIndexChecked);
     }
     /** add end by ut001121 zhangmeng 20200718 */
@@ -154,7 +154,7 @@ void EncodeListView::focusOutEvent(QFocusEvent *event)
 void EncodeListView::resizeEvent(QResizeEvent *event)
 {
     /***add by ut001121 zhangmeng 20200701 修改滚动条高度,解决滚动条被窗口特效圆角切割的问题***/
-    verticalScrollBar()->setFixedHeight(height()-10);
+    verticalScrollBar()->setFixedHeight(height() - 10);
 
     return DListView::resizeEvent(event);
 }
@@ -179,13 +179,13 @@ void EncodeListView::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Up:
         //上键到顶发出提示音
-        if(0 == currentIndex().row()){
+        if (0 == currentIndex().row()) {
             DBusManager::callSystemSound();
         }
         break;
     case Qt::Key_Down:
         //下键到底发出提示音
-        if(m_encodeModel->listData().size()-1 == currentIndex().row()){
+        if (m_encodeModel->listData().size() - 1 == currentIndex().row()) {
             DBusManager::callSystemSound();
         }
         break;
@@ -205,7 +205,7 @@ void EncodeListView::keyPressEvent(QKeyEvent *event)
 void EncodeListView::mousePressEvent(QMouseEvent *event)
 {
     /** add by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
-    if(Qt::MouseEventSynthesizedByQt == event->source()){
+    if (Qt::MouseEventSynthesizedByQt == event->source()) {
         m_touchPressPosY = event->y();
         m_touchSlideMaxY = -1;
     }
@@ -224,8 +224,8 @@ void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
 {
     /** add begin by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
     /***add mod by ut001121 zhangmeng 20200813 触摸屏下移动距离超过COORDINATE_ERROR_Y则认为是滑动事件 修复BUG42261***/
-    if(Qt::MouseEventSynthesizedByQt == event->source()
-            && m_touchSlideMaxY > COORDINATE_ERROR_Y){
+    if (Qt::MouseEventSynthesizedByQt == event->source()
+            && m_touchSlideMaxY > COORDINATE_ERROR_Y) {
         event->accept();
         return;
     }
@@ -244,7 +244,7 @@ void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
 void EncodeListView::mouseMoveEvent(QMouseEvent *event)
 {
     /***add begin by ut001121 zhangmeng 20200813 记录触摸屏下移动最大距离 修复BUG42261***/
-    if(Qt::MouseEventSynthesizedByQt == event->source()){
+    if (Qt::MouseEventSynthesizedByQt == event->source()) {
         m_touchSlideMaxY = qMax(m_touchSlideMaxY, qAbs(event->y() - m_touchPressPosY));
     }
     /***add end by ut001121***/
@@ -357,8 +357,8 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         // 背景区域
         QRect bgRect;
-        bgRect.setX(option.rect.x()+1/* + 10*/);
-        bgRect.setY(option.rect.y()+1/* + 10*/);
+        bgRect.setX(option.rect.x() + 1/* + 10*/);
+        bgRect.setY(option.rect.y() + 1/* + 10*/);
         bgRect.setWidth(option.rect.width() - 1);
         bgRect.setHeight(option.rect.height() - 10);
 
@@ -376,7 +376,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         path.arcTo(bgRect.right() - cornerSize, bgRect.bottom() - cornerSize, cornerSize, cornerSize, 270.0, 90.0);
         path.lineTo(bgRect.right(), bgRect.top() + arcRadius);
         path.arcTo(bgRect.right() - cornerSize, bgRect.top(), cornerSize, cornerSize, 0.0, 90.0);
-        path.lineTo(bgRect.left()+ arcRadius, bgRect.top());
+        path.lineTo(bgRect.left() + arcRadius, bgRect.top());
 
         // 悬浮状态
         if (option.state & QStyle::State_MouseOver) {
@@ -417,21 +417,21 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         Qt::FocusReason focusReason = qobject_cast<EncodeListView *>(m_parentView)->getFocusReason();
         // mod by ut001121 zhangmeng 20200731 有效效焦点原因下绘制边框 修复BUG40390
         if ((option.state & QStyle::State_Selected) && (focusReason != INVALID_FOCUS_REASON)) {
-             QPen framePen;
-             DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
-             if (option.state & QStyle::State_Selected) {
-                 painter->setOpacity(1);
-                 framePen = QPen(pax.color(DPalette::Highlight), 2);
-             }
+            QPen framePen;
+            DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
+            if (option.state & QStyle::State_Selected) {
+                painter->setOpacity(1);
+                framePen = QPen(pax.color(DPalette::Highlight), 2);
+            }
 
-             painter->setPen(framePen);
-             painter->drawPath(path);
-         }
+            painter->setPen(framePen);
+            painter->drawPath(path);
+        }
 
         // 判断状态
         const QStandardItemModel *model = qobject_cast<const QStandardItemModel *>(index.model());
         DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(index.row()));
-        if (modelItem->checkState() & Qt::CheckState::Checked ) {
+        if (modelItem->checkState() & Qt::CheckState::Checked) {
             // 计算区域
             QRect editIconRect = QRect(bgRect.right() - checkIconSize - 6, bgRect.top() + (bgRect.height() - checkIconSize) / 2,
                                        checkIconSize, checkIconSize);

@@ -37,8 +37,8 @@ ListView::ListView(ListType type, QWidget *parent)
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "ListView-objectname" << objectName();
-    m_mainWidget->setObjectName("mainWidget");
-    m_mainLayout->setObjectName("mainLayout");
+    m_mainWidget->setObjectName("ListViewMainWidget");
+    m_mainLayout->setObjectName("ListViewMainLayout");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     // 初始化界面
     initUI();
@@ -364,6 +364,7 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
                 // 弹出删除弹窗
                 qDebug() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
                 DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), m_configDialog);
+                deleteDialog->setObjectName("RemoteDeleteDialog");
                 deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
                 connect(deleteDialog, &DDialog::finished, this, [ = ](int result2) {
                     // 获取index
@@ -551,6 +552,7 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
             if (m_pdlg->isDelCurCommand()) {
                 qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
                 DDialog *dlgDelete = new DDialog(this);
+                dlgDelete->setObjectName("CustomDeleteDialog");
                 dlgDelete->setAttribute(Qt::WA_DeleteOnClose);
                 dlgDelete->setWindowModality(Qt::WindowModal);
                 m_pdlg->m_dlgDelete = dlgDelete;

@@ -57,11 +57,11 @@ void RemoteManagementSearchPanel::initUI()
     m_rebackButton->setFocusPolicy(Qt::TabFocus);
 
     m_listWidget = new ListView(ListType_Remote, this);
-    m_listWidget->setObjectName("RemotelistWidget");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "RemotelistWidget-objectname" << m_listWidget->objectName();
+    m_listWidget->setObjectName("RemoteSearchListWidget");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "RemotelistWidget-objectname" << m_listWidget->objectName();
     m_label = new DLabel(this);
-    m_label->setObjectName("Remotelabel");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "Remotelabel-objectname" << m_label->objectName();
+    m_label->setObjectName("RemoteSearchFilterLabel");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "Remotelabel-objectname" << m_label->objectName();
     m_label->setAlignment(Qt::AlignCenter);
     // 字体颜色随主题变化而变化
     DPalette palette = m_label->palette();

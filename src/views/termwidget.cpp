@@ -138,7 +138,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
     // 以最小mainwindow分4屏为标准的最小大小
     /******** Modify by ut001000 renfeixiang 2020-08-07:修改成根据全局变量m_MinWidth，m_MinHeight计算出term的最小高度和宽度***************/
-    setMinimumSize(MainWindow::m_MinWidth/2, (MainWindow::m_MinHeight-50)/2);
+    setMinimumSize(MainWindow::m_MinWidth / 2, (MainWindow::m_MinHeight - 50) / 2);
     /********************* Modify by n014361 wangpeili End ************************/
 
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
@@ -251,7 +251,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
 
-    setFocusPolicy( Qt::NoFocus );
+    setFocusPolicy(Qt::NoFocus);
 }
 
 TermWidget::~TermWidget()
@@ -341,8 +341,9 @@ void TermWidget::addMenuActions(const QPoint &pos)
         m_menu->addAction(tr("Horizontal split"), this, [this] {
             getTermLayer();
             // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
-            QTimer::singleShot(10, this, [ = ]() {
-               parentPage()->split(Qt::Horizontal);
+            QTimer::singleShot(10, this, [ = ]()
+            {
+                parentPage()->split(Qt::Horizontal);
             });
 
         });
@@ -351,8 +352,9 @@ void TermWidget::addMenuActions(const QPoint &pos)
         m_menu->addAction(tr("Vertical split"), this, [this] {
             getTermLayer();
             // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
-            QTimer::singleShot(10, this, [ = ]() {
-               parentPage()->split(Qt::Vertical);
+            QTimer::singleShot(10, this, [ = ]()
+            {
+                parentPage()->split(Qt::Vertical);
             });
         });
     }
@@ -670,7 +672,7 @@ void TermWidget::customContextMenuCall(const QPoint &pos)
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     if (nullptr == m_menu) {
         m_menu = new DMenu(this);
-        m_menu->setObjectName("menu");//Add by ut001000 renfeixiang 2020-08-13
+        m_menu->setObjectName("TermMenu");//Add by ut001000 renfeixiang 2020-08-13
     }
 
     m_menu->clear();

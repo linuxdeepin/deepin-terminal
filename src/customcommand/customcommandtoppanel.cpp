@@ -39,10 +39,10 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     //qDebug() << "CustomCommandTopPanel-objectname" << objectName();
-    m_customCommandPanel->setObjectName("CustomcustomCommandPanel");
-    m_customCommandSearchPanel->setObjectName("CustomcustomCommandSearchPanel");
-    qDebug() << "CustomcustomCommandPanel CustomcustomCommandSearchPanel-objectname" << m_customCommandPanel->objectName()
-             << m_customCommandSearchPanel->objectName();
+    m_customCommandPanel->setObjectName("CustomCommandPanel");
+    m_customCommandSearchPanel->setObjectName("CustomSearchPanel");
+//    qDebug() << "CustomcustomCommandPanel CustomCommandSearchPanel-objectname" << m_customCommandPanel->objectName()
+//             << m_customCommandSearchPanel->objectName();
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     setAttribute(Qt::WA_TranslucentBackground);
     connect(m_customCommandPanel,
