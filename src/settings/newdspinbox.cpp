@@ -34,16 +34,16 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     Utils::set_Object_Name(this);
     //qDebug() << "set_Object_Name-objectname" << objectName();
     m_DIconBtnAdd = new DIconButton(DStyle::SP_IncreaseElement);
-    m_DIconBtnAdd->setObjectName("NewDspinBoxDIconBtnAdd");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "NewDspinBoxDIconBtnAdd" << m_DIconBtnAdd->objectName();
+    m_DIconBtnAdd->setObjectName("NewDspinBoxAddDIconButton");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "NewDspinBoxDIconBtnAdd" << m_DIconBtnAdd->objectName();
     m_DIconBtnAdd->setFixedSize(36, 36);
     m_DIconBtnSubtract = new DIconButton(DStyle::SP_DecreaseElement);
-    m_DIconBtnSubtract->setObjectName("NewDspinBoxDIconBtnSubtract");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "NewDspinBoxDIconBtnSubtract" << m_DIconBtnSubtract->objectName();
+    m_DIconBtnSubtract->setObjectName("NewDspinBoxSubDIconButton");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "NewDspinBoxDIconBtnSubtract" << m_DIconBtnSubtract->objectName();
     m_DIconBtnSubtract->setFixedSize(36, 36);
     m_DLineEdit = new DLineEdit();
-    m_DLineEdit->setObjectName("NewDspinBoxDLineEdit");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "NewDspinBoxDLineEdit" << m_DLineEdit->objectName();
+    m_DLineEdit->setObjectName("NewDspinBoxFontSizeDLineEdit");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "NewDspinBoxDLineEdit" << m_DLineEdit->objectName();
     m_DLineEdit->setClearButtonEnabled(false);
     m_DLineEdit->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
     QHBoxLayout *pHBoxLayout = new QHBoxLayout();
@@ -121,7 +121,7 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
         if (!var) {
             /******** Add by nt001000 renfeixiang 2020-05-25:增加正常数据的过滤不需要处理，textChanged信号已经处理 Begin***************/
             int value = m_DLineEdit->lineEdit()->text().toInt();
-            if(value >= 5)
+            if (value >= 5)
                 return ;
             /******** Add by nt001000 renfeixiang 2020-05-25:增加正常数据的过滤不需要处理，textChanged信号已经处理 End***************/
             correctValue();
@@ -130,9 +130,9 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     });
 
     /******** Add by nt001000 renfeixiang 2020-05-25:增加m_DLineEdit的textChanged信号的响应 Begin***************/
-    connect(m_DLineEdit, &DLineEdit::textChanged, this, [ = ](const QString &value) {
+    connect(m_DLineEdit, &DLineEdit::textChanged, this, [ = ](const QString & value) {
         //过滤范围之外的数据
-        if(value.toInt() < 5)
+        if (value.toInt() < 5)
             return ;
         // 对输入的数据做个校正
         //correctValue();
@@ -160,7 +160,7 @@ bool NewDspinBox::eventFilter(QObject *watched, QEvent *event)
 {
     /** add begin ut001121 zhangmeng 20200723 for sp3 keyboard interaction */
     // 处理编辑框上键事件,调整字体大小
-    if(watched == m_DLineEdit && event->type() == QEvent::KeyPress){
+    if (watched == m_DLineEdit && event->type() == QEvent::KeyPress) {
         QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
         switch (key_event->key()) {
         case Qt::Key_Up:
@@ -306,8 +306,8 @@ void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition
     if (d->layoutData->hasBidi) {
         const int arrow_extent = 4;
         int sign = rightToLeft ? -1 : 1;
-        p->drawLine(QLineF(x, y, x + (sign * arrow_extent/2), y + arrow_extent/2));
-        p->drawLine(QLineF(x, y+arrow_extent, x + (sign * arrow_extent/2), y + arrow_extent/2));
+        p->drawLine(QLineF(x, y, x + (sign * arrow_extent / 2), y + arrow_extent / 2));
+        p->drawLine(QLineF(x, y + arrow_extent, x + (sign * arrow_extent / 2), y + arrow_extent / 2));
     }
     return;
 }

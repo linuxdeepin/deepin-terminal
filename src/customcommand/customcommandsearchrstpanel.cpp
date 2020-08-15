@@ -58,15 +58,15 @@ void CustomCommandSearchRstPanel::initUI()
 
     m_rebackButton = new IconButton(this);
     m_rebackButton->setObjectName("CustomRebackButton");
-    qDebug() << "CustomRebackButton-objectname" << m_rebackButton->objectName();
+//    qDebug() << "CustomRebackButton-objectname" << m_rebackButton->objectName();
     m_backButton = m_rebackButton;
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(36, 36));
     m_backButton->setFocusPolicy(Qt::TabFocus);
 
     m_label = new DLabel(this);
-    m_label->setObjectName("Customlabel");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "Customlabel-objectname" << m_label->objectName();
+    m_label->setObjectName("CustomSearchFilterlabel");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "Customlabel-objectname" << m_label->objectName();
     m_label->setAlignment(Qt::AlignCenter);
     // 字体颜色随主题变化变化
     DPalette palette = m_label->palette();
@@ -80,8 +80,8 @@ void CustomCommandSearchRstPanel::initUI()
     m_label->setPalette(palette);
 
     m_cmdListWidget = new ListView(ListType_Custom, this);
-    m_cmdListWidget->setObjectName("CustomcmdListWidget");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "CustomcmdListWidget-objectname" << m_cmdListWidget->objectName();
+    m_cmdListWidget->setObjectName("CustomcmdSearchListWidget");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "CustomcmdListWidget-objectname" << m_cmdListWidget->objectName();
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addSpacing(10);
@@ -101,17 +101,6 @@ void CustomCommandSearchRstPanel::initUI()
 
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
-//    connect(m_rebackButton, &IconButton::preFocus, this, [ = ]() {
-//        // 在派生类捕获方向键盘左键按下，转化为鼠标点击。
-//        QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier);
-//        QApplication::sendEvent(m_rebackButton, &pressSpace);
-//        // 设置定时
-//        QTimer::singleShot(80, this, [ = ]() {
-//            // 模拟空格键松开事件
-//            QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier);
-//            QApplication::sendEvent(m_rebackButton, &releaseSpace);
-//        });
-//    });
     // 字体颜色随主题变化变化
     connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
         DPalette palette = m_label->palette();

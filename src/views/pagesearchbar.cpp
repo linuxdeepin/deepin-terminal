@@ -73,7 +73,7 @@ bool PageSearchBar::isFocus()
 {
     MainWindow *minwindow = Utils::getMainWindow(this);
     DIconButton *addButton = minwindow->findChild<DIconButton *>("AddButton");
-    if(addButton != nullptr){
+    if (addButton != nullptr) {
         QWidget::setTabOrder(m_findNextButton, addButton);
     } else {
         qDebug() << "can not found AddButton in DIconButton";
@@ -131,13 +131,13 @@ DIconButton *findIconBtn(DSearchEdit *searchEdit)
     QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
     if (iconWidget != nullptr) {
         DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
-        if(iconBtn == nullptr){
+        if (iconBtn == nullptr) {
             qDebug() << "can not found iconBtn in DIconButton";
         }
         return iconBtn;
     } else {
         qDebug() << "can not found iconWidget in QWidget";
-        if(searchEdit->findChild<DIconButton *>() == nullptr){
+        if (searchEdit->findChild<DIconButton *>() == nullptr) {
             qDebug() << "can not found searchEdit in DIconButton";
         }
         return searchEdit->findChild<DIconButton *>();
@@ -231,7 +231,7 @@ void PageSearchBar::keyPressEvent(QKeyEvent *event)
 void PageSearchBar::initFindPrevButton()
 {
     m_findPrevButton = new DIconButton(QStyle::SP_ArrowUp);
-    m_findNextButton->setObjectName("findNextButton");//Add by ut001000 renfeixiang 2020-08-13
+    m_findNextButton->setObjectName("PageSearchBarFindNextDIconButton");//Add by ut001000 renfeixiang 2020-08-13
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
     m_findPrevButton->setFocusPolicy(Qt::TabFocus);
 
@@ -251,7 +251,7 @@ void PageSearchBar::initFindPrevButton()
 void PageSearchBar::initFindNextButton()
 {
     m_findNextButton = new DIconButton(QStyle::SP_ArrowDown);
-    m_findNextButton->setObjectName("findNextButton");//Add by ut001000 renfeixiang 2020-08-13
+    m_findNextButton->setObjectName("PageSearchBarFindNextDIconButton");//Add by ut001000 renfeixiang 2020-08-13
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
     m_findNextButton->setFocusPolicy(Qt::TabFocus);
 
@@ -271,7 +271,7 @@ void PageSearchBar::initFindNextButton()
 void PageSearchBar::initSearchEdit()
 {
     m_searchEdit = new DSearchEdit(this);
-    m_searchEdit->setObjectName("searchEdit");//Add by ut001000 renfeixiang 2020-08-13
+    m_searchEdit->setObjectName("PageSearchBarSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
     m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
 
     //　保留原文字，图标
@@ -283,7 +283,7 @@ void PageSearchBar::initSearchEdit()
     // 把那个＂Ｘ＂控件功能还原成仅为清空文本
     QList<QToolButton *> list = m_searchEdit->lineEdit()->findChildren<QToolButton *>();
     QAction *clearAction = m_searchEdit->lineEdit()->findChild<QAction *>(QLatin1String("_q_qlineeditclearaction"));
-    if(clearAction != nullptr){
+    if (clearAction != nullptr) {
         for (int i = 0; i < list.count(); i++) {
             if (list.at(i)->defaultAction() == clearAction) {
                 QToolButton *clearBtn = list.at(i);

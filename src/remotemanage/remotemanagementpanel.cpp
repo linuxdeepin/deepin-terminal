@@ -225,14 +225,14 @@ void RemoteManagementPanel::initUI()
     this->setAutoFillBackground(true);
 
     m_searchEdit = new DSearchEdit(this);
-    m_searchEdit->setObjectName("RemotesearchEdit");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "RemotesearchEdit-objectname" << m_searchEdit->objectName();
+    m_searchEdit->setObjectName("RemoteSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "RemotesearchEdit-objectname" << m_searchEdit->objectName();
     m_listWidget = new ListView(ListType_Remote, this);
-    m_listWidget->setObjectName("RemotelistWidget");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "RemotelistWidget-objectname" << m_listWidget->objectName();
+    m_listWidget->setObjectName("RemoteManageListWidget");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "RemotelistWidget-objectname" << m_listWidget->objectName();
     m_pushButton = new DPushButton(this);
-    m_pushButton->setObjectName("RemotepushButton");//Add by ut001000 renfeixiang 2020-08-13
-    qDebug() << "RemotepushButton-objectname" << m_pushButton->objectName();
+    m_pushButton->setObjectName("RemoteAddPushButton");//Add by ut001000 renfeixiang 2020-08-13
+//    qDebug() << "RemotepushButton-objectname" << m_pushButton->objectName();
 
     m_searchEdit->setFixedHeight(COMMONHEIGHT);
     m_searchEdit->setClearButtonEnabled(true);

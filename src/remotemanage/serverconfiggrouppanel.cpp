@@ -52,11 +52,11 @@ void ServerConfigGroupPanel::initUI()
 
     m_rebackButton = new IconButton(this);
     m_searchEdit = new DSearchEdit(this);
-    m_searchEdit->setObjectName("RemoteGroupsearchEdit");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "RemoteGroupsearchEdit-objectname" << m_searchEdit->objectName();
+    m_searchEdit->setObjectName("RemoteGroupSearchEdit");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "RemoteGroupsearchEdit-objectname" << m_searchEdit->objectName();
     m_listWidget = new ListView(ListType_Remote, this);
-    m_listWidget->setObjectName("RemoteGrouplistWidget");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "RemoteGrouplistWidget-objectname" << m_listWidget->objectName();
+    m_listWidget->setObjectName("RemoteGroupListWidget");//Add by ut001000 renfeixiang 2020-08-14
+//    qDebug() << "RemoteGrouplistWidget-objectname" << m_listWidget->objectName();
 
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_rebackButton->setFixedSize(QSize(ICONSIZE_36, ICONSIZE_36));

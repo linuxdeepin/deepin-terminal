@@ -46,7 +46,7 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
 
     TermWidget *w = createTerm(properties);
     m_layout = new QVBoxLayout(this);
-    m_layout->setObjectName("layout");//Add by ut001000 renfeixiang 2020-08-13
+    m_layout->setObjectName("TermPageLayout");//Add by ut001000 renfeixiang 2020-08-13
     m_layout->setSpacing(0);
     m_layout->setContentsMargins(0, 0, 0, 0);
     m_layout->addWidget(w);
