@@ -332,7 +332,11 @@ set(PROJECT_NAME_TEST ${PROJECT_NAME}_test)
 FILE(GLOB allTestSource
     unit-test/test/common/*.cpp
     unit-test/test/customcommand/*.cpp
-    unit-test/test/main/test_main.cpp
+    unit-test/test/encodeplugin/*.cpp
+    unit-test/test/main/*.cpp
+    unit-test/test/remotemanage/*.cpp
+    unit-test/test/settings/*.cpp
+    unit-test/test/theme/*.cpp
     unit-test/test/views/*.cpp
 )
 
@@ -385,7 +389,7 @@ add_custom_command(TARGET test
     #3.过滤一些我们不感兴趣的文件的覆盖率信息
     COMMAND echo " =================== do filter begin ==================== "
     COMMAND lcov --remove ./coverageResult/${PROJECT_NAME}_Coverage.info
-    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/src/*' '*/googletest/*'
+    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/unit-test/*' '*/googletest/*'
     -o ./coverageResult/${PROJECT_NAME}_Coverage.info
     COMMAND echo " =================== do filter end ==================== "
 

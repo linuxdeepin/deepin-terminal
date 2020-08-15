@@ -14,7 +14,4 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
-
-    //在这里编写单元测试代码
-    void initTest();
 };

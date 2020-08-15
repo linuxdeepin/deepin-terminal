@@ -1,16 +1,13 @@
 
-#ifndef UT_UTILS_TEST_H
-#define UT_UTILS_TEST_H
+#ifndef UT_TABBAR_TEST_H
+#define UT_TABBAR_TEST_H
 
-#include "utils.h"
-
-#include <QObject>
 #include <gtest/gtest.h>
 
-class UT_Utils_Test : public ::testing::Test
+class UT_Tabbar_Test : public ::testing::Test
 {
 public:
-    UT_Utils_Test();
+    UT_Tabbar_Test();
 
 public:
     //这里的几个函数都会自动调用
@@ -22,5 +19,5 @@ public:
     virtual void TearDown();
 };
 
-#endif // UT_UTILS_TEST_H
+#endif // UT_TABBAR_TEST_H
 

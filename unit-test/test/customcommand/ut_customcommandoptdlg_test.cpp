@@ -2,15 +2,13 @@
 
 #include "customcommandoptdlg.h"
 
-#include <QDebug>
-#include <QObject>
-#include <QtGui>
-
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
+#include <QtGui>
+#include <QDebug>
 
 UT_CustomCommandOptDlg_Test::UT_CustomCommandOptDlg_Test()
 {
@@ -24,7 +22,7 @@ void UT_CustomCommandOptDlg_Test::TearDown()
 {
 }
 
-TEST_F(UT_CustomCommandOptDlg_Test, OmptDlgTest)
+TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
 {
     CustomCommandOptDlg cmdDlg;
     cmdDlg.show();
@@ -43,8 +41,5 @@ TEST_F(UT_CustomCommandOptDlg_Test, OmptDlgTest)
     EXPECT_NE(shortcutEdit, nullptr);
 
     shortcutEdit->setKeySequence(QKeySequence("Ctrl+Shift+K"));
-
-//    QSignalSpy spyAddBtn(cmdDlg, SIGNAL(confirmBtnClicked()));
-//    EXPECT_EQ(0, spyAddBtn.count());
 }
 

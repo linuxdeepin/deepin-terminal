@@ -1,17 +1,21 @@
 #include "ut_listview_test.h"
 
+#define private public
+#include "itemwidget.h"
 #include "listview.h"
 #include "customcommandpanel.h"
-
-#include <QString>
-#include <QDebug>
-#include <QtGui>
+#include "remotemanagementpanel.h"
+#include "utils.h"
+#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
+#include <QtGui>
+#include <QSignalSpy>
+#include <QDebug>
 
 
 UT_ListView_Test::UT_ListView_Test()
@@ -28,20 +32,15 @@ void UT_ListView_Test::TearDown()
 
 TEST_F(UT_ListView_Test, CustomCommandListViewTest)
 {
-    const int PANEL_WIDTH = 242;
-    const int PANEL_HEIGHT = 600;
     CustomCommandPanel panel;
-    panel.resize(PANEL_WIDTH, PANEL_HEIGHT);
+    panel.resize(242, 600);
     panel.show();
-    EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
-    EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
-
-    panel.refreshCmdPanel();
 
     ListView cmdListWidget(ListType_Custom, &panel);
 
     QList<QAction *> cmdActionList;
-    for(int i=0; i<=10; i++)
+    const int cmdCount = 10;
+    for(int i=0; i<=cmdCount; i++)
     {
         QString key = QString(QChar('A'+i));
         QAction *newAction = new QAction;
@@ -59,15 +58,24 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
     ASSERT_EQ(cmdActionList.isEmpty(), false);
 
     QAction *firstAction = cmdActionList.first();
-    QString cmdName = firstAction->text();
-    EXPECT_EQ(cmdName, QString("cmd_%1").arg(0));
-    qDebug() << cmdName << endl;
+    QString firstCmdName = firstAction->text();
+    EXPECT_EQ(firstCmdName, QString("cmd_%1").arg(0));
 
     QAction *lastAction = cmdActionList.last();
-    cmdName = lastAction->text();
-    EXPECT_EQ(cmdName, QString("cmd_%1").arg(10));
-    qDebug() << cmdName << endl;
+    QString lastCmdName = lastAction->text();
+    EXPECT_EQ(lastCmdName, QString("cmd_%1").arg(cmdCount));
 
+    cmdListWidget.removeItem(ItemFuncType_Item, firstCmdName);
+    EXPECT_EQ(cmdListWidget.count(), cmdActionList.size()-1);
+
+    QString updateCmdName = Utils::getRandString().toLower();
+    cmdListWidget.updateItem(ItemFuncType_Item, lastCmdName, updateCmdName);
+
+    QList<ItemWidget*> itemWidgetList = cmdListWidget.m_itemList;
+    ItemWidget *lastItemWidget = itemWidgetList.last();
+    EXPECT_EQ(lastItemWidget->m_firstText, updateCmdName);
+
+    //释放内存
     for(int i=0; i<cmdActionList.size(); i++)
     {
         QAction *action = cmdActionList.at(i);
@@ -75,4 +83,6 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
     }
 }
 
-
+TEST_F(UT_ListView_Test, RemoteManagementListViewTest)
+{
+}

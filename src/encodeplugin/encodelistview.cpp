@@ -37,7 +37,10 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     Utils::set_Object_Name(this);
     //qDebug() << "EncodeListView-objectname" << objectName();
     m_standardModel = new QStandardItemModel(this);
-    m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
+    if (parentWidget() && parentWidget()->parentWidget() && parentWidget()->parentWidget()->parentWidget())
+    {
+        m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
+    }
     // init view.
     this->setModel(m_standardModel);
     setBackgroundRole(QPalette::NoRole);
@@ -272,7 +275,10 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
     modelItem->setCheckState(Qt::Checked);
 
     /***add by ut001121 zhangmeng 20200727 修改编码配置后使其生效 修复BUG39694***/
-    m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
+    if (m_Mainwindow && m_Mainwindow->currentPage() && m_Mainwindow->currentPage()->currentTerminal())
+    {
+        m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
+    }
 }
 
 /*******************************************************************************

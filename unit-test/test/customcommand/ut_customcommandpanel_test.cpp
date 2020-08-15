@@ -3,14 +3,13 @@
 #include "customcommandpanel.h"
 
 #include <QDebug>
-#include <QObject>
-#include <QtGui>
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
+#include <QtGui>
 
 UT_CustomCommandPanel_Test::UT_CustomCommandPanel_Test()
 {
@@ -18,22 +17,15 @@ UT_CustomCommandPanel_Test::UT_CustomCommandPanel_Test()
 
 void UT_CustomCommandPanel_Test::SetUp()
 {
-    qDebug() << __FUNCTION__ << endl;
-
-    // 初始化配置
-    m_settings = Settings::instance();
-    m_settings->init();
-
-    // 初始化快捷键、自定义命令数据
+    //快捷键、自定义命令
     m_scManager = ShortcutManager::instance();
-    m_scManager->initShortcuts();
 }
 
 void UT_CustomCommandPanel_Test::TearDown()
 {
 }
 
-TEST_F(UT_CustomCommandPanel_Test, PanelTest)
+TEST_F(UT_CustomCommandPanel_Test, CustomCommandPanelTest)
 {
     QList<QAction *> cmdActionlist = m_scManager->getCustomCommandActionList();
 

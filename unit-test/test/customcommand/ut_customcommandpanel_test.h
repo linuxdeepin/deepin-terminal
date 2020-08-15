@@ -1,4 +1,7 @@
 
+#ifndef UT_CUSTOMCOMMANDPANEL_TEST_H
+#define UT_CUSTOMCOMMANDPANEL_TEST_H
+
 #include "shortcutmanager.h"
 
 #include <gtest/gtest.h>
@@ -17,9 +20,7 @@ public:
     //用于做一些清理操作
     virtual void TearDown();
 
-    //在这里编写单元测试代码
-    void initTest();
-
-    Settings *m_settings;
     ShortcutManager *m_scManager;
 };
+
+#endif // UT_CUSTOMCOMMANDPANEL_TEST_H

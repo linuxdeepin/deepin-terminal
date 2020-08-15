@@ -1,16 +1,18 @@
 
-#ifndef UT_UTILS_TEST_H
-#define UT_UTILS_TEST_H
+#ifndef UT_SERVICE_TEST_H
+#define UT_SERVICE_TEST_H
 
 #include "utils.h"
 
 #include <QObject>
 #include <gtest/gtest.h>
 
-class UT_Utils_Test : public ::testing::Test
+class Service;
+
+class UT_Service_Test : public ::testing::Test
 {
 public:
-    UT_Utils_Test();
+    UT_Service_Test();
 
 public:
     //这里的几个函数都会自动调用
@@ -20,7 +22,9 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+
+    Service *m_service = nullptr;
 };
 
-#endif // UT_UTILS_TEST_H
+#endif // UT_SERVICE_TEST_H
 
