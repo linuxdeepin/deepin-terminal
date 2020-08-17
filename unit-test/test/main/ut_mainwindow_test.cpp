@@ -24,6 +24,8 @@ UT_MainWindow_Test::UT_MainWindow_Test()
 void UT_MainWindow_Test::SetUp()
 {
     m_service = Service::instance();
+    //Service的init初始化函数只能执行一次，否则会crash
+    //其他地方直接使用m_service = Service::instance()获取单例
     m_service->init();
 
     m_normalTermProperty[QuakeMode] = false;
@@ -69,7 +71,7 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     }
     TabBar *tabBar = m_normalWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
-    //
+    //窗口默认启动就自带了1个tab，所以这里加1
     EXPECT_EQ(tabBar->count(), tabCount+1);
 
     QString firstTabId = tabBar->identifier(0);
@@ -81,7 +83,11 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     EXPECT_NE(currPage, nullptr);
     TermWidget *currTerm = currPage->currentTerminal();
     EXPECT_NE(currTerm, nullptr);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(1000);
+    //只有在开启UI测试的模式下，才能判断焦点
     EXPECT_EQ(currTerm->hasFocus(), true);
+#endif
 }
 
 TEST_F(UT_MainWindow_Test, QuakeWindowTest)
@@ -104,7 +110,7 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     }
     TabBar *tabBar = m_quakeWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
-    //
+    //窗口默认启动就自带了1个tab，所以这里加1
     EXPECT_EQ(tabBar->count(), tabCount+1);
 
     QString firstTabId = tabBar->identifier(0);

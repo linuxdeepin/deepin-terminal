@@ -54,11 +54,10 @@ TEST_F(UT_Tabbar_Test, TabbarTest)
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
 #ifdef ENABLE_UI_TEST
-        QTest::qWait(500);
+        QTest::qWait(100);
 #endif
     }
     EXPECT_EQ(tabbar.count(), tabCount);
-
 
     int firstTabIndex = 0;
     EXPECT_EQ(tabbar.identifier(firstTabIndex), tabIdList.first());
