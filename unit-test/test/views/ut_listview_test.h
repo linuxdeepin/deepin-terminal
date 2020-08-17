@@ -2,6 +2,7 @@
 #ifndef UT_LISTVIEW_TEST_H
 #define UT_LISTVIEW_TEST_H
 
+#include "../common/ut_defines.h"
 #include <gtest/gtest.h>
 
 class UT_ListView_Test : public ::testing::Test

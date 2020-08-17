@@ -22,7 +22,6 @@ void UT_EncodeListView_Test::SetUp()
 
 void UT_EncodeListView_Test::TearDown()
 {
-    delete m_normalWindow;
 }
 
 TEST_F(UT_EncodeListView_Test, EncodeListViewTest)
@@ -30,4 +29,6 @@ TEST_F(UT_EncodeListView_Test, EncodeListViewTest)
     EncodeListView encodeListView;
     encodeListView.initEncodeItems();
     EXPECT_GT(encodeListView.count(), 0);
+
+    encodeListView.show();
 }

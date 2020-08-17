@@ -1,4 +1,6 @@
 
+#include "../common/ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_CustomCommandOptDlg_Test : public ::testing::Test

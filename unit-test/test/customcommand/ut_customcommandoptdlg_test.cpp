@@ -1,5 +1,6 @@
 #include "ut_customcommandoptdlg_test.h"
 
+#include "../common/ut_defines.h"
 #include "customcommandoptdlg.h"
 
 //Google GTest 相关头文件
@@ -41,5 +42,9 @@ TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
     EXPECT_NE(shortcutEdit, nullptr);
 
     shortcutEdit->setKeySequence(QKeySequence("Ctrl+Shift+K"));
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(1000);
+#endif
 }
 

@@ -2,6 +2,7 @@
 #ifndef UT_ENCODEPANEL_TEST
 #define UT_ENCODEPANEL_TEST
 
+#include "../common/ut_defines.h"
 #include <gtest/gtest.h>
 
 class UT_EncodePanel_Test : public ::testing::Test

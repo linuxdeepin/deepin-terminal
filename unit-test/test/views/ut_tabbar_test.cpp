@@ -29,6 +29,7 @@ void UT_Tabbar_Test::TearDown()
 TEST_F(UT_Tabbar_Test, TabbarTest)
 {
     TabBar tabbar;
+    tabbar.resize(800, 50);
     tabbar.show();
     EXPECT_EQ(tabbar.isVisible(), true);
 
@@ -44,20 +45,35 @@ TEST_F(UT_Tabbar_Test, TabbarTest)
     tabbar.setTabItemMaxWidth(tabItemMaxWidth);
     EXPECT_EQ(tabbar.m_tabItemMaxWidth, tabItemMaxWidth);
 
-    QString tabIdentifier = Utils::getRandString().toLower();
-    tabbar.addTab(tabIdentifier, "tab1");
-    EXPECT_EQ(tabbar.count(), 1);
+    QList<QString> tabIdList;
+    const int tabCount = 6;
+    for(int i=0; i<tabCount; i++)
+    {
+        QString tabName = QString("tab%1").arg(i);
+        QString tabIdentifier = Utils::getRandString().toLower();
+        tabbar.addTab(tabIdentifier, tabName);
+        tabIdList.append(tabIdentifier);
+#ifdef ENABLE_UI_TEST
+        QTest::qWait(500);
+#endif
+    }
+    EXPECT_EQ(tabbar.count(), tabCount);
+
 
     int firstTabIndex = 0;
-    EXPECT_EQ(tabbar.identifier(firstTabIndex), tabIdentifier);
+    EXPECT_EQ(tabbar.identifier(firstTabIndex), tabIdList.first());
 
-    int tabIndex = tabbar.getIndexByIdentifier(tabIdentifier);
+    int tabIndex = tabbar.getIndexByIdentifier(tabIdList.first());
     EXPECT_EQ(tabIndex, firstTabIndex);
 
     QString tabText = QString("tab001");
-    tabbar.setTabText(tabIdentifier, tabText);
+    tabbar.setTabText(tabIdList.first(), tabText);
     EXPECT_EQ(tabbar.tabText(firstTabIndex), tabText);
 
-    tabbar.removeTab(tabIdentifier);
-    EXPECT_EQ(tabbar.count(), 0);
+    tabbar.removeTab(tabIdList.first());
+    EXPECT_EQ(tabbar.count(), tabCount-1);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(1000);
+#endif
 }

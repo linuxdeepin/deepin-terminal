@@ -6,6 +6,8 @@
 #include "customcommandpanel.h"
 #include "remotemanagementpanel.h"
 #include "utils.h"
+#include "shortcutmanager.h"
+#include "service.h"
 #undef private
 
 //Google GTest 相关头文件
@@ -32,11 +34,9 @@ void UT_ListView_Test::TearDown()
 
 TEST_F(UT_ListView_Test, CustomCommandListViewTest)
 {
-    CustomCommandPanel panel;
-    panel.resize(242, 600);
-    panel.show();
-
-    ListView cmdListWidget(ListType_Custom, &panel);
+    ListView cmdListWidget(ListType_Custom, nullptr);
+    cmdListWidget.resize(242, 600);
+    cmdListWidget.show();
 
     QList<QAction *> cmdActionList;
     const int cmdCount = 10;
@@ -49,11 +49,10 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
         cmdListWidget.addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
 
         cmdActionList.append(newAction);
+        ShortcutManager::instance()->addCustomCommand(*newAction);
     }
 
-    QObject::connect(&cmdListWidget, &ListView::itemClicked, &panel, &CustomCommandPanel::doCustomCommand);
-    QObject::connect(&cmdListWidget, &ListView::listItemCountChange, &panel, &CustomCommandPanel::refreshCmdSearchState);
-    QObject::connect(&cmdListWidget, &ListView::focusOut, &panel, &CustomCommandPanel::onFocusOut);
+    emit Service::instance()->refreshCommandPanel("", "");
 
     ASSERT_EQ(cmdActionList.isEmpty(), false);
 
@@ -74,6 +73,10 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
     QList<ItemWidget*> itemWidgetList = cmdListWidget.m_itemList;
     ItemWidget *lastItemWidget = itemWidgetList.last();
     EXPECT_EQ(lastItemWidget->m_firstText, updateCmdName);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(1000);
+#endif
 
     //释放内存
     for(int i=0; i<cmdActionList.size(); i++)

@@ -1,0 +1,8 @@
+
+#ifndef UT_DEFINES_TEST_H
+#define UT_DEFINES_TEST_H
+
+#define ENABLE_UI_TEST
+
+#endif // UT_DEFINES_TEST_H
+

@@ -19,6 +19,7 @@ void UT_CustomCommandPanel_Test::SetUp()
 {
     //快捷键、自定义命令
     m_scManager = ShortcutManager::instance();
+    m_scManager->createCustomCommandsFromConfig();
 }
 
 void UT_CustomCommandPanel_Test::TearDown()
@@ -43,4 +44,8 @@ TEST_F(UT_CustomCommandPanel_Test, CustomCommandPanelTest)
     EXPECT_EQ(cmdActionlist.size(), cmdListWidget->count());
 
     panel.refreshCmdSearchState();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(1000);
+#endif
 }

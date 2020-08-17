@@ -2,6 +2,7 @@
 #ifndef UT_CUSTOMCOMMANDPANEL_TEST_H
 #define UT_CUSTOMCOMMANDPANEL_TEST_H
 
+#include "../common/ut_defines.h"
 #include "shortcutmanager.h"
 
 #include <gtest/gtest.h>

@@ -2,6 +2,9 @@
 #ifndef UT_MAINWINDOW_TEST_H
 #define UT_MAINWINDOW_TEST_H
 
+#include "../common/ut_defines.h"
+#include "termproperties.h"
+
 #include <gtest/gtest.h>
 
 class Service;
@@ -27,6 +30,9 @@ public:
 
     //雷神窗口
     MainWindow *m_quakeWindow = nullptr;
+
+    TermProperties m_normalTermProperty;
+    TermProperties m_quakeTermProperty;
 };
 
 #endif // UT_MAINWINDOW_TEST_H

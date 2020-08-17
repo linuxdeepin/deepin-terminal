@@ -2,6 +2,7 @@
 #ifndef UT_TABBAR_TEST_H
 #define UT_TABBAR_TEST_H
 
+#include "../common/ut_defines.h"
 #include <gtest/gtest.h>
 
 class UT_Tabbar_Test : public ::testing::Test
