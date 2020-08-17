@@ -23,8 +23,10 @@ int main(int argc, char *argv[])
     int ret = RUN_ALL_TESTS();
 
 #ifdef ENABLE_UI_TEST
-    app.exec();
+//    app.exec();
+    QTest::qExec(&app, argc, argv);
 #endif
+
     QTEST_SET_MAIN_SOURCE_PATH
 
     return ret;
