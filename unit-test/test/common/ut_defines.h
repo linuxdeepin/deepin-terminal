@@ -27,5 +27,7 @@
 #define UT_LISTVIEW_TEST
 #define UT_TABBAR_TEST
 
+#define UT_DBUSMANAGER_TEST
+
 #endif // UT_DEFINES_TEST_H
 

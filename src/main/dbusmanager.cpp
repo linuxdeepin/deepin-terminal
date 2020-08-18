@@ -198,28 +198,6 @@ QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fo
 /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
 
 /*******************************************************************************
- 1. @函数:    callCreateRequest
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    调用DBUS创建请求
-*******************************************************************************/
-bool DBusManager::callCreateRequest()
-{
-    QDBusMessage msg =
-        QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "createRequest");
-
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::AutoDetect);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        QList<QVariant> list = response.arguments();
-        qDebug() << "call createRequest Success!" << list.takeFirst().toBool();
-        return list.takeFirst().toBool();
-    } else {
-        qDebug() << "call createRequest!" << response.errorMessage();
-        return false;
-    }
-}
-
-/*******************************************************************************
  1. @函数:    callTerminalEntry
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-05-19
