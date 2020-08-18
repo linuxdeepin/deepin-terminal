@@ -84,7 +84,7 @@ void Service::init()
     // 主进程：共享内存如果不存在即创建
     if (!m_enableShareMemory->attach()) {
         m_enableShareMemory->create(sizeof(ShareMemoryInfo));
-        qDebug() << "m_enableShareMemory create";
+        qDebug() << "m_enableShareMemory create" << m_enableShareMemory->key();
     }
     // 创建好以后，保持共享内存连接，防止释放。
     m_enableShareMemory->attach();
@@ -94,7 +94,7 @@ void Service::init()
     setMemoryEnable(false);
     // 清理共享内存
     setSubAppStartTime(0);
-    qDebug() << "All init data complete!";
+    qDebug() << "All init data complete! m_enableShareMemory is" << m_enableShareMemory->key();
 
     //监听窗口特效变化
     listenWindowEffectSwitcher();
@@ -409,7 +409,7 @@ Service::Service(QObject *parent) : QObject(parent)
     // 不同用户不能交叉使用共享内存，以及dbus, 所以共享内存的名字和登陆使用的用户有关。
     // 如sudo 用户名为root, 使用的配置也是root的配置。
     QString ShareMemoryName = QString(getenv("LOGNAME")) + "_enableCreateTerminal";
-    qDebug() << "ShareMemoryName: " << ShareMemoryName;
+    //qDebug() << "ShareMemoryName: " << ShareMemoryName;
     m_enableShareMemory = new QSharedMemory(ShareMemoryName);
     m_enableShareMemory->setObjectName("EnableShareMemory");// Add by ut001000 renfeixiang 2020-08-13
 }
@@ -428,7 +428,7 @@ bool Service::getEnable(qint64 time)
     }
     // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
     if (!m_enableShareMemory->attach()) {
-        qDebug() << "[sub app] m_enableShareMemory  can't attach";
+        qDebug() << "[sub app] m_enableShareMemory  can't attach" << m_enableShareMemory->key();
         return  false;
     }
     // sub app首次赋值m_pShareMemoryInfo
@@ -489,7 +489,7 @@ qint64 Service::getSubAppStartTime()
 void Service::updateShareMemoryCount(int count)
 {
     if (!m_enableShareMemory->isAttached()) {
-        qDebug() << "m_enableShareMemory  isAttached failed?????";
+        qDebug() << "m_enableShareMemory  isAttached failed?????" << m_enableShareMemory->key();
         return ;
     }
 
@@ -518,7 +518,7 @@ int Service::getShareMemoryCount()
 bool Service::setMemoryEnable(bool enable)
 {
     if (!m_enableShareMemory->isAttached()) {
-        qDebug() << "m_enableShareMemory  isAttached failed?????";
+        qDebug() << "m_enableShareMemory  isAttached failed?????" << m_enableShareMemory->key();
         return false;
     }
     if (enable) {
@@ -537,7 +537,7 @@ bool Service::setMemoryEnable(bool enable)
 *******************************************************************************/
 void Service::releaseShareMemory()
 {
-    qDebug() << "[sub app] m_enableShareMemory released";
+    qDebug() << "[sub app] m_enableShareMemory released" << m_enableShareMemory->key();
     m_enableShareMemory->detach();
     m_enableShareMemory->deleteLater();
 }
