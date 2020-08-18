@@ -3608,87 +3608,19 @@ TerminalScreen::TerminalScreen(QWidget *parent):TerminalDisplay (parent)
     grabGesture(Qt::PanGesture);
     grabGesture(Qt::PinchGesture);
     grabGesture(Qt::SwipeGesture);
-
-    m_SpeedTest = new QTimer(this);
-    m_SpeedTest->setSingleShot(true);
-    connect(m_SpeedTest,&QTimer::timeout, this ,[this]()
-    {
-        m_EndValue = getScrollBar()->value();
-        m_Speed = (m_EndValue - m_StartValue)* m_SpeedScale *1000;
-        qDebug()<<"m_Speed = "<<m_Speed<<"m_EndValue"<<m_EndValue;
-        m_PerReduce = m_Speed *m_ReduceTimerInterval/m_ReduceTime ;
-        m_ReduceSpeed->start(m_ReduceTimerInterval);
-
-    });
-
-    connect(getScrollBar(),&QScrollBar::valueChanged , this ,[this](int val)
-    {
-        if(m_gestureAction == GA_slide)
-        {
-            qDebug()<<"m_StartValue"<<m_StartValue;
-            m_SpeedTest->start(m_SpeedTestInterval);
-        }
-
-        //if
-        if(m_gestureAction == GA_null)
-        {
-
-             if(!m_StartReduce)
-             {
-//                 if(m_Speed == 0)
-//                 {
-//                     m_StartReduce =false;
-//                     return ;
-//                 }
-                 //m_StartReduce = true;
-                 //float perReduce = (float)m_Speed *m_ReduceTimerInterval/m_ReduceTime ;
-                 qDebug()<<"now start scrollReduce "<<m_StartValue<<m_Speed;
-                 //getScrollBar()->setValue( getScrollBar()->value() +  m_Speed);
-                // 进入减速滚动
-                 scrollReduceSpeed(m_Speed);
-                  m_StartReduce =true;
-                 //m_Speed -= perReduce;
-             }
-
-        }
-
-    });
-    m_ReduceSpeed = new QTimer(this);
-    m_ReduceSpeed->setSingleShot(true);
-
-    // 每次减速触发下次减速
-    connect(m_ReduceSpeed, &QTimer::timeout, this ,[this]()
-    {
-        if(abs(m_Speed) <= 1000)
-        {
-            m_Speed = 0;
-            m_StartReduce =false;
-            qDebug()<<"m_StartReduce has stop";
-            return ;
-        }
-
-         //qDebug()<<"m_Speed"<<m_Speed;
-
-//          //return ;
-          if(m_PerReduce != 0)
-          {
-              getScrollBar()->setValue( getScrollBar()->value() +  m_Speed / 1000);
-              scrollReduceSpeed(m_Speed);
-              qDebug()<<"m_Speed"<<m_Speed<<m_PerReduce;
-          }
-
-
-           m_Speed -= m_PerReduce;
-//           qDebug()<<"m_Speed"<<m_Speed<<perReduce;
-
-
-    });
 }
+
 TerminalScreen::~TerminalScreen()
 {
 
 }
 
+/*******************************************************************************
+ 1. @函数:    gestureEvent
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    手势事件
+*******************************************************************************/
 bool TerminalScreen::gestureEvent(QGestureEvent *event)
 {
     if (QGesture *tap = event->gesture(Qt::TapGesture))
@@ -3705,66 +3637,154 @@ bool TerminalScreen::gestureEvent(QGestureEvent *event)
     return true;
 }
 
+/*******************************************************************************
+ 1. @函数:    tapGestureTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    单指点击手势
+*******************************************************************************/
 void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
 {
-    qDebug()<<"------"<<"tapGestureTriggered" << tap ;
-    m_tapStatus = tap->state();
-    //滑动事件
-    if(m_tapStatus == Qt::GestureCanceled)
+    //qDebug()<<"------"<<"tapGestureTriggered" << tap ;
+    switch (tap->state()) {
+    case Qt::GestureStarted:
     {
-        //根据时间长短区分滑动翻滚和滑动选择
-        if(m_touchStop - m_touchBegin<300){
-            m_gestureAction = GA_slide;
-            qDebug() << "slide start" << m_touchStop - m_touchBegin;
-        } else {
-            m_gestureAction = GA_null;
-            qDebug() << "select start" << m_touchStop - m_touchBegin;
-        }
+        m_gestureAction = GA_tap;
+        m_tapBeginTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+        break;
     }
-    else if(m_tapStatus == Qt::GestureFinished){
-        m_gestureAction = GA_click;
-        qDebug() << "clicked start" << m_touchStop - m_touchBegin;
+    case Qt::GestureUpdated:
+    {
+        break;
+    }
+    case Qt::GestureCanceled:
+    {
+        //根据时间长短区分轻触滑动
+        qint64 timeSpace = QDateTime::currentDateTime().toMSecsSinceEpoch() - m_tapBeginTime;
+        if(timeSpace < TAP_MOVE_DELAY || m_slideContinue){
+            m_slideContinue = false;
+            m_gestureAction = GA_slide;
+            qDebug() << "slide start" << timeSpace;
+        } else {
+            qDebug() << "null start" << timeSpace;
+            m_gestureAction = GA_null;
+        }
+        break;
+    }
+    case Qt::GestureFinished:
+    {
+        m_gestureAction = GA_null;
+        break;
+    }
+    default:
+    {
+        Q_ASSERT(false);
+        break;
+    }
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    tapAndHoldGestureTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    单指长按手势
+*******************************************************************************/
 void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
 {
     qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
-    m_tapStatus = tapAndHold->state();
-    if(m_tapStatus == Qt::GestureFinished){
-        qDebug() << "Hold start" << m_touchStop - m_touchBegin;
+    switch (tapAndHold->state()) {
+    case Qt::GestureStarted:
+        m_gestureAction = GA_hold;
+        break;
+    case Qt::GestureUpdated:
+        Q_ASSERT(false);
+        break;
+    case Qt::GestureCanceled:
+        Q_ASSERT(false);
+        break;
+    case Qt::GestureFinished:
+        m_gestureAction = GA_null;
+        break;
+    default:
+        Q_ASSERT(false);
+        break;
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    panTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    两指平移手势
+*******************************************************************************/
 void TerminalScreen::panTriggered(QPanGesture *pan)
 {
-    qDebug()<<"------"<<"panTriggered"<<pan;
+    //qDebug()<<"------"<<"panTriggered"<<pan;
+    switch (pan->state()) {
+    case Qt::GestureStarted:
+        m_gestureAction = GA_pan;
+        break;
+    case Qt::GestureUpdated:
+        break;
+    case Qt::GestureCanceled:
+        break;
+    case Qt::GestureFinished:
+        m_gestureAction = GA_null;
+        break;
+    default:
+        Q_ASSERT(false);
+        break;
+    }
 }
 
+/*******************************************************************************
+ 1. @函数:    pinchTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    两指捏合手势
+*******************************************************************************/
 void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
 {
-    qDebug()<<"------"<<"pinchTriggered"<<pinch;
-    QPinchGesture::ChangeFlags changeFlags = pinch->changeFlags();
-    if (changeFlags & QPinchGesture::ScaleFactorChanged) {
-        m_currentStepScaleFactor = pinch->totalScaleFactor();
-    }
-    m_tapStatus = pinch->state();
-    if(m_tapStatus == Qt::GestureStarted){
+    //qDebug()<<"------"<<"pinchTriggered"<<pinch;
+    switch (pinch->state()) {
+    case Qt::GestureStarted:
+    {
         m_gestureAction = GA_pinch;
-        qDebug() << "pinch start" << m_touchStop - m_touchBegin;
-
         /**add begin by ut001121 zhangmeng 20200812 捏合手势触发时判断是否重新获取字体大小 修复BUG42424 */
         QFont font = getVTFont();
         if(static_cast<int>(m_scaleFactor) != font.pointSize()){
             m_scaleFactor = font.pointSize();
         }
         /**add end by ut001121 */
+        break;
     }
-    if (pinch->state() == Qt::GestureFinished) {
+    case Qt::GestureUpdated:
+    {
+        QPinchGesture::ChangeFlags changeFlags = pinch->changeFlags();
+        if (changeFlags & QPinchGesture::ScaleFactorChanged) {
+            m_currentStepScaleFactor = pinch->totalScaleFactor();
+        }
+        break;
+    }
+    case Qt::GestureCanceled:
+    {
+        Q_ASSERT(false);
+        break;
+    }
+    case Qt::GestureFinished:
+    {
         m_gestureAction = GA_null;
         m_scaleFactor *= m_currentStepScaleFactor;
         m_currentStepScaleFactor = 1;
+        break;
     }
+    default:
+    {
+        Q_ASSERT(false);
+        break;
+    }
+    }//switch
 
     QFont font = getVTFont();
     int size = static_cast<int>(m_scaleFactor*m_currentStepScaleFactor);
@@ -3772,24 +3792,60 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
     setVTFont(font);
 }
 
+/*******************************************************************************
+ 1. @函数:    swipeTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    三指滑动手势
+*******************************************************************************/
 void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
 {
-    qDebug()<<"------"<<"swipeTriggered"<<swipe;
-}
-
-void TerminalScreen::scrollReduceSpeed(int val)
-{
-    if(m_Speed == 0)
-    {
-        //m_StartReduce = false;
-        return;
+    //qDebug()<<"------"<<"swipeTriggered"<<swipe;
+    switch (swipe->state()) {
+    case Qt::GestureStarted:
+        m_gestureAction = GA_swipe;
+        break;
+    case Qt::GestureUpdated:
+        break;
+    case Qt::GestureCanceled:
+        m_gestureAction = GA_null;
+        break;
+    case Qt::GestureFinished:
+        Q_ASSERT(false);
+        break;
+    default:
+        Q_ASSERT(false);
+        break;
     }
-    m_ReduceSpeed->start(m_ReduceTimerInterval);
-
 }
 
+/*******************************************************************************
+ 1. @函数:    slideGesture
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    单指滑动手势(通过原生触摸屏事件进行抽象模拟)
+*******************************************************************************/
+void TerminalScreen::slideGesture(qreal diff)
+{
+    static qreal delta = 0.0;
+    int step = static_cast<int>(diff+delta);
+    delta = diff+delta - step;
+
+    getScrollBar()->setValue(getScrollBar()->value()+step);
+}
+
+/*******************************************************************************
+ 1. @函数:    event
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    事件处理
+*******************************************************************************/
 bool TerminalScreen::event(QEvent* event)
 {
+    static FlashTween tween;
+    static qreal change = 0.0;
+    static qreal duration = 0.0;
+
     if (event->type() == QEvent::Gesture)
         return gestureEvent(static_cast<QGestureEvent*>(event));
 
@@ -3797,49 +3853,117 @@ bool TerminalScreen::event(QEvent* event)
     if (event->type() == QEvent::MouseButtonRelease && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
     {
         qDebug()<< "action is over" << m_gestureAction;
+
+        if(m_gestureAction == GA_slide){
+            tween.start(0, 0, change, duration, std::bind(&TerminalScreen::slideGesture, this, std::placeholders::_1));
+        }
+
         m_gestureAction = GA_null;
     }
     if (event->type() == QEvent::MouseButtonPress && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
     {
-        m_touchStop = mouseEvent->timestamp();
-        m_lastTouchBeginPos = mouseEvent->pos();
+        m_lastMouseTime = mouseEvent->timestamp();
+        m_lastMouseYpos = mouseEvent->pos().y();
+
+        if(tween.active())
+        {
+            m_slideContinue = true;
+            tween.stop();
+        }
     }
     if (event->type() == QEvent::MouseMove && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
     {
-        m_touchStop = mouseEvent->timestamp();
-
-        const QPoint difference_pos = mouseEvent->pos() - m_lastTouchBeginPos;
-        m_lastTouchBeginPos = mouseEvent->pos();
+        const ulong diffTime = mouseEvent->timestamp() - m_lastMouseTime;
+        const int diffYpos = mouseEvent->pos().y() - m_lastMouseYpos;
+        m_lastMouseTime = mouseEvent->timestamp();
+        m_lastMouseYpos = mouseEvent->pos().y();
 
         if(m_gestureAction == GA_slide)
         {
-            qDebug()<<"slide";
-             m_StartValue =  getScrollBar()->value() ;
-            getScrollBar()->setValue( getScrollBar()->value() - difference_pos.y()/4 );
-        }
+            QFont font = getVTFont();
+            QFontMetrics fm(font);
 
-        if(m_gestureAction != GA_null)
-        {
-            selectionCleared();
+            /*2.5为调优数值, 开根号时数值越大衰减比例越大*/
+            slideGesture(-diffYpos/2.5/sqrt(fm.height()));
+
+            /*预算滑惯性动距离*/
+            m_stepSpeed = static_cast<qreal>(diffYpos/sqrt(fm.height()))/static_cast<qreal>(diffTime+0.000001);
+            change = m_stepSpeed*sqrt(abs(m_stepSpeed))*100;
+            /*预算滑惯性动时间*/
+            m_stepSpeed = static_cast<qreal>(diffYpos)/static_cast<qreal>(diffTime+0.000001);
+            duration = sqrt(abs(m_stepSpeed))*1000;
+
             return true;
         }
+        return m_gestureAction != GA_null;
     }
 
+    /** 待删除
     QTouchEvent *touchEvent = static_cast<QTouchEvent *>(event);
     switch (event->type()) {
     case QEvent::TouchBegin:
-        m_touchBegin = touchEvent->timestamp();
-        m_gestureAction = GA_touch;
-        qDebug()<<"================================================================";
-    case QEvent::TouchUpdate:
-    case QEvent::TouchEnd:
     {
         QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
-        qDebug()<< "----" << __FUNCTION__ << event->type()<<touchEvent->timestamp() << touchPoints.count();
-        break;
+        qDebug()<<"========================================================"<<touchPoints.count();
+        break;//不能return true;
     }
-    default:
-        break;
+    case QEvent::TouchUpdate:
+    case QEvent::TouchCancel:
+    case QEvent::TouchEnd:
+    {
+        //qDebug()<< "----" << event->type()<<touchEvent->timestamp();
+        break;//不能return true;
     }
+    default: break;
+    }*/
     return TerminalDisplay::event(event);
+}
+
+FlashTween::FlashTween()
+{
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this ,&FlashTween::__run);
+}
+
+/*******************************************************************************
+ 1. @函数:    start
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    开始惯性
+*******************************************************************************/
+void FlashTween::start(qreal t,qreal b,qreal c,qreal d, FunSlideInertial f)
+{
+    if(c==0.0 || d==0.0) return;
+    m_currentTime = t;
+    m_beginValue = b;
+    m_changeValue = c;
+    m_durationTime = d;
+
+    m_lastValue = 0;
+    m_fSlideGesture = f;
+    m_direction = m_changeValue<0?1:-1;
+
+    m_timer->stop();
+    m_timer->start(CELL_TIME);
+}
+
+/*******************************************************************************
+ 1. @函数:    __run
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    运行惯性
+*******************************************************************************/
+void FlashTween::__run()
+{
+    qreal tempValue = m_lastValue;
+    m_lastValue = FlashTween::sinusoidalEaseOut(m_currentTime, m_beginValue, abs(m_changeValue), m_durationTime);
+    m_fSlideGesture(m_direction*(m_lastValue-tempValue));
+    //qDebug()<<"###############################"<<m_lastValue<<temp<<m_lastValue-temp;
+
+    if(m_currentTime<m_durationTime){
+        m_currentTime+=CELL_TIME;
+    }
+    else {
+        m_timer->stop();
+    }
 }
