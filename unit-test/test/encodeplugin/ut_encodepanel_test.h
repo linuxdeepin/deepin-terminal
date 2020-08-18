@@ -1,6 +1,6 @@
 
-#ifndef UT_ENCODEPANEL_TEST
-#define UT_ENCODEPANEL_TEST
+#ifndef UT_ENCODEPANEL_TEST_H
+#define UT_ENCODEPANEL_TEST_H
 
 #include "../common/ut_defines.h"
 #include <gtest/gtest.h>
@@ -20,5 +20,5 @@ public:
     virtual void TearDown();
 };
 
-#endif // UT_ENCODEPANEL_TEST
+#endif // UT_ENCODEPANEL_TEST_H
 

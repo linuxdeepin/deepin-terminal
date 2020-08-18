@@ -20,6 +20,8 @@ void UT_ThemePanel_Test::TearDown()
 {
 }
 
+#ifdef UT_THEMEPANEL_TEST
 TEST_F(UT_ThemePanel_Test, ThemePanelTest)
 {
 }
+#endif

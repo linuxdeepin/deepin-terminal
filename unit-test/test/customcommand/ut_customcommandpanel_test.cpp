@@ -26,6 +26,7 @@ void UT_CustomCommandPanel_Test::TearDown()
 {
 }
 
+#ifdef UT_CUSTOMCOMMANDPANEL_TEST
 TEST_F(UT_CustomCommandPanel_Test, CustomCommandPanelTest)
 {
     QList<QAction *> cmdActionlist = m_scManager->getCustomCommandActionList();
@@ -49,3 +50,4 @@ TEST_F(UT_CustomCommandPanel_Test, CustomCommandPanelTest)
     QTest::qWait(1000);
 #endif
 }
+#endif

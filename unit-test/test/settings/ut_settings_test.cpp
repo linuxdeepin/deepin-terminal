@@ -26,6 +26,7 @@ void UT_Settings_Test::TearDown()
 {
 }
 
+#ifdef UT_SETTINGS_TEST
 TEST_F(UT_Settings_Test, SettingsTest)
 {
     EXPECT_EQ(qApp->organizationName(), QString("deepin"));
@@ -69,3 +70,4 @@ TEST_F(UT_Settings_Test, SettingsTest)
     bool outputScroll = m_settings->OutputtingScroll();
     EXPECT_EQ(outputScroll, currSettings.value("advanced.scroll.scroll_on_output/value").toBool());
 }
+#endif

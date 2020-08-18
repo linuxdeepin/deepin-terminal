@@ -42,6 +42,7 @@ void UT_MainWindow_Test::TearDown()
     delete m_quakeWindow;
 }
 
+#ifdef UT_MAINWINDOW_TEST
 TEST_F(UT_MainWindow_Test, NormalWindowTest)
 {
     EXPECT_EQ(MainWindow::m_MinWidth, 450);
@@ -83,6 +84,7 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     EXPECT_NE(currPage, nullptr);
     TermWidget *currTerm = currPage->currentTerminal();
     EXPECT_NE(currTerm, nullptr);
+
 #ifdef ENABLE_UI_TEST
     QTest::qWait(1000);
     //只有在开启UI测试的模式下，才能判断焦点
@@ -107,6 +109,9 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     for(int i=0; i<tabCount; i++)
     {
         m_quakeWindow->addTab(m_normalTermProperty);
+#ifdef ENABLE_UI_TEST
+        QTest::qWait(1000);
+#endif
     }
     TabBar *tabBar = m_quakeWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
@@ -119,5 +124,9 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     QString lastTabId = tabBar->identifier(tabBar->count()-1);
     m_quakeWindow->closeTab(lastTabId);
     EXPECT_EQ(tabBar->count(), tabCount-1);
-}
 
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(1000);
+#endif
+}
+#endif

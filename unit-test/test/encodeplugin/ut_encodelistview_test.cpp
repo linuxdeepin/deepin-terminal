@@ -27,6 +27,7 @@ void UT_EncodeListView_Test::TearDown()
 {
 }
 
+#ifdef UT_ENCODELISTVIEW_TEST
 TEST_F(UT_EncodeListView_Test, EncodeListViewTest)
 {
     const int LISTVIEW_WIDTH = 242;
@@ -76,3 +77,4 @@ TEST_F(UT_EncodeListView_Test, EncodeListViewTest)
     QTest::qWait(1000);
 #endif
 }
+#endif

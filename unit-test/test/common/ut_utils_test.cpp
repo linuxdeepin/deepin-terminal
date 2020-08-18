@@ -20,6 +20,7 @@ void UT_Utils_Test::TearDown()
 {
 }
 
+#ifdef UT_UTILS_TEST
 TEST_F(UT_Utils_Test, UtilsTest)
 {
     QString allGenText = "";
@@ -43,3 +44,4 @@ TEST_F(UT_Utils_Test, UtilsTest)
     const QString text = Utils::holdTextInRect(font, allGenText, textSize);
     EXPECT_LE(text.length(), allGenText.length());
 }
+#endif

@@ -23,6 +23,7 @@ void UT_CustomCommandOptDlg_Test::TearDown()
 {
 }
 
+#ifdef UT_CUSTOMCOMMANDOPTDLG_TEST
 TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
 {
     CustomCommandOptDlg cmdDlg;
@@ -48,3 +49,4 @@ TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
 #endif
 }
 
+#endif

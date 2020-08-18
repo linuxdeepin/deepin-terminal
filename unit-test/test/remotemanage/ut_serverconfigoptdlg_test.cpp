@@ -21,9 +21,10 @@ void UT_ServerConfigOptDlg_Test::TearDown()
 {
 }
 
+#ifdef UT_SERVERCONFIGOPTDLG_TEST
 TEST_F(UT_ServerConfigOptDlg_Test, ServerConfigOptDlgTest)
 {
     ServerConfigOptDlg serverCfgDlg;
     serverCfgDlg.show();
 }
-
+#endif

@@ -26,6 +26,7 @@ void UT_Tabbar_Test::TearDown()
 {
 }
 
+#ifdef UT_TABBAR_TEST
 TEST_F(UT_Tabbar_Test, TabbarTest)
 {
     TabBar tabbar;
@@ -76,3 +77,4 @@ TEST_F(UT_Tabbar_Test, TabbarTest)
     QTest::qWait(1000);
 #endif
 }
+#endif

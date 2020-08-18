@@ -2,6 +2,7 @@
 #ifndef UT_UTILS_TEST_H
 #define UT_UTILS_TEST_H
 
+#include "../common/ut_defines.h"
 #include "utils.h"
 
 #include <QObject>

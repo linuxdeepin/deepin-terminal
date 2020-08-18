@@ -27,6 +27,7 @@ void UT_RemoteManagementPanel_Test::TearDown()
 {
 }
 
+#ifdef UT_REMOTEMANAGEMENTPANEL_TEST
 TEST_F(UT_RemoteManagementPanel_Test, RemoteManagementPanelTest)
 {
     const int PANEL_WIDTH = 242;
@@ -51,3 +52,4 @@ TEST_F(UT_RemoteManagementPanel_Test, RemoteManagementPanelTest)
     QTest::qWait(1000);
 #endif
 }
+#endif

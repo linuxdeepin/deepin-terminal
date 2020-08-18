@@ -22,6 +22,8 @@ void UT_ThemeListView_Test::TearDown()
 {
 }
 
+#ifdef UT_THEMELISTVIEW_TEST
 TEST_F(UT_ThemeListView_Test, ThemeListViewTest)
 {
 }
+#endif

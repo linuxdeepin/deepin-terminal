@@ -32,6 +32,7 @@ void UT_ListView_Test::TearDown()
 {
 }
 
+#ifdef UT_LISTVIEW_TEST
 TEST_F(UT_ListView_Test, CustomCommandListViewTest)
 {
     ListView cmdListWidget(ListType_Custom, nullptr);
@@ -89,3 +90,4 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
 TEST_F(UT_ListView_Test, RemoteManagementListViewTest)
 {
 }
+#endif

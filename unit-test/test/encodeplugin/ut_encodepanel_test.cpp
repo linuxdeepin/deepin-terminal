@@ -22,8 +22,10 @@ void UT_EncodePanel_Test::TearDown()
 {
 }
 
+#ifdef UT_ENCODEPANEL_TEST
 TEST_F(UT_EncodePanel_Test, EncodePanelTest)
 {
     EncodePanel panel;
     panel.show();
 }
+#endif
