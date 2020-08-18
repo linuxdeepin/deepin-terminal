@@ -138,6 +138,7 @@ void TermWidgetPage::split(Qt::Orientation orientation)
 {
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     TermWidget *term = m_currentTerm;
+    qDebug() << "getTerminalCount()" << getTerminalCount();
     if (getTerminalCount() == 1) {
         qDebug() << "first split";
         QSplitter *firstSplit = createSubSplit(term, orientation);

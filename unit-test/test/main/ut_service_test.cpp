@@ -15,6 +15,11 @@ UT_Service_Test::UT_Service_Test()
 void UT_Service_Test::SetUp()
 {
     m_service = Service::instance();
+    if (!m_service->property("isServiceInit").toBool())
+    {
+        m_service->init();
+        m_service->setProperty("isServiceInit", true);
+    }
 }
 
 void UT_Service_Test::TearDown()

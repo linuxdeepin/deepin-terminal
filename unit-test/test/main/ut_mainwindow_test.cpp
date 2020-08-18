@@ -25,8 +25,11 @@ void UT_MainWindow_Test::SetUp()
 {
     m_service = Service::instance();
     //Service的init初始化函数只能执行一次，否则会crash
-    //其他地方直接使用m_service = Service::instance()获取单例
-    m_service->init();
+    if (!m_service->property("isServiceInit").toBool())
+    {
+        m_service->init();
+        m_service->setProperty("isServiceInit", true);
+    }
 
     m_normalTermProperty[QuakeMode] = false;
     m_normalTermProperty[SingleFlag] = true;
