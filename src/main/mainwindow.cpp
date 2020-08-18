@@ -1936,7 +1936,7 @@ void QuakeWindow::setWindowMinHeightForFont()
     int height = 0;
     //根据内部term的最小高度设置雷神终端的最小高度, (m_MinHeight-50)/2是内部term的最小高度，50是雷神窗口的标题栏高度
     //add by ut001000 renfeixiang 2020-08-07
-    height = (m_MinHeight-50)/2 + 50;
+    height = (m_MinHeight-50)/2 + 60;
     setMinimumHeight(height);
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
@@ -1961,12 +1961,12 @@ void QuakeWindow::updateMinHeight()
     }
     if(hasHorizontalSplit)
     {
-        if(minimumHeight() != m_MinHeight){
+        if(minimumHeight() != m_MinHeight+10){
             qDebug() << "set has Vertical split MinHeight";
-            setMinimumHeight(m_MinHeight);
+            setMinimumHeight(m_MinHeight+10);
         }
     }else {
-        if(minimumHeight() == m_MinHeight){
+        if(minimumHeight() == m_MinHeight+10){
             qDebug() << "set not has Vertical split MinHeight";
             setWindowMinHeightForFont();
         }
