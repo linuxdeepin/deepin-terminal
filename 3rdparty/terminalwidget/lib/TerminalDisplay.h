@@ -40,6 +40,10 @@
 #include <QTapAndHoldGesture>
 #include <QGestureEvent>
 
+#include <math.h>
+#define CELL_TIME   15
+#define TAP_MOVE_DELAY 300
+
 #define KONSOLEPRIVATE_EXPORT
 
 class QDrag;
@@ -919,42 +923,125 @@ private:
     void panTriggered(QPanGesture*);
     void pinchTriggered(QPinchGesture*);
     void swipeTriggered(QSwipeGesture*);
-    void scrollReduceSpeed(int val);
+
+    void slideGesture(qreal diff);
 
     enum GestureAction{
         GA_null,
-        GA_touch,
-        GA_click,
+        GA_tap,
         GA_slide,
-        GA_select,
-        GA_pinch
+        GA_pinch,
+        GA_hold,
+        GA_pan,
+        GA_swipe
     };
 
     qreal m_scaleFactor = 1;
     qreal m_currentStepScaleFactor = 1;
 
-    ulong m_touchBegin = 0;
-    ulong m_touchStop = 0;
+    qint64 m_tapBeginTime = 0;
+    bool m_slideContinue = false;
+
+    int m_lastMouseYpos;
+    ulong m_lastMouseTime;
+    qreal m_stepSpeed = 0;
 
     Qt::GestureState m_tapStatus = Qt::NoGesture;
     GestureAction m_gestureAction = GA_null;
-
-    //-----
-    QPoint m_lastTouchBeginPos;
-
-    QTimer  *m_SpeedTest = nullptr;
-    QTimer  *m_ReduceSpeed = nullptr;
-    int m_StartValue = 0;
-    int m_EndValue = 0;
-    int m_Speed = 0; //放大100倍传输
-    int m_PerReduce = 0;//
-
-    const int m_ReduceTime = 1000;
-    const int m_ReduceTimerInterval = 20;
-    const int m_SpeedTestInterval = 100;
-    const float m_SpeedScale = 1.0;
-    bool m_StartReduce = false;
 };
+
+// Tween算法(模拟惯性)
+typedef std::function<void (qreal)> FunSlideInertial;
+class FlashTween : public QObject
+{
+    Q_OBJECT
+public:
+    FlashTween();
+    ~FlashTween(){}
+
+public:
+    void start(qreal t,qreal b,qreal c,qreal d, FunSlideInertial fSlideGesture);
+    void stop(){m_timer->stop();}
+    bool active(){m_timer->isActive();}
+
+private slots:
+    void __run();
+
+private:
+    QTimer* m_timer = nullptr;
+    FunSlideInertial m_fSlideGesture = nullptr;
+
+    qreal m_currentTime = 0;
+    qreal m_beginValue = 0;
+    qreal m_changeValue = 0;
+    qreal m_durationTime = 0;
+
+    qreal m_direction = 1;
+    qreal m_lastValue = 0;
+
+private:
+    /**
+    链接:https://www.cnblogs.com/cloudgamer/archive/2009/01/06/Tween.html
+    效果说明
+        Linear：无缓动效果；
+        Quadratic：二次方的缓动（t^2）；
+        Cubic：三次方的缓动（t^3）；
+        Quartic：四次方的缓动（t^4）；
+        Quintic：五次方的缓动（t^5）；
+        Sinusoidal：正弦曲线的缓动（sin(t)）；
+        Exponential：指数曲线的缓动（2^t）；
+        Circular：圆形曲线的缓动（sqrt(1-t^2)）；
+        Elastic：指数衰减的正弦曲线缓动；
+        Back：超过范围的三次方缓动（(s+1)*t^3 - s*t^2）；
+        Bounce：指数衰减的反弹缓动。
+    每个效果都分三个缓动方式（方法），分别是：
+        easeIn：从0开始加速的缓动；
+        easeOut：减速到0的缓动；
+        easeInOut：前半段从0开始加速，后半段减速到0的缓动。
+        其中Linear是无缓动效果，没有以上效果。
+    四个参数分别是：
+        t: current time（当前时间）；
+        b: beginning value（初始值）；
+        c: change in value（变化量）；
+        d: duration（持续时间）。
+    */
+    static qreal quadraticEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return -c *(t/=d)*(t-2) + b;
+    }
+
+    static qreal cubicEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c*((t=t/d-1)*t*t + 1) + b;
+    }
+
+    static qreal quarticEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return -c * ((t=t/d-1)*t*t*t - 1) + b;
+    }
+
+    static qreal quinticEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c*((t=t/d-1)*t*t*t*t + 1) + b;
+    }
+
+    static qreal sinusoidalEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c * sin(t/d * (3.14/2)) + b;
+    }
+
+    static qreal circularEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c * sqrt(1 - (t=t/d-1)*t) + b;
+    }
+
+    static qreal bounceEaseOut(qreal t,qreal b,qreal c,qreal d){
+        if ((t/=d) < (1/2.75)) {
+            return c*(7.5625*t*t) + b;
+        } else if (t < (2/2.75)) {
+            return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+        } else if (t < (2.5/2.75)) {
+            return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+        } else {
+            return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+        }
+    }
+};
+
 }
 
 #endif // TERMINALDISPLAY_H
