@@ -3895,7 +3895,11 @@ bool TerminalScreen::event(QEvent* event)
 
             return true;
         }
-        return m_gestureAction != GA_null;
+
+        if(m_gestureAction != GA_null)
+        {
+            return true;
+        }
     }
 
     /** 待删除
