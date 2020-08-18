@@ -86,11 +86,5 @@ TEST(dbusmanager, converToList)
    // qDebug()<< lstArr;
 }
 
-
-TEST(dbusmanager, callCreateRequest)
-{
-   EXPECT_FALSE(DBusManager::callCreateRequest());
-}
-
 #endif
 
