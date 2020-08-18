@@ -24,7 +24,7 @@ endif ()
 
 #compile flags
 if (CMAKE_BUILD_TYPE MATCHES Debug)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wextra -fprofile-arcs -ftest-coverage")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wextra")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra -fprofile-arcs -ftest-coverage")
   # Enable Qt builtin debug mode
   add_definitions("-DQT_MESSAGELOGCONTEXT")
@@ -362,7 +362,7 @@ target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
 
 target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} terminalwidget5 gmock gmock_main gtest gtest_main)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage -O0")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage -O0")
 
 
 
@@ -380,7 +380,7 @@ add_custom_command(TARGET test
     #1.清理原先的gcov信息
     COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
     COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME}.dir --zerocounters
-    COMMAND ./${PROJECT_NAME_TEST}
+    #COMMAND ./${PROJECT_NAME_TEST}
 
     #2.收集gcov信息到.info文件中
     COMMAND lcov --directory . --capture --output-file ./coverageResult/${PROJECT_NAME}_Coverage.info
