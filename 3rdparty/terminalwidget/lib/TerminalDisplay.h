@@ -962,7 +962,7 @@ public:
 public:
     void start(qreal t,qreal b,qreal c,qreal d, FunSlideInertial fSlideGesture);
     void stop(){m_timer->stop();}
-    bool active(){m_timer->isActive();}
+    bool active(){return m_timer->isActive();}
 
 private slots:
     void __run();
@@ -1005,6 +1005,8 @@ private:
         c: change in value（变化量）；
         d: duration（持续时间）。
     */
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsequence-point"
     static qreal quadraticEaseOut(qreal t,qreal b,qreal c,qreal d){
         return -c *(t/=d)*(t-2) + b;
     }
@@ -1040,6 +1042,7 @@ private:
             return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
         }
     }
+    #pragma GCC diagnostic pop
 };
 
 }
