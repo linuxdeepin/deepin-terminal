@@ -7,6 +7,9 @@
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
+#include <utility>
+#include <memory>
+#include <QWidget>
 
 UT_Utils_Test::UT_Utils_Test()
 {
@@ -21,8 +24,50 @@ void UT_Utils_Test::TearDown()
 }
 
 #ifdef UT_UTILS_TEST
+
+TEST(UT_Utils_Test, getQssContentEmpty)
+{
+   EXPECT_TRUE(Utils::getQssContent(QString()).isEmpty());
+}
+
+TEST(UT_Utils_Test, getQssContentNoFile)
+{
+   EXPECT_TRUE(Utils::getQssContent(QString("/opt/qt.qss")).isEmpty());
+}
+
+TEST(UT_Utils_Test, getQssContentOKFile)
+{
+   system("echo '' > qts.qss");
+   EXPECT_FALSE(Utils::getQssContent(QString("./qts.qss")).isEmpty());
+}
+
+
+TEST(UT_Utils_Test, getConfigPath)
+{
+   EXPECT_FALSE(Utils::getConfigPath().isEmpty());
+}
+
+
+TEST(UT_Utils_Test, suffixList)
+{
+   EXPECT_FALSE(Utils::suffixList().isEmpty());
+}
+
+TEST(UT_Utils_Test, getRandString)
+{
+   EXPECT_FALSE(Utils::getRandString().isEmpty());
+}
+
+TEST(UT_Utils_Test, showDirDialog)
+{
+   // std::shared_ptr<QWidget> pWidget(new QWidget);
+ //   Utils::showDirDialog(pWidget.get()).isEmpty();
+}
+
+/*
 TEST_F(UT_Utils_Test, UtilsTest)
 {
+
     QString allGenText = "";
     for(int i=0; i<20; i++)
     {
@@ -44,4 +89,8 @@ TEST_F(UT_Utils_Test, UtilsTest)
     const QString text = Utils::holdTextInRect(font, allGenText, textSize);
     EXPECT_LE(text.length(), allGenText.length());
 }
+*/
+
+
+
 #endif
