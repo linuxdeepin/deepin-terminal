@@ -251,6 +251,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
 
+    // 接收触控板事件
+    connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
+
     setFocusPolicy(Qt::NoFocus);
 }
 
@@ -914,5 +917,23 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     }
 
     qDebug() << "settingValue[" << keyName << "] changed is not effective";
+}
+
+void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
+{
+    qDebug() << __FUNCTION__;
+    qDebug() << name << direction << fingers;
+    // 当前窗口被激活,且有焦点
+    if (isActiveWindow() && hasFocus()) {
+        if (name == "pinch" && fingers == 2) {
+            if (direction == "in") {
+                // 捏合 in是手指捏合的方向 向内缩小
+                zoomOut();  // zoom out 缩小
+            } else if (direction == "out") {
+                // 捏合 out是手指捏合的方向 向外放大
+                zoomIn();   // zoom in 放大
+            }
+        }
+    }
 }
 

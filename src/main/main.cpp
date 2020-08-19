@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
     TermProperties properties;
     Utils::parseCommandLine(app.arguments(), properties, true);
 
-    qDebug()<<endl<<endl<<endl;
-    qDebug()<<"new terminal start run";
+    qDebug() << endl << endl << endl;
+    qDebug() << "new terminal start run";
     DBusManager manager;
     if (!manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         // 不是雷神且正在创建
         if (!properties[QuakeMode].toBool() && !Service::instance()->getEnable(startTime)) {
             qDebug() << "[sub app] Server can't create, drop this create request! time use "
-                     << useTime.elapsed() <<"ms";
+                     << useTime.elapsed() << "ms";
             return 0;
         }
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         qDebug() << "[sub app] start to call main terminal entry! app args " << args;
         DBusManager::callTerminalEntry(args);
         qDebug() << "[sub app] task complete! sub app quit, time use "
-                 << useTime.elapsed()<<"ms";
+                 << useTime.elapsed() << "ms";
         return 0;
     }
     // 这行不要删除
@@ -108,7 +108,9 @@ int main(int argc, char *argv[])
     service->init();
     // 创建窗口
     service->Entry(app.arguments());
-    qDebug() << "First Terminal Window create complete! time use " << useTime.elapsed() <<"ms";
+    qDebug() << "First Terminal Window create complete! time use " << useTime.elapsed() << "ms";
+    // 监听触控板事件
+    manager.listenTouchPadSignal();
 
     return app.exec();
 }

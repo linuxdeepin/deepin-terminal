@@ -91,6 +91,8 @@ public:
 public slots:
     void wpasteSelection();
     void onSettingValueChanged(const QString &keyName);
+    // 处理触控板事件
+    void onTouchPadSignal(QString name, QString direction, int fingers);
 
 signals:
     void termRequestRenameTab(QString newTabName);

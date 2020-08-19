@@ -114,8 +114,10 @@ signals:
     void checkEncode(QString encode);
     // 当前终端切换
     void currentTermChange(QWidget *term);
-
+    // 窗口特效是否开启
     void onWindowEffectEnabled(bool isEnabled);
+    // 触控板事件 name 事件名称 direction 手势方向 fingers 手指个数
+    void touchPadEventSignal(QString name, QString direction, int fingers);
 
 public slots:
     void Entry(QStringList arguments);

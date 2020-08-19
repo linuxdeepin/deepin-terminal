@@ -264,7 +264,7 @@ bool DBusManager::createRequest()
              设备接入:device-added
              设备拔出:device-removed
 *******************************************************************************/
-void DBusManager::callSystemSound(const QString& sound)
+void DBusManager::callSystemSound(const QString &sound)
 {
     QDBusMessage response = dbusPlaySound(sound);
     if (response.type() == QDBusMessage::ReplyMessage) {
@@ -272,4 +272,17 @@ void DBusManager::callSystemSound(const QString& sound)
     } else {
         qDebug() << "call dbusPlaySound!" << response.errorMessage();
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    listenTouchPadSignal
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-19
+ 4. @说明:    监听触控板事件
+*******************************************************************************/
+void DBusManager::listenTouchPadSignal()
+{
+    qDebug() << __FUNCTION__;
+    // 注册监听触控板事件
+    QDBusConnection::systemBus().connect(GESTURE_SERVICE, GESTURE_PATH, GESTURE_INTERFACE, GESTURE_SIGNAL, Service::instance(), SIGNAL(touchPadEventSignal(QString, QString, int)));
 }
