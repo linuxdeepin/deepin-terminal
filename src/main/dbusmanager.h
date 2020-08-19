@@ -45,6 +45,12 @@
 #define SOUND_EFFECT_INTERFACE  "com.deepin.daemon.SoundEffect"
 #define SOUND_EFFECT_METHOD(method) QDBusMessage::createMethodCall(SOUND_EFFECT_SERVICE, SOUND_EFFECT_PATH, SOUND_EFFECT_INTERFACE, (method))
 
+// gesture 触控板手势
+#define GESTURE_SERVICE          "com.deepin.daemon.Gesture"
+#define GESTURE_PATH             "/com/deepin/daemon/Gesture"
+#define GESTURE_INTERFACE        "com.deepin.daemon.Gesture"
+#define GESTURE_SIGNAL           "Event"
+
 #define dbusPlaySound(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("PlaySound")<<(sound))
 #define dbusIsSoundEnabled(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("IsSoundEnabled")<<(sound))
 #define dbusEnableSound(sound, enable) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("EnableSound")<<(sound)<<(enable))
@@ -88,7 +94,10 @@ public:
 
 
     /** add by ut001121 zhangmeng 20200720 for sp3 keyboard interaction*/
-    static void callSystemSound(const QString& sound = "dialog-error");
+    static void callSystemSound(const QString &sound = "dialog-error");
+
+    // 监听触控板事件
+    void listenTouchPadSignal();
 
 public slots:
     void entry(QStringList args);
