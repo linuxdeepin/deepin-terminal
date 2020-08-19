@@ -1,4 +1,6 @@
 
+#ifndef UT_CUSTOMCOMMANDOPTDLG_TEST_H
+#define UT_CUSTOMCOMMANDOPTDLG_TEST_H
 #include "../common/ut_defines.h"
 
 #include <gtest/gtest.h>
@@ -17,3 +19,4 @@ public:
     //用于做一些清理操作
     virtual void TearDown();
 };
+#endif//UT_CUSTOMCOMMANDOPTDLG_TEST_H

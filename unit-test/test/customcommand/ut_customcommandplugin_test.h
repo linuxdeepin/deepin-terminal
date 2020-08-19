@@ -1,7 +1,12 @@
+
+#ifndef UT_CUSTOMCOMMANDPLUGIN_TEST_H
+#define UT_CUSTOMCOMMANDPLUGIN_TEST_H
+
 #include "../common/ut_defines.h"
 
 #include <gtest/gtest.h>
 
+class CustomCommandPlugin;
 class UT_Customcommandplugin_Test : public ::testing::Test
 {
 public:
@@ -15,4 +20,8 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+public:
+    CustomCommandPlugin* m_pccp;
 };
+
+#endif//UT_CUSTOMCOMMANDPLUGIN_TEST_H
