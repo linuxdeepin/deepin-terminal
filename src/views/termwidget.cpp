@@ -919,6 +919,17 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     qDebug() << "settingValue[" << keyName << "] changed is not effective";
 }
 
+/*******************************************************************************
+ 1. @函数:    onTouchPadSignal
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-19
+ 4. @说明:    处理触控板事件
+ 1) 参数 name      : 触控板事件类型(手势或者触摸类型) pinch 捏 tap 敲 swipe 右键单击 单键
+ 2) 参数 direction : 手势方向 触控板上 up 触控板下 down 左 left 右 right 无 none 向内 in 向外 out
+                    触控屏上 top 触摸屏下 bot
+ 3) 参数 fingers   : 手指数量 (1,2,3,4,5)
+ 注意libinput接收到触摸板事件后将接收到的数据通过Event广播出去
+*******************************************************************************/
 void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 {
     qDebug() << __FUNCTION__;
