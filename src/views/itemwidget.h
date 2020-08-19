@@ -52,7 +52,7 @@
 
 DWIDGET_USE_NAMESPACE
 
-#define TAP_TIME_SPACE_T 80
+#define TAP_TIME_SPACE_T 200
 
 // 功能键类型
 enum ItemFuncType {
