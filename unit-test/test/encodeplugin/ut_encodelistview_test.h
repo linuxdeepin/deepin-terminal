@@ -3,6 +3,7 @@
 #define UT_ENCODELISTVIEW_TEST_H
 
 #include "../common/ut_defines.h"
+#include "termproperties.h"
 #include <gtest/gtest.h>
 
 class MainWindow;
@@ -19,6 +20,12 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+
+public:
+    //普通窗口
+    MainWindow *m_normalWindow = nullptr;
+
+    TermProperties m_normalTermProperty;
 };
 
 #endif // UT_ENCODELISTVIEW_TEST_H
