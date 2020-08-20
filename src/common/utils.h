@@ -61,11 +61,21 @@
 #define ICONSIZE_36 36
 #define ICONSIZE_20 20
 
+//Viewport Margins
+#define MARGINS_TOP 10
+#define MARGINS_BOTTOM 10
+#define MARGINS_LEFT 10
+#define MARGINS_RIGHT 10
+
 // MainWindow
 #define WINDOW_DEFAULT_WIDTH 1000   //终端窗口默认宽度
 #define WINDOW_DEFAULT_HEIGHT 600   //终端窗口默认高度
 #define WINDOW_DEFAULT_SIZE QSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT)      //终端窗口默认尺寸
 #define ICON_EXIT_FULL_SIZE QSize(ICONSIZE_36, ICONSIZE_36)                         //退出全屏按钮尺寸
+
+//Encode Plugin
+#define ENCODE_ITEM_WIDTH 220
+#define ENCODE_ITEM_HEIGHT 60
 
 /*******************************************************************************
  1. @类名:    Utils

@@ -59,11 +59,10 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //add by ameng 设置属性，修复BUG#20074
-    setFixedWidth(m_ContentWidth + 20);
-    setItemSize(QSize(m_ContentWidth, m_ContentHeight + m_Space));
+    setItemSize(QSize(ENCODE_ITEM_WIDTH, ENCODE_ITEM_HEIGHT));
 
     /***add by ut001121 zhangmeng 20200628 设置视图边距,留出空间给滚动条显示 修复BUG35378***/
-    setViewportMargins(10, 10, 10, 10);
+    setViewportMargins(MARGINS_LEFT, MARGINS_TOP, MARGINS_RIGHT, MARGINS_BOTTOM);
 
     /***add by ut001121 zhangmeng 20200521 设置非编辑模式 修复BUG27443***/
     setEditTriggers(QAbstractItemView::NoEditTriggers);

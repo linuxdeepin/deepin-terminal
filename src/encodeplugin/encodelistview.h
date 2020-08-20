@@ -78,8 +78,9 @@ private:
 
     QStandardItemModel *m_standardModel = nullptr;
     const int m_Space = 10;
-    const int m_ContentWidth = 220;
-    const int m_ContentHeight = 50;
+    const int m_ContentWidth = 240;
+    const int m_ItemWidth = 220;
+    const int m_ItemHeight = 60;
     const int m_ListLenth = 1500;
 
     Qt::FocusReason m_foucusReason = INVALID_FOCUS_REASON;
