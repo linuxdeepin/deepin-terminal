@@ -183,8 +183,6 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
     // 1.显示弹窗
     ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
-        // 弹窗隐藏或消失
-        Service::instance()->setIsDialogShow(window(), false);
         // 3. 对弹窗操作进行分析
         // 判断是否删除
         if (result == ServerConfigOptDlg::Accepted) {
@@ -223,6 +221,9 @@ void ServerConfigList::handleModifyServerConfig(ServerConfig *curItemServer, QMo
             // 取消后及时将弹窗删除
             ServerConfigManager::instance()->removeDialog(dlg);
         }
+
+        // 弹窗隐藏或消失
+        Service::instance()->setIsDialogShow(window(), false);
 
     });
     // 2. 记录弹窗
