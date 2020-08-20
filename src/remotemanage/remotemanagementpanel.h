@@ -73,7 +73,6 @@ private:
     void initUI();
 
 private:
-//    ServerConfigList *m_listWidget = nullptr;
     ListView *m_listWidget = nullptr;
 };
 

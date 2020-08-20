@@ -35,7 +35,6 @@
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "ServerConfigGroupPanel-objectname" << objectName();
     initUI();
 }
 
@@ -53,10 +52,8 @@ void ServerConfigGroupPanel::initUI()
     m_rebackButton = new IconButton(this);
     m_searchEdit = new DSearchEdit(this);
     m_searchEdit->setObjectName("RemoteGroupSearchEdit");//Add by ut001000 renfeixiang 2020-08-14
-//    qDebug() << "RemoteGroupsearchEdit-objectname" << m_searchEdit->objectName();
     m_listWidget = new ListView(ListType_Remote, this);
     m_listWidget->setObjectName("RemoteGroupListWidget");//Add by ut001000 renfeixiang 2020-08-14
-//    qDebug() << "RemoteGrouplistWidget-objectname" << m_listWidget->objectName();
 
     m_rebackButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_rebackButton->setFixedSize(QSize(ICONSIZE_36, ICONSIZE_36));
@@ -95,7 +92,6 @@ void ServerConfigGroupPanel::initUI()
             return;
         }
         if (type == Qt::TabFocusReason) {
-//            m_rebackButton->setFocus();
             qDebug() << "group focus out!";
             QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
             QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
@@ -140,8 +136,6 @@ void ServerConfigGroupPanel::initUI()
             }
         }
     });
-    // 设置焦点顺序
-//    setTabOrder(m_rebackButton, m_searchEdit);
 }
 
 /*******************************************************************************
@@ -155,7 +149,6 @@ void ServerConfigGroupPanel::refreshData(const QString &groupName)
     qDebug() << __FUNCTION__;
     m_groupName = groupName;
     m_listWidget->clearData();
-//    m_listWidget->refreshDataByGroup(groupName, true);
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Group, m_listWidget, "", groupName);
     refreshSearchState();
 }

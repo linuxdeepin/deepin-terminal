@@ -30,7 +30,6 @@ ServerConfigManager *ServerConfigManager::m_instance = nullptr;
 ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "ServerConfigManager-objectname" << objectName();
 }
 /*******************************************************************************
  1. @函数:    settServerConfig
@@ -332,8 +331,6 @@ void ServerConfigManager::refreshServerList(PanelType type, ListView *listview, 
     case PanelType_Search:
         fillSearchPanel(listview, key, group);
         break;
-    default:
-        break;
     }
 }
 
@@ -438,8 +435,6 @@ void ServerConfigManager::closeAllDialog(QString key)
             item->reject();
         }
     }
-    // removeDialog会做此操作
-    // m_serverConfigDialogMap.remove(key);
 }
 
 /*******************************************************************************

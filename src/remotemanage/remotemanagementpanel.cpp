@@ -27,7 +27,6 @@
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "RemoteManagementPanel-objectname" << objectName();
     initUI();
 }
 
@@ -172,8 +171,6 @@ void RemoteManagementPanel::onItemClicked(const QString &key)
 *******************************************************************************/
 void RemoteManagementPanel::showCurSearchResult()
 {
-//    // 清除当前焦点
-//    clearFocus();
     QString strTxt = m_searchEdit->text();
     if (strTxt.isEmpty()) {
         return;
@@ -226,13 +223,10 @@ void RemoteManagementPanel::initUI()
 
     m_searchEdit = new DSearchEdit(this);
     m_searchEdit->setObjectName("RemoteSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
-//    qDebug() << "RemotesearchEdit-objectname" << m_searchEdit->objectName();
     m_listWidget = new ListView(ListType_Remote, this);
     m_listWidget->setObjectName("RemoteManageListWidget");//Add by ut001000 renfeixiang 2020-08-14
-//    qDebug() << "RemotelistWidget-objectname" << m_listWidget->objectName();
     m_pushButton = new DPushButton(this);
     m_pushButton->setObjectName("RemoteAddPushButton");//Add by ut001000 renfeixiang 2020-08-13
-//    qDebug() << "RemotepushButton-objectname" << m_pushButton->objectName();
 
     m_searchEdit->setFixedHeight(COMMONHEIGHT);
     m_searchEdit->setClearButtonEnabled(true);
@@ -269,7 +263,6 @@ void RemoteManagementPanel::initUI()
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
-//    connect(m_listWidget, &ServerConfigList::itemClicked, this, &RemoteManagementPanel::listItemClicked);
     connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementPanel::onItemClicked);
     connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementPanel::showGroupPanel);
     connect(m_listWidget, &ListView::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);

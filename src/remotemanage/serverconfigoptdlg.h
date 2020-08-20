@@ -111,7 +111,6 @@ private:
     DSpinBox *m_port = nullptr;
     DLineEdit *m_userName = nullptr;
     DPasswordEdit *m_password = nullptr;
-//    DFileChooserEdit *m_privateKey = nullptr;
     DLineEdit *m_privateKey = nullptr;
     DSuggestButton *m_fileDialog = nullptr;
     DLineEdit *m_group = nullptr;
@@ -120,7 +119,6 @@ private:
     DComboBox *m_coding = nullptr;
     DComboBox *m_backSapceKey = nullptr;
     DComboBox *m_deleteKey = nullptr;
-//    DCommandLinkButton *m_advancedOptions = nullptr;
     DPushButton *m_advancedOptions = nullptr;
     TermCommandLinkButton *m_delServer = nullptr;
     bool m_bDelOpt = false;

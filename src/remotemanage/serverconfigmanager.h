@@ -104,7 +104,6 @@ private:
 
 private:
     static ServerConfigManager *m_instance;
-    // QList<ServerConfig *> m_serverConfigs;
     // 配置文件数据
     QMap<QString, QList<ServerConfig *>> m_serverConfigs;
     // 展示的弹窗的键值及弹窗的指针 <服务器名，同类服务器弹窗列表> 弹窗只需存储修改弹窗

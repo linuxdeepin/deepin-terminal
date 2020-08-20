@@ -56,7 +56,6 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_port(new DSpinBox),
       m_userName(new DLineEdit),
       m_password(new DPasswordEdit),
-//      m_privateKey(new DFileChooserEdit),
       m_privateKey(new DLineEdit),
       m_fileDialog(new DSuggestButton),
       m_group(new DLineEdit),
@@ -71,7 +70,6 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
-    //qDebug() << "ServerConfigOptDlg-objectname" << objectName();
     m_titleLabel->setObjectName("RemoteTitleLabel");
     m_iconLabel->setObjectName("RemoteIconLabel");
     m_closeButton->setObjectName("RemoteCloseButton");
@@ -89,15 +87,6 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     m_backSapceKey->setObjectName("RemoteBackSapceKeyComboBox");
     m_deleteKey->setObjectName("RemoteDeleteKeyComboBox");
     m_advancedOptions->setObjectName("RemoteAdvancedOptionsQPushButton");
-
-//    qDebug() << "ServertitleLabel ServericonLabel ServercloseButton ServerserverName Serveraddress"
-//             "Serverport ServeruserName Serverpassword ServerprivateKey ServerfileDialog Servergroup"
-//             "Serverpath Servercommand Servercoding ServerbackSapceKey ServerdeleteKey ServeradvancedOptions-objectname"
-//             << m_titleLabel->objectName() << m_iconLabel->objectName() << m_closeButton->objectName() << m_serverName->objectName()
-//             << m_address->objectName() << m_port->objectName() << m_userName->objectName() << m_password->objectName()
-//             << m_privateKey->objectName() << m_fileDialog->objectName() << m_group->objectName() << m_path->objectName()
-//             << m_command->objectName() << m_coding->objectName() << m_backSapceKey->objectName() << m_advancedOptions->objectName();
-
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     setWindowModality(Qt::WindowModal);
     setFixedWidth(459);
@@ -123,7 +112,6 @@ void ServerConfigOptDlg::initUI()
     m_iconLabel->setFixedSize(ICONSIZE_50, ICONSIZE_50);
     m_titleLabel->setText(tr("Add Server"));
     m_titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    //m_titleLabel->setFixedWidth(85);
 
     m_closeButton->setFocusPolicy(Qt::TabFocus);
     m_closeButton->setFixedWidth(ICONSIZE_50);
@@ -133,7 +121,6 @@ void ServerConfigOptDlg::initUI()
     DFontSizeManager::instance()->bind(m_titleLabel, DFontSizeManager::T5, QFont::DemiBold);
     // 字色
     DPalette palette = m_titleLabel->palette();
-    //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
     QColor color;
     if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
         color = QColor::fromRgb(192, 198, 212, 255);

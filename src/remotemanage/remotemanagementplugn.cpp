@@ -31,7 +31,6 @@
 RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "RemoteManagementPlugin-objectname" << objectName();
     m_pluginName = "Remote Management";
 }
 
@@ -124,7 +123,6 @@ void RemoteManagementPlugin::initRemoteManagementTopPanel()
     qDebug() << __FUNCTION__;
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
     m_remoteManagementTopPanel->setObjectName("RemoteManagementTopPanel");//Add by ut001000 renfeixiang 2020-08-14
-//    qDebug() << "RemoteremoteManagementTopPanel-objectname" << m_remoteManagementTopPanel->objectName();
     connect(m_remoteManagementTopPanel,
             &RemoteManagementTopPanel::doConnectServer,
             this,
