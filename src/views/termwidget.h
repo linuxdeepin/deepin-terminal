@@ -106,7 +106,7 @@ private:
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     void addMenuActions(const QPoint &pos);
 
-    TermWidgetPage *m_Page = nullptr;
+    TermWidgetPage *m_page = nullptr;
     TermProperties m_properties;
 
     DMenu *m_menu = nullptr;
@@ -119,7 +119,7 @@ private:
     // 当前编码
     QString m_encode = "UTF-8";
     // 远程编码
-    QString m_RemoteEncode = "UTF-8";
+    QString m_remoteEncode = "UTF-8";
     // 当前终端退格信号
     EraseMode m_backspaceMode = EraseMode_Ascii_Delete;
     // 当前终端删除信号

@@ -54,7 +54,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
     //qDebug() << " TermWidgetparent " << parentWidget();
-    m_Page = static_cast<TermWidgetPage *>(parentWidget());
+    m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     setHistorySize(5000);
@@ -273,7 +273,7 @@ TermWidget::~TermWidget()
 TermWidgetPage *TermWidget::parentPage()
 {
     //qDebug() << "parentPage" << parentWidget();
-    return  m_Page;
+    return  m_page;
 }
 
 /*******************************************************************************
@@ -487,7 +487,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
 *******************************************************************************/
 QString TermWidget::RemoteEncode() const
 {
-    return m_RemoteEncode;
+    return m_remoteEncode;
 }
 
 /*******************************************************************************
@@ -498,7 +498,7 @@ QString TermWidget::RemoteEncode() const
 *******************************************************************************/
 void TermWidget::setRemoteEncode(const QString &RemoteEncode)
 {
-    m_RemoteEncode = RemoteEncode;
+    m_remoteEncode = RemoteEncode;
 }
 
 /*******************************************************************************
@@ -864,9 +864,9 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     if (keyName == "basic.interface.font") {
         setTermFont(Settings::instance()->fontName());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 Begin***************/
-        m_Page->parentMainWindow()->setWindowMinHeightForFont();
+        m_page->parentMainWindow()->setWindowMinHeightForFont();
         /******** Add by ut001000 renfeixiang 2020-08-07:字体改变时改变大小，bug#41436***************/
-        m_Page->parentMainWindow()->updateMinHeight();
+        m_page->parentMainWindow()->updateMinHeight();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 End***************/
         return;
     }
@@ -874,9 +874,9 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     if (keyName == "basic.interface.font_size") {
         setTermFontSize(Settings::instance()->fontSize());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 Begin***************/
-        m_Page->parentMainWindow()->setWindowMinHeightForFont();
+        m_page->parentMainWindow()->setWindowMinHeightForFont();
         /******** Add by ut001000 renfeixiang 2020-08-07:字体大小改变时改变大小，bug#41436***************/
-        m_Page->parentMainWindow()->updateMinHeight();
+        m_page->parentMainWindow()->updateMinHeight();
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 End***************/
         return;
     }

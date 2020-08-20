@@ -54,7 +54,6 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     //qDebug() << "w->parent()" << w->parent();
 
     // Init find bar.
-    m_findBar->move(this->x() - 100, this->y() - 100);
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
     connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
     connect(m_findBar, &PageSearchBar::keywordChanged, this, [ = ](QString keyword) {
@@ -482,6 +481,7 @@ QRect TermWidgetPage::GetRect(TermWidget *term)
  2. @作者:     ut000439 王培利
  3. @日期:     2020-01-08
  4. @说明:     获取窗口上下左右键需要判断的点位信息
+              只需要获取偏离1个像素信息，即可
 *******************************************************************************/
 QPoint TermWidgetPage::GetComparePoint(TermWidget *term, Qt::Edge dir)
 {
@@ -779,8 +779,8 @@ void TermWidgetPage::showSearchBar(int state)
 {
     if (SearchBar_Show == state) {
         /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 Begin***************/
-        if (m_MainWindow->isQuakeMode() && m_MainWindow->height() < 220) {
-            m_MainWindow->resize(m_MainWindow->width(), 220); //首先设置雷神界面的大小
+        if (m_MainWindow->isQuakeMode() && m_MainWindow->height() < LISTMINHEIGHT) {
+            m_MainWindow->resize(m_MainWindow->width(), LISTMINHEIGHT); //首先设置雷神界面的大小
             m_MainWindow->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);//重新打开查询界面，当前流程结束
             return;
         }
@@ -788,7 +788,7 @@ void TermWidgetPage::showSearchBar(int state)
         m_findBar->raise();
         m_findBar->clearHoldContent();
         m_findBar->show();
-        m_findBar->move(width() - 382, 0);
+        m_findBar->move(width() - SEARCHBAR_RIGHT_MARGIN, 0);
         qDebug() << __FUNCTION__ << "show search bar!";
         QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });
     } else if (SearchBar_Hide == state) {
@@ -1055,5 +1055,5 @@ void TermWidgetPage::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event)
     //qDebug() << "resizeEvent" << x() << y();
-    this->m_findBar->move(width() - 382, 0);
+    this->m_findBar->move(width() - SEARCHBAR_RIGHT_MARGIN, 0);
 }
