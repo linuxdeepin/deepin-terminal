@@ -44,7 +44,6 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
-    //qDebug() << "ItemWidget-objectname" << objectName();
     m_mainLayout->setObjectName("ItemWidgetMainLayout");
     m_iconLayout->setObjectName("ItemWidgetIconLayout");
     m_textLayout->setObjectName("ItemWidgetTextLayout");
@@ -52,11 +51,6 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
     m_iconButton->setObjectName("ItemWidgetIconButton");
     m_firstline->setObjectName("ItemWidgetFirstLineLabel");
     m_secondline->setObjectName("ItemWidgetSecondLineLabel");
-
-//    qDebug() << "ItemWidgetmainLayout ItemWidgeticonLayout ItemWidgettextLayout ItemWidgetfuncLayout ItemWidgeticonButton"
-//             "ItemWidgetfirstline ItemWidgetsecondline"
-//             << m_mainLayout->objectName() << m_iconLayout->objectName() << m_textLayout->objectName() << m_funcLayout->objectName()
-//             << m_iconButton->objectName() << m_firstline->objectName() << m_secondline->objectName();
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     // 界面初始化
     initUI();
@@ -145,13 +139,8 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
 *******************************************************************************/
 bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
 {
-    if (m_functType == type && key == m_firstText) {
-        // 相等
-        return true;
-    } else {
-        // 不相等
-        return false;
-    }
+    // fistText是唯一值
+    return (m_functType == type && key == m_firstText);
 }
 
 /*******************************************************************************

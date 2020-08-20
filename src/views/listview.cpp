@@ -315,9 +315,6 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
     case ListType_Custom:
         onCustomItemModify(key, isFocusOn);
         break;
-    default:
-        qDebug() << "";
-        break;
     }
 
 }

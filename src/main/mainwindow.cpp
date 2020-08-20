@@ -1490,19 +1490,27 @@ void MainWindow::onCreateNewWindow(QString workingDir)
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::KeyPress) {
+        // 当前的终端进行操作
         TermWidget *term = currentPage()->currentTerminal();
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        // 键盘事件 按下回车
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
+            // 判断是否进行下载输入完要下载的文件后按下回车且当前窗口是激活窗口
             if (term->enterSzCommand() && term->isActiveWindow()) {
                 //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+                // 先用sz获取输入的文件
                 pressEnterKey("\nsz \"${files[@]}\"");
                 //-------------------------------------
+                // 执行下载操作
                 executeDownloadFile();
+                // 下载完成,将是否进行下载的标志位设置为false
                 term->setEnterSzCommand(false);
             }
         }
         if ((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_C || keyEvent->key() == Qt::Key_D)) {
+            // 当点击ctrl+c或者ctrl+d时判断,当前窗口是否正在等待下载输入
             if (term->enterSzCommand()) {
+                // 若是则将是否进行下载的标志位设置为false
                 term->setEnterSzCommand(false);
             }
         }
@@ -1995,15 +2003,21 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::executeDownloadFile()
 {
     //--modified by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+    // 前一条命令执行
     currentPage()->sendTextToCurrentTerm("\r\n");
+    // 执行玩等待1s直到文件传输结束
     sleep(1000);
+    // ctrl+@ 进入当前机器
     pressCtrlAt();
+    // cd 到当前机器的制定文件夹下
     sleep(100);
     QString strCd = "cd " + downloadFilePath;
     currentPage()->sendTextToCurrentTerm(strCd);
-    //sleep(100);
+    // 将文件下载下来
     QString strRz = "\r\nrz -be";
+    // 执行下载命令
     currentPage()->sendTextToCurrentTerm(strRz);
+    // 将下载路径置空
     downloadFilePath = "";
     //-------------------------------------------
 }
@@ -2591,12 +2605,12 @@ void QuakeWindow::updateMinHeight()
         }
     }
     if (hasHorizontalSplit) {
-        if (minimumHeight() != m_MinHeight+10) {
+        if (minimumHeight() != m_MinHeight + 10) {
             qDebug() << "set has Vertical split MinHeight";
-            setMinimumHeight(m_MinHeight+10);
+            setMinimumHeight(m_MinHeight + 10);
         }
     } else {
-        if (minimumHeight() == m_MinHeight+10) {
+        if (minimumHeight() == m_MinHeight + 10) {
             qDebug() << "set not has Vertical split MinHeight";
             setWindowMinHeightForFont();
         }
