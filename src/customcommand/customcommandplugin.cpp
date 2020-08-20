@@ -140,15 +140,4 @@ void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
     emit doHide();
 }
 
-/*******************************************************************************
- 1. @函数:    hidePlugn
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-08-11
- 4. @说明:    不再使用，暂保留
-*******************************************************************************/
-void CustomCommandPlugin::hidePlugn()
-{
-    if (m_customCommandTopPanel && m_customCommandTopPanel->isVisible()) {
-        m_customCommandTopPanel->hide();
-    }
-}
+

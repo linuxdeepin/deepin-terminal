@@ -251,19 +251,6 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 }
 
 /*******************************************************************************
- 1. @函数:    hidePlugn
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    远程管理隐藏面板，暂时不使用，待处理
-*******************************************************************************/
-void RemoteManagementPlugin::hidePlugn()
-{
-    if (m_remoteManagementTopPanel && m_remoteManagementTopPanel->isVisible()) {
-        m_remoteManagementTopPanel->hide();
-    }
-}
-
-/*******************************************************************************
  1. @函数:    setRemoteEncode
  2. @作者:    ut000610 daizhengwen
  3. @日期:    2020-08-11
