@@ -61,6 +61,12 @@
 #define ICONSIZE_36 36
 #define ICONSIZE_20 20
 
+// MainWindow
+#define WINDOW_DEFAULT_WIDTH 1000   //终端窗口默认宽度
+#define WINDOW_DEFAULT_HEIGHT 600   //终端窗口默认高度
+#define WINDOW_DEFAULT_SIZE QSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT)      //终端窗口默认尺寸
+#define ICON_EXIT_FULL_SIZE QSize(ICONSIZE_36, ICONSIZE_36)                         //退出全屏按钮尺寸
+
 /*******************************************************************************
  1. @类名:    Utils
  2. @作者:    ut000439 wangpeili

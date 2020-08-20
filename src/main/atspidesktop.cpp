@@ -79,7 +79,7 @@ void AtspiDesktop::on_event(AtspiEvent *event, void *data)
 void AtspiDesktop::run()
 {
     // 设置accessibility参数
-    char cmdGsettings[128] = "gsettings set org.gnome.desktop.interface toolkit-accessibility true";
+    char cmdGsettings[] = "gsettings set org.gnome.desktop.interface toolkit-accessibility true";
     if (0 == system(cmdGsettings)) {
         qDebug() << "exec:[gsettings set org.gnome.desktop.interface toolkit-accessibility true]success";
     } else {
@@ -93,9 +93,9 @@ void AtspiDesktop::run()
         qDebug() << "atspi_init failed : " << result;
         return;
     }
-    AtspiEventListener *listener = atspi_event_listener_new(on_event, NULL, NULL);
+    AtspiEventListener *listener = atspi_event_listener_new(on_event, nullptr, nullptr);
     if (listener) {
-        qDebug() << "object:state-changed:focused" << atspi_event_listener_register(listener, "object:state-changed:focused", NULL);
+        qDebug() << "object:state-changed:focused" << atspi_event_listener_register(listener, "object:state-changed:focused", nullptr);
         m_isLoop = true;
         // 主循环
         atspi_event_main();

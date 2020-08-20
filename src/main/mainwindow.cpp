@@ -232,8 +232,8 @@ void MainWindow::initOptionButton()
     m_exitFullScreen->setObjectName("MainWindowExitFullScreenDToolButton");//Add by ut001000 renfeixiang 2020-08-13
     m_exitFullScreen->setCheckable(false);
     m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
-    m_exitFullScreen->setIconSize(QSize(36, 36));
-    m_exitFullScreen->setFixedSize(QSize(36, 36));
+    m_exitFullScreen->setIconSize(ICON_EXIT_FULL_SIZE);
+    m_exitFullScreen->setFixedSize(ICON_EXIT_FULL_SIZE);
     titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
     m_exitFullScreen->setVisible(false);
     m_exitFullScreen->setFocusPolicy(Qt::TabFocus);
@@ -339,7 +339,7 @@ MainWindow::~MainWindow()
 *******************************************************************************/
 void MainWindow::setDefaultLocation()
 {
-    resize(QSize(1000, 600));
+    resize(WINDOW_DEFAULT_SIZE);
     singleFlagMove();
 }
 /*******************************************************************************
@@ -669,7 +669,7 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     QString txt;
     Utils::CloseType temtype = type;
     // 关闭窗口的时候，如果只有一个tab,提示的内容要为终端．
-    if (type == Utils::CloseType_Window && m_tabbar->count() == 1) {
+    if (Utils::CloseType_Window == type && m_tabbar->count() == 1) {
         temtype = Utils::CloseType_Terminal;
     }
     Utils::getExitDialogText(temtype, title, txt, count);
@@ -1589,8 +1589,8 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
         if ("window_normal" == state) {
             m_IfUseLastSize = true;
             /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
-            m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, 1000);
-            m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, 600);
+            m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, WINDOW_DEFAULT_WIDTH);
+            m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, WINDOW_DEFAULT_HEIGHT);
             /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
             qDebug() << "change value change value change value";
         } else {
@@ -1983,7 +1983,7 @@ void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
 *******************************************************************************/
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-
+    Q_UNUSED(event);
 }
 
 /*******************************************************************************
@@ -2227,8 +2227,8 @@ void NormalWindow::initWindowAttribute()
         qDebug() << "load window_height: " << saveHeight;
         // 如果配置文件没有数据
         if (saveWidth == 0 || saveHeight == 0) {
-            saveWidth = 1000;
-            saveHeight = 600;
+            saveWidth = WINDOW_DEFAULT_WIDTH;
+            saveHeight = WINDOW_DEFAULT_HEIGHT;
         }
         resize(QSize(saveWidth, saveHeight));
         singleFlagMove();
