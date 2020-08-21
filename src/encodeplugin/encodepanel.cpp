@@ -34,9 +34,7 @@ EncodePanel::EncodePanel(QWidget *parent)
 {
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
-    //qDebug() << "EncodePanel-objectname" << objectName();
     m_encodeView->setObjectName("EncodeListView");
-//    qDebug() << "EncodeencodeView-objectname" << m_encodeView->objectName();
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);

@@ -35,7 +35,6 @@ WarnningDlg::WarnningDlg(QWidget *parent)
     : DAbstractDialog(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "WarnningDlg-objectname" << objectName();
     initUI();
     initContentLayout();
     initConnections();

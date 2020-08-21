@@ -353,7 +353,6 @@ void Service::showShortcutConflictMsgbox(QString txt)
     if (nullptr == m_settingShortcutConflictDialog) {
         m_settingShortcutConflictDialog = new DDialog(m_settingDialog);
         m_settingShortcutConflictDialog->setObjectName("ServiceSettingShortcutConflictDialog");// Add by ut001000 renfeixiang 2020-08-13
-//        qDebug() << "ServicesettingShortcutConflictDialog-objectname" << m_settingShortcutConflictDialog->objectName();
         connect(m_settingShortcutConflictDialog, &DDialog::finished, m_settingShortcutConflictDialog, [ = ]() {
             delete m_settingShortcutConflictDialog;
             m_settingShortcutConflictDialog = nullptr;
@@ -405,7 +404,6 @@ void Service::Entry(QStringList arguments)
 Service::Service(QObject *parent) : QObject(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "Service-objectname" << objectName();
     // 不同用户不能交叉使用共享内存，以及dbus, 所以共享内存的名字和登陆使用的用户有关。
     // 如sudo 用户名为root, 使用的配置也是root的配置。
     QString ShareMemoryName = QString(getenv("LOGNAME")) + "_enableCreateTerminal";

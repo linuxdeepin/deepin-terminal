@@ -38,7 +38,6 @@
 TermTabStyle::TermTabStyle() : m_tabCount(0)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "TermTabStyle-objectname" << objectName();
 }
 
 TermTabStyle::~TermTabStyle()
@@ -176,7 +175,6 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "TabBar-objectname" << objectName();
     setStyle(new TermTabStyle());
 
     m_sessionIdTabIndexMap.clear();

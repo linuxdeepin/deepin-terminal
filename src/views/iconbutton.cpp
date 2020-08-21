@@ -28,7 +28,6 @@ IconButton::IconButton(QWidget *parent)
     : DIconButton(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "IconButton-objectname" << objectName();
 }
 
 /*******************************************************************************

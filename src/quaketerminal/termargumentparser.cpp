@@ -34,7 +34,6 @@
 TermArgumentParser::TermArgumentParser(QObject *parent) : QObject(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "TermArgumentParser-objectname" << objectName();
 }
 
 TermArgumentParser::~TermArgumentParser()

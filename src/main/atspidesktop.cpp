@@ -27,7 +27,6 @@
 AtspiDesktop::AtspiDesktop()
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "AtspiDesktop-objectname" << objectName();
 }
 
 /*******************************************************************************

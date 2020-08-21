@@ -33,7 +33,6 @@ DWIDGET_USE_NAMESPACE
 EncodeListModel::EncodeListModel(QObject *parent) : QStandardItemModel(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "EncodeListModel-objectname" << objectName();
     initEncodeData();
 }
 

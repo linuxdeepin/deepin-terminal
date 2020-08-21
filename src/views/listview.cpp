@@ -36,7 +36,6 @@ ListView::ListView(ListType type, QWidget *parent)
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
-    //qDebug() << "ListView-objectname" << objectName();
     m_mainWidget->setObjectName("ListViewMainWidget");
     m_mainLayout->setObjectName("ListViewMainLayout");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/

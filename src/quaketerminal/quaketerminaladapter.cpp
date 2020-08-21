@@ -36,7 +36,6 @@
 QuakeTerminalAdapter::QuakeTerminalAdapter(QObject *parent) : QDBusAbstractAdaptor(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "QuakeTerminalAdapter-objectname" << objectName();
     // constructor
     setAutoRelaySignals(true);
 }

@@ -41,7 +41,6 @@ CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
     : CommonPanel(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "set_Object_Name-objectname" << objectName();
     initUI();
 }
 
@@ -58,7 +57,6 @@ void CustomCommandSearchRstPanel::initUI()
 
     m_rebackButton = new IconButton(this);
     m_rebackButton->setObjectName("CustomRebackButton");
-//    qDebug() << "CustomRebackButton-objectname" << m_rebackButton->objectName();
     m_backButton = m_rebackButton;
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
     m_backButton->setFixedSize(QSize(36, 36));
@@ -66,7 +64,6 @@ void CustomCommandSearchRstPanel::initUI()
 
     m_label = new DLabel(this);
     m_label->setObjectName("CustomSearchFilterlabel");//Add by ut001000 renfeixiang 2020-08-13
-//    qDebug() << "Customlabel-objectname" << m_label->objectName();
     m_label->setAlignment(Qt::AlignCenter);
     // 字体颜色随主题变化变化
     DPalette palette = m_label->palette();
@@ -81,7 +78,6 @@ void CustomCommandSearchRstPanel::initUI()
 
     m_cmdListWidget = new ListView(ListType_Custom, this);
     m_cmdListWidget->setObjectName("CustomcmdSearchListWidget");//Add by ut001000 renfeixiang 2020-08-14
-//    qDebug() << "CustomcmdListWidget-objectname" << m_cmdListWidget->objectName();
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->addSpacing(10);

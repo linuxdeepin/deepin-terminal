@@ -27,7 +27,6 @@
 ThemeListModel::ThemeListModel(QObject *parent) : QAbstractListModel(parent)
 {
     Utils::set_Object_Name(this);
-    qDebug() << "ThemeListModel-objcetname" << objectName();
     initThemeData();
 }
 

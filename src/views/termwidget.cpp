@@ -50,7 +50,6 @@ using namespace Konsole;
 TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "TermWidget-objectname" << objectName();
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
     //qDebug() << " TermWidgetparent " << parentWidget();

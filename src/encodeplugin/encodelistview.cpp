@@ -36,11 +36,9 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
 {
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
-    //qDebug() << "EncodeListView-objectname" << objectName();
     m_encodeModel->setObjectName("EncodeListModel");
     m_standardModel = new QStandardItemModel(this);
     m_standardModel->setObjectName("EncodeStandardModel");
-//    qDebug() << "EncodeencodeModel EncodestandardModel-objectname" << m_encodeModel->objectName() << m_standardModel->objectName();
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     m_Mainwindow = qobject_cast<MainWindow *>(parentWidget()->parentWidget()->parentWidget());
     // init view.

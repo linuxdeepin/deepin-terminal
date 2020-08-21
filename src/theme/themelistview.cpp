@@ -25,7 +25,6 @@
 ThemeListView::ThemeListView(QWidget *parent) : QListView(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "ThemeListView-objectname" << objectName();
     setVerticalScrollMode(ScrollPerPixel);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

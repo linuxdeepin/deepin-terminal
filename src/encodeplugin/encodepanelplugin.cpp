@@ -34,7 +34,6 @@
 EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "EncodePanelPlugin-objectname" << objectName();
     m_pluginName = "Encoding";
 }
 
@@ -119,7 +118,6 @@ void EncodePanelPlugin::initEncodePanel()
 {
     qDebug() << __FUNCTION__;
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
-    qDebug() << "m_encodePanel-objectname" << m_encodePanel->objectName();
     connect(Service::instance(), &Service::currentTermChange, m_encodePanel, [ = ](QWidget * term) {
         TermWidget *pterm = m_mainWindow->currentPage()->currentTerminal();
         // 列表显示时，切换了当前终端

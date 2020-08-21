@@ -30,7 +30,6 @@
 ThemePanelPlugin::ThemePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "ThemePanelPlugin-objectname" << objectName();
     m_pluginName = "Theme";
 }
 
@@ -87,7 +86,6 @@ void ThemePanelPlugin::initThemePanel()
 {
     m_themePanel = new ThemePanel(m_mainWindow->centralWidget());
     m_themePanel->setObjectName("ThemePanelPluginThemePanel");//Add by ut001000 renfeixiang 2020-08-14
-    qDebug() << "ThemePanelPluginthemePanel" << m_themePanel->objectName();
 
     connect(m_themePanel, &ThemePanel::themeChanged, this, [ = ](const QString themeName) {
         m_mainWindow->forAllTabPage([themeName](TermWidgetPage * tabPage) {

@@ -33,7 +33,6 @@
 CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "CustomCommandPlugin-objectname" << objectName();
     m_pluginName = "Custom Command";
 }
 
@@ -100,7 +99,6 @@ void CustomCommandPlugin::initCustomCommandTopPanel()
     qDebug() << __FUNCTION__;
     m_customCommandTopPanel = new CustomCommandTopPanel(m_mainWindow->centralWidget());
     m_customCommandTopPanel->setObjectName("CustomCustomCommandTopPanel");//Add by ut001000 renfeixiang 2020-08-14
-//    qDebug() << "CustomcustomCommandTopPanel-objectname" << m_customCommandTopPanel->objectName();
     connect(m_customCommandTopPanel,
             &CustomCommandTopPanel::handleCustomCurCommand,
             this,

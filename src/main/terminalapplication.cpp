@@ -28,7 +28,6 @@
 TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication(argc, argv)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "TerminalApplication-objectname" << objectName();
     loadTranslator();
     setOrganizationName("deepin");
     setOrganizationDomain("deepin.org");

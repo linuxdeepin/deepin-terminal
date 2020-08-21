@@ -35,7 +35,6 @@ TermInputDialog::TermInputDialog(QWidget *parent)
     : DAbstractDialog(parent)
 {
     Utils::set_Object_Name(this);
-    //qDebug() << "TermInputDialog-objectname" << objectName();
     initUI();
     initConnections();
 }
