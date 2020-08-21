@@ -345,6 +345,16 @@ class QuakeWindow : public MainWindow
 {
     Q_OBJECT
 
+    // 雷神resize是否拖拽的状态
+    enum Quake_Resize_State {
+        // 不进行resize
+        Quake_NoResize = 0,
+        // 正在resize
+        Quake_Resize = 1,
+        // 准备resize
+        Quake_Prepare_Resize = 2
+    };
+
 public:
     explicit QuakeWindow(TermProperties properties, QWidget *parent = nullptr);
     ~QuakeWindow() override;
@@ -372,10 +382,16 @@ protected:
     void changeEvent(QEvent *event) override;
     void showEvent(QShowEvent *event) override;
     bool event(QEvent *event) override;
+    // 事件过滤器 => 处理雷神resize
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 protected:
     // 切换窗口拉伸属性
     inline void switchEnableResize();
+
+private:
+    // 雷神窗口resize状态 默认noresize
+    Quake_Resize_State m_resizeState = Quake_NoResize;
 
 };
 

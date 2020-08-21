@@ -73,6 +73,9 @@ const int MainWindow::m_MinHeight = 250;
 
 DWIDGET_USE_NAMESPACE
 
+// 定义雷神窗口边缘,接近边缘光标变化图标
+#define QUAKE_EDGE 10
+
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent),
       m_menu(new QMenu(this)),
@@ -2445,7 +2448,7 @@ void QuakeWindow::initWindowAttribute()
     QDesktopWidget *desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
-    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint /*| Qt::Dialog*/);
+    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint /*| Qt::Dialog*/);
 
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
@@ -2662,6 +2665,65 @@ bool QuakeWindow::event(QEvent *event)
     /***add end by ut001121***/
 
     return MainWindow::event(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    __FUNCTION__
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-21
+ 4. @说明:    事件过滤器,处理雷神相关的事件
+*******************************************************************************/
+bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    // 由于MainWindow是qApp注册的时间过滤器,所以这里需要判断
+    // 只处理雷神的事件 QuakeWindowWindow是Qt内置用来管理QuakeWindow的Mouse事件的object
+    if (watched->objectName() != "QuakeWindowWindow") {
+        return MainWindow::eventFilter(watched, event);
+    }
+
+    // 鼠标点击事件
+    if (event->type() == QEvent::MouseButtonPress) {
+        // 鼠标点击窗口后激活窗口,因为不走窗管
+        activateWindow();
+        // 判断是否可以resize
+        if (Quake_Prepare_Resize == m_resizeState) {
+            // 若可以设置状态为resize,等待用户move鼠标
+            m_resizeState = Quake_Resize;
+        }
+    }
+
+    // 鼠标释放事件
+    if (event->type() == QEvent::MouseButtonRelease) {
+        // 松开鼠标 将状态值恢复默认
+        m_resizeState = Quake_NoResize;
+    }
+
+    // 鼠标移动事件
+    if (event->type() == QEvent::MouseMove) {
+        // 将事件装换为鼠标事件
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event) ;
+        switch (m_resizeState) {
+        // 若此时已经准备好resize
+        case Quake_Resize:
+            resize(width(), mouseEvent->screenPos().y());
+            update();
+            break;
+        // 若没到边缘或者到边缘还没点击
+        default:
+            // 判断鼠标位置
+            if (height() - mouseEvent->screenPos().y() < QUAKE_EDGE) {
+                // 若小于定义的边缘大小,将光标变化为指定形状
+                setCursor(Qt::SizeVerCursor);
+                m_resizeState = Quake_Prepare_Resize;
+            } else {
+                // 若大于,则还原
+                setCursor(Qt::ArrowCursor);
+            }
+            break;
+        }
+    }
+    return MainWindow::eventFilter(watched, event);
+
 }
 
 /*******************************************************************************

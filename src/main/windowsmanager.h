@@ -65,7 +65,7 @@ public slots:
     void onMainwindowClosed(MainWindow *);
 private:
     QList<MainWindow *> m_normalWindowList;
-    MainWindow *m_quakeWindow = nullptr;
+    QuakeWindow *m_quakeWindow = nullptr;
     TermWidgetPage *m_currentPage = nullptr;
 private:
     explicit WindowsManager(QObject *parent = nullptr);
