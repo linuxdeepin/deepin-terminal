@@ -30,6 +30,8 @@ TEST_F(UT_CustomCommandSearchRstPanel_Test,init)
     m_pccs->show();
     EXPECT_EQ(m_pccs->isVisible(),true);
     m_pccs->refreshData();
+     QTest::qWait(1000);
+    m_pccs->refreshData("test");
    // m_pccs->doCustomCommand("");  //该接口有问题，如果没有命令，会产生崩溃
     QTest::qWait(1000);
 }
