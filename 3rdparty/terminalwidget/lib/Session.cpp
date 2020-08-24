@@ -44,36 +44,39 @@
 #include "TerminalDisplay.h"
 #include "ShellCommand.h"
 #include "Vt102Emulation.h"
+#include "TerminalCharacterDecoder.h"
 
 using namespace Konsole;
 
 int Session::lastSessionId = 0;
 
-Session::Session(QObject* parent) :
-    QObject(parent),
-        _shellProcess(nullptr)
-        , _emulation(nullptr)
-        , _monitorActivity(false)
-        , _monitorSilence(false)
-        , _notifiedActivity(false)
-        , _autoClose(true)
-        , _wantedClose(false)
-        , _silenceSeconds(10)
-        , _isTitleChanged(false)
-        , _addToUtmp(false)  // disabled by default because of a bug encountered on certain systems
-        // which caused Konsole to hang when closing a tab and then opening a new
-        // one.  A 'QProcess destroyed while still running' warning was being
-        // printed to the terminal.  Likely a problem in KPty::logout()
-        // or KPty::login() which uses a QProcess to start /usr/bin/utempter
-        , _flowControl(true)
-        , _fullScripting(false)
-        , _sessionId(0)
-    	, _sessionProcessInfo(nullptr)
-    	, _foregroundProcessInfo(nullptr)
-//   , _zmodemBusy(false)
-//   , _zmodemProc(0)
-//   , _zmodemProgress(0)
-        , _hasDarkBackground(false)
+Session::Session(QObject *parent)
+    : QObject(parent),
+      _shellProcess(nullptr),
+      _emulation(nullptr),
+      _monitorActivity(false),
+      _monitorSilence(false),
+      _notifiedActivity(false),
+      _autoClose(true),
+      _wantedClose(false),
+      _silenceSeconds(10),
+      _isTitleChanged(false),
+      _addToUtmp(false)  // disabled by default because of a bug encountered on certain systems
+                         // which caused Konsole to hang when closing a tab and then opening a new
+                         // one.  A 'QProcess destroyed while still running' warning was being
+                         // printed to the terminal.  Likely a problem in KPty::logout()
+                         // or KPty::login() which uses a QProcess to start /usr/bin/utempter
+      ,
+      _flowControl(true),
+      _fullScripting(false),
+      _sessionId(0),
+      _sessionProcessInfo(nullptr),
+      _foregroundProcessInfo(nullptr)
+      //   , _zmodemBusy(false)
+      //   , _zmodemProc(0)
+      //   , _zmodemProgress(0)
+      ,
+      _hasDarkBackground(false)
 {
     //prepare DBus communication
 //    new SessionAdaptor(this);
@@ -110,14 +113,40 @@ Session::Session(QObject* parent) :
     //connect teletype to emulation backend
     _shellProcess->setUtf8Mode(_emulation->utf8());
 
-    connect( _shellProcess,SIGNAL(receivedData(const char *,int)),this,
-             SLOT(onReceiveBlock(const char *,int)) );
-    connect( _emulation,SIGNAL(sendData(const char *,int)),_shellProcess,
-             SLOT(sendData(const char *,int)) );
-    connect( _emulation,SIGNAL(lockPtyRequest(bool)),_shellProcess,SLOT(lockPty(bool)) );
-    connect( _emulation,SIGNAL(useUtf8Request(bool)),_shellProcess,SLOT(setUtf8Mode(bool)) );
+    connect(_shellProcess, SIGNAL(receivedData(const char *, int)), this, SLOT(onReceiveBlock(const char *, int)));
+    connect(_shellProcess, &Pty::customFixStepChanged,  _emulation, [this](Pty::CustomFixStep step)
+    {
+        switch (step) {
+        case Pty::FixStep1_Ctrl_u:
+            _emulation->m_ResizeSaveType = Emulation::SaveNone;
+            break;
+        case Pty::FixStep2_Clear:
+            break;
+        case Pty::FixStep3_Return:
+            _emulation->m_ResizeSaveType = Emulation::SavePrompt;
+            _emulation->startPrompt.clear();
+            qDebug()<<"startPrompt clear";
+            break;
+        case Pty::FixStep4_SwapText:
+            break;
+        case Pty::FixStep5_UserKey:
+            break;
+        }
+    });
+    connect(_shellProcess, &Pty::shellHasStart,  _emulation, [this]()
+    {
+        _emulation->resizeAllString.clear();
+        qDebug()<<"resizeAllString clear, m_ResizeSaveType";
+        _emulation->m_ResizeSaveType = Emulation::SaveAll;
+    });
 
-    connect( _shellProcess,SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(done(int)) );
+
+
+    connect(_emulation, SIGNAL(sendData(const char *, int)), _shellProcess, SLOT(sendData(const char *, int)));
+    connect(_emulation, SIGNAL(lockPtyRequest(bool)), _shellProcess, SLOT(lockPty(bool)));
+    connect(_emulation, SIGNAL(useUtf8Request(bool)), _shellProcess, SLOT(setUtf8Mode(bool)));
+
+    connect(_shellProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(done(int)));
     // not in kprocess anymore connect( _shellProcess,SIGNAL(done(int)), this, SLOT(done(int)) );
 
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
@@ -462,7 +491,103 @@ void Session::monitorTimerDone()
         emit stateChanged(NOTIFYNORMAL);
     }
 
-    _notifiedActivity=false;
+    _notifiedActivity = false;
+}
+
+char *Session::changeReceiveBuffer(const char *str, int len)
+{
+
+    // \u001B[1A  \r\u001B[K
+    char *strAdd2 = "\x1b\x5b\x31\x41\x0d\x1b\x5b\x4b";
+
+    // \u001B[A
+    char *strAdd = "\x1b\x5b\x41";
+    // char *strAdd2 = "\x1b\x5b\x41";
+    // \r\u001B[K
+    char str1[] = "\x0d\x1b\x5b\x4b";  //要求替换的字符串
+    // char str2[120] = "\x0d\x1b\x5b\x4b\x1b\x5b\x31\x41\x0d\x1b\x5b\x4b";  //替换成字符串
+    // char str2[120] = "";  //替换成字符串
+    // char str4[]="\x1b\x5b\x32\x4a\x0d";   //Esc[2J //	Clear entire screen
+    // char str4[]="\x0d\x1b\x5b\x4a";   //Esc[J //	Clear screen from cursor down
+
+    QByteArray byte(str);
+
+    QByteArray byte0(str1);
+    QByteArray addByte;
+
+    int cleanLineCount = 0;
+
+   qDebug()<<"_shellProcess->lastCommandStateIsResize"<<_shellProcess->lastCommandStateIsResize<<_shellProcess->lastSend;
+    // 删除\r\n\r
+    char str3[] = "\r\n\r";
+    if (_shellProcess->lastCommandStateIsResize && byte.contains("\u0007"))
+    {
+        qDebug()<<"auto clean line start";
+        Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
+        int curY= vt102->_currentScreen->getCursorY() + vt102->_currentScreen->getHistLines() + 1;
+        int calLines = curY - vt102->_currentScreen->ShellStartLine + 1;
+        cleanLineCount = calLines - 1;
+        qDebug() << "new last lastPromptColumns =" << calLines <<curY << vt102->_currentScreen->ShellStartLine
+                 <<"will clean lines = "<<cleanLineCount;
+        //_shellProcess->Step2_Clear = false;
+
+        for (int i = 1; i <= cleanLineCount; i++)
+        {
+            addByte.append(strAdd2);
+            // memcpy(str2 + i * 8 + 4, strAdd, 8);
+            //qDebug() << "add one" << i;
+            // str2_len+=8;
+            // 去掉所有A ,\r\u001B[KA -> \r\u001B[K
+            byte.replace(byte0 + strAdd, byte0);
+        }
+        //resize最后的信息不知为何为加几个、\b,全干掉
+        for (int i = 0; i <= _views[0]->lines(); i++)
+        {
+            byte.replace(byte0 + strAdd, byte0);
+            if (byte.endsWith("\b"))
+            {
+                qDebug() << "clear \b";
+                qDebug() << byte;
+                byte = byte.left(byte.size() - 1);
+            }
+            // byte.replace("\b","");
+        }
+
+        QByteArray dest_byte(str1);
+        dest_byte.append(addByte);
+
+
+        int nnn = byte.size();
+        // 替换
+        byte.replace(byte0, dest_byte);
+
+        //qDebug() << "byte replace" << byte.size() - nnn << byte0 << dest_byte << _views[0]->lines();
+
+        //_shellProcess->lastCommandStateIsResize = false;
+         qDebug()<<"replace \\r\\n\\r times = "<<byte.count(str3);
+          byte.replace(str3, "");
+
+    }
+
+
+    //byte.replace(str3, "");
+
+    char str4[] = "\x1b\x5b\x4b\x1b\x5b\x41";
+
+
+    m_swapBufferSize = byte.size();
+    if (m_swapBuffer != nullptr)
+    {
+        free(m_swapBuffer);
+    }
+
+    m_swapBuffer = ( char * )malloc(m_swapBufferSize);
+    memcpy(m_swapBuffer, byte.data(), m_swapBufferSize);
+
+    qDebug() << "find" << QByteArray(str).count(str1) << QByteArray(str).count(str3) << cleanLineCount << len
+             << m_swapBufferSize <<m_swapBuffer;
+    return m_swapBuffer;
+
 }
 
 void Session::activityStateSet(int state)
@@ -528,12 +653,36 @@ void Session::updateTerminalSize(int height, int width)
     }
 
     // backend emulation must have a _terminal of at least 1 column x 1 line in size
-    if ( minLines > 0 && minColumns > 0 ) {
-        _emulation->setImageSize( minLines , minColumns );
-        _shellProcess->setWindowSize( minLines , minColumns );
+    if (minLines > 0 && minColumns > 0)
+    {
+        QString string;
+        QTextStream searchStream(&string);
+        PlainTextDecoder decoder;
+        decoder.begin(&searchStream);
+        decoder.setRecordLinePositions(true);
+
+        // Calculate lines to read and read them
+         Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
+        int curY= vt102->_currentScreen->getCursorY() + vt102->_currentScreen->getHistLines() + 1;
+        int blockStartLine = curY;
+        int chunkEndLine = vt102->_currentScreen->ShellStartLine + 1;
+
+
+
+        _emulation->writeToStream(&decoder, blockStartLine-1, chunkEndLine-1);
+        //qDebug()<<"resize string"<<blockStartLine<<chunkEndLine<<string;
+
+
+        _emulation->setImageSize(minLines, minColumns);
+        _shellProcess->setWindowSize(minLines, minColumns);
+
+        //_shellProcess->swapByte  = _emulation->bodyText;
+
+
+
+        //_shellProcess->setWorkingDirectory(_shellProcess->workingDirectory()) ;
+       // _shellProcess->updateCursor(_emulation->_currentScreen->getCursorX(), _emulation->_currentScreen->getCursorY());
     }
-
-
 }
 
 void Session::refresh()
@@ -948,10 +1097,103 @@ void Session::zmodemFinished()
   }
 }
 */
-void Session::onReceiveBlock( const char * buf, int len )
+void Session::onReceiveBlock(const char *buf, int len)
 {
-    _emulation->receiveData( buf, len );
-    emit receivedData( QString::fromLatin1( buf, len ) );
+
+    qDebug() << "onReceiveBlock" << QString::fromLatin1(buf, len);
+
+//    if(_shellProcess->lastCommandStateIsResize && !_shellProcess->Step3_Modify
+//            && QString::fromLatin1(buf, len).contains("\u0007"))
+//    {
+//        qDebug()<<"save buffer";
+//        lastResizeInfo = QString::fromLatin1(buf, len);
+//    }
+
+//    if(_shellProcess->Step3_Modify)
+//    {
+
+//        lastResizeInfo = lastResizeInfo.replace("\u001B[K","").replace("\u001B[A","").replace("\r\n\r","").replace("\r","");
+//        qDebug()<<"now start use lastResizeInfo"<<lastResizeInfo;
+//         char * swapBuffer = ( char * )malloc(lastResizeInfo.size());
+//         memcpy(swapBuffer, lastResizeInfo.data(), lastResizeInfo.size());
+
+//         changeReceiveBuffer(swapBuffer, lastResizeInfo.size());
+//         _shellProcess->Step3_Modify = false;
+//         _shellProcess->lastCommandStateIsResize = false;
+//         qDebug()<<"modify complete"<<QString::fromLatin1(m_swapBuffer, m_swapBufferSize);
+//         free(swapBuffer);
+//    }
+//    else {
+
+//    }
+
+    //if(_shellProcess->lastCommandStateIsResize)
+    //{
+    _emulation->resizeMode = _shellProcess->lastCommandStateIsResize;
+
+
+        changeReceiveBuffer(buf, len);
+   //}
+
+
+    //}
+        //bool updatePrompt = false;
+        // 在普通情况下记录、\n后的 提示信息
+        if(!_shellProcess->lastCommandStateIsResize)
+        {
+            if(_shellProcess->lastSend == '\r' || (QString::fromLatin1(buf, len).startsWith("\r\n") && len >2))
+            {
+                //_emulation->isPrompt= true;
+                //_emulation->startPrompt.clear();
+                // _emulation->bodyText.clear();
+
+                qDebug()<<"bodyText clear";
+                //updatePrompt = true;
+            }
+            else {
+                //_emulation->isPrompt= false;
+            }
+        }
+
+
+    _emulation->receiveData(m_swapBuffer, m_swapBufferSize);
+
+//    if(!_shellProcess->lastCommandStateIsResize)
+//    {
+//        if(updatePrompt)
+//        {
+//            qDebug()<<"update startPrompt"<<_emulation->startPrompt;
+//        }
+//        else {
+//            qDebug()<<"update bodyText"<<_emulation->bodyText;
+//        }
+//    }
+
+    qDebug()<<"startPrompt"<<_emulation->startPrompt;
+           qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
+           qDebug()<<"swapByte"<<_shellProcess->swapByte;
+
+    if( _shellProcess->lastCommandStateIsResize && _shellProcess->m_CustomFixStep == Pty::FixStep3_Return)
+    {
+        if(!_emulation->startPrompt.isEmpty() && _emulation->resizeAllString.startsWith(_emulation->startPrompt) )
+        {
+            //if(!_emulation->resizeAllString.isEmpty())
+            //{
+                _shellProcess->swapByte
+                        = _emulation->resizeAllString.right(_emulation->resizeAllString.size() - _emulation->startPrompt.size());
+                _emulation->resizeAllString.clear();
+            //}
+            qDebug()<<"resize is over , now all is normal";
+            //_shellProcess->Step2_Clear = false;
+            _shellProcess->lastCommandStateIsResize = false;
+        }
+
+    }
+    qDebug()<<"startPrompt"<<_emulation->startPrompt;
+           qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
+           qDebug()<<"swapByte"<<_shellProcess->swapByte;
+
+    emit receivedData(QString::fromLatin1(m_swapBuffer, m_swapBufferSize));
 }
 
 QSize Session::size()

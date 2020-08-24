@@ -207,6 +207,17 @@ QPoint ScreenWindow::cursorPosition() const
     return position;
 }
 
+int ScreenWindow::cursorLine()
+{
+    int line = 0;
+    if(_screen != nullptr)
+    {
+        line = _screen->getHistLines() + _screen->getCursorY() + 1;
+    }
+    return line;
+
+}
+
 int ScreenWindow::currentLine() const
 {
     return qBound(0,_currentLine,lineCount()-windowLines());

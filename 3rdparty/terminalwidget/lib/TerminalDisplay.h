@@ -888,7 +888,7 @@ public:
     {
         HAVE_TRANSPARENCY = enable;
     }
-
+	  int lastPromptColumns = 0;
     QScrollBar* getScrollBar() {return _scrollBar;}
 };
 

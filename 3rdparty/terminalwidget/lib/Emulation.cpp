@@ -38,6 +38,7 @@
 #include <QThread>
 #include <QList>
 #include <QTime>
+#include <QDebug>
 
 // KDE
 //#include <kdebug.h>
@@ -287,6 +288,7 @@ void Emulation::receiveData(const char *text, int length)
 {
     emit stateSet(NOTIFYACTIVITY);
 
+    qDebug()<<"Vt102Emulation::receiveData() bufferedUpdate";
     bufferedUpdate();
 
     /* XXX: the following code involves encoding & decoding of "UTF-16
@@ -439,6 +441,7 @@ int Emulation::lineCount() const
 
 void Emulation::showBulk()
 {
+    qDebug()<<"Emulation::showBulk()"<<_bulkTimer1.isActive()<<_bulkTimer2.isActive();
     _bulkTimer1.stop();
     _bulkTimer2.stop();
 
@@ -483,6 +486,7 @@ void Emulation::setImageSize(int lines, int columns)
 
     emit imageSizeChanged(lines, columns);
 
+        qDebug()<<"Vt102Emulation::setImageSize() bufferedUpdate"<< lines<< columns;
     bufferedUpdate();
 }
 

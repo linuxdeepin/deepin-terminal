@@ -190,10 +190,12 @@ private:
   //or window title.
   //these calls occur when certain escape sequences are seen in the
   //output from the terminal
-  QHash<int,QString> _pendingTitleUpdates;
+
   QTimer* _titleUpdateTimer;
 
     bool _reportFocusEvents;
+public:
+      QHash<int,QString> _pendingTitleUpdates;
 };
 
 }

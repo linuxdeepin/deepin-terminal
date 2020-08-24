@@ -418,6 +418,7 @@ void Vt102Emulation::processWindowAttributeChange()
   // ignored, only the second char in ST ("\e\\") is appended to tokenBuffer.
   QString newValue = QString::fromWCharArray(tokenBuffer + i + 1, tokenBufferPos-i-2);
 
+  _currentScreen->updateShellStartLine();
   _pendingTitleUpdates[attributeToChange] = newValue;
   _titleUpdateTimer->start(20);
 }
@@ -454,8 +455,10 @@ void Vt102Emulation::processToken(int token, wchar_t p, int q)
 {
   switch (token)
   {
-
-    case TY_CHR(         ) : _currentScreen->displayCharacter     (p         ); break; //UTF16
+    // 在resize模式下记录全部，非resize模式下记录标题
+    case TY_CHR(         ) : if(m_ResizeSaveType == SavePrompt)  startPrompt.append(QString::fromWCharArray(&p));
+      if(m_ResizeSaveType == SaveAll)  resizeAllString.append(QString::fromWCharArray(&p));
+ _currentScreen->displayCharacter     (p         ); break; //UTF16
 
     //             127 DEL    : ignored on input
 

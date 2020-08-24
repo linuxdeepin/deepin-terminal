@@ -121,7 +121,17 @@ class TERMINALWIDGET_EXPORT Emulation : public QObject
     Q_OBJECT
 
 public:
-
+    enum ResizeSaveType{
+        SavePrompt,
+        SaveAll,
+        SaveNone
+    };
+    ResizeSaveType m_ResizeSaveType = SaveNone;
+    bool isPrompt = false;
+    bool resizeMode = false;
+QString resizeAllString;
+    QString startPrompt;
+    QString bodyText;
     /**
      * This enum describes the available shapes for the keyboard cursor.
      * See setKeyboardCursorShape()
@@ -486,7 +496,7 @@ protected:
 
     QList<ScreenWindow *> _windows;
 
-    Screen *_currentScreen;  // pointer to the screen which is currently active,
+
     // this is one of the elements in the screen[] array
 
     Screen *_screen[2];      // 0 = primary screen ( used by most programs, including the shell
@@ -502,7 +512,8 @@ protected:
     /******** Modify by ut000610 daizhengwen 2020-06-02: 让这个值能被修改****************/
     /*const */KeyboardTranslator *_keyTranslator; // the keyboard layout
     /********************* Modify by ut000610 daizhengwen End ************************/
-
+public:
+    Screen *_currentScreen;  // pointer to the screen which is currently active,
 protected slots:
     /**
      * Schedules an update of attached views.

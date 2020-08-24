@@ -71,6 +71,8 @@ class TerminalCharacterDecoder;
 class Screen
 {
 public:
+
+        int ShellStartLine = 0;
     /** Construct a new screen image of size @p lines by @p columns. */
     Screen(int lines, int columns);
     ~Screen();
@@ -259,6 +261,8 @@ public:
     void clearToEndOfLine();
     /** Clears from the current cursor position to the beginning of the line. */
     void clearToBeginOfLine();
+
+    void updateShellStartLine();
 
     /** Fills the entire screen with the letter 'E' */
     void helpAlign();

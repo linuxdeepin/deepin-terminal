@@ -45,6 +45,8 @@
 #include <QDir>
 #include <QRegExp>
 #include <QRegExpValidator>
+#include <QTimer>
+#include <QMetaEnum>
 
 #include "kpty.h"
 #include "kptydevice.h"
@@ -53,11 +55,30 @@ using namespace Konsole;
 
 void Pty::setWindowSize(int lines, int cols)
 {
+
+
+   // if((_windowColumns == cols) && (_windowLines == lines) && !lastCommandStateIsResize)
+    //{
+    //    return;
+    //}
+    lastSend = "";
     _windowColumns = cols;
     _windowLines = lines;
+    if(!hasStart)
+    {
+        return;
+    }
 
+    lastCommandStateIsResize = true;
+    qDebug()<<"update lastCommandStateIsResize"<<lastCommandStateIsResize;
+    emit shellHasStart();
+
+    qDebug()<<"setWindowSize"<<lines<<cols;
     if (pty()->masterFd() >= 0)
+    {
         pty()->setWinSize(lines, cols);
+    }
+
 }
 QSize Pty::windowSize() const
 {
@@ -207,7 +228,8 @@ int Pty::start(const QString &program,
     if (!pty()->tcSetAttr(&ttmode))
         qWarning() << "Unable to set terminal attributes.";
 
-    pty()->setWinSize(_windowLines, _windowColumns);
+    //pty()->setWinSize(_windowLines, _windowColumns);
+
 
     KProcess::start();
 
@@ -276,6 +298,27 @@ void Pty::init()
 
 Pty::~Pty()
 {
+}
+
+void Pty::entryCustomFixStep(CustomFixStep step)
+{
+    qDebug()<<"entry"<<QMetaEnum::fromType<CustomFixStep>().key(step);
+    m_CustomFixStep = step;
+    emit customFixStepChanged(step);
+}
+
+void Pty::deleteReturnChar(QByteArray &data)
+{
+    if(data.startsWith("\r\n") )
+    {
+        qDebug()<<"deleteReturnChar"<<data;
+        data = data.right(data.size()-2);
+    }
+    if(data.startsWith("\u0007\r\n") )
+    {
+        qDebug()<<"deleteReturnChar"<<data;
+        data = data.right(data.size()-3);
+    }
 }
 
 bool Pty::isTerminalRemoved()
@@ -444,6 +487,8 @@ void Pty::sendData(const char *data, int length)
     if (currCommand.length() > 0 && currCommand.endsWith('\n')) {
         isCustomCommand = true;
     }
+    lastSend = currCommand;
+    qDebug()<<"lastSend"<<lastSend;
 
     //检测到按了回车键
     if (((*data) == '\r' || isCustomCommand) && _bUninstall == false) {
@@ -483,7 +528,100 @@ void Pty::sendData(const char *data, int length)
             }
         }
     }
+//    lastCommandStateIsResize = false;
+//    if (!pty()->write(data, length)) {
+//        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+//        return;
+//    }
+//    return;
 
+
+    qDebug()<<lastCommandStateIsResize;
+    if(lastCommandStateIsResize /*&& hasStart*/)
+    {
+        //qDebug()<<"now start byteCtrlU";
+        entryCustomFixStep(FixStep1_Ctrl_u);
+        //Step1_Ctrl_u = true;
+
+        QByteArray byteCtrlU("\u0015");
+        if (!pty()->write(byteCtrlU, byteCtrlU.count())) {
+            qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+            return;
+        }
+        //return;
+
+        //modifyByte
+
+        QTimer::singleShot(5, this, [this]() {
+            //entryCustomFixStep(FixStep2_Clear);
+            m_userKey.append(lastSend);
+            //qDebug()<<"now start clear";
+            //Step2_Clear = true;
+                char str1[] = "\x0d\x1b\x5b\x4b";
+                char *strAdd = "\x1b\x5b\x41\u0007";
+                QByteArray byteClear(str1);
+                byteClear.append(strAdd);
+                emit receivedData(byteClear.constData(), byteClear.count());
+
+
+                QTimer::singleShot(2, this, [this]() {
+                    entryCustomFixStep(FixStep3_Return);
+                    QByteArray byteReturn("\r");
+                    lastSend = byteReturn;
+                    if (!pty()->write(byteReturn, byteReturn.count())) {
+                        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+                        return;
+                    }
+
+                    QTimer::singleShot(2, this, [this]() {
+//                        if(swapByte.isEmpty())
+//                        {
+//                            entryCustomFixStep(FixStep6_Complete);
+//                        }
+                        entryCustomFixStep(FixStep4_SwapText);
+                        QByteArray byteReturn;
+                        byteReturn.append(swapByte/*.replace(' ', "")*/);
+                        lastSend = byteReturn;
+                        if(!lastSend.isEmpty())
+                        {
+                            if (!pty()->write(byteReturn, byteReturn.count())) {
+                                qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+                                return;
+                            }
+                            swapByte.clear();
+                        }
+
+                        QTimer::singleShot(2, this, [this]() {
+                            entryCustomFixStep(FixStep5_UserKey);
+                            qDebug()<<"now start userkey"<<m_userKey;
+                            if(!m_userKey.isEmpty())
+                            {
+                                if (!pty()->write(m_userKey, m_userKey.count())) {
+                                    qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+                                    return;
+                                }
+                                m_userKey.clear();
+                            }
+                        });
+
+                    });
+                 });
+
+
+        });
+        return;
+
+        //lastCommandStateIsResize = false;
+
+    }
+//    if(!hasStart)
+//    {
+//        hasStart = true;
+//    }
+//    if(lastSend == "\r")
+//    {
+//        lastCommandStateIsResize = false;
+//    }
     if (!pty()->write(data, length)) {
         qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
         return;
@@ -496,27 +634,67 @@ void Pty::dataReceived()
 
     QString recvData = QString(data);
 
-    /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
-    // 乱码提示信息不显示
-    if (recvData.contains("bash: $'\\212")
-            || recvData.contains("bash: **0800000000022d：")
-            || recvData.contains("**^XB0800000000022d")
-            || recvData.startsWith("**\u0018B0800000000022d\r\u008A")) {
+    switch (m_CustomFixStep) {
+    case FixStep1_Ctrl_u:
+        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<recvData;
+
+        return;
+    //case FixStep2_Clear:
+       // deleteReturnChar(data);
+        break;
+    case FixStep3_Return:
+        deleteReturnChar(data);
+        break;
+//    case FixStep1_Ctrl_u:
+//        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<recvData;
+//        return;
+//    case FixStep1_Ctrl_u:
+//        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<recvData;
+//        return;
+    default:
+        break;
+    }
+
+    if(data.isEmpty())
+    {
         return;
     }
 
-    // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
-    if (recvData.contains("\u008A")) {
-        recvData.replace("\u008A", "\b \b #");
-        data = recvData.toUtf8();
+
+    //qDebug() << "____________________recv:" << recvData;
+//    /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
+//    // 乱码提示信息不显示
+//    if (recvData.contains("bash: $'\\212")
+//            || recvData.contains("bash: **0800000000022d：")
+//            || recvData.contains("**^XB0800000000022d")
+//            || recvData.startsWith("**\u0018B0800000000022d\r\u008A")) {
+//        return;
+//    }
+
+//    // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
+//    if (recvData.contains("\u008A")) {
+//        recvData.replace("\u008A", "\b \b #");
+//        data = recvData.toUtf8();
+//    }
+
+//    if (recvData == "rz waiting to receive.") {
+//        recvData += "\r\n";
+//        data = recvData.toUtf8();
+//    }
+    /********************* Modify by m000714 daizhengwen End ************************/
+
+
+    emit receivedData(data.constData(), data.count());
+    if(!hasStart)
+    {
+        hasStart = true;
+        setWindowSize(_windowLines, _windowColumns);
+        //emit shellHasStart();
+
     }
 
-    if (recvData == "rz waiting to receive.") {
-        recvData += "\r\n";
-        data = recvData.toUtf8();
-    }
-    /********************* Modify by m000714 daizhengwen End ************************/
-    emit receivedData(data.constData(), data.count());
+//     = cols;
+//     = lines;
 }
 
 void Pty::lockPty(bool lock)

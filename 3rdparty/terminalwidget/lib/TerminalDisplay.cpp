@@ -1304,6 +1304,8 @@ void TerminalDisplay::updateImage()
   /*the terminal interface will display colored lines. time: 2020.4.10 14:18
    * */
   //update(dirtyRegion);
+ // _screenWindow->_screen->
+  qDebug()<<"new current cursor pos:"<< _screenWindow->cursorLine();
   update();
   //-------------------------------------------------
 
@@ -1870,6 +1872,7 @@ void TerminalDisplay::updateImageSize()
 
   if ( _resizing )
   {
+      qDebug()<<"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
       showResizeNotification();
     emit changedContentSizeSignal(oldlin, oldcol); // expose resizeEvent
   }
@@ -3341,8 +3344,26 @@ void TerminalDisplay::calcGeometry()
 
   if (!_isFixedSize)
   {
+      if(lastPromptColumns!=_columns)
+      {
+          qDebug()<<"lastPromptColumns"<<lastPromptColumns<<_columns;
+      }
+      lastPromptColumns = _columns;
+
+//      int minColumns =  _views[0]->columns();
+//      //
+//      int calLines = 1;
+
+
+      // if(calLines > 1)
      // ensure that display is always at least one column wide
      _columns = qMax(1,_contentWidth / _fontWidth);
+     if(lastPromptColumns == 9)
+     {
+         lastPromptColumns = _columns;
+
+     }
+     //qDebug()<<"lastPromptColumns"<<lastPromptColumns<<_columns;
      _usedColumns = qMin(_usedColumns,_columns);
 
      // ensure that display is always at least one line high

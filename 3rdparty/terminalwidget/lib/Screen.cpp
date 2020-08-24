@@ -33,6 +33,7 @@
 // Qt
 #include <QTextStream>
 #include <QDate>
+#include <QDebug>
 
 // KDE
 //#include <kdebug.h>
@@ -314,6 +315,7 @@ void Screen::restoreCursor()
 
 void Screen::resizeImage(int new_lines, int new_columns)
 {
+    qDebug()<<"resizeImage"<<new_lines<<new_columns;
     if ((new_lines==lines) && (new_columns==columns)) return;
 
     if (cuY > new_lines-1)
@@ -948,11 +950,14 @@ void Screen::moveImage(int dest, int sourceBegin, int sourceEnd)
 
 void Screen::clearToEndOfScreen()
 {
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<cuX<<cuY<<loc(cuX,cuY)<<columns-1<<lines-1<<loc(columns-1,lines-1);
+
     clearImage(loc(cuX,cuY),loc(columns-1,lines-1),' ');
 }
 
 void Screen::clearToBeginOfScreen()
 {
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     clearImage(loc(0,0),loc(cuX,cuY),' ');
 }
 
@@ -967,6 +972,7 @@ void Screen::clearToBeginOfScreen()
 
 void Screen::clearEntireScreen()
 {
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     // Add entire screen to history
     for (int i = 0; i < (lines-1); i++)
     {
@@ -987,16 +993,29 @@ void Screen::helpAlign()
 
 void Screen::clearToEndOfLine()
 {
+    //usleep(1000000);
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<cuX<<cuY<<loc(cuX,cuY)<<columns-1<<cuY<<loc(columns-1,cuY);
+
+    //updateShellStartLine();
     clearImage(loc(cuX,cuY),loc(columns-1,cuY),' ');
+    //usleep(1000000);
 }
 
 void Screen::clearToBeginOfLine()
 {
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     clearImage(loc(0,cuY),loc(cuX,cuY),' ');
+}
+
+void Screen::updateShellStartLine()
+{
+    ShellStartLine = cuY + getHistLines() +1;
+    qDebug()<<"ShellStartLine update "<<ShellStartLine;
 }
 
 void Screen::clearEntireLine()
 {
+    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     clearImage(loc(0,cuY),loc(columns-1,cuY),' ');
 }
 

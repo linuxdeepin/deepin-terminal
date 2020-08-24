@@ -55,6 +55,7 @@ class ScreenWindow : public QObject
 Q_OBJECT
 
 public:
+        Screen* _screen; // see setScreen() , screen()
     /**
      * Constructs a new screen window with the given parent.
      * A screen must be specified by calling setScreen() before calling getImage() or getLineProperties().
@@ -167,6 +168,8 @@ public:
      */
     QPoint cursorPosition() const;
 
+    int cursorLine();
+
     /**
      * Convenience method. Returns true if the window is currently at the bottom
      * of the screen.
@@ -251,7 +254,7 @@ private:
     int endWindowLine() const;
     void fillUnusedArea();
 
-    Screen* _screen; // see setScreen() , screen()
+//    Screen* _screen; // see setScreen() , screen()
     Character* _windowBuffer;
     int _windowBufferSize;
     bool _bufferNeedsUpdate;
