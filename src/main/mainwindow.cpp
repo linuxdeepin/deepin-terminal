@@ -74,7 +74,7 @@ const int MainWindow::m_MinHeight = 250;
 DWIDGET_USE_NAMESPACE
 
 // 定义雷神窗口边缘,接近边缘光标变化图标
-#define QUAKE_EDGE 10
+#define QUAKE_EDGE 5
 
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent),
@@ -2349,7 +2349,9 @@ void NormalWindow::changeEvent(QEvent *event)
 /**
  雷神终端窗口
 */
-QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow(properties, parent)
+QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow(properties, parent),
+    // 初始化雷神resize的定时器
+    m_resizeTimer(new QTimer(this))
 {
     Q_ASSERT(m_isQuakeWindow == true);
     setObjectName("QuakeWindow");
@@ -2357,11 +2359,18 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     initConnections();
     initShortcuts();
     createWindowComplete();
+    // 设置雷神resize定时器属性
+    m_resizeTimer->setSingleShot(true);
+    // 绑定信号槽
+    connect(m_resizeTimer, &QTimer::timeout, this, &QuakeWindow::onResizeWindow);
 }
 
 QuakeWindow::~QuakeWindow()
 {
-
+    // 析构resize定时器
+    if (nullptr != m_resizeTimer) {
+        delete m_resizeTimer;
+    }
 }
 
 /*******************************************************************************
@@ -2484,6 +2493,8 @@ void QuakeWindow::initWindowAttribute()
     }
     int saveWidth = screenRect.size().width();
     resize(QSize(saveWidth, saveHeight));
+    // 记录雷神高度
+    m_quakeWindowHeight = saveHeight;
     move(0, 0);
     /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 End  ************************/
 
@@ -2617,6 +2628,17 @@ void QuakeWindow::updateMinHeight()
 }
 
 /*******************************************************************************
+ 1. @函数:    onResizeWindow
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-24
+ 4. @说明:    处理resize信号,延迟一段时间处理,避免处理过快,界面显示有延迟
+*******************************************************************************/
+void QuakeWindow::onResizeWindow()
+{
+    resize(width(), m_quakeWindowHeight);
+}
+
+/*******************************************************************************
  1. @函数:    changeEvent
  2. @作者:    ut001121 zhangmeng
  3. @日期:    2020-08-11
@@ -2697,27 +2719,31 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
         // 松开鼠标 将状态值恢复默认
         m_resizeState = Quake_NoResize;
     }
-
     // 鼠标移动事件
     if (event->type() == QEvent::MouseMove) {
         // 将事件装换为鼠标事件
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event) ;
+        int mousePosY = mouseEvent->screenPos().y();
+        int margin = mousePosY - height();
         switch (m_resizeState) {
         // 若此时已经准备好resize
         case Quake_Resize:
-            resize(width(), mouseEvent->screenPos().y());
-            update();
+            // 记录当前的雷神窗口高度
+            m_quakeWindowHeight = height() + margin;
+            // 延时发送,避免resize过于频繁,导致titlebar抖动
+            m_resizeTimer->start(5);
             break;
         // 若没到边缘或者到边缘还没点击
         default:
             // 判断鼠标位置
-            if (height() - mouseEvent->screenPos().y() < QUAKE_EDGE) {
+            if (qAbs(margin) < QUAKE_EDGE) {
                 // 若小于定义的边缘大小,将光标变化为指定形状
                 setCursor(Qt::SizeVerCursor);
                 m_resizeState = Quake_Prepare_Resize;
             } else {
                 // 若大于,则还原
                 setCursor(Qt::ArrowCursor);
+                m_resizeState = Quake_NoResize;
             }
             break;
         }

@@ -29,16 +29,19 @@
 #include "utils.h"
 #include "define.h"
 
+// dtk
 #include <DMainWindow>
 #include <DWidgetUtil>
 #include <DToolButton>
 #include <DIconButton>
 #include <DPushButton>
 
+// qt
 #include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QSettings>
 #include <QMouseEvent>
+#include <QTimer>
 
 #include <functional>
 #include <QShortcut>
@@ -362,6 +365,10 @@ public:
     /******** Add by ut001000 renfeixiang 2020-08-07:用于雷神窗口增加和减少横向分屏时，对雷神窗口的自小高进行修改，bug#41436***************/
     virtual void updateMinHeight() override;
 
+public slots:
+    // 处理resize消息
+    void onResizeWindow();
+
 protected:
     // 初始化标题栏
     virtual void initTitleBar() override;
@@ -392,6 +399,10 @@ protected:
 private:
     // 雷神窗口resize状态 默认noresize
     Quake_Resize_State m_resizeState = Quake_NoResize;
+    // 雷神窗口的高度
+    int m_quakeWindowHeight;
+    // 雷神resize的定时器
+    QTimer *m_resizeTimer = nullptr;
 
 };
 
