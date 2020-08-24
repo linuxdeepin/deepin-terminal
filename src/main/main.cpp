@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 {
     //计时
     qint64 starttime = QDateTime::currentMSecsSinceEpoch();
-    DApplication::loadDXcbPlugin();
+    //DApplication::loadDXcbPlugin();
 
     //DApplication app(argc, argv);
     TerminalApplication app(argc, argv);
