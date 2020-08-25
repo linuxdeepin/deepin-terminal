@@ -134,16 +134,12 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
         }
 
         if ((keyevent->modifiers() == Qt::AltModifier) && keyevent->key() == Qt::Key_M) {
-            // 光标中心点
-            QPoint pos = QPoint(qApp->inputMethod()->cursorRectangle().x() + qApp->inputMethod()->cursorRectangle().width() / 2,
-                                qApp->inputMethod()->cursorRectangle().y() + qApp->inputMethod()->cursorRectangle().height() / 2);
-
-            qDebug() << "Alt+M has triggerd" << pos << qApp->inputMethod();
-            // QPoint(0,0) 表示无法获取光标位置
-            if (pos != QPoint(0, 0)) {
-                QMouseEvent event1(QEvent::MouseButtonPress, pos, Qt::RightButton, Qt::NoButton, Qt::NoModifier);
-                QCoreApplication::sendEvent(object, &event1);
-            }
+            /***add begin by ut001121 zhangmeng 20200825 模拟发送ContextMenu事件 修复BUG44282***/
+            QPoint pos;
+            QContextMenuEvent menuEvent(QContextMenuEvent::Keyboard, pos);
+            qDebug()<<"------------"<<menuEvent.type();
+            QApplication::sendEvent(object, &menuEvent);
+            /***add end by ut001121***/
 
             return true;
         }
