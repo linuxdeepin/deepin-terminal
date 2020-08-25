@@ -67,6 +67,7 @@ class Pty: public KPtyProcess
 Q_OBJECT
 
   public:
+    QTimer *m_resizeTimer = nullptr;
     QString swapByte;
     QString lastSend;
     QByteArray m_userKey;

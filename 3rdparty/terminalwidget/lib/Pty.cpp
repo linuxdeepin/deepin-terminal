@@ -70,6 +70,7 @@ void Pty::setWindowSize(int lines, int cols)
     }
 
     lastCommandStateIsResize = true;
+    m_resizeTimer->start(200);
     qDebug()<<"update lastCommandStateIsResize"<<lastCommandStateIsResize;
     emit shellHasStart();
 
@@ -291,9 +292,14 @@ void Pty::init()
     _xonXoff = true;
     _utf8 = true;
     _bUninstall = false;
-
+    m_resizeTimer = new QTimer(this);
+    m_resizeTimer->setSingleShot(true);
     connect(pty(), SIGNAL(readyRead()), this, SLOT(dataReceived()));
     setPtyChannels(KPtyProcess::AllChannels);
+    connect(m_resizeTimer, &QTimer::timeout, this, [this]{
+        //m_resizeTimer.stop();
+        emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
+    });
 }
 
 Pty::~Pty()
