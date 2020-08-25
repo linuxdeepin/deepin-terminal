@@ -120,7 +120,11 @@ signals:
     void touchPadEventSignal(QString name, QString direction, int fingers);
 
 public slots:
+    // 创建窗口的入口
     void Entry(QStringList arguments);
+    // 桌面工作区切换
+    void onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop);
+
 private:
     explicit Service(QObject *parent = nullptr);
     //显示/隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用

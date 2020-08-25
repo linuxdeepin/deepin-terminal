@@ -66,7 +66,10 @@ void WindowsManager::quakeWindowShowOrHide()
     // 没有显示，就显示．
     if (!m_quakeWindow->isVisible()) {
         qDebug() << "!mainWindow  isVisible now show !" << m_quakeWindow->winId();
-        m_quakeWindow->show();
+        // 判断终端在原来窗口是否隐藏.原来窗口隐藏的情况下,显示
+        if (!m_quakeWindow->isShowOnCurrentDesktop()) {
+            m_quakeWindow->show();
+        }
     }
 
     // 没有激活就激活
@@ -96,7 +99,9 @@ void WindowsManager::quakeWindowShowOrHide()
         }
         return;
     }
-    m_quakeWindow->hide();
+    // 隐藏雷神
+    m_quakeWindow->hideQuakeWindow();
+
 }
 
 /*******************************************************************************

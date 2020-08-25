@@ -51,6 +51,12 @@
 #define GESTURE_INTERFACE        "com.deepin.daemon.Gesture"
 #define GESTURE_SIGNAL           "Event"
 
+// deepin wm 窗管
+#define WM_SERVICE                       "com.deepin.wm"
+#define WM_PATH                         "/com/deepin/wm"
+#define WM_INTERFACE                    "com.deepin.wm"
+#define WM_WORKSPACESWITCHED            "WorkspaceSwitched"
+
 #define dbusPlaySound(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("PlaySound")<<(sound))
 #define dbusIsSoundEnabled(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("IsSoundEnabled")<<(sound))
 #define dbusEnableSound(sound, enable) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("EnableSound")<<(sound)<<(enable))
@@ -98,6 +104,8 @@ public:
 
     // 监听触控板事件
     void listenTouchPadSignal();
+    // 监听桌面(工作区切换)
+    void listenDesktopSwitched();
 
 public slots:
     void entry(QStringList args);

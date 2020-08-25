@@ -2628,6 +2628,31 @@ void QuakeWindow::updateMinHeight()
 }
 
 /*******************************************************************************
+ 1. @函数:    isShowOnCurrentDesktop
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-25
+ 4. @说明:    给出当前桌面雷神是否显示
+*******************************************************************************/
+bool QuakeWindow::isShowOnCurrentDesktop()
+{
+    return m_desktopMap[m_desktopIndex];
+}
+
+/*******************************************************************************
+ 1. @函数:    hideQuakeWindow
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-25
+ 4. @说明:    隐藏雷神终端
+*******************************************************************************/
+void QuakeWindow::hideQuakeWindow()
+{
+    // 隐藏雷神
+    hide();
+    // 记录雷神在当前窗口的状态
+    m_desktopMap[m_desktopIndex] = false;
+}
+
+/*******************************************************************************
  1. @函数:    onResizeWindow
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-08-24
@@ -2665,6 +2690,8 @@ void QuakeWindow::showEvent(QShowEvent *event)
     /***add begin by ut001121 zhangmeng 20200528 重新获取桌面索引 修复BUG29082***/
     m_desktopIndex = DBusManager::callKDECurrentDesktop();
     /***add end by ut001121***/
+    // 记录当前桌面的index为显示状态
+    m_desktopMap[m_desktopIndex] = true;
 
     /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
     switchEnableResize();

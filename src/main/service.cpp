@@ -401,6 +401,42 @@ void Service::Entry(QStringList arguments)
     return;
 }
 
+/*******************************************************************************
+ 1. @函数:    desktopWorkspaceSwitched
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-24
+ 4. @说明:    对桌面切换事件的处理
+*******************************************************************************/
+void Service::onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop)
+{
+    qDebug() << __FUNCTION__ << curDesktop << nextDesktop;
+    // 获取雷神窗口
+    QuakeWindow *window = static_cast<QuakeWindow *>(WindowsManager::instance()->getQuakeWindow());
+    // 没有雷神,直接返回
+    if (nullptr == window) {
+        return;
+    }
+    // 雷神在所在桌面是否显示
+    bool isQuakeVisible = window->isShowOnCurrentDesktop();
+    // 判断下一个窗口是否是雷神所在的窗口
+    if (nextDesktop != window->getDesktopIndex()) {
+        // 下一个桌面不是当前桌面,隐藏
+        if (isQuakeVisible) {
+            // 根据雷神显隐,判断此时雷神的显隐,若已经隐了,不用再隐
+            window->hide();
+        }
+        window->hide();
+    } else {
+        // 下一个是雷神的窗口
+        if (isQuakeVisible) {
+            // 根据雷神显隐,判断此时雷神的显隐
+            window->show();
+            window->activateWindow();
+        }
+        // 另一种情况,雷神已经是隐藏状态不用再影藏
+    }
+}
+
 Service::Service(QObject *parent) : QObject(parent)
 {
     Utils::set_Object_Name(this);

@@ -305,5 +305,28 @@ void DBusManager::listenTouchPadSignal()
 {
     qDebug() << __FUNCTION__;
     // 注册监听触控板事件
-    QDBusConnection::systemBus().connect(GESTURE_SERVICE, GESTURE_PATH, GESTURE_INTERFACE, GESTURE_SIGNAL, Service::instance(), SIGNAL(touchPadEventSignal(QString, QString, int)));
+    bool isConnect = QDBusConnection::systemBus().connect(GESTURE_SERVICE, GESTURE_PATH, GESTURE_INTERFACE, GESTURE_SIGNAL, Service::instance(), SIGNAL(touchPadEventSignal(QString, QString, int)));
+    if (isConnect) {
+        qDebug() << "connect to Guest, listen touchPad!";
+    } else {
+        qDebug() << "disconnect to Guest, cannot listen touchPad!";
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    listenDesktopSwitched
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-08-24
+ 4. @说明:    监听桌面切换事件
+*******************************************************************************/
+void DBusManager::listenDesktopSwitched()
+{
+    qDebug() << __FUNCTION__;
+    // 注册监听桌面工作区切换
+    bool isConnect = QDBusConnection::sessionBus().connect(WM_SERVICE, WM_PATH, WM_INTERFACE, WM_WORKSPACESWITCHED, Service::instance(), SLOT(onDesktopWorkspaceSwitched(int, int)));
+    if (isConnect) {
+        qDebug() << "connect to wm, listen workspaceswitched";
+    } else {
+        qDebug() << "disconnect to wm,cannot listen workspaceswitched";
+    }
 }

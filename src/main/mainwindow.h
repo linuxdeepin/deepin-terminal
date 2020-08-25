@@ -365,6 +365,11 @@ public:
     /******** Add by ut001000 renfeixiang 2020-08-07:用于雷神窗口增加和减少横向分屏时，对雷神窗口的自小高进行修改，bug#41436***************/
     virtual void updateMinHeight() override;
 
+    // 是否在记录的当前桌面显示
+    bool isShowOnCurrentDesktop();
+    // 隐藏雷神终端
+    void hideQuakeWindow();
+
 public slots:
     // 处理resize消息
     void onResizeWindow();
@@ -403,7 +408,8 @@ private:
     int m_quakeWindowHeight;
     // 雷神resize的定时器
     QTimer *m_resizeTimer = nullptr;
-
+    // 记录雷神是否当前桌面显示
+    QMap<int, bool> m_desktopMap;
 };
 
 #endif  // MAINWINDOW_H
