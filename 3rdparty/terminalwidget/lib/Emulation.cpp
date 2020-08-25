@@ -19,8 +19,7 @@
     02110-1301  USA.
 */
 
-// Own
-#include "Emulation.h"
+
 
 // System
 #include <cstdio>
@@ -39,6 +38,7 @@
 #include <QList>
 #include <QTime>
 #include <QDebug>
+#include <QMetaEnum>
 
 // KDE
 //#include <kdebug.h>
@@ -50,7 +50,8 @@
 #include "ScreenWindow.h"
 #include "Session.h"
 #include "SessionManager.h"
-
+// Own
+#include "Emulation.h"
 using namespace Konsole;
 
 Emulation::Emulation() :
@@ -373,6 +374,43 @@ void Emulation::receiveData(const char *text, int length)
         }
     }
 }
+
+//void Emulation::onRedrawData(Session::RedrawStep step)
+//{
+////    if(***)
+////    {
+////        return;
+////    }
+////    if(IsFirstStart)
+////    {
+////        m_RedrawStep = RedrawStep1_Ctrl_u;
+////    }
+//    QByteArray byteCtrlU("\u0015");
+//    QByteArray byteReturn("\r");
+//    QByteArray byteSwapText;
+//    switch (step) {
+//    case Session::RedrawStep1_Ctrl_u:
+//        sendString(byteCtrlU.data(), byteCtrlU.count());
+//        break;
+//    case Session::RedrawStep1_Ctrl_u_Complete:
+//        break;
+//    case Session::RedrawStep2_Clear_Complete:
+//        sendString(byteReturn.data(), byteReturn.count());
+//        m_ResizeSaveType = Emulation::SavePrompt;
+//        startPrompt.clear();
+//        break;
+//    case Session::RedrawStep3_Return_Complete:
+//        swapByte= resizeAllString.right(resizeAllString.size() - startPrompt.size());
+//        byteSwapText.append(swapByte);
+//        resizeAllString.clear();
+//        m_ResizeSaveType = Emulation::SaveNone;
+//        sendString(byteSwapText.data(),byteSwapText.count());
+//        break;
+//    default:
+//        break;
+//    }
+//}
+
 
 //OLDER VERSION
 //This version of onRcvBlock was commented out because

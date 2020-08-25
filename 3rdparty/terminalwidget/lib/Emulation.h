@@ -35,6 +35,8 @@
 
 #include "qtermwidget_export.h"
 
+
+
 namespace Konsole {
 
 class KeyboardTranslator;
@@ -42,6 +44,7 @@ class HistoryType;
 class Screen;
 class ScreenWindow;
 class TerminalCharacterDecoder;
+class Session;
 
 /**
  * This enum describes the available states which
@@ -116,22 +119,14 @@ enum {
  * how long the emulation has been active/idle for and also respond to
  * a 'bell' event in different ways.
  */
+
 class TERMINALWIDGET_EXPORT Emulation : public QObject
 {
     Q_OBJECT
 
 public:
-    enum ResizeSaveType{
-        SavePrompt,
-        SaveAll,
-        SaveNone
-    };
-    ResizeSaveType m_ResizeSaveType = SaveNone;
-    bool isPrompt = false;
-    bool resizeMode = false;
-QString resizeAllString;
-    QString startPrompt;
-    QString bodyText;
+
+
     /**
      * This enum describes the available shapes for the keyboard cursor.
      * See setKeyboardCursorShape()
@@ -155,6 +150,21 @@ QString resizeAllString;
     /** Constructs a new terminal emulation */
     Emulation();
     ~Emulation() override;
+
+    enum ResizeSaveType{
+        SavePrompt,
+        SaveAll,
+        SaveNone
+    };
+    ResizeSaveType m_ResizeSaveType = SaveNone;
+    bool isPrompt = false;
+    bool resizeMode = false;
+    QString resizeAllString;
+    bool hasMorespace = false;
+    QString startPrompt;
+    QString bodyText;
+    //RedrawStep m_RedrawStep = RedrawStep6_Complete;
+    QString swapByte;
 
     /**
      * Creates a new window onto the output from this emulation.  The contents
@@ -309,6 +319,25 @@ public slots:
      * @param len The length of @p buffer
      */
     void receiveData(const char *buffer, int len);
+
+    //void onRedrawData(Session::RedrawStep step);
+    // resize后重绘接口类型
+//    enum RedrawStep
+//    {
+//        RedrawStep1_Ctrl_u,
+//        RedrawStep1_Ctrl_u_Complete,
+//        RedrawStep2_Clear_Complete,
+//        RedrawStep3_Return_Complete,
+//        RedrawStep4_SwapText,
+//        RedrawStep5_UserKey,
+//        RedrawStep6_Complete
+//    };
+//    Q_ENUM(RedrawStep)
+    // resize后重绘接口
+
+
+
+
 
 signals:
 

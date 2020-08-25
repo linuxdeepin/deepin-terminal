@@ -307,19 +307,6 @@ void Pty::entryCustomFixStep(CustomFixStep step)
     emit customFixStepChanged(step);
 }
 
-void Pty::deleteReturnChar(QByteArray &data)
-{
-    if(data.startsWith("\r\n") )
-    {
-        qDebug()<<"deleteReturnChar"<<data;
-        data = data.right(data.size()-2);
-    }
-    if(data.startsWith("\u0007\r\n") )
-    {
-        qDebug()<<"deleteReturnChar"<<data;
-        data = data.right(data.size()-3);
-    }
-}
 
 bool Pty::isTerminalRemoved()
 {
@@ -478,9 +465,9 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
 
 void Pty::sendData(const char *data, int length)
 {
-    if (!length) {
-        return;
-    }
+//    if (!length) {
+//        return;
+//    }
 
     bool isCustomCommand = false;
     QString currCommand = QString::fromLatin1(data);
@@ -535,94 +522,46 @@ void Pty::sendData(const char *data, int length)
 //    }
 //    return;
 
-
+    QByteArray info = QByteArray(data,length);
     qDebug()<<lastCommandStateIsResize;
     if(lastCommandStateIsResize /*&& hasStart*/)
     {
-        //qDebug()<<"now start byteCtrlU";
-        entryCustomFixStep(FixStep1_Ctrl_u);
-        //Step1_Ctrl_u = true;
+        if(*m_RedrawStep == Session::RedrawStep0_None)
+        {
+            m_userKey += info;
 
-        QByteArray byteCtrlU("\u0015");
-        if (!pty()->write(byteCtrlU, byteCtrlU.count())) {
-            qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+            emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
+
             return;
         }
-        //return;
-
-        //modifyByte
-
-        QTimer::singleShot(5, this, [this]() {
-            //entryCustomFixStep(FixStep2_Clear);
-            m_userKey.append(lastSend);
-            //qDebug()<<"now start clear";
-            //Step2_Clear = true;
-                char str1[] = "\x0d\x1b\x5b\x4b";
-                char *strAdd = "\x1b\x5b\x41\u0007";
-                QByteArray byteClear(str1);
-                byteClear.append(strAdd);
-                emit receivedData(byteClear.constData(), byteClear.count());
-
-
-                QTimer::singleShot(2, this, [this]() {
-                    entryCustomFixStep(FixStep3_Return);
-                    QByteArray byteReturn("\r");
-                    lastSend = byteReturn;
-                    if (!pty()->write(byteReturn, byteReturn.count())) {
-                        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-                        return;
-                    }
-
-                    QTimer::singleShot(2, this, [this]() {
-//                        if(swapByte.isEmpty())
-//                        {
-//                            entryCustomFixStep(FixStep6_Complete);
-//                        }
-                        entryCustomFixStep(FixStep4_SwapText);
-                        QByteArray byteReturn;
-                        byteReturn.append(swapByte/*.replace(' ', "")*/);
-                        lastSend = byteReturn;
-                        if(!lastSend.isEmpty())
-                        {
-                            if (!pty()->write(byteReturn, byteReturn.count())) {
-                                qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-                                return;
-                            }
-                            swapByte.clear();
-                        }
-
-                        QTimer::singleShot(2, this, [this]() {
-                            entryCustomFixStep(FixStep5_UserKey);
-                            qDebug()<<"now start userkey"<<m_userKey;
-                            if(!m_userKey.isEmpty())
-                            {
-                                if (!pty()->write(m_userKey, m_userKey.count())) {
-                                    qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-                                    return;
-                                }
-                                m_userKey.clear();
-                            }
-                        });
-
-                    });
-                 });
-
-
-        });
-        return;
-
-        //lastCommandStateIsResize = false;
-
+        if(*m_RedrawStep == Session::RedrawStep4_SwapText)
+        {
+            if(info.isEmpty())
+            {
+                *m_RedrawStep = Session::RedrawStep5_UserKey;
+            }
+        }
+        if(*m_RedrawStep == Session::RedrawStep5_UserKey)
+        {
+            //m_userKey += info;
+            info = m_userKey;
+            m_userKey .clear();
+            *m_RedrawStep = Session::RedrawStep0_None;
+            qDebug()<<"resize is over , now all is normal";
+            //_shellProcess->Step2_Clear = false;
+            lastCommandStateIsResize = false;
+            //m_RedrawStep = RedrawStep0_None;
+            //return;
+        }
     }
-//    if(!hasStart)
-//    {
-//        hasStart = true;
-//    }
-//    if(lastSend == "\r")
-//    {
-//        lastCommandStateIsResize = false;
-//    }
-    if (!pty()->write(data, length)) {
+
+
+    if(info.length() == 0)
+    {
+        return;
+    }
+
+    if (!pty()->write(info.data(), info.length())) {
         qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
         return;
     }
@@ -633,33 +572,6 @@ void Pty::dataReceived()
     QByteArray data = pty()->readAll();
 
     QString recvData = QString(data);
-
-    switch (m_CustomFixStep) {
-    case FixStep1_Ctrl_u:
-        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<recvData;
-
-        return;
-    //case FixStep2_Clear:
-       // deleteReturnChar(data);
-        break;
-    case FixStep3_Return:
-        deleteReturnChar(data);
-        break;
-//    case FixStep1_Ctrl_u:
-//        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<recvData;
-//        return;
-//    case FixStep1_Ctrl_u:
-//        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<recvData;
-//        return;
-    default:
-        break;
-    }
-
-    if(data.isEmpty())
-    {
-        return;
-    }
-
 
     //qDebug() << "____________________recv:" << recvData;
 //    /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/

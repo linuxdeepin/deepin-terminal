@@ -79,6 +79,28 @@ public:
     Session(QObject* parent = nullptr);
     ~Session() override;
 
+
+    // resize后重绘接口类型
+    enum RedrawStep
+    {
+        RedrawStep0_None,
+        RedrawStep1_Ctrl_u,
+        RedrawStep1_Ctrl_u_Received,
+        RedrawStep2_Clear_Received,
+        RedrawStep3_Return_Received,
+        RedrawStep4_SwapText,
+        RedrawStep5_UserKey,
+        RedrawStep6_Complete
+    };
+    Q_ENUM(RedrawStep)
+    RedrawStep m_RedrawStep = RedrawStep0_None;
+    void entryRedrawStep(RedrawStep step);
+    void preRedraw(QByteArray & data);
+    void tailRedraw();
+    void deleteReturnChar(QByteArray & data);
+    void onRedrawData(RedrawStep step);
+
+
     /**
      * Returns true if the session is currently running.  This will be true
      * after run() has been called successfully.
@@ -503,7 +525,7 @@ signals:
     /**
      * Emitted when the terminal process requests a change
      * in the size of the terminal window.
-     *
+     *onReceiveBlock
      * @param size The requested window size in terms of lines and columns.
      */
     void resizeRequest(const QSize & size);

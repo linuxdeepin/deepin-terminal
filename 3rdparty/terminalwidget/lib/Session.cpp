@@ -37,6 +37,7 @@
 #include <QStringList>
 #include <QFile>
 #include <QtDebug>
+#include <QMetaEnum>
 
 #include "Pty.h"
 #include "ProcessInfo.h"
@@ -86,6 +87,7 @@ Session::Session(QObject *parent)
     //create teletype for I/O with shell process
     _shellProcess = new Pty();
     _shellProcess->setSessionId(_sessionId);
+    _shellProcess->m_RedrawStep = &m_RedrawStep;
     ptySlaveFd = _shellProcess->pty()->slaveFd();
 
     //create emulation backend
@@ -114,30 +116,34 @@ Session::Session(QObject *parent)
     _shellProcess->setUtf8Mode(_emulation->utf8());
 
     connect(_shellProcess, SIGNAL(receivedData(const char *, int)), this, SLOT(onReceiveBlock(const char *, int)));
-    connect(_shellProcess, &Pty::customFixStepChanged,  _emulation, [this](Pty::CustomFixStep step)
-    {
-        switch (step) {
-        case Pty::FixStep1_Ctrl_u:
-            _emulation->m_ResizeSaveType = Emulation::SaveNone;
-            break;
-        case Pty::FixStep2_Clear:
-            break;
-        case Pty::FixStep3_Return:
-            _emulation->m_ResizeSaveType = Emulation::SavePrompt;
-            _emulation->startPrompt.clear();
-            qDebug()<<"startPrompt clear";
-            break;
-        case Pty::FixStep4_SwapText:
-            break;
-        case Pty::FixStep5_UserKey:
-            break;
-        }
+    connect(_shellProcess, &Pty::redrawStepChanged,  this, [this](RedrawStep step){
+           onRedrawData(RedrawStep1_Ctrl_u);
     });
+//    connect(_shellProcess, &Pty::customFixStepChanged,  _emulation, [this](Pty::CustomFixStep step)
+//    {
+//        switch (step) {
+//        case Pty::FixStep1_Ctrl_u:
+//            _emulation->m_ResizeSaveType = Emulation::SaveNone;
+//            break;
+//        case Pty::FixStep2_Clear:
+//            break;
+//        case Pty::FixStep3_Return:
+//            _emulation->m_ResizeSaveType = Emulation::SavePrompt;
+//            _emulation->startPrompt.clear();
+//            qDebug()<<"startPrompt clear";
+//            break;
+//        case Pty::FixStep4_SwapText:
+//            break;
+//        case Pty::FixStep5_UserKey:
+//            break;
+//        }
+//    });
     connect(_shellProcess, &Pty::shellHasStart,  _emulation, [this]()
     {
         _emulation->resizeAllString.clear();
         qDebug()<<"resizeAllString clear, m_ResizeSaveType";
         _emulation->m_ResizeSaveType = Emulation::SaveAll;
+        entryRedrawStep(RedrawStep0_None);
     });
 
 
@@ -520,7 +526,8 @@ char *Session::changeReceiveBuffer(const char *str, int len)
    qDebug()<<"_shellProcess->lastCommandStateIsResize"<<_shellProcess->lastCommandStateIsResize<<_shellProcess->lastSend;
     // 删除\r\n\r
     char str3[] = "\r\n\r";
-    if (_shellProcess->lastCommandStateIsResize && byte.contains("\u0007"))
+    if (_shellProcess->lastCommandStateIsResize && /*byte.contains("\u0007")*/
+            (m_RedrawStep == RedrawStep2_Clear_Received  ||m_RedrawStep == RedrawStep0_None))
     {
         qDebug()<<"auto clean line start";
         Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
@@ -754,7 +761,161 @@ Session::~Session()
     if(nullptr != _shellProcess){
         delete _shellProcess;
     }
-//  delete _zmodemProc;
+    //  delete _zmodemProc;
+}
+
+void Session::entryRedrawStep(Session::RedrawStep step)
+{
+    qDebug()<<"entryRedrawStep"<<QMetaEnum::fromType<RedrawStep>().key(step);
+    m_RedrawStep = step;
+    //_shellProcess->m_RedrawStep = &m_RedrawStep;
+}
+
+void Session::preRedraw(QByteArray & data)
+{
+    if(!_shellProcess->lastCommandStateIsResize)
+    {
+        return;
+    }
+    QByteArray byteClear("\x0d\x1b\x5b\x4b\x1b\x5b\x41\u0007");
+
+    switch (m_RedrawStep) {
+    case RedrawStep1_Ctrl_u_Received:
+        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data;
+        entryRedrawStep(RedrawStep2_Clear_Received);
+        data = byteClear;
+        qDebug()<<"Clear info" <<data;
+        return ;
+    //case FixStep2_Clear:
+       // deleteReturnChar(data);
+        break;
+    case RedrawStep3_Return_Received:
+        deleteReturnChar(data);
+
+        break;
+    default:
+        break;
+    }
+
+    if(data.isEmpty())
+    {
+        return;
+    }
+}
+
+void Session::tailRedraw()
+{
+    qDebug()<<"startPrompt"<<_emulation->startPrompt;
+    qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
+    qDebug()<<"swapByte"<<_shellProcess->swapByte;
+
+    // 每次重绘的入口
+    onRedrawData(m_RedrawStep);
+
+    qDebug()<<"startPrompt"<<_emulation->startPrompt;
+    qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
+    qDebug()<<"swapByte"<<_shellProcess->swapByte;
+
+}
+
+void Session::deleteReturnChar(QByteArray &data)
+{
+    bool deleteOK = false;
+    if(data.startsWith("\r\n") )
+    {
+        qDebug()<<"deleteReturnChar"<<data;
+        data = data.right(data.size() - 2);
+        deleteOK = true;
+    }
+    if(data.startsWith("\u0007\r\n"))
+    {
+        qDebug()<<"deleteReturnChar"<<data;
+        data = data.right(data.size()-3);
+        deleteOK = true;
+    }
+    if(deleteOK)
+    {
+        entryRedrawStep(RedrawStep3_Return_Received);
+        _emulation->m_ResizeSaveType = Emulation::SavePrompt;
+        _emulation->hasMorespace = false;
+        _emulation->startPrompt.clear();
+    }
+    if(data.endsWith(" \r"))
+    {
+        qDebug()<<data<<"has \\r";
+        _emulation->hasMorespace = true;
+    }
+}
+
+void Session::onRedrawData(RedrawStep step)
+{
+    if(!_shellProcess->lastCommandStateIsResize)
+    {
+        return;
+    }
+
+    if(step == RedrawStep0_None)
+    {
+        return;
+    }
+    //if(step == RedrawStep1_Ctrl_u)
+    //{
+    m_RedrawStep = step;
+    //}
+    entryRedrawStep(m_RedrawStep);
+    QByteArray byteCtrlU("\u0015");
+    QByteArray byteReturn("\r");
+    QByteArray byteSwapText;
+    switch (step) {
+    case Session::RedrawStep1_Ctrl_u:
+        _emulation->sendString(byteCtrlU.data(), byteCtrlU.count());
+        break;
+//    case Session::RedrawStep1_Ctrl_u_Complete:
+//        break;
+    case Session::RedrawStep2_Clear_Received:
+        _emulation->sendString(byteReturn.data(), byteReturn.count());
+        break;
+    case Session::RedrawStep3_Return_Received:
+        // 有的时候会发来的消息只有\0007信息
+        if(_emulation->startPrompt.isEmpty())
+        {
+            return;
+        }
+        if(_emulation->hasMorespace)
+        {
+            _emulation->startPrompt = _emulation->startPrompt.left(_emulation->startPrompt.size() - 1);
+        }
+        if(_emulation->resizeAllString.startsWith(_emulation->startPrompt) )
+        {
+            _emulation->m_ResizeSaveType = Emulation::SaveNone;
+            _emulation->swapByte = _emulation->resizeAllString.right(_emulation->resizeAllString.size()
+                                                                     - _emulation->startPrompt.size());
+            _emulation->resizeAllString.clear();
+            byteSwapText.append(_emulation->swapByte);
+            if(byteSwapText.count() != 0)
+            {
+                _emulation->sendString(byteSwapText.data(),byteSwapText.count());
+            }
+            else {
+                qDebug()<<"none of swapByte will be send";
+                //m_RedrawStep = RedrawStep4_SwapText;
+                onRedrawData(RedrawStep4_SwapText);
+                return;
+            }
+        }
+        qDebug()<<"startPrompt"<<_emulation->startPrompt;
+        qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
+        qDebug()<<"swapByte"<<_shellProcess->swapByte;
+        break;
+
+    case Session::RedrawStep4_SwapText:
+        _emulation->sendString("",0);
+        break;
+    case Session::RedrawStep5_UserKey:
+        //m_RedrawStep = RedrawStep0_None;
+        return;
+    }
+    m_RedrawStep = RedrawStep(1+ m_RedrawStep);
 }
 
 void Session::setProfileKey(const QString & key)
@@ -1102,96 +1263,41 @@ void Session::onReceiveBlock(const char *buf, int len)
 
     qDebug() << "onReceiveBlock" << QString::fromLatin1(buf, len);
 
-//    if(_shellProcess->lastCommandStateIsResize && !_shellProcess->Step3_Modify
-//            && QString::fromLatin1(buf, len).contains("\u0007"))
-//    {
-//        qDebug()<<"save buffer";
-//        lastResizeInfo = QString::fromLatin1(buf, len);
-//    }
-
-//    if(_shellProcess->Step3_Modify)
-//    {
-
-//        lastResizeInfo = lastResizeInfo.replace("\u001B[K","").replace("\u001B[A","").replace("\r\n\r","").replace("\r","");
-//        qDebug()<<"now start use lastResizeInfo"<<lastResizeInfo;
-//         char * swapBuffer = ( char * )malloc(lastResizeInfo.size());
-//         memcpy(swapBuffer, lastResizeInfo.data(), lastResizeInfo.size());
-
-//         changeReceiveBuffer(swapBuffer, lastResizeInfo.size());
-//         _shellProcess->Step3_Modify = false;
-//         _shellProcess->lastCommandStateIsResize = false;
-//         qDebug()<<"modify complete"<<QString::fromLatin1(m_swapBuffer, m_swapBufferSize);
-//         free(swapBuffer);
-//    }
-//    else {
-
-//    }
-
-    //if(_shellProcess->lastCommandStateIsResize)
-    //{
+    QByteArray byteBuf(buf, len);
+    preRedraw(byteBuf);
     _emulation->resizeMode = _shellProcess->lastCommandStateIsResize;
 
+    if(byteBuf.count() == 0)
+    {
+        return;
+    }
+    changeReceiveBuffer(byteBuf.data(), byteBuf.count());
 
-        changeReceiveBuffer(buf, len);
-   //}
-
-
-    //}
-        //bool updatePrompt = false;
-        // 在普通情况下记录、\n后的 提示信息
-        if(!_shellProcess->lastCommandStateIsResize)
-        {
-            if(_shellProcess->lastSend == '\r' || (QString::fromLatin1(buf, len).startsWith("\r\n") && len >2))
-            {
-                //_emulation->isPrompt= true;
-                //_emulation->startPrompt.clear();
-                // _emulation->bodyText.clear();
-
-                qDebug()<<"bodyText clear";
-                //updatePrompt = true;
-            }
-            else {
-                //_emulation->isPrompt= false;
-            }
-        }
-
-
-    _emulation->receiveData(m_swapBuffer, m_swapBufferSize);
-
+//    // 在普通情况下记录、\n后的 提示信息
 //    if(!_shellProcess->lastCommandStateIsResize)
 //    {
-//        if(updatePrompt)
+//        if(_shellProcess->lastSend == '\r' || (QString::fromLatin1(buf, len).startsWith("\r\n") && len >2))
 //        {
-//            qDebug()<<"update startPrompt"<<_emulation->startPrompt;
+//            //_emulation->isPrompt= true;
+//            //_emulation->startPrompt.clear();
+//            // _emulation->bodyText.clear();
+
+//            qDebug()<<"bodyText clear";
+//            //updatePrompt = true;
 //        }
 //        else {
-//            qDebug()<<"update bodyText"<<_emulation->bodyText;
+//            //_emulation->isPrompt= false;
 //        }
 //    }
 
-    qDebug()<<"startPrompt"<<_emulation->startPrompt;
-           qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-           qDebug()<<"swapByte"<<_shellProcess->swapByte;
+    // 解码的入口
+    _emulation->receiveData(m_swapBuffer, m_swapBufferSize);
 
-    if( _shellProcess->lastCommandStateIsResize && _shellProcess->m_CustomFixStep == Pty::FixStep3_Return)
-    {
-        if(!_emulation->startPrompt.isEmpty() && _emulation->resizeAllString.startsWith(_emulation->startPrompt) )
-        {
-            //if(!_emulation->resizeAllString.isEmpty())
-            //{
-                _shellProcess->swapByte
-                        = _emulation->resizeAllString.right(_emulation->resizeAllString.size() - _emulation->startPrompt.size());
-                _emulation->resizeAllString.clear();
-            //}
-            qDebug()<<"resize is over , now all is normal";
-            //_shellProcess->Step2_Clear = false;
-            _shellProcess->lastCommandStateIsResize = false;
-        }
 
-    }
-    qDebug()<<"startPrompt"<<_emulation->startPrompt;
-           qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-           qDebug()<<"swapByte"<<_shellProcess->swapByte;
+    tailRedraw();
+
+
+
 
     emit receivedData(QString::fromLatin1(m_swapBuffer, m_swapBufferSize));
 }

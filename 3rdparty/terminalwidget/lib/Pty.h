@@ -39,6 +39,8 @@
 
 // KDE
 #include "kptyprocess.h"
+#include "Emulation.h"
+#include "Session.h"
 
 namespace Konsole {
 
@@ -76,6 +78,7 @@ Q_OBJECT
     //bool hasStart =false;
     QTimer *ModifySend = nullptr;
     QByteArray modifyByte;
+    Session::RedrawStep *m_RedrawStep;
 
     enum CustomFixStep
     {
@@ -219,6 +222,7 @@ Q_OBJECT
      * @param length Length of @p buffer
      */
     void receivedData(const char* buffer, int length);
+    void redrawStepChanged(Session::RedrawStep step);
 
     void customFixStepChanged(CustomFixStep step);
     void shellHasStart();
