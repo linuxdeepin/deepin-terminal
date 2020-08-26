@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
         if (!Properties[QuakeMode].toBool() && !Service::instance()->getEnable()) {
             qint64 endtime = QDateTime::currentMSecsSinceEpoch();
             qDebug() << "[sub app] Server can't create, drop this create request! time use "
-                     << endtime - starttime <<"ms";
+                     << endtime - starttime << "ms";
             return 0;
         }
 
@@ -90,11 +90,13 @@ int main(int argc, char *argv[])
         DBusManager::callTerminalEntry(args);
         qint64 endtime2 = QDateTime::currentMSecsSinceEpoch();
         qDebug() << "[sub app] task complete! sub app quit, time use "
-                 << endtime2 - starttime<<"ms";
+                 << endtime2 - starttime << "ms";
         return 0;
     }
     // 这行不要删除
     qputenv("TERM", "xterm-256color");
+    // klu&panguv环境下需要wayland调用终端=>提供调整大小 task 34884
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
 
     // 主进程
     Service *service = Service::instance();
@@ -104,7 +106,7 @@ int main(int argc, char *argv[])
     // 创建窗口
     service->Entry(app.arguments());
     qint64 endtime3 = QDateTime::currentMSecsSinceEpoch();
-    qDebug() << "First Terminal Window create complete! time use " << endtime3 - starttime <<"ms";
+    qDebug() << "First Terminal Window create complete! time use " << endtime3 - starttime << "ms";
 
     return app.exec();
 }
