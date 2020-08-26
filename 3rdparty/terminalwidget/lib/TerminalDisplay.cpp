@@ -3881,17 +3881,18 @@ bool TerminalScreen::event(QEvent* event)
         if(m_gestureAction == GA_slide)
         {
             QFont font = getVTFont();
-            QFontMetrics fm(font);
 
-            /*2.5为调优数值, 开根号时数值越大衰减比例越大*/
-            slideGesture(-diffYpos/2.5/sqrt(fm.height()));
+            /*开根号时数值越大衰减比例越大*/
+            qreal direction = diffYpos>0?1.0:-1.0;
+            slideGesture(-direction*sqrt(abs(diffYpos))/font.pointSize());
 
-            /*预算滑惯性动距离*/
-            m_stepSpeed = static_cast<qreal>(diffYpos/sqrt(fm.height()))/static_cast<qreal>(diffTime+0.000001);
-            change = m_stepSpeed*sqrt(abs(m_stepSpeed))*100;
             /*预算滑惯性动时间*/
             m_stepSpeed = static_cast<qreal>(diffYpos)/static_cast<qreal>(diffTime+0.000001);
             duration = sqrt(abs(m_stepSpeed))*1000;
+
+            /*预算滑惯性动距离,4.0为调优数值*/
+            m_stepSpeed /= sqrt(font.pointSize()*4.0);
+            change = m_stepSpeed*sqrt(abs(m_stepSpeed))*100;
 
             return true;
         }
