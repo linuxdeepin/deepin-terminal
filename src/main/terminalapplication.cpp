@@ -21,6 +21,7 @@
 #include "terminalapplication.h"
 #include "mainwindow.h"
 #include "service.h"
+#include "DKeySequenceEdit"
 
 // qt
 #include <QDebug>
@@ -97,6 +98,33 @@ void TerminalApplication::handleQuitAction()
 *******************************************************************************/
 bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
+    // 针对DTK做的特殊处理,等DTK自己完成后,需要删除
+    if (object->metaObject()->className() == QStringLiteral("Dtk::Widget::DKeySequenceEdit")) {
+        static bool isEnableEdit = true;     // true 可以Enter进入编辑状态 false 此时Enter为快捷键输入
+        // 焦点进入快捷键编辑
+        if (event->type() == QEvent::FocusOut) {
+            // 焦点出去后,可以Enter进入编辑状态
+            isEnableEdit = true;
+        }
+        if (event->type() == QEvent::KeyPress && isEnableEdit) {
+            QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
+            // 在dtk的自定义快捷键输入框上按Enter
+            if (keyevent->key() == Qt::Key_Enter
+                    || keyevent->key() == Qt::Key_Return
+                    || keyevent->key() == Qt::Key_Space) {
+                // 获取DKeySequenceEdit
+                DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
+                // 找到其中的QLabel
+                QList<Dtk::Widget::DLabel *> childern = edit->findChildren<Dtk::Widget::DLabel *>();
+                // 发送QMouseEvent
+                QMouseEvent mouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+                DApplication::sendEvent(childern[0], &mouseEvent);
+                isEnableEdit = false;
+                return true;
+            }
+        }
+    }
+
     // ALT+M = 右键
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
@@ -137,7 +165,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             /***add begin by ut001121 zhangmeng 20200825 模拟发送ContextMenu事件 修复BUG44282***/
             QPoint pos;
             QContextMenuEvent menuEvent(QContextMenuEvent::Keyboard, pos);
-            qDebug()<<"------------"<<menuEvent.type();
+            qDebug() << "------------" << menuEvent.type();
             QApplication::sendEvent(object, &menuEvent);
             /***add end by ut001121***/
 
@@ -146,6 +174,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 
         return QApplication::notify(object, event);
     }
+
 #if 0
     // 快捷键检测
     bool spont = event->spontaneous();
