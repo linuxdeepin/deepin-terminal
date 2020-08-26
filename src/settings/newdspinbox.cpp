@@ -234,12 +234,8 @@ void NewDspinBox::correctValue()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    drawCursor
- 2. @作者:    ut001121 zhangmeng
- 3. @日期:    2020-08-11
- 4. @说明:
-*******************************************************************************/
+/***del begin by ut001121 zhangmeng 20200515 修复BUG44606***/
+#if 0
 //拷贝了Qt QTextLayout类的源码
 void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition, int width) const
 {
@@ -307,4 +303,5 @@ void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition
     }
     return;
 }
-
+#endif
+/***del end by ut001121***/
