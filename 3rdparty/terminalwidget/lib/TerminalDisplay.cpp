@@ -1887,11 +1887,13 @@ void TerminalDisplay::updateImageSize()
 //the same signal as the one for a content size change
 void TerminalDisplay::showEvent(QShowEvent*)
 {
-    emit changedContentSizeSignal(_contentHeight,_contentWidth);
+    //屏蔽原因：因为切换tab页时，会触发优化shell后的resize清行功能
+    //emit changedContentSizeSignal(_contentHeight,_contentWidth);
 }
 void TerminalDisplay::hideEvent(QHideEvent*)
 {
-    emit changedContentSizeSignal(_contentHeight,_contentWidth);
+    //屏蔽原因：因为切换tab页时，会触发优化shell后的resize清行功能
+    //emit changedContentSizeSignal(_contentHeight,_contentWidth);
 }
 
 /* ------------------------------------------------------------------------- */
