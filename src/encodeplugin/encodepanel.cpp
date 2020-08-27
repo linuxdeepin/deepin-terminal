@@ -40,13 +40,8 @@ EncodePanel::EncodePanel(QWidget *parent)
     setAutoFillBackground(true);
     setFocusProxy(m_encodeView);
 
-    /********************* Modify by m000714 daizhengwen End ************************/
-    QScroller::grabGesture(m_encodeView, QScroller::TouchGesture);
-
     QHBoxLayout *hLayout = new QHBoxLayout();
-    /*hLayout->addSpacing(10);*/
     hLayout->addWidget(m_encodeView);
-    /*hLayout->addSpacing(10);*/
 
     // init layout.
     QVBoxLayout *layout = new QVBoxLayout(this);

@@ -50,9 +50,7 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setFocusPolicy(Qt::TabFocus);
     /** mod by ut001121 zhangmeng 20200718 for sp3 keyboard interaction */
     setSelectionMode(QListView::SingleSelection);
-    /** del by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction
-    setVerticalScrollMode(ScrollPerItem);
-    */
+
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -117,7 +115,8 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
     m_foucusReason = event->reason();
 
     // 判断焦点
-    if (getFocusReason() == Qt::TabFocusReason || getFocusReason() == Qt::BacktabFocusReason) {
+    if (m_foucusReason == Qt::TabFocusReason || m_foucusReason == Qt::BacktabFocusReason) {
+        qDebug()<< __FUNCTION__ << m_foucusReason << "Current Encode:" << m_modelIndexChecked.data().toString();
         setCurrentIndex(m_modelIndexChecked);
     }
     /** add end by ut001121 zhangmeng 20200718 */
@@ -135,9 +134,6 @@ void EncodeListView::focusOutEvent(QFocusEvent *event)
     /** add by ut001121 zhangmeng 20200718 for sp3 keyboard interaction*/
     // mod by ut001121 zhangmeng 20200731 设置无效焦点原因 修复BUG40390
     m_foucusReason = INVALID_FOCUS_REASON;
-
-    /** del by ut001121 zhangmeng 20200723 for sp3 keyboard interaction*/
-    //emit focusOut();
 
     DListView::focusOutEvent(event);
 }
@@ -220,13 +216,13 @@ void EncodeListView::mousePressEvent(QMouseEvent *event)
 void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
 {
     /** add begin by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
-    /***add mod by ut001121 zhangmeng 20200813 触摸屏下移动距离超过COORDINATE_ERROR_Y则认为是滑动事件 修复BUG42261***/
+    /***mod by ut001121 zhangmeng 20200813 触摸屏下移动距离超过COORDINATE_ERROR_Y则认为是滑动事件 修复BUG42261***/
     if (Qt::MouseEventSynthesizedByQt == event->source()
             && m_touchSlideMaxY > COORDINATE_ERROR_Y) {
         event->accept();
         return;
     }
-    /***add mod by ut001121***/
+    /***mod by ut001121***/
     /** add end by ut001121 */
 
     return DListView::mouseReleaseEvent(event);
@@ -281,8 +277,11 @@ QSize EncodeListView::contentsSize() const
 void EncodeListView::onListViewClicked(const QModelIndex &index)
 {
     if (!index.isValid()) {
+        qDebug()<< __FUNCTION__ << "Error:" << index;
         return;
     }
+
+    qDebug()<< __FUNCTION__ << "Old:" << m_modelIndexChecked.data().toString() << "New:" << index.data().toString();
 
     //当前Checked子项改为Unchecked状态
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
@@ -308,7 +307,7 @@ void EncodeListView::checkEncode(QString encode)
 {
     // 判断是否是当前窗口
     if (this->isActiveWindow()) {
-        qDebug() << "check encode " << encode;
+        qDebug() << __FUNCTION__ << encode;
         QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
         // 遍历编码
         for (int row = 0; row < model->rowCount(); row++) {

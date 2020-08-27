@@ -146,6 +146,9 @@ void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
         // 终端编码
         encode = term->encode();
     }
+
+    //更新编码
+    qDebug()<< __FUNCTION__ << term->isConnectRemote() << encode;
     m_encodePanel->updateEncode(encode);
 }
 
