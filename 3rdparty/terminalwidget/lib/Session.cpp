@@ -784,6 +784,10 @@ void Session::preRedraw(QByteArray & data)
     QByteArray byteClear("\x0d\x1b\x5b\x4b\x1b\x5b\x41\u0007");
 
     switch (m_RedrawStep) {
+    case RedrawStep0_None://将非resize时保存的信息清除
+        _emulation->m_ResizeSaveType = Emulation::SaveAll;
+        _emulation->resizeAllString.clear();
+        break;
     case RedrawStep1_Ctrl_u_Received:
         qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data;
         entryRedrawStep(RedrawStep2_Clear_Received);
@@ -811,14 +815,14 @@ void Session::tailRedraw()
 {
     qDebug()<<"startPrompt"<<_emulation->startPrompt;
     qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-    qDebug()<<"swapByte"<<_shellProcess->swapByte;
+    //qDebug()<<"swapByte"<<_shellProcess->swapByte;
 
     // 每次重绘的入口
     onRedrawData(m_RedrawStep);
 
     qDebug()<<"startPrompt"<<_emulation->startPrompt;
     qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-    qDebug()<<"swapByte"<<_shellProcess->swapByte;
+    //qDebug()<<"swapByte"<<_shellProcess->swapByte;
 
 }
 
@@ -909,7 +913,7 @@ void Session::onRedrawData(RedrawStep step)
         }
         qDebug()<<"startPrompt"<<_emulation->startPrompt;
         qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-        qDebug()<<"swapByte"<<_shellProcess->swapByte;
+        //qDebug()<<"swapByte"<<_shellProcess->swapByte;
         break;
 
     case Session::RedrawStep4_SwapText:
