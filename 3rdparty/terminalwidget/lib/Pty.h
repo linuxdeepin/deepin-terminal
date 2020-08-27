@@ -212,6 +212,7 @@ Q_OBJECT
      * @param length Length of @p buffer.
      */
     void sendData(const char* buffer, int length);
+    bool processRedraw(QByteArray &info);
 
   signals:
 

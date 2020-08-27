@@ -316,7 +316,7 @@ void Vt102Emulation::receiveChar(wchar_t cc)
     if (lec(1,0,ESC)) { return; }
     if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('['); return; }
     if (les(2,1,GRP)) { return; }
-    if (Xte         ) { processWindowAttributeChange(); resetTokenizer(); return; }
+    if (Xte         ) { processWindowAttributeChange(); resetTokenizer(); if(m_ResizeSaveType == SaveAll)  resizeAllString.clear(); return; }
     if (Xpe         ) { prevCC = cc; return; }
     if (lec(3,2,'?')) { return; }
     if (lec(3,2,'>')) { return; }

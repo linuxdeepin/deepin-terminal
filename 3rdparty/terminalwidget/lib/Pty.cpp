@@ -521,56 +521,55 @@ void Pty::sendData(const char *data, int length)
             }
         }
     }
-//    lastCommandStateIsResize = false;
-//    if (!pty()->write(data, length)) {
-//        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-//        return;
-//    }
-//    return;
 
-    QByteArray info = QByteArray(data,length);
-    qDebug()<<lastCommandStateIsResize;
-    if(lastCommandStateIsResize /*&& hasStart*/)
-    {
-        if(*m_RedrawStep == Session::RedrawStep0_None)
-        {
-            m_userKey += info;
-
-            emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
-
-            return;
-        }
-        if(*m_RedrawStep == Session::RedrawStep4_SwapText)
-        {
-            if(info.isEmpty())
-            {
-                *m_RedrawStep = Session::RedrawStep5_UserKey;
-            }
-        }
-        if(*m_RedrawStep == Session::RedrawStep5_UserKey)
-        {
-            //m_userKey += info;
-            info = m_userKey;
-            m_userKey .clear();
-            *m_RedrawStep = Session::RedrawStep0_None;
-            qDebug()<<"resize is over , now all is normal";
-            //_shellProcess->Step2_Clear = false;
-            lastCommandStateIsResize = false;
-            //m_RedrawStep = RedrawStep0_None;
-            //return;
-        }
-    }
-
-
-    if(info.length() == 0)
+    QByteArray buffer = QByteArray(data,length);
+    qDebug()<<lastCommandStateIsResize<<*m_RedrawStep;
+    if(!processRedraw(buffer))
     {
         return;
     }
 
-    if (!pty()->write(info.data(), info.length())) {
+
+    if(buffer.length() == 0)
+    {
+        return;
+    }
+
+    if (!pty()->write(buffer.data(), buffer.length())) {
         qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
         return;
     }
+}
+
+bool Pty::processRedraw(QByteArray &buffer)
+{
+    if(!lastCommandStateIsResize /*&& hasStart*/)
+    {
+        return true;
+    }
+    switch (*m_RedrawStep) {
+    case Session::RedrawStep0_None:
+        m_userKey += buffer;
+        emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
+        return false;
+    case Session::RedrawStep4_SwapText:
+        if(!buffer.isEmpty())
+        {
+            break;
+        }
+        *m_RedrawStep = Session::RedrawStep5_UserKey;
+    case Session::RedrawStep5_UserKey:
+        buffer = m_userKey;
+        m_userKey .clear();
+        *m_RedrawStep = Session::RedrawStep0_None;
+        qDebug()<<"resize is over , now all is normal"<<*m_RedrawStep;
+        lastCommandStateIsResize = false;
+        break;
+    default:
+        break;
+    }
+
+    return  true;
 }
 
 void Pty::dataReceived()

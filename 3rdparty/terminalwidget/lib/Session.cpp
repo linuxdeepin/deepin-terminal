@@ -117,7 +117,11 @@ Session::Session(QObject *parent)
 
     connect(_shellProcess, SIGNAL(receivedData(const char *, int)), this, SLOT(onReceiveBlock(const char *, int)));
     connect(_shellProcess, &Pty::redrawStepChanged,  this, [this](RedrawStep step){
-           onRedrawData(RedrawStep1_Ctrl_u);
+        if(m_RedrawStep == RedrawStep0_None)
+        {
+            onRedrawData(RedrawStep1_Ctrl_u);
+        }
+
     });
 //    connect(_shellProcess, &Pty::customFixStepChanged,  _emulation, [this](Pty::CustomFixStep step)
 //    {
@@ -915,7 +919,11 @@ void Session::onRedrawData(RedrawStep step)
         //m_RedrawStep = RedrawStep0_None;
         return;
     }
-    m_RedrawStep = RedrawStep(1+ m_RedrawStep);
+    // 如果流程处理完了，回来的时候就变成了RedrawStep0_None
+    if(m_RedrawStep != RedrawStep0_None)
+    {
+        m_RedrawStep = RedrawStep(1+ m_RedrawStep);
+    }
 }
 
 void Session::setProfileKey(const QString & key)
@@ -1262,7 +1270,7 @@ void Session::onReceiveBlock(const char *buf, int len)
 {
 
     qDebug() << "onReceiveBlock" << QString::fromLatin1(buf, len);
-
+    qDebug()<<"m_RedrawStep"<<m_RedrawStep;
     QByteArray byteBuf(buf, len);
     preRedraw(byteBuf);
     _emulation->resizeMode = _shellProcess->lastCommandStateIsResize;
