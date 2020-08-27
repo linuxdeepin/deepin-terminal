@@ -761,7 +761,7 @@ void Session::deleteReturnChar(QByteArray &data)
     }
     if(deleteOK)
     {
-        entryRedrawStep(RedrawStep3_Return_Received);
+        //entryRedrawStep(RedrawStep3_Return_Received);
         _emulation->m_ResizeSaveType = Emulation::SavePrompt;
         _emulation->hasMorespace = false;
         _emulation->startPrompt.clear();
@@ -820,6 +820,7 @@ void Session::onRedrawData(RedrawStep step)
             byteSwapText.append(_emulation->swapByte);
             if(byteSwapText.count() != 0)
             {
+                entryRedrawStep(RedrawStep4_SwapText);
                 _emulation->sendString(byteSwapText.data(),byteSwapText.count());
             }
             else {
@@ -835,9 +836,12 @@ void Session::onRedrawData(RedrawStep step)
         break;
 
     case Session::RedrawStep4_SwapText:
+        //entryRedrawStep(RedrawStep5_UserKey);
         _emulation->sendString("",0);
-        break;
+        return;
+    //正常情况走，发送空时不走
     case Session::RedrawStep5_UserKey:
+        _emulation->sendString("",0);
         //m_RedrawStep = RedrawStep0_None;
         return;
     }
@@ -1206,7 +1210,7 @@ void Session::onReceiveBlock(const char *buf, int len)
     // 重绘的尾处理，要解码信息
     tailRedraw();
 
-    emit receivedData(QString::fromLatin1(m_swapBuffer, m_swapBufferSize));
+    emit receivedData(QString::fromLatin1(byteBuf.data(), byteBuf.length()));
 }
 
 QSize Session::size()

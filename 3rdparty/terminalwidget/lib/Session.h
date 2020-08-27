@@ -644,12 +644,6 @@ private:
 
     int ptySlaveFd;
 
-    char * m_swapBuffer = nullptr;
-
-    int m_swapBufferSize = 0;
-
-
-
 };
 
 /**

@@ -554,7 +554,7 @@ bool Pty::processRedraw(QByteArray &buffer)
         buffer = m_userKey;
         m_userKey .clear();
         *m_redrawStep = Session::RedrawStep0_None;
-        qDebug()<<"resize is over , now all is normal"<<*m_redrawStep;
+        qDebug()<<"resize is over , now all is normal"<<*m_redrawStep << "m_userKey is:" <<buffer;
         m_inResizeMode = false;
         break;
     default:
@@ -571,25 +571,25 @@ void Pty::dataReceived()
     QString recvData = QString(data);
 
     //qDebug() << "____________________recv:" << recvData;
-//    /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
-//    // 乱码提示信息不显示
-//    if (recvData.contains("bash: $'\\212")
-//            || recvData.contains("bash: **0800000000022d：")
-//            || recvData.contains("**^XB0800000000022d")
-//            || recvData.startsWith("**\u0018B0800000000022d\r\u008A")) {
-//        return;
-//    }
+    /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
+    // 乱码提示信息不显示
+    if (recvData.contains("bash: $'\\212")
+            || recvData.contains("bash: **0800000000022d：")
+            || recvData.contains("**^XB0800000000022d")
+            || recvData.startsWith("**\u0018B0800000000022d\r\u008A")) {
+        return;
+    }
 
-//    // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
-//    if (recvData.contains("\u008A")) {
-//        recvData.replace("\u008A", "\b \b #");
-//        data = recvData.toUtf8();
-//    }
+    // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
+    if (recvData.contains("\u008A")) {
+        recvData.replace("\u008A", "\b \b #");
+        data = recvData.toUtf8();
+    }
 
-//    if (recvData == "rz waiting to receive.") {
-//        recvData += "\r\n";
-//        data = recvData.toUtf8();
-//    }
+    if (recvData == "rz waiting to receive.") {
+        recvData += "\r\n";
+        data = recvData.toUtf8();
+    }
     /********************* Modify by m000714 daizhengwen End ************************/
 
 
