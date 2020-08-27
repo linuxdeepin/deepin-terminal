@@ -55,8 +55,6 @@ using namespace Konsole;
 
 void Pty::setWindowSize(int lines, int cols)
 {
-
-
    // if((_windowColumns == cols) && (_windowLines == lines) && !lastCommandStateIsResize)
     //{
     //    return;
@@ -296,9 +294,17 @@ void Pty::init()
     m_redrawTimer->setSingleShot(true);
     connect(pty(), SIGNAL(readyRead()), this, SLOT(dataReceived()));
     setPtyChannels(KPtyProcess::AllChannels);
-    connect(m_redrawTimer, &QTimer::timeout, this, [this]{
+    connect(m_redrawTimer, &QTimer::timeout, this, [this]{        
         //m_resizeTimer.stop();
-        emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
+        qDebug()<<"m_redrawTimer timeout";
+        //qDebug()<<"setWindowSize"<<lines<<cols;
+//        if (pty()->masterFd() >= 0)
+//        {
+//            pty()->setWinSize(_windowLines, _windowColumns);
+//        }
+//        QTimer::singleShot(10, this, [this]() {
+            emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
+        //});
     });
 }
 
@@ -462,7 +468,7 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
 }
 /******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
 
-void Pty::sendData(const char *data, int length)
+void Pty::sendData(const char *data, int length,  bool immediatelyRun)
 {
 //    if (!length) {
 //        return;
@@ -473,8 +479,6 @@ void Pty::sendData(const char *data, int length)
     if (currCommand.length() > 0 && currCommand.endsWith('\n')) {
         isCustomCommand = true;
     }
-    lastSend = currCommand;
-    qDebug()<<"new send info"<<lastSend;
 
     //检测到按了回车键
     if (((*data) == '\r' || isCustomCommand) && _bUninstall == false) {
@@ -515,9 +519,10 @@ void Pty::sendData(const char *data, int length)
         }
     }
 
+    lastSend = currCommand;
     QByteArray buffer = QByteArray(data,length);
-    qDebug()<<m_inResizeMode<<*m_redrawStep;
-    if(!processRedraw(buffer))
+    qDebug()<<"new send info"<<lastSend<<m_inResizeMode<<*m_redrawStep <<immediatelyRun;
+    if(!processRedraw(buffer, immediatelyRun))
     {
         return;
     }
@@ -533,17 +538,23 @@ void Pty::sendData(const char *data, int length)
     }
 }
 
-bool Pty::processRedraw(QByteArray &buffer)
+bool Pty::processRedraw(QByteArray &buffer, bool immediatelyRun)
 {
+    if(!immediatelyRun && *m_redrawStep != Session::RedrawStep0_None)
+    {
+        qDebug()<<"m_userKey update"<<m_userKey<<*m_redrawStep;
+        m_userKey += buffer;
+        return  false;
+    }
     if(!m_inResizeMode /*&& hasStart*/)
     {
         return true;
     }
     switch (*m_redrawStep) {
     case Session::RedrawStep0_None:
-        m_userKey += buffer;
-        emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
-        return false;
+        //m_userKey += buffer;
+        //emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
+        return true;
     case Session::RedrawStep4_SwapText:
         if(!buffer.isEmpty())
         {

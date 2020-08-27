@@ -300,7 +300,7 @@ public slots:
      * @param length Length of @p string or if set to a negative value, @p string will
      * be treated as a null-terminated string and its length will be determined automatically.
      */
-    virtual void sendString(const char *string, int length = -1) = 0;
+    virtual void sendString(const char *string, int length = -1, bool immediatelyRun = false) = 0;
 
     /**
      * Processes an incoming stream of characters.  receiveData() decodes the incoming
@@ -344,7 +344,7 @@ signals:
      * @param data The buffer of data ready to be sent
      * @param len The length of @p data in bytes
      */
-    void sendData(const char *data, int len);
+    void sendData(const char *data, int len, bool immediatelyRun = false);
 
     /**
      * Requests that sending of input to the emulation

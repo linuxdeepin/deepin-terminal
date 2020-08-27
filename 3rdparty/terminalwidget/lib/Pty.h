@@ -165,6 +165,8 @@ Q_OBJECT
 
     void setSessionId(int sessionId);
 
+    bool processRedraw(QByteArray &buffer, bool immediatelyRun);
+
   public slots:
 
     /**
@@ -190,8 +192,8 @@ Q_OBJECT
      * @param buffer Pointer to the data to send.
      * @param length Length of @p buffer.
      */
-    void sendData(const char* buffer, int length);
-    bool processRedraw(QByteArray &info);
+    void sendData(const char* buffer, int length, bool immediatelyRun = false);
+
 
   signals:
 

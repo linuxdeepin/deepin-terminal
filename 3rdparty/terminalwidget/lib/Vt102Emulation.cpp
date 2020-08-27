@@ -863,12 +863,12 @@ void Vt102Emulation::clearScreenAndSetColumns(int columnCount)
     _currentScreen->setCursorYX(0,0);
 }
 
-void Vt102Emulation::sendString(const char* s , int length)
+void Vt102Emulation::sendString(const char* s , int length, bool immediatelyRun)
 {
   if ( length >= 0 )
-    emit sendData(s,length);
+    emit sendData(s,length, immediatelyRun);
   else
-    emit sendData(s,static_cast<int>(strlen(s)));
+    emit sendData(s,static_cast<int>(strlen(s)), immediatelyRun);
 }
 
 void Vt102Emulation::reportCursorPosition()

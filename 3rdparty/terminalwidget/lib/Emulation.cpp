@@ -270,7 +270,7 @@ void Emulation::sendKeyEvent(QKeyEvent *ev)
     }
 }
 
-void Emulation::sendString(const char *, int)
+void Emulation::sendString(const char *, int, bool)
 {
     // default implementation does nothing
 }

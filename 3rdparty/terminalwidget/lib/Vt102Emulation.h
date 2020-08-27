@@ -91,7 +91,7 @@ public:
 
 public slots:
   // reimplemented from Emulation
-  void sendString(const char*,int length = -1) override;
+  void sendString(const char*,int length = -1, bool immediatelyRun = false) override;
   void sendText(const QString& text) override;
   void sendKeyEvent(QKeyEvent*) override;
   void sendMouseEvent(int buttons, int column, int line, int eventType) override;
