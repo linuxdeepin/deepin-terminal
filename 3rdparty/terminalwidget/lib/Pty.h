@@ -67,31 +67,12 @@ class Pty: public KPtyProcess
 Q_OBJECT
 
   public:
-    QTimer *m_resizeTimer = nullptr;
-    QString swapByte;
+    QTimer *m_redrawTimer = nullptr;
     QString lastSend;
     QByteArray m_userKey;
-    bool lastCommandStateIsResize = false;
-    bool hasStart = false;
-    //bool Step3_Modify = false;
-    //bool Step2_Clear = false;
-    //bool Step1_Ctrl_u = false;
-    //bool hasStart =false;
-    QTimer *ModifySend = nullptr;
-    QByteArray modifyByte;
-    Session::RedrawStep *m_RedrawStep;
-
-    enum CustomFixStep
-    {
-        FixStep1_Ctrl_u,
-        FixStep2_Clear,
-        FixStep3_Return,
-        FixStep4_SwapText,
-        FixStep5_UserKey,
-        FixStep6_Complete
-    };
-    CustomFixStep m_CustomFixStep = FixStep5_UserKey;
-    Q_ENUM(CustomFixStep)
+    bool m_inResizeMode = false;
+    bool m_hasStart = false;
+    Session::RedrawStep *m_redrawStep = nullptr;
 
     /**
      * Constructs a new Pty.
@@ -112,8 +93,6 @@ Q_OBJECT
 
     ~Pty() override;
 
-    void entryCustomFixStep(CustomFixStep step);
-    void deleteReturnChar(QByteArray & data);
     /**
      * Starts the terminal process.
      *
@@ -226,7 +205,6 @@ Q_OBJECT
     void receivedData(const char* buffer, int length);
     void redrawStepChanged(Session::RedrawStep step);
 
-    void customFixStepChanged(CustomFixStep step);
     void shellHasStart();
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     bool ptyUninstallTerminal(QString commandname);

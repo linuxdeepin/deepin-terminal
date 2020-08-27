@@ -157,13 +157,9 @@ public:
         SaveNone
     };
     ResizeSaveType m_ResizeSaveType = SaveNone;
-    bool isPrompt = false;
-    bool resizeMode = false;
-    QString resizeAllString;
     bool hasMorespace = false;
+    QString resizeAllString;
     QString startPrompt;
-    QString bodyText;
-    //RedrawStep m_RedrawStep = RedrawStep6_Complete;
     QString swapByte;
 
     /**

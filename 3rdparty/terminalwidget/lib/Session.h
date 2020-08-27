@@ -72,10 +72,8 @@ public:
      * falls back to using the program specified in the SHELL environment
      * variable.
      */
-    int activeStartLine = 0;
 
-    QString lastResizeInfo;
-        //bool lastCommandStateIsResize = false;
+    //bool lastCommandStateIsResize = false;
     Session(QObject* parent = nullptr);
     ~Session() override;
 
@@ -564,7 +562,7 @@ private slots:
 
     void onReceiveBlock( const char * buffer, int len );
     void monitorTimerDone();
-    char * changeReceiveBuffer( const char * buffer, int len );
+    void fixClearLineCmd(QByteArray &buffer);
 
     void onViewSizeChange(int height, int width);
     void onEmulationSizeChange(QSize);

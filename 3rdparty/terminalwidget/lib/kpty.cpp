@@ -692,29 +692,14 @@ bool KPty::setWinSize(int lines, int columns)
     ioctl(d->masterFd, TIOCGWINSZ, (char *)&winSize2);
     if(winSize2.ws_row == lines && winSize2.ws_col == columns )
     {
-        qDebug()<<"setWinSize has chongfu"<<lines<<columns;
+        qDebug()<<"new setWinSize is same with old setting"<<lines<<columns;
         return  true;
     }
-   // return  true;
-
-  // qDebug()<< ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) ;
 
     winSize.ws_row = (unsigned short)lines;
     winSize.ws_col = (unsigned short)columns;
 
     return  ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) ;
-
-
-    //termios
-     //int tt=1;
-
-    //qDebug()<<ioctl(d->masterFd, TCFLSH, 2);
-//     qDebug()<<winSize2.ws_row<<winSize2.ws_col;
-
-    return  true;
-
-    //return tcsetsize(d->masterFd, TIOCSWINSZ, (char *)&winSize) == 0;
-
 }
 
 bool KPty::setEcho(bool echo)

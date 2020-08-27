@@ -1872,9 +1872,9 @@ void TerminalDisplay::updateImageSize()
 
   if ( _resizing )
   {
-      qDebug()<<"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+      qDebug()<<"changedContentSizeSignal";
       showResizeNotification();
-    emit changedContentSizeSignal(oldlin, oldcol); // expose resizeEvent
+      emit changedContentSizeSignal(oldlin, oldcol); // expose resizeEvent
   }
 
   _resizing = false;

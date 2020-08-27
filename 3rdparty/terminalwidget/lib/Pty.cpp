@@ -64,15 +64,15 @@ void Pty::setWindowSize(int lines, int cols)
     lastSend = "";
     _windowColumns = cols;
     _windowLines = lines;
-    if(!hasStart)
+    if(!m_hasStart)
     {
         return;
     }
 
-    lastCommandStateIsResize = true;
-    m_resizeTimer->start(200);
-    qDebug()<<"update lastCommandStateIsResize"<<lastCommandStateIsResize;
-    emit shellHasStart();
+    m_inResizeMode = true;
+    m_redrawTimer->start(200);
+    qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
+    //emit shellHasStart();
 
     qDebug()<<"setWindowSize"<<lines<<cols;
     if (pty()->masterFd() >= 0)
@@ -292,11 +292,11 @@ void Pty::init()
     _xonXoff = true;
     _utf8 = true;
     _bUninstall = false;
-    m_resizeTimer = new QTimer(this);
-    m_resizeTimer->setSingleShot(true);
+    m_redrawTimer = new QTimer(this);
+    m_redrawTimer->setSingleShot(true);
     connect(pty(), SIGNAL(readyRead()), this, SLOT(dataReceived()));
     setPtyChannels(KPtyProcess::AllChannels);
-    connect(m_resizeTimer, &QTimer::timeout, this, [this]{
+    connect(m_redrawTimer, &QTimer::timeout, this, [this]{
         //m_resizeTimer.stop();
         emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
     });
@@ -304,13 +304,6 @@ void Pty::init()
 
 Pty::~Pty()
 {
-}
-
-void Pty::entryCustomFixStep(CustomFixStep step)
-{
-    qDebug()<<"entry"<<QMetaEnum::fromType<CustomFixStep>().key(step);
-    m_CustomFixStep = step;
-    emit customFixStepChanged(step);
 }
 
 
@@ -481,7 +474,7 @@ void Pty::sendData(const char *data, int length)
         isCustomCommand = true;
     }
     lastSend = currCommand;
-    qDebug()<<"lastSend"<<lastSend;
+    qDebug()<<"new send info"<<lastSend;
 
     //检测到按了回车键
     if (((*data) == '\r' || isCustomCommand) && _bUninstall == false) {
@@ -523,12 +516,11 @@ void Pty::sendData(const char *data, int length)
     }
 
     QByteArray buffer = QByteArray(data,length);
-    qDebug()<<lastCommandStateIsResize<<*m_RedrawStep;
+    qDebug()<<m_inResizeMode<<*m_redrawStep;
     if(!processRedraw(buffer))
     {
         return;
     }
-
 
     if(buffer.length() == 0)
     {
@@ -543,11 +535,11 @@ void Pty::sendData(const char *data, int length)
 
 bool Pty::processRedraw(QByteArray &buffer)
 {
-    if(!lastCommandStateIsResize /*&& hasStart*/)
+    if(!m_inResizeMode /*&& hasStart*/)
     {
         return true;
     }
-    switch (*m_RedrawStep) {
+    switch (*m_redrawStep) {
     case Session::RedrawStep0_None:
         m_userKey += buffer;
         emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
@@ -557,13 +549,13 @@ bool Pty::processRedraw(QByteArray &buffer)
         {
             break;
         }
-        *m_RedrawStep = Session::RedrawStep5_UserKey;
+        *m_redrawStep = Session::RedrawStep5_UserKey;
     case Session::RedrawStep5_UserKey:
         buffer = m_userKey;
         m_userKey .clear();
-        *m_RedrawStep = Session::RedrawStep0_None;
-        qDebug()<<"resize is over , now all is normal"<<*m_RedrawStep;
-        lastCommandStateIsResize = false;
+        *m_redrawStep = Session::RedrawStep0_None;
+        qDebug()<<"resize is over , now all is normal"<<*m_redrawStep;
+        m_inResizeMode = false;
         break;
     default:
         break;
@@ -602,16 +594,15 @@ void Pty::dataReceived()
 
 
     emit receivedData(data.constData(), data.count());
-    if(!hasStart)
-    {
-        hasStart = true;
-        setWindowSize(_windowLines, _windowColumns);
-        //emit shellHasStart();
 
+    // 原来系统一启动就设置大小，导致首次信息，与resize信息混合在一起，无法拆分
+    // 现在收到第一次正常消息后，再进行resize设置
+    if(!m_hasStart)
+    {
+        m_hasStart = true;
+        setWindowSize(_windowLines, _windowColumns);  
     }
 
-//     = cols;
-//     = lines;
 }
 
 void Pty::lockPty(bool lock)

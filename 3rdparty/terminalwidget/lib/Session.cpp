@@ -87,7 +87,7 @@ Session::Session(QObject *parent)
     //create teletype for I/O with shell process
     _shellProcess = new Pty();
     _shellProcess->setSessionId(_sessionId);
-    _shellProcess->m_RedrawStep = &m_RedrawStep;
+    _shellProcess->m_redrawStep = &m_RedrawStep;
     ptySlaveFd = _shellProcess->pty()->slaveFd();
 
     //create emulation backend
@@ -123,29 +123,9 @@ Session::Session(QObject *parent)
         }
 
     });
-//    connect(_shellProcess, &Pty::customFixStepChanged,  _emulation, [this](Pty::CustomFixStep step)
-//    {
-//        switch (step) {
-//        case Pty::FixStep1_Ctrl_u:
-//            _emulation->m_ResizeSaveType = Emulation::SaveNone;
-//            break;
-//        case Pty::FixStep2_Clear:
-//            break;
-//        case Pty::FixStep3_Return:
-//            _emulation->m_ResizeSaveType = Emulation::SavePrompt;
-//            _emulation->startPrompt.clear();
-//            qDebug()<<"startPrompt clear";
-//            break;
-//        case Pty::FixStep4_SwapText:
-//            break;
-//        case Pty::FixStep5_UserKey:
-//            break;
-//        }
-//    });
     connect(_shellProcess, &Pty::shellHasStart,  _emulation, [this]()
     {
-        _emulation->resizeAllString.clear();
-        qDebug()<<"resizeAllString clear, m_ResizeSaveType";
+        qDebug()<<"shellHasStart"<<m_RedrawStep;
         _emulation->m_ResizeSaveType = Emulation::SaveAll;
         entryRedrawStep(RedrawStep0_None);
     });
@@ -504,101 +484,62 @@ void Session::monitorTimerDone()
     _notifiedActivity = false;
 }
 
-char *Session::changeReceiveBuffer(const char *str, int len)
+/*******************************************************************************
+ 1. @函数:    fixClearLineCmd
+ 2. @作者:    ut000439 王培利
+ 3. @日期:    2020-08-27
+ 4. @说明:    清行的修正处理：
+              使用场景resize回来的指令，以及主动clear时候的指令
+*******************************************************************************/
+void Session::fixClearLineCmd(QByteArray &buffer)
 {
-
-    // \u001B[1A  \r\u001B[K
-    char *strAdd2 = "\x1b\x5b\x31\x41\x0d\x1b\x5b\x4b";
-
+    // \r\u001B[K 最基本的清行字符串, bash的这个字符串有问题
+    QByteArray byteClearLine = "\x0d\x1b\x5b\x4b";
+    // \u001B[1A  \r\u001B[K 增加清除一行的指令
+    QByteArray addClearOneLine = "\x1b\x5b\x31\x41\x0d\x1b\x5b\x4b";
+    // bash 有问题的\r\n\r
+    QByteArray bashBugReturn = "\r\n\r";
     // \u001B[A
-    char *strAdd = "\x1b\x5b\x41";
+    QByteArray bashBugAddClearOneLine = "\x1b\x5b\x41";
+
+    // 正确的清除指令
+    QByteArray rightClearLineCmd(byteClearLine);
     // char *strAdd2 = "\x1b\x5b\x41";
-    // \r\u001B[K
-    char str1[] = "\x0d\x1b\x5b\x4b";  //要求替换的字符串
-    // char str2[120] = "\x0d\x1b\x5b\x4b\x1b\x5b\x31\x41\x0d\x1b\x5b\x4b";  //替换成字符串
-    // char str2[120] = "";  //替换成字符串
     // char str4[]="\x1b\x5b\x32\x4a\x0d";   //Esc[2J //	Clear entire screen
     // char str4[]="\x0d\x1b\x5b\x4a";   //Esc[J //	Clear screen from cursor down
 
-    QByteArray byte(str);
+    // 获取上一次一共有多少行
+    Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
+    int curY= vt102->_currentScreen->getCursorY() + vt102->_currentScreen->getHistLines() + 1;
+    int calLines = curY - vt102->_currentScreen->ShellStartLine + 1;
+    int cleanLineCount = calLines - 1;
+    qDebug()<<"auto clean line: "<<m_RedrawStep<< "new last lastPromptColumns =" << calLines <<curY << vt102->_currentScreen->ShellStartLine
+             <<"will clean lines = "<<cleanLineCount;
 
-    QByteArray byte0(str1);
-    QByteArray addByte;
-
-    int cleanLineCount = 0;
-
-   qDebug()<<"_shellProcess->lastCommandStateIsResize"<<_shellProcess->lastCommandStateIsResize<<_shellProcess->lastSend;
-    // 删除\r\n\r
-    char str3[] = "\r\n\r";
-    if (_shellProcess->lastCommandStateIsResize && /*byte.contains("\u0007")*/
-            (m_RedrawStep == RedrawStep2_Clear_Received  ||m_RedrawStep == RedrawStep0_None))
+    // 把原来指令中的相关清行指令还原成最原始的清行指令
+    // 组装应该有的清行信息
+    for (int i = 1; i <= cleanLineCount; i++)
     {
-        qDebug()<<"auto clean line start";
-        Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
-        int curY= vt102->_currentScreen->getCursorY() + vt102->_currentScreen->getHistLines() + 1;
-        int calLines = curY - vt102->_currentScreen->ShellStartLine + 1;
-        cleanLineCount = calLines - 1;
-        qDebug() << "new last lastPromptColumns =" << calLines <<curY << vt102->_currentScreen->ShellStartLine
-                 <<"will clean lines = "<<cleanLineCount;
-        //_shellProcess->Step2_Clear = false;
-
-        for (int i = 1; i <= cleanLineCount; i++)
-        {
-            addByte.append(strAdd2);
-            // memcpy(str2 + i * 8 + 4, strAdd, 8);
-            //qDebug() << "add one" << i;
-            // str2_len+=8;
-            // 去掉所有A ,\r\u001B[KA -> \r\u001B[K
-            byte.replace(byte0 + strAdd, byte0);
-        }
-        //resize最后的信息不知为何为加几个、\b,全干掉
-        for (int i = 0; i <= _views[0]->lines(); i++)
-        {
-            byte.replace(byte0 + strAdd, byte0);
-            if (byte.endsWith("\b"))
-            {
-                qDebug() << "clear \b";
-                qDebug() << byte;
-                byte = byte.left(byte.size() - 1);
-            }
-            // byte.replace("\b","");
-        }
-
-        QByteArray dest_byte(str1);
-        dest_byte.append(addByte);
-
-
-        int nnn = byte.size();
-        // 替换
-        byte.replace(byte0, dest_byte);
-
-        //qDebug() << "byte replace" << byte.size() - nnn << byte0 << dest_byte << _views[0]->lines();
-
-        //_shellProcess->lastCommandStateIsResize = false;
-         qDebug()<<"replace \\r\\n\\r times = "<<byte.count(str3);
-          byte.replace(str3, "");
-
+        rightClearLineCmd.append(addClearOneLine);
+        //buffer.replace(byteClearLine + strAdd, byteClearLine);
     }
-
-
-    //byte.replace(str3, "");
-
-    char str4[] = "\x1b\x5b\x4b\x1b\x5b\x41";
-
-
-    m_swapBufferSize = byte.size();
-    if (m_swapBuffer != nullptr)
+    // resize最后的信息不知为何为加几个\b,全干掉
+    for (int i = 0; i <= _views[0]->lines(); i++)
     {
-        free(m_swapBuffer);
+        // 不知为何bash指令，有时会多很多清行信息，全干掉
+        buffer.replace(byteClearLine + bashBugAddClearOneLine, byteClearLine);
+        if (buffer.endsWith("\b"))
+        {
+            qDebug() << "clear \\b: "<<buffer;
+            buffer = buffer.left(buffer.size() - 1);
+        }
     }
+    // 将前面处理过的原始清行指令替换成该有的清行指令
+    buffer.replace(byteClearLine, rightClearLineCmd);
 
-    m_swapBuffer = ( char * )malloc(m_swapBufferSize);
-    memcpy(m_swapBuffer, byte.data(), m_swapBufferSize);
-
-    qDebug() << "find" << QByteArray(str).count(str1) << QByteArray(str).count(str3) << cleanLineCount << len
-             << m_swapBufferSize <<m_swapBuffer;
-    return m_swapBuffer;
-
+    // 把有问题的\r\n\r 删除
+    qDebug()<<"replace \\r\\n\\r times = "<<buffer.count(bashBugReturn);
+    buffer.replace(bashBugReturn, "");
 }
 
 void Session::activityStateSet(int state)
@@ -666,33 +607,8 @@ void Session::updateTerminalSize(int height, int width)
     // backend emulation must have a _terminal of at least 1 column x 1 line in size
     if (minLines > 0 && minColumns > 0)
     {
-        QString string;
-        QTextStream searchStream(&string);
-        PlainTextDecoder decoder;
-        decoder.begin(&searchStream);
-        decoder.setRecordLinePositions(true);
-
-        // Calculate lines to read and read them
-         Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
-        int curY= vt102->_currentScreen->getCursorY() + vt102->_currentScreen->getHistLines() + 1;
-        int blockStartLine = curY;
-        int chunkEndLine = vt102->_currentScreen->ShellStartLine + 1;
-
-
-
-        _emulation->writeToStream(&decoder, blockStartLine-1, chunkEndLine-1);
-        //qDebug()<<"resize string"<<blockStartLine<<chunkEndLine<<string;
-
-
         _emulation->setImageSize(minLines, minColumns);
         _shellProcess->setWindowSize(minLines, minColumns);
-
-        //_shellProcess->swapByte  = _emulation->bodyText;
-
-
-
-        //_shellProcess->setWorkingDirectory(_shellProcess->workingDirectory()) ;
-       // _shellProcess->updateCursor(_emulation->_currentScreen->getCursorX(), _emulation->_currentScreen->getCursorY());
     }
 }
 
@@ -777,7 +693,7 @@ void Session::entryRedrawStep(Session::RedrawStep step)
 
 void Session::preRedraw(QByteArray & data)
 {
-    if(!_shellProcess->lastCommandStateIsResize)
+    if(!_shellProcess->m_inResizeMode)
     {
         return;
     }
@@ -787,12 +703,14 @@ void Session::preRedraw(QByteArray & data)
     case RedrawStep0_None://将非resize时保存的信息清除
         _emulation->m_ResizeSaveType = Emulation::SaveAll;
         _emulation->resizeAllString.clear();
+        fixClearLineCmd(data);
         break;
     case RedrawStep1_Ctrl_u_Received:
         qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data;
         entryRedrawStep(RedrawStep2_Clear_Received);
         data = byteClear;
         qDebug()<<"Clear info" <<data;
+        fixClearLineCmd(data);
         return ;
     //case FixStep2_Clear:
        // deleteReturnChar(data);
@@ -857,7 +775,7 @@ void Session::deleteReturnChar(QByteArray &data)
 
 void Session::onRedrawData(RedrawStep step)
 {
-    if(!_shellProcess->lastCommandStateIsResize)
+    if(!_shellProcess->m_inResizeMode)
     {
         return;
     }
@@ -1272,44 +1190,21 @@ void Session::zmodemFinished()
 */
 void Session::onReceiveBlock(const char *buf, int len)
 {
-
     qDebug() << "onReceiveBlock" << QString::fromLatin1(buf, len);
     qDebug()<<"m_RedrawStep"<<m_RedrawStep;
     QByteArray byteBuf(buf, len);
-    preRedraw(byteBuf);
-    _emulation->resizeMode = _shellProcess->lastCommandStateIsResize;
 
+    // 重绘的预处理
+    preRedraw(byteBuf);
     if(byteBuf.count() == 0)
     {
         return;
     }
-    changeReceiveBuffer(byteBuf.data(), byteBuf.count());
-
-//    // 在普通情况下记录、\n后的 提示信息
-//    if(!_shellProcess->lastCommandStateIsResize)
-//    {
-//        if(_shellProcess->lastSend == '\r' || (QString::fromLatin1(buf, len).startsWith("\r\n") && len >2))
-//        {
-//            //_emulation->isPrompt= true;
-//            //_emulation->startPrompt.clear();
-//            // _emulation->bodyText.clear();
-
-//            qDebug()<<"bodyText clear";
-//            //updatePrompt = true;
-//        }
-//        else {
-//            //_emulation->isPrompt= false;
-//        }
-//    }
-
     // 解码的入口
-    _emulation->receiveData(m_swapBuffer, m_swapBufferSize);
+    _emulation->receiveData(byteBuf.data(), byteBuf.length());
 
-
+    // 重绘的尾处理，要解码信息
     tailRedraw();
-
-
-
 
     emit receivedData(QString::fromLatin1(m_swapBuffer, m_swapBufferSize));
 }
