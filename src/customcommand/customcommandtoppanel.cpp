@@ -169,9 +169,11 @@ void CustomCommandTopPanel::show(bool bSetFocus)
     m_customCommandSearchPanel->hide();
     m_bSetFocus = bSetFocus;
     if (m_bSetFocus) {
+        qDebug() << "Focus is in Custom panel";
         // 将焦点设置在平面上
         m_customCommandPanel->setFocusInPanel();
     } else {
+        qDebug() << "Focus is in Current page";
         // 将焦点落回终端
         Utils::getMainWindow(this)->focusCurrentPage();
     }
@@ -193,6 +195,7 @@ void CustomCommandTopPanel::show(bool bSetFocus)
 *******************************************************************************/
 void CustomCommandTopPanel::slotsRefreshCommandPanel()
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     m_customCommandPanel->resize(size());
     //m_customCommandPanel->show();
     m_customCommandPanel->refreshCmdPanel();

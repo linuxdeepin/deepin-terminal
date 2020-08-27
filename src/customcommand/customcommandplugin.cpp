@@ -50,6 +50,7 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
         if (MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name) {
             // 若插件已经显示，则隐藏
             if (m_isShow) {
+                qDebug() << "Command top panel hide";
                 getCustomCommandTopPanel()->hideAnim();
                 m_isShow = false;
             }
@@ -128,6 +129,7 @@ CustomCommandTopPanel *CustomCommandPlugin::getCustomCommandTopPanel()
 *******************************************************************************/
 void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
 {
+    qDebug() <<  __FUNCTION__ << ",[" << strTxt << "]";
     if (!strTxt.isEmpty()) {
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
         m_mainWindow->focusCurrentPage();

@@ -159,6 +159,7 @@ void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
 *******************************************************************************/
 void CustomCommandSearchRstPanel::refreshData()
 {
+    qDebug() <<  __FUNCTION__ ;
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, m_strFilter);
 }
 
@@ -170,6 +171,7 @@ void CustomCommandSearchRstPanel::refreshData()
 *******************************************************************************/
 void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 {
+    qDebug() <<  __FUNCTION__ << " filter=" << strFilter;
     setSearchFilter(strFilter);
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, strFilter);
 }
@@ -182,6 +184,7 @@ void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 *******************************************************************************/
 void CustomCommandSearchRstPanel::doCustomCommand(const QString &strKey)
 {
+    qDebug() << "doCustomCommand,key=" << strKey;
     QAction *item = ShortcutManager::instance()->findActionByKey(strKey);
     QString strCommand = item->data().toString();
     if (!strCommand.endsWith('\n')) {

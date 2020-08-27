@@ -97,7 +97,7 @@ void CustomCommandPanel::showAddCustomCommandDlg()
         qDebug() << "finished" << result;
 
         if (result == QDialog::Accepted) {
-
+            qDebug() << "Accepted";
             QAction *newAction = m_pdlg->getCurCustomCmd();
             m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
             /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
@@ -207,6 +207,7 @@ void CustomCommandPanel::refreshCmdSearchState()
 *******************************************************************************/
 void CustomCommandPanel::setFocusInPanel()
 {
+    qDebug() <<  __FUNCTION__ << __LINE__;
     if (m_searchEdit->isVisible()) {
         // 搜索框在
         m_searchEdit->lineEdit()->setFocus();
