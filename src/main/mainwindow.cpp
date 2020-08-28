@@ -2457,7 +2457,7 @@ void QuakeWindow::initWindowAttribute()
     QDesktopWidget *desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
-    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint /*| Qt::Dialog*/);
+    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint /*| Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
 
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
@@ -2724,6 +2724,7 @@ bool QuakeWindow::event(QEvent *event)
 *******************************************************************************/
 bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
 {
+#if 0
     // 由于MainWindow是qApp注册的时间过滤器,所以这里需要判断
     // 只处理雷神的事件 QuakeWindowWindow是Qt内置用来管理QuakeWindow的Mouse事件的object
     if (watched->objectName() != "QuakeWindowWindow") {
@@ -2775,6 +2776,7 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
             break;
         }
     }
+#endif
     return MainWindow::eventFilter(watched, event);
 
 }
