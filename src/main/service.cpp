@@ -293,12 +293,13 @@ void Service::showSettingDialog(MainWindow *pOwner)
     //保存设置框的有拥者
     m_settingOwner = pOwner;
     if (nullptr != m_settingDialog) {
-        /******** Modify by ut000610 daizhengwen 2020-06-23:每当点击设置，都重新new一个settingDialog Begin***************/
-        delete m_settingDialog;
-        m_settingDialog = nullptr;
-        // 重新new dialog  ----由于设置文字大小，窗口不会自适应，所以需要重新new，如果dtk设置框随设置变化大小，此处可去
-        initSetting();
-        /********************* Modify by ut000610 daizhengwen End ************************/
+        // 这个功能DTK已经解决
+//        /******** Modify by ut000610 daizhengwen 2020-06-23:每当点击设置，都重新new一个settingDialog Begin***************/
+//        delete m_settingDialog;
+//        m_settingDialog = nullptr;
+//        // 重新new dialog  ----由于设置文字大小，窗口不会自适应，所以需要重新new，如果dtk设置框随设置变化大小，此处可去
+//        initSetting();
+//        /********************* Modify by ut000610 daizhengwen End ************************/
         //雷神需要让窗口置顶，可是普通窗口不要
         if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
@@ -310,7 +311,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
         }
         // 显示窗口
-        m_settingDialog->move(m_settingDialog->pos());
+//        m_settingDialog->move(m_settingDialog->pos());
         /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置窗口时，执行等宽字体出来 Begin***************/
         Settings::instance()->HandleWidthFont();
         FontFilter::instance()->HandleWidthFont();
