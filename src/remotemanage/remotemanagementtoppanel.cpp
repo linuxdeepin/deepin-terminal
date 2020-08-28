@@ -107,6 +107,7 @@ void RemoteManagementTopPanel::setFocusInPanel()
 *******************************************************************************/
 void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 {
+    qDebug() << "RemoteManagementTopPanel show search panel.";
     // 记录搜索界面的搜索条件
     m_filterStack.push_back(strFilter);
     // 设置搜索界面大小
@@ -165,6 +166,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 *******************************************************************************/
 void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool isFocusOn)
 {
+    qDebug() << "RemoteManagementTopPanel show group panel.";
     // 记录当前分组
     m_group = strGroupName;
     // 设置分组界面大小
@@ -235,6 +237,7 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
 *******************************************************************************/
 void RemoteManagementTopPanel::showPrevPanel()
 {
+    qDebug() << "RemoteManagementTopPanel show previous panel.";
     PanelState state;
     ServerConfigManager::PanelType prevType;
     // 栈为空

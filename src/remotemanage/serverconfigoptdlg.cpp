@@ -477,6 +477,7 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 *******************************************************************************/
 void ServerConfigOptDlg::updataData(ServerConfig *curServer)
 {
+    qDebug() << "ServerConfigOptDlg server configuration options updata data.";
     // 读取配置
     QList<QString> textCodeList = getTextCodec();
     QList<QString> backSpaceKeyList = getBackSpaceKey();
@@ -542,18 +543,7 @@ ServerConfig ServerConfigOptDlg::getData()
 *******************************************************************************/
 void ServerConfigOptDlg::resetCurServer(ServerConfig config)
 {
-    m_curServer->m_serverName = config.m_serverName;
-    m_curServer->m_address = config.m_address;
-    m_curServer->m_userName = config.m_userName;
-    m_curServer->m_password = config.m_password;
-    m_curServer->m_privateKey = config.m_privateKey;
-    m_curServer->m_port = config.m_port;
-    m_curServer->m_group = config.m_group;
-    m_curServer->m_path = config.m_path;
-    m_curServer->m_command = config.m_command;
-    m_curServer->m_encoding = config.m_encoding;
-    m_curServer->m_backspaceKey = config.m_backspaceKey;
-    m_curServer->m_deleteKey = config.m_deleteKey;
+    m_curServer = &config;
 }
 
 /*******************************************************************************
@@ -564,6 +554,7 @@ void ServerConfigOptDlg::resetCurServer(ServerConfig config)
 *******************************************************************************/
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
+    qDebug() << "ServerConfigOptDlg add and save button clicled slot function.";
     // 服务器名为空
     if (m_serverName->text().trimmed().isEmpty()) {
         m_serverName->showAlertMessage(tr("Please enter a server name"), m_serverName);
