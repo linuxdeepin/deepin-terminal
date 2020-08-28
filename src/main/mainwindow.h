@@ -97,6 +97,7 @@ public:
     static constexpr const char *CONFIG_QUAKE_WINDOW_HEIGHT = "quake_window_height";
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
     static constexpr const char *QKEYSEQUENCE_PASTE_BUILTIN = "Shift+Ins";
+    static constexpr const char *QKEYSEQUENCE_COPY_BUILTIN = "Ctrl+Ins";
 
     /******** Add by ut001000 renfeixiang 2020-08-07:将m_MinWidth和m_MinHeight设置成全局变量***************/
     // 窗口最小宽度

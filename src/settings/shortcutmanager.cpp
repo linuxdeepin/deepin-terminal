@@ -41,6 +41,9 @@ void ShortcutManager::initShortcuts()
 
     /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
     m_builtinShortcuts << QString(MainWindow::QKEYSEQUENCE_PASTE_BUILTIN);
+
+    /******** Modify by ut001000 renfeixiang 2020-08-28:修改 bug 44477***************/
+    m_builtinShortcuts << QString(MainWindow::QKEYSEQUENCE_COPY_BUILTIN);
     /********************* Modify by n014361 wangpeili End ************************/
 
     // 切换标签页，防止和ctrl+shift+1等冲突（无法识别）

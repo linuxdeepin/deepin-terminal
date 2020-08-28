@@ -1068,6 +1068,16 @@ void MainWindow::initShortcuts()
             page->pasteClipboard();
         }
     });
+
+    /******** Modify by ut001000 renfeixiang 2020-08-28:修改 bug 44477***************/
+    QShortcut *shortcutBuiltinCopy = new QShortcut(QKeySequence(QKEYSEQUENCE_COPY_BUILTIN), this);
+    connect(shortcutBuiltinCopy, &QShortcut::activated, this, [this]() {
+        qDebug() << "built in copy shortcut is activated!"<<QKEYSEQUENCE_COPY_BUILTIN;
+        TermWidgetPage *page = currentPage();
+        if (page) {
+            page->copyClipboard();
+        }
+    });
     /********************* Modify by n014361 wangpeili End ************************/
 
     for (int i = 1; i <= 9; i++) {
