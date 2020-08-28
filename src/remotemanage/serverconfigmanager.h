@@ -24,6 +24,12 @@ struct ServerConfig {
     QString m_deleteKey;
 };
 
+// 旧版本groupName的count
+#define OLD_VERTIONCOUNT 3
+// 新版本groupName的count
+#define NEW_VERTIONCOUNT 4
+
+
 class ServerConfigOptDlg;
 class ServerConfigManager : public QObject
 {
@@ -45,7 +51,10 @@ public:
     // 删除数据，关闭所有同类弹窗
     void closeAllDialog(QString key);
 
-signals:
+    // 获取密码
+    QString remoteGetSecreats(const QString &userName, const QString &address, const QString &port);
+
+Q_SIGNALS:
     void refreshList(QString serverName);
 
 private:
@@ -58,9 +67,12 @@ private:
     QMap<QString, QList<ServerConfig *>> m_serverConfigs;
     // 展示的弹窗的键值及弹窗的指针 <服务器名，同类服务器弹窗列表> 弹窗只需存储修改弹窗
     QMap<QString, QList<ServerConfigOptDlg *>> m_serverConfigDialogMap;
-
-
+    // 新旧数据兼容 第一个QString是旧数据在新终端的
+    QMap<QString, QString> m_uniqueNameMap;
+    // 添加服务器弹窗
     inline void settServerConfig(QSettings &commandsSettings, const QString &strGroupName, ServerConfig *config);
+    // 将旧数据转换为新数据
+    void ConvertData();
 };
 
 typedef QMap<QString, QList<ServerConfigOptDlg *>>::Iterator serverConfigDialogMapIterator;
