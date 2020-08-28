@@ -270,6 +270,7 @@ void ItemWidget::onIconButtonClicked()
         emit itemClicked(m_firstText);
         break;
     default:
+        qDebug() << "default" ;
         break;
     }
 }
@@ -282,6 +283,7 @@ void ItemWidget::onIconButtonClicked()
 *******************************************************************************/
 void ItemWidget::onFocusReback()
 {
+    qDebug() << __FUNCTION__;
     setFocus();
 }
 
@@ -422,6 +424,7 @@ void ItemWidget::paintEvent(QPaintEvent *event)
 *******************************************************************************/
 void ItemWidget::enterEvent(QEvent *event)
 {
+    qDebug() << __FUNCTION__;
     // 编辑按钮现
     if (m_functType == ItemFuncType_Item) {
         m_funcButton->show();
@@ -477,6 +480,7 @@ void ItemWidget::mousePressEvent(QMouseEvent *event)
 *******************************************************************************/
 void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    qDebug() << __FUNCTION__ ;
     //根据鼠标按下弹起的差值判断是否触发点击事件
     if (event->timestamp() - m_tapTimeSpace > TAP_TIME_SPACE_T
             && (Qt::MouseEventNotSynthesized == event->source() || Qt::MouseEventSynthesizedByQt == event->source())) {

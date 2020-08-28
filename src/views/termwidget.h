@@ -64,8 +64,6 @@ public:
     void setPressingScroll(bool enable);
     // 设置编码
     void selectEncode(QString encode);
-//    // session支持最大值．再多了就起不来了．
-//    static const int MaxTermwidgetCount = 199;
 
     bool enterSzCommand() const;
     void setEnterSzCommand(bool enterSzCommand);
