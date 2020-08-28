@@ -51,9 +51,6 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
     pHBoxLayout->addWidget(m_DIconBtnSubtract);
     setLayout(pHBoxLayout);
 
-//    m_QIntValidator = new QIntValidator(m_MinValue, m_MaxValue, this);
-//    m_DLineEdit->lineEdit()->setValidator(m_QIntValidator);
-//    m_DLineEdit->lineEdit()->setValidator(new QIntValidator(0, m_MaxValue, this));
     /******** Add by nt001000 renfeixiang 2020-05-26:增加正则表达式限制00000现象 Begin***************/
     QRegExp regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[1-9]$)");
     m_DLineEdit->lineEdit()->setValidator(new QRegExpValidator(regExp, this));
@@ -97,19 +94,6 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DWidget(parent)
             emit valueChanged(m_DLineEdit->lineEdit()->text().toInt());
         }
     });
-
-    /**
-     * del by ut001121 zhangmeng 20200718 for sp3 keyboard interaction
-    // 回车即脱离焦点
-    connect(m_DLineEdit, &DLineEdit::returnPressed, this, [ = ] {
-
-        m_DLineEdit->lineEdit()->clearFocus();
-    });
-
-    // 回车即脱离焦点
-    connect(m_DLineEdit, &DLineEdit::editingFinished, this, [ = ] {
-        m_DLineEdit->lineEdit()->clearFocus();
-    });*/
 
     // 脱离焦点后校正生效．
     connect(m_DLineEdit, &DLineEdit::focusChanged, this, [ = ](bool var) {
@@ -197,8 +181,6 @@ void NewDspinBox::setMaximum(int val)
 {
     if (val > m_MinValue) {
         m_MaxValue = val;
-        // m_QIntValidator->setTop(m_MaxValue);
-        // m_DLineEdit->lineEdit()->setValidator(m_QIntValidator);
     }
 }
 
@@ -212,8 +194,6 @@ void NewDspinBox::setMinimum(int val)
 {
     if (val < m_MaxValue) {
         m_MinValue = val;
-        // m_QIntValidator->setBottom(m_MinValue);
-        // m_DLineEdit->lineEdit()->setValidator(m_QIntValidator);
     }
 }
 
