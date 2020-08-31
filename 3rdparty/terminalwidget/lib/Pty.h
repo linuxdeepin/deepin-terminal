@@ -73,10 +73,10 @@ Q_OBJECT
     bool m_inResizeMode = false;
     bool m_hasStart = false;
     Session::RedrawStep *m_redrawStep = nullptr;
-    int  swap_windowColumns;
-    int  swap_windowLines;
-    int  redraw_windowColumns;
-    int  redraw_windowLines;
+    int  swap_windowColumns = 0;
+    int  swap_windowLines = 0;
+    int  redraw_windowColumns = 0;
+    int  redraw_windowLines = 0;
     /**
      * Constructs a new Pty.
      *
