@@ -530,6 +530,15 @@ void Session::fixClearLineCmd(QByteArray &buffer)
         rightClearLineCmd.append(addClearOneLine);
         //buffer.replace(byteClearLine + strAdd, byteClearLine);
     }
+
+    if(m_RedrawStep == RedrawStep1_Resize_Receiving)
+    {
+        if(buffer.endsWith(" \r"))
+        {
+            buffer = buffer.left(buffer.length() - 2);
+        }
+    }
+
     // resize最后的信息不知为何为加几个\b,全干掉
     for (int i = 0; i <= _views[0]->lines(); i++)
     {
@@ -544,21 +553,15 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     // 将前面处理过的原始清行指令替换成该有的清行指令
     buffer.replace(byteClearLine, rightClearLineCmd);
 
-    if(m_RedrawStep == RedrawStep1_Resize_Receiving)
-    {
-        if(buffer.endsWith(" \r"))
-        {
-            buffer = buffer.left(buffer.length() - 2);
-        }
-    }
-
     // 把有问题的\r\n\r 删除
+    buffer.replace(bashBugReturn, "");
+
     //qDebug()<<"auto clean line: "<<m_RedrawStep
     //         <<"will clean lines = "<<cleanLineCount << "replace \\r\\n\\r times = "<<buffer.count(bashBugReturn);
     //qDebug()<<"last ShellStartLine"<<vt102->_currentScreen->ShellStartLine;
     //qDebug()<<"now cursor line at"<<curY;
+
     qDebug()<<"fix buffer:"<<buffer;
-    buffer.replace(bashBugReturn, "");
 }
 
 void Session::activityStateSet(int state)
