@@ -71,8 +71,6 @@ private:
     QMap<QString, QString> m_uniqueNameMap;
     // 添加服务器弹窗
     inline void settServerConfig(QSettings &commandsSettings, const QString &strGroupName, ServerConfig *config);
-    // 将旧数据转换为新数据
-    void ConvertData();
 };
 
 typedef QMap<QString, QList<ServerConfigOptDlg *>>::Iterator serverConfigDialogMapIterator;
