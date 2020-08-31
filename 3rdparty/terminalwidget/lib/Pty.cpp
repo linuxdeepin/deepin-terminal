@@ -587,7 +587,7 @@ void Pty::sendData(const char *data, int length,  bool immediatelyRun)
     }
 
     QByteArray buffer = QByteArray(data,length);
-    qDebug()<<"new send info"<<currCommand<<m_inResizeMode<<*m_redrawStep <<immediatelyRun;
+    //qDebug()<<"new send info"<<currCommand<<m_inResizeMode<<*m_redrawStep <<immediatelyRun;
     if(!processRedraw(buffer, immediatelyRun))
     {
         return;

@@ -553,10 +553,10 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     }
 
     // 把有问题的\r\n\r 删除
-    qDebug()<<"auto clean line: "<<m_RedrawStep
-             <<"will clean lines = "<<cleanLineCount << "replace \\r\\n\\r times = "<<buffer.count(bashBugReturn);
-    qDebug()<<"last ShellStartLine"<<vt102->_currentScreen->ShellStartLine;
-    qDebug()<<"now cursor line at"<<curY;
+    //qDebug()<<"auto clean line: "<<m_RedrawStep
+    //         <<"will clean lines = "<<cleanLineCount << "replace \\r\\n\\r times = "<<buffer.count(bashBugReturn);
+    //qDebug()<<"last ShellStartLine"<<vt102->_currentScreen->ShellStartLine;
+    //qDebug()<<"now cursor line at"<<curY;
     qDebug()<<"fix buffer:"<<buffer;
     buffer.replace(bashBugReturn, "");
 }
@@ -743,7 +743,7 @@ bool Session::preRedraw(QByteArray & data)
             entryRedrawStep(RedrawStep2_Clear_Receiving);
             _emulation->m_ResizeSaveType = Emulation::SaveNone;
             data = byteClear;
-            qDebug()<<"Clear info" <<data;
+            //qDebug()<<"Clear info" <<data;
             fixClearLineCmd(data);
             return true;
         }

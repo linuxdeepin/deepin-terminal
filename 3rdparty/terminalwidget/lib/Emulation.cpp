@@ -289,7 +289,7 @@ void Emulation::receiveData(const char *text, int length)
 {
     emit stateSet(NOTIFYACTIVITY);
 
-    qDebug()<<"Vt102Emulation::receiveData() bufferedUpdate";
+    //qDebug()<<"Vt102Emulation::receiveData() bufferedUpdate";
     bufferedUpdate();
 
     /* XXX: the following code involves encoding & decoding of "UTF-16
@@ -524,7 +524,7 @@ void Emulation::setImageSize(int lines, int columns)
 
     emit imageSizeChanged(lines, columns);
 
-        qDebug()<<"Vt102Emulation::setImageSize() bufferedUpdate"<< lines<< columns;
+    //qDebug()<<"Vt102Emulation::setImageSize() bufferedUpdate"<< lines<< columns;
     bufferedUpdate();
 }
 
