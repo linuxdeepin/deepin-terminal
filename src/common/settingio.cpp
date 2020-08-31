@@ -112,8 +112,8 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                }
            }
        }
-       return true;
-      //return ok;
+      // return true;
+      return ok;
 }
 /*******************************************************************************
  1. @函数:    writeIniFunc
@@ -186,8 +186,8 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
           writeError = true;
       }
      }
-    return true;
-    //return writeError;
+   // return true;
+    return writeError;
 }
 
 /*******************************************************************************
@@ -256,7 +256,12 @@ QVariant SettingIO::stringToVariant(const QString &s)
     return QVariant(s);
 }
 
-
+/*******************************************************************************
+ 1. @函数:    escapedString
+ 2. @作者:    ut001811 朱科伟
+ 3. @日期:    2020-08-31
+ 4. @说明:   加入特殊字符
+*******************************************************************************/
 QByteArray SettingIO::escapedString(const QString &src)
 {
     bool needsQuotes = false;
@@ -319,7 +324,12 @@ QByteArray SettingIO::escapedString(const QString &src)
 
 
 const char hexDigits[] = "0123456789ABCDEF";
-
+/*******************************************************************************
+ 1. @函数:    unescapedString
+ 2. @作者:    ut001811 朱科伟
+ 3. @日期:    2020-08-31
+ 4. @说明:    去除特殊字符
+*******************************************************************************/
 QString SettingIO::unescapedString(const QString &src)
 {
     static const char escapeCodes[][2] =
@@ -416,7 +426,12 @@ octEscape:
 end:
     return stringResult;
 }
-
+/*******************************************************************************
+ 1. @函数:    canTransfer
+ 2. @作者:    ut001811 朱科伟
+ 3. @日期:    2020-08-31
+ 4. @说明:   uincode是否需要被转换
+*******************************************************************************/
 QString SettingIO::canTransfer(const QString &str)
 {
     QString res;
@@ -440,7 +455,12 @@ QString SettingIO::canTransfer(const QString &str)
     return res;
 }
 
-
+/*******************************************************************************
+ 1. @函数:    iniUnescapedKey
+ 2. @作者:    ut001811 朱科伟
+ 3. @日期:    2020-08-31
+ 4. @说明:    去除unicode的标识信息
+*******************************************************************************/
 bool SettingIO::iniUnescapedKey(const QByteArray &key, int from, int to, QString &result)
 {
     bool lowercaseOnly = true;
