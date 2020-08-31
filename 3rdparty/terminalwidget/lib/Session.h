@@ -82,10 +82,11 @@ public:
     enum RedrawStep
     {
         RedrawStep0_None,
-        RedrawStep1_Ctrl_u,
-        RedrawStep1_Ctrl_u_Received,
-        RedrawStep2_Clear_Received,
-        RedrawStep3_Return_Received,
+        RedrawStep1_Resize_Receiving,
+        //RedrawStep1_Ctrl_u,
+        RedrawStep1_Ctrl_u_Receiving,
+        RedrawStep2_Clear_Receiving,
+        RedrawStep3_Return_Receiving,
         RedrawStep4_SwapText,
         RedrawStep5_UserKey,
         RedrawStep6_Complete
@@ -93,7 +94,7 @@ public:
     Q_ENUM(RedrawStep)
     RedrawStep m_RedrawStep = RedrawStep0_None;
     void entryRedrawStep(RedrawStep step);
-    void preRedraw(QByteArray & data);
+    bool preRedraw(QByteArray & data);
     void tailRedraw();
     void deleteReturnChar(QByteArray & data);
     void onRedrawData(RedrawStep step);

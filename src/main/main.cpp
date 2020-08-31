@@ -52,6 +52,9 @@ int main(int argc, char *argv[])
 
     // 启动应用
     TerminalApplication app(argc, argv);
+
+
+
     app.setStartTime(startTime);
     DApplicationSettings set(&app);
 

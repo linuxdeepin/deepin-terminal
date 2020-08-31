@@ -693,13 +693,13 @@ bool KPty::setWinSize(int lines, int columns)
     if(winSize2.ws_row == lines && winSize2.ws_col == columns )
     {
         qDebug()<<"new setWinSize is same with old setting"<<lines<<columns;
-        return  true;
+        return  false;
     }
 
     winSize.ws_row = (unsigned short)lines;
     winSize.ws_col = (unsigned short)columns;
 
-    return  ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) ;
+    return  ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) == 0 ;
 }
 
 bool KPty::setEcho(bool echo)

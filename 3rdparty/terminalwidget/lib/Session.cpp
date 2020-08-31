@@ -119,9 +119,13 @@ Session::Session(QObject *parent)
     connect(_shellProcess, &Pty::redrawStepChanged,  this, [this](RedrawStep step){
         if(m_RedrawStep == RedrawStep0_None)
         {
-            onRedrawData(RedrawStep1_Ctrl_u);
+            entryRedrawStep(RedrawStep1_Resize_Receiving);
         }
 
+    });
+    connect(_shellProcess, &Pty::winsizeChanged,  this, [this](int lines, int columns){
+        _emulation->setImageSize(lines, columns);
+        entryRedrawStep(RedrawStep1_Resize_Receiving);
     });
     connect(_shellProcess, &Pty::shellHasStart,  _emulation, [this]()
     {
@@ -515,6 +519,10 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     int cleanLineCount = calLines - 1;
 
 
+    //qDebug()<<_emulation->resizeAllString.length() << _shellProcess->redraw_windowColumns;
+   // cleanLineCount = (_emulation->resizeAllString.length() + _shellProcess->redraw_windowColumns - 1) / _shellProcess->redraw_windowColumns -1;
+
+
     // 把原来指令中的相关清行指令还原成最原始的清行指令
     // 组装应该有的清行信息
     for (int i = 1; i <= cleanLineCount; i++)
@@ -536,9 +544,20 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     // 将前面处理过的原始清行指令替换成该有的清行指令
     buffer.replace(byteClearLine, rightClearLineCmd);
 
+    if(m_RedrawStep == RedrawStep1_Resize_Receiving)
+    {
+        if(buffer.endsWith(" \r"))
+        {
+            buffer = buffer.left(buffer.length() - 2);
+        }
+    }
+
     // 把有问题的\r\n\r 删除
-    qDebug()<<"auto clean line: "<<m_RedrawStep<< "new last lastPromptColumns =" << calLines <<curY << vt102->_currentScreen->ShellStartLine
+    qDebug()<<"auto clean line: "<<m_RedrawStep
              <<"will clean lines = "<<cleanLineCount << "replace \\r\\n\\r times = "<<buffer.count(bashBugReturn);
+    qDebug()<<"last ShellStartLine"<<vt102->_currentScreen->ShellStartLine;
+    qDebug()<<"now cursor line at"<<curY;
+    qDebug()<<"fix buffer:"<<buffer;
     buffer.replace(bashBugReturn, "");
 }
 
@@ -607,7 +626,7 @@ void Session::updateTerminalSize(int height, int width)
     // backend emulation must have a _terminal of at least 1 column x 1 line in size
     if (minLines > 0 && minColumns > 0)
     {
-        _emulation->setImageSize(minLines, minColumns);
+        //_emulation->setImageSize(minLines, minColumns);
         _shellProcess->setWindowSize(minLines, minColumns);
     }
 }
@@ -691,47 +710,65 @@ void Session::entryRedrawStep(Session::RedrawStep step)
     //_shellProcess->m_RedrawStep = &m_RedrawStep;
 }
 
-void Session::preRedraw(QByteArray & data)
+bool Session::preRedraw(QByteArray & data)
 {
     if(!_shellProcess->m_inResizeMode)
     {
-        return;
+        return true;
     }
     QByteArray byteClear("\x0d\x1b\x5b\x4b\x1b\x5b\x41\u0007");
 
     switch (m_RedrawStep) {
-    case RedrawStep0_None://将非resize时保存的信息清除
+    case RedrawStep1_Resize_Receiving://将非resize时保存的信息清除
         if(!data.contains("\x07"))
         {
-            return;
+            return false;
         }
+        qDebug()<<m_RedrawStep <<" OK!";
         _emulation->m_ResizeSaveType = Emulation::SaveAll;
         _emulation->resizeAllString.clear();        
         fixClearLineCmd(data);
+
         break;
-    case RedrawStep1_Ctrl_u_Received:        
-        qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data<<"resizeAllString"<<_emulation->resizeAllString;
-        entryRedrawStep(RedrawStep2_Clear_Received);
-        _emulation->m_ResizeSaveType = Emulation::SaveNone;
-        data = byteClear;
-        qDebug()<<"Clear info" <<data;
-        fixClearLineCmd(data);
-        return ;
+    case RedrawStep1_Ctrl_u_Receiving:
+//        if((data.length() == 1 && data != "\x07") || data.contains("\u001B[C"))
+//        {
+//            qDebug()<<"info is not crrect !"<< data;
+//            return;
+//        }
+
+        if(((data == "\x07") || data.contains("\u001B[C") || data.contains("\u001B[K")) && !data.endsWith(_emulation->resizeAllString.toLatin1()))
+        {
+            qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data<<"resizeAllString"<<_emulation->resizeAllString;
+            entryRedrawStep(RedrawStep2_Clear_Receiving);
+            _emulation->m_ResizeSaveType = Emulation::SaveNone;
+            data = byteClear;
+            qDebug()<<"Clear info" <<data;
+            fixClearLineCmd(data);
+            return true;
+        }
+        qDebug()<<"info is not crrect !"<< data;
+        return false;
     //case FixStep2_Clear:
        // deleteReturnChar(data);
         break;
-    case RedrawStep3_Return_Received:
+    case RedrawStep3_Return_Receiving:
         deleteReturnChar(data);
+        if(!data.contains("\x07"))
+        {
+            return false;
+        }
 
         break;
     default:
         break;
     }
 
-    if(data.isEmpty())
-    {
-        return;
-    }
+//    if(data.isEmpty())
+//    {
+//        return true;
+//    }
+    return  true;
 }
 
 void Session::tailRedraw()
@@ -752,24 +789,27 @@ void Session::tailRedraw()
 void Session::deleteReturnChar(QByteArray &data)
 {
     bool deleteOK = false;
-    if(data.startsWith("\r\n") )
+    QByteArrayList maybePreList;
+    maybePreList<<"\r\n"<<"\u0007\r\n"<<"\u001B[A\r\n";
+
+    for(QByteArray pre: maybePreList)
     {
-        qDebug()<<"deleteReturnChar"<<data;
-        data = data.right(data.size() - 2);
-        deleteOK = true;
-    }
-    if(data.startsWith("\u0007\r\n"))
-    {
-        qDebug()<<"deleteReturnChar"<<data;
-        data = data.right(data.size()-3);
-        deleteOK = true;
+        if(data.startsWith(pre) )
+        {
+            qDebug()<<"deleteReturnChar"<<data;
+            data = data.right(data.size() - pre.length());
+            deleteOK = true;
+            break;
+        }
     }
     if(deleteOK)
     {
+        qDebug()<<m_RedrawStep <<" OK!";
         //entryRedrawStep(RedrawStep3_Return_Received);
         _emulation->m_ResizeSaveType = Emulation::SavePrompt;
         _emulation->hasMorespace = false;
         _emulation->startPrompt.clear();
+        _emulation->swapByte.clear();
     }
     if(data.endsWith(" \r"))
     {
@@ -780,15 +820,15 @@ void Session::deleteReturnChar(QByteArray &data)
 
 void Session::onRedrawData(RedrawStep step)
 {
-    if(!_shellProcess->m_inResizeMode)
-    {
-        return;
-    }
+    //if(!_shellProcess->m_inResizeMode)
+    //{
+    //    return;
+    //}
 
-    if(step == RedrawStep0_None)
-    {
-        return;
-    }
+    //if(step == RedrawStep0_None)
+    //{
+    //    return;
+    //}
     //if(step == RedrawStep1_Ctrl_u)
     //{
     m_RedrawStep = step;
@@ -798,18 +838,39 @@ void Session::onRedrawData(RedrawStep step)
     QByteArray byteReturn("\r");
     QByteArray byteSwapText;
     switch (step) {
-    case Session::RedrawStep1_Ctrl_u:
+    case Session::RedrawStep0_None:
+         //qDebug()<<" resize continue ?????????????";
+        if(_shellProcess->isNeeadResize())
+        {
+            qDebug()<<" resize continue...";
+            _shellProcess->startResize();
+        }
+        return;
+
+    case Session::RedrawStep1_Resize_Receiving:
+//        return;
+//    case Session::RedrawStep1_Ctrl_u:
+        if(_emulation->resizeAllString.isEmpty())
+        {
+            return;
+        }
+        qDebug()<<"_emulation->resizeAllString"<<_emulation->resizeAllString;
         _emulation->sendString(byteCtrlU.data(), byteCtrlU.count(), true);
+        //entryRedrawStep(RedrawStep1_Ctrl_u_Receiving);
         break;
+
+    case Session::RedrawStep1_Ctrl_u_Receiving:
+        //_emulation->sendString(byteCtrlU.data(), byteCtrlU.count(), true);
+        return;
 //    case Session::RedrawStep1_Ctrl_u_Complete:
 //        break;
-    case Session::RedrawStep2_Clear_Received:
+    case Session::RedrawStep2_Clear_Receiving:
         _emulation->sendString(byteReturn.data(), byteReturn.count(), true);
         break;
-    case Session::RedrawStep3_Return_Received:
+    case Session::RedrawStep3_Return_Receiving:
         qDebug()<<"startPrompt"<<_emulation->startPrompt;
         qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-        qDebug()<<"swapByte"<<_emulation->swapByte;
+        //qDebug()<<"swapByte"<<_emulation->swapByte;
         // 有的时候会发来的消息只有\0007信息
         if(_emulation->startPrompt.isEmpty())
         {
@@ -825,6 +886,7 @@ void Session::onRedrawData(RedrawStep step)
             _emulation->swapByte = _emulation->resizeAllString.right(_emulation->resizeAllString.size()
                                                                      - _emulation->startPrompt.size());
             _emulation->resizeAllString.clear();
+            _emulation->startPrompt.clear();
             byteSwapText.append(_emulation->swapByte);
             if(byteSwapText.count() != 0)
             {
@@ -838,8 +900,8 @@ void Session::onRedrawData(RedrawStep step)
                 return;
             }
         }
-        qDebug()<<"startPrompt"<<_emulation->startPrompt;
-        qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
+        //qDebug()<<"startPrompt"<<_emulation->startPrompt;
+        //qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
         qDebug()<<"swapByte"<<_emulation->swapByte;
         break;
 
@@ -1206,7 +1268,12 @@ void Session::onReceiveBlock(const char *buf, int len)
     QByteArray byteBuf(buf, len);
 
     // 重绘的预处理
-    preRedraw(byteBuf);
+    if(!preRedraw(byteBuf))
+    {
+        qDebug()<<m_RedrawStep<<" data is delete"<<byteBuf;
+        return;
+    }
+
     if(byteBuf.count() == 0)
     {
         return;

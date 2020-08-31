@@ -68,12 +68,15 @@ Q_OBJECT
 
   public:
     QTimer *m_redrawTimer = nullptr;
-    QString lastSend;
+    QTimer *m_swapRedrawTimer = nullptr;
     QByteArray m_userKey;
     bool m_inResizeMode = false;
     bool m_hasStart = false;
     Session::RedrawStep *m_redrawStep = nullptr;
-
+    int  swap_windowColumns;
+    int  swap_windowLines;
+    int  redraw_windowColumns;
+    int  redraw_windowLines;
     /**
      * Constructs a new Pty.
      *
@@ -143,6 +146,8 @@ Q_OBJECT
      * used by this teletype.
      */
     void setWindowSize(int lines, int cols);
+    void startResize();
+    bool isNeeadResize();
 
     /** Returns the size of the window used by this teletype.  See setWindowSize() */
     QSize windowSize() const;
@@ -206,6 +211,7 @@ Q_OBJECT
      */
     void receivedData(const char* buffer, int length);
     void redrawStepChanged(Session::RedrawStep step);
+    void winsizeChanged(int lines, int columns);
 
     void shellHasStart();
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
@@ -233,6 +239,7 @@ Q_OBJECT
 
     int  _windowColumns;
     int  _windowLines;
+
     char _eraseChar;
     bool _xonXoff;
     bool _utf8;

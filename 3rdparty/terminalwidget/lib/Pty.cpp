@@ -59,7 +59,6 @@ void Pty::setWindowSize(int lines, int cols)
     //{
     //    return;
     //}
-    lastSend = "";
     _windowColumns = cols;
     _windowLines = lines;
     if(!m_hasStart)
@@ -67,17 +66,59 @@ void Pty::setWindowSize(int lines, int cols)
         return;
     }
 
-    m_inResizeMode = true;
-    m_redrawTimer->start(200);
-    qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
-    //emit shellHasStart();
+    swap_windowLines = _windowLines;
+    swap_windowColumns = _windowColumns;
 
-    qDebug()<<"setWindowSize"<<lines<<cols;
-    if (pty()->masterFd() >= 0)
+    //m_redrawTimer->start(200);
+    qDebug()<<"updateWindowSize"<<lines<<cols;
+    if(*m_redrawStep != Session::RedrawStep0_None)
     {
-        pty()->setWinSize(lines, cols);
+        qDebug()<<"updateWindowSize has swap"<<lines<<cols;
+        return;
     }
 
+    startResize();
+
+//    m_inResizeMode = true;
+//    qDebug()<<endl<<endl;
+//    emit redrawStepChanged(Session::RedrawStep1_Resize_Receiving);
+//    qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
+//    //emit shellHasStart();
+
+
+//    if (pty()->masterFd() >= 0)
+//    {
+//        pty()->setWinSize(lines, cols);
+//    }
+
+}
+
+void Pty::startResize()
+{
+    redraw_windowColumns = swap_windowColumns;
+    redraw_windowLines = swap_windowLines;
+
+    if (pty()->masterFd() >= 0)
+    {
+      if(pty()->setWinSize(redraw_windowLines, redraw_windowColumns))
+      {
+          m_inResizeMode = true;
+          qDebug()<<endl<<endl;
+          emit winsizeChanged(redraw_windowLines, redraw_windowColumns);
+          //emit redrawStepChanged(Session::RedrawStep1_Resize_Receiving);
+          qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
+          //emit shellHasStart();
+      }
+    }
+}
+
+bool Pty::isNeeadResize()
+{
+    if((redraw_windowColumns != swap_windowColumns) || (redraw_windowColumns != swap_windowColumns))
+    {
+        return  true;
+    }
+    return false;
 }
 QSize Pty::windowSize() const
 {
@@ -292,19 +333,45 @@ void Pty::init()
     _bUninstall = false;
     m_redrawTimer = new QTimer(this);
     m_redrawTimer->setSingleShot(true);
+    m_swapRedrawTimer =  new QTimer(this);
+    m_swapRedrawTimer->setSingleShot(true);
     connect(pty(), SIGNAL(readyRead()), this, SLOT(dataReceived()));
     setPtyChannels(KPtyProcess::AllChannels);
-    connect(m_redrawTimer, &QTimer::timeout, this, [this]{        
+    connect(m_redrawTimer, &QTimer::timeout, this, [this]{
+//          redraw_windowColumns = swap_windowColumns;
+//          redraw_windowLines = swap_windowLines;
+//        qDebug()<<"m_redrawTimer timeout";
+//        if (pty()->masterFd() >= 0)
+//        {
+//            if(pty()->setWinSize(redraw_windowLines, redraw_windowColumns))
+//            {
+//                m_inResizeMode = true;
+//                qDebug()<<endl<<endl;
+//                emit redrawStepChanged(Session::RedrawStep1_Resize_Receiving);
+//                qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
+//                //emit shellHasStart();
+//            }
+//        }
+    });
+    connect(m_swapRedrawTimer, &QTimer::timeout, this, [this]{
         //m_resizeTimer.stop();
         qDebug()<<"m_redrawTimer timeout";
         //qDebug()<<"setWindowSize"<<lines<<cols;
-//        if (pty()->masterFd() >= 0)
+//        if(*m_redrawStep == Session::RedrawStep0_None)
 //        {
-//            pty()->setWinSize(_windowLines, _windowColumns);
+//            if (pty()->masterFd() >= 0)
+//            {
+//                pty()->setWinSize(_windowLines, _windowColumns);
+//            }
+//            //qDebug()<<"setWindowSize"<<lines<<cols;
+//    //        if (pty()->masterFd() >= 0)
+//    //        {
+//    //            pty()->setWinSize(_windowLines, _windowColumns);
+//    //        }
+//            QTimer::singleShot(10, this, [this]() {
+               // emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
+//            });
 //        }
-//        QTimer::singleShot(10, this, [this]() {
-            emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
-        //});
     });
 }
 
@@ -519,9 +586,8 @@ void Pty::sendData(const char *data, int length,  bool immediatelyRun)
         }
     }
 
-    lastSend = currCommand;
     QByteArray buffer = QByteArray(data,length);
-    qDebug()<<"new send info"<<lastSend<<m_inResizeMode<<*m_redrawStep <<immediatelyRun;
+    qDebug()<<"new send info"<<currCommand<<m_inResizeMode<<*m_redrawStep <<immediatelyRun;
     if(!processRedraw(buffer, immediatelyRun))
     {
         return;
@@ -529,6 +595,11 @@ void Pty::sendData(const char *data, int length,  bool immediatelyRun)
 
     if(buffer.length() == 0)
     {
+        if(isNeeadResize() && *m_redrawStep == Session::RedrawStep0_None)
+        {
+            qDebug()<<" resize continue...";
+            startResize();
+        }
         return;
     }
 
@@ -565,8 +636,9 @@ bool Pty::processRedraw(QByteArray &buffer, bool immediatelyRun)
         buffer = m_userKey;
         m_userKey .clear();
         *m_redrawStep = Session::RedrawStep0_None;
-        qDebug()<<"resize is over , now all is normal"<<*m_redrawStep << "m_userKey is:" <<buffer;
+        qDebug()<<"resize is over , now all is normal"<<*m_redrawStep << "m_userKey is:" <<buffer<<endl<<endl;
         m_inResizeMode = false;
+
         break;
     default:
         break;

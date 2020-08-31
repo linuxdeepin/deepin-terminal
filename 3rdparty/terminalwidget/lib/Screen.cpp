@@ -994,7 +994,7 @@ void Screen::helpAlign()
 void Screen::clearToEndOfLine()
 {
     //usleep(1000000);
-    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<cuX<<cuY<<loc(cuX,cuY)<<columns-1<<cuY<<loc(columns-1,cuY);
+    //qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<cuX<<cuY<<loc(cuX,cuY)<<columns-1<<cuY<<loc(columns-1,cuY);
 
     //updateShellStartLine();
     clearImage(loc(cuX,cuY),loc(columns-1,cuY),' ');
