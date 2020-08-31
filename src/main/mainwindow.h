@@ -255,7 +255,6 @@ public:
 
 protected:
     QMenu *m_menu = nullptr;
-    DToolButton *m_exitFullScreen = nullptr;
     TabBar *m_tabbar = nullptr;
     QWidget *m_centralWidget = nullptr;
     QVBoxLayout *m_centralLayout = nullptr;

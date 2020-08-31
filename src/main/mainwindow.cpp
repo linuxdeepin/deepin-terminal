@@ -231,19 +231,6 @@ void MainWindow::initOptionButton()
         qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
     }
 
-    m_exitFullScreen = new DToolButton(this);
-    m_exitFullScreen->setObjectName("MainWindowExitFullScreenDToolButton");//Add by ut001000 renfeixiang 2020-08-13
-    m_exitFullScreen->setCheckable(false);
-    m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
-    m_exitFullScreen->setIconSize(ICON_EXIT_FULL_SIZE);
-    m_exitFullScreen->setFixedSize(ICON_EXIT_FULL_SIZE);
-    titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
-    m_exitFullScreen->setVisible(false);
-    m_exitFullScreen->setFocusPolicy(Qt::TabFocus);
-    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
-        switchFullscreen();
-    });
-
     // option button
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
     if (optionBtn != nullptr) {
@@ -2341,17 +2328,6 @@ void NormalWindow::onAppFocusChangeForQuake()
 *******************************************************************************/
 void NormalWindow::changeEvent(QEvent *event)
 {
-    if (m_exitFullScreen) {
-        bool isFullscreen = window()->windowState().testFlag(Qt::WindowFullScreen);
-        m_exitFullScreen->setVisible(isFullscreen);
-        titlebar()->setMenuVisible(!isFullscreen);
-        if (titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton") != nullptr) {
-            titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton")->hide();
-        } else {
-            qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
-        }
-    }
-
     QMainWindow::changeEvent(event);
 }
 
