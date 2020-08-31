@@ -112,8 +112,8 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                }
            }
        }
-      // return true;
-      return ok;
+       return true;
+      //return ok;
 }
 /*******************************************************************************
  1. @函数:    writeIniFunc
@@ -186,8 +186,8 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
           writeError = true;
       }
      }
-   // return true;
-    return writeError;
+    return true;
+    //return writeError;
 }
 
 /*******************************************************************************
@@ -434,15 +434,15 @@ end:
 *******************************************************************************/
 QString SettingIO::canTransfer(const QString &str)
 {
-    QString res;
-    if(str.startsWith("%U") || str.startsWith("%u"))
+    QString res = str;
+    if(str.contains("%U") || str.contains("%u") || str.contains("%40"))
     {
         rewrite = true;
         //uincode
         bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
         qDebug()<< "uincode" <<ok << res;
     }
-    else if(str.startsWith("%"))
+    else if(str.contains("%"))
     {
         rewrite = true;
         //utf-8转换为uincode过了
