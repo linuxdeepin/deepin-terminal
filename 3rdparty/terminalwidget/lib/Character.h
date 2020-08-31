@@ -25,9 +25,11 @@
 
 // Qt
 #include <QHash>
+#include <QVector>
 
 // Local
 #include "CharacterColor.h"
+#include "konsole_wcwidth.h"
 
 namespace Konsole
 {
@@ -54,6 +56,20 @@ static const int LINE_DOUBLEHEIGHT    = (1 << 2);
 #define RE_OVERLINE        (1 << 10)
 
 /**
+ * Unicode character in the range of U+2500 ~ U+257F are known as line
+ * characters, or box-drawing characters. Currently, konsole draws those
+ * characters itself, instead of using the glyph provided by the font.
+ * Unfortunately, the triple and quadruple dash lines (┄┅┆┇┈┉┊┋) are too
+ * detailed too be drawn cleanly at normal font scales without anti
+ * -aliasing, so those are drawn as regular characters.
+ */
+inline bool isSupportedLineChar(quint16 codePoint)
+{
+    return (codePoint & 0xFF80) == 0x2500 // Unicode block: Mathematical Symbols - Box Drawing
+           && !(0x2504 <= codePoint && codePoint <= 0x250B); // Triple and quadruple dash range
+}
+
+/**
  * A single character in the terminal which consists of a unicode character
  * value, foreground and background colors and a set of rendition attributes
  * which specify how it should be drawn.
@@ -61,69 +77,108 @@ static const int LINE_DOUBLEHEIGHT    = (1 << 2);
 class Character
 {
 public:
-  /**
-   * Constructs a new character.
-   *
-   * @param _c The unicode character value of this character.
-   * @param _f The foreground color used to draw the character.
-   * @param _b The color used to draw the character's background.
-   * @param _r A set of rendition flags which specify how this character is to be drawn.
-   */
-  inline Character(quint16 _c = ' ',
+    /**
+    * Constructs a new character.
+    *
+    * @param _c The unicode character value of this character.
+    * @param _f The foreground color used to draw the character.
+    * @param _b The color used to draw the character's background.
+    * @param _r A set of rendition flags which specify how this character is to be drawn.
+    */
+    inline Character(quint16 _c = ' ',
             CharacterColor  _f = CharacterColor(COLOR_SPACE_DEFAULT,DEFAULT_FORE_COLOR),
             CharacterColor  _b = CharacterColor(COLOR_SPACE_DEFAULT,DEFAULT_BACK_COLOR),
             quint8  _r = DEFAULT_RENDITION)
        : character(_c), rendition(_r), foregroundColor(_f), backgroundColor(_b) {}
 
-  union
-  {
-    /** The unicode character value for this character. */
-    wchar_t character;
+    union
+    {
+        /** The unicode character value for this character. */
+        uint character;
+        /**
+         * Experimental addition which allows a single Character instance to contain more than
+         * one unicode character.
+         *
+         * charSequence is a hash code which can be used to look up the unicode
+         * character sequence in the ExtendedCharTable used to create the sequence.
+         */
+        quint16 charSequence;
+    };
+
+    /** A combination of RENDITION flags which specify options for drawing the character. */
+    quint8  rendition;
+
+    /** The foreground color used to draw this character. */
+    CharacterColor  foregroundColor;
+    /** The color used to draw this character's background. */
+    CharacterColor  backgroundColor;
+
     /**
-     * Experimental addition which allows a single Character instance to contain more than
-     * one unicode character.
-     *
-     * charSequence is a hash code which can be used to look up the unicode
-     * character sequence in the ExtendedCharTable used to create the sequence.
-     */
-    quint16 charSequence;
-  };
+    * Returns true if this character has a transparent background when
+    * it is drawn with the specified @p palette.
+    */
+    bool   isTransparent(const ColorEntry* palette) const;
+    /**
+    * Returns true if this character should always be drawn in bold when
+    * it is drawn with the specified @p palette, independent of whether
+    * or not the character has the RE_BOLD rendition flag.
+    */
+    ColorEntry::FontWeight fontWeight(const ColorEntry* base) const;
 
-  /** A combination of RENDITION flags which specify options for drawing the character. */
-  quint8  rendition;
+    /**
+    * returns true if the format (color, rendition flag) of the compared characters is equal
+    */
+    bool equalsFormat(const Character &other) const;
 
-  /** The foreground color used to draw this character. */
-  CharacterColor  foregroundColor;
-  /** The color used to draw this character's background. */
-  CharacterColor  backgroundColor;
+    /**
+    * Compares two characters and returns true if they have the same unicode character value,
+    * rendition and colors.
+    */
+    friend bool operator == (const Character& a, const Character& b);
+    /**
+    * Compares two characters and returns true if they have different unicode character values,
+    * renditions or colors.
+    */
+    friend bool operator != (const Character& a, const Character& b);
 
-  /**
-   * Returns true if this character has a transparent background when
-   * it is drawn with the specified @p palette.
-   */
-  bool   isTransparent(const ColorEntry* palette) const;
-  /**
-   * Returns true if this character should always be drawn in bold when
-   * it is drawn with the specified @p palette, independent of whether
-   * or not the character has the RE_BOLD rendition flag.
-   */
-  ColorEntry::FontWeight fontWeight(const ColorEntry* base) const;
+    inline bool isLineChar() const
+    {
+        if (rendition & RE_EXTENDED_CHAR) {
+            return false;
+        } else {
+            return isSupportedLineChar(character);
+        }
+    }
 
-  /**
-   * returns true if the format (color, rendition flag) of the compared characters is equal
-   */
-  bool equalsFormat(const Character &other) const;
+    inline bool isSpace() const
+    {
+        if (rendition & RE_EXTENDED_CHAR) {
+            return false;
+        } else {
+            return QChar(character).isSpace();
+        }
+    }
 
-  /**
-   * Compares two characters and returns true if they have the same unicode character value,
-   * rendition and colors.
-   */
-  friend bool operator == (const Character& a, const Character& b);
-  /**
-   * Compares two characters and returns true if they have different unicode character values,
-   * renditions or colors.
-   */
-  friend bool operator != (const Character& a, const Character& b);
+    inline int width() const {
+        return width(character);
+    }
+
+    static int width(uint ucs4) {
+        return characterWidth(ucs4);
+    }
+
+    static int stringWidth(const uint *ucs4Str, int len) {
+        int w = 0;
+        for (int i = 0; i < len; ++i) {
+            w += width(ucs4Str[i]);
+        }
+        return w;
+    }
+
+    inline static int stringWidth(const QString &str) {
+        QVector<uint> ucs4Str = str.toUcs4();
+        return stringWidth(ucs4Str.constData(), ucs4Str.length());
+    }
 };
 
 inline bool operator == (const Character& a, const Character& b)
@@ -136,10 +191,7 @@ inline bool operator == (const Character& a, const Character& b)
 
 inline bool operator != (const Character& a, const Character& b)
 {
-  return    a.character != b.character ||
-            a.rendition != b.rendition ||
-            a.foregroundColor != b.foregroundColor ||
-            a.backgroundColor != b.backgroundColor;
+    return !operator==(a, b);
 }
 
 inline bool Character::isTransparent(const ColorEntry* base) const
@@ -152,10 +204,9 @@ inline bool Character::isTransparent(const ColorEntry* base) const
 
 inline bool Character::equalsFormat(const Character& other) const
 {
-  return
-    backgroundColor==other.backgroundColor &&
-    foregroundColor==other.foregroundColor &&
-    rendition==other.rendition;
+    return backgroundColor == other.backgroundColor
+           && foregroundColor == other.foregroundColor
+           && rendition == other.rendition;
 }
 
 inline ColorEntry::FontWeight Character::fontWeight(const ColorEntry* base) const
@@ -195,7 +246,7 @@ public:
      * @param unicodePoints An array of unicode character points
      * @param length Length of @p unicodePoints
      */
-    ushort createExtendedChar(ushort* unicodePoints , ushort length);
+    uint createExtendedChar(uint* unicodePoints , ushort length);
     /**
      * Looks up and returns a pointer to a sequence of unicode characters
      * which was added to the table using createExtendedChar().
@@ -206,20 +257,20 @@ public:
      *
      * @return A unicode character sequence of size @p length.
      */
-    ushort* lookupExtendedChar(ushort hash , ushort& length) const;
+    uint* lookupExtendedChar(uint hash , ushort& length) const;
 
     /** The global ExtendedCharTable instance. */
     static ExtendedCharTable instance;
 private:
     // calculates the hash key of a sequence of unicode points of size 'length'
-    ushort extendedCharHash(ushort* unicodePoints , ushort length) const;
+    uint extendedCharHash(uint* unicodePoints , ushort length) const;
     // tests whether the entry in the table specified by 'hash' matches the
     // character sequence 'unicodePoints' of size 'length'
-    bool extendedCharMatch(ushort hash , ushort* unicodePoints , ushort length) const;
+    bool extendedCharMatch(uint hash , uint* unicodePoints , ushort length) const;
     // internal, maps hash keys to character sequence buffers.  The first ushort
     // in each value is the length of the buffer, followed by the ushorts in the buffer
     // themselves.
-    QHash<ushort,ushort*> extendedCharTable;
+    QHash<uint,uint*> extendedCharTable;
 };
 
 }

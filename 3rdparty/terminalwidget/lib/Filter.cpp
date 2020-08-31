@@ -281,7 +281,7 @@ void Filter::getLineColumn(int position, int &startLine, int &startColumn)
 
         if (_linePositions->value(i) <= position && position < nextLine) {
             startLine = i;
-            startColumn = string_width(buffer()->mid(_linePositions->value(i), position - _linePositions->value(i)).toStdWString());
+            startColumn = Character::stringWidth(buffer()->mid(_linePositions->value(i), position - _linePositions->value(i)));
             return;
         }
     }
