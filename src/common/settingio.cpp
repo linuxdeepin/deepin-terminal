@@ -434,7 +434,7 @@ end:
 *******************************************************************************/
 QString SettingIO::canTransfer(const QString &str)
 {
-    QString res = str;
+    QString res;
     if(str.contains("%U") || str.contains("%u") || str.contains("%40"))
     {
         rewrite = true;
@@ -450,6 +450,10 @@ QString SettingIO::canTransfer(const QString &str)
         qDebug()<< "utf-8 to uincode" <<ok << res;
         qDebug() << QString::fromLocal8Bit(res.toLatin1());
         res = QString::fromLocal8Bit(res.toLatin1());
+    }
+    else
+    {
+        res = str;
     }
 
     return res;
