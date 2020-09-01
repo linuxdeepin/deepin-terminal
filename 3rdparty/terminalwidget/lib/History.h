@@ -277,14 +277,16 @@ public:
   }
 
   void setFormat(const Character& c) {
-    rendition=c.rendition;
-    fgColor=c.foregroundColor;
-    bgColor=c.backgroundColor;
+    rendition = c.rendition;
+    fgColor = c.foregroundColor;
+    bgColor = c.backgroundColor;
+    isRealCharacter = c.isRealCharacter;
   }
 
   CharacterColor fgColor, bgColor;
   quint16 startPos;
   quint8 rendition;
+  bool isRealCharacter;
 };
 
 class CompactHistoryBlock
