@@ -455,7 +455,7 @@ QString SettingIO::canTransfer(const QString &str)
         rewrite = true;
         //uincode
         bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
-        qDebug()<< "uincode" <<ok << res;
+       // qDebug()<< "uincode" <<ok << res;
     }
     //如果是%是Latin1格式的字符串
     else if(str.contains("%"))
@@ -463,8 +463,8 @@ QString SettingIO::canTransfer(const QString &str)
         rewrite = true;
         //utf-8转换为uincode过了
         bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
-        qDebug()<< "utf-8 to uincode" <<ok << res;
-        qDebug() << QString::fromLocal8Bit(res.toLatin1());
+        //qDebug()<< "utf-8 to uincode" <<ok << res;
+       // qDebug() << QString::fromLocal8Bit(res.toLatin1());
         res = QString::fromLocal8Bit(res.toLatin1());
     }
     else
