@@ -94,8 +94,22 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                    if (commaPos.isEmpty()) { //value
                        QString v = data.mid(equalsPos+1).trimmed();
                        if (v.startsWith("\"") && v.endsWith("\"") && v.length()>1) {
-                           v = v.mid(1, v.length()-2);                     }
-                       settingsMap[key] = stringToVariant(unescapedString(v));
+                           v = v.mid(1, v.length()-2);
+                       }
+                        QString str = unescapedString(v);
+                        //如果是3字节的Latin1中文，转换中文编码
+                        if(v.count("\\x") > 0 && v.count("\\x") %3 == 0)
+                        {
+                            int first = v.indexOf("\\x");
+                            int next = v.indexOf("\\x",first+1);
+                            int len = next-first;
+                            if(len == 4)
+                            {
+                                str = QString::fromLocal8Bit(str.toLatin1());
+                            }
+                        }
+
+                        settingsMap[key] = stringToVariant(str);
                    } else { //value list
                        commaPos.prepend(equalsPos);
                        commaPos.append(-1);
@@ -235,7 +249,7 @@ QString SettingIO::variantToString(const QVariant &v)
  1. @函数:    stringToVariant
  2. @作者:    ut001811 朱科伟
  3. @日期:    2020-08-31
- 4. @说明:
+ 4. @说明: 将QString转换为Variant
 *******************************************************************************/
 QVariant SettingIO::stringToVariant(const QString &s)
 {
@@ -260,7 +274,7 @@ QVariant SettingIO::stringToVariant(const QString &s)
  1. @函数:    escapedString
  2. @作者:    ut001811 朱科伟
  3. @日期:    2020-08-31
- 4. @说明:   加入特殊字符
+ 4. @说明:   加入特殊字符\x
 *******************************************************************************/
 QByteArray SettingIO::escapedString(const QString &src)
 {
@@ -328,7 +342,7 @@ const char hexDigits[] = "0123456789ABCDEF";
  1. @函数:    unescapedString
  2. @作者:    ut001811 朱科伟
  3. @日期:    2020-08-31
- 4. @说明:    去除特殊字符
+ 4. @说明:    去除特殊字符\x
 *******************************************************************************/
 QString SettingIO::unescapedString(const QString &src)
 {
@@ -435,13 +449,15 @@ end:
 QString SettingIO::canTransfer(const QString &str)
 {
     QString res;
-    if(str.contains("%U") || str.contains("%u") || str.contains("%40"))
+    //如果有%U，是Uincode字符串
+    if(str.contains("%U") || str.contains("%u"))
     {
         rewrite = true;
         //uincode
         bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
         qDebug()<< "uincode" <<ok << res;
     }
+    //如果是%是Latin1格式的字符串
     else if(str.contains("%"))
     {
         rewrite = true;
@@ -463,7 +479,7 @@ QString SettingIO::canTransfer(const QString &str)
  1. @函数:    iniUnescapedKey
  2. @作者:    ut001811 朱科伟
  3. @日期:    2020-08-31
- 4. @说明:    去除unicode的标识信息
+ 4. @说明:    去除unicode的标识信息 %U
 *******************************************************************************/
 bool SettingIO::iniUnescapedKey(const QByteArray &key, int from, int to, QString &result)
 {
