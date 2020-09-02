@@ -38,6 +38,18 @@ void ShortcutManager::initShortcuts()
     m_builtinShortcuts << "F1";
     m_builtinShortcuts << "Ctrl+C";
     m_builtinShortcuts << "Ctrl+D";
+
+    // 切换标签页，防止和ctrl+shift+1等冲突（无法识别）
+    m_builtinShortcuts << "Ctrl+Shift+!";
+    m_builtinShortcuts << "Ctrl+Shift+@";
+    m_builtinShortcuts << "Ctrl+Shift+#";
+    m_builtinShortcuts << "Ctrl+Shift+$";
+    m_builtinShortcuts << "Ctrl+Shift+%";
+    m_builtinShortcuts << "Ctrl+Shift+^";
+    m_builtinShortcuts << "Ctrl+Shift+&";
+    m_builtinShortcuts << "Ctrl+Shift+*";
+    m_builtinShortcuts << "Ctrl+Shift+(";
+
     for (int i = 0; i <= 9; i++) {
         m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
     }
@@ -48,6 +60,17 @@ void ShortcutManager::initShortcuts()
 //    }
 
     createCustomCommandsFromConfig();
+
+    m_mapReplaceText.insert("Ctrl+Shift+!", "Ctrl+Shift+1");
+    m_mapReplaceText.insert("Ctrl+Shift+@", "Ctrl+Shift+2");
+    m_mapReplaceText.insert("Ctrl+Shift+#", "Ctrl+Shift+3");
+    m_mapReplaceText.insert("Ctrl+Shift+$", "Ctrl+Shift+4");
+    m_mapReplaceText.insert("Ctrl+Shift+%", "Ctrl+Shift+5");
+    m_mapReplaceText.insert("Ctrl+Shift+^", "Ctrl+Shift+6");
+    m_mapReplaceText.insert("Ctrl+Shift+&", "Ctrl+Shift+7");
+    m_mapReplaceText.insert("Ctrl+Shift+*", "Ctrl+Shift+8");
+    m_mapReplaceText.insert("Ctrl+Shift+(", "Ctrl+Shift+9");
+    m_mapReplaceText.insert("Return", "Enter");
 }
 ShortcutManager::~ShortcutManager()
 {

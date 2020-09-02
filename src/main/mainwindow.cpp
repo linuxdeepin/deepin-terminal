@@ -1046,9 +1046,20 @@ void MainWindow::initShortcuts()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
+    QMap<QString, QString> shortcutMap;
+    shortcutMap.insert("Ctrl+Shift+1", "Ctrl+Shift+!");
+    shortcutMap.insert("Ctrl+Shift+2", "Ctrl+Shift+@");
+    shortcutMap.insert("Ctrl+Shift+3", "Ctrl+Shift+#");
+    shortcutMap.insert("Ctrl+Shift+4", "Ctrl+Shift+$");
+    shortcutMap.insert("Ctrl+Shift+5", "Ctrl+Shift+%");
+    shortcutMap.insert("Ctrl+Shift+6", "Ctrl+Shift+^");
+    shortcutMap.insert("Ctrl+Shift+7", "Ctrl+Shift+&");
+    shortcutMap.insert("Ctrl+Shift+8", "Ctrl+Shift+*");
+    shortcutMap.insert("Ctrl+Shift+9", "Ctrl+Shift+(");
     for (int i = 1; i <= 9; i++) {
-        QString shortCutStr = QString("ctrl+shift+%1").arg(i);
-        //qDebug() << shortCutStr;
+        QString key = QString("Ctrl+Shift+%1").arg(i);
+        QString shortCutStr = shortcutMap[key];
+        qDebug() << shortCutStr;
         QShortcut *switchTabSC = new QShortcut(QKeySequence(shortCutStr), this);
         connect(switchTabSC, &QShortcut::activated, this, [this, i]() {
             TermWidgetPage *page = currentPage();
@@ -1707,7 +1718,7 @@ void NormalWindow::saveWindowSize()
     // 1.高度-1,如果不-1,最大后无法正常还原
     // 2.+ QSize(0, 1) 适应原始高度
     // 3.- QSize(0, 1) 适应关闭窗口特效， 半屏后无法还原
-    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1)))|| (size() == (halfScreenSize() - QSize(0, 1)))) {
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1))) || (size() == (halfScreenSize() - QSize(0, 1)))) {
         return;
     }
 
