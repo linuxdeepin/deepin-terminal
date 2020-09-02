@@ -135,6 +135,11 @@ TermWidget *TermWidgetPage::currentTerminal()
 *******************************************************************************/
 void TermWidgetPage::split(Qt::Orientation orientation)
 {
+    /******** Add by ut001000 renfeixiang 2020-09-02:增加 Begin***************/
+    //解释：此处为什么添加stayTermsize函数将所有term大小固定，是因为分屏幕时，所有term都会改变大小，
+    //这样子会触发多次的bashresize，导致多次重绘，产生term上显示多行shell信息，
+    //在分屏幕处理结束，会调用restoreAllMinSize，将所有term最大最小值恢复成原有
+    stayTermsize(orientation);
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     TermWidget *term = m_currentTerm;
     if (getTerminalCount() == 1) {
@@ -154,11 +159,66 @@ void TermWidgetPage::split(Qt::Orientation orientation)
         upSplit->setSizes(parentSizes);
         setSplitStyle(upSplit);
     }
+    /******** Add by ut001000 renfeixiang 2020-09-02:增加 Begin***************/
+    //在分屏幕处理结束，会调用restoreAllMinSize，将所有term最大最小值恢复成原有
+    restoreAllMinSize(QSize(MainWindow::m_MinWidth / 2, (MainWindow::m_MinHeight - 50) / 2), QSize(2000,2000));
 
     /******** Add by ut001000 renfeixiang 2020-08-07:新增分屏时改变大小，bug#41436***************/
     parentMainWindow()->updateMinHeight();
     return ;
 }
+
+/*******************************************************************************
+ 1. @函数:    stayTermsize
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-09-02
+ 4. @说明:    在分屏幕前，将当前页面的所有term设置当前大小的固定大小，要分屏幕的term根据是横或是纵分屏幕，将term的高或宽对应减半
+*******************************************************************************/
+void TermWidgetPage::stayTermsize(Qt::Orientation orientation)
+{
+    qDebug() << "TermWidgetPage into stayTermsize";
+    QList<TermWidget *> termList = findChildren<TermWidget *>();
+
+    int currSessionId = m_currentTerm->getSessionId();
+    //exit protection
+    for (TermWidget *term : qAsConst(termList)) {
+        if (term->getSessionId() == currSessionId) {
+            if(orientation != Qt::Horizontal)
+            {
+                term->setMaximumSize(term->width() /2 , term->height());
+                term->setMinimumSize(term->width() /2 , term->height());
+            }
+            else {
+                term->setMaximumSize(term->width() , term->height()/2);
+                term->setMinimumSize(term->width() , term->height()/2);
+            }
+
+        }
+        else {
+            term->setMaximumSize(term->size());
+            term->setMinimumSize(term->size());
+        }
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    restoreAllMinSize
+ 2. @作者:    ut000439 wangpeili
+ 3. @日期:    2020-09-02
+ 4. @说明:    在分屏幕后，将当前页面的所有term大小恢复成原有大小，最小值是原有的最小值，最大值设置2000
+*******************************************************************************/
+void TermWidgetPage::restoreAllMinSize(QSize minsize, QSize maxsize)
+{
+    qDebug() << "TermWidgetPage into restoreAllMinSize";
+    QList<TermWidget *> termList = findChildren<TermWidget *>();
+
+    //exit protection
+    for (TermWidget *term : qAsConst(termList)) {
+        term->setMinimumSize(minsize);
+        term->setMaximumSize(maxsize);
+    }
+}
+
 /*******************************************************************************
  1. @函数:    createSubSplit
  2. @作者:    ut000439 王培利
@@ -170,6 +230,11 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     TermProperties properties(term->workingDirectory());
     term->setParent(nullptr);
     TermWidget *newTerm  = createTerm(properties);
+    /******** Add by ut001000 renfeixiang 2020-09-02:增加分屏幕时，将新创建的term设置成固定大小，减少resize
+     * 分屏幕结束后，恢复成正常的最大最小值 Begin***************/
+    newTerm->setMinimumSize(term->minimumSize());
+    newTerm->setMaximumSize(term->maximumSize());
+    /******** Add by ut001000 renfeixiang 2020-09-02 End***************/
 
     // 意义与名称是相反的
     DSplitter *subSplit = new DSplitter(orientation == Qt::Horizontal ? Qt::Vertical : Qt::Horizontal,

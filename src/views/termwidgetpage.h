@@ -54,6 +54,12 @@ public:
 
     // 分屏功能
     void split(Qt::Orientation orientation);
+    /******** Add by ut000439 wangpeili 2020-09-02:增加 Begin***************/
+    //在分屏幕前，将当前页面的所有term设置当前大小的固定大小，要分屏幕的term根据是横或是纵分屏幕，将term的高或宽对应减半
+    void stayTermsize(Qt::Orientation orientation);
+    //在分屏幕后，将当前页面的所有term大小恢复成原有大小，最小值是原有的最小值，最大值设置2000
+    void restoreAllMinSize(QSize minsize, QSize maxsize);
+    /******** Add by ut000439 wangpeili 2020-09-02 End***************/
     DSplitter *createSubSplit(TermWidget *term, Qt::Orientation orientation);
     void closeSplit(TermWidget *term, bool hasConfirmed = false);
     void showExitConfirmDialog(Utils::CloseType type, int count = 1, QWidget *parent = nullptr);
