@@ -3692,6 +3692,8 @@ void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
 *******************************************************************************/
 void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
 {
+    Q_UNUSED(tapAndHold);
+    /** 请保留
     qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
     switch (tapAndHold->state()) {
     case Qt::GestureStarted:
@@ -3710,6 +3712,7 @@ void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
         Q_ASSERT(false);
         break;
     }
+    */
 }
 
 /*******************************************************************************
@@ -3720,7 +3723,9 @@ void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
 *******************************************************************************/
 void TerminalScreen::panTriggered(QPanGesture *pan)
 {
-    //qDebug()<<"------"<<"panTriggered"<<pan;
+    Q_UNUSED(pan);
+    /** 请保留
+    qDebug()<<"------"<<"panTriggered"<<pan;
     switch (pan->state()) {
     case Qt::GestureStarted:
         m_gestureAction = GA_pan;
@@ -3736,6 +3741,7 @@ void TerminalScreen::panTriggered(QPanGesture *pan)
         Q_ASSERT(false);
         break;
     }
+    */
 }
 
 /*******************************************************************************
@@ -3788,8 +3794,11 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
 
     QFont font = getVTFont();
     int size = static_cast<int>(m_scaleFactor*m_currentStepScaleFactor);
-    font.setPointSize(size);
-    setVTFont(font);
+    if(font.pointSize() != size){
+        font.setPointSize(size);
+        setVTFont(font);
+    }
+
 }
 
 /*******************************************************************************
@@ -3800,7 +3809,9 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
 *******************************************************************************/
 void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
 {
-    //qDebug()<<"------"<<"swipeTriggered"<<swipe;
+    Q_UNUSED(swipe);
+    /** 请保留
+    qDebug()<<"------"<<"swipeTriggered"<<swipe;
     switch (swipe->state()) {
     case Qt::GestureStarted:
         m_gestureAction = GA_swipe;
@@ -3811,12 +3822,13 @@ void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
         m_gestureAction = GA_null;
         break;
     case Qt::GestureFinished:
-        Q_ASSERT(false);
+        m_gestureAction = GA_null;
         break;
     default:
         Q_ASSERT(false);
         break;
     }
+    */
 }
 
 /*******************************************************************************
@@ -3886,11 +3898,11 @@ bool TerminalScreen::event(QEvent* event)
             qreal direction = diffYpos>0?1.0:-1.0;
             slideGesture(-direction*sqrt(abs(diffYpos))/font.pointSize());
 
-            /*预算滑惯性动时间*/
+            /*预算惯性滑动时间*/
             m_stepSpeed = static_cast<qreal>(diffYpos)/static_cast<qreal>(diffTime+0.000001);
             duration = sqrt(abs(m_stepSpeed))*1000;
 
-            /*预算滑惯性动距离,4.0为调优数值*/
+            /*预算惯性滑动距离,4.0为调优数值*/
             m_stepSpeed /= sqrt(font.pointSize()*4.0);
             change = m_stepSpeed*sqrt(abs(m_stepSpeed))*100;
 
