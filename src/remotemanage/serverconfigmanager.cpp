@@ -108,7 +108,7 @@ void ServerConfigManager::initServerConfig()
 
         // 旧终端的唯一值
         QString strKey =
-            QString("%1@%2@%3").arg(strList.at(0)).arg(strList.at(1)).arg(strList.at(2));
+            QString("%1@%2@%3@%4").arg(strList.at(0)).arg(strList.at(1)).arg(strList.at(2)).arg(pServerConfig->m_serverName);
         if (m_remoteConfigs.contains(strKey)) {
             if (strList.count() == OLD_VERTIONCOUNT) {
                 // 现在是旧的
