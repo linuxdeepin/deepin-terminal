@@ -24,21 +24,23 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
         return;
     }
 
-    if (DApplication::isDXcbPlatform()) {
+    /******** Modify by ut000610 daizhengwen 2020-09-02:KLU版本不需要isDXcbPlatform Begin***************/
+    //    if (DApplication::isDXcbPlatform()) {
 
-        QPixmap iconPixmap = QIcon::fromTheme("deepin-terminal").pixmap(36, 36);
-        QLabel *iconLabel = new QLabel(this);
-        iconLabel->setFixedSize(36, 36);
-        iconLabel->setPixmap(iconPixmap);
+    QPixmap iconPixmap = QIcon::fromTheme("deepin-terminal").pixmap(36, 36);
+    QLabel *iconLabel = new QLabel(this);
+    iconLabel->setFixedSize(36, 36);
+    iconLabel->setPixmap(iconPixmap);
 
 
-        m_layout->addSpacing(10);
+    m_layout->addSpacing(10);
 
-        /******** Modify by n014361 wangpeili 2020-02-12: 修改居中样式***********×****/
-        m_layout->addWidget(iconLabel, 0, Qt::AlignVCenter);
-        /***************** Modify by n014361 End ********************×****/
-        m_layout->addSpacing(10);
-    }
+    /******** Modify by n014361 wangpeili 2020-02-12: 修改居中样式***********×****/
+    m_layout->addWidget(iconLabel, 0, Qt::AlignVCenter);
+    /***************** Modify by n014361 End ********************×****/
+    m_layout->addSpacing(10);
+    //    }
+    /********************* Modify by ut000610 daizhengwen End ************************/
 }
 
 TitleBar::~TitleBar()
