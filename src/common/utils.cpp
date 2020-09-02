@@ -815,6 +815,15 @@ QStringList Utils::parseNestedQString(QString str)
         iLeft = str.indexOf("\'");
         iRight = str.lastIndexOf("\'");
     } else {
+
+        //对路径带空格的脚本，右键执行时不进行拆分处理， //./deepin-terminal "-e"  "/home/lx777/Desktop/a b/PerfTools_1.9.sh"
+        QFileInfo fi(str);
+        if (fi.isFile()) {
+            qDebug() << "this is file,not split.";
+            paraList.append(str);
+            return paraList;
+        }
+
         paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
         return  paraList;
     }
@@ -994,7 +1003,7 @@ QList<QByteArray> Utils::encodeList()
 *******************************************************************************/
 void Utils::set_Object_Name(QObject *object)
 {
-    if(object != nullptr){
+    if (object != nullptr) {
         object->setObjectName(object->metaObject()->className());
     }
 }
