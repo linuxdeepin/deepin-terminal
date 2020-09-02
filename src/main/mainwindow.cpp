@@ -231,6 +231,7 @@ void MainWindow::initOptionButton()
         qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
     }
 
+
     // option button
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
     if (optionBtn != nullptr) {
@@ -1331,7 +1332,7 @@ void MainWindow::initShortcuts()
     /******** Modify by ut001000 renfeixiang 2020-08-28:修改 bug 44477***************/
     QShortcut *shortcutBuiltinCopy = new QShortcut(QKeySequence(QKEYSEQUENCE_COPY_BUILTIN), this);
     connect(shortcutBuiltinCopy, &QShortcut::activated, this, [this]() {
-        qDebug() << "built in copy shortcut is activated!"<<QKEYSEQUENCE_COPY_BUILTIN;
+        qDebug() << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
         TermWidgetPage *page = currentPage();
         if (page) {
             page->copyClipboard();
@@ -2183,6 +2184,12 @@ void NormalWindow::initTitleBar()
     } else {
         qDebug() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
     }
+    QWidget *quitFullscreenBtn = titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton");
+    if (quitFullscreenBtn != nullptr) {
+        quitFullscreenBtn->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
+    }
     DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
     if (minBtn != nullptr) {
         minBtn->setFocusPolicy(Qt::TabFocus);
@@ -2201,9 +2208,10 @@ void NormalWindow::initTitleBar()
     } else {
         qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
     }
-    if (addButton != nullptr && optionBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
+    if (addButton != nullptr && optionBtn != nullptr && quitFullscreenBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
         QWidget::setTabOrder(addButton, optionBtn);
-        QWidget::setTabOrder(optionBtn, minBtn);
+        QWidget::setTabOrder(optionBtn, quitFullscreenBtn);
+        QWidget::setTabOrder(quitFullscreenBtn, minBtn);
         QWidget::setTabOrder(minBtn, maxBtn);
         QWidget::setTabOrder(maxBtn, closeBtn);
     }
