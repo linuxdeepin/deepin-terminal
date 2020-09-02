@@ -1456,17 +1456,38 @@ QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
  */
 void MainWindow::remoteUploadFile()
 {
-    QStringList fileName = Utils::showFilesSelectDialog(this);
-    if (!fileName.isEmpty()) {
-        pressCtrlAt();
-        sleep(100);
-        QString strTxt = "sz ";
-        for (QString &str : fileName) {
-            strTxt += str + " ";
+    //下载弹窗加载
+    QString curPath = QDir::currentPath();
+    QString dlgTitle = QObject::tr("Select file to upload");
+
+    // 设置弹窗
+    DFileDialog *dialog = new DFileDialog(this, dlgTitle, curPath);
+    connect(dialog, &DFileDialog::finished, this, [ = ](int code) {
+        QStringList fileName;
+
+        if (code == QDialog::Accepted) {
+            fileName = dialog->selectedFiles();
+        } else {
+            // 选择文件，却点击了叉号
+            fileName = QStringList();
         }
-        currentPage()->sendTextToCurrentTerm(strTxt);
-        currentPage()->sendTextToCurrentTerm("\n");
-    }
+
+        if (!fileName.isEmpty()) {
+            pressCtrlAt();
+            sleep(100);
+            QString strTxt = "sz ";
+            for (QString &str : fileName) {
+                strTxt += str + " ";
+            }
+            currentPage()->sendTextToCurrentTerm(strTxt);
+            currentPage()->sendTextToCurrentTerm("\n");
+        }
+
+    });
+    dialog->setAcceptMode(QFileDialog::AcceptOpen);
+    dialog->setFileMode(QFileDialog::ExistingFiles);
+    dialog->setLabelText(QFileDialog::Accept, QObject::tr("Upload"));
+    dialog->open();
 }
 
 /**
@@ -1475,19 +1496,40 @@ void MainWindow::remoteUploadFile()
 void MainWindow::remoteDownloadFile()
 {
     TermWidget *term = currentPage()->currentTerminal();
-    downloadFilePath = Utils::showDirDialog(this);
 
-    if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
-        //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
-        //currentTab()->sendTextToCurrentTerm(strTxt);
-        //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-        QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
-        pressEnterKey(strTxt);
-        currentPage()->sendTextToCurrentTerm("\n");
-        //-------------------
-        term->setEnterSzCommand(true);
-        //sleep(100);//
-    }
+    QString curPath = QDir::currentPath();
+    QString dlgTitle = QObject::tr("Select a directory to save the file");
+
+    DFileDialog *dialog = new DFileDialog(this, dlgTitle, curPath);
+    connect(dialog, &DFileDialog::finished, this, [ = ](int code) {
+        if (code == QDialog::Accepted && !dialog->selectedFiles().isEmpty()) {
+            QStringList list = dialog->selectedFiles();
+            const QString dirName = list.first();
+            downloadFilePath = dirName;
+        } else {
+            downloadFilePath = "";
+        }
+
+        if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
+            //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
+            //currentTab()->sendTextToCurrentTerm(strTxt);
+            //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+            QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
+            pressEnterKey(strTxt);
+            currentPage()->sendTextToCurrentTerm("\n");
+            //-------------------
+            term->setEnterSzCommand(true);
+            //sleep(100);//
+        }
+
+        // 弹窗注销
+        dialog->deleteLater();
+    });
+    dialog->setAcceptMode(QFileDialog::AcceptOpen);
+    dialog->setFileMode(QFileDialog::Directory);
+    dialog->setOption(DFileDialog::DontConfirmOverwrite);
+    dialog->setLabelText(QFileDialog::Accept, QObject::tr("Select"));
+    dialog->open();
 }
 
 /*******************************************************************************

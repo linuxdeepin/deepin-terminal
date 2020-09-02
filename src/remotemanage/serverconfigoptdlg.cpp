@@ -529,18 +529,22 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
 *******************************************************************************/
 void ServerConfigOptDlg::slotFileChooseDialog()
 {
-    DFileDialog dialog(this, QObject::tr("Select the private key file"));
-    dialog.setAcceptMode(QFileDialog::AcceptOpen);
-    dialog.setFileMode(QFileDialog::ExistingFile);
-    dialog.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden);
-    dialog.setLabelText(QFileDialog::Accept, QObject::tr("Select"));
+    DFileDialog *dialog = new DFileDialog(this, QObject::tr("Select the private key file"));
+    connect(dialog, &DFileDialog::finished, [ = ](int code) {
+        // 关闭时的操作
+        if (code == QDialog::Accepted && !dialog->selectedFiles().isEmpty()) {
+            QStringList list = dialog->selectedFiles();
+            const QString fileName = list.first();
 
-    int code = dialog.exec();
+            m_privateKey->setText(fileName);
+        }
+        // 弹窗销毁
+        dialog->deleteLater();
+    });
+    dialog->setAcceptMode(QFileDialog::AcceptOpen);
+    dialog->setFileMode(QFileDialog::ExistingFile);
+    dialog->setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden);
+    dialog->setLabelText(QFileDialog::Accept, QObject::tr("Select"));
 
-    if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
-        QStringList list = dialog.selectedFiles();
-        const QString fileName = list.first();
-
-        m_privateKey->setText(fileName);
-    }
+    dialog->open();
 }
