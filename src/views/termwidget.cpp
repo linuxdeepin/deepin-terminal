@@ -330,7 +330,30 @@ void TermWidget::addMenuActions(const QPoint &pos)
     /********************* Modify by n014361 wangpeili End ************************/
 
     m_menu->addAction(tr("Open in file manager"), this, [this] {
-        DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
+        //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
+
+        //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
+        //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
+        //dde-file-manager --show-item a.pdf
+
+        QProcess process;
+        //未选择内容
+        if (selectedText().isEmpty())
+        {
+            process.startDetached("dde-file-manager -n " + workingDirectory());
+            return;
+        }
+
+        QFileInfo fi(workingDirectory() + "/" + selectedText());
+        //选择的内容是文件或者文件夹
+        if (fi.isFile() || fi.isDir())
+        {
+            process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
+            return;
+        }
+        //选择的文本不是文件也不是文件夹
+        process.startDetached("dde-file-manager -n " + workingDirectory());
+
     });
 
     m_menu->addSeparator();
