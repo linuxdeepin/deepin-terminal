@@ -278,7 +278,15 @@ bool ShortcutManager::isValidShortcut(const QString &Name, const QString &Key)
 *******************************************************************************/
 bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key, QString &Reason)
 {
-    QString style = QString("<span style=\"color: rgba(255, 87, 54, 1);\">%1</span>").arg(Key);
+    /******** Modify by ut000610 daizhengwen 2020-09-02:给'<'做兼容 html中'<'的转译为 &lt; Begin***************/
+    QString key = Key;
+    if (key.contains("<")) {
+        // 用<>断开 &lt; 与+号  +&lt; 会显示错误
+        key.replace("<", "<>&lt;");
+    }
+    /********************* Modify by ut000610 daizhengwen End ************************/
+    QString style = QString("<span style=\"color: rgba(255, 87, 54, 1);\">%1</span>").arg(key);
+
     // 单键
     if (Key.count("+") == 0) {
         //F1-F12是允许的，这个正则不够精确，但是没关系。
