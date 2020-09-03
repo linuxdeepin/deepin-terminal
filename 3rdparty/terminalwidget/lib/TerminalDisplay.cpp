@@ -3692,9 +3692,7 @@ void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
 *******************************************************************************/
 void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
 {
-    Q_UNUSED(tapAndHold);
-    /** 请保留
-    qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
+    //qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
     switch (tapAndHold->state()) {
     case Qt::GestureStarted:
         m_gestureAction = GA_hold;
@@ -3712,7 +3710,6 @@ void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
         Q_ASSERT(false);
         break;
     }
-    */
 }
 
 /*******************************************************************************
@@ -3723,9 +3720,7 @@ void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
 *******************************************************************************/
 void TerminalScreen::panTriggered(QPanGesture *pan)
 {
-    Q_UNUSED(pan);
-    /** 请保留
-    qDebug()<<"------"<<"panTriggered"<<pan;
+    //qDebug()<<"------"<<"panTriggered"<<pan;
     switch (pan->state()) {
     case Qt::GestureStarted:
         m_gestureAction = GA_pan;
@@ -3741,7 +3736,6 @@ void TerminalScreen::panTriggered(QPanGesture *pan)
         Q_ASSERT(false);
         break;
     }
-    */
 }
 
 /*******************************************************************************
@@ -3809,9 +3803,7 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
 *******************************************************************************/
 void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
 {
-    Q_UNUSED(swipe);
-    /** 请保留
-    qDebug()<<"------"<<"swipeTriggered"<<swipe;
+    //qDebug()<<"------"<<"swipeTriggered"<<swipe;
     switch (swipe->state()) {
     case Qt::GestureStarted:
         m_gestureAction = GA_swipe;
@@ -3828,7 +3820,6 @@ void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
         Q_ASSERT(false);
         break;
     }
-    */
 }
 
 /*******************************************************************************
