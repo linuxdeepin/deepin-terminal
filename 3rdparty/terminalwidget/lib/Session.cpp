@@ -124,14 +124,17 @@ Session::Session(QObject *parent)
 
     });
     connect(_shellProcess, &Pty::winsizeChanged,  this, [this](int lines, int columns){
+        /******** Modify by ut000439 wangpeili 2020-09-03:修改不调用bash的功能，不走清行流程 Begin***************/
+        _emulation->setImageSize(lines, columns);//不调用bash的流程也需要resizeImage，内容换行
         QString name = getDynamicProcessName();
         if(name == "bash")
         {
-            _emulation->setImageSize(lines, columns);
+            qDebug() << "bashbashbashbashbash";
             entryRedrawStep(RedrawStep1_Resize_Receiving);
             return ;
         }
         qDebug()<<"no need go to redraw mode, current process name:"<<name;
+        /******** Modify by ut000439 wangpeili 2020-09-03 End***************/
 
     });
     connect(_shellProcess, &Pty::shellHasStart,  _emulation, [this]()
