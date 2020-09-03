@@ -263,14 +263,23 @@ void MainWindow::initOptionMenu()
 {
     titlebar()->setMenu(m_menu);
     /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
+    // 防止创建新窗口的action被多次触发
+    QTimer *createTimer = new QTimer(this);
+    // 设置定时器,等待菜单消失,触发一次,防止多次被触发
+    createTimer->setSingleShot(true);
     QAction *newWindowAction(new QAction(tr("New window"), this));
-    connect(newWindowAction, &QAction::triggered, this, [this]() {
+    connect(createTimer, &QTimer::timeout, this, [ = ]() {
+        // 创建新的窗口
         qDebug() << "menu click new window";
 
         TermWidgetPage *tabPage = currentPage();
         TermWidget *term = tabPage->currentTerminal();
         QString currWorkingDir = term->workingDirectory();
         emit newWindowRequest(currWorkingDir);
+    });
+    connect(newWindowAction, &QAction::triggered, this, [ = ]() {
+        // 等待菜单消失  此处影响菜单创建窗口的性能
+        createTimer->start(50);
     });
     m_menu->addAction(newWindowAction);
     /********************* Modify by m000714 daizhengwen End ************************/
