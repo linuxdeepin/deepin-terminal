@@ -124,8 +124,15 @@ Session::Session(QObject *parent)
 
     });
     connect(_shellProcess, &Pty::winsizeChanged,  this, [this](int lines, int columns){
-        _emulation->setImageSize(lines, columns);
-        entryRedrawStep(RedrawStep1_Resize_Receiving);
+        QString name = foregroundProcessName();
+        if(name == "bash")
+        {
+            _emulation->setImageSize(lines, columns);
+            entryRedrawStep(RedrawStep1_Resize_Receiving);
+            return ;
+        }
+        qDebug()<<"no need go to redraw mode, current process name:"<<name;
+
     });
     connect(_shellProcess, &Pty::shellHasStart,  _emulation, [this]()
     {
