@@ -35,7 +35,7 @@ void UT_ServerConfigGroupPanel_Test::TearDown()
     delete m_normalWindow;
 }
 
-//#ifdef UT_SERVERCONFIGGROUPPANEL_TEST
+#ifdef UT_SERVERCONFIGGROUPPANEL_TEST
 TEST_F(UT_ServerConfigGroupPanel_Test, ServerConfigGroupPanelTest)
 {
     m_normalWindow->resize(800, 600);
@@ -56,4 +56,4 @@ TEST_F(UT_ServerConfigGroupPanel_Test, ServerConfigGroupPanelTest)
     QTest::qWait(1000);
 #endif
 }
-//#endif
+#endif

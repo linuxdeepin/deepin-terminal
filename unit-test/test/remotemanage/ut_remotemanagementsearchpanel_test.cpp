@@ -35,7 +35,7 @@ void UT_RemoteManagementSearchPanel_Test::TearDown()
     delete m_normalWindow;
 }
 
-//#ifdef UT_REMOTEMANAGEMENTSEARCHPANEL_TEST
+#ifdef UT_REMOTEMANAGEMENTSEARCHPANEL_TEST
 TEST_F(UT_RemoteManagementSearchPanel_Test, RemoteManagementSearchPanelTest)
 {
     m_normalWindow->resize(800, 600);
@@ -56,4 +56,4 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, RemoteManagementSearchPanelTest)
     QTest::qWait(1000);
 #endif
 }
-//#endif
+#endif

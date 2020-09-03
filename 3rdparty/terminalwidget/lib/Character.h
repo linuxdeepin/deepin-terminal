@@ -29,6 +29,8 @@
 // Local
 #include "CharacterColor.h"
 
+#include "unit_test_export.h"
+
 namespace Konsole
 {
 
@@ -58,7 +60,7 @@ static const int LINE_DOUBLEHEIGHT    = (1 << 2);
  * value, foreground and background colors and a set of rendition attributes
  * which specify how it should be drawn.
  */
-class Character
+class UNIT_TEST_EXPORT Character
 {
 public:
   /**

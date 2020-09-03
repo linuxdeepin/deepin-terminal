@@ -35,7 +35,7 @@ void UT_RemoteManagementPlugn_Test::TearDown()
     delete m_normalWindow;
 }
 
-//#ifdef UT_REMOTEMANAGEMENTPLUGN_TEST
+#ifdef UT_REMOTEMANAGEMENTPLUGN_TEST
 TEST_F(UT_RemoteManagementPlugn_Test, RemoteManagementPlugnTest)
 {
     m_normalWindow->resize(800, 600);
@@ -59,4 +59,4 @@ TEST_F(UT_RemoteManagementPlugn_Test, RemoteManagementPlugnTest)
     QTest::qWait(1000);
 #endif
 }
-//#endif
+#endif

@@ -68,7 +68,7 @@ class TerminalCharacterDecoder;
     using selectedText().  When getImage() is used to retrieve the visible image,
     characters which are part of the selection have their colours inverted.
 */
-class Screen
+class UNIT_TEST_EXPORT Screen
 {
 public:
     /** Construct a new screen image of size @p lines by @p columns. */

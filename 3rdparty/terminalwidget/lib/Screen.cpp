@@ -1227,7 +1227,7 @@ int Screen::copyLineToStream(int line ,
     static const int MAX_CHARS = 1024;
     static Character characterBuffer[MAX_CHARS];
 
-    Q_ASSERT( count < MAX_CHARS );
+//    Q_ASSERT( count < MAX_CHARS );
 
     LineProperty currentLineProperties = 0;
 

@@ -337,13 +337,17 @@ FILE(GLOB allTestSource
     unit-test/test/settings/*.cpp
     unit-test/test/theme/*.cpp
     unit-test/test/views/*.cpp
+    unit-test/test/3rdparty/terminalwidget/lib/*.cpp
 )
+include_directories(unit-test/test/common)
+include_directories(unit-test/test/3rdparty/terminalwidget/lib)
 
 add_executable(${PROJECT_NAME_TEST}
     ${allHeaders}
     ${allSource}
     ${allTestSource}
     ${qrcFiles}
+    ${uiFiles}
 )
 
 target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
@@ -361,9 +365,6 @@ target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
                                                         ${GOBJECT_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} terminalwidget5 gmock gmock_main gtest gtest_main)
-
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage -O0")
-
 
 
 #------------------------------ 创建'make test'指令---------------------------------------

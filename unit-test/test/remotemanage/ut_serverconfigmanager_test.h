@@ -2,7 +2,7 @@
 #ifndef UT_SERVERCONFIGMANAGER_TEST_H
 #define UT_SERVERCONFIGMANAGER_TEST_H
 
-#include "../common/ut_defines.h"
+#include "ut_defines.h"
 #include <gtest/gtest.h>
 
 class UT_ServerConfigManager_Test : public ::testing::Test

@@ -33,6 +33,7 @@
 // Konsole
 #include "BlockArray.h"
 #include "Character.h"
+#include "unit_test_export.h"
 
 // map
 #include <sys/mman.h>
@@ -45,7 +46,7 @@ namespace Konsole
    An extendable tmpfile(1) based buffer.
 */
 
-class HistoryFile
+class UNIT_TEST_EXPORT HistoryFile
 {
 public:
   HistoryFile();
@@ -89,7 +90,7 @@ private:
 //////////////////////////////////////////////////////////////////////
 class HistoryType;
 
-class HistoryScroll
+class UNIT_TEST_EXPORT HistoryScroll
 {
 public:
   HistoryScroll(HistoryType*);
@@ -135,7 +136,7 @@ protected:
 // File-based history (e.g. file log, no limitation in length)
 //////////////////////////////////////////////////////////////////////
 
-class HistoryScrollFile : public HistoryScroll
+class UNIT_TEST_EXPORT HistoryScrollFile : public HistoryScroll
 {
 public:
   HistoryScrollFile(const QString &logFileName);
@@ -162,7 +163,7 @@ private:
 //////////////////////////////////////////////////////////////////////
 // Buffer-based history (limited to a fixed nb of lines)
 //////////////////////////////////////////////////////////////////////
-class HistoryScrollBuffer : public HistoryScroll
+class UNIT_TEST_EXPORT HistoryScrollBuffer : public HistoryScroll
 {
 public:
   typedef QVector<Character> HistoryLine;
@@ -219,7 +220,7 @@ public:
 //////////////////////////////////////////////////////////////////////
 // Nothing-based history (no history :-)
 //////////////////////////////////////////////////////////////////////
-class HistoryScrollNone : public HistoryScroll
+class UNIT_TEST_EXPORT HistoryScrollNone : public HistoryScroll
 {
 public:
   HistoryScrollNone();
@@ -357,7 +358,7 @@ protected:
   bool wrapped;
 };
 
-class CompactHistoryScroll : public HistoryScroll
+class UNIT_TEST_EXPORT CompactHistoryScroll : public HistoryScroll
 {
   typedef QList<CompactHistoryLine*> HistoryArray;
 
@@ -389,7 +390,7 @@ private:
 // History type
 //////////////////////////////////////////////////////////////////////
 
-class HistoryType
+class UNIT_TEST_EXPORT HistoryType
 {
 public:
   HistoryType();
@@ -413,7 +414,7 @@ public:
   virtual HistoryScroll* scroll(HistoryScroll *) const = 0;
 };
 
-class HistoryTypeNone : public HistoryType
+class UNIT_TEST_EXPORT HistoryTypeNone : public HistoryType
 {
 public:
   HistoryTypeNone();
@@ -439,7 +440,7 @@ protected:
 };
 
 #if 1
-class HistoryTypeFile : public HistoryType
+class UNIT_TEST_EXPORT HistoryTypeFile : public HistoryType
 {
 public:
   HistoryTypeFile(const QString& fileName=QString());
@@ -471,7 +472,7 @@ protected:
   unsigned int m_nbLines;
 };
 
-class CompactHistoryType : public HistoryType
+class UNIT_TEST_EXPORT CompactHistoryType : public HistoryType
 {
 public:
   CompactHistoryType(unsigned int size);

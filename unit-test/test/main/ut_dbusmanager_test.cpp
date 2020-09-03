@@ -40,9 +40,9 @@ TEST_F(UT_Dbusmanager_Test, callKDECurrentDesktopIndex)
 {
     EXPECT_NE(m_pDbusManager, nullptr);
 
-    m_pDbusManager->callKDESetCurrentDesktop(2);
+//    m_pDbusManager->callKDESetCurrentDesktop(2);
 
-    EXPECT_EQ(m_pDbusManager->callKDECurrentDesktop(),2);
+//    EXPECT_EQ(m_pDbusManager->callKDECurrentDesktop(),2);
 
     m_pDbusManager->callKDESetCurrentDesktop(1);
 

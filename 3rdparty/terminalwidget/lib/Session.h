@@ -52,7 +52,7 @@ class ProcessInfo;
  * or send input to the program in the terminal in the form of keypresses and mouse
  * activity.
  */
-class Session : public QObject {
+class UNIT_TEST_EXPORT Session : public QObject {
     Q_OBJECT
 
 public:

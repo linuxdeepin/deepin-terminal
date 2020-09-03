@@ -25,6 +25,7 @@
 
 // Qt
 #include <QColor>
+#include "unit_test_export.h"
 
 //#include <kdemacros.h>
 #define KDE_NO_EXPORT
@@ -45,7 +46,7 @@ namespace Konsole
  * display should avoid drawing the background for any characters
  * using the entry as a background.
  */
-class ColorEntry
+class UNIT_TEST_EXPORT ColorEntry
 {
 public:
   /** Specifies the weight to use when drawing text with this color. */
@@ -145,7 +146,7 @@ extern const ColorEntry base_color_table[TABLE_COLORS] KDE_NO_EXPORT;
 /**
  * Describes the color of a single character in the terminal.
  */
-class CharacterColor
+class UNIT_TEST_EXPORT CharacterColor
 {
     friend class Character;
 

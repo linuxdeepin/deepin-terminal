@@ -1,6 +1,6 @@
 #include "ut_customcommandoptdlg_test.h"
 
-#include "../common/ut_defines.h"
+#include "ut_defines.h"
 #include "customcommandoptdlg.h"
 
 //Google GTest 相关头文件

@@ -41,7 +41,7 @@ int UT_ServerConfigManager_Test::getServerConfigCount()
     return serverConfigList.count();
 }
 
-//#ifdef UT_SERVERCONFIGMANAGER_TEST
+#ifdef UT_SERVERCONFIGMANAGER_TEST
 TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
 {
     ServerConfigManager *serverConfigManager = ServerConfigManager::instance();
@@ -105,4 +105,4 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     QTest::qWait(1000);
 #endif
 }
-//#endif
+#endif

@@ -2,7 +2,7 @@
 #ifndef UT_SHORTCUTMANAGER_TEST_H
 #define UT_SHORTCUTMANAGER_TEST_H
 
-#include "../common/ut_defines.h"
+#include "ut_defines.h"
 
 #include <QObject>
 #include <gtest/gtest.h>

@@ -31,7 +31,7 @@
 
 // Konsole
 //#include "konsole_export.h"
-#define KONSOLEPRIVATE_EXPORT
+#include "unit_test_export.h"
 
 class QIODevice;
 class QTextStream;
@@ -52,7 +52,7 @@ namespace Konsole
  * (Shift,Ctrl,Alt,Meta etc.) and state flags which indicate the state
  * which the terminal must be in for the key sequence to apply.
  */
-class KeyboardTranslator
+class UNIT_TEST_EXPORT KeyboardTranslator
 {
 public:
     /**
@@ -356,7 +356,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(KeyboardTranslator::Commands)
  *  }
  * @endcode
  */
-class KeyboardTranslatorReader
+class UNIT_TEST_EXPORT KeyboardTranslatorReader
 {
 public:
     /** Constructs a new reader which parses the given @p source */
@@ -450,7 +450,7 @@ private:
  * Manages the keyboard translations available for use by terminal sessions,
  * see KeyboardTranslator.
  */
-class KONSOLEPRIVATE_EXPORT KeyboardTranslatorManager
+class UNIT_TEST_EXPORT KeyboardTranslatorManager
 {
 public:
     /**

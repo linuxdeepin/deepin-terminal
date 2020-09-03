@@ -2,7 +2,7 @@
 #ifndef UT_SERVERCONFIGOPTDLG_TEST_H
 #define UT_SERVERCONFIGOPTDLG_TEST_H
 
-#include "../common/ut_defines.h"
+#include "ut_defines.h"
 #include <gtest/gtest.h>
 
 class UT_ServerConfigOptDlg_Test : public ::testing::Test

@@ -2,7 +2,7 @@
 #ifndef UT_REMOTEMANAGEMENTSEARCHPANEL_TEST_H
 #define UT_REMOTEMANAGEMENTSEARCHPANEL_TEST_H
 
-#include "../common/ut_defines.h"
+#include "ut_defines.h"
 #include "termproperties.h"
 #include <gtest/gtest.h>
 

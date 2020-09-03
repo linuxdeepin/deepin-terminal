@@ -1,5 +1,5 @@
 #include "terminalapplication.h"
-#include "../common/ut_defines.h"
+#include "ut_defines.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>

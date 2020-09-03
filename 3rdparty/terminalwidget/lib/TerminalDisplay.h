@@ -44,7 +44,12 @@
 #define CELL_TIME   15
 #define TAP_MOVE_DELAY 300
 
+#include "unit_test_export.h"
+#ifdef UNIT_TEST_EXPORT
+#define KONSOLEPRIVATE_EXPORT UNIT_TEST_EXPORT
+#else
 #define KONSOLEPRIVATE_EXPORT
+#endif
 
 class QDrag;
 class QDragEnterEvent;

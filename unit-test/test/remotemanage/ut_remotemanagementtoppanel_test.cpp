@@ -35,7 +35,7 @@ void UT_RemoteManagementTopPanel_Test::TearDown()
     delete m_normalWindow;
 }
 
-//#ifdef UT_REMOTEMANAGEMENTTOPPANEL_TEST
+#ifdef UT_REMOTEMANAGEMENTTOPPANEL_TEST
 TEST_F(UT_RemoteManagementTopPanel_Test, RemoteManagementTopPanelTest)
 {
     m_normalWindow->resize(800, 600);
@@ -55,4 +55,4 @@ TEST_F(UT_RemoteManagementTopPanel_Test, RemoteManagementTopPanelTest)
     QTest::qWait(1000);
 #endif
 }
-//#endif
+#endif

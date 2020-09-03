@@ -32,6 +32,7 @@
 
 #include "kprocess.h"
 #include "kptydevice.h"
+#include "unit_test_export.h"
 
 #include <csignal>
 
@@ -54,7 +55,7 @@ class KPtyProcessPrivate;
  *
  * @author Oswald Buddenhagen <ossi@kde.org>
  */
-class KPtyProcess : public KProcess
+class UNIT_TEST_EXPORT KPtyProcess : public KProcess
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(KPtyProcess)

@@ -25,6 +25,13 @@
 // Qt
 #include <QStringList>
 
+#include "unit_test_export.h"
+#ifdef UNIT_TEST_EXPORT
+#define KONSOLEPRIVATE_EXPORT UNIT_TEST_EXPORT
+#else
+#define KONSOLEPRIVATE_EXPORT
+#endif
+
 namespace Konsole {
 
 /**
@@ -48,7 +55,7 @@ namespace Konsole {
  *      </li>
  * </ul>
  */
-class ShellCommand {
+class KONSOLEPRIVATE_EXPORT ShellCommand {
 public:
     /**
      * Constructs a ShellCommand from a command line.
