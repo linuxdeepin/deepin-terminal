@@ -64,22 +64,25 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                        }
                    } else if (ch == QChar('"')) {
                        inQuotes = !inQuotes;
-                   } else if (ch == QChar(',')) {
+                   } /*else if (ch == QChar(',')) {
+
                        if (!inQuotes && equalsPos != -1) {
                            commaPos.append(i);
                        }
-                   } else if (ch == QChar(';') || ch == QChar('#')) {
+
+                   }*/ /*else if (ch == QChar(';') || ch == QChar('#')) {
                        if (!inQuotes) {
                            data.resize(i);
                            break;
                        }
-                   } else if (ch == QChar('\\')) {
+                   }*/ /*else if (ch == QChar('\\')) {
                        if (++i < data.size()) {
                         } else {
                            ok = false;
                            break;
                        }
                    }
+                   */
                    i++;
                }
                 if (equalsPos == -1) {
@@ -118,7 +121,8 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                            QString d = data.mid(commaPos.at(i-1)+1, commaPos.at(i)-commaPos.at(i-1)-1);
                            QString v = d.trimmed();
                            if (v.startsWith("\"") && v.endsWith("\"") && v.length()>1) {
-                               v = v.mid(1, v.length()-2);                         }
+                               v = v.mid(1, v.length()-2);
+                           }
                            vals.append(stringToVariant(unescapedString(v)));
                        }
                        settingsMap[key] = vals;
@@ -150,7 +154,7 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
       it.next();
       QString key = it.key();
       QString section;
-      qDebug()<<"key: "<<key;
+     // qDebug()<<"key: "<<key;
       int idx = key.lastIndexOf(QChar('/'));
       if (idx == -1) {
           section = QString("[General]");
@@ -355,10 +359,12 @@ QString SettingIO::unescapedString(const QString &src)
         { 'r', '\r' },
         { 't', '\t' },
         { 'v', '\v' },
-        { '"', '"' },
-        { '?', '?' },
+        { '"',  '"' },
+        { 's',   ' '},
+        { '?',  '?' },
         { '\'', '\'' },
         { '\\', '\\' }
+
     };
     static const int numEscapeCodes = sizeof(escapeCodes) / sizeof(escapeCodes[0]);
 
@@ -455,7 +461,7 @@ QString SettingIO::canTransfer(const QString &str)
         rewrite = true;
         //uincode
         bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
-       // qDebug()<< "uincode" <<ok << res;
+      //  qDebug()<< "uincode" <<ok << res;
     }
     //如果是%是Latin1格式的字符串
     else if(str.contains("%"))
@@ -463,7 +469,7 @@ QString SettingIO::canTransfer(const QString &str)
         rewrite = true;
         //utf-8转换为uincode过了
         bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
-        //qDebug()<< "utf-8 to uincode" <<ok << res;
+      //  qDebug()<< "utf-8 to uincode" <<ok << res;
        // qDebug() << QString::fromLocal8Bit(res.toLatin1());
         res = QString::fromLocal8Bit(res.toLatin1());
     }
