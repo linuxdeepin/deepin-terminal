@@ -114,7 +114,8 @@ void Pty::startResize()
 
 bool Pty::isNeeadResize()
 {
-    if((redraw_windowColumns != swap_windowColumns) || (redraw_windowColumns != swap_windowColumns))
+    /******** Modify by ut001000 renfeixiang 2020-09-03:修改判断条件，行没有做判断 Begin***************/
+    if((redraw_windowColumns != swap_windowColumns) || (redraw_windowLines != swap_windowLines))
     {
         return  true;
     }
