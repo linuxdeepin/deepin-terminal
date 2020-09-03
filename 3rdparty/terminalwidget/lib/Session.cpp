@@ -124,7 +124,7 @@ Session::Session(QObject *parent)
 
     });
     connect(_shellProcess, &Pty::winsizeChanged,  this, [this](int lines, int columns){
-        QString name = foregroundProcessName();
+        QString name = getDynamicProcessName();
         if(name == "bash")
         {
             _emulation->setImageSize(lines, columns);
