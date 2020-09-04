@@ -669,7 +669,7 @@ private:
     // draws a section of text, all the text in this section
     // has a common color and style
     void drawTextFragment(QPainter& painter, const QRect& rect,
-                          const std::wstring& text, const Character* style);
+                          const QString& text, const Character* style);
     // draws the background for a text fragment
     // if useOpacitySetting is true then the color's alpha value will be set to
     // the display's transparency (set with setOpacity()), otherwise the background
@@ -680,11 +680,11 @@ private:
     void drawCursor(QPainter& painter, const QRect& rect , const QColor& foregroundColor,
                                        const QColor& backgroundColor , bool& invertColors);
     // draws the characters or line graphics in a text fragment
-    void drawCharacters(QPainter& painter, const QRect& rect,  const std::wstring& text,
+    void drawCharacters(QPainter& painter, const QRect& rect,  const QString& text,
                                            const Character* style, bool invertCharacterColor);
     // draws a string of line graphics
     void drawLineCharString(QPainter& painter, int x, int y,
-                            const std::wstring& str, const Character* attributes);
+                            const QString& str, const Character* attributes);
 
     // draws the preedit string for input methods
     void drawInputMethodPreeditString(QPainter& painter , const QRect& rect);
@@ -693,6 +693,7 @@ private:
 
     // maps an area in the character image to an area on the widget
     QRect imageToWidget(const QRect& imageArea) const;
+    QRect widgetToImage(const QRect& widgetArea) const;
 
     // the area where the preedit string for input methods will be draw
     QRect preeditRect() const;
@@ -730,8 +731,8 @@ private:
 
     bool handleShortcutOverrideEvent(QKeyEvent* event);
 
-    bool isLineChar(wchar_t c) const;
-    bool isLineCharString(const std::wstring& string) const;
+    bool canDraw(uint c) const;
+    bool isLineCharString(const QString& string) const;
 
     // the window onto the terminal screen which this display
     // is currently showing.
@@ -763,8 +764,11 @@ private:
                      // than 'columns' if the character image provided with setImage() is smaller
                      // than the maximum image size which can be displayed
 
+    QRect _contentRect;
+
     int _contentHeight;
     int _contentWidth;
+
     Character* _image; // [lines][columns]
                // only the area [usedLines][usedColumns] in the image contains valid data
 
@@ -852,7 +856,7 @@ private:
 
     struct InputMethodData
     {
-        std::wstring preeditString;
+        QString preeditString;
         QRect previousPreeditRect;
     };
     InputMethodData _inputMethodData;
@@ -861,6 +865,9 @@ private:
 
     //the delay in milliseconds between redrawing blinking text
     static const int TEXT_BLINK_DELAY = 500;
+
+    int _margin;      // the contents margin
+    bool _centerContents;   // center the contents between margins
 
     int _leftBaseMargin;
     int _topBaseMargin;

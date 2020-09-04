@@ -60,6 +60,7 @@ void ServerConfigManager::settServerConfig(QSettings &commandsSettings, const QS
 *******************************************************************************/
 void ServerConfigManager::fillManagePanel(ListView *listview)
 {
+    qDebug() << "ServerConfigManager fill data to manage panel.";
     listview->clearData();
     for (QString key : m_serverConfigs.keys()) {
         // key有效
@@ -88,6 +89,7 @@ void ServerConfigManager::fillManagePanel(ListView *listview)
 *******************************************************************************/
 void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &filter, const QString &group)
 {
+    qDebug() << "ServerConfigManager fill data to search panel.";
     listview->clearData();
     // 判断是否是组内搜索
     if (group.isEmpty() || group.isNull()) {

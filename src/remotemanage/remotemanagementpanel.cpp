@@ -54,6 +54,7 @@ void RemoteManagementPanel::refreshPanel()
 *******************************************************************************/
 void RemoteManagementPanel::setFocusInPanel()
 {
+    qDebug() << "RemoteManagementPanel focus in Panel.";
     if (m_searchEdit->isVisible()) {
         // 搜索框显示
         // 设置焦点
@@ -78,6 +79,7 @@ void RemoteManagementPanel::setFocusInPanel()
 *******************************************************************************/
 void RemoteManagementPanel::setFocusBack(const QString &strGroup)
 {
+    qDebug() << "RemoteManagementPanel return from RemoteManageGroup";
     // 返回前判断之前是否要有焦点
     if (m_listWidget->getFocusState()) {
         // 要有焦点
@@ -186,6 +188,7 @@ void RemoteManagementPanel::showCurSearchResult()
 *******************************************************************************/
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
+    qDebug() << "RemoteManagementPanel show add server config dialog.";
     // 判断控件是否有焦点
     bool focusState = m_pushButton->hasFocus();
     // 弹窗显示
@@ -222,11 +225,11 @@ void RemoteManagementPanel::initUI()
     this->setAutoFillBackground(true);
 
     m_searchEdit = new DSearchEdit(this);
-    m_searchEdit->setObjectName("RemoteSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
+    m_searchEdit->setObjectName("RemoteSearchEdit");
     m_listWidget = new ListView(ListType_Remote, this);
-    m_listWidget->setObjectName("RemoteManageListWidget");//Add by ut001000 renfeixiang 2020-08-14
+    m_listWidget->setObjectName("RemoteManageListWidget");
     m_pushButton = new DPushButton(this);
-    m_pushButton->setObjectName("RemoteAddPushButton");//Add by ut001000 renfeixiang 2020-08-13
+    m_pushButton->setObjectName("RemoteAddPushButton");
 
     m_searchEdit->setFixedHeight(COMMONHEIGHT);
     m_searchEdit->setClearButtonEnabled(true);

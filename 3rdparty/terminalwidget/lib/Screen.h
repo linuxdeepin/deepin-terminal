@@ -27,6 +27,7 @@
 #include <QRect>
 #include <QTextStream>
 #include <QVarLengthArray>
+#include <QSet>
 
 // Konsole
 #include "Character.h"
@@ -346,7 +347,7 @@ public:
      * is inserted at the current cursor position, otherwise it will replace the
      * character already at the current cursor position.
      */
-    void displayCharacter(wchar_t c);
+    void displayCharacter(uint c);
 
     // Do composition with last shown character FIXME: Not implemented yet for KDE 4
     void compose(const QString& compose);
@@ -558,6 +559,19 @@ public:
       */
     static void fillWithDefaultChar(Character* dest, int count);
 
+    QSet<uint> usedExtendedChars() const
+    {
+        QSet<uint> result;
+        for (int i = 0; i < lines; ++i) {
+            const ImageLine &il = screenLines[i];
+            for (int j = 0; j < il.length(); ++j) {
+                if (il[j].rendition & RE_EXTENDED_CHAR) {
+                    result << il[j].character;
+                }
+            }
+        }
+        return result;
+    }
 private:
 
     //copies a line of text from the screen or history into a stream using a

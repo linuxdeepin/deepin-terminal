@@ -776,6 +776,12 @@ void TermWidgetPage::setPressingScroll(bool enable)
 *******************************************************************************/
 void TermWidgetPage::showSearchBar(int state)
 {
+    /******** Modify by ut001000 renfeixiang 2020-08-28:修改bug 45227,SearchBar没有显示，且不需要显示时，return Begin***************/
+    // 沒显示，且不要显示
+    if(!m_findBar->isVisible() && state != SearchBar_Show){
+        return;
+    }
+    /******** Modify by ut001000 renfeixiang 2020-08-28***************/
     if (SearchBar_Show == state) {
         /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 Begin***************/
         if (m_MainWindow->isQuakeMode() && m_MainWindow->height() < LISTMINHEIGHT) {
@@ -794,9 +800,14 @@ void TermWidgetPage::showSearchBar(int state)
         m_findBar->hide();
         qDebug() << __FUNCTION__ << "hide search bar!";
     } else if (SearchBar_FocusOut == state) {
-        m_findBar->hide();
+
         qDebug() << __FUNCTION__ << "hide search bar! focus in term!";
-        Utils::getMainWindow(this)->focusCurrentPage();
+        /******** Modify by ut001000 renfeixiang 2020-08-28:修改bug 45227,焦点只有在m_findBar上时，才将焦点设置到CurrentPage Begin***************/
+        if (Utils::getMainWindow(this)->isFocusOnList()) {
+            Utils::getMainWindow(this)->focusCurrentPage();
+        }
+         m_findBar->hide();
+        /******** Modify by ut001000 renfeixiang 2020-08-28 End***************/
     }
 }
 

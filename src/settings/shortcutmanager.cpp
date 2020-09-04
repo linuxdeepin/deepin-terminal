@@ -60,15 +60,15 @@ ShortcutManager *ShortcutManager::instance()
 *******************************************************************************/
 void ShortcutManager::initShortcuts()
 {
-    //m_builtinShortcuts = createBuiltinShortcutsFromConfig();  // use QAction or QShortcut ?
-
-    //QStringList builtinShortcuts;
     m_builtinShortcuts << "F1";
     m_builtinShortcuts << "Ctrl+C";
     m_builtinShortcuts << "Ctrl+D";
 
     /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
     m_builtinShortcuts << QString(MainWindow::QKEYSEQUENCE_PASTE_BUILTIN);
+
+    /******** Modify by ut001000 renfeixiang 2020-08-28:修改 bug 44477***************/
+    m_builtinShortcuts << QString(MainWindow::QKEYSEQUENCE_COPY_BUILTIN);
     /********************* Modify by n014361 wangpeili End ************************/
 
     /******** Modify by ut000439 wangpeili 2020-07-20:  SP3 右键快捷键被内置   ****************/
@@ -87,11 +87,6 @@ void ShortcutManager::initShortcuts()
     for (int i = 0; i <= 9; i++) {
         m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
     }
-
-//    for(int i = 0; i < m_builtinShortcuts.size(); i++)
-//    {
-//        m_GloableShortctus[QString("builtin_%1").arg(i)] = m_builtinShortcuts.at(i);
-//    }
 
     createCustomCommandsFromConfig();
     m_mapReplaceText.insert("Ctrl+Shift+!", "Ctrl+Shift+1");
@@ -122,7 +117,6 @@ void ShortcutManager::initConnect(MainWindow *mainWindow)
     for (auto &commandAction : m_customCommandActionList) {
         connect(commandAction, &QAction::triggered, mainWindow, [ = ]() {
             qDebug() << "commandAction->data().toString() is triggered" << mainWindow;
-            qDebug() << commandAction->parent();
             if (!mainWindow->isActiveWindow()) {
                 return ;
             }
@@ -158,7 +152,6 @@ void ShortcutManager::createCustomCommandsFromConfig()
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     commandsSettings.setIniCodec(INI_FILE_CODEC);
     QStringList commandGroups = commandsSettings.childGroups();
-    // qDebug() << commandGroups.size() << endl;
     for (const QString &commandName : commandGroups) {
         commandsSettings.beginGroup(commandName);
         if (!commandsSettings.contains("Command")) {
@@ -176,16 +169,6 @@ void ShortcutManager::createCustomCommandsFromConfig()
                 action->setShortcut(QKeySequence(shortcutStr));
             }
         }
-//        if (isShortcutExistInSetting(action->shortcut().toString())) {
-//            action->setEnabled(false);
-//        }
-//        connect(action, &QAction::triggered, m_mainWindow, [this, action]() {
-//            QString command = action->data().toString();
-//            if (!command.endsWith('\n')) {
-//                command.append('\n');
-//            }
-//            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
-//        });
         commandsSettings.endGroup();
         m_customCommandActionList.append(action);
     }
@@ -200,23 +183,6 @@ void ShortcutManager::createCustomCommandsFromConfig()
 QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
 {
     QList<QAction *> actionList;
-
-    // TODO.
-
-    //    QAction *action = nullptr;
-
-    //    action = new QAction("__builtin_focus_nav_up", this);
-    //    // blumia: in Qt 5.7.1 (from Debian stretch) if we pass something like "Ctrl+Shift+Q" to QKeySequence then it
-    //    won't works.
-    //    //         in Qt 5.11.3 (from Debian buster) it works fine.
-    //    action->setShortcut(QKeySequence("Alt+k"));
-
-    //    connect(action, &QAction::triggered, m_mainWindow, [this](){
-    //        TermWidgetPage *page = m_mainWindow->currentTab();
-    //        if (page) page->focusNavigation(Up);
-    //    });
-    //    actionList.append(action);
-
     return actionList;
 }
 
@@ -232,11 +198,6 @@ QList<QAction *> &ShortcutManager::getCustomCommandActionList()
     return m_customCommandActionList;
 }
 
-//void ShortcutManager::setMainWindow(MainWindow *curMainWindow)
-//{
-//    m_mainWindow = curMainWindow;
-//}
-
 /*******************************************************************************
  1. @函数:    addCustomCommand
  2. @作者:    ut001121 zhangmeng
@@ -250,26 +211,10 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     addAction->setData(action.data());
     addAction->setShortcut(action.shortcut());
     m_customCommandActionList.append(addAction);
-    //m_mainWindow->addAction(addAction);
-//    mainWindowAddAction(addAction);
-//    connect(addAction, &QAction::triggered, m_mainWindow, [this, addAction]() {
-//        QString command = addAction->data().toString();
-//        if (!command.endsWith('\n')) {
-//            command.append('\n');
-//        }
-//        m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
-//    });
     saveCustomCommandToConfig(addAction, -1);
     emit addCustomCommandSignal(addAction);
     return addAction;
 }
-
-//void ShortcutManager::mainWindowAddAction(QAction *action)
-//{
-//    //if (!isShortcutExistInSetting(action->shortcut().toString())) {
-//    m_mainWindow->addAction(action);
-//    //}
-//}
 
 /*******************************************************************************
  1. @函数:    checkActionIsExist
@@ -371,7 +316,6 @@ void ShortcutManager::fillCommandListData(ListView *listview, const QString &str
 *******************************************************************************/
 bool ShortcutManager::isShortcutConflictInCustom(const QString &Name, const QString &Key)
 {
-    //qDebug()<<"isShortcutConflictInCustom";
     for (auto &currAction : m_customCommandActionList) {
         if (Key == currAction->shortcut().toString()) {
             if (Name != currAction->text()) {
@@ -473,19 +417,11 @@ void ShortcutManager::delCustomCommand(CustomCommandData itemData)
     delCustomCommandToConfig(itemData);
 
     QString actionCmdName = itemData.m_cmdName;
-    //QString actionCmdText = itemData.m_cmdText;
-    //QString actionKeySeq = itemData.m_cmdShortcut;
 
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList.at(i);
         QString currCmdName = currAction->text();
-        //QString currCmdText = currAction->data().toString();
-        //QString currKeySeq = currAction->shortcut().toString();
-        //if (actionCmdName == currCmdName
-        //        && actionCmdText == currCmdText
-        //        && actionKeySeq == currKeySeq) {
         if (actionCmdName == currCmdName) {
-            // m_mainWindow->removeAction(m_customCommandActionList.at(i));
             emit removeCustomCommandSignal(m_customCommandActionList.at(i));
             m_customCommandActionList.at(i)->deleteLater();
             m_customCommandActionList.removeAt(i);
@@ -514,7 +450,6 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     commandsSettings.setIniCodec(INI_FILE_CODEC);
     commandsSettings.beginGroup(action->text());
     commandsSettings.setValue("Command", action->data());
-    //QString tmp = action->shortcut().toString();
     commandsSettings.setValue("Shortcut", action->shortcut().toString());
     commandsSettings.endGroup();
 
@@ -525,17 +460,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
         saveAction->setData(action->data());
         saveAction->setShortcut(action->shortcut());
         qDebug() << "old" << m_customCommandActionList[saveIndex]->shortcut();
-        //m_mainWindow->removeAction(m_customCommandActionList[saveIndex]);
         m_customCommandActionList[saveIndex] = saveAction;
-        //m_mainWindow->addAction(saveAction);
-//        mainWindowAddAction(saveAction);
-//        connect(saveAction, &QAction::triggered, m_mainWindow, [this, saveAction]() {
-//            QString command = saveAction->data().toString();
-//            if (!command.endsWith('\n')) {
-//                command.append('\n');
-//            }
-//            m_mainWindow->currentPage()->sendTextToCurrentTerm(command);
-//        });
         qDebug() << "new" << m_customCommandActionList[saveIndex]->shortcut();
     }
 }
@@ -569,10 +494,4 @@ int ShortcutManager::delCustomCommandToConfig(CustomCommandData itemData)
     }
     return removeIndex;
 }
-
-//QString ShortcutManager::getClipboardCommandData()
-//{
-//    // 从mainwindwo 绕了一圈过来的数据
-//    return m_mainWindow->selectedText(true);
-//}
 

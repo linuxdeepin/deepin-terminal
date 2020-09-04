@@ -197,11 +197,6 @@ void Settings::initConnection()
     connect(PressingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit pressingScrollChanged(value.toBool());
     });
-    // 取消了这个修改信号，设置信息为实时读取
-    //    QPointer<DSettingsOption> OutputtingScroll = settings->option("advanced.scroll.scroll_on_output");
-    //    connect(OutputtingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [=](QVariant value) {
-    //        emit OutputScrollChanged(value.toBool());
-    //    });
     /********************* Modify by n014361 wangpeili End ************************/
 }
 
@@ -421,14 +416,12 @@ void Settings::HandleWidthFont()
     QFontDatabase base;
     for (int i = 0; i < Whitelist.count(); ++i) {
         QString name = Whitelist.at(i);
-//        qDebug() << "find combox font" << comboBox->findText(name);
         if (-1 == comboBox->findText(name)) {
             QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/";// + name + ".ttf";
             QDir dir(fontpath);
             if (dir.count() > 2) {
                 fontpath = fontpath + dir[2];
             }
-//            qDebug() << "load font path" << fontpath;
             int ret = base.addApplicationFont(fontpath);
             if (-1 == ret) {
                 qDebug() << "load " << name << " font faild";
@@ -475,8 +468,6 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 Begin***************/
     comboBox = new DComboBox;
     comboBox->setObjectName("SettingsFontFamilyComboBox");//Add by ut001000 renfeixiang 2020-08-14
-    //DComboBox *comboBox = new DComboBox;
-    // QWidget *optionWidget = DSettingsWidgetFactory::createTwoColumWidget(option, comboBox);
 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
@@ -501,8 +492,6 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     }
     comboBox->addItems(Whitelist);
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 End***************/
-    // comboBox->setItemDelegate(new FontItemDelegate);
-    // comboBox->setFixedSize(240, 36);
 
     if (option->value().toString().isEmpty()) {
         option->setValue(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());
@@ -533,10 +522,6 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
     DSlider *slider = new DSlider;
-    //--added by qinyaning(nyq) to slove the problem of hide the right icon--//
-    //const int SLIDER_FIXED_WIDTH = 296;
-    //slider->setFixedWidth(SLIDER_FIXED_WIDTH);
-    //------------------------------------------------------------------------s
     slider->setIconSize(QSize(20, 20));
     slider->setLeftIcon(QIcon::fromTheme("dt_opacity_left"));
     slider->setRightIcon(QIcon::fromTheme("dt_opacity_right"));
@@ -567,7 +552,6 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     auto rightWidget = new NewDspinBox();
 
-    // rightWidget->setObjectName("OptionDSpinBox");
     rightWidget->setValue(option->value().toInt());
 
     if (option->data("max").isValid()) {
@@ -607,8 +591,6 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
 
     auto optionValue = option->value();
     auto translateContext = opt->property(PRIVATE_PROPERTY_translateContext).toByteArray();
-    //QString optname = option->key();
-    //qDebug() << "optname" << optname;
 
     // 控件初始加载配置文件的值
     auto updateWidgetValue = [ = ](const QVariant & optionValue, DTK_CORE_NAMESPACE::DSettingsOption * opt) {

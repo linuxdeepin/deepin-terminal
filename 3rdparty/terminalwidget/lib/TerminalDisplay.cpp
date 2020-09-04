@@ -67,6 +67,8 @@
 
 using namespace Konsole;
 
+typedef quint16 RenditionFlags;
+
 #ifndef loc
 #define loc(X,Y) ((Y)*_columns+(X))
 #endif
@@ -197,12 +199,16 @@ void TerminalDisplay::setColorTable(const ColorEntry table[])
    QCodec.
 */
 
-bool TerminalDisplay::isLineChar(wchar_t c) const {
-    return _drawLineChars && ((c & 0xFF80) == 0x2500);
+bool TerminalDisplay::canDraw(uint ucs4cp) const {
+    return (0x2500 <= ucs4cp && ucs4cp <= 0x259F);
 }
 
-bool TerminalDisplay::isLineCharString(const std::wstring& string) const {
-    return (string.length() > 0) && (isLineChar(string[0]));
+bool TerminalDisplay::isLineCharString(const QString& string) const {
+    if (string.length() == 0) {
+        return false;
+    }
+
+    return canDraw(string.at(0).unicode());
 }
 
 
@@ -226,21 +232,19 @@ void TerminalDisplay::fontChange(const QFont&)
   // "Base character width on widest ASCII character. This prevents too wide
   //  characters in the presence of double wide (e.g. Japanese) characters."
   // Get the width from representative normal width characters
-  _fontWidth = qRound((double)fm.width(QLatin1String(REPCHAR))/(double)qstrlen(REPCHAR));
+  _fontWidth = qRound((static_cast<double>(fm.horizontalAdvance(QStringLiteral(REPCHAR))) / static_cast<double>(qstrlen(REPCHAR))));
 
   //修改方法：修改字体高度的获取方法，修改成字体宽度+字体的大小：_fontWidth + font().pointSize()
   _fontHeight = _fontWidth + font().pointSize() + _lineSpacing;
   /******** Modify by ut001000 renfeixiang 2020-06-24: bug#34902 End***************/
   _fixedFont = true;
 
-  int fw = fm.width(QLatin1Char(REPCHAR[0]));
-  for(unsigned int i=1; i< qstrlen(REPCHAR); i++)
-  {
-    if (fw != fm.width(QLatin1Char(REPCHAR[i])))
-    {
-      _fixedFont = false;
-      break;
-    }
+  const int fw = fm.horizontalAdvance(QLatin1Char(REPCHAR[0]));
+  for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
+      if (fw != fm.horizontalAdvance(QLatin1Char(REPCHAR[i]))) {
+          _fixedFont = false;
+          break;
+      }
   }
 
   if (_fontWidth < 1)
@@ -281,34 +285,81 @@ void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
 
 void TerminalDisplay::setVTFont(const QFont& f)
 {
-  QFont font = f;
+    QFont newFont(f);
+    int strategy = 0;
 
-    // This was originally set for OS X only:
-    //     mac uses floats for font width specification.
-    //     this ensures the same handling for all platforms
-    // but then there was revealed that various Linux distros
-    // have this problem too...
-    font.setStyleStrategy(QFont::ForceIntegerMetrics);
+    // hint that text should be drawn with- or without anti-aliasing.
+    // depending on the user's font configuration, this may not be respected
+    strategy |= _antialiasText ? QFont::PreferAntialias : QFont::NoAntialias;
 
-  QFontMetrics metrics(font);
+    // Konsole cannot handle non-integer font metrics
+    strategy |= QFont::ForceIntegerMetrics;
 
-  if ( !QFontInfo(font).fixedPitch() )
-  {
-      qDebug() << "Using a variable-width font in the terminal.  This may cause performance degradation and display/alignment errors.";
-  }
+    // In case the provided font doesn't have some specific characters it should
+    // fall back to a Monospace fonts.
+    newFont.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(strategy));
 
-  // hint that text should be drawn without anti-aliasing.
-  // depending on the user's font configuration, this may not be respected
-  if (!_antialiasText)
-      font.setStyleStrategy( QFont::NoAntialias );
+    // Try to check that a good font has been loaded.
+    // For some fonts, ForceIntegerMetrics causes height() == 0 which
+    // will cause Konsole to crash later.
+    QFontMetrics fontMetrics2(newFont);
+    if (fontMetrics2.height() < 1) {
+        qDebug()<<"The font "<<newFont.toString()<<" has an invalid height()";
+        // Ask for a generic font so at least it is usable.
+        // Font listed in profile's dialog will not be updated.
+        newFont = QFont(QStringLiteral("Monospace"));
+        // Set style strategy without ForceIntegerMetrics for the font
+        strategy &= ~QFont::ForceIntegerMetrics;
+        newFont.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(strategy));
+        qDebug()<<"Font changed to "<<newFont.toString();
+    }
 
-  // experimental optimization.  Konsole assumes that the terminal is using a
-  // mono-spaced font, in which case kerning information should have an effect.
-  // Disabling kerning saves some computation when rendering text.
-  font.setKerning(false);
+    // experimental optimization.  Konsole assumes that the terminal is using a
+    // mono-spaced font, in which case kerning information should have an effect.
+    // Disabling kerning saves some computation when rendering text.
+    newFont.setKerning(false);
 
-  QWidget::setFont(font);
-  fontChange(font);
+    // "Draw intense colors in bold font" feature needs to use different font weights. StyleName
+    // property, when set, doesn't allow weight changes. Since all properties (weight, stretch,
+    // italic, etc) are stored in QFont independently, in almost all cases styleName is not needed.
+    newFont.setStyleName(QString());
+
+    if (newFont == font()) {
+        // Do not process the same font again
+        return;
+    }
+
+    QFontInfo fontInfo(newFont);
+
+    // QFontInfo::fixedPitch() appears to not match QFont::fixedPitch() - do not test it.
+    // related?  https://bugreports.qt.io/browse/QTBUG-34082
+    if (fontInfo.family() != newFont.family()
+            || !qFuzzyCompare(fontInfo.pointSizeF(), newFont.pointSizeF())
+            || fontInfo.styleHint()  != newFont.styleHint()
+            || fontInfo.weight()     != newFont.weight()
+            || fontInfo.style()      != newFont.style()
+            || fontInfo.underline()  != newFont.underline()
+            || fontInfo.strikeOut()  != newFont.strikeOut()
+            || fontInfo.rawMode()    != newFont.rawMode()) {
+        const QString nonMatching = QString::asprintf("%s,%g,%d,%d,%d,%d,%d,%d,%d,%d",
+                qPrintable(fontInfo.family()),
+                fontInfo.pointSizeF(),
+                -1, // pixelSize is not used
+                static_cast<int>(fontInfo.styleHint()),
+                fontInfo.weight(),
+                static_cast<int>(fontInfo.style()),
+                static_cast<int>(fontInfo.underline()),
+                static_cast<int>(fontInfo.strikeOut()),
+                // Intentional newFont use - fixedPitch is bugged, see comment above
+                static_cast<int>(newFont.fixedPitch()),
+                static_cast<int>(fontInfo.rawMode()));
+        qDebug() << "The font to use in the terminal can not be matched exactly on your system.";
+        qDebug() << " Selected: " << newFont.toString();
+        qDebug() << " System  : " << nonMatching;
+    }
+
+    QWidget::setFont(newFont);
+    fontChange(newFont);
 }
 
 void TerminalDisplay::setFont(const QFont &)
@@ -335,6 +386,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_columns(1)
 ,_usedLines(1)
 ,_usedColumns(1)
+,_contentRect(QRect())
 ,_contentHeight(1)
 ,_contentWidth(1)
 ,_image(nullptr)
@@ -517,177 +569,25 @@ enum LineEncode
     BotR  = (1<<23)
 };
 
-#include "LineFont.h"
-
-static void drawLineChar(QPainter& paint, int x, int y, int w, int h, uint8_t code)
-{
-    //Calculate cell midpoints, end points.
-    int cx = x + w/2;
-    int cy = y + h/2;
-    int ex = x + w - 1;
-    int ey = y + h - 1;
-
-    quint32 toDraw = LineChars[code];
-
-    //Top _lines:
-    if (toDraw & TopL)
-        paint.drawLine(cx-1, y, cx-1, cy-2);
-    if (toDraw & TopC)
-        paint.drawLine(cx, y, cx, cy-2);
-    if (toDraw & TopR)
-        paint.drawLine(cx+1, y, cx+1, cy-2);
-
-    //Bot _lines:
-    if (toDraw & BotL)
-        paint.drawLine(cx-1, cy+2, cx-1, ey);
-    if (toDraw & BotC)
-        paint.drawLine(cx, cy+2, cx, ey);
-    if (toDraw & BotR)
-        paint.drawLine(cx+1, cy+2, cx+1, ey);
-
-    //Left _lines:
-    if (toDraw & LeftT)
-        paint.drawLine(x, cy-1, cx-2, cy-1);
-    if (toDraw & LeftC)
-        paint.drawLine(x, cy, cx-2, cy);
-    if (toDraw & LeftB)
-        paint.drawLine(x, cy+1, cx-2, cy+1);
-
-    //Right _lines:
-    if (toDraw & RightT)
-        paint.drawLine(cx+2, cy-1, ex, cy-1);
-    if (toDraw & RightC)
-        paint.drawLine(cx+2, cy, ex, cy);
-    if (toDraw & RightB)
-        paint.drawLine(cx+2, cy+1, ex, cy+1);
-
-    //Intersection points.
-    if (toDraw & Int11)
-        paint.drawPoint(cx-1, cy-1);
-    if (toDraw & Int12)
-        paint.drawPoint(cx, cy-1);
-    if (toDraw & Int13)
-        paint.drawPoint(cx+1, cy-1);
-
-    if (toDraw & Int21)
-        paint.drawPoint(cx-1, cy);
-    if (toDraw & Int22)
-        paint.drawPoint(cx, cy);
-    if (toDraw & Int23)
-        paint.drawPoint(cx+1, cy);
-
-    if (toDraw & Int31)
-        paint.drawPoint(cx-1, cy+1);
-    if (toDraw & Int32)
-        paint.drawPoint(cx, cy+1);
-    if (toDraw & Int33)
-        paint.drawPoint(cx+1, cy+1);
-
-}
-
-static void drawOtherChar(QPainter& paint, int x, int y, int w, int h, uchar code)
-{
-    //Calculate cell midpoints, end points.
-    const int cx = x + w / 2;
-    const int cy = y + h / 2;
-    const int ex = x + w - 1;
-    const int ey = y + h - 1;
-
-    // Double dashes
-    if (0x4C <= code && code <= 0x4F) {
-        const int xHalfGap = qMax(w / 15, 1);
-        const int yHalfGap = qMax(h / 15, 1);
-        switch (code) {
-        case 0x4D: // BOX DRAWINGS HEAVY DOUBLE DASH HORIZONTAL
-            paint.drawLine(x, cy - 1, cx - xHalfGap - 1, cy - 1);
-            paint.drawLine(x, cy + 1, cx - xHalfGap - 1, cy + 1);
-            paint.drawLine(cx + xHalfGap, cy - 1, ex, cy - 1);
-            paint.drawLine(cx + xHalfGap, cy + 1, ex, cy + 1);
-            /* Falls through. */
-        case 0x4C: // BOX DRAWINGS LIGHT DOUBLE DASH HORIZONTAL
-            paint.drawLine(x, cy, cx - xHalfGap - 1, cy);
-            paint.drawLine(cx + xHalfGap, cy, ex, cy);
-            break;
-        case 0x4F: // BOX DRAWINGS HEAVY DOUBLE DASH VERTICAL
-            paint.drawLine(cx - 1, y, cx - 1, cy - yHalfGap - 1);
-            paint.drawLine(cx + 1, y, cx + 1, cy - yHalfGap - 1);
-            paint.drawLine(cx - 1, cy + yHalfGap, cx - 1, ey);
-            paint.drawLine(cx + 1, cy + yHalfGap, cx + 1, ey);
-            /* Falls through. */
-        case 0x4E: // BOX DRAWINGS LIGHT DOUBLE DASH VERTICAL
-            paint.drawLine(cx, y, cx, cy - yHalfGap - 1);
-            paint.drawLine(cx, cy + yHalfGap, cx, ey);
-            break;
-        }
-    }
-
-    // Rounded corner characters
-    else if (0x6D <= code && code <= 0x70) {
-        const int r = w * 3 / 8;
-        const int d = 2 * r;
-        switch (code) {
-        case 0x6D: // BOX DRAWINGS LIGHT ARC DOWN AND RIGHT
-            paint.drawLine(cx, cy + r, cx, ey);
-            paint.drawLine(cx + r, cy, ex, cy);
-            paint.drawArc(cx, cy, d, d, 90 * 16, 90 * 16);
-            break;
-        case 0x6E: // BOX DRAWINGS LIGHT ARC DOWN AND LEFT
-            paint.drawLine(cx, cy + r, cx, ey);
-            paint.drawLine(x, cy, cx - r, cy);
-            paint.drawArc(cx - d, cy, d, d, 0 * 16, 90 * 16);
-            break;
-        case 0x6F: // BOX DRAWINGS LIGHT ARC UP AND LEFT
-            paint.drawLine(cx, y, cx, cy - r);
-            paint.drawLine(x, cy, cx - r, cy);
-            paint.drawArc(cx - d, cy - d, d, d, 270 * 16, 90 * 16);
-            break;
-        case 0x70: // BOX DRAWINGS LIGHT ARC UP AND RIGHT
-            paint.drawLine(cx, y, cx, cy - r);
-            paint.drawLine(cx + r, cy, ex, cy);
-            paint.drawArc(cx, cy - d, d, d, 180 * 16, 90 * 16);
-            break;
-        }
-    }
-
-    // Diagonals
-    else if (0x71 <= code && code <= 0x73) {
-        switch (code) {
-        case 0x71: // BOX DRAWINGS LIGHT DIAGONAL UPPER RIGHT TO LOWER LEFT
-            paint.drawLine(ex, y, x, ey);
-            break;
-        case 0x72: // BOX DRAWINGS LIGHT DIAGONAL UPPER LEFT TO LOWER RIGHT
-            paint.drawLine(x, y, ex, ey);
-            break;
-        case 0x73: // BOX DRAWINGS LIGHT DIAGONAL CROSS
-            paint.drawLine(ex, y, x, ey);
-            paint.drawLine(x, y, ex, ey);
-            break;
-        }
-    }
-}
-
-void TerminalDisplay::drawLineCharString(    QPainter& painter, int x, int y, const std::wstring& str,
+void TerminalDisplay::drawLineCharString(QPainter& painter, int x, int y, const QString& str,
                                     const Character* attributes)
 {
-        const QPen& currentPen = painter.pen();
+    // only turn on anti-aliasing during this short time for the "text"
+    // for the normal text we have TextAntialiasing on demand on
+    // otherwise we have rendering artifacts
+    // set https://bugreports.qt.io/browse/QTBUG-66036
+    painter.setRenderHint(QPainter::Antialiasing, _antialiasText);
 
-        if ( (attributes->rendition & RE_BOLD) && _boldIntense )
-        {
-            QPen boldPen(currentPen);
-            boldPen.setWidth(3);
-            painter.setPen( boldPen );
-        }
+    const bool useBoldPen = (attributes->rendition & RE_BOLD) != 0 && _boldIntense;
 
-        for (size_t i=0 ; i < str.length(); i++)
-        {
-            uint8_t code = static_cast<uint8_t>(str[i] & 0xffU);
-            if (LineChars[code])
-                drawLineChar(painter, x + (_fontWidth*i), y, _fontWidth, _fontHeight, code);
-            else
-                drawOtherChar(painter, x + (_fontWidth * i), y, _fontWidth, _fontHeight, code);
-        }
+    QRect cellRect = {x, y, _fontWidth, _fontHeight};
+    for (int i = 0 ; i < str.length(); i++) {
+        LineBlockCharacters::draw(painter, cellRect.translated(i * _fontWidth, 0), str[i],
+                                        useBoldPen);
+    }
 
-        painter.setPen( currentPen );
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
 }
 
 void TerminalDisplay::setKeyboardCursorShape(QTermWidget::KeyboardCursorShape shape)
@@ -776,7 +676,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QColor& /*backgroundColor*/,
                                  bool& invertCharacterColor)
 {
-    QRectF cursorRect = rect;
+    QRect cursorRect = rect;
     cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
 
     if (!_cursorBlinking)
@@ -828,7 +728,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
 
 void TerminalDisplay::drawCharacters(QPainter& painter,
                                      const QRect& rect,
-                                     const std::wstring& text,
+                                     const QString& text,
                                      const Character* style,
                                      bool invertCharacterColor)
 {
@@ -883,12 +783,12 @@ void TerminalDisplay::drawCharacters(QPainter& painter,
         painter.setLayoutDirection(Qt::LeftToRight);
 
         if (_bidiEnabled) {
-            painter.drawText(rect.x(), rect.y() + _fontAscent + _lineSpacing, QString::fromStdWString(text));
+            painter.drawText(QPointF(rect.x(), rect.y() + _fontAscent + _lineSpacing), text);
         } else {
          {
-            QRect drawRect(rect.topLeft(), rect.size());
+            QRectF drawRect(rect.topLeft(), rect.size());
             drawRect.setHeight(rect.height() + _drawTextAdditionHeight);
-            painter.drawText(drawRect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + QString::fromStdWString(text));
+            painter.drawText(drawRect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + text);
          }
         }
     }
@@ -896,7 +796,7 @@ void TerminalDisplay::drawCharacters(QPainter& painter,
 
 void TerminalDisplay::drawTextFragment(QPainter& painter ,
                                        const QRect& rect,
-                                       const std::wstring& text,
+                                       const QString& text,
                                        const Character* style)
 {
     painter.save();
@@ -1128,7 +1028,6 @@ void TerminalDisplay::updateImage()
   // can simply be moved up or down
   scrollImage( _screenWindow->scrollCount() ,
                _screenWindow->scrollRegion() );
-  _screenWindow->resetScrollCount();
 
   if (!_image) {
      // Create _image.
@@ -1157,14 +1056,11 @@ void TerminalDisplay::updateImage()
   _hasBlinker = false;
 
   CharacterColor cf;       // undefined
-  CharacterColor _clipboard;       // undefined
-  int cr  = -1;   // undefined
 
   const int linesToUpdate = qMin(this->_lines, qMax(0,lines  ));
   const int columnsToUpdate = qMin(this->_columns,qMax(0,columns));
 
-  wchar_t *disstrU = new wchar_t[columnsToUpdate];
-  char *dirtyMask = new char[columnsToUpdate+2];
+  auto dirtyMask = new char[columnsToUpdate + 2];
   QRegion dirtyRegion;
 
   // debugging variable, this records the number of lines that are found to
@@ -1174,7 +1070,7 @@ void TerminalDisplay::updateImage()
 
   for (y = 0; y < linesToUpdate; ++y)
   {
-    const Character*       currentLine = &_image[y*this->_columns];
+    const Character* currentLine = &_image[y*this->_columns];
     const Character* const newLine = &newimg[y*columns];
 
     bool updateLine = false;
@@ -1188,7 +1084,7 @@ void TerminalDisplay::updateImage()
     {
         if ( newLine[x] != currentLine[x] )
         {
-            dirtyMask[x] = true;
+            dirtyMask[x] = 1;
         }
     }
 
@@ -1202,17 +1098,19 @@ void TerminalDisplay::updateImage()
       // where characters exceed their cell width.
       if (dirtyMask[x])
       {
-        wchar_t c = newLine[x+0].character;
-        if ( !c )
+        if (newLine[x + 0].character == 0u)
+        {
             continue;
-        int p = 0;
-        disstrU[p++] = c; //fontMap(c);
-        bool lineDraw = isLineChar(c);
-        bool doubleWidth = (x+1 == columnsToUpdate) ? false : (newLine[x+1].character == 0);
-        cr = newLine[x].rendition;
-        _clipboard = newLine[x].backgroundColor;
-        if (newLine[x].foregroundColor != cf) cf = newLine[x].foregroundColor;
-        int lln = columnsToUpdate - x;
+        }
+        bool lineDraw = canDraw(newLine[x + 0].character);
+        bool doubleWidth = (x + 1 == columnsToUpdate) ? false : (newLine[x + 1].character == 0);
+        RenditionFlags cr = newLine[x].rendition;
+        CharacterColor clipboard = newLine[x].backgroundColor;
+        if (newLine[x].foregroundColor != cf)
+        {
+            cf = newLine[x].foregroundColor;
+        }
+        const int lln = columnsToUpdate - x;
         for (len = 1; len < lln; ++len)
         {
             const Character& ch = newLine[x+len];
@@ -1220,20 +1118,17 @@ void TerminalDisplay::updateImage()
             if (!ch.character)
                 continue; // Skip trailing part of multi-col chars.
 
-            bool nextIsDoubleWidth = (x+len+1 == columnsToUpdate) ? false : (newLine[x+len+1].character == 0);
+            bool nextIsDoubleWidth = (x + len + 1 == columnsToUpdate) ? false : (newLine[x + len + 1].character == 0);
 
-            if (  ch.foregroundColor != cf ||
-                  ch.backgroundColor != _clipboard ||
-                  ch.rendition != cr ||
-                  !dirtyMask[x+len] ||
-                  isLineChar(c) != lineDraw ||
-                  nextIsDoubleWidth != doubleWidth )
-            break;
-
-          disstrU[p++] = c; //fontMap(c);
+            if (ch.foregroundColor != cf ||
+                  ch.backgroundColor != clipboard ||
+                  (ch.rendition & ~RE_EXTENDED_CHAR) != (cr & ~RE_EXTENDED_CHAR) ||
+                  (dirtyMask[x + len] == 0) ||
+                  canDraw(ch.character) != lineDraw ||
+                  nextIsDoubleWidth != doubleWidth) {
+                break;
+            }
         }
-
-        std::wstring unistr(disstrU, p);
 
         bool saveFixedFont = _fixedFont;
         if (lineDraw)
@@ -1299,6 +1194,7 @@ void TerminalDisplay::updateImage()
 
   dirtyRegion |= _inputMethodData.previousPreeditRect;
 
+  _screenWindow->resetScrollCount();
   // update the parts of the display which have changed
    //--modified and added by qinyaning(nyq) to solve When the screen zooms to 1.25 and 2.75,
   /*the terminal interface will display colored lines. time: 2020.4.10 14:18
@@ -1310,8 +1206,6 @@ void TerminalDisplay::updateImage()
   if ( _hasBlinker && !_blinkTimer->isActive()) _blinkTimer->start( TEXT_BLINK_DELAY );
   if (!_hasBlinker && _blinkTimer->isActive()) { _blinkTimer->stop(); _blinking = false; }
   delete[] dirtyMask;
-  delete[] disstrU;
-
 }
 
 void TerminalDisplay::showResizeNotification()
@@ -1439,14 +1333,23 @@ void TerminalDisplay::paintEvent( QPaintEvent* pe )
     calDrawTextAdditionHeight(paint);
   }
 
-  const auto rects = (pe->region() & contentsRect()).rects();
-  for (const QRect &rect : rects)
-  {
-    drawBackground(paint,rect,palette().background().color(),
-                   true /* use opacity setting */);
-    drawContents(paint, rect);
+  // Determine which characters should be repainted (1 region unit = 1 character)
+  QRegion dirtyImageRegion;
+  const QRegion region = pe->region() & contentsRect();
+
+  for (const QRect &rect : region) {
+      dirtyImageRegion += widgetToImage(rect);
+      drawBackground(paint, rect, palette().background().color(), true /* use opacity setting */);
   }
-  drawInputMethodPreeditString(paint,preeditRect());
+
+  // only turn on text anti-aliasing, never turn on normal antialiasing
+  // set https://bugreports.qt.io/browse/QTBUG-66036
+  paint.setRenderHint(QPainter::TextAntialiasing, _antialiasText);
+
+  for (const QRect &rect : qAsConst(dirtyImageRegion)) {
+      drawContents(paint, rect);
+  }
+  drawInputMethodPreeditString(paint, preeditRect());
   paintFilters(paint);
 }
 
@@ -1460,7 +1363,7 @@ QPoint TerminalDisplay::cursorPosition() const
 
 QRect TerminalDisplay::preeditRect() const
 {
-    const int preeditLength = string_width(_inputMethodData.preeditString);
+    const int preeditLength = Character::stringWidth(_inputMethodData.preeditString);
 
     if ( preeditLength == 0 )
         return {};
@@ -1473,7 +1376,7 @@ QRect TerminalDisplay::preeditRect() const
 
 void TerminalDisplay::drawInputMethodPreeditString(QPainter& painter , const QRect& rect)
 {
-    if ( _inputMethodData.preeditString.empty() )
+    if ( _inputMethodData.preeditString.isEmpty() )
         return;
 
     const QPoint cursorPos = cursorPosition();
@@ -1645,138 +1548,211 @@ QRect TerminalDisplay::calculateTextArea(int topLeftX, int topLeftY, int startCo
                _fontHeight};
 }
 
-void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
-{
-  QPoint tL  = contentsRect().topLeft();
-  int    tLx = tL.x();
-  int    tLy = tL.y();
-
-  int lux = qMin(_usedColumns-1, qMax(0,(rect.left()   - tLx - _leftMargin ) / _fontWidth));
-  int luy = qMin(_usedLines-1,   qMax(0,(rect.top()    - tLy - _topMargin  ) / _fontHeight));
-  int rlx = qMin(_usedColumns-1, qMax(0,(rect.right()  - tLx - _leftMargin ) / _fontWidth));
-  int rly = qMin(_usedLines-1,   qMax(0,(rect.bottom() - tLy - _topMargin  ) / _fontHeight));
-
-  const int bufferSize = _usedColumns;
-  std::wstring unistr;
-  unistr.reserve(bufferSize);
-  for (int y = luy; y <= rly; y++)
-  {
-    quint32 c = _image[loc(lux,y)].character;
-    int x = lux;
-    if(!c && x)
-      x--; // Search for start of multi-column character
-    for (; x <= rlx; x++)
-    {
-      int len = 1;
-      int p = 0;
-
-      // reset our buffer to the maximal size
-      unistr.resize(bufferSize);
-
-      // is this a single character or a sequence of characters ?
-      if ( _image[loc(x,y)].rendition & RE_EXTENDED_CHAR )
-      {
+static uint baseCodePoint(const Character &ch) {
+    if (ch.rendition & RE_EXTENDED_CHAR) {
         // sequence of characters
         ushort extendedCharLength = 0;
-        ushort* chars = ExtendedCharTable::instance
-                            .lookupExtendedChar(_image[loc(x,y)].charSequence,extendedCharLength);
-        for ( int index = 0 ; index < extendedCharLength ; index++ )
-        {
-            Q_ASSERT( p < bufferSize );
-            unistr[p++] = chars[index];
-        }
-      }
-      else
-      {
-        // single character
-        c = _image[loc(x,y)].character;
-        if (c)
-        {
-             Q_ASSERT( p < bufferSize );
-             unistr[p++] = c; //fontMap(c);
-        }
-      }
-
-      bool lineDraw = isLineChar(c);
-      bool doubleWidth = (_image[ qMin(loc(x,y)+1,_imageSize) ].character == 0);
-      CharacterColor currentForeground = _image[loc(x,y)].foregroundColor;
-      CharacterColor currentBackground = _image[loc(x,y)].backgroundColor;
-      quint8 currentRendition = _image[loc(x,y)].rendition;
-
-      while (x+len <= rlx &&
-             _image[loc(x+len,y)].foregroundColor == currentForeground &&
-             _image[loc(x+len,y)].backgroundColor == currentBackground &&
-             _image[loc(x+len,y)].rendition == currentRendition &&
-             (_image[ qMin(loc(x+len,y)+1,_imageSize) ].character == 0) == doubleWidth &&
-             isLineChar( c = _image[loc(x+len,y)].character) == lineDraw) // Assignment!
-      {
-        if (c)
-          unistr[p++] = c; //fontMap(c);
-        if (doubleWidth) // assert((_image[loc(x+len,y)+1].character == 0)), see above if condition
-          len++; // Skip trailing part of multi-column character
-        len++;
-      }
-      if ((x+len < _usedColumns) && (!_image[loc(x+len,y)].character))
-        len++; // Adjust for trailing part of multi-column character
-
-            bool save__fixedFont = _fixedFont;
-         if (lineDraw)
-            _fixedFont = false;
-         unistr.resize(p);
-
-         // Create a text scaling matrix for double width and double height lines.
-         QTransform textScale;
-
-         if (y < _lineProperties.size())
-         {
-            if (_lineProperties[y] & LINE_DOUBLEWIDTH)
-                textScale.scale(2,1);
-
-            if (_lineProperties[y] & LINE_DOUBLEHEIGHT)
-                textScale.scale(1,2);
-         }
-
-         //Apply text scaling matrix.
-         paint.setWorldTransform(textScale, true);
-
-         //calculate the area in which the text will be drawn
-         QRect textArea = calculateTextArea(tLx, tLy, x, y, len);
-
-         //move the calculated area to take account of scaling applied to the painter.
-         //the position of the area from the origin (0,0) is scaled
-         //by the opposite of whatever
-         //transformation has been applied to the painter.  this ensures that
-         //painting does actually start from textArea.topLeft()
-         //(instead of textArea.topLeft() * painter-scale)
-         textArea.moveTopLeft( textScale.inverted().map(textArea.topLeft()) );
-
-         //paint text fragment
-         drawTextFragment(    paint,
-                            textArea,
-                            unistr,
-                            &_image[loc(x,y)] ); //,
-                            //0,
-                            //!_isPrinting );
-
-         _fixedFont = save__fixedFont;
-
-         //reset back to single-width, single-height _lines
-         paint.setWorldTransform(textScale.inverted(), true);
-
-         if (y < _lineProperties.size()-1)
-         {
-            //double-height _lines are represented by two adjacent _lines
-            //containing the same characters
-            //both _lines will have the LINE_DOUBLEHEIGHT attribute.
-            //If the current line has the LINE_DOUBLEHEIGHT attribute,
-            //we can therefore skip the next line
-            if (_lineProperties[y] & LINE_DOUBLEHEIGHT)
-                y++;
-         }
-
-        x += len - 1;
+        const uint* chars = ExtendedCharTable::instance.lookupExtendedChar(ch.character, extendedCharLength);
+        return chars[0];
+    } else {
+        return ch.character;
     }
-  }
+}
+
+void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
+{
+    const int numberOfColumns = _usedColumns;
+    QVector<uint> univec;
+    univec.reserve(numberOfColumns);
+    for (int y = rect.y(); y <= rect.bottom(); y++) {
+        int x = rect.x();
+        if ((_image[loc(rect.x(), y)].character == 0u) && (x != 0)) {
+            x--; // Search for start of multi-column character
+        }
+        for (; x <= rect.right(); x++) {
+            int len = 1;
+            int p = 0;
+
+            // reset our buffer to the number of columns
+            int bufferSize = numberOfColumns;
+            univec.resize(bufferSize);
+            uint *disstrU = univec.data();
+
+            // is this a single character or a sequence of characters ?
+            if ((_image[loc(x, y)].rendition & RE_EXTENDED_CHAR) != 0) {
+                // sequence of characters
+                ushort extendedCharLength = 0;
+                const uint* chars = ExtendedCharTable::instance.lookupExtendedChar(_image[loc(x, y)].character, extendedCharLength);
+                if (chars != nullptr) {
+                    Q_ASSERT(extendedCharLength > 1);
+                    bufferSize += extendedCharLength - 1;
+                    univec.resize(bufferSize);
+                    disstrU = univec.data();
+                    for (int index = 0 ; index < extendedCharLength ; index++) {
+                        Q_ASSERT(p < bufferSize);
+                        disstrU[p++] = chars[index];
+                    }
+                }
+            } else {
+                // single character
+                const uint c = _image[loc(x, y)].character;
+                if (c != 0u) {
+                    Q_ASSERT(p < bufferSize);
+                    disstrU[p++] = c;
+                }
+            }
+
+            const bool lineDraw = canDraw(_image[loc(x, y)].character);
+            const bool doubleWidth = (_image[qMin(loc(x, y) + 1, _imageSize - 1)].character == 0);
+            const CharacterColor currentForeground = _image[loc(x, y)].foregroundColor;
+            const CharacterColor currentBackground = _image[loc(x, y)].backgroundColor;
+            const RenditionFlags currentRendition = _image[loc(x, y)].rendition;
+            const QChar::Script currentScript = QChar::script(baseCodePoint(_image[loc(x, y)]));
+
+            const auto isInsideDrawArea = [&](int column) { return column <= rect.right(); };
+            const auto hasSameColors = [&](int column) {
+                return _image[loc(column, y)].foregroundColor == currentForeground
+                    && _image[loc(column, y)].backgroundColor == currentBackground;
+            };
+            const auto hasSameRendition = [&](int column) {
+                return (_image[loc(column, y)].rendition & ~RE_EXTENDED_CHAR)
+                    == (currentRendition & ~RE_EXTENDED_CHAR);
+            };
+            const auto hasSameWidth = [&](int column) {
+                const int characterLoc = qMin(loc(column, y) + 1, _imageSize - 1);
+                return (_image[characterLoc].character == 0) == doubleWidth;
+            };
+            const auto hasSameLineDrawStatus = [&](int column) {
+                return canDraw(_image[loc(column, y)].character)
+                    == lineDraw;
+            };
+            const auto isSameScript = [&](int column) {
+                const QChar::Script script = QChar::script(baseCodePoint(_image[loc(column, y)]));
+                if (currentScript == QChar::Script_Common || script == QChar::Script_Common
+                    || currentScript == QChar::Script_Inherited || script == QChar::Script_Inherited) {
+                    return true;
+                }
+                return currentScript == script;
+            };
+            const auto canBeGrouped = [&](int column) {
+                return _image[loc(column, y)].character <= 0x7e
+                       || (_image[loc(column, y)].rendition & RE_EXTENDED_CHAR)
+                       || (_bidiEnabled && !doubleWidth);
+            };
+
+            if (canBeGrouped(x)) {
+                while (isInsideDrawArea(x + len) && hasSameColors(x + len)
+                       && hasSameRendition(x + len) && hasSameWidth(x + len)
+                       && hasSameLineDrawStatus(x + len) && isSameScript(x + len)
+                       && canBeGrouped(x + len)) {
+                    const uint c = _image[loc(x + len, y)].character;
+                    if ((_image[loc(x + len, y)].rendition & RE_EXTENDED_CHAR) != 0) {
+                        // sequence of characters
+                        ushort extendedCharLength = 0;
+                        const uint* chars = ExtendedCharTable::instance.lookupExtendedChar(c, extendedCharLength);
+                        if (chars != nullptr) {
+                            Q_ASSERT(extendedCharLength > 1);
+                            bufferSize += extendedCharLength - 1;
+                            univec.resize(bufferSize);
+                            disstrU = univec.data();
+                            for (int index = 0 ; index < extendedCharLength ; index++) {
+                                Q_ASSERT(p < bufferSize);
+                                disstrU[p++] = chars[index];
+                            }
+                        }
+                    } else {
+                        // single character
+                        if (c != 0u) {
+                            Q_ASSERT(p < bufferSize);
+                            disstrU[p++] = c;
+                        }
+                    }
+
+                    if (doubleWidth) { // assert((_image[loc(x+len,y)+1].character == 0)), see above if condition
+                        len++; // Skip trailing part of multi-column character
+                    }
+                    len++;
+                }
+            } else {
+                // Group spaces following any non-wide character with the character. This allows for
+                // rendering ambiguous characters with wide glyphs without clipping them.
+                while (!doubleWidth && isInsideDrawArea(x + len)
+                        && _image[loc(x + len, y)].character == ' ' && hasSameColors(x + len)
+                        && hasSameRendition(x + len)) {
+                    // disstrU intentionally not modified - trailing spaces are meaningless
+                    len++;
+                }
+            }
+            if ((x + len < _usedColumns) && (_image[loc(x + len, y)].character == 0u)) {
+                len++; // Adjust for trailing part of multi-column character
+            }
+
+            const bool save__fixedFont = _fixedFont;
+            if (lineDraw) {
+                _fixedFont = false;
+            }
+            if (doubleWidth) {
+                _fixedFont = false;
+            }
+            univec.resize(p);
+
+            // Create a text scaling matrix for double width and double height lines.
+            QMatrix textScale;
+
+            if (y < _lineProperties.size()) {
+                if ((_lineProperties[y] & LINE_DOUBLEWIDTH) != 0) {
+                    textScale.scale(2, 1);
+                }
+
+                if ((_lineProperties[y] & LINE_DOUBLEHEIGHT) != 0) {
+                    textScale.scale(1, 2);
+                }
+            }
+
+            //Apply text scaling matrix.
+            paint.setWorldTransform(QTransform(textScale), true);
+
+            //calculate the area in which the text will be drawn
+            QRect textArea = QRect(contentsRect().left() + contentsRect().left() + _fontWidth * x,
+                                   contentsRect().top() + contentsRect().top() + _fontHeight * y,
+                                   _fontWidth * len,
+                                   _fontHeight);
+
+            //move the calculated area to take account of scaling applied to the painter.
+            //the position of the area from the origin (0,0) is scaled
+            //by the opposite of whatever
+            //transformation has been applied to the painter.  this ensures that
+            //painting does actually start from textArea.topLeft()
+            //(instead of textArea.topLeft() * painter-scale)
+            textArea.moveTopLeft(textScale.inverted().map(textArea.topLeft()));
+
+            QString unistr = QString::fromUcs4(univec.data(), univec.length());
+
+            //paint text fragment
+            drawTextFragment(paint,
+                             textArea,
+                             unistr,
+                             &_image[loc(x, y)]);
+
+            _fixedFont = save__fixedFont;
+
+            //reset back to single-width, single-height _lines
+            paint.setWorldTransform(QTransform(textScale.inverted()), true);
+
+            if (y < _lineProperties.size() - 1) {
+                //double-height _lines are represented by two adjacent _lines
+                //containing the same characters
+                //both _lines will have the LINE_DOUBLEHEIGHT attribute.
+                //If the current line has the LINE_DOUBLEHEIGHT attribute,
+                //we can therefore skip the next line
+                if ((_lineProperties[y] & LINE_DOUBLEHEIGHT) != 0) {
+                    y++;
+                }
+            }
+
+            x += len - 1;
+        }
+    }
 }
 
 void TerminalDisplay::blinkEvent()
@@ -1799,6 +1775,16 @@ QRect TerminalDisplay::imageToWidget(const QRect& imageArea) const
     result.setWidth( _fontWidth * imageArea.width() );
     result.setHeight( _fontHeight * imageArea.height() );
 
+    return result;
+}
+
+QRect TerminalDisplay::widgetToImage(const QRect &widgetArea) const
+{
+    QRect result;
+    result.setLeft(qMin(_usedColumns - 1, qMax(0, (widgetArea.left()) / _fontWidth )));
+    result.setTop(qMin(_usedLines   - 1, qMax(0, (widgetArea.top()) / _fontHeight)));
+    result.setRight(qMin(_usedColumns - 1, qMax(0, (widgetArea.right()) / _fontWidth )));
+    result.setBottom(qMin(_usedLines   - 1, qMax(0, (widgetArea.bottom()) / _fontHeight)));
     return result;
 }
 
@@ -3132,7 +3118,7 @@ void TerminalDisplay::inputMethodEvent( QInputMethodEvent* event )
     QKeyEvent keyEvent(QEvent::KeyPress,0,Qt::NoModifier,event->commitString());
     emit keyPressedSignal(&keyEvent);
 
-    _inputMethodData.preeditString = event->preeditString().toStdWString();
+    _inputMethodData.preeditString = event->preeditString();
     update(preeditRect() | _inputMethodData.previousPreeditRect);
 
     event->accept();
@@ -3692,7 +3678,7 @@ void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
 *******************************************************************************/
 void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
 {
-    qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
+    //qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
     switch (tapAndHold->state()) {
     case Qt::GestureStarted:
         m_gestureAction = GA_hold;
@@ -3788,8 +3774,11 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
 
     QFont font = getVTFont();
     int size = static_cast<int>(m_scaleFactor*m_currentStepScaleFactor);
-    font.setPointSize(size);
-    setVTFont(font);
+    if(font.pointSize() != size){
+        font.setPointSize(size);
+        setVTFont(font);
+    }
+
 }
 
 /*******************************************************************************
@@ -3811,7 +3800,7 @@ void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
         m_gestureAction = GA_null;
         break;
     case Qt::GestureFinished:
-        Q_ASSERT(false);
+        m_gestureAction = GA_null;
         break;
     default:
         Q_ASSERT(false);
@@ -3886,11 +3875,11 @@ bool TerminalScreen::event(QEvent* event)
             qreal direction = diffYpos>0?1.0:-1.0;
             slideGesture(-direction*sqrt(abs(diffYpos))/font.pointSize());
 
-            /*预算滑惯性动时间*/
+            /*预算惯性滑动时间*/
             m_stepSpeed = static_cast<qreal>(diffYpos)/static_cast<qreal>(diffTime+0.000001);
             duration = sqrt(abs(m_stepSpeed))*1000;
 
-            /*预算滑惯性动距离,4.0为调优数值*/
+            /*预算惯性滑动距离,4.0为调优数值*/
             m_stepSpeed /= sqrt(font.pointSize()*4.0);
             change = m_stepSpeed*sqrt(abs(m_stepSpeed))*100;
 

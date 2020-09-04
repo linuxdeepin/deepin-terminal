@@ -231,18 +231,6 @@ void MainWindow::initOptionButton()
         qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
     }
 
-    m_exitFullScreen = new DToolButton(this);
-    m_exitFullScreen->setObjectName("MainWindowExitFullScreenDToolButton");//Add by ut001000 renfeixiang 2020-08-13
-    m_exitFullScreen->setCheckable(false);
-    m_exitFullScreen->setIcon(QIcon::fromTheme("dt_exit_fullscreen"));
-    m_exitFullScreen->setIconSize(ICON_EXIT_FULL_SIZE);
-    m_exitFullScreen->setFixedSize(ICON_EXIT_FULL_SIZE);
-    titlebar()->addWidget(m_exitFullScreen, Qt::AlignRight | Qt::AlignHCenter);
-    m_exitFullScreen->setVisible(false);
-    m_exitFullScreen->setFocusPolicy(Qt::TabFocus);
-    connect(m_exitFullScreen, &DPushButton::clicked, this, [this]() {
-        switchFullscreen();
-    });
 
     // option button
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
@@ -275,14 +263,23 @@ void MainWindow::initOptionMenu()
 {
     titlebar()->setMenu(m_menu);
     /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
+    // 防止创建新窗口的action被多次触发
+    QTimer *createTimer = new QTimer(this);
+    // 设置定时器,等待菜单消失,触发一次,防止多次被触发
+    createTimer->setSingleShot(true);
     QAction *newWindowAction(new QAction(tr("New window"), this));
-    connect(newWindowAction, &QAction::triggered, this, [this]() {
+    connect(createTimer, &QTimer::timeout, this, [ = ]() {
+        // 创建新的窗口
         qDebug() << "menu click new window";
 
         TermWidgetPage *tabPage = currentPage();
         TermWidget *term = tabPage->currentTerminal();
         QString currWorkingDir = term->workingDirectory();
         emit newWindowRequest(currWorkingDir);
+    });
+    connect(newWindowAction, &QAction::triggered, this, [ = ]() {
+        // 等待菜单消失  此处影响菜单创建窗口的性能
+        createTimer->start(50);
     });
     m_menu->addAction(newWindowAction);
     /********************* Modify by m000714 daizhengwen End ************************/
@@ -1340,6 +1337,16 @@ void MainWindow::initShortcuts()
             page->pasteClipboard();
         }
     });
+
+    /******** Modify by ut001000 renfeixiang 2020-08-28:修改 bug 44477***************/
+    QShortcut *shortcutBuiltinCopy = new QShortcut(QKeySequence(QKEYSEQUENCE_COPY_BUILTIN), this);
+    connect(shortcutBuiltinCopy, &QShortcut::activated, this, [this]() {
+        qDebug() << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
+        TermWidgetPage *page = currentPage();
+        if (page) {
+            page->copyClipboard();
+        }
+    });
     /********************* Modify by n014361 wangpeili End ************************/
 
     for (int i = 1; i <= 9; i++) {
@@ -2186,6 +2193,12 @@ void NormalWindow::initTitleBar()
     } else {
         qDebug() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
     }
+    QWidget *quitFullscreenBtn = titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton");
+    if (quitFullscreenBtn != nullptr) {
+        quitFullscreenBtn->setFocusPolicy(Qt::TabFocus);
+    } else {
+        qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
+    }
     DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
     if (minBtn != nullptr) {
         minBtn->setFocusPolicy(Qt::TabFocus);
@@ -2204,9 +2217,10 @@ void NormalWindow::initTitleBar()
     } else {
         qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
     }
-    if (addButton != nullptr && optionBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
+    if (addButton != nullptr && optionBtn != nullptr && quitFullscreenBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
         QWidget::setTabOrder(addButton, optionBtn);
-        QWidget::setTabOrder(optionBtn, minBtn);
+        QWidget::setTabOrder(optionBtn, quitFullscreenBtn);
+        QWidget::setTabOrder(quitFullscreenBtn, minBtn);
         QWidget::setTabOrder(minBtn, maxBtn);
         QWidget::setTabOrder(maxBtn, closeBtn);
     }
@@ -2331,17 +2345,6 @@ void NormalWindow::onAppFocusChangeForQuake()
 *******************************************************************************/
 void NormalWindow::changeEvent(QEvent *event)
 {
-    if (m_exitFullScreen) {
-        bool isFullscreen = window()->windowState().testFlag(Qt::WindowFullScreen);
-        m_exitFullScreen->setVisible(isFullscreen);
-        titlebar()->setMenuVisible(!isFullscreen);
-        if (titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton") != nullptr) {
-            titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton")->hide();
-        } else {
-            qDebug() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
-        }
-    }
-
     QMainWindow::changeEvent(event);
 }
 
@@ -2457,7 +2460,7 @@ void QuakeWindow::initWindowAttribute()
     QDesktopWidget *desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
-    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint /*| Qt::Dialog*/);
+    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint /*| Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
 
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
@@ -2724,6 +2727,7 @@ bool QuakeWindow::event(QEvent *event)
 *******************************************************************************/
 bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
 {
+#if 0
     // 由于MainWindow是qApp注册的时间过滤器,所以这里需要判断
     // 只处理雷神的事件 QuakeWindowWindow是Qt内置用来管理QuakeWindow的Mouse事件的object
     if (watched->objectName() != "QuakeWindowWindow") {
@@ -2775,6 +2779,7 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
             break;
         }
     }
+#endif
     return MainWindow::eventFilter(watched, event);
 
 }

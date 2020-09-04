@@ -42,6 +42,7 @@ RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPlug
 *******************************************************************************/
 void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
 {
+    qDebug() << "RemoteManagementPlugin init Plugin.";
     m_mainWindow = mainWindow;
     //initRemoteManagementTopPanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
@@ -122,7 +123,7 @@ void RemoteManagementPlugin::initRemoteManagementTopPanel()
 {
     qDebug() << __FUNCTION__;
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
-    m_remoteManagementTopPanel->setObjectName("RemoteManagementTopPanel");//Add by ut001000 renfeixiang 2020-08-14
+    m_remoteManagementTopPanel->setObjectName("RemoteManagementTopPanel");
     connect(m_remoteManagementTopPanel,
             &RemoteManagementTopPanel::doConnectServer,
             this,
@@ -137,6 +138,7 @@ void RemoteManagementPlugin::initRemoteManagementTopPanel()
 *******************************************************************************/
 void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
 {
+    qDebug() << "RemoteManagementPlugin do connect server.";
     if (nullptr != curServer) {
 
         QString shellFile = createShellFile(curServer);
@@ -199,6 +201,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
 *******************************************************************************/
 QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 {
+    qDebug() << "RemoteManagementPlugin create temporary shell file.";
     // 首先读取通用模板
     QFile sourceFile(":/other/ssh_login.sh");
     QString fileString;

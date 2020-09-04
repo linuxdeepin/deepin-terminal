@@ -56,7 +56,7 @@ void RemoteManagementSearchPanel::initUI()
     m_rebackButton->setFocusPolicy(Qt::TabFocus);
 
     m_listWidget = new ListView(ListType_Remote, this);
-    m_listWidget->setObjectName("RemoteSearchListWidget");//Add by ut001000 renfeixiang 2020-08-14
+    m_listWidget->setObjectName("RemoteSearchListWidget");
     m_label = new DLabel(this);
     m_label->setObjectName("RemoteSearchFilterLabel");//Add by ut001000 renfeixiang 2020-08-13;
     m_label->setAlignment(Qt::AlignCenter);
@@ -229,6 +229,7 @@ void RemoteManagementSearchPanel::clearAllFocus()
 *******************************************************************************/
 void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup, bool isFocusOn, int prevIndex)
 {
+    qDebug() << "RemoteManagementSearchPanel return from RemoteManagementGroup.";
     // 返回前判断之前是否要有焦点
     if (isFocusOn) {
         // 要有焦点

@@ -137,6 +137,7 @@ public:
     /******** Add by nt001000 renfeixiang 2020-05-25:增加 定义 End***************/
     static constexpr const char *QKEYSEQUENCE_FOCUSOUT_TIMINAL = "Meta+Tab";
     static constexpr const char *QKEYSEQUENCE_PASTE_BUILTIN = "Shift+Ins";
+    static constexpr const char *QKEYSEQUENCE_COPY_BUILTIN = "Ctrl+Ins";
 
     /******** Add by ut001000 renfeixiang 2020-08-07:将m_MinWidth和m_MinHeight设置成全局变量***************/
     // 窗口最小宽度
@@ -254,7 +255,6 @@ public:
 
 protected:
     QMenu *m_menu = nullptr;
-    DToolButton *m_exitFullScreen = nullptr;
     TabBar *m_tabbar = nullptr;
     QWidget *m_centralWidget = nullptr;
     QVBoxLayout *m_centralLayout = nullptr;

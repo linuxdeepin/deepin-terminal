@@ -67,7 +67,7 @@ public slots:
     void onListViewClicked(const QModelIndex &index);
     void checkEncode(QString encode);
     /** add by ut001121 zhangmeng 20200718 for sp3 keyboard interaction*/
-    Qt::FocusReason getFocusReason(){return m_foucusReason;}
+    inline Qt::FocusReason getFocusReason(){return m_foucusReason;}
 
 private:
     void initEncodeItems();
