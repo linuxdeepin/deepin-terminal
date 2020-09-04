@@ -184,10 +184,18 @@ echo "最终虚拟内存(M):  $vmsize" >> $accfile
 avgcpu=0;
 i=0
 echo "cpu采样次数为: $cpu_resample_number"
+termpid=$(ps -eo pid,comm | grep 'deepin-terminal' | awk '{print$1;}')
+for userpid in $termpid; do
+	if [ $userpid ] ; then
+	 	break
+	fi
+done
 while [ $i -lt $cpu_resample_number ]
 do
  #   curcpu=$(top -n1 | grep "deepin-terminal" | awk '{print $10;}')
-    curcpu=$(ps -eo pcpu,comm | grep "deepin-terminal" | awk '{print $1;}')
+#    curcpu=$(ps -eo pcpu,comm | grep "deepin-terminal" | awk '{print $1;}')
+    curcpu=`top -n 1 -d 1 -p $userpid | grep deepin | awk '{print $10;}'`
+#    echo "====================$curcpu=================="
      if [ $curcpu ] ; then
         # avgcpu=$((avgcpu+curcpu))
         avgcpu=$(echo "scale=2; $avgcpu+$curcpu"|bc)
