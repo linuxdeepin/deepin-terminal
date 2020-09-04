@@ -607,7 +607,6 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
 
     // 控件输入
     option->connect(rightWidget, &KeySequenceEdit::editingFinished, rightWidget, [ = ](const QKeySequence & sequence) {
-        rightWidget->clearFocus();
         // 删除
         if (sequence.toString() == "Backspace") {
             rightWidget->clear();

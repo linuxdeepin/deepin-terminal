@@ -24,8 +24,11 @@
 
 #include "environments.h"
 
+#include <QList>
+
 #include <DApplication>
 #include <DPushButton>
+#include <DKeySequenceEdit>
 
 DWIDGET_USE_NAMESPACE
 
@@ -55,6 +58,8 @@ private:
     // APP启动时间
     // 子进程该数据时间会通过共享内存传给对应的maindow
     qint64 m_AppStartTime = 0;
+    // 记录已经进入编辑状态的DKeySequenceEdit
+    QList<DKeySequenceEdit *> m_keySequenceList;
 };
 
 #endif // TERMINALAPPLICATION_H

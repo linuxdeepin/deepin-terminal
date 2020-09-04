@@ -21,7 +21,6 @@
 #include "terminalapplication.h"
 #include "mainwindow.h"
 #include "service.h"
-#include "DKeySequenceEdit"
 
 // qt
 #include <QDebug>
@@ -100,13 +99,14 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
     // 针对DTK做的特殊处理,等DTK自己完成后,需要删除
     if (object->metaObject()->className() == QStringLiteral("Dtk::Widget::DKeySequenceEdit")) {
-        static bool isEnableEdit = true;     // true 可以Enter进入编辑状态 false 此时Enter为快捷键输入
-        // 焦点进入快捷键编辑
         if (event->type() == QEvent::FocusOut) {
-            // 焦点出去后,可以Enter进入编辑状态
-            isEnableEdit = true;
+            // 获取DKeySequenceEdit
+            DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
+            // 焦点丢失,移除KeySequence
+            m_keySequenceList.removeOne(edit);
         }
-        if (event->type() == QEvent::KeyPress && isEnableEdit) {
+
+        if (event->type() == QEvent::KeyPress) {
             QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
             // 在dtk的自定义快捷键输入框上按Enter
             if (keyevent->key() == Qt::Key_Enter
@@ -114,13 +114,22 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
                     || keyevent->key() == Qt::Key_Space) {
                 // 获取DKeySequenceEdit
                 DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
-                // 找到其中的QLabel
-                QList<Dtk::Widget::DLabel *> childern = edit->findChildren<Dtk::Widget::DLabel *>();
-                // 发送QMouseEvent
-                QMouseEvent mouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-                DApplication::sendEvent(childern[0], &mouseEvent);
-                isEnableEdit = false;
-                return true;
+                // 当快捷键输入框内容不为空
+                if (!edit->keySequence().isEmpty() && !m_keySequenceList.contains(edit)) {
+                    // 找到其中的QLabel
+                    QList<Dtk::Widget::DLabel *> childern = edit->findChildren<Dtk::Widget::DLabel *>();
+                    // 发送QMouseEvent
+                    QMouseEvent mouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+                    DApplication::sendEvent(childern[0], &mouseEvent);
+                    // 记录当前KeySequence已经进入编辑状态
+                    m_keySequenceList.append(edit);
+                    qDebug() << "KeySequence in Editing";
+                    return true;
+                } else {
+                    // KeySequence
+                    m_keySequenceList.removeOne(edit);
+                }
+
             }
         }
     }
