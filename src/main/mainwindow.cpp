@@ -1524,6 +1524,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                 term->setEnterSzCommand(false);
             }
         }
+        /******** Modify by ut000610 daizhengwen 2020-09-07:焦点在推出全屏上,点击Enter或Space Begin***************/
+        // fix#bug 46680
+        if ((watched->metaObject()->className() == QStringLiteral("Dtk::Widget::DWindowQuitFullButton"))
+                && (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Space)) {
+            // 退出全屏
+            switchFullscreen(false);
+            return true;
+        }
+        /********************* Modify by ut000610 daizhengwen End ************************/
     }
 
     //if (watched == this) {
