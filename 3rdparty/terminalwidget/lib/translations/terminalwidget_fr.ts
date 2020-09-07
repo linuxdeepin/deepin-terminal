@@ -4,12 +4,12 @@
     <message>
         <location filename="../TerminalDisplay.cpp" line="1279"/>
         <source>Size: XXX x XXX</source>
-        <translation>Taille : XXX x XXX</translation>
+        <translation>Taille: XXX x XXX</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1291"/>
         <source>Size: %1 x %2</source>
-        <translation>Taille : %1 x %2</translation>
+        <translation>Taille: %1 x %2</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
@@ -31,7 +31,7 @@
         <location filename="../ColorScheme.cpp" line="278"/>
         <location filename="../ColorScheme.cpp" line="293"/>
         <source>Un-named Color Scheme</source>
-        <translation>Schéma des couleurs non nommé</translation>
+        <translation>Schéma de couleurs non nommé</translation>
     </message>
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation>Impossible de charger le schéma de couleurs : %1</translation>
+        <translation>Impossible de charger le schéma de couleurs: %1</translation>
     </message>
 </context>
 <context>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../SearchBar.ui" line="32"/>
         <source>Find:</source>
-        <translation>Trouver :</translation>
+        <translation>Trouver:</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="42"/>
