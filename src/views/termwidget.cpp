@@ -970,3 +970,29 @@ void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    wheelEvent
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-08
+ 4. @说明:    支持Ctrl + 滚轮上下事件
+ Ctrl+滚轮上 放大
+ Ctrl+滚轮下 缩小
+*******************************************************************************/
+void TermWidget::wheelEvent(QWheelEvent *event)
+{
+    // 当前窗口被激活,且有焦点
+    if (isActiveWindow() && hasFocus()) {
+        if (event->modifiers() == Qt::ControlModifier) {
+            int directionY = event->angleDelta().y();
+            if (directionY < 0) {
+                // 向下缩小
+                zoomOut();  // zoom out 缩小
+            } else {
+                // 向上放大
+                zoomIn();   // zoom in 放大
+            }
+        }
+    }
+    QTermWidget::wheelEvent(event);
+}
+
