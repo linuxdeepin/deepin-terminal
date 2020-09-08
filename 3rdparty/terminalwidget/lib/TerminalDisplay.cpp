@@ -3774,6 +3774,13 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
 
     QFont font = getVTFont();
     int size = static_cast<int>(m_scaleFactor*m_currentStepScaleFactor);
+    /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42412***/
+    if(size < 5){
+        size = 5;
+    } else if (size > 50) {
+        size = 50;
+    }
+    /***add end by ut001121***/
     if(font.pointSize() != size){
         font.setPointSize(size);
         setVTFont(font);
