@@ -2588,7 +2588,7 @@ void QuakeWindow::onAppFocusChangeForQuake()
         return;
     }
 
-    hide();
+    hideQuakeWindow();
 }
 
 /*******************************************************************************
