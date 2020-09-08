@@ -2174,7 +2174,7 @@ void NormalWindow::initTitleBar()
     m_titleBar->setTabBar(m_tabbar);
 
     titlebar()->setCustomWidget(m_titleBar);
-    titlebar()->setAutoHideOnFullscreen(true);
+    // titlebar()->setAutoHideOnFullscreen(true);
     titlebar()->setTitle("");
 
     //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
