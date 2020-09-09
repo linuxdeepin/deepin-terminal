@@ -397,8 +397,12 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
                 deleteDialog->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
                 deleteDialog->addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
                 deleteDialog->show();
+                // 释放窗口
+                Service::instance()->setIsDialogShow(window(), false);
             } else {
                 // 不删除，修改
+                // 释放窗口
+                Service::instance()->setIsDialogShow(window(), false);
                 // 修改后会有信号刷新列表
                 // 不需要删除，修改了转到这条修改的记录
                 // 设置滚轮
@@ -439,6 +443,8 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
         }
         // 不接受，reject 修改弹窗
         else {
+            // 释放窗口
+            Service::instance()->setIsDialogShow(window(), false);
             if (m_focusState) {
                 int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                 // 回到列表,仅回到大的列表，没有回到具体的哪个点
@@ -449,8 +455,6 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
             // 取消后及时将弹窗删除
             ServerConfigManager::instance()->removeDialog(m_configDialog);
         }
-        // 等待处理完成再释放窗口
-        Service::instance()->setIsDialogShow(window(), false);
 
     });
     // 2. 记录弹窗
