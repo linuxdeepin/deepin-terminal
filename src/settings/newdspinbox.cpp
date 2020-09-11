@@ -156,6 +156,8 @@ void NewDspinBox::correctValue()
 }
 
 //拷贝了Qt QTextLayout类的源码
+//fixbug-47238 ut001000 renfeixiang 20200911
+#if 0
 void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition, int width) const
 {
     Q_UNUSED(width)
@@ -222,4 +224,4 @@ void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition
     }
     return;
 }
-
+#endif
