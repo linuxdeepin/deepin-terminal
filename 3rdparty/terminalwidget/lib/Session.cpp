@@ -523,10 +523,24 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     // char str4[]="\x0d\x1b\x5b\x4a";   //Esc[J //	Clear screen from cursor down
 
     // 获取上一次一共有多少行
-    Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
-    int curY= vt102->_currentScreen->getCursorY() + vt102->_currentScreen->getHistLines() + 1;
-    int calLines = curY - vt102->_currentScreen->ShellStartLine + 1;
-    int cleanLineCount = calLines - 1;
+    /******** Modify by ut001000 renfeixiang 2020-09-09:修改 更换计算行的方法，通过存储数据的screenLines获取行数，并设置当前的cuY值 Begin***************/
+//    Vt102Emulation *vt102 = static_cast<Vt102Emulation *>(_emulation);
+//    int curY= vt102->_currentScreen->getCursorY() + vt102->_currentScreen->getHistLines() + 1;
+//    int calLines = curY - vt102->_currentScreen->ShellStartLine + 1;
+//    int cleanLineCount = calLines - 1;
+
+
+    int cleanLineCount = _emulation->_currentScreen->getImageHasLine()+ _emulation->_currentScreen->getHistLines() - _emulation->_currentScreen->ShellStartLine - 1;//calLines - 1;
+//    qDebug () << "ssssssssssssssssssss" << "getImageHasLine" << _emulation->_currentScreen->getImageHasLine()
+//              << "getHistLines" << _emulation->_currentScreen->getHistLines()
+//              << "ShellStartLine" << _emulation->_currentScreen->ShellStartLine << "cleanLineCount" << cleanLineCount;
+
+//     qDebug()<< "ssssssssssssssssssss" <<"ShellStartLine" << _emulation->_currentScreen->ShellStartLine << "getImageHasLine" << _emulation->_currentScreen->getImageHasLine()
+//             << "cleanLineCount" << cleanLineCount <<"_sessionId" << _sessionId;
+     tmpImageLine = _emulation->_currentScreen->getImageHasLine();
+    _emulation->_currentScreen->setCursorY(tmpImageLine);
+//    qDebug() << "getCursorY()" << _emulation->_currentScreen->getCursorY() << "tmpImageLine" << tmpImageLine <<"_sessionId" << _sessionId;
+    /******** Modify by ut001000 renfeixiang 2020-09-09 End***************/
 
 
     //qDebug()<<_emulation->resizeAllString.length() << _shellProcess->redraw_windowColumns;
@@ -565,6 +579,13 @@ void Session::fixClearLineCmd(QByteArray &buffer)
 
     // 把有问题的\r\n\r 删除
     buffer.replace(bashBugReturn, "");
+
+    /******** Add by ut001000 renfeixiang 2020-09-09:增加，在有多行输入信息时，并且光标往上面行移动时的场景，
+     * 收到的bash信息解析后，信息前面多了\n，需要删除 Begin***************/
+    while(buffer.startsWith("\n")){
+        buffer = buffer.right(buffer.size() - 1);
+    }
+    /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
 
     //qDebug()<<"auto clean line: "<<m_RedrawStep
     //         <<"will clean lines = "<<cleanLineCount << "replace \\r\\n\\r times = "<<buffer.count(bashBugReturn);
@@ -733,13 +754,20 @@ bool Session::preRedraw(QByteArray & data)
 
     switch (m_RedrawStep) {
     case RedrawStep1_Resize_Receiving://将非resize时保存的信息清除
-        if(!data.contains("\x07"))
-        {
-            return false;
-        }
-        qDebug()<<m_RedrawStep <<" OK!";
+        /******** Modify by ut001000 renfeixiang 2020-09-09:修改 export PS1="%%%%%"场景没有\x07 Begin***************/
+//        if(!data.contains("\x07"))
+//        {
+//            return false;
+//        }
+        qDebug()<<m_RedrawStep <<" OK!" << "_sessionId" << _sessionId;
         _emulation->m_ResizeSaveType = Emulation::SaveAll;
         _emulation->resizeAllString.clear();        
+        /******** Add by ut001000 renfeixiang 2020-09-09:增加,用于屏蔽分屏幕场景，第一条消息，被分开发送，分开的消息发送到resize流程中 Begin***************/
+        if(!data.contains("\x0d\x1b\x5b\x4b")){
+            m_RedrawStep = RedrawStep0_None;
+            break;
+        }
+        /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
         fixClearLineCmd(data);
 
         break;
@@ -805,6 +833,39 @@ void Session::deleteReturnChar(QByteArray &data)
     QByteArrayList maybePreList;
     maybePreList<<"\r\n"<<"\u0007\r\n"<<"\u001B[A\r\n";
 
+    /******** Add by ut001000 renfeixiang 2020-09-09:增加 用于计算出第三步正确的接收信息，格式\r\nXX\u0007XX Begin***************/
+    QString strbyte = data;
+    strbyte = strbyte.replace("\r\n\r","");
+    lastRecvReturnData = lastRecvReturnData+strbyte;
+    qDebug() << "lastRecvReturnDatalastRecvReturnData" << lastRecvReturnData;
+    if(lastRecvReturnData.contains("\r\n") && lastRecvReturnData.contains("\x07")){
+        if(lastRecvReturnData.split("\x07").at(1).size() > 0){
+            strbyte = lastRecvReturnData;
+            lastRecvReturnData = "";
+        }else {
+            data.replace("\x07","");
+            return;
+        }
+    }else {
+        data.replace("\x07","");
+        return;
+    }
+    if(strbyte.contains("\r\n")){
+        QStringList list = strbyte.split("\r\n");
+        qDebug() << "list.size" << list.size();
+        if(list.size() > 1){
+            strbyte = "\r\n";
+            strbyte += list.at(list.size()-1);
+            data = strbyte.toLatin1();
+            qDebug() << "strbytestrbyte" << strbyte;
+        }
+    }/*else {
+        if(strbyte.contains("\x07")){
+            deleteOK = true;
+        }
+    }*/
+    /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
+
     for(QByteArray pre: maybePreList)
     {
         if(data.startsWith(pre) )
@@ -868,6 +929,10 @@ void Session::onRedrawData(RedrawStep step)
             return;
         }
         qDebug()<<"_emulation->resizeAllString"<<_emulation->resizeAllString;
+        /******** Modify by ut001000 renfeixiang 2020-09-09:修改,在清除行前，设置下光标的行数，主要是为了光标移动的场景 Begin***************/
+//         qDebug() << "getImageHasLinegetImageHasLine" <<_emulation->_currentScreen->getImageHasLine() << "tmpImageLine" << tmpImageLine;
+         _emulation->_currentScreen->setCursorY(tmpImageLine);
+         /******** Modify by ut001000 renfeixiang 2020-09-09: End***************/
         _emulation->sendString(byteCtrlU.data(), byteCtrlU.count(), true);
         //entryRedrawStep(RedrawStep1_Ctrl_u_Receiving);
         break;
@@ -893,6 +958,17 @@ void Session::onRedrawData(RedrawStep step)
         {
             _emulation->startPrompt = _emulation->startPrompt.left(_emulation->startPrompt.size() - 1);
         }
+        /******** Add by ut001000 renfeixiang 2020-09-09:增加 将resizeAllString的信息格式化，开始的信息必须是shell信息 Begin***************/
+        if(!_emulation->resizeAllString.startsWith(_emulation->startPrompt)){
+            if(_emulation->resizeAllString.contains(_emulation->startPrompt)){
+                QStringList list = _emulation->resizeAllString.split(_emulation->startPrompt);
+                if(list.size() > 1){
+                    _emulation->resizeAllString = _emulation->startPrompt+list.at(0)+list.at(1);
+                    qDebug() << "resizeAllString format is error, show change resizeAllString:" << _emulation->resizeAllString;
+                }
+            }
+        }
+        /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
         if(_emulation->resizeAllString.startsWith(_emulation->startPrompt) )
         {
             _emulation->m_ResizeSaveType = Emulation::SaveNone;
@@ -1277,7 +1353,8 @@ void Session::zmodemFinished()
 */
 void Session::onReceiveBlock(const char *buf, int len)
 {
-    qDebug() <<m_RedrawStep <<_emulation->m_ResizeSaveType<< "new onReceiveBlock" << QString::fromLatin1(buf, len);
+    qDebug() <<m_RedrawStep <<_emulation->m_ResizeSaveType<< "new onReceiveBlock" << QString::fromLatin1(buf, len)
+            << "_sessionId" << _sessionId;
     QByteArray byteBuf(buf, len);
 
     // 重绘的预处理

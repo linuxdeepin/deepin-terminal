@@ -73,6 +73,9 @@ class Screen
 public:
 
         int ShellStartLine = 0;
+        /******** Add by ut001000 renfeixiang 2020-09-09:增加 通过存储数据的screenLines获取行数 Begin***************/
+        int getImageHasLine();
+        /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
     /** Construct a new screen image of size @p lines by @p columns. */
     Screen(int lines, int columns);
     ~Screen();

@@ -99,6 +99,13 @@ public:
     void deleteReturnChar(QByteArray & data);
     void onRedrawData(RedrawStep step);
 
+    /******** Add by ut001000 renfeixiang 2020-09-09:增加 Begin***************/
+    //记录在收到resezie信息时的行数，用于在clear时设置当前光标位置
+    int tmpImageLine = 0;
+    //用于计算出第三步正确的接收信息，格式\r\nXX\u0007XX
+    QString lastRecvReturnData = "";
+    /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
+
 
     /**
      * Returns true if the session is currently running.  This will be true

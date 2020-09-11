@@ -69,7 +69,22 @@ Character Screen::defaultChar = Character(' ',
 
 //#define REVERSE_WRAPPED_LINES  // for wrapped line debug
 
-    Screen::Screen(int l, int c)
+/*******************************************************************************
+ 1. @函数:    getImageHasLine
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-09-09
+ 4. @说明:    通过存储数据的screenLines获取行数,返回值行数
+*******************************************************************************/
+int Screen::getImageHasLine()
+{
+    for (int i = 0; i < lines; i++) {
+        if(screenLines[i].size() <= 0){
+            return  i;
+        }
+    }
+}
+
+Screen::Screen(int l, int c)
 : lines(l),
     columns(c),
     screenLines(new ImageLine[lines+1] ),
@@ -1009,8 +1024,12 @@ void Screen::clearToBeginOfLine()
 
 void Screen::updateShellStartLine()
 {
-    ShellStartLine = cuY + getHistLines() +1;
-    qDebug()<<"ShellStartLine update "<<ShellStartLine;
+    //ShellStartLine = cuY + getHistLines() +1;
+    /******** Modify by ut001000 renfeixiang 2020-09-09:修改 Begin***************/
+    //新判断方法：使用screenLines判断有几行数据
+    ShellStartLine = getImageHasLine() + getHistLines();
+    //qDebug()<<"ShellStartLine update "<<ShellStartLine << "cuY" << cuY << "getImageHasLine()" <<getImageHasLine() << getHistLines();
+    /******** Modify by ut001000 renfeixiang 2020-09-09 End***************/
 }
 
 void Screen::clearEntireLine()
