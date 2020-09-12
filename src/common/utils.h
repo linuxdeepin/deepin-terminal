@@ -64,6 +64,8 @@
 // limit font size
 #define DEFAULT_MIN_FONT_SZIE 5
 #define DEFAULT_MAX_FONT_SZIE 50
+#define MIN_FONT_SZIE (Settings::instance()->minFontSize())
+#define MAX_FONT_SZIE (Settings::instance()->maxFontSize())
 
 //Viewport Margins
 #define MARGINS_TOP 10

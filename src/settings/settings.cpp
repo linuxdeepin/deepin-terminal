@@ -37,9 +37,6 @@
 #include <QStandardPaths>
 #include <QFontDatabase>
 
-#include <TerminalDisplay.h>
-
-
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
 Settings *Settings::m_settings_instance = new Settings();
@@ -566,13 +563,6 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     auto rightWidget = new NewDspinBox();
 
     rightWidget->setValue(option->value().toInt());
-
-    if (option->data("max").isValid()) {
-        rightWidget->setMaximum(option->data("max").toInt());
-    }
-    if (option->data("min").isValid()) {
-        rightWidget->setMinimum(option->data("min").toInt());
-    }
 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, rightWidget);
