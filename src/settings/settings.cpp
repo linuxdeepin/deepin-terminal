@@ -37,6 +37,8 @@
 #include <QStandardPaths>
 #include <QFontDatabase>
 
+#include <TerminalDisplay.h>
+
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
@@ -118,6 +120,17 @@ void Settings::init()
         m_Watcher->addPath(m_configPath);
     });
 #endif
+
+    /***add begin by ut001121 zhangmeng 20200912 设置字号限制 修复42250***/
+    auto option = settings->option("basic.interface.font_size");
+    Konsole::__minFontSize = option->data("min").isValid()? option->data("min").toInt() : DEFAULT_MIN_FONT_SZIE;
+    Konsole::__maxFontSize = option->data("max").isValid()? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
+
+    // 校验正确
+    if(Konsole::__minFontSize > Konsole::__maxFontSize){
+        qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
+    }
+    /***add end by ut001121***/
 }
 
 /*******************************************************************************

@@ -105,6 +105,11 @@ const ColorEntry Konsole::base_color_table[TABLE_COLORS] =
 bool TerminalDisplay::_antialiasText = true;
 bool TerminalDisplay::HAVE_TRANSPARENCY = true;
 
+/***add begin by ut001121 zhangmeng 20200912 初始化字号限制 修复42250***/
+int Konsole::__minFontSize = 0;
+int Konsole::__maxFontSize = 0x7fffffff;
+/***add end by ut001121***/
+
 // we use this to force QPainter to display text in LTR mode
 // more information can be found in: http://unicode.org/reports/tr9/
 const QChar LTR_OVERRIDE_CHAR( 0x202D );
@@ -285,6 +290,13 @@ void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
 
 void TerminalDisplay::setVTFont(const QFont& f)
 {
+    /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42250***/
+    /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42412***/
+    if(f.pointSize() < __minFontSize || f.pointSize() > __maxFontSize){
+        return;
+    }
+    /***add end by ut001121***/
+
     QFont newFont(f);
     int strategy = 0;
 
@@ -3773,19 +3785,8 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
     }//switch
 
     QFont font = getVTFont();
-    int size = static_cast<int>(m_scaleFactor*m_currentStepScaleFactor);
-    /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42412***/
-    if(size < 5){
-        size = 5;
-    } else if (size > 50) {
-        size = 50;
-    }
-    /***add end by ut001121***/
-    if(font.pointSize() != size){
-        font.setPointSize(size);
-        setVTFont(font);
-    }
-
+    font.setPointSize(static_cast<int>(m_scaleFactor*m_currentStepScaleFactor));
+    setVTFont(font);
 }
 
 /*******************************************************************************

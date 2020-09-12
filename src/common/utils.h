@@ -61,6 +61,10 @@
 #define ICONSIZE_36 36
 #define ICONSIZE_20 20
 
+// limit font size
+#define DEFAULT_MIN_FONT_SZIE 5
+#define DEFAULT_MAX_FONT_SZIE 50
+
 //Viewport Margins
 #define MARGINS_TOP 10
 #define MARGINS_BOTTOM 10

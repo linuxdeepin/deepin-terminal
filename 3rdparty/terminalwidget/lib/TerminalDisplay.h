@@ -75,6 +75,10 @@ namespace Konsole
         MoveEndScreenWindow = 2
     };
 
+/***add begin by ut001121 zhangmeng 20200912 声明字号限制 修复42250***/
+extern __attribute__((visibility("default"))) int __minFontSize;
+extern __attribute__((visibility("default"))) int __maxFontSize;
+/***add end by ut001121***/
 
 extern unsigned short vt100_graphics[32];
 
