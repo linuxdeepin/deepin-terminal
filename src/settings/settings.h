@@ -28,7 +28,6 @@
 #include <qsettingbackend.h>
 
 #include <DComboBox>
-#include <TerminalDisplay.h>
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
@@ -51,8 +50,6 @@ public:
 
     void initConnection();
 
-    inline int minFontSize() const{return Konsole::__minFontSize;}
-    inline int maxFontSize() const{return Konsole::__maxFontSize;}
     qreal opacity() const;
     int cursorShape() const;
     bool cursorBlink() const;

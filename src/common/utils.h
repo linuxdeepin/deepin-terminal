@@ -34,6 +34,11 @@
 #include <QVariant>
 #include <QCommandLineParser>
 
+namespace Konsole {
+extern __attribute__((visibility("default"))) int __minFontSize;
+extern __attribute__((visibility("default"))) int __maxFontSize;
+}
+
 /******** Modify by m000714 daizhengwen 2020-04-03: 自绘的显示控件限制item的宽度****************/
 #define ITEMMAXWIDTH 140
 /********************* Modify by m000714 daizhengwen End ************************/
@@ -64,8 +69,8 @@
 // limit font size
 #define DEFAULT_MIN_FONT_SZIE 5
 #define DEFAULT_MAX_FONT_SZIE 50
-#define MIN_FONT_SZIE (Settings::instance()->minFontSize())
-#define MAX_FONT_SZIE (Settings::instance()->maxFontSize())
+#define MIN_FONT_SZIE ({Konsole::__minFontSize;})
+#define MAX_FONT_SZIE ({Konsole::__maxFontSize;})
 
 //Viewport Margins
 #define MARGINS_TOP 10
