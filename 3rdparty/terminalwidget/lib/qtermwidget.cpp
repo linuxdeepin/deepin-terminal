@@ -379,6 +379,30 @@ void QTermWidget::interactionHandler()
     m_interactionTimer->start();
 }
 
+/*******************************************************************************
+ 1. @函数:    setisAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-14
+ 4. @说明:    设置是否允许滚动到最新的位置
+ 当有输出且并不是在setZoom之后,此标志为true 允许滚动
+ 当有输出且在setZoom之后,比标志位false 不允许滚动
+*******************************************************************************/
+void QTermWidget::setIsAllowScroll(bool isAllowScroll)
+{
+    m_isAllowScroll = isAllowScroll;
+}
+
+/*******************************************************************************
+ 1. @函数:    getisAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-14
+ 4. @说明:    获取是否允许输出时滚动
+*******************************************************************************/
+bool QTermWidget::getIsAllowScroll() const
+{
+    return m_isAllowScroll;
+}
+
 void QTermWidget::startTerminalTeletype()
 {
     if (m_impl->m_session->isRunning()) {
@@ -728,8 +752,15 @@ void QTermWidget::pasteSelection()
 
 void QTermWidget::setZoom(int step)
 {
+    // 放大缩小时需要一个标志位
+    // 该标志位负责取消输出时滚动
+    // 发送信号修改标志位 => 调整大小时,不允许接收输出时滚动的设置
+    m_isAllowScroll = false;
+
+    // 获取字体
     QFont font = m_impl->m_terminalDisplay->getVTFont();
 
+    // 设置字体
     font.setPointSize(font.pointSize() + step);
     setTerminalFont(font);
 }

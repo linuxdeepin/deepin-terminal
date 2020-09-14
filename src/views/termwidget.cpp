@@ -143,7 +143,15 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, [this](QString value) {
         Q_UNUSED(value)
-        setTrackOutput(Settings::instance()->OutputtingScroll());
+        // 获取是否允许输出时滚动
+        if (getIsAllowScroll()) {
+            // 允许,则滚动到最新位置
+            setTrackOutput(Settings::instance()->OutputtingScroll());
+        } else {
+            // 不允许,则不滚动
+            // 将标志位置位
+            setIsAllowScroll(true);
+        }
     });
 
     // 接收到输出

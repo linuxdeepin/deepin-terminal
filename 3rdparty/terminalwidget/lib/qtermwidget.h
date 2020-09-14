@@ -269,6 +269,13 @@ public:
     void setDrawLineChars(bool drawLineChars);
 
     void setBoldIntense(bool boldIntense);
+
+    // 获取是否允许输出时滚动
+    bool getIsAllowScroll() const;
+
+    // 设置是否允许输出时滚动
+    void setIsAllowScroll(bool isAllowScroll);
+
 signals:
     void finished();
     void copyAvailable(bool);
@@ -392,6 +399,9 @@ private:
     int m_startLine = 0;
     int m_endColumn = 0;
     int m_endLine = 0;
+
+    // 当前窗口是否允许输出时回滚的标志位
+    bool m_isAllowScroll = true;
 };
 
 // Maybe useful, maybe not
