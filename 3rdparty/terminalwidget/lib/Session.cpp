@@ -546,6 +546,12 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     //qDebug()<<_emulation->resizeAllString.length() << _shellProcess->redraw_windowColumns;
    // cleanLineCount = (_emulation->resizeAllString.length() + _shellProcess->redraw_windowColumns - 1) / _shellProcess->redraw_windowColumns -1;
 
+    //防止计算的行数已经超过当前屏幕的最大行数 //add by ut001000 renfeixiang 2020-09-14
+    //因为数据信息超出屏幕后，计算清行的数量，无法全部清除，超出屏幕的部分无法清除
+    if(cleanLineCount > _emulation->_currentScreen->getLines()){
+        m_RedrawStep = RedrawStep0_None;
+        return;
+    }
 
     // 把原来指令中的相关清行指令还原成最原始的清行指令
     // 组装应该有的清行信息
@@ -778,7 +784,8 @@ bool Session::preRedraw(QByteArray & data)
 //            return;
 //        }
 
-        if(((data == "\x07") || data.contains("\u001B[C") || data.contains("\u001B[K")) && !data.endsWith(_emulation->resizeAllString.toLatin1()))
+        //增加 data.contains("\b") 场景的判断，有的场景第三步只发送了一个\b回来 //add by ut001000 renfeixiang 2020-09-14
+        if(((data == "\x07") || data.contains("\u001B[C") || data.contains("\u001B[K") || data.contains("\b")) && !data.endsWith(_emulation->resizeAllString.toLatin1()))
         {
             qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data<<"resizeAllString"<<_emulation->resizeAllString;
             entryRedrawStep(RedrawStep2_Clear_Receiving);
@@ -839,7 +846,9 @@ void Session::deleteReturnChar(QByteArray &data)
     lastRecvReturnData = lastRecvReturnData+strbyte;
     qDebug() << "lastRecvReturnDatalastRecvReturnData" << lastRecvReturnData;
     if(lastRecvReturnData.contains("\r\n") && lastRecvReturnData.contains("\x07")){
-        if(lastRecvReturnData.split("\x07").at(1).size() > 0){
+        //增加第三布保存信息的校验，屏蔽\x07后面没有信息也走正常流程的问题
+        QStringList list = lastRecvReturnData.split("\x07");
+        if(list.at(list.size() - 1).size() > 0){
             strbyte = lastRecvReturnData;
             lastRecvReturnData = "";
         }else {
@@ -855,7 +864,7 @@ void Session::deleteReturnChar(QByteArray &data)
         qDebug() << "list.size" << list.size();
         if(list.size() > 1){
             strbyte = "\r\n";
-            strbyte += list.at(list.size()-1);
+            strbyte += list.at(list.size() - 1);
             data = strbyte.toLatin1();
             qDebug() << "strbytestrbyte" << strbyte;
         }
@@ -946,6 +955,11 @@ void Session::onRedrawData(RedrawStep step)
         _emulation->sendString(byteReturn.data(), byteReturn.count(), true);
         break;
     case Session::RedrawStep3_Return_Receiving:
+        //发现resizeAllString信息后面也包含了“ \r” //add by ut001000 renfeixiang 2020-09-14
+        if(_emulation->resizeAllString.endsWith("  \r"))
+        {
+            _emulation->resizeAllString = _emulation->resizeAllString.left(_emulation->resizeAllString.size() - 2);
+        }
         qDebug()<<"startPrompt"<<_emulation->startPrompt;
         qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
         //qDebug()<<"swapByte"<<_emulation->swapByte;

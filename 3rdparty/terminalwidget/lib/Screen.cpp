@@ -82,6 +82,9 @@ int Screen::getImageHasLine()
             return  i;
         }
     }
+    //添加返回值，当终端输入信息满屏时，返回lines //add by ut001000 renfeixiang 2020-09-14
+    qDebug() << "getImageHasLine return lines";
+    return lines;
 }
 
 Screen::Screen(int l, int c)
