@@ -93,6 +93,9 @@ public:
     };
     Q_ENUM(RedrawStep)
     RedrawStep m_RedrawStep = RedrawStep0_None;
+    //add by ut001000 renfeixiang 2020-09-14
+    //用于标志当前的操作是不是zoom
+    bool isZoom = false;
     void entryRedrawStep(RedrawStep step);
     bool preRedraw(QByteArray & data);
     void tailRedraw();

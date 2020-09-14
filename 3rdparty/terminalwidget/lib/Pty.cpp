@@ -541,7 +541,6 @@ void Pty::sendData(const char *data, int length,  bool immediatelyRun)
 //    if (!length) {
 //        return;
 //    }
-
     bool isCustomCommand = false;
     QString currCommand = QString::fromLatin1(data);
     if (currCommand.length() > 0 && currCommand.endsWith('\n')) {

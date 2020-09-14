@@ -548,9 +548,15 @@ void Session::fixClearLineCmd(QByteArray &buffer)
 
     //防止计算的行数已经超过当前屏幕的最大行数 //add by ut001000 renfeixiang 2020-09-14
     //因为数据信息超出屏幕后，计算清行的数量，无法全部清除，超出屏幕的部分无法清除
-    if(cleanLineCount > _emulation->_currentScreen->getLines()){
+    //只有在设置zoom时，才需要走下面的流程
+    if(cleanLineCount > _emulation->_currentScreen->getLines() && isZoom){
         m_RedrawStep = RedrawStep0_None;
+        //zoom标志未设置为false
+        isZoom = false;
         return;
+    }else {
+        //正常流程,zoom标志未设置为false
+        isZoom = false;
     }
 
     // 把原来指令中的相关清行指令还原成最原始的清行指令
@@ -917,7 +923,9 @@ void Session::onRedrawData(RedrawStep step)
     m_RedrawStep = step;
     //}
     entryRedrawStep(m_RedrawStep);
-    QByteArray byteCtrlU("\u0015");
+    //add by ut001000 renfeixiang 2020-09-14
+    //增加\u001B[F让光标回到消息的最后，防止出现光标在信息最开始，输入回车后，把输入信息执行了
+    QByteArray byteCtrlU("\u001B[F\u0015");//byteCtrlU("\u001B[F\u0015");
     QByteArray byteReturn("\r");
     QByteArray byteSwapText;
     switch (step) {
