@@ -245,6 +245,9 @@ protected:
     // 雷神终端所在桌面
     int m_desktopIndex;
     bool m_hasConfirmedClose = false;
+
+    // 创建第一个终端完成时，需要记录
+    bool hasCreateFirstTermialComplete = false;
 };
 
 class NormalWindow : public MainWindow

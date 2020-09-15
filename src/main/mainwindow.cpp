@@ -741,6 +741,14 @@ void MainWindow::onTermTitleChanged(QString title)
     if (!customName) {
         m_tabbar->setTabText(tabPage->identifier(), title);
     }
+
+    /************************ Add by sunchengxi 2020-09-15:判定窗口创建成功优化 Begin************************/
+    // 判定第一次修改标题的时候，认为终端已经创建成功
+    if (!hasCreateFirstTermialComplete) {
+        Service::instance()->setMemoryEnable(true);
+        hasCreateFirstTermialComplete = true;
+    }
+    /************************ Add by sunchengxi 2020-09-15:判定窗口创建成功优化 End ************************/
 }
 
 void MainWindow::onTabTitleChanged(QString title)
