@@ -670,7 +670,10 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     }
 
     if (parser.isSet(optExecute)) {
+        /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
+        Properties[KeepOpen] = false;
         Properties[Execute] = parseExecutePara(arguments);
+        /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 End ************************/
     }
     if (parser.isSet(optWorkDirectory)) {
         Properties[WorkingDir] = parser.value(optWorkDirectory);
