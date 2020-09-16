@@ -51,7 +51,7 @@ eval spawn $ssh_cmd $ssh_opt $private_key -t $remote_command exec \\\$SHELL -l
 if {[string length $password]} {
     expect {
         timeout {send_user "ssh connection time out, please operate manually\n"}
-        -nocase "(yes/no)\\?" {send "yes\r"; exp_continue}
+        -nocase "yes/no" {send "yes\r"; exp_continue}
         -nocase -re "password:|enter passphrase for key" {
             send "$password\r"
 		}
