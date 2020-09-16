@@ -999,6 +999,7 @@ void TermWidget::wheelEvent(QWheelEvent *event)
                 // 向上放大
                 zoomIn();   // zoom in 放大
             }
+            return;
         }
     }
     QTermWidget::wheelEvent(event);

@@ -2631,8 +2631,15 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
 
 void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 {
-  //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
-  initKeyBoardSelection();
+    // 当前窗口被激活,且有焦点,不处理Ctrl+滚轮事件
+    if (isActiveWindow() && hasFocus()) {
+        if (ev->modifiers() == Qt::ControlModifier) {
+            QWidget::wheelEvent(ev);
+            return;
+        }
+    }
+    //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
+    initKeyBoardSelection();
 
   if (ev->orientation() != Qt::Vertical)
     return;
