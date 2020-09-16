@@ -673,7 +673,11 @@ void Session::updateTerminalSize(int height, int width)
     if (minLines > 0 && minColumns > 0)
     {
         //_emulation->setImageSize(minLines, minColumns);
-        _shellProcess->setWindowSize(minLines, minColumns);
+        //add by ut001000 renfeixiang 2020-09-16
+        //特殊场景，不需要TerminalDisplay上行列进行更新
+        if(!IsSpecialscene){
+            _shellProcess->setWindowSize(minLines, minColumns);
+        }
     }
 }
 
@@ -773,13 +777,8 @@ bool Session::preRedraw(QByteArray & data)
 //        }
         qDebug()<<m_RedrawStep <<" OK!" << "_sessionId" << _sessionId;
         _emulation->m_ResizeSaveType = Emulation::SaveAll;
-        _emulation->resizeAllString.clear();        
-        /******** Add by ut001000 renfeixiang 2020-09-09:增加,用于屏蔽分屏幕场景，第一条消息，被分开发送，分开的消息发送到resize流程中 Begin***************/
-        if(!data.contains("\x0d\x1b\x5b\x4b")){
-            m_RedrawStep = RedrawStep0_None;
-            break;
-        }
-        /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
+        _emulation->resizeAllString.clear();
+
         fixClearLineCmd(data);
 
         break;
@@ -928,6 +927,9 @@ void Session::onRedrawData(RedrawStep step)
     QByteArray byteCtrlU("\u001B[F\u0015");//byteCtrlU("\u001B[F\u0015");
     QByteArray byteReturn("\r");
     QByteArray byteSwapText;
+    //add by ut001000 renfeixiang 2020-09-16
+    //用于计算当前的shell信息是否满足特殊场景
+    int tmpnumber = 0;
     switch (step) {
     case Session::RedrawStep0_None:
          //qDebug()<<" resize continue ?????????????";
@@ -980,6 +982,25 @@ void Session::onRedrawData(RedrawStep step)
         {
             _emulation->startPrompt = _emulation->startPrompt.left(_emulation->startPrompt.size() - 1);
         }
+
+        /******** Add by ut001000 renfeixiang 2020-09-16:增加 Begin***************/
+        //对特殊场景，进行一次resize重绘处理，将当前的colomn减一，IsSpecialscene标记只进行一次重绘
+        qDebug() << "_sessionId" << _sessionId << "IsSpecialscene" << IsSpecialscene;
+        if(!IsSpecialscene){
+            tmpnumber = _emulation->startPrompt.size() - _emulation->_currentScreen->getColumns()*2;
+            //特殊场景，有可能是光标在第三行行首，或者第二个位置
+            if(tmpnumber >= 0 && tmpnumber < 2)
+            {
+                qDebug() << "tmpnumber" << tmpnumber << "_emulation->startPrompt.size()" << _emulation->startPrompt.size() << "_emulation->_currentScreen->getColumns()" << _emulation->_currentScreen->getColumns();
+                qDebug() << "enter special scene";
+                _shellProcess->swap_windowColumns -= 1;
+                IsSpecialscene = true;
+            }
+        }else {
+            IsSpecialscene = false;
+        }
+        /******** Add by ut001000 renfeixiang 2020-09-16:增加 End***************/
+
         /******** Add by ut001000 renfeixiang 2020-09-09:增加 将resizeAllString的信息格式化，开始的信息必须是shell信息 Begin***************/
         if(!_emulation->resizeAllString.startsWith(_emulation->startPrompt)){
             if(_emulation->resizeAllString.contains(_emulation->startPrompt)){
@@ -1025,6 +1046,8 @@ void Session::onRedrawData(RedrawStep step)
         _emulation->sendString("",0, true);
         //m_RedrawStep = RedrawStep0_None;
         return;
+    default:
+        break;
     }
     // 如果流程处理完了，回来的时候就变成了RedrawStep0_None
     if(m_RedrawStep != RedrawStep0_None)

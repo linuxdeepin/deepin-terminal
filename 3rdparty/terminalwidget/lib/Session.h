@@ -590,6 +590,10 @@ private slots:
 
 private:
 
+    //add by ut001000 renfeixiang 2020-09-16
+    //用于标记特殊场景：shell信息是2行，并且光标的位置在第三行的第一个或者第二个位置时
+    bool IsSpecialscene = false;
+
     void updateTerminalSize(int height, int width);
     WId windowId() const;
 
