@@ -389,7 +389,7 @@ void QTermWidget::interactionHandler()
 *******************************************************************************/
 void QTermWidget::setIsAllowScroll(bool isAllowScroll)
 {
-    m_isAllowScroll = isAllowScroll;
+    m_impl->m_terminalDisplay->setIsAllowScroll(isAllowScroll);
 }
 
 /*******************************************************************************
@@ -400,7 +400,7 @@ void QTermWidget::setIsAllowScroll(bool isAllowScroll)
 *******************************************************************************/
 bool QTermWidget::getIsAllowScroll() const
 {
-    return m_isAllowScroll;
+    return m_impl->m_terminalDisplay->getIsAllowScroll();
 }
 
 void QTermWidget::startTerminalTeletype()
@@ -752,11 +752,6 @@ void QTermWidget::pasteSelection()
 
 void QTermWidget::setZoom(int step)
 {
-    // 放大缩小时需要一个标志位
-    // 该标志位负责取消输出时滚动
-    // 发送信号修改标志位 => 调整大小时,不允许接收输出时滚动的设置
-    m_isAllowScroll = false;
-
     // 获取字体
     QFont font = m_impl->m_terminalDisplay->getVTFont();
 

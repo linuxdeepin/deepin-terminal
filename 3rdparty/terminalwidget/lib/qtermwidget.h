@@ -399,9 +399,6 @@ private:
     int m_startLine = 0;
     int m_endColumn = 0;
     int m_endLine = 0;
-
-    // 当前窗口是否允许输出时回滚的标志位
-    bool m_isAllowScroll = true;
 };
 
 // Maybe useful, maybe not

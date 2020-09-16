@@ -216,6 +216,30 @@ bool TerminalDisplay::isLineCharString(const QString& string) const {
     return canDraw(string.at(0).unicode());
 }
 
+/*******************************************************************************
+ 1. @函数:    setIsAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-16
+ 4. @说明:     设置是否允许滚动到最新的位置
+ 当有输出且并不是在setZoom之后,此标志为true 允许滚动
+ 当有输出且在setZoom之后,比标志位false 不允许滚动
+*******************************************************************************/
+void TerminalDisplay::setIsAllowScroll(bool isAllowScroll)
+{
+    m_isAllowScroll = isAllowScroll;
+}
+
+/*******************************************************************************
+ 1. @函数:    getIsAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-16
+ 4. @说明:    获取是否允许输出时滚动
+*******************************************************************************/
+bool TerminalDisplay::getIsAllowScroll() const
+{
+    return m_isAllowScroll;
+}
+
 
 // assert for i in [0..31] : vt100extended(vt100_graphics[i]) == i.
 
@@ -296,6 +320,11 @@ void TerminalDisplay::setVTFont(const QFont& f)
         return;
     }
     /***add end by ut001121***/
+
+    // 放大缩小时需要一个标志位
+    // 该标志位负责取消输出时滚动
+    // 发送信号修改标志位 => 调整大小时,不允许接收输出时滚动的设置
+    m_isAllowScroll = false;
 
     QFont newFont(f);
     int strategy = 0;

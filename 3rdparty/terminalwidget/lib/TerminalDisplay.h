@@ -441,6 +441,11 @@ public:
 
     void setSessionId(int sessionId);
 
+    // 获取是否允许输出时滚动
+    bool getIsAllowScroll() const;
+    // 设置是否允许输出时滚动
+    void setIsAllowScroll(bool isAllowScroll);
+
 public slots:
 
     /**
@@ -893,6 +898,9 @@ private:
     int _lastEndColumn = 0;
 
     bool _selBegin = false;
+
+    // 当前窗口是否允许输出时回滚的标志位
+    bool m_isAllowScroll = true;
 
 public:
     static void setTransparencyEnabled(bool enable)
