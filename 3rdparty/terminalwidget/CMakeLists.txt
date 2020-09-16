@@ -158,7 +158,10 @@ lxqt_translate_ts(TERMINALWIDGET_QM
 
 add_library(${TERMINALWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS} ${TERMINALWIDGET_QM})
 target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME} Qt5::Widgets)
-target_compile_options(${TERMINALWIDGET_LIBRARY_NAME} PUBLIC "-fvisibility=default")
+if (USE_TEST)
+    # set fvisibility to default only in Unit Test mode
+    target_compile_options(${TERMINALWIDGET_LIBRARY_NAME} PUBLIC "-fvisibility=default")
+endif()
 set_target_properties( ${TERMINALWIDGET_LIBRARY_NAME} PROPERTIES
                        SOVERSION ${TERMINALWIDGET_VERSION_MAJOR}
                        VERSION ${TERMINALWIDGET_VERSION}
