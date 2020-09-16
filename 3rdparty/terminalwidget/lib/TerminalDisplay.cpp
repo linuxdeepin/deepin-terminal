@@ -3660,13 +3660,15 @@ void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
             qDebug() << "slide start" << timeSpace;
         } else {
             qDebug() << "null start" << timeSpace;
-            m_gestureAction = GA_null;
+            /***del by ut001121 zhangmeng 20200915 修复BUG46979
+            m_gestureAction = GA_null;***/
         }
         break;
     }
     case Qt::GestureFinished:
     {
-        m_gestureAction = GA_null;
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
         break;
     }
     default:
@@ -3697,7 +3699,8 @@ void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
         Q_ASSERT(false);
         break;
     case Qt::GestureFinished:
-        m_gestureAction = GA_null;
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
         break;
     default:
         Q_ASSERT(false);
@@ -3723,7 +3726,8 @@ void TerminalScreen::panTriggered(QPanGesture *pan)
     case Qt::GestureCanceled:
         break;
     case Qt::GestureFinished:
-        m_gestureAction = GA_null;
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
         break;
     default:
         Q_ASSERT(false);
@@ -3743,6 +3747,7 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
     switch (pinch->state()) {
     case Qt::GestureStarted:
     {
+        qDebug()<<"------"<<"pinchTriggered start";
         m_gestureAction = GA_pinch;
         /**add begin by ut001121 zhangmeng 20200812 捏合手势触发时判断是否重新获取字体大小 修复BUG42424 */
         QFont font = getVTFont();
@@ -3767,9 +3772,11 @@ void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
     }
     case Qt::GestureFinished:
     {
-        m_gestureAction = GA_null;
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
         m_scaleFactor *= m_currentStepScaleFactor;
         m_currentStepScaleFactor = 1;
+        qDebug()<<"------"<<"pinchTriggered over";
         break;
     }
     default:
@@ -3800,10 +3807,12 @@ void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
     case Qt::GestureUpdated:
         break;
     case Qt::GestureCanceled:
-        m_gestureAction = GA_null;
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
         break;
     case Qt::GestureFinished:
-        m_gestureAction = GA_null;
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
         break;
     default:
         Q_ASSERT(false);
@@ -3894,6 +3903,14 @@ bool TerminalScreen::event(QEvent* event)
             return true;
         }
     }
+
+    /***add by ut001121 zhangmeng 20200915 修复BUG46979***/
+    if (event->type() == QEvent::MouseMove
+            && mouseEvent->source() != Qt::MouseEventSynthesizedByQt
+            && m_gestureAction == GA_slide){
+        return true;
+    }
+    /***add end ut001121***/
 
     /** 待删除
     QTouchEvent *touchEvent = static_cast<QTouchEvent *>(event);
