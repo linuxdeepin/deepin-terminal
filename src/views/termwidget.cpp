@@ -79,9 +79,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     // theme
     QString theme = "Dark";
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        theme = "Light";
-    }
+    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
+    theme=Settings::instance()->colorScheme();
+    //if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+    //    theme = "Light";
+    //}
+    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
 
@@ -199,9 +202,17 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         qDebug() << "themeChanged" << builtInTheme;
         // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
         QString theme = "Dark";
+        /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
         if (builtInTheme == DGuiApplicationHelper::LightType) {
             theme = "Light";
+            DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::LightType);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
         }
+        else {
+            DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        }
+        /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
         setColorScheme(theme);
         Settings::instance()->setColorScheme(theme);
     });
