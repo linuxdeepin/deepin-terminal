@@ -3696,15 +3696,15 @@ void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
             qDebug() << "slide start" << timeSpace;
         } else {
             qDebug() << "null start" << timeSpace;
-            /***del by ut001121 zhangmeng 20200915 修复BUG46979
-            m_gestureAction = GA_null;***/
+            /***add by ut001121 zhangmeng 20200917 修复BUG48402***/
+            m_gestureAction = GA_null;
         }
         break;
     }
     case Qt::GestureFinished:
     {
-        /***del by ut001121 zhangmeng 20200915 修复BUG46979
-        m_gestureAction = GA_null;***/
+        /***add by ut001121 zhangmeng 20200917 修复BUG48402***/
+        m_gestureAction = GA_null;
         break;
     }
     default:
