@@ -59,6 +59,8 @@ pkg_search_module(DtkCore REQUIRED dtkcore)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(ATSPI2 REQUIRED atspi-2)
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
+pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
+
 
 # Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
@@ -96,12 +98,14 @@ set(LINK_LIBS
     ${DFrameworkDBus_LIBRARIES}
     ${ATSPI2_LIBRARIES}
     ${GOBJECT_LIBRARIES}
+    ${LIBSECRET_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources
 # TODO: portable headers?
 set (DTNG_CPP_FILES
     src/common/utils.cpp
+    src/common/settingio.cpp
     src/customcommand/customcommandoptdlg.cpp
     src/customcommand/customcommandpanel.cpp
     src/customcommand/customcommandplugin.cpp
@@ -160,6 +164,7 @@ set (DTNG_CPP_FILES
 set (DTNG_HEADER_FILES
     src/common/define.h
     src/common/utils.h
+    src/common/settingio.h
     src/customcommand/customcommandoptdlg.h
     src/customcommand/customcommandpanel.h
     src/customcommand/customcommandplugin.h
@@ -247,7 +252,8 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
                                               ${DtkGUI_INCLUDE_DIRS}
                                               ${DFrameworkDBus_INCLUDE_DIRS}
                                               ${ATSPI2_INCLUDE_DIRS}
-                                              ${GOBJECT_INCLUDE_DIRS})
+                                              ${GOBJECT_INCLUDE_DIRS}
+                                              ${LIBSECRET_INCLUDE_DIRS})
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
