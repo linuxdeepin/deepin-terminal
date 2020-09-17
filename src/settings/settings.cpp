@@ -88,8 +88,11 @@ void Settings::init()
     /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light Begin************************/
     QFile file(m_configPath);
     if (!file.exists() || "Light" != m_backend->getOption("basic.interface.theme").toString()) {
-        DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
+        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 Begin************************/
+        //DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        setColorScheme("Dark");
+        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 End ************************/
     }
     /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light End ************************/
 

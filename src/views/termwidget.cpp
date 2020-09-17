@@ -203,14 +203,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
         QString theme = "Dark";
         /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
+        //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
         if (builtInTheme == DGuiApplicationHelper::LightType) {
             theme = "Light";
-            DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::LightType);
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        }
-        else {
-            DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         }
         /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
         setColorScheme(theme);
