@@ -683,11 +683,7 @@ void Pty::dataReceived()
     if(!m_hasStart)
     {
         m_hasStart = true;
-        //add by ut001000 renfeixiang 2020-09-16
-        //添加延迟的目的是：在分屏幕时，第一条消息有可能没有发全，导致应该是正常流程的信息，跑到resize流程
-        QTimer::singleShot(10, this, [this]() {
-            setWindowSize(_windowLines, _windowColumns);
-        });
+        setWindowSize(_windowLines, _windowColumns);
     }
 
 }
