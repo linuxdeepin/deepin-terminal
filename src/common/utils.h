@@ -83,6 +83,7 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 #define WINDOW_DEFAULT_HEIGHT 600   //终端窗口默认高度
 #define WINDOW_DEFAULT_SIZE QSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT)      //终端窗口默认尺寸
 #define ICON_EXIT_FULL_SIZE QSize(ICONSIZE_36, ICONSIZE_36)                         //退出全屏按钮尺寸
+#define WIN_TITLE_BAR_HEIGHT 50 //标题栏高度
 
 //Encode Plugin
 #define ENCODE_ITEM_WIDTH 220

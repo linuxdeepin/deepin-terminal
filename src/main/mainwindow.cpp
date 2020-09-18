@@ -2603,7 +2603,7 @@ void QuakeWindow::setWindowMinHeightForFont()
     int height = 0;
     //根据内部term的最小高度设置雷神终端的最小高度, (m_MinHeight-50)/2是内部term的最小高度，50是雷神窗口的标题栏高度
     //add by ut001000 renfeixiang 2020-08-07
-    height = (m_MinHeight - 50) / 2 + 60;
+    height = (m_MinHeight - WIN_TITLE_BAR_HEIGHT) / 2 + 60;
     setMinimumHeight(height);
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
