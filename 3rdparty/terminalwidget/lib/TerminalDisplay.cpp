@@ -1128,6 +1128,7 @@ void TerminalDisplay::updateImage()
   // can simply be moved up or down
   scrollImage( _screenWindow->scrollCount() ,
                _screenWindow->scrollRegion() );
+  //add by 2020-09-18 和SP3信息位置不同
   _screenWindow->resetScrollCount();
 
   if (!_image) {
@@ -1304,8 +1305,8 @@ void TerminalDisplay::updateImage()
   /*the terminal interface will display colored lines. time: 2020.4.10 14:18
    * */
   //update(dirtyRegion);
- // _screenWindow->_screen->
-  qDebug()<<"new current cursor pos:"<< _screenWindow->cursorLine();
+//add by 2020-09-18 //打印输出信息时，光标位置
+//  qDebug()<<"new current cursor pos:"<< _screenWindow->cursorLine();
   update();
   //-------------------------------------------------
 
@@ -1872,7 +1873,8 @@ void TerminalDisplay::updateImageSize()
 
   if ( _resizing )
   {
-      qDebug()<<"changedContentSizeSignal";
+      //add by 2020-09-18
+//      qDebug()<<"changedContentSizeSignal";
       showResizeNotification();
       emit changedContentSizeSignal(oldlin, oldcol); // expose resizeEvent
   }
@@ -1887,11 +1889,13 @@ void TerminalDisplay::updateImageSize()
 //the same signal as the one for a content size change
 void TerminalDisplay::showEvent(QShowEvent*)
 {
+    //add by 2020-09-18
     //屏蔽原因：因为切换tab页时，会触发优化shell后的resize清行功能
     //emit changedContentSizeSignal(_contentHeight,_contentWidth);
 }
 void TerminalDisplay::hideEvent(QHideEvent*)
 {
+    //add by 2020-09-18
     //屏蔽原因：因为切换tab页时，会触发优化shell后的resize清行功能
     //emit changedContentSizeSignal(_contentHeight,_contentWidth);
 }
@@ -3075,7 +3079,7 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
             case MoveEndScreenWindow:
                 scrollToEnd();
                 break;
-            case NoMoveScreenWindow:
+            case NoMoveScreenWindow://add by 2020-09-18
                 break;
             }
 //        }
@@ -3346,26 +3350,8 @@ void TerminalDisplay::calcGeometry()
 
   if (!_isFixedSize)
   {
-      if(lastPromptColumns!=_columns)
-      {
-          qDebug()<<"lastPromptColumns"<<lastPromptColumns<<_columns;
-      }
-      lastPromptColumns = _columns;
-
-//      int minColumns =  _views[0]->columns();
-//      //
-//      int calLines = 1;
-
-
-      // if(calLines > 1)
      // ensure that display is always at least one column wide
      _columns = qMax(1,_contentWidth / _fontWidth);
-     if(lastPromptColumns == 9)
-     {
-         lastPromptColumns = _columns;
-
-     }
-     //qDebug()<<"lastPromptColumns"<<lastPromptColumns<<_columns;
      _usedColumns = qMin(_usedColumns,_columns);
 
      // ensure that display is always at least one line high
@@ -3715,7 +3701,6 @@ void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
 *******************************************************************************/
 void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
 {
-    qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
     switch (tapAndHold->state()) {
     case Qt::GestureStarted:
         m_gestureAction = GA_hold;

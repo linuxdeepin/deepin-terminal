@@ -685,14 +685,14 @@ bool KPty::tcSetAttr(struct ::termios * ttmode)
 bool KPty::setWinSize(int lines, int columns)
 {
     Q_D(KPty);
-
+    //add by 2020-09-18 begin
     struct winsize winSize, winSize2;
     memset(&winSize, 0, sizeof(winSize));
 
     ioctl(d->masterFd, TIOCGWINSZ, (char *)&winSize2);
     if(winSize2.ws_row == lines && winSize2.ws_col == columns )
     {
-        qDebug()<<"new setWinSize is same with old setting"<<lines<<columns;
+        //qDebug()<<"new setWinSize is same with old setting"<<lines<<columns;
         return  false;
     }
 
@@ -700,6 +700,7 @@ bool KPty::setWinSize(int lines, int columns)
     winSize.ws_col = (unsigned short)columns;
 
     return  ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) == 0 ;
+    //add by 2020-09-18 end
 }
 
 bool KPty::setEcho(bool echo)

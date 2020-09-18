@@ -206,7 +206,7 @@ QPoint ScreenWindow::cursorPosition() const
 
     return position;
 }
-
+//add by 2020-09-18 //只有在TerminalDisplay.cpp的一个打印日志使用
 int ScreenWindow::cursorLine()
 {
     int line = 0;

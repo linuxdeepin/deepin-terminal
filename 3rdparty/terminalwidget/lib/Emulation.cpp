@@ -269,7 +269,7 @@ void Emulation::sendKeyEvent(QKeyEvent *ev)
         emit sendData(ev->text().toUtf8().constData(), ev->text().length());
     }
 }
-
+//增加一个bool参数
 void Emulation::sendString(const char *, int, bool)
 {
     // default implementation does nothing
@@ -289,7 +289,6 @@ void Emulation::receiveData(const char *text, int length)
 {
     emit stateSet(NOTIFYACTIVITY);
 
-    //qDebug()<<"Vt102Emulation::receiveData() bufferedUpdate";
     bufferedUpdate();
 
     /* XXX: the following code involves encoding & decoding of "UTF-16
@@ -299,66 +298,7 @@ void Emulation::receiveData(const char *text, int length)
      */
     QString utf16Text = _decoder->toUnicode(text, length);
 
-    /******** Add by ut001000 renfeixiang 2020-07-16:增加 过滤收到的数据中的“\r\n\r”，“\r\n\r”在不同的bash版本可能不同，需要修改 Begin***************/
-//    if (utf16Text.contains("[00m$") && utf16Text.contains("\r\n\r")) {
-//            utf16Text.replace("\r\n\r", "");
-//    }//清除\r\n\r会引起光标的上一行突然被清除，在一直按上键，看历史命令时，光标会往上跑
-    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
-
-    /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 Begin ***************/
-//    int maxPathDepth = 1;
-//    bool bWindowResizing = false;
-//    QList<Session *> allSession = SessionManager::instance()->sessions();
-//    for (int i = 0; i < allSession.size(); ++i) {
-//        Session *session = allSession.at(i);
-//        int currSessionId = session->sessionId();
-//        //遍历所有Session, 如果有一个控件正在resize，则标记为窗口整体正在resize
-//        if (SessionManager::instance()->isTerminalResizing(currSessionId)) {
-//            bWindowResizing = true;
-//        }
-
-//        //获取所有Session中shell提示符路径最长的那个对应路径的路径深度
-//        int currPathDepth = SessionManager::instance()->getTerminalPathDepth(currSessionId);
-//        if (currPathDepth >= maxPathDepth) {
-//            maxPathDepth = currPathDepth;
-//        }
-//    }
-
-//    //判断是bash发送过来的提示符数据[utf16Text.startsWith("\r\u001B[K\u001B")], 且当前正在调整窗口大小resizing时，才进行下面的处理
-//    if (utf16Text.length() > 0 && utf16Text.startsWith("\r\u001B[K\u001B") && bWindowResizing) {
-//        //用于后面构造使用的转移字符，主要是通过对比bash5.0.3和bash4.4.x版本接收到的utf16Text差异得到
-//        QString codeLine = "\u001B[A";
-//        int pathDepth = utf16Text.count("/");
-//        //存储终端控件当前shell提示符的路径深度(比如/home/test 路径深度为2)
-//        SessionManager::instance()->setTerminalPathDepth(_sessionId, pathDepth);
-
-//        //取shell提示符路最大的那个路径深度
-//        if (pathDepth < maxPathDepth) {
-//            pathDepth = maxPathDepth;
-//        }
-
-//        //发现了一个规律，路径深度越深，需要加入的\u001B[A越多才能够较好清除重复的shell提示符
-//        QString insertCode = codeLine;
-//        if (pathDepth > 0) {
-//            int codeLineCount = pathDepth;
-//            for (int i=0; i<codeLineCount; i++) {
-//                insertCode.append(codeLine);
-//            }
-//        }
-//        //将\u001B[A转移字符插入到bash发送过来的数据中，参考了bash4.4.x版本接收的数据格式
-//        utf16Text = utf16Text.replace("\r\u001B[K", QString("\r\u001B[K%1").arg(insertCode));
-//    }
-    /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 End ***************/
-
     std::wstring unicodeText = utf16Text.toStdWString();
-
-    /******** Add by ut001000 renfeixiang 2020-07-16:增加 当终端宽高度变化时，收到数据，显示之前先清空界面上的信息 Begin***************/
-//    if(_lastcol != _currentScreen->getColumns() || _lastline != _currentScreen->getLines()){
-//        _currentScreen->clearAllScreen();
-//    }
-//    _lastcol = _currentScreen->getColumns();
-//    _lastline = _currentScreen->getLines();
-    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 
     //send characters to terminal emulator
     for (size_t i = 0; i < unicodeText.length(); i++)
@@ -374,43 +314,6 @@ void Emulation::receiveData(const char *text, int length)
         }
     }
 }
-
-//void Emulation::onRedrawData(Session::RedrawStep step)
-//{
-////    if(***)
-////    {
-////        return;
-////    }
-////    if(IsFirstStart)
-////    {
-////        m_RedrawStep = RedrawStep1_Ctrl_u;
-////    }
-//    QByteArray byteCtrlU("\u0015");
-//    QByteArray byteReturn("\r");
-//    QByteArray byteSwapText;
-//    switch (step) {
-//    case Session::RedrawStep1_Ctrl_u:
-//        sendString(byteCtrlU.data(), byteCtrlU.count());
-//        break;
-//    case Session::RedrawStep1_Ctrl_u_Complete:
-//        break;
-//    case Session::RedrawStep2_Clear_Complete:
-//        sendString(byteReturn.data(), byteReturn.count());
-//        m_ResizeSaveType = Emulation::SavePrompt;
-//        startPrompt.clear();
-//        break;
-//    case Session::RedrawStep3_Return_Complete:
-//        swapByte= resizeAllString.right(resizeAllString.size() - startPrompt.size());
-//        byteSwapText.append(swapByte);
-//        resizeAllString.clear();
-//        m_ResizeSaveType = Emulation::SaveNone;
-//        sendString(byteSwapText.data(),byteSwapText.count());
-//        break;
-//    default:
-//        break;
-//    }
-//}
-
 
 //OLDER VERSION
 //This version of onRcvBlock was commented out because
@@ -479,7 +382,6 @@ int Emulation::lineCount() const
 
 void Emulation::showBulk()
 {
-    qDebug()<<"Emulation::showBulk()"<<_bulkTimer1.isActive()<<_bulkTimer2.isActive();
     _bulkTimer1.stop();
     _bulkTimer2.stop();
 
@@ -523,8 +425,6 @@ void Emulation::setImageSize(int lines, int columns)
     _screen[1]->resizeImage(lines, columns);
 
     emit imageSizeChanged(lines, columns);
-
-    //qDebug()<<"Vt102Emulation::setImageSize() bufferedUpdate"<< lines<< columns;
     bufferedUpdate();
 }
 

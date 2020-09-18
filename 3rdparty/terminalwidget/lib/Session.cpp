@@ -37,6 +37,7 @@
 #include <QStringList>
 #include <QFile>
 #include <QtDebug>
+//add by 2020-09-18
 #include <QMetaEnum>
 
 #include "Pty.h"
@@ -45,6 +46,7 @@
 #include "TerminalDisplay.h"
 #include "ShellCommand.h"
 #include "Vt102Emulation.h"
+//add by 2020-09-18
 #include "TerminalCharacterDecoder.h"
 
 using namespace Konsole;
@@ -87,7 +89,8 @@ Session::Session(QObject *parent)
     //create teletype for I/O with shell process
     _shellProcess = new Pty();
     _shellProcess->setSessionId(_sessionId);
-    _shellProcess->m_redrawStep = &m_RedrawStep;
+    //add by 2020-09-18
+    _shellProcess->setRedrawStep(&m_RedrawStep);
     ptySlaveFd = _shellProcess->pty()->slaveFd();
 
     //create emulation backend
@@ -115,21 +118,16 @@ Session::Session(QObject *parent)
     //connect teletype to emulation backend
     _shellProcess->setUtf8Mode(_emulation->utf8());
 
-    connect(_shellProcess, SIGNAL(receivedData(const char *, int)), this, SLOT(onReceiveBlock(const char *, int)));
-    connect(_shellProcess, &Pty::redrawStepChanged,  this, [this](RedrawStep step){
-        if(m_RedrawStep == RedrawStep0_None)
-        {
-            entryRedrawStep(RedrawStep1_Resize_Receiving);
-        }
 
-    });
+    connect(_shellProcess, SIGNAL(receivedData(const char *, int)), this, SLOT(onReceiveBlock(const char *, int)));
+    //add by 2020-09-18 begin
     connect(_shellProcess, &Pty::winsizeChanged,  this, [this](int lines, int columns){
         /******** Modify by ut000439 wangpeili 2020-09-03:修改不调用bash的功能，不走清行流程 Begin***************/
         _emulation->setImageSize(lines, columns);//不调用bash的流程也需要resizeImage，内容换行
         QString name = getDynamicProcessName();
         if(name == "bash")
         {
-            qDebug() << "bashbashbashbashbash";
+//            qDebug() << "bashbashbashbashbash";
             entryRedrawStep(RedrawStep1_Resize_Receiving);
             return ;
         }
@@ -137,14 +135,7 @@ Session::Session(QObject *parent)
         /******** Modify by ut000439 wangpeili 2020-09-03 End***************/
 
     });
-    connect(_shellProcess, &Pty::shellHasStart,  _emulation, [this]()
-    {
-        qDebug()<<"shellHasStart"<<m_RedrawStep;
-        _emulation->m_ResizeSaveType = Emulation::SaveAll;
-        entryRedrawStep(RedrawStep0_None);
-    });
-
-
+    //add by 2020-09-18 end
 
     connect(_emulation, SIGNAL(sendData(const char *, int, bool)), _shellProcess, SLOT(sendData(const char *, int, bool)));
     connect(_emulation, SIGNAL(lockPtyRequest(bool)), _shellProcess, SLOT(lockPty(bool)));
@@ -497,7 +488,7 @@ void Session::monitorTimerDone()
 
     _notifiedActivity = false;
 }
-
+//add by 2020-09-18
 /*******************************************************************************
  1. @函数:    fixClearLineCmd
  2. @作者:    ut000439 王培利
@@ -530,9 +521,6 @@ void Session::fixClearLineCmd(QByteArray &buffer)
 
     // 正确的清除指令
     QByteArray rightClearLineCmd(byteClearLine);
-    // char *strAdd2 = "\x1b\x5b\x41";
-    // char str4[]="\x1b\x5b\x32\x4a\x0d";   //Esc[2J //	Clear entire screen
-    // char str4[]="\x0d\x1b\x5b\x4a";   //Esc[J //	Clear screen from cursor down
 
     // 获取上一次一共有多少行
     /******** Modify by ut001000 renfeixiang 2020-09-09:修改 更换计算行的方法，通过存储数据的screenLines获取行数，并设置当前的cuY值 Begin***************/
@@ -541,27 +529,17 @@ void Session::fixClearLineCmd(QByteArray &buffer)
 //    int calLines = curY - vt102->_currentScreen->ShellStartLine + 1;
 //    int cleanLineCount = calLines - 1;
 
-
-    int cleanLineCount = _emulation->_currentScreen->getImageHasLine()+ _emulation->_currentScreen->getHistLines() - _emulation->_currentScreen->ShellStartLine - 1;//calLines - 1;
-//    qDebug () << "ssssssssssssssssssss" << "getImageHasLine" << _emulation->_currentScreen->getImageHasLine()
-//              << "getHistLines" << _emulation->_currentScreen->getHistLines()
-//              << "ShellStartLine" << _emulation->_currentScreen->ShellStartLine << "cleanLineCount" << cleanLineCount;
-
-//     qDebug()<< "ssssssssssssssssssss" <<"ShellStartLine" << _emulation->_currentScreen->ShellStartLine << "getImageHasLine" << _emulation->_currentScreen->getImageHasLine()
-//             << "cleanLineCount" << cleanLineCount <<"_sessionId" << _sessionId;
-     tmpImageLine = _emulation->_currentScreen->getImageHasLine();
-    _emulation->_currentScreen->setCursorY(tmpImageLine);
-    qDebug() << "getCursorY()" << _emulation->_currentScreen->getCursorY() << "tmpImageLine" << tmpImageLine <<"_sessionId" << _sessionId;
+    //add by 2020-09-18
+    int cleanLineCount = _emulation->getCurrentScreen()->getImageHasLine()+ _emulation->getCurrentScreen()->getHistLines() - _emulation->getCurrentScreen()->getShellStartLine() - 1;
+    tmpImageLine = _emulation->getCurrentScreen()->getImageHasLine();
+    _emulation->getCurrentScreen()->setCursorY(tmpImageLine);
+//    qDebug() << "getCursorY()" << _emulation->getCurrentScreen()->getCursorY() << "tmpImageLine" << tmpImageLine <<"_sessionId" << _sessionId;
     /******** Modify by ut001000 renfeixiang 2020-09-09 End***************/
-
-
-    //qDebug()<<_emulation->resizeAllString.length() << _shellProcess->redraw_windowColumns;
-   // cleanLineCount = (_emulation->resizeAllString.length() + _shellProcess->redraw_windowColumns - 1) / _shellProcess->redraw_windowColumns -1;
 
     //防止计算的行数已经超过当前屏幕的最大行数 //add by ut001000 renfeixiang 2020-09-14
     //因为数据信息超出屏幕后，计算清行的数量，无法全部清除，超出屏幕的部分无法清除
     //只有在设置zoom时，才需要走下面的流程
-    if(cleanLineCount > _emulation->_currentScreen->getLines() && isZoom){
+    if(cleanLineCount > _emulation->getCurrentScreen()->getLines() && isZoom){
         m_RedrawStep = RedrawStep0_None;
         //zoom标志未设置为false
         isZoom = false;
@@ -576,7 +554,6 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     for (int i = 1; i <= cleanLineCount; i++)
     {
         rightClearLineCmd.append(addClearOneLine);
-        //buffer.replace(byteClearLine + strAdd, byteClearLine);
     }
 
     if(m_RedrawStep == RedrawStep1_Resize_Receiving)
@@ -594,7 +571,7 @@ void Session::fixClearLineCmd(QByteArray &buffer)
         buffer.replace(byteClearLine + bashBugAddClearOneLine, byteClearLine);
         if (buffer.endsWith("\b"))
         {
-            qDebug() << "clear \\b: "<<buffer;
+            //qDebug() << "clear \\b: "<<buffer;
             buffer = buffer.left(buffer.size() - 1);
         }
     }
@@ -611,12 +588,7 @@ void Session::fixClearLineCmd(QByteArray &buffer)
     }
     /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
 
-    //qDebug()<<"auto clean line: "<<m_RedrawStep
-    //         <<"will clean lines = "<<cleanLineCount << "replace \\r\\n\\r times = "<<buffer.count(bashBugReturn);
-    //qDebug()<<"last ShellStartLine"<<vt102->_currentScreen->ShellStartLine;
-    //qDebug()<<"now cursor line at"<<curY;
-
-    qDebug()<<"fix buffer:"<<buffer;
+//    qDebug()<<"fix buffer:"<<buffer;
 }
 
 void Session::activityStateSet(int state)
@@ -684,6 +656,7 @@ void Session::updateTerminalSize(int height, int width)
     // backend emulation must have a _terminal of at least 1 column x 1 line in size
     if (minLines > 0 && minColumns > 0)
     {
+        //add by 2020-09-18 //为什么注释掉这个setImageSize函数
         //_emulation->setImageSize(minLines, minColumns);
         //add by ut001000 renfeixiang 2020-09-16
         //特殊场景，不需要TerminalDisplay上行列进行更新
@@ -764,17 +737,16 @@ Session::~Session()
     }
     //  delete _zmodemProc;
 }
-
+//add by 2020-09-18
 void Session::entryRedrawStep(Session::RedrawStep step)
 {
-    qDebug()<<"entryRedrawStep"<<QMetaEnum::fromType<RedrawStep>().key(step);
+//    qDebug()<<"entryRedrawStep"<<QMetaEnum::fromType<RedrawStep>().key(step);
     m_RedrawStep = step;
-    //_shellProcess->m_RedrawStep = &m_RedrawStep;
 }
-
+//add by 2020-09-18
 bool Session::preRedraw(QByteArray & data)
 {
-    if(!_shellProcess->m_inResizeMode)
+    if(!_shellProcess->getResizeMode())
     {
         return true;
     }
@@ -782,14 +754,9 @@ bool Session::preRedraw(QByteArray & data)
 
     switch (m_RedrawStep) {
     case RedrawStep1_Resize_Receiving://将非resize时保存的信息清除
-        /******** Modify by ut001000 renfeixiang 2020-09-09:修改 export PS1="%%%%%"场景没有\x07 Begin***************/
-//        if(!data.contains("\x07"))
-//        {
-//            return false;
-//        }
-        qDebug()<<m_RedrawStep <<" OK!" << "_sessionId" << _sessionId;
-        _emulation->m_ResizeSaveType = Emulation::SaveAll;
-        _emulation->resizeAllString.clear();        
+//        qDebug()<<m_RedrawStep <<" OK!" << "_sessionId" << _sessionId;
+        _emulation->setResizeSaveType(Emulation::SaveAll);
+        _emulation->clearResizeAllString();
         /******** Add by ut001000 renfeixiang 2020-09-09:增加,用于屏蔽分屏幕场景，第一条消息，被分开发送，分开的消息发送到resize流程中 Begin***************/
         if(!data.contains("\x0d\x1b\x5b\x4b")){
             m_RedrawStep = RedrawStep0_None;
@@ -800,62 +767,38 @@ bool Session::preRedraw(QByteArray & data)
 
         break;
     case RedrawStep1_Ctrl_u_Receiving:
-//        if((data.length() == 1 && data != "\x07") || data.contains("\u001B[C"))
-//        {
-//            qDebug()<<"info is not crrect !"<< data;
-//            return;
-//        }
-
         //增加 data.contains("\b") 场景的判断，有的场景第三步只发送了一个\b回来 //add by ut001000 renfeixiang 2020-09-14
-        if(((data == "\x07") || data.contains("\u001B[C") || data.contains("\u001B[K") || data.contains("\b")) && !data.endsWith(_emulation->resizeAllString.toLatin1()))
+        if(((data == "\x07") || data.contains("\u001B[C") || data.contains("\u001B[K") || data.contains("\b")) && !data.endsWith(_emulation->getResizeAllString().toLatin1()))
         {
-            qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data<<"resizeAllString"<<_emulation->resizeAllString;
+            //qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data<<"resizeAllString"<<_emulation->getResizeAllString();
             entryRedrawStep(RedrawStep2_Clear_Receiving);
-            _emulation->m_ResizeSaveType = Emulation::SaveNone;
+            _emulation->setResizeSaveType(Emulation::SaveNone);
             data = byteClear;
-            //qDebug()<<"Clear info" <<data;
             fixClearLineCmd(data);
             return true;
         }
         qDebug()<<"info is not crrect !"<< data;
         return false;
-    //case FixStep2_Clear:
-       // deleteReturnChar(data);
-        break;
     case RedrawStep3_Return_Receiving:
         deleteReturnChar(data);
         if(!data.contains("\x07"))
         {
             return false;
         }
-
         break;
     default:
         break;
     }
 
-//    if(data.isEmpty())
-//    {
-//        return true;
-//    }
     return  true;
 }
-
+//add by 2020-09-18
 void Session::tailRedraw()
 {
-    //qDebug()<<"startPrompt"<<_emulation->startPrompt;
-    //qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-    //qDebug()<<"swapByte"<<_shellProcess->swapByte;
-
     // 每次重绘的入口
     onRedrawData(m_RedrawStep);
-
-    //qDebug()<<"startPrompt"<<_emulation->startPrompt;
-    //qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-    //qDebug()<<"swapByte"<<_shellProcess->swapByte;
-
 }
-
+//add by 2020-09-18
 void Session::deleteReturnChar(QByteArray &data)
 {
     bool deleteOK = false;
@@ -866,7 +809,7 @@ void Session::deleteReturnChar(QByteArray &data)
     QString strbyte = data;
     strbyte = strbyte.replace("\r\n\r","");
     lastRecvReturnData = lastRecvReturnData+strbyte;
-    qDebug() << "lastRecvReturnDatalastRecvReturnData" << lastRecvReturnData;
+//    qDebug() << "lastRecvReturnDatalastRecvReturnData" << lastRecvReturnData;
     if(lastRecvReturnData.contains("\r\n") && lastRecvReturnData.contains("\x07")){
         //增加第三布保存信息的校验，屏蔽\x07后面没有信息也走正常流程的问题
         QStringList list = lastRecvReturnData.split("\x07");
@@ -889,25 +832,21 @@ void Session::deleteReturnChar(QByteArray &data)
 
     if(strbyte.contains("\r\n")){
         QStringList list = strbyte.split("\r\n");
-        qDebug() << "list.size" << list.size();
+//        qDebug() << "list.size" << list.size();
         if(list.size() > 1){
             strbyte = "\r\n";
             strbyte += list.at(list.size() - 1);
             data = strbyte.toLatin1();
-            qDebug() << "strbytestrbyte" << strbyte;
+//            qDebug() << "strbytestrbyte" << strbyte;
         }
-    }/*else {
-        if(strbyte.contains("\x07")){
-            deleteOK = true;
-        }
-    }*/
+    }
     /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
 
     for(QByteArray pre: maybePreList)
     {
         if(data.startsWith(pre) )
         {
-            qDebug()<<"deleteReturnChar"<<data;
+//            qDebug()<<"deleteReturnChar"<<data;
             data = data.right(data.size() - pre.length());
             deleteOK = true;
             break;
@@ -915,35 +854,22 @@ void Session::deleteReturnChar(QByteArray &data)
     }
     if(deleteOK)
     {
-        qDebug()<<m_RedrawStep <<" OK!";
-        //entryRedrawStep(RedrawStep3_Return_Received);
-        _emulation->m_ResizeSaveType = Emulation::SavePrompt;
-        _emulation->hasMorespace = false;
-        _emulation->startPrompt.clear();
-        _emulation->swapByte.clear();
+//        qDebug()<<m_RedrawStep <<" OK!";
+        _emulation->setResizeSaveType(Emulation::SavePrompt);
+        _emulation->setHasMorespace(false);
+        _emulation->clearStartPrompt();
+        _emulation->clearSwapByte();
     }
     if(data.endsWith(" \r"))
     {
         qDebug()<<data<<"has \\r";
-        _emulation->hasMorespace = true;
+        _emulation->setHasMorespace(true);
     }
 }
-
+//add by 2020-09-18
 void Session::onRedrawData(RedrawStep step)
 {
-    //if(!_shellProcess->m_inResizeMode)
-    //{
-    //    return;
-    //}
-
-    //if(step == RedrawStep0_None)
-    //{
-    //    return;
-    //}
-    //if(step == RedrawStep1_Ctrl_u)
-    //{
     m_RedrawStep = step;
-    //}
     entryRedrawStep(m_RedrawStep);
     //add by ut001000 renfeixiang 2020-09-14
     //增加\u001B[F让光标回到消息的最后，防止出现光标在信息最开始，输入回车后，把输入信息执行了
@@ -964,62 +890,56 @@ void Session::onRedrawData(RedrawStep step)
         return;
 
     case Session::RedrawStep1_Resize_Receiving:
-//        return;
-//    case Session::RedrawStep1_Ctrl_u:
-        if(_emulation->resizeAllString.isEmpty())
+        if(_emulation->getResizeAllString().isEmpty())
         {
             return;
         }
-        qDebug()<<"_emulation->resizeAllString"<<_emulation->resizeAllString;
         /******** Modify by ut001000 renfeixiang 2020-09-09:修改,在清除行前，设置下光标的行数，主要是为了光标移动的场景 Begin***************/
-//         qDebug() << "getImageHasLinegetImageHasLine" <<_emulation->_currentScreen->getImageHasLine() << "tmpImageLine" << tmpImageLine;
-         _emulation->_currentScreen->setCursorY(tmpImageLine);
-        //_emulation->_currentScreen->setCursorY(_emulation->_currentScreen->getImageHasLine());
+        _emulation->getCurrentScreen()->setCursorY(tmpImageLine);
          /******** Modify by ut001000 renfeixiang 2020-09-09: End***************/
         _emulation->sendString(byteCtrlU.data(), byteCtrlU.count(), true);
-        //entryRedrawStep(RedrawStep1_Ctrl_u_Receiving);
         break;
 
     case Session::RedrawStep1_Ctrl_u_Receiving:
-        //_emulation->sendString(byteCtrlU.data(), byteCtrlU.count(), true);
         return;
-//    case Session::RedrawStep1_Ctrl_u_Complete:
-//        break;
     case Session::RedrawStep2_Clear_Receiving:
         _emulation->sendString(byteReturn.data(), byteReturn.count(), true);
         break;
     case Session::RedrawStep3_Return_Receiving:
         //发现resizeAllString信息后面也包含了“ \r” //add by ut001000 renfeixiang 2020-09-14
-        if(_emulation->resizeAllString.endsWith("  \r"))
+        if(_emulation->getResizeAllString().endsWith("  \r"))
         {
-            _emulation->resizeAllString = _emulation->resizeAllString.left(_emulation->resizeAllString.size() - 2);
+            QString tmpAllString = _emulation->getResizeAllString();
+            tmpAllString = tmpAllString.left(tmpAllString.size() - 2);
+            _emulation->setResizeAllString(tmpAllString);
         }
-        qDebug()<<"startPrompt"<<_emulation->startPrompt;
-        qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-        //qDebug()<<"swapByte"<<_emulation->swapByte;
+//        qDebug()<<"startPrompt"<<_emulation->getStartPrompt();
+//        qDebug()<<"resizeAllString"<<_emulation->getResizeAllString();
         // 有的时候会发来的消息只有\0007信息
-        if(_emulation->startPrompt.isEmpty())
+        if(_emulation->getStartPrompt().isEmpty())
         {
             return;
         }
-        if(_emulation->hasMorespace)
+        if(_emulation->getHasMorespace())
         {
-            _emulation->startPrompt = _emulation->startPrompt.left(_emulation->startPrompt.size() - 1);
+            QString tmpStartPrompt = _emulation->getStartPrompt();
+            tmpStartPrompt = tmpStartPrompt.left(tmpStartPrompt.size() - 1);
+            _emulation->setStartPrompt(tmpStartPrompt);
         }
 
         /******** Add by ut001000 renfeixiang 2020-09-16:增加 Begin***************/
         //对特殊场景，进行一次resize重绘处理，将当前的colomn减一，IsSpecialscene标记只进行一次重绘
-        qDebug() << "_sessionId" << _sessionId << "IsSpecialscene" << IsSpecialscene;
+        //qDebug() << "_sessionId" << _sessionId << "IsSpecialscene" << IsSpecialscene;
         if(!IsSpecialscene){
-            tmpnumber = _emulation->startPrompt.size() - _emulation->_currentScreen->getColumns()*2;
+            tmpnumber = _emulation->getStartPrompt().size() - _emulation->getCurrentScreen()->getColumns()*2;
             //特殊场景，有可能是光标在第三行行首，或者第二个位置
             if(tmpnumber >= 0 && tmpnumber < 2)
             {
-                qDebug() << "tmpnumber" << tmpnumber << "_emulation->startPrompt.size()" << _emulation->startPrompt.size() << "_emulation->_currentScreen->getColumns()" << _emulation->_currentScreen->getColumns();
+//                qDebug() << "tmpnumber" << tmpnumber << "_emulation->startPrompt.size()" << _emulation->getStartPrompt().size() << "_emulation->_currentScreen->getColumns()" << _emulation->getCurrentScreen()->getColumns();
                 qDebug() << "enter special scene";
                 if(!_shellProcess->isNeeadResize()){
-                    _shellProcess->swap_windowColumns -= 1;
-                    qDebug() << _shellProcess->swap_windowColumns << _shellProcess->redraw_windowColumns;
+                    _shellProcess->setSwapWindowColumns(_shellProcess->getSwapWindowColumns() - 1);
+//                    qDebug() << _shellProcess->swap_windowColumns << _shellProcess->redraw_windowColumns;
                     IsSpecialscene = true;
                 }
             }
@@ -1029,24 +949,25 @@ void Session::onRedrawData(RedrawStep step)
         /******** Add by ut001000 renfeixiang 2020-09-16:增加 End***************/
 
         /******** Add by ut001000 renfeixiang 2020-09-09:增加 将resizeAllString的信息格式化，开始的信息必须是shell信息 Begin***************/
-        if(!_emulation->resizeAllString.startsWith(_emulation->startPrompt)){
-            if(_emulation->resizeAllString.contains(_emulation->startPrompt)){
-                QStringList list = _emulation->resizeAllString.split(_emulation->startPrompt);
+        //这种场景估计不会在出现了，因为resize第一步接收的消息已经在了格式校验，这个问题当时出现是export “%%%%%%”场景
+        if(!_emulation->getResizeAllString().startsWith(_emulation->getStartPrompt())){
+            if(_emulation->getResizeAllString().contains(_emulation->getStartPrompt())){
+                QStringList list = _emulation->getResizeAllString().split(_emulation->getStartPrompt());
                 if(list.size() > 1){
-                    _emulation->resizeAllString = _emulation->startPrompt+list.at(0)+list.at(1);
-                    qDebug() << "resizeAllString format is error, show change resizeAllString:" << _emulation->resizeAllString;
+                    _emulation->setResizeAllString(_emulation->getStartPrompt()+list.at(0)+list.at(1));
+                    qDebug() << "resizeAllString format is error, show change resizeAllString:" << _emulation->getResizeAllString();
                 }
             }
         }
         /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
-        if(_emulation->resizeAllString.startsWith(_emulation->startPrompt) )
+        if(_emulation->getResizeAllString().startsWith(_emulation->getStartPrompt()) )
         {
-            _emulation->m_ResizeSaveType = Emulation::SaveNone;
-            _emulation->swapByte = _emulation->resizeAllString.right(_emulation->resizeAllString.size()
-                                                                     - _emulation->startPrompt.size());
-            _emulation->resizeAllString.clear();
-            _emulation->startPrompt.clear();
-            byteSwapText.append(_emulation->swapByte);
+            _emulation->setResizeSaveType(Emulation::SaveNone);
+            _emulation->setSwapByte(_emulation->getResizeAllString().right(_emulation->getResizeAllString().size()
+                                                                           - _emulation->getStartPrompt().size()));
+            _emulation->clearResizeAllString();
+            _emulation->clearStartPrompt();
+            byteSwapText.append(_emulation->getSwapByte());
             if(byteSwapText.count() != 0)
             {
                 entryRedrawStep(RedrawStep4_SwapText);
@@ -1054,24 +975,24 @@ void Session::onRedrawData(RedrawStep step)
             }
             else {
                 qDebug()<<"none of swapByte will be send";
-                //m_RedrawStep = RedrawStep4_SwapText;
                 onRedrawData(RedrawStep4_SwapText);
                 return;
             }
+        }else {
+            qDebug()<<"resizeAllString format is error";
+            //resizeAllString信息格式错误时，继续走正常流程不能卡住
+            onRedrawData(RedrawStep4_SwapText);
+            return;
         }
-        //qDebug()<<"startPrompt"<<_emulation->startPrompt;
-        //qDebug()<<"resizeAllString"<<_emulation->resizeAllString;
-        qDebug()<<"swapByte"<<_emulation->swapByte;
+//        qDebug()<<"swapByte"<<_emulation->getSwapByte();
         break;
 
     case Session::RedrawStep4_SwapText:
-        //entryRedrawStep(RedrawStep5_UserKey);
         _emulation->sendString("",0, true);
         return;
     //正常情况走，发送空时不走
     case Session::RedrawStep5_UserKey:
         _emulation->sendString("",0, true);
-        //m_RedrawStep = RedrawStep0_None;
         return;
     default:
         break;
@@ -1425,14 +1346,15 @@ void Session::zmodemFinished()
 */
 void Session::onReceiveBlock(const char *buf, int len)
 {
-    qDebug() <<m_RedrawStep <<_emulation->m_ResizeSaveType<< "new onReceiveBlock" << QString::fromLatin1(buf, len)
-            << "_sessionId" << _sessionId;
+    //add by 2020-09-18 begin
+//    qDebug() <<m_RedrawStep <<_emulation->getResizeAllString()<< "new onReceiveBlock" << QString::fromLatin1(buf, len)
+//            << "_sessionId" << _sessionId;
     QByteArray byteBuf(buf, len);
 
     // 重绘的预处理
     if(!preRedraw(byteBuf))
     {
-        qDebug()<<m_RedrawStep<<" data is delete"<<byteBuf;
+        //qDebug()<<m_RedrawStep<<" data is delete"<<byteBuf;
         return;
     }
 
@@ -1453,10 +1375,12 @@ void Session::onReceiveBlock(const char *buf, int len)
     if(m_RedrawStep == RedrawStep0_None){
         if(byteBuf.endsWith("\r\n\r") || byteBuf.endsWith("\r\n\r ")){
             qDebug() << "Specialscene resize";
-            _shellProcess->swap_windowColumns -= 1;
+            //_shellProcess->swap_windowColumns -= 1;
+            _shellProcess->setSwapWindowColumns(_shellProcess->getSwapWindowColumns() - 1);
             _shellProcess->startResize();
         }
     }
+    //add by 2020-09-18 end
 }
 
 QSize Session::size()

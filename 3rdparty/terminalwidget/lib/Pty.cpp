@@ -45,7 +45,7 @@
 #include <QDir>
 #include <QRegExp>
 #include <QRegExpValidator>
-#include <QTimer>
+//add by 2020-09-18
 #include <QMetaEnum>
 
 #include "kpty.h"
@@ -55,12 +55,9 @@ using namespace Konsole;
 
 void Pty::setWindowSize(int lines, int cols)
 {
-   // if((_windowColumns == cols) && (_windowLines == lines) && !lastCommandStateIsResize)
-    //{
-    //    return;
-    //}
     _windowColumns = cols;
     _windowLines = lines;
+//add by 2020-09-18 begin
     if(!m_hasStart)
     {
         return;
@@ -69,30 +66,18 @@ void Pty::setWindowSize(int lines, int cols)
     swap_windowLines = _windowLines;
     swap_windowColumns = _windowColumns;
 
-    //m_redrawTimer->start(200);
-    qDebug()<<"updateWindowSize"<<lines<<cols;
+//    qDebug()<<"updateWindowSize"<<lines<<cols;
     if(*m_redrawStep != Session::RedrawStep0_None)
     {
-        qDebug()<<"updateWindowSize has swap"<<lines<<cols;
+//        qDebug()<<"updateWindowSize has swap"<<lines<<cols;
         return;
     }
 
     startResize();
-
-//    m_inResizeMode = true;
-//    qDebug()<<endl<<endl;
-//    emit redrawStepChanged(Session::RedrawStep1_Resize_Receiving);
-//    qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
-//    //emit shellHasStart();
-
-
-//    if (pty()->masterFd() >= 0)
-//    {
-//        pty()->setWinSize(lines, cols);
-//    }
+//add by 2020-09-18 end
 
 }
-
+//add by 2020-09-18
 void Pty::startResize()
 {
     redraw_windowColumns = swap_windowColumns;
@@ -105,13 +90,11 @@ void Pty::startResize()
           m_inResizeMode = true;
           qDebug()<<endl<<endl;
           emit winsizeChanged(redraw_windowLines, redraw_windowColumns);
-          //emit redrawStepChanged(Session::RedrawStep1_Resize_Receiving);
-          qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
-          //emit shellHasStart();
+//          qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
       }
     }
 }
-
+//add by 2020-09-18
 bool Pty::isNeeadResize()
 {
     /******** Modify by ut001000 renfeixiang 2020-09-03:修改判断条件，行没有做判断 Begin***************/
@@ -268,7 +251,7 @@ int Pty::start(const QString &program,
 
     if (!pty()->tcSetAttr(&ttmode))
         qWarning() << "Unable to set terminal attributes.";
-
+    //add by 2020-09-18 注释掉了
     //pty()->setWinSize(_windowLines, _windowColumns);
 
 
@@ -332,48 +315,8 @@ void Pty::init()
     _xonXoff = true;
     _utf8 = true;
     _bUninstall = false;
-    m_redrawTimer = new QTimer(this);
-    m_redrawTimer->setSingleShot(true);
-    m_swapRedrawTimer =  new QTimer(this);
-    m_swapRedrawTimer->setSingleShot(true);
     connect(pty(), SIGNAL(readyRead()), this, SLOT(dataReceived()));
     setPtyChannels(KPtyProcess::AllChannels);
-    connect(m_redrawTimer, &QTimer::timeout, this, [this]{
-//          redraw_windowColumns = swap_windowColumns;
-//          redraw_windowLines = swap_windowLines;
-//        qDebug()<<"m_redrawTimer timeout";
-//        if (pty()->masterFd() >= 0)
-//        {
-//            if(pty()->setWinSize(redraw_windowLines, redraw_windowColumns))
-//            {
-//                m_inResizeMode = true;
-//                qDebug()<<endl<<endl;
-//                emit redrawStepChanged(Session::RedrawStep1_Resize_Receiving);
-//                qDebug()<<"update lastCommandStateIsResize"<<m_inResizeMode;
-//                //emit shellHasStart();
-//            }
-//        }
-    });
-    connect(m_swapRedrawTimer, &QTimer::timeout, this, [this]{
-        //m_resizeTimer.stop();
-        qDebug()<<"m_redrawTimer timeout";
-        //qDebug()<<"setWindowSize"<<lines<<cols;
-//        if(*m_redrawStep == Session::RedrawStep0_None)
-//        {
-//            if (pty()->masterFd() >= 0)
-//            {
-//                pty()->setWinSize(_windowLines, _windowColumns);
-//            }
-//            //qDebug()<<"setWindowSize"<<lines<<cols;
-//    //        if (pty()->masterFd() >= 0)
-//    //        {
-//    //            pty()->setWinSize(_windowLines, _windowColumns);
-//    //        }
-//            QTimer::singleShot(10, this, [this]() {
-               // emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
-//            });
-//        }
-    });
 }
 
 Pty::~Pty()
@@ -535,12 +478,9 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
     return acceptableList.contains(true);
 }
 /******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
-
+//add by 2020-09-18 增加bool参数
 void Pty::sendData(const char *data, int length,  bool immediatelyRun)
 {
-//    if (!length) {
-//        return;
-//    }
     bool isCustomCommand = false;
     QString currCommand = QString::fromLatin1(data);
     if (currCommand.length() > 0 && currCommand.endsWith('\n')) {
@@ -585,9 +525,9 @@ void Pty::sendData(const char *data, int length,  bool immediatelyRun)
             }
         }
     }
-
+//add by 2020-09-18 begin
     QByteArray buffer = QByteArray(data,length);
-    //qDebug()<<"new send info"<<currCommand<<m_inResizeMode<<*m_redrawStep <<immediatelyRun;
+//    qDebug()<<"new send info"<<currCommand<<m_inResizeMode<<*m_redrawStep <<immediatelyRun;
     if(!processRedraw(buffer, immediatelyRun))
     {
         return;
@@ -597,34 +537,33 @@ void Pty::sendData(const char *data, int length,  bool immediatelyRun)
     {
         if(isNeeadResize() && *m_redrawStep == Session::RedrawStep0_None)
         {
-            qDebug()<<" resize continue...";
+//            qDebug()<<" resize continue...";
             startResize();
         }
         return;
     }
 
     if (!pty()->write(buffer.data(), buffer.length())) {
-        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+//        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
         return;
     }
+//add by 2020-09-18 end
 }
-
+//add by 2020-09-18
 bool Pty::processRedraw(QByteArray &buffer, bool immediatelyRun)
 {
     if(!immediatelyRun && *m_redrawStep != Session::RedrawStep0_None)
     {
-        qDebug()<<"m_userKey update"<<m_userKey<<*m_redrawStep;
+//        qDebug()<<"m_userKey update"<<m_userKey<<*m_redrawStep;
         m_userKey += buffer;
         return  false;
     }
-    if(!m_inResizeMode /*&& hasStart*/)
+    if(!m_inResizeMode)
     {
         return true;
     }
     switch (*m_redrawStep) {
     case Session::RedrawStep0_None:
-        //m_userKey += buffer;
-        //emit redrawStepChanged(Session::RedrawStep1_Ctrl_u);
         return true;
     case Session::RedrawStep4_SwapText:
         if(!buffer.isEmpty())
@@ -636,7 +575,7 @@ bool Pty::processRedraw(QByteArray &buffer, bool immediatelyRun)
         buffer = m_userKey;
         m_userKey .clear();
         *m_redrawStep = Session::RedrawStep0_None;
-        qDebug()<<"resize is over , now all is normal"<<*m_redrawStep << "m_userKey is:" <<buffer<<endl<<endl;
+//        qDebug()<<"resize is over , now all is normal"<<*m_redrawStep << "m_userKey is:" <<buffer<<endl<<endl;
         m_inResizeMode = false;
 
         break;
@@ -653,7 +592,6 @@ void Pty::dataReceived()
 
     QString recvData = QString(data);
 
-    //qDebug() << "____________________recv:" << recvData;
     /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
     // 乱码提示信息不显示
     if (recvData.contains("bash: $'\\212")
@@ -677,7 +615,7 @@ void Pty::dataReceived()
 
 
     emit receivedData(data.constData(), data.count());
-
+//add by 2020-09-18 begin
     // 原来系统一启动就设置大小，导致首次信息，与resize信息混合在一起，无法拆分
     // 现在收到第一次正常消息后，再进行resize设置
     if(!m_hasStart)
@@ -685,7 +623,7 @@ void Pty::dataReceived()
         m_hasStart = true;
         setWindowSize(_windowLines, _windowColumns);
     }
-
+//add by 2020-09-18 end
 }
 
 void Pty::lockPty(bool lock)

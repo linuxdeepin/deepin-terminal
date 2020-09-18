@@ -728,9 +728,10 @@ void QTermWidget::pasteSelection()
 
 void QTermWidget::setZoom(int step)
 {
+    //add by 2020-09-18
     //add by ut001000 renfeixiang 2020-09-14
     //设置zoom的标志位为true
-    m_impl->m_session->isZoom = true;
+    m_impl->m_session->setIsZoom(true);
     QFont font = m_impl->m_terminalDisplay->getVTFont();
 
     font.setPointSize(font.pointSize() + step);

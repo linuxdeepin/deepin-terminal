@@ -33,6 +33,7 @@
 // Qt
 #include <QTextStream>
 #include <QDate>
+//add by 2020-09-18
 #include <QDebug>
 
 // KDE
@@ -68,25 +69,6 @@ Character Screen::defaultChar = Character(' ',
         DEFAULT_RENDITION);
 
 //#define REVERSE_WRAPPED_LINES  // for wrapped line debug
-
-/*******************************************************************************
- 1. @函数:    getImageHasLine
- 2. @作者:    ut001000 任飞翔
- 3. @日期:    2020-09-09
- 4. @说明:    通过存储数据的screenLines获取行数,返回值行数
-*******************************************************************************/
-int Screen::getImageHasLine()
-{
-    for (int i = 0; i < lines; i++) {
-        if(screenLines[i].size() <= 0){
-            return  i;
-        }
-    }
-    //添加返回值，当终端输入信息满屏时，返回lines //add by ut001000 renfeixiang 2020-09-14
-    qDebug() << "getImageHasLine return lines";
-    return lines;
-}
-
 Screen::Screen(int l, int c)
 : lines(l),
     columns(c),
@@ -333,7 +315,8 @@ void Screen::restoreCursor()
 
 void Screen::resizeImage(int new_lines, int new_columns)
 {
-    qDebug()<<"resizeImage"<<new_lines<<new_columns;
+//add by 2020-09-18
+//    qDebug()<<"resizeImage"<<new_lines<<new_columns;
     if ((new_lines==lines) && (new_columns==columns)) return;
 
     if (cuY > new_lines-1)
@@ -968,14 +951,11 @@ void Screen::moveImage(int dest, int sourceBegin, int sourceEnd)
 
 void Screen::clearToEndOfScreen()
 {
-    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<cuX<<cuY<<loc(cuX,cuY)<<columns-1<<lines-1<<loc(columns-1,lines-1);
-
     clearImage(loc(cuX,cuY),loc(columns-1,lines-1),' ');
 }
 
 void Screen::clearToBeginOfScreen()
 {
-    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     clearImage(loc(0,0),loc(cuX,cuY),' ');
 }
 
@@ -990,7 +970,6 @@ void Screen::clearToBeginOfScreen()
 
 void Screen::clearEntireScreen()
 {
-    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     // Add entire screen to history
     for (int i = 0; i < (lines-1); i++)
     {
@@ -1011,33 +990,26 @@ void Screen::helpAlign()
 
 void Screen::clearToEndOfLine()
 {
-    //usleep(1000000);
-    //qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<cuX<<cuY<<loc(cuX,cuY)<<columns-1<<cuY<<loc(columns-1,cuY);
-
-    //updateShellStartLine();
     clearImage(loc(cuX,cuY),loc(columns-1,cuY),' ');
-    //usleep(1000000);
 }
 
 void Screen::clearToBeginOfLine()
 {
-    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     clearImage(loc(0,cuY),loc(cuX,cuY),' ');
 }
-
+//add by 2020-09-18
 void Screen::updateShellStartLine()
 {
     //ShellStartLine = cuY + getHistLines() +1;
     /******** Modify by ut001000 renfeixiang 2020-09-09:修改 Begin***************/
     //新判断方法：使用screenLines判断有几行数据
-    ShellStartLine = getImageHasLine() + getHistLines();
+    shellStartLine = getImageHasLine() + getHistLines();
     //qDebug()<<"ShellStartLine update "<<ShellStartLine << "cuY" << cuY << "getImageHasLine()" <<getImageHasLine() << getHistLines();
     /******** Modify by ut001000 renfeixiang 2020-09-09 End***************/
 }
 
 void Screen::clearEntireLine()
 {
-    qDebug()<<__FILE__<<__FUNCTION__<<__LINE__;
     clearImage(loc(0,cuY),loc(columns-1,cuY),' ');
 }
 
@@ -1448,4 +1420,23 @@ void Screen::fillWithDefaultChar(Character* dest, int count)
 {
     for (int i=0;i<count;i++)
         dest[i] = defaultChar;
+}
+
+//add by 2020-09-18
+/*******************************************************************************
+ 1. @函数:    getImageHasLine
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-09-09
+ 4. @说明:    通过存储数据的screenLines获取行数,返回值行数
+*******************************************************************************/
+int Screen::getImageHasLine()
+{
+    for (int i = 0; i < lines; i++) {
+        if(screenLines[i].size() <= 0){
+            return  i;
+        }
+    }
+    //添加返回值，当终端输入信息满屏时，返回lines //add by ut001000 renfeixiang 2020-09-14
+//    qDebug() << "getImageHasLine return lines";
+    return lines;
 }

@@ -71,11 +71,6 @@ class TerminalCharacterDecoder;
 class Screen
 {
 public:
-
-        int ShellStartLine = 0;
-        /******** Add by ut001000 renfeixiang 2020-09-09:增加 通过存储数据的screenLines获取行数 Begin***************/
-        int getImageHasLine();
-        /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
     /** Construct a new screen image of size @p lines by @p columns. */
     Screen(int lines, int columns);
     ~Screen();
@@ -264,7 +259,7 @@ public:
     void clearToEndOfLine();
     /** Clears from the current cursor position to the beginning of the line. */
     void clearToBeginOfLine();
-
+    //add by 2020-09-18
     void updateShellStartLine();
 
     /** Fills the entire screen with the letter 'E' */
@@ -565,6 +560,13 @@ public:
       */
     static void fillWithDefaultChar(Character* dest, int count);
 
+    /******** Add by ut001000 renfeixiang 2020-09-09:增加 通过存储数据的screenLines获取行数 Begin***************/
+    int getImageHasLine();
+    /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
+
+    //add by 2020-09-18 //私有变量加函数
+    int getShellStartLine(){return shellStartLine;}
+
 private:
 
     //copies a line of text from the screen or history into a stream using a
@@ -691,6 +693,9 @@ private:
     unsigned short lastDrawnChar;
 
     static Character defaultChar;
+
+    //add by 2020-09-18 改成私有变量
+    int shellStartLine = 0;
 };
 
 }

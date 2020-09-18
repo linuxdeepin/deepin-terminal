@@ -316,7 +316,7 @@ void Vt102Emulation::receiveChar(wchar_t cc)
     if (lec(1,0,ESC)) { return; }
     if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('['); return; }
     if (les(2,1,GRP)) { return; }
-    if (Xte         ) { processWindowAttributeChange(); resetTokenizer(); if(m_ResizeSaveType == SaveAll)  resizeAllString.clear(); return; }
+    if (Xte         ) { processWindowAttributeChange(); resetTokenizer(); if(getResizeSaveType() == SaveAll)  clearResizeAllString(); return; }//add by 2020-09-18
     if (Xpe         ) { prevCC = cc; return; }
     if (lec(3,2,'?')) { return; }
     if (lec(3,2,'>')) { return; }
@@ -417,7 +417,7 @@ void Vt102Emulation::processWindowAttributeChange()
   // 0x07 or 0x92. Note that as control characters in OSC text parts are
   // ignored, only the second char in ST ("\e\\") is appended to tokenBuffer.
   QString newValue = QString::fromWCharArray(tokenBuffer + i + 1, tokenBufferPos-i-2);
-
+  //add by 2020-09-18
   _currentScreen->updateShellStartLine();
   _pendingTitleUpdates[attributeToChange] = newValue;
   _titleUpdateTimer->start(20);
@@ -456,9 +456,9 @@ void Vt102Emulation::processToken(int token, wchar_t p, int q)
   switch (token)
   {
     // 在resize模式下记录全部，非resize模式下记录标题
-    case TY_CHR(         ) : if(m_ResizeSaveType == SavePrompt)  startPrompt.append(QString::fromWCharArray(&p));
-      if(m_ResizeSaveType == SaveAll)  resizeAllString.append(QString::fromWCharArray(&p));
- _currentScreen->displayCharacter     (p         ); break; //UTF16
+    case TY_CHR(         ) : if(getResizeSaveType() == SavePrompt)  addStartPrompt(QString::fromWCharArray(&p));//add by 2020-09-18
+        if(getResizeSaveType() == SaveAll)  addResizeAllString(QString::fromWCharArray(&p));
+        _currentScreen->displayCharacter     (p         ); break; //UTF16
 
     //             127 DEL    : ignored on input
 
@@ -862,7 +862,7 @@ void Vt102Emulation::clearScreenAndSetColumns(int columnCount)
     setDefaultMargins();
     _currentScreen->setCursorYX(0,0);
 }
-
+//add by 2020-09-18 //增加bool参数
 void Vt102Emulation::sendString(const char* s , int length, bool immediatelyRun)
 {
   if ( length >= 0 )

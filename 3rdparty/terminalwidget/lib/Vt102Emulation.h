@@ -91,6 +91,7 @@ public:
 
 public slots:
   // reimplemented from Emulation
+  //add by 2020-09-18 //增加bool参数
   void sendString(const char*,int length = -1, bool immediatelyRun = false) override;
   void sendText(const QString& text) override;
   void sendKeyEvent(QKeyEvent*) override;
@@ -190,12 +191,10 @@ private:
   //or window title.
   //these calls occur when certain escape sequences are seen in the
   //output from the terminal
-
+  QHash<int,QString> _pendingTitleUpdates;
   QTimer* _titleUpdateTimer;
 
-    bool _reportFocusEvents;
-public:
-      QHash<int,QString> _pendingTitleUpdates;
+  bool _reportFocusEvents;
 };
 
 }

@@ -39,6 +39,7 @@
 
 // KDE
 #include "kptyprocess.h"
+//add by 2020-09-18
 #include "Emulation.h"
 #include "Session.h"
 
@@ -57,26 +58,11 @@ namespace Konsole {
  * To start the terminal process, call the start() method
  * with the program name and appropriate arguments.
  */
-const QString History_Up = "\u001B[A";
-const QString History_Down = "\u001B[B";
-const QString Key_Left = "\u001B[D";
-const QString Key_Delete = "\u007F";
-const QString Key_CtrlU = "\u0015";
 class Pty: public KPtyProcess
 {
 Q_OBJECT
 
   public:
-    QTimer *m_redrawTimer = nullptr;
-    QTimer *m_swapRedrawTimer = nullptr;
-    QByteArray m_userKey;
-    bool m_inResizeMode = false;
-    bool m_hasStart = false;
-    Session::RedrawStep *m_redrawStep = nullptr;
-    int  swap_windowColumns = 0;
-    int  swap_windowLines = 0;
-    int  redraw_windowColumns = 0;
-    int  redraw_windowLines = 0;
     /**
      * Constructs a new Pty.
      *
@@ -146,8 +132,10 @@ Q_OBJECT
      * used by this teletype.
      */
     void setWindowSize(int lines, int cols);
+//add by 2020-09-18
     void startResize();
     bool isNeeadResize();
+//add by 2020-09-18
 
     /** Returns the size of the window used by this teletype.  See setWindowSize() */
     QSize windowSize() const;
@@ -169,8 +157,16 @@ Q_OBJECT
     int foregroundProcessGroup() const;
 
     void setSessionId(int sessionId);
-
+    //add by 2020-09-18
     bool processRedraw(QByteArray &buffer, bool immediatelyRun);
+
+    //add by 2020-09-18 对私有变量添加函数
+    void setRedrawStep(Session::RedrawStep *step){m_redrawStep = step;}
+
+    bool getResizeMode(){return m_inResizeMode;}
+
+    int getSwapWindowColumns(){return swap_windowColumns;}
+    void setSwapWindowColumns(int column){swap_windowColumns = column;}
 
   public slots:
 
@@ -197,6 +193,7 @@ Q_OBJECT
      * @param buffer Pointer to the data to send.
      * @param length Length of @p buffer.
      */
+    //add by 2020-09-18
     void sendData(const char* buffer, int length, bool immediatelyRun = false);
 
 
@@ -210,10 +207,9 @@ Q_OBJECT
      * @param length Length of @p buffer
      */
     void receivedData(const char* buffer, int length);
-    void redrawStepChanged(Session::RedrawStep step);
+    //add by 2020-09-18
     void winsizeChanged(int lines, int columns);
 
-    void shellHasStart();
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     bool ptyUninstallTerminal(QString commandname);
     /******** Modify by nt001000 renfeixiang 2020-05-14:修改 增加参数区别remove和purge卸载命令 End***************/
@@ -246,6 +242,16 @@ Q_OBJECT
 
     int _sessionId;
     bool _bUninstall;
+
+    //add by 2020-09-18 //修改成私有变量
+    QByteArray m_userKey;
+    bool m_inResizeMode = false;
+    bool m_hasStart = false;
+    Session::RedrawStep *m_redrawStep = nullptr;
+    int  swap_windowColumns = 0;
+    int  swap_windowLines = 0;
+    int  redraw_windowColumns = 0;
+    int  redraw_windowLines = 0;
 };
 
 }

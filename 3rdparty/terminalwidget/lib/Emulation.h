@@ -44,7 +44,6 @@ class HistoryType;
 class Screen;
 class ScreenWindow;
 class TerminalCharacterDecoder;
-class Session;
 
 /**
  * This enum describes the available states which
@@ -156,11 +155,6 @@ public:
         SaveAll,
         SaveNone
     };
-    ResizeSaveType m_ResizeSaveType = SaveNone;
-    bool hasMorespace = false;
-    QString resizeAllString;
-    QString startPrompt;
-    QString swapByte;
 
     /**
      * Creates a new window onto the output from this emulation.  The contents
@@ -270,6 +264,29 @@ public:
     //用于保存当前Emulator对应的sessionId
     void setSessionId(int sessionId);
 
+    //add by 2020-09-18 //对私有和保护变量增加获取和设置函数
+    ResizeSaveType getResizeSaveType(){return m_ResizeSaveType;}
+    void setResizeSaveType(ResizeSaveType type){m_ResizeSaveType = type;}
+
+    QString getResizeAllString(){return resizeAllString;}
+    void clearResizeAllString(){resizeAllString.clear();}
+    void addResizeAllString(QString value){resizeAllString.append(value);}
+    void setResizeAllString(QString value){resizeAllString = value;}
+
+    QString getStartPrompt(){return startPrompt;}
+    void clearStartPrompt(){startPrompt.clear();}
+    void addStartPrompt(QString value){startPrompt.append(value);}
+    void setStartPrompt(QString value){startPrompt = value;}
+
+    QString getSwapByte(){return swapByte;}
+    void clearSwapByte(){swapByte.clear();}
+    void setSwapByte(QString value){swapByte = value;}
+
+    bool getHasMorespace(){return hasMorespace;}
+    void setHasMorespace(bool flag){hasMorespace = flag;}
+
+    Screen* getCurrentScreen(){return _currentScreen;}
+
 public slots:
 
     /** Change the size of the emulation's image */
@@ -300,6 +317,7 @@ public slots:
      * @param length Length of @p string or if set to a negative value, @p string will
      * be treated as a null-terminated string and its length will be determined automatically.
      */
+    //增加一个bool参数
     virtual void sendString(const char *string, int length = -1, bool immediatelyRun = false) = 0;
 
     /**
@@ -316,25 +334,6 @@ public slots:
      */
     void receiveData(const char *buffer, int len);
 
-    //void onRedrawData(Session::RedrawStep step);
-    // resize后重绘接口类型
-//    enum RedrawStep
-//    {
-//        RedrawStep1_Ctrl_u,
-//        RedrawStep1_Ctrl_u_Complete,
-//        RedrawStep2_Clear_Complete,
-//        RedrawStep3_Return_Complete,
-//        RedrawStep4_SwapText,
-//        RedrawStep5_UserKey,
-//        RedrawStep6_Complete
-//    };
-//    Q_ENUM(RedrawStep)
-    // resize后重绘接口
-
-
-
-
-
 signals:
 
     /**
@@ -344,6 +343,7 @@ signals:
      * @param data The buffer of data ready to be sent
      * @param len The length of @p data in bytes
      */
+    //增加一个bool参数
     void sendData(const char *data, int len, bool immediatelyRun = false);
 
     /**
@@ -521,7 +521,8 @@ protected:
 
     QList<ScreenWindow *> _windows;
 
-
+    //修改成保护变量
+    Screen *_currentScreen;  // pointer to the screen which is currently active,
     // this is one of the elements in the screen[] array
 
     Screen *_screen[2];      // 0 = primary screen ( used by most programs, including the shell
@@ -537,8 +538,7 @@ protected:
     /******** Modify by ut000610 daizhengwen 2020-06-02: 让这个值能被修改****************/
     /*const */KeyboardTranslator *_keyTranslator; // the keyboard layout
     /********************* Modify by ut000610 daizhengwen End ************************/
-public:
-    Screen *_currentScreen;  // pointer to the screen which is currently active,
+
 protected slots:
     /**
      * Schedules an update of attached views.
@@ -565,10 +565,12 @@ private:
 
     int _sessionId;
 
-    /******** Add by ut001000 renfeixiang 2020-07-16:增加保存上一次的屏幕行列数，用于比较终端屏宽是否发生变化 Begin***************/
-//    int _lastcol = 0;
-//    int _lastline = 0;
-    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
+    //add by 2020-09-18 //将变量设置成私有
+    ResizeSaveType m_ResizeSaveType = SaveNone;
+    bool hasMorespace = false;
+    QString resizeAllString;
+    QString startPrompt;
+    QString swapByte;
 };
 
 }

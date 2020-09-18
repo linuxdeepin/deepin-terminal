@@ -72,18 +72,15 @@ public:
      * falls back to using the program specified in the SHELL environment
      * variable.
      */
-
-    //bool lastCommandStateIsResize = false;
     Session(QObject* parent = nullptr);
     ~Session() override;
 
-
+    //add by 2020-09-18 begin
     // resize后重绘接口类型
     enum RedrawStep
     {
         RedrawStep0_None,
         RedrawStep1_Resize_Receiving,
-        //RedrawStep1_Ctrl_u,
         RedrawStep1_Ctrl_u_Receiving,
         RedrawStep2_Clear_Receiving,
         RedrawStep3_Return_Receiving,
@@ -92,23 +89,12 @@ public:
         RedrawStep6_Complete
     };
     Q_ENUM(RedrawStep)
-    RedrawStep m_RedrawStep = RedrawStep0_None;
-    //add by ut001000 renfeixiang 2020-09-14
-    //用于标志当前的操作是不是zoom
-    bool isZoom = false;
     void entryRedrawStep(RedrawStep step);
     bool preRedraw(QByteArray & data);
     void tailRedraw();
     void deleteReturnChar(QByteArray & data);
     void onRedrawData(RedrawStep step);
-
-    /******** Add by ut001000 renfeixiang 2020-09-09:增加 Begin***************/
-    //记录在收到resezie信息时的行数，用于在clear时设置当前光标位置
-    int tmpImageLine = 0;
-    //用于计算出第三步正确的接收信息，格式\r\nXX\u0007XX
-    QString lastRecvReturnData = "";
-    /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
-
+    //add by 2020-09-18 end
 
     /**
      * Returns true if the session is currently running.  This will be true
@@ -442,6 +428,9 @@ public:
     // 获取此时tty的eraseChar
     char getEraseChar();
 
+    //add by 2020-09-18 //私有变量添加函数
+    void setIsZoom(bool bZoom){isZoom = bZoom;}
+
 public slots:
 
     /**
@@ -573,6 +562,7 @@ private slots:
 
     void onReceiveBlock( const char * buffer, int len );
     void monitorTimerDone();
+    //add by 2020-09-18
     void fixClearLineCmd(QByteArray &buffer);
 
     void onViewSizeChange(int height, int width);
@@ -589,10 +579,23 @@ private slots:
 //  void zmodemFinished();
 
 private:
-
+    //add by 2020-09-18 begin
     //add by ut001000 renfeixiang 2020-09-16
     //用于标记特殊场景：shell信息是2行，并且光标的位置在第三行的第一个或者第二个位置时
     bool IsSpecialscene = false;
+
+    //改成私有变量
+    RedrawStep m_RedrawStep = RedrawStep0_None;
+    //add by ut001000 renfeixiang 2020-09-14
+    //用于标志当前的操作是不是zoom
+    bool isZoom = false;
+    /******** Add by ut001000 renfeixiang 2020-09-09:增加 Begin***************/
+    //记录在收到resezie信息时的行数，用于在clear时设置当前光标位置
+    int tmpImageLine = 0;
+    //用于计算出第三步正确的接收信息，格式\r\nXX\u0007XX
+    QString lastRecvReturnData = "";
+    /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
+    //add by 2020-09-18 end
 
     void updateTerminalSize(int height, int width);
     WId windowId() const;
