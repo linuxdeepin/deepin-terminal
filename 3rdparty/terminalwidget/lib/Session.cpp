@@ -1373,7 +1373,8 @@ void Session::onReceiveBlock(const char *buf, int len)
     //add by ut001000 renfeixiang 2020-09-17
     //增加特殊场景处理，当分屏幕时，分屏幕收到的信息分开发送，第二条信息进入到resize流程中
     if(m_RedrawStep == RedrawStep0_None){
-        if(byteBuf.endsWith("\r\n\r") || byteBuf.endsWith("\r\n\r ")){
+        //判断条件错误，有的正常命令也会最后带\r\n\r，条件改为空格+\r\n\r
+        if(byteBuf.endsWith(" \r\n\r") || byteBuf.endsWith("\r\n\r ")){
             qDebug() << "Specialscene resize";
             //_shellProcess->swap_windowColumns -= 1;
             _shellProcess->setSwapWindowColumns(_shellProcess->getSwapWindowColumns() - 1);
