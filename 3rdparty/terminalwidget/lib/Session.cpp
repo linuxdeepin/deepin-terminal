@@ -514,7 +514,8 @@ void Session::fixClearLineCmd(QByteArray &buffer)
         QStringList list = tmpdata.split(byteClearLine);
         if(list.size() > 1 && list.at(0).size() > 1){
             tmpdata = tmpdata.right(tmpdata.size() - list.at(0).size());
-            buffer = tmpdata.toLatin1();
+            //使用toLatin1转换成QByteArray时，中文成乱码，改成toLocal8Bit
+            buffer = tmpdata.toLocal8Bit();
             qDebug() << "change buffer" << buffer;
         }
     }
@@ -767,8 +768,8 @@ bool Session::preRedraw(QByteArray & data)
 
         break;
     case RedrawStep1_Ctrl_u_Receiving:
-        //增加 data.contains("\b") 场景的判断，有的场景第三步只发送了一个\b回来 //add by ut001000 renfeixiang 2020-09-14
-        if(((data == "\x07") || data.contains("\u001B[C") || data.contains("\u001B[K") || data.contains("\b")) && !data.endsWith(_emulation->getResizeAllString().toLatin1()))
+        //增加 data.contains("\b") 场景的判断，有的场景第三步只发送了一个\b回来 //add by ut001000 renfeixiang 2020-09-14 //使用toLatin1转换成QByteArray时，中文成乱码，改成toLocal8Bit
+        if(((data == "\x07") || data.contains("\u001B[C") || data.contains("\u001B[K") || data.contains("\b")) && !data.endsWith(_emulation->getResizeAllString().toLocal8Bit()))
         {
             //qDebug()<<"Step1_Ctrl_u = true, ignore dataReceived" <<data<<"resizeAllString"<<_emulation->getResizeAllString();
             entryRedrawStep(RedrawStep2_Clear_Receiving);
@@ -836,7 +837,8 @@ void Session::deleteReturnChar(QByteArray &data)
         if(list.size() > 1){
             strbyte = "\r\n";
             strbyte += list.at(list.size() - 1);
-            data = strbyte.toLatin1();
+            //使用toLatin1转换成QByteArray时，中文成乱码，改成toLocal8Bit
+            data = strbyte.toLocal8Bit();
 //            qDebug() << "strbytestrbyte" << strbyte;
         }
     }
@@ -1347,14 +1349,14 @@ void Session::zmodemFinished()
 void Session::onReceiveBlock(const char *buf, int len)
 {
     //add by 2020-09-18 begin
-//    qDebug() <<m_RedrawStep <<_emulation->getResizeAllString()<< "new onReceiveBlock" << QString::fromLatin1(buf, len)
+//    qDebug() <<m_RedrawStep <<_emulation->getResizeAllString()<< "new onReceiveBlock" << QString::fromLocal8Bit(buf, len)
 //            << "_sessionId" << _sessionId;
     QByteArray byteBuf(buf, len);
 
     // 重绘的预处理
     if(!preRedraw(byteBuf))
     {
-        //qDebug()<<m_RedrawStep<<" data is delete"<<byteBuf;
+//        qDebug()<<m_RedrawStep<<" data is delete"<<byteBuf;
         return;
     }
 
