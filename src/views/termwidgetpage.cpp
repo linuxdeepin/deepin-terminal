@@ -24,6 +24,7 @@
 #include "utils.h"
 #include "service.h"
 #include "windowsmanager.h"
+#include "define.h"
 
 #include <DLog>
 #include <DDialog>
@@ -834,6 +835,22 @@ void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
         m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
         m_renameDialog->setFocusPolicy(Qt::NoFocus);
         m_renameDialog->showDialog(oldTitle, this);
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    printSearchCostTime
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-21
+ 4. @说明:    打印查找花费的时间
+*******************************************************************************/
+void TermWidgetPage::printSearchCostTime()
+{
+    qint64 costTime = m_findBar->searchCostTime();
+    if (costTime != -1)
+    {
+        QString strSearchTime = GRAB_POINT + LOGO_TYPE + SEARCH_TIME + QString::number(costTime);
+        qDebug() << qPrintable(strSearchTime);
     }
 }
 

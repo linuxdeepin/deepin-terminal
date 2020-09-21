@@ -253,6 +253,8 @@ void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int 
     sw->setSelectionEnd(endColumn + matchChinese, endLine - sw->currentLine());
     sw->notifyOutputChanged();
     /***mod end by ut001121***/
+    // 结束查找
+    emit sig_matchFound();
 }
 
 void QTermWidget::clearSelection()

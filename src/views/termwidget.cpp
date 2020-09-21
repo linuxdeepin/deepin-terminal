@@ -212,8 +212,13 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         Settings::instance()->setColorScheme(theme);
     });
 
+    // 未找到搜索的匹配结果
     connect(this, &QTermWidget::sig_noMatchFound, this, [this]() {
         parentPage()->setMismatchAlert(true);
+    });
+    // 找到搜索匹配的结果 => 记录查找时间 => 打印日志，方便性能测试
+    connect(this, &QTermWidget::sig_matchFound, this, [this](){
+        parentPage()->printSearchCostTime();
     });
     /********************* Modify by n014361 wangpeili End ************************/
 

@@ -26,6 +26,7 @@
 #include "service.h"
 #include "utils.h"
 #include "terminalapplication.h"
+#include "define.h"
 
 
 #include <DApplication>
@@ -109,6 +110,8 @@ int main(int argc, char *argv[])
     // 创建窗口
     service->Entry(app.arguments());
     qDebug() << "First Terminal Window create complete! time use " << useTime.elapsed() << "ms";
+    QString strInitAppTime = GRAB_POINT + LOGO_TYPE + INIT_APP_TIME + QString::number(useTime.elapsed());
+    qDebug() << qPrintable(strInitAppTime);
     // 监听触控板事件
     manager.listenTouchPadSignal();
     // 监听桌面切换事件

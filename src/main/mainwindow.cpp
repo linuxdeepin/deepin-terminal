@@ -386,6 +386,7 @@ bool MainWindow::isTabChangeColor(int tabSessionId)
 *******************************************************************************/
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
+    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
     /***add by ut001121 zhangmeng 修复BUG#24452 点击“+”按钮新建工作区，自定义命令/编码/远程管理插件未消失***/
     showPlugin(PLUGIN_TYPE_NONE);
 
@@ -445,6 +446,9 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     });
 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
+    qint64 endTime = QDateTime::currentMSecsSinceEpoch();
+    QString strNewTabTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_TAB_TIME + QString::number(endTime - startTime);
+    qDebug() << qPrintable(strNewTabTime);
 }
 
 /*******************************************************************************
@@ -2128,6 +2132,18 @@ void MainWindow::firstTerminalComplete()
     // 创建mainwidow时间，这个时候terminal并没有创建好，不能代表什么。
     //qDebug() << "create mainwidow use " << m_WindowCompleteTime - m_CreateWindowTime << "ms";
     qDebug() << "cretae first Terminal use" << m_FirstTerminalCompleteTime - m_CreateWindowTime << "ms";
+}
+
+/*******************************************************************************
+ 1. @函数:    createNewMainWindowTime
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-21
+ 4. @说明:    创建新窗口需要的时间
+*******************************************************************************/
+qint64 MainWindow::createNewMainWindowTime()
+{
+    // 当前时间减去创建时间
+    return (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_ReferedAppStartTime);
 }
 
 /*******************************************************************************
