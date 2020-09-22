@@ -595,6 +595,8 @@ private:
     //用于计算出第三步正确的接收信息，格式\r\nXX\u0007XX
     QString lastRecvReturnData = "";
     /******** Add by ut001000 renfeixiang 2020-09-09 End***************/
+    //判断cat >>ttt<<_EOF特殊场景
+    bool specialHandle(QString &str);
     //add by 2020-09-18 end
 
     void updateTerminalSize(int height, int width);

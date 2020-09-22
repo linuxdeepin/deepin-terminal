@@ -250,6 +250,20 @@ void Session::viewDestroyed(QObject * view)
     removeView(display);
 }
 
+//判断cat >>ttt<<_EOF特殊场景 //add by 2020-09-16
+bool Session::specialHandle(QString &str)
+{
+    str.replace("\u001B[K", "");
+    str.replace("\u001B[A", "");
+    str.replace("\r", "");
+    str.replace("\n", "");
+    if(str.startsWith("> ")){
+        return true;
+    }else {
+        return false;
+    }
+}
+
 void Session::removeView(TerminalDisplay * widget)
 {
     _views.removeAll(widget);
@@ -752,6 +766,8 @@ bool Session::preRedraw(QByteArray & data)
         return true;
     }
     QByteArray byteClear("\x0d\x1b\x5b\x4b\x1b\x5b\x41\u0007");
+    //用于判断cat >>ttt<<_EOF特殊场景
+    QString tmpstrdata = "";
 
     switch (m_RedrawStep) {
     case RedrawStep1_Resize_Receiving://将非resize时保存的信息清除
@@ -759,7 +775,9 @@ bool Session::preRedraw(QByteArray & data)
         _emulation->setResizeSaveType(Emulation::SaveAll);
         _emulation->clearResizeAllString();
         /******** Add by ut001000 renfeixiang 2020-09-09:增加,用于屏蔽分屏幕场景，第一条消息，被分开发送，分开的消息发送到resize流程中 Begin***************/
-        if(!data.contains("\x0d\x1b\x5b\x4b")){
+        //增加特殊场景开头是>，不进行resize操作，判断cat >>ttt<<_EOF特殊场景
+        tmpstrdata = QString::fromLocal8Bit(data);
+        if(!data.contains("\x0d\x1b\x5b\x4b") || specialHandle(tmpstrdata)){
             m_RedrawStep = RedrawStep0_None;
             break;
         }
