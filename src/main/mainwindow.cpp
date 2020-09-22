@@ -1575,6 +1575,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                 // 不干扰终端使用ESC
                 if (QString(qApp->focusWidget()->metaObject()->className()) == TERM_WIDGET_NAME) {
                     filterReason = "focusWidget is terminnal";
+                    /***add by ut001121 zhangmeng 20200922 修复BUG48960***/
+                    showPlugin(PLUGIN_TYPE_NONE);
                     break;
                 }
                 // 如果有菜单出现的时候，ESC无效
