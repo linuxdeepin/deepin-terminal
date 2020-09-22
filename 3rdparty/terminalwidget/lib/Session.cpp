@@ -253,6 +253,9 @@ void Session::viewDestroyed(QObject * view)
 //判断cat >>ttt<<_EOF特殊场景 //add by 2020-09-16
 bool Session::specialHandle(QString &str)
 {
+    //防止当前消失带了上一次未发完的数据
+    QStringList list = str.split("\r\u001B[K");
+    str = list.at(list.size() -1);
     str.replace("\u001B[K", "");
     str.replace("\u001B[A", "");
     str.replace("\r", "");
