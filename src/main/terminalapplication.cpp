@@ -105,18 +105,18 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             // 包含edit
             if (m_keySequenceList.contains(edit)) {
                 m_keySequenceList.removeOne(edit);
-                qDebug() << "remove editing";
+                qDebug() << "remove editing when foucs out";
             }
         }
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
+            // 获取DKeySequenceEdit
+            DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
             // 在dtk的自定义快捷键输入框上按Enter
             if (keyevent->key() == Qt::Key_Enter
                     || keyevent->key() == Qt::Key_Return
                     || keyevent->key() == Qt::Key_Space
                ) {
-                // 获取DKeySequenceEdit
-                DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
                 // 当快捷键输入框内容不为空
                 // 设置里的快捷键输入框
                 if (!edit->keySequence().isEmpty()
@@ -132,11 +132,12 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
                     m_keySequenceList.append(edit);
                     return true;
                 }
-                if (m_keySequenceList.contains(edit)) {
-                    // 其他情况的按键，移除edit
-                    m_keySequenceList.removeOne(edit);
-                    qDebug() << "remove editing";
-                }
+            }
+            // 不是Enter和space操作，或者没进入记录流程，就删除
+            if (m_keySequenceList.contains(edit)) {
+                // 其他情况的按键，移除edit
+                m_keySequenceList.removeOne(edit);
+                qDebug() << "remove editing when others";
             }
         }
     }
