@@ -349,6 +349,7 @@ void TermWidgetPage::closeOtherTerminal(bool hasConfirmed)
     }
 
     setTerminalOpacity(Settings::instance()->opacity());
+    m_MainWindow->focusCurrentPage();
 }
 
 #if 0
@@ -779,7 +780,7 @@ void TermWidgetPage::showSearchBar(int state)
 {
     /******** Modify by ut001000 renfeixiang 2020-08-28:修改bug 45227,SearchBar没有显示，且不需要显示时，return Begin***************/
     // 沒显示，且不要显示
-    if(!m_findBar->isVisible() && state != SearchBar_Show){
+    if (!m_findBar->isVisible() && state != SearchBar_Show) {
         return;
     }
     /******** Modify by ut001000 renfeixiang 2020-08-28***************/
@@ -807,7 +808,7 @@ void TermWidgetPage::showSearchBar(int state)
         if (Utils::getMainWindow(this)->isFocusOnList()) {
             Utils::getMainWindow(this)->focusCurrentPage();
         }
-         m_findBar->hide();
+        m_findBar->hide();
         /******** Modify by ut001000 renfeixiang 2020-08-28 End***************/
     }
 }
@@ -847,8 +848,7 @@ void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
 void TermWidgetPage::printSearchCostTime()
 {
     qint64 costTime = m_findBar->searchCostTime();
-    if (costTime != -1)
-    {
+    if (costTime != -1) {
         QString strSearchTime = GRAB_POINT + LOGO_TYPE + SEARCH_TIME + QString::number(costTime);
         qDebug() << qPrintable(strSearchTime);
     }
