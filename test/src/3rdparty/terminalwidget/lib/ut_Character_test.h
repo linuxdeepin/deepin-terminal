@@ -3,7 +3,6 @@
 #define UT_CHARACTER_TEST_H
 
 #include "ut_defines.h"
-#include "Character.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>

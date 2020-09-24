@@ -21,7 +21,7 @@ public:
     //用于做一些清理操作
     virtual void TearDown();
 public:
-    CustomCommandSearchRstPanel* m_pccs;
+    CustomCommandSearchRstPanel* m_cmdSearchPanel = nullptr;
 };
 
 #endif//UT_CUSTOMCOMMANDSEARCHRSTPANEL_TEST_H

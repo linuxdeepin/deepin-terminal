@@ -24,7 +24,8 @@ void UT_TerminalDisplay_Test::TearDown()
 {
 }
 #ifdef UT_TERMINALDISPLAY_TEST
-TEST_F(UT_TerminalDisplay_Test, ScrollBarPositionsTest)
+
+TEST_F(UT_TerminalDisplay_Test, setScrollBarPosition)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
 
@@ -42,7 +43,7 @@ TEST_F(UT_TerminalDisplay_Test, ScrollBarPositionsTest)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, ColorTableTest)
+TEST_F(UT_TerminalDisplay_Test, setColorTable)
 {
     const ColorEntry defaultTable[TABLE_COLORS] =
     {

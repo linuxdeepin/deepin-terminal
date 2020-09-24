@@ -33,6 +33,7 @@ void UT_ListView_Test::TearDown()
 }
 
 #ifdef UT_LISTVIEW_TEST
+
 TEST_F(UT_ListView_Test, CustomCommandListViewTest)
 {
     ListView cmdListWidget(ListType_Custom, nullptr);
@@ -55,7 +56,7 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
 
     emit Service::instance()->refreshCommandPanel("", "");
 
-    ASSERT_EQ(cmdActionList.isEmpty(), false);
+    EXPECT_EQ(cmdActionList.isEmpty(), false);
 
     QAction *firstAction = cmdActionList.first();
     QString firstCmdName = firstAction->text();
@@ -75,9 +76,12 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
     ItemWidget *lastItemWidget = itemWidgetList.last();
     EXPECT_EQ(lastItemWidget->m_firstText, updateCmdName);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
-#endif
+    cmdListWidget.onCustomItemModify("cmd_0", false);
+
+    cmdListWidget.onCustomItemModify("cmd_0", true);
+
+    int index = cmdListWidget.getWidgetIndex(lastItemWidget);
+    EXPECT_GE(index, 0);
 
     //释放内存
     for(int i=0; i<cmdActionList.size(); i++)
@@ -85,9 +89,46 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
         QAction *action = cmdActionList.at(i);
         delete action;
     }
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(200);
+#endif
 }
 
-TEST_F(UT_ListView_Test, RemoteManagementListViewTest)
+TEST_F(UT_ListView_Test, onRemoteItemModify)
 {
+    ListView remoteListWidget(ListType_Custom, nullptr);
+    remoteListWidget.resize(242, 600);
+    remoteListWidget.show();
+
+    ServerConfigManager *serverConfigManager = ServerConfigManager::instance();
+    QList<ServerConfig *> remoteServerList;
+    const int remoteCount = 8;
+    for(int i=0; i<=remoteCount; i++)
+    {
+
+        ServerConfig *config = new ServerConfig();
+        config->m_serverName = QString("server_%1").arg(i);
+        config->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+        config->m_userName = QString("%1").arg(Utils::getRandString());
+        config->m_password = QString("123");
+        config->m_privateKey = QString("");
+        config->m_port = QString("");
+        config->m_group = QString("");
+        config->m_path = QString("");
+        config->m_command = QString("");
+        config->m_encoding = QString("");
+        config->m_backspaceKey = QString("");
+        config->m_deleteKey = QString("");
+
+        serverConfigManager->saveServerConfig(config);
+
+        remoteListWidget.addItem(ItemFuncType_Item, config->m_serverName, config->m_address);
+
+        remoteServerList.append(config);
+    }
+
+    remoteListWidget.onRemoteItemModify("server_0", false);
 }
+
 #endif

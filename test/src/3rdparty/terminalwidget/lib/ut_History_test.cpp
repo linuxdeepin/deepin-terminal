@@ -23,7 +23,8 @@ void UT_History_Test::TearDown()
 {
 }
 
-#ifdef UT_History_TEST
+#ifdef UT_HISTORY_TEST
+
 TEST_F(UT_History_Test, HistoryNoneTest)
 {
     HistoryType *history;
@@ -132,6 +133,48 @@ TEST_F(UT_History_Test, HistoryScrollTest)
     EXPECT_EQ(compactHistoryType.maximumLineCount(), 42);
 
     delete historyScroll;
+}
+
+TEST_F(UT_History_Test, HistoryScrollBufferTest)
+{
+    HistoryScrollBuffer *scrollBuffer = new HistoryScrollBuffer(200);
+    EXPECT_EQ(scrollBuffer->maxNbLines(), 200);
+
+    scrollBuffer->setMaxNbLines(600);
+    EXPECT_EQ(scrollBuffer->maxNbLines(), 600);
+
+    QVector<Character> charVec;
+    for(int i=0; i<20; i++)
+    {
+        Character aChar(static_cast<quint16>('a'+i));
+        charVec << aChar;
+    }
+
+    LineProperty lineProperty = LINE_DEFAULT;
+    scrollBuffer->addCellsVector(charVec);
+    scrollBuffer->addLine(lineProperty & LINE_WRAPPED);
+
+    int lineCount = scrollBuffer->getLines();
+    EXPECT_GE(lineCount, 1);
+}
+
+TEST_F(UT_History_Test, HistoryScrollBlockArrayTest)
+{
+    HistoryScrollBlockArray *scrollBlockArray = new HistoryScrollBlockArray(500);
+
+    QVector<Character> charVec;
+    for(int i=0; i<20; i++)
+    {
+        Character aChar(static_cast<quint16>('a'+i));
+        charVec << aChar;
+    }
+
+    LineProperty lineProperty = LINE_DEFAULT;
+    scrollBlockArray->addCellsVector(charVec);
+    scrollBlockArray->addLine(lineProperty & LINE_WRAPPED);
+
+    int lineCount = scrollBlockArray->getLines();
+    EXPECT_GE(lineCount, 1);
 }
 
 #endif

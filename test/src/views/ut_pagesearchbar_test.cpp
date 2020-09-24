@@ -67,7 +67,7 @@ TEST_F(UT_PageSearchBar_Test, PageSearchBarTest)
     EXPECT_EQ(searchTxt.length(), 0);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 
     QString searchCmd = QString("rw");
@@ -104,7 +104,7 @@ TEST_F(UT_PageSearchBar_Test, PageSearchBarTest)
     }
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
 #endif

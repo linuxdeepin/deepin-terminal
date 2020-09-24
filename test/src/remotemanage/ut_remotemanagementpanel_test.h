@@ -21,6 +21,11 @@ public:
     virtual void TearDown();
 
     ServerConfigManager *m_serverConfigManager = nullptr;
+
+private:
+    int getServerConfigCount();
+
+    void prepareData();
 };
 
 #endif // UT_REMOTEMANAGEMENTPANEL_TEST_H

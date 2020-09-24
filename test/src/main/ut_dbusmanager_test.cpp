@@ -21,12 +21,12 @@ void UT_Dbusmanager_Test::TearDown()
 #ifdef UT_DBUSMANAGER_TEST
 
 //初始化链接
-TEST_F(UT_Dbusmanager_Test, initDbus)
-{
-    EXPECT_NE(m_pDbusManager, nullptr);
+//TEST_F(UT_Dbusmanager_Test, initDbus)
+//{
+//    EXPECT_NE(m_pDbusManager, nullptr);
 
-    EXPECT_TRUE(m_pDbusManager->initDBus());
-}
+//    EXPECT_TRUE(m_pDbusManager->initDBus());
+//}
 //获取桌面索引
 TEST_F(UT_Dbusmanager_Test, callKDECurrentDesktop)
 {

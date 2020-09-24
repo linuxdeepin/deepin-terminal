@@ -47,6 +47,12 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     ServerConfigManager *serverConfigManager = ServerConfigManager::instance();
     serverConfigManager->initServerConfig();
 
+    QDir serverConfigBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    EXPECT_EQ(serverConfigBasePath.exists(), true);
+
+    QString serverConfigFilePath(serverConfigBasePath.filePath("server-config.conf"));
+    EXPECT_EQ(QFile::exists(serverConfigFilePath), true);
+
     int serverConfigCount = getServerConfigCount();
     qDebug() << serverConfigCount << endl;
 
@@ -94,7 +100,7 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     serverConfigManager->modifyServerConfig(newConfig, currConfig);
     EXPECT_EQ(newConfig, serverConfigManager->getServerConfig(newConfig->m_serverName));
 
-    EXPECT_EQ(serverCount, 1);
+    EXPECT_GE(serverCount, 1);
 
     serverConfigManager->delServerConfig(newConfig);
     EXPECT_EQ(getServerConfigCount(), serverConfigCount);
@@ -102,7 +108,7 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount-1);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
 #endif

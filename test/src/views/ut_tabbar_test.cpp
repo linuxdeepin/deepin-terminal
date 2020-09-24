@@ -74,7 +74,7 @@ TEST_F(UT_Tabbar_Test, TabbarTest)
     EXPECT_EQ(tabbar.count(), tabCount-1);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
 #endif

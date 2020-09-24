@@ -3,8 +3,6 @@
 #define UT_VT102EMULATION_TEST_H
 
 #include "ut_defines.h"
-#include "Vt102Emulation.h"
-
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
 

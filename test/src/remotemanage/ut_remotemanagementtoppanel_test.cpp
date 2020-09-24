@@ -24,20 +24,19 @@ void UT_RemoteManagementTopPanel_Test::SetUp()
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
-
-    m_normalTermProperty[QuakeMode] = false;
-    m_normalTermProperty[SingleFlag] = true;
-    m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
 }
 
 void UT_RemoteManagementTopPanel_Test::TearDown()
 {
-    delete m_normalWindow;
 }
 
 #ifdef UT_REMOTEMANAGEMENTTOPPANEL_TEST
-TEST_F(UT_RemoteManagementTopPanel_Test, RemoteManagementTopPanelTest)
+
+TEST_F(UT_RemoteManagementTopPanel_Test, setFocusInPanel)
 {
+    m_normalTermProperty[QuakeMode] = false;
+    m_normalTermProperty[SingleFlag] = true;
+    m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();
     EXPECT_EQ(m_normalWindow->isVisible(), true);
@@ -52,7 +51,65 @@ TEST_F(UT_RemoteManagementTopPanel_Test, RemoteManagementTopPanelTest)
     remoteTopPanel->setFocusInPanel();
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
+    m_normalWindow->close();
+    delete m_normalWindow;
+}
+
+TEST_F(UT_RemoteManagementTopPanel_Test, showSearchPanel)
+{
+    m_normalTermProperty[QuakeMode] = false;
+    m_normalTermProperty[SingleFlag] = true;
+    m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    m_normalWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+
+    RemoteManagementPlugin *remotePlugin = m_normalWindow->findChild<RemoteManagementPlugin *>();
+    RemoteManagementTopPanel *remoteTopPanel = remotePlugin->getRemoteManagementTopPanel();
+    EXPECT_NE(remoteTopPanel, nullptr);
+    EXPECT_EQ(remoteTopPanel->isVisible(), true);
+
+    remoteTopPanel->showSearchPanel("group");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(200);
+#endif
+    m_normalWindow->close();
+    delete m_normalWindow;
+}
+
+TEST_F(UT_RemoteManagementTopPanel_Test, showGroupPanel)
+{
+    m_normalTermProperty[QuakeMode] = false;
+    m_normalTermProperty[SingleFlag] = true;
+    m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    m_normalWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+
+    RemoteManagementPlugin *remotePlugin = m_normalWindow->findChild<RemoteManagementPlugin *>();
+    RemoteManagementTopPanel *remoteTopPanel = remotePlugin->getRemoteManagementTopPanel();
+    EXPECT_NE(remoteTopPanel, nullptr);
+    EXPECT_EQ(remoteTopPanel->isVisible(), true);
+
+    remoteTopPanel->showSearchPanel("group");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(200);
+#endif
+    //显示前一个界面（返回）
+    remoteTopPanel->showPrevPanel();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(200);
+#endif
+    m_normalWindow->close();
+    delete m_normalWindow;
 }
 #endif

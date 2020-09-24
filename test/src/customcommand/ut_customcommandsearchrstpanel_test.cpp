@@ -14,25 +14,34 @@ UT_CustomCommandSearchRstPanel_Test::UT_CustomCommandSearchRstPanel_Test()
 
 void UT_CustomCommandSearchRstPanel_Test::SetUp()
 {
-    m_pccs = new CustomCommandSearchRstPanel();
+    m_cmdSearchPanel = new CustomCommandSearchRstPanel();
 }
 
 void UT_CustomCommandSearchRstPanel_Test::TearDown()
 {
-    delete  m_pccs;
+    delete  m_cmdSearchPanel;
 
 }
 #ifdef UT_CUSTOMCOMMANDSEARCHRSTPANEL_TEST
 
-TEST_F(UT_CustomCommandSearchRstPanel_Test,init)
+TEST_F(UT_CustomCommandSearchRstPanel_Test, refreshDataTest)
 {
-    EXPECT_NE(m_pccs,nullptr);
-    m_pccs->show();
-    EXPECT_EQ(m_pccs->isVisible(),true);
-    m_pccs->refreshData();
-     QTest::qWait(1000);
-    m_pccs->refreshData("test");
+    EXPECT_NE(m_cmdSearchPanel, nullptr);
+    m_cmdSearchPanel->show();
+    EXPECT_EQ(m_cmdSearchPanel->isVisible(),true);
    // m_pccs->doCustomCommand("");  //该接口有问题，如果没有命令，会产生崩溃
-    QTest::qWait(1000);
+
+    m_cmdSearchPanel->refreshData();
+
+#ifdef ENABLE_UI_TEST
+     QTest::qWait(200);
+#endif
+
+    m_cmdSearchPanel->refreshData("test");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(200);
+#endif
 }
+
 #endif

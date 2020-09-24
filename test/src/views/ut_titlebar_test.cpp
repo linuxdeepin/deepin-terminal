@@ -55,7 +55,8 @@ TEST_F(UT_TitleBar_Test, TitleBarTest)
     EXPECT_EQ(titleBar->isVisible(), true);
 
     //清空titleBar布局
-    QHBoxLayout *titleBarLayout = titleBar->m_layout;QLayoutItem *child;
+    QHBoxLayout *titleBarLayout = titleBar->m_layout;
+    QLayoutItem *child;
     while ((child = titleBarLayout->takeAt(0)) != nullptr)
     {
         if(child->widget())
@@ -83,7 +84,7 @@ TEST_F(UT_TitleBar_Test, TitleBarTest)
     EXPECT_EQ(rightSpace, titleBar->m_rightSpace);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
 #endif

@@ -67,6 +67,7 @@ TEST_F(UT_ShortcutManager_Test, SettingsTest)
     EXPECT_NE(currAction, nullptr);
     EXPECT_EQ(currAction->text(), cmdName);
 
+#ifdef ENABLE_UI_TEST
     bool isConflict = m_shortcutManager->isShortcutConflictInCustom(cmdName, shortcutKey);
     EXPECT_EQ(isConflict, true);
 
@@ -86,5 +87,6 @@ TEST_F(UT_ShortcutManager_Test, SettingsTest)
 
     isValid = m_shortcutManager->isValidShortcut(cmdName, shortcutKey);
     EXPECT_EQ(isValid, false);
+#endif
 }
 #endif

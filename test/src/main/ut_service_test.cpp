@@ -1,12 +1,17 @@
 #include "ut_service_test.h"
 
+#define private public
 #include "service.h"
+#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
+#include <QSignalSpy>
+
+#include <DSettingsWidgetFactory>
 
 UT_Service_Test::UT_Service_Test()
 {
@@ -49,4 +54,105 @@ TEST_F(UT_Service_Test, ServiceTest)
 //        m_service->releaseShareMemory();
 //    }
 }
+
+TEST_F(UT_Service_Test, getSubAppStartTime)
+{
+    qint64 startTime = 5;
+    m_service->setSubAppStartTime(startTime);
+
+    qint64 time = m_service->getSubAppStartTime();
+    EXPECT_EQ(startTime, time);
+}
+
+TEST_F(UT_Service_Test, setSubAppStartTime)
+{
+    qint64 startTime = 10;
+    m_service->setSubAppStartTime(startTime);
+
+    qint64 time = m_service->getSubAppStartTime();
+    EXPECT_EQ(startTime, time);
+}
+
+TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
+{
+    m_service->listenWindowEffectSwitcher();
+
+    QSignalSpy spyWinEffectEnable(Service::instance(), SIGNAL(Service::onWindowEffectEnabled(bool)));
+    EXPECT_EQ(spyWinEffectEnable.count(), 0);
+
+    bool isWindowEffectEnabled = m_service->isWindowEffectEnabled();
+    if( isWindowEffectEnabled)
+    {
+#ifdef ENABLE_UI_TEST
+//        模拟自动关闭窗口特效
+//        QTest::qWait(200);
+//        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
+//        EXPECT_EQ(spyWinEffectEnable.count(), 1);
+#endif
+    }
+    else
+    {
+#ifdef ENABLE_UI_TEST
+//        模拟自动开启窗口特效
+//        QTest::qWait(200);
+//        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
+//        EXPECT_EQ(spyWinEffectEnable.count(), 1);
+#endif
+    }
+}
+
+TEST_F(UT_Service_Test, isCountEnable)
+{
+    bool isCountEnable = m_service->isCountEnable();
+    EXPECT_EQ(isCountEnable, true);
+}
+
+TEST_F(UT_Service_Test, getsetIsDialogShow)
+{
+    EXPECT_EQ(m_service->getIsDialogShow(), false);
+
+//    m_service->setIsDialogShow(nullptr, true);
+//    EXPECT_EQ(m_service->getIsDialogShow(), true);
+}
+
+TEST_F(UT_Service_Test, getEnable)
+{
+    qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    bool isEnable = m_service->getEnable(startTime);
+    EXPECT_EQ(isEnable, false);
+}
+
+TEST_F(UT_Service_Test, getEntryTime)
+{
+    qint64 entyTime = m_service->getEntryTime();
+    EXPECT_GE(entyTime, 0);
+}
+
+TEST_F(UT_Service_Test, showHideOpacityAndBlurOptions)
+{
+    m_service->m_settingDialog = new DSettingsDialog();
+    m_service->m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
+    m_service->m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
+    m_service->m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
+    m_service->m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
+
+    m_service->m_settingDialog->updateSettings(Settings::instance()->settings);
+    m_service->m_settingDialog->setWindowModality(Qt::NonModal);
+    m_service->m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
+
+    m_service->showHideOpacityAndBlurOptions(true);
+}
+
+TEST_F(UT_Service_Test, isSettingDialogVisible)
+{
+    EXPECT_EQ(m_service->isSettingDialogVisible(), false);
+}
+
+TEST_F(UT_Service_Test, resetSettingOwner)
+{
+    m_service->resetSettingOwner();
+    EXPECT_EQ(m_service->m_settingOwner, nullptr);
+}
+
+
 #endif

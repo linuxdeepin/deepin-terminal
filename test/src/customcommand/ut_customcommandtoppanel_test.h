@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 
-class CustomCommandSearchRstPanel;
+class CustomCommandTopPanel;
 class UT_CustomCommandTopPanel_Test : public ::testing::Test
 {
 public:
@@ -20,6 +20,7 @@ public:
     //用于做一些清理操作
     virtual void TearDown();
 public:
+    CustomCommandTopPanel* m_cmdTopPanel = nullptr;
 };
 
 #endif//UT_CUSTOMCOMMANDTOPPANEL_TEST_H

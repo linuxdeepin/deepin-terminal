@@ -103,7 +103,7 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
     }
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
 
@@ -135,7 +135,7 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
     Konsole::Emulation::KeyboardCursorShape underlineShape = Konsole::Emulation::KeyboardCursorShape::UnderlineCursor;
     Konsole::Emulation::KeyboardCursorShape ibeamShape = Konsole::Emulation::KeyboardCursorShape::IBeamCursor;
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
     parentWidget.setcursorShape(static_cast<int>(blockShape));
     EXPECT_EQ(blockShape, termDisplay->_cursorShape);
@@ -149,9 +149,6 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
 #endif
     parentWidget.setcursorShape(static_cast<int>(ibeamShape));
     EXPECT_EQ(ibeamShape, termDisplay->_cursorShape);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(2000);
-#endif
 }
 
 TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)

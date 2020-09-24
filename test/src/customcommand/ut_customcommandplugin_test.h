@@ -21,7 +21,7 @@ public:
     //用于做一些清理操作
     virtual void TearDown();
 public:
-    CustomCommandPlugin* m_pccp;
+    CustomCommandPlugin* m_cmdPlugin = nullptr;
 };
 
 #endif//UT_CUSTOMCOMMANDPLUGIN_TEST_H

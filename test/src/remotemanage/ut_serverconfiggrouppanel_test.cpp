@@ -28,6 +28,8 @@ void UT_ServerConfigGroupPanel_Test::SetUp()
     m_normalTermProperty[QuakeMode] = false;
     m_normalTermProperty[SingleFlag] = true;
     m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
 }
 
 void UT_ServerConfigGroupPanel_Test::TearDown()
@@ -36,10 +38,8 @@ void UT_ServerConfigGroupPanel_Test::TearDown()
 }
 
 #ifdef UT_SERVERCONFIGGROUPPANEL_TEST
-TEST_F(UT_ServerConfigGroupPanel_Test, ServerConfigGroupPanelTest)
+TEST_F(UT_ServerConfigGroupPanel_Test, refreshData)
 {
-    m_normalWindow->resize(800, 600);
-    m_normalWindow->show();
     EXPECT_EQ(m_normalWindow->isVisible(), true);
 
     m_normalWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
@@ -51,9 +51,55 @@ TEST_F(UT_ServerConfigGroupPanel_Test, ServerConfigGroupPanelTest)
 
     ServerConfigGroupPanel *groupPanel = remoteTopPanel->findChild<ServerConfigGroupPanel *>();
     EXPECT_NE(groupPanel, nullptr);
+    groupPanel->refreshData("group01");
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
+
+TEST_F(UT_ServerConfigGroupPanel_Test, setFocusBack)
+{
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    m_normalWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+
+    RemoteManagementPlugin *remotePlugin = m_normalWindow->findChild<RemoteManagementPlugin *>();
+    RemoteManagementTopPanel *remoteTopPanel = remotePlugin->getRemoteManagementTopPanel();
+    EXPECT_NE(remoteTopPanel, nullptr);
+    EXPECT_EQ(remoteTopPanel->isVisible(), true);
+
+    ServerConfigGroupPanel *groupPanel = remoteTopPanel->findChild<ServerConfigGroupPanel *>();
+    EXPECT_NE(groupPanel, nullptr);
+    groupPanel->setFocusBack();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(200);
+#endif
+}
+
+TEST_F(UT_ServerConfigGroupPanel_Test, clearAllFocus)
+{
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    m_normalWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+
+    RemoteManagementPlugin *remotePlugin = m_normalWindow->findChild<RemoteManagementPlugin *>();
+    RemoteManagementTopPanel *remoteTopPanel = remotePlugin->getRemoteManagementTopPanel();
+    EXPECT_NE(remoteTopPanel, nullptr);
+    EXPECT_EQ(remoteTopPanel->isVisible(), true);
+
+    ServerConfigGroupPanel *groupPanel = remoteTopPanel->findChild<ServerConfigGroupPanel *>();
+    EXPECT_NE(groupPanel, nullptr);
+    groupPanel->clearAllFocus();
+
+    EXPECT_EQ(groupPanel->m_rebackButton->hasFocus(), false);
+    EXPECT_EQ(groupPanel->m_searchEdit->hasFocus(), false);
+    EXPECT_EQ(groupPanel->m_listWidget->hasFocus(), false);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(200);
+#endif
+}
+
 #endif

@@ -3,6 +3,19 @@ project(deepin-terminal-test)
 
 configure_file(../src/environments.h.in environments.h @ONLY)
 
+# 设置添加gocv相关信息的输出
+set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+
 FILE(GLOB allSource
     ../src/common/*.cpp
     ../src/customcommand/*.cpp
@@ -98,7 +111,7 @@ add_custom_command(TARGET test
     #1.清理原先的gcov信息
     COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
     COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME}.dir --zerocounters
-    COMMAND ./${PROJECT_NAME_TEST}
+    COMMAND ./test/${PROJECT_NAME_TEST}
 
     #2.收集gcov信息到.info文件中
     COMMAND lcov --directory . --capture --output-file ./coverageResult/${PROJECT_NAME}_Coverage.info
@@ -106,7 +119,7 @@ add_custom_command(TARGET test
     #3.过滤一些我们不感兴趣的文件的覆盖率信息
     COMMAND echo " =================== do filter begin ==================== "
     COMMAND lcov --remove ./coverageResult/${PROJECT_NAME}_Coverage.info
-    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/src/*' '*/googletest/*'
+    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/theme/*' '*/quaketerminal/*' '*/test/*' 'qtermwidget.h' '*/lib/SearchBar.*' '*/build-*/*' '*/googletest/*'
     -o ./coverageResult/${PROJECT_NAME}_Coverage.info
     COMMAND echo " =================== do filter end ==================== "
 

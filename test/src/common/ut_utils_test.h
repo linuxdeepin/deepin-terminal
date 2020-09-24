@@ -3,7 +3,6 @@
 #define UT_UTILS_TEST_H
 
 #include "ut_defines.h"
-#include "utils.h"
 
 #include <QObject>
 #include <gtest/gtest.h>

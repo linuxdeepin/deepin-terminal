@@ -1,16 +1,16 @@
 
-#ifndef UT_REMOTEMANAGEMENTPLUGN_TEST_H
-#define UT_REMOTEMANAGEMENTPLUGN_TEST_H
+#ifndef UT_REMOTEMANAGEMENTPLUGIN_TEST_H
+#define UT_REMOTEMANAGEMENTPLUGIN_TEST_H
 
 #include "ut_defines.h"
 #include "termproperties.h"
 #include <gtest/gtest.h>
 
 class MainWindow;
-class UT_RemoteManagementPlugn_Test : public ::testing::Test
+class UT_RemoteManagementPlugin_Test : public ::testing::Test
 {
 public:
-    UT_RemoteManagementPlugn_Test();
+    UT_RemoteManagementPlugin_Test();
 
 public:
     //这里的几个函数都会自动调用
@@ -28,4 +28,4 @@ public:
     TermProperties m_normalTermProperty;
 };
 
-#endif // UT_REMOTEMANAGEMENTPLUGN_TEST_H
+#endif // UT_REMOTEMANAGEMENTPLUGIN_TEST_H

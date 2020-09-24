@@ -62,6 +62,12 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
     termWidget->skipToPreCommand();
     termWidget->skipToNextCommand();
 
+    termWidget->setEnterSzCommand(false);
+    EXPECT_EQ(termWidget->enterSzCommand(), false);
+
+    termWidget->setEnterSzCommand(true);
+    EXPECT_EQ(termWidget->enterSzCommand(), true);
+
     //设置透明度
     for(qreal opacity=0.01; opacity <= 1.0; opacity += 0.01)
     {
@@ -105,11 +111,11 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
     }
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
 
-TEST_F(UT_TermWidget_Test, TermWidgetTest2)
+TEST_F(UT_TermWidget_Test, getsetEncode)
 {
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();

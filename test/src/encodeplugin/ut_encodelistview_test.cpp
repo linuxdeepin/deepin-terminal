@@ -60,6 +60,7 @@ TEST_F(UT_EncodeListView_Test, EncodeListViewTest)
     qsrand(static_cast<uint>(time(nullptr)));
     int randomIndex = qrand() % itemCount;
     EXPECT_EQ((randomIndex > 0) && (randomIndex < itemCount), true);
+    qDebug() << "itemCount" << itemCount << endl;
     qDebug() << "randomIndex" << randomIndex << endl;
 
     QAbstractItemModel *model = encodeListView->model();
@@ -89,7 +90,7 @@ TEST_F(UT_EncodeListView_Test, EncodeListViewTest)
         }
     }
 
-    QTest::qWait(1000);
+    QTest::qWait(200);
 #endif
 }
 #endif
