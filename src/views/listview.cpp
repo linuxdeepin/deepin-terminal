@@ -27,6 +27,7 @@
 
 // qt
 #include <QDebug>
+#include <QScroller>
 
 ListView::ListView(ListType type, QWidget *parent)
     : QScrollArea(parent),
@@ -41,6 +42,9 @@ ListView::ListView(ListType type, QWidget *parent)
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     // 初始化界面
     initUI();
+
+    /***add by ut001121 zhangmeng 20200924 修复BUG48618***/
+    QScroller::grabGesture(this, QScroller::TouchGesture);
 }
 
 /*******************************************************************************
@@ -922,8 +926,7 @@ int ListView::calculateRange(int height)
 *******************************************************************************/
 void ListView::mousePressEvent(QMouseEvent *event)
 {
-    //获取鼠标按下的点坐标
-    m_tempPoint = event->pos();
+    Q_UNUSED(event)
     //return QScrollArea::mousePressEvent(event);
 }
 
@@ -935,25 +938,8 @@ void ListView::mousePressEvent(QMouseEvent *event)
 *******************************************************************************/
 void ListView::mouseMoveEvent(QMouseEvent *event)
 {
-    //移动位置记录
-    auto pos = event->pos();
-    //纵向滚动条获取
-    auto vbar = this->verticalScrollBar();
-    //移动距离差值计算
-    auto offset = m_tempPoint.y() - pos.y();
-    //当前滚动条位置
-    auto val = vbar->value();
-    //滚动条pagetemp区域高度
-    auto step = vbar->pageStep();
-    //移动位置计算
-    auto move = offset * step / m_mainWidget->height();
-
-    if (move + val < 0 || move + val > m_mainWidget->height()) {
-        return;
-    }
-    //滚轮位置设置
-    vbar->setValue(move + val);
-
+    Q_UNUSED(event)
+    //return QScrollArea::mouseMoveEvent(event);
 }
 
 
