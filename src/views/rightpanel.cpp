@@ -66,8 +66,19 @@ void RightPanel::hideAnim()
         animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), windowRect.height() - 50));
     }
 
+    /***mod begin by ut001121 zhangmeng 20200924 修复BUG49378***/
+    //结束处理
+    connect(animation, &QPropertyAnimation::finished, this, [=]{
+        //启用面板
+        setEnabled(true);
+        //隐藏面板
+        hide();
+    });
 
+    //禁用面板
+    setEnabled(false);
+
+    //开始动画
     animation->start(QAbstractAnimation::DeleteWhenStopped);
-
-    connect(animation, &QPropertyAnimation::finished, this, &QWidget::hide);
+    /***mod end by ut001121***/
 }
