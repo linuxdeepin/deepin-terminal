@@ -78,7 +78,6 @@ include_directories("src/common")
 include_directories("src/customcommand")
 include_directories("src/encodeplugin")
 include_directories("src/main")
-include_directories("src/quaketerminal")
 include_directories("src/remotemanage")
 include_directories("src/settings")
 include_directories("src/theme")
@@ -123,9 +122,6 @@ set (DTNG_CPP_FILES
     src/main/termproperties.cpp    
     src/main/dbusmanager.cpp
     src/main/atspidesktop.cpp
-    src/quaketerminal/quaketerminaladapter.cpp
-    src/quaketerminal/quaketerminalproxy.cpp
-    src/quaketerminal/termargumentparser.cpp
     src/remotemanage/remotemanagementpanel.cpp
     src/remotemanage/remotemanagementplugn.cpp
     src/remotemanage/remotemanagementsearchpanel.cpp
@@ -144,7 +140,6 @@ set (DTNG_CPP_FILES
     src/theme/themepanelplugin.cpp
     src/views/commonpanel.cpp
     src/views/myiconbutton.cpp
-    src/views/warnningdlg.cpp
     src/views/operationconfirmdlg.cpp
     src/views/pagesearchbar.cpp
     src/views/rightpanel.cpp
@@ -182,9 +177,6 @@ set (DTNG_HEADER_FILES
     src/main/termproperties.h
     src/main/dbusmanager.h
     src/main/atspidesktop.h
-    src/quaketerminal/quaketerminaladapter.h
-    src/quaketerminal/quaketerminalproxy.h
-    src/quaketerminal/termargumentparser.h
     src/remotemanage/remotemanagementpanel.h
     src/remotemanage/remotemanagementplugn.h
     src/remotemanage/remotemanagementsearchpanel.h
@@ -203,7 +195,6 @@ set (DTNG_HEADER_FILES
     src/views/commonpanel.h
     src/views/myiconbutton.h
     src/views/operationconfirmdlg.h
-    src/views/warnningdlg.h
     src/views/pagesearchbar.h
     src/views/rightpanel.h
     src/views/tabbar.h

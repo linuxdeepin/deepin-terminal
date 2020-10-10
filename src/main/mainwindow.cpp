@@ -910,35 +910,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         emit mainwindowClosed(this);
     }
 }
-/*******************************************************************************
- 1. @函数:    closeConfirm
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-04-29
- 4. @说明:    mainwindow关闭确认
- 　　　　　　　当前方案为一页一页确认
-*******************************************************************************/
-bool MainWindow::closeConfirm()
-{
-    int runningCount = 0;
-    QList<QString> closeTabIdList;
-    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
-        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
-        closeTabIdList.append(tabPage->identifier());
-        runningCount += tabPage->runningTerminalCount();
-    }
-
-    // 如果不能马上关闭，并且还在没有最小化．
-    if (runningCount != 0  && isMinimized()) {
-        qDebug() << "isMinimized........... " << endl;
-        setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
-    }
-    if (runningCount != 0) {
-        // 全部关闭时，仅提示一次．
-        showExitConfirmDialog(Utils::CloseType_Window, runningCount, this);
-        return false;
-    }
-    return true;
-}
 
 /*******************************************************************************
  1. @函数:    isQuakeMode

@@ -19,8 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "mainwindow.h"
-#include "termargumentparser.h"
-#include "termproperties.h"
 #include "environments.h"
 #include "dbusmanager.h"
 #include "service.h"
