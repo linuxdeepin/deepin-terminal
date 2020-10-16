@@ -338,6 +338,11 @@ void TermWidgetPage::closeOtherTerminal(bool hasConfirmed)
     }
 
     QList<TermWidget *> termList = findChildren<TermWidget *>();
+    // 终端数量小于2,执行关闭其他窗口操作
+    if (termList.count() < 2) {
+        qDebug() << "current window doesn't have other terminal, can't close other terminals.";
+        return;
+    }
 
     int currSessionId = m_currentTerm->getSessionId();
     //exit protection
