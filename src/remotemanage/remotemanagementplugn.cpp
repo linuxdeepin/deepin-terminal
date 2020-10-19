@@ -115,30 +115,37 @@ void RemoteManagementPlugn::doCennectServer(ServerConfig *curServer)
 
 QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
 {
+    qDebug() << "RemoteManagementPlugin create temporary shell file.";
+    // 首先读取通用模板
     QFile sourceFile(":/other/ssh_login.sh");
     QString fileString;
+    // 打开文件
     if (sourceFile.open(QIODevice::ReadOnly)) {
+        //读取文件
         fileString = sourceFile.readAll();
+        // 关闭文件
         sourceFile.close();
     }
 
-    fileString.replace("<<USER>>", curServer->m_userName);
-    fileString.replace("<<SERVER>>", curServer->m_address.trimmed());
-    fileString.replace("<<PORT>>", curServer->m_port);
+    QString strArgs = QString(" <<USER>> <<SERVER>> <<PORT>> <<PRIVATE_KEY>> <<PASSWORD>>");
+    // 用远程管理数据替换文件内的关键字
+    strArgs.replace("<<USER>>", curServer->m_userName);
+    strArgs.replace("<<SERVER>>", curServer->m_address.trimmed());
+    strArgs.replace("<<PORT>>", curServer->m_port);
+    // 根据是否有证书，替换关键字 // pass_way仅仅是占位
     if (curServer->m_privateKey.isNull() || curServer->m_privateKey.isEmpty()) {
-        fileString.replace("<<PRIVATE_KEY>>", "");
-        QRegExp rx("([\"$\\\\])");
-        QString password = curServer->m_password;
-        password.replace(rx, "\\\\\\1");
-        fileString.replace("<<PASSWORD>>", password);
         fileString.replace("<<AUTHENTICATION>>", "no");
+        strArgs.replace("<<PRIVATE_KEY>>", "NoPrivateKeyPath");
+        strArgs.replace("<<PASSWORD>>", curServer->m_password);
     } else {
-        fileString.replace("<<PRIVATE_KEY>>", QString("-i " + curServer->m_privateKey));
-        fileString.replace("<<PASSWORD>>", "");
         fileString.replace("<<AUTHENTICATION>>", "yes");
+        strArgs.replace("<<PRIVATE_KEY>>", curServer->m_privateKey);
+        strArgs.replace("<<PASSWORD>>", "");
     }
+
     QString path = curServer->m_path;
     QString command = curServer->m_command;
+    // 添加远程提示
     QString remote_command = "echo " + tr("Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.") + " && ";
     if (!path.isNull() && !path.isEmpty()) {
         remote_command = remote_command + "cd " + path + " && ";
@@ -148,18 +155,15 @@ QString RemoteManagementPlugn::createShellFile(ServerConfig *curServer)
     }
     fileString.replace("<<REMOTE_COMMAND>>", remote_command);
 
+    // 创建临时文件和执行脚本所需要的参数
     QString toFileStr = "/tmp/terminal-" + Utils::getRandString();
     QFile toFile(toFileStr);
     toFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    // 写文件
     toFile.write(fileString.toUtf8());
+    // 退出文件
     toFile.close();
-    return toFileStr;
-}
-void RemoteManagementPlugn::hidePlugn()
-{
-    if (m_remoteManagementTopPanel && m_remoteManagementTopPanel->isVisible()) {
-        m_remoteManagementTopPanel->hide();
-    }
+    return QString(toFileStr + strArgs);
 }
 
 void RemoteManagementPlugn::setRemoteEncode(QString encode)
