@@ -1,83 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="uk">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.1">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="118"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="113"/>
         <source>Name:</source>
         <translation>Ім&apos;я:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="120"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="115"/>
         <source>Command:</source>
         <translation>Команда:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="122"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="117"/>
         <source>Shortcuts:</source>
         <translation>Ярлики:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="133"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="134"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="155"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="162"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="128"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="129"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="150"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="157"/>
         <source>Required</source>
         <translation>Вимагається</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="170"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="165"/>
         <source>Add Command</source>
         <translation>Додати команду</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="176"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="171"/>
         <source>Edit Command</source>
         <translation>Редагувати команду</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="186"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="181"/>
         <source>Delete Command</source>
         <translation>Вилучити команду</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="211"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="206"/>
         <source>Cancel</source>
         <translation>Скасувати</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="213"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="208"/>
         <source>Add</source>
         <translation>Додати</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="215"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="210"/>
         <source>Save</source>
         <translation>Зберегти</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="420"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="406"/>
         <source>Please enter a name</source>
         <translation>Будь ласка, введіть назву</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="434"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="418"/>
         <source>Please enter a command</source>
         <translation>Будь ласка, введіть команду</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="485"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="463"/>
         <source>The name already exists,</source>
         <translation>Таку назву вже визначено,</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="486"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="464"/>
         <source>please input another one.</source>
         <translation>будь ласка, введіть іншу.</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="739"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="714"/>
         <source>OK</source>
         <translation>Гаразд</translation>
     </message>
@@ -85,7 +83,7 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandpanel.cpp" line="247"/>
+        <location filename="../src/customcommand/customcommandpanel.cpp" line="241"/>
         <source>Add Command</source>
         <translation>Додати команду</translation>
     </message>
@@ -93,7 +91,7 @@
 <context>
     <name>CustomCommandPlugin</name>
     <message>
-        <location filename="../src/customcommand/customcommandplugin.cpp" line="83"/>
+        <location filename="../src/customcommand/customcommandplugin.cpp" line="81"/>
         <source>Custom commands</source>
         <translation>Користувацькі команди</translation>
     </message>
@@ -101,7 +99,7 @@
 <context>
     <name>CustomCommandSearchRstPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="151"/>
+        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="159"/>
         <source>Search</source>
         <translation>Пошук</translation>
     </message>
@@ -117,13 +115,13 @@
 <context>
     <name>ListView</name>
     <message>
-        <location filename="../src/views/listview.cpp" line="362"/>
+        <location filename="../src/views/listview.cpp" line="360"/>
         <source>Delete Server</source>
         <translation>Вилучити сервер</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="362"/>
-        <location filename="../src/views/listview.cpp" line="557"/>
+        <location filename="../src/views/listview.cpp" line="360"/>
+        <location filename="../src/views/listview.cpp" line="553"/>
         <source>Are you sure you want to delete %1?</source>
         <translation>Ви впевнені, що хочете видалити %1?</translation>
     </message>
@@ -131,33 +129,33 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="245"/>
-        <location filename="../src/main/mainwindow.cpp" line="270"/>
+        <location filename="../src/main/mainwindow.cpp" line="244"/>
+        <location filename="../src/main/mainwindow.cpp" line="263"/>
         <source>New window</source>
         <translation>Нове вікно</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="297"/>
+        <location filename="../src/main/mainwindow.cpp" line="285"/>
         <source>Settings</source>
         <translation>Налаштування</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="697"/>
+        <location filename="../src/main/mainwindow.cpp" line="677"/>
         <source>Cancel</source>
         <translation>Скасувати</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="699"/>
+        <location filename="../src/main/mainwindow.cpp" line="679"/>
         <source>Close</source>
         <translation>Закрити</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1774"/>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <source>Select workspace</source>
         <translation>Вибрати робочу область</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1894"/>
+        <location filename="../src/main/mainwindow.cpp" line="1852"/>
         <source>Type path to download file</source>
         <translation>Введіть шлях для завантаження файлу</translation>
     </message>
@@ -165,7 +163,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/views/warnningdlg.cpp" line="145"/>
+        <location filename="../src/views/warnningdlg.cpp" line="135"/>
         <location filename="../src/common/utils.cpp" line="462"/>
         <location filename="../src/common/utils.cpp" line="481"/>
         <location filename="../src/common/utils.cpp" line="588"/>
@@ -204,7 +202,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="46"/>
-        <location filename="../src/main/service.cpp" line="173"/>
+        <location filename="../src/main/service.cpp" line="168"/>
         <source>Blur background</source>
         <translation>Розмитий фон</translation>
     </message>
@@ -225,7 +223,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="54"/>
-        <location filename="../src/main/service.cpp" line="200"/>
+        <location filename="../src/main/service.cpp" line="195"/>
         <source>Opacity</source>
         <translation>Непрозорість</translation>
     </message>
@@ -266,68 +264,68 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="70"/>
-        <location filename="../src/main/mainwindow.cpp" line="1751"/>
+        <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Others</source>
         <translation>Інше</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="72"/>
-        <location filename="../src/main/terminalapplication.cpp" line="36"/>
-        <location filename="../src/main/mainwindow.cpp" line="1749"/>
+        <location filename="../src/main/terminalapplication.cpp" line="35"/>
+        <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Terminal</source>
         <translation>Термінал</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="74"/>
-        <location filename="../src/main/mainwindow.cpp" line="1747"/>
+        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Workspace</source>
         <translation>Робоча область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="76"/>
-        <location filename="../src/main/mainwindow.cpp" line="1816"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <source>Custom commands</source>
         <translation>Користувацькі команди</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="78"/>
-        <location filename="../src/main/mainwindow.cpp" line="1816"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <source>Display shortcuts</source>
         <translation>Показати ярлики</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="80"/>
-        <location filename="../src/main/mainwindow.cpp" line="1816"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <source>Remote management</source>
         <translation>Дистанційне керування</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="82"/>
-        <location filename="../src/main/mainwindow.cpp" line="1816"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <source>Rename title</source>
         <translation>Перейменувати назву</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="84"/>
-        <location filename="../src/main/mainwindow.cpp" line="1816"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <source>Fullscreen</source>
         <translation>На весь екран</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="86"/>
-        <location filename="../src/main/mainwindow.cpp" line="1784"/>
+        <location filename="../src/main/mainwindow.cpp" line="1742"/>
         <source>Copy</source>
         <translation>Копіювати</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="88"/>
-        <location filename="../src/main/mainwindow.cpp" line="1784"/>
+        <location filename="../src/main/mainwindow.cpp" line="1742"/>
         <source>Default size</source>
         <translation>Стандартний розмір</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="90"/>
-        <location filename="../src/main/mainwindow.cpp" line="1784"/>
+        <location filename="../src/main/mainwindow.cpp" line="1742"/>
         <source>Paste</source>
         <translation>Вставити</translation>
     </message>
@@ -338,7 +336,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="94"/>
-        <location filename="../src/main/mainwindow.cpp" line="1784"/>
+        <location filename="../src/main/mainwindow.cpp" line="1742"/>
         <source>Select all</source>
         <translation>Вибрати все</translation>
     </message>
@@ -354,103 +352,103 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="100"/>
-        <location filename="../src/main/mainwindow.cpp" line="1784"/>
+        <location filename="../src/main/mainwindow.cpp" line="1742"/>
         <source>Zoom in</source>
         <translation>Збільшити масштаб</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="102"/>
-        <location filename="../src/main/mainwindow.cpp" line="1784"/>
+        <location filename="../src/main/mainwindow.cpp" line="1742"/>
         <source>Zoom out</source>
         <translation>Зменшити масштаб</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="104"/>
-        <location filename="../src/main/mainwindow.cpp" line="1801"/>
+        <location filename="../src/main/mainwindow.cpp" line="1759"/>
         <source>Close other windows</source>
         <translation>Закрити інші вікна</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="106"/>
-        <location filename="../src/main/mainwindow.cpp" line="1799"/>
+        <location filename="../src/main/mainwindow.cpp" line="1757"/>
         <source>Close other workspaces</source>
         <translation>Закрити інші робочі простори</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="108"/>
-        <location filename="../src/main/mainwindow.cpp" line="1801"/>
+        <location filename="../src/main/mainwindow.cpp" line="1759"/>
         <source>Close window</source>
         <translation>Закрити вікно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="110"/>
-        <location filename="../src/main/mainwindow.cpp" line="1799"/>
+        <location filename="../src/main/mainwindow.cpp" line="1757"/>
         <source>Close workspace</source>
         <translation>Закрити робочий простір</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="112"/>
-        <location filename="../src/main/mainwindow.cpp" line="1800"/>
+        <location filename="../src/main/mainwindow.cpp" line="1758"/>
         <source>Horizontal split</source>
         <translation>Горизонтальний розподіл</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="114"/>
-        <location filename="../src/main/mainwindow.cpp" line="1799"/>
+        <location filename="../src/main/mainwindow.cpp" line="1757"/>
         <source>New workspace</source>
         <translation>Новий робочий простір</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="116"/>
-        <location filename="../src/main/mainwindow.cpp" line="1799"/>
+        <location filename="../src/main/mainwindow.cpp" line="1757"/>
         <source>Next workspace</source>
         <translation>Наступна робоча область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="118"/>
-        <location filename="../src/main/mainwindow.cpp" line="1799"/>
+        <location filename="../src/main/mainwindow.cpp" line="1757"/>
         <source>Previous workspace</source>
         <translation>Попередній робочий простір</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="120"/>
-        <location filename="../src/main/mainwindow.cpp" line="1801"/>
+        <location filename="../src/main/mainwindow.cpp" line="1759"/>
         <source>Select left window</source>
         <translation>Вибрати ліве вікно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="122"/>
-        <location filename="../src/main/mainwindow.cpp" line="1800"/>
+        <location filename="../src/main/mainwindow.cpp" line="1758"/>
         <source>Select lower window</source>
         <translation>Вибрати нижнє вікно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="124"/>
-        <location filename="../src/main/mainwindow.cpp" line="1801"/>
+        <location filename="../src/main/mainwindow.cpp" line="1759"/>
         <source>Select right window</source>
         <translation>Вибрати праве вікно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="126"/>
-        <location filename="../src/main/mainwindow.cpp" line="1800"/>
+        <location filename="../src/main/mainwindow.cpp" line="1758"/>
         <source>Select upper window</source>
         <translation>Вибрати верхнє вікно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="128"/>
-        <location filename="../src/main/mainwindow.cpp" line="1800"/>
+        <location filename="../src/main/mainwindow.cpp" line="1758"/>
         <source>Vertical split</source>
         <translation>Вертикальний розподіл</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="130"/>
-        <location filename="../src/main/mainwindow.cpp" line="1784"/>
+        <location filename="../src/main/mainwindow.cpp" line="1742"/>
         <source>Find</source>
         <translation>Знайти</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="397"/>
-        <location filename="../src/views/listview.cpp" line="558"/>
+        <location filename="../src/views/listview.cpp" line="394"/>
+        <location filename="../src/views/listview.cpp" line="554"/>
         <location filename="../src/common/utils.cpp" line="367"/>
         <location filename="../src/common/utils.cpp" line="462"/>
         <location filename="../src/common/utils.cpp" line="480"/>
@@ -459,20 +457,20 @@
         <translation>Скасувати</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="398"/>
+        <location filename="../src/views/listview.cpp" line="395"/>
         <source>Delete</source>
         <translation>Видалити</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="365"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="742"/>
+        <location filename="../src/main/service.cpp" line="357"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="717"/>
         <location filename="../src/common/utils.cpp" line="518"/>
         <location filename="../src/common/utils.cpp" line="525"/>
         <source>please set another one.</source>
         <translation>будь ласка, встановіть іншу.</translation>
     </message>
     <message>
-        <location filename="../src/main/terminalapplication.cpp" line="39"/>
+        <location filename="../src/main/terminalapplication.cpp" line="38"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation>Термінал - це розширений емулятор терміналу з робочим простором, декількома вікнами, віддаленим керуванням, режимом тремтіння і іншими функціями.</translation>
     </message>
@@ -597,29 +595,29 @@
         <translation>Не закривати термінал після завершення роботи команди</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="566"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="427"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="558"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="412"/>
         <source>The name should be no more than 32 characters</source>
         <translation>Кількість символів у назві не повинна перевищувати 32</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="642"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="634"/>
         <location filename="../src/common/utils.cpp" line="318"/>
         <source>Select</source>
         <translation>Обрати</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="638"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="630"/>
         <source>Select the private key file</source>
         <translation>Вибрати файл приватного ключа</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="559"/>
+        <location filename="../src/views/listview.cpp" line="555"/>
         <source>Confirm</source>
         <translation>Підтвердити</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1800"/>
+        <location filename="../src/main/mainwindow.cpp" line="1758"/>
         <source>Select workspace</source>
         <translation>Вибрати робочу область</translation>
     </message>
@@ -627,7 +625,7 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="238"/>
+        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="233"/>
         <source>Add Server</source>
         <translation>Додати сервер</translation>
     </message>
@@ -635,12 +633,12 @@
 <context>
     <name>RemoteManagementPlugin</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="94"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="92"/>
         <source>Remote management</source>
         <translation>Дистанційне керування</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="236"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="231"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>Переконайтеся, що на сервері встановлено програми rz і sz, перш ніж клацати правою кнопкою миші для вивантаження та отримання файлів.</translation>
     </message>
@@ -648,7 +646,7 @@
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="280"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="276"/>
         <source>Search</source>
         <translation>Пошук</translation>
     </message>
@@ -656,164 +654,164 @@
 <context>
     <name>ServerConfigOptDlg</name>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="67"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="68"/>
         <source>Advanced options</source>
         <translation>Розширені параметри</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="113"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="94"/>
         <source>Add Server</source>
         <translation>Додати сервер</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="150"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="133"/>
         <source>Server name:</source>
         <translation>Ім&apos;я серверу:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="153"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="162"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="191"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="136"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="145"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="174"/>
         <source>Required</source>
         <translation>Вимагається</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="160"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="143"/>
         <source>Address:</source>
         <translation>Адреса:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="168"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="151"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="172"/>
         <source>Username:</source>
         <translation>Ім&apos;я користувача:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="195"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="178"/>
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="202"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="185"/>
         <source>Certificate:</source>
         <translation>Сертифікат:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="228"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="211"/>
         <source>Group:</source>
         <translation>Група:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="234"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="217"/>
         <source>Path:</source>
         <translation>Шлях:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="240"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="223"/>
         <source>Command:</source>
         <translation>Команда:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="246"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="229"/>
         <source>Encoding:</source>
         <translation>Кодування:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="252"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="235"/>
         <source>Backspace key:</source>
         <translation>Клавіша Backspace:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="258"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="241"/>
         <source>Delete key:</source>
         <translation>Видалити ключ:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="280"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="263"/>
         <source>Delete server</source>
         <translation>Видалити сервер</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="284"/>
         <source>Cancel</source>
         <translation>Скасувати</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="302"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="285"/>
         <source>Add</source>
         <translation>Додати</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="306"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="289"/>
         <source>Edit Server</source>
         <translation>Редагувати сервер</translation>
     </message>
     <message>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="414"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="431"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="448"/>
         <source>tty</source>
         <translation>tty</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="560"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="552"/>
         <source>Please enter a server name</source>
         <translation>Будь ласка, введіть назву сервера</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="573"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="565"/>
         <source>Please enter an IP address</source>
         <translation>Будь ласка, введіть IP-адресу</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="578"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="570"/>
         <source>Please enter a port</source>
         <translation>Будь ласка, введіть порт</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="584"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="576"/>
         <source>Please enter a username</source>
         <translation>Будь ласка, введіть ім&apos;я користувача</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="307"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="290"/>
         <source>Save</source>
         <translation>Зберегти</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="427"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="445"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="410"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="428"/>
         <source>ascii-del</source>
         <translation>ascii-del</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="428"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="446"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="411"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="429"/>
         <source>auto</source>
         <translation>auto</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="429"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="447"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="412"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="430"/>
         <source>control-h</source>
         <translation>control-h</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="430"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="444"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="413"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="427"/>
         <source>escape-sequence</source>
         <translation>escape-sequence</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="598"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="590"/>
         <source>The server name already exists,</source>
         <translation>Сервер із такою назвою вже існує,</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="599"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="591"/>
         <source>please input another one. </source>
         <translation>будь ласка, введіть іншу назву.</translation>
     </message>
@@ -821,7 +819,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="363"/>
+        <location filename="../src/main/service.cpp" line="355"/>
         <source>OK</source>
         <translation>Гаразд</translation>
     </message>
@@ -829,22 +827,22 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../src/settings/settings.cpp" line="99"/>
+        <location filename="../src/settings/settings.cpp" line="97"/>
         <source>Split screen</source>
         <translation>Розділити екран</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="99"/>
+        <location filename="../src/settings/settings.cpp" line="97"/>
         <source>Fullscreen</source>
         <translation>На весь екран</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="99"/>
+        <location filename="../src/settings/settings.cpp" line="97"/>
         <source>Normal window</source>
         <translation>Нормальне вікно</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="99"/>
+        <location filename="../src/settings/settings.cpp" line="97"/>
         <source>Maximum</source>
         <translation>Максимум</translation>
     </message>
@@ -852,15 +850,15 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="372"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="381"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="427"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="436"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>Клавіатурне скорочення %1 є некоректним, </translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="388"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="395"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="401"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="443"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="450"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="456"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>Клавіатурне скорочення %1 вже вжито, </translation>
     </message>
@@ -868,12 +866,12 @@
 <context>
     <name>TabBar</name>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="530"/>
+        <location filename="../src/views/tabbar.cpp" line="525"/>
         <source>Close workspace</source>
         <translation>Закрити робочий простір</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="532"/>
+        <location filename="../src/views/tabbar.cpp" line="526"/>
         <source>Close other workspaces</source>
         <translation>Закрити інші робочі простори</translation>
     </message>
@@ -881,17 +879,17 @@
 <context>
     <name>TermInputDialog</name>
     <message>
-        <location filename="../src/views/terminputdialog.cpp" line="204"/>
+        <location filename="../src/views/terminputdialog.cpp" line="194"/>
         <source>Rename title</source>
         <translation>Перейменувати назву</translation>
     </message>
     <message>
-        <location filename="../src/views/terminputdialog.cpp" line="230"/>
+        <location filename="../src/views/terminputdialog.cpp" line="220"/>
         <source>Cancel</source>
         <translation>Скасувати</translation>
     </message>
     <message>
-        <location filename="../src/views/terminputdialog.cpp" line="231"/>
+        <location filename="../src/views/terminputdialog.cpp" line="221"/>
         <source>Confirm</source>
         <translation>Підтвердити</translation>
     </message>
@@ -899,105 +897,105 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="447"/>
+        <location filename="../src/views/termwidget.cpp" line="418"/>
         <source>Rename title</source>
         <translation>Перейменувати назву</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="312"/>
+        <location filename="../src/views/termwidget.cpp" line="308"/>
         <source>Copy</source>
         <translation>Копіювати</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="315"/>
+        <location filename="../src/views/termwidget.cpp" line="311"/>
         <source>Paste</source>
         <translation>Вставити</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="321"/>
+        <location filename="../src/views/termwidget.cpp" line="317"/>
         <source>Open</source>
         <translation>Відкрити</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="332"/>
+        <location filename="../src/views/termwidget.cpp" line="328"/>
         <source>Open in file manager</source>
         <translation>Відкрити у файловому менеджері</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="366"/>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
+        <location filename="../src/views/termwidget.cpp" line="339"/>
+        <location filename="../src/views/termwidget.cpp" line="467"/>
         <source>Horizontal split</source>
         <translation>Горизонтальний розподіл</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="377"/>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
+        <location filename="../src/views/termwidget.cpp" line="349"/>
+        <location filename="../src/views/termwidget.cpp" line="467"/>
         <source>Vertical split</source>
         <translation>Вертикальний розподіл</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="388"/>
+        <location filename="../src/views/termwidget.cpp" line="359"/>
         <source>Close window</source>
         <translation>Закрити вікно</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="393"/>
+        <location filename="../src/views/termwidget.cpp" line="364"/>
         <source>Close other windows</source>
         <translation>Закрити інші вікна</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="400"/>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
+        <location filename="../src/views/termwidget.cpp" line="371"/>
+        <location filename="../src/views/termwidget.cpp" line="467"/>
         <source>New workspace</source>
         <translation>Новий робочий простір</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="409"/>
+        <location filename="../src/views/termwidget.cpp" line="380"/>
         <source>Exit fullscreen</source>
         <translation>Вийти з повноекранного режиму</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="413"/>
+        <location filename="../src/views/termwidget.cpp" line="384"/>
         <source>Fullscreen</source>
         <translation>На весь екран</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="419"/>
+        <location filename="../src/views/termwidget.cpp" line="390"/>
         <source>Find</source>
         <translation>Знайти</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="425"/>
+        <location filename="../src/views/termwidget.cpp" line="396"/>
         <source>Search</source>
         <translation>Пошук</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="464"/>
+        <location filename="../src/views/termwidget.cpp" line="435"/>
         <source>Encoding</source>
         <translation>Кодування</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="468"/>
+        <location filename="../src/views/termwidget.cpp" line="439"/>
         <source>Custom commands</source>
         <translation>Користувацькі команди</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="472"/>
+        <location filename="../src/views/termwidget.cpp" line="443"/>
         <source>Remote management</source>
         <translation>Дистанційне керування</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="478"/>
+        <location filename="../src/views/termwidget.cpp" line="449"/>
         <source>Upload file</source>
         <translation>Вивантажити файл</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="481"/>
+        <location filename="../src/views/termwidget.cpp" line="452"/>
         <source>Download file</source>
         <translation>Завантажити файл</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="488"/>
+        <location filename="../src/views/termwidget.cpp" line="459"/>
         <source>Settings</source>
         <translation>Налаштування</translation>
     </message>
