@@ -124,7 +124,7 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     newWindow->show();
     qint64 newMainWindowTime = newWindow->createNewMainWindowTime();
     QString strNewMainWindowTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_MAINWINDOE + QString::number(newMainWindowTime);
-    qDebug() << qPrintable(strNewMainWindowTime);
+    qInfo() << qPrintable(strNewMainWindowTime);
 }
 
 /*******************************************************************************

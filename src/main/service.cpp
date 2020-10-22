@@ -323,7 +323,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
     QDateTime endTime = QDateTime::currentDateTime();
     qDebug() << "Setting show cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
     QString strSettingsShowTime = GRAB_POINT + LOGO_TYPE + SHOW_SETTINGS_TIME + QString::number(endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch());
-    qDebug() << qPrintable(strSettingsShowTime);
+    qInfo() << qPrintable(strSettingsShowTime);
 }
 
 /*******************************************************************************

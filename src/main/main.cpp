@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
     service->Entry(app.arguments());
     qDebug() << "First Terminal Window create complete! time use " << useTime.elapsed() << "ms";
     QString strInitAppTime = GRAB_POINT + LOGO_TYPE + INIT_APP_TIME + QString::number(useTime.elapsed());
-    qDebug() << qPrintable(strInitAppTime);
+    qInfo() << qPrintable(strInitAppTime);
     // 监听触控板事件
     manager.listenTouchPadSignal();
 

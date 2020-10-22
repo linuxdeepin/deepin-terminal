@@ -448,7 +448,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
     qint64 endTime = QDateTime::currentMSecsSinceEpoch();
     QString strNewTabTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_TAB_TIME + QString::number(endTime - startTime);
-    qDebug() << qPrintable(strNewTabTime);
+    qInfo() << qPrintable(strNewTabTime);
 }
 
 /*******************************************************************************
