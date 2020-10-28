@@ -61,7 +61,7 @@ void TermTabStyle::setTabTextColor(const QColor &color)
  3. @日期:    2020-08-11
  4. @说明:    设置标签状态图
 *******************************************************************************/
-void TermTabStyle::setTabStatusMap(const QMap<int, int> &tabStatusMap)
+void TermTabStyle::setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusMap)
 {
     m_tabStatusMap = tabStatusMap;
 }
@@ -111,7 +111,13 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
             QString content = tab->text;
             QRect tabRect = tab->rect;
 
-            if (m_tabStatusMap.value(tab->row) == 2) {
+            QString strTabIndex = QString::number(tab->row);
+            QObject *styleObject = option->styleObject;
+            // 取出对应index的tab唯一标识identifier
+            QString strTabIdentifier = styleObject->property(strTabIndex.toLatin1()).toString();
+
+            // 由于标签现在可以左右移动切换，index会变化，改成使用唯一标识identifier进行判断
+            if (m_tabStatusMap.value(strTabIdentifier) == TabTextColorStatus_Changed) {
                 if (tab->state & QStyle::State_Selected) {
                     DPalette pa = appHelper->standardPalette(appHelper->themeType());
                     painter->setPen(pa.color(DPalette::HighlightedText));
@@ -168,6 +174,9 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
     QRect textRect = style()->subElementRect(QStyle::SE_TabBarTabText, option, this);
     option->text = fontMetrics().elidedText(option->text, d->elideMode, textRect.width(),
                                             Qt::TextShowMnemonic);
+
+    // 保存对应index的tab唯一标识identifier
+    option->styleObject->setProperty(QString("%1").arg(tabIndex).toLatin1(), tabData(tabIndex));
     // 保存tab的索引值到row字段
     option->row = tabIndex;
 }
@@ -189,6 +198,7 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setVisibleAddButton(true);
     setElideMode(Qt::ElideRight);
     setFocusPolicy(Qt::TabFocus);
+    setMovable(true);
 
     setTabHeight(36);
     setTabItemMinWidth(110);
@@ -201,7 +211,7 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
         qDebug() << "can not found AddButton in DIconButton";
     }
 
-    connect(this, &DTabBar::tabBarClicked, this, &TabBar::tabBarClicked);
+    connect(this, &DTabBar::tabBarClicked, this, &TabBar::handleTabBarClicked);
 }
 
 TabBar::~TabBar()
@@ -589,9 +599,9 @@ QSize TabBar::maximumTabSizeHint(int index) const
  3. @日期:    2020-08-11
  4. @说明:    设置需要更改文本颜色
 *******************************************************************************/
-void TabBar::setNeedChangeTextColor(int index, const QColor &color)
+void TabBar::setNeedChangeTextColor(const QString &tabIdentifier, const QColor &color)
 {
-    m_tabStatusMap.insert(index, 1);
+    m_tabStatusMap.insert(tabIdentifier, TabTextColorStatus_NeedChange);
     m_tabChangedTextColor = color;
 }
 
@@ -601,9 +611,9 @@ void TabBar::setNeedChangeTextColor(int index, const QColor &color)
  3. @日期:    2020-08-11
  4. @说明:    删除需要更改文本颜色
 *******************************************************************************/
-void TabBar::removeNeedChangeTextColor(int index)
+void TabBar::removeNeedChangeTextColor(const QString &tabIdentifier)
 {
-    m_tabStatusMap.remove(index);
+    m_tabStatusMap.remove(tabIdentifier);
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
     style->setTabStatusMap(m_tabStatusMap);
@@ -616,9 +626,9 @@ void TabBar::removeNeedChangeTextColor(int index)
  3. @日期:    2020-08-11
  4. @说明:    设置更改文字颜色
 *******************************************************************************/
-void TabBar::setChangeTextColor(int index)
+void TabBar::setChangeTextColor(const QString &tabIdentifier)
 {
-    m_tabStatusMap.insert(index, 2);
+    m_tabStatusMap.insert(tabIdentifier, TabTextColorStatus_Changed);
     QColor color = m_tabChangedTextColor;
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
@@ -633,9 +643,9 @@ void TabBar::setChangeTextColor(int index)
  3. @日期:    2020-08-11
  4. @说明:    是否需要更改文字颜色
 *******************************************************************************/
-bool TabBar::isNeedChangeTextColor(int index)
+bool TabBar::isNeedChangeTextColor(const QString &tabIdentifier)
 {
-    return (m_tabStatusMap.value(index) == 1);
+    return (m_tabStatusMap.value(tabIdentifier) == TabTextColorStatus_NeedChange);
 }
 
 /*******************************************************************************
@@ -644,9 +654,9 @@ bool TabBar::isNeedChangeTextColor(int index)
  3. @日期:    2020-08-11
  4. @说明:    设置清除标签颜色
 *******************************************************************************/
-void TabBar::setClearTabColor(int index)
+void TabBar::setClearTabColor(const QString &tabIdentifier)
 {
-    m_tabStatusMap.insert(index, 0);
+    m_tabStatusMap.insert(tabIdentifier, TabTextColorStatus_Default);
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
     style->setTabStatusMap(m_tabStatusMap);
@@ -659,7 +669,7 @@ void TabBar::setClearTabColor(int index)
  3. @日期:    2020-08-11
  4. @说明:    设置标签状态图
 *******************************************************************************/
-void TabBar::setTabStatusMap(const QMap<int, int> &tabStatusMap)
+void TabBar::setTabStatusMap(const QMap<QString,TabTextColorStatus> &tabStatusMap)
 {
     m_tabStatusMap = tabStatusMap;
 }
@@ -684,4 +694,9 @@ void TabBar::setEnableCloseTabAnimation(bool bEnableCloseTabAnimation)
 bool TabBar::isEnableCloseTabAnimation()
 {
     return m_bEnableCloseTabAnimation;
+}
+
+void TabBar::handleTabBarClicked(int index)
+{
+    emit tabBarClicked(index, tabData(index).toString());
 }

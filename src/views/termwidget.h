@@ -94,7 +94,7 @@ public slots:
 
 signals:
     void termRequestRenameTab(QString newTabName);
-    void termIsIdle(int currSessionId, bool bIdle);
+    void termIsIdle(QString tabIdentifier, bool bIdle);
     void termTitleChanged(QString titleText);
 
 protected:

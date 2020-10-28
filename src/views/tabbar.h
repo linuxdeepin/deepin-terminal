@@ -35,6 +35,16 @@ DWIDGET_USE_NAMESPACE
  4. @说明:
 *******************************************************************************/
 
+//Tab文字颜色状态
+enum TabTextColorStatus {
+    //tab文字默认颜色
+    TabTextColorStatus_Default = 0,
+    //tab文字即将变色
+    TabTextColorStatus_NeedChange = 1,
+    //tab文字已经变色
+    TabTextColorStatus_Changed = 2
+};
+
 class TermTabStyle : public QProxyStyle
 {
     Q_OBJECT
@@ -43,7 +53,7 @@ public:
     virtual ~TermTabStyle();
 
     void setTabTextColor(const QColor &color);
-    void setTabStatusMap(const QMap<int,int> &tabStatusMap);
+    void setTabStatusMap(const QMap<QString,TabTextColorStatus> &tabStatusMap);
 
     QSize sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const;
     int pixelMetric(QStyle::PixelMetric metric, const QStyleOption* option, const QWidget* widget) const;
@@ -52,7 +62,7 @@ public:
 private:
     int m_tabCount;
     QColor m_tabTextColor;
-    QMap<int,int> m_tabStatusMap;
+    QMap<QString,TabTextColorStatus> m_tabStatusMap;
 };
 
 /*******************************************************************************
@@ -85,12 +95,12 @@ public:
     int getIndexByIdentifier(QString id);
 
     //set tab label's title color
-    void setChangeTextColor(int index);
-    void setNeedChangeTextColor(int index, const QColor &color);
-    void removeNeedChangeTextColor(int index);
-    bool isNeedChangeTextColor(int index);
-    void setClearTabColor(int index);
-    void setTabStatusMap(const QMap<int,int> &tabStatusMap);
+    void setChangeTextColor(const QString &tabIdentifier);
+    void setNeedChangeTextColor(const QString &tabIdentifier, const QColor &color);
+    void removeNeedChangeTextColor(const QString &tabIdentifier);
+    bool isNeedChangeTextColor(const QString &tabIdentifier);
+    void setClearTabColor(const QString &tabIdentifier);
+    void setTabStatusMap(const QMap<QString,TabTextColorStatus> &tabStatusMap);
 
     //设置是否启用关闭tab动画效果
     void setEnableCloseTabAnimation(bool bEnableCloseTabAnimation);
@@ -101,9 +111,12 @@ protected:
     QSize maximumTabSizeHint(int index) const;
 
 signals:
-    void tabBarClicked(int index);
+    void tabBarClicked(int index, QString Identifier);
     void menuCloseTab(QString Identifier);
     void menuCloseOtherTab(QString Identifier);
+
+private slots:
+    void handleTabBarClicked(int index);
 
 private:
     QAction *m_closeOtherTabAction = nullptr;
@@ -117,7 +130,7 @@ private:
     QMap<int, int> m_sessionIdTabIndexMap; // key--sessionId, value--tabIndex
     QMap<int, QString> m_sessionIdTabIdMap; // key--sessionId, value--tabIdentifier
 
-    QMap<int,int> m_tabStatusMap;
+    QMap<QString, TabTextColorStatus> m_tabStatusMap;
     QColor m_tabChangedTextColor;
 
     bool m_bEnableCloseTabAnimation;

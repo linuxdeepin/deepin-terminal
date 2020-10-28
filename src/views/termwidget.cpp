@@ -223,7 +223,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     /********************* Modify by n014361 wangpeili End ************************/
 
     connect(this, &QTermWidget::isTermIdle, this, [this](bool bIdle) {
-        emit termIsIdle(getSessionId(), bIdle);
+        emit termIsIdle(m_page->identifier(), bIdle);
     });
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
@@ -302,7 +302,7 @@ TermWidgetPage *TermWidget::parentPage()
 *******************************************************************************/
 void TermWidget::handleTermIdle(bool bIdle)
 {
-    emit termIsIdle(this->getSessionId(), bIdle);
+    emit termIsIdle(this->m_page->identifier(), bIdle);
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/

@@ -164,16 +164,20 @@ void MainWindow::initTabBar()
     m_tabbar = new TabBar(this);
     m_tabbar->setFocusPolicy(Qt::NoFocus);
 
-    connect(m_tabbar, &DTabBar::tabBarClicked, this, [ = ](int index) {
+    connect(m_tabbar, &TabBar::tabBarClicked, this, [ = ](int index, QString tabIdentifier) {
+        //DTabBar在左右移动时右侧会出现空白，点击会导致crash，这里加个判断防止index出现非法的情况
+        if (index < 0) {
+            return;
+        }
+
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
         TermWidget *term = tabPage->currentTerminal();
         bool bIdle = !(term->hasRunningProcess());
 
-        int currSessionId = term->getSessionId();
-        if (bIdle && isTabChangeColor(currSessionId)) {
-            m_tabVisitMap.insert(currSessionId, true);
-            m_tabChangeColorMap.insert(currSessionId, false);
-            m_tabbar->removeNeedChangeTextColor(index);
+        if (bIdle && isTabChangeColor(tabIdentifier)) {
+            m_tabVisitMap.insert(tabIdentifier, true);
+            m_tabChangeColorMap.insert(tabIdentifier, false);
+            m_tabbar->removeNeedChangeTextColor(tabIdentifier);
         }
     });
 
@@ -362,9 +366,9 @@ void MainWindow::singleFlagMove()
  3. @日期:    2020-08-11
  4. @说明:    基类判断标签是否访问了
 *******************************************************************************/
-bool MainWindow::isTabVisited(int tabSessionId)
+bool MainWindow::isTabVisited(const QString &tabIdentifier)
 {
-    return m_tabVisitMap.value(tabSessionId);
+    return m_tabVisitMap.value(tabIdentifier);
 }
 
 /*******************************************************************************
@@ -373,9 +377,9 @@ bool MainWindow::isTabVisited(int tabSessionId)
  3. @日期:    2020-08-11
  4. @说明:    基类判断是否是标签更改颜色
 *******************************************************************************/
-bool MainWindow::isTabChangeColor(int tabSessionId)
+bool MainWindow::isTabChangeColor(const QString &tabIdentifier)
 {
-    return m_tabChangeColorMap.value(tabSessionId);
+    return m_tabChangeColorMap.value(tabIdentifier);
 }
 
 /*******************************************************************************
@@ -407,7 +411,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     qDebug() << "addTab index" << index;
     if (activeTab) {
         m_tabbar->setCurrentIndex(index);
-        m_tabbar->removeNeedChangeTextColor(index);
+        m_tabbar->removeNeedChangeTextColor(termPage->identifier());
     }
 
     TermWidget *term = termPage->currentTerminal();
@@ -501,9 +505,8 @@ void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
         return;
     }
     qDebug() << "Tab closed" << identifier;
-    int currSessionId = tabPage->currentTerminal()->getSessionId();
-    m_tabVisitMap.remove(currSessionId);
-    m_tabChangeColorMap.remove(currSessionId);
+    m_tabVisitMap.remove(identifier);
+    m_tabChangeColorMap.remove(identifier);
     m_tabbar->removeTab(identifier);
     m_termStackWidget->removeWidget(tabPage);
     tabPage->deleteLater();
@@ -532,20 +535,20 @@ void MainWindow::updateTabStatus()
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
         TermWidget *term = tabPage->currentTerminal();
         bool bIdle = !(term->hasRunningProcess());
-        int currSessionId = term->getSessionId();
+        QString tabIdentifier = tabPage->identifier();
 
         if (bIdle) {
-            if (isTabVisited(currSessionId)) {
-                m_tabVisitMap.insert(currSessionId, false);
-                m_tabChangeColorMap.insert(currSessionId, false);
-                m_tabbar->removeNeedChangeTextColor(i);
-            } else if (isTabChangeColor(currSessionId)) {
-                m_tabbar->setChangeTextColor(i);
+            if (isTabVisited(tabIdentifier)) {
+                m_tabVisitMap.insert(tabIdentifier, false);
+                m_tabChangeColorMap.insert(tabIdentifier, false);
+                m_tabbar->removeNeedChangeTextColor(tabIdentifier);
+            } else if (isTabChangeColor(tabIdentifier)) {
+                m_tabbar->setChangeTextColor(tabIdentifier);
             } else {
-                m_tabbar->removeNeedChangeTextColor(i);
+                m_tabbar->removeNeedChangeTextColor(tabIdentifier);
             }
         } else {
-            m_tabbar->removeNeedChangeTextColor(i);
+            m_tabbar->removeNeedChangeTextColor(tabIdentifier);
         }
     }
 }
@@ -812,40 +815,40 @@ void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage *)> &func
  3. @日期:    2020-08-11
  4. @说明:    基类终端是否闲置响应函数
 *******************************************************************************/
-void MainWindow::onTermIsIdle(int currSessionId, bool bIdle)
+void MainWindow::onTermIsIdle(QString tabIdentifier, bool bIdle)
 {
-    int tabIndex = m_tabbar->queryIndexBySessionId(currSessionId);
-
     //如果标签被点过，移除标签颜色
-    if (isTabVisited(currSessionId) && bIdle) {
-        m_tabVisitMap.insert(currSessionId, false);
-        m_tabChangeColorMap.insert(currSessionId, false);
-        m_tabbar->removeNeedChangeTextColor(tabIndex);
+    if (isTabVisited(tabIdentifier) && bIdle) {
+        m_tabVisitMap.insert(tabIdentifier, false);
+        m_tabChangeColorMap.insert(tabIdentifier, false);
+        m_tabbar->removeNeedChangeTextColor(tabIdentifier);
         return;
     }
 
     if (bIdle) {
         //空闲状态如果标签被标记变色，则改变标签颜色
-        if (m_tabbar->isNeedChangeTextColor(tabIndex)) {
-            m_tabChangeColorMap.insert(currSessionId, true);
-            m_tabbar->setChangeTextColor(tabIndex);
+        if (m_tabbar->isNeedChangeTextColor(tabIdentifier)) {
+            m_tabChangeColorMap.insert(tabIdentifier, true);
+            m_tabbar->setChangeTextColor(tabIdentifier);
         }
     } else {
 
         //如果当前标签是活动标签，移除变色请求
         int activeTabIndex = m_tabbar->currentIndex();
-        if (activeTabIndex == tabIndex) {
-            m_tabVisitMap.insert(currSessionId, false);
-            m_tabChangeColorMap.insert(currSessionId, false);
-            m_tabbar->removeNeedChangeTextColor(tabIndex);
+        qDebug() << "activeTabIndex: " << activeTabIndex;
+        QString activeTabIdentifier = m_tabbar->tabData(activeTabIndex).toString();
+        if (activeTabIdentifier == tabIdentifier) {
+            m_tabVisitMap.insert(activeTabIdentifier, false);
+            m_tabChangeColorMap.insert(activeTabIdentifier, false);
+            m_tabbar->removeNeedChangeTextColor(activeTabIdentifier);
             return;
         }
 
         //标记变色，发起请求，稍后等空闲状态变色
-        m_tabChangeColorMap.insert(currSessionId, false);
+        m_tabChangeColorMap.insert(tabIdentifier, false);
         DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
         DPalette pa = appHelper->standardPalette(appHelper->themeType());
-        m_tabbar->setNeedChangeTextColor(tabIndex, pa.color(DPalette::Highlight));
+        m_tabbar->setNeedChangeTextColor(tabIdentifier, pa.color(DPalette::Highlight));
     }
 }
 
