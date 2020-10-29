@@ -105,13 +105,13 @@ void Settings::loadDefaultsWhenReinstall()
         installFlagPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     }
 
-    QString installFlagFilePath(installFlagPath.filePath("install_flag"));
-    QFile installFlagFile(installFlagFilePath);
-    if (installFlagFile.exists()) {
-        //fix bug: 17676 终端窗口透明度较低，能够看到桌面上文案
-        this->settings->setOption("basic.interface.opacity", 100);
-        installFlagFile.remove();
-    }
+//    QString installFlagFilePath(installFlagPath.filePath("install_flag"));
+//    QFile installFlagFile(installFlagFilePath);
+//    if (installFlagFile.exists()) {
+//        //fix bug: 17676 终端窗口透明度较低，能够看到桌面上文案
+//        this->settings->setOption("basic.interface.opacity", 100);
+//        installFlagFile.remove();
+//    }
 }
 
 void Settings::initConnection()
