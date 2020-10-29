@@ -161,6 +161,28 @@ bool NewDspinBox::eventFilter(QObject *watched, QEvent *event)
 }
 
 /*******************************************************************************
+ 1. @函数:    wheelEvent
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-10-29
+ 4. @说明:    重写wheelEvent函数，截胡鼠标滑轮事件，进行字体大小变化
+*******************************************************************************/
+void NewDspinBox::wheelEvent(QWheelEvent *event)
+{
+    if(m_DLineEdit != nullptr){
+        const int deltaY = event->angleDelta().y();
+        if(deltaY < 0){
+            //缩小
+            m_DIconBtnSubtract->click();
+        }
+        else {
+            //放大
+            m_DIconBtnAdd->click();
+        }
+    }
+    event->accept();
+}
+
+/*******************************************************************************
  1. @函数:    setValue
  2. @作者:    ut001121 zhangmeng
  3. @日期:    2020-08-11
