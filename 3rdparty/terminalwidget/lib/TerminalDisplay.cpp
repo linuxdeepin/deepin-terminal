@@ -3493,6 +3493,11 @@ void TerminalDisplay::dropEvent(QDropEvent* event)
     dropText = event->mimeData()->text();
   }
 
+  /***add begin by ut001121 zhangmeng 20201030 for SP4.1 拖拽文件到工作区文件路径加引号***/
+  dropText.insert(0, '\'');
+  dropText.append('\'');
+  /***add end ut001121***/
+
     emit sendStringToEmu(dropText.toLocal8Bit().constData());
 }
 
