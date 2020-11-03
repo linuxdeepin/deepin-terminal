@@ -61,6 +61,10 @@ public:
     bool PressingScroll();
     bool OutputtingScroll();
     void reload();
+    // 标签标题
+    QString tabTitleFormat() const;
+    // 远程标签标题
+    QString remoteTabTitleFormat() const;
 
     // 设置主题
     void setColorScheme(const QString &name);
@@ -87,6 +91,10 @@ public:
     static QPair<QWidget *, QWidget *> createSpinButtonHandle(QObject *obj);
     // 新增自定义ShortcutEdit控件处理
     static QPair<QWidget *, QWidget *> createShortcutEditOptionHandle(QObject *opt);
+    // 新增自定义修改标签格式的控件
+    static QPair<QWidget *, QWidget *> createTabTitleFormatOptionHandle(QObject *opt);
+    // 新增自定义修改远程标签格式的控件
+    static QPair<QWidget *, QWidget *> createRemoteTabTitleFormatOptionHandle(QObject *opt);
 
 signals:
     // void settingValueChanged(const QString &key, const QVariant &value);
@@ -104,9 +112,17 @@ signals:
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
 
+    // 设置中的标签标题格式变化
+    void tabFormatChanged(const QString &tabFormat);
+    // 设置中的远程标签标题格式变化
+    void remoteTabFormatChanged(const QString &remoteTabFormat);
+
+
 private:
     Settings();
     void loadDefaultsWhenReinstall();
+    // 创建标题格式输入控件
+    static QPair<QWidget *, QWidget *>  createTabTitleFormatWidget(QObject *opt, bool isRemote);
 
     static Settings *m_settings_instance;
 

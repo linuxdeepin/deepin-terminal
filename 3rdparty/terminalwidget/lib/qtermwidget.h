@@ -266,6 +266,9 @@ public:
     /** Get the foreground pid in terminal */
     int getForegroundProcessId() const;
 
+    // 获取foreground名称
+    QString getForegroundProcessName() const;
+
     void setDrawLineChars(bool drawLineChars);
 
     void setBoldIntense(bool boldIntense);

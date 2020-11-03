@@ -26,7 +26,7 @@
 #include "pagesearchbar.h"
 #include "mainwindow.h"
 #include "utils.h"
-#include "terminputdialog.h"
+#include "tabrenamedlg.h"
 
 #include <DSplitter>
 
@@ -106,7 +106,7 @@ public:
     void setMismatchAlert(bool alert);
 
     // 显示重命名弹窗
-    void showRenameTitleDialog(QString oldTitle);
+    void showRenameTitleDialog();
 
     // 打印查找花费的时间
     void printSearchCostTime();
@@ -117,7 +117,7 @@ protected:
 
 public slots:
     void onTermRequestRenameTab(QString newTabName);
-    void onTermTitleChanged(QString title) const;
+    void onTermTitleChanged(QString title);
     void onTermGetFocus();
     void onTermClosed();
     // 查找下一个接口
@@ -146,6 +146,8 @@ signals:
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     // 下载失败时退出下载
     void quitDownload();
+    // 对当前标签页的标题重命名，只对当前标签页有效
+    void tabTitleFormatChanged(const QString &tabTitleFormat, const QString &remoteTabTitleFormat);
 
 private slots:
     void setCurrentTerminal(TermWidget *term);
@@ -160,6 +162,8 @@ private:
     QVBoxLayout *m_layout = nullptr;
 
     // 重命名弹框
-    TermInputDialog *m_renameDialog = nullptr;
+    TabRenameDlg *m_renameDlg = nullptr;
+    // 标签标题
+    QString m_tabTitle;
 };
 #endif  // TERMWIDGETPAGE_H

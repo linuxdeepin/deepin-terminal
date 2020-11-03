@@ -129,4 +129,10 @@ void GenerateSettingTranslate()
     Q_UNUSED(shortcuts_workspace_vertical_splitName);
     auto shortcuts_terminal_FindName = QObject::tr("Find");
     Q_UNUSED(shortcuts_terminal_FindName);
+    auto tab_titles = QObject::tr("Tab titles");
+    Q_UNUSED(tab_titles);
+    auto tab_title_format = QObject::tr("Tab title format");
+    Q_UNUSED(tab_title_format);
+    auto remote_tab_title_format = QObject::tr("Remote tab title format");
+    Q_UNUSED(remote_tab_title_format);
 }

@@ -52,6 +52,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     Utils::set_Object_Name(this);
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
+    // 初始化标题
+    initTabTitle();
     //qDebug() << " TermWidgetparent " << parentWidget();
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -250,7 +252,12 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         sendText(args);
     }
 
-    connect(this, &QTermWidget::titleChanged, this, [this] { emit termTitleChanged(TermWidget::title()); });
+    connect(this, &QTermWidget::titleChanged, this, [this] {
+        // 解析shell传来的title 用户名 主机名 地址/目录
+        parseShellTitle();
+        // 将标题参数变更信息传出
+        emit termTitleChanged(getTabTitle());
+    });
     connect(this, &TermWidget::copyAvailable, this, [this](bool enable) {
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
@@ -463,23 +470,6 @@ void TermWidget::addMenuActions(const QPoint &pos)
         m_menu->addSeparator();
     }
 
-    m_menu->addAction(tr("Rename title"), this, [this] {
-        //QString currTabTitle = this->property("currTabTitle").toString();
-        /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 Begin************************/
-        QString currTabTitle = parentPage()->parentMainWindow()->getCurrTabTitle();
-        if (currTabTitle.isEmpty())
-        {
-            currTabTitle = this->property("currTabTitle").toString();
-        }
-        /************************ Mod by sunchengxi 2020-04-30:分屏修改标题异常问题 End  ************************/
-        if (currTabTitle.isNull())
-        {
-            currTabTitle = this->title();
-        }
-        qDebug() << "currTabTitle" << currTabTitle << endl;
-        parentPage()->showRenameTitleDialog(currTabTitle);
-    });
-
     m_menu->addAction(tr("Encoding"), this, [this] {
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
     });
@@ -518,6 +508,59 @@ void TermWidget::addMenuActions(const QPoint &pos)
             }
         }
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    parseShellTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    解析shell默认标题
+*******************************************************************************/
+void TermWidget::parseShellTitle()
+{
+    QString tabTitle = TermWidget::title();
+    // %w shell设置的窗口标题
+    m_tabArgs[SHELL_TITLE] = tabTitle;
+    m_remoteTabArgs[SHELL_TITLE] = tabTitle;
+    // %u 用户名
+    int index = tabTitle.indexOf("@");
+    QString user = tabTitle.mid(0, index);
+    // 是否连接远程
+    if (isInRemoteServer() /*|| getForegroundProcessName() == "ssh"*/) {
+        // 远程的用户名
+        m_remoteTabArgs[USER_NAME] = user;
+        m_remoteTabArgs[USER_NAME_L] = user + QString("@");
+    } else {
+        // 用户名
+        m_tabArgs[USER_NAME] = user;
+
+        // 本地主机
+        int hostNameIndex = tabTitle.indexOf(":");
+        // index找的到
+        if (hostNameIndex >= 0) {
+            QString hostName = tabTitle.mid(index + 1, hostNameIndex - index - 1);
+            m_tabArgs[LOCAL_HOST_NAME] = hostName;
+        }
+
+        // 当前目录长
+        QString dir = tabTitle.mid(hostNameIndex + 1).trimmed();
+        m_tabArgs[DIR_L] = dir;
+
+        // 当前目录短（若有优化方法请及时告知）
+        if (dir == "~") {
+            QString homePath = QDir::homePath();
+            QStringList pathList = homePath.split("/");
+            m_tabArgs[DIR_S] = pathList.last();
+        } else if (dir == "/") {
+            m_tabArgs[DIR_S] = "/";
+        } else {
+            QStringList pathList = dir.split("/");
+            m_tabArgs[DIR_S] = pathList.last();
+        }
+    }
+
+    // 当前程序名
+    m_tabArgs[PROGRAM_NAME] = getForegroundProcessName();
 }
 
 /*******************************************************************************
@@ -634,6 +677,164 @@ int TermWidget::getTermLayer()
 }
 
 /*******************************************************************************
+ 1. @函数:    setTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    设置标签标题格式（全局设置）
+*******************************************************************************/
+void TermWidget::setTabFormat(const QString &tabFormat)
+{
+    // 非全局设置优先级更高
+    if (m_tabFormat.isGlobal != false && m_tabFormat.currentTabFormat != tabFormat) {
+        m_tabFormat.currentTabFormat = tabFormat;
+        // 有变化，就将变化发出，但此时可能显示的不是变化的项
+        emit termTitleChanged(getTabTitle());
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    setRemoteTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    设置远程标签标题格式(全局设置)
+*******************************************************************************/
+void TermWidget::setRemoteTabFormat(const QString &remoteTabFormat)
+{
+    // 非全局设置优先级更高
+    if (m_tabFormat.isGlobal != false && m_tabFormat.remoteTabFormat != remoteTabFormat) {
+        m_tabFormat.remoteTabFormat = remoteTabFormat;
+        // 有变化，就将变化发出，但此时可能显示的不是变化的项
+        emit termTitleChanged(getTabTitle());
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    renameTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    重命名标签标题/远程标签标题格式
+*******************************************************************************/
+void TermWidget::renameTabFormat(const QString &tabFormat, const QString &remoteTabFormat)
+{
+    // 重命名优先级高
+    m_tabFormat.currentTabFormat = tabFormat;
+    m_tabFormat.remoteTabFormat = remoteTabFormat;
+    m_tabFormat.isGlobal = false;
+    emit termTitleChanged(getTabTitle());
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    返回标签对应的标题
+*******************************************************************************/
+QString TermWidget::getTabTitle()
+{
+    QString strTabName;
+    // 判断当前是否连接远程
+    if (isInRemoteServer() /*|| getForegroundProcessName() == "ssh"*/) {
+        // 连接远程 远程标签标题格式
+        strTabName = getTabTitle(m_remoteTabArgs, m_tabFormat.remoteTabFormat);
+    } else {
+        // 当前标签标题格式
+        strTabName = getTabTitle(m_tabArgs, m_tabFormat.currentTabFormat);
+    }
+
+    // 没有内容则给Terminal作为默认标题
+    if (strTabName.trimmed().isEmpty()) {
+        strTabName = "Terminal";
+    }
+    return strTabName;
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    根据格式和对应参数获取标题
+*******************************************************************************/
+QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat)
+{
+    // 遍历参数列表
+    for (QString key : format.keys()) {
+        // 判断是否包含改参数
+        if (TabFormat.contains(key)) {
+            // 包含的话，把参数替换为参数对应的内容
+            TabFormat.replace(key, format[key]);
+            // qDebug() << "replace " << key << "to " << format[key];
+        }
+    }
+    return TabFormat;
+}
+
+/*******************************************************************************
+ 1. @函数:    initTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    初始化标签标题
+*******************************************************************************/
+void TermWidget::initTabTitle()
+{
+    static ushort sessionNumber = 0;
+    // 初始化标签标题参数
+    initTabTitleArgs();
+    // 会话编号赋值
+    m_sessionNumber = ++sessionNumber;
+    m_tabArgs[TAB_NUM] = QString::number(m_sessionNumber);
+    m_remoteTabArgs[TAB_NUM] = QString::number(m_sessionNumber);
+    // 设置标签标题格式
+    setTabFormat(Settings::instance()->tabTitleFormat());
+    setRemoteTabFormat(Settings::instance()->remoteTabTitleFormat());
+    // 标签标题变化，则每个term变化
+    connect(Settings::instance(), &Settings::tabFormatChanged, this, &TermWidget::setTabFormat);
+    connect(Settings::instance(), &Settings::remoteTabFormatChanged, this, &TermWidget::setRemoteTabFormat);
+}
+
+/*******************************************************************************
+ 1. @函数:    initTabTitleArgs
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    初始化参数列表
+*******************************************************************************/
+void TermWidget::initTabTitleArgs()
+{
+    QStringList strTabArgs = TAB_ARGS.split(" ");
+    // 填充标签标题参数
+    for (QString arg : strTabArgs) {
+        m_tabArgs.insert(arg, " ");
+    }
+    // 填充远程标题标签参数
+    QStringList strRemoteTabArgs = REMOTE_ARGS.split(" ");
+    for (QString arg : strRemoteTabArgs) {
+        m_remoteTabArgs.insert(arg, " ");
+    }
+    qDebug() << "Tab args init! tab title count : " << m_tabArgs.count() << " remote title count : " << m_remoteTabArgs.count();
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-02
+ 4. @说明:    获取标签标题格式
+*******************************************************************************/
+QString TermWidget::getTabTitleFormat()
+{
+    return m_tabFormat.currentTabFormat;
+}
+
+/*******************************************************************************
+ 1. @函数:    getRemoteTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-02
+ 4. @说明:    获取远程标签标题格式
+*******************************************************************************/
+QString TermWidget::getRemoteTabTitleFormat()
+{
+    return m_tabFormat.remoteTabFormat;
+}
+
+/*******************************************************************************
  1. @函数:    encode
  2. @作者:    ut000610 daizhengwen
  3. @日期:    2020-08-11
@@ -675,6 +876,17 @@ bool TermWidget::isConnectRemote() const
 void TermWidget::setIsConnectRemote(bool isConnectRemote)
 {
     m_isConnectRemote = isConnectRemote;
+}
+
+/*******************************************************************************
+ 1. @函数:    modifyRemoteTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    连接远程后修改当前标签标题
+*******************************************************************************/
+void TermWidget::modifyRemoteTabTitle(QString remoteHostName)
+{
+    m_remoteTabArgs[REMOTE_HOST_NAME] = remoteHostName;
 }
 
 /*******************************************************************************

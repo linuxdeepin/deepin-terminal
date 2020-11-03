@@ -114,6 +114,7 @@ signals:
     void tabBarClicked(int index, QString Identifier);
     void menuCloseTab(QString Identifier);
     void menuCloseOtherTab(QString Identifier);
+    void showRenameTabDialog(QString Identifier);
 
 private slots:
     void handleTabBarClicked(int index);
@@ -121,6 +122,8 @@ private slots:
 private:
     QAction *m_closeOtherTabAction = nullptr;
     QAction *m_closeTabAction = nullptr;
+    QAction *m_renameTabAction = nullptr;
+
     DMenu *m_rightMenu = nullptr;
     int m_rightClickTab;
     int m_tabHeight;

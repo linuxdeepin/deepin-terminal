@@ -1015,3 +1015,8 @@ int QTermWidget::getForegroundProcessId() const
     return m_impl->m_session->foregroundProcessId();
 }
 
+QString QTermWidget::getForegroundProcessName() const
+{
+    return m_impl->m_session->foregroundProcessName();
+}
+

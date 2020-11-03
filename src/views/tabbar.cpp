@@ -539,9 +539,12 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
 
                 m_closeTabAction = new QAction(tr("Close workspace"), m_rightMenu);
                 m_closeTabAction->setObjectName("TabBarCloseTabAction");//Add by ut001000 renfeixiang 2020-08-13
+
                 m_closeOtherTabAction = new QAction(tr("Close other workspaces"), m_rightMenu);
                 m_closeOtherTabAction->setObjectName("TabBarCloseOtherTabAction");//Add by ut001000 renfeixiang 2020-08-13
 
+                m_renameTabAction = new QAction(tr("Rename title"), m_rightMenu);
+                m_renameTabAction->setObjectName("TabTitleRenameAction");//Add by dzw 2020-11-02
 
                 connect(m_closeTabAction, &QAction::triggered, this, [ = ] {
                     Q_EMIT tabCloseRequested(m_rightClickTab);
@@ -551,8 +554,13 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                     emit menuCloseOtherTab(identifier(m_rightClickTab));
                 });
 
+                connect(m_renameTabAction, &QAction::triggered, this, [ = ] {
+                    emit showRenameTabDialog(identifier(m_rightClickTab));
+                });
+
                 m_rightMenu->addAction(m_closeTabAction);
                 m_rightMenu->addAction(m_closeOtherTabAction);
+                m_rightMenu->addAction(m_renameTabAction);
 
                 m_closeOtherTabAction->setEnabled(true);
                 if (this->count() < 2) {

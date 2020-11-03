@@ -129,6 +129,8 @@ void Service::initSetting()
     m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
     m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
     m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
+    m_settingDialog->widgetFactory()->registerWidget("tabformatedit", Settings::createTabTitleFormatOptionHandle);
+    m_settingDialog->widgetFactory()->registerWidget("remotetabformatedit", Settings::createRemoteTabTitleFormatOptionHandle);
     // 将数据重新读入
     m_settingDialog->updateSettings(Settings::instance()->settings);
     // 设置窗口模态为没有模态，不阻塞窗口和进程

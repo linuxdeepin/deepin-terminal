@@ -75,6 +75,8 @@ void TabRenameWidget::initUi()
 
     if (!m_isSetting) {
         initLabel();
+        // 非设置情况下，显示关闭按钮
+        m_inputedit->setClearButtonEnabled(true);
     }
 
     m_layout->addWidget(m_inputedit);

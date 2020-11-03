@@ -824,23 +824,26 @@ void TermWidgetPage::showSearchBar(int state)
  3. @日期:    2020-05-21
  4. @说明:    判断是否有重命名弹窗，有则显示，没有则创建
 *******************************************************************************/
-void TermWidgetPage::showRenameTitleDialog(QString oldTitle)
+void TermWidgetPage::showRenameTitleDialog()
 {
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
+    if (nullptr == m_renameDlg) {
+        m_renameDlg = new TabRenameDlg(this);
+        QString tabTitleFormat = currentTerminal()->getTabTitleFormat();
+        QString remoteTabTitleFormat = currentTerminal()->getRemoteTabTitleFormat();
+        m_renameDlg->setText(tabTitleFormat, remoteTabTitleFormat);
+        m_renameDlg->setFocusPolicy(Qt::NoFocus);
+        m_renameDlg->setAttribute(Qt::WA_DeleteOnClose);
+        m_renameDlg->open();
 
-    if (nullptr == m_renameDialog) {
-        m_renameDialog = new TermInputDialog(this);
-        m_renameDialog->setAttribute(Qt::WA_DeleteOnClose);
-        connect(m_renameDialog, &TermInputDialog::finished, m_renameDialog, [ = ]() {
+        connect(m_renameDlg, &TabRenameDlg::finished, m_renameDlg, [ = ]() {
             // 弹窗隐藏或消失
             Service::instance()->setIsDialogShow(window(), false);
-            m_renameDialog = nullptr;
+            m_renameDlg = nullptr;
         });
-        m_renameDialog->setFixedSize(380, 180);
-        m_renameDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
-        m_renameDialog->setFocusPolicy(Qt::NoFocus);
-        m_renameDialog->showDialog(oldTitle, this);
+
+        connect(m_renameDlg, &TabRenameDlg::tabTitleFormatRename, this, &TermWidgetPage::tabTitleFormatChanged);
     }
 }
 
@@ -884,10 +887,12 @@ void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
  3. @日期:    2020-08-12
  4. @说明:    终端标题变化响应函数
 *******************************************************************************/
-void TermWidgetPage::onTermTitleChanged(QString title) const
+void TermWidgetPage::onTermTitleChanged(QString title)
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
-    if (m_currentTerm == term) {
+    // 标题内容没变化的话不发，不是当前终端改变，不发
+    if (m_currentTerm == term && m_tabTitle != title) {
+        m_tabTitle = title;
         emit termTitleChanged(title);
     }
 }
@@ -1025,11 +1030,8 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
         qDebug() << "m_currentTerm change" << m_currentTerm->getSessionId();
-        if (m_currentTerm->isTitleChanged()) {
-            emit termTitleChanged(m_currentTerm->title());
-        } else {
-            emit termTitleChanged(windowTitle());
-        }
+        // 当前界面切换
+        emit termTitleChanged(m_currentTerm->getTabTitle());
     }
 }
 
@@ -1051,6 +1053,8 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
 
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
     qDebug() << "create Terminal, sessionId = " << term->getSessionId();
+    // 对标签页重命名设置
+    connect(this, &TermWidgetPage::tabTitleFormatChanged, term, &TermWidget::renameTabFormat);
     return term;
 }
 

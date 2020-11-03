@@ -560,7 +560,7 @@ ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
 *******************************************************************************/
 static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer unused)
 {
-    qDebug() << __FUNCTION__;
+    // qDebug() << __FUNCTION__;
     Q_UNUSED(source);
     GError *error = NULL;
 
@@ -747,7 +747,7 @@ void ServerConfigManager::ConvertData()
 *******************************************************************************/
 void ServerConfigManager::onLookupFinish(const QString &key, const QString &password)
 {
-    qDebug() << __FUNCTION__;
+    // qDebug() << __FUNCTION__;
     --m_lookupCount;
     // 遍历
     for (QList<ServerConfig *> &list : m_serverConfigs) {

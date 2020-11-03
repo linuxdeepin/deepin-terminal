@@ -25,6 +25,7 @@
 #include "../views/operationconfirmdlg.h"
 #include "service.h"
 #include "dbusmanager.h"
+#include "tabrenamewidget.h"
 
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
@@ -165,6 +166,42 @@ void Settings::loadDefaultsWhenReinstall()
 }
 
 /*******************************************************************************
+ 1. @函数:    createTabTitleFormatWidget
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-02
+ 4. @说明:    创建标签标题修改界面
+*******************************************************************************/
+QPair<QWidget *, QWidget *>  Settings::createTabTitleFormatWidget(QObject *opt, bool isRemote)
+{
+    DTK_CORE_NAMESPACE::DSettingsOption *option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(opt);
+    // tabrenaemewidget 第一个false表示标签重命名 第二个true表示不加标签提示
+    TabRenameWidget *tabTitleFormat = new TabRenameWidget(isRemote, true);
+
+    tabTitleFormat->getInputedit()->setText(option->value().toString());
+
+    QPair<QWidget *, QWidget *> optionWidget =
+        DSettingsWidgetFactory::createStandardItem(QByteArray(), option, tabTitleFormat);
+    // 别的窗口修改了设置，这里需要同步设置显示
+    connect(
+    option, &DSettingsOption::valueChanged, tabTitleFormat, [ = ](QVariant var) {
+        tabTitleFormat->getInputedit()->setText(var.toString());
+    });
+
+    // 点击按钮，改变输入框内容后给输入框设置焦点
+    option->connect(tabTitleFormat->getInputedit(), &DLineEdit::textChanged, option, [ = ]() {
+        tabTitleFormat->getInputedit()->lineEdit()->setFocus();
+    });
+    // 编辑结束才修改标签
+    option->connect(tabTitleFormat->getInputedit(), &DLineEdit::editingFinished, option, [ = ]() {
+        option->setValue(tabTitleFormat->getInputedit()->text());
+    });
+
+
+
+    return optionWidget;
+}
+
+/*******************************************************************************
  1. @函数:    initConnection
  2. @作者:    ut001121 zhangmeng
  3. @日期:    2020-08-11
@@ -219,6 +256,18 @@ void Settings::initConnection()
         emit pressingScrollChanged(value.toBool());
     });
     /********************* Modify by n014361 wangpeili End ************************/
+
+    // 标签标题格式变化
+    QPointer<DSettingsOption> tabFormat = settings->option("basic.tab_title.tab_title_format");
+    connect(tabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit tabFormatChanged(value.toString());
+    });
+
+    // 远程标签标题格式变化
+    QPointer<DSettingsOption> remoteTabFormat = settings->option("basic.tab_title.remote_tab_title_format");
+    connect(remoteTabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit remoteTabFormatChanged(value.toString());
+    });
 }
 
 /*******************************************************************************
@@ -319,6 +368,28 @@ void Settings::reload()
             settings->option(key)->setValue(newSettings.value(key + "/value"));
         }
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    tabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    标签标题
+*******************************************************************************/
+QString Settings::tabTitleFormat() const
+{
+    return settings->option("basic.tab_title.tab_title_format")->value().toString();
+}
+
+/*******************************************************************************
+ 1. @函数:    remoteTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    远程标签标题
+*******************************************************************************/
+QString Settings::remoteTabTitleFormat() const
+{
+    return settings->option("basic.tab_title.remote_tab_title_format")->value().toString();
 }
 
 /*******************************************************************************
@@ -661,6 +732,28 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     });
 
     return DSettingsWidgetFactory::createStandardItem(translateContext, option, rightWidget);
+}
+
+/*******************************************************************************
+ 1. @函数:    createTabTitleFormatOptionHandle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    新增自定义修改标签格式的控件
+*******************************************************************************/
+QPair<QWidget *, QWidget *> Settings::createTabTitleFormatOptionHandle(QObject *opt)
+{
+    return createTabTitleFormatWidget(opt, false);
+}
+
+/*******************************************************************************
+ 1. @函数:    createRemoteTabTitleFormatOptionHandle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-02
+ 4. @说明:    创建远程的标签标题格式的控件
+*******************************************************************************/
+QPair<QWidget *, QWidget *> Settings::createRemoteTabTitleFormatOptionHandle(QObject *opt)
+{
+    return createTabTitleFormatWidget(opt, true);
 }
 
 

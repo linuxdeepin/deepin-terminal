@@ -215,6 +215,12 @@ void MainWindow::initTabBar()
         return;
     });
 
+    connect(m_tabbar, &TabBar::showRenameTabDialog, this, [ = ](QString Identifier) {
+        // 获取标签选中的tab对应的标签标题
+        getPageByIdentifier(Identifier)->showRenameTitleDialog();
+        return;
+    });
+
     addTab(m_properties);
 }
 
@@ -418,7 +424,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     m_tabbar->saveSessionIdWithTabIndex(term->getSessionId(), index);
     m_tabbar->saveSessionIdWithTabId(term->getSessionId(), termPage->identifier());
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
-    connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
+//    connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString & identifier) {
         closeTab(identifier);
     });
@@ -1264,8 +1270,7 @@ void MainWindow::initShortcuts()
         showPlugin(PLUGIN_TYPE_NONE);
         TermWidgetPage *page = currentPage();
         if (page) {
-            QString currTabTitle = m_tabbar->tabText(m_tabbar->currentIndex());
-            page->showRenameTitleDialog(currTabTitle);
+            page->showRenameTitleDialog();
         }
     });
 
@@ -1937,6 +1942,28 @@ void MainWindow::removeCustomCommandSlot(QAction *newAction)
 {
     qDebug() << " MainWindow::removeCustomCommandSlot";
     removeAction(newAction);
+}
+
+/*******************************************************************************
+ 1. @函数:    onTabFormatChanged
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    当前标签标题格式变化，对所有标签生效
+*******************************************************************************/
+void MainWindow::onTabFormatChanged(const QString &tabFormat)
+{
+    emit
+}
+
+/*******************************************************************************
+ 1. @函数:    onRemoteTabFormatChanged
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    远程标签标题变化，对所有的标签生效
+*******************************************************************************/
+void MainWindow::onRemoteTabFormatChanged(const QString &remoteTabFormat)
+{
+
 }
 
 /*******************************************************************************
