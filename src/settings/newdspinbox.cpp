@@ -168,7 +168,8 @@ bool NewDspinBox::eventFilter(QObject *watched, QEvent *event)
 *******************************************************************************/
 void NewDspinBox::wheelEvent(QWheelEvent *event)
 {
-    if(m_DLineEdit != nullptr){
+    //注释这个判断条件，字体大小框的滑轮效果和类DSettingsDialog自带的SpinBox相同的效果
+    if(m_DLineEdit->lineEdit()->hasFocus()){
         const int deltaY = event->angleDelta().y();
         if(deltaY < 0){
             //缩小
@@ -178,8 +179,8 @@ void NewDspinBox::wheelEvent(QWheelEvent *event)
             //放大
             m_DIconBtnAdd->click();
         }
+        event->accept();
     }
-    event->accept();
 }
 
 /*******************************************************************************
