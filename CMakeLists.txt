@@ -163,6 +163,7 @@ set (DTNG_CPP_FILES
     src/views/pagesearchbar.cpp
     src/views/rightpanel.cpp
     src/views/tabbar.cpp
+    src/views/tabrenamedlg.cpp
     src/views/tabrenamewidget.cpp
     src/views/termwidget.cpp
     src/views/termwidgetpage.cpp
@@ -218,6 +219,7 @@ set (DTNG_HEADER_FILES
     src/views/pagesearchbar.h
     src/views/rightpanel.h
     src/views/tabbar.h
+    src/views/tabrenamedlg.h
     src/views/tabrenamewidget.h
     src/views/termwidget.h
     src/views/termwidgetpage.h
