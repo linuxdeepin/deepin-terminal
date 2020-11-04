@@ -12,8 +12,9 @@ TEST_F(Ut_TabRenameWidget_Test, TestInitConnection)
         firstAction->setText("username: %u");
     }
 
-    emit m_renameWidgetRS->m_choseMenu->triggered(list.first());
+    m_renameWidgetRS->getInputedit()->clear();
 
+    emit m_renameWidgetRS->m_choseMenu->triggered(list.first());
     EXPECT_TRUE(m_renameWidgetRS->getInputedit()->text() == "%u");
     EXPECT_TRUE(m_renameWidgetRS->m_Label == nullptr);
 }
