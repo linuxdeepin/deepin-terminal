@@ -437,7 +437,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     /********************* Modify by n014361 wangpeili End ************************/
     m_menu->addSeparator();
-    m_menu->addAction(QObject::tr("New Tab"), this, [this] {
+    m_menu->addAction(tr("New tab"), this, [this] {
         parentPage()->parentMainWindow()->createNewTab();
     });
 
