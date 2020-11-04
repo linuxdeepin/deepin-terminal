@@ -207,6 +207,15 @@ public:
     // 窗口最小高度
     static const int m_MinHeight;
 
+    //主题菜单
+    static constexpr const char *THEME                          = "Theme";
+    //浅色主题
+    static constexpr const char *THEME_SYSTEN_LIGHT             = "Light Theme";
+    //深色主题
+    static constexpr const char *THEME_SYSTEN_DARK              = "Dark Theme";
+    //跟随系统
+    static constexpr const char *THEME_SYSTEN                   = "System Theme";
+
     //浅色主题
     static constexpr const char *THEME_LIGHT                    = "Light";
     //深色主题

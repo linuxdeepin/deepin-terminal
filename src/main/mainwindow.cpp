@@ -2318,10 +2318,10 @@ void MainWindow::addThemeMenuItems()
     //观察dtk中klu不支持主题功能。不显示主题相关部分。
     if (!disableDtkSwitchThemeMenu) {
         //浅色 深色 跟随系统  的 翻译 不需要终端自己翻译，这里直接用dtk的翻译即可
-        switchThemeMenu = new SwitchThemeMenu(qApp->translate("TitleBarMenu", "Theme"), menu);
-        lightThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", "Light Theme"));
-        darkThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", "Dark Theme"));
-        autoThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", "System Theme"));
+        switchThemeMenu = new SwitchThemeMenu(qApp->translate("TitleBarMenu", THEME), menu);
+        lightThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", THEME_SYSTEN_LIGHT));
+        darkThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", THEME_SYSTEN_DARK));
+        autoThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", THEME_SYSTEN));
         switchThemeMenu->addSeparator();
 
         //添加内置主题项列表
