@@ -105,6 +105,7 @@ bool TerminalDisplay::HAVE_TRANSPARENCY = true;
 // we use this to force QPainter to display text in LTR mode
 // more information can be found in: http://unicode.org/reports/tr9/
 const QChar LTR_OVERRIDE_CHAR( 0x202D );
+#define SWAP_ARG
 
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
@@ -263,7 +264,11 @@ void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
 {
     QRect test_rect, feedback_rect;
     test_rect.setRect(1, 1, _fontWidth * 4, _fontHeight);
+#ifndef SWAP_ARG
     painter.drawText(test_rect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + QLatin1String("Mq"), &feedback_rect);
+#else
+    painter.drawText(test_rect, Qt::AlignBottom, QLatin1String("Mq") + LTR_OVERRIDE_CHAR, &feedback_rect);
+#endif
 
     //qDebug() << "test_rect:" << test_rect << "feeback_rect:" << feedback_rect;
 
@@ -885,7 +890,11 @@ void TerminalDisplay::drawCharacters(QPainter& painter,
          {
             QRect drawRect(rect.topLeft(), rect.size());
             drawRect.setHeight(rect.height() + _drawTextAdditionHeight);
+#ifndef SWAP_ARG
             painter.drawText(drawRect, Qt::AlignBottom, LTR_OVERRIDE_CHAR + QString::fromStdWString(text));
+#else
+            painter.drawText(drawRect, Qt::AlignBottom, QString::fromStdWString(text) + LTR_OVERRIDE_CHAR);
+#endif
          }
         }
     }
