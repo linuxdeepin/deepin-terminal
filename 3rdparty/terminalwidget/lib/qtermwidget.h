@@ -303,6 +303,10 @@ signals:
     /******** Modify by ut000610 daizhengwen 2020-06-11: QProcess start finished signal****************/
     void processStarted();
     /********************* Modify by ut000610 daizhengwen End ************************/
+
+    /******** Modify by ut000610 daizhengwen 2020-09-03:将拖拽过来的数据传送给终端 Begin***************/
+    void sendUrlsToTerm(const char *);
+    /********************* Modify by ut000610 daizhengwen End ************************/
     /**
      * Emitted when emulator send data to the terminal process
      * (redirected for external recipient). It can be used for

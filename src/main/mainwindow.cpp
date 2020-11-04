@@ -587,6 +587,23 @@ QString MainWindow::getCurrTabTitle()
 }
 
 /*******************************************************************************
+ 1. @函数:    remoteUploadFile
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-03
+ 4. @说明:    执行上传文件
+ 1) 支持远程时拖拽文件自动上传
+ 2) 支持上传指定的文件
+*******************************************************************************/
+void MainWindow::remoteUploadFile(QString strFileNames)
+{
+    qDebug() << __FUNCTION__ << strFileNames;
+    pressCtrlAt();
+    sleep(100);
+    currentPage()->sendTextToCurrentTerm(strFileNames);
+    currentPage()->sendTextToCurrentTerm("\n");
+}
+
+/*******************************************************************************
  1. @函数:    isFocusOnList
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-31
@@ -1871,17 +1888,37 @@ QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 *******************************************************************************/
 void MainWindow::remoteUploadFile()
 {
-    QStringList fileName = Utils::showFilesSelectDialog(this);
-    if (!fileName.isEmpty()) {
-        pressCtrlAt();
-        sleep(100);
-        QString strTxt = "sz ";
-        for (QString &str : fileName) {
-            strTxt += str + " ";
+    //下载弹窗加载
+    QString curPath = QDir::currentPath();
+    QString dlgTitle = QObject::tr("Select file to upload");
+
+    // 设置弹窗
+    DFileDialog *dialog = new DFileDialog(this, dlgTitle, curPath);
+    connect(dialog, &DFileDialog::finished, this, [ = ](int code) {
+        QStringList fileName;
+
+        if (code == QDialog::Accepted) {
+            fileName = dialog->selectedFiles();
+        } else {
+            // 选择文件，却点击了叉号
+            fileName = QStringList();
         }
-        currentPage()->sendTextToCurrentTerm(strTxt);
-        currentPage()->sendTextToCurrentTerm("\n");
-    }
+
+        if (!fileName.isEmpty()) {
+            QString strTxt = "sz ";
+            for (QString &str : fileName) {
+                strTxt += str + " ";
+            }
+            remoteUploadFile(strTxt);
+        } else {
+            qDebug() << "remoteUploadFile file name is Null";
+        }
+
+    });
+    dialog->setAcceptMode(QFileDialog::AcceptOpen);
+    dialog->setFileMode(QFileDialog::ExistingFiles);
+    dialog->setLabelText(QFileDialog::Accept, QObject::tr("Upload"));
+    dialog->open();
 }
 
 /**
@@ -1896,19 +1933,37 @@ void MainWindow::remoteUploadFile()
 void MainWindow::remoteDownloadFile()
 {
     TermWidget *term = currentPage()->currentTerminal();
-    downloadFilePath = Utils::showDirDialog(this);
 
-    if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
-        //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
-        //currentTab()->sendTextToCurrentTerm(strTxt);
-        //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-        QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
-        pressEnterKey(strTxt);
-        currentPage()->sendTextToCurrentTerm("\n");
-        //-------------------
-        term->setEnterSzCommand(true);
-        //sleep(100);//
-    }
+    QString curPath = QDir::currentPath();
+    QString dlgTitle = QObject::tr("Select a directory to save the file");
+
+    DFileDialog *dialog = new DFileDialog(this, dlgTitle, curPath);
+    dialog->setAcceptMode(QFileDialog::AcceptOpen);
+    dialog->setFileMode(QFileDialog::Directory);
+    dialog->setOption(DFileDialog::DontConfirmOverwrite);
+    dialog->setLabelText(QFileDialog::Accept, QObject::tr("Select"));
+    connect(dialog, &DFileDialog::finished, this, [ = ](int code) {
+        if (code == QDialog::Accepted && !dialog->selectedFiles().isEmpty()) {
+            QStringList list = dialog->selectedFiles();
+            const QString dirName = list.first();
+            downloadFilePath = dirName;
+        } else {
+            downloadFilePath = "";
+        }
+
+        if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
+            //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
+            //currentTab()->sendTextToCurrentTerm(strTxt);
+            //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+            QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
+            pressEnterKey(strTxt);
+            currentPage()->sendTextToCurrentTerm("\n");
+            //-------------------
+            term->setEnterSzCommand(true);
+            //sleep(100);//
+        }
+    });
+    dialog->open();
 }
 
 /*******************************************************************************
@@ -1959,28 +2014,6 @@ void MainWindow::removeCustomCommandSlot(QAction *newAction)
 {
     qDebug() << " MainWindow::removeCustomCommandSlot";
     removeAction(newAction);
-}
-
-/*******************************************************************************
- 1. @函数:    onTabFormatChanged
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-10-28
- 4. @说明:    当前标签标题格式变化，对所有标签生效
-*******************************************************************************/
-void MainWindow::onTabFormatChanged(const QString &tabFormat)
-{
-    emit
-}
-
-/*******************************************************************************
- 1. @函数:    onRemoteTabFormatChanged
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-10-28
- 4. @说明:    远程标签标题变化，对所有的标签生效
-*******************************************************************************/
-void MainWindow::onRemoteTabFormatChanged(const QString &remoteTabFormat)
-{
-
 }
 
 /*******************************************************************************

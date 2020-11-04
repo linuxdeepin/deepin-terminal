@@ -496,6 +496,8 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_terminalDisplay, SIGNAL(termGetFocus()), this, SIGNAL(termGetFocus()));
     connect(m_impl->m_terminalDisplay, SIGNAL(leftMouseClick()), this, SIGNAL(leftMouseClick()));
     connect(m_impl->m_terminalDisplay, SIGNAL(termLostFocus()), this, SIGNAL(termLostFocus()));
+    // 将拖拽进入的urls名返回给终端 将要转发给Emu的数据
+    connect(m_impl->m_terminalDisplay, SIGNAL(sendStringToEmu(const char *)), this, SIGNAL(sendUrlsToTerm(const char *)));
     connect(
         m_impl->m_terminalDisplay, SIGNAL(keyPressedSignal(QKeyEvent *)), this, SIGNAL(termKeyPressed(QKeyEvent *)));
     //    m_impl->m_terminalDisplay->setSize(80, 40);

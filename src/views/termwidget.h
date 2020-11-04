@@ -142,6 +142,8 @@ public:
 public slots:
     void wpasteSelection();
     void onSettingValueChanged(const QString &keyName);
+    // 处理拖拽进来的文件名Urls
+    void onDropInUrls(const char *urls);
     // 处理触控板事件
     void onTouchPadSignal(QString name, QString direction, int fingers);
 

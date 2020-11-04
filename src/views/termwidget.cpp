@@ -189,6 +189,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
     });
 
+    // 接收到拖拽文件的Urls数据
+    connect(this, &QTermWidget::sendUrlsToTerm, this, &TermWidget::onDropInUrls);
+
     connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
         if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
             QDesktopServices::openUrl(url);
@@ -1182,6 +1185,30 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
 
     qDebug() << "settingValue[" << keyName << "] changed is not effective";
 }
+
+/*******************************************************************************
+ 1. @函数:    onDropInUrls
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-03
+ 4. @说明:    处理拖拽进来的文件名
+ 1) 正常模式下: 目前只显示,暂不处理
+*******************************************************************************/
+void TermWidget::onDropInUrls(const char *urls)
+{
+    QString strUrls = QString::fromLocal8Bit(urls);
+    qDebug() << "recv urls:" << strUrls;
+    if (isInRemoteServer()) {
+        // 远程管理连接中
+        QString strTxt = "sz ";
+        strTxt += strUrls;
+        // 上传文件
+        parentPage()->parentMainWindow()->remoteUploadFile(strTxt);
+    } else {
+        // 发送字符
+        sendText(strUrls);
+    }
+}
+
 
 /*******************************************************************************
  1. @函数:    onTouchPadSignal

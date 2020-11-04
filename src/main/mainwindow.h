@@ -148,6 +148,9 @@ public:
     // 焦点是否在列表上
     bool isFocusOnList();
 
+    // 上传指定的文件
+    void remoteUploadFile(QString strFileNames);
+
     void focusPage(const QString &identifier);
     void focusCurrentPage();
     TermWidgetPage *currentPage();
@@ -263,11 +266,6 @@ public slots:
     void onApplicationStateChanged(Qt::ApplicationState state);
     void addCustomCommandSlot(QAction *newAction);
     void removeCustomCommandSlot(QAction *newAction);
-
-    // 标签标题格式变化
-    void onTabFormatChanged(const QString &tabFormat);
-    // 远程标签标题格式变化
-    void onRemoteTabFormatChanged(const QString &remoteTabFormat);
 
     /******** Add by ut001000 renfeixiang 2020-06-03:增加 Begin***************/
     //处理关闭类型的参数
