@@ -8,6 +8,12 @@
 #include <QObject>
 #include <gtest/gtest.h>
 
+#define private public
+#define protected public
+#include "newdspinbox.h"
+#undef private
+#undef protected
+
 class UT_NewDSpinBox_Test : public ::testing::Test
 {
 public:
@@ -21,6 +27,8 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+
+    NewDspinBox *m_spinBox = nullptr;
 };
 
 #endif // UT_NEWDSPINBOX_TEST_H

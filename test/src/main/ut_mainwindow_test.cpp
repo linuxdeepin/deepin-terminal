@@ -186,10 +186,10 @@ TEST_F(UT_MainWindow_Test, selectedText)
     EXPECT_EQ(selectedText.length(), 0);
 }
 
-TEST_F(UT_MainWindow_Test, createNewWorkspace)
+TEST_F(UT_MainWindow_Test, createNewTab)
 {
     TabBar *tabBar = m_normalWindow->m_tabbar;
-    m_normalWindow->createNewWorkspace();
+    m_normalWindow->createNewTab();
     EXPECT_EQ(tabBar->count(), 2);
 }
 
@@ -336,10 +336,10 @@ TEST_F(UT_MainWindow_Test, quake_selectedText)
     EXPECT_EQ(selectedText.length(), 0);
 }
 
-TEST_F(UT_MainWindow_Test, quake_createNewWorkspace)
+TEST_F(UT_MainWindow_Test, quake_createNewTab)
 {
     TabBar *tabBar = m_quakeWindow->m_tabbar;
-    m_quakeWindow->createNewWorkspace();
+    m_quakeWindow->createNewTab();
     EXPECT_EQ(tabBar->count(), 2);
 }
 
