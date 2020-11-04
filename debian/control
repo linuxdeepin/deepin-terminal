@@ -2,12 +2,12 @@ Source: deepin-terminal
 Section: utils
 Priority: optional
 Maintainer: Deepin Terminal <terminal@deepin.com>
-Build-Depends: debhelper (>= 9), cmake, pkg-config, qt5-default, qtbase5-dev, qttools5-dev-tools, qtbase5-private-dev, libdtkwidget-dev, libdframeworkdbus-dev, lxqt-build-tools (>= 0.6.0~), libutf8proc-dev, libatspi2.0-dev, libglib2.0-dev
+Build-Depends: debhelper (>= 9), cmake, pkg-config, qtbase5-dev, qttools5-dev-tools, qtbase5-private-dev, libdtkwidget-dev, libdframeworkdbus-dev, lxqt-build-tools (>= 0.6.0~), libutf8proc-dev, libatspi2.0-dev, libglib2.0-dev, libsecret-1-dev
 Standards-Version: 3.9.8
 Homepage: https://www.deepin.com/
 
 Package: deepin-terminal
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, expect, zssh, qt-at-spi, at-spi2-core
-Description: deepin terminal
- Deepin Terminal
+Description: Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.
+ Terminal is a terminal emulator with simple interface, rich and powerful functions such as multi-windows, workspace, remote management, Quake mode and etc. You can instantly start and close Terminal smoothly like normal file window, allowing you to input commands with facility and no distractions.
