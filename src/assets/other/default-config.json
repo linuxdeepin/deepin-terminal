@@ -35,7 +35,13 @@
                             "hide": true,
                             "reset": false,
                             "default": "Linux"
-                        }
+                        },
+                        {
+                            "key": "expand_theme",
+                            "hide": true,
+                            "reset": false,
+                            "default": ""
+                        }  
                     ]
                 },
                 {

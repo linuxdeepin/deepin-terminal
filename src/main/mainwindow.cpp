@@ -258,6 +258,9 @@ void MainWindow::initOptionButton()
                 }
             }
 
+            //选中当前的主题项
+            checkThemeItem();
+
         });
     } else {
         qDebug() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
@@ -307,6 +310,12 @@ void MainWindow::initOptionMenu()
     QAction *settingAction(new QAction(tr("Settings"), this));
     m_menu->addAction(settingAction);
     m_menu->addSeparator();
+
+    //禁掉dtk主题菜单
+    titlebar()->setSwitchThemeMenuVisible(false);
+    //增加主题菜单
+    addThemeMenuItems();
+
     connect(settingAction, &QAction::triggered, Service::instance(), [ = ] {
         Service::instance()->showSettingDialog(this);
     });
@@ -459,6 +468,13 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     qint64 endTime = QDateTime::currentMSecsSinceEpoch();
     QString strNewTabTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_TAB_TIME + QString::number(endTime - startTime);
     qInfo() << qPrintable(strNewTabTime);
+
+    QString  expandThemeStr = "";
+    expandThemeStr = Settings::instance()->extendColorScheme();
+    if (!expandThemeStr.isEmpty()) {
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+    }
+
 }
 
 /*******************************************************************************
@@ -2160,6 +2176,411 @@ int MainWindow::getDesktopIndex() const
 {
     return m_desktopIndex;
 }
+
+/*******************************************************************************
+ 1. @函数:    checkExtendThemeItem
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    选中当前的内置主题项
+*******************************************************************************/
+void MainWindow::checkExtendThemeItem(const QString &expandThemeStr, QAction *&action)
+{
+    if (expandThemeStr == THEME_ONE) {
+        action = themeOneAction;
+    } else if (expandThemeStr == THEME_TWO) {
+        action = themeTwoAction;
+    } else if (expandThemeStr == THEME_THREE) {
+        action = themeThreeAction;
+    } else if (expandThemeStr == THEME_FOUR) {
+        action = themeFourAction;
+    } else if (expandThemeStr == THEME_FIVE) {
+        action = themeFiveAction;
+    } else if (expandThemeStr == THEME_SIX) {
+        action = themeSixAction;
+    } else if (expandThemeStr == THEME_SEVEN) {
+        action = themeSevenAction;
+    } else if (expandThemeStr == THEME_EIGHT) {
+        action = themeEightAction;
+    } else if (expandThemeStr == THEME_NINE) {
+        action = themeNineAction;
+    } else if (expandThemeStr == THEME_TEN) {
+        action = themeTenAction;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    checkThemeItem
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    选中当前的主题项
+*******************************************************************************/
+void MainWindow::checkThemeItem()
+{
+    bool disableDtkSwitchThemeMenu = qEnvironmentVariableIsSet("KLU_DISABLE_MENU_THEME");
+    //disableDtkSwitchThemeMenu = true; //主题显示开关控制
+    //观察dtk中klu不支持主题功能。不显示主题相关部分。
+    if (disableDtkSwitchThemeMenu) {
+        return;
+    }
+
+    QAction *action;
+    QString  expandThemeStr = THEME_NO;
+    expandThemeStr = Settings::instance()->extendColorScheme();
+
+    Settings::instance()->themeStr = THEME_NO;
+    Settings::instance()->extendThemeStr = expandThemeStr;
+
+
+    switch (DGuiApplicationHelper::instance()->paletteType()) {
+    case DGuiApplicationHelper::LightType:
+
+    {
+        action = lightThemeAction;
+        Settings::instance()->themeStr = THEME_LIGHT;
+        checkExtendThemeItem(expandThemeStr, action);
+        break;
+
+    }
+    case DGuiApplicationHelper::DarkType: {
+        action = darkThemeAction;
+        Settings::instance()->themeStr = THEME_DARK;
+        checkExtendThemeItem(expandThemeStr, action);
+
+        break;
+    }
+
+    default: {
+        //默认是跟随系统
+        action = autoThemeAction;
+        checkExtendThemeItem(expandThemeStr, action);
+
+        break;
+    }
+
+    }
+
+    //勾选主题项
+    action->setChecked(true);
+
+}
+
+/*******************************************************************************
+ 1. @函数:    addThemeMenuItems
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    增加主题菜单
+*******************************************************************************/
+void MainWindow::addThemeMenuItems()
+{
+    QMenu *menu = m_menu;
+    QAction *themeSeparator = nullptr;
+
+    //下面代码参考dtk编写
+    bool disableDtkSwitchThemeMenu = qEnvironmentVariableIsSet("KLU_DISABLE_MENU_THEME");
+    //disableDtkSwitchThemeMenu = true;//主题显示开关控制
+    //观察dtk中klu不支持主题功能。不显示主题相关部分。
+    if (!disableDtkSwitchThemeMenu) {
+        //浅色 深色 跟随系统  的 翻译 不需要终端自己翻译，这里直接用dtk的翻译即可
+        switchThemeMenu = new SwitchThemeMenu(qApp->translate("TitleBarMenu", "Theme"), menu);
+        lightThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", "Light Theme"));
+        darkThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", "Dark Theme"));
+        autoThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", "System Theme"));
+        switchThemeMenu->addSeparator();
+
+        //添加内置主题项列表
+        themeOneAction = switchThemeMenu->addAction(tr(THEME_ONE_NAME));
+        themeTwoAction = switchThemeMenu->addAction(tr(THEME_TWO_NAME));
+        themeThreeAction = switchThemeMenu->addAction(tr(THEME_THREE_NAME));
+        themeFourAction = switchThemeMenu->addAction(tr(THEME_FOUR_NAME));
+        themeFiveAction = switchThemeMenu->addAction(tr(THEME_FIVE_NAME));
+        themeSixAction = switchThemeMenu->addAction(tr(THEME_SIX_NAME));
+        themeSevenAction = switchThemeMenu->addAction(tr(THEME_SEVEN_NAME));
+        themeEightAction = switchThemeMenu->addAction(tr(THEME_EIGHT_NAME));
+        themeNineAction = switchThemeMenu->addAction(tr(THEME_NINE_NAME));
+        themeTenAction = switchThemeMenu->addAction(tr(THEME_TEN_NAME));
+
+        //设置主题项可选
+        autoThemeAction->setCheckable(true);
+        lightThemeAction->setCheckable(true);
+        darkThemeAction->setCheckable(true);
+
+        themeOneAction->setCheckable(true);
+        themeTwoAction->setCheckable(true);
+        themeThreeAction->setCheckable(true);
+        themeFourAction->setCheckable(true);
+        themeFiveAction->setCheckable(true);
+        themeSixAction->setCheckable(true);
+        themeSevenAction->setCheckable(true);
+        themeEightAction->setCheckable(true);
+        themeNineAction->setCheckable(true);
+        themeTenAction->setCheckable(true);
+
+        //创建主题项快捷键组
+        group = new QActionGroup(switchThemeMenu);
+        group->addAction(autoThemeAction);
+        group->addAction(lightThemeAction);
+        group->addAction(darkThemeAction);
+
+        group->addAction(themeOneAction);
+        group->addAction(themeTwoAction);
+        group->addAction(themeThreeAction);
+        group->addAction(themeFourAction);
+        group->addAction(themeFiveAction);
+        group->addAction(themeSixAction);
+        group->addAction(themeSevenAction);
+        group->addAction(themeEightAction);
+        group->addAction(themeNineAction);
+        group->addAction(themeTenAction);
+
+        menu->addMenu(switchThemeMenu);
+        themeSeparator = menu->addSeparator();
+
+        switchThemeMenu->menuAction()->setVisible(true);
+        themeSeparator->setVisible(true);
+
+        QObject::connect(group, SIGNAL(triggered(QAction *)),
+                         this, SLOT(themeActionTriggeredSlot(QAction *)));
+        QObject::connect(group, SIGNAL(hovered(QAction *)),
+                         this, SLOT(themeActionHoveredSlot(QAction *)));
+
+        checkThemeItem();
+
+        connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(setThemeCheckItemSlot()));
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    setThemeCheckItemSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    设置选中的主题项的槽函数
+*******************************************************************************/
+void MainWindow::setThemeCheckItemSlot()
+{
+    //如果是手动选中了主题项，直接返回
+    if (Settings::instance()->bSwitchTheme == true) {
+        return;
+    }
+
+    //以下都是鼠标离开主题项时，还原到之前勾选的主题的处理
+
+    //选中了浅色主题项
+    if (Settings::instance()->themeStr == THEME_LIGHT && Settings::instance()->extendThemeStr == THEME_NO) {
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    }
+
+    //选中了深色主题项
+    if (Settings::instance()->themeStr == THEME_DARK && Settings::instance()->extendThemeStr == THEME_NO) {
+        Settings::instance()->setColorScheme(THEME_DARK);
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+    }
+
+    //选中了跟随系统主题项
+    if (autoThemeAction->isChecked()) {
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::ColorType type = DGuiApplicationHelper::UnknownType;
+        DGuiApplicationHelper::instance()->setPaletteType(type);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        return;
+    }
+
+    //选中了内置主题在1-2项之间 // 浅色方案系列
+    if (Settings::instance()->extendThemeStr == THEME_ONE || Settings::instance()->extendThemeStr == THEME_TWO) {
+
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    }
+
+    //选中了内置主题在3-10项之间 // 深色方案系列
+    if (Settings::instance()->extendThemeStr == THEME_THREE || Settings::instance()->extendThemeStr == THEME_FOUR || Settings::instance()->extendThemeStr == THEME_FIVE
+            || Settings::instance()->extendThemeStr == THEME_SIX || Settings::instance()->extendThemeStr == THEME_SEVEN || Settings::instance()->extendThemeStr == THEME_EIGHT
+            || Settings::instance()->extendThemeStr == THEME_NINE || Settings::instance()->extendThemeStr == THEME_TEN) {
+
+        Settings::instance()->setColorScheme(THEME_DARK);
+        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    switchThemeAction
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    选择主题项
+*******************************************************************************/
+void MainWindow::switchThemeAction(QAction *action)
+{
+    //浅色主题
+    if (action == lightThemeAction) {
+
+        if (Settings::instance()->bSwitchTheme) {
+            Settings::instance()->themeStr = THEME_LIGHT;
+            Settings::instance()->extendThemeStr = THEME_NO;
+        }
+
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    }
+    //深色主题
+    if (action == darkThemeAction) {
+
+        if (Settings::instance()->bSwitchTheme) {
+            Settings::instance()->themeStr = THEME_DARK;
+            Settings::instance()->extendThemeStr = THEME_NO;
+        }
+
+        Settings::instance()->setColorScheme(THEME_DARK);
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+
+    }
+    //跟随系统
+    if (action == autoThemeAction) {
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        return;
+    }
+    //内置主题1
+    if (action == themeOneAction) {
+        switchThemeAction(action, THEME_ONE);
+        return;
+    }
+    //内置主题2
+    if (action == themeTwoAction) {
+        switchThemeAction(action, THEME_TWO);
+        return;
+    }
+    //内置主题3
+    if (action == themeThreeAction) {
+        switchThemeAction(action, THEME_THREE);
+        return;
+    }
+    //内置主题4
+    if (action == themeFourAction) {
+        switchThemeAction(action, THEME_FOUR);
+        return;
+    }
+    //内置主题5
+    if (action == themeFiveAction) {
+        switchThemeAction(action, THEME_FIVE);
+        return;
+    }
+    //内置主题6
+    if (action == themeSixAction) {
+        switchThemeAction(action, THEME_SIX);
+        return;
+    }
+    //内置主题7
+    if (action == themeSevenAction) {
+        switchThemeAction(action, THEME_SEVEN);
+        return;
+    }
+    //内置主题8
+    if (action == themeEightAction) {
+        switchThemeAction(action, THEME_EIGHT);
+        return;
+    }
+    //内置主题9
+    if (action == themeNineAction) {
+        switchThemeAction(action, THEME_NINE);
+        return;
+    }
+    //内置主题10
+    if (action == themeTenAction) {
+        switchThemeAction(action, THEME_TEN);
+        return;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    switchThemeAction
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    选择内置主题项
+*******************************************************************************/
+void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr)
+{
+    //内置浅色主题 1-2 之间
+    if (action == themeOneAction || action == themeTwoAction) {
+
+        if (Settings::instance()->bSwitchTheme) {
+            Settings::instance()->themeStr = THEME_LIGHT;
+            Settings::instance()->extendThemeStr = themeNameStr;
+        }
+
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        Settings::instance()->setExtendColorScheme(themeNameStr);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    }
+    //内置深色主题 3-10 之间
+    if (action == themeThreeAction || action == themeFourAction || action == themeFiveAction || action == themeSixAction
+            || action == themeSevenAction || action == themeEightAction || action == themeNineAction || action == themeTenAction) {
+
+        if (Settings::instance()->bSwitchTheme) {
+            Settings::instance()->themeStr = THEME_DARK;
+            Settings::instance()->extendThemeStr = themeNameStr;
+        }
+
+        Settings::instance()->setColorScheme(THEME_DARK);
+        Settings::instance()->setExtendColorScheme(themeNameStr);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    themeActionTriggeredSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    鼠标选择时主题切换触发的槽函数
+*******************************************************************************/
+void MainWindow::themeActionTriggeredSlot(QAction *action)
+{
+    Settings::instance()->bSwitchTheme = true;
+    switchThemeAction(action);
+}
+
+/*******************************************************************************
+ 1. @函数:    themeActionHoveredSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    鼠标悬浮主题项时切换触发的槽函数
+*******************************************************************************/
+void MainWindow::themeActionHoveredSlot(QAction *action)
+{
+    if (switchThemeMenu->hoveredThemeStr != action->text()) {
+        switchThemeMenu->hoveredThemeStr = action->text();
+        Settings::instance()->bSwitchTheme = false;
+        switchThemeAction(action);
+    }
+}
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /**

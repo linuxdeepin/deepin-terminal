@@ -73,6 +73,11 @@ public:
     // 通用设置
     void setKeyValue(const QString &name, const QString &value);
 
+    //获取内置主题
+    QString extendColorScheme() const;
+    //设置内置主题
+    void setExtendColorScheme(const QString &name);
+
     DSettings *settings;
     static DComboBox *comboBox;
     bool IsPasteSelection();
@@ -80,6 +85,14 @@ public:
     // 与设置里的快捷键冲突检测
     bool isShortcutConflict(const QString &Name, const QString &Key);
     void HandleWidthFont();
+
+    //是否选择了主题
+    bool bSwitchTheme           = false;
+    //主题名称
+    QString themeStr            = "";
+    //内置主题名称
+    QString extendThemeStr      = "";
+
 
 public:
     QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);

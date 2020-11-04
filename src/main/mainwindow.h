@@ -42,6 +42,8 @@
 #include <QSettings>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QMenu>
+#include <QDebug>
 
 #include <functional>
 #include <QShortcut>
@@ -55,6 +57,60 @@ class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
+
+
+/*******************************************************************************
+ 1. @类名:    SwitchThemeMenu
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    主题菜单的快捷键项在鼠标离开悬浮时，触发主题还原
+*******************************************************************************/
+class SwitchThemeMenu : public QMenu
+{
+    Q_OBJECT
+public:
+    SwitchThemeMenu(const QString &title, QWidget *parent = nullptr): QMenu(title, parent) {}
+    //捕获鼠标离开主题项事件
+    void leaveEvent(QEvent *) override
+    {
+        //鼠标停靠悬浮判断
+        bool ishover = this->property("hover").toBool();
+        if (!ishover) {
+            emit mainWindowCheckThemeItemSignal();
+        }
+
+    }
+    //主题菜单栏隐藏时触发
+    void hideEvent(QHideEvent *) override
+    {
+        hoveredThemeStr = "";
+    }
+    //捕获鼠标进入主题项事件
+    void enterEvent(QEvent *event) override
+    {
+        hoveredThemeStr = "";
+        return QMenu::enterEvent(event);
+    }
+    //处理键盘主题项左键按下离开事件
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        switch (event->key()) {
+        case Qt::Key_Left:
+            emit mainWindowCheckThemeItemSignal();
+            break;
+        }
+        return QMenu::keyPressEvent(event);
+    }
+
+signals:
+    //主题项在鼠标停靠离开时触发的信号
+    void mainWindowCheckThemeItemSignal();
+
+public:
+    //鼠标悬殊主题记录，防止频繁刷新，鼠标再次进入主题列表负责刷新预览
+    QString hoveredThemeStr = "";
+};
+
 
 /*******************************************************************************
  1. @类名:    MainWindow
@@ -148,6 +204,44 @@ public:
     // 窗口最小高度
     static const int m_MinHeight;
 
+    //浅色主题
+    static constexpr const char *THEME_LIGHT                    = "Light";
+    //深色主题
+    static constexpr const char *THEME_DARK                     = "Dark";
+    //无内置主题
+    static constexpr const char *THEME_NO                       = "";
+    //内置主题1
+    static constexpr const char *THEME_ONE                      = "Theme1";
+    static constexpr const char *THEME_ONE_NAME                 = "mar";
+    //内置主题2
+    static constexpr const char *THEME_TWO                      = "Theme2";
+    static constexpr const char *THEME_TWO_NAME                 = "one light";
+    //内置主题3
+    static constexpr const char *THEME_THREE                    = "Theme3";
+    static constexpr const char *THEME_THREE_NAME               = "elementary";
+    //内置主题4
+    static constexpr const char *THEME_FOUR                     = "Theme4";
+    static constexpr const char *THEME_FOUR_NAME                = "empathy";
+    //内置主题5
+    static constexpr const char *THEME_FIVE                     = "Theme5";
+    static constexpr const char *THEME_FIVE_NAME                = "tomorrow night blue";
+    //内置主题6
+    static constexpr const char *THEME_SIX                      = "Theme6";
+    static constexpr const char *THEME_SIX_NAME                 = "bim";
+    //内置主题7
+    static constexpr const char *THEME_SEVEN                    = "Theme7";
+    static constexpr const char *THEME_SEVEN_NAME               = "freya";
+    //内置主题8
+    static constexpr const char *THEME_EIGHT                    = "Theme8";
+    static constexpr const char *THEME_EIGHT_NAME               = "hybrid";
+    //内置主题9
+    static constexpr const char *THEME_NINE                     = "Theme9";
+    static constexpr const char *THEME_NINE_NAME                = "ocean dark";
+    //内置主题10
+    static constexpr const char *THEME_TEN                      = "Theme10";
+    static constexpr const char *THEME_TEN_NAME                 = "deepin";
+
+
     int getDesktopIndex() const;
 
 signals:
@@ -187,10 +281,30 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
     //------------------------------------------------------------
+
+    //选中当前的内置主题项
+    void checkExtendThemeItem(const QString &expandThemeStr, QAction *&action);
+    //选中当前的主题项
+    void checkThemeItem();
+    //增加主题菜单
+    void addThemeMenuItems();
+    //选择主题项
+    void switchThemeAction(QAction *);
+    //选择内置主题项
+    void switchThemeAction(QAction *&action, const QString &themeNameStr);
+
+
 protected slots:
     void onTermTitleChanged(QString title);
     void onTabTitleChanged(QString title);
     void onCreateNewWindow(QString workingDir);
+
+    //鼠标选择时主题切换触发的槽函数
+    void themeActionTriggeredSlot(QAction *);
+    //鼠标悬浮主题项时切换触发的槽函数
+    void themeActionHoveredSlot(QAction *);
+    //设置选中的主题项的槽函数
+    void setThemeCheckItemSlot();
 
 protected:
     void initUI();
@@ -308,6 +422,41 @@ protected:
     int m_MainWindowID = 0;
     // 创建第一个终端完成时，需要记录
     bool hasCreateFirstTermialComplete = false;
+
+    //主题菜单
+    SwitchThemeMenu *switchThemeMenu        = nullptr;
+    //浅色主题快捷键
+    QAction         *lightThemeAction       = nullptr;
+    //深色主题快捷键
+    QAction         *darkThemeAction        = nullptr;
+    //跟随系统主题快捷键
+    QAction         *autoThemeAction        = nullptr;
+
+    //内置主题1快捷键
+    QAction         *themeOneAction         = nullptr;
+    //内置主题2快捷键
+    QAction         *themeTwoAction         = nullptr;
+    //内置主题3快捷键
+    QAction         *themeThreeAction       = nullptr;
+    //内置主题4快捷键
+    QAction         *themeFourAction        = nullptr;
+    //内置主题5快捷键
+    QAction         *themeFiveAction        = nullptr;
+    //内置主题6快捷键
+    QAction         *themeSixAction         = nullptr;
+    //内置主题7快捷键
+    QAction         *themeSevenAction       = nullptr;
+    //内置主题8快捷键
+    QAction         *themeEightAction       = nullptr;
+    //内置主题9快捷键
+    QAction         *themeNineAction        = nullptr;
+    //内置主题10快捷键
+    QAction         *themeTenAction         = nullptr;
+
+    //主题快捷键组
+    QActionGroup    *group                  = nullptr;
+
+
 };
 
 /*******************************************************************************

@@ -210,8 +210,19 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
             theme = "Light";
         }
         /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-        setColorScheme(theme);
-        Settings::instance()->setColorScheme(theme);
+        //setColorScheme(theme);
+        //Settings::instance()->setColorScheme(theme);
+        QString  expandThemeStr = "";
+        expandThemeStr = Settings::instance()->extendColorScheme();
+        if (expandThemeStr.isEmpty()) {
+            if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType) {
+                theme = "Light";
+            }
+            setColorScheme(theme);
+            Settings::instance()->setColorScheme(theme);
+        } else {
+            setColorScheme(expandThemeStr);
+        }
     });
 
     // 未找到搜索的匹配结果

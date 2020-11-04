@@ -91,9 +91,14 @@ void Settings::init()
     if (!file.exists() || "Light" != m_backend->getOption("basic.interface.theme").toString()) {
         /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 Begin************************/
         //DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        setColorScheme("Dark");
+        //DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        //setColorScheme("Dark");
         /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 End ************************/
+        if (m_backend->getOption("basic.interface.expand_theme").toString().isEmpty()) {
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+            setColorScheme("Dark");
+        }
+
     }
     /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light End ************************/
 
@@ -434,6 +439,28 @@ bool Settings::backgroundBlur() const
 void Settings::setColorScheme(const QString &name)
 {
     return settings->option("basic.interface.theme")->setValue(name);
+}
+
+/*******************************************************************************
+ 1. @函数:    extendColorScheme
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    获取内置主题
+*******************************************************************************/
+QString Settings::extendColorScheme() const
+{
+    return settings->option("basic.interface.expand_theme")->value().toString();
+}
+
+/*******************************************************************************
+ 1. @函数:    setExtendColorScheme
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    设置内置主题
+*******************************************************************************/
+void Settings::setExtendColorScheme(const QString &name)
+{
+    return settings->option("basic.interface.expand_theme")->setValue(name);
 }
 
 /*******************************************************************************
