@@ -161,4 +161,18 @@ TEST_F(UT_TermWidget_Test, getsetEncode)
     }
 }
 
+TEST_F(UT_TermWidget_Test, addMenuActions)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    QPoint pos(50, 50);
+    termWidget->customContextMenuCall(pos);
+}
+
 #endif

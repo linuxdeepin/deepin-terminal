@@ -154,6 +154,7 @@ KeyboardTranslator* KeyboardTranslatorManager::loadTranslator(const QString& nam
     const QString& path = findTranslatorPath(name);
 
     QFile source(path);
+    qDebug() << __FUNCTION__ << path << endl;
     if (name.isEmpty() || !source.open(QIODevice::ReadOnly | QIODevice::Text))
         return nullptr;
 

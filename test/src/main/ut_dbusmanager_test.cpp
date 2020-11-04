@@ -79,11 +79,23 @@ TEST_F(UT_Dbusmanager_Test, otherfailfont)
 
 
 //Json转为 QStringList
-TEST(dbusmanager, converToList)
+TEST_F(UT_Dbusmanager_Test, converToList)
 {
    QJsonArray array = { 1, 2.2, QString() };
    QStringList lstArr = DBusManager::converToList("type", array);
    // qDebug()<< lstArr;
+}
+
+TEST_F(UT_Dbusmanager_Test, listenTouchPadSignal)
+{
+    EXPECT_NE(m_pDbusManager, nullptr);
+    m_pDbusManager->listenTouchPadSignal();
+}
+
+TEST_F(UT_Dbusmanager_Test, listenDesktopSwitched)
+{
+    EXPECT_NE(m_pDbusManager, nullptr);
+    m_pDbusManager->listenDesktopSwitched();
 }
 
 #endif

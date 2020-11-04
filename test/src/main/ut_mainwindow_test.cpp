@@ -362,4 +362,62 @@ TEST_F(UT_MainWindow_Test, getConfigWindowState)
     EXPECT_EQ(m_normalWindow->getConfigWindowState(), "window_normal");
 }
 
+TEST_F(UT_MainWindow_Test, OnHandleCloseType)
+{
+    m_normalWindow->createNewTab();
+    m_normalWindow->createNewTab();
+    m_normalWindow->createNewTab();
+
+    m_normalWindow->OnHandleCloseType(0, Utils::CloseType::CloseType_Window);
+
+    m_normalWindow->OnHandleCloseType(1, Utils::CloseType::CloseType_Tab);
+    m_normalWindow->OnHandleCloseType(1, Utils::CloseType::CloseType_OtherTab);
+    m_normalWindow->OnHandleCloseType(1, Utils::CloseType::CloseType_Window);
+}
+
+TEST_F(UT_MainWindow_Test, onWindowSettingChanged)
+{
+    m_normalWindow->onWindowSettingChanged("advanced.window.blurred_background");
+
+    m_normalWindow->onWindowSettingChanged("advanced.window.use_on_starting");
+
+    m_normalWindow->onWindowSettingChanged("advanced.window.auto_hide_raytheon_window");
+}
+
+TEST_F(UT_MainWindow_Test, onTermIsIdle)
+{
+    TermWidgetPage *currPage = m_normalWindow->currentPage();
+    m_normalWindow->onTermIsIdle(currPage->identifier(), true);
+
+    m_normalWindow->onTermIsIdle(currPage->identifier(), false);
+}
+
+TEST_F(UT_MainWindow_Test, showExitConfirmDialog)
+{
+#ifdef ENABLE_UI_TEST
+    //要自己退出，否则对话框窗口会一直阻塞
+    QtConcurrent::run([=]() {
+        QTimer timer;
+        timer.setSingleShot(true);
+
+        QEventLoop *loop = new QEventLoop;
+
+        QObject::connect(&timer, &QTimer::timeout, [=]() {
+            loop->quit();
+            qApp->exit();
+        });
+
+        timer.start(1000);
+        loop->exec();
+
+        delete loop;
+    });
+
+    m_normalWindow->createNewTab();
+    m_normalWindow->showExitConfirmDialog(Utils::CloseType::CloseType_Tab, 1, m_normalWindow);
+
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
 #endif

@@ -131,4 +131,27 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
     remoteListWidget.onRemoteItemModify("server_0", false);
 }
 
+TEST_F(UT_ListView_Test, setFocusFromeIndex)
+{
+    ListView listWidget(ListType_Custom, nullptr);
+    listWidget.resize(242, 600);
+    listWidget.show();
+
+    const int count = 10;
+    for(int i=0; i<=count; i++)
+    {
+        QString key = QString(QChar('A'+i));
+        QAction *newAction = new QAction;
+        newAction->setText(QString("cmd_%1").arg(i));
+        newAction->setShortcut(QKeySequence(QString("Ctrl+Shift+%1").arg(key)));
+        listWidget.addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
+
+        ShortcutManager::instance()->addCustomCommand(*newAction);
+    }
+
+    listWidget.setFocusFromeIndex(0, true);
+
+    listWidget.setFocusFromeIndex(0, false);
+}
+
 #endif

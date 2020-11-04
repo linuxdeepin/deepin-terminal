@@ -1,9 +1,12 @@
 #include "ut_TerminalDisplay_test.h"
 
 #define private public
+#define protected public
 #include "qtermwidget.h"
 #include "TerminalDisplay.h"
+#include "Vt102Emulation.h"
 #undef private
+#undef protected
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -72,6 +75,192 @@ TEST_F(UT_TerminalDisplay_Test, setColorTable)
         EXPECT_EQ(colorTable[i].transparent, defaultTable[i].transparent);
     }
 
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, resizeTest)
+{
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    display->setBellMode(TerminalDisplay::NotifyBell);
+    display->setTerminalSizeHint(true);
+    display->setTripleClickMode(TerminalDisplay::SelectWholeLine);
+    display->setTerminalSizeStartup(true);
+    display->setHideCursor(true);
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
+
+    display->resize(800, 600);
+    display->show();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    display->resize(500, 300);
+
+    delete emulation;
+    delete display;
+}
+
+
+TEST_F(UT_TerminalDisplay_Test, drawContentsTest)
+{
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    int margin = display->margin();
+    EXPECT_EQ(margin > 0, true);
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, extendSelectionTest)
+{
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
+
+    QPoint selectPos(0, 0);
+    display->extendSelection(selectPos);
+
+    delete emulation;
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, mouseDoubleClickTest)
+{
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    display->makeImage();
+    display->setFixedSize(200, 100);
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
+
+    QPoint clickPoint(50, 50);
+    QTest::mouseDClick(display, Qt::LeftButton, Qt::NoModifier, clickPoint);
+
+    delete emulation;
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, mouseTripleClickTest)
+{
+    QVector<LineProperty> lineProperties(80);
+    for (int line = 0; line < lineProperties.size(); line++)
+    {
+        lineProperties[line] = (LineProperty)(LINE_DEFAULT | LINE_WRAPPED);
+    }
+
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->_lineProperties = lineProperties;
+    display->_possibleTripleClick = true;
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
+
+    QPoint clickPoint(10, 20);
+    QTest::mouseClick(display, Qt::LeftButton, Qt::NoModifier, clickPoint);
+
+    delete emulation;
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, setKeyboardCursorColorTest)
+{
+    QVector<LineProperty> lineProperties(80);
+    for (int line = 0; line < lineProperties.size(); line++)
+    {
+        lineProperties[line] = (LineProperty)(LINE_DEFAULT | LINE_WRAPPED);
+    }
+
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->_lineProperties = lineProperties;
+    display->_possibleTripleClick = true;
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
+
+    display->setKeyboardCursorColor(true, QColor(Qt::red));
+
+    delete emulation;
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, processFiltersTest)
+{
+    QVector<LineProperty> lineProperties(80);
+    for (int line = 0; line < lineProperties.size(); line++)
+    {
+        lineProperties[line] = (LineProperty)(LINE_DEFAULT | LINE_WRAPPED);
+    }
+
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->_lineProperties = lineProperties;
+    display->_possibleTripleClick = true;
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
+
+    display->processFilters();
+
+    delete emulation;
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, inputMethodQueryTest)
+{
+    QVector<LineProperty> lineProperties(80);
+    for (int line = 0; line < lineProperties.size(); line++)
+    {
+        lineProperties[line] = (LineProperty)(LINE_DEFAULT | LINE_WRAPPED);
+    }
+
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->_lineProperties = lineProperties;
+    display->_possibleTripleClick = true;
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
+
+    display->inputMethodQuery(Qt::ImQueryAll);
+    display->inputMethodQuery(Qt::ImMicroFocus);
+    display->inputMethodQuery(Qt::ImFont);
+    display->inputMethodQuery(Qt::ImCursorPosition);
+    display->inputMethodQuery(Qt::ImSurroundingText);
+
+    delete emulation;
     delete display;
 }
 

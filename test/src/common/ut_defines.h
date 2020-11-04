@@ -2,8 +2,8 @@
 #ifndef UT_DEFINES_TEST_H
 #define UT_DEFINES_TEST_H
 
-//UI测试等待时间间隔 200毫秒
-#define UT_WAIT_TIME 200
+//UI测试等待时间间隔 300毫秒
+#define UT_WAIT_TIME 300
 
 //是否开启UI测试
 #define ENABLE_UI_TEST
@@ -75,6 +75,8 @@
 #define UT_BLOCKARRAY_TEST
 #define UT_SEARCHBAR_TEST
 #define UT_KEYBOARDTRANSLATOR_TEST
+#define UT_KPROCESS_TEST
+#define UT_KPTY_TEST
 
 #endif // UT_DEFINES_TEST_H
 

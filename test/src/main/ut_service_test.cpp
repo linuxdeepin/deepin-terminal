@@ -10,6 +10,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QSignalSpy>
+#include <QtConcurrent/QtConcurrent>
 
 #include <DSettingsWidgetFactory>
 
@@ -170,6 +171,5 @@ TEST_F(UT_Service_Test, resetSettingOwner)
     m_service->resetSettingOwner();
     EXPECT_EQ(m_service->m_settingOwner, nullptr);
 }
-
 
 #endif
