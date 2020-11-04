@@ -1332,13 +1332,12 @@ void MainWindow::initShortcuts()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
-    for (int i = 1; i <= 9; i++) {
-        QString shortCutStr = QString("ctrl+shift+%1").arg(i);
-        //qDebug() << shortCutStr;
-        QShortcut *switchTabSC = new QShortcut(QKeySequence(shortCutStr), this);
-        connect(switchTabSC, &QShortcut::activated, this, [this, i]() {
+    for(int i = 1 ;i <= 9; i++){
+        QString strSwitchLabel=QString("shortcuts.workspace.switch_label_win_%1").arg(i);
+        connect(createNewShotcut(strSwitchLabel), &QShortcut::activated, this, [this, i]() {
             TermWidgetPage *page = currentPage();
-            if (page) {
+            if(page){
+                assert(m_tabbar);
                 if (9 == i && m_tabbar->count() > 9) {
                     m_tabbar->setCurrentIndex(m_tabbar->count() - 1);
                     return;
@@ -1355,7 +1354,9 @@ void MainWindow::initShortcuts()
             }
             qDebug() << "currentPage nullptr ??";
         });
+
     }
+
 }
 
 /*******************************************************************************

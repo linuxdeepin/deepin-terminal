@@ -76,6 +76,8 @@ void ShortcutManager::initShortcuts()
     m_builtinShortcuts << "Alt+M";
     /********************* Modify by n014361 wangpeili End ************************/
     // 切换标签页，防止和ctrl+shift+1等冲突（无法识别）
+
+/*
     m_builtinShortcuts << "Ctrl+Shift+!";
     m_builtinShortcuts << "Ctrl+Shift+@";
     m_builtinShortcuts << "Ctrl+Shift+#";
@@ -88,7 +90,7 @@ void ShortcutManager::initShortcuts()
     for (int i = 0; i <= 9; i++) {
         m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
     }
-
+*/
     createCustomCommandsFromConfig();
     m_mapReplaceText.insert("Ctrl+Shift+!", "Ctrl+Shift+1");
     m_mapReplaceText.insert("Ctrl+Shift+@", "Ctrl+Shift+2");

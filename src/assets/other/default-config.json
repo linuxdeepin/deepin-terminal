@@ -193,6 +193,60 @@
                             "name": "Close other windows",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+Q"
+                        },
+                        {
+                            "key": "switch_label_win_1",
+                            "name": "switch label window 1",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+1"
+                        },
+                        {
+                            "key": "switch_label_win_2",
+                            "name": "switch label window 2",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+2"
+                        },
+                        {
+                            "key": "switch_label_win_3",
+                            "name": "switch label window 3",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+3"
+                        },
+                        {
+                            "key": "switch_label_win_4",
+                            "name": "switch label window 4",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+4"
+                        },
+                        {
+                            "key": "switch_label_win_5",
+                            "name": "switch label window 5",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+5"
+                        },
+                        {
+                            "key": "switch_label_win_6",
+                            "name": "switch label window 6",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+6"
+                        },
+                        {
+                            "key": "switch_label_win_7",
+                            "name": "switch label window 7",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+7"
+                        },
+                        {
+                            "key": "switch_label_win_8",
+                            "name": "switch label window 8",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+8"
+                        },
+                        {
+                            "key": "switch_label_win_9",
+                            "name": "switch label window 9",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+9"
                         }
                     ]
                 },
