@@ -24,6 +24,7 @@ protected:
 
 class TabRenameWidget : public QWidget
 {
+    Q_OBJECT
 public:
     explicit TabRenameWidget(bool isRemote, bool isSetting = false, QWidget *parent = nullptr);
 

@@ -835,6 +835,7 @@ void TermWidgetPage::showRenameTitleDialog()
         m_renameDlg->setText(tabTitleFormat, remoteTabTitleFormat);
         m_renameDlg->setFocusPolicy(Qt::NoFocus);
         m_renameDlg->setAttribute(Qt::WA_DeleteOnClose);
+        m_renameDlg->getTabTitleEdit()->getInputedit()->lineEdit()->selectAll();
         m_renameDlg->open();
 
         connect(m_renameDlg, &TabRenameDlg::finished, m_renameDlg, [ = ]() {

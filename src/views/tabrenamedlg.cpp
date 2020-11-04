@@ -1,5 +1,4 @@
 #include "tabrenamedlg.h"
-#include "tabrenamewidget.h"
 #include "utils.h"
 
 #include <DVerticalLine>
@@ -130,9 +129,7 @@ void TabRenameDlg::setText(const QString &tabTitleFormat, const QString &remoteT
 *******************************************************************************/
 void TabRenameDlg::setNormalLineEditText(const QString &text)
 {
-    LineEdit *lineEdit = nullptr;
-    lineEdit = m_normalWidget->findChild<LineEdit *>();
-    lineEdit->setText(text);
+    m_tabTitleEdit->getInputedit()->setText(text);
 }
 
 /*******************************************************************************
@@ -143,10 +140,9 @@ void TabRenameDlg::setNormalLineEditText(const QString &text)
 *******************************************************************************/
 void TabRenameDlg::setRemoteLineEditText(const QString &text)
 {
-    LineEdit *lineEdit = nullptr;
-    lineEdit = m_remoteWidget->findChild<LineEdit *>();
-    lineEdit->setText(text);
+    m_remoteTabTitleEdit->getInputedit()->setText(text);
 }
+
 
 /*******************************************************************************
  1. @函数:    eventFilter
@@ -164,6 +160,28 @@ bool TabRenameDlg::eventFilter(QObject *obj, QEvent *event)
         }
     }
     return false;
+}
+
+/*******************************************************************************
+ 1. @函数:    getRemoteTabTitleEdit
+ 2. @作者:    ut000442 赵公强
+ 3. @日期:    2020-11-4
+ 4. @说明:    获取远程重命名控件接口
+*******************************************************************************/
+TabRenameWidget *TabRenameDlg::getRemoteTabTitleEdit() const
+{
+    return m_remoteTabTitleEdit;
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitleEdit
+ 2. @作者:    ut000442 赵公强
+ 3. @日期:    2020-11-4
+ 4. @说明:    获取普通重命名控件接口
+*******************************************************************************/
+TabRenameWidget *TabRenameDlg::getTabTitleEdit() const
+{
+    return m_tabTitleEdit;
 }
 
 /*******************************************************************************

@@ -62,9 +62,7 @@ void TabRenameWidget::initUi()
 
     m_inputedit = new LineEdit;
     m_inputedit->setText("%n:%d");
-    m_inputedit->lineEdit()->setSelection(0, m_inputedit->text().size());
     m_inputedit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_inputedit->setClearButtonEnabled(false);
     DFontSizeManager::instance()->bind(m_inputedit, DFontSizeManager::T6);
 
     m_choseButton = new DPushButton(tr("Insert"));
@@ -73,10 +71,11 @@ void TabRenameWidget::initUi()
     m_choseButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_choseButton, DFontSizeManager::T6);
 
+    //  设置界面隐藏clearbutton并且不需要初始化标题 重命名窗口不用隐藏clearbutton需要初始化标题
     if (!m_isSetting) {
         initLabel();
-        // 非设置情况下，显示关闭按钮
-        m_inputedit->setClearButtonEnabled(true);
+    } else {
+        m_inputedit->lineEdit()->setClearButtonEnabled(false);
     }
 
     m_layout->addWidget(m_inputedit);
@@ -150,6 +149,8 @@ void TabRenameWidget::initConnections()
     connect(m_choseMenu, &DMenu::triggered, this, [ = ](QAction * ac) {
         QStringList spiltlist = ac->text().split("%");
         m_inputedit->lineEdit()->insert("%" + spiltlist.at(1));
+        //向输入条中输入内容后，焦点应该同步设置过去
+        m_inputedit->lineEdit()->setFocus(Qt::MouseFocusReason);
     });
 }
 

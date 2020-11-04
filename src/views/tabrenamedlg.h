@@ -1,5 +1,8 @@
 #ifndef TABRENAMEDLG_H
 #define TABRENAMEDLG_H
+
+#include "tabrenamewidget.h"
+
 #include <DSuggestButton>
 #include <DLabel>
 #include <DButtonBox>
@@ -35,6 +38,9 @@ public:
     void setText(const QString &tabTitleFormat, const QString &remoteTabTitleFormat);
     void setNormalLineEditText(const QString &text);
     void setRemoteLineEditText(const QString &text);
+
+    TabRenameWidget *getTabTitleEdit() const;
+    TabRenameWidget *getRemoteTabTitleEdit() const;
 
 Q_SIGNALS:
     void tabTitleFormatRename(const QString &tabTitleFormat, const QString &remoteTabTitleFormat);
