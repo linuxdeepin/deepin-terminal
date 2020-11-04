@@ -119,36 +119,36 @@
                     ]
                 },
                 {
-                    "key" : "workspace",
-                    "name" : "Workspace",
+                    "key" : "tab",
+                    "name" : "Tabs",
                     "options" : [
                         {
-                            "key": "new_workspace",
-                            "name": "New workspace",
+                            "key": "new_tab",
+                            "name": "New tab",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+T"
                         },
                         {
-                            "key": "close_workspace",
-                            "name": "Close workspace",
+                            "key": "close_tab",
+                            "name": "Close tab",
                             "type": "shortcut",
                             "default":  "Alt+W"
                         },
                         {
-                            "key": "close_other_workspace",
-                            "name": "Close other workspaces",
+                            "key": "close_other_tabs",
+                            "name": "Close other tabs",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+W"
                         },
                         {
-                            "key": "previous_workspace",
-                            "name": "Previous workspace",
+                            "key": "previous_tab",
+                            "name": "Previous tab",
                             "type": "shortcut",
                             "default":  "Ctrl+Tab"
                         },
                         {
-                            "key": "next_workspace",
-                            "name": "Next workspace",
+                            "key": "next_tab",
+                            "name": "Next tab",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+Tab"
                         },
@@ -165,92 +165,92 @@
                             "default":  "Ctrl+Shift+H"
                         },
                         {
-                            "key": "select_upper_window",
-                            "name": "Select upper window",
+                            "key": "select_upper_workspace",
+                            "name": "Select upper workspace",
                             "type": "shortcut",
                             "default":  "Alt+Up"
                         },
                         {
-                            "key": "select_lower_window",
-                            "name": "Select lower window",
+                            "key": "select_lower_workspace",
+                            "name": "Select lower workspace",
                             "type": "shortcut",
                             "default":  "Alt+Down"
                         },
                         {
-                            "key": "select_left_window",
-                            "name": "Select left window",
+                            "key": "select_left_workspace",
+                            "name": "Select left workspace",
                             "type": "shortcut",
                             "default":  "Alt+Left"
                         },
                         {
-                            "key": "select_right_window",
-                            "name": "Select right window",
+                            "key": "select_right_workspace",
+                            "name": "Select right workspace",
                             "type": "shortcut",
                             "default":  "Alt+Right"
                         },
                         {
-                            "key": "close_window",
-                            "name": "Close window",
+                            "key": "close_workspace",
+                            "name": "Close workspace",
                             "type": "shortcut",
                             "default":  "Alt+Q"
                         },
                         {
-                            "key": "close_other_windows",
-                            "name": "Close other windows",
+                            "key": "close_other_workspaces",
+                            "name": "Close other workspaces",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+Q"
                         },
                         {
                             "key": "switch_label_win_1",
-                            "name": "switch label window 1",
+                            "name": "Go to tab 1",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+1"
                         },
                         {
                             "key": "switch_label_win_2",
-                            "name": "switch label window 2",
+                            "name": "Go to tab 2",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+2"
                         },
                         {
                             "key": "switch_label_win_3",
-                            "name": "switch label window 3",
+                            "name": "Go to tab 3",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+3"
                         },
                         {
                             "key": "switch_label_win_4",
-                            "name": "switch label window 4",
+                            "name": "Go to tab 4",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+4"
                         },
                         {
                             "key": "switch_label_win_5",
-                            "name": "switch label window 5",
+                            "name": "Go to tab 5",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+5"
                         },
                         {
                             "key": "switch_label_win_6",
-                            "name": "switch label window 6",
+                            "name": "Go to tab 6",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+6"
                         },
                         {
                             "key": "switch_label_win_7",
-                            "name": "switch label window 7",
+                            "name": "Go to tab 7",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+7"
                         },
                         {
                             "key": "switch_label_win_8",
-                            "name": "switch label window 8",
+                            "name": "Go to tab 8",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+8"
                         },
                         {
                             "key": "switch_label_win_9",
-                            "name": "switch label window 9",
+                            "name": "Go to tab 9",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+9"
                         }

@@ -231,11 +231,10 @@ void TabRenameDlg::initConnections()
 *******************************************************************************/
 void TabRenameDlg::initTitleLabel()
 {
-    m_titlelabel = new DLabel(tr("Rename title"), this);
+    m_titlelabel = new DLabel(QObject::tr("Rename title"), this);
     m_titlelabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_titlelabel->setAlignment(Qt::AlignCenter);
     DFontSizeManager::instance()->bind(m_titlelabel, DFontSizeManager::T6);
-
 }
 
 /*******************************************************************************

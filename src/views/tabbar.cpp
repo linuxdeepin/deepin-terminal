@@ -537,13 +537,13 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                     m_rightMenu->clear();
                 }
 
-                m_closeTabAction = new QAction(tr("Close workspace"), m_rightMenu);
+                m_closeTabAction = new QAction(QObject::tr("Close Tab"), m_rightMenu);
                 m_closeTabAction->setObjectName("TabBarCloseTabAction");//Add by ut001000 renfeixiang 2020-08-13
 
-                m_closeOtherTabAction = new QAction(tr("Close other workspaces"), m_rightMenu);
+                m_closeOtherTabAction = new QAction(QObject::tr("Close other tabs"), m_rightMenu);
                 m_closeOtherTabAction->setObjectName("TabBarCloseOtherTabAction");//Add by ut001000 renfeixiang 2020-08-13
 
-                m_renameTabAction = new QAction(tr("Rename title"), m_rightMenu);
+                m_renameTabAction = new QAction(QObject::tr("Rename title"), m_rightMenu);
                 m_renameTabAction->setObjectName("TabTitleRenameAction");//Add by dzw 2020-11-02
 
                 connect(m_closeTabAction, &QAction::triggered, this, [ = ] {
@@ -677,7 +677,7 @@ void TabBar::setClearTabColor(const QString &tabIdentifier)
  3. @日期:    2020-08-11
  4. @说明:    设置标签状态图
 *******************************************************************************/
-void TabBar::setTabStatusMap(const QMap<QString,TabTextColorStatus> &tabStatusMap)
+void TabBar::setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusMap)
 {
     m_tabStatusMap = tabStatusMap;
 }

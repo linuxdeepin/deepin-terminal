@@ -191,7 +191,7 @@ void MainWindow::initTabBar()
     Qt::QueuedConnection);
     // 点击TAB上的＂＋＂触发
     connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() {
-        createNewWorkspace();
+        createNewTab();
     }, Qt::QueuedConnection);
 
     // 点击TAB上的＂X＂触发
@@ -1091,29 +1091,29 @@ void MainWindow::initShortcuts()
     connect(ShortcutManager::instance(), &ShortcutManager::removeCustomCommandSignal, this, &MainWindow::removeCustomCommandSlot);
 
     /******** Modify by n014361 wangpeili 2020-01-10: 增加设置的各种快捷键修改关联***********×****/
-    // new_workspace
-    connect(createNewShotcut("shortcuts.workspace.new_workspace", false), &QShortcut::activated, this, [this]() {
+    // new_tab 新建标签页
+    connect(createNewShotcut("shortcuts.tab.new_tab", false), &QShortcut::activated, this, [this]() {
         this->addTab(currentPage()->createCurrentTerminalProperties(), true);
     });
 
-    // close_workspace
-    connect(createNewShotcut("shortcuts.workspace.close_workspace"), &QShortcut::activated, this, [this]() {
+    // close_tab 关闭标签页
+    connect(createNewShotcut("shortcuts.tab.close_tab"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             closeTab(page->identifier());
         }
     });
 
-    // Close_other_workspaces
-    connect(createNewShotcut("shortcuts.workspace.close_other_workspace"), &QShortcut::activated, this, [this]() {
+    // Close_other_tabs
+    connect(createNewShotcut("shortcuts.tab.close_other_tabs"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             closeOtherTab(page->identifier());
         }
     });
 
-    // previous_workspace
-    connect(createNewShotcut("shortcuts.workspace.previous_workspace"), &QShortcut::activated, this, [this]() {
+    // previous_tab
+    connect(createNewShotcut("shortcuts.tab.previous_tab"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             int index = m_tabbar->currentIndex();
@@ -1125,8 +1125,8 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // next_workspace
-    connect(createNewShotcut("shortcuts.workspace.next_workspace"), &QShortcut::activated, this, [this]() {
+    // next_tab
+    connect(createNewShotcut("shortcuts.tab.next_tab"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             int index = m_tabbar->currentIndex();
@@ -1139,7 +1139,7 @@ void MainWindow::initShortcuts()
     });
 
     // horionzal_split
-    connect(createNewShotcut("shortcuts.workspace.horionzal_split", false), &QShortcut::activated, this, [this]() {
+    connect(createNewShotcut("shortcuts.tab.horionzal_split", false), &QShortcut::activated, this, [this]() {
         // 判读数量是否允许分屏
         if (Service::instance()->isCountEnable()) {
             TermWidgetPage *page = currentPage();
@@ -1158,7 +1158,7 @@ void MainWindow::initShortcuts()
     });
 
     // vertical_split
-    connect(createNewShotcut("shortcuts.workspace.vertical_split", false), &QShortcut::activated, this, [this]() {
+    connect(createNewShotcut("shortcuts.tab.vertical_split", false), &QShortcut::activated, this, [this]() {
         // 判读数量是否允许分屏
         if (Service::instance()->isCountEnable()) {
             TermWidgetPage *page = currentPage();
@@ -1176,30 +1176,30 @@ void MainWindow::initShortcuts()
         qDebug() << "can't split vertical  again";
     });
 
-    // select_upper_window
-    connect(createNewShotcut("shortcuts.workspace.select_upper_window"), &QShortcut::activated, this, [this]() {
+    // select_upper_workspace
+    connect(createNewShotcut("shortcuts.tab.select_upper_workspace"), &QShortcut::activated, this, [this]() {
         qDebug() << "Alt+k";
         TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::TopEdge);
         }
     });
-    // select_lower_window
-    connect(createNewShotcut("shortcuts.workspace.select_lower_window"), &QShortcut::activated, this, [this]() {
+    // select_lower_workspace
+    connect(createNewShotcut("shortcuts.tab.select_lower_workspace"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::BottomEdge);
         }
     });
-    // select_left_window
-    connect(createNewShotcut("shortcuts.workspace.select_left_window"), &QShortcut::activated, this, [this]() {
+    // select_left_workspace
+    connect(createNewShotcut("shortcuts.tab.select_left_workspace"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::LeftEdge);
         }
     });
-    // select_right_window
-    connect(createNewShotcut("shortcuts.workspace.select_right_window"), &QShortcut::activated, this, [this]() {
+    // select_right_workspace
+    connect(createNewShotcut("shortcuts.tab.select_right_workspace"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             page->focusNavigation(Qt::RightEdge);
@@ -1207,17 +1207,17 @@ void MainWindow::initShortcuts()
         }
     });
 
-    // close_window
-    connect(createNewShotcut("shortcuts.workspace.close_window"), &QShortcut::activated, this, [this]() {
+    // close_workspace
+    connect(createNewShotcut("shortcuts.tab.close_workspace"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
-            qDebug() << "CloseWindow";
+            qDebug() << "CloseWorkspace";
             page->closeSplit(page->currentTerminal());
         }
     });
 
-    // close_other_windows
-    connect(createNewShotcut("shortcuts.workspace.close_other_windows"), &QShortcut::activated, this, [this]() {
+    // close_other_workspaces
+    connect(createNewShotcut("shortcuts.tab.close_other_workspaces"), &QShortcut::activated, this, [this]() {
         TermWidgetPage *page = currentPage();
         if (page) {
             page->closeOtherTerminal();
@@ -1365,11 +1365,11 @@ void MainWindow::initShortcuts()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
-    for(int i = 1 ;i <= 9; i++){
-        QString strSwitchLabel=QString("shortcuts.workspace.switch_label_win_%1").arg(i);
+    for (int i = 1 ; i <= 9; i++) {
+        QString strSwitchLabel = QString("shortcuts.tab.switch_label_win_%1").arg(i);
         connect(createNewShotcut(strSwitchLabel), &QShortcut::activated, this, [this, i]() {
             TermWidgetPage *page = currentPage();
-            if(page){
+            if (page) {
                 assert(m_tabbar);
                 if (9 == i && m_tabbar->count() > 9) {
                     m_tabbar->setCurrentIndex(m_tabbar->count() - 1);
@@ -1693,12 +1693,12 @@ void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 }
 
 /*******************************************************************************
- 1. @函数:    createNewWorkspace
+ 1. @函数:    createNewTab
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-11
  4. @说明:    基类创建新工作区域
 *******************************************************************************/
-void MainWindow::createNewWorkspace()
+void MainWindow::createNewTab()
 {
     addTab(currentPage()->createCurrentTerminalProperties(), true);
 }
@@ -1741,7 +1741,7 @@ void MainWindow::displayShortcuts()
 
     QJsonArray jsonGroups;
     createJsonGroup("terminal", jsonGroups);
-    createJsonGroup("workspace", jsonGroups);
+    createJsonGroup("tab", jsonGroups);
     createJsonGroup("advanced", jsonGroups);
     QJsonObject shortcutObj;
     shortcutObj.insert("shortcut", jsonGroups);
@@ -1771,8 +1771,8 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     qDebug() << keyCategory;
 
     QString strGroupName = "";
-    if (keyCategory == "workspace") {
-        strGroupName =  QObject::tr("Workspace");
+    if (keyCategory == "tab") {
+        strGroupName =  QObject::tr("Tabs");
     } else if (keyCategory == "terminal") {
         strGroupName =  QObject::tr("Terminal");
     } else if (keyCategory == "advanced") {
@@ -1797,12 +1797,12 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
         JsonArry.append(jsonItem);
     }
 
-    if (keyCategory == "workspace") {
-        QJsonObject jsonItem;
-        jsonItem.insert("name", tr("Select workspace"));
-        jsonItem.insert("value", "Ctrl+Shift+1~9");
-        JsonArry.append(jsonItem);
-    }
+//    if (keyCategory == "workspace") {
+//        QJsonObject jsonItem;
+//        jsonItem.insert("name", tr("Select workspace"));
+//        jsonItem.insert("value", "Ctrl+Shift+1~9");
+//        JsonArry.append(jsonItem);
+//    }
 
     /************************ Add by sunchengxi 2020-06-08:json重新排序，快捷键显示顺序调整 Begin************************/
     //default-config.json 文件增加的跟此处相关字段，此处相应添加，保证显示。
@@ -1822,11 +1822,14 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
         }
         JsonArry = newJsonArry;
     }
-    if (keyCategory == "workspace") {
+    if (keyCategory == "tab") {
         QStringList strList;
-        strList << QObject::tr("New workspace") << QObject::tr("Close workspace") << QObject::tr("Close other workspaces") << QObject::tr("Previous workspace") << QObject::tr("Next workspace")
-                << QObject::tr("Select workspace") << QObject::tr("Vertical split") << QObject::tr("Horizontal split") << QObject::tr("Select upper window") << QObject::tr("Select lower window")
-                << QObject::tr("Select left window") << QObject::tr("Select right window") << QObject::tr("Close window") << QObject::tr("Close other windows");
+        strList << QObject::tr("New tab") << QObject::tr("Close tab") << QObject::tr("Close other tabs") << QObject::tr("Previous tab") << QObject::tr("Next tab")
+                << QObject::tr("Select tab") << QObject::tr("Vertical split") << QObject::tr("Horizontal split") << QObject::tr("Select upper workspace") << QObject::tr("Select lower workspace")
+                << QObject::tr("Select left workspace") << QObject::tr("Select right workspace") << QObject::tr("Close workspace") << QObject::tr("Close other workspaces")
+                << QObject::tr("Go to tab 1") << QObject::tr("Go to tab 2") << QObject::tr("Go to tab 3")
+                << QObject::tr("Go to tab 4") << QObject::tr("Go to tab 5") << QObject::tr("Go to tab 6")
+                << QObject::tr("Go to tab 7") << QObject::tr("Go to tab 8") << QObject::tr("Go to tab 9");
         QJsonArray newJsonArry;
         for (int i = 0; i < strList.size(); i++) {
             for (int j = 0; j < JsonArry.size(); j++) {

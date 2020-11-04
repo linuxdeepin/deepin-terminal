@@ -82,7 +82,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // theme
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    theme=Settings::instance()->colorScheme();
+    theme = Settings::instance()->colorScheme();
     //if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
     //    theme = "Light";
     //}
@@ -233,7 +233,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         parentPage()->setMismatchAlert(true);
     });
     // 找到搜索匹配的结果 => 记录查找时间 => 打印日志，方便性能测试
-    connect(this, &QTermWidget::sig_matchFound, this, [this](){
+    connect(this, &QTermWidget::sig_matchFound, this, [this]() {
         parentPage()->printSearchCostTime();
     });
     /********************* Modify by n014361 wangpeili End ************************/
@@ -425,20 +425,20 @@ void TermWidget::addMenuActions(const QPoint &pos)
     }
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    m_menu->addAction(tr("Close window"), this, [this] {
+    m_menu->addAction(QObject::tr("Close workspace"), this, [this] {
         parentPage()->closeSplit(parentPage()->currentTerminal());
     });
     //m_menu->addAction(tr("Close Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
     if (parentPage()->getTerminalCount() > 1) {
-        m_menu->addAction(tr("Close other windows"), this, [this] {
+        m_menu->addAction(QObject::tr("Close other workspaces"), this, [this] {
             parentPage()->closeOtherTerminal();
         });
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
     m_menu->addSeparator();
-    m_menu->addAction(tr("New workspace"), this, [this] {
-        parentPage()->parentMainWindow()->createNewWorkspace();
+    m_menu->addAction(QObject::tr("New Tab"), this, [this] {
+        parentPage()->parentMainWindow()->createNewTab();
     });
 
     m_menu->addSeparator();
@@ -516,7 +516,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
     if (!Service::instance()->isCountEnable()) {
         QList<QAction *> actionList = m_menu->actions();
         for (auto item : actionList) {
-            if (item->text() == tr("New workspace") || item->text() == tr("Horizontal split") || item->text() == tr("Vertical split")) {
+            if (item->text() == tr("New tab") || item->text() == tr("Horizontal split") || item->text() == tr("Vertical split")) {
                 // 无法点击的菜单项置灰
                 item->setEnabled(false);
             }
