@@ -71,41 +71,19 @@ class SwitchThemeMenu : public QMenu
 public:
     SwitchThemeMenu(const QString &title, QWidget *parent = nullptr): QMenu(title, parent) {}
     //捕获鼠标离开主题项事件
-    void leaveEvent(QEvent *) override
-    {
-        //鼠标停靠悬浮判断
-        bool ishover = this->property("hover").toBool();
-        if (!ishover) {
-            emit mainWindowCheckThemeItemSignal();
-        }
-
-    }
+    void leaveEvent(QEvent *) override;
     //主题菜单栏隐藏时触发
-    void hideEvent(QHideEvent *) override
-    {
-        hoveredThemeStr = "";
-    }
+    void hideEvent(QHideEvent *) override;
     //捕获鼠标进入主题项事件
-    void enterEvent(QEvent *event) override
-    {
-        hoveredThemeStr = "";
-        return QMenu::enterEvent(event);
-    }
+    void enterEvent(QEvent *event) override;
     //处理键盘主题项左键按下离开事件
-    void keyPressEvent(QKeyEvent *event) override
-    {
-        switch (event->key()) {
-        case Qt::Key_Left:
-            emit mainWindowCheckThemeItemSignal();
-            break;
-        }
-        return QMenu::keyPressEvent(event);
-    }
+    void keyPressEvent(QKeyEvent *event) override;
 
 signals:
     //主题项在鼠标停靠离开时触发的信号
     void mainWindowCheckThemeItemSignal();
 
+    void menuHideSetThemeSignal();
 public:
     //鼠标悬殊主题记录，防止频繁刷新，鼠标再次进入主题列表负责刷新预览
     QString hoveredThemeStr = "";
@@ -224,34 +202,34 @@ public:
     static constexpr const char *THEME_NO                       = "";
     //内置主题1
     static constexpr const char *THEME_ONE                      = "Theme1";
-    static constexpr const char *THEME_ONE_NAME                 = "mar";
+    static constexpr const char *THEME_ONE_NAME                 = "Elementary";
     //内置主题2
     static constexpr const char *THEME_TWO                      = "Theme2";
-    static constexpr const char *THEME_TWO_NAME                 = "one light";
+    static constexpr const char *THEME_TWO_NAME                 = "Empathy";
     //内置主题3
     static constexpr const char *THEME_THREE                    = "Theme3";
-    static constexpr const char *THEME_THREE_NAME               = "elementary";
+    static constexpr const char *THEME_THREE_NAME               = "Tomorrow night blue";
     //内置主题4
     static constexpr const char *THEME_FOUR                     = "Theme4";
-    static constexpr const char *THEME_FOUR_NAME                = "empathy";
+    static constexpr const char *THEME_FOUR_NAME                = "Bim";
     //内置主题5
     static constexpr const char *THEME_FIVE                     = "Theme5";
-    static constexpr const char *THEME_FIVE_NAME                = "tomorrow night blue";
+    static constexpr const char *THEME_FIVE_NAME                = "Freya";
     //内置主题6
     static constexpr const char *THEME_SIX                      = "Theme6";
-    static constexpr const char *THEME_SIX_NAME                 = "bim";
+    static constexpr const char *THEME_SIX_NAME                 = "Hybrid";
     //内置主题7
     static constexpr const char *THEME_SEVEN                    = "Theme7";
-    static constexpr const char *THEME_SEVEN_NAME               = "freya";
+    static constexpr const char *THEME_SEVEN_NAME               = "Ocean dark";
     //内置主题8
     static constexpr const char *THEME_EIGHT                    = "Theme8";
-    static constexpr const char *THEME_EIGHT_NAME               = "hybrid";
+    static constexpr const char *THEME_EIGHT_NAME               = "Deepin";
     //内置主题9
     static constexpr const char *THEME_NINE                     = "Theme9";
-    static constexpr const char *THEME_NINE_NAME                = "ocean dark";
+    static constexpr const char *THEME_NINE_NAME                = "Ura";
     //内置主题10
     static constexpr const char *THEME_TEN                      = "Theme10";
-    static constexpr const char *THEME_TEN_NAME                 = "deepin";
+    static constexpr const char *THEME_TEN_NAME                 = "One light";
 
 
     int getDesktopIndex() const;
@@ -312,6 +290,8 @@ protected slots:
     void themeActionHoveredSlot(QAction *);
     //设置选中的主题项的槽函数
     void setThemeCheckItemSlot();
+    //主题菜单隐藏时设置主题槽函数
+    void menuHideSetThemeSlot();
 
 protected:
     void initUI();
@@ -463,6 +443,8 @@ protected:
     //主题快捷键组
     QActionGroup    *group                  = nullptr;
 
+    //当前勾选的菜单主题快捷键
+    QAction         *currCheckThemeAction   = nullptr;
 
 };
 

@@ -76,6 +76,63 @@ DWIDGET_USE_NAMESPACE
 // 定义雷神窗口边缘,接近边缘光标变化图标
 #define QUAKE_EDGE 5
 
+/*******************************************************************************
+ 1. @函数:    leaveEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    捕获鼠标离开主题项事件
+*******************************************************************************/
+void SwitchThemeMenu::leaveEvent(QEvent *)
+{
+    //鼠标停靠悬浮判断
+    bool ishover = this->property("hover").toBool();
+    if (!ishover) {
+            emit mainWindowCheckThemeItemSignal();
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    hideEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    主题菜单栏隐藏时触发
+*******************************************************************************/
+void SwitchThemeMenu::hideEvent(QHideEvent *)
+{
+    hoveredThemeStr = "";
+    emit menuHideSetThemeSignal();
+}
+
+/*******************************************************************************
+ 1. @函数:    enterEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    捕获鼠标进入主题项事件
+*******************************************************************************/
+void SwitchThemeMenu::enterEvent(QEvent *event)
+{
+    hoveredThemeStr = "";
+    return QMenu::enterEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    处理键盘主题项左键按下离开事件
+*******************************************************************************/
+void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_Left:
+        emit mainWindowCheckThemeItemSignal();
+        break;
+    }
+    return QMenu::keyPressEvent(event);
+}
+
+
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent),
       m_menu(new QMenu(this)),
@@ -2298,6 +2355,7 @@ void MainWindow::checkThemeItem()
 
     //勾选主题项
     action->setChecked(true);
+    currCheckThemeAction = action;
 
 }
 
@@ -2383,6 +2441,7 @@ void MainWindow::addThemeMenuItems()
         checkThemeItem();
 
         connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(setThemeCheckItemSlot()));
+        connect(switchThemeMenu, SIGNAL(menuHideSetThemeSignal()), this, SLOT(menuHideSetThemeSlot()));
     }
 }
 
@@ -2428,20 +2487,10 @@ void MainWindow::setThemeCheckItemSlot()
         return;
     }
 
-    //选中了内置主题在1-2项之间 // 浅色方案系列
-    if (Settings::instance()->extendThemeStr == THEME_ONE || Settings::instance()->extendThemeStr == THEME_TWO) {
-
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
-    }
-
-    //选中了内置主题在3-10项之间 // 深色方案系列
-    if (Settings::instance()->extendThemeStr == THEME_THREE || Settings::instance()->extendThemeStr == THEME_FOUR || Settings::instance()->extendThemeStr == THEME_FIVE
-            || Settings::instance()->extendThemeStr == THEME_SIX || Settings::instance()->extendThemeStr == THEME_SEVEN || Settings::instance()->extendThemeStr == THEME_EIGHT
-            || Settings::instance()->extendThemeStr == THEME_NINE || Settings::instance()->extendThemeStr == THEME_TEN) {
+    //选中了内置主题在1-8项之间 // 深色方案系列
+    if (Settings::instance()->extendThemeStr == THEME_ONE || Settings::instance()->extendThemeStr == THEME_TWO || Settings::instance()->extendThemeStr == THEME_THREE
+            || Settings::instance()->extendThemeStr == THEME_FOUR || Settings::instance()->extendThemeStr == THEME_FIVE
+            || Settings::instance()->extendThemeStr == THEME_SIX || Settings::instance()->extendThemeStr == THEME_SEVEN || Settings::instance()->extendThemeStr == THEME_EIGHT) {
 
         Settings::instance()->setColorScheme(THEME_DARK);
         Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
@@ -2450,6 +2499,83 @@ void MainWindow::setThemeCheckItemSlot()
         return;
     }
 
+    //选中了内置主题在9-10项之间 // 浅色方案系列
+    if (Settings::instance()->extendThemeStr == THEME_NINE || Settings::instance()->extendThemeStr == THEME_TEN) {
+
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    menuHideSetThemeSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-10-28
+ 4. @说明:    主题菜单隐藏时设置主题槽函数
+*******************************************************************************/
+void MainWindow::menuHideSetThemeSlot()
+{
+    if (currCheckThemeAction == lightThemeAction) {
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    } else if (currCheckThemeAction == darkThemeAction) {
+        Settings::instance()->setColorScheme(THEME_DARK);
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+    } else if (currCheckThemeAction == autoThemeAction) {
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+        DGuiApplicationHelper::ColorType type = DGuiApplicationHelper::UnknownType;
+        DGuiApplicationHelper::instance()->setPaletteType(type);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        return;
+    }
+
+    else if (currCheckThemeAction == themeOneAction || currCheckThemeAction == themeTwoAction || currCheckThemeAction == themeThreeAction || currCheckThemeAction == themeFourAction
+             || currCheckThemeAction == themeFiveAction || currCheckThemeAction == themeSixAction || currCheckThemeAction == themeSevenAction || currCheckThemeAction == themeEightAction
+            ) {
+        Settings::instance()->setColorScheme(THEME_DARK);
+
+        if (currCheckThemeAction == themeOneAction) {
+            Settings::instance()->setExtendColorScheme(THEME_ONE);
+        } else if (currCheckThemeAction == themeTwoAction) {
+            Settings::instance()->setExtendColorScheme(THEME_TWO);
+        } else if (currCheckThemeAction == themeThreeAction) {
+            Settings::instance()->setExtendColorScheme(THEME_THREE);
+        } else if (currCheckThemeAction == themeFourAction) {
+            Settings::instance()->setExtendColorScheme(THEME_FOUR);
+        } else if (currCheckThemeAction == themeFiveAction) {
+            Settings::instance()->setExtendColorScheme(THEME_FIVE);
+        } else if (currCheckThemeAction == themeSixAction) {
+            Settings::instance()->setExtendColorScheme(THEME_SIX);
+        } else if (currCheckThemeAction == themeSevenAction) {
+            Settings::instance()->setExtendColorScheme(THEME_SEVEN);
+        } else if (currCheckThemeAction == themeEightAction) {
+            Settings::instance()->setExtendColorScheme(THEME_EIGHT);
+        }
+
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+    } else if (currCheckThemeAction == themeNineAction || currCheckThemeAction == themeTenAction) {
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        if (currCheckThemeAction == themeNineAction) {
+            Settings::instance()->setExtendColorScheme(THEME_NINE);
+        } else {
+            Settings::instance()->setExtendColorScheme(THEME_TEN);
+        }
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    }
 }
 
 /*******************************************************************************
@@ -2557,23 +2683,10 @@ void MainWindow::switchThemeAction(QAction *action)
 *******************************************************************************/
 void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr)
 {
-    //内置浅色主题 1-2 之间
-    if (action == themeOneAction || action == themeTwoAction) {
-
-        if (Settings::instance()->bSwitchTheme) {
-            Settings::instance()->themeStr = THEME_LIGHT;
-            Settings::instance()->extendThemeStr = themeNameStr;
-        }
-
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        Settings::instance()->setExtendColorScheme(themeNameStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
-    }
-    //内置深色主题 3-10 之间
-    if (action == themeThreeAction || action == themeFourAction || action == themeFiveAction || action == themeSixAction
-            || action == themeSevenAction || action == themeEightAction || action == themeNineAction || action == themeTenAction) {
+    //内置深色主题 1-8 之间
+    if (action == themeOneAction || action == themeTwoAction || action == themeThreeAction
+            || action == themeFourAction || action == themeFiveAction || action == themeSixAction
+            || action == themeSevenAction || action == themeEightAction) {
 
         if (Settings::instance()->bSwitchTheme) {
             Settings::instance()->themeStr = THEME_DARK;
@@ -2584,6 +2697,20 @@ void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr
         Settings::instance()->setExtendColorScheme(themeNameStr);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+    }
+    //内置浅色主题 9-10 之间
+    if (action == themeNineAction || action == themeTenAction) {
+
+        if (Settings::instance()->bSwitchTheme) {
+            Settings::instance()->themeStr = THEME_LIGHT;
+            Settings::instance()->extendThemeStr = themeNameStr;
+        }
+
+        Settings::instance()->setColorScheme(THEME_LIGHT);
+        Settings::instance()->setExtendColorScheme(themeNameStr);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         return;
     }
 

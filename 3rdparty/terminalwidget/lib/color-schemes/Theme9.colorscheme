@@ -1,104 +1,104 @@
 [General]
-Description=Deepin Terminal Dark Mode Color
-Name=ocean dark
+Description=Deepin Terminal Light Mode Color
+Name=ura
 
 [Background]
 Bold=true
-Color=28, 31, 39
+Color=254, 255, 238
 Transparency=false
 
 [BackgroundIntense]
 Bold=true
-Color=28, 31, 39
+Color=254, 255, 238
 Transparency=false
 
 [Color0]
 Bold=true
-Color=79, 79, 79
+Color=0, 0, 0
 Transparency=false
 
 [Color0Intense]
 Bold=true
-Color=79, 79, 79
+Color=0, 0, 0
 Transparency=false
 
 [Color1]
 Bold=true
-Color=175, 75, 87
+Color=194, 27, 111
 Transparency=false
 
 [Color1Intense]
 Bold=true
-Color=175, 75, 87
+Color=194, 27, 111
 Transparency=false
 
 [Color2]
 Bold=true
-Color=175, 211, 131
+Color=111, 194, 27
 Transparency=false
 
 [Color2Intense]
 Bold=true
-Color=175, 211, 131
+Color=111, 194, 27
 Transparency=false
 
 [Color3]
 Bold=true
-Color=229, 192, 121
+Color=194, 111, 27
 Transparency=false
 
 [Color3Intense]
 Bold=true
-Color=229, 192, 121
+Color=194, 111, 27
 Transparency=false
 
 [Color4]
 Bold=true
-Color=125, 144, 164
+Color=27, 111, 194
 Transparency=false
 
 [Color4Intense]
 Bold=true
-Color=125, 144, 164
+Color=27, 111, 194
 Transparency=false
 
 [Color5]
 Bold=true
-Color=164, 121, 157
+Color=111, 27, 194
 Transparency=false
 
 [Color5Intense]
 Bold=true
-Color=164, 121, 157
+Color=111, 27, 194
 Transparency=false
 
 [Color6]
 Bold=true
-Color=133, 166, 165
+Color=27, 194, 111
 Transparency=false
 
 [Color6Intense]
 Bold=true
-Color=133, 166, 165
+Color=27, 194, 111
 Transparency=false
 
 [Color7]
 Bold=true
-Color=238, 237, 238
+Color=128, 128, 128
 Transparency=false
 
 [Color7Intense]
 Bold=true
-Color=238, 237, 238
+Color=128, 128, 128
 Transparency=false
 
 [Foreground]
 Bold=true
-Color=99, 124, 206
+Color=57, 53, 44
 Transparency=false
 
 [ForegroundIntense]
 Bold=true
-Color=99, 124, 206
+Color=57, 53, 44
 Transparency=false
 
