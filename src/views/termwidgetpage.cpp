@@ -835,7 +835,14 @@ void TermWidgetPage::showRenameTitleDialog()
         m_renameDlg->setText(tabTitleFormat, remoteTabTitleFormat);
         m_renameDlg->setFocusPolicy(Qt::NoFocus);
         m_renameDlg->setAttribute(Qt::WA_DeleteOnClose);
-        m_renameDlg->getTabTitleEdit()->getInputedit()->lineEdit()->selectAll();
+
+        //bug 53463 ut000442 判断当前是否为远程链接状态，根据状态设置对应行的选中
+        if (currentTerminal()->isConnectRemote()) {
+            m_renameDlg->getRemoteTabTitleEdit()->getInputedit()->lineEdit()->selectAll();
+        } else {
+            m_renameDlg->getTabTitleEdit()->getInputedit()->lineEdit()->selectAll();
+        }
+
         m_renameDlg->open();
 
         connect(m_renameDlg, &TabRenameDlg::finished, m_renameDlg, [ = ]() {
