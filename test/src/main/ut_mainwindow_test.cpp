@@ -18,6 +18,58 @@
 #include <QDesktopWidget>
 #include <QtConcurrent/QtConcurrent>
 
+
+UT_SwitchThemeMenu_Test::UT_SwitchThemeMenu_Test()
+{
+}
+
+void UT_SwitchThemeMenu_Test::SetUp()
+{
+    m_themeMenu = new SwitchThemeMenu("Theme", nullptr);
+}
+
+void UT_SwitchThemeMenu_Test::TearDown()
+{
+    delete m_themeMenu;
+}
+
+/*******************************************************************************
+ 1. @函数:    SwitchThemeMenu类的函数
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-05
+ 4. @说明:    SwitchThemeMenu类单元测试
+*******************************************************************************/
+#ifdef UT_SWITCHTHEMEMENU_TEST
+TEST_F(UT_SwitchThemeMenu_Test, SwitchThemeMenuTest)
+{
+    EXPECT_NE(m_themeMenu, nullptr);
+    m_themeMenu->show();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    QEvent e(QEvent::None);
+    m_themeMenu->leaveEvent(&e);
+
+    QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Up, Qt::NoModifier);
+    m_themeMenu->keyPressEvent(&keyPress);
+
+    m_themeMenu->enterEvent(&e);
+    EXPECT_EQ(m_themeMenu->hoveredThemeStr, "");
+
+    QHideEvent he;
+    m_themeMenu->hideEvent(&he);
+    EXPECT_EQ(m_themeMenu->hoveredThemeStr, "");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+#endif
+
+
+
 UT_MainWindow_Test::UT_MainWindow_Test()
 {
 }
@@ -419,5 +471,191 @@ TEST_F(UT_MainWindow_Test, showExitConfirmDialog)
     QTest::qWait(UT_WAIT_TIME);
 #endif
 }
+
+/*******************************************************************************
+ 1. @函数:    checkThemeItem
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-05
+ 4. @说明:    checkThemeItem函数单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, checkExtendThemeItemTest)
+{
+    QAction *pAction = nullptr;
+    m_normalWindow->checkExtendThemeItem("Theme1", pAction);
+    EXPECT_EQ(m_normalWindow->themeOneAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme2", pAction);
+    EXPECT_EQ(m_normalWindow->themeTwoAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme3", pAction);
+    EXPECT_EQ(m_normalWindow->themeThreeAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme4", pAction);
+    EXPECT_EQ(m_normalWindow->themeFourAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme5", pAction);
+    EXPECT_EQ(m_normalWindow->themeFiveAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme6", pAction);
+    EXPECT_EQ(m_normalWindow->themeSixAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme7", pAction);
+    EXPECT_EQ(m_normalWindow->themeSevenAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme8", pAction);
+    EXPECT_EQ(m_normalWindow->themeEightAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme9", pAction);
+    EXPECT_EQ(m_normalWindow->themeNineAction, pAction);
+
+    m_normalWindow->checkExtendThemeItem("Theme10", pAction);
+    EXPECT_EQ(m_normalWindow->themeTenAction, pAction);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+/*******************************************************************************
+ 1. @函数:    checkThemeItem
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-05
+ 4. @说明:    checkThemeItem函数单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, checkThemeItemTest)
+{
+    m_normalWindow->checkThemeItem();
+    EXPECT_NE(m_normalWindow->currCheckThemeAction, nullptr);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+/*******************************************************************************
+ 1. @函数:    switchThemeAction
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-05
+ 4. @说明:    switchThemeAction函数单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, switchThemeActionTest)
+{
+    QAction *pAction = m_normalWindow->themeOneAction;
+    QString themeNameStr = "Theme1";
+    m_normalWindow->switchThemeAction(pAction, themeNameStr);
+    //EXPECT_EQ(Settings::instance()->extendThemeStr, "Theme1");
+
+    pAction = m_normalWindow->themeNineAction;
+    themeNameStr = "Theme9";
+    m_normalWindow->switchThemeAction(pAction, themeNameStr);
+    //EXPECT_EQ(Settings::instance()->extendThemeStr, "Theme9");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+/*******************************************************************************
+ 1. @函数:    switchThemeAction
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-05
+ 4. @说明:    switchThemeAction函数单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, switchThemeActionTestOne)
+{
+    QAction *pAction = m_normalWindow->lightThemeAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->darkThemeAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->autoThemeAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeOneAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeTwoAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeThreeAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeFourAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeFiveAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeSixAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeSevenAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeEightAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeNineAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+    pAction = m_normalWindow->themeTenAction;
+    m_normalWindow->switchThemeAction(pAction);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+/*******************************************************************************
+ 1. @函数:    setThemeCheckItemSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-05
+ 4. @说明:    setThemeCheckItemSlot函数单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, setThemeCheckItemSlotTest)
+{
+    Settings::instance()->themeStr = "Light";
+    Settings::instance()->extendThemeStr = "";
+    m_normalWindow->setThemeCheckItemSlot();
+
+    Settings::instance()->themeStr = "Dark";
+    Settings::instance()->extendThemeStr = "";
+    m_normalWindow->setThemeCheckItemSlot();
+
+    m_normalWindow->autoThemeAction->setChecked(true);
+    m_normalWindow->setThemeCheckItemSlot();
+
+    m_normalWindow->autoThemeAction->setChecked(false);
+
+    Settings::instance()->extendThemeStr = "Theme1";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme2";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme3";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme4";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme5";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme6";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme7";
+    m_normalWindow->setThemeCheckItemSlot();
+
+    Settings::instance()->extendThemeStr = "Theme9";
+    m_normalWindow->setThemeCheckItemSlot();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+
+
+
+
+
+
 
 #endif
