@@ -87,7 +87,7 @@ void SwitchThemeMenu::leaveEvent(QEvent *)
     //鼠标停靠悬浮判断
     bool ishover = this->property("hover").toBool();
     if (!ishover) {
-            emit mainWindowCheckThemeItemSignal();
+        emit mainWindowCheckThemeItemSignal();
     }
 
 }
@@ -3406,5 +3406,16 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
 void QuakeWindow::switchEnableResize()
 {
     // 如果(桌面光标Y坐标)>(雷神窗口Y坐标+雷神高度的1/2),则启用拉伸属性.否则禁用拉伸属性
-    setEnableSystemResize(QCursor::pos().y() > pos().y() + height() / 2);
+    // 此方法dtk已经标记废弃
+    //    setEnableSystemResize(QCursor::pos().y() > pos().y() + height() / 2);
+    if (QCursor::pos().y() > pos().y() + height() / 2) {
+        // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
+        QDesktopWidget *desktopWidget = QApplication::desktop();
+        QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+        setMinimumHeight(LISTMINHEIGHT);
+        setMaximumHeight(screenRect.height() * 2 / 3);
+    } else {
+        // 窗管和DTK让用fixSize来替代，禁止resize
+        setFixedHeight(height());
+    }
 }

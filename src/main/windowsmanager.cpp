@@ -80,6 +80,8 @@ void WindowsManager::quakeWindowShowOrHide()
         if (index != -1 && m_quakeWindow->getDesktopIndex() != index) {
             // 不在同一个桌面
             DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
+            // 选择拉伸方式，因为此时不知道鼠标位置
+            m_quakeWindow->switchEnableResize();
         }
         m_quakeWindow->activateWindow();
         // fix#42497 防止隐藏显示后"+"号高亮
