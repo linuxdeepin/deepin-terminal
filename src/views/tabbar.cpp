@@ -537,7 +537,7 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                     m_rightMenu->clear();
                 }
 
-                m_closeTabAction = new QAction(QObject::tr("Close Tab"), m_rightMenu);
+                m_closeTabAction = new QAction(QObject::tr("Close tab"), m_rightMenu);
                 m_closeTabAction->setObjectName("TabBarCloseTabAction");//Add by ut001000 renfeixiang 2020-08-13
 
                 m_closeOtherTabAction = new QAction(QObject::tr("Close other tabs"), m_rightMenu);
