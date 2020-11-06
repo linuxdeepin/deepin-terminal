@@ -16,6 +16,7 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QtConcurrent/QtConcurrent>
 
 UT_TermWidgetPage_Test::UT_TermWidgetPage_Test()
 {
@@ -166,13 +167,39 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
 #ifdef ENABLE_UI_TEST
     QTest::qWait(2000);
 #endif
+
+    //测试分屏
     currTermPage->split(Qt::Orientation::Vertical);
 #ifdef ENABLE_UI_TEST
     QTest::qWait(2000);
 #endif
+
+    //测试分屏
     currTermPage->split(Qt::Orientation::Horizontal);
 #ifdef ENABLE_UI_TEST
     QTest::qWait(2000);
+#endif
+
+    //测试关闭分屏
+    currTermPage->closeSplit(currTermPage->currentTerminal(), true);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(2000);
+#endif
+}
+
+TEST_F(UT_TermWidgetPage_Test, showRenameTitleDialog)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    currTermPage->showRenameTitleDialog();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 

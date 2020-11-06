@@ -186,26 +186,78 @@ TEST_F(UT_ItemWidget_Test, getColor)
     QTest::qWait(UT_WAIT_TIME);
 #endif
 }
-//// 设置文字
-//void setText(const QString &firstline, const QString &secondline = "");
-//// 是否匹配
-//bool isEqual(ItemFuncType type, const QString &key);
-//// 获取焦点
-//void getFocus();
-//// 丢失焦点
-//void lostFocus();
 
-//// 设置文字大小和颜色
-//void setFont(DLabel *label, DFontSizeManager::SizeType fontSize, ItemTextColor colorType);
-//// 设置字体大小
-//void setFontSize(DLabel *label, DFontSizeManager::SizeType fontSize);
-//// 设置字体颜色
-//void setFontColor(DLabel *label, ItemTextColor colorType);
-//// 返回指定颜色值
-//QColor getColor(ItemTextColor colorType);
-//// 处理键盘事件
-//void rightKeyPress();
-//// 项被点击
-//void onItemClicked();
+TEST_F(UT_ItemWidget_Test, onFuncButtonClicked)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->onFuncButtonClicked();
+
+    itemWidget->m_moveSource = new QObject();
+    itemWidget->onFuncButtonClicked();
+
+    itemWidget->m_functType = ItemFuncType_Item;
+    itemWidget->onFuncButtonClicked();
+
+    delete itemWidget;
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+TEST_F(UT_ItemWidget_Test, onIconButtonClicked)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->onIconButtonClicked();
+
+    itemWidget->m_moveSource = new QObject();
+    itemWidget->onIconButtonClicked();
+
+    itemWidget->m_functType = ItemFuncType_Item;
+    itemWidget->onIconButtonClicked();
+
+    delete itemWidget;
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+TEST_F(UT_ItemWidget_Test, onItemClicked)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->onItemClicked();
+
+    itemWidget->m_moveSource = new QObject();
+    itemWidget->onItemClicked();
+
+    itemWidget->m_functType = ItemFuncType_Item;
+    itemWidget->onItemClicked();
+
+    delete itemWidget;
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+TEST_F(UT_ItemWidget_Test, rightKeyPress)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->rightKeyPress();
+
+    itemWidget->m_functType = ItemFuncType_Item;
+    itemWidget->rightKeyPress();
+
+    delete itemWidget;
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
 
 #endif

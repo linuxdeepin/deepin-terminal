@@ -141,6 +141,9 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     TermWidget *currTerm = currPage->currentTerminal();
     EXPECT_NE(currTerm, nullptr);
 
+    Service::instance()->showSettingDialog(m_normalWindow);
+    m_service->showHideOpacityAndBlurOptions(true);
+
 #ifdef ENABLE_UI_TEST
     QTest::qWait(2000);
     //只有在开启UI测试的模式下，才能判断焦点
@@ -651,11 +654,42 @@ TEST_F(UT_MainWindow_Test, setThemeCheckItemSlotTest)
 #endif
 }
 
+TEST_F(UT_MainWindow_Test, menuHideSetThemeSlot)
+{
+    Settings::instance()->themeStr = "Light";
+    Settings::instance()->extendThemeStr = "";
+    m_normalWindow->setThemeCheckItemSlot();
 
+    Settings::instance()->themeStr = "Dark";
+    Settings::instance()->extendThemeStr = "";
+    m_normalWindow->setThemeCheckItemSlot();
 
+    m_normalWindow->autoThemeAction->setChecked(true);
+    m_normalWindow->setThemeCheckItemSlot();
 
+    m_normalWindow->autoThemeAction->setChecked(false);
 
+    Settings::instance()->extendThemeStr = "Theme1";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme2";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme3";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme4";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme5";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme6";
+    m_normalWindow->setThemeCheckItemSlot();
+    Settings::instance()->extendThemeStr = "Theme7";
+    m_normalWindow->setThemeCheckItemSlot();
 
+    Settings::instance()->extendThemeStr = "Theme9";
+    m_normalWindow->setThemeCheckItemSlot();
 
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
 
 #endif

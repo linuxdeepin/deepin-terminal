@@ -16,6 +16,7 @@
 #include <QtGui>
 #include <QSignalSpy>
 #include <QDebug>
+#include <QtConcurrent/QtConcurrent>
 
 UT_TermWidget_Test::UT_TermWidget_Test()
 {
@@ -161,7 +162,7 @@ TEST_F(UT_TermWidget_Test, getsetEncode)
     }
 }
 
-TEST_F(UT_TermWidget_Test, addMenuActions)
+TEST_F(UT_TermWidget_Test, customContextMenuCall)
 {
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();
@@ -173,6 +174,53 @@ TEST_F(UT_TermWidget_Test, addMenuActions)
     TermWidget *termWidget = currTermPage->m_currentTerm;
     QPoint pos(50, 50);
     termWidget->customContextMenuCall(pos);
+}
+
+TEST_F(UT_TermWidget_Test, onSettingValueChanged)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    termWidget->onSettingValueChanged("basic.interface.opacity");
+    termWidget->onSettingValueChanged("basic.interface.font");
+    termWidget->onSettingValueChanged("basic.interface.font_size");
+    termWidget->onSettingValueChanged("advanced.cursor.cursor_shape");
+    termWidget->onSettingValueChanged("advanced.cursor.cursor_blink");
+    termWidget->onSettingValueChanged("advanced.scroll.scroll_on_key");
+    termWidget->onSettingValueChanged("advanced.cursor.auto_copy_selection");
+}
+
+TEST_F(UT_TermWidget_Test, search)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    termWidget->search("~", true, false);
+    termWidget->search("~", false, true);
+}
+
+TEST_F(UT_TermWidget_Test, onTouchPadSignal)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    termWidget->onTouchPadSignal("pinch", "in", 2);
+    termWidget->onTouchPadSignal("pinch", "out", 2);
 }
 
 #endif

@@ -106,13 +106,39 @@ TEST_F(UT_TerminalDisplay_Test, resizeTest)
     delete display;
 }
 
-
-TEST_F(UT_TerminalDisplay_Test, drawContentsTest)
+TEST_F(UT_TerminalDisplay_Test, marginTest)
 {
     TerminalDisplay* display = new TerminalDisplay(nullptr);
     int margin = display->margin();
     EXPECT_EQ(margin > 0, true);
     delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, drawContentsTest)
+{
+    class PainterWidget :  public QWidget
+    {
+    public:
+        PainterWidget()
+        {
+            resize(800, 600);
+            setWindowTitle(tr( "Paint Demo"));
+        }
+    protected:
+        void paintEvent(QPaintEvent * event)
+        {
+            TerminalDisplay* display = new TerminalDisplay(nullptr);
+            Q_UNUSED(event);
+            QPainter painter(this);
+
+            display->drawContents(painter, this->rect());
+            delete display;
+        }
+    };
+
+    PainterWidget painterWidget;
+    painterWidget.resize(800, 600);
+    painterWidget.show();
 }
 
 TEST_F(UT_TerminalDisplay_Test, extendSelectionTest)
@@ -259,6 +285,23 @@ TEST_F(UT_TerminalDisplay_Test, inputMethodQueryTest)
     display->inputMethodQuery(Qt::ImFont);
     display->inputMethodQuery(Qt::ImCursorPosition);
     display->inputMethodQuery(Qt::ImSurroundingText);
+
+    delete emulation;
+    delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, setFlowControlWarningEnabled)
+{
+    TerminalDisplay* display = new TerminalDisplay(nullptr);
+    display->makeImage();
+    display->setFixedSize(40, 80);
+
+    display->setFlowControlWarningEnabled(true);
+
+    Emulation *emulation = new Vt102Emulation();
+    display->setUsesMouse( emulation->programUsesMouse() );
+    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
+    display->setScreenWindow(emulation->createWindow());
 
     delete emulation;
     delete display;

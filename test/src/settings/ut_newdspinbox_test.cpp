@@ -79,4 +79,20 @@ TEST_F(UT_NewDSpinBox_Test, WheelEvent_Reduce)
 #endif
 }
 
+TEST_F(UT_NewDSpinBox_Test, eventFilter_Key_Up)
+{
+    int value = 20;
+    m_spinBox->setValue(value);
+    QKeyEvent *key_event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Up, Qt::NoModifier, QString(""));
+    m_spinBox->eventFilter(m_spinBox->m_DLineEdit, key_event);
+}
+
+TEST_F(UT_NewDSpinBox_Test, eventFilter_Key_Down)
+{
+    int value = 20;
+    m_spinBox->setValue(value);
+    QKeyEvent *key_event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier, QString(""));
+    m_spinBox->eventFilter(m_spinBox->m_DLineEdit, key_event);
+}
+
 #endif
