@@ -654,38 +654,44 @@ TEST_F(UT_MainWindow_Test, setThemeCheckItemSlotTest)
 #endif
 }
 
-TEST_F(UT_MainWindow_Test, menuHideSetThemeSlot)
+/*******************************************************************************
+ 1. @函数:    menuHideSetThemeSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-05
+ 4. @说明:    menuHideSetThemeSlot函数单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, menuHideSetThemeSlotTest)
 {
-    Settings::instance()->themeStr = "Light";
-    Settings::instance()->extendThemeStr = "";
-    m_normalWindow->setThemeCheckItemSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->lightThemeAction;
+    m_normalWindow->menuHideSetThemeSlot();
 
-    Settings::instance()->themeStr = "Dark";
-    Settings::instance()->extendThemeStr = "";
-    m_normalWindow->setThemeCheckItemSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->darkThemeAction;
+    m_normalWindow->menuHideSetThemeSlot();
 
-    m_normalWindow->autoThemeAction->setChecked(true);
-    m_normalWindow->setThemeCheckItemSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->autoThemeAction;
+    m_normalWindow->menuHideSetThemeSlot();
 
-    m_normalWindow->autoThemeAction->setChecked(false);
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeOneAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeTwoAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeThreeAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeFourAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeFiveAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeSixAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeSevenAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeEightAction;
+    m_normalWindow->menuHideSetThemeSlot();
 
-    Settings::instance()->extendThemeStr = "Theme1";
-    m_normalWindow->setThemeCheckItemSlot();
-    Settings::instance()->extendThemeStr = "Theme2";
-    m_normalWindow->setThemeCheckItemSlot();
-    Settings::instance()->extendThemeStr = "Theme3";
-    m_normalWindow->setThemeCheckItemSlot();
-    Settings::instance()->extendThemeStr = "Theme4";
-    m_normalWindow->setThemeCheckItemSlot();
-    Settings::instance()->extendThemeStr = "Theme5";
-    m_normalWindow->setThemeCheckItemSlot();
-    Settings::instance()->extendThemeStr = "Theme6";
-    m_normalWindow->setThemeCheckItemSlot();
-    Settings::instance()->extendThemeStr = "Theme7";
-    m_normalWindow->setThemeCheckItemSlot();
-
-    Settings::instance()->extendThemeStr = "Theme9";
-    m_normalWindow->setThemeCheckItemSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeNineAction;
+    m_normalWindow->menuHideSetThemeSlot();
+    m_normalWindow->currCheckThemeAction = m_normalWindow->themeTenAction;
+    m_normalWindow->menuHideSetThemeSlot();
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
