@@ -290,6 +290,11 @@ public:
 
     /******** Add by ut001000 renfeixiang 2020-08-07:用于雷神窗口增加和减少横向分屏时，对雷神窗口的自小高进行修改，bug#41436***************/
     virtual void updateMinHeight() override;
+    // 处理雷神窗口丢失焦点自动隐藏功能
+    virtual void onAppFocusChangeForQuake() override;
+
+    // 切换窗口拉伸属性
+    void switchEnableResize();
 
 protected:
     // 初始化标题栏
@@ -302,8 +307,6 @@ protected:
     virtual void switchFullscreen(bool forceFullscreen = false) override;
     // 计算快捷预览显示坐标
     virtual QPoint calculateShortcutsPreviewPoint() override;
-    // 处理雷神窗口丢失焦点自动隐藏功能
-    virtual void onAppFocusChangeForQuake() override;
     // 根据字体和字体大小设置最小高度
     virtual void setWindowMinHeightForFont() override;
 
@@ -311,10 +314,6 @@ protected:
     void changeEvent(QEvent *event) override;
     void showEvent(QShowEvent *event) override;
     bool event(QEvent *event) override;
-
-protected:
-    // 切换窗口拉伸属性
-    inline void switchEnableResize();
 
 };
 

@@ -33,7 +33,7 @@ public:
     // 获取当前窗口数量
     int widgetCount() const;
     // 获取雷神窗口
-    MainWindow *getQuakeWindow()
+    QuakeWindow *getQuakeWindow()
     {
         return m_quakeWindow;
     }
@@ -44,7 +44,7 @@ public slots:
     void onMainwindowClosed(MainWindow *);
 private:
     QList<MainWindow *> m_normalWindowList;
-    MainWindow *m_quakeWindow = nullptr;
+    QuakeWindow *m_quakeWindow = nullptr;
     TermWidgetPage *m_currentPage = nullptr;
 private:
     explicit WindowsManager(QObject *parent = nullptr);

@@ -18,7 +18,7 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
         m_quakeWindow = new QuakeWindow(properties);
         m_quakeWindow->show();
         // 雷神创建的第一个时候，m_quakeWindow仍为null，需要在这里更正一下．
-        Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr? m_widgetCount: m_widgetCount -1);
+        Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
         return;
     }
     // Alt+F2的显隐功能实现点
@@ -43,6 +43,8 @@ void WindowsManager::quakeWindowShowOrHide()
         if (index != -1 && m_quakeWindow->getDesktopIndex() != index) {
             // 不在同一个桌面
             DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
+            // 选择拉伸方式，因为此时不知道鼠标位置
+            m_quakeWindow->switchEnableResize();
         }
         m_quakeWindow->activateWindow();
         return;
@@ -89,12 +91,10 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
     if (window == m_quakeWindow) {
         Q_ASSERT(window->isQuakeMode() == true);
         m_quakeWindow = nullptr;
-    }
-    else if (m_normalWindowList.contains(window)) {
+    } else if (m_normalWindowList.contains(window)) {
         Q_ASSERT(window->isQuakeMode() == false);
         m_normalWindowList.removeOne(window);
-    }
-    else {
+    } else {
         //Q_ASSERT(false);
         qDebug() << "unkown windows closed " << window;
     }
@@ -102,7 +102,7 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
     window->deleteLater();
 
     // 程序退出判断 add by ut001121
-    if(m_normalWindowList.size() == 0 && m_quakeWindow == nullptr){
+    if (m_normalWindowList.size() == 0 && m_quakeWindow == nullptr) {
         qApp->quit();
     }
     /***mod end by ut001121***/
@@ -128,13 +128,13 @@ void WindowsManager::terminalCountIncrease()
 {
     ++m_widgetCount;
     // 雷神首次创建的时候m_quakeWindow　= nullptr,　统计数据会多出来一个,后面流程会修正．
-    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr? m_widgetCount: m_widgetCount -1);
+    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
     qDebug() << "++ Terminals Count : " << m_widgetCount;
 }
 
 void WindowsManager::terminalCountReduce()
 {
     --m_widgetCount;
-    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr? m_widgetCount: m_widgetCount -1);
+    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
     qDebug() << "-- Terminals Count : " << m_widgetCount;
 }

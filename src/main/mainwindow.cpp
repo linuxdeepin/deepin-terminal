@@ -1070,7 +1070,7 @@ void MainWindow::initShortcuts()
     /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
     QShortcut *shortcutBuiltinPaste = new QShortcut(QKeySequence(QKEYSEQUENCE_PASTE_BUILTIN), this);
     connect(shortcutBuiltinPaste, &QShortcut::activated, this, [this]() {
-        qDebug() << "built in paste shortcut is activated!"<<QKEYSEQUENCE_PASTE_BUILTIN;
+        qDebug() << "built in paste shortcut is activated!" << QKEYSEQUENCE_PASTE_BUILTIN;
         TermWidgetPage *page = currentPage();
         if (page) {
             page->pasteClipboard();
@@ -1080,7 +1080,7 @@ void MainWindow::initShortcuts()
     /******** Modify by ut001000 renfeixiang 2020-08-28:修改 bug 44477***************/
     QShortcut *shortcutBuiltinCopy = new QShortcut(QKeySequence(QKEYSEQUENCE_COPY_BUILTIN), this);
     connect(shortcutBuiltinCopy, &QShortcut::activated, this, [this]() {
-        qDebug() << "built in copy shortcut is activated!"<<QKEYSEQUENCE_COPY_BUILTIN;
+        qDebug() << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
         TermWidgetPage *page = currentPage();
         if (page) {
             page->copyClipboard();
@@ -1749,7 +1749,7 @@ void NormalWindow::saveWindowSize()
     // 1.高度-1,如果不-1,最大后无法正常还原
     // 2.+ QSize(0, 1) 适应原始高度
     // 3.- QSize(0, 1) 适应关闭窗口特效， 半屏后无法还原
-    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1)))|| (size() == (halfScreenSize() - QSize(0, 1)))) {
+    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1))) || (size() == (halfScreenSize() - QSize(0, 1)))) {
         return;
     }
 
@@ -1954,7 +1954,7 @@ void QuakeWindow::setWindowMinHeightForFont()
     int height = 0;
     //根据内部term的最小高度设置雷神终端的最小高度, (m_MinHeight-50)/2是内部term的最小高度，50是雷神窗口的标题栏高度
     //add by ut001000 renfeixiang 2020-08-07
-    height = (m_MinHeight-50)/2 + 60;
+    height = (m_MinHeight - 50) / 2 + 60;
     setMinimumHeight(height);
 }
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
@@ -1977,14 +1977,13 @@ void QuakeWindow::updateMinHeight()
             break;
         }
     }
-    if(hasHorizontalSplit)
-    {
-        if(minimumHeight() != m_MinHeight+10){
+    if (hasHorizontalSplit) {
+        if (minimumHeight() != m_MinHeight + 10) {
             qDebug() << "set has Vertical split MinHeight";
-            setMinimumHeight(m_MinHeight+10);
+            setMinimumHeight(m_MinHeight + 10);
         }
-    }else {
-        if(minimumHeight() == m_MinHeight+10){
+    } else {
+        if (minimumHeight() == m_MinHeight + 10) {
             qDebug() << "set not has Vertical split MinHeight";
             setWindowMinHeightForFont();
         }
@@ -2045,5 +2044,16 @@ bool QuakeWindow::event(QEvent *event)
 void QuakeWindow::switchEnableResize()
 {
     // 如果(桌面光标Y坐标)>(雷神窗口Y坐标+雷神高度的1/2),则启用拉伸属性.否则禁用拉伸属性
-    setEnableSystemResize(QCursor::pos().y() > pos().y() + height() / 2);
+    // 此方法dtk已经标记废弃
+    //    setEnableSystemResize(QCursor::pos().y() > pos().y() + height() / 2);
+    if (QCursor::pos().y() > pos().y() + height() / 2) {
+        // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
+        QDesktopWidget *desktopWidget = QApplication::desktop();
+        QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+        setMinimumHeight(LISTMINHEIGHT);
+        setMaximumHeight(screenRect.height() * 2 / 3);
+    } else {
+        // 窗管和DTK让用fixSize来替代，禁止resize
+        setFixedHeight(height());
+    }
 }

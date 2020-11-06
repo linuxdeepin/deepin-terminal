@@ -41,6 +41,9 @@
 #define USE_DTK
 /********************* Modify by m000714 daizhengwen End ************************/
 
+// 雷神最小高度，方便list显示完全
+#define LISTMINHEIGHT 222
+
 // kwin dbus
 #define KWinDBusService "org.kde.KWin"
 #define KWinDBusPath "/KWin"
@@ -112,7 +115,7 @@ class FontFilter : public QObject
 {
     Q_OBJECT
 public:
-    static FontFilter * instance();
+    static FontFilter *instance();
     FontFilter();
     ~FontFilter();
     //启动thread，打印等宽字体函数
