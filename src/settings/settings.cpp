@@ -679,9 +679,10 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     option, &DSettingsOption::valueChanged, rightWidget, [ = ](QVariant var) {
         rightWidget->setValue(var.toInt());
     });
-
-    option->connect(rightWidget, &NewDspinBox::valueChanged, option, [ = ](const QVariant & value) {
-        option->setValue(value.toInt());
+    //Add by ut001000 renfeixiang 2020-11-06 使用QSpinBox自带的valueChanged信号
+    option->connect(rightWidget, static_cast<void (QSpinBox::*)(int value)>(&QSpinBox::valueChanged),
+    option, [ = ](int value) {
+        option->setValue(value);
     });
 
     return optionWidget;

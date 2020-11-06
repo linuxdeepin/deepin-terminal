@@ -23,11 +23,8 @@
 #ifndef NEWDSPINBOX_H
 #define NEWDSPINBOX_H
 
-#include <DLineEdit>
-#include <DWidget>
-#include <DIconButton>
+#include <DSpinBox>
 
-#include <QHBoxLayout>
 #include <QRegExpValidator>
 
 DWIDGET_USE_NAMESPACE
@@ -36,32 +33,16 @@ DWIDGET_USE_NAMESPACE
  1. @类名:    NewDspinBox
  2. @作者:    ut000439 王培利
  3. @日期:    2020-07-31
- 4. @说明:    设置里面重新写的spinBox
+ 4. @说明:    设置里面重新写的spinBox 2020-11-06 renfeixiang 修改成继承DSpinBox 修改bug#53551
 *******************************************************************************/
-class NewDspinBox : public DWidget
+class NewDspinBox : public DSpinBox
 {
     Q_OBJECT
 public:
     explicit NewDspinBox(QWidget *parent = nullptr);
-    void setValue(int val);
-
-signals:
-    void valueChanged(int value);
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
-    void wheelEvent(QWheelEvent *event);
-
-private:
-    void correctValue();
-
-private:
-
-    DLineEdit *m_DLineEdit = nullptr;
-    DIconButton *m_DIconBtnAdd = nullptr;
-    DIconButton *m_DIconBtnSubtract = nullptr;
-
-    QIntValidator *m_QIntValidator = nullptr;
+    void wheelEvent(QWheelEvent *event) override;
 };
 
 
