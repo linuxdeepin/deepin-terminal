@@ -138,6 +138,8 @@ public:
     QString getTabTitleFormat();
     // 获取远程标签标题格式
     QString getRemoteTabTitleFormat();
+    // 获取当前标签标题格式
+    QString getCurrentTabTitleFormat();
 
 public slots:
     void wpasteSelection();

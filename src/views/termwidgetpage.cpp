@@ -915,9 +915,6 @@ void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
-    m_tabTitle = term->getTabTitle();
-    // 当前窗口变化修改标签标题
-    emit termTitleChanged(m_tabTitle);
     emit Service::instance()->currentTermChange(m_currentTerm);
     qDebug() << "onTermGetFocus" << m_currentTerm->getSessionId();
     emit termGetFocus();
@@ -1042,6 +1039,14 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     if (oldTerm != m_currentTerm) {
         // 当前界面切换
         qDebug() << "m_currentTerm change" << m_currentTerm->getSessionId();
+        QString tabTitle = term->getTabTitle();
+        // 当前标签为空，标签格式不为空 => 未得到term参数，暂不上传数据
+        if ((tabTitle == DEFAULT_TAB_TITLE) && !term->getCurrentTabTitleFormat().trimmed().isEmpty()) {
+            return;
+        }
+        m_tabTitle = tabTitle;
+        // 当前窗口变化修改标签标题
+        emit termTitleChanged(m_tabTitle);
     }
 }
 

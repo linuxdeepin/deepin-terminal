@@ -73,7 +73,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
 {
     Session *session = new Session(parent);
 
-    session->setTitle(Session::NameRole, QLatin1String("QTermWidget"));
+    session->setTitle(Session::NameRole, QLatin1String("Terminal"));
 
     /* Thats a freaking bad idea!!!!
      * /bin/bash is not there on every system
@@ -160,7 +160,7 @@ void QTermWidget::search(bool forwards, bool next)
         } else {
             if (m_startColumn == 0) {
                 startColumn = -1;
-                startLine = m_startLine>0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
+                startLine = m_startLine > 0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
             } else {
                 startColumn = m_startColumn;
                 startLine = m_startLine;
@@ -203,7 +203,7 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
         } else {
             if (m_startColumn == 0) {
                 startColumn = -1;
-                startLine = m_startLine>0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
+                startLine = m_startLine > 0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
             } else {
                 startColumn = m_startColumn;
                 startLine = m_startLine;

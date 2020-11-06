@@ -48,6 +48,9 @@ const QString SEARCH_TIME = "0006 ";
 // 显示设置时间(ms)
 const QString SHOW_SETTINGS_TIME = "0007 ";
 
+// 默认标签标题
+const QString DEFAULT_TAB_TITLE = "Terminal";
+
 // 搜索框焦点状态
 enum SearchBar_State {
     // 显示搜索框，焦点落入搜索框

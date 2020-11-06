@@ -757,7 +757,7 @@ QString TermWidget::getTabTitle()
 
     // 没有内容则给Terminal作为默认标题
     if (strTabName.trimmed().isEmpty()) {
-        strTabName = "Terminal";
+        strTabName = DEFAULT_TAB_TITLE;
     }
     return strTabName;
 }
@@ -846,6 +846,23 @@ QString TermWidget::getTabTitleFormat()
 QString TermWidget::getRemoteTabTitleFormat()
 {
     return m_tabFormat.remoteTabFormat;
+}
+
+/*******************************************************************************
+ 1. @函数:    getCurrentTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-06
+ 4. @说明:    获取当前term显示的标签标题
+*******************************************************************************/
+QString TermWidget::getCurrentTabTitleFormat()
+{
+    // 连接远程
+    if (isConnectRemote()) {
+        return m_tabFormat.remoteTabFormat;
+    }
+
+    // 未连接远程
+    return m_tabFormat.currentTabFormat;
 }
 
 /*******************************************************************************
