@@ -335,7 +335,7 @@ void TermWidget::handleTermIdle(bool bIdle)
 *******************************************************************************/
 void TermWidget::addMenuActions(const QPoint &pos)
 {
-    bool isRemoting = isInRemoteServer();
+    bool isRemoting = isConnectRemote();
 
     QList<QAction *> termActions = filterActions(pos);
     for (QAction *&action : termActions) {
@@ -496,7 +496,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
         parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
 
-    if (isInRemoteServer()) {
+    if (isConnectRemote()) {
         m_menu->addSeparator();
         m_menu->addAction(tr("Upload file"), this, [this] {
             parentPage()->parentMainWindow()->remoteUploadFile();
@@ -540,7 +540,7 @@ void TermWidget::parseShellTitle()
     int index = tabTitle.indexOf("@");
     QString user = tabTitle.mid(0, index);
     // 是否连接远程
-    if (isInRemoteServer() /*|| getForegroundProcessName() == "ssh"*/) {
+    if (isConnectRemote() /*|| getForegroundProcessName() == "ssh"*/) {
         // 远程的用户名
         m_remoteTabArgs[USER_NAME] = user;
         m_remoteTabArgs[USER_NAME_L] = user + QString("@");
@@ -747,7 +747,7 @@ QString TermWidget::getTabTitle()
 {
     QString strTabName;
     // 判断当前是否连接远程
-    if (isInRemoteServer() /*|| getForegroundProcessName() == "ssh"*/) {
+    if (isConnectRemote() /*|| getForegroundProcessName() == "ssh"*/) {
         // 连接远程 远程标签标题格式
         strTabName = getTabTitle(m_remoteTabArgs, m_tabFormat.remoteTabFormat);
     } else {
@@ -1197,7 +1197,7 @@ void TermWidget::onDropInUrls(const char *urls)
 {
     QString strUrls = QString::fromLocal8Bit(urls);
     qDebug() << "recv urls:" << strUrls;
-    if (isInRemoteServer()) {
+    if (isConnectRemote()) {
         // 远程管理连接中
         QString strTxt = "sz ";
         strTxt += strUrls;
