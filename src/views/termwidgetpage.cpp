@@ -915,6 +915,9 @@ void TermWidgetPage::onTermGetFocus()
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
+    m_tabTitle = term->getTabTitle();
+    // 当前窗口变化修改标签标题
+    emit termTitleChanged(m_tabTitle);
     emit Service::instance()->currentTermChange(m_currentTerm);
     qDebug() << "onTermGetFocus" << m_currentTerm->getSessionId();
     emit termGetFocus();
@@ -1037,9 +1040,8 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     TermWidget *oldTerm = m_currentTerm;
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
-        qDebug() << "m_currentTerm change" << m_currentTerm->getSessionId();
         // 当前界面切换
-        emit termTitleChanged(m_currentTerm->getTabTitle());
+        qDebug() << "m_currentTerm change" << m_currentTerm->getSessionId();
     }
 }
 
