@@ -131,7 +131,7 @@ void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)
     }
     //内置主题屏蔽 除了 上下左右回车键的其他按键响应 处理bug#53439
     if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Up || event->key() == Qt::Key_Right
-            || event->key() == Qt::Key_Down || event->key() == Qt::Key_Enter) {
+            || event->key() == Qt::Key_Down || event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         return QMenu::keyPressEvent(event);
     }
 }
