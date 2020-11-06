@@ -372,6 +372,8 @@ public:
     bool isShowOnCurrentDesktop();
     // 隐藏雷神终端
     void hideQuakeWindow();
+    // 切换窗口拉伸属性
+    void switchEnableResize();
 
 public slots:
     // 处理resize消息
@@ -399,10 +401,6 @@ protected:
     bool event(QEvent *event) override;
     // 事件过滤器 => 处理雷神resize
     bool eventFilter(QObject *watched, QEvent *event) override;
-
-protected:
-    // 切换窗口拉伸属性
-    inline void switchEnableResize();
 
 private:
     // 雷神窗口resize状态 默认noresize
