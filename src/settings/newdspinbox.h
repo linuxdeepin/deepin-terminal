@@ -26,6 +26,7 @@
 #include <DSpinBox>
 
 #include <QRegExpValidator>
+#include <QKeyEvent>
 
 DWIDGET_USE_NAMESPACE
 
@@ -43,6 +44,7 @@ public:
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 };
 
 
