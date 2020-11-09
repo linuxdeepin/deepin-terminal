@@ -643,6 +643,9 @@ void TabBar::setChangeTextColor(const QString &tabIdentifier)
     style->setTabTextColor(color);
     style->setTabStatusMap(m_tabStatusMap);
     style->polish(this);
+
+    //fix bug 53782程序运行完后，标签页字体颜色未变色
+    this->update();
 }
 
 /*******************************************************************************
