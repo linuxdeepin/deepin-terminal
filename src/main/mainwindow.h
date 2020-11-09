@@ -231,7 +231,8 @@ public:
     static constexpr const char *THEME_TEN                      = "Theme10";
     static constexpr const char *THEME_TEN_NAME                 = "One light";
 
-
+    // /etc/hostname 文件路径
+    static constexpr const char *HOSTNAME_PATH                 = "/etc/hostname";
     int getDesktopIndex() const;
 
 signals:
@@ -260,7 +261,7 @@ public slots:
     /******** Add by ut001000 renfeixiang 2020-06-03:增加 End***************/
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -308,7 +309,8 @@ protected:
     void initTabBar();
     void initOptionButton();
     void initOptionMenu();
-
+    //初始化文件检测
+    void initFileWatcher();
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 
     QString getWinInfoConfigPath();

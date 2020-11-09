@@ -190,7 +190,7 @@ void MainWindow::initUI()
     initTabBar();
     initTitleBar();
     initWindowAttribute();
-
+    initFileWatcher();
 
     qApp->installEventFilter(this);
 }
@@ -379,6 +379,24 @@ void MainWindow::initOptionMenu()
 
     connect(settingAction, &QAction::triggered, Service::instance(), [ = ] {
         Service::instance()->showSettingDialog(this);
+    });
+}
+
+/*******************************************************************************
+ 1. @函数:    initFileWatcher
+ 2. @作者:    ut000442 zhaogongqiang
+ 3. @日期:    2020-11-09
+ 4. @说明:    初始化文件检测
+*******************************************************************************/
+void MainWindow::initFileWatcher()
+{
+    QFileSystemWatcher *fileWatcher  = new QFileSystemWatcher(this);
+    fileWatcher->addPath(HOSTNAME_PATH);
+    //bug 53565 ut000442 hostname被修改后，全部窗口触发一次修改标题
+    connect(fileWatcher, &QFileSystemWatcher::fileChanged, this, [ = ] {
+        emit  Service::instance()->hostnameChanged();
+        //这句话去了之后filechanged信号只能触发一次
+        fileWatcher->addPath(HOSTNAME_PATH);
     });
 }
 

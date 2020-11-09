@@ -40,6 +40,7 @@
 #include <QDesktopServices>
 #include <QMenu>
 #include <QVBoxLayout>
+#include <QHostInfo>
 #include <QTime>
 #include <QApplication>
 #include <QClipboard>
@@ -293,6 +294,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // 接收触控板事件
     connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
 
+    connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::titleChanged);
     setFocusPolicy(Qt::NoFocus);
 }
 
@@ -552,7 +554,7 @@ void TermWidget::parseShellTitle()
         int hostNameIndex = tabTitle.indexOf(":");
         // index找的到
         if (hostNameIndex >= 0) {
-            QString hostName = tabTitle.mid(index + 1, hostNameIndex - index - 1);
+            QString hostName = QHostInfo::localHostName();
             m_tabArgs[LOCAL_HOST_NAME] = hostName;
         }
 

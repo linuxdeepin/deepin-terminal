@@ -118,6 +118,7 @@ signals:
     void onWindowEffectEnabled(bool isEnabled);
     // 触控板事件 name 事件名称 direction 手势方向 fingers 手指个数
     void touchPadEventSignal(QString name, QString direction, int fingers);
+    void hostnameChanged();
 
 public slots:
     // 创建窗口的入口
