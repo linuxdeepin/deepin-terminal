@@ -411,6 +411,8 @@ void TermWidget::addMenuActions(const QPoint &pos)
             QTimer::singleShot(10, this, [ = ]()
             {
                 parentPage()->split(Qt::Horizontal);
+                //分屏时切换到当前选中主题方案
+                switchThemeOnSplitScreen();
             });
 
         });
@@ -422,6 +424,8 @@ void TermWidget::addMenuActions(const QPoint &pos)
             QTimer::singleShot(10, this, [ = ]()
             {
                 parentPage()->split(Qt::Vertical);
+                //分屏时切换到当前选中主题方案
+                switchThemeOnSplitScreen();
             });
         });
     }
@@ -782,6 +786,21 @@ QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat
         }
     }
     return TabFormat;
+}
+
+/*******************************************************************************
+ 1. @函数:    switchThemeOnSplitScreen
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-11-09
+ 4. @说明:    分屏时切换到当前选中主题方案
+*******************************************************************************/
+void TermWidget::switchThemeOnSplitScreen()
+{
+    QString  expandThemeStr = "";
+    expandThemeStr = Settings::instance()->extendColorScheme();
+    if (!expandThemeStr.isEmpty()) {
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+    }
 }
 
 /*******************************************************************************

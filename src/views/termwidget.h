@@ -168,6 +168,9 @@ private:
     void parseShellTitle();
     // 根据标签格式获取标签标题
     QString getTabTitle(QMap<QString, QString> format, QString TabFormat);
+    //分屏时切换到当前选中主题方案
+    void switchThemeOnSplitScreen();
+
 
     TermWidgetPage *m_page = nullptr;
     TermProperties m_properties;
