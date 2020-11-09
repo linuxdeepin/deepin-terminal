@@ -56,7 +56,8 @@ void ServerConfigManager::settServerConfig(QSettings &commandsSettings, const QS
 {
     commandsSettings.beginGroup(strGroupName);
     commandsSettings.setValue("Name", config->m_serverName);
-    commandsSettings.setValue("Password", config->m_password);
+    // 不将密码写入配置文件中
+    //commandsSettings.setValue("Password", config->m_password);
     commandsSettings.setValue("GroupName", config->m_group);
     commandsSettings.setValue("Command", config->m_command);
     commandsSettings.setValue("Path", config->m_path);
@@ -227,8 +228,8 @@ void ServerConfigManager::initServerConfig()
         pServerConfig->m_privateKey = serversSettings.value("PrivateKey").toString();
         serversSettings.endGroup();
 
-        // 兼容旧版本的操作
-        if (strList.count() == OLD_VERTIONCOUNT) {
+        // 兼容旧版本的操作 1) 旧版配置文件需要重写 2) 密码明文需要重写
+        if (strList.count() == OLD_VERTIONCOUNT || !pServerConfig->m_password.isEmpty()) {
             isConvertData = true;
         }
 
@@ -560,11 +561,9 @@ ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
 *******************************************************************************/
 static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer unused)
 {
-    qDebug() << __FUNCTION__;
+    // qDebug() << __FUNCTION__;
     Q_UNUSED(source);
     GError *error = NULL;
-
-
 
     PasswordReBack *reback = static_cast<PasswordReBack *>(unused);
     Q_ASSERT(reback);
@@ -603,7 +602,7 @@ static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer u
 *******************************************************************************/
 void ServerConfigManager::remoteGetSecreats(const QString &userName, const QString &address, const QString &port, const QString &key)
 {
-    qDebug() << __FUNCTION__;
+    // qDebug() << __FUNCTION__;
     QString strSchemaName = QString("com.deepin.terminal.password.%1.%2.%3").arg(userName).arg(address).arg(port);
     const SecretSchema *scheme =
         secret_schema_new(strSchemaName.toUtf8().data(), SECRET_SCHEMA_NONE, "number", SECRET_SCHEMA_ATTRIBUTE_INTEGER, "string", SECRET_SCHEMA_ATTRIBUTE_STRING, "even", SECRET_SCHEMA_ATTRIBUTE_BOOLEAN, NULL);
@@ -680,7 +679,7 @@ static void on_password_cleared(GObject *source, GAsyncResult *result, gpointer 
 
     if (error != NULL) {
         /* ... handle the failure here */
-        qDebug() << "===========================================" << error->message;
+        qDebug() << __FUNCTION__ << error->message;
         g_error_free(error);
 
     } else {
