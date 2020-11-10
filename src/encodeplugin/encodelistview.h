@@ -1,9 +1,9 @@
 /*
  *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
  *
- * Author:zhangmeng <zhangmeng@uniontech.com>
+ * Author:      zhangmeng <zhangmeng@uniontech.com>
  *
- * Maintainer:编码插件列表视图
+ * Maintainer:  zhangmeng <zhangmeng@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

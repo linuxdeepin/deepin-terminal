@@ -1,9 +1,9 @@
 /*
  *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
  *
- * Author:     zhangmeng <zhangmeng@uniontech.com>
+ * Author:      zhangmeng <zhangmeng@uniontech.com>
  *
- * Maintainer:编码插件列表模型
+ * Maintainer:  zhangmeng <zhangmeng@uniontech.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,13 @@
  */
 
 #include "encodelistmodel.h"
+#include "utils.h"
 
 #include <DStandardItem>
 #include <DLog>
 
 #include <QTextCodec>
 #include <QRegExp>
-#include "utils.h"
 
 DWIDGET_USE_NAMESPACE
 
@@ -81,7 +81,6 @@ QList<QByteArray> EncodeListModel::listData()
 *******************************************************************************/
 void EncodeListModel::initEncodeData()
 {
-    QList<QByteArray> all = QTextCodec::availableCodecs();
     // m_encodeData = QTextCodec::availableCodecs().toSet().toList();
     QList<QByteArray> showEncodeList;
     showEncodeList << "UTF-8" << "GB18030" << "GB2312" << "GBK" /*简体中文*/
@@ -115,6 +114,7 @@ void EncodeListModel::initEncodeData()
                    << "IBM850" << "ISO-8859-1" << "ISO-8859-15" << "x-ROMAN8" << "WINDOWS-1252"; /*西方国家*/
 
     // 自定义的名称，系统里不一定大小写完全一样，再同步一下。
+    QList<QByteArray> all = QTextCodec::availableCodecs();
     for (QByteArray &name : showEncodeList) {
         QString strname1 = name;
         bool bFind = false;
