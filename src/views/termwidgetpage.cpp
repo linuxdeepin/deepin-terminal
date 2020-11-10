@@ -838,7 +838,8 @@ void TermWidgetPage::showRenameTitleDialog()
 
         //bug 53463 ut000442 判断当前是否为远程链接状态，根据状态设置对应行的选中
         if (currentTerminal()->isConnectRemote()) {
-            m_renameDlg->getRemoteTabTitleEdit()->getInputedit()->lineEdit()->selectAll();
+            //通过这种方式设置全选效果
+            m_renameDlg->getRemoteTabTitleEdit()->getInputedit()->lineEdit()->setFocus(Qt::TabFocusReason);
         } else {
             m_renameDlg->getTabTitleEdit()->getInputedit()->lineEdit()->selectAll();
         }
