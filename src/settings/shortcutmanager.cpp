@@ -77,20 +77,20 @@ void ShortcutManager::initShortcuts()
     /********************* Modify by n014361 wangpeili End ************************/
     // 切换标签页，防止和ctrl+shift+1等冲突（无法识别）
 
-/*
-    m_builtinShortcuts << "Ctrl+Shift+!";
-    m_builtinShortcuts << "Ctrl+Shift+@";
-    m_builtinShortcuts << "Ctrl+Shift+#";
-    m_builtinShortcuts << "Ctrl+Shift+$";
-    m_builtinShortcuts << "Ctrl+Shift+%";
-    m_builtinShortcuts << "Ctrl+Shift+^";
-    m_builtinShortcuts << "Ctrl+Shift+&";
-    m_builtinShortcuts << "Ctrl+Shift+*";
-    m_builtinShortcuts << "Ctrl+Shift+(";
-    for (int i = 0; i <= 9; i++) {
-        m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
-    }
-*/
+    /*
+        m_builtinShortcuts << "Ctrl+Shift+!";
+        m_builtinShortcuts << "Ctrl+Shift+@";
+        m_builtinShortcuts << "Ctrl+Shift+#";
+        m_builtinShortcuts << "Ctrl+Shift+$";
+        m_builtinShortcuts << "Ctrl+Shift+%";
+        m_builtinShortcuts << "Ctrl+Shift+^";
+        m_builtinShortcuts << "Ctrl+Shift+&";
+        m_builtinShortcuts << "Ctrl+Shift+*";
+        m_builtinShortcuts << "Ctrl+Shift+(";
+        for (int i = 0; i <= 9; i++) {
+            m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
+        }
+    */
     createCustomCommandsFromConfig();
     m_mapReplaceText.insert("Ctrl+Shift+!", "Ctrl+Shift+1");
     m_mapReplaceText.insert("Ctrl+Shift+@", "Ctrl+Shift+2");
@@ -231,6 +231,7 @@ QAction *ShortcutManager::addCustomCommand(QAction &action)
     m_customCommandActionList.append(addAction);
     saveCustomCommandToConfig(addAction, -1);
     emit addCustomCommandSignal(addAction);
+
     return addAction;
 }
 
