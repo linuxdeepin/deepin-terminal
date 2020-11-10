@@ -31,16 +31,16 @@
 
 // 需要选择Item类型
 ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
-    : FocusFrame(parent),
-      m_mainLayout(new QHBoxLayout(this)),
-      m_iconLayout(new QVBoxLayout),
-      m_textLayout(new QVBoxLayout),
-      m_funcLayout(new QVBoxLayout),
-      m_iconButton(new DIconButton(this)),
-      m_firstline(new DLabel(this)),
-      m_secondline(new DLabel(this)),
-      m_funcButton(new IconButton(this)),
-      m_functType(itemType)
+    : FocusFrame(parent)
+    , m_mainLayout(new QHBoxLayout(this))
+    , m_iconLayout(new QVBoxLayout)
+    , m_textLayout(new QVBoxLayout)
+    , m_funcLayout(new QVBoxLayout)
+    , m_iconButton(new DIconButton(this))
+    , m_firstline(new DLabel(this))
+    , m_secondline(new DLabel(this))
+    , m_funcButton(new IconButton(this))
+    , m_functType(itemType)
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
@@ -146,7 +146,7 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
 bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
 {
     // fistText是唯一值
-    return (m_functType == type && key == m_firstText);
+    return ((m_functType == type) && (key == m_firstText));
 }
 
 /*******************************************************************************
@@ -175,7 +175,7 @@ void ItemWidget::lostFocus()
 {
     m_isFocus = false;
     // 项影藏功能键
-    if (m_functType == ItemFuncType_Item && !m_isHover) {
+    if ((ItemFuncType_Item == m_functType) && (!m_isHover)) {
         m_funcButton->hide();
     }
 }
@@ -482,14 +482,6 @@ void ItemWidget::leaveEvent(QEvent *event)
 *******************************************************************************/
 void ItemWidget::mousePressEvent(QMouseEvent *event)
 {
-//    // 判断类型执行操作
-//    onItemClicked();
-//    // 捕获事件
-//    event->accept();
-#if 0
-    //记录鼠标点击时的时间戳
-    m_tapTimeSpace = event->timestamp();
-#endif
     FocusFrame::mousePressEvent(event);
 }
 
@@ -501,15 +493,6 @@ void ItemWidget::mousePressEvent(QMouseEvent *event)
 *******************************************************************************/
 void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-#if 0
-    qDebug() << __FUNCTION__ ;
-    //根据鼠标按下弹起的差值判断是否触发点击事件
-    if (event->timestamp() - m_tapTimeSpace > TAP_TIME_SPACE_T
-            && (Qt::MouseEventNotSynthesized == event->source() || Qt::MouseEventSynthesizedByQt == event->source())) {
-        event->accept();
-        return;
-    }
-#endif
     // 判断类型执行操作
     onItemClicked();
     // 捕获事件

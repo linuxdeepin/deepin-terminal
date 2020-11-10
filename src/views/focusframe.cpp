@@ -82,8 +82,6 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     }
     painter.end();
     event->ignore();
-    // 放弃DFrame的绘制
-//    DFrame::paintEvent(event);
 }
 
 /*******************************************************************************
@@ -94,7 +92,6 @@ void FocusFrame::paintEvent(QPaintEvent *event)
 *******************************************************************************/
 void FocusFrame::enterEvent(QEvent *event)
 {
-//    qDebug() << __FUNCTION__;
     // 鼠标进入
     m_isHover = true;
     // 背景色 0.1
@@ -112,7 +109,6 @@ void FocusFrame::enterEvent(QEvent *event)
 *******************************************************************************/
 void FocusFrame::leaveEvent(QEvent *event)
 {
-//    qDebug() << __FUNCTION__;
     // 鼠标出
     m_isHover = false;
     // 背景色 0.02
@@ -184,8 +180,8 @@ int FocusFrame::getBackgroudColorRole()
     if (m_isHover) {
         // 鼠标悬浮 返回背景色 0.1
         return DPalette::ObviousBackground;
-    } else {
-        // 鼠标不悬浮 返回背景色 0.02
-        return DPalette::ItemBackground;
     }
+
+    // 鼠标不悬浮 返回背景色 0.02
+    return DPalette::ItemBackground;
 }
