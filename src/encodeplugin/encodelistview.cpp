@@ -392,7 +392,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         painter->setPen(pa.color(DPalette::Text));
 
         // 绘画文本
-        int checkIconSize = 15;
+        int checkIconSize = 16;
         QString strCmdName = index.data().toString();
         QRect cmdNameRect = QRect(10, bgRect.top(), bgRect.width() - checkIconSize, 50);
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
