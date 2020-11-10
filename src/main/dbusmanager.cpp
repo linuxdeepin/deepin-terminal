@@ -24,7 +24,6 @@
 #include <QDBusMessage>
 #include <QDBusConnection>
 #include <QDBusInterface>
-
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -85,10 +84,10 @@ int DBusManager::callKDECurrentDesktop()
         qDebug() << "call currentDesktop Success!";
         QList<QVariant> list = response.arguments();
         return list.takeFirst().toInt();
-    } else {
-        qDebug() << "call currentDesktop Fail!" << response.errorMessage();
-        return -1;
     }
+
+    qDebug() << "call currentDesktop Fail!" << response.errorMessage();
+    return -1;
 }
 
 /*******************************************************************************

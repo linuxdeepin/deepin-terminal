@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "atspidesktop.h"
+#include "utils.h"
 
 //qt
 #include <QDebug>
-#include "utils.h"
 
 AtspiDesktop::AtspiDesktop()
 {
@@ -44,8 +44,7 @@ void  AtspiDesktop::stopThread()
     }
     // 退出插件循环
     atspi_event_quit();
-    // 加上会报错
-    // atspi_exit();
+
     // 等待退出线程
     quit();
     wait();

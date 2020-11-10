@@ -113,8 +113,5 @@ int main(int argc, char *argv[])
     // 监听触控板事件
     manager.listenTouchPadSignal();
 
-    // 监听桌面切换事件
-    // manager.listenDesktopSwitched();
-
     return app.exec();
 }

@@ -97,7 +97,7 @@ public:
     static void callTerminalEntry(QStringList args);
 
 
-    /** add by ut001121 zhangmeng 20200720 for sp3 keyboard interaction*/
+    /** add by ut001121 zhangmeng 20200720 用于 sp3 键盘交互功能*/
     static void callSystemSound(const QString &sound = "dialog-error");
 
     // 监听触控板事件
@@ -109,7 +109,7 @@ public slots:
     void entry(QStringList args);
 
 signals:
-    // To Service entry function
+    // 该信号由Service在main入口中使用
     void entryArgs(QStringList args);
 };
 

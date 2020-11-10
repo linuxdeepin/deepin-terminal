@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "mainwindow.h"
-
 #include "mainwindowplugininterface.h"
 #include "settings.h"
 #include "shortcutmanager.h"
@@ -45,6 +44,7 @@
 #include <DThemeManager>
 #include <DTitlebar>
 #include <DFileDialog>
+#include <DImageButton>
 #include <DLog>
 
 #include <QApplication>
@@ -58,12 +58,11 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QtDBus>
-
 #include <QVBoxLayout>
 #include <QMap>
-#include <DImageButton>
 
 #include <fstream>
+
 using std::ifstream;
 using std::ofstream;
 
@@ -75,6 +74,10 @@ DWIDGET_USE_NAMESPACE
 
 // 定义雷神窗口边缘,接近边缘光标变化图标
 #define QUAKE_EDGE 5
+
+SwitchThemeMenu::SwitchThemeMenu(const QString &title, QWidget *parent): QMenu(title, parent)
+{
+}
 
 /*******************************************************************************
  1. @函数:    leaveEvent
@@ -128,6 +131,8 @@ void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Left:
         emit mainWindowCheckThemeItemSignal();
         break;
+    default:
+        break;
     }
     //内置主题屏蔽 除了 上下左右回车键的其他按键响应 处理bug#53439
     if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Up || event->key() == Qt::Key_Right
@@ -136,17 +141,16 @@ void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)
     }
 }
 
-
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
-    : DMainWindow(parent),
-      m_menu(new QMenu(this)),
-      m_tabbar(nullptr),
-      m_centralWidget(new QWidget(this)),
-      m_centralLayout(new QVBoxLayout(m_centralWidget)),
-      m_termStackWidget(new QStackedWidget),
-      m_properties(properties),
-      m_isQuakeWindow(properties[QuakeMode].toBool()),
-      m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
+    : DMainWindow(parent)
+    , m_menu(new QMenu(this))
+    , m_tabbar(nullptr)
+    , m_centralWidget(new QWidget(this))
+    , m_centralLayout(new QVBoxLayout(m_centralWidget))
+    , m_termStackWidget(new QStackedWidget)
+    , m_properties(properties)
+    , m_isQuakeWindow(properties[QuakeMode].toBool())
+    , m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     m_menu->setObjectName("MainWindowQMenu");
@@ -1748,9 +1752,9 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
 void MainWindow::onShortcutSettingChanged(const QString &keyName)
 {
     qDebug() << "Shortcut[" << keyName << "] changed";
-    if (m_BuiltInShortcut.contains(keyName)) {
+    if (m_builtInShortcut.contains(keyName)) {
         QString value = Settings::instance()->settings->option(keyName)->value().toString();
-        m_BuiltInShortcut[keyName]->setKey(QKeySequence(value));
+        m_builtInShortcut[keyName]->setKey(QKeySequence(value));
         return;
     }
 
@@ -1954,7 +1958,7 @@ QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 {
     QString value = Settings::instance()->settings->option(key)->value().toString();
     QShortcut *shortcut = new QShortcut(QKeySequence(value), this);
-    m_BuiltInShortcut[key] = shortcut;
+    m_builtInShortcut[key] = shortcut;
     shortcut->setAutoRepeat(AutoRepeat);
     // qDebug() << "createNewShotcut" << key << value;
     return shortcut;

@@ -44,9 +44,9 @@
 #include <QTimer>
 #include <QMenu>
 #include <QDebug>
+#include <QShortcut>
 
 #include <functional>
-#include <QShortcut>
 
 
 DWIDGET_USE_NAMESPACE
@@ -69,7 +69,7 @@ class SwitchThemeMenu : public QMenu
 {
     Q_OBJECT
 public:
-    SwitchThemeMenu(const QString &title, QWidget *parent = nullptr): QMenu(title, parent) {}
+    SwitchThemeMenu(const QString &title, QWidget *parent = nullptr);
     //捕获鼠标离开主题项事件
     void leaveEvent(QEvent *) override;
     //主题菜单栏隐藏时触发
@@ -137,9 +137,8 @@ public:
 
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
 
-    //
+    // 基类终端是否闲置响应函数(闲置即没有程序运行)
     void onTermIsIdle(QString tabIdentifier, bool bIdle);
-    //ShortcutManager *getShortcutManager();
 
     void executeDownloadFile();
 
@@ -245,7 +244,6 @@ signals:
     void changeEncodeSig(const QString &name);
 
 public slots:
-    // void onSettingValueChanged(const int &keyIndex, const QVariant &value);
     void onWindowSettingChanged(const QString &keyName);
     void onShortcutSettingChanged(const QString &keyName);
     void remoteUploadFile();
@@ -335,7 +333,7 @@ protected:
     void createJsonGroup(const QString &keyCategory, QJsonArray &jsonGroups);
     // 创建快捷键管理
     QShortcut *createNewShotcut(const QString &key, bool AutoRepeat = true);
-    //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+    //--added by qinyaning(nyq) 2020.4.13 18:21 解决无法从服务器下载文件的问题//
     void pressEnterKey(const QString &text);
 
     // mainwindow创建结束记录
@@ -378,7 +376,7 @@ protected:
     QMap<QString, bool> m_tabChangeColorMap;
 
     /******** Modify by n014361 wangpeili 2020-02-20: 内置快捷键集中管理 ****************/
-    QMap<QString, QShortcut *> m_BuiltInShortcut;
+    QMap<QString, QShortcut *> m_builtInShortcut;
     /********************* Modify by n014361 wangpeili End ************************/
     QString downloadFilePath = "";
     RemoteManagementPlugin *remoteManagPlugin = nullptr;
