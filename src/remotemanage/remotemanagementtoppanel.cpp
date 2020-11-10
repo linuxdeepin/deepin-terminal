@@ -129,7 +129,6 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
         animation = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
         connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-
     } else if (m_currentPanelType == ServerConfigManager::PanelType_Manage) {
         // 全局搜索
         m_remoteManagementSearchPanel->refreshDataByFilter(strFilter);
@@ -138,7 +137,6 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
         animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
         connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-
     } else {
         qDebug() << "unknow current panel!";
         return;
@@ -185,7 +183,6 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
         animation = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
         connect(animation, &QPropertyAnimation::finished, m_remoteManagementSearchPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
-
     } else if (m_currentPanelType == ServerConfigManager::PanelType_Manage) {
         // 动画效果的设置
         animation = new QPropertyAnimation(m_remoteManagementPanel, "geometry");

@@ -22,8 +22,7 @@
 #include "mainwindow.h"
 #include "utils.h"
 #include "service.h"
-
-#include "../views/termwidget.h"//added by nyq
+#include "termwidget.h"
 
 #include <QTextCodec>
 #include <QDebug>
