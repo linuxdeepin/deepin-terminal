@@ -96,7 +96,7 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
         qDebug() << "finished" << result;
 
-        if (result == QDialog::Accepted) {
+        if (QDialog::Accepted == result) {
             qDebug() << "Accepted";
             QAction *newAction = m_pdlg->getCurCustomCmd();
             m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
@@ -148,12 +148,12 @@ void CustomCommandPanel::doCustomCommand(const QString &key)
 *******************************************************************************/
 void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
 {
-    if (type == Qt::TabFocusReason || type == Qt::NoFocusReason) {
+    if ((Qt::TabFocusReason == type) || (Qt::NoFocusReason == type)) {
         // 下一个 或 列表为空， 焦点定位到添加按钮上
         m_pushButton->setFocus();
         m_cmdListWidget->clearIndex();
         qDebug() << "set focus on add pushButton";
-    } else if (type == Qt::BacktabFocusReason) {
+    } else if (Qt::BacktabFocusReason == type) {
         // 判断是否可见，可见设置焦点
         if (m_searchEdit->isVisible()) {
             m_searchEdit->lineEdit()->setFocus();
@@ -270,7 +270,7 @@ void CustomCommandPanel::initUI()
     vLayout->addSpacing(10);
     setLayout(vLayout);
 
-    connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);  //
+    connect(m_searchEdit, &DSearchEdit::returnPressed, this, &CustomCommandPanel::showCurSearchResult);
     connect(m_pushButton, &DPushButton::clicked, this, &CustomCommandPanel::showAddCustomCommandDlg);
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandPanel::doCustomCommand);
     connect(m_cmdListWidget, &ListView::listItemCountChange, this, &CustomCommandPanel::refreshCmdSearchState);

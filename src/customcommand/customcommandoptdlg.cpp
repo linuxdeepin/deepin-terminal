@@ -45,12 +45,12 @@
 #include <QClipboard>
 
 CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandData *currItemData, QWidget *parent)
-    : DAbstractDialog(parent),
-      m_type(type),
-      m_nameLineEdit(new DLineEdit),
-      m_commandLineEdit(new DLineEdit),
-      m_shortCutLineEdit(new DKeySequenceEdit),
-      m_bDelOpt(false)
+    : DAbstractDialog(parent)
+    , m_type(type)
+    , m_nameLineEdit(new DLineEdit)
+    , m_commandLineEdit(new DLineEdit)
+    , m_shortCutLineEdit(new DKeySequenceEdit)
+    , m_bDelOpt(false)
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
@@ -222,7 +222,7 @@ void CustomCommandOptDlg::initUI()
             qDebug() << "The KeySequenceE is Backspace";
             m_shortCutLineEdit->clear();
             m_lastCmdShortcut = "";
-            return ;
+            return;
         }
         // 取消
         if ("Esc" == sequence.toString()) {
@@ -231,7 +231,7 @@ void CustomCommandOptDlg::initUI()
             m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
             /***add by ut001121 zhangmeng 20200521 在快捷键编辑框中按下ESC键时退出窗口 修复BUG27554***/
             close();
-            return ;
+            return;
         }
         QString checkName;
         //QString seq = m_shortCutLineEdit->text();
