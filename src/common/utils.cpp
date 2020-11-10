@@ -21,6 +21,8 @@
 #include "utils.h"
 #include "operationconfirmdlg.h"
 #include "termwidget.h"
+#include "terminputdialog.h"
+#include "dbusmanager.h"
 
 #include <DLog>
 #include <DMessageBox>
@@ -46,9 +48,7 @@
 #include <QTextLayout>
 #include <QTime>
 #include <QFontMetrics>
-#include "terminputdialog.h"
 
-#include "dbusmanager.h"
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
