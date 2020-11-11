@@ -14,7 +14,6 @@ struct PasswordReBack {
     ServerConfigManager *manager = nullptr;
 };
 
-
 ServerConfigManager *ServerConfigManager::m_instance = nullptr;
 
 ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
@@ -33,7 +32,8 @@ void ServerConfigManager::settServerConfig(QSettings &commandsSettings, const QS
 {
     commandsSettings.beginGroup(strGroupName);
     commandsSettings.setValue("Name", config->m_serverName);
-    commandsSettings.setValue("Password", config->m_password);
+    // 不将密码写入配置文件中
+    //commandsSettings.setValue("Password", config->m_password);
     commandsSettings.setValue("GroupName", config->m_group);
     commandsSettings.setValue("Command", config->m_command);
     commandsSettings.setValue("Path", config->m_path);
@@ -100,9 +100,8 @@ void ServerConfigManager::initServerConfig()
         pServerConfig->m_privateKey = serversSettings.value("PrivateKey").toString();
         serversSettings.endGroup();
 
-
-        // 兼容旧版本的操作
-        if (strList.count() == OLD_VERTIONCOUNT) {
+        // 兼容旧版本的操作 1) 旧版配置文件需要重写 2) 密码明文需要重写
+        if (strList.count() == OLD_VERTIONCOUNT || !pServerConfig->m_password.isEmpty()) {
             isConvertData = true;
         }
 
@@ -138,7 +137,6 @@ void ServerConfigManager::initServerConfig()
         }
     }
 
-
     // 新数据写入map
     for (ServerConfig *config : m_remoteConfigs) {
         // 没有密码的情况都要去DBus中获取一下
@@ -149,7 +147,6 @@ void ServerConfigManager::initServerConfig()
         // 将数据写入map
         m_serverConfigs[config->m_group].append(config);
     }
-
 
     // 若rewrite为true删除原数据,将内存的数据写入原文件
     m_rewriteConfig = (SettingIO::rewrite || isConvertData);

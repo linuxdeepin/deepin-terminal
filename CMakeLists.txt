@@ -5,6 +5,12 @@ cmake_minimum_required(VERSION 3.9.5)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 include (src/DtkSettingsToolsMacros)
+option(TERM_RPATH "Do you want to use compiled libraries" ON)
+
+if(TERM_RPATH)
+set(CMAKE_SKIP_INSTALL_RPATH YES)
+set(CMAKE_SKIP_RPATH YES)
+endif()
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -276,10 +282,6 @@ install(FILES src/deepin-terminal.desktop
 
 install(FILES src/assets/logo/deepin-terminal.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
-
-# add this empty file for first install/reinstall judge
-install(FILES src/assets/other/install_flag
-        DESTINATION $ENV{HOME}/.config/deepin/deepin-terminal/)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
