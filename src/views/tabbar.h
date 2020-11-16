@@ -28,6 +28,9 @@
 
 DWIDGET_USE_NAMESPACE
 
+class TermWidgetPage;
+class MainWindow;
+
 /*******************************************************************************
  1. @类名:    TermTabStyle
  2. @作者:    ut000610 daizhengwen
@@ -85,7 +88,9 @@ public:
     void setTabItemMinWidth(int tabItemMinWidth);
     void setTabItemMaxWidth(int tabItemMaxWidth);
     int addTab(const QString &tabIdentifier, const QString &tabName);
+    int insertTab(const int &index, const QString &tabIdentifier, const QString &tabName);
     void removeTab(const QString &tabIdentifier);
+    void closeTab(const int &index);
     bool setTabText(const QString &tabIdentifier, const QString &text);
 
     void saveSessionIdWithTabIndex(int sessionId, int index);
@@ -103,12 +108,31 @@ public:
     void setTabStatusMap(const QMap<QString,TabTextColorStatus> &tabStatusMap);
 
     //设置是否启用关闭tab动画效果
-    void setEnableCloseTabAnimation(bool bEnableCloseTabAnimation);
+    void setEnableCloseTabAnimation(bool isEnableCloseTabAnimation);
     bool isEnableCloseTabAnimation();
+
+    void setIsQuakeWindowTab(bool isQuakeWindowTab);
+    void setTabDragMoveStatus();
+
+public slots:
+    void setCurrentIndex(int index);
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
     QSize minimumTabSizeHint(int index) const;
     QSize maximumTabSizeHint(int index) const;
+
+    //tab拖动
+    QPixmap createDragPixmapFromTab(int index, const QStyleOptionTab &option, QPoint *hotspot) const;
+    QMimeData *createMimeDataFromTab(int index, const QStyleOptionTab &option) const;
+    void insertFromMimeDataOnDragEnter(int index, const QMimeData *source);
+    void insertFromMimeData(int index, const QMimeData *source);
+    bool canInsertFromMimeData(int index, const QMimeData *source) const;
+
+    void createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab);
+    MainWindow* createNormalWindow();
+
+    QPoint calculateDragDropWindowPosition(MainWindow *window);
 
 signals:
     void tabBarClicked(int index, QString Identifier);
@@ -118,6 +142,11 @@ signals:
 
 private slots:
     void handleTabBarClicked(int index);
+    void handleTabMoved(int fromIndex, int toIndex);
+    void handleTabReleased(int index);
+    void handleTabIsRemoved(int index);
+    void handleTabDroped(int index, Qt::DropAction dropAction, QObject *target);
+    void handleDragActionChanged(Qt::DropAction action);
 
 private:
     QAction *m_closeOtherTabAction = nullptr;
@@ -130,13 +159,19 @@ private:
     int m_tabItemMinWidth;
     int m_tabItemMaxWidth;
 
+    QStringList m_tabIdentifierList;
+
     QMap<int, int> m_sessionIdTabIndexMap; // key--sessionId, value--tabIndex
     QMap<int, QString> m_sessionIdTabIdMap; // key--sessionId, value--tabIdentifier
 
     QMap<QString, TabTextColorStatus> m_tabStatusMap;
     QColor m_tabChangedTextColor;
 
-    bool m_bEnableCloseTabAnimation;
+    bool m_isEnableCloseTabAnimation;
+    bool m_isQuakeWindowTab;
+
+    //用于拖拽结束drop动画的图像
+    static QPixmap* s_pDragPixmap;
 };
 
 #endif  // TABBAR_H

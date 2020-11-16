@@ -33,7 +33,8 @@ enum TermProperty {
     Execute,           // 仅供第一个terminal使用，任意长，任意位置，QStringList
     StartWindowState,  // mainwindow使用
     KeepOpen,          // 仅供第一个terminal使用
-    Script             // 仅供第一个terminal使用
+    Script,            // 仅供第一个terminal使用
+    DragDropTerminal   // 窗口标签拖拽时使用
 };
 
 /*******************************************************************************

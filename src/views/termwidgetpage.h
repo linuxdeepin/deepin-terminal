@@ -50,6 +50,8 @@ public:
     TermWidgetPage(TermProperties properties, QWidget *parent = nullptr);
     // mainwindow指针，parent()会变化？？？所以要在构造的时候保存。
     MainWindow *parentMainWindow();
+    // 当标签页拖拽到新的MainWindow时，重新设置TermWidgetPage的父窗口
+    void setParentMainWindow(MainWindow *mainWin);
     TermWidget *currentTerminal();
 
     // 分屏功能

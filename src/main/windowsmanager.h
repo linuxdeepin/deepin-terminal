@@ -58,6 +58,11 @@ public:
     {
         return m_quakeWindow;
     }
+    // 获取普通窗口列表
+    QList<MainWindow *> getNormalWindowList()
+    {
+        return m_normalWindowList;
+    }
 
 signals:
 

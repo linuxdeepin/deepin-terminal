@@ -92,6 +92,17 @@ MainWindow *TermWidgetPage::parentMainWindow()
 }
 
 /*******************************************************************************
+ 1. @函数:    parentMainWindow
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    当标签页拖拽到新的MainWindow时，重新设置TermWidgetPage的父窗口
+*******************************************************************************/
+void TermWidgetPage::setParentMainWindow(MainWindow *mainWin)
+{
+    m_MainWindow = mainWin;
+}
+
+/*******************************************************************************
  1. @函数:    setSplitStyle
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-12

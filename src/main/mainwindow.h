@@ -109,10 +109,15 @@ public:
     ~MainWindow() override;
 
     void addTab(TermProperties properties, bool activeTab = false);
+    void addTabWithTermPage(const QString &tabName, bool activeTab, TermWidgetPage *page, int insertIndex=-1);
+    bool beginAddTab();
+    void endAddTab(TermWidgetPage *termPage, bool activeTab, int index, qint64 startTime);
 
     /******** Modify by n014361 wangpeili 2020-01-07:  关闭其它标签页功能 ************/
     // 点击，右键，快捷键以及被调用．
     void closeTab(const QString &identifier, bool hasConfirmed = false);
+    TermWidgetPage *getTermPage(const QString &identifier);
+    void removeTermWidgetPage(const QString &identifier, bool isDelete);
     // Tab右键或者快捷键
     void closeOtherTab(const QString &identifier, bool hasConfirmed = false);
     // 整体关闭事件
@@ -161,6 +166,8 @@ public:
 
     bool hasRunningProcesses();
     bool isQuakeMode();
+    // 用于标记当前tab是否为雷神窗口的tab
+    void setIsQuakeWindowTab(bool isQuakeWindowTab);
 
     static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
     static constexpr const char *PLUGIN_TYPE_THEME = "Theme";
@@ -449,6 +456,10 @@ protected:
     //当前勾选的菜单主题快捷键
     QAction         *currCheckThemeAction   = nullptr;
 
+    //用于保存identifier/TermWidgetPage键值对的map
+    QMap<QString, TermWidgetPage *> m_termWidgetPageMap;
+
+    bool m_isInitialized = false;
 };
 
 /*******************************************************************************

@@ -27,12 +27,20 @@
 #include <DFontSizeManager>
 #include <DLog>
 #include <DIconButton>
+#include <DPlatformWindowHandle>
+#include <DWindowManagerHelper>
 
 #include <QStyleOption>
 #include <QStyleOptionTab>
 #include <QStylePainter>
 #include <QMouseEvent>
+#include <QDesktopWidget>
+
 #include "utils.h"
+#include "termwidget.h"
+#include "termwidgetpage.h"
+#include "windowsmanager.h"
+#include "terminalapplication.h"
 
 //TermTabStyle start
 TermTabStyle::TermTabStyle() : m_tabCount(0)
@@ -181,6 +189,9 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
     option->row = tabIndex;
 }
 
+//初始TabBar静态成员
+QPixmap *TabBar::s_pDragPixmap = nullptr;
+
 TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 {
     Utils::set_Object_Name(this);
@@ -198,7 +209,11 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setVisibleAddButton(true);
     setElideMode(Qt::ElideRight);
     setFocusPolicy(Qt::TabFocus);
+    //tab移动
     setMovable(true);
+    //tab拖拽
+    setDragable(true);
+    setStartDragDistance(40);
 
     setTabHeight(36);
     setTabItemMinWidth(110);
@@ -212,6 +227,13 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     }
 
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::handleTabBarClicked);
+
+    // 用于窗口tab拖拽
+    connect(this, &DTabBar::tabMoved, this, &TabBar::handleTabMoved);
+    connect(this, &DTabBar::tabDroped, this, &TabBar::handleTabDroped);
+    connect(this, &DTabBar::tabIsRemoved, this, &TabBar::handleTabIsRemoved);
+    connect(this, &DTabBar::tabReleaseRequested, this, &TabBar::handleTabReleased);
+    connect(this, &DTabBar::dragActionChanged, this, &TabBar::handleDragActionChanged);
 }
 
 TabBar::~TabBar()
@@ -277,7 +299,30 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
     int index = DTabBar::addTab(tabName);
     setTabData(index, QVariant::fromValue(tabIdentifier));
 
+    setTabDragMoveStatus();
+
+    m_tabIdentifierList << tabIdentifier;
+
     return index;
+}
+
+/*******************************************************************************
+ 1. @函数:    insertTab
+ 2. @作者:    ut000610 wangliang
+ 3. @日期:    2020-10-12
+ 4. @说明:    增加标签
+*******************************************************************************/
+int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QString &tabName)
+{
+    qDebug() << "insertTab at index: " << index << " with id::" << tabIdentifier << endl;
+    int insertIndex = DTabBar::insertTab(index, tabName);
+    setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
+
+    setTabDragMoveStatus();
+
+    m_tabIdentifierList.insert(index, tabIdentifier);
+
+    return insertIndex;
 }
 
 /*******************************************************************************
@@ -479,6 +524,8 @@ void TabBar::removeTab(const QString &tabIdentifier)
             break;
         }
     }
+
+    setTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -572,9 +619,386 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                 return true;
             }
         }
+    } else if (event->type() == QEvent::DragEnter) {
+    } else if (event->type() == QEvent::DragLeave) {
+    } else if (event->type() == QEvent::Drop) {
+    } else if (event->type() == QEvent::DragMove) {
+        event->accept();
     }
 
     return false;
+}
+
+/*******************************************************************************
+ 1. @函数:    dropShadow
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    根据原图像生成对应的阴影图像
+*******************************************************************************/
+QPixmap dropShadow(const QPixmap &source, qreal radius, const QColor &color, const QPoint &offset)
+{
+    QImage shadow = dropShadow(source, radius, color);
+    shadow.setDevicePixelRatio(source.devicePixelRatio());
+
+    QPainter pa(&shadow);
+    pa.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    pa.drawPixmap(QPointF(radius - offset.x(), radius - offset.y()), source);
+    pa.end();
+
+    return QPixmap::fromImage(shadow);
+}
+
+/*******************************************************************************
+ 1. @函数:    createDragPixmapFromTab
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    将标签对应的TermWidgetPage控件转化为QPixmap图像，用于在拖拽过程中显示
+*******************************************************************************/
+QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option, QPoint *hotspot) const
+{
+    Q_UNUSED(option)
+
+    const qreal ratio = qApp->devicePixelRatio();
+
+    QString termIdentifer = identifier(index);
+    TermWidgetPage *termPage = static_cast<MainWindow *>(this->window())->getTermPage(termIdentifer);
+    int width =  static_cast<int>(termPage->width() * ratio);
+    int height =  static_cast<int>(termPage->height() * ratio);
+    QImage screenshotImage(width, height, QImage::Format_ARGB32_Premultiplied);
+    screenshotImage.setDevicePixelRatio(ratio);
+    termPage->render(&screenshotImage, QPoint(), QRegion(0, 0, width, height));
+
+    // 根据对应的ration缩放图像
+    int scaledWidth = static_cast<int>((width * ratio)/5);
+    int scaledHeight = static_cast<int>((height * ratio)/5);
+    auto scaledImage = screenshotImage.scaled(scaledWidth, scaledHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    const int shadowRadius = 10;
+    QImage backgroundImage(scaledWidth + shadowRadius, scaledHeight + shadowRadius, QImage::Format_ARGB32_Premultiplied);
+    backgroundImage.fill(QColor(palette().color(QPalette::Base)));
+    //使用对应的window radius裁剪截图图像。
+    QPainter painter(&backgroundImage);
+    painter.drawImage(5, 5, scaledImage);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    if (1 == count()) {
+        this->window()->hide();
+    }
+
+    //调整偏移量
+    hotspot->setX(scaledWidth/2);
+    hotspot->setY(scaledHeight/2);
+
+    QPainterPath rectPath;
+
+    if(s_pDragPixmap) {
+        delete s_pDragPixmap;
+    }
+    s_pDragPixmap = new QPixmap(QPixmap::fromImage(backgroundImage));
+
+    //当开启了窗口特效时
+    if(DWindowManagerHelper::instance()->hasComposite()) {
+        QPainterPath roundedRectPath;
+
+        const int cornerRadius = 6;
+        rectPath.addRect(0, 0, scaledWidth + shadowRadius, scaledHeight + shadowRadius);
+        roundedRectPath.addRoundedRect(QRectF(0,
+                                              0,
+                                              (scaledWidth / ratio) + shadowRadius,
+                                              (scaledHeight) / ratio + shadowRadius),
+                                       cornerRadius,
+                                       cornerRadius);
+
+        rectPath -= roundedRectPath;
+
+        painter.setCompositionMode(QPainter::CompositionMode_Source);
+        painter.fillPath(rectPath, Qt::transparent);
+
+        QColor shadowColor = QColor(palette().color(QPalette::BrightText));
+        shadowColor.setAlpha(80);
+
+        painter.end();
+
+        return dropShadow(QPixmap::fromImage(backgroundImage), 5, shadowColor, QPoint(0, 0));
+    } else {
+        painter.end();
+
+        return QPixmap::fromImage(backgroundImage);
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    createMimeDataFromTab
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    自定义QMimeData数据用于拖放数据的存储
+*******************************************************************************/
+QMimeData* TabBar::createMimeDataFromTab(int index, const QStyleOptionTab &option) const
+{
+    Q_UNUSED(option)
+
+    const QString tabName = tabText(index);
+
+    MainWindow *window = static_cast<MainWindow *>(this->window());
+    TermWidgetPage *termPage = window->currentPage();
+    if (!termPage) {
+        return nullptr;
+    }
+
+    QMimeData *mimeData = new QMimeData;
+
+    //保存工作区页面TermWidgetPage、标签页名称数据到QMimeData
+    mimeData->setProperty("termpage", QVariant::fromValue(static_cast<void *>(termPage)));
+    mimeData->setData("deepin-terminal/tabbar", tabName.toUtf8());
+
+    return mimeData;
+}
+
+/*******************************************************************************
+ 1. @函数:    insertFromMimeDataOnDragEnter
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    拖拽过程中将从QMimeData中取出拖拽的标签页相关数据，插入标签页到当前窗口
+             此时插入的标签为拖拽过程中的“虚拟标签”
+*******************************************************************************/
+void TabBar::insertFromMimeDataOnDragEnter(int index, const QMimeData *source)
+{
+    if (nullptr == source) {
+        return;
+    }
+
+    const QString tabName = QString::fromUtf8(source->data("deepin-terminal/tabbar"));
+
+    QVariant pVar = source->property("termpage");
+    TermWidgetPage *termPage = static_cast<TermWidgetPage *>(pVar.value<void *>());
+
+    if (nullptr == termPage) {
+        return;
+    }
+
+    MainWindow *window = static_cast<MainWindow *>(this->window());
+    window->addTabWithTermPage(tabName, true, termPage, index);
+    window->focusCurrentPage();
+}
+
+/*******************************************************************************
+ 1. @函数:    insertFromMimeData
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    拖拽结束后将从QMimeData中取出拖拽的标签页相关数据，插入标签页到当前窗口
+*******************************************************************************/
+void TabBar::insertFromMimeData(int index, const QMimeData *source)
+{
+    if (nullptr == source) {
+        return;
+    }
+
+    const QString tabName = QString::fromUtf8(source->data("deepin-terminal/tabbar"));
+
+    QVariant pVar = source->property("termpage");
+    TermWidgetPage *termPage = static_cast<TermWidgetPage *>(pVar.value<void *>());
+
+    if (nullptr == termPage) {
+        return;
+    }
+
+    MainWindow *window = static_cast<MainWindow *>(this->window());
+    window->addTabWithTermPage(tabName, true, termPage, index);
+    window->focusCurrentPage();
+}
+
+/*******************************************************************************
+ 1. @函数:    canInsertFromMimeData
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    用于判断是否能插入标签
+*******************************************************************************/
+bool TabBar::canInsertFromMimeData(int index, const QMimeData *source) const
+{
+    Q_UNUSED(index)
+    //根据标签的QMimeData的MIME类型(即format)判断是否可以将标签插入当前tab中
+    return source->hasFormat("deepin-terminal/tabbar");
+}
+
+/*******************************************************************************
+ 1. @函数:    handleTabMoved
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    标签左右移动后，交换移动的两个标签对应的标签identifier
+*******************************************************************************/
+void TabBar::handleTabMoved(int fromIndex, int toIndex)
+{
+    m_tabIdentifierList.swap(fromIndex, toIndex);
+}
+
+/*******************************************************************************
+ 1. @函数:    handleTabReleased
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    标签拖拽释放后，使用拖拽出的TermWidgetPage页面新建窗口，关闭原窗口拖出的标签页并移除对应页面
+*******************************************************************************/
+void TabBar::handleTabReleased(int index)
+{
+    if (index < 0) {
+        index = 0;
+    }
+
+    qDebug() << "handleTabReleased: index: " << index;
+    const QString tabName = tabText(index);
+
+    MainWindow *window = static_cast<MainWindow *>(this->window());
+
+    QString termIdentifer = identifier(index);
+    TermWidgetPage *termPage = window->getTermPage(termIdentifer);
+
+    //使用拖拽出的TermWidgetPage页面新建窗口
+    createWindowFromTermPage(tabName, termPage, true);
+
+    //移除原窗口标签
+    closeTab(index);
+
+    //从原窗口中移除TermWidgetPage。
+    window->removeTermWidgetPage(termIdentifer, false);
+    qDebug() << "removeTermWidgetPage: termIdentifer: " << termIdentifer;
+}
+
+/*******************************************************************************
+ 1. @函数:    handleDragActionChanged
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    拖动过程中动态改变鼠标光标样式
+*******************************************************************************/
+void TabBar::handleDragActionChanged(Qt::DropAction action)
+{
+    if (action == Qt::IgnoreAction) {
+        // 如果拖动标签页未成功，则将光标重置为Qt::ArrowCursor。
+        if (dragIconWindow()) {
+            QGuiApplication::changeOverrideCursor(Qt::ArrowCursor);
+            DPlatformWindowHandle::setDisableWindowOverrideCursor(dragIconWindow(), true);
+        }
+    } else if (dragIconWindow()) {
+        DPlatformWindowHandle::setDisableWindowOverrideCursor(dragIconWindow(), false);
+        if (QGuiApplication::overrideCursor()) {
+            QGuiApplication::changeOverrideCursor(QGuiApplication::overrideCursor()->shape());
+        }
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    createWindowFromTermPage
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    根据对应标签名称、标签对应的工作区创建新的MainWindow
+*******************************************************************************/
+void TabBar::createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab)
+{
+    MainWindow *window = createNormalWindow();
+    window->addTabWithTermPage(tabName, isActiveTab, termPage);
+    window->move(calculateDragDropWindowPosition(window));
+}
+
+/*******************************************************************************
+ 1. @函数:    calculateDragDropWindowPosition
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    用于计算拖拽窗口结束鼠标释放后的窗口位置
+*******************************************************************************/
+QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
+{
+    QPoint pos(QCursor::pos() - window->topLevelWidget()->pos());
+
+    return pos;
+}
+
+/*******************************************************************************
+ 1. @函数:    createNormalWindow
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    创建一个用于标签页拖拽的新窗口
+*******************************************************************************/
+MainWindow* TabBar::createNormalWindow()
+{
+    //创建窗口
+    TermProperties properties;
+    properties[DragDropTerminal] = true;
+    WindowsManager::instance()->createNormalWindow(properties);
+
+    MainWindow *window = WindowsManager::instance()->getNormalWindowList().last();
+
+    //当关闭最后一个窗口时退出整个应用
+    connect(window, &MainWindow::close, this, [=] {
+        int windowIndex = WindowsManager::instance()->getNormalWindowList().indexOf(window);
+        qDebug() << "Close window at index: " << windowIndex;
+
+        if (windowIndex >= 0) {
+            WindowsManager::instance()->getNormalWindowList().takeAt(windowIndex);
+        }
+
+        if (WindowsManager::instance()->getNormalWindowList().isEmpty()) {
+            QApplication::quit();
+        }
+    });
+
+    return window;
+}
+
+/*******************************************************************************
+ 1. @函数:    handleTabIsRemoved
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    移除标签操作，同时移除对应的工作区页面TermWidgetPage
+*******************************************************************************/
+void TabBar::handleTabIsRemoved(int index)
+{
+    MainWindow *window = static_cast<MainWindow *>(this->window());
+    QString removeId = m_tabIdentifierList.at(index);
+    m_tabIdentifierList.removeAt(index);
+    window->removeTermWidgetPage(removeId, false);
+    qDebug() << "handleTabIsRemoved: identifier: " << removeId;
+}
+
+/*******************************************************************************
+ 1. @函数:    closeTab
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    移除标签，同时设置标签拖拽状态
+*******************************************************************************/
+void TabBar::closeTab(const int &index)
+{
+    DTabBar::removeTab(index);
+
+    setTabDragMoveStatus();
+}
+
+/*******************************************************************************
+ 1. @函数:    handleTabDroped
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    处理拖入/拖出标签drop后，关闭之前窗口标签/新建MainWindow窗口显示相关逻辑
+*******************************************************************************/
+void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *target)
+{
+    Q_UNUSED(dropAction)
+
+    qDebug() << "handleTabDroped index:" << index << ", target:" << target << endl;
+    TabBar *tabbar = qobject_cast<TabBar *>(target);
+
+    //拖出的标签--需要新建窗口
+    if (tabbar == nullptr) {
+        qDebug() << "tabbar == nullptr " << index << endl;
+        MainWindow *window = static_cast<MainWindow *>(this->window());
+        //窗口不为雷神模式才允许移动
+        if (!window->isQuakeMode()) {
+            window->move(calculateDragDropWindowPosition(window));
+        }
+        window->show();
+        window->activateWindow();
+    }
+    //拖入的标签--需要关闭拖入窗口的标签页
+    else {
+        qDebug() << "tabbar != nullptr " << index << endl;
+        closeTab(index);
+    }
 }
 
 /*******************************************************************************
@@ -691,9 +1115,9 @@ void TabBar::setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusM
  3. @日期:    2020-08-11
  4. @说明:    设置启用关闭标签动画
 *******************************************************************************/
-void TabBar::setEnableCloseTabAnimation(bool bEnableCloseTabAnimation)
+void TabBar::setEnableCloseTabAnimation(bool isEnableCloseTabAnimation)
 {
-    m_bEnableCloseTabAnimation = bEnableCloseTabAnimation;
+    m_isEnableCloseTabAnimation = isEnableCloseTabAnimation;
 }
 
 /*******************************************************************************
@@ -704,9 +1128,57 @@ void TabBar::setEnableCloseTabAnimation(bool bEnableCloseTabAnimation)
 *******************************************************************************/
 bool TabBar::isEnableCloseTabAnimation()
 {
-    return m_bEnableCloseTabAnimation;
+    return m_isEnableCloseTabAnimation;
 }
 
+/*******************************************************************************
+ 1. @函数:    setIsQuakeWindowTab
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    用于标记当前tab是否为雷神窗口的tab
+*******************************************************************************/
+void TabBar::setIsQuakeWindowTab(bool isQuakeWindowTab)
+{
+    m_isQuakeWindowTab = isQuakeWindowTab;
+}
+
+/*******************************************************************************
+ 1. @函数:    setTabDragMoveStatus
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    用于设置tab拖拽状态，仅当窗口为雷神模式且标签页数量为1时不允许拖拽
+*******************************************************************************/
+void TabBar::setTabDragMoveStatus()
+{
+    if (m_isQuakeWindowTab && 1 == this->count())
+    {
+        setMovable(false);
+        setDragable(false);
+        return;
+    }
+
+    setMovable(true);
+    setDragable(true);
+}
+
+/*******************************************************************************
+ 1. @函数:    setCurrentIndex
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    切换到对应index的标签，并移除标签文字颜色
+*******************************************************************************/
+void TabBar::setCurrentIndex(int index)
+{
+    DTabBar::setCurrentIndex(index);
+    this->removeNeedChangeTextColor(identifier(index));
+}
+
+/*******************************************************************************
+ 1. @函数:    handleTabBarClicked
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    点击某个标签触发，并发出tabBarClicked信号，传递index和标签identifier参数
+*******************************************************************************/
 void TabBar::handleTabBarClicked(int index)
 {
     emit tabBarClicked(index, tabData(index).toString());

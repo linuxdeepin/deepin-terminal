@@ -286,6 +286,12 @@ void MainWindow::initTabBar()
         return;
     });
 
+    // 如果此时是拖拽的窗口，暂时先不添加tab(默认添加tab后会新建工作区)
+    // 需要使用拖入/拖出标签对应的那个TermWidgetPage控件
+    if(m_properties[DragDropTerminal].toBool()) {
+        return;
+    }
+
     addTab(m_properties);
 }
 
@@ -489,6 +495,55 @@ bool MainWindow::isTabChangeColor(const QString &tabIdentifier)
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
     qint64 startTime = QDateTime::currentMSecsSinceEpoch();
+    //如果不允许新建标签，则返回
+    if (!beginAddTab()) {
+        return;
+    }
+
+    TermWidgetPage *termPage = new TermWidgetPage(properties, this);
+
+    // pageID存在 tab中，所以page增删改操作都要由tab发起。
+    int index = m_tabbar->addTab(termPage->identifier(), m_tabbar->tabText(m_tabbar->currentIndex()));
+    qDebug() << "addTab index" << index;
+    endAddTab(termPage, activeTab, index, startTime);
+}
+
+/*******************************************************************************
+ 1. @函数:    addTabWithTermPage
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    拖拽成功后，将之前窗口的标签插入当前MainWindow窗口
+*******************************************************************************/
+void MainWindow::addTabWithTermPage(const QString &tabName, bool activeTab, TermWidgetPage *page, int insertIndex)
+{
+    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
+    //如果不允许新建标签，则返回
+    if (!beginAddTab()) {
+        return;
+    }
+
+    TermWidgetPage *termPage = page;
+    termPage->setParentMainWindow(this);
+
+    if (-1 == insertIndex) {
+        insertIndex = m_tabbar->currentIndex()+1;
+    }
+    // pageID存在 tab中，所以page增删改操作都要由tab发起。
+    int index = m_tabbar->insertTab(insertIndex, page->identifier(), tabName);
+    qDebug() << "insertTab index" << index;
+    endAddTab(termPage, activeTab, index, startTime);
+
+    m_tabbar->setTabText(termPage->identifier(), tabName);
+}
+
+/*******************************************************************************
+ 1. @函数:    beginAddTab
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    判断是否超出最大允许控件数量，如果超出则不允许新建标签
+*******************************************************************************/
+bool MainWindow::beginAddTab()
+{
     /***add by ut001121 zhangmeng 修复BUG#24452 点击“+”按钮新建工作区，自定义命令/编码/远程管理插件未消失***/
     showPlugin(PLUGIN_TYPE_NONE);
 
@@ -497,19 +552,25 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
         if (!(nullptr == WindowsManager::instance()->getQuakeWindow() && m_isQuakeWindow)) {
             // 非雷神窗口不得超过MAXWIDGETCOUNT
             qDebug() << "addTab failed, can't create number more than " << MAXWIDGETCOUNT;
-            return;
+            return false;
         }
     }
 
-    TermWidgetPage *termPage = new TermWidgetPage(properties, this);
+    return true;
+}
+
+/*******************************************************************************
+ 1. @函数:    endAddTab
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    结束添加标签
+*******************************************************************************/
+void MainWindow::endAddTab(TermWidgetPage *termPage, bool activeTab, int index, qint64 startTime)
+{
     setNewTermPage(termPage, activeTab);
 
-    // pageID存在 tab中，所以page增删改操作都要由tab发起。
-    int index = m_tabbar->addTab(termPage->identifier(), m_tabbar->tabText(m_tabbar->currentIndex()));
-    qDebug() << "addTab index" << index;
     if (activeTab) {
         m_tabbar->setCurrentIndex(index);
-        m_tabbar->removeNeedChangeTextColor(termPage->identifier());
     }
 
     TermWidget *term = termPage->currentTerminal();
@@ -626,6 +687,41 @@ void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
     }
     qDebug() << "mainwindow close";
     close();
+}
+
+/*******************************************************************************
+ 1. @函数:    getTermPage
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    根据identifier获取对应的TermWidgetPage
+*******************************************************************************/
+TermWidgetPage *MainWindow::getTermPage(const QString &identifier)
+{
+    return m_termWidgetPageMap.value(identifier);
+}
+
+/*******************************************************************************
+ 1. @函数:    removeTermWidgetPage
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    根据identifier移除对应的TermPage
+*******************************************************************************/
+void MainWindow::removeTermWidgetPage(const QString &identifier, bool isDelete)
+{
+    if (m_termWidgetPageMap.contains(identifier)) {
+        TermWidgetPage *termPage = m_termWidgetPageMap.value(identifier);
+        m_termStackWidget->removeWidget(termPage);
+        m_termWidgetPageMap.remove(identifier);
+        if (isDelete) {
+            delete termPage;
+        }
+    }
+
+    // 当所有tab标签页都关闭时，关闭整个MainWindow窗口
+    if (m_termWidgetPageMap.isEmpty()) {
+        qDebug() << "removeTermWidgetPage mainwindow close";
+        close();
+    }
 }
 
 /*******************************************************************************
@@ -868,6 +964,8 @@ void MainWindow::focusPage(const QString &identifier)
 {
     TermWidgetPage *tabPage = getPageByIdentifier(identifier);
     if (tabPage) {
+        //当切换焦点到PAGE页后，移除标签文字颜色
+        m_tabbar->removeNeedChangeTextColor(identifier);
         m_termStackWidget->setCurrentWidget(tabPage);
         tabPage->focusCurrentTerm();
         return;
@@ -1049,6 +1147,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
 bool MainWindow::isQuakeMode()
 {
     return  m_isQuakeWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    setIsQuakeWindowTab
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-16
+ 4. @说明:    用于标记当前tab是否为雷神窗口的tab
+*******************************************************************************/
+void MainWindow::setIsQuakeWindowTab(bool isQuakeWindowTab)
+{
+    m_tabbar->setIsQuakeWindowTab(isQuakeWindowTab);
 }
 
 /*******************************************************************************
@@ -1534,6 +1643,10 @@ void MainWindow::showPlugin(const QString &name)
         }
     }
 
+    if (m_CurrentShowPlugin.isEmpty()) {
+        return;
+    }
+
     if (m_CurrentShowPlugin == name && m_CurrentShowPlugin == PLUGIN_TYPE_NONE) {
         // 目前没有列表显示，直接返回
         qDebug() << "no plugin show!";
@@ -1773,6 +1886,13 @@ void MainWindow::onShortcutSettingChanged(const QString &keyName)
 *******************************************************************************/
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 {
+    if (termPage == nullptr) {
+        qDebug() << "termPage is nullptr!";
+        return;
+    }
+
+    m_termWidgetPageMap.insert(termPage->identifier(), termPage);
+
     m_termStackWidget->addWidget(termPage);
     if (activePage) {
         m_termStackWidget->setCurrentWidget(termPage);
@@ -2787,6 +2907,7 @@ NormalWindow::NormalWindow(TermProperties properties, QWidget *parent): MainWind
     initConnections();
     initShortcuts();
     createWindowComplete();
+    setIsQuakeWindowTab(false);
 }
 
 NormalWindow::~NormalWindow()
@@ -3005,6 +3126,7 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     initConnections();
     initShortcuts();
     createWindowComplete();
+    setIsQuakeWindowTab(true);
     // 设置雷神resize定时器属性
     m_resizeTimer->setSingleShot(true);
     // 绑定信号槽
