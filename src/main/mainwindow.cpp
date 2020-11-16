@@ -982,6 +982,10 @@ void MainWindow::onTermIsIdle(QString tabIdentifier, bool bIdle)
 *******************************************************************************/
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    //Add by ut001000 renfeixiang 2020-11-16 雷神动画效果时，不进行resize操作，直接return
+    if(!isNotAnimation){
+        return;
+    }
     // 保存窗口位置
     saveWindowSize();
     // 通知隐藏插件
@@ -3155,9 +3159,12 @@ void QuakeWindow::saveWindowSize()
 {
     // 记录最后一个正常窗口的大小
     /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
-    m_winInfoConfig->setValue(CONFIG_QUAKE_WINDOW_HEIGHT, height());
+    //Modify by ut001000 renfeixiang 2020-11-16 非雷神动画时，在保存雷神窗口的高度到配置文件
+    if(isNotAnimation){
+        m_winInfoConfig->setValue(CONFIG_QUAKE_WINDOW_HEIGHT, height());
+        qDebug() << "save quake_window_Height:" << height() << m_desktopMap[m_desktopIndex] << m_desktopIndex;
+    }
     /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height End***************/
-    qDebug() << "save quake_window_Height:" << height();
 }
 
 /*******************************************************************************
@@ -3257,15 +3264,11 @@ void QuakeWindow::updateMinHeight()
         }
     }
     if (hasHorizontalSplit) {
-        if (minimumHeight() != m_MinHeight + 10) {
-            qDebug() << "set has Vertical split MinHeight";
-            setMinimumHeight(m_MinHeight + 10);
-        }
-    } else {
-        if (minimumHeight() == m_MinHeight + 10) {
-            qDebug() << "set not has Vertical split MinHeight";
-            setWindowMinHeightForFont();
-        }
+        //Modify by ut001000 renfeixiang 2020-11-16  因为switchEnableResize函数使用setFixedHeight会改变最小高度值，所以将判断条件删除
+        setMinimumHeight(m_MinHeight + 10);
+    } else {    
+        //Modify by ut001000 renfeixiang 2020-11-16 将判断条件删除
+        setWindowMinHeightForFont();
     }
 }
 
@@ -3289,9 +3292,10 @@ bool QuakeWindow::isShowOnCurrentDesktop()
 void QuakeWindow::hideQuakeWindow()
 {
     // 隐藏雷神
-    hide();
     // 记录雷神在当前窗口的状态
     m_desktopMap[m_desktopIndex] = false;
+    //Add by ut001000 renfeixiang 2020-11-16 添加雷神动画函数, 雷神窗口隐藏已经放在动画效果结束后
+    bottomToTopAnimation();
 }
 
 /*******************************************************************************
@@ -3303,6 +3307,112 @@ void QuakeWindow::hideQuakeWindow()
 void QuakeWindow::onResizeWindow()
 {
     resize(width(), m_quakeWindowHeight);
+}
+
+/*******************************************************************************
+ 1. @函数:    topToBottomAnimation
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-11-16
+ 4. @说明:    雷神窗口从上而下的动画效果函数
+*******************************************************************************/
+void QuakeWindow::topToBottomAnimation()
+{
+    if(currentPage() == nullptr){
+        return;
+    }
+
+    isNotAnimation = false;
+    qDebug() << "保存的最小高度值" << minimumHeight();
+    this->setMinimumHeight(0);//防止雷神窗口在高度为0时，显示信息不全，shell信息从少变多
+    currentPage()->setMinimumHeight(currentPage()->height());
+
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+    QPropertyAnimation *m_pageAni = new QPropertyAnimation(currentPage(), "geometry", this);
+    m_pageAni->setDuration(400);//可以定义成宏
+    m_pageAni->setEasingCurve(QEasingCurve::Linear);
+
+    m_pageAni->setStartValue(QRect(0,-currentPage()->height(), currentPage()->width(), currentPage()->height()));
+    m_pageAni->setEndValue(QRect(0, 0, currentPage()->width(), currentPage()->height()));
+
+    QPropertyAnimation *m_heightAni = new QPropertyAnimation(this, "height");
+
+    m_heightAni->setEasingCurve(QEasingCurve::Linear);
+    float ttime = static_cast<float>(getQuakeHeight()/1.5);
+    qDebug() << "计算速度" << getQuakeHeight() << getQuakeHeight()/1.5 << getQuakeHeight()/ttime;
+    m_heightAni->setDuration(static_cast<int>(getQuakeHeight()/1.5));
+
+    m_heightAni->setStartValue(0);
+    m_heightAni->setEndValue(getQuakeHeight());
+
+    group->addAnimation(m_heightAni);
+//    group->addAnimation(m_pageAni);
+    group->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(group, &QPropertyAnimation::finished, this, [=](){
+        updateMinHeight();
+        currentPage()->setMinimumHeight(this->minimumHeight() - 60);
+        qDebug() << "动画响应 打开动画 设置最小高度值" << this->minimumHeight();
+        isNotAnimation = true;
+        /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
+        switchEnableResize();
+        qDebug() << "top 拉伸函数" << minimumHeight();
+    });
+}
+
+/*******************************************************************************
+ 1. @函数:    bottomToTopAnimation
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-11-16
+ 4. @说明:    雷神窗口从下而上的动画效果函数
+*******************************************************************************/
+void QuakeWindow::bottomToTopAnimation()
+{
+    if(!isNotAnimation || currentPage() == nullptr){
+        qDebug() << "hide_test return";
+        return;
+    }
+
+    isNotAnimation = false;
+    this->setMinimumHeight(0);
+    currentPage()->setMinimumHeight(currentPage()->height());
+
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+    QPropertyAnimation *m_heightAni = new QPropertyAnimation(this, "height");
+
+    m_heightAni->setEasingCurve(QEasingCurve::Linear);
+    //m_heightAni->setDuration(400);
+    m_heightAni->setDuration(static_cast<int>(getQuakeHeight()/1.5));
+
+    m_heightAni->setStartValue(getQuakeHeight());
+    m_heightAni->setEndValue(0);
+
+
+    QPropertyAnimation *m_page = new QPropertyAnimation(currentPage(), "geometry", this);
+    m_page->setEasingCurve(QEasingCurve::Linear);
+    m_page->setDuration(400);
+
+    m_page->setStartValue(QRect(0, 0, currentPage()->width(), currentPage()->height()));
+    m_page->setEndValue(QRect(0,-currentPage()->height(), currentPage()->width(), currentPage()->height()));
+
+    group->addAnimation(m_heightAni);
+//    group->addAnimation(m_page);
+    group->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(group, &QPropertyAnimation::finished, this, [=](){
+        this->hide();
+        isNotAnimation = true;
+    });
+}
+
+/*******************************************************************************
+ 1. @函数:    setHeight
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-11-16
+ 4. @说明:    设置雷神窗口高度函数
+*******************************************************************************/
+void QuakeWindow::setHeight(int h)
+{
+    this->resize(this->width(), h);
 }
 
 /*******************************************************************************
@@ -3335,9 +3445,6 @@ void QuakeWindow::showEvent(QShowEvent *event)
     // 记录当前桌面的index为显示状态
     m_desktopMap[m_desktopIndex] = true;
 
-    /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
-    switchEnableResize();
-
     DMainWindow::showEvent(event);
 }
 
@@ -3350,8 +3457,10 @@ void QuakeWindow::showEvent(QShowEvent *event)
 bool QuakeWindow::event(QEvent *event)
 {
     /***add begin by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
-    if (event->type() == QEvent::HoverMove) {
+    //Add by ut001000 renfeixiang 2020-11-16 增加雷神动画的标志isNotAnimation， 雷神动画效果时，不进行窗口拉伸属性
+    if (event->type() == QEvent::HoverMove && isNotAnimation) {
         switchEnableResize();
+        qDebug() << "event 拉伸函数" << minimumHeight();
     }
     /***add end by ut001121***/
 
@@ -3438,7 +3547,8 @@ void QuakeWindow::switchEnableResize()
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
         QDesktopWidget *desktopWidget = QApplication::desktop();
         QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-        setMinimumHeight(LISTMINHEIGHT);
+        //setMinimumHeight(LISTMINHEIGHT);
+        updateMinHeight();
         setMaximumHeight(screenRect.height() * 2 / 3);
     } else {
         // 窗管和DTK让用fixSize来替代，禁止resize

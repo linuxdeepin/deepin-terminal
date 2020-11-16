@@ -43,7 +43,11 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
     if (m_quakeWindow == nullptr) {
         qDebug() << "runQuakeWindow :create";
         m_quakeWindow = new QuakeWindow(properties);
+        //Add by ut001000 renfeixiang 2020-11-16 设置开始雷神动画效果标志
+        m_quakeWindow->setAnimationFlag(false);
         m_quakeWindow->show();
+        //Add by ut001000 renfeixiang 2020-11-16 开始从上到下的动画
+        m_quakeWindow->topToBottomAnimation();
         m_quakeWindow->activateWindow();
         // 雷神创建的第一个时候，m_quakeWindow仍为null，需要在这里更正一下．
         Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
@@ -69,7 +73,12 @@ void WindowsManager::quakeWindowShowOrHide()
         qDebug() << "!mainWindow  isVisible now show !" << m_quakeWindow->winId();
         // 判断终端在原来窗口是否隐藏.原来窗口隐藏的情况下,显示
         if (!m_quakeWindow->isShowOnCurrentDesktop()) {
+            //Add by ut001000 renfeixiang 2020-11-16  设置开始雷神动画效果标志
+            m_quakeWindow->setAnimationFlag(false);
             m_quakeWindow->show();
+            //Add by ut001000 renfeixiang 2020-11-16  开始从上到下的动画
+            m_quakeWindow->topToBottomAnimation();
+            m_quakeWindow->activateWindow();
         }
     }
 
@@ -82,6 +91,7 @@ void WindowsManager::quakeWindowShowOrHide()
             DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
             // 选择拉伸方式，因为此时不知道鼠标位置
             m_quakeWindow->switchEnableResize();
+            qDebug() << "isActiveWindow 拉伸函数" << m_quakeWindow->minimumHeight();
         }
         m_quakeWindow->activateWindow();
         // fix#42497 防止隐藏显示后"+"号高亮

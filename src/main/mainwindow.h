@@ -234,6 +234,9 @@ public:
     static constexpr const char *HOSTNAME_PATH                 = "/etc/hostname";
     int getDesktopIndex() const;
 
+    //Add by ut001000 renfeixiang 2020-11-16 标记是否动画效果，true : 不动画 false : 动画
+    bool isNotAnimation = true;
+
 signals:
     void newWindowRequest(const QString &directory);
     // !这两个信号被封装了，请不要单独调用！
@@ -493,6 +496,7 @@ protected:
 class QuakeWindow : public MainWindow
 {
     Q_OBJECT
+    Q_PROPERTY(int height WRITE setHeight)//为动画增加一个设置高度的函数
 
     // 雷神resize是否拖拽的状态
     enum Quake_Resize_State {
@@ -517,6 +521,15 @@ public:
     void hideQuakeWindow();
     // 切换窗口拉伸属性
     inline void switchEnableResize();
+
+    /******** Add by ut001000 renfeixiang 2020-11-16:增加 雷神窗口动画效果函数 Begin***************/
+    //设置雷神动画效果是否正在执行
+    void setAnimationFlag(bool flag){isNotAnimation = flag;}
+    //从上而下的动画效果
+    void topToBottomAnimation();
+    //从下而上的动画效果
+    void bottomToTopAnimation();
+    /******** Add by ut001000 renfeixiang 2020-11-16 End***************/
 
 public slots:
     // 处理resize消息
@@ -554,6 +567,12 @@ private:
     QTimer *m_resizeTimer = nullptr;
     // 记录雷神是否当前桌面显示
     QMap<int, bool> m_desktopMap;
+
+    //Add by ut001000 renfeixiang 2020-11-16
+    //获取配置文件中保存的雷神窗口高度
+    int getQuakeHeight(){return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();}
+    //动画效果使用的设置雷神窗口高度的函数
+    void setHeight(int h);
 };
 
 #endif  // MAINWINDOW_H
