@@ -2616,15 +2616,11 @@ void QuakeWindow::updateMinHeight()
         }
     }
     if (hasHorizontalSplit) {
-        if (minimumHeight() != m_MinHeight + 10) {
-            qDebug() << "set has Vertical split MinHeight";
-            setMinimumHeight(m_MinHeight + 10);
-        }
+        //Modify by ut001000 renfeixiang 2020-11-16  因为switchEnableResize函数使用setFixedHeight会改变最小高度值，所以将判断条件删除
+        setMinimumHeight(m_MinHeight + 10);
     } else {
-        if (minimumHeight() == m_MinHeight + 10) {
-            qDebug() << "set not has Vertical split MinHeight";
-            setWindowMinHeightForFont();
-        }
+        //Modify by ut001000 renfeixiang 2020-11-16 将判断条件删除
+        setWindowMinHeightForFont();
     }
 }
 
@@ -2797,7 +2793,8 @@ void QuakeWindow::switchEnableResize()
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
         QDesktopWidget *desktopWidget = QApplication::desktop();
         QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-        setMinimumHeight(LISTMINHEIGHT);
+        //Modify by ut001000 renfeixiang 2020-11-16修改成统计的函数设置最小高度值
+        updateMinHeight();
         setMaximumHeight(screenRect.height() * 2 / 3);
     } else {
         // 窗管和DTK让用fixSize来替代，禁止resize
