@@ -3444,40 +3444,23 @@ void QuakeWindow::topToBottomAnimation()
     }
 
     isNotAnimation = false;
-    qDebug() << "保存的最小高度值" << minimumHeight();
-    this->setMinimumHeight(0);//防止雷神窗口在高度为0时，显示信息不全，shell信息从少变多
-    currentPage()->setMinimumHeight(currentPage()->height());
+    this->setMinimumHeight(0);//设置最小高度为0,让动画效果流畅
+    currentPage()->setMinimumHeight(currentPage()->height());//设置page的最小高度，让动画效果时，page上信息不因为外框的变小而变小
 
-    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
-    QPropertyAnimation *m_pageAni = new QPropertyAnimation(currentPage(), "geometry", this);
-    m_pageAni->setDuration(400);//可以定义成宏
-    m_pageAni->setEasingCurve(QEasingCurve::Linear);
-
-    m_pageAni->setStartValue(QRect(0,-currentPage()->height(), currentPage()->width(), currentPage()->height()));
-    m_pageAni->setEndValue(QRect(0, 0, currentPage()->width(), currentPage()->height()));
-
+    //动画代码
     QPropertyAnimation *m_heightAni = new QPropertyAnimation(this, "height");
-
     m_heightAni->setEasingCurve(QEasingCurve::Linear);
-    float ttime = static_cast<float>(getQuakeHeight()/1.5);
-    qDebug() << "计算速度" << getQuakeHeight() << getQuakeHeight()/1.5 << getQuakeHeight()/ttime;
     m_heightAni->setDuration(static_cast<int>(getQuakeHeight()/1.5));
-
     m_heightAni->setStartValue(0);
     m_heightAni->setEndValue(getQuakeHeight());
+    m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
-    group->addAnimation(m_heightAni);
-//    group->addAnimation(m_pageAni);
-    group->start(QAbstractAnimation::DeleteWhenStopped);
-
-    connect(group, &QPropertyAnimation::finished, this, [=](){
-        updateMinHeight();
-        currentPage()->setMinimumHeight(this->minimumHeight() - 60);
-        qDebug() << "动画响应 打开动画 设置最小高度值" << this->minimumHeight();
+    connect(m_heightAni, &QPropertyAnimation::finished, this, [=](){
+        updateMinHeight();//恢复外框的原有最小高度值
+        currentPage()->setMinimumHeight(this->minimumHeight() - 60);//恢复page的原有最小高度值
         isNotAnimation = true;
         /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
         switchEnableResize();
-        qDebug() << "top 拉伸函数" << minimumHeight();
     });
 }
 
@@ -3495,32 +3478,18 @@ void QuakeWindow::bottomToTopAnimation()
     }
 
     isNotAnimation = false;
-    this->setMinimumHeight(0);
-    currentPage()->setMinimumHeight(currentPage()->height());
+    this->setMinimumHeight(0);//设置最小高度为0,让动画效果流畅
+    currentPage()->setMinimumHeight(currentPage()->height());//设置page的最小高度，让动画效果时，page上信息不因为外框的变小而变小
 
-    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+    //动画代码
     QPropertyAnimation *m_heightAni = new QPropertyAnimation(this, "height");
-
     m_heightAni->setEasingCurve(QEasingCurve::Linear);
-    //m_heightAni->setDuration(400);
     m_heightAni->setDuration(static_cast<int>(getQuakeHeight()/1.5));
-
     m_heightAni->setStartValue(getQuakeHeight());
     m_heightAni->setEndValue(0);
+    m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
-
-    QPropertyAnimation *m_page = new QPropertyAnimation(currentPage(), "geometry", this);
-    m_page->setEasingCurve(QEasingCurve::Linear);
-    m_page->setDuration(400);
-
-    m_page->setStartValue(QRect(0, 0, currentPage()->width(), currentPage()->height()));
-    m_page->setEndValue(QRect(0,-currentPage()->height(), currentPage()->width(), currentPage()->height()));
-
-    group->addAnimation(m_heightAni);
-//    group->addAnimation(m_page);
-    group->start(QAbstractAnimation::DeleteWhenStopped);
-
-    connect(group, &QPropertyAnimation::finished, this, [=](){
+    connect(m_heightAni, &QPropertyAnimation::finished, this, [=](){
         this->hide();
         isNotAnimation = true;
     });
@@ -3582,7 +3551,6 @@ bool QuakeWindow::event(QEvent *event)
     //Add by ut001000 renfeixiang 2020-11-16 增加雷神动画的标志isNotAnimation， 雷神动画效果时，不进行窗口拉伸属性
     if (event->type() == QEvent::HoverMove && isNotAnimation) {
         switchEnableResize();
-        qDebug() << "event 拉伸函数" << minimumHeight();
     }
     /***add end by ut001121***/
 
