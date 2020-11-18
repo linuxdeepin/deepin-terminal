@@ -366,6 +366,18 @@
                             "default": "false"
                         }
                     ]
+                },
+                {
+                    "key": "shell",
+                    "name": "Shell",
+                    "options": [
+                        {
+                            "key": "enable_ctrl_flow",
+                            "text": "Disable Ctrl+S and Ctrl+Q flow control",
+                            "type": "checkbox",
+                            "default": "false"
+                        }
+                    ]
                 }
             ]
         }

@@ -140,7 +140,9 @@ public:
     QString getRemoteTabTitleFormat();
     // 获取当前标签标题格式
     QString getCurrentTabTitleFormat();
-
+    //
+    void showFlowMessage(bool show);
+    
 public slots:
     void wpasteSelection();
     void onSettingValueChanged(const QString &keyName);
@@ -157,7 +159,7 @@ signals:
 protected:
     // 鼠标滚轮事件
     void wheelEvent(QWheelEvent *event) override;
-
+    void resizeEvent(QResizeEvent *event) override;
 private slots:
     void customContextMenuCall(const QPoint &pos);
     void handleTermIdle(bool bIdle);
@@ -200,6 +202,7 @@ private:
     TabFormat m_tabFormat;
     // 会话编号
     int m_sessionNumber;
+    DFloatingMessage* m_flowMessage = nullptr;
 };
 
 #endif  // TERMWIDGET_H

@@ -1750,6 +1750,19 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             return true;
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
+        if((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_S)){
+            if(Settings::instance()->enableControlFlow()){
+                return true;
+            }
+            assert(term);
+            term->showFlowMessage(true);
+        }
+        if((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_Q)){
+            if(Settings::instance()->enableControlFlow()){
+                return true;
+            }
+            term->showFlowMessage(false);
+        }
     }
 
     //if (watched == this) {

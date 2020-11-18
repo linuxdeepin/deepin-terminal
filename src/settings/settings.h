@@ -85,6 +85,8 @@ public:
     // 与设置里的快捷键冲突检测
     bool isShortcutConflict(const QString &Name, const QString &Key);
     void HandleWidthFont();
+    //是否启动Ctrl+S/Ctrl+Q流控制
+    bool enableControlFlow(void);
 
     //是否选择了主题
     bool bSwitchTheme           = false;

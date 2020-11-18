@@ -560,6 +560,20 @@ void Settings::HandleWidthFont()
         comboBox->setCurrentText(fontname);
     }
 }
+
+/* 
+ ***************************************************************************************
+ *函数:  enableControlFlow
+ *作者:  朱科伟
+ *日期:  2020年11月13日
+ *描述:  是否禁用Ctrl+S和Ctrl+Q流控制 
+ ***************************************************************************************
+ */
+bool Settings::enableControlFlow(void)
+{
+    return !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool(); 
+}
+
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/
 
 /*******************************************************************************

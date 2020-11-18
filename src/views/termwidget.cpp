@@ -34,6 +34,7 @@
 #include <DApplicationHelper>
 #include <DLog>
 #include <DDialog>
+#include <DFloatingMessage>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -53,7 +54,6 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     Utils::set_Object_Name(this);
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
-    // 初始化标题
     initTabTitle();
     //qDebug() << " TermWidgetparent " << parentWidget();
     m_page = static_cast<TermWidgetPage *>(parentWidget());
@@ -1303,4 +1303,58 @@ void TermWidget::wheelEvent(QWheelEvent *event)
     }
     QTermWidget::wheelEvent(event);
 }
+
+/* 
+ ***************************************************************************************
+ *函数:  showFlowMessage
+ *作者:  朱科伟
+ *日期:  2020年11月17日
+ *描述: 显示 Ctrl+S和Ctrl+Q流控制 文案提示
+ ***************************************************************************************
+ */
+void TermWidget::showFlowMessage(bool show)
+{
+    if(nullptr == m_flowMessage){
+        m_flowMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
+        assert(m_flowMessage);
+        QList<QLabel*> lst = m_flowMessage->findChildren<QLabel*>();
+        for(auto label : lst){
+            label->setWordWrap(false);
+        }
+        m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
+    }
+    assert(m_flowMessage);
+
+    if(show){
+        int xPoint = 0;
+        m_flowMessage->adjustSize();
+        QString strText = QObject::tr("Ctrl+S has been pressed and the output is suspended. You can press Ctrl+Q to continue.");
+       // QString strText = QObject::tr("已经按下Ctrl+S，输出被挂起。可以按下Ctrl+Q继续。");
+        m_flowMessage->setMessage(strText);
+        if(this->width() < m_flowMessage->width()){
+            m_flowMessage->resize(this->width(), m_flowMessage->height());
+        }
+        else{
+            xPoint = (this->width() - m_flowMessage->width())/2;
+        }
+        int yPoint = this->height()- m_flowMessage->height();
+
+        m_flowMessage->move(xPoint, yPoint);
+        m_flowMessage->show();
+    }
+    else{
+        m_flowMessage->hide();
+    }
+}
+
+void TermWidget::resizeEvent(QResizeEvent *event)
+{
+    if(m_flowMessage){
+        if(!m_flowMessage->isHidden()){
+            showFlowMessage(true);
+        }
+    }
+    QTermWidget::resizeEvent(event);
+}
+
 

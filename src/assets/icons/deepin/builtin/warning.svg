@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <linearGradient id="warning-c" x1="50%" x2="50%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF674A"/>
+      <stop offset="100%" stop-color="#EC5783"/>
+    </linearGradient>
+    <path id="warning-b" d="M14.9860714,0 C23.2779849,0 30,6.71737605 30,15 C30,23.2826239 23.2779849,30 14.9860714,30 C6.70808946,30 0,23.2826325 0,15 C0,6.71736761 6.70808946,0 14.9860714,0 Z"/>
+    <filter id="warning-a" width="136.7%" height="136.7%" x="-18.3%" y="-11.7%" filterUnits="objectBoundingBox">
+      <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="1.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 1   0 0 0 0 0.443137255   0 0 0 0 0.443137255  0 0 0 0.3 0"/>
+    </filter>
+  </defs>
+  <g fill="none" fill-rule="evenodd" transform="translate(3 1)">
+    <use fill="#000" filter="url(#warning-a)" xlink:href="#warning-b"/>
+    <use fill="url(#warning-c)" xlink:href="#warning-b"/>
+    <path fill="#FFF" fill-rule="nonzero" d="M13.5,7.5 L16.5,7.5 L16.5,16.5 L13.5,16.5 L13.5,7.5 Z M13.5,19.5 L16.5,19.5 L16.5,22.5 L13.5,22.5 L13.5,19.5 Z" opacity=".9"/>
+  </g>
+</svg>
