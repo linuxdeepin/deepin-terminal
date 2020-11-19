@@ -1081,7 +1081,7 @@ void MainWindow::onTermIsIdle(QString tabIdentifier, bool bIdle)
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     //Add by ut001000 renfeixiang 2020-11-16 雷神动画效果时，不进行resize操作，直接return
-    if(!isNotAnimation){
+    if (!isNotAnimation) {
         return;
     }
     // 保存窗口位置
@@ -3292,7 +3292,7 @@ void QuakeWindow::saveWindowSize()
     // 记录最后一个正常窗口的大小
     /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
     //Modify by ut001000 renfeixiang 2020-11-16 非雷神动画时，在保存雷神窗口的高度到配置文件
-    if(isNotAnimation){
+    if (isNotAnimation) {
         m_winInfoConfig->setValue(CONFIG_QUAKE_WINDOW_HEIGHT, height());
         qDebug() << "save quake_window_Height:" << height() << m_desktopMap[m_desktopIndex] << m_desktopIndex;
     }
@@ -3398,7 +3398,7 @@ void QuakeWindow::updateMinHeight()
     if (hasHorizontalSplit) {
         //Modify by ut001000 renfeixiang 2020-11-16  因为switchEnableResize函数使用setFixedHeight会改变最小高度值，所以将判断条件删除
         setMinimumHeight(m_MinHeight + 10);
-    } else {    
+    } else {
         //Modify by ut001000 renfeixiang 2020-11-16 将判断条件删除
         setWindowMinHeightForFont();
     }
@@ -3449,7 +3449,7 @@ void QuakeWindow::onResizeWindow()
 *******************************************************************************/
 void QuakeWindow::topToBottomAnimation()
 {
-    if(currentPage() == nullptr){
+    if (currentPage() == nullptr) {
         return;
     }
 
@@ -3460,14 +3460,15 @@ void QuakeWindow::topToBottomAnimation()
     //动画代码
     QPropertyAnimation *m_heightAni = new QPropertyAnimation(this, "height");
     m_heightAni->setEasingCurve(QEasingCurve::Linear);
-    m_heightAni->setDuration(static_cast<int>(getQuakeHeight()/1.5));
+    int durationTime = getQuakeAnimationTime();
+    m_heightAni->setDuration(durationTime);
     m_heightAni->setStartValue(0);
     m_heightAni->setEndValue(getQuakeHeight());
     m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
-    connect(m_heightAni, &QPropertyAnimation::finished, this, [=](){
+    connect(m_heightAni, &QPropertyAnimation::finished, this, [ = ]() {
         updateMinHeight();//恢复外框的原有最小高度值
-        currentPage()->setMinimumHeight(this->minimumHeight() - 60);//恢复page的原有最小高度值
+        currentPage()->setMinimumHeight(this->minimumHeight() - tabbarHeight);//恢复page的原有最小高度值 tabbarHeight是tabbar的高度
         isNotAnimation = true;
         /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
         switchEnableResize();
@@ -3482,8 +3483,8 @@ void QuakeWindow::topToBottomAnimation()
 *******************************************************************************/
 void QuakeWindow::bottomToTopAnimation()
 {
-    if(!isNotAnimation || currentPage() == nullptr){
-        qDebug() << "hide_test return";
+    if (!isNotAnimation || currentPage() == nullptr) {
+        qDebug() << "bottomToTopAnimation no need to execute.";
         return;
     }
 
@@ -3494,12 +3495,13 @@ void QuakeWindow::bottomToTopAnimation()
     //动画代码
     QPropertyAnimation *m_heightAni = new QPropertyAnimation(this, "height");
     m_heightAni->setEasingCurve(QEasingCurve::Linear);
-    m_heightAni->setDuration(static_cast<int>(getQuakeHeight()/1.5));
+    int durationTime = getQuakeAnimationTime();
+    m_heightAni->setDuration(durationTime);
     m_heightAni->setStartValue(getQuakeHeight());
     m_heightAni->setEndValue(0);
     m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
-    connect(m_heightAni, &QPropertyAnimation::finished, this, [=](){
+    connect(m_heightAni, &QPropertyAnimation::finished, this, [ = ]() {
         this->hide();
         isNotAnimation = true;
     });
@@ -3514,6 +3516,22 @@ void QuakeWindow::bottomToTopAnimation()
 void QuakeWindow::setHeight(int h)
 {
     this->resize(this->width(), h);
+}
+
+/*******************************************************************************
+ 1. @函数:    getQuakeAnimationTime
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-11-19
+ 4. @说明:    计算雷神动画时间函数
+*******************************************************************************/
+int QuakeWindow::getQuakeAnimationTime()
+{
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+    //quakeAnimationBaseTime+quakeAnimationHighDistributionTotalTime的时间是雷神窗口最大高度时动画效果时间
+    //动画时间计算方法：3quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间，为各个高度时动画时间
+    int durationTime = quakeAnimationBaseTime + quakeAnimationHighDistributionTotalTime * this->getQuakeHeight() / (screenRect.height() * 2 / 3);
+    return durationTime;
 }
 
 /*******************************************************************************
@@ -3647,7 +3665,7 @@ void QuakeWindow::switchEnableResize()
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
         QDesktopWidget *desktopWidget = QApplication::desktop();
         QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-        //setMinimumHeight(LISTMINHEIGHT);
+        //Add by ut001000 renfeixiang 2020-11-16 修改成使用写好的设置最小值的函数
         updateMinHeight();
         setMaximumHeight(screenRect.height() * 2 / 3);
     } else {

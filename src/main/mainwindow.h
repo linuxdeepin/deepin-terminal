@@ -243,6 +243,13 @@ public:
 
     //Add by ut001000 renfeixiang 2020-11-16 标记是否动画效果，true : 不动画 false : 动画
     bool isNotAnimation = true;
+    //雷神窗口动画时间计算公式：quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间
+    //雷神窗口动画的基础时间
+    static constexpr const int quakeAnimationBaseTime = 300;
+    //雷神窗口动画按高度分配的总时间
+    static constexpr const int quakeAnimationHighDistributionTotalTime = 150;
+    //雷神窗口的tabbar高度,用于计算page的最小高度值
+    static constexpr const int tabbarHeight = 60;
 
 signals:
     void newWindowRequest(const QString &directory);
@@ -535,7 +542,7 @@ public:
 
     /******** Add by ut001000 renfeixiang 2020-11-16:增加 雷神窗口动画效果函数 Begin***************/
     //设置雷神动画效果是否正在执行
-    void setAnimationFlag(bool flag){isNotAnimation = flag;}
+    void setAnimationFlag(bool flag) {isNotAnimation = flag;}
     //从上而下的动画效果
     void topToBottomAnimation();
     //从下而上的动画效果
@@ -581,9 +588,11 @@ private:
 
     //Add by ut001000 renfeixiang 2020-11-16
     //获取配置文件中保存的雷神窗口高度
-    int getQuakeHeight(){return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();}
+    int getQuakeHeight() {return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();}
     //动画效果使用的设置雷神窗口高度的函数
     void setHeight(int h);
+    //计算雷神动画时间函数
+    int getQuakeAnimationTime();
 };
 
 #endif  // MAINWINDOW_H
