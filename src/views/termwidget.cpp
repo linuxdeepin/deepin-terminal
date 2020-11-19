@@ -1343,7 +1343,9 @@ void TermWidget::showFlowMessage(bool show)
         m_flowMessage->show();
     }
     else{
-        m_flowMessage->hide();
+        if(!m_flowMessage->isHidden()){
+            m_flowMessage->hide();
+        }
     }
 }
 
