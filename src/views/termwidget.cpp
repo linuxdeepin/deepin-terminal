@@ -1328,8 +1328,7 @@ void TermWidget::showFlowMessage(bool show)
     if(show){
         int xPoint = 0;
         m_flowMessage->adjustSize();
-        QString strText = QObject::tr("Ctrl+S has been pressed and the output is suspended. You can press Ctrl+Q to continue.");
-       // QString strText = QObject::tr("已经按下Ctrl+S，输出被挂起。可以按下Ctrl+Q继续。");
+        QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
         m_flowMessage->setMessage(strText);
         if(this->width() < m_flowMessage->width()){
             m_flowMessage->resize(this->width(), m_flowMessage->height());

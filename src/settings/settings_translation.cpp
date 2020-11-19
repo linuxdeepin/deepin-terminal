@@ -153,5 +153,6 @@ void GenerateSettingTranslate()
     Q_UNUSED(go_to_tab_8);
     auto go_to_tab_9 = QObject::tr("Go to tab 9");
     Q_UNUSED(go_to_tab_9);
-
+    auto disable_flow_control_using_ctrl_s_ctrl_q= QObject::tr("Disable flow control using Ctrl+S, Ctrl+Q");
+    Q_UNUSED(disable_flow_control_using_ctrl_s_ctrl_q);
 }
