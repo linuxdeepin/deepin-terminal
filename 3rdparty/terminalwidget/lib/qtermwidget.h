@@ -399,7 +399,7 @@ private:
     TermWidgetImpl *m_impl;
     SearchBar *m_searchBar;
     QVBoxLayout *m_layout;
-    QTranslator *m_translator;
+    static QTranslator *m_translator;
     QPointer<Konsole::TerminalDisplay> m_termDisplay;
     QTimer *m_interactionTimer = nullptr;
 

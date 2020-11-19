@@ -45,6 +45,9 @@
 
 using namespace Konsole;
 
+// 翻译文件加载
+QTranslator *QTermWidget::m_translator = nullptr;
+
 void *createTermWidget(int startnow, void *parent)
 {
     return (void *) new QTermWidget(startnow, (QWidget *)parent);
@@ -434,9 +437,9 @@ void QTermWidget::init(int startnow)
     dirs.append(QFile::decodeName(TRANSLATIONS_DIR));
 
     // 语言，整个应用程序只需要设置一次
-    static bool hasLoad = false;
-    if (!hasLoad) {
-        m_translator = new QTranslator(this);
+    if (nullptr == m_translator) {
+        // 绑定的父类需要是全局的，不能是this防止窗口被关闭后翻译也随之消失
+        m_translator = new QTranslator(qApp);
         for (const QString &dir : qAsConst(dirs)) {
             qDebug() << "Trying to load translation file from dir" << dir;
             if (m_translator->load(
@@ -446,7 +449,6 @@ void QTermWidget::init(int startnow)
                 break;
             }
         }
-        hasLoad = true;
     }
 
     m_impl = new TermWidgetImpl(this);
