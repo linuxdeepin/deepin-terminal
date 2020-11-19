@@ -206,15 +206,14 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setVisibleAddButton(true);
     setElideMode(Qt::ElideRight);
     setFocusPolicy(Qt::TabFocus);
-    //默认禁用tab移动
-    setMovable(false);
-    //默认禁用tab拖拽
-    setDragable(false);
     setStartDragDistance(40);
 
     setTabHeight(36);
     setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
+
+    //统一设置Tab拖动/移动状态
+    updateTabDragMoveStatus();
 
     DIconButton *addButton = findChild<DIconButton *>("AddButton");
     if (nullptr != addButton) {
@@ -1154,6 +1153,9 @@ bool TabBar::isEnableCloseTabAnimation()
 void TabBar::setIsQuakeWindowTab(bool isQuakeWindowTab)
 {
     m_isQuakeWindowTab = isQuakeWindowTab;
+
+    //刚初始化窗口同时, 更新Tab拖动/移动状态
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
