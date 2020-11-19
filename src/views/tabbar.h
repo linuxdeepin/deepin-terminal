@@ -56,16 +56,16 @@ public:
     virtual ~TermTabStyle();
 
     void setTabTextColor(const QColor &color);
-    void setTabStatusMap(const QMap<QString,TabTextColorStatus> &tabStatusMap);
+    void setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusMap);
 
     QSize sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const;
-    int pixelMetric(QStyle::PixelMetric metric, const QStyleOption* option, const QWidget* widget) const;
+    int pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
     void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
     void drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget = Q_NULLPTR) const;
 private:
     int m_tabCount;
     QColor m_tabTextColor;
-    QMap<QString,TabTextColorStatus> m_tabStatusMap;
+    QMap<QString, TabTextColorStatus> m_tabStatusMap;
 };
 
 /*******************************************************************************
@@ -105,14 +105,14 @@ public:
     void removeNeedChangeTextColor(const QString &tabIdentifier);
     bool isNeedChangeTextColor(const QString &tabIdentifier);
     void setClearTabColor(const QString &tabIdentifier);
-    void setTabStatusMap(const QMap<QString,TabTextColorStatus> &tabStatusMap);
+    void setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusMap);
 
     //设置是否启用关闭tab动画效果
     void setEnableCloseTabAnimation(bool isEnableCloseTabAnimation);
     bool isEnableCloseTabAnimation();
 
     void setIsQuakeWindowTab(bool isQuakeWindowTab);
-    void setTabDragMoveStatus();
+    void updateTabDragMoveStatus();
 
 public slots:
     void setCurrentIndex(int index);
@@ -130,7 +130,7 @@ protected:
     bool canInsertFromMimeData(int index, const QMimeData *source) const;
 
     void createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab);
-    MainWindow* createNormalWindow();
+    MainWindow *createNormalWindow();
 
     QPoint calculateDragDropWindowPosition(MainWindow *window);
 
@@ -169,9 +169,6 @@ private:
 
     bool m_isEnableCloseTabAnimation;
     bool m_isQuakeWindowTab;
-
-    //用于拖拽结束drop动画的图像
-    static QPixmap* s_pDragPixmap;
 };
 
 #endif  // TABBAR_H

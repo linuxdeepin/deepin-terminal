@@ -189,9 +189,6 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
     option->row = tabIndex;
 }
 
-//初始TabBar静态成员
-QPixmap *TabBar::s_pDragPixmap = nullptr;
-
 TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 {
     Utils::set_Object_Name(this);
@@ -209,10 +206,10 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setVisibleAddButton(true);
     setElideMode(Qt::ElideRight);
     setFocusPolicy(Qt::TabFocus);
-    //tab移动
-    setMovable(true);
-    //tab拖拽
-    setDragable(true);
+    //默认禁用tab移动
+    setMovable(false);
+    //默认禁用tab拖拽
+    setDragable(false);
     setStartDragDistance(40);
 
     setTabHeight(36);
@@ -299,7 +296,7 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
     int index = DTabBar::addTab(tabName);
     setTabData(index, QVariant::fromValue(tabIdentifier));
 
-    setTabDragMoveStatus();
+    updateTabDragMoveStatus();
 
     m_tabIdentifierList << tabIdentifier;
 
@@ -318,7 +315,7 @@ int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QStr
     int insertIndex = DTabBar::insertTab(index, tabName);
     setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
 
-    setTabDragMoveStatus();
+    updateTabDragMoveStatus();
 
     m_tabIdentifierList.insert(index, tabIdentifier);
 
@@ -525,7 +522,7 @@ void TabBar::removeTab(const QString &tabIdentifier)
         }
     }
 
-    setTabDragMoveStatus();
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -669,8 +666,8 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
     termPage->render(&screenshotImage, QPoint(), QRegion(0, 0, width, height));
 
     // 根据对应的ration缩放图像
-    int scaledWidth = static_cast<int>((width * ratio)/5);
-    int scaledHeight = static_cast<int>((height * ratio)/5);
+    int scaledWidth = static_cast<int>((width * ratio) / 5);
+    int scaledHeight = static_cast<int>((height * ratio) / 5);
     auto scaledImage = screenshotImage.scaled(scaledWidth, scaledHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     const int shadowRadius = 10;
@@ -686,18 +683,13 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
     }
 
     //调整偏移量
-    hotspot->setX(scaledWidth/2);
-    hotspot->setY(scaledHeight/2);
+    hotspot->setX(scaledWidth / 2);
+    hotspot->setY(scaledHeight / 2);
 
     QPainterPath rectPath;
 
-    if(s_pDragPixmap) {
-        delete s_pDragPixmap;
-    }
-    s_pDragPixmap = new QPixmap(QPixmap::fromImage(backgroundImage));
-
     //当开启了窗口特效时
-    if(DWindowManagerHelper::instance()->hasComposite()) {
+    if (DWindowManagerHelper::instance()->hasComposite()) {
         QPainterPath roundedRectPath;
 
         const int cornerRadius = 6;
@@ -733,7 +725,7 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
  3. @日期:    2020-11-16
  4. @说明:    自定义QMimeData数据用于拖放数据的存储
 *******************************************************************************/
-QMimeData* TabBar::createMimeDataFromTab(int index, const QStyleOptionTab &option) const
+QMimeData *TabBar::createMimeDataFromTab(int index, const QStyleOptionTab &option) const
 {
     Q_UNUSED(option)
 
@@ -777,8 +769,10 @@ void TabBar::insertFromMimeDataOnDragEnter(int index, const QMimeData *source)
     }
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
-    window->addTabWithTermPage(tabName, true, termPage, index);
+    window->addTabWithTermPage(tabName, true, true, termPage, index);
     window->focusCurrentPage();
+
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -803,8 +797,10 @@ void TabBar::insertFromMimeData(int index, const QMimeData *source)
     }
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
-    window->addTabWithTermPage(tabName, true, termPage, index);
+    window->addTabWithTermPage(tabName, true, false, termPage, index);
     window->focusCurrentPage();
+
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -828,7 +824,12 @@ bool TabBar::canInsertFromMimeData(int index, const QMimeData *source) const
 *******************************************************************************/
 void TabBar::handleTabMoved(int fromIndex, int toIndex)
 {
-    m_tabIdentifierList.swap(fromIndex, toIndex);
+    if (fromIndex < m_tabIdentifierList.count()
+            && toIndex < m_tabIdentifierList.count()
+            && fromIndex >= 0
+            && toIndex >= 0) {
+        m_tabIdentifierList.swap(fromIndex, toIndex);
+    }
 }
 
 /*******************************************************************************
@@ -860,6 +861,8 @@ void TabBar::handleTabReleased(int index)
     //从原窗口中移除TermWidgetPage。
     window->removeTermWidgetPage(termIdentifer, false);
     qDebug() << "removeTermWidgetPage: termIdentifer: " << termIdentifer;
+
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -893,7 +896,7 @@ void TabBar::handleDragActionChanged(Qt::DropAction action)
 void TabBar::createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab)
 {
     MainWindow *window = createNormalWindow();
-    window->addTabWithTermPage(tabName, isActiveTab, termPage);
+    window->addTabWithTermPage(tabName, isActiveTab, false, termPage);
     window->move(calculateDragDropWindowPosition(window));
 }
 
@@ -916,7 +919,7 @@ QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
  3. @日期:    2020-11-16
  4. @说明:    创建一个用于标签页拖拽的新窗口
 *******************************************************************************/
-MainWindow* TabBar::createNormalWindow()
+MainWindow *TabBar::createNormalWindow()
 {
     //创建窗口
     TermProperties properties;
@@ -926,15 +929,17 @@ MainWindow* TabBar::createNormalWindow()
     MainWindow *window = WindowsManager::instance()->getNormalWindowList().last();
 
     //当关闭最后一个窗口时退出整个应用
-    connect(window, &MainWindow::close, this, [=] {
+    connect(window, &MainWindow::close, this, [ = ] {
         int windowIndex = WindowsManager::instance()->getNormalWindowList().indexOf(window);
         qDebug() << "Close window at index: " << windowIndex;
 
-        if (windowIndex >= 0) {
+        if (windowIndex >= 0)
+        {
             WindowsManager::instance()->getNormalWindowList().takeAt(windowIndex);
         }
 
-        if (WindowsManager::instance()->getNormalWindowList().isEmpty()) {
+        if (WindowsManager::instance()->getNormalWindowList().isEmpty())
+        {
             QApplication::quit();
         }
     });
@@ -950,11 +955,18 @@ MainWindow* TabBar::createNormalWindow()
 *******************************************************************************/
 void TabBar::handleTabIsRemoved(int index)
 {
-    MainWindow *window = static_cast<MainWindow *>(this->window());
+    if (index < 0 || index >= m_tabIdentifierList.size()) {
+        return;
+    }
+
     QString removeId = m_tabIdentifierList.at(index);
     m_tabIdentifierList.removeAt(index);
+
+    MainWindow *window = static_cast<MainWindow *>(this->window());
     window->removeTermWidgetPage(removeId, false);
     qDebug() << "handleTabIsRemoved: identifier: " << removeId;
+
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -967,7 +979,7 @@ void TabBar::closeTab(const int &index)
 {
     DTabBar::removeTab(index);
 
-    setTabDragMoveStatus();
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -999,6 +1011,8 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
         qDebug() << "tabbar != nullptr " << index << endl;
         closeTab(index);
     }
+
+    updateTabDragMoveStatus();
 }
 
 /*******************************************************************************
@@ -1148,10 +1162,9 @@ void TabBar::setIsQuakeWindowTab(bool isQuakeWindowTab)
  3. @日期:    2020-11-16
  4. @说明:    用于设置tab拖拽状态，仅当窗口为雷神模式且标签页数量为1时不允许拖拽
 *******************************************************************************/
-void TabBar::setTabDragMoveStatus()
+void TabBar::updateTabDragMoveStatus()
 {
-    if (m_isQuakeWindowTab && 1 == this->count())
-    {
+    if (m_isQuakeWindowTab && 1 == this->count()) {
         setMovable(false);
         setDragable(false);
         return;
@@ -1159,6 +1172,20 @@ void TabBar::setTabDragMoveStatus()
 
     setMovable(true);
     setDragable(true);
+
+    //针对雷神窗口单独进行处理
+    MainWindow *quakeWindow = WindowsManager::instance()->getQuakeWindow();
+    if (nullptr != quakeWindow) {
+        TabBar *quakeWindowTabbar = quakeWindow->findChild<TabBar *>(this->metaObject()->className());
+        if (1 == quakeWindowTabbar->count()) {
+            quakeWindowTabbar->setMovable(false);
+            quakeWindowTabbar->setDragable(false);
+            return;
+        }
+
+        quakeWindowTabbar->setMovable(true);
+        quakeWindowTabbar->setDragable(true);
+    }
 }
 
 /*******************************************************************************

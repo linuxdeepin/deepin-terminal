@@ -109,7 +109,7 @@ public:
     ~MainWindow() override;
 
     void addTab(TermProperties properties, bool activeTab = false);
-    void addTabWithTermPage(const QString &tabName, bool activeTab, TermWidgetPage *page, int insertIndex=-1);
+    void addTabWithTermPage(const QString &tabName, bool activeTab, bool isVirtualAdd, TermWidgetPage *page, int insertIndex = -1);
     bool beginAddTab();
     void endAddTab(TermWidgetPage *termPage, bool activeTab, int index, qint64 startTime);
 

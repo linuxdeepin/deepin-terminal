@@ -288,7 +288,7 @@ void MainWindow::initTabBar()
 
     // 如果此时是拖拽的窗口，暂时先不添加tab(默认添加tab后会新建工作区)
     // 需要使用拖入/拖出标签对应的那个TermWidgetPage控件
-    if(m_properties[DragDropTerminal].toBool()) {
+    if (m_properties[DragDropTerminal].toBool()) {
         return;
     }
 
@@ -514,7 +514,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
  3. @日期:    2020-11-16
  4. @说明:    拖拽成功后，将之前窗口的标签插入当前MainWindow窗口
 *******************************************************************************/
-void MainWindow::addTabWithTermPage(const QString &tabName, bool activeTab, TermWidgetPage *page, int insertIndex)
+void MainWindow::addTabWithTermPage(const QString &tabName, bool activeTab, bool isVirtualAdd, TermWidgetPage *page, int insertIndex)
 {
     qint64 startTime = QDateTime::currentMSecsSinceEpoch();
     //如果不允许新建标签，则返回
@@ -523,17 +523,20 @@ void MainWindow::addTabWithTermPage(const QString &tabName, bool activeTab, Term
     }
 
     TermWidgetPage *termPage = page;
-    termPage->setParentMainWindow(this);
 
     if (-1 == insertIndex) {
-        insertIndex = m_tabbar->currentIndex()+1;
+        insertIndex = m_tabbar->currentIndex() + 1;
     }
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
     int index = m_tabbar->insertTab(insertIndex, page->identifier(), tabName);
-    qDebug() << "insertTab index" << index;
-    endAddTab(termPage, activeTab, index, startTime);
-
     m_tabbar->setTabText(termPage->identifier(), tabName);
+    qDebug() << "insertTab index" << index;
+
+    //拖拽过程中存在一种标签预览模式，此时不需要真实添加
+    if (!isVirtualAdd) {
+        termPage->setParentMainWindow(this);
+        endAddTab(termPage, activeTab, index, startTime);
+    }
 }
 
 /*******************************************************************************
