@@ -45,24 +45,8 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DSpinBox(parent)
 *******************************************************************************/
 void NewDspinBox::wheelEvent(QWheelEvent *event)
 {
-    if(lineEdit()->hasFocus()){
+    if (lineEdit()->hasFocus()) {
         DSpinBox::wheelEvent(event);
     }
 }
 
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut001000 任飞翔
- 3. @日期:    2020-11-09
- 4. @说明:    键盘事件，Enter和Return事件会影响，Tab titles的insert按钮弹出显示信息
-*******************************************************************************/
-void NewDspinBox::keyPressEvent(QKeyEvent *event)
-{
-    //增加这个条件是为了规避Tab titles的insert按钮弹出显示信息的问题
-    if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter){
-        lineEdit()->selectAll();
-        return;
-    }
-
-    DSpinBox::keyPressEvent(event);
-}

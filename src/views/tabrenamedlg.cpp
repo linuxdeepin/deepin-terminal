@@ -216,6 +216,9 @@ void TabRenameDlg::initContentWidget()
 
     contentwidget->setLayout(m_mainLayout);
     addContent(contentwidget);
+    // 设置确认按钮为enter后响应的默认按钮
+    // 放在布局后生效，放在布局完成前不生效
+    m_confirmButton->setDefault(true);
 }
 
 /*******************************************************************************

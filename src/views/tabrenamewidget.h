@@ -11,17 +11,6 @@
 
 DWIDGET_USE_NAMESPACE
 
-class LineEdit : public DLineEdit
-{
-public:
-    explicit LineEdit(DLineEdit *parent = nullptr);
-
-protected:
-    void keyPressEvent(QKeyEvent *event);
-
-};
-
-
 class TabRenameWidget : public QWidget
 {
     Q_OBJECT
@@ -37,7 +26,7 @@ public:
     void initLabel();
     void setLineEditText();
 
-    LineEdit *getInputedit() const;
+    DLineEdit *getInputedit() const;
 
 private:
     bool m_isRemote = false;
@@ -48,7 +37,7 @@ private:
 
     DPushButton *m_choseButton = nullptr;
     DMenu *m_choseMenu = nullptr;
-    LineEdit *m_inputedit = nullptr;
+    DLineEdit *m_inputedit = nullptr;
 };
 
 #endif // TABRENAMEWIDGET_H

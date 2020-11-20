@@ -3,32 +3,6 @@
 #include <QKeyEvent>
 
 #include <DFontSizeManager>
-/*******************************************************************************
- 1. @函数:    LineEdit
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    输入条构造函数，为了解决键盘交互问题需要重写keyPressEvent
-*******************************************************************************/
-LineEdit::LineEdit(DLineEdit *parent)
-    : DLineEdit(parent)
-{
-
-}
-
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    键盘事件，当按下enter键不执行键盘按下事件，否则键盘交互会出现问题
-*******************************************************************************/
-void LineEdit::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        return;
-    }
-
-    DLineEdit::keyPressEvent(event);
-}
 
 /*******************************************************************************
  1. @函数:    TabRenameWidget
@@ -60,16 +34,18 @@ void TabRenameWidget::initUi()
     m_layout = new QHBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
 
-    m_inputedit = new LineEdit;
+    m_inputedit = new DLineEdit(this);
     m_inputedit->setText("%n:%d");
     m_inputedit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_inputedit, DFontSizeManager::T6);
 
-    m_choseButton = new DPushButton(tr("Insert"));
+    m_choseButton = new DPushButton(tr("Insert"), this);
     m_choseButton->setMaximumSize(82, 45);
     m_choseButton->setMenu(m_choseMenu);
     m_choseButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_choseButton, DFontSizeManager::T6);
+    m_choseButton->setAutoDefault(false);
+    m_choseButton->setDefault(false);
 
     //  设置界面隐藏clearbutton并且不需要初始化标题 重命名窗口不用隐藏clearbutton需要初始化标题
     if (!m_isSetting) {
@@ -183,7 +159,7 @@ void TabRenameWidget::initLabel()
  3. @日期:    2020-10-30
  4. @说明:    获取输入条接口
 *******************************************************************************/
-LineEdit *TabRenameWidget::getInputedit() const
+DLineEdit *TabRenameWidget::getInputedit() const
 {
     return m_inputedit;
 }
