@@ -214,7 +214,7 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
         sourceFile.close();
     }
 
-    QString strArgs = QString(" <<USER>> <<SERVER>> <<PORT>> <<PRIVATE_KEY>> <<PASSWORD>>");
+    QString strArgs = QString(" '<<USER>>' <<SERVER>> <<PORT>> '<<PRIVATE_KEY>>' '<<PASSWORD>>'");
     // 用远程管理数据替换文件内的关键字
     strArgs.replace("<<USER>>", curServer->m_userName);
     strArgs.replace("<<SERVER>>", curServer->m_address.trimmed());
