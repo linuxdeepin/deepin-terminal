@@ -1,6 +1,5 @@
 #include "ut_listview_test.h"
 
-#define private public
 #include "itemwidget.h"
 #include "listview.h"
 #include "customcommandpanel.h"
@@ -8,10 +7,6 @@
 #include "utils.h"
 #include "shortcutmanager.h"
 #include "service.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -42,9 +37,8 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
 
     QList<QAction *> cmdActionList;
     const int cmdCount = 10;
-    for(int i=0; i<=cmdCount; i++)
-    {
-        QString key = QString(QChar('A'+i));
+    for (int i = 0; i <= cmdCount; i++) {
+        QString key = QString(QChar('A' + i));
         QAction *newAction = new QAction;
         newAction->setText(QString("cmd_%1").arg(i));
         newAction->setShortcut(QKeySequence(QString("Ctrl+Shift+%1").arg(key)));
@@ -67,12 +61,12 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
     EXPECT_EQ(lastCmdName, QString("cmd_%1").arg(cmdCount));
 
     cmdListWidget.removeItem(ItemFuncType_Item, firstCmdName);
-    EXPECT_EQ(cmdListWidget.count(), cmdActionList.size()-1);
+    EXPECT_EQ(cmdListWidget.count(), cmdActionList.size() - 1);
 
     QString updateCmdName = Utils::getRandString().toLower();
     cmdListWidget.updateItem(ItemFuncType_Item, lastCmdName, updateCmdName);
 
-    QList<ItemWidget*> itemWidgetList = cmdListWidget.m_itemList;
+    QList<ItemWidget *> itemWidgetList = cmdListWidget.m_itemList;
     ItemWidget *lastItemWidget = itemWidgetList.last();
     EXPECT_EQ(lastItemWidget->m_firstText, updateCmdName);
 
@@ -84,8 +78,7 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
     EXPECT_GE(index, 0);
 
     //释放内存
-    for(int i=0; i<cmdActionList.size(); i++)
-    {
+    for (int i = 0; i < cmdActionList.size(); i++) {
         QAction *action = cmdActionList.at(i);
         delete action;
     }
@@ -104,8 +97,7 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
     ServerConfigManager *serverConfigManager = ServerConfigManager::instance();
     QList<ServerConfig *> remoteServerList;
     const int remoteCount = 8;
-    for(int i=0; i<=remoteCount; i++)
-    {
+    for (int i = 0; i <= remoteCount; i++) {
 
         ServerConfig *config = new ServerConfig();
         config->m_serverName = QString("server_%1").arg(i);
@@ -138,9 +130,8 @@ TEST_F(UT_ListView_Test, setFocusFromeIndex)
     listWidget.show();
 
     const int count = 10;
-    for(int i=0; i<=count; i++)
-    {
-        QString key = QString(QChar('A'+i));
+    for (int i = 0; i <= count; i++) {
+        QString key = QString(QChar('A' + i));
         QAction *newAction = new QAction;
         newAction->setText(QString("cmd_%1").arg(i));
         newAction->setShortcut(QKeySequence(QString("Ctrl+Shift+%1").arg(key)));

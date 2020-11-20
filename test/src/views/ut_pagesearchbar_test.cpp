@@ -1,14 +1,9 @@
 #include "ut_pagesearchbar_test.h"
 
-#define private public
 #include "pagesearchbar.h"
 #include "termwidgetpage.h"
 #include "service.h"
-#undef private
 #include "utils.h"
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -23,8 +18,7 @@ UT_PageSearchBar_Test::UT_PageSearchBar_Test()
 
 void UT_PageSearchBar_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
@@ -78,28 +72,26 @@ TEST_F(UT_PageSearchBar_Test, PageSearchBarTest)
     //查找下一个'rw'字符串
     DIconButton *findNextButton = searchBar->m_findNextButton;
     QPoint clickPoint(3, 3);
-    for(int i=0; i<findNextCount; i++)
-    {
+    for (int i = 0; i < findNextCount; i++) {
         QSignalSpy spyNext(findNextButton, SIGNAL(clicked()));
         EXPECT_EQ(spyNext.count(), 0);
         QTest::mouseClick(findNextButton, Qt::LeftButton, Qt::NoModifier, clickPoint);
         EXPECT_EQ(spyNext.count(), 1);
 #ifdef ENABLE_UI_TEST
-        QTest::qWait(500);
+        QTest::qWait(UT_WAIT_TIME);
 #endif
     }
 
     const int findPrevCount = 2;
     //查找前一个rw
-    for(int i=0; i<findPrevCount; i++)
-    {
+    for (int i = 0; i < findPrevCount; i++) {
         DIconButton *findPrevButton = searchBar->m_findPrevButton;
         QSignalSpy spyPrev(findPrevButton, SIGNAL(clicked()));
         EXPECT_EQ(spyPrev.count(), 0);
         QTest::mouseClick(findPrevButton, Qt::LeftButton, Qt::NoModifier, clickPoint);
         EXPECT_EQ(spyPrev.count(), 1);
 #ifdef ENABLE_UI_TEST
-        QTest::qWait(500);
+        QTest::qWait(UT_WAIT_TIME);
 #endif
     }
 

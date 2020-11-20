@@ -1,8 +1,6 @@
 #include "ut_kpty_test.h"
 
-#define private public
 #include "kpty.h"
-#undef private
 
 #include <sys/types.h>
 #include <sys/ioctl.h>
@@ -45,7 +43,7 @@ TEST_F(UT_KPty_Test, openFdTest)
 {
     int fd = 0;
 
-    fd = ::posix_openpt(O_RDWR|O_NOCTTY);
+    fd = ::posix_openpt(O_RDWR | O_NOCTTY);
 
     m_pty->open(fd);
 }

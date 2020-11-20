@@ -4,15 +4,9 @@
 
 #include "ut_defines.h"
 #include "utils.h"
-
-#include <QObject>
-#include <gtest/gtest.h>
-
-#define private public
-#define protected public
 #include "newdspinbox.h"
-#undef private
-#undef protected
+
+#include <gtest/gtest.h>
 
 class UT_NewDSpinBox_Test : public ::testing::Test
 {

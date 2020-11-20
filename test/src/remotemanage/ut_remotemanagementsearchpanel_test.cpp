@@ -1,10 +1,8 @@
 #include "ut_remotemanagementsearchpanel_test.h"
 
-#define private public
 #include "remotemanagementsearchpanel.h"
 #include "service.h"
 #include "mainwindow.h"
-#undef public
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -19,8 +17,7 @@ UT_RemoteManagementSearchPanel_Test::UT_RemoteManagementSearchPanel_Test()
 
 void UT_RemoteManagementSearchPanel_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
@@ -50,7 +47,7 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, refreshDataByGroupAndFilter)
     EXPECT_NE(remoteTopPanel, nullptr);
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
-    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel*>();
+    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel *>();
     searchPanel->refreshDataByGroupAndFilter("group01", "server");
 
 #ifdef ENABLE_UI_TEST
@@ -68,7 +65,7 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, refreshDataByFilter)
     EXPECT_NE(remoteTopPanel, nullptr);
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
-    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel*>();
+    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel *>();
     searchPanel->refreshDataByFilter("server");
 
 #ifdef ENABLE_UI_TEST
@@ -85,7 +82,7 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, clearAllFocus)
     EXPECT_NE(remoteTopPanel, nullptr);
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
-    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel*>();
+    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel *>();
     searchPanel->clearAllFocus();
 
 #ifdef ENABLE_UI_TEST
@@ -102,7 +99,7 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, setFocusBack)
     EXPECT_NE(remoteTopPanel, nullptr);
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
-    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel*>();
+    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel *>();
     searchPanel->setFocusBack("group01", true, 0);
 
 #ifdef ENABLE_UI_TEST
@@ -119,7 +116,7 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, getListIndex)
     EXPECT_NE(remoteTopPanel, nullptr);
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
-    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel*>();
+    RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel *>();
     int listIndex = searchPanel->getListIndex();
     EXPECT_EQ(listIndex, -1);
 

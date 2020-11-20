@@ -1,13 +1,9 @@
 #include "ut_mainwindow_test.h"
 
-#define private public
-#define protected public
 #include "service.h"
 #include "mainwindow.h"
 #include "tabbar.h"
 #include "termwidget.h"
-#undef protected
-#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -78,8 +74,7 @@ void UT_MainWindow_Test::SetUp()
 {
     m_service = Service::instance();
     //Service的init初始化函数只能执行一次，否则会crash
-    if (!m_service->property("isServiceInit").toBool())
-    {
+    if (!m_service->property("isServiceInit").toBool()) {
         m_service->init();
         m_service->setProperty("isServiceInit", true);
     }
@@ -119,8 +114,7 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     EXPECT_EQ(m_normalWindow->hasRunningProcesses(), false);
 
     const int tabCount = 5;
-    for(int i=0; i<tabCount; i++)
-    {
+    for (int i = 0; i < tabCount; i++) {
         m_normalWindow->addTab(m_normalTermProperty);
 #ifdef ENABLE_UI_TEST
         QTest::qWait(UT_WAIT_TIME);
@@ -129,7 +123,7 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     TabBar *tabBar = m_normalWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
     //窗口默认启动就自带了1个tab，所以这里加1
-    EXPECT_EQ(tabBar->count(), tabCount+1);
+    EXPECT_EQ(tabBar->count(), tabCount + 1);
 
     QString firstTabId = tabBar->identifier(0);
     m_normalWindow->closeTab(firstTabId);
@@ -145,7 +139,7 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     m_service->showHideOpacityAndBlurOptions(true);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(2000);
+    QTest::qWait(UT_WAIT_TIME);
     //只有在开启UI测试的模式下，才能判断焦点
     currTerm->hasFocus();
 #endif
@@ -191,7 +185,7 @@ TEST_F(UT_MainWindow_Test, focusPage)
     EXPECT_NE(tabPage, nullptr);
 
 //#ifdef ENABLE_UI_TEST
-//    QTest::qWait(2000);
+//    QTest::qWait(UT_WAIT_TIME);
 //    //只有在开启UI测试的模式下，才能判断焦点
 //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
 //#endif
@@ -209,7 +203,7 @@ TEST_F(UT_MainWindow_Test, focusCurrentPage)
     EXPECT_NE(tabPage, nullptr);
 
 //#ifdef ENABLE_UI_TEST
-//    QTest::qWait(2000);
+//    QTest::qWait(UT_WAIT_TIME);
 //    //只有在开启UI测试的模式下，才能判断焦点
 //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
 //#endif
@@ -278,8 +272,7 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     EXPECT_EQ(m_quakeWindow->hasRunningProcesses(), false);
 
     const int tabCount = 5;
-    for(int i=0; i<tabCount; i++)
-    {
+    for (int i = 0; i < tabCount; i++) {
         m_quakeWindow->addTab(m_normalTermProperty);
 #ifdef ENABLE_UI_TEST
         QTest::qWait(UT_WAIT_TIME);
@@ -288,14 +281,14 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     TabBar *tabBar = m_quakeWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
     //窗口默认启动就自带了1个tab，所以这里加1
-    EXPECT_EQ(tabBar->count(), tabCount+1);
+    EXPECT_EQ(tabBar->count(), tabCount + 1);
 
     QString firstTabId = tabBar->identifier(0);
     m_quakeWindow->closeTab(firstTabId);
 
-    QString lastTabId = tabBar->identifier(tabBar->count()-1);
+    QString lastTabId = tabBar->identifier(tabBar->count() - 1);
     m_quakeWindow->closeTab(lastTabId);
-    EXPECT_EQ(tabBar->count(), tabCount-1);
+    EXPECT_EQ(tabBar->count(), tabCount - 1);
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
@@ -342,7 +335,7 @@ TEST_F(UT_MainWindow_Test, quake_focusPage)
     EXPECT_NE(tabPage, nullptr);
 
 //#ifdef ENABLE_UI_TEST
-//    QTest::qWait(2000);
+//    QTest::qWait(UT_WAIT_TIME);
 //    //只有在开启UI测试的模式下，才能判断焦点
 //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
 //#endif
@@ -359,7 +352,7 @@ TEST_F(UT_MainWindow_Test, quake_focusCurrentPage)
     EXPECT_NE(tabPage, nullptr);
 
 //#ifdef ENABLE_UI_TEST
-//    QTest::qWait(2000);
+//    QTest::qWait(UT_WAIT_TIME);
 //    //只有在开启UI测试的模式下，才能判断焦点
 //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
 //#endif
@@ -451,13 +444,13 @@ TEST_F(UT_MainWindow_Test, showExitConfirmDialog)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
-    QtConcurrent::run([=]() {
+    QtConcurrent::run([ = ]() {
         QTimer timer;
         timer.setSingleShot(true);
 
         QEventLoop *loop = new QEventLoop;
 
-        QObject::connect(&timer, &QTimer::timeout, [=]() {
+        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
             loop->quit();
             qApp->exit();
         });
@@ -692,6 +685,47 @@ TEST_F(UT_MainWindow_Test, menuHideSetThemeSlotTest)
     m_normalWindow->menuHideSetThemeSlot();
     m_normalWindow->currCheckThemeAction = m_normalWindow->themeTenAction;
     m_normalWindow->menuHideSetThemeSlot();
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+/*******************************************************************************
+ 1. @函数:    dragDropTabTest
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-11-20
+ 4. @说明:    tab标签拖拽单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, clickTabTest)
+{
+    EXPECT_NE(m_normalWindow, nullptr);
+
+    m_normalWindow->show();
+
+    const int tabCount = 5;
+    for (int i = 0; i < tabCount; i++) {
+        m_normalWindow->addTab(m_normalTermProperty);
+#ifdef ENABLE_UI_TEST
+        QTest::qWait(UT_WAIT_TIME);
+#endif
+    }
+    TabBar *tabBar = m_normalWindow->m_tabbar;
+    EXPECT_NE(tabBar, nullptr);
+    \
+    QTest::mouseClick(tabBar, Qt::LeftButton, Qt::NoModifier, QPoint(50, 10), UT_WAIT_TIME);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    QTest::mouseClick(tabBar, Qt::LeftButton, Qt::NoModifier, QPoint(100, 10), UT_WAIT_TIME);
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    QTest::mouseClick(tabBar, Qt::LeftButton, Qt::NoModifier, QPoint(200, 10), UT_WAIT_TIME);
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);

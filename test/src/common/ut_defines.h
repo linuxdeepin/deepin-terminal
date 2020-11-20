@@ -2,8 +2,8 @@
 #ifndef UT_DEFINES_TEST_H
 #define UT_DEFINES_TEST_H
 
-//UI测试等待时间间隔 300毫秒
-#define UT_WAIT_TIME 300
+//UI测试等待时间间隔
+#define UT_WAIT_TIME 10
 
 //是否开启UI测试
 #define ENABLE_UI_TEST

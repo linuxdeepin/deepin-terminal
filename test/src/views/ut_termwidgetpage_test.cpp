@@ -1,14 +1,9 @@
 #include "ut_termwidgetpage_test.h"
 
-#define private public
 #include "termwidgetpage.h"
 #include "termwidget.h"
 #include "service.h"
 #include "TerminalDisplay.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -24,8 +19,7 @@ UT_TermWidgetPage_Test::UT_TermWidgetPage_Test()
 
 void UT_TermWidgetPage_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
@@ -62,21 +56,19 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
     EXPECT_NE(currTermWidget, nullptr);
 
     //设置透明度，提示符会出现异常，且显示2个光标
-    for(qreal opacity=0.01; opacity <= 1.0; opacity += 0.01)
-    {
+    for (qreal opacity = 0.01; opacity <= 1.0; opacity += 0.01) {
         parentWidget.setTerminalOpacity(opacity);
 #ifdef ENABLE_UI_TEST
-        QTest::qWait(10);
+        QTest::qWait(UT_WAIT_TIME);
 #endif
     }
 
     QStringList fontFamilyList;
     fontFamilyList << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
-              << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
-              << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
-              << "Noto Sans Mono CJK TC";
-    for(int i=0; i<fontFamilyList.size(); i++)
-    {
+                   << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
+                   << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
+                   << "Noto Sans Mono CJK TC";
+    for (int i = 0; i < fontFamilyList.size(); i++) {
         QString fontFamily = fontFamilyList.at(i);
         parentWidget.setFont(fontFamily);
         QFont currFont = currTermWidget->getTerminalFont();
@@ -93,13 +85,12 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
 
     //字体大小大于20时界面提示符显示会有异常
     //设置字体大小时会不停刷日志：Using a variable-width font in the terminal.  This may cause performance degradation and display/alignment errors.
-    for(int fontSize=5; fontSize<=50; fontSize++)
-    {
+    for (int fontSize = 5; fontSize <= 50; fontSize++) {
         parentWidget.setFontSize(fontSize);
         QFont currFont = currTermWidget->getTerminalFont();
         EXPECT_EQ(currFont.pointSize(), fontSize);
 #ifdef ENABLE_UI_TEST
-        QTest::qWait(100);
+        QTest::qWait(UT_WAIT_TIME);
 #endif
     }
 
@@ -141,17 +132,17 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
     parentWidget.setcursorShape(static_cast<int>(blockShape));
     EXPECT_EQ(blockShape, termDisplay->_cursorShape);
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
     parentWidget.setcursorShape(static_cast<int>(underlineShape));
     EXPECT_EQ(underlineShape, termDisplay->_cursorShape);
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
     parentWidget.setcursorShape(static_cast<int>(ibeamShape));
     EXPECT_EQ(ibeamShape, termDisplay->_cursorShape);
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(1000);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 
@@ -165,25 +156,25 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
     EXPECT_EQ(currTermPage->isVisible(), true);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(2000);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 
     //测试分屏
     currTermPage->split(Qt::Orientation::Vertical);
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(2000);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 
     //测试分屏
     currTermPage->split(Qt::Orientation::Horizontal);
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(2000);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 
     //测试关闭分屏
     currTermPage->closeSplit(currTermPage->currentTerminal(), true);
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(2000);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 

@@ -1,8 +1,6 @@
 #include "ut_KeyboardTranslator_test.h"
 
-#define private public
 #include "KeyboardTranslator.h"
-#undef private
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -50,12 +48,11 @@ TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorTest)
                      << Qt::AltModifier
                      << Qt::ControlModifier;
 
-    for(int i=0; i<entry.size(); i++)
-    {
+    for (int i = 0; i < entry.size(); i++) {
         KeyboardTranslator::Entry keyEntry;
         keyEntry.setText(entry.at(i));
         keyEntry.setModifiers(keyboardModifier.at(i));
-        qDebug() << i << " : "<< keyEntry.text(true, keyboardModifier.at(i)) << endl;
+        qDebug() << i << " : " << keyEntry.text(true, keyboardModifier.at(i)) << endl;
         EXPECT_EQ(keyEntry.text(true, keyboardModifier.at(i)), resultList.at(i));
     }
 
@@ -74,12 +71,11 @@ TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorTest)
                      << (Qt::ControlModifier | Qt::AltModifier)
                      << (Qt::ShiftModifier | Qt::AltModifier | Qt::ControlModifier);
 
-    for(int i=0; i<entry.size(); i++)
-    {
+    for (int i = 0; i < entry.size(); i++) {
         KeyboardTranslator::Entry keyEntry;
         keyEntry.setText(entry.at(i));
         keyEntry.setModifiers(keyboardModifier.at(i));
-        qDebug() << i << " : "<< keyEntry.text(true, keyboardModifier.at(i)) << endl;
+        qDebug() << i << " : " << keyEntry.text(true, keyboardModifier.at(i)) << endl;
         EXPECT_EQ(keyEntry.text(true, keyboardModifier.at(i)), resultList.at(i));
     }
 }
@@ -114,7 +110,7 @@ TEST_F(UT_KeyboardTranslator_Test, defaultTranslator)
 
 TEST_F(UT_KeyboardTranslator_Test, findAddWriteEntryTest)
 {
-    KeyboardTranslator* translator = new KeyboardTranslator(QLatin1String("default"));
+    KeyboardTranslator *translator = new KeyboardTranslator(QLatin1String("default"));
 
     KeyboardTranslator::Entry entry = translator->findEntry(
                                           Qt::Key_Delete,
@@ -151,8 +147,7 @@ TEST_F(UT_KeyboardTranslator_Test, findAddWriteEntryTest)
     KeyboardTranslatorWriter writer(&destination);
 
     QListIterator<KeyboardTranslator::Entry> iter(translator->entries());
-    while( iter.hasNext() )
-    {
+    while (iter.hasNext()) {
         writer.writeEntry(iter.next());
     }
 
@@ -173,11 +168,10 @@ TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorReaderTest)
 
     QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator* translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
     KeyboardTranslatorReader reader(&source);
-    while(reader.hasNextEntry())
-    {
+    while (reader.hasNextEntry()) {
         translator->addEntry(reader.nextEntry());
     }
 
@@ -200,7 +194,7 @@ TEST_F(UT_KeyboardTranslator_Test, createEntryTest)
 
     QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator* translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
     //测试KeyboardTranslatorReader类的createEntry
     KeyboardTranslatorReader reader(&source);
@@ -224,7 +218,7 @@ TEST_F(UT_KeyboardTranslator_Test, parseAsStateFlagTest)
 
     QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator* translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
     KeyboardTranslatorReader reader(&source);
 
@@ -262,7 +256,7 @@ TEST_F(UT_KeyboardTranslator_Test, parseAsModifierTest)
 
     QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator* translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
     KeyboardTranslatorReader reader(&source);
     Qt::KeyboardModifier modifyer1 = Qt::ShiftModifier;
@@ -298,7 +292,7 @@ TEST_F(UT_KeyboardTranslator_Test, decodeSequenceTest)
 
     QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator* translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
     //测试KeyboardTranslatorReader类的decodeSequence
     KeyboardTranslatorReader reader(&source);

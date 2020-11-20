@@ -1,10 +1,8 @@
 #include "ut_remotemanagementtoppanel_test.h"
 
-#define private public
 #include "remotemanagementtoppanel.h"
 #include "service.h"
 #include "mainwindow.h"
-#undef public
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -19,8 +17,7 @@ UT_RemoteManagementTopPanel_Test::UT_RemoteManagementTopPanel_Test()
 
 void UT_RemoteManagementTopPanel_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }

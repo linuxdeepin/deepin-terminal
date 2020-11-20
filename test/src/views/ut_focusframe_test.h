@@ -3,6 +3,7 @@
 #define UT_FOCUSFRAME_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_FocusFrame_Test : public ::testing::Test

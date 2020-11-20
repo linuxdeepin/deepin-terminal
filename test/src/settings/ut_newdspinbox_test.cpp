@@ -1,8 +1,5 @@
 #include "ut_newdspinbox_test.h"
 
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
-
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
@@ -40,7 +37,7 @@ TEST_F(UT_NewDSpinBox_Test, WheelEvent_Increase)
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
-    QWheelEvent *e = new QWheelEvent(QPointF(63,29),120, Qt::NoButton, Qt::NoModifier);
+    QWheelEvent *e = new QWheelEvent(QPointF(63, 29), 120, Qt::NoButton, Qt::NoModifier);
     m_spinBox->wheelEvent(e);
 
 #ifdef ENABLE_UI_TEST
@@ -58,7 +55,7 @@ TEST_F(UT_NewDSpinBox_Test, WheelEvent_Reduce)
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
-    QWheelEvent *e = new QWheelEvent(QPointF(63,29),-120, Qt::NoButton, Qt::NoModifier);
+    QWheelEvent *e = new QWheelEvent(QPointF(63, 29), -120, Qt::NoButton, Qt::NoModifier);
     m_spinBox->wheelEvent(e);
 
 #ifdef ENABLE_UI_TEST

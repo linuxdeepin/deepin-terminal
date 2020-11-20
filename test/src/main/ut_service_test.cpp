@@ -1,8 +1,6 @@
 #include "ut_service_test.h"
 
-#define private public
 #include "service.h"
-#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -21,8 +19,7 @@ UT_Service_Test::UT_Service_Test()
 void UT_Service_Test::SetUp()
 {
     m_service = Service::instance();
-    if (!m_service->property("isServiceInit").toBool())
-    {
+    if (!m_service->property("isServiceInit").toBool()) {
         m_service->init();
         m_service->setProperty("isServiceInit", true);
     }
@@ -82,17 +79,14 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
     EXPECT_EQ(spyWinEffectEnable.count(), 0);
 
     bool isWindowEffectEnabled = m_service->isWindowEffectEnabled();
-    if( isWindowEffectEnabled)
-    {
+    if (isWindowEffectEnabled) {
 #ifdef ENABLE_UI_TEST
 //        模拟自动关闭窗口特效
 //        QTest::qWait(UT_WAIT_TIME);
 //        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
 //        EXPECT_EQ(spyWinEffectEnable.count(), 1);
 #endif
-    }
-    else
-    {
+    } else {
 #ifdef ENABLE_UI_TEST
 //        模拟自动开启窗口特效
 //        QTest::qWait(UT_WAIT_TIME);

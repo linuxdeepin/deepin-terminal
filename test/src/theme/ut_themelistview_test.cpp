@@ -2,9 +2,6 @@
 
 #include "themelistview.h"
 
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
-
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>

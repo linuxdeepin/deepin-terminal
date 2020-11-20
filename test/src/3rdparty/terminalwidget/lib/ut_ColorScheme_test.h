@@ -7,8 +7,6 @@
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
 
-#include <QString>
-
 class UT_ColorScheme_Test : public ::testing::Test
 {
 public:

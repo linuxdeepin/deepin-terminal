@@ -1,11 +1,9 @@
 #include "ut_serverconfigmanager_test.h"
 
-#define private public
 #include "serverconfigmanager.h"
 #include "service.h"
 #include "mainwindow.h"
 #include "utils.h"
-#undef public
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -74,14 +72,14 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     config->m_deleteKey = QString("");
 
     serverConfigManager->saveServerConfig(config);
-    EXPECT_EQ(getServerConfigCount(), serverConfigCount+1);
+    EXPECT_EQ(getServerConfigCount(), serverConfigCount + 1);
 
     int serverCount = serverConfigManager->getServerCount(config->m_group);
 
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
     EXPECT_NE(currConfig, nullptr);
 
-    QTest::qWait(30);
+    QTest::qWait(UT_WAIT_TIME);
 
     qsrand(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
@@ -105,7 +103,7 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     serverConfigManager->delServerConfig(newConfig);
     EXPECT_EQ(getServerConfigCount(), serverConfigCount);
 
-    EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount-1);
+    EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount - 1);
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);

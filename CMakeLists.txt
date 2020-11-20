@@ -42,18 +42,9 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -Wl,-O1 -Wl,--gc-sections")
 endif()
 
-option(USE_TEST "use ut" OFF)
-if (USE_TEST)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra -fprofile-arcs -ftest-coverage")
-    find_package(Qt5Test REQUIRED)
-    add_definitions(${Qt5Test_DEFINITIONS})
-    #Unit Test
-    add_subdirectory(test)
-else()
-    #Use deepin-turbo for Performance optimization
-    set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wl,--as-need -fPIE")
-    set(CMAKE_EXE_LINKER_FLAGS "-pie")
-endif()
+#Use deepin-turbo for Performance optimization
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wl,--as-need -fPIE")
+set(CMAKE_EXE_LINKER_FLAGS "-pie")
 
 configure_file(src/environments.h.in environments.h @ONLY)
 
@@ -294,3 +285,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         WORLD_READ WORLD_EXECUTE)
 
 install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)
+
+# Unit Test
+add_subdirectory(test)

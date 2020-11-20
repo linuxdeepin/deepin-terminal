@@ -1,9 +1,7 @@
 #include "ut_remotemanagementpanel_test.h"
 
-#define private public
 #include "remotemanagementpanel.h"
 #include "utils.h"
-#undef public
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -67,14 +65,14 @@ void UT_RemoteManagementPanel_Test::prepareData()
     config->m_deleteKey = QString("");
 
     serverConfigManager->saveServerConfig(config);
-    EXPECT_EQ(getServerConfigCount(), serverConfigCount+1);
+    EXPECT_EQ(getServerConfigCount(), serverConfigCount + 1);
 
     int serverCount = serverConfigManager->getServerCount(config->m_group);
 
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
     EXPECT_NE(currConfig, nullptr);
 
-    QTest::qWait(30);
+    QTest::qWait(UT_WAIT_TIME);
 
     qsrand(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
@@ -98,9 +96,9 @@ void UT_RemoteManagementPanel_Test::prepareData()
     serverConfigManager->delServerConfig(newConfig);
     EXPECT_EQ(getServerConfigCount(), serverConfigCount);
 
-    EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount-1);
+    EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount - 1);
 
-    QTest::qWait(30);
+    QTest::qWait(UT_WAIT_TIME);
 }
 
 void UT_RemoteManagementPanel_Test::TearDown()

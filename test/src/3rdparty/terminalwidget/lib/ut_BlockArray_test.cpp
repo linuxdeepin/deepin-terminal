@@ -1,8 +1,6 @@
 #include "ut_BlockArray_test.h"
 
-#define private public
 #include "BlockArray.h"
-#undef private
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -59,10 +57,10 @@ TEST_F(UT_BlockArray_Test, lastBlock)
     EXPECT_EQ(res > 0, true);
 
     Block *lastBlock = blockArray.lastBlock();
-    EXPECT_EQ((lastBlock!=nullptr), true);
+    EXPECT_EQ((lastBlock != nullptr), true);
 
-    const Block * block = blockArray.at(0);
-    EXPECT_EQ((block!=nullptr), true);
+    const Block *block = blockArray.at(0);
+    EXPECT_EQ((block != nullptr), true);
 }
 
 TEST_F(UT_BlockArray_Test, len)

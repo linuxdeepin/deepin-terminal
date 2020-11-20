@@ -3,6 +3,7 @@
 #define UT_OPERATIONCONFIRMDLG_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_OperationConfirmDlg_Test : public ::testing::Test

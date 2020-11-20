@@ -3,6 +3,7 @@
 #define UT_ICONBUTTON_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_IconButton_Test : public ::testing::Test

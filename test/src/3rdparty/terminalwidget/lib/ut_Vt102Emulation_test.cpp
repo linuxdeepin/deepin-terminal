@@ -1,8 +1,6 @@
 #include "ut_Vt102Emulation_test.h"
 
-#define private public
 #include "Vt102Emulation.h"
-#undef private
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -52,32 +50,31 @@ TEST_F(UT_Vt102Emulation_Test, processToken)
 {
     Vt102Emulation emulation;
 
-    for(int i=0; i<110; i++)
-    {
-        emulation.processToken( TY_CHR(), 'a', 0);
-        emulation.processToken( TY_CTL('a'+i), 'a', 0);
-        emulation.processToken( TY_CTL('A'+i), 'a', 0);
-        emulation.processToken( TY_ESC('a'+i), 0, 0);
-        emulation.processToken( TY_ESC_CS('a'+i, ' '+i), 0, 0);
-        emulation.processToken( TY_ESC_DE('0'+i), 0, 0);
-        emulation.processToken( TY_ESC_DE('a'+i), 0, 0);
-        emulation.processToken( TY_CSI_PN('a'+i), 1,0);
-        emulation.processToken( TY_CSI_PN('A'+i), 1,0);
-        emulation.processToken( TY_CSI_PS_SP('a'+i, 1), 1, 0);
-        emulation.processToken( TY_CSI_PS('m', i), 0, 1);
-        emulation.processToken( TY_CSI_PS('a'+i, i), 0, 1);
-        emulation.processToken( TY_CSI_PS('A'+i, i), 0, 1);
-        emulation.processToken( TY_CSI_PE('a'+i), 0, 0);
-        emulation.processToken( TY_CSI_PR('a'+i, i), 0, 0);
-        emulation.processToken( TY_CSI_PR('a'+i, i*10), 0, 0);
-        emulation.processToken( TY_CSI_PG('a'+i), 0, 0);
-        emulation.processToken( TY_CSI_PS('a'+i, 0), COLOR_SPACE_RGB, 236);
-        emulation.processToken( TY_CSI_PS('a'+i, 1), COLOR_SPACE_256, 1);
-        emulation.processToken( TY_CSI_PS('a'+i, 2), 0, 0);
-        emulation.processToken( TY_CHR(), 'a'+i, 0);
-        emulation.processToken( TY_VT52('a'+i), 0, 0);
-        emulation.processToken( TY_VT52('A'+i), 0, 0);
-        emulation.processToken( TY_VT52('a'+i), 'm', 'l');
+    for (int i = 0; i < 110; i++) {
+        emulation.processToken(TY_CHR(), 'a', 0);
+        emulation.processToken(TY_CTL('a' + i), 'a', 0);
+        emulation.processToken(TY_CTL('A' + i), 'a', 0);
+        emulation.processToken(TY_ESC('a' + i), 0, 0);
+        emulation.processToken(TY_ESC_CS('a' + i, ' ' + i), 0, 0);
+        emulation.processToken(TY_ESC_DE('0' + i), 0, 0);
+        emulation.processToken(TY_ESC_DE('a' + i), 0, 0);
+        emulation.processToken(TY_CSI_PN('a' + i), 1, 0);
+        emulation.processToken(TY_CSI_PN('A' + i), 1, 0);
+        emulation.processToken(TY_CSI_PS_SP('a' + i, 1), 1, 0);
+        emulation.processToken(TY_CSI_PS('m', i), 0, 1);
+        emulation.processToken(TY_CSI_PS('a' + i, i), 0, 1);
+        emulation.processToken(TY_CSI_PS('A' + i, i), 0, 1);
+        emulation.processToken(TY_CSI_PE('a' + i), 0, 0);
+        emulation.processToken(TY_CSI_PR('a' + i, i), 0, 0);
+        emulation.processToken(TY_CSI_PR('a' + i, i * 10), 0, 0);
+        emulation.processToken(TY_CSI_PG('a' + i), 0, 0);
+        emulation.processToken(TY_CSI_PS('a' + i, 0), COLOR_SPACE_RGB, 236);
+        emulation.processToken(TY_CSI_PS('a' + i, 1), COLOR_SPACE_256, 1);
+        emulation.processToken(TY_CSI_PS('a' + i, 2), 0, 0);
+        emulation.processToken(TY_CHR(), 'a' + i, 0);
+        emulation.processToken(TY_VT52('a' + i), 0, 0);
+        emulation.processToken(TY_VT52('A' + i), 0, 0);
+        emulation.processToken(TY_VT52('a' + i), 'm', 'l');
     }
 }
 

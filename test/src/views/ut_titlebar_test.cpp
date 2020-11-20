@@ -1,14 +1,9 @@
 #include "ut_titlebar_test.h"
 
-#define private public
 #include "titlebar.h"
 #include "tabbar.h"
 #include "mainwindow.h"
 #include "service.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -26,8 +21,7 @@ UT_TitleBar_Test::UT_TitleBar_Test()
 
 void UT_TitleBar_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
@@ -50,17 +44,15 @@ TEST_F(UT_TitleBar_Test, TitleBarTest)
     EXPECT_EQ(m_normalWindow->isVisible(), true);
 
     DTitlebar *dtkTitleBar = m_normalWindow->titlebar();
-    TitleBar *titleBar = qobject_cast<TitleBar*>(dtkTitleBar->customWidget());
+    TitleBar *titleBar = qobject_cast<TitleBar *>(dtkTitleBar->customWidget());
     EXPECT_NE(titleBar, nullptr);
     EXPECT_EQ(titleBar->isVisible(), true);
 
     //清空titleBar布局
     QHBoxLayout *titleBarLayout = titleBar->m_layout;
     QLayoutItem *child;
-    while ((child = titleBarLayout->takeAt(0)) != nullptr)
-    {
-        if(child->widget())
-        {
+    while ((child = titleBarLayout->takeAt(0)) != nullptr) {
+        if (child->widget()) {
             child->widget()->setParent(nullptr);
         }
         delete child;

@@ -3,6 +3,7 @@
 #define UT_THEMEPANEL_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_ThemePanel_Test : public ::testing::Test

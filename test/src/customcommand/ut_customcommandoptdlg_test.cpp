@@ -1,9 +1,7 @@
 #include "ut_customcommandoptdlg_test.h"
 
-#define private public
 #include "ut_defines.h"
 #include "customcommandoptdlg.h"
-#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -32,7 +30,7 @@ TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
     CustomCommandOptDlg cmdDlg;
     cmdDlg.show();
 
-    QList<DLineEdit*> lineEditList = cmdDlg.findChildren<DLineEdit *>();
+    QList<DLineEdit *> lineEditList = cmdDlg.findChildren<DLineEdit *>();
     EXPECT_EQ(lineEditList.size(), 2);
 
     DLineEdit *cmdNameEdit = lineEditList.first();

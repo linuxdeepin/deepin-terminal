@@ -1,11 +1,6 @@
 #include "ut_focusframe_test.h"
 
-#define private public
 #include "focusframe.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -39,7 +34,7 @@ TEST_F(UT_FocusFrame_Test, setFocusTest)
     frame->setFocus();
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(500);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
     delete frame;
 }

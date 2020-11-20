@@ -3,7 +3,10 @@
 #define UT_TABBAR_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
+
+#include <QString>
 
 class UT_Tabbar_Test : public ::testing::Test
 {
@@ -18,6 +21,8 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+
+    inline QString generateUniqueId();
 };
 
 #endif // UT_TABBAR_TEST_H

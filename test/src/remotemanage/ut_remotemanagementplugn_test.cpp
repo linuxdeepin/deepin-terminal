@@ -1,10 +1,8 @@
 #include "ut_remotemanagementplugn_test.h"
 
-#define private public
 #include "remotemanagementplugn.h"
 #include "mainwindow.h"
 #include "service.h"
-#undef public
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -19,8 +17,7 @@ UT_RemoteManagementPlugin_Test::UT_RemoteManagementPlugin_Test()
 
 void UT_RemoteManagementPlugin_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
@@ -52,7 +49,7 @@ TEST_F(UT_RemoteManagementPlugin_Test, setRemoteEncode)
     remotePlugin->setRemoteEncode(QString("UTF-8"));
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(100);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 
@@ -74,7 +71,7 @@ TEST_F(UT_RemoteManagementPlugin_Test, setBackspaceKey)
     remotePlugin->setBackspaceKey(termWidget, QString("ascii-del"));
     remotePlugin->setBackspaceKey(termWidget, QString("tty"));
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(100);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 
@@ -96,7 +93,7 @@ TEST_F(UT_RemoteManagementPlugin_Test, setDeleteKey)
     remotePlugin->setDeleteKey(termWidget, QString("ascii-del"));
     remotePlugin->setDeleteKey(termWidget, QString("tty"));
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(100);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 

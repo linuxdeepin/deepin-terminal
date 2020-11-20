@@ -1,14 +1,11 @@
 #ifndef UT_TABRENAMEWIDGET_TEST_H
 #define UT_TABRENAMEWIDGET_TEST_H
 
-#define protected public
-#define private public
 #include "tabrenamewidget.h"
-#undef private
-#undef protected
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
+
 #include <QSignalSpy>
 #include <QTest>
 

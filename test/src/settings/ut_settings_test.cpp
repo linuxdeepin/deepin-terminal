@@ -1,11 +1,6 @@
 #include "ut_settings_test.h"
 
-#define private public
 #include "settings.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -40,7 +35,7 @@ TEST_F(UT_Settings_Test, SettingsTest)
     EXPECT_EQ(qApp->applicationName(), QString("deepin-terminal"));
 
     QString configPath = QString("%1/%2/%3/config.conf")
-                   .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
+                         .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
     QFile cfgFile(configPath);
     EXPECT_EQ(cfgFile.exists(), true);
 
@@ -48,8 +43,8 @@ TEST_F(UT_Settings_Test, SettingsTest)
 
     qreal opacity = m_settings->opacity();
     qDebug() << "opacity" << opacity << endl;
-    qDebug() << "opacity" << currSettings.value("basic.interface.opacity/value").toDouble()/100 << endl;
-    EXPECT_EQ(opacity, currSettings.value("basic.interface.opacity/value", QVariant(100)).toDouble()/100);
+    qDebug() << "opacity" << currSettings.value("basic.interface.opacity/value").toDouble() / 100 << endl;
+    EXPECT_EQ(opacity, currSettings.value("basic.interface.opacity/value", QVariant(100)).toDouble() / 100);
 
     QString fontName = m_settings->fontName();
     EXPECT_EQ(fontName, currSettings.value("basic.interface.font/value", QVariant("Noto Sans Mono")));

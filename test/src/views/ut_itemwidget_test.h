@@ -3,6 +3,7 @@
 #define UT_ITEMWIDGET_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_ItemWidget_Test : public ::testing::Test

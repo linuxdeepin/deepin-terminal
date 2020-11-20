@@ -1,8 +1,6 @@
 #include "ut_Filter_test.h"
 
-#define private public
 #include "Filter.h"
-#undef private
 
 //Qt单元测试相关头文件
 #include <QTest>

@@ -1,8 +1,6 @@
 #include "ut_itemwidget_test.h"
 
-#define private public
 #include "itemwidget.h"
-#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>

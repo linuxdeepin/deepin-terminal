@@ -1,9 +1,7 @@
 #include "ut_qtermwidget_test.h"
 
-#define private public
 #include "qtermwidget.h"
 #include "Emulation.h"
-#undef private
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -30,19 +28,19 @@ void UT_QTermWidget_Test::TearDown()
 
 TEST_F(UT_QTermWidget_Test, setWindowTitle)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setWindowTitle("Terminal");
 }
 
 TEST_F(UT_QTermWidget_Test, setWindowIcon)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setWindowIcon(QIcon());
 }
 
 TEST_F(UT_QTermWidget_Test, setScrollBarPosition)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
 
     m_termWidget->setScrollBarPosition(QTermWidget::NoScrollBar);
 
@@ -51,7 +49,7 @@ TEST_F(UT_QTermWidget_Test, setScrollBarPosition)
 
 TEST_F(UT_QTermWidget_Test, setKeyboardCursorShape)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
 
     m_termWidget->setKeyboardCursorShape(Emulation::KeyboardCursorShape::BlockCursor);
 }
@@ -59,13 +57,13 @@ TEST_F(UT_QTermWidget_Test, setKeyboardCursorShape)
 
 TEST_F(UT_QTermWidget_Test, availableColorSchemes)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     EXPECT_GE(m_termWidget->availableColorSchemes().size(), 0);
 }
 
 TEST_F(UT_QTermWidget_Test, setColorScheme)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setColorScheme("Light");
 
     m_termWidget->setColorScheme("Dark");
@@ -73,20 +71,20 @@ TEST_F(UT_QTermWidget_Test, setColorScheme)
 
 TEST_F(UT_QTermWidget_Test, setShellProgram)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     //设置shell类型
     m_termWidget->setShellProgram("/bin/bash");
 }
 
 TEST_F(UT_QTermWidget_Test, setKeyBindings)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setKeyBindings("linux");
 }
 
 TEST_F(UT_QTermWidget_Test, getsetTerminalFont)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
 
     int fontSize = 15;
     QFont font("Noto Mono");
@@ -97,33 +95,33 @@ TEST_F(UT_QTermWidget_Test, getsetTerminalFont)
 
 TEST_F(UT_QTermWidget_Test, setTerminalOpacity)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setTerminalOpacity(1.0);
 }
 
 TEST_F(UT_QTermWidget_Test, setWorkingDirectory)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     QString path = "/usr/share";
     m_termWidget->setWorkingDirectory(path);
 }
 
 TEST_F(UT_QTermWidget_Test, setEnvironment)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setEnvironment(QStringList());
 }
 
 TEST_F(UT_QTermWidget_Test, startShellProgram)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setShellProgram("/bin/sh");
     m_termWidget->startShellProgram();
 }
 
 TEST_F(UT_QTermWidget_Test, setFlowControlEnabled)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
 
     m_termWidget->setFlowControlEnabled(false);
     EXPECT_EQ(m_termWidget->flowControlEnabled(), false);
@@ -134,7 +132,7 @@ TEST_F(UT_QTermWidget_Test, setFlowControlEnabled)
 
 TEST_F(UT_QTermWidget_Test, clear)
 {
-    EXPECT_EQ(m_termWidget!=nullptr, true);
+    EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->clear();
 }
 

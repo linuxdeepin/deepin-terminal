@@ -3,6 +3,7 @@
 #define UT_THEMELISTVIEW_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_ThemeListView_Test : public ::testing::Test

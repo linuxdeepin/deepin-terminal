@@ -3,6 +3,7 @@
 #define UT_TERMINPUTDIALOG_TEST_H
 
 #include "ut_defines.h"
+
 #include <gtest/gtest.h>
 
 class UT_TermInputDialog_Test : public ::testing::Test

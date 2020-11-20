@@ -1,11 +1,6 @@
 #include "ut_operationconfirmdlg_test.h"
 
-#define private public
 #include "operationconfirmdlg.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>

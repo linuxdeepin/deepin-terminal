@@ -4,6 +4,7 @@
 
 #include "ut_defines.h"
 #include "termproperties.h"
+
 #include <gtest/gtest.h>
 
 class Service;

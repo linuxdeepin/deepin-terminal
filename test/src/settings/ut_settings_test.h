@@ -5,7 +5,6 @@
 #include "ut_defines.h"
 #include "utils.h"
 
-#include <QObject>
 #include <gtest/gtest.h>
 
 class UT_Settings_Test : public ::testing::Test

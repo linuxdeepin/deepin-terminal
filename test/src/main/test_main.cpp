@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     QTEST_DISABLE_KEYPAD_NAVIGATION
     QTEST_ADD_GPU_BLACKLIST_SUPPORT
 
-    testing::InitGoogleTest();
+    testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
 
 #ifdef ENABLE_UI_TEST

@@ -1,8 +1,6 @@
 #include "ut_customcommandtoppanel_test.h"
 
-#define private public
 #include "customcommandtoppanel.h"
-#undef private
 #include "mainwindow.h"
 
 #include <QTest>
@@ -41,7 +39,7 @@ TEST_F(UT_CustomCommandTopPanel_Test, showCustomCommandPanel)
     EXPECT_EQ(m_cmdTopPanel->m_customCommandPanel->isVisible(), true);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(500);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 
@@ -54,7 +52,7 @@ TEST_F(UT_CustomCommandTopPanel_Test, showCustomCommandSearchPanel)
     EXPECT_EQ(m_cmdTopPanel->m_customCommandSearchPanel->isVisible(), true);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(500);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 

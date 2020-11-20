@@ -4,7 +4,6 @@
 #define UT_DBUSMANAGER_TEST_H
 
 #include "ut_defines.h"
-#include <QObject>
 
 #include <gtest/gtest.h>
 
@@ -19,7 +18,7 @@ public:
     //用于做一些清理操作
     virtual void TearDown();
 public:
-    DBusManager* m_pDbusManager;
+    DBusManager *m_pDbusManager;
 };
 
 

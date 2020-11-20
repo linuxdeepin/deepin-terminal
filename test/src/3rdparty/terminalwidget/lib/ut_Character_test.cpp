@@ -53,8 +53,7 @@ TEST_F(UT_Character_Test, decodeLine)
 
 TEST_F(UT_Character_Test, characterWidthTest)
 {
-    for(uint i=0; i<255; i++)
-    {
+    for (uint i = 0; i < 255; i++) {
         int width = characterWidth(i);
         EXPECT_GE(width, -1);
     }
@@ -69,10 +68,10 @@ TEST_F(UT_Character_Test, drawTest)
         PainterWidget()
         {
             resize(800, 600);
-            setWindowTitle(tr( "Paint Demo"));
+            setWindowTitle(tr("Paint Demo"));
         }
     protected:
-        void paintEvent(QPaintEvent * event)
+        void paintEvent(QPaintEvent *event)
         {
             Q_UNUSED(event);
             QPainter painter(this);
@@ -87,11 +86,9 @@ TEST_F(UT_Character_Test, drawTest)
             QString str4 = QString("▖▗▘▙▚▛▜▝▞▞▟");
             drawStringList << str << str2 << str3 << str4;
             QRect cellRect = {0, 0, fontWidth, fontHeight};
-            for (int strIndex = 0; strIndex < drawStringList.size(); strIndex++)
-            {
+            for (int strIndex = 0; strIndex < drawStringList.size(); strIndex++) {
                 QString drawStr = drawStringList.at(strIndex);
-                for (int i = 0 ; i < drawStr.length(); i++)
-                {
+                for (int i = 0 ; i < drawStr.length(); i++) {
                     LineBlockCharacters::draw(painter, cellRect.translated(i * fontWidth, 0), drawStr[i], false);
                 }
             }
@@ -102,7 +99,9 @@ TEST_F(UT_Character_Test, drawTest)
     painterWidget.resize(800, 600);
     painterWidget.show();
 
+#ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
+#endif
 
     EXPECT_EQ(painterWidget.isVisible(), true);
 }

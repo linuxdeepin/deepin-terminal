@@ -1,8 +1,6 @@
 #include "ut_ColorScheme_test.h"
 
-#define private public
 #include "ColorScheme.h"
-#undef private
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -36,8 +34,7 @@ TEST_F(UT_ColorScheme_Test, allColorSchemesTest)
 
     QStringList colorSchemeNamesList;
     const auto allColorSchemes = ColorSchemeManager::instance()->allColorSchemes();
-    for (const ColorScheme *scheme : allColorSchemes)
-    {
+    for (const ColorScheme *scheme : allColorSchemes) {
         colorSchemeNamesList.append(scheme->name());
         qDebug() << "scheme name:" << scheme->name();
     }
@@ -47,10 +44,10 @@ TEST_F(UT_ColorScheme_Test, allColorSchemesTest)
 
 TEST_F(UT_ColorScheme_Test, findColorSchemeTest)
 {
-    const ColorScheme* schemeLight = ColorSchemeManager::instance()->findColorScheme("Light");
+    const ColorScheme *schemeLight = ColorSchemeManager::instance()->findColorScheme("Light");
     EXPECT_EQ(schemeLight != nullptr, true);
 
-    const ColorScheme* schemeDark = ColorSchemeManager::instance()->findColorScheme("Dark");
+    const ColorScheme *schemeDark = ColorSchemeManager::instance()->findColorScheme("Dark");
     EXPECT_EQ(schemeDark != nullptr, true);
 }
 

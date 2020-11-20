@@ -1,13 +1,6 @@
 #include "ut_terminalapplication_test.h"
 
-#define private public
-#define protected public
 #include "terminalapplication.h"
-#undef protected
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QObject>
@@ -37,12 +30,12 @@ TEST_F(UT_TerminalApplication_Test, getsetStartTime)
     char **argv = nullptr;
     TerminalApplication *app = new TerminalApplication(argc, argv);
 
-    QtConcurrent::run([=]() {
+    QtConcurrent::run([ = ]() {
         QTimer timer;
         timer.setSingleShot(true);
 
         QEventLoop *loop = new QEventLoop;
-        QObject::connect(&timer, &QTimer::timeout, [=]() {
+        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
             loop->quit();
             app->quit();
         });
@@ -71,12 +64,12 @@ TEST_F(UT_TerminalApplication_Test, pressSpace)
     char **argv = nullptr;
     TerminalApplication *app = new TerminalApplication(argc, argv);
 
-    QtConcurrent::run([=]() {
+    QtConcurrent::run([ = ]() {
         QTimer timer;
         timer.setSingleShot(true);
 
         QEventLoop *loop = new QEventLoop;
-        QObject::connect(&timer, &QTimer::timeout, [=]() {
+        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
             loop->quit();
             app->quit();
         });
@@ -95,11 +88,11 @@ TEST_F(UT_TerminalApplication_Test, pressSpace)
 
     mainWin.show();
 
-    app->pressSpace(&pushButton);
+//    app->pressSpace(&pushButton);
 
     app->exec();
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(500);
+    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 

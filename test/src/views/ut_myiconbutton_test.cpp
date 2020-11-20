@@ -1,8 +1,6 @@
 #include "ut_myiconbutton_test.h"
 
-#define private public
 #include "myiconbutton.h"
-#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>

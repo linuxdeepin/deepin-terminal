@@ -1,15 +1,10 @@
 #include "ut_termwidget_test.h"
 
-#define private public
 #include "service.h"
 #include "termwidget.h"
 #include "termwidgetpage.h"
 #include "qtermwidget.h"
 #include "TerminalDisplay.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -24,8 +19,7 @@ UT_TermWidget_Test::UT_TermWidget_Test()
 
 void UT_TermWidget_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
@@ -70,21 +64,19 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
     EXPECT_EQ(termWidget->enterSzCommand(), true);
 
     //设置透明度
-    for(qreal opacity=0.01; opacity <= 1.0; opacity += 0.01)
-    {
+    for (qreal opacity = 0.01; opacity <= 1.0; opacity += 0.01) {
         termWidget->setTermOpacity(opacity);
 #ifdef ENABLE_UI_TEST
-        QTest::qWait(10);
+        QTest::qWait(UT_WAIT_TIME);
 #endif
     }
 
     QStringList fontFamilyList;
     fontFamilyList << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
-              << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
-              << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
-              << "Noto Sans Mono CJK TC";
-    for(int i=0; i<fontFamilyList.size(); i++)
-    {
+                   << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
+                   << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
+                   << "Noto Sans Mono CJK TC";
+    for (int i = 0; i < fontFamilyList.size(); i++) {
         QString fontFamily = fontFamilyList.at(i);
         termWidget->setTermFont(fontFamily);
         QFont currFont = termWidget->getTerminalFont();
@@ -101,13 +93,12 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
 
     //字体大小大于20时界面提示符显示会有异常
     //设置字体大小时会不停刷日志：Using a variable-width font in the terminal.  This may cause performance degradation and display/alignment errors.
-    for(int fontSize=5; fontSize<=50; fontSize++)
-    {
+    for (int fontSize = 5; fontSize <= 50; fontSize++) {
         termWidget->setTermFontSize(fontSize);
         QFont currFont = termWidget->getTerminalFont();
         EXPECT_EQ(currFont.pointSize(), fontSize);
 #ifdef ENABLE_UI_TEST
-        QTest::qWait(100);
+        QTest::qWait(UT_WAIT_TIME);
 #endif
     }
 
@@ -149,8 +140,7 @@ TEST_F(UT_TermWidget_Test, getsetEncode)
                << "WINDOWS-1258" //<< "TCVN" << "VISCII"  /*越南语*/
                << "IBM850" << "ISO-8859-1" << "ISO-8859-15" << "x-ROMAN8" << "WINDOWS-1252"; /*西方国家*/
 
-    for(int i=0; i<encodeList.size(); i++)
-    {
+    for (int i = 0; i < encodeList.size(); i++) {
         QString encode = QString(encodeList.at(i));
         termWidget->setEncode(encode);
         EXPECT_EQ(termWidget->encode(), encode);
@@ -221,6 +211,20 @@ TEST_F(UT_TermWidget_Test, onTouchPadSignal)
     TermWidget *termWidget = currTermPage->m_currentTerm;
     termWidget->onTouchPadSignal("pinch", "in", 2);
     termWidget->onTouchPadSignal("pinch", "out", 2);
+}
+
+TEST_F(UT_TermWidget_Test, showFlowMessage)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    termWidget->showFlowMessage(true);
+    EXPECT_EQ(termWidget->m_flowMessage->isVisible(), true);
 }
 
 #endif

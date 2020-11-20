@@ -1,8 +1,6 @@
 #include "ut_termproperties_test.h"
 
-#define private public
 #include "termproperties.h"
-#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>

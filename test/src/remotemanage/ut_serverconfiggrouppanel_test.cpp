@@ -1,10 +1,8 @@
 #include "ut_serverconfiggrouppanel_test.h"
 
-#define private public
 #include "serverconfiggrouppanel.h"
 #include "service.h"
 #include "mainwindow.h"
-#undef public
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -19,8 +17,7 @@ UT_ServerConfigGroupPanel_Test::UT_ServerConfigGroupPanel_Test()
 
 void UT_ServerConfigGroupPanel_Test::SetUp()
 {
-    if (!Service::instance()->property("isServiceInit").toBool())
-    {
+    if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }

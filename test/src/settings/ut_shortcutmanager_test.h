@@ -4,7 +4,6 @@
 
 #include "ut_defines.h"
 
-#include <QObject>
 #include <gtest/gtest.h>
 
 class ShortcutManager;

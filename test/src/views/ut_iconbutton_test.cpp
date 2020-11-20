@@ -1,11 +1,6 @@
 #include "ut_iconbutton_test.h"
 
-#define private public
 #include "iconbutton.h"
-#undef private
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>

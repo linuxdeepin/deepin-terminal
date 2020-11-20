@@ -1,8 +1,7 @@
+
 #include "ut_terminputdialog_test.h"
 
-#define private public
 #include "terminputdialog.h"
-#undef private
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>

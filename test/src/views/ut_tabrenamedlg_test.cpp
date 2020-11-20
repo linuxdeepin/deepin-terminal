@@ -1,13 +1,15 @@
+
 #include "ut_tabrenamedlg_test.h"
 #include "mainwindow.h"
 
+#include <QLineEdit>
 
 TEST_F(Ut_TabRenameDlg_Test, TesSetText)
 {
     m_renameDlg->setText("first", "second");
 
-    LineEdit *normalLineEdit = m_renameDlg->m_normalWidget->findChild<LineEdit *>();
-    LineEdit *remoteLineEdit = m_renameDlg->m_remoteWidget->findChild<LineEdit *>();
+    QLineEdit *normalLineEdit = m_renameDlg->m_normalWidget->findChild<QLineEdit *>();
+    QLineEdit *remoteLineEdit = m_renameDlg->m_remoteWidget->findChild<QLineEdit *>();
 
     EXPECT_TRUE(normalLineEdit->text() == "first");
     EXPECT_TRUE(remoteLineEdit->text() == "second");
