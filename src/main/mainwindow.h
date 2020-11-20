@@ -295,6 +295,8 @@ public:
 
     // 切换窗口拉伸属性
     void switchEnableResize();
+    // 是否开启窗口拉伸属性
+    void switchEnableResize(bool isEnable);
 
 protected:
     // 初始化标题栏

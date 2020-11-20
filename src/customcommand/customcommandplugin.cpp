@@ -25,8 +25,13 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
         } else {
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，自定义界面使用不方便，将雷神窗口变大适应正常的自定义界面 Begin***************/
             if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < 220) {
+                //因为拉伸函数设置了FixSize，导致自定义界面弹出时死循环，然后崩溃的问题
+                QuakeWindow *quakeWindow = qobject_cast<QuakeWindow *>(m_mainWindow);
+                quakeWindow->switchEnableResize(true);
                 m_mainWindow->resize(m_mainWindow->width(), 220); //首先设置雷神界面的大小
                 m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);//重新打开自定义界面，当前流程结束
+                //窗口弹出后，重新判断雷神窗口是否需要有拉伸属性
+                quakeWindow->switchEnableResize();
                 return;
             }
             /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，自定义界面使用不方便，将雷神窗口变大适应正常的自定义界面 End***************/
