@@ -803,8 +803,13 @@ void TermWidgetPage::showSearchBar(int state)
     if (SearchBar_Show == state) {
         /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 Begin***************/
         if (m_MainWindow->isQuakeMode() && m_MainWindow->height() < LISTMINHEIGHT) {
+            //因为拉伸函数设置了FixSize，导致自定义界面弹出时死循环，然后崩溃的问题
+            QuakeWindow *quakeWindow = qobject_cast<QuakeWindow *>(m_MainWindow);
+            quakeWindow->switchEnableResize(true);
             m_MainWindow->resize(m_MainWindow->width(), LISTMINHEIGHT); //首先设置雷神界面的大小
             m_MainWindow->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);//重新打开查询界面，当前流程结束
+            //窗口弹出后，重新判断雷神窗口是否需要有拉伸属性
+            quakeWindow->switchEnableResize();
             return;
         }
         /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，查询界面使用不方便，将雷神窗口变大适应正常的查询界面 End***************/

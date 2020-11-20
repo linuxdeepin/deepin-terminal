@@ -539,6 +539,8 @@ public:
     void hideQuakeWindow();
     // 切换窗口拉伸属性
     inline void switchEnableResize();
+    // 是否开启窗口拉伸属性
+    void switchEnableResize(bool isEnable);
 
     /******** Add by ut001000 renfeixiang 2020-11-16:增加 雷神窗口动画效果函数 Begin***************/
     //设置雷神动画效果是否正在执行

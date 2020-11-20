@@ -3663,8 +3663,21 @@ void QuakeWindow::switchEnableResize()
 {
     // 如果(桌面光标Y坐标)>(雷神窗口Y坐标+雷神高度的1/2),则启用拉伸属性.否则禁用拉伸属性
     // 此方法dtk已经标记废弃
-    //    setEnableSystemResize(QCursor::pos().y() > pos().y() + height() / 2);
-    if (QCursor::pos().y() > pos().y() + height() / 2) {
+    switchEnableResize(QCursor::pos().y() > pos().y() + height() / 2);
+}
+
+/*******************************************************************************
+ 1. @函数:    switchEnableResize
+ 2. @作者:    ut001121 张猛
+ 3. @日期:    2020-06-06
+ 4. @说明:    是否开放窗口拉伸属性
+ 参数：
+1）true 可以拉伸
+2）false 不可以拉伸
+*******************************************************************************/
+void QuakeWindow::switchEnableResize(bool isEnable)
+{
+    if (isEnable) {
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
         QDesktopWidget *desktopWidget = QApplication::desktop();
         QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
