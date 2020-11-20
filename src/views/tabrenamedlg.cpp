@@ -19,7 +19,6 @@ TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
     initUi();
     initContentWidget();
     initConnections();
-    m_confirmButton->installEventFilter(this);
 }
 
 /*******************************************************************************
@@ -56,7 +55,7 @@ void TabRenameDlg::initUi()
 
     m_closeButton = new DWindowCloseButton(this);
     m_closeButton->setObjectName("closeButton");//Add by ut001000 renfeixiang 2020-08-13
-    m_closeButton->setFocusPolicy(Qt::NoFocus);
+    m_closeButton->setFocusPolicy(Qt::TabFocus);
     m_closeButton->setIconSize(QSize(50, 50));
 
     m_titleText = new DLabel(this);
@@ -145,32 +144,36 @@ void TabRenameDlg::setRemoteLineEditText(const QString &text)
 
 
 /*******************************************************************************
- 1. @函数:    eventFilter
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-31
- 4. @说明:    事件过滤器，解决重命名窗口Tab键盘交互问题
-*******************************************************************************/
-bool TabRenameDlg::eventFilter(QObject *obj, QEvent *event)
-{
-    if (event->type() == QEvent::KeyPress && obj == m_confirmButton) {
-        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_Tab) {
-            m_closeButton->setFocus(Qt::TabFocusReason);
-            return true;
-        }
-    }
-    return false;
-}
-
-/*******************************************************************************
  1. @函数:    getRemoteTabTitleEdit
  2. @作者:    ut000442 赵公强
  3. @日期:    2020-11-4
  4. @说明:    获取远程重命名控件接口
 *******************************************************************************/
-TabRenameWidget *TabRenameDlg::getRemoteTabTitleEdit() const
+QLineEdit *TabRenameDlg::getRemoteTabTitleEdit() const
 {
-    return m_remoteTabTitleEdit;
+    return m_remoteTabTitleEdit->getInputedit()->lineEdit();
+}
+
+/*******************************************************************************
+ 1. @函数:    setFocusOnEdit
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-20
+ 4. @说明:    将焦点设置在输入框内
+*******************************************************************************/
+void TabRenameDlg::setFocusOnEdit(bool isRemote)
+{
+    QLineEdit *lineEdit = nullptr;
+    if (isRemote) {
+        // 连接远程时，设置需要操作的输入框为远程输入框
+        lineEdit = getRemoteTabTitleEdit();
+    } else {
+        // 设置需要操作的输入框为非远程输入框
+        lineEdit = getTabTitleEdit();
+    }
+
+    // 设置焦点，全选输入框的内容
+    lineEdit->setFocus();
+    lineEdit->selectAll();
 }
 
 /*******************************************************************************
@@ -179,9 +182,9 @@ TabRenameWidget *TabRenameDlg::getRemoteTabTitleEdit() const
  3. @日期:    2020-11-4
  4. @说明:    获取普通重命名控件接口
 *******************************************************************************/
-TabRenameWidget *TabRenameDlg::getTabTitleEdit() const
+QLineEdit *TabRenameDlg::getTabTitleEdit() const
 {
-    return m_tabTitleEdit;
+    return m_tabTitleEdit->getInputedit()->lineEdit();
 }
 
 /*******************************************************************************
@@ -229,8 +232,9 @@ void TabRenameDlg::initConnections()
     });
 
     connect(m_confirmButton, &DSuggestButton::clicked, this, [ = ] {
-        QString tabTitleFormat = m_tabTitleEdit->getInputedit()->lineEdit()->text();
-        QString remoteTabTitleFormat = m_remoteTabTitleEdit->getInputedit()->lineEdit()->text();
+        qDebug() << "confirm rename title";
+        QString tabTitleFormat = getTabTitleEdit()->text();
+        QString remoteTabTitleFormat = getRemoteTabTitleEdit()->text();
         emit tabTitleFormatRename(tabTitleFormat, remoteTabTitleFormat);
         close();
     });

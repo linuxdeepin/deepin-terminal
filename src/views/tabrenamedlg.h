@@ -39,14 +39,14 @@ public:
     void setNormalLineEditText(const QString &text);
     void setRemoteLineEditText(const QString &text);
 
-    TabRenameWidget *getTabTitleEdit() const;
-    TabRenameWidget *getRemoteTabTitleEdit() const;
+    QLineEdit *getTabTitleEdit() const;
+    QLineEdit *getRemoteTabTitleEdit() const;
+
+    // 设置焦点
+    void setFocusOnEdit(bool isRemote);
 
 Q_SIGNALS:
     void tabTitleFormatRename(const QString &tabTitleFormat, const QString &remoteTabTitleFormat);
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event)Q_DECL_OVERRIDE;
 
 private:
     QWidget *m_titleBar = nullptr;
