@@ -129,28 +129,28 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="312"/>
-        <location filename="../src/main/mainwindow.cpp" line="340"/>
+        <location filename="../src/main/mainwindow.cpp" line="326"/>
+        <location filename="../src/main/mainwindow.cpp" line="354"/>
         <source>New window</source>
         <translation>Dritare e re</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="367"/>
+        <location filename="../src/main/mainwindow.cpp" line="381"/>
         <source>Settings</source>
         <translation>Rregullime</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="800"/>
+        <location filename="../src/main/mainwindow.cpp" line="925"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="802"/>
+        <location filename="../src/main/mainwindow.cpp" line="927"/>
         <source>Close</source>
         <translation>Mbylle</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2018"/>
+        <location filename="../src/main/mainwindow.cpp" line="2181"/>
         <source>Type path to download file</source>
         <translation>Shtypni shteg për shkarkim kartele</translation>
     </message>
@@ -258,14 +258,14 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="70"/>
-        <location filename="../src/main/mainwindow.cpp" line="1836"/>
+        <location filename="../src/main/mainwindow.cpp" line="1999"/>
         <source>Others</source>
         <translation>Të tjera</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="72"/>
         <location filename="../src/main/terminalapplication.cpp" line="36"/>
-        <location filename="../src/main/mainwindow.cpp" line="1834"/>
+        <location filename="../src/main/mainwindow.cpp" line="1997"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
@@ -276,61 +276,61 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="76"/>
-        <location filename="../src/main/mainwindow.cpp" line="1904"/>
+        <location filename="../src/main/mainwindow.cpp" line="2067"/>
         <source>Custom commands</source>
         <translation>Urdhra vetjakë</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="78"/>
-        <location filename="../src/main/mainwindow.cpp" line="1904"/>
+        <location filename="../src/main/mainwindow.cpp" line="2067"/>
         <source>Display shortcuts</source>
         <translation>Shfaq shkurtore</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="80"/>
-        <location filename="../src/main/mainwindow.cpp" line="1904"/>
+        <location filename="../src/main/mainwindow.cpp" line="2067"/>
         <source>Remote management</source>
         <translation>Administrim së largëti</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="114"/>
-        <location filename="../src/main/mainwindow.cpp" line="1884"/>
+        <location filename="../src/main/mainwindow.cpp" line="2047"/>
         <source>New tab</source>
         <translation>Skedë e re</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="116"/>
-        <location filename="../src/main/mainwindow.cpp" line="1884"/>
+        <location filename="../src/main/mainwindow.cpp" line="2047"/>
         <source>Next tab</source>
         <translation>Skeda pasuese</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="118"/>
-        <location filename="../src/main/mainwindow.cpp" line="1884"/>
+        <location filename="../src/main/mainwindow.cpp" line="2047"/>
         <source>Previous tab</source>
         <translation>Skeda e mëparshme</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="120"/>
-        <location filename="../src/main/mainwindow.cpp" line="1886"/>
+        <location filename="../src/main/mainwindow.cpp" line="2049"/>
         <source>Select left workspace</source>
         <translation>Përzgjidhni hapësirën e punës majtas</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="122"/>
-        <location filename="../src/main/mainwindow.cpp" line="1885"/>
+        <location filename="../src/main/mainwindow.cpp" line="2048"/>
         <source>Select lower workspace</source>
         <translation>Përzgjidhni hapësirën e poshtme të punës</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="124"/>
-        <location filename="../src/main/mainwindow.cpp" line="1886"/>
+        <location filename="../src/main/mainwindow.cpp" line="2049"/>
         <source>Select right workspace</source>
         <translation>Përzgjidhni hapësirën e punës djathtas</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="126"/>
-        <location filename="../src/main/mainwindow.cpp" line="1885"/>
+        <location filename="../src/main/mainwindow.cpp" line="2048"/>
         <source>Select upper workspace</source>
         <translation>Përzgjidhni hapësirën e sipërme të punës</translation>
     </message>
@@ -341,88 +341,93 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="138"/>
-        <location filename="../src/main/mainwindow.cpp" line="1887"/>
+        <location filename="../src/main/mainwindow.cpp" line="2050"/>
         <source>Go to tab 1</source>
         <translation>Shko te skeda 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="140"/>
-        <location filename="../src/main/mainwindow.cpp" line="1887"/>
+        <location filename="../src/main/mainwindow.cpp" line="2050"/>
         <source>Go to tab 2</source>
         <translation>Kalo te skeda 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="142"/>
-        <location filename="../src/main/mainwindow.cpp" line="1887"/>
+        <location filename="../src/main/mainwindow.cpp" line="2050"/>
         <source>Go to tab 3</source>
         <translation>Kalo te skeda 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="144"/>
-        <location filename="../src/main/mainwindow.cpp" line="1888"/>
+        <location filename="../src/main/mainwindow.cpp" line="2051"/>
         <source>Go to tab 4</source>
         <translation>Kalo te skeda 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="146"/>
-        <location filename="../src/main/mainwindow.cpp" line="1888"/>
+        <location filename="../src/main/mainwindow.cpp" line="2051"/>
         <source>Go to tab 5</source>
         <translation>Kalo te skeda 5</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="148"/>
-        <location filename="../src/main/mainwindow.cpp" line="1888"/>
+        <location filename="../src/main/mainwindow.cpp" line="2051"/>
         <source>Go to tab 6</source>
         <translation>Kalo te skeda 6</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="150"/>
-        <location filename="../src/main/mainwindow.cpp" line="1889"/>
+        <location filename="../src/main/mainwindow.cpp" line="2052"/>
         <source>Go to tab 7</source>
         <translation>Kalo te skeda 7</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="152"/>
-        <location filename="../src/main/mainwindow.cpp" line="1889"/>
+        <location filename="../src/main/mainwindow.cpp" line="2052"/>
         <source>Go to tab 8</source>
         <translation>Kalo te skeda 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="154"/>
-        <location filename="../src/main/mainwindow.cpp" line="1889"/>
+        <location filename="../src/main/mainwindow.cpp" line="2052"/>
         <source>Go to tab 9</source>
         <translation>Kalo te skeda 9</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="156"/>
+        <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
+        <translation>Çaktivizo kontroll rrjedhe duke përdorur Ctrl+S, Ctrl+Q</translation>
+    </message>
+    <message>
         <location filename="../src/views/terminputdialog.cpp" line="204"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="252"/>
-        <location filename="../src/views/tabbar.cpp" line="546"/>
+        <location filename="../src/views/tabbar.cpp" line="590"/>
         <location filename="../src/settings/settings_translation.cpp" line="82"/>
-        <location filename="../src/main/mainwindow.cpp" line="1904"/>
+        <location filename="../src/main/mainwindow.cpp" line="2067"/>
         <source>Rename title</source>
         <translation>Titull riemërtimi</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="84"/>
-        <location filename="../src/main/mainwindow.cpp" line="1904"/>
+        <location filename="../src/main/mainwindow.cpp" line="2067"/>
         <source>Fullscreen</source>
         <translation>Sa krejt ekrani</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="86"/>
-        <location filename="../src/main/mainwindow.cpp" line="1869"/>
+        <location filename="../src/main/mainwindow.cpp" line="2032"/>
         <source>Copy</source>
         <translation>Kopjoje</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="88"/>
-        <location filename="../src/main/mainwindow.cpp" line="1869"/>
+        <location filename="../src/main/mainwindow.cpp" line="2032"/>
         <source>Default size</source>
         <translation>Madhësi parazgjedhje</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="90"/>
-        <location filename="../src/main/mainwindow.cpp" line="1869"/>
+        <location filename="../src/main/mainwindow.cpp" line="2032"/>
         <source>Paste</source>
         <translation>Ngjite</translation>
     </message>
@@ -433,7 +438,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="94"/>
-        <location filename="../src/main/mainwindow.cpp" line="1869"/>
+        <location filename="../src/main/mainwindow.cpp" line="2032"/>
         <source>Select all</source>
         <translation>Përzgjidhi krejt</translation>
     </message>
@@ -449,13 +454,13 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="100"/>
-        <location filename="../src/main/mainwindow.cpp" line="1869"/>
+        <location filename="../src/main/mainwindow.cpp" line="2032"/>
         <source>Zoom in</source>
         <translation>Zmadhoje</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="102"/>
-        <location filename="../src/main/mainwindow.cpp" line="1869"/>
+        <location filename="../src/main/mainwindow.cpp" line="2032"/>
         <source>Zoom out</source>
         <translation>Zvogëloje</translation>
     </message>
@@ -465,11 +470,16 @@
         <translation>Mbylli dritaret e tjera</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="433"/>
+        <location filename="../src/views/termwidget.cpp" line="439"/>
         <location filename="../src/settings/settings_translation.cpp" line="106"/>
-        <location filename="../src/main/mainwindow.cpp" line="1886"/>
+        <location filename="../src/main/mainwindow.cpp" line="2049"/>
         <source>Close other workspaces</source>
         <translation>Mbyll hapësira të tjera pune</translation>
+    </message>
+    <message>
+        <location filename="../src/views/termwidget.cpp" line="1331"/>
+        <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
+        <translation>Shfaqja e përfundimit është pezulluar nga shtypja e Ctrl+S. Shtypni Ctrl+Q që të vazhdojë.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="108"/>
@@ -477,27 +487,27 @@
         <translation>Mbylle dritaren</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="428"/>
+        <location filename="../src/views/termwidget.cpp" line="434"/>
         <location filename="../src/settings/settings_translation.cpp" line="110"/>
-        <location filename="../src/main/mainwindow.cpp" line="1886"/>
+        <location filename="../src/main/mainwindow.cpp" line="2049"/>
         <source>Close workspace</source>
         <translation>Mbylle hapësirën e punës</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="112"/>
-        <location filename="../src/main/mainwindow.cpp" line="1885"/>
+        <location filename="../src/main/mainwindow.cpp" line="2048"/>
         <source>Horizontal split</source>
         <translation>Ndarje horizontale</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="128"/>
-        <location filename="../src/main/mainwindow.cpp" line="1885"/>
+        <location filename="../src/main/mainwindow.cpp" line="2048"/>
         <source>Vertical split</source>
         <translation>Ndarje vertikale</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="130"/>
-        <location filename="../src/main/mainwindow.cpp" line="1869"/>
+        <location filename="../src/main/mainwindow.cpp" line="2032"/>
         <source>Find</source>
         <translation>Gjej</translation>
     </message>
@@ -530,29 +540,29 @@
         <translation>Terminali është një emulues i thelluar terminali, me hapësira pune, dritare të shumta, administrim së largëti, mënyrë Quake dhe veçori të tjera.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1832"/>
+        <location filename="../src/main/mainwindow.cpp" line="1995"/>
         <source>Tabs</source>
         <translation>Skeda</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="540"/>
-        <location filename="../src/main/mainwindow.cpp" line="1884"/>
+        <location filename="../src/views/tabbar.cpp" line="584"/>
+        <location filename="../src/main/mainwindow.cpp" line="2047"/>
         <source>Close tab</source>
         <translation>Mbylle skedën</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1885"/>
+        <location filename="../src/main/mainwindow.cpp" line="2048"/>
         <source>Select tab</source>
         <translation>Përzgjidhni skedë</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1953"/>
+        <location filename="../src/main/mainwindow.cpp" line="2116"/>
         <location filename="../src/common/utils.cpp" line="337"/>
         <source>Select file to upload</source>
         <translation>Përzgjidhni kartelë për ngarkim</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1980"/>
+        <location filename="../src/main/mainwindow.cpp" line="2143"/>
         <location filename="../src/common/utils.cpp" line="342"/>
         <source>Upload</source>
         <translation>Ngarkim</translation>
@@ -604,7 +614,7 @@
         <translation>Ka ende procese që xhirojnë në këtë dritare. Mbyllja e dritares do t’i asgjësojë krejt ata.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1998"/>
+        <location filename="../src/main/mainwindow.cpp" line="2161"/>
         <location filename="../src/common/utils.cpp" line="311"/>
         <source>Select a directory to save the file</source>
         <translation>Përzgjidhni një drejtori ku të ruhet kartela</translation>
@@ -676,7 +686,7 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="642"/>
-        <location filename="../src/main/mainwindow.cpp" line="2004"/>
+        <location filename="../src/main/mainwindow.cpp" line="2167"/>
         <location filename="../src/common/utils.cpp" line="317"/>
         <source>Select</source>
         <translation>Përzgjidhe</translation>
@@ -705,8 +715,8 @@
         <translation>Format titulli skede të largët</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="543"/>
-        <location filename="../src/main/mainwindow.cpp" line="1884"/>
+        <location filename="../src/views/tabbar.cpp" line="587"/>
+        <location filename="../src/main/mainwindow.cpp" line="2047"/>
         <source>Close other tabs</source>
         <translation>Mbylli skedat e tjera</translation>
     </message>
@@ -722,12 +732,12 @@
 <context>
     <name>RemoteManagementPlugin</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="94"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="93"/>
         <source>Remote management</source>
         <translation>Administrim së largëti</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="237"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="236"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>Përpara se të djathtasklikoni për ngarkim dhe shkarkim kartelash, sigurohuni që urdhrat rz dhe sz janë të instaluar te shërbyesi.</translation>
     </message>
@@ -939,15 +949,15 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="390"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="399"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="391"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="400"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>Shkurtorja %1 është e pavlefshme,</translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="406"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="413"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="419"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="407"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="414"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="420"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>Shkurtorja %1 është tashmë në përdorim,</translation>
     </message>
@@ -1024,90 +1034,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="352"/>
+        <location filename="../src/views/termwidget.cpp" line="354"/>
         <source>Copy</source>
         <translation>Kopjoje</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="355"/>
+        <location filename="../src/views/termwidget.cpp" line="357"/>
         <source>Paste</source>
         <translation>Ngjite</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="361"/>
+        <location filename="../src/views/termwidget.cpp" line="363"/>
         <source>Open</source>
         <translation>Hap</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="372"/>
+        <location filename="../src/views/termwidget.cpp" line="374"/>
         <source>Open in file manager</source>
         <translation>Hape në përgjegjës kartelash</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="406"/>
-        <location filename="../src/views/termwidget.cpp" line="519"/>
+        <location filename="../src/views/termwidget.cpp" line="408"/>
+        <location filename="../src/views/termwidget.cpp" line="525"/>
         <source>Horizontal split</source>
         <translation>Ndarje horizontale</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="417"/>
-        <location filename="../src/views/termwidget.cpp" line="519"/>
+        <location filename="../src/views/termwidget.cpp" line="421"/>
+        <location filename="../src/views/termwidget.cpp" line="525"/>
         <source>Vertical split</source>
         <translation>Ndarje vertikale</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="440"/>
-        <location filename="../src/views/termwidget.cpp" line="519"/>
+        <location filename="../src/views/termwidget.cpp" line="446"/>
+        <location filename="../src/views/termwidget.cpp" line="525"/>
         <source>New tab</source>
         <translation>Skedë e re</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="449"/>
+        <location filename="../src/views/termwidget.cpp" line="455"/>
         <source>Exit fullscreen</source>
         <translation>Dil nga mënyra sa krejt ekrani</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="453"/>
+        <location filename="../src/views/termwidget.cpp" line="459"/>
         <source>Fullscreen</source>
         <translation>Sa krejt ekrani</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="459"/>
+        <location filename="../src/views/termwidget.cpp" line="465"/>
         <source>Find</source>
         <translation>Gjej</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="465"/>
+        <location filename="../src/views/termwidget.cpp" line="471"/>
         <source>Search</source>
         <translation>Kërko</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="487"/>
+        <location filename="../src/views/termwidget.cpp" line="493"/>
         <source>Encoding</source>
         <translation>Kodim</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="491"/>
+        <location filename="../src/views/termwidget.cpp" line="497"/>
         <source>Custom commands</source>
         <translation>Urdhra vetjakë</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="495"/>
+        <location filename="../src/views/termwidget.cpp" line="501"/>
         <source>Remote management</source>
         <translation>Administrim së largëti</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="501"/>
+        <location filename="../src/views/termwidget.cpp" line="507"/>
         <source>Upload file</source>
         <translation>Ngarkoni kartelë</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="504"/>
+        <location filename="../src/views/termwidget.cpp" line="510"/>
         <source>Download file</source>
         <translation>Shkarkoje kartelën</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="511"/>
+        <location filename="../src/views/termwidget.cpp" line="517"/>
         <source>Settings</source>
         <translation>Rregullime</translation>
     </message>
