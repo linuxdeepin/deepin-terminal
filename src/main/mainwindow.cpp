@@ -1758,10 +1758,16 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
                 return true;
             }
             assert(term);
-            term->showFlowMessage(true);
+            if(term->isActiveWindow()){
+                term->showFlowMessage(true);
+            }
         }
+
         if((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_Q)){
-            term->showFlowMessage(false);
+            assert(term);
+            if(term->isActiveWindow()){
+                term->showFlowMessage(false);
+            }
         }
     }
 
