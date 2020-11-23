@@ -723,6 +723,9 @@ void MainWindow::removeTermWidgetPage(const QString &identifier, bool isDelete)
     // 当所有tab标签页都关闭时，关闭整个MainWindow窗口
     if (m_termWidgetPageMap.isEmpty()) {
         qDebug() << "removeTermWidgetPage mainwindow close";
+        /******** Modify by ut000438 王亮 2020-11-23:fix bug 55552:拖动标签页移动窗口过程中异常最大化 ***************/
+        //当拖动标签过程中销毁窗口时，不保存销毁的窗口大小
+        m_IfUseLastSize = false;
         close();
     }
 }
