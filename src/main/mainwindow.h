@@ -538,7 +538,7 @@ public:
     // 隐藏雷神终端
     void hideQuakeWindow();
     // 切换窗口拉伸属性
-    inline void switchEnableResize();
+    void switchEnableResize();
     // 是否开启窗口拉伸属性
     void switchEnableResize(bool isEnable);
 
