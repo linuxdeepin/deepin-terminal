@@ -108,7 +108,18 @@ TEST_F(UT_KeyboardTranslator_Test, defaultTranslator)
     KeyboardTranslatorManager::instance()->defaultTranslator();
 }
 
-TEST_F(UT_KeyboardTranslator_Test, findAddWriteEntryTest)
+TEST_F(UT_KeyboardTranslator_Test, findEntryTest)
+{
+    KeyboardTranslator *translator = new KeyboardTranslator(QLatin1String("default"));
+
+    translator->findEntry(Qt::Key_Delete,
+                          Qt::NoModifier,
+                          KeyboardTranslator::NoState);
+
+    delete translator;
+}
+
+TEST_F(UT_KeyboardTranslator_Test, addEntryTest)
 {
     KeyboardTranslator *translator = new KeyboardTranslator(QLatin1String("default"));
 
@@ -132,23 +143,30 @@ TEST_F(UT_KeyboardTranslator_Test, findAddWriteEntryTest)
     newEntry.setCommand(command);
     translator->addEntry(entry);
 
-    QDir dir("/usr/share/terminalwidget5/kb-layouts");
+    delete translator;
+}
+
+TEST_F(UT_KeyboardTranslator_Test, writeEntryTest)
+{
+    KeyboardTranslator *translator = new KeyboardTranslator(QLatin1String("default"));
+
+    QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
     filters << QLatin1String("*.keytab");
 
     QStringList list = dir.entryList(filters);
-    QString path = list.first();
-    EXPECT_EQ(!path.isEmpty(), true);
+    if (list.size() > 0 && translator->entries().size() > 0) {
+        QString path = list.first();
 
-    QFile destination(path);
-    bool isOpenSuccess = destination.open(QIODevice::WriteOnly | QIODevice::Text);
-    EXPECT_EQ(isOpenSuccess, true);
+        QFile destination(path);
+        bool isOpenSuccess = destination.open(QIODevice::WriteOnly | QIODevice::Text);
 
-    KeyboardTranslatorWriter writer(&destination);
+        KeyboardTranslatorWriter writer(&destination);
 
-    QListIterator<KeyboardTranslator::Entry> iter(translator->entries());
-    while (iter.hasNext()) {
-        writer.writeEntry(iter.next());
+        QListIterator<KeyboardTranslator::Entry> iter(translator->entries());
+        while (iter.hasNext()) {
+            writer.writeEntry(iter.next());
+        }
     }
 
     delete translator;
@@ -156,163 +174,173 @@ TEST_F(UT_KeyboardTranslator_Test, findAddWriteEntryTest)
 
 TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorReaderTest)
 {
-    QDir dir("/usr/share/terminalwidget5/kb-layouts");
+    QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
     filters << QLatin1String("*.keytab");
 
     QStringList list = dir.entryList(filters);
-    QString path = list.first();
+    if (list.size() > 0) {
+        QString path = list.first();
 
-    QFile source(path);
-    source.open(QIODevice::ReadOnly);
+        QFile source(path);
+        source.open(QIODevice::ReadOnly);
 
-    QFileInfo keyTabFileInfo(path);
+        QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+        KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
-    KeyboardTranslatorReader reader(&source);
-    while (reader.hasNextEntry()) {
-        translator->addEntry(reader.nextEntry());
+        KeyboardTranslatorReader reader(&source);
+        while (reader.hasNextEntry()) {
+            translator->addEntry(reader.nextEntry());
+        }
+
+        source.close();
+
+        delete translator;
     }
-
-    source.close();
-
-    delete translator;
 }
 
 TEST_F(UT_KeyboardTranslator_Test, createEntryTest)
 {
-    QDir dir("/usr/share/terminalwidget5/kb-layouts");
+    QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
     filters << QLatin1String("*.keytab");
 
     QStringList list = dir.entryList(filters);
-    QString path = list.first();
+    if (list.size() > 0) {
+        QString path = list.first();
 
-    QFile source(path);
-    source.open(QIODevice::ReadOnly);
+        QFile source(path);
+        source.open(QIODevice::ReadOnly);
 
-    QFileInfo keyTabFileInfo(path);
+        QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+        KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
-    //测试KeyboardTranslatorReader类的createEntry
-    KeyboardTranslatorReader reader(&source);
-    reader.createEntry("", "");
+        //测试KeyboardTranslatorReader类的createEntry
+        KeyboardTranslatorReader reader(&source);
+        reader.createEntry("", "");
 
-    source.close();
-    delete translator;
+        source.close();
+        delete translator;
+    }
 }
 
 TEST_F(UT_KeyboardTranslator_Test, parseAsStateFlagTest)
 {
-    QDir dir("/usr/share/terminalwidget5/kb-layouts");
+    QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
     filters << QLatin1String("*.keytab");
 
     QStringList list = dir.entryList(filters);
-    QString path = list.first();
+    if (list.size() > 0) {
+        QString path = list.first();
 
-    QFile source(path);
-    source.open(QIODevice::ReadOnly);
+        QFile source(path);
+        source.open(QIODevice::ReadOnly);
 
-    QFileInfo keyTabFileInfo(path);
+        QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+        KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
-    KeyboardTranslatorReader reader(&source);
+        KeyboardTranslatorReader reader(&source);
 
-    KeyboardTranslator::State state1 = KeyboardTranslator::CursorKeysState;
-    KeyboardTranslator::State state2 = KeyboardTranslator::AnsiState;
-    KeyboardTranslator::State state3 = KeyboardTranslator::NewLineState;
-    KeyboardTranslator::State state4 = KeyboardTranslator::CursorKeysState;
-    KeyboardTranslator::State state5 = KeyboardTranslator::AnyModifierState;
-    KeyboardTranslator::State state6 = KeyboardTranslator::ApplicationKeypadState;
+        KeyboardTranslator::State state1 = KeyboardTranslator::CursorKeysState;
+        KeyboardTranslator::State state2 = KeyboardTranslator::AnsiState;
+        KeyboardTranslator::State state3 = KeyboardTranslator::NewLineState;
+        KeyboardTranslator::State state4 = KeyboardTranslator::CursorKeysState;
+        KeyboardTranslator::State state5 = KeyboardTranslator::AnyModifierState;
+        KeyboardTranslator::State state6 = KeyboardTranslator::ApplicationKeypadState;
 
-    //测试KeyboardTranslatorReader类的parseAsStateFlag
-    reader.parseAsStateFlag("Ctrl+C", state1);
-    reader.parseAsStateFlag("Ctrl+C", state2);
-    reader.parseAsStateFlag("Ctrl+C", state3);
-    reader.parseAsStateFlag("Ctrl+C", state4);
-    reader.parseAsStateFlag("Ctrl+C", state5);
-    reader.parseAsStateFlag("Ctrl+C", state6);
+        //测试KeyboardTranslatorReader类的parseAsStateFlag
+        reader.parseAsStateFlag("Ctrl+C", state1);
+        reader.parseAsStateFlag("Ctrl+C", state2);
+        reader.parseAsStateFlag("Ctrl+C", state3);
+        reader.parseAsStateFlag("Ctrl+C", state4);
+        reader.parseAsStateFlag("Ctrl+C", state5);
+        reader.parseAsStateFlag("Ctrl+C", state6);
 
-    source.close();
-    delete translator;
+        source.close();
+        delete translator;
+    }
 }
 
 
 TEST_F(UT_KeyboardTranslator_Test, parseAsModifierTest)
 {
-    QDir dir("/usr/share/terminalwidget5/kb-layouts");
+    QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
     filters << QLatin1String("*.keytab");
 
     QStringList list = dir.entryList(filters);
-    QString path = list.first();
+    if (list.size() > 0) {
+        QString path = list.first();
 
-    QFile source(path);
-    source.open(QIODevice::ReadOnly);
+        QFile source(path);
+        source.open(QIODevice::ReadOnly);
 
-    QFileInfo keyTabFileInfo(path);
+        QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+        KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
-    KeyboardTranslatorReader reader(&source);
-    Qt::KeyboardModifier modifyer1 = Qt::ShiftModifier;
-    Qt::KeyboardModifier modifyer2 = Qt::ControlModifier;
-    Qt::KeyboardModifier modifyer3 = Qt::AltModifier;
-    Qt::KeyboardModifier modifyer4 = Qt::MetaModifier;
-    Qt::KeyboardModifier modifyer5 = Qt::KeypadModifier;
-    Qt::KeyboardModifier modifyer6 = Qt::NoModifier;
+        KeyboardTranslatorReader reader(&source);
+        Qt::KeyboardModifier modifyer1 = Qt::ShiftModifier;
+        Qt::KeyboardModifier modifyer2 = Qt::ControlModifier;
+        Qt::KeyboardModifier modifyer3 = Qt::AltModifier;
+        Qt::KeyboardModifier modifyer4 = Qt::MetaModifier;
+        Qt::KeyboardModifier modifyer5 = Qt::KeypadModifier;
+        Qt::KeyboardModifier modifyer6 = Qt::NoModifier;
 
-    //测试KeyboardTranslatorReader类的parseAsModifier
-    reader.parseAsModifier("Ctrl+A", modifyer1);
-    reader.parseAsModifier("Ctrl+B", modifyer2);
-    reader.parseAsModifier("Ctrl+C", modifyer3);
-    reader.parseAsModifier("Ctrl+D", modifyer4);
-    reader.parseAsModifier("Ctrl+E", modifyer5);
-    reader.parseAsModifier("Ctrl+F", modifyer6);
+        //测试KeyboardTranslatorReader类的parseAsModifier
+        reader.parseAsModifier("Ctrl+A", modifyer1);
+        reader.parseAsModifier("Ctrl+B", modifyer2);
+        reader.parseAsModifier("Ctrl+C", modifyer3);
+        reader.parseAsModifier("Ctrl+D", modifyer4);
+        reader.parseAsModifier("Ctrl+E", modifyer5);
+        reader.parseAsModifier("Ctrl+F", modifyer6);
 
-    source.close();
-    delete translator;
+        source.close();
+        delete translator;
+    }
 }
 
 TEST_F(UT_KeyboardTranslator_Test, decodeSequenceTest)
 {
-    QDir dir("/usr/share/terminalwidget5/kb-layouts");
+    QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
     filters << QLatin1String("*.keytab");
 
     QStringList list = dir.entryList(filters);
-    QString path = list.first();
+    if (list.size() > 0) {
+        QString path = list.first();
 
-    QFile source(path);
-    source.open(QIODevice::ReadOnly);
+        QFile source(path);
+        source.open(QIODevice::ReadOnly);
 
-    QFileInfo keyTabFileInfo(path);
+        QFileInfo keyTabFileInfo(path);
 
-    KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
+        KeyboardTranslator *translator = new KeyboardTranslator(keyTabFileInfo.baseName());
 
-    //测试KeyboardTranslatorReader类的decodeSequence
-    KeyboardTranslatorReader reader(&source);
+        //测试KeyboardTranslatorReader类的decodeSequence
+        KeyboardTranslatorReader reader(&source);
 
-    KeyboardTranslator::States flags = KeyboardTranslator::NoState;
-    KeyboardTranslator::States flagMask = KeyboardTranslator::NoState;
-    Qt::KeyboardModifiers modifiers = Qt::NoModifier;
-    Qt::KeyboardModifiers modifierMask = Qt::NoModifier;
+        KeyboardTranslator::States flags = KeyboardTranslator::NoState;
+        KeyboardTranslator::States flagMask = KeyboardTranslator::NoState;
+        Qt::KeyboardModifiers modifiers = Qt::NoModifier;
+        Qt::KeyboardModifiers modifierMask = Qt::NoModifier;
 
-    int keyCode = Qt::Key_unknown;
+        int keyCode = Qt::Key_unknown;
 
-    reader.decodeSequence("abcdefghijklmn",
-                          keyCode,
-                          modifiers,
-                          modifierMask,
-                          flags,
-                          flagMask);
+        reader.decodeSequence("abcdefghijklmn",
+                              keyCode,
+                              modifiers,
+                              modifierMask,
+                              flags,
+                              flagMask);
 
-    source.close();
-    delete translator;
+        source.close();
+        delete translator;
+    }
 }
 
 TEST_F(UT_KeyboardTranslator_Test, unescapeTest)

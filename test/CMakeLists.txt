@@ -22,6 +22,7 @@ include_directories("src/encodeplugin")
 include_directories("src/remotemanage")
 include_directories("src/views")
 include_directories("src/main")
+include_directories("src/3rdparty/terminalwidget/lib/")
 
 FILE(GLOB allSource
     ../src/common/*.cpp
@@ -121,7 +122,7 @@ target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
                                                         ${GOBJECT_INCLUDE_DIRS}
                                                         ${LIBSECRET_INCLUDE_DIRS})
 
-target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} terminalwidget5 Qt5::Test ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} -lpthread -lm)
+target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} Qt5::Test ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} -lpthread -lm)
 
 #------------------------------ 创建'make test'指令---------------------------------------
 add_custom_target(test

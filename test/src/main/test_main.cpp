@@ -13,7 +13,7 @@ QT_END_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-//    QApplication app(argc, argv);
+    qputenv("QT_QPA_PLATFORM", "offscreen");
     TerminalApplication app(argc, argv);
 
     QTEST_DISABLE_KEYPAD_NAVIGATION
@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
     int ret = RUN_ALL_TESTS();
 
 #ifdef ENABLE_UI_TEST
-//    app.exec();
     QTest::qExec(&app, argc, argv);
 #endif
 
