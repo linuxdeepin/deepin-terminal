@@ -55,10 +55,6 @@ FILE(GLOB allThirdPartySource
     ../3rdparty/terminalwidget/lib/*.cpp
 )
 
-FILE(GLOB allThirdPartyHeader
-    ../3rdparty/terminalwidget/lib/*.h
-)
-
 FILE(GLOB qrcFiles
     ../src/assets/resources.qrc
 )
@@ -87,7 +83,6 @@ FILE(GLOB allTestSource
     src/3rdparty/terminalwidget/lib/*.cpp
 )
 
-
 set(UI ../3rdparty/terminalwidget/lib/SearchBar.ui)
 qt5_wrap_ui(UI_SRCS ${UI})
 
@@ -102,7 +97,6 @@ add_definitions("-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\"")
 
 add_executable(${PROJECT_NAME_TEST}
     ${UI_SRCS}
-    ${allThirdPartyHeader}
     ${allThirdPartySource}
     ${allHeaders}
     ${allSource}
@@ -129,21 +123,21 @@ target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
 
 target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} terminalwidget5 Qt5::Test ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} -lpthread -lm)
 
-##------------------------------ 创建'make test'指令---------------------------------------
-#add_custom_target(test
+#------------------------------ 创建'make test'指令---------------------------------------
+add_custom_target(test
 #    #执行mkdir -p 创建 coverageResult
 #    COMMAND mkdir -p coverageResult
 #    #设置工作目录
 #    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-#)
+)
 
-#add_custom_command(TARGET test
-#    COMMAND echo " =================== CREAT LCOV REPROT BEGIN ==================== "
+add_custom_command(TARGET test
+    COMMAND echo " =================== TEST BEGIN ==================== "
 
 #    #1.清理原先的gcov信息
 #    COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
 #    COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME}.dir --zerocounters
-#    COMMAND ./test/${PROJECT_NAME_TEST}
+    COMMAND ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME_TEST}
 
 #    #2.收集gcov信息到.info文件中
 #    COMMAND lcov --directory . --capture --output-file ./coverageResult/${PROJECT_NAME}_Coverage.info
@@ -158,13 +152,13 @@ target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} terminalwidget5 Q
 #    #3.将.info信息生成报告到reprot文件夹中
 #    COMMAND genhtml -o ./coverageResult/report ./coverageResult/${PROJECT_NAME}_Coverage.info
 
-#    COMMAND echo " =================== CREAT LCOV REPROT END ==================== "
+    COMMAND echo " =================== TEST END ==================== "
 
 #    COMMAND echo " Coverage files have been output to ${CMAKE_BINARY_DIR}/coverageResult/report "
 
 #    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-#)
+)
 
-##'make test'命令依赖与我们的测试程序
-#add_dependencies(test ${PROJECT_NAME_TEST})
+#'make test'命令依赖与我们的测试程序
+add_dependencies(test ${PROJECT_NAME_TEST})
 
