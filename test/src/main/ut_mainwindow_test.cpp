@@ -94,6 +94,29 @@ void UT_MainWindow_Test::TearDown()
 }
 
 #ifdef UT_MAINWINDOW_TEST
+
+/*******************************************************************************
+ 1. @函数:    QuakeAnimationTest
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-11-24
+ 4. @说明:    测试雷神窗口动画效果UT
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, QuakeAnimationTest)
+{
+    m_quakeTermProperty[QuakeMode] = true;
+    QuakeWindow *quakeWindow = new QuakeWindow(m_quakeTermProperty);
+    quakeWindow->setAnimationFlag(false);
+    quakeWindow->show();
+    quakeWindow->topToBottomAnimation();
+    QTest::qWait(UT_WAIT_TIME);
+
+    quakeWindow->bottomToTopAnimation();
+    QTest::qWait(UT_WAIT_TIME);
+
+    delete quakeWindow;
+    quakeWindow = nullptr;
+}
+
 TEST_F(UT_MainWindow_Test, NormalWindowTest)
 {
     EXPECT_EQ(MainWindow::m_MinWidth, 450);
