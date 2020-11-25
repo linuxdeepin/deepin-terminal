@@ -182,10 +182,13 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
     option->text = fontMetrics().elidedText(option->text, d->elideMode, textRect.width(),
                                             Qt::TextShowMnemonic);
 
-    // 保存对应index的tab唯一标识identifier
-    option->styleObject->setProperty(QString("%1").arg(tabIndex).toLatin1(), tabData(tabIndex));
-    // 保存tab的索引值到row字段
-    option->row = tabIndex;
+    /*********** Modify by ut000438 王亮 2020-11-25:fix bug 55813: 拖拽终端标签页终端闪退 ***********/
+    if (tabIndex >= 0) {
+        // 保存对应index的tab唯一标识identifier
+        option->styleObject->setProperty(QString("%1").arg(tabIndex).toLatin1(), tabData(tabIndex));
+        // 保存tab的索引值到row字段
+        option->row = tabIndex;
+    }
 }
 
 TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
