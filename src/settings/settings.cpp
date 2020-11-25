@@ -160,14 +160,6 @@ void Settings::loadDefaultsWhenReinstall()
     if (!installFlagPath.exists()) {
         installFlagPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     }
-
-//    QString installFlagFilePath(installFlagPath.filePath("install_flag"));
-//    QFile installFlagFile(installFlagFilePath);
-//    if (installFlagFile.exists()) {
-//        //fix bug: 17676 终端窗口透明度较低，能够看到桌面上文案
-//        this->settings->setOption("basic.interface.opacity", 100);
-//        installFlagFile.remove();
-//    }
 }
 
 /*******************************************************************************
@@ -187,8 +179,7 @@ QPair<QWidget *, QWidget *>  Settings::createTabTitleFormatWidget(QObject *opt, 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, tabTitleFormat);
     // 别的窗口修改了设置，这里需要同步设置显示
-    connect(
-    option, &DSettingsOption::valueChanged, tabTitleFormat, [ = ](QVariant var) {
+    connect(option, &DSettingsOption::valueChanged, tabTitleFormat, [ = ](QVariant var) {
         tabTitleFormat->getInputedit()->setText(var.toString());
     });
 
@@ -727,7 +718,6 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
         if (keyseq == SHORTCUT_VALUE) {
             return;
         }
-        //qDebug() << "sequence set" << sequence;
         rightWidget->setKeySequence(sequence);
     };
     updateWidgetValue(optionValue, option);

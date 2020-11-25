@@ -40,9 +40,6 @@ ShortcutManager *ShortcutManager::m_instance = nullptr;
 ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent)
 {
     Utils::set_Object_Name(this);
-    // Q_UNUSED(parent);
-    // make sure it is NOT a nullptr since we'll use it all the time.
-    // Q_CHECK_PTR(parent);
 }
 
 ShortcutManager *ShortcutManager::instance()
@@ -77,20 +74,6 @@ void ShortcutManager::initShortcuts()
     /********************* Modify by n014361 wangpeili End ************************/
     // 切换标签页，防止和ctrl+shift+1等冲突（无法识别）
 
-    /*
-        m_builtinShortcuts << "Ctrl+Shift+!";
-        m_builtinShortcuts << "Ctrl+Shift+@";
-        m_builtinShortcuts << "Ctrl+Shift+#";
-        m_builtinShortcuts << "Ctrl+Shift+$";
-        m_builtinShortcuts << "Ctrl+Shift+%";
-        m_builtinShortcuts << "Ctrl+Shift+^";
-        m_builtinShortcuts << "Ctrl+Shift+&";
-        m_builtinShortcuts << "Ctrl+Shift+*";
-        m_builtinShortcuts << "Ctrl+Shift+(";
-        for (int i = 0; i <= 9; i++) {
-            m_builtinShortcuts << QString("ctrl+shift+%1").arg(i);
-        }
-    */
     createCustomCommandsFromConfig();
     m_mapReplaceText.insert("Ctrl+Shift+!", "Ctrl+Shift+1");
     m_mapReplaceText.insert("Ctrl+Shift+@", "Ctrl+Shift+2");
@@ -152,7 +135,6 @@ void ShortcutManager::createCustomCommandsFromConfig()
         return ;
     }
 
-    //QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     QSettings::Format fmt = QSettings::registerFormat("conf", SettingIO::readIniFunc, SettingIO::writeIniFunc);
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
 
@@ -170,7 +152,7 @@ void ShortcutManager::createCustomCommandsFromConfig()
             if (shortcutVariant.type() == QVariant::KeySequence) {
                 action->setShortcut(shortcutVariant.convert(QMetaType::QKeySequence));
             } else if (shortcutVariant.type() == QVariant::String) {
-                // to make it compatible to deepin-terminal config file.
+                //兼容deepin-terminal 旧的command-config.conf配置文件
                 QString shortcutStr = shortcutVariant.toString().remove(QChar(' '));
                 action->setShortcut(QKeySequence(shortcutStr));
             }

@@ -48,7 +48,6 @@ class ShortcutManager : public QObject
     Q_OBJECT
 public:
     ShortcutManager(QObject *parent = nullptr);
-    //void setMainWindow(MainWindow *curMainWindow);
     static ShortcutManager *instance();
     ~ShortcutManager();
     void initShortcuts();
@@ -59,11 +58,9 @@ public:
     QList<QAction *> &getCustomCommandActionList();
 
     QAction *addCustomCommand(QAction &action);
-    //void mainWindowAddAction(QAction *action);
     void delCustomCommand(CustomCommandData itemData);
     void saveCustomCommandToConfig(QAction *action, int saveIndex);
     int delCustomCommandToConfig(CustomCommandData itemData);
-    // check same name of the action is exist
     QAction *checkActionIsExist(QAction &action);
     QAction *checkActionIsExistForModify(QAction &action);
     // 通过快捷键的唯一值找到action
