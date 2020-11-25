@@ -32,12 +32,12 @@
 #define TERMINALINTERFACE "/window"
 
 // kwin dbus
-#define KWinDBusService "org.kde.KWin"
-#define KWinDBusPath "/KWin"
+#define KWINDBUSSERVICE "org.kde.KWin"
+#define KWINDBUSPATH "/KWin"
 
 // deepin Appearance
-#define AppearanceService "com.deepin.daemon.Appearance"
-#define AppearancePath "/com/deepin/daemon/Appearance"
+#define APPEARANCESERVICE "com.deepin.daemon.Appearance"
+#define APPEARANCEPATH "/com/deepin/daemon/Appearance"
 
 // sound effect 音效服务
 #define SOUND_EFFECT_SERVICE    "com.deepin.daemon.SoundEffect"

@@ -77,7 +77,7 @@ bool DBusManager::initDBus()
 int DBusManager::callKDECurrentDesktop()
 {
     QDBusMessage msg =
-        QDBusMessage::createMethodCall(KWinDBusService, KWinDBusPath, KWinDBusService, "currentDesktop");
+        QDBusMessage::createMethodCall(KWINDBUSSERVICE, KWINDBUSPATH, KWINDBUSSERVICE, "currentDesktop");
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
@@ -99,7 +99,7 @@ int DBusManager::callKDECurrentDesktop()
 void DBusManager::callKDESetCurrentDesktop(int index)
 {
     QDBusMessage msg =
-        QDBusMessage::createMethodCall(KWinDBusService, KWinDBusPath, KWinDBusService, "setCurrentDesktop");
+        QDBusMessage::createMethodCall(KWINDBUSSERVICE, KWINDBUSPATH, KWINDBUSSERVICE, "setCurrentDesktop");
 
     msg << index;
 
@@ -123,7 +123,7 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
 {
     QStringList fontList;
     QDBusMessage msg =
-        QDBusMessage::createMethodCall(AppearanceService, AppearancePath, AppearanceService, "List");
+        QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "List");
 
     msg << fontType;
 
@@ -176,7 +176,7 @@ QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fo
 {
     QStringList List;
     QDBusMessage msg =
-        QDBusMessage::createMethodCall(AppearanceService, AppearancePath, AppearanceService, "Show");
+        QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "Show");
 
     msg << fontType << fontList;
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);

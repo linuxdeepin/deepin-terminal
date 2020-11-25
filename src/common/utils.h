@@ -48,8 +48,8 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 /********************* Modify by m000714 daizhengwen End ************************/
 
 // kwin dbus
-#define KWinDBusService "org.kde.KWin"
-#define KWinDBusPath "/KWin"
+#define KWINDBUSSERVICE "org.kde.KWin"
+#define KWINDBUSPATH "/KWin"
 
 #define MAX_NAME_LEN 32
 
