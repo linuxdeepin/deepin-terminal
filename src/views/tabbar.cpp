@@ -19,7 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "tabbar.h"
-
+#include "utils.h"
+#include "termwidget.h"
+#include "termwidgetpage.h"
+#include "windowsmanager.h"
+#include "terminalapplication.h"
 #include "private/qtabbar_p.h"
 
 #include <DApplication>
@@ -36,13 +40,7 @@
 #include <QMouseEvent>
 #include <QDesktopWidget>
 
-#include "utils.h"
-#include "termwidget.h"
-#include "termwidgetpage.h"
-#include "windowsmanager.h"
-#include "terminalapplication.h"
-
-//TermTabStyle start
+//TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
 {
     Utils::set_Object_Name(this);
@@ -104,7 +102,7 @@ int TermTabStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *op
 *******************************************************************************/
 void TermTabStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    if (element == CE_TabBarTabLabel) {
+    if (CE_TabBarTabLabel == element) {
         if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option)) {
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
 
@@ -125,7 +123,7 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
             QString strTabIdentifier = styleObject->property(strTabIndex.toLatin1()).toString();
 
             // 由于标签现在可以左右移动切换，index会变化，改成使用唯一标识identifier进行判断
-            if (m_tabStatusMap.value(strTabIdentifier) == TabTextColorStatus_Changed) {
+            if (TabTextColorStatus_Changed == m_tabStatusMap.value(strTabIdentifier)) {
                 if (tab->state & QStyle::State_Selected) {
                     DPalette pa = appHelper->standardPalette(appHelper->themeType());
                     painter->setPen(pa.color(DPalette::HighlightedText));
@@ -146,7 +144,8 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
             }
 
             QFontMetrics fontMetric(textFont);
-            QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width() - 30, Qt::TextShowMnemonic);
+            const int TAB_LEFTRIGHT_SPACE = 30;
+            QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width() - TAB_LEFTRIGHT_SPACE, Qt::TextShowMnemonic);
             painter->drawText(tabRect, elidedText, textOption);
         } else {
             QProxyStyle::drawControl(element, option, painter, widget);
@@ -166,7 +165,7 @@ void TermTabStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleO
 {
     QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
-//TermTabStyle end
+//TermTabStyle 结束
 
 /*******************************************************************************
  1. @函数:    initStyleOption
@@ -570,7 +569,7 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
             }
             qDebug() << "currIndex" << m_rightClickTab << endl;
 
-            // popup right menu on tab.
+            // 弹出tab标签的右键菜单
             if (m_rightClickTab >= 0) {
                 if (m_rightMenu == nullptr) {
                     m_rightMenu = new DMenu(this);
@@ -823,10 +822,10 @@ bool TabBar::canInsertFromMimeData(int index, const QMimeData *source) const
 *******************************************************************************/
 void TabBar::handleTabMoved(int fromIndex, int toIndex)
 {
-    if (fromIndex < m_tabIdentifierList.count()
-            && toIndex < m_tabIdentifierList.count()
-            && fromIndex >= 0
-            && toIndex >= 0) {
+    if ((fromIndex < m_tabIdentifierList.count())
+            && (toIndex < m_tabIdentifierList.count())
+            && (fromIndex >= 0)
+            && (toIndex >= 0)) {
         m_tabIdentifierList.swap(fromIndex, toIndex);
     }
 }
@@ -954,7 +953,7 @@ MainWindow *TabBar::createNormalWindow()
 *******************************************************************************/
 void TabBar::handleTabIsRemoved(int index)
 {
-    if (index < 0 || index >= m_tabIdentifierList.size()) {
+    if ((index < 0) || (index >= m_tabIdentifierList.size())) {
         return;
     }
 
