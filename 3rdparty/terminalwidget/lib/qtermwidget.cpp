@@ -462,6 +462,8 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, &Session::profileChangeCommandReceived, this, &QTermWidget::profileChanged);
     connect(m_impl->m_session, &Session::receivedData, this, &QTermWidget::receivedData);
     connect(m_impl->m_session, &Session::started, this, &QTermWidget::processStarted);
+    // 标签标题参数变化
+    connect(m_impl->m_session, &Session::titleArgsChange, this, &QTermWidget::titleArgsChange);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     // 用于卸载终端弹出框提示
     connect(m_impl->m_session, SIGNAL(sessionUninstallTerminal(QString)), this, SIGNAL(uninstallTerminal(QString)));

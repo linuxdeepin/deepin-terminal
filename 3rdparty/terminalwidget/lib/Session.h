@@ -531,6 +531,9 @@ signals:
     bool sessionUninstallTerminal(QString commandname);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 end***************/
 
+    // 标签标题参数改变 dzw 2020-12-2
+    void titleArgsChange(QString key, QString value);
+
 private slots:
     void done(int);
 
@@ -551,6 +554,9 @@ private slots:
 //  void zmodemReadAndSendBlock();
 //  void zmodemRcvBlock(const char *data, int len);
 //  void zmodemFinished();
+
+    // 目前为了更新标签标题信息
+    void onUpdateTitleArgs();
 
 private:
 
@@ -618,6 +624,11 @@ private:
     static int lastSessionId;
 
     int ptySlaveFd;
+
+    // title format args
+    QString _userName;
+    QString _currentDir;
+    QString _programName;
 
 };
 

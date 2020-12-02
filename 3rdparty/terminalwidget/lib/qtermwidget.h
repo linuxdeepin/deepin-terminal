@@ -334,6 +334,9 @@ signals:
     // 找到的信号
     void sig_matchFound();
 
+    // 标签标题参数改变 dzw 2020-12-2
+    void titleArgsChange(QString key, QString value);
+
 public slots:
     // Copy selection to clipboard
     void copyClipboard();

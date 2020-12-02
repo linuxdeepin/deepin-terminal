@@ -75,6 +75,7 @@ struct TabFormat {
 };
 
 class TermProperties;
+struct ServerConfig;
 class TermWidget : public QTermWidget
 {
     Q_OBJECT
@@ -105,7 +106,7 @@ public:
     bool isConnectRemote() const;
     void setIsConnectRemote(bool isConnectRemote);
     // 连接远程后修改标签标题
-    void modifyRemoteTabTitle(QString remoteHostName);
+    void modifyRemoteTabTitle(ServerConfig remoteConfig);
 
     QString encode() const;
     void setEncode(const QString &encode);
@@ -163,11 +164,13 @@ protected:
 private slots:
     void customContextMenuCall(const QPoint &pos);
     void handleTermIdle(bool bIdle);
+    // 处理标签标题参数变化
+    void onTitleArgsChange(QString key, QString value);
+    // hostname名称变化
+    void onHostnameChanged();
 private:
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     void addMenuActions(const QPoint &pos);
-    // 解析shell默认标题
-    void parseShellTitle();
     // 根据标签格式获取标签标题
     QString getTabTitle(QMap<QString, QString> format, QString TabFormat);
     //分屏时切换到当前选中主题方案

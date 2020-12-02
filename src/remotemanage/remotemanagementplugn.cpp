@@ -177,7 +177,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
             // 标记此term连接远程
             term->setIsConnectRemote(true);
             // 设置远程主机
-            term->modifyRemoteTabTitle(curServer->m_address);
+            term->modifyRemoteTabTitle(*curServer);
             qDebug() << "connect to server";
             // 编码
             setRemoteEncode(curServer->m_encoding);

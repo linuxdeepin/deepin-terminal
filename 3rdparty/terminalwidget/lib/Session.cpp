@@ -129,6 +129,11 @@ Session::Session(QObject* parent) :
     _monitorTimer = new QTimer(this);
     _monitorTimer->setSingleShot(true);
     connect(_monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerDone()));
+
+    // 定时更新term信息 => 目前为了更新标签标题信息
+    QTimer *updateTimer = new QTimer(this);
+    connect(updateTimer, &QTimer::timeout, this, &Session::onUpdateTitleArgs);
+    updateTimer->start(500);
 }
 
 WId Session::windowId() const
@@ -226,7 +231,53 @@ void Session::viewDestroyed(QObject * view)
     removeView(display);
 }
 
-void Session::removeView(TerminalDisplay * widget)
+/*******************************************************************************
+ 1. @函数:    onUpdateTitleArgs
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-02
+ 4. @说明:    更新标签标题参数
+*******************************************************************************/
+void Session::onUpdateTitleArgs()
+{
+    ProcessInfo *process = getProcessInfo();
+
+    // format tab titles using process info
+    bool ok = false;
+
+    // 用户名 %u
+    QString userName = process->userName();
+    if (_userName != userName) {
+        _userName = userName;
+        emit titleArgsChange(QLatin1String("%u"), _userName);
+    }
+
+    //title.replace(QLatin1String("%h"), Konsole::ProcessInfo::localHost());
+    // 程序名 %n
+    QString programName = process->name(&ok);
+    if (_programName != programName) {
+        _programName = programName;
+        emit titleArgsChange(QLatin1String("%n"), _programName);
+    }
+
+
+    // 获取当前目录 %D
+    QString dir = _reportedWorkingUrl.toLocalFile();
+    ok = true;
+    if (dir.isEmpty()) {
+        // update current directory from process
+        updateWorkingDirectory();
+        // Previous process may have been freed in updateSessionProcessInfo()
+        process = getProcessInfo();
+        dir = process->currentDir(&ok);
+    }
+    if (_currentDir != dir) {
+        _currentDir = dir;
+        emit titleArgsChange(QLatin1String("%D"), _currentDir);
+    }
+
+}
+
+void Session::removeView(TerminalDisplay *widget)
 {
     _views.removeAll(widget);
 

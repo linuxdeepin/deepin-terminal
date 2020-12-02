@@ -28,6 +28,7 @@
 #include "utils.h"
 #include "service.h"
 #include "windowsmanager.h"
+#include "serverconfigmanager.h"
 
 #include <DDesktopServices>
 #include <DInputDialog>
@@ -173,7 +174,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
         // 退出远程后，设置成false
-        if (value.contains("Connection to") && value.contains(" closed.")) {
+        if (value.contains("Connection to") && value.contains(" closed.") || value.contains("Permission denied")) {
             QTimer::singleShot(100, this, [&]() {
                 // 判断是否此时退出远程
                 if (!isInRemoteServer()) {
@@ -225,8 +226,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
             setColorScheme(theme);
             Settings::instance()->setColorScheme(theme);
         } else {
-            setColorScheme(expandThemeStr,Settings::instance()->m_customThemeModify);
-            Settings::instance()->m_customThemeModify=false;
+            setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
+            Settings::instance()->m_customThemeModify = false;
         }
     });
 
@@ -247,14 +248,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
     //qDebug() << parentPage << endl;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
-    /******** Modify by ut000610 daizhengwen 2020-06-11: 启动成功，则允许下一个窗口创建****************/
-//    connect(this, &TermWidget::processStarted, Service::instance(), [ = ]() {
-//        QTimer::singleShot(200, this, [ = ]() {
-//            Service::instance()->setMemoryEnable(true);
-//        });
-//    });
-    /********************* Modify by ut000610 daizhengwen End ************************/
 
+    // 启动shell
     startShellProgram();
 
     // 增加可以自动运行脚本的命令，不需要的话，可以删除
@@ -270,10 +265,16 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     connect(this, &QTermWidget::titleChanged, this, [this] {
         // 解析shell传来的title 用户名 主机名 地址/目录
-        parseShellTitle();
+        QString tabTitle = TermWidget::title();
+        // %w shell设置的窗口标题
+        m_tabArgs[SHELL_TITLE] = tabTitle;
+        m_remoteTabArgs[SHELL_TITLE] = tabTitle;
         // 将标题参数变更信息传出
         emit termTitleChanged(getTabTitle());
     });
+
+    // 标题参数变化
+    connect(this, &QTermWidget::titleArgsChange, this, &TermWidget::onTitleArgsChange);
     connect(this, &TermWidget::copyAvailable, this, [this](bool enable) {
         if (Settings::instance()->IsPasteSelection() && enable) {
             qDebug() << "hasCopySelection";
@@ -295,7 +296,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // 接收触控板事件
     connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
 
-    connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::titleChanged);
+    connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
     setFocusPolicy(Qt::NoFocus);
 }
 
@@ -327,6 +328,58 @@ TermWidgetPage *TermWidget::parentPage()
 void TermWidget::handleTermIdle(bool bIdle)
 {
     emit termIsIdle(this->m_page->identifier(), bIdle);
+}
+
+/*******************************************************************************
+ 1. @函数:    onTitleArgsChange
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-02
+ 4. @说明:    标签标题参数变化
+*******************************************************************************/
+void TermWidget::onTitleArgsChange(QString key, QString value)
+{
+    // tab获取参数
+    m_tabArgs[key] = value;
+    // 获取当前目录短 由长到短
+    if (DIR_L == key) {
+        QString dir = value;
+        // 当前目录短（若有优化方法请及时告知）
+        if (dir == "~" || dir.startsWith(QDir::homePath())) {
+            // 出现家目录~的情况
+            QString homePath = QDir::homePath();
+            QStringList pathList = homePath.split("/");
+            // 当前目录短
+            m_tabArgs[DIR_S] = pathList.last();
+            // 当前目录长对于~的处理 => 传过来的不是~但要填进去~和提示符保持一致
+            dir.replace(homePath, "~");
+            m_tabArgs[DIR_L] = dir;
+        } else if (dir == "/") {
+            // 出现根目录/的情况
+            m_tabArgs[DIR_S] = "/";
+        } else {
+            // 一般情况
+            QStringList pathList = dir.split("/");
+            m_tabArgs[DIR_S] = pathList.last();
+        }
+    }
+
+    // 更改标签标题
+    emit termTitleChanged(getTabTitle());
+}
+
+/*******************************************************************************
+ 1. @函数:    onHostnameChanged
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-02
+ 4. @说明:    主机名变化
+*******************************************************************************/
+void TermWidget::onHostnameChanged()
+{
+    // 主机名变化
+    QString hostName = QHostInfo::localHostName();
+    m_tabArgs[LOCAL_HOST_NAME] = hostName;
+    // 发送标签标题变化
+    emit termTitleChanged(getTabTitle());
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
@@ -529,59 +582,6 @@ void TermWidget::addMenuActions(const QPoint &pos)
             }
         }
     }
-}
-
-/*******************************************************************************
- 1. @函数:    parseShellTitle
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-10-29
- 4. @说明:    解析shell默认标题
-*******************************************************************************/
-void TermWidget::parseShellTitle()
-{
-    QString tabTitle = TermWidget::title();
-    // %w shell设置的窗口标题
-    m_tabArgs[SHELL_TITLE] = tabTitle;
-    m_remoteTabArgs[SHELL_TITLE] = tabTitle;
-    // %u 用户名
-    int index = tabTitle.indexOf("@");
-    QString user = tabTitle.mid(0, index);
-    // 是否连接远程
-    if (isConnectRemote() /*|| getForegroundProcessName() == "ssh"*/) {
-        // 远程的用户名
-        m_remoteTabArgs[USER_NAME] = user;
-        m_remoteTabArgs[USER_NAME_L] = user + QString("@");
-    } else {
-        // 用户名
-        m_tabArgs[USER_NAME] = user;
-
-        // 本地主机
-        int hostNameIndex = tabTitle.indexOf(":");
-        // index找的到
-        if (hostNameIndex >= 0) {
-            QString hostName = QHostInfo::localHostName();
-            m_tabArgs[LOCAL_HOST_NAME] = hostName;
-        }
-
-        // 当前目录长
-        QString dir = tabTitle.mid(hostNameIndex + 1).trimmed();
-        m_tabArgs[DIR_L] = dir;
-
-        // 当前目录短（若有优化方法请及时告知）
-        if (dir == "~") {
-            QString homePath = QDir::homePath();
-            QStringList pathList = homePath.split("/");
-            m_tabArgs[DIR_S] = pathList.last();
-        } else if (dir == "/") {
-            m_tabArgs[DIR_S] = "/";
-        } else {
-            QStringList pathList = dir.split("/");
-            m_tabArgs[DIR_S] = pathList.last();
-        }
-    }
-
-    // 当前程序名
-    m_tabArgs[PROGRAM_NAME] = getForegroundProcessName();
 }
 
 /*******************************************************************************
@@ -819,6 +819,8 @@ void TermWidget::initTabTitle()
     m_sessionNumber = ++sessionNumber;
     m_tabArgs[TAB_NUM] = QString::number(m_sessionNumber);
     m_remoteTabArgs[TAB_NUM] = QString::number(m_sessionNumber);
+    // 初始化hostName
+    m_tabArgs[LOCAL_HOST_NAME] = QHostInfo::localHostName();
     // 设置标签标题格式
     setTabFormat(Settings::instance()->tabTitleFormat());
     setRemoteTabFormat(Settings::instance()->remoteTabTitleFormat());
@@ -937,9 +939,17 @@ void TermWidget::setIsConnectRemote(bool isConnectRemote)
  3. @日期:    2020-10-29
  4. @说明:    连接远程后修改当前标签标题
 *******************************************************************************/
-void TermWidget::modifyRemoteTabTitle(QString remoteHostName)
+void TermWidget::modifyRemoteTabTitle(ServerConfig remoteConfig)
 {
-    m_remoteTabArgs[REMOTE_HOST_NAME] = remoteHostName;
+    // 远程主机名
+    m_remoteTabArgs[REMOTE_HOST_NAME] = remoteConfig.m_address;
+    // 用户名 %u
+    m_remoteTabArgs[USER_NAME] = remoteConfig.m_userName;
+    // 用户名@ %U
+    m_remoteTabArgs[USER_NAME_L] = remoteConfig.m_userName + QString("@");
+
+    // 标签标题变化
+    emit termTitleChanged(getTabTitle());
 }
 
 /*******************************************************************************
@@ -1305,7 +1315,7 @@ void TermWidget::wheelEvent(QWheelEvent *event)
     QTermWidget::wheelEvent(event);
 }
 
-/* 
+/*
  ***************************************************************************************
  *函数:  showFlowMessage
  *作者:  朱科伟
@@ -1315,35 +1325,33 @@ void TermWidget::wheelEvent(QWheelEvent *event)
  */
 void TermWidget::showFlowMessage(bool show)
 {
-    if(nullptr == m_flowMessage){
+    if (nullptr == m_flowMessage) {
         m_flowMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
         assert(m_flowMessage);
-        QList<QLabel*> lst = m_flowMessage->findChildren<QLabel*>();
-        for(auto label : lst){
+        QList<QLabel *> lst = m_flowMessage->findChildren<QLabel *>();
+        for (auto label : lst) {
             label->setWordWrap(false);
         }
         m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
     }
     assert(m_flowMessage);
 
-    if(show){
+    if (show) {
         int xPoint = 0;
         m_flowMessage->adjustSize();
         QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
         m_flowMessage->setMessage(strText);
-        if(this->width() < m_flowMessage->width()){
+        if (this->width() < m_flowMessage->width()) {
             m_flowMessage->resize(this->width(), m_flowMessage->height());
+        } else {
+            xPoint = (this->width() - m_flowMessage->width()) / 2;
         }
-        else{
-            xPoint = (this->width() - m_flowMessage->width())/2;
-        }
-        int yPoint = this->height()- m_flowMessage->height();
+        int yPoint = this->height() - m_flowMessage->height();
 
         m_flowMessage->move(xPoint, yPoint);
         m_flowMessage->show();
-    }
-    else{
-        if(!m_flowMessage->isHidden()){
+    } else {
+        if (!m_flowMessage->isHidden()) {
             m_flowMessage->hide();
         }
     }
@@ -1351,8 +1359,8 @@ void TermWidget::showFlowMessage(bool show)
 
 void TermWidget::resizeEvent(QResizeEvent *event)
 {
-    if(m_flowMessage){
-        if(!m_flowMessage->isHidden()){
+    if (m_flowMessage) {
+        if (!m_flowMessage->isHidden()) {
             showFlowMessage(true);
         }
     }
