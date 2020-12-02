@@ -26,6 +26,7 @@
 
 #include <QFileSystemWatcher>
 #include <qsettingbackend.h>
+#include <QSettings>
 
 #include <DComboBox>
 
@@ -77,6 +78,8 @@ public:
     QString extendColorScheme() const;
     //设置内置主题
     void setExtendColorScheme(const QString &name);
+    //颜色转字符串
+    QStringList color2str(QColor);
 
     DSettings *settings;
     static DComboBox *comboBox;
@@ -94,6 +97,13 @@ public:
     QString themeStr            = "";
     //内置主题名称
     QString extendThemeStr      = "";
+
+    //自定义主题配置文件路径
+    QString m_configCustomThemePath;
+    //自定义主题配置设置
+    QSettings *themeSetting = nullptr;
+    //自定义主题配置是否修改
+    bool    m_customThemeModify = false;
 
 
 public:

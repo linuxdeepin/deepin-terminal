@@ -225,7 +225,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
             setColorScheme(theme);
             Settings::instance()->setColorScheme(theme);
         } else {
-            setColorScheme(expandThemeStr);
+            setColorScheme(expandThemeStr,Settings::instance()->m_customThemeModify);
+            Settings::instance()->m_customThemeModify=false;
         }
     });
 

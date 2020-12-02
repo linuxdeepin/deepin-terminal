@@ -26,6 +26,7 @@
 #include "shortcutmanager.h"
 #include "settings.h"
 #include "atspidesktop.h"
+#include "customthemesettingdialog.h"
 
 #include <DSettingsDialog>
 #include <DDialog>
@@ -66,6 +67,9 @@ public:
 
     // 显示设置框
     void showSettingDialog(MainWindow *pOwner);
+
+    //显示自定义主题设置框
+    void showCustomThemeSettingDialog(MainWindow *pOwner);
     // 显示设置快捷键冲突弹窗
     void showShortcutConflictMsgbox(QString txt);
     // 设置框是否显示
@@ -136,6 +140,9 @@ private:
     static Service *pService ;
     // 设置框 全局唯一显示
     DSettingsDialog *m_settingDialog = nullptr;
+
+    //自定义主题设置对话框 全局唯一
+    CustomThemeSettingDialog *m_customThemeSettingDialog = nullptr;
 
     WMSwitcher *m_wmSwitcher = nullptr;
     //设置框的所有者

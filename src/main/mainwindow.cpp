@@ -2470,6 +2470,8 @@ void MainWindow::checkExtendThemeItem(const QString &expandThemeStr, QAction *&a
         action = themeNineAction;
     } else if (expandThemeStr == THEME_TEN) {
         action = themeTenAction;
+    } else if (expandThemeStr == Settings::instance()->m_configCustomThemePath) {
+        action = themeCustomAction;
     }
 
 }
@@ -2565,6 +2567,8 @@ void MainWindow::addThemeMenuItems()
         themeEightAction = switchThemeMenu->addAction(tr(THEME_EIGHT_NAME));
         themeNineAction = switchThemeMenu->addAction(tr(THEME_NINE_NAME));
         themeTenAction = switchThemeMenu->addAction(tr(THEME_TEN_NAME));
+        themeCustomAction = switchThemeMenu->addAction(tr("Custom Theme"));
+
 
         //设置主题项可选
         autoThemeAction->setCheckable(true);
@@ -2581,6 +2585,8 @@ void MainWindow::addThemeMenuItems()
         themeEightAction->setCheckable(true);
         themeNineAction->setCheckable(true);
         themeTenAction->setCheckable(true);
+        themeCustomAction->setCheckable(true);
+
 
         //创建主题项快捷键组
         group = new QActionGroup(switchThemeMenu);
@@ -2598,6 +2604,7 @@ void MainWindow::addThemeMenuItems()
         group->addAction(themeEightAction);
         group->addAction(themeNineAction);
         group->addAction(themeTenAction);
+        group->addAction(themeCustomAction);
 
         menu->addMenu(switchThemeMenu);
         themeSeparator = menu->addSeparator();
@@ -2681,6 +2688,15 @@ void MainWindow::setThemeCheckItemSlot()
         return;
     }
 
+    if (Settings::instance()->extendThemeStr == Settings::instance()->m_configCustomThemePath) {
+
+        Settings::instance()->setColorScheme(THEME_DARK);
+        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        return;
+    }
+
 }
 
 /*******************************************************************************
@@ -2746,6 +2762,19 @@ void MainWindow::menuHideSetThemeSlot()
         }
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
         emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        return;
+    } else if (currCheckThemeAction == themeCustomAction) {
+        Settings::instance()->setExtendColorScheme(Settings::instance()->m_configCustomThemePath);
+        if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+            Settings::instance()->setColorScheme(THEME_LIGHT);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        } else {
+            Settings::instance()->setColorScheme(THEME_DARK);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        }
+
         return;
     }
 }
@@ -2845,6 +2874,15 @@ void MainWindow::switchThemeAction(QAction *action)
         return;
     }
 
+    //自定义主题
+    if (action == themeCustomAction) {
+        if (Settings::instance()->bSwitchTheme) {
+            Service::instance()->showCustomThemeSettingDialog(this);
+        } else {
+            switchThemeAction(action, Settings::instance()->m_configCustomThemePath);
+        }
+        return;
+    }
 }
 
 /*******************************************************************************
@@ -2886,6 +2924,29 @@ void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr
         return;
     }
 
+    if (action == themeCustomAction) {
+        if (Settings::instance()->bSwitchTheme) {
+            if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+                Settings::instance()->themeStr = THEME_LIGHT;
+            } else {
+                Settings::instance()->themeStr = THEME_DARK;
+            }
+            Settings::instance()->extendThemeStr = themeNameStr;
+        }
+
+        Settings::instance()->setExtendColorScheme(themeNameStr);
+        if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+            Settings::instance()->setColorScheme(THEME_LIGHT);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        } else {
+            Settings::instance()->setColorScheme(THEME_DARK);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        }
+
+        return;
+    }
 }
 
 /*******************************************************************************

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="439px" height="35px" viewBox="0 0 439 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>headbar_dark</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#232323" offset="0%"></stop>
+            <stop stop-color="#1C1C1C" offset="100%"></stop>
+        </linearGradient>
+        <path d="M0,8.00776211 C0,3.58519722 3.58204868,0 7.99441625,0 L431.005584,0 C435.420778,0 439,3.58113254 439,8.00776211 L439,35 L0,35 L0,8.00776211 Z" id="path-2"></path>
+        <filter x="-0.1%" y="-1.4%" width="100.2%" height="102.9%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="light" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="终端窗口-自定义主题" transform="translate(-215.000000, -240.000000)">
+            <g id="添加远程服务器-高级" transform="translate(205.000000, 170.000000)">
+                <g id="预览" transform="translate(10.000000, 70.000000)">
+                    <g id="headbar_dark">
+                        <g id="toolbar">
+                            <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                            <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                        </g>
+                        <polygon id="Line" fill-opacity="0.8" fill="#FFFFFF" points="323.555556 18 324 18 324 17 323.555556 17 311.444444 17 311 17 311 18 311.444444 18"></polygon>
+                        <polygon id="Combined-Shape" fill-opacity="0.8" fill="#FFFFFF" points="412.646447 22.5459415 412.292893 22.8994949 411.585786 22.1923882 411.93934 21.8388348 416.535534 17.2426407 411.93934 12.6464466 411.585786 12.2928932 412.292893 11.5857864 412.646447 11.9393398 417.242641 16.5355339 421.838835 11.9393398 422.192388 11.5857864 422.899495 12.2928932 422.545942 12.6464466 417.949747 17.2426407 422.545942 21.8388348 422.899495 22.1923882 422.192388 22.8994949 421.838835 22.5459415 417.242641 17.9497475"></polygon>
+                        <path d="M373,13 L373,22 L371.2,22 L363.8,22 L362,22 L362,13 L373,13 Z M372,14 L363,14 L363,21 L372,21 L372,14 Z" id="maximize_normal" fill-opacity="0.8" fill="#FFFFFF"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -57,6 +57,11 @@ Service::~Service()
     if (nullptr != m_settingShortcutConflictDialog) {
         delete m_settingShortcutConflictDialog;
     }
+    if (nullptr != m_customThemeSettingDialog) {
+        delete m_customThemeSettingDialog;
+        m_customThemeSettingDialog = nullptr;
+    }
+
     qDebug() << "service release finish!";
 }
 
@@ -327,6 +332,56 @@ void Service::showSettingDialog(MainWindow *pOwner)
     QString strSettingsShowTime = GRAB_POINT + LOGO_TYPE + SHOW_SETTINGS_TIME + QString::number(endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch());
     qInfo() << qPrintable(strSettingsShowTime);
 }
+
+/*******************************************************************************
+ 1. @函数:    showCustomThemeSettingDialog
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    显示自定义主题设置框
+*******************************************************************************/
+void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
+{
+    //保存设置框的有拥者
+    m_settingOwner = pOwner;
+    if (nullptr != m_customThemeSettingDialog) {
+        //雷神需要让窗口置顶，可是普通窗口不要
+        if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
+            m_customThemeSettingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+        } else {
+            // 雷神窗口失去焦点自动隐藏
+            if (WindowsManager::instance()->getQuakeWindow()) {
+                WindowsManager::instance()->getQuakeWindow()->onAppFocusChangeForQuake();
+            }
+            m_customThemeSettingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
+        }
+    } else {
+        m_customThemeSettingDialog = new CustomThemeSettingDialog();
+
+        connect(m_customThemeSettingDialog, &CustomThemeSettingDialog::finished, this, [ & ](int result) {
+            if (result == CustomThemeSettingDialog::Accepted) {
+                qDebug() << "CustomThemeSettingDialog::Accepted";
+                m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
+                return;
+            } else {
+                qDebug() << "CustomThemeSettingDialog::Rejected";
+            }
+
+        });
+        // 设置窗口模态为没有模态，不阻塞窗口和进程
+        m_customThemeSettingDialog->setWindowModality(Qt::NonModal);
+        // 让设置与窗口等效，隐藏后显示就不会被遮挡
+        m_customThemeSettingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
+        moveToCenter(m_customThemeSettingDialog);
+    }
+
+    m_customThemeSettingDialog->show();
+
+    // 若设置窗口已显示，则激活窗口
+    if (!m_customThemeSettingDialog->isActiveWindow()) {
+        m_customThemeSettingDialog->activateWindow();
+    }
+}
+
 
 /*******************************************************************************
  1. @函数:    showShortcutConflictMsgbox

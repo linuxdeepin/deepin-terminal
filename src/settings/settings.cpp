@@ -145,6 +145,48 @@ void Settings::init()
         qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
     }
     /***add end by ut001121***/
+
+    //自定义主题配置初始化处理
+    m_configCustomThemePath = QString("%1/%2/%3/customTheme.colorscheme")
+                              .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
+    themeSetting = new QSettings(m_configCustomThemePath, QSettings::IniFormat);
+
+    QFile customThemeFile(m_configCustomThemePath);
+    if (!customThemeFile.exists()) {
+        //标题栏风格   // custom_theme_title_style
+        themeSetting->setValue("CustomTheme/TitleStyle", "Dark");
+
+        //背景颜色 “黑色” （0x252525)
+        QColor backgroundColor(37, 37, 37);
+        themeSetting->setValue("Background/Color", color2str(backgroundColor));
+        //前景色 “绿色” （0x00FF00）
+        QColor foregroundColor(0, 255, 0);
+        themeSetting->setValue("Foreground/Color", color2str(foregroundColor));
+        //提示符   PS1  “土黄色” （0x859900）
+        QColor pS1Color(133, 153, 0);
+        themeSetting->setValue("Color2/Color", color2str(pS1Color));
+        themeSetting->setValue("Color2Intense/Color", color2str(pS1Color));
+        //提示符   PS2  “蓝色” （0x3465A4）
+        QColor pS2Color(52, 101, 164);
+        themeSetting->setValue("Color4/Color", color2str(pS2Color));
+        themeSetting->setValue("Color4Intense/Color", color2str(pS2Color));
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    color2str
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    颜色转字符串
+*******************************************************************************/
+QStringList Settings::color2str(QColor color)
+{
+    QStringList ret;
+    ret << QString::number(color.red());
+    ret << QString::number(color.green());
+    ret << QString::number(color.blue());
+    return ret;
 }
 
 /*******************************************************************************

@@ -166,6 +166,8 @@ set (DTNG_CPP_FILES
     src/views/focusframe.cpp
     src/views/iconbutton.cpp
     src/views/listview.cpp
+    src/views/customthemesettingdialog.cpp
+    src/views/themepreviewarea.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -222,6 +224,8 @@ set (DTNG_HEADER_FILES
     src/views/focusframe.h
     src/views/iconbutton.h
     src/views/listview.h
+    src/views/customthemesettingdialog.h
+    src/views/themepreviewarea.h
 )
 
 set (DTNG_QRC_FILES

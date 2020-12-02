@@ -636,7 +636,13 @@ void QTermWidget::setTextCodec(QTextCodec *codec)
     m_impl->m_session->setCodec(codec);
 }
 
-void QTermWidget::setColorScheme(const QString &origName)
+/*******************************************************************************
+ 1. @函数:    setColorScheme
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    设置主题的配色方案,根据参数 needReloadTheme 判断是否需要重新加载
+*******************************************************************************/
+void QTermWidget::setColorScheme(const QString &origName, bool needReloadTheme)
 {
     const ColorScheme *cs = nullptr;
 
@@ -646,16 +652,21 @@ void QTermWidget::setColorScheme(const QString &origName)
     // avoid legacy (int) solution
     if (!availableColorSchemes().contains(name)) {
         if (isFile) {
-            if (ColorSchemeManager::instance()->loadCustomColorScheme(origName))
+            if (ColorSchemeManager::instance()->loadCustomColorScheme(origName)) {
                 cs = ColorSchemeManager::instance()->findColorScheme(name);
-            else
+            } else {
                 qWarning() << Q_FUNC_INFO << "cannot load color scheme from" << origName;
+            }
         }
-
-        if (!cs)
+        if (!cs) {
             cs = ColorSchemeManager::instance()->defaultColorScheme();
-    } else
+        }
+    } else {
+        if (name == "customTheme" && needReloadTheme) {
+            ColorSchemeManager::instance()->realodColorScheme(origName);
+        }
         cs = ColorSchemeManager::instance()->findColorScheme(name);
+    }
 
     if (!cs) {
         QMessageBox::information(this, tr("Color Scheme Error"), tr("Cannot load color scheme: %1").arg(name));

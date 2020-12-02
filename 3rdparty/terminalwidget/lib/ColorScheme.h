@@ -302,6 +302,9 @@ public:
      */
     bool deleteColorScheme(const QString& name);
 
+    //重新加载主题
+    void realodColorScheme(const QString &origName);
+
     /**
      * Returns a list of the all the available color schemes.
      * This may be slow when first called because all of the color

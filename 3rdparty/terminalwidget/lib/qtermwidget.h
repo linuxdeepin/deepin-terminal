@@ -126,7 +126,8 @@ public:
      * @param[in] name The name of the color scheme, either returned from
      * availableColorSchemes() or a full path to a color scheme.
      */
-    void setColorScheme(const QString &name);
+    //设置主题的配色方案
+    void setColorScheme(const QString &name, bool needReloadTheme = false);
     static QStringList availableColorSchemes();
     static void addCustomColorSchemeDir(const QString &custom_dir);
 

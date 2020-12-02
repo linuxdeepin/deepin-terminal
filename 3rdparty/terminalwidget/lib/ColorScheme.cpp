@@ -784,6 +784,40 @@ bool ColorSchemeManager::deleteColorScheme(const QString& name)
         return false;
     }
 }
+
+/*******************************************************************************
+ 1. @函数:    realodColorScheme
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    重新加载主题
+*******************************************************************************/
+void ColorSchemeManager::realodColorScheme(const QString &origName)
+{
+    qDebug() << "realodColorScheme:" << origName;
+    if (!origName.endsWith(QLatin1String(".colorscheme")) || !QFile::exists(origName)) {
+        return;
+    }
+
+    QFileInfo info(origName);
+    const QString &schemeName = info.baseName();
+    ColorScheme *scheme = new ColorScheme();
+    scheme->setName(schemeName);
+    scheme->read(origName);
+
+    if (scheme->name().isEmpty()) {
+        qDebug() << "Color scheme in" << origName << "does not have a valid name and was not loaded.";
+        delete scheme;
+        return;
+    }
+
+    if (_colorSchemes.contains(schemeName)) {
+        qDebug() << "(_colorSchemes.contains(schemeName))";
+        const ColorScheme *needDeletScheme = _colorSchemes[schemeName];
+        delete needDeletScheme;
+        _colorSchemes[schemeName] = scheme;
+    }
+}
+
 QString ColorSchemeManager::findColorSchemePath(const QString& name) const
 {
 //    QString path = KStandardDirs::locate("data","konsole/"+name+".colorscheme");

@@ -28,6 +28,7 @@
 #include "remotemanagementplugn.h"
 #include "utils.h"
 #include "define.h"
+#include "customthemesettingdialog.h"
 
 // dtk
 #include <DMainWindow>
@@ -236,6 +237,9 @@ public:
     //内置主题10
     static constexpr const char *THEME_TEN                      = "Theme10";
     static constexpr const char *THEME_TEN_NAME                 = "One light";
+    //自定义主题
+    static constexpr const char *THEME_CUSTOM                   = "Custom Theme";
+
 
     // /etc/hostname 文件路径
     static constexpr const char *HOSTNAME_PATH                 = "/etc/hostname";
@@ -289,6 +293,7 @@ protected:
     void checkThemeItem();
     //增加主题菜单
     void addThemeMenuItems();
+public:
     //选择主题项
     void switchThemeAction(QAction *);
     //选择内置主题项
@@ -427,6 +432,7 @@ protected:
     // 创建第一个终端完成时，需要记录
     bool hasCreateFirstTermialComplete = false;
 
+public:
     //主题菜单
     SwitchThemeMenu *switchThemeMenu        = nullptr;
     //浅色主题快捷键
@@ -456,6 +462,8 @@ protected:
     QAction         *themeNineAction        = nullptr;
     //内置主题10快捷键
     QAction         *themeTenAction         = nullptr;
+    //自定义主题快捷键
+    QAction        *themeCustomAction      = nullptr;
 
     //主题快捷键组
     QActionGroup    *group                  = nullptr;
