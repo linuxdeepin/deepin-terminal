@@ -534,6 +534,9 @@ signals:
     // 标签标题参数改变 dzw 2020-12-2
     void titleArgsChange(QString key, QString value);
 
+    // warning提示信息 currentShell当前使用的shell, 启用shell是否成功 true 替换了shell false 替换shell但启动失败
+    void shellWarningMessage(QString currentShell, bool isSuccess);
+
 private slots:
     void done(int);
 

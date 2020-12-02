@@ -36,6 +36,7 @@
 #include <DLog>
 #include <DDialog>
 #include <DFloatingMessage>
+#include <DMessageManager>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -62,9 +63,10 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     setHistorySize(5000);
 
+    QString strShellPath = Settings::instance()->shellPath();
     // set shell program
-    QString shell{ getenv("SHELL") };
-    setShellProgram(shell.isEmpty() ? "/bin/bash" : shell);
+    qDebug() << "set shell program : " << strShellPath;
+    setShellProgram(strShellPath);
     /******** Modify by ut000610 daizhengwen 2020-07-08:初始化透明度 Begin***************/
     // 若没有窗口特效，则不生效
     // 若有窗口特效，生效
@@ -244,6 +246,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(this, &QTermWidget::isTermIdle, this, [this](bool bIdle) {
         emit termIsIdle(m_page->identifier(), bIdle);
     });
+
+    connect(this, &QTermWidget::shellWarningMessage, this, &TermWidget::onShellMessage);
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
     //qDebug() << parentPage << endl;
@@ -1289,6 +1293,28 @@ void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 }
 
 /*******************************************************************************
+ 1. @函数:    onShellMessage
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-30
+ 4. @说明:    conment
+第一个参数: currentShell当前使用的shell,
+第二个参数：isSuccess 启用shell是否成功 true 替换了shell false 替换shell但启动失败
+*******************************************************************************/
+void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
+{
+    if (isSuccess) {
+        // 替换了shell提示
+        QString strSetShell = Settings::instance()->shellPath();
+        QString strShellWarning = QObject::tr("Could not find \"%1\", starting \"%2\" instead. Please check your shell profile.").arg(strSetShell).arg(currentShell);
+        showShellMessage(strShellWarning);
+    } else {
+        // 启动shell失败
+        QString strShellNoFound = QObject::tr("Could not find \"%1\", unable to run it").arg(currentShell);
+        showShellMessage(strShellNoFound);
+    }
+}
+
+/*******************************************************************************
  1. @函数:    wheelEvent
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-09-08
@@ -1333,22 +1359,15 @@ void TermWidget::showFlowMessage(bool show)
             label->setWordWrap(false);
         }
         m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
+        QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
+        m_flowMessage->setMessage(strText);
+        if (show) {
+            DMessageManager::instance()->sendMessage(this, m_flowMessage);
+        }
     }
     assert(m_flowMessage);
 
     if (show) {
-        int xPoint = 0;
-        m_flowMessage->adjustSize();
-        QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
-        m_flowMessage->setMessage(strText);
-        if (this->width() < m_flowMessage->width()) {
-            m_flowMessage->resize(this->width(), m_flowMessage->height());
-        } else {
-            xPoint = (this->width() - m_flowMessage->width()) / 2;
-        }
-        int yPoint = this->height() - m_flowMessage->height();
-
-        m_flowMessage->move(xPoint, yPoint);
         m_flowMessage->show();
     } else {
         if (!m_flowMessage->isHidden()) {
@@ -1357,14 +1376,27 @@ void TermWidget::showFlowMessage(bool show)
     }
 }
 
-void TermWidget::resizeEvent(QResizeEvent *event)
+/*******************************************************************************
+ 1. @函数:    showShellMessage
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-27
+ 4. @说明:    shell启动失败时的悬浮提示框
+*******************************************************************************/
+void TermWidget::showShellMessage(QString strWarnings)
 {
-    if (m_flowMessage) {
-        if (!m_flowMessage->isHidden()) {
-            showFlowMessage(true);
-        }
+    // 初始化悬浮框
+    DFloatingMessage *shellWarningsMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
+    QList<QLabel *> lst = shellWarningsMessage->findChildren<QLabel *>();
+    for (auto label : lst) {
+        label->setWordWrap(false);
     }
-    QTermWidget::resizeEvent(event);
+    // 关闭悬浮框时销毁
+    connect(shellWarningsMessage, &DFloatingMessage::closeButtonClicked, shellWarningsMessage, &DFloatingMessage::deleteLater);
+    // 设置icon和文字
+    shellWarningsMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
+    shellWarningsMessage->setMessage(strWarnings);
+    // 调用DTK的方法关闭悬浮框
+    DMessageManager::instance()->sendMessage(this, shellWarningsMessage);
 }
 
 

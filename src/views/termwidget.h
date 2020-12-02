@@ -141,9 +141,11 @@ public:
     QString getRemoteTabTitleFormat();
     // 获取当前标签标题格式
     QString getCurrentTabTitleFormat();
-    //
+    // Ctrl+Q/Ctrl+S的悬浮提示框
     void showFlowMessage(bool show);
-    
+    // shell启动失败悬浮框
+    void showShellMessage(QString strWarnings);
+
 public slots:
     void wpasteSelection();
     void onSettingValueChanged(const QString &keyName);
@@ -151,6 +153,8 @@ public slots:
     void onDropInUrls(const char *urls);
     // 处理触控板事件
     void onTouchPadSignal(QString name, QString direction, int fingers);
+    // 处理shell消息提示
+    void onShellMessage(QString currentShell, bool isSuccess);
 
 signals:
     void termRequestRenameTab(QString newTabName);
@@ -160,7 +164,6 @@ signals:
 protected:
     // 鼠标滚轮事件
     void wheelEvent(QWheelEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
 private slots:
     void customContextMenuCall(const QPoint &pos);
     void handleTermIdle(bool bIdle);
@@ -205,7 +208,8 @@ private:
     TabFormat m_tabFormat;
     // 会话编号
     int m_sessionNumber;
-    DFloatingMessage* m_flowMessage = nullptr;
+    // Ctrl+Q/Ctrl+S的悬浮框
+    DFloatingMessage *m_flowMessage = nullptr;
 };
 
 #endif  // TERMWIDGET_H

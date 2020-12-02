@@ -66,6 +66,12 @@ public:
     QString tabTitleFormat() const;
     // 远程标签标题
     QString remoteTabTitleFormat() const;
+    // 当前选中的shell路径
+    QString shellPath() const;
+    // 重新加载shell配置
+    void reloadShellOptions();
+    // 为默认shell添加选项
+    static void addShellOption();
 
     // 设置主题
     void setColorScheme(const QString &name);
@@ -82,7 +88,12 @@ public:
     QStringList color2str(QColor);
 
     DSettings *settings;
+
+    // 字体下拉列表
     static DComboBox *comboBox;
+    // shell配置下拉列表
+    static DComboBox *g_shellConfigCombox;
+
     bool IsPasteSelection();
 
     // 与设置里的快捷键冲突检测
@@ -120,6 +131,8 @@ public:
     static QPair<QWidget *, QWidget *> createTabTitleFormatOptionHandle(QObject *opt);
     // 新增自定义修改远程标签格式的控件
     static QPair<QWidget *, QWidget *> createRemoteTabTitleFormatOptionHandle(QObject *opt);
+    // 新增自定义shell配置下拉列表控件
+    static QPair<QWidget *, QWidget *> createShellConfigComboxOptionHandle(QObject *opt);
 
 signals:
     // void settingValueChanged(const QString &key, const QVariant &value);
@@ -141,7 +154,6 @@ signals:
     void tabFormatChanged(const QString &tabFormat);
     // 设置中的远程标签标题格式变化
     void remoteTabFormatChanged(const QString &remoteTabFormat);
-
 
 private:
     Settings();

@@ -372,6 +372,12 @@
                     "name": "Shell",
                     "options": [
                         {
+                            "key": "default_shell",
+                            "name": "Shell config",
+                            "type": "shellconfigcombox",
+                            "default": "$SHELL"
+                        },
+                        {
                             "key": "enable_ctrl_flow",
                             "text": "Disable flow control using Ctrl+S, Ctrl+Q",
                             "type": "checkbox",

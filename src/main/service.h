@@ -32,6 +32,7 @@
 #include <DDialog>
 #include <QObject>
 #include <QSharedMemory>
+#include <QMap>
 
 #include <com_deepin_wmswitcher.h>
 
@@ -112,6 +113,11 @@ public:
     // 获取主程序初始进入的时间
     qint64 getEntryTime();
 
+    // 获取/etc/shells下的shell列表
+    QMap<QString, QString> getShells();
+    // 获取shells的map,不读取/etc/shells
+    QMap<QString, QString> shellsMap();
+
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
@@ -158,6 +164,9 @@ private:
     ShareMemoryInfo *m_pShareMemoryInfo = nullptr;
     // 初始化和运行无障碍辅助工具的线程
     AtspiDesktop *m_atspiThread = nullptr;
+
+    // shells
+    QMap<QString, QString> m_shellsMap;
 
     // 记录进入的时间，只有创建窗口时，才会来取用这个时间
     qint64 m_EntryTime = 0;

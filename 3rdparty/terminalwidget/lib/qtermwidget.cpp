@@ -522,6 +522,7 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, SIGNAL(finished()), this, SLOT(sessionFinished()));
     connect(m_impl->m_session, &Session::titleChanged, this, &QTermWidget::titleChanged);
     connect(m_impl->m_session, &Session::cursorChanged, this, &QTermWidget::cursorChanged);
+    connect(m_impl->m_session, &Session::shellWarningMessage, this, &QTermWidget::shellWarningMessage);
 
     //将终端活动状态传给SessionManager单例
     connect(this, SIGNAL(isTermIdle(bool)), SessionManager::instance(), SIGNAL(sessionIdle(bool)));

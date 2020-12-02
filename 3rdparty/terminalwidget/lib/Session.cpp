@@ -319,20 +319,29 @@ void Session::run()
 
     // here we expect full path. If there is no fullpath let's expect it's
     // a custom shell (eg. python, etc.) available in the PATH.
-    if (exec.startsWith(QLatin1Char('/')) || exec.isEmpty())
-    {
-        const QString defaultShell{QLatin1String("/bin/sh")};
+    QString programPath = exec;
+    if (exec.startsWith(QLatin1Char('/')) || exec.isEmpty()) {
+        const QString defaultShell{QLatin1String("/bin/bash")};
 
         QFile excheck(exec);
-        if ( exec.isEmpty() || !excheck.exists() ) {
+#if 0 // 下一期优化
+        // exec是空的，或者文件不存在，则替换exec为$SHELL
+        if (exec.isEmpty() || !excheck.exists()) {
             exec = QString::fromLocal8Bit(qgetenv("SHELL"));
         }
         excheck.setFileName(exec);
-
-        if ( exec.isEmpty() || !excheck.exists() ) {
+#endif
+        // SHELL是空的，或者文件不存在，则替换exec为/bin/sh
+        if (exec.isEmpty() || !excheck.exists()) {
             qWarning() << "Neither default shell nor $SHELL is set to a correct path. Fallback to" << defaultShell;
             exec = defaultShell;
         }
+
+    }
+
+    if (programPath != exec) {
+        // 说明有文件不存在，取最后找到的文件进行替换
+        emit shellWarningMessage(exec, true);
     }
 
     // _arguments sometimes contain ("") so isEmpty()
@@ -376,6 +385,7 @@ void Session::run()
         sendText(infoText);
         _userTitle = QString::fromLatin1("Session crashed");
         emit titleChanged();
+        emit shellWarningMessage(exec, false);
         return;
     }
 
@@ -466,7 +476,10 @@ void Session::setUserTitle( int what, const QString & caption )
         return;
     }
 
-    if ( modified ) {
+    if (modified) {
+        // 标签标题变化前更新标签标题参数
+        onUpdateTitleArgs();
+        // 标签标题有变化，发送信号通知terminal
         emit titleChanged();
     }
 }

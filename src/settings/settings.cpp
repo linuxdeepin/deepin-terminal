@@ -42,6 +42,10 @@ DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
 Settings *Settings::m_settings_instance = new Settings();
 DComboBox *Settings::comboBox = nullptr;
+DComboBox *Settings::g_shellConfigCombox = nullptr;
+
+// 全局变量  变量定义的位置可以变，目前只有这边用，所以定义到这儿
+const QString DEFAULT_SHELL = "$SHELL";
 
 Settings::Settings() : QObject(qApp)
 {
@@ -202,6 +206,28 @@ void Settings::loadDefaultsWhenReinstall()
     if (!installFlagPath.exists()) {
         installFlagPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    addShellOption
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-25
+ 4. @说明:    添加加默认shell的配置项
+*******************************************************************************/
+void Settings::addShellOption()
+{
+    g_shellConfigCombox->clear();
+    // 获取shells
+    QMap<QString, QString> shellsMap = Service::instance()->getShells();
+    // item列表
+    QStringList keysList;
+    // 初始值
+    keysList << DEFAULT_SHELL;
+    // 数据转换
+    for (const QString key : shellsMap.keys()) {
+        keysList << key;
+    }
+    g_shellConfigCombox->addItems(keysList);
 }
 
 /*******************************************************************************
@@ -428,6 +454,41 @@ QString Settings::tabTitleFormat() const
 QString Settings::remoteTabTitleFormat() const
 {
     return settings->option("basic.tab_title.remote_tab_title_format")->value().toString();
+}
+
+/*******************************************************************************
+ 1. @函数:    shellPath
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-27
+ 4. @说明:    获取当前设置选中的shell路径
+*******************************************************************************/
+QString Settings::shellPath() const
+{
+    QString strShellProgram = settings->option("advanced.shell.default_shell")->value().toString();
+    // $SHELL无法写入配置文件中
+    if (DEFAULT_SHELL == strShellProgram || strShellProgram.isEmpty()) {
+        QString shell{ getenv("SHELL") };
+        return shell;
+    }
+
+    return strShellProgram;
+}
+
+/*******************************************************************************
+ 1. @函数:    reloadShellOptions
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-30
+ 4. @说明:    重新加载最新项，并设置当前项
+*******************************************************************************/
+void Settings::reloadShellOptions()
+{
+    // 记录设置当前值
+    QString strShellProgram = settings->option("advanced.shell.default_shell")->value().toString();
+    // 更新shell选项
+    addShellOption();
+    QMap<QString, QString> shellMap = Service::instance()->shellsMap();
+    // 设置之前的项 若strShellProgram不存在会自动选取第一项
+    g_shellConfigCombox->setCurrentText(shellMap.key(strShellProgram));
 }
 
 /*******************************************************************************
@@ -828,6 +889,38 @@ QPair<QWidget *, QWidget *> Settings::createTabTitleFormatOptionHandle(QObject *
 QPair<QWidget *, QWidget *> Settings::createRemoteTabTitleFormatOptionHandle(QObject *opt)
 {
     return createTabTitleFormatWidget(opt, true);
+}
+
+/*******************************************************************************
+ 1. @函数:    createShellConfigComboxOptionHandle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-30
+ 4. @说明:    创建shell配置下拉列表
+*******************************************************************************/
+QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObject *obj)
+{
+    DSettingsOption *option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
+    // shell配置框
+    g_shellConfigCombox = new DComboBox;
+    QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, g_shellConfigCombox);
+    // 添加shell配置选项
+    addShellOption();
+
+    connect(option, &DSettingsOption::valueChanged, g_shellConfigCombox, [ = ](QVariant var) {
+        QMap<QString, QString> shellMap = Service::instance()->shellsMap();
+        g_shellConfigCombox->setCurrentText(shellMap.key(var.toString()));
+    });
+
+    option->connect(g_shellConfigCombox, &DComboBox::currentTextChanged, option, [ = ](const QString & strShell) {
+        QMap<QString, QString> shellMap = Service::instance()->shellsMap();
+        option->setValue(shellMap[strShell]);
+    });
+
+    QMap<QString, QString> shellMap = Service::instance()->shellsMap();
+    // 设置默认值
+    g_shellConfigCombox->setCurrentText(shellMap.key(option->value().toString()));
+
+    return optionWidget;
 }
 
 

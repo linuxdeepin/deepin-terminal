@@ -136,6 +136,7 @@ void Service::initSetting()
     m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
     m_settingDialog->widgetFactory()->registerWidget("tabformatedit", Settings::createTabTitleFormatOptionHandle);
     m_settingDialog->widgetFactory()->registerWidget("remotetabformatedit", Settings::createRemoteTabTitleFormatOptionHandle);
+    m_settingDialog->widgetFactory()->registerWidget("shellconfigcombox", Settings::createShellConfigComboxOptionHandle);
     // 将数据重新读入
     m_settingDialog->updateSettings(Settings::instance()->settings);
     // 设置窗口模态为没有模态，不阻塞窗口和进程
@@ -288,6 +289,61 @@ qint64 Service::getEntryTime()
 }
 
 /*******************************************************************************
+ 1. @函数:    getShells
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-26
+ 4. @说明:    从/etc/shells获取shell列表
+*******************************************************************************/
+QMap<QString, QString> Service::getShells()
+{
+    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
+    // 清空原有数据
+    m_shellsMap.clear();
+    // 需要读取/etc/shells
+    QFile shellsInfo(QStringLiteral("/etc/shells"));
+    if (shellsInfo.open(QIODevice::ReadOnly)) {
+        // 只读
+        QTextStream stream(&shellsInfo);
+        QString shellLine;
+        // 循环读取
+        do {
+            QString shellPath;
+            shellLine = stream.readLine();
+            // 忽略注释
+            if (!shellLine.startsWith(QLatin1String("#")) && !shellLine.isNull()) {
+                // 获取shell所在目录
+                shellPath = shellLine;
+                // 获取shell进程名称
+                QStringList shellPaths = shellPath.split(QLatin1String("/"));
+                QString shellProgram = shellPaths.back();
+                // 添加数据入map
+                m_shellsMap.insert(shellProgram, shellPath);
+                // qDebug() << "shell : " << shellProgram << " path : " << shellPath;
+            }
+        } while (!shellLine.isNull());
+    } else {
+        // 读取数据失败报错
+        qDebug() << "read /etc/shells fail! error : " << shellsInfo.error();
+    }
+    // 关闭文件
+    shellsInfo.close();
+    qint64 endTime = QDateTime::currentMSecsSinceEpoch();
+    qDebug() << "read /etc/shells cost time : " << endTime - startTime;
+    return m_shellsMap;
+}
+
+/*******************************************************************************
+ 1. @函数:    shellsMap
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-26
+ 4. @说明:    获取shellsMap
+*******************************************************************************/
+QMap<QString, QString> Service::shellsMap()
+{
+    return m_shellsMap;
+}
+
+/*******************************************************************************
  1. @函数:    showSettingDialog
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-05-20
@@ -317,6 +373,8 @@ void Service::showSettingDialog(MainWindow *pOwner)
         Settings::instance()->HandleWidthFont();
         FontFilter::instance()->HandleWidthFont();
         /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置窗口时，执行等宽字体出来 End***************/
+        // 重新加载shell配置数据
+        Settings::instance()->reloadShellOptions();
         m_settingDialog->show();
     } else {
         qDebug() << "No setting dialog.";
