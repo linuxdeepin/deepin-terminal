@@ -61,6 +61,11 @@ public:
     void setBackGroundColor(const QColor &color);
     //获取背景色
     QColor getBackGroundColor();
+
+signals:
+    //清理按钮焦点信号
+    void clearFocussSignal();
+
 protected:
     //处理重绘事件
     void paintEvent(QPaintEvent *event) override;
@@ -68,7 +73,11 @@ protected:
     void focusInEvent(QFocusEvent *event) override;
     //焦点离开事件
     void focusOutEvent(QFocusEvent *event) override;
-private:
+    //按键按下事件
+    void keyPressEvent(QKeyEvent *event) override;
+    //鼠标按下事件
+    void mousePressEvent(QMouseEvent *event) override;
+public:
     //背景色
     QColor m_color;
     //焦点是否在 用于背景和边框
@@ -101,10 +110,14 @@ protected:
     void loadConfiguration();
     //键盘事件
     void keyPressEvent(QKeyEvent *event) override;
+    //显示事件
+    void showEvent(QShowEvent *event) override;
 
 public slots:
     //选择配色槽
     void onSelectColor();
+    //清理按钮焦点槽
+    void clearFocussSlot();
 
 private:
     //标题栏

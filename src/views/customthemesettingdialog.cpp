@@ -132,7 +132,13 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
 void ColorPushButton::focusInEvent(QFocusEvent *event)
 {
     // 焦点入
-    m_isFocus = true;
+    if (Qt::TabFocusReason == event->reason() || Qt::BacktabFocusReason == event->reason()) {
+        m_isFocus = true;
+    } else if (Qt::ActiveWindowFocusReason == event->reason() && m_isFocus) {
+        m_isFocus = true;
+    } else {
+        m_isFocus = false;
+    }
     DPushButton::focusInEvent(event);
 }
 
@@ -145,9 +151,41 @@ void ColorPushButton::focusInEvent(QFocusEvent *event)
 void ColorPushButton::focusOutEvent(QFocusEvent *event)
 {
     // 焦点Tab出
-    m_isFocus = false;
+    //m_isFocus=false;
+    if ((Qt::TabFocusReason == event->reason() || Qt::BacktabFocusReason == event->reason())) {
+        qDebug() << "ColorPushButton::focusOutEvent-------163" ;
+        m_isFocus = false;
+    }
     DPushButton::focusOutEvent(event);
 }
+
+/*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    按键按下事件
+*******************************************************************************/
+void ColorPushButton::keyPressEvent(QKeyEvent *event)
+{
+    if ((Qt::Key_Return == event->key()) || (Qt::Key_Enter == event->key())) {
+        m_isFocus = true;
+    }
+
+    DPushButton::keyPressEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    mousePressEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    鼠标按下事件
+*******************************************************************************/
+void ColorPushButton::mousePressEvent(QMouseEvent *event)
+{
+    emit clearFocussSignal();
+    DPushButton::mousePressEvent(event);
+}
+
 
 
 CustomThemeSettingDialog::CustomThemeSettingDialog(QWidget *parent) : DAbstractDialog(parent)
@@ -261,35 +299,33 @@ void CustomThemeSettingDialog::initUI()
 
     DLabel *titleStyleLabel = new DLabel(tr("Style:"));
     DFontSizeManager::instance()->bind(titleStyleLabel, DFontSizeManager::T6, QFont::Normal);
-    titleStyleLabel->setFixedSize(64, 20);
+    titleStyleLabel->setFixedSize(64, 22);
 
     m_lightRadioButton = new DRadioButton(tr("Light"));
     DFontSizeManager::instance()->bind(m_lightRadioButton, DFontSizeManager::T6, QFont::Normal);
-    m_lightRadioButton->setFixedSize(64, 20);
+    m_lightRadioButton->setFixedSize(64, 22);
 
     m_darkRadioButton = new DRadioButton(tr("Dark"));
     DFontSizeManager::instance()->bind(m_darkRadioButton, DFontSizeManager::T6, QFont::Normal);
-    m_darkRadioButton->setFixedSize(64, 20);
+    m_darkRadioButton->setFixedSize(64, 22);
 
     m_darkRadioButton->setFocusPolicy(Qt::TabFocus);
     m_lightRadioButton->setFocusPolicy(Qt::TabFocus);
+    m_foregroundButton->setFocusPolicy(Qt::TabFocus);
+    m_backgroundButton->setFocusPolicy(Qt::TabFocus);
     setTabOrder(m_darkRadioButton, m_lightRadioButton);
 
     connect(m_darkRadioButton, &DRadioButton::toggled, this, [ = ]() {
         if (m_darkRadioButton->isChecked()) {
             m_themePreviewArea->setTitleStyle("Dark");
-            if (m_lightRadioButton->hasFocus()) {
-                m_darkRadioButton->setFocus();
-            }
         }
+        clearFocussSlot();
     });
     connect(m_lightRadioButton, &DRadioButton::toggled, this, [ = ]() {
         if (m_lightRadioButton->isChecked()) {
             m_themePreviewArea->setTitleStyle("Light");
-            if (m_darkRadioButton->hasFocus()) {
-                m_lightRadioButton->setFocus();
-            }
         }
+        clearFocussSlot();
     });
 
     titleStyleLayout->addWidget(titleStyleLabel);
@@ -363,6 +399,12 @@ void CustomThemeSettingDialog::initUI()
     connect(m_backgroundButton, &DPushButton::clicked, this, &CustomThemeSettingDialog::onSelectColor);
     connect(m_ps1Button, &DPushButton::clicked, this, &CustomThemeSettingDialog::onSelectColor);
     connect(m_ps2Button, &DPushButton::clicked, this, &CustomThemeSettingDialog::onSelectColor);
+
+    connect(m_foregroundButton, &ColorPushButton::clearFocussSignal, this, &CustomThemeSettingDialog::clearFocussSlot);
+    connect(m_backgroundButton, &ColorPushButton::clearFocussSignal, this, &CustomThemeSettingDialog::clearFocussSlot);
+    connect(m_ps1Button, &ColorPushButton::clearFocussSignal, this, &CustomThemeSettingDialog::clearFocussSlot);
+    connect(m_ps2Button, &ColorPushButton::clearFocussSignal, this, &CustomThemeSettingDialog::clearFocussSlot);
+
     loadConfiguration();
 }
 
@@ -421,6 +463,9 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
     m_confirmBtn->setText(tr("Confirm"));
     Utils::setSpaceInWord(m_confirmBtn);
 
+    m_cancelBtn->setFocusPolicy(Qt::TabFocus);
+    m_confirmBtn->setFocusPolicy(Qt::TabFocus);
+
     //设置回车键默认响应的按钮
     m_confirmBtn->setDefault(true);
 
@@ -440,9 +485,6 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
     buttonsLayout->addWidget(m_confirmBtn);
     m_confirmBtn->setDefault(true);
 
-    QTimer::singleShot(30, this, [&]() {
-        m_confirmBtn->setFocus();
-    });
     m_mainLayout->addLayout(buttonsLayout);
 
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
@@ -484,7 +526,6 @@ void CustomThemeSettingDialog::onSelectColor()
 {
     ColorPushButton *pushButton = qobject_cast<ColorPushButton *>(sender());
     if (pushButton) {
-        pushButton->setFocus();
         QColor newColor = DColorDialog::getColor(pushButton->getBackGroundColor(), this);
         if (newColor.isValid()) {
             pushButton->setBackGroundColor(newColor);
@@ -502,6 +543,32 @@ void CustomThemeSettingDialog::onSelectColor()
             }
         }
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    clearFocussSlot
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    清理按钮焦点槽
+*******************************************************************************/
+void CustomThemeSettingDialog::clearFocussSlot()
+{
+    m_closeButton->clearFocus();
+    m_darkRadioButton->clearFocus();
+    m_lightRadioButton->clearFocus();
+    m_foregroundButton->clearFocus();
+    m_backgroundButton->clearFocus();
+    m_ps1Button->clearFocus();
+    m_ps2Button->clearFocus();
+    m_cancelBtn->clearFocus();
+    m_confirmBtn->clearFocus();
+
+    m_foregroundButton->m_isFocus = false;
+    m_backgroundButton->m_isFocus = false;
+    m_ps1Button->m_isFocus = false;
+    m_ps2Button->m_isFocus = false;
+
+    m_logoIcon->setFocus();
 }
 
 /*******************************************************************************
@@ -593,4 +660,14 @@ void CustomThemeSettingDialog::keyPressEvent(QKeyEvent *event)
     }
 }
 
-
+/*******************************************************************************
+ 1. @函数:    showEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    显示事件
+*******************************************************************************/
+void CustomThemeSettingDialog::showEvent(QShowEvent *event)
+{
+    clearFocussSlot();
+    DAbstractDialog::showEvent(event);
+}
