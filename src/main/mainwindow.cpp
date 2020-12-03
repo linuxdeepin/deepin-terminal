@@ -27,7 +27,6 @@
 #include "termwidgetpage.h"
 #include "termwidget.h"
 #include "titlebar.h"
-#include "operationconfirmdlg.h"
 #include "encodepanelplugin.h"
 #include "customcommandplugin.h"
 #include "serverconfigmanager.h"
@@ -1756,19 +1755,19 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             return true;
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
-        if((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_S)){
-            if(!Settings::instance()->enableControlFlow()){
+        if ((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_S)) {
+            if (!Settings::instance()->enableControlFlow()) {
                 return true;
             }
             assert(term);
-            if(term->isActiveWindow()){
+            if (term->isActiveWindow()) {
                 term->showFlowMessage(true);
             }
         }
 
-        if((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_Q)){
+        if ((keyEvent->modifiers() == Qt::ControlModifier) && (keyEvent->key() == Qt::Key_Q)) {
             assert(term);
-            if(term->isActiveWindow()){
+            if (term->isActiveWindow()) {
                 term->showFlowMessage(false);
             }
         }

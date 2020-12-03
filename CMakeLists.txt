@@ -149,8 +149,6 @@ set (DTNG_CPP_FILES
     src/theme/themepanel.cpp
     src/theme/themepanelplugin.cpp
     src/views/commonpanel.cpp
-    src/views/myiconbutton.cpp
-    src/views/operationconfirmdlg.cpp
     src/views/pagesearchbar.cpp
     src/views/rightpanel.cpp
     src/views/tabbar.cpp
@@ -159,7 +157,6 @@ set (DTNG_CPP_FILES
     src/views/termwidget.cpp
     src/views/termwidgetpage.cpp
     src/views/termbasedialog.cpp
-    src/views/terminputdialog.cpp
     src/views/termcommandlinkbutton.cpp
     src/views/titlebar.cpp
     src/views/itemwidget.cpp
@@ -207,8 +204,6 @@ set (DTNG_HEADER_FILES
     src/theme/themepanel.h
     src/theme/themepanelplugin.h
     src/views/commonpanel.h
-    src/views/myiconbutton.h
-    src/views/operationconfirmdlg.h
     src/views/pagesearchbar.h
     src/views/rightpanel.h
     src/views/tabbar.h
@@ -218,7 +213,6 @@ set (DTNG_HEADER_FILES
     src/views/termwidgetpage.h
     src/views/titlebar.h
     src/views/termbasedialog.h
-    src/views/terminputdialog.h
     src/views/termcommandlinkbutton.h
     src/views/itemwidget.h
     src/views/focusframe.h
@@ -291,6 +285,8 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
 install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)
 
 # Unit Test
-if ((${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") AND TERM_RPATH)
+option(UT_SWITCH "Do you want to run ut code" ON)
+
+if ((${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") AND UT_SWITCH)
     add_subdirectory(test)
 endif()

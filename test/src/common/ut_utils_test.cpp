@@ -288,34 +288,6 @@ TEST(UT_Utils_Test, showUnistallConfirmDialog)
 #endif
 }
 
-TEST(UT_Utils_Test, showShortcutConflictDialog)
-{
-#ifdef ENABLE_UI_TEST
-    //要自己退出，否则对话框窗口会一直阻塞
-    QtConcurrent::run([ = ]() {
-        QTimer timer;
-        timer.setSingleShot(true);
-
-        QEventLoop *loop = new QEventLoop;
-
-        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
-            loop->quit();
-            qApp->exit();
-        });
-
-        timer.start(1000);
-        loop->exec();
-
-        delete loop;
-    });
-
-    QString shortcutName = "Ctrl+A";
-    bool isAccepted = Utils::showShortcutConflictDialog(shortcutName);
-    EXPECT_EQ(isAccepted, false);
-
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-}
 
 TEST(UT_Utils_Test, showShortcutConflictMsgbox)
 {
@@ -341,35 +313,6 @@ TEST(UT_Utils_Test, showShortcutConflictMsgbox)
     QString shortcutName = "Ctrl+C";
     bool isAccepted = Utils::showShortcutConflictMsgbox(shortcutName);
     EXPECT_EQ(isAccepted, true);
-
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-}
-
-TEST(UT_Utils_Test, showRenameTitleDialog)
-{
-#ifdef ENABLE_UI_TEST
-    QWidget *parentWidget = new QWidget;
-    //要自己退出，否则对话框窗口会一直阻塞
-    QtConcurrent::run([ = ]() {
-        QTimer timer;
-        timer.setSingleShot(true);
-
-        QEventLoop *loop = new QEventLoop;
-
-        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
-            parentWidget->deleteLater();
-            loop->quit();
-            qApp->exit();
-        });
-
-        timer.start(1000);
-        loop->exec();
-
-        delete loop;
-    });
-
-    Utils::showRenameTitleDialog("QTermWidget", parentWidget);
 
     QTest::qWait(UT_WAIT_TIME);
 #endif

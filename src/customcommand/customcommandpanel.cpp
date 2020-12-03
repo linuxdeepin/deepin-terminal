@@ -21,7 +21,6 @@
 #include "customcommandpanel.h"
 #include "customcommandoptdlg.h"
 #include "shortcutmanager.h"
-#include "operationconfirmdlg.h"
 #include "service.h"
 
 #include <DGroupBox>

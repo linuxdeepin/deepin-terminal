@@ -137,11 +137,8 @@ public:
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     static bool showUnistallConfirmDialog(QString commandname);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
-    static bool showShortcutConflictDialog(QString conflictkey);
     static bool showShortcutConflictMsgbox(QString txt);
     static void setSpaceInWord(DPushButton *button);
-
-    static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
 
     static void showSameNameDialog(QWidget *parent, const QString &firstLine, const QString &secondLine);
     static void clearChildrenFocus(QObject *objParent);

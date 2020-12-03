@@ -19,9 +19,7 @@
  */
 
 #include "utils.h"
-#include "operationconfirmdlg.h"
 #include "termwidget.h"
-#include "terminputdialog.h"
 #include "dbusmanager.h"
 
 #include <DLog>
@@ -357,17 +355,6 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
 *******************************************************************************/
 bool Utils::showExitConfirmDialog(CloseType type, int count)
 {
-    /******** Modify by m000714 daizhengwen 2020-04-17: 统一使用dtk Dialog****************/
-#ifndef USE_DTK
-    OperationConfirmDlg optDlg;
-    optDlg.setFixedSize(380, 160);
-    optDlg.setOperatTypeName(QObject::tr("Programs are still running in terminal"));
-    optDlg.setTipInfo(QObject::tr("Are you sure you want to exit?"));
-    optDlg.setOKCancelBtnText(QObject::tr("Exit"), QObject::tr("Cancel"));
-    optDlg.exec();
-
-    return (optDlg.getConfirmResult() == QDialog::Accepted);
-#else
     // count < 1 不提示
     if (count < 1) {
         return true;
@@ -397,8 +384,6 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
     dlg.addButton(QString(tr("Close")), true, DDialog::ButtonWarning);
     /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
     return (dlg.exec() == DDialog::Accepted);
-#endif
-    /********************* Modify by m000714 daizhengwen End ************************/
 }
 /*******************************************************************************
  1. @函数:    getExitDialogText
@@ -453,16 +438,6 @@ bool Utils::showExitUninstallConfirmDialog()
 //单词可能拼错了showUninstallConfirmDialog
 bool Utils::showUnistallConfirmDialog(QString commandname)
 {
-#ifndef USE_DTK
-    OperationConfirmDlg dlg;
-    dlg.setFixedSize(380, 160);
-    dlg.setOperatTypeName(QObject::tr("Are you sure you want to uninstall this application?"));
-    dlg.setTipInfo(QObject::tr("You will not be able to use Terminal any longer."));
-    dlg.setOKCancelBtnText(QObject::tr("OK"), QObject::tr("Cancel"));
-    dlg.exec();
-
-    return (dlg.getConfirmResult() == QDialog::Accepted);
-#else
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，显示不同的弹框信息 Begin***************/
     QString title = "", text = "";
     if (commandname == "remove") {
@@ -479,30 +454,8 @@ bool Utils::showUnistallConfirmDialog(QString commandname)
     dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
     dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);
     return (dlg.exec() == DDialog::Accepted);
-#endif
 }
 
-/*******************************************************************************
- 1. @函数:    showShortcutConflictDialog
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-03-31
- 4. @说明:    快捷键冲突框显示
-*******************************************************************************/
-bool Utils::showShortcutConflictDialog(QString conflictkey)
-{
-    QString str = qApp->translate("DSettingsDialog", "This shortcut conflicts with %1")
-                  .arg(QString("<span style=\"color: rgba(255, 90, 90, 1);\">%1</span>").arg(conflictkey));
-
-    OperationConfirmDlg optDlg;
-    QPixmap warnning = QIcon::fromTheme("dialog-warning").pixmap(QSize(32, 32));
-    optDlg.setIconPixmap(warnning);
-    optDlg.setOperatTypeName(str);
-    optDlg.setTipInfo(QObject::tr("Click on Add to make this shortcut effective immediately"));
-    optDlg.setOKCancelBtnText(QObject::tr("Replace"), QObject::tr("Cancel"));
-    optDlg.setFixedSize(380, 160);
-    optDlg.exec();
-    return optDlg.getConfirmResult() == QDialog::Accepted;
-}
 /*******************************************************************************
  1. @函数:    showShortcutConflictMsgbox
  2. @作者:    ut000439 wangpeili
@@ -548,21 +501,6 @@ void Utils::setSpaceInWord(DPushButton *button)
 
         button->setText(QString().append(text.at(0)).append(QChar::Nbsp).append(text.at(1)));
     }
-}
-/*******************************************************************************
- 1. @函数:    showRenameTitleDialog
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    显示重命名标题对话框
-*******************************************************************************/
-void Utils::showRenameTitleDialog(QString oldTitle, QWidget *parentWidget)
-{
-    TermInputDialog *pDialog = new TermInputDialog(parentWidget);
-    pDialog->setWindowModality(Qt::ApplicationModal);
-    pDialog->setFixedSize(380, 180);
-    pDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
-    pDialog->setFocusPolicy(Qt::NoFocus);
-    pDialog->showDialog(oldTitle, parentWidget);
 }
 
 /*******************************************************************************

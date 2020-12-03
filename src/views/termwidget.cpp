@@ -24,7 +24,6 @@
 #include "termproperties.h"
 #include "mainwindow.h"
 #include "shortcutmanager.h"
-#include "operationconfirmdlg.h"
 #include "utils.h"
 #include "service.h"
 #include "windowsmanager.h"

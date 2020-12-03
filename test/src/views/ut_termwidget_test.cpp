@@ -227,4 +227,406 @@ TEST_F(UT_TermWidget_Test, showFlowMessage)
     EXPECT_EQ(termWidget->m_flowMessage->isVisible(), true);
 }
 
+/*******************************************************************************
+ 1. @函数:    setRemoteTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证是否能正确设置term中远程标签标题格式的值
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, setRemoteTabFormat)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    QString remoteFormat = "%U";
+    termWidget->setRemoteTabFormat(remoteFormat);
+    // 验证远程标签标签标题是否正确
+    EXPECT_EQ(termWidget->m_tabFormat.remoteTabFormat, remoteFormat);
+    EXPECT_EQ(termWidget->getRemoteTabTitleFormat(), remoteFormat);
+}
+
+/*******************************************************************************
+ 1. @函数:    setTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证是否能正确设置term中标签标题格式的值
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, setTabFormat)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    QString tabFormat = "%w";
+    term->setTabFormat(tabFormat);
+    // 验证标签标签标题是否正确
+    EXPECT_EQ(term->m_tabFormat.currentTabFormat, tabFormat);
+    EXPECT_EQ(term->getTabTitleFormat(), tabFormat);
+    // 若没有连接远程
+    if (!term->isConnectRemote()) {
+        EXPECT_EQ(term->getCurrentTabTitleFormat(), tabFormat);
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    renameTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    测试重命名标签标题格式是否正确
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, renameTabFormat)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    QString tabFormat = "%D";
+    QString remoteFormat = "%h";
+    term->renameTabFormat(tabFormat, remoteFormat);
+    // 验证标签标签标题是否正确
+    EXPECT_EQ(term->m_tabFormat.currentTabFormat, tabFormat);
+    EXPECT_EQ(term->getTabTitleFormat(), tabFormat);
+    // 若没有连接远程
+    if (!term->isConnectRemote()) {
+        EXPECT_EQ(term->getCurrentTabTitleFormat(), tabFormat);
+    }
+    // 验证远程标签标题是否正确
+    EXPECT_EQ(term->m_tabFormat.remoteTabFormat, remoteFormat);
+    EXPECT_EQ(term->getRemoteTabTitleFormat(), remoteFormat);
+    EXPECT_EQ(term->m_tabFormat.isGlobal, false);
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证获取标签标题是否正确
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, getTabTitle)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 有内容
+    QString tabFormat = "ut_test";
+    term->setTabFormat(tabFormat);
+    // 验证的获取的标签标题是否是给定值
+    EXPECT_EQ(term->getTabTitle(), tabFormat);
+    // 空标签
+    tabFormat = "";
+    term->setTabFormat(tabFormat);
+    EXPECT_EQ(term->getTabTitle(), "Terminal");
+
+    // 设置远程标题
+    QString tabTitle = "remote_current_title";
+    term->m_isConnectRemote = true;
+    term->setRemoteTabFormat(tabTitle);
+    EXPECT_EQ(term->getTabTitle(), tabTitle);
+    // 设置非远程标题
+    tabTitle = "current_title";
+    term->m_isConnectRemote = false;
+    term->setTabFormat(tabTitle);
+    EXPECT_EQ(term->getTabTitle(), tabTitle);
+}
+
+/*******************************************************************************
+ 1. @函数:    initTabTitleArgs
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证初始化标签标题参数列表是否正确
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, initTabTitleArgs)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    term->initTabTitleArgs();
+    // 验证初始化标签标题参数列表是否正确
+    // 标签标题
+    QStringList strTabArgs = TAB_ARGS.split(" ");
+    EXPECT_EQ(strTabArgs.count(), term->m_tabArgs.count());
+    // 填充标签标题参数
+    for (QString arg : strTabArgs) {
+        EXPECT_EQ(term->m_tabArgs.contains(arg), true);
+    }
+    // 远程标签标题
+    // 参数数量是否一致
+    QStringList strRemoteTabArgs = REMOTE_ARGS.split(" ");
+    EXPECT_EQ(strRemoteTabArgs.count(), term->m_remoteTabArgs.count());
+    for (QString arg : strRemoteTabArgs) {
+        EXPECT_EQ(term->m_remoteTabArgs.contains(arg), true);
+    }
+
+}
+
+/*******************************************************************************
+ 1. @函数:    getCurrentTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    获取的当前标签标题格式
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, getCurrentTabTitleFormat)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置远程标题
+    QString tabTitle = "remote_current_title";
+    term->m_isConnectRemote = true;
+    term->setRemoteTabFormat(tabTitle);
+    EXPECT_EQ(term->getCurrentTabTitleFormat(), tabTitle);
+    // 设置非远程标题
+    tabTitle = "current_title";
+    term->m_isConnectRemote = false;
+    term->setTabFormat(tabTitle);
+    EXPECT_EQ(term->getCurrentTabTitleFormat(), tabTitle);
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证获取的标签标题格式
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, getTabTitleFormat)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置标签标题
+    QString tabTitle = "tab_title";
+    term->setTabFormat(tabTitle);
+    EXPECT_EQ(term->getTabTitleFormat(), tabTitle);
+}
+
+/*******************************************************************************
+ 1. @函数:    getRemoteTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证获取远程标签标题格式
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, getRemoteTabTitleFormat)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置远程标签标题
+    QString remoteTabTitle = "remote_tab_title";
+    term->setRemoteTabFormat(remoteTabTitle);
+    EXPECT_EQ(term->getRemoteTabTitleFormat(), remoteTabTitle);
+}
+
+/*******************************************************************************
+ 1. @函数:    showShellMessage
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证shell消息报错弹窗是否正常显示
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, showShellMessage)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置远程标签标题
+    QString shellWarning = "shell message";
+    term->showShellMessage(shellWarning);
+    // 获取DFloatingMessage
+    QList<DFloatingMessage *> list = term->findChildren<DFloatingMessage *>();
+    QString strShellMessage;
+    // 获取label的提示信息
+    for (DFloatingMessage *msg : list) {
+        QList<QLabel *> lst = msg->findChildren<QLabel *>();
+        for (QLabel *label : lst) {
+            strShellMessage = label->text();
+        }
+    }
+    EXPECT_EQ(strShellMessage, shellWarning);
+}
+
+/*******************************************************************************
+ 1. @函数:    setEncode
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    测试setEncode接口是否正常使用
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, setEncode)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置编码
+    QString encode = "GBK";
+    term->setEncode(encode);
+    EXPECT_EQ(term->encode(), encode);
+    EXPECT_EQ(term->m_encode, encode);
+    // 切换编码
+    encode = "UTF-8";
+    term->setEncode(encode);
+    EXPECT_EQ(term->encode(), encode);
+    EXPECT_EQ(term->m_encode, encode);
+}
+
+/*******************************************************************************
+ 1. @函数:    encode
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    测试获取encode接口是否获取争取的值
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, encode)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 测试函数修改是否获取正确的值
+    QString encode = "GBK";
+    term->setEncode(encode);
+    EXPECT_EQ(term->encode(), encode);
+    // 测试直接修改变量是否获取正确的值
+    encode = "UTF-8";
+    term->m_encode = encode;
+    EXPECT_EQ(term->encode(), encode);
+}
+
+/*******************************************************************************
+ 1. @函数:    setEncode
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    测试setRemoteEncode接口是否正常使用
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, setRemoteEncode)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置远程编码
+    QString remoteEncode = "GBK";
+    term->setRemoteEncode(remoteEncode);
+    EXPECT_EQ(term->RemoteEncode(), remoteEncode);
+    EXPECT_EQ(term->m_remoteEncode, remoteEncode);
+    // 切换编码
+    remoteEncode = "UTF-8";
+    term->setRemoteEncode(remoteEncode);
+    EXPECT_EQ(term->RemoteEncode(), remoteEncode);
+    EXPECT_EQ(term->m_remoteEncode, remoteEncode);
+}
+
+/*******************************************************************************
+ 1. @函数:    RemoteEncode
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    测试获取远程encode接口是否获取争取的值
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, RemoteEncode)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 测试函数修改是否获取正确的值
+    QString remoteEncode = "GBK";
+    term->setRemoteEncode(remoteEncode);
+    EXPECT_EQ(term->RemoteEncode(), remoteEncode);
+    // 测试直接修改变量是否获取正确的值
+    remoteEncode = "UTF-8";
+    term->m_remoteEncode = remoteEncode;
+    EXPECT_EQ(term->RemoteEncode(), remoteEncode);
+}
+
+/*******************************************************************************
+ 1. @函数:    modifyRemoteTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证修改远程标签标题参数
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, modifyRemoteTabTitle)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 初始化测试数据
+    ServerConfig serverConfig;
+    serverConfig.m_address = "127.0.0.1";
+    serverConfig.m_userName = "uos";
+    serverConfig.m_serverName = "ut_test";
+    // 参数传入
+    term->modifyRemoteTabTitle(serverConfig);
+    // 验证是否正确
+    // 远程主机名
+    EXPECT_EQ(term->m_remoteTabArgs[REMOTE_HOST_NAME], serverConfig.m_address);
+    // 用户名 %u
+    EXPECT_EQ(term->m_remoteTabArgs[USER_NAME], serverConfig.m_userName);
+    // 用户名@ %U
+    EXPECT_EQ(term->m_remoteTabArgs[USER_NAME_L], serverConfig.m_userName + QString("@"));
+}
+
+/*******************************************************************************
+ 1. @函数:    setIsConnectRemote
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    测试接口是否能够正确设置变量值
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, setIsConnectRemote)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置远程变量状态
+    term->setIsConnectRemote(true);
+    // 验证是否正确
+    EXPECT_EQ(term->isConnectRemote(), true);
+    EXPECT_EQ(term->m_isConnectRemote, true);
+    // 设置远程变量状态
+    term->setIsConnectRemote(false);
+    // 验证是否正确
+    EXPECT_EQ(term->isConnectRemote(), false);
+    EXPECT_EQ(term->m_isConnectRemote, false);
+}
+
+/*******************************************************************************
+ 1. @函数:    isConnectRemote
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    是否连接远程
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, isConnectRemote)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 通过函数设置远程变量状态
+    term->setIsConnectRemote(true);
+    // 验证是否正确
+    EXPECT_EQ(term->isConnectRemote(), true);
+    // 设置远程变量状态
+    term->m_isConnectRemote = false;
+    // 验证是否正确
+    EXPECT_EQ(term->isConnectRemote(), false);
+}
+
+/*******************************************************************************
+ 1. @函数:    selectEncode
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-03
+ 4. @说明:    验证在连接远程和未连接远程状态下，修改编码是否正确
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, selectEncode)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 设置连接远程
+    term->setIsConnectRemote(true);
+    // 编码变量
+    QString encode = "GBK";
+    // 设置编码
+    term->selectEncode(encode);
+    // 此时远程编码应该和设置的编码一致
+    EXPECT_EQ(term->RemoteEncode(), encode);
+    // 设置断开远程
+    term->setIsConnectRemote(false);
+    // 改变编码
+    encode = "BIG5";
+    term->selectEncode(encode);
+    // 此时当前编码和设置的编码一致
+    EXPECT_EQ(term->encode(), encode);
+}
+
+
 #endif

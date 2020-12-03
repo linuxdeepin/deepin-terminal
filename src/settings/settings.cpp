@@ -22,7 +22,6 @@
 #include "newdspinbox.h"
 //#include "utils.h"
 #include "shortcutmanager.h"
-#include "../views/operationconfirmdlg.h"
 #include "service.h"
 #include "dbusmanager.h"
 #include "tabrenamewidget.h"
@@ -141,11 +140,11 @@ void Settings::init()
 
     /***add begin by ut001121 zhangmeng 20200912 设置字号限制 修复42250***/
     auto option = settings->option("basic.interface.font_size");
-    Konsole::__minFontSize = option->data("min").isValid()? option->data("min").toInt() : DEFAULT_MIN_FONT_SZIE;
-    Konsole::__maxFontSize = option->data("max").isValid()? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
+    Konsole::__minFontSize = option->data("min").isValid() ? option->data("min").toInt() : DEFAULT_MIN_FONT_SZIE;
+    Konsole::__maxFontSize = option->data("max").isValid() ? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
 
     // 校验正确
-    if(Konsole::__minFontSize > Konsole::__maxFontSize){
+    if (Konsole::__minFontSize > Konsole::__maxFontSize) {
         qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
     }
     /***add end by ut001121***/
@@ -655,17 +654,17 @@ void Settings::HandleWidthFont()
     }
 }
 
-/* 
+/*
  ***************************************************************************************
  *函数:  enableControlFlow
  *作者:  朱科伟
  *日期:  2020年11月13日
- *描述:  是否禁用Ctrl+S和Ctrl+Q流控制 
+ *描述:  是否禁用Ctrl+S和Ctrl+Q流控制
  ***************************************************************************************
  */
 bool Settings::enableControlFlow(void)
 {
-    return !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool(); 
+    return !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool();
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/
