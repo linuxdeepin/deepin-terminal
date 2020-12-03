@@ -80,26 +80,25 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
     QPainter *painter = new QPainter(this);
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setOpacity(1);
-    QPainterPath framePath;
 
     QPainterPath backgroundPath;
     backgroundPath.addRoundedRect(
         QRect(0, 0, 28, 28), 8, 8);
-    painter->setPen(m_color);
+    //painter->setPen(m_color);
     painter->setBrush(QBrush(m_color));
     painter->fillPath(backgroundPath, QColor(m_color));
 
     if (m_isFocus) {
         // 背景区域
         QRect bgRect;
-        bgRect.setX(this->rect().x());
-        bgRect.setY(this->rect().y());
-        bgRect.setWidth(this->rect().width());
-        bgRect.setHeight(this->rect().height());
+        bgRect.setX(this->rect().x()+1);
+        bgRect.setY(this->rect().y()+1);
+        bgRect.setWidth(this->rect().width()-1);
+        bgRect.setHeight(this->rect().height()-1);
         // 绘画路径
         QPainterPath pathFrame;
         int cornerSize = 16;
-        int arcRadius = 20;
+        int arcRadius = 12;
 
         pathFrame.moveTo(bgRect.left() + arcRadius, bgRect.top());
         pathFrame.arcTo(bgRect.left(), bgRect.top(), cornerSize, cornerSize, 90.0, 90.0);
@@ -121,6 +120,8 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
         painter->drawPath(pathFrame);
     }
     event->accept();
+
+
 }
 
 /*******************************************************************************
