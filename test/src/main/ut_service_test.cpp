@@ -166,4 +166,91 @@ TEST_F(UT_Service_Test, resetSettingOwner)
     EXPECT_EQ(m_service->m_settingOwner, nullptr);
 }
 
+/*******************************************************************************
+ 1. @函数:    init
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-04
+ 4. @说明:    初始化设置框
+*******************************************************************************/
+TEST_F(UT_Service_Test, initSetting)
+{
+    m_service->m_settingDialog = nullptr;
+    // 初始化设置框
+    m_service->initSetting();
+    // 判断设置框是否被初始化
+    EXPECT_NE(m_service->m_settingDialog, nullptr);
+    // 获取刚刚生成的dialog
+    DSettingsDialog *settingDialog = m_service->m_settingDialog;
+    // 再次初始化
+    m_service->initSetting();
+    // 若已经初始化过，此时指针不变
+    EXPECT_NE(m_service->m_settingDialog, nullptr);
+    EXPECT_EQ(m_service->m_settingDialog, settingDialog);
+}
+
+/*******************************************************************************
+ 1. @函数:    getShells
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-04
+ 4. @说明:    获取可获取的shell名称和地址
+*******************************************************************************/
+TEST_F(UT_Service_Test, getShells)
+{
+    // 获取shell列表
+    QMap<QString, QString> shellMap = m_service->getShells();
+    // 正常情况下若没有shell终端无法打开，所以map不为空
+    EXPECT_EQ(shellMap.isEmpty(), false);
+    // 且m_shellsMap需要被赋值，内容不为空
+    EXPECT_EQ(m_service->m_shellsMap.isEmpty(), false);
+}
+
+/*******************************************************************************
+ 1. @函数:    shellsMap
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-04
+ 4. @说明:    获取当前的shellMap
+*******************************************************************************/
+TEST_F(UT_Service_Test, shellsMap)
+{
+    // 清空map
+    m_service->m_shellsMap.clear();
+    // 获取时候，应该是空的
+    EXPECT_EQ(m_service->shellsMap().isEmpty(), true);
+    // 获取数据
+    m_service->getShells();
+    // 内容不为空
+    EXPECT_EQ(m_service->shellsMap().isEmpty(), false);
+}
+
+/*******************************************************************************
+ 1. @函数:    Entry
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-04
+ 4. @说明:    Service进入接口
+*******************************************************************************/
+TEST_F(UT_Service_Test, Entry)
+{
+    // -q进入，启动雷神窗口
+    m_service->Entry(QStringList() << "deepin-terminal" << "-q");
+    // 雷神窗口不为空
+    EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
+    // 不带参数进入，启动普通窗口
+    // 获取窗口数量
+    int widgetCount = WindowsManager::instance()->widgetCount();
+    m_service->Entry(QStringList() << "");
+    EXPECT_EQ(WindowsManager::instance()->widgetCount(), widgetCount + 1);
+}
+
+/*******************************************************************************
+ 1. @函数:    getMemoryEnable
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-04
+ 4. @说明:    获取是否允许继续创建窗口
+*******************************************************************************/
+TEST_F(UT_Service_Test, getMemoryEnable)
+{
+    // 此时没有窗口新建，应该得到true
+    EXPECT_EQ(m_service->getMemoryEnable(), true);
+}
+
 #endif
