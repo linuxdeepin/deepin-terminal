@@ -373,7 +373,7 @@
                     "options": [
                         {
                             "key": "default_shell",
-                            "name": "Shell config",
+                            "name": "Shell profile",
                             "type": "shellconfigcombox",
                             "default": "$SHELL"
                         },

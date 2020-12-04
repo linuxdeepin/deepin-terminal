@@ -82,7 +82,7 @@
     <message>
         <location filename="../SearchBar.cpp" line="46"/>
         <source>Regular expression</source>
-        <translation>Reguliere expressie</translation>
+        <translation>Reguliere uitdrukking</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="50"/>
