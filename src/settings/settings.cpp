@@ -906,6 +906,12 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     addShellOption();
 
     connect(option, &DSettingsOption::valueChanged, g_shellConfigCombox, [ = ](QVariant var) {
+        // 恢复默认值
+        if (DEFAULT_SHELL == var.toString()) {
+            g_shellConfigCombox->setCurrentText(DEFAULT_SHELL);
+            return;
+        }
+        // 不是默认值的其他情况
         QMap<QString, QString> shellMap = Service::instance()->shellsMap();
         g_shellConfigCombox->setCurrentText(shellMap.key(var.toString()));
     });
