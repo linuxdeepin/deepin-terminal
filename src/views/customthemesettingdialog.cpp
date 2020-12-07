@@ -304,17 +304,19 @@ void CustomThemeSettingDialog::initUI()
 
     m_lightRadioButton = new DRadioButton(tr("Light"));
     DFontSizeManager::instance()->bind(m_lightRadioButton, DFontSizeManager::T6, QFont::Normal);
-    m_lightRadioButton->setFixedSize(64, 22);
+    //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
+    m_lightRadioButton->setFixedWidth(64);
+
 
     m_darkRadioButton = new DRadioButton(tr("Dark"));
     DFontSizeManager::instance()->bind(m_darkRadioButton, DFontSizeManager::T6, QFont::Normal);
-    m_darkRadioButton->setFixedSize(64, 22);
+    //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
+    m_darkRadioButton->setFixedWidth(64);
 
     m_darkRadioButton->setFocusPolicy(Qt::TabFocus);
     m_lightRadioButton->setFocusPolicy(Qt::TabFocus);
     m_foregroundButton->setFocusPolicy(Qt::TabFocus);
     m_backgroundButton->setFocusPolicy(Qt::TabFocus);
-    setTabOrder(m_darkRadioButton, m_lightRadioButton);
 
     connect(m_darkRadioButton, &DRadioButton::toggled, this, [ = ]() {
         if (m_darkRadioButton->isChecked()) {
