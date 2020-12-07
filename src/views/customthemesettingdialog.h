@@ -115,6 +115,8 @@ class CustomThemeSettingDialog : public DAbstractDialog
     Q_OBJECT
 public:
     explicit CustomThemeSettingDialog(QWidget *parent = nullptr);
+    //重置单选按钮的tab焦点状态，保证每次打开时，第一个单选按钮是tab键盘控制的选中按钮
+    void resetFocusState();
 
 protected:
     //标题栏初始化

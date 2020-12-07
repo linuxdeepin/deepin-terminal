@@ -339,6 +339,12 @@ void CustomThemeSettingDialog::initUI()
     m_foregroundButton->setFocusPolicy(Qt::TabFocus);
     m_backgroundButton->setFocusPolicy(Qt::TabFocus);
 
+    //将浅色标题风格单选按钮放入单选按钮分组中
+    m_titleStyleButtonGroup->addButton(m_lightRadioButton);
+    //将深色标题风格单选按钮放入单选按钮分组中
+    m_titleStyleButtonGroup->addButton(m_darkRadioButton);
+
+
     connect(m_darkRadioButton, &DRadioButton::toggled, this, [ = ]() {
         if (m_darkRadioButton->isChecked()) {
             m_themePreviewArea->setTitleStyle("Dark");
@@ -350,19 +356,19 @@ void CustomThemeSettingDialog::initUI()
         }
     });
     //鼠标点击单选按钮时清除tab键盘控制的焦点
-    connect(m_darkRadioButton,&DRadioButton::clicked,this,[=](){
+    connect(m_darkRadioButton, &DRadioButton::clicked, this, [ = ]() {
         TitleStyleRadioButton *radioButton = qobject_cast<TitleStyleRadioButton *>(sender());
-        if( radioButton &&radioButton->m_mouseClick){
+        if (radioButton && radioButton->m_mouseClick) {
             clearFocussSlot();
-            radioButton->m_mouseClick=false;
+            radioButton->m_mouseClick = false;
         }
     });
     //鼠标点击单选按钮时清除tab键盘控制的焦点
-    connect(m_lightRadioButton,&DRadioButton::clicked,this,[=](){
+    connect(m_lightRadioButton, &DRadioButton::clicked, this, [ = ]() {
         TitleStyleRadioButton *radioButton = qobject_cast<TitleStyleRadioButton *>(sender());
-        if( radioButton &&radioButton->m_mouseClick){
+        if (radioButton && radioButton->m_mouseClick) {
             clearFocussSlot();
-            radioButton->m_mouseClick=false;
+            radioButton->m_mouseClick = false;
         }
     });
 
@@ -532,6 +538,9 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
         reject();
     });
     connect(m_confirmBtn, &DSuggestButton::clicked, this, [ = ]() {
+        //重置单选按钮的tab焦点状态
+        resetFocusState();
+
         m_confirmBtn->setFocus();
 
         if (m_darkRadioButton->isChecked()) {
@@ -617,6 +626,9 @@ void CustomThemeSettingDialog::clearFocussSlot()
 *******************************************************************************/
 void CustomThemeSettingDialog::loadConfiguration()
 {
+    //重置单选按钮的tab焦点状态
+    resetFocusState();
+
     if ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
         m_lightRadioButton->setChecked(true);
     } else {
@@ -709,3 +721,17 @@ void CustomThemeSettingDialog::showEvent(QShowEvent *event)
     clearFocussSlot();
     DAbstractDialog::showEvent(event);
 }
+
+/*******************************************************************************
+ 1. @函数:    resetFocusState
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    重置单选按钮的tab焦点状态，保证每次打开时，第一个单选按钮是tab键盘控制的选中按钮
+*******************************************************************************/
+void CustomThemeSettingDialog::resetFocusState()
+{
+    m_darkRadioButton->setFocusPolicy(Qt::NoFocus);
+    m_darkRadioButton->setFocusPolicy(Qt::TabFocus);
+    m_lightRadioButton->setFocus();
+}
+
