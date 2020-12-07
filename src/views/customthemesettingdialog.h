@@ -47,6 +47,25 @@
 DWIDGET_USE_NAMESPACE
 
 /*******************************************************************************
+ 1. @类名:    TitleStyleRadioButton
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    主题风格单选按钮类
+*******************************************************************************/
+class TitleStyleRadioButton: public DRadioButton
+{
+    Q_OBJECT
+public:
+    explicit TitleStyleRadioButton(const QString &text, QWidget *parent = nullptr);
+protected:
+    //鼠标按下事件
+    void mousePressEvent(QMouseEvent *event) override;
+public:
+    //鼠标操作标志位
+    bool m_mouseClick = false;
+};
+
+/*******************************************************************************
  1. @类名:    ColorPushButton
  2. @作者:    ut000125 sunchengxi
  3. @日期:    2020-12-01
@@ -141,9 +160,9 @@ private:
     //预览区域
     ThemePreviewArea *m_themePreviewArea = nullptr;
     //深色主题风格单选按钮
-    DRadioButton *m_darkRadioButton = nullptr;
+    TitleStyleRadioButton *m_darkRadioButton = nullptr;
     //浅色主题风格单选按钮
-    DRadioButton *m_lightRadioButton = nullptr;
+    TitleStyleRadioButton *m_lightRadioButton = nullptr;
     //单选按钮组
     QButtonGroup  *m_titleStyleButtonGroup = nullptr;
     //前景色标签

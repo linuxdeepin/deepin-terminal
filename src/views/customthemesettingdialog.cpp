@@ -41,6 +41,27 @@
 #include <QTimer>
 
 
+
+TitleStyleRadioButton::TitleStyleRadioButton(const QString &text, QWidget *parent): DRadioButton(text, parent)
+{
+
+}
+
+/*******************************************************************************
+ 1. @函数:    setBackGroundColor
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    设置背景色
+*******************************************************************************/
+void TitleStyleRadioButton::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_mouseClick = true;
+    }
+    DRadioButton::mousePressEvent(event);
+}
+
+
 ColorPushButton::ColorPushButton(QWidget *parent): DPushButton(parent)
 {
     setFocusPolicy(Qt::TabFocus);
@@ -91,10 +112,10 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
     if (m_isFocus) {
         // 背景区域
         QRect bgRect;
-        bgRect.setX(this->rect().x()+1);
-        bgRect.setY(this->rect().y()+1);
-        bgRect.setWidth(this->rect().width()-1);
-        bgRect.setHeight(this->rect().height()-1);
+        bgRect.setX(this->rect().x() + 1);
+        bgRect.setY(this->rect().y() + 1);
+        bgRect.setWidth(this->rect().width() - 1);
+        bgRect.setHeight(this->rect().height() - 1);
         // 绘画路径
         QPainterPath pathFrame;
         int cornerSize = 16;
@@ -302,13 +323,13 @@ void CustomThemeSettingDialog::initUI()
     DFontSizeManager::instance()->bind(titleStyleLabel, DFontSizeManager::T6, QFont::Normal);
     titleStyleLabel->setFixedSize(64, 22);
 
-    m_lightRadioButton = new DRadioButton(tr("Light"));
+    m_lightRadioButton = new TitleStyleRadioButton(tr("Light"));
     DFontSizeManager::instance()->bind(m_lightRadioButton, DFontSizeManager::T6, QFont::Normal);
     //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
     m_lightRadioButton->setFixedWidth(64);
 
 
-    m_darkRadioButton = new DRadioButton(tr("Dark"));
+    m_darkRadioButton = new TitleStyleRadioButton(tr("Dark"));
     DFontSizeManager::instance()->bind(m_darkRadioButton, DFontSizeManager::T6, QFont::Normal);
     //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
     m_darkRadioButton->setFixedWidth(64);
@@ -322,13 +343,27 @@ void CustomThemeSettingDialog::initUI()
         if (m_darkRadioButton->isChecked()) {
             m_themePreviewArea->setTitleStyle("Dark");
         }
-        clearFocussSlot();
     });
     connect(m_lightRadioButton, &DRadioButton::toggled, this, [ = ]() {
         if (m_lightRadioButton->isChecked()) {
             m_themePreviewArea->setTitleStyle("Light");
         }
-        clearFocussSlot();
+    });
+    //鼠标点击单选按钮时清除tab键盘控制的焦点
+    connect(m_darkRadioButton,&DRadioButton::clicked,this,[=](){
+        TitleStyleRadioButton *radioButton = qobject_cast<TitleStyleRadioButton *>(sender());
+        if( radioButton &&radioButton->m_mouseClick){
+            clearFocussSlot();
+            radioButton->m_mouseClick=false;
+        }
+    });
+    //鼠标点击单选按钮时清除tab键盘控制的焦点
+    connect(m_lightRadioButton,&DRadioButton::clicked,this,[=](){
+        TitleStyleRadioButton *radioButton = qobject_cast<TitleStyleRadioButton *>(sender());
+        if( radioButton &&radioButton->m_mouseClick){
+            clearFocussSlot();
+            radioButton->m_mouseClick=false;
+        }
     });
 
     titleStyleLayout->addWidget(titleStyleLabel);
