@@ -29,7 +29,6 @@
 #include <DLog>
 #include <DDialog>
 
-#include <QUuid>
 #include <QVBoxLayout>
 #include <QApplication>
 
@@ -41,8 +40,12 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     m_MainWindow = static_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
+
+    //fix bug 55961 UOS SP2 OEM版本的系统下，一个窗口同时打开几个终端，各终端简无法切换
+    //Qt自带API接口QUuid::createUuid()在浪潮服务器上会生成重复的id：ffffffff-ffff-4fff-bfff-ffffffffffff
+    QString pageId = QString::number(reinterpret_cast<qulonglong>(this));
     // 生成唯一 pageID
-    setProperty("TAB_IDENTIFIER_PROPERTY", QUuid::createUuid().toString());
+    setProperty("TAB_IDENTIFIER_PROPERTY", pageId);
 
     TermWidget *w = createTerm(properties);
     m_layout = new QVBoxLayout(this);
