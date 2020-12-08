@@ -659,6 +659,10 @@ void TermWidgetPage::showSearchBar(bool enable)
         m_findBar->raise();
         m_findBar->clearHoldContent();
         m_findBar->show();
+        //Add by ut001000 renfeixiang 2020-12-02 在搜索框弹出时，添加设置Term的m_bHasSelect为false函数
+        if(m_currentTerm != nullptr){
+            m_currentTerm->setNoHasSelect();
+        }
         m_findBar->move(width() - 382, 0);
         QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });
     } else {

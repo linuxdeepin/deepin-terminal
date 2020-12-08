@@ -269,6 +269,11 @@ public:
     void setDrawLineChars(bool drawLineChars);
 
     void setBoldIntense(bool boldIntense);
+
+    //Add by ut001000 renfeixiang 2020-12-02 当搜索框出现时，设置m_bHasSelect为false,
+    //避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
+    void setNoHasSelect();
+
 signals:
     void finished();
     void copyAvailable(bool);

@@ -978,6 +978,17 @@ void QTermWidget::setBoldIntense(bool boldIntense)
     m_impl->m_terminalDisplay->setBoldIntense(boldIntense);
 }
 
+/*******************************************************************************
+ 1. @函数:    setNoHasSelect
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-12-02
+ 4. @说明:    当搜索框出现时，设置m_bHasSelect为false,避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
+*******************************************************************************/
+void QTermWidget::setNoHasSelect()
+{
+    m_bHasSelect = false;
+}
+
 int QTermWidget::getForegroundProcessId() const
 {
     return m_impl->m_session->foregroundProcessId();
