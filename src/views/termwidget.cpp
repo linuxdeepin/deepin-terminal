@@ -175,7 +175,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
         // 退出远程后，设置成false
-        if (value.contains("Connection to") && value.contains(" closed.") || value.contains("Permission denied")) {
+        if ((value.contains("Connection to") && value.contains(" closed.")) || value.contains("Permission denied")) {
             QTimer::singleShot(100, this, [&]() {
                 // 判断是否此时退出远程
                 if (!isInRemoteServer()) {

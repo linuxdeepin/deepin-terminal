@@ -1,6 +1,9 @@
 #include "ut_service_test.h"
 
 #include "service.h"
+#include "mainwindow.h"
+#include "dbusmanager.h"
+#include "utils.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -251,6 +254,109 @@ TEST_F(UT_Service_Test, getMemoryEnable)
 {
     // 此时没有窗口新建，应该得到true
     EXPECT_EQ(m_service->getMemoryEnable(), true);
+}
+
+/*******************************************************************************
+ 1. @函数:    isSettingDialogVisible
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-08
+ 4. @说明:    设置框是否显示
+*******************************************************************************/
+TEST_F(UT_Service_Test, isSettingDialogVisible2)
+{
+    // 此时没有设置窗口新建，应该得到false
+    EXPECT_EQ(m_service->isSettingDialogVisible(), false);
+
+    // 初始化设置窗口，但是没有show此时应该得到false
+    m_service->initSetting();
+    EXPECT_EQ(m_service->isSettingDialogVisible(), false);
+
+    // 此时显示设置框，应该得到true
+    m_service->m_settingDialog->show();
+    EXPECT_EQ(m_service->isSettingDialogVisible(), true);
+}
+
+/*******************************************************************************
+ 1. @函数:    getSettingOwner
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-08
+ 4. @说明:    验证获取设置框的所有者是否正确
+*******************************************************************************/
+TEST_F(UT_Service_Test, getSettingOwner)
+{
+    // 未设置时是空
+    m_service->m_settingOwner = nullptr;
+    EXPECT_EQ(m_service->getSettingOwner(), nullptr);
+
+    // 显示设置时会有父类
+    MainWindow *window = new NormalWindow(TermProperties("/"));
+    m_service->showSettingDialog(window);
+    EXPECT_EQ(m_service->getSettingOwner(), window);
+
+    // 重置设置框所有者
+    m_service->resetSettingOwner();
+    EXPECT_EQ(m_service->getSettingOwner(), nullptr);
+    // 删除临时变量
+    delete window;
+}
+
+/*******************************************************************************
+ 1. @函数:    resetSettingOwner
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-08
+ 4. @说明:    重置设置框的所有者
+*******************************************************************************/
+TEST_F(UT_Service_Test, resetSettingOwner2)
+{
+    // 显示设置
+    MainWindow *window = new NormalWindow(TermProperties("/"));
+    m_service->m_settingOwner = window;
+    EXPECT_EQ(m_service->getSettingOwner(), window);
+    // 重置设置框所有者
+    m_service->resetSettingOwner();
+    EXPECT_EQ(m_service->getSettingOwner(), nullptr);
+    // 删除临时变量
+    delete window;
+}
+
+/*******************************************************************************
+ 1. @函数:    onDesktopWorkspaceSwitched
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-08
+ 4. @说明:    桌面工作区切换 => 雷神窗口的显隐
+*******************************************************************************/
+TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
+{
+    // 设置当前窗口1
+    DBusManager::callKDESetCurrentDesktop(1);
+    // 关闭雷神
+    if (WindowsManager::instance()->getQuakeWindow()) {
+        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+    }
+
+    TermProperties properties;
+    Utils::parseCommandLine(QStringList() << "deepin-terminal" << "-q", properties);
+    // 显示雷神
+    WindowsManager::instance()->runQuakeWindow(properties);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 切换桌面1到桌面2
+    m_service->onDesktopWorkspaceSwitched(1, 2);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 切换桌面雷神影藏
+    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isHidden(), true);
+    // 切回
+    m_service->onDesktopWorkspaceSwitched(2, WindowsManager::instance()->getQuakeWindow()->m_desktopIndex);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 雷神显示
+    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
+    // 关闭雷神
+    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
 }
 
 #endif

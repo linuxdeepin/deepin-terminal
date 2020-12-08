@@ -3540,7 +3540,10 @@ void QuakeWindow::topToBottomAnimation()
 
     connect(m_heightAni, &QPropertyAnimation::finished, this, [ = ]() {
         updateMinHeight();//恢复外框的原有最小高度值
-        currentPage()->setMinimumHeight(this->minimumHeight() - tabbarHeight);//恢复page的原有最小高度值 tabbarHeight是tabbar的高度
+        // 保证currentPage有值，不然ut多线程下可能会崩溃
+        if (currentPage()) {
+            currentPage()->setMinimumHeight(this->minimumHeight() - tabbarHeight);//恢复page的原有最小高度值 tabbarHeight是tabbar的高度
+        }
         isNotAnimation = true;
         /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
         switchEnableResize();
