@@ -98,51 +98,33 @@ QColor ColorPushButton::getBackGroundColor()
 *******************************************************************************/
 void ColorPushButton::paintEvent(QPaintEvent *event)
 {
+
     QPainter *painter = new QPainter(this);
+    //去锯齿
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setOpacity(1);
 
+    //绘制背景色
     QPainterPath backgroundPath;
-    backgroundPath.addRoundedRect(
-        QRect(0, 0, 28, 28), 8, 8);
-    //painter->setPen(m_color);
-    painter->setBrush(QBrush(m_color));
+    backgroundPath.addRoundedRect(QRectF(3, 3, 28, 28), 8, 8);
     painter->fillPath(backgroundPath, QColor(m_color));
 
+    //tab焦点存在，绘制边框
     if (m_isFocus) {
-        // 背景区域
-        QRect bgRect;
-        bgRect.setX(this->rect().x() + 1);
-        bgRect.setY(this->rect().y() + 1);
-        bgRect.setWidth(this->rect().width() - 1);
-        bgRect.setHeight(this->rect().height() - 1);
-        // 绘画路径
+        //边框绘制路径
         QPainterPath pathFrame;
-        int cornerSize = 16;
-        int arcRadius = 12;
+        pathFrame.addRoundedRect(QRectF(1, 1, 32, 32), 8, 8);
 
-        pathFrame.moveTo(bgRect.left() + arcRadius, bgRect.top());
-        pathFrame.arcTo(bgRect.left(), bgRect.top(), cornerSize, cornerSize, 90.0, 90.0);
-        pathFrame.lineTo(bgRect.left(), bgRect.bottom() - arcRadius);
-        pathFrame.arcTo(bgRect.left(), bgRect.bottom() - cornerSize, cornerSize, cornerSize, 180.0, 90.0);
-        pathFrame.lineTo(bgRect.right() - arcRadius, bgRect.bottom());
-        pathFrame.arcTo(bgRect.right() - cornerSize, bgRect.bottom() - cornerSize, cornerSize, cornerSize, 270.0, 90.0);
-        pathFrame.lineTo(bgRect.right(), bgRect.top() + arcRadius);
-        pathFrame.arcTo(bgRect.right() - cornerSize, bgRect.top(), cornerSize, cornerSize, 0.0, 90.0);
-        pathFrame.lineTo(bgRect.left() + arcRadius, bgRect.top());
-
-        // 绘画边框
+        //绘画边框
         QPen framePen;
         DPalette pax = DApplicationHelper::instance()->palette(this);
-        painter->setOpacity(1);
+        //获取活动色
         framePen = QPen(pax.color(DPalette::Highlight), 2);
-
         painter->setPen(framePen);
         painter->drawPath(pathFrame);
     }
+    painter->end();
     event->accept();
-
-
 }
 
 /*******************************************************************************
@@ -389,13 +371,13 @@ void CustomThemeSettingDialog::initUI()
     DFontSizeManager::instance()->bind(m_foregroundColorLabel, DFontSizeManager::T6, QFont::Normal);
     m_foregroundColorLabel->setFixedSize(92, 20);
 
-    m_foregroundButton->setFixedSize(28, 28);
+    m_foregroundButton->setFixedSize(34, 34);
 
 
     m_backgroundColorLabel = new DLabel(tr("Back color:"));
     DFontSizeManager::instance()->bind(m_backgroundColorLabel, DFontSizeManager::T6, QFont::Normal);
     m_backgroundColorLabel->setFixedSize(92, 20);
-    m_backgroundButton->setFixedSize(28, 28);
+    m_backgroundButton->setFixedSize(34, 34);
 
     foregroundAndBackgroundLayout->addWidget(m_foregroundColorLabel);
     foregroundAndBackgroundLayout->addWidget(m_foregroundButton);
@@ -413,11 +395,11 @@ void CustomThemeSettingDialog::initUI()
     m_ps1ColorLabel = new DLabel(tr("Prompt PS1:"));
     DFontSizeManager::instance()->bind(m_ps1ColorLabel, DFontSizeManager::T6, QFont::Normal);
     m_ps1ColorLabel->setFixedSize(92, 20);
-    m_ps1Button->setFixedSize(28, 28);
+    m_ps1Button->setFixedSize(34, 34);
     m_ps2ColorLabel = new DLabel(tr("Prompt PS2:"));
     DFontSizeManager::instance()->bind(m_ps2ColorLabel, DFontSizeManager::T6, QFont::Normal);
     m_ps2ColorLabel->setFixedSize(92, 20);
-    m_ps2Button->setFixedSize(28, 28);
+    m_ps2Button->setFixedSize(34, 34);
 
     ps1AndPs2Layout->addWidget(m_ps1ColorLabel);
     ps1AndPs2Layout->addWidget(m_ps1Button);
