@@ -61,7 +61,12 @@ void TitleStyleRadioButton::mousePressEvent(QMouseEvent *event)
     DRadioButton::mousePressEvent(event);
 }
 
-
+/*******************************************************************************
+ 1. @函数:    ColorPushButton
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    构造函数初始化
+*******************************************************************************/
 ColorPushButton::ColorPushButton(QWidget *parent): DPushButton(parent)
 {
     setFocusPolicy(Qt::TabFocus);
@@ -139,8 +144,10 @@ void ColorPushButton::focusInEvent(QFocusEvent *event)
     if (Qt::TabFocusReason == event->reason() || Qt::BacktabFocusReason == event->reason()) {
         m_isFocus = true;
     } else if (Qt::ActiveWindowFocusReason == event->reason() && m_isFocus) {
+        //取色面板退出时，是否仍然保留选中焦点，如果是键盘控制的情况，仍然保持保持焦点的状态
         m_isFocus = true;
     } else {
+        //除了键盘操作的其他情况，都不保持焦点状态
         m_isFocus = false;
     }
     DPushButton::focusInEvent(event);
@@ -155,8 +162,7 @@ void ColorPushButton::focusInEvent(QFocusEvent *event)
 void ColorPushButton::focusOutEvent(QFocusEvent *event)
 {
     // 焦点Tab出
-    //m_isFocus=false;
-    if ((Qt::TabFocusReason == event->reason() || Qt::BacktabFocusReason == event->reason())) {
+    if ((Qt::TabFocusReason == event->reason()) || (Qt::BacktabFocusReason == event->reason())) {
         qDebug() << "ColorPushButton::focusOutEvent-------163" ;
         m_isFocus = false;
     }

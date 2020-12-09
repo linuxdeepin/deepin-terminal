@@ -41,8 +41,6 @@ class ThemePreviewArea : public DWidget
     Q_OBJECT
 public:
     explicit ThemePreviewArea(QWidget *parent = nullptr);
-    //处理重绘事件
-    void paintEvent(QPaintEvent *) override;
     //设置主题风格
     void setTitleStyle(const QString &titleStyle);
     //设置背景色
@@ -55,6 +53,10 @@ public:
     void setPs2Color(const QColor &color);
     //设置全部配色
     void setAllColorParameter(const QColor &foregroundColorParameter, const QColor &backgroundColorParameter, const QColor &ps1ColorParameter, const QColor &ps2ColorParameter);
+
+protected:
+    //处理重绘事件
+    void paintEvent(QPaintEvent *) override;
 
 private:
     //主题风格区域

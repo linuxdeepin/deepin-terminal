@@ -83,7 +83,7 @@ public:
 signals:
     //主题项在鼠标停靠离开时触发的信号
     void mainWindowCheckThemeItemSignal();
-
+    //主题菜单隐藏时设置主题信号
     void menuHideSetThemeSignal();
 public:
     //鼠标悬殊主题记录，防止频繁刷新，鼠标再次进入主题列表负责刷新预览
