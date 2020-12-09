@@ -786,7 +786,6 @@ QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat
         if (TabFormat.contains(key)) {
             // 包含的话，把参数替换为参数对应的内容
             TabFormat.replace(key, format[key]);
-            // qDebug() << "replace " << key << "to " << format[key];
         }
     }
     return TabFormat;
@@ -1325,7 +1324,7 @@ void TermWidget::wheelEvent(QWheelEvent *event)
 {
     // 当前窗口被激活,且有焦点
     if (isActiveWindow() && hasFocus()) {
-        if (event->modifiers() == Qt::ControlModifier) {
+        if (Qt::ControlModifier == event->modifiers()) {
             int directionY = event->angleDelta().y();
             if (directionY < 0) {
                 // 向下缩小

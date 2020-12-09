@@ -23,12 +23,11 @@
 
 #include <DSettingsDialog>
 #include <DKeySequenceEdit>
+#include <DComboBox>
 
 #include <QFileSystemWatcher>
 #include <qsettingbackend.h>
 #include <QSettings>
-
-#include <DComboBox>
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
@@ -135,7 +134,6 @@ public:
     static QPair<QWidget *, QWidget *> createShellConfigComboxOptionHandle(QObject *opt);
 
 signals:
-    // void settingValueChanged(const QString &key, const QVariant &value);
     void windowSettingChanged(const QString &key);
     void terminalSettingChanged(const QString &key);
     void shortcutSettingChanged(const QString &key);
@@ -166,7 +164,7 @@ private:
     Dtk::Core::QSettingBackend *m_backend;
     QString m_configPath;
     //　配置文件监视
-    QFileSystemWatcher * m_Watcher = nullptr;
+    QFileSystemWatcher *m_Watcher = nullptr;
     // 编码格式为当前mainwindow有效参数，不记录在文件中．
     QString m_EncodeName = "UTF-8";
 };
