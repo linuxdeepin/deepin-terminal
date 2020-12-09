@@ -44,20 +44,23 @@ ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent)
  2. @作者:    ut000125 sunchengxi
  3. @日期:    2020-12-01
  4. @说明:    处理重绘事件
+             备注：预览界面的视觉错觉，在深色区域和预览背景的蓝色（ rgb(85,0,255) ）接触边线最明显，
+             左上两边看起来是紫红色，右下两边看起来是蓝色。关联的bug#57007
 *******************************************************************************/
 void ThemePreviewArea::paintEvent(QPaintEvent *event)
 {
-    QString frameNormalColor = "blue";
     QPainter *painter = new QPainter(this);
+    //抗锯设置
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::NoBrush);
 
     painter->setOpacity(1);
     const QRect &rect = this->rect();
-    QPainterPath framePath;
+    //绘制标题图片
     painter->drawPixmap(*titleRect, titlePixmap, *titleRect);
 
+    //绘制背景色
     QPainterPath backgroundPathTop;
     backgroundPathTop.addRect(
         QRect(rect.x(), rect.y()  + 35, rect.width(), 8));
@@ -77,18 +80,19 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
     painter->setFont(font);
 
     int lineHeight = 18;
+    //绘制提示符PS1演示文本
     painter->setPen(QPen(ps1Color));
     painter->drawText(
         QRect(rect.x() + 10, rect.y() + 35 + 10, 90, lineHeight), Qt::AlignLeft | Qt::AlignTop, ps1String);
-
+    //绘制前景色演示文本
     painter->setPen(QPen(foregroundColor));
     painter->drawText(
         QRect(rect.x() + 10 + 90, rect.y()  + 35 + 10, 5, lineHeight), Qt::AlignLeft | Qt::AlignTop, foregroundLeftString);
-
+    //绘制提示符PS2演示文本
     painter->setPen(QPen(ps2Color));
     painter->drawText(
         QRect(rect.x() + 10 + 90 + 5, rect.y() + 35 + 10, 65, lineHeight), Qt::AlignLeft | Qt::AlignTop, ps2String);
-
+    //绘制前景色演示文本
     painter->setPen(QPen(foregroundColor));
     painter->drawText(
         QRect(rect.x() + 10 + 90 + 5 + 65, rect.y() + 35 + 10, 230, lineHeight), Qt::AlignLeft | Qt::AlignTop, foregroundRightString);
