@@ -14,6 +14,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QtConcurrent/QtConcurrent>
+#include <QDebug>
 
 UI_WindowsManager_Test::UI_WindowsManager_Test()
 {
@@ -93,4 +94,70 @@ TEST_F(UI_WindowsManager_Test, terminalCountReduce)
     EXPECT_EQ(winManager->widgetCount(), widgetCount - 1);
 }
 
+/*******************************************************************************
+ 1. @函数:    runQuakeWindow
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-09
+ 4. @说明:    运行雷神窗口的显隐测试
+*******************************************************************************/
+TEST_F(UI_WindowsManager_Test, runQuakeWindow2)
+{
+    // 若雷神还在就关闭
+    if (WindowsManager::instance()->getQuakeWindow()) {
+        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+        WindowsManager::instance()->m_quakeWindow = nullptr;
+    }
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    // 启动雷神
+    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+    WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 雷神存在
+    EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
+    // 雷神显示
+    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
+    // 相当于再次Alt+F2
+    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+    // 雷神影藏 => 又开始了新一轮的动画
+    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isNotAnimation, false);
+
+    // 关闭雷神窗口
+    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+    WindowsManager::instance()->m_quakeWindow = nullptr;
+}
+
+/*******************************************************************************
+ 1. @函数:    onMainwindowClosed
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-09
+ 4. @说明:    测试窗口关闭
+*******************************************************************************/
+TEST_F(UI_WindowsManager_Test, onMainwindowClosed)
+{
+    // 新建一个窗口
+    MainWindow *newWindow = new NormalWindow(m_normalTermProperty);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 关闭当前的窗口 => 测试是否正常执行
+    WindowsManager::instance()->onMainwindowClosed(newWindow);
+
+    // 没有雷神窗口
+    if (!WindowsManager::instance()->getQuakeWindow()) {
+        // 创建雷神窗口
+        WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+    }
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 关闭雷神窗口
+    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+    WindowsManager::instance()->onMainwindowClosed(WindowsManager::instance()->getQuakeWindow());
+    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow(), nullptr);
+}
 #endif

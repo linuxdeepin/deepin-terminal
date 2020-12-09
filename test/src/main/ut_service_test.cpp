@@ -334,6 +334,9 @@ TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
         WindowsManager::instance()->getQuakeWindow()->closeAllTab();
     }
 
+    // 关闭雷神窗口 没有雷神，没有任何影响，程序正常运行
+    m_service->onDesktopWorkspaceSwitched(1, 2);
+
     TermProperties properties;
     Utils::parseCommandLine(QStringList() << "deepin-terminal" << "-q", properties);
     // 显示雷神
