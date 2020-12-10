@@ -51,7 +51,7 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
 {
     QPainter *painter = new QPainter(this);
     //抗锯设置
-    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform);
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::NoBrush);
 
@@ -96,6 +96,17 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
     painter->setPen(QPen(foregroundColor));
     painter->drawText(
         QRect(rect.x() + 10 + 90 + 5 + 65, rect.y() + 35 + 10, 230, lineHeight), Qt::AlignLeft | Qt::AlignTop, foregroundRightString);
+
+    // 边框描线，主要深色主题下标题与窗口分界不明显
+    QPainterPath FramePath;
+    FramePath.addRoundedRect(QRectF(rect.x(), rect.y(), rect.width(), rect.height()), 8, 8);
+    // 获取控件边框颜色
+    DPalette pa = DApplicationHelper::instance()->palette(this);
+    QPen pen(pa.color(DPalette::FrameBorder), 1);
+    painter->setPen(pen);
+    // 绘制边框
+    painter->drawPath(FramePath);
+
 
     DWidget::paintEvent(event);
 }
