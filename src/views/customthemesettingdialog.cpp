@@ -62,6 +62,22 @@ void TitleStyleRadioButton::mousePressEvent(QMouseEvent *event)
 }
 
 /*******************************************************************************
+ 1. @函数:    keyPressEvent
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    按键按下事件
+*******************************************************************************/
+void TitleStyleRadioButton::keyPressEvent(QKeyEvent *event)
+{
+    //增加设置按键捕获，让单选按钮在键盘操作下同样支持enter键盘控制作为选中操作，原生已经支持空格键作为选中操作
+    if ((Qt::Key_Return == event->key()) || (Qt::Key_Enter == event->key())) {
+        setChecked(true);
+    }
+    DRadioButton::keyPressEvent(event);
+}
+
+
+/*******************************************************************************
  1. @函数:    ColorPushButton
  2. @作者:    ut000125 sunchengxi
  3. @日期:    2020-12-01

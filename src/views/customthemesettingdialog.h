@@ -60,6 +60,8 @@ public:
 protected:
     //鼠标按下事件
     void mousePressEvent(QMouseEvent *event) override;
+    //按键按下事件
+    void keyPressEvent(QKeyEvent *event) override;
 public:
     //鼠标操作标志位
     bool m_mouseClick = false;
