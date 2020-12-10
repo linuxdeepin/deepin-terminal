@@ -325,18 +325,18 @@ void CustomThemeSettingDialog::initUI()
 
     DLabel *titleStyleLabel = new DLabel(tr("Style:"));
     DFontSizeManager::instance()->bind(titleStyleLabel, DFontSizeManager::T6, QFont::Normal);
-    titleStyleLabel->setFixedSize(64, 22);
+    titleStyleLabel->setFixedWidth(90);
 
     m_lightRadioButton = new TitleStyleRadioButton(tr("Light"));
     DFontSizeManager::instance()->bind(m_lightRadioButton, DFontSizeManager::T6, QFont::Normal);
     //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
-    m_lightRadioButton->setFixedWidth(64);
+    m_lightRadioButton->setFixedWidth(74);
 
 
     m_darkRadioButton = new TitleStyleRadioButton(tr("Dark"));
     DFontSizeManager::instance()->bind(m_darkRadioButton, DFontSizeManager::T6, QFont::Normal);
     //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
-    m_darkRadioButton->setFixedWidth(64);
+    m_darkRadioButton->setFixedWidth(74);
 
     m_darkRadioButton->setFocusPolicy(Qt::TabFocus);
     m_lightRadioButton->setFocusPolicy(Qt::TabFocus);
@@ -377,9 +377,9 @@ void CustomThemeSettingDialog::initUI()
     });
 
     titleStyleLayout->addWidget(titleStyleLabel);
-    titleStyleLayout->addSpacing(35);
+    titleStyleLayout->addSpacing(30);
     titleStyleLayout->addWidget(m_lightRadioButton);
-    titleStyleLayout->addSpacing(22);
+    titleStyleLayout->addSpacing(24);
     titleStyleLayout->addWidget(m_darkRadioButton);
     titleStyleLayout->addStretch();
 
@@ -391,19 +391,19 @@ void CustomThemeSettingDialog::initUI()
 
     m_foregroundColorLabel = new DLabel(tr("Fore color:"));
     DFontSizeManager::instance()->bind(m_foregroundColorLabel, DFontSizeManager::T6, QFont::Normal);
-    m_foregroundColorLabel->setFixedSize(92, 20);
+    m_foregroundColorLabel->setFixedWidth(114);
 
     m_foregroundButton->setFixedSize(34, 34);
 
 
     m_backgroundColorLabel = new DLabel(tr("Back color:"));
     DFontSizeManager::instance()->bind(m_backgroundColorLabel, DFontSizeManager::T6, QFont::Normal);
-    m_backgroundColorLabel->setFixedSize(92, 20);
+    m_backgroundColorLabel->setFixedWidth(114);
     m_backgroundButton->setFixedSize(34, 34);
 
     foregroundAndBackgroundLayout->addWidget(m_foregroundColorLabel);
     foregroundAndBackgroundLayout->addWidget(m_foregroundButton);
-    foregroundAndBackgroundLayout->addSpacing(103);
+    foregroundAndBackgroundLayout->addSpacing(62);
     foregroundAndBackgroundLayout->addWidget(m_backgroundColorLabel);
     foregroundAndBackgroundLayout->addWidget(m_backgroundButton);
     foregroundAndBackgroundLayout->addStretch();
@@ -416,28 +416,29 @@ void CustomThemeSettingDialog::initUI()
 
     m_ps1ColorLabel = new DLabel(tr("Prompt PS1:"));
     DFontSizeManager::instance()->bind(m_ps1ColorLabel, DFontSizeManager::T6, QFont::Normal);
-    m_ps1ColorLabel->setFixedSize(92, 20);
+    m_ps1ColorLabel->setFixedWidth(114);
     m_ps1Button->setFixedSize(34, 34);
     m_ps2ColorLabel = new DLabel(tr("Prompt PS2:"));
     DFontSizeManager::instance()->bind(m_ps2ColorLabel, DFontSizeManager::T6, QFont::Normal);
-    m_ps2ColorLabel->setFixedSize(92, 20);
+    m_ps2ColorLabel->setFixedWidth(114);
     m_ps2Button->setFixedSize(34, 34);
 
     ps1AndPs2Layout->addWidget(m_ps1ColorLabel);
     ps1AndPs2Layout->addWidget(m_ps1Button);
-    ps1AndPs2Layout->addSpacing(103);
+    ps1AndPs2Layout->addSpacing(62);
     ps1AndPs2Layout->addWidget(m_ps2ColorLabel);
     ps1AndPs2Layout->addWidget(m_ps2Button);
     ps1AndPs2Layout->addStretch();
 
+    contentLayout->addSpacing(14);
     contentLayout->addWidget(m_themePreviewArea);
-    contentLayout->addSpacing(19);
+    contentLayout->addSpacing(28);
     contentLayout->addWidget(titleStyleFrame);
-    contentLayout->addSpacing(15);
+    contentLayout->addSpacing(12);
     contentLayout->addWidget(foregroundAndBackgroundFrame);
-    contentLayout->addSpacing(15);
+    contentLayout->addSpacing(14);
     contentLayout->addWidget(ps1AndPs2Frame);
-    contentLayout->addSpacing(25);
+    contentLayout->addSpacing(18);
 
     contentFrame->setLayout(contentLayout);
     m_contentLayout->addWidget(contentFrame);
