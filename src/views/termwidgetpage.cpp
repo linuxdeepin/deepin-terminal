@@ -118,7 +118,9 @@ void TermWidgetPage::setSplitStyle(DSplitter *splitter)
 
     if (handle) {
         //分割线颜色暂时设置为Highlight颜色，需要和UI确认下
-        DPalette pa = DApplicationHelper::instance()->palette(handle);
+        //此处代码暂时保留  //DPalette pa = DApplicationHelper::instance()->palette(handle);
+        //bug#57044 中的分割线颜色，保留的代码对默认主题，和十个内置主题的颜色是正确获取，但是在自定义的颜色获取存在异常，采取如下方式获取
+        DPalette pa = DApplicationHelper::instance()->applicationPalette();
         QColor splitBrush = pa.color(DPalette::Highlight);
         pa.setBrush(DPalette::Background, splitBrush);
         handle->setPalette(pa);
