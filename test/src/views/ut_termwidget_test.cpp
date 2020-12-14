@@ -12,6 +12,7 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
+#include <QHostInfo>
 
 UT_TermWidget_Test::UT_TermWidget_Test()
 {
@@ -628,5 +629,66 @@ TEST_F(UT_TermWidget_Test, selectEncode)
     EXPECT_EQ(term->encode(), encode);
 }
 
+/*******************************************************************************
+ 1. @函数:    onTitleArgsChange
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-14
+ 4. @说明:    测试标签标题变化
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, onTitleArgsChange)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    // %D %d
+    // 第一种情况
+    term->onTitleArgsChange(DIR_L, "~");
+    QString longDir = term->m_tabArgs[DIR_L];
+    QString shortDir = term->m_tabArgs[DIR_S];
+    EXPECT_EQ(longDir, "~");
+    EXPECT_EQ(shortDir, QDir::homePath().split("/").last());
+    // 第二种情况
+    term->onTitleArgsChange(DIR_L, QDir::homePath());
+    longDir = term->m_tabArgs[DIR_L];
+    shortDir = term->m_tabArgs[DIR_S];
+    EXPECT_EQ(longDir, "~");
+    EXPECT_EQ(shortDir, QDir::homePath().split("/").last());
+    // 第三种情况
+    term->onTitleArgsChange(DIR_L, "/");
+    longDir = term->m_tabArgs[DIR_L];
+    shortDir = term->m_tabArgs[DIR_S];
+    EXPECT_EQ(longDir, QString("/"));
+    EXPECT_EQ(shortDir, QString("/"));
+    // 一般情况
+    term->onTitleArgsChange(DIR_L, "/home/777/aaa");
+    longDir = term->m_tabArgs[DIR_L];
+    shortDir = term->m_tabArgs[DIR_S];
+    EXPECT_EQ(longDir, QString("/home/777/aaa"));
+    EXPECT_EQ(shortDir, QString("aaa"));
+
+    // %h
+    term->onTitleArgsChange(LOCAL_HOST_NAME, "dzw");
+    QString localHostName = term->m_tabArgs[LOCAL_HOST_NAME];
+    EXPECT_EQ(localHostName, "dzw");
+}
+
+/*******************************************************************************
+ 1. @函数:    onHostnameChanged
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-14
+ 4. @说明:    更新当前主机名
+*******************************************************************************/
+TEST_F(UT_TermWidget_Test, onHostnameChanged)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+    // 获取当前主机名
+    QString hostName = QHostInfo::localHostName();
+    term->onHostnameChanged();
+    QString result = term->m_tabArgs[LOCAL_HOST_NAME];
+    EXPECT_EQ(hostName, result);
+}
 
 #endif

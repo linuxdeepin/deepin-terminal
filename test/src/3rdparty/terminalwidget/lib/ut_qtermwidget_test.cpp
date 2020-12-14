@@ -321,5 +321,106 @@ TEST_F(UT_QTermWidget_Test, getForegroundProcessName)
 //    EXPECT_EQ(processName, QString("ping"));
 }
 
+/*******************************************************************************
+ 1. @函数:    clearSelection
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-14
+ 4. @说明:    清除选中
+*******************************************************************************/
+TEST_F(UT_QTermWidget_Test, clearSelection)
+{
+    // 设置有选中
+    m_termWidget->m_bHasSelect = true;
+    // 清除选中标志
+    m_termWidget->clearSelection();
+    EXPECT_EQ(m_termWidget->m_bHasSelect, false);
+}
 
+/*******************************************************************************
+ 1. @函数:    terminalSizeHint
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-14
+ 4. @说明:    终端的大小消息提示
+*******************************************************************************/
+TEST_F(UT_QTermWidget_Test, terminalSizeHint)
+{
+    // 终端大小提示 => 开
+    m_termWidget->setTerminalSizeHint(true);
+    bool sizeHit = m_termWidget->terminalSizeHint();
+    EXPECT_EQ(sizeHit, true);
+
+    // 终端大小提示 => 关
+    m_termWidget->setTerminalSizeHint(false);
+    sizeHit = m_termWidget->terminalSizeHint();
+    EXPECT_EQ(sizeHit, false);
+}
+
+/*******************************************************************************
+ 1. @函数:    setNoHasSelect
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-14
+ 4. @说明:    当搜索框出现时，设置m_bHasSelect为false,
+             避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
+*******************************************************************************/
+TEST_F(UT_QTermWidget_Test, setNoHasSelect)
+{
+    // 设置变量为true
+    m_termWidget->m_bHasSelect = true;
+    // 改变变量值
+    m_termWidget->setNoHasSelect();
+    EXPECT_EQ(m_termWidget->m_bHasSelect, false);
+
+    m_termWidget->m_bHasSelect = true;
+    m_termWidget->noMatchFound();
+    EXPECT_EQ(m_termWidget->m_bHasSelect, false);
+}
+
+/*******************************************************************************
+ 1. @函数:    interactionHandler
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-14
+ 4. @说明:    测试定时器是否正常启动
+*******************************************************************************/
+TEST_F(UT_QTermWidget_Test, interactionHandler)
+{
+    // 若没有
+    if (nullptr == m_termWidget->m_interactionTimer) {
+        m_termWidget->m_interactionTimer = new QTimer;
+    }
+    // 设置变量为true
+    bool timerIsActive = m_termWidget->m_interactionTimer->isActive();
+    if (timerIsActive) {
+        // 关闭定时器
+        m_termWidget->m_interactionTimer->stop();
+    }
+    // 改变变量值
+    m_termWidget->interactionHandler();
+    timerIsActive = m_termWidget->m_interactionTimer->isActive();
+    EXPECT_EQ(timerIsActive, true);
+    delete m_termWidget->m_interactionTimer;
+}
+
+/*******************************************************************************
+ 1. @函数:    startTerminalTeletype
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-14
+ 4. @说明:    测试startTerminalTeletype函数
+*******************************************************************************/
+TEST_F(UT_QTermWidget_Test, startTerminalTeletype)
+{
+    // session已经running
+    // 直接return
+    m_termWidget->startTerminalTeletype();
+
+
+    QTermWidget *term = new QTermWidget;
+    // runEmptyPTY
+    term->startTerminalTeletype();
+    term->show();
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 正常运行
+    EXPECT_EQ(term->isVisible(), true);
+}
 #endif
