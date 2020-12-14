@@ -157,7 +157,9 @@ TEST_F(UI_WindowsManager_Test, onMainwindowClosed)
 #endif
     // 关闭雷神窗口
     WindowsManager::instance()->getQuakeWindow()->closeAllTab();
-    WindowsManager::instance()->onMainwindowClosed(WindowsManager::instance()->getQuakeWindow());
+    if (WindowsManager::instance()->getQuakeWindow()) {
+        WindowsManager::instance()->onMainwindowClosed(WindowsManager::instance()->getQuakeWindow());
+    }
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow(), nullptr);
 }
 #endif

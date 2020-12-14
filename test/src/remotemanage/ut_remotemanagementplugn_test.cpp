@@ -10,6 +10,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+#include <QFile>
 
 UT_RemoteManagementPlugin_Test::UT_RemoteManagementPlugin_Test()
 {
@@ -124,7 +125,47 @@ TEST_F(UT_RemoteManagementPlugin_Test, createShellFile)
     config->m_deleteKey = QString("");
 
     QString shellFile = remotePlugin->createShellFile(config);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
     EXPECT_NE(shellFile.length(), 0);
+    delete config;
 }
 
+/*******************************************************************************
+ 1. @函数:    createShellFile
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-13
+ 4. @说明:    测试创建脚本的各种情况
+*******************************************************************************/
+TEST_F(UT_RemoteManagementPlugin_Test, createShellFile2)
+{
+    RemoteManagementPlugin *pRemotePlugin = new RemoteManagementPlugin;
+    ServerConfig config;
+    config.m_userName = "root";
+    config.m_address = "127.0.0.1";
+    config.m_port = "22";
+    // 密钥为空
+    config.m_privateKey = "";
+    config.m_password = "1";
+    config.m_path = "/";
+    config.m_command = "ls";
+    // 生成配置文件执行位置及其参数
+    QString command = pRemotePlugin->createShellFile(&config);
+    QStringList strList = command.split(" ");
+    QFile file(strList.first());
+    // 文件存在
+    EXPECT_EQ(file.exists(), true);
+
+    // 密钥不为空
+    config.m_privateKey = "/";
+    command = pRemotePlugin->createShellFile(&config);
+    strList.clear();
+    strList = command.split(" ");
+    file.setFileName(strList.first());
+    // 文件存在
+    EXPECT_EQ(file.exists(), true);
+    // 删除文件
+    file.remove();
+}
 #endif

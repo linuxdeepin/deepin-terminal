@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include "tabbar.h"
 #include "termwidget.h"
+#include "termwidget.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -13,6 +14,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QtConcurrent/QtConcurrent>
+#include <QKeyEvent>
 
 
 UT_SwitchThemeMenu_Test::UT_SwitchThemeMenu_Test()
@@ -755,4 +757,28 @@ TEST_F(UT_MainWindow_Test, clickTabTest)
 #endif
 }
 
+/*******************************************************************************
+ 1. @函数:    hasRunningProcesses
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-13
+ 4. @说明:    是否有程序正在运行
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, hasRunningProcesses)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->show();
+    // 此时没有正在执行的程序
+    EXPECT_EQ(mainWindow->hasRunningProcesses(), false);
+
+    // 发送数据
+    mainWindow->currentPage()->sendTextToCurrentTerm("ping 127.0.0.1\n");
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    bool running = mainWindow->hasRunningProcesses();
+    qDebug() << "has running process :" << running;
+//    EXPECT_EQ(running, true);
+    delete mainWindow;
+}
 #endif
