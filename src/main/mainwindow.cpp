@@ -1533,7 +1533,7 @@ void MainWindow::initShortcuts()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
-    /******** Modify by ut000439 wangpeili 2020-07-17:              ****************/
+    /******** Modify by ut000439 wangpeili 2020-07-17: Super+Tab快捷键   ****************/
     QShortcut *shortcutFoucusOut = new QShortcut(QKeySequence(QKEYSEQUENCE_FOCUSOUT_TIMINAL), this);
     connect(shortcutFoucusOut, &QShortcut::activated, this, [this]() {
         qDebug() << "focusout timinal is activated!" << QKEYSEQUENCE_FOCUSOUT_TIMINAL;
@@ -2072,7 +2072,8 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     }
     if (keyCategory == "advanced") {
         QStringList strList;
-        strList << QObject::tr("Fullscreen") << QObject::tr("Rename title") << QObject::tr("Display shortcuts") << QObject::tr("Custom commands") << QObject::tr("Remote management");
+        strList << QObject::tr("Fullscreen") << QObject::tr("Rename title") << QObject::tr("Display shortcuts") << QObject::tr("Custom commands") << QObject::tr("Remote management")
+                << QObject::tr("Switch focus to \"+\" icon");
         QJsonArray newJsonArry;
         for (int i = 0; i < strList.size(); i++) {
             for (int j = 0; j < JsonArry.size(); j++) {

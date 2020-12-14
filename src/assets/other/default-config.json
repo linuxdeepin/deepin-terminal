@@ -289,6 +289,12 @@
                             "name": "Remote management",
                             "type": "shortcut",
                             "default":  "Alt+Del"
+                        },
+                        {
+                            "key": "switch_focus_to_add_icon",
+                            "name": "Switch focus to \"+\" icon",
+                            "type": "shortcut",
+                            "default":  "Super+Tab"
                         }
                     ]
                 }
