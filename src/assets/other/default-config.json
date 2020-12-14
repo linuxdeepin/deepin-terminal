@@ -321,7 +321,7 @@
                             "key": "auto_copy_selection",
                             "type": "checkbox",
                             "text": "Copy on select",
-                            "default": false
+                            "default": true
                         }
                     ]
                 },
