@@ -65,6 +65,26 @@ TEST_F(UT_CustomThemeSettingDialog_Test, setFocusTest)
     customThemeSettingDialog->m_ps1Button->click();
     customThemeSettingDialog->m_ps2Button->click();
     customThemeSettingDialog->hide();
+
+    //add by sunchengxi 2020.12.15
+    customThemeSettingDialog->show();
+    //单选按钮
+    customThemeSettingDialog->m_darkRadioButton->setFocus(Qt::TabFocusReason);
+    //模拟enter键按下事件
+    QKeyEvent pressEnter(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier, " ");
+    QApplication::sendEvent(customThemeSettingDialog->m_darkRadioButton, &pressEnter);
+    // 模拟鼠标左键点击事件
+    QPoint pos(0, 0);
+    QMouseEvent mousePress(QEvent::MouseButtonPress, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    QApplication::sendEvent(customThemeSettingDialog->m_darkRadioButton, &mousePress);
+
+    //取色按钮
+    customThemeSettingDialog->m_foregroundButton->setFocus(Qt::TabFocusReason);
+    //模拟enter键按下事件
+    QApplication::sendEvent(customThemeSettingDialog->m_foregroundButton, &pressEnter);
+    // 模拟鼠标左键点击事件
+    QApplication::sendEvent(customThemeSettingDialog->m_foregroundButton, &mousePress);
+
     customThemeSettingDialog->close();
 
 #ifdef ENABLE_UI_TEST
