@@ -33,6 +33,7 @@
 #include <QByteArray>
 #include <QVariant>
 #include <QCommandLineParser>
+#include <QKeySequence>
 
 namespace Konsole {
 extern __attribute__((visibility("default"))) int __minFontSize;
@@ -156,6 +157,10 @@ public:
 
     //设置类的objectname
     static void set_Object_Name(QObject *object);
+
+    // 快捷键转换
+    static QString converUpToDown(QKeySequence keysequence);
+    static QString converDownToUp(QKeySequence keysequence);
 
 };
 

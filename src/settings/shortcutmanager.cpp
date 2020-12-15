@@ -305,7 +305,8 @@ void ShortcutManager::fillCommandListData(ListView *listview, const QString &str
             QString strCmdName = curAction->text();
             QString strCmdShortcut = curAction->shortcut().toString();
 
-            listview->addItem(ItemFuncType_Item, strCmdName, strCmdShortcut);
+            // 刷新列表,列表项中的值显示大写 down2up dzw 20201215
+            listview->addItem(ItemFuncType_Item, strCmdName, Utils::converDownToUp(strCmdShortcut));
         }
     } else {
         for (int i = 0; i < customCommandActionList.size(); i++) {
@@ -317,7 +318,8 @@ void ShortcutManager::fillCommandListData(ListView *listview, const QString &str
             if (strCmdName.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
                     || strCmdText.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)
                     || strKeySeq.contains(strFilter, Qt::CaseSensitivity::CaseInsensitive)) {
-                listview->addItem(ItemFuncType_Item, strCmdName, strKeySeq);
+                // 刷新列表,列表项中的值显示大写 down2up dzw 20201215
+                listview->addItem(ItemFuncType_Item, strCmdName, Utils::converDownToUp(strKeySeq));
             }
         }
     }

@@ -71,9 +71,9 @@ void Service::init()
     /******** Modify by ut000610 daizhengwen 2020-07-09:在linux上兼容快捷键 Begin***************/
     // 初始化qt-at-spi
     // 该线程负责在linux上兼容快捷键，如ctrl+shift+? （服务器版暂不支持此兼容）
-    m_atspiThread = new AtspiDesktop;
+    // m_atspiThread = new AtspiDesktop;
     // 运行线程
-    m_atspiThread->start();
+    // m_atspiThread->start();
     /********************* Modify by ut000610 daizhengwen End ************************/
     // 初始化配置
     Settings::instance()->init();

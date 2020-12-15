@@ -1629,7 +1629,8 @@ void MainWindow::onShortcutSettingChanged(const QString &keyName)
     qDebug() << "Shortcut[" << keyName << "] changed";
     if (m_BuiltInShortcut.contains(keyName)) {
         QString value = Settings::instance()->settings->option(keyName)->value().toString();
-        m_BuiltInShortcut[keyName]->setKey(QKeySequence(value));
+        // 设置中快捷键变化,重新注册快捷键,使用小写 up2down
+        m_BuiltInShortcut[keyName]->setKey(Utils::converUpToDown(value));
         return;
     }
 
@@ -1829,7 +1830,8 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 {
     QString value = Settings::instance()->settings->option(key)->value().toString();
-    QShortcut *shortcut = new QShortcut(QKeySequence(value), this);
+    // 初始化设置中的快捷键,使用小写 up2down dzw 20201215
+    QShortcut *shortcut = new QShortcut(Utils::converUpToDown(value), this);
     m_BuiltInShortcut[key] = shortcut;
     shortcut->setAutoRepeat(AutoRepeat);
     // qDebug() << "createNewShotcut" << key << value;
@@ -1909,6 +1911,8 @@ void MainWindow::addCustomCommandSlot(QAction *newAction)
     qDebug() << " MainWindow::addCustomCommandSlot";
 
     QAction *action = newAction;
+    // 注册自定义快捷键,使用小写 up2down dzw 20201215
+    action->setShortcut(Utils::converUpToDown(action->shortcut()));
     addAction(action);
 
     connect(action, &QAction::triggered, this, [this, action]() {

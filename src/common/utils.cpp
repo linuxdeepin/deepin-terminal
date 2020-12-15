@@ -21,6 +21,8 @@
 #include "utils.h"
 #include "operationconfirmdlg.h"
 #include "termwidget.h"
+#include "terminputdialog.h"
+#include "dbusmanager.h"
 
 #include <DLog>
 #include <DMessageBox>
@@ -46,9 +48,6 @@
 #include <QTextLayout>
 #include <QTime>
 #include <QFontMetrics>
-#include "terminputdialog.h"
-
-#include "dbusmanager.h"
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -1002,6 +1001,63 @@ void Utils::set_Object_Name(QObject *object)
     if (object != nullptr) {
         object->setObjectName(object->metaObject()->className());
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    converUpToDown
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-15
+ 4. @说明:    转换up2down
+*******************************************************************************/
+QString Utils::converUpToDown(QKeySequence keysequence)
+{
+    // 获取现在的快捷键字符串
+    QString strKey = keysequence.toString();
+
+    // 是否有shift修饰
+    if (!(strKey.contains("Shift") || strKey.contains("shift"))) {
+        // 没有直接返回字符串
+        return strKey;
+    }
+
+    // 遍历是否存在有shift修饰的字符串
+    for (int i = 0; i < SHORTCUT_CONVERSION_UP.count(); ++i) {
+        QString key = SHORTCUT_CONVERSION_UP[i];
+        if (strKey.endsWith(key)) {
+            // 若存在则替换字符
+            strKey.replace(strKey.length() - 1, 1, SHORTCUT_CONVERSION_DOWN[i]);
+        }
+    }
+
+    return strKey;
+}
+
+/*******************************************************************************
+ 1. @函数:    converDownToUp
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-15
+ 4. @说明:    转换down2up
+*******************************************************************************/
+QString Utils::converDownToUp(QKeySequence keysequence)
+{
+    // 获取现在的快捷键字符串
+    QString strKey = keysequence.toString();
+    // 是否有shift修饰
+    if (!(strKey.contains("Shift") || strKey.contains("shift"))) {
+        // 没有直接返回字符串
+        return strKey;
+    }
+
+    // 遍历是否存在有shift修饰的字符串
+    for (int i = 0; i < SHORTCUT_CONVERSION_DOWN.count(); ++i) {
+        QString key = SHORTCUT_CONVERSION_DOWN[i];
+        if (strKey.contains(key)) {
+            // 若存在则替换字符
+            strKey.replace(key, SHORTCUT_CONVERSION_UP[i]);
+        }
+    }
+
+    return strKey;
 }
 
 /*******************************************************************************
