@@ -78,8 +78,6 @@ void GenerateSettingTranslate()
     Q_UNUSED(shortcuts_advanced_display_shortcutsName);
     auto shortcuts_advanced_remote_managementName = QObject::tr("Remote management");
     Q_UNUSED(shortcuts_advanced_remote_managementName);
-    auto shortcuts_advanced_switch_focus_to_add_iconName = QObject::tr("Switch focus to \"+\" icon");
-    Q_UNUSED(shortcuts_advanced_switch_focus_to_add_iconName);
     auto shortcuts_advanced_rename_tabName = QObject::tr("Rename title");
     Q_UNUSED(shortcuts_advanced_rename_tabName);
     auto shortcuts_advanced_switch_fullscreenName = QObject::tr("Fullscreen");

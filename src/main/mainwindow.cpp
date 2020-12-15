@@ -2032,6 +2032,14 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 //        JsonArry.append(jsonItem);
 //    }
 
+    QString swithFocusToIcon = QObject::tr("Switch focus to \"+\" icon");
+    if (keyCategory == "advanced") {
+        QJsonObject jsonItem;
+        jsonItem.insert("name", swithFocusToIcon);
+        jsonItem.insert("value", "Super+Tab");
+        JsonArry.append(jsonItem);
+    }
+
     /************************ Add by sunchengxi 2020-06-08:json重新排序，快捷键显示顺序调整 Begin************************/
     //default-config.json 文件增加的跟此处相关字段，此处相应添加，保证显示。
     //用三个条件分开，清晰，方便后续调整扩展维护，代码稍微多点。
@@ -2073,7 +2081,7 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
     if (keyCategory == "advanced") {
         QStringList strList;
         strList << QObject::tr("Fullscreen") << QObject::tr("Rename title") << QObject::tr("Display shortcuts") << QObject::tr("Custom commands") << QObject::tr("Remote management")
-                << QObject::tr("Switch focus to \"+\" icon");
+                << swithFocusToIcon;
         QJsonArray newJsonArry;
         for (int i = 0; i < strList.size(); i++) {
             for (int j = 0; j < JsonArry.size(); j++) {
