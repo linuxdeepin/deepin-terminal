@@ -1,6 +1,5 @@
 #!/bin/bash
 workspace=$1
-appname=$2
 
 cd $workspace
 
@@ -28,11 +27,6 @@ lcov --remove ./coverage/coverage.info '*/${project_name}_test_autogen/*' '*/${p
 mkdir ../report
 genhtml -o ../report ./coverage/coverage.info
 
-cd ../report
+lcov -d $build_dir –z
 
-line=`cat index.html | grep headerCovTableEntryLo | awk '{print $2}'| cut -d '>' -f 2 | head -n 1`
-func=`cat index.html | grep headerCovTableEntryLo | awk '{print $2}' | cut -d '>' -f 2 | tail -n 1`
-
-cd $workspace
-touch $appname.csv
-echo $appname,"行覆盖率: "$line"% 函数覆盖率: "$func"%"> $appname.csv
+exit 0
