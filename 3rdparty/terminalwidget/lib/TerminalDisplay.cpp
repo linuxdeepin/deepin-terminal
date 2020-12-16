@@ -1560,8 +1560,11 @@ void TerminalDisplay::paintFilters(QPainter& painter)
     }
 
     /***add begin by ut001121 zhangmeng 20200624 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
-    if(bDrawLineForHotSpotLink){
-        if(cursor().shape() != Qt::PointingHandCursor) setCursor(Qt::PointingHandCursor);
+    /** modify by ut001121 zhangmeng 20201215 for 1040-4 Ctrl键+鼠标点击超链接打开网页 */
+    if(bDrawLineForHotSpotLink && (QApplication::queryKeyboardModifiers() & Qt::ControlModifier)){
+        if(cursor().shape() != Qt::PointingHandCursor) {
+          setCursor(Qt::PointingHandCursor);
+        }
     }
     else if(cursor().shape() != Qt::IBeamCursor){
         setCursor(Qt::IBeamCursor);
