@@ -617,6 +617,23 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
                 return true;
             }
         }
+        else if(mouseEvent->button() ==  Qt::MiddleButton)                                                                                                               
+        {
+            //鼠标中键点击关闭标签页  
+            int index = -1;     
+            QPoint position = mouseEvent->pos();
+
+            for (int i = 0; i < this->count(); i++) { 
+                if (tabRect(i).contains(position)) {
+                    index = i;     
+                    break;     
+                }
+            }
+            if(index >= 0)     
+            {
+                emit tabCloseRequested(index); 
+            }
+        }
     } else if (event->type() == QEvent::DragEnter) {
     } else if (event->type() == QEvent::DragLeave) {
     } else if (event->type() == QEvent::Drop) {
