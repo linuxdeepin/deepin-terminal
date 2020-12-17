@@ -24,17 +24,17 @@ Transparency=false
 
 [Color1]
 Bold=true
-Color=204, 102, 102
+Color=178, 24, 24
 Transparency=false
 
 [Color1Intense]
 Bold=true
-Color=204, 102, 102
+Color=255, 84, 84
 Transparency=false
 
 [Color2]
 Bold=true
-Color=181, 189, 104
+Color=24, 178, 24
 Transparency=false
 
 [Color2Intense]
@@ -54,7 +54,7 @@ Transparency=false
 
 [Color4]
 Bold=true
-Color=129, 162, 190
+Color=24, 24, 178
 Transparency=false
 
 [Color4Intense]

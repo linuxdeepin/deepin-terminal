@@ -557,9 +557,10 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
 
         Settings::instance()->themeSetting->setValue("Foreground/Color", Settings::instance()->color2str(m_foregroundButton->getBackGroundColor()));
         Settings::instance()->themeSetting->setValue("Background/Color", Settings::instance()->color2str(m_backgroundButton->getBackGroundColor()));
-        Settings::instance()->themeSetting->setValue("Color2/Color", Settings::instance()->color2str(m_ps1Button->getBackGroundColor()));
+        //仅仅修改参数 "Color2Intense/Color"与"Color4Intense/Color"为了保证python脚本取色RGB正常显示使用的固定不变，跟终端的所有主题都保持一致。此处代码暂时保留
+        //Settings::instance()->themeSetting->setValue("Color2/Color", Settings::instance()->color2str(m_ps1Button->getBackGroundColor()));
         Settings::instance()->themeSetting->setValue("Color2Intense/Color", Settings::instance()->color2str(m_ps1Button->getBackGroundColor()));
-        Settings::instance()->themeSetting->setValue("Color4/Color", Settings::instance()->color2str(m_ps2Button->getBackGroundColor()));
+        //Settings::instance()->themeSetting->setValue("Color4/Color", Settings::instance()->color2str(m_ps2Button->getBackGroundColor()));
         Settings::instance()->themeSetting->setValue("Color4Intense/Color", Settings::instance()->color2str(m_ps2Button->getBackGroundColor()));
 
         Settings::instance()->m_customThemeModify = true;

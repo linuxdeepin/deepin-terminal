@@ -165,14 +165,27 @@ void Settings::init()
         //前景色 “绿色” （0x00FF00）
         QColor foregroundColor(0, 255, 0);
         themeSetting->setValue("Foreground/Color", color2str(foregroundColor));
+
+        //自定义主题中实际修改的PS1参数只是一个"Color2Intense/Color" ，而配置"Color2/Color" 是为了保证python脚本取色RGB正常显示使用的固定不变，跟终端的所有主题都保持一致 //Green
+        QColor color2Color(24, 178, 24);
         //提示符   PS1  “土黄色” （0x859900）
         QColor pS1Color(133, 153, 0);
-        themeSetting->setValue("Color2/Color", color2str(pS1Color));
+
+        themeSetting->setValue("Color2/Color", color2str(color2Color));
         themeSetting->setValue("Color2Intense/Color", color2str(pS1Color));
+
+        //自定义主题中实际修改的参数PS2只是一个"Color4Intense/Color" ，而配置"Color4/Color" 是为了保证python脚本取色RGB正常显示使用的固定不变，跟终端的所有主题都保持一致 //Blue
+        QColor color4Color(24, 24, 178);
         //提示符   PS2  “蓝色” （0x3465A4）
         QColor pS2Color(52, 101, 164);
-        themeSetting->setValue("Color4/Color", color2str(pS2Color));
+        themeSetting->setValue("Color4/Color", color2str(color4Color));
         themeSetting->setValue("Color4Intense/Color", color2str(pS2Color));
+
+        //配置"Color1/Color"与"Color1Intense/Color"  是为了保证python脚本取色RGB正常显示使用的固定不变，跟终端的所有主题都保持一致 //Red
+        QColor color1Color(178, 24, 24);
+        QColor color1IntenseColor(255, 84, 84);
+        themeSetting->setValue("Color1/Color", color2str(color1Color));
+        themeSetting->setValue("Color1Intense/Color", color2str(color1IntenseColor));
     }
 
 }
