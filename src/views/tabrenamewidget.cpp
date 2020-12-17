@@ -29,20 +29,26 @@ TabRenameWidget::TabRenameWidget(bool isRemote, bool isSetting, QWidget *parent)
 *******************************************************************************/
 void TabRenameWidget::initUi()
 {
-//    setMinimumSize(300, 36);
-
     m_layout = new QHBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
+    // 设置布局之间的宽度,之前的间距比较宽
+    m_layout->setSpacing(10);
+    // widet 自己设置0 0 0 0
+    this->setContentsMargins(0, 0, 0, 0);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    // 内容输入框
     m_inputedit = new DLineEdit(this);
     m_inputedit->setText("%n:%d");
-    m_inputedit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_inputedit->setMaximumSize(172, 36);
+    m_inputedit->setMinimumSize(135, 36);
     DFontSizeManager::instance()->bind(m_inputedit, DFontSizeManager::T6);
 
+    // 插入按钮
     m_choseButton = new DPushButton(tr("Insert"), this);
-    m_choseButton->setMaximumSize(82, 45);
+    m_choseButton->setMaximumHeight(36);
+    // 添加下拉菜单
     m_choseButton->setMenu(m_choseMenu);
-    m_choseButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_choseButton, DFontSizeManager::T6);
     m_choseButton->setAutoDefault(false);
     m_choseButton->setDefault(false);
@@ -55,7 +61,6 @@ void TabRenameWidget::initUi()
     }
 
     m_layout->addWidget(m_inputedit);
-    m_layout->addSpacing(10);
     m_layout->addWidget(m_choseButton);
 }
 
@@ -70,8 +75,10 @@ void TabRenameWidget::initChoseMenu()
     m_choseMenu = new DMenu(this);
     DFontSizeManager::instance()->bind(m_choseMenu, DFontSizeManager::T6);
     if (m_isRemote) {
+        // 初始化远程菜单
         initRemoteChoseMenu();
     } else {
+        // 初始化正常菜单
         initNormalChoseMenu();
     }
 }
@@ -139,7 +146,6 @@ void TabRenameWidget::initConnections()
 void TabRenameWidget::initLabel()
 {
     m_Label = new QLabel;
-//    m_Label->setMaximumSize(126, 20);
     if (!m_isRemote) {
         m_Label->setText(QObject::tr("Tab title format"));
     } else {
@@ -148,9 +154,9 @@ void TabRenameWidget::initLabel()
 
     DFontSizeManager::instance()->bind(m_Label, DFontSizeManager::T6);
 
+    // label要跟随字体扩展 => 所有控件都扩展效果不好
     m_Label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_layout->addWidget(m_Label);
-    m_layout->addSpacing(10);
 }
 
 /*******************************************************************************

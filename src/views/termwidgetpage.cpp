@@ -822,7 +822,7 @@ void TermWidgetPage::showSearchBar(int state)
         m_findBar->clearHoldContent();
         m_findBar->show();
         //Add by ut001000 renfeixiang 2020-12-02 在搜索框弹出时，添加设置Term的m_bHasSelect为false函数
-        if(m_currentTerm != nullptr){
+        if (m_currentTerm != nullptr) {
             m_currentTerm->setNoHasSelect();
         }
         m_findBar->move(width() - SEARCHBAR_RIGHT_MARGIN, 0);
@@ -855,6 +855,7 @@ void TermWidgetPage::showRenameTitleDialog()
     Service::instance()->setIsDialogShow(window(), true);
     if (nullptr == m_renameDlg) {
         m_renameDlg = new TabRenameDlg(this);
+        m_renameDlg->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         QString tabTitleFormat = currentTerminal()->getTabTitleFormat();
         QString remoteTabTitleFormat = currentTerminal()->getRemoteTabTitleFormat();
         m_renameDlg->setText(tabTitleFormat, remoteTabTitleFormat);

@@ -30,7 +30,9 @@ TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
 void TabRenameDlg::initUi()
 {
     setWindowModality(Qt::ApplicationModal);
+    // 设置最小值 => 以免一开始挤在一起
     setMinimumSize(456, 226);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
@@ -197,7 +199,6 @@ void TabRenameDlg::initContentWidget()
 {
     m_mainLayout = new QVBoxLayout();
     m_mainLayout->setObjectName("mainLayout");//Add by ut001000 renfeixiang 2020-08-13
-    m_mainLayout->setSpacing(8);
     m_mainLayout->setContentsMargins(10, 0, 10, 10);
 
     QWidget *contentwidget = new QWidget(this);
@@ -208,10 +209,11 @@ void TabRenameDlg::initContentWidget()
     initRenameWidget(true);
     initButtonWidget();
 
+    // 添加控件
+    m_mainLayout->setSpacing(10);
     m_mainLayout->addWidget(m_titlelabel);
     m_mainLayout->addWidget(m_normalWidget);
     m_mainLayout->addWidget(m_remoteWidget);
-    m_mainLayout->addSpacing(10);
     m_mainLayout->addWidget(m_buttonWidget);
 
     contentwidget->setLayout(m_mainLayout);
@@ -245,7 +247,6 @@ void TabRenameDlg::initConnections()
     connect(m_closeButton, &DPushButton::clicked, this, [ = ] {
         close();
     });
-
 }
 
 /*******************************************************************************
@@ -274,8 +275,6 @@ void TabRenameDlg::initRenameWidget(bool isRemote)
     TAbLayout->setContentsMargins(0, 0, 0, 0);
 
     TabRenameWidget *renameWidget = new TabRenameWidget(isRemote);
-    renameWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//    TAbLayout->addWidget(label);
     TAbLayout->addWidget(renameWidget);
 
     if (!isRemote) {
