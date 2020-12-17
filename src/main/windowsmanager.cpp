@@ -40,7 +40,7 @@ WindowsManager *WindowsManager::instance()
 *******************************************************************************/
 void WindowsManager::runQuakeWindow(TermProperties properties)
 {
-    if (m_quakeWindow == nullptr) {
+    if (nullptr == m_quakeWindow) {
         qDebug() << "runQuakeWindow :create";
         m_quakeWindow = new QuakeWindow(properties);
         //Add by ut001000 renfeixiang 2020-11-16 设置开始雷神动画效果标志
@@ -86,7 +86,7 @@ void WindowsManager::quakeWindowShowOrHide()
     if (!m_quakeWindow->isActiveWindow()) {
         qDebug() << "QuakeWindow is activate, now activateWindow" << m_quakeWindow->winId();
         int index = DBusManager::callKDECurrentDesktop();
-        if (index != -1 && m_quakeWindow->getDesktopIndex() != index) {
+        if ((index != -1) && (m_quakeWindow->getDesktopIndex() != index)) {
             // 不在同一个桌面
             DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
             // 选择拉伸方式，因为此时不知道鼠标位置
@@ -106,7 +106,7 @@ void WindowsManager::quakeWindowShowOrHide()
         return;
     }
     // 雷神设置框显示,不处理
-    if (Service::instance()->isSettingDialogVisible() && Service::instance()->getSettingOwner() == m_quakeWindow) {
+    if (Service::instance()->isSettingDialogVisible() && (Service::instance()->getSettingOwner() == m_quakeWindow)) {
         if (m_quakeWindow->isActiveWindow()) {
             Service::instance()->showSettingDialog(m_quakeWindow);
         }

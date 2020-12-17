@@ -844,7 +844,7 @@ void MainWindow::closeOtherTab(const QString &identifier, bool hasConfirmed)
         }
     }
 
-    if (!hasConfirmed && runningCount != 0) {
+    if ((!hasConfirmed) && (runningCount != 0)) {
         // 全部关闭时，仅提示一次．
         showExitConfirmDialog(Utils::CloseType_OtherTab, runningCount, this);
         return;
@@ -908,7 +908,7 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     // 关闭确认窗口前确认焦点位置是否在close button上，并且发起了关闭窗口
     bool closeBtnHasfocus = false;
     DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-    if (closeBtn != nullptr && closeBtn->hasFocus() && type == Utils::CloseType_Window) {
+    if ((closeBtn != nullptr) && closeBtn->hasFocus() && (type == Utils::CloseType_Window)) {
         closeBtnHasfocus = true;
         qDebug() << "before close window, focus widget is close button. ";
     }
@@ -1123,9 +1123,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
         runningCount += tabPage->runningTerminalCount();
     }
 
-    if (!m_hasConfirmedClose && runningCount != 0) {
+    if ((!m_hasConfirmedClose) && (runningCount != 0)) {
         // 如果不能马上关闭，并且还在没有最小化．
-        if (runningCount != 0  && isMinimized()) {
+        if ((runningCount != 0)  && isMinimized()) {
             qDebug() << "isMinimized........... " << endl;
             setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
         }
@@ -1217,7 +1217,7 @@ QString MainWindow::getConfigWindowState()
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
         qDebug() << "use line state set:" << state;
-        if (state == "maximum") {
+        if ("maximum" == state ) {
             windowState = "window_maximum";
         } else if (state == "splitscreen") {
             windowState = "split_screen";
@@ -1274,7 +1274,7 @@ QString MainWindow::getWinInfoConfigPath()
 void MainWindow::initWindowPosition(MainWindow *mainwindow)
 {
     int m_WindowNumber = executeCMD(cmd);
-    if (m_WindowNumber == 1) {
+    if (1 == m_WindowNumber) {
         mainwindow->move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
     }
 }
@@ -1572,7 +1572,7 @@ void MainWindow::initShortcuts()
             TermWidgetPage *page = currentPage();
             if (page) {
                 assert(m_tabbar);
-                if (9 == i && m_tabbar->count() > 9) {
+                if ((9 == i) && (m_tabbar->count() > 9)) {
                     m_tabbar->setCurrentIndex(m_tabbar->count() - 1);
                     return;
                 }
@@ -1652,7 +1652,7 @@ void MainWindow::showPlugin(const QString &name)
         return;
     }
 
-    if (m_CurrentShowPlugin == name && m_CurrentShowPlugin == PLUGIN_TYPE_NONE) {
+    if ((m_CurrentShowPlugin == name) && (PLUGIN_TYPE_NONE == m_CurrentShowPlugin)) {
         // 目前没有列表显示，直接返回
         qDebug() << "no plugin show!";
         return;
@@ -1673,7 +1673,7 @@ void MainWindow::showPlugin(const QString &name)
 *******************************************************************************/
 void MainWindow::hidePlugin()
 {
-    if (m_CurrentShowPlugin == PLUGIN_TYPE_NONE) {
+    if (PLUGIN_TYPE_NONE == m_CurrentShowPlugin) {
         return;
     }
     qDebug() << "hide Plugin" << m_CurrentShowPlugin;
@@ -2024,13 +2024,6 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
         jsonItem.insert("value", opt->value().toString());
         JsonArry.append(jsonItem);
     }
-
-//    if (keyCategory == "workspace") {
-//        QJsonObject jsonItem;
-//        jsonItem.insert("name", tr("Select workspace"));
-//        jsonItem.insert("value", "Ctrl+Shift+1~9");
-//        JsonArry.append(jsonItem);
-//    }
 
     QString swithFocusToIcon = QObject::tr("Switch focus to \"+\" icon");
     if (keyCategory == "advanced") {
