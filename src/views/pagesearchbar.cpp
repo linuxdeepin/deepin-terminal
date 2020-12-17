@@ -130,7 +130,7 @@ DIconButton *findIconBtn(DSearchEdit *searchEdit)
     QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
     if (iconWidget != nullptr) {
         DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
-        if (iconBtn == nullptr) {
+        if (nullptr == iconBtn) {
             qDebug() << "can not found iconBtn in DIconButton";
         }
         return iconBtn;
@@ -184,7 +184,7 @@ void PageSearchBar::recoveryHoldContent()
 *******************************************************************************/
 qint64 PageSearchBar::searchCostTime()
 {
-    if (m_searchStartTime == 0)
+    if (0 == m_searchStartTime)
     {
         qDebug() << __FUNCTION__ << "search time error!";
         return -1;

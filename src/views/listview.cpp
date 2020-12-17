@@ -370,7 +370,7 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
                     // 获取index
                     int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
                     // 删除
-                    if (result2 == DDialog::Accepted) {
+                    if (DDialog::Accepted == result2) {
                         // 关闭所有相关弹窗
                         ServerConfigManager::instance()->closeAllDialog(m_configDialog->getCurServer()->m_serverName);
                         ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
@@ -723,10 +723,10 @@ void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
     switch (type) {
     // 项图标
     case ItemFuncType_Item:
-        if (m_type == ListType_Custom) {
+        if (ListType_Custom == m_type) {
             // 自定义项
             item->setIcon("dt_command");
-        } else if (m_type == ListType_Remote) {
+        } else if (ListType_Remote == m_type) {
             // 远程项
             item->setIcon("dt_server");
         }
@@ -734,8 +734,6 @@ void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
     // 远程图标
     case ItemFuncType_Group:
         item->setIcon("dt_server_group");
-        break;
-    default:
         break;
     }
 }
@@ -825,7 +823,7 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
     // 计算range
     int range = calculateRange(height());
     verticalScrollBar()->setRange(0, range);
-    if (index == 0) {
+    if (0 == index) {
         m_scrollPostion = 0;
     }
     verticalScrollBar()->setValue(m_scrollPostion);
@@ -846,7 +844,7 @@ void ListView::lostFocus(int preIndex)
 {
     qDebug() << __FUNCTION__;
     // 没有前一个
-    if (preIndex == -1) {
+    if (-1 == preIndex) {
         return;
     }
 
@@ -875,7 +873,7 @@ void ListView::setScroll(int currentIndex)
     if (item != nullptr) {
         int postion = currentIndex  * 70;
         qDebug() << "postion : " << postion;
-        if (postion + 60 < height()) {
+        if ((postion + 60) < height()) {
             verticalScrollBar()->setValue(0);
             m_scrollPostion = 0;
         } else {
@@ -902,7 +900,7 @@ void ListView::setScroll(int currentIndex)
 bool ListView::indexIsValid(int index)
 {
     qDebug() << index << m_itemList.count();
-    return (index >= 0 && index < m_itemList.count());
+    return ((index >= 0) && (index < m_itemList.count()));
 }
 
 /*******************************************************************************

@@ -99,8 +99,6 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
         m_funcButton->setIcon(QIcon::fromTheme("dt_arrow_right"));
         m_funcButton->show();
         break;
-    default:
-        break;
     }
 
 }
@@ -289,9 +287,6 @@ void ItemWidget::onIconButtonClicked()
         qDebug() << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
-    default:
-        qDebug() << "default" ;
-        break;
     }
 }
 
@@ -316,7 +311,7 @@ void ItemWidget::onFocusReback()
 void ItemWidget::onFocusOut(Qt::FocusReason type)
 {
     // Tab切出
-    if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
+    if ((type == Qt::TabFocusReason) || (type == Qt::BacktabFocusReason)) {
         emit focusOut(type);
     }
     if (type == Qt::ActiveWindowFocusReason) {
@@ -731,8 +726,6 @@ void ItemWidget::onItemClicked()
         // 项被点击
         qDebug() << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
-        break;
-    default:
         break;
     }
 }

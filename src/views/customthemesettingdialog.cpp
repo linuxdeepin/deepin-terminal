@@ -157,9 +157,9 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
 void ColorPushButton::focusInEvent(QFocusEvent *event)
 {
     // 焦点入
-    if (Qt::TabFocusReason == event->reason() || Qt::BacktabFocusReason == event->reason()) {
+    if ((Qt::TabFocusReason == event->reason()) || (Qt::BacktabFocusReason == event->reason())) {
         m_isFocus = true;
-    } else if (Qt::ActiveWindowFocusReason == event->reason() && m_isFocus) {
+    } else if ((Qt::ActiveWindowFocusReason == event->reason()) && m_isFocus) {
         //取色面板退出时，是否仍然保留选中焦点，如果是键盘控制的情况，仍然保持保持焦点的状态
         m_isFocus = true;
     } else {
