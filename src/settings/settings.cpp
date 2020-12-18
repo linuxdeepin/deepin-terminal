@@ -615,7 +615,11 @@ bool Settings::IsPasteSelection()
 bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 {
     for (QString &tmpKey : settings->keys()) {
-        if (settings->value(tmpKey).toString() == Key) {
+        // 获取设置里面的快捷键键值
+        QString strKey = settings->value(tmpKey).toString();
+        // 比较前将快捷键都设置为同一级别的键值，然后比较
+        // 例ctlr+shift+? => ctrl+shift+/
+        if (Utils::converUpToDown(strKey) == Utils::converUpToDown(Key)) {
             if (Name != tmpKey) {
                 qDebug() << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
                 return  true;

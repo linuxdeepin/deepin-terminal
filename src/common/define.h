@@ -61,4 +61,8 @@ enum SearchBar_State {
     SearchBar_FocusOut = 2
 };
 
+// 快捷键转换
+const QString SHORTCUT_CONVERSION_UP = "~!@#$%^&*()_+{}:\"|<>?";
+const QString SHORTCUT_CONVERSION_DOWN = "`1234567890-=[];'\\,./";
+
 #endif // DTNG_DEFINE_H
