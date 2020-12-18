@@ -3,11 +3,14 @@
 #include "qtermwidget.h"
 #include "TerminalDisplay.h"
 #include "Vt102Emulation.h"
+#include "Filter.h"
+#include "ScreenWindow.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
+#include <QTimer>
 
 using namespace Konsole;
 
@@ -152,6 +155,226 @@ TEST_F(UT_TerminalDisplay_Test, extendSelectionTest)
     delete emulation;
     delete display;
 }
+
+/*******************************************************************************
+ 1. @函数:    displayForUrl
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-12-18
+ 4. @说明:    内部函数，创建一个带有Url的TerminalDisplay对象
+*******************************************************************************/
+TerminalDisplay *displayForUrl()
+{
+    //创建超链接
+    UrlFilter::HotSpot *spot = new UrlFilter::HotSpot(0, 0, 0, 100);
+    QStringList texts("www.baidu.com");
+    spot->setCapturedTexts(texts);
+    spot->setType(Filter::HotSpot::Type::Link);
+
+    //创建超链接过滤器
+    UrlFilter *filter = new UrlFilter;
+    filter->addHotSpot(spot);
+
+    //创建TerminalDisplay对象
+    TerminalDisplay *display = new TerminalDisplay(nullptr);
+    //设置字体宽度和高度
+    display->_fontWidth = 9;
+    display->_fontHeight = 20;
+    //添加过滤器
+    display->_filterChain->addFilter(filter);
+    //display显示
+    display->show();
+    //光标形状
+    display->setCursor(Qt::IBeamCursor);
+    //光标位置
+    QCursor::setPos(4, 4);
+
+    //display屏幕
+    display->_screenWindow = new ScreenWindow(display);
+    display->_screenWindow->_screen = new Screen(40, 80);
+    //display->_screenWindow->_screen->setSelectionAll();
+
+    return display;
+}
+
+/*******************************************************************************
+ 1. @函数:    sendMouseEvent
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-12-18
+ 4. @说明:    发送鼠标事件
+*******************************************************************************/
+void sendMouseEvent(QObject *receiver, QEvent::Type type, Qt::MouseButton button, Qt::KeyboardModifiers modifiers = Qt::NoModifier)
+{
+    QMouseEvent mouseEv(type, QPoint(2, 2), button, button, modifiers);
+    QApplication::sendEvent(receiver, &mouseEv);
+}
+
+/*******************************************************************************
+ 1. @函数:    sendKeyEvent
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-12-18
+ 4. @说明:    发送键盘事件
+*******************************************************************************/
+void sendKeyEvent(QObject *receiver, QEvent::Type type, Qt::Key key, Qt::KeyboardModifiers modifiers = Qt::NoModifier)
+{
+    QKeyEvent keyEv(type, key, modifiers);
+    QApplication::sendEvent(receiver, &keyEv);
+}
+
+/*******************************************************************************
+ 1. @函数:    paintFiltersTest
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-12-18
+ 4. @说明:    paintFilters函数 UT
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, paintFiltersTest)
+{
+    //创建对象
+    TerminalDisplay *display = displayForUrl();
+
+    // 模拟Ctrl键按下事件
+    sendKeyEvent(display,QEvent::KeyPress, Qt::Key_Control);
+
+    //测试paintFilters
+    QPainter painter;
+    display->paintFilters(painter);
+
+    //鼠标变成小手形状
+    Q_ASSERT(display->cursor() == Qt::PointingHandCursor);
+
+    // 模拟Ctrl键松开事件
+    sendKeyEvent(display,QEvent::KeyRelease, Qt::Key_Control);
+
+    // 设置定时
+    QTimer::singleShot(80, display, [ = ]() {
+        //鼠标松开后，光标变成指针形状
+        Q_ASSERT(display->cursor() == Qt::IBeamCursor);
+
+        //关闭窗口
+        display->close();
+
+        //释放内存
+        //spot和filter随着display释放而被释放
+        delete display;
+    });
+}
+
+/*******************************************************************************
+ 1. @函数:    mousePressEventTest_LButton
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-12-18
+ 4. @说明:    mousePressEvent函数 鼠标左键事件UT
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, mousePressEventTest_LButton)
+{
+    //创建对象
+    TerminalDisplay *display = displayForUrl();
+
+    display->clearFocus();
+
+    //ctrl drag
+    {
+        //初始化相关变量
+        display->_ctrlDrag = true;
+
+        //设置全选
+        display->_screenWindow->_screen->setSelectionAll();
+
+        //Ctrl+鼠标左击
+        sendMouseEvent(display, QEvent::MouseButtonPress, Qt::LeftButton, Qt::ControlModifier);
+        sendMouseEvent(display, QEvent::MouseButtonRelease, Qt::LeftButton, Qt::ControlModifier);
+    }
+
+    // url
+    {
+        //初始化相关变量
+        display->_ctrlDrag = true;
+        display->_mouseMarks = false;
+
+        //Shift+鼠标左击
+        sendMouseEvent(display, QEvent::MouseButtonPress, Qt::LeftButton, Qt::ShiftModifier);
+        sendMouseEvent(display, QEvent::MouseButtonRelease, Qt::LeftButton, Qt::ShiftModifier);
+
+        //鼠标左击
+        sendMouseEvent(display, QEvent::MouseButtonPress, Qt::LeftButton);
+        sendMouseEvent(display, QEvent::MouseButtonRelease, Qt::LeftButton);
+    }
+
+    // 设置定时
+    QTimer::singleShot(UT_WAIT_TIME, display, [ = ]() {
+        //关闭窗口
+        display->close();
+
+        //释放内存
+        //spot和filter随着display释放而被释放
+        delete display;
+    });
+}
+
+/*******************************************************************************
+ 1. @函数:    mousePressEventTest_MidButton
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-12-18
+ 4. @说明:    mousePressEvent函数 鼠标中键事件UT
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, mousePressEventTest_MidButton)
+{
+    //创建对象
+    TerminalDisplay *display = displayForUrl();
+
+    //Shift+鼠标左击
+    display->_mouseMarks = false;
+    sendMouseEvent(display, QEvent::MouseButtonPress, Qt::MidButton, Qt::ShiftModifier);
+    sendMouseEvent(display, QEvent::MouseButtonRelease, Qt::MidButton, Qt::ShiftModifier);
+
+    //鼠标左击
+    display->_mouseMarks = false;
+    sendMouseEvent(display, QEvent::MouseButtonPress, Qt::MidButton);
+    sendMouseEvent(display, QEvent::MouseButtonRelease, Qt::MidButton);
+
+    // 设置定时
+    QTimer::singleShot(UT_WAIT_TIME, display, [ = ]() {
+        //关闭窗口
+        display->close();
+
+        //释放内存
+        //spot和filter随着display释放而被释放
+        delete display;
+    });
+
+}
+
+/*******************************************************************************
+ 1. @函数:    mousePressEventTest_RightButton
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-12-18
+ 4. @说明:    mousePressEvent函数 右键中键事件UT
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, mousePressEventTest_RightButton)
+{
+    //创建对象
+    TerminalDisplay *display = displayForUrl();
+
+    //Shift+鼠标左击
+    display->_mouseMarks = false;
+    sendMouseEvent(display, QEvent::MouseButtonPress, Qt::RightButton, Qt::ShiftModifier);
+    sendMouseEvent(display, QEvent::MouseButtonRelease, Qt::RightButton, Qt::ShiftModifier);
+
+    //鼠标左击
+    display->_mouseMarks = false;
+    sendMouseEvent(display, QEvent::MouseButtonPress, Qt::RightButton);
+    sendMouseEvent(display, QEvent::MouseButtonRelease, Qt::RightButton);
+
+    // 设置定时
+    QTimer::singleShot(UT_WAIT_TIME, display, [ = ]() {
+        //关闭窗口
+        display->close();
+
+        //释放内存
+        //spot和filter随着display释放而被释放
+        delete display;
+    });
+}
+
 
 TEST_F(UT_TerminalDisplay_Test, mouseDoubleClickTest)
 {
