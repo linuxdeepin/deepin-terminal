@@ -22,7 +22,6 @@
 #include "serverconfigoptdlg.h"
 #include "listview.h"
 #include "utils.h"
-#include "settingio.h"
 
 #include <QDebug>
 #include <QTextCodec>
@@ -52,7 +51,7 @@ ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
  3. @日期:    2020-04-17
  4. @说明:    写服务器配置文件
 *******************************************************************************/
-void ServerConfigManager::settServerConfig(QSettings &commandsSettings, const QString &strGroupName, ServerConfig *config)
+void ServerConfigManager::settServerConfig(USettings &commandsSettings, const QString &strGroupName, ServerConfig *config)
 {
     commandsSettings.beginGroup(strGroupName);
     commandsSettings.setValue("Name", config->m_serverName);
@@ -202,8 +201,14 @@ void ServerConfigManager::initServerConfig()
         return;
     }
 
+    /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
+    /* del
     QSettings serversSettings(serverConfigFilePath, QSettings::CustomFormat1);
-    serversSettings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    serversSettings.setIniCodec(QTextCodec::codecForName("UTF-8"));*/
+    /* add */
+    USettings serversSettings(serverConfigFilePath);
+    /***modify end by ut001121***/
+
     QStringList serverGroups = serversSettings.childGroups();
     for (QString &serverName : serverGroups) {
         serversSettings.beginGroup(serverName);
@@ -302,7 +307,12 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
+    /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
+    /* del
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);*/
+    /* add */
+    USettings commandsSettings(customCommandConfigFilePath);
+    /***modify end by ut001121***/
 
     //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
     QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
@@ -336,7 +346,13 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
+    /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
+    /* del
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);*/
+    /* add */
+    USettings commandsSettings(customCommandConfigFilePath);
+    /***modify end by ut001121***/
+
     //--modified by qinyaning to solve probel(bug 19338) when added ftp--//
     QString strConfigGroupName = QString("%1@%2@%3@%4").arg(
                                      config->m_userName, config->m_address, config->m_port, config->m_serverName);
@@ -725,7 +741,13 @@ void ServerConfigManager::ConvertData()
     QFile fileTemp(customCommandConfigFilePath);
     fileTemp.remove();
 
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
+    /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
+    /* del
+    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);*/
+    /* add */
+    USettings commandsSettings(customCommandConfigFilePath);
+    /***modify end by ut001121***/
+
     // 新数据写入
     for (QList<ServerConfig *> list : m_serverConfigs) {
         for (ServerConfig *config : list) {

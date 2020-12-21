@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSettings>
 #include <QIODevice>
+#include <QStringList>
 
 class SettingIO : public QObject
 {
@@ -21,6 +22,34 @@ private:
     static bool iniUnescapedKey(const QByteArray &key, int from, int to, QString &result);
 public:
     static bool rewrite;
+};
+
+/**
+ * @brief The USettings class
+ * 1.conf配置文件“/”与QSettings(SLASH_REPLACE_CHAR)通过SettingIO实现转换
+ * 2.QSettings(SLASH_REPLACE_CHAR)与Conmmand/Remote(/)通过USettings实现转换
+ */
+class USettings : protected QSettings
+{
+    Q_OBJECT
+public:
+    USettings(const QString &fileName, QObject *parent = nullptr);
+    ~USettings();
+
+    void beginGroup(const QString &prefix);
+    void endGroup();
+
+    void setValue(const QString &key, const QVariant &value);
+    QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
+
+    void remove(const QString &key);
+    bool contains(const QString &key) const;
+
+    QStringList childGroups();
+
+private:
+    //自定义规则
+    static Format g_customFormat;
 };
 
 #endif // SETTINGIO_H
