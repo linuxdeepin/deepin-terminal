@@ -284,9 +284,4 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
 
 install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)
 
-# Unit Test
-option(UT_SWITCH "Do you want to run ut code" ON)
-
-if ((${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") AND UT_SWITCH)
-    add_subdirectory(test)
-endif()
+add_subdirectory(test)
