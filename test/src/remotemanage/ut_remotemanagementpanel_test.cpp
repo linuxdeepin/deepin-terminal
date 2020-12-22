@@ -2,6 +2,8 @@
 
 #include "remotemanagementpanel.h"
 #include "utils.h"
+#include "stub.h"
+#include "service.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -12,6 +14,10 @@
 
 UT_RemoteManagementPanel_Test::UT_RemoteManagementPanel_Test()
 {
+}
+void stub_return()
+{
+    return;
 }
 
 void UT_RemoteManagementPanel_Test::SetUp()
@@ -138,6 +144,11 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusInPanel)
     qDebug() << "listIndex:" << listIndex << endl;
     EXPECT_EQ(listIndex, -1);
 
+    // 最后一种情况
+    panel.m_searchEdit->hide();
+    panel.m_listWidget->hide();
+    panel.setFocusInPanel();
+
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
@@ -153,9 +164,34 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusBack)
     EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
     EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
-//    panel.setFocusBack("group01");
-//    int listIndex = panel.getListIndex();
-//    EXPECT_GE(listIndex, 0);
+    // 创建分组
+    ServerConfig groupConfig;
+    groupConfig.m_serverName = "group_item";
+    groupConfig.m_address = "127.0.0.1";
+    groupConfig.m_group = "group2020";
+    groupConfig.m_userName = "dzw";
+    groupConfig.m_port = "22";
+    // 分组数据存储结构
+    QList<ServerConfig *> list;
+    list.append(&groupConfig);
+    // 数据存储结构
+    ServerConfigManager::instance()->m_serverConfigs.insert("group2020", list);
+    // 刷新列表,填充数据
+    panel.refreshPanel();
+    // 不要焦点 => 没有主界面会崩
+    // panel.setFocusBack("group2020");
+
+
+    // 要焦点
+    panel.m_listWidget->setFocusState(true);
+    panel.setFocusBack("group2020");
+    int listIndex = panel.getListIndex();
+    EXPECT_GE(listIndex, 0);
+
+    // 找不到情况
+    panel.setFocusBack("group1988");
+    listIndex = panel.getListIndex();
+    EXPECT_GE(listIndex, 0);
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
@@ -193,11 +229,121 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
     EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
     EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
+    // 一个也没有,搜索框隐藏
     panel.refreshSearchState();
+    //添加数据,显示搜索框
+    ServerConfig config;
+    config.m_serverName = "test_item";
+    config.m_address = "127.0.0.1";
+    config.m_userName = "dzw";
+    config.m_port = "22";
+    ServerConfig config2;
+    config2.m_serverName = "test_item2";
+    config2.m_address = "127.0.0.1";
+    config2.m_userName = "dzw";
+    config2.m_port = "22";
+    // 分组数据存储结构
+    QList<ServerConfig *> list;
+    list.append(&config);
+    list.append(&config2);
+    // 数据存储结构
+    ServerConfigManager::instance()->m_serverConfigs.insert("", list);
+    // 刷新列表,填充数据
+    panel.refreshPanel();
+    // 两个数据,搜索框显示
+    panel.refreshSearchState();
+    // list中数据的数量
+    int count = panel.m_listWidget->count();
+    EXPECT_EQ(count, 2);
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 
+/*******************************************************************************
+ 1. @函数:    onItemClicked
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-22
+ 4. @说明:    当前项被点击
+*******************************************************************************/
+TEST_F(UT_RemoteManagementPanel_Test, onItemClicked)
+{
+    // 初始化一个panel
+    RemoteManagementPanel remotePanel;
+    remotePanel.show();
+    // 初始化一个可点击的数据
+    //添加数据,显示搜索框
+    ServerConfig config;
+    config.m_serverName = "test_item";
+    config.m_address = "127.0.0.1";
+    config.m_userName = "dzw";
+    config.m_port = "22";
+    // 添加数据到列表中
+    // 分组数据存储结构
+    QList<ServerConfig *> list;
+    list.append(&config);
+    // 数据存储结构
+    ServerConfigManager::instance()->m_serverConfigs.insert("", list);
+    // 刷新列表,填充数据
+    remotePanel.refreshPanel();
+
+    // 模拟数据被点击
+    // 传来被点击的key值
+    remotePanel.onItemClicked("test_item");
+
+    // 传来错误的值
+    remotePanel.onItemClicked("test_item2");
+}
+
+/*******************************************************************************
+ 1. @函数:    showCurSearchResult
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-22
+ 4. @说明:    测试接口是否可以正常调用
+*******************************************************************************/
+TEST_F(UT_RemoteManagementPanel_Test, showCurSearchResult)
+{
+    // 没有搜索内容
+    RemoteManagementPanel remotePanel;
+    remotePanel.show();
+    remotePanel.showCurSearchResult();
+    // 有搜索内容
+    remotePanel.m_searchEdit->setText("aaa");
+    remotePanel.showCurSearchResult();
+}
+
+/*******************************************************************************
+ 1. @函数:    showAddServerConfigDlg
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-22
+ 4. @说明:    弹出添加数据弹窗
+*******************************************************************************/
+TEST_F(UT_RemoteManagementPanel_Test, showAddServerConfigDlg)
+{
+    // 没有搜索内容
+    RemoteManagementPanel remotePanel;
+    remotePanel.show();
+    Stub s;
+    s.set(ADDR(Service, setIsDialogShow), stub_return);
+
+    // 需要打桩
+    remotePanel.showAddServerConfigDlg();
+    ServerConfigOptDlg *dialog = remotePanel.findChild<ServerConfigOptDlg *>();
+    // 发送弹窗添加失败
+    if (dialog) {
+        emit dialog->reject();
+    }
+
+    // 设置添加按钮有焦点
+    remotePanel.m_pushButton->setFocus();
+    remotePanel.showAddServerConfigDlg();
+    dialog = remotePanel.findChild<ServerConfigOptDlg *>();
+    // 发送弹窗添加失败
+    if (dialog) {
+        emit dialog->reject();
+    }
+
+    s.reset(ADDR(Service, setIsDialogShow));
+}
 #endif

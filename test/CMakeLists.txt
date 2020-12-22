@@ -22,6 +22,7 @@ include_directories("src/encodeplugin")
 include_directories("src/remotemanage")
 include_directories("src/views")
 include_directories("src/main")
+include_directories("src/stub")
 include_directories("src/3rdparty/terminalwidget/lib/")
 
 FILE(GLOB allSource

@@ -286,7 +286,7 @@ install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-
 
 # Unit Test
 option(UT_SWITCH "Do you want to run ut code" ON)
-
-if ((${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") AND UT_SWITCH)
+#if ((${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") AND UT_SWITCH)
+if (UT_SWITCH)
     add_subdirectory(test)
 endif()
