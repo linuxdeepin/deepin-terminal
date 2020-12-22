@@ -121,6 +121,16 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
     }
 
     remoteListWidget.onRemoteItemModify("server_0", false);
+
+    // 清理不用的数据
+    for (ServerConfig *item : remoteServerList) {
+        if (item->m_serverName.contains("server_")) {
+            remoteServerList.removeOne(item);
+            qDebug() << "####### delete " << item->m_serverName;
+            // 删除测试数据
+            ServerConfigManager::instance()->delServerConfig(item);
+        }
+    }
 }
 
 TEST_F(UT_ListView_Test, setFocusFromeIndex)
