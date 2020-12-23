@@ -119,13 +119,15 @@ public:
     static QString getQssContent(const QString &filePath);
     static QString getConfigPath();
     static QString suffixList();
-    static QPixmap renderSVG(const QString &filePath, const QSize &size);
-    static QString loadFontFamilyFromFiles(const QString &fontFileName);
+    //此接口暂时注释保留不删除，2020.12.23
+    //static QPixmap renderSVG(const QString &filePath, const QSize &size);
+    //static QString loadFontFamilyFromFiles(const QString &fontFileName);
     static QString getElidedText(QFont font, QString str, int MaxWith, Qt::TextElideMode elideMode = Qt::ElideRight);
 
-    static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
-
-    static QString convertToPreviewString(QString fontFilePath, QString srcString);
+    //此接口暂时注释保留不删除，2020.12.23
+    //static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
+    //此接口暂时注释保留不删除，2020.12.23
+    //static QString convertToPreviewString(QString fontFilePath, QString srcString);
 
     static QString getRandString();
 
@@ -157,7 +159,8 @@ public:
 
     // 快捷键转换
     static QString converUpToDown(QKeySequence keysequence);
-    static QString converDownToUp(QKeySequence keysequence);
+    //此接口暂时注释保留不删除，2020.12.23
+    //static QString converDownToUp(QKeySequence keysequence);
 
 };
 

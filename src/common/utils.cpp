@@ -105,60 +105,60 @@ QString Utils::suffixList()
  3. @日期:    2020-08-11
  4. @说明:
 *******************************************************************************/
-QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
-{
-    if (m_imgCacheHash.contains(filePath)) {
-        return m_imgCacheHash.value(filePath);
-    }
+//QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
+//{
+//    if (m_imgCacheHash.contains(filePath)) {
+//        return m_imgCacheHash.value(filePath);
+//    }
 
-    QImageReader reader;
-    QPixmap pixmap;
+//    QImageReader reader;
+//    QPixmap pixmap;
 
-    reader.setFileName(filePath);
+//    reader.setFileName(filePath);
 
-    if (reader.canRead()) {
-        const qreal ratio = qApp->devicePixelRatio();
-        reader.setScaledSize(size * ratio);
-        pixmap = QPixmap::fromImage(reader.read());
-        pixmap.setDevicePixelRatio(ratio);
-    } else {
-        pixmap.load(filePath);
-    }
+//    if (reader.canRead()) {
+//        const qreal ratio = qApp->devicePixelRatio();
+//        reader.setScaledSize(size * ratio);
+//        pixmap = QPixmap::fromImage(reader.read());
+//        pixmap.setDevicePixelRatio(ratio);
+//    } else {
+//        pixmap.load(filePath);
+//    }
 
-    m_imgCacheHash.insert(filePath, pixmap);
+//    m_imgCacheHash.insert(filePath, pixmap);
 
-    return pixmap;
-}
+//    return pixmap;
+//}
 /*******************************************************************************
  1. @函数:    loadFontFamilyFromFiles
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-11
  4. @说明:    从文件中加载字体系列
 *******************************************************************************/
-QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
-{
-    if (m_fontNameCache.contains(fontFileName)) {
-        return m_fontNameCache.value(fontFileName);
-    }
+//QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
+//{
+//    if (m_fontNameCache.contains(fontFileName)) {
+//        return m_fontNameCache.value(fontFileName);
+//    }
 
-    QString fontFamilyName = "";
+//    QString fontFamilyName = "";
 
-    QFile fontFile(fontFileName);
-    if (!fontFile.open(QIODevice::ReadOnly)) {
-        qDebug() << "Open font file error";
-        return fontFamilyName;
-    }
+//    QFile fontFile(fontFileName);
+//    if (!fontFile.open(QIODevice::ReadOnly)) {
+//        qDebug() << "Open font file error";
+//        return fontFamilyName;
+//    }
 
-    int loadedFontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll());
-    QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(loadedFontID);
-    if (!loadedFontFamilies.empty()) {
-        fontFamilyName = loadedFontFamilies.at(0);
-    }
-    fontFile.close();
+//    int loadedFontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll());
+//    QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(loadedFontID);
+//    if (!loadedFontFamilies.empty()) {
+//        fontFamilyName = loadedFontFamilies.at(0);
+//    }
+//    fontFile.close();
 
-    m_fontNameCache.insert(fontFileName, fontFamilyName);
-    return fontFamilyName;
-}
+//    m_fontNameCache.insert(fontFileName, fontFamilyName);
+//    return fontFamilyName;
+//}
 /*******************************************************************************
  1. @函数:    getElidedText
  2. @作者:    ut000439 wangpeili
@@ -190,92 +190,92 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElid
  3. @日期:    2020-08-11
  4. @说明:    在矩形中保留文本
 *******************************************************************************/
-const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize &size)
-{
-    QFontMetrics fm(font);
-    QTextLayout layout(text);
+//const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize &size)
+//{
+//    QFontMetrics fm(font);
+//    QTextLayout layout(text);
 
-    layout.setFont(font);
+//    layout.setFont(font);
 
-    QStringList lines;
-    QTextOption &text_option = *const_cast<QTextOption *>(&layout.textOption());
+//    QStringList lines;
+//    QTextOption &text_option = *const_cast<QTextOption *>(&layout.textOption());
 
-    text_option.setWrapMode(QTextOption::WordWrap);
-    text_option.setAlignment(Qt::AlignTop | Qt::AlignLeft);
+//    text_option.setWrapMode(QTextOption::WordWrap);
+//    text_option.setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    layout.beginLayout();
+//    layout.beginLayout();
 
-    QTextLine line = layout.createLine();
-    int height = 0;
-    int lineHeight = fm.height();
+//    QTextLine line = layout.createLine();
+//    int height = 0;
+//    int lineHeight = fm.height();
 
-    while (line.isValid()) {
-        height += lineHeight;
+//    while (line.isValid()) {
+//        height += lineHeight;
 
-        if (height + lineHeight > size.height()) {
-            const QString &end_str = fm.elidedText(text.mid(line.textStart()), Qt::ElideRight, size.width());
+//        if (height + lineHeight > size.height()) {
+//            const QString &end_str = fm.elidedText(text.mid(line.textStart()), Qt::ElideRight, size.width());
 
-            layout.endLayout();
-            layout.setText(end_str);
+//            layout.endLayout();
+//            layout.setText(end_str);
 
-            text_option.setWrapMode(QTextOption::NoWrap);
-            layout.beginLayout();
-            line = layout.createLine();
-            line.setLineWidth(size.width() - 1);
-            text = end_str;
-        } else {
-            line.setLineWidth(size.width());
-        }
+//            text_option.setWrapMode(QTextOption::NoWrap);
+//            layout.beginLayout();
+//            line = layout.createLine();
+//            line.setLineWidth(size.width() - 1);
+//            text = end_str;
+//        } else {
+//            line.setLineWidth(size.width());
+//        }
 
-        lines.append(text.mid(line.textStart(), line.textLength()));
+//        lines.append(text.mid(line.textStart(), line.textLength()));
 
-        if (height + lineHeight > size.height())
-            break;
+//        if (height + lineHeight > size.height())
+//            break;
 
-        line = layout.createLine();
-    }
+//        line = layout.createLine();
+//    }
 
-    layout.endLayout();
+//    layout.endLayout();
 
-    return lines.join("");
-}
+//    return lines.join("");
+//}
 /*******************************************************************************
  1. @函数:    convertToPreviewString
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-11
  4. @说明:    转换为预览字符串
 *******************************************************************************/
-QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
-{
-    if (fontFilePath.isEmpty()) {
-        return srcString;
-    }
+//QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
+//{
+//    if (fontFilePath.isEmpty()) {
+//        return srcString;
+//    }
 
-    QString strFontPreview = srcString;
+//    QString strFontPreview = srcString;
 
-    QRawFont rawFont(fontFilePath, 0, QFont::PreferNoHinting);
-    bool isSupport = rawFont.supportsCharacter(QChar('a'));
-    bool isSupportF = rawFont.supportsCharacter(QChar('a' | 0xf000));
-    if ((!isSupport && isSupportF)) {
-        QChar *chArr = new QChar[srcString.length() + 1];
-        for (int i = 0; i < srcString.length(); i++) {
-            int ch = srcString.at(i).toLatin1();
-            //判断字符ascii在32～126范围内(共95个)
-            if (ch >= 32 && ch <= 126) {
-                ch |= 0xf000;
-                chArr[i] = QChar(ch);
-            } else {
-                chArr[i] = srcString.at(i);
-            }
-        }
-        chArr[srcString.length()] = '\0';
-        QString strResult(chArr);
-        strFontPreview = strResult;
-        delete[] chArr;
-    }
+//    QRawFont rawFont(fontFilePath, 0, QFont::PreferNoHinting);
+//    bool isSupport = rawFont.supportsCharacter(QChar('a'));
+//    bool isSupportF = rawFont.supportsCharacter(QChar('a' | 0xf000));
+//    if ((!isSupport && isSupportF)) {
+//        QChar *chArr = new QChar[srcString.length() + 1];
+//        for (int i = 0; i < srcString.length(); i++) {
+//            int ch = srcString.at(i).toLatin1();
+//            //判断字符ascii在32～126范围内(共95个)
+//            if (ch >= 32 && ch <= 126) {
+//                ch |= 0xf000;
+//                chArr[i] = QChar(ch);
+//            } else {
+//                chArr[i] = srcString.at(i);
+//            }
+//        }
+//        chArr[srcString.length()] = '\0';
+//        QString strResult(chArr);
+//        strFontPreview = strResult;
+//        delete[] chArr;
+//    }
 
-    return strFontPreview;
-}
+//    return strFontPreview;
+//}
 /*******************************************************************************
  1. @函数:    getRandString
  2. @作者:    ut000439 wangpeili
@@ -976,27 +976,27 @@ QString Utils::converUpToDown(QKeySequence keysequence)
  3. @日期:    2020-12-15
  4. @说明:    转换down2up
 *******************************************************************************/
-QString Utils::converDownToUp(QKeySequence keysequence)
-{
-    // 获取现在的快捷键字符串
-    QString strKey = keysequence.toString();
-    // 是否有shift修饰
-    if (!(strKey.contains("Shift") || strKey.contains("shift"))) {
-        // 没有直接返回字符串
-        return strKey;
-    }
+//QString Utils::converDownToUp(QKeySequence keysequence)
+//{
+//    // 获取现在的快捷键字符串
+//    QString strKey = keysequence.toString();
+//    // 是否有shift修饰
+//    if (!(strKey.contains("Shift") || strKey.contains("shift"))) {
+//        // 没有直接返回字符串
+//        return strKey;
+//    }
 
-    // 遍历是否存在有shift修饰的字符串
-    for (int i = 0; i < SHORTCUT_CONVERSION_DOWN.count(); ++i) {
-        QString key = SHORTCUT_CONVERSION_DOWN[i];
-        if (strKey.contains(key)) {
-            // 若存在则替换字符
-            strKey.replace(key, SHORTCUT_CONVERSION_UP[i]);
-        }
-    }
+//    // 遍历是否存在有shift修饰的字符串
+//    for (int i = 0; i < SHORTCUT_CONVERSION_DOWN.count(); ++i) {
+//        QString key = SHORTCUT_CONVERSION_DOWN[i];
+//        if (strKey.contains(key)) {
+//            // 若存在则替换字符
+//            strKey.replace(key, SHORTCUT_CONVERSION_UP[i]);
+//        }
+//    }
 
-    return strKey;
-}
+//    return strKey;
+//}
 
 /*******************************************************************************
  1. @函数:    getMainWindow

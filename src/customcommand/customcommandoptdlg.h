@@ -88,7 +88,8 @@ public:
 protected:
     void initUITitle();
     void initTitleConnections();
-    void setLogoVisable(bool visible = true);
+    //此接口暂时注释保留不删除，2020.12.23
+    //void setLogoVisable(bool visible = true);
     void setTitle(const QString &title);
     QLayout *getContentLayout();
 

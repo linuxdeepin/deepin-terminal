@@ -74,4 +74,34 @@ TEST(UT_SettingIO_Test, canTransferTest)
     qDebug() << strResut;
 }
 
+/*******************************************************************************
+ 1. @函数:    canTransferTest
+ 2. @作者:    ut000125 孙成熙
+ 3. @日期:    2020-12-15
+ 4. @说明:    escapedString函数测试
+*******************************************************************************/
+TEST(UT_SettingIO_Test, escapedStringTest)
+{
+    QString strTest = "a;b,c=d#e\\0";
+    QString strResut = SettingIO::escapedString(strTest);
+    qDebug() << strResut;
+
+    strTest = "!@#$%^&*()-+=\??？bB0\n\r\t\\\0\0";
+    strResut = SettingIO::escapedString(strTest);
+    qDebug() << strResut;
+}
+
+/*******************************************************************************
+ 1. @函数:    unescapedStringTest
+ 2. @作者:    ut000125 孙成熙
+ 3. @日期:    2020-12-15
+ 4. @说明:    unescapedString函数测试
+*******************************************************************************/
+TEST(UT_SettingIO_Test, unescapedStringTest)
+{
+    QString strTest = "123\1?\\t\\x1Bb\a\t ";
+    QString strResut = SettingIO::unescapedString(strTest);
+    qDebug() << strResut;
+}
+
 #endif

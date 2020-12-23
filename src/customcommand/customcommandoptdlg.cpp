@@ -649,12 +649,12 @@ QDialog::DialogCode CustomCommandOptDlg::getConfirmResult()
  3. @日期:    2020-07-31
  4. @说明:    设置自定义命令操作窗口的图标是否可见
 *******************************************************************************/
-void CustomCommandOptDlg::setLogoVisable(bool visible)
-{
-    if (nullptr != m_logoIcon) {
-        m_logoIcon->setVisible(visible);
-    }
-}
+//void CustomCommandOptDlg::setLogoVisable(bool visible)
+//{
+//    if (nullptr != m_logoIcon) {
+//        m_logoIcon->setVisible(visible);
+//    }
+//}
 
 /*******************************************************************************
  1. @函数:    setTitle
