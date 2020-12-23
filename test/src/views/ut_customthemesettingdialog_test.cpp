@@ -28,13 +28,26 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QMainWindow>
+#include <QtConcurrent/QtConcurrent>
+
 #include <DTitlebar>
 
 DWIDGET_USE_NAMESPACE
 
+UT_ColorPushButton_Test::UT_ColorPushButton_Test()
+{
+}
+
+void UT_ColorPushButton_Test::SetUp()
+{
+}
+
+void UT_ColorPushButton_Test::TearDown()
+{
+}
+
 UT_CustomThemeSettingDialog_Test::UT_CustomThemeSettingDialog_Test()
 {
-
 }
 
 void UT_CustomThemeSettingDialog_Test::SetUp()
@@ -47,6 +60,20 @@ void UT_CustomThemeSettingDialog_Test::TearDown()
 
 #ifdef UT_CUSTOMTHEMESETTINGDIALOG_TEST
 
+TEST_F(UT_ColorPushButton_Test, paintEvent)
+{
+    ColorPushButton colorPushBtn;
+    colorPushBtn.resize(200, 30);
+    QPaintEvent *event = new QPaintEvent(colorPushBtn.rect());
+
+    colorPushBtn.paintEvent(event);
+
+    colorPushBtn.m_isFocus = true;
+    colorPushBtn.paintEvent(event);
+
+    delete event;
+}
+
 TEST_F(UT_CustomThemeSettingDialog_Test, setFocusTest)
 {
     CustomThemeSettingDialog *customThemeSettingDialog = new CustomThemeSettingDialog;
@@ -57,7 +84,6 @@ TEST_F(UT_CustomThemeSettingDialog_Test, setFocusTest)
     customThemeSettingDialog->loadConfiguration();
     customThemeSettingDialog->m_confirmBtn->click();
 
-    customThemeSettingDialog->show();
     customThemeSettingDialog->m_darkRadioButton->click();
     customThemeSettingDialog->m_lightRadioButton->click();
     customThemeSettingDialog->m_backgroundButton->click();
@@ -85,21 +111,37 @@ TEST_F(UT_CustomThemeSettingDialog_Test, setFocusTest)
     // 模拟鼠标左键点击事件
     QApplication::sendEvent(customThemeSettingDialog->m_foregroundButton, &mousePress);
 
-    customThemeSettingDialog->close();
+    //要自己退出，否则对话框窗口会一直阻塞
+    QtConcurrent::run([ = ]() {
+        QTimer timer;
+        timer.setSingleShot(true);
+
+        QEventLoop *loop = new QEventLoop;
+
+        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
+            loop->quit();
+            qApp->exit();
+        });
+
+        timer.start(1000);
+        loop->exec();
+
+        delete loop;
+    });
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
-    delete customThemeSettingDialog;
 }
 
+TEST_F(UT_CustomThemeSettingDialog_Test, clearFocussSlot)
+{
+    CustomThemeSettingDialog *customThemeSettingDialog = new CustomThemeSettingDialog;
+    EXPECT_NE(customThemeSettingDialog, nullptr);
 
+    customThemeSettingDialog->clearFocus();
 
-
-
-
-
-
-
+    delete customThemeSettingDialog;
+}
 
 #endif

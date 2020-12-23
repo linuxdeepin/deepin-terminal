@@ -5,6 +5,7 @@
 #include "termwidgetpage.h"
 #include "qtermwidget.h"
 #include "TerminalDisplay.h"
+#include "stub.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -153,8 +154,35 @@ TEST_F(UT_TermWidget_Test, getsetEncode)
     }
 }
 
+
+//用于customContextMenuCall测试打桩
+void stub_showPlugin(const QString &name)
+{
+    Q_UNUSED(name)
+}
+
+//用于customContextMenuCall测试打桩
+void stub_addMenuActions(const QPoint &pos)
+{
+    Q_UNUSED(pos)
+}
+
+//用于customContextMenuCall测试打桩
+QAction *stub_exec(const QPoint &pos, QAction *at = nullptr)
+{
+    Q_UNUSED(pos)
+    Q_UNUSED(at)
+
+    return nullptr;
+}
+
 TEST_F(UT_TermWidget_Test, customContextMenuCall)
 {
+    Stub s;
+    s.set(ADDR(MainWindow, showPlugin), stub_showPlugin);
+    s.set(ADDR(TermWidget, addMenuActions), stub_addMenuActions);
+    s.set((QAction *(QMenu::*)(const QPoint &, QAction *))ADDR(QMenu, exec), stub_exec);
+
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();
     EXPECT_EQ(m_normalWindow->isVisible(), true);
@@ -165,6 +193,10 @@ TEST_F(UT_TermWidget_Test, customContextMenuCall)
     TermWidget *termWidget = currTermPage->m_currentTerm;
     QPoint pos(50, 50);
     termWidget->customContextMenuCall(pos);
+
+    s.reset(ADDR(MainWindow, showPlugin));
+    s.reset(ADDR(TermWidget, addMenuActions));
+    s.reset((QAction *(QMenu::*)(const QPoint &, QAction *))ADDR(QMenu, exec));
 }
 
 TEST_F(UT_TermWidget_Test, onSettingValueChanged)

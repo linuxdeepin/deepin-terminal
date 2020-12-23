@@ -24,6 +24,15 @@
 #include "ut_defines.h"
 
 #include <gtest/gtest.h>
+
+class UT_ColorPushButton_Test : public ::testing::Test
+{
+public:
+    UT_ColorPushButton_Test();
+    virtual void SetUp();
+    virtual void TearDown();
+};
+
 class UT_CustomThemeSettingDialog_Test : public ::testing::Test
 {
 public:

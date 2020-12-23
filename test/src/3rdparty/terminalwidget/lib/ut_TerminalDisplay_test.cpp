@@ -5,6 +5,7 @@
 #include "Vt102Emulation.h"
 #include "Filter.h"
 #include "ScreenWindow.h"
+#include "stub.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -511,6 +512,7 @@ TEST_F(UT_TerminalDisplay_Test, setFlowControlWarningEnabled)
     display->setFixedSize(40, 80);
 
     display->setFlowControlWarningEnabled(true);
+    display->setFlowControlWarningEnabled(false);
 
     Emulation *emulation = new Vt102Emulation();
     display->setUsesMouse(emulation->programUsesMouse());
@@ -577,6 +579,73 @@ TEST_F(UT_TerminalDisplay_Test, setLineSpacing)
     EXPECT_EQ(display->lineSpacing(), lineSpacing);
 
     delete display;
+}
+
+TEST_F(UT_TerminalDisplay_Test, setVTFont)
+{
+    TerminalDisplay *display = new TerminalDisplay(nullptr);
+
+    QFont font = display->font();
+    display->setVTFont(font);
+
+    font.setPointSizeF(0.5);
+    display->setVTFont(font);
+
+    delete display;
+}
+
+void stub_drawText(const QRect &r, int flags, const QString &text, QRect *br = nullptr)
+{
+    Q_UNUSED(r)
+    Q_UNUSED(flags)
+    Q_UNUSED(text)
+    Q_UNUSED(br)
+}
+
+TEST_F(UT_TerminalDisplay_Test, calDrawTextAdditionHeight)
+{
+    Stub s;
+    s.set((void (QPainter::*)(const QRect &, int, const QString &, QRect *br))ADDR(QPainter, drawText), stub_drawText);
+
+    TerminalDisplay *display = new TerminalDisplay(nullptr);
+
+    QPainter painter;
+    display->calDrawTextAdditionHeight(painter);
+
+    delete display;
+
+    s.reset((void (QPainter::*)(const QRect &, int, const QString &, QRect *br))ADDR(QPainter, drawText));
+}
+
+//用于processFilters测试打桩
+QRegion stub_hotSpotRegion()
+{
+    QRegion region;
+    return region;
+}
+
+TEST_F(UT_TerminalDisplay_Test, processFilters)
+{
+    Stub s;
+    s.set(ADDR(TerminalDisplay, hotSpotRegion), stub_hotSpotRegion);
+
+    QWidget parentWidget;
+    TerminalDisplay *display = new TerminalDisplay(&parentWidget);
+
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setScreenWindow(emulation->createWindow());
+
+    display->processFilters();
+
+    delete emulation;
+    delete display;
+
+    s.reset(ADDR(TerminalDisplay, hotSpotRegion));
 }
 
 TEST_F(UT_TerminalDisplay_Test, setMargin)
@@ -676,6 +745,241 @@ TEST_F(UT_TerminalDisplay_Test, keyPressEvent)
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
+
+    delete emulation;
+    delete display;
+}
+
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-23
+ 4. @说明:    outputSuspended单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, outputSuspended)
+{
+    QWidget parentWidget;
+    TerminalScreen *display = new TerminalScreen(&parentWidget);
+
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setScreenWindow(emulation->createWindow());
+
+    display->outputSuspended(false);
+
+    delete emulation;
+    delete display;
+}
+
+//QGesture手势类state打桩
+Qt::GestureState stub_started_state()
+{
+    return Qt::GestureStarted;
+}
+
+//QGesture手势类state打桩
+Qt::GestureState stub_updated_state()
+{
+    return Qt::GestureUpdated;
+}
+
+//QGesture手势类state打桩
+Qt::GestureState stub_cancelState()
+{
+    return Qt::GestureCanceled;
+}
+
+//QGesture手势类state打桩
+Qt::GestureState stub_finishedState()
+{
+    return Qt::GestureFinished;
+}
+
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-23
+ 4. @说明:    tapGestureTriggered单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, tapGestureTriggered)
+{
+    QWidget parentWidget;
+    TerminalScreen *display = new TerminalScreen(&parentWidget);
+    QTapGesture *tapGes = new QTapGesture(display);
+
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setScreenWindow(emulation->createWindow());
+
+    Stub s;
+    s.set(ADDR(QTapGesture, state), stub_started_state);
+    display->tapGestureTriggered(tapGes);
+
+    s.set(ADDR(QTapGesture, state), stub_updated_state);
+    display->tapGestureTriggered(tapGes);
+
+    s.set(ADDR(QTapGesture, state), stub_cancelState);
+    display->tapGestureTriggered(tapGes);
+
+    s.set(ADDR(QTapGesture, state), stub_finishedState);
+    display->tapGestureTriggered(tapGes);
+
+    s.reset(ADDR(QTapGesture, state));
+
+    delete emulation;
+    delete display;
+}
+
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-23
+ 4. @说明:    tapAndHoldGestureTriggered单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, tapAndHoldGestureTriggered)
+{
+    QWidget parentWidget;
+    TerminalScreen *display = new TerminalScreen(&parentWidget);
+    QTapAndHoldGesture *tapHoldGes = new QTapAndHoldGesture(display);
+
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setScreenWindow(emulation->createWindow());
+
+    Stub s;
+    s.set(ADDR(QTapAndHoldGesture, state), stub_started_state);
+    display->tapAndHoldGestureTriggered(tapHoldGes);
+
+    s.set(ADDR(QTapAndHoldGesture, state), stub_finishedState);
+    display->tapAndHoldGestureTriggered(tapHoldGes);
+
+    s.reset(ADDR(QTapAndHoldGesture, state));
+
+    delete emulation;
+    delete display;
+}
+
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-23
+ 4. @说明:    panTriggered单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, panTriggered)
+{
+    QWidget parentWidget;
+    TerminalScreen *display = new TerminalScreen(&parentWidget);
+    QPanGesture *panGes = new QPanGesture(display);
+
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setScreenWindow(emulation->createWindow());
+
+    Stub s;
+    s.set(ADDR(QPanGesture, state), stub_started_state);
+    display->panTriggered(panGes);
+
+    s.set(ADDR(QPanGesture, state), stub_updated_state);
+    display->panTriggered(panGes);
+
+    s.set(ADDR(QPanGesture, state), stub_cancelState);
+    display->panTriggered(panGes);
+
+    s.set(ADDR(QPanGesture, state), stub_finishedState);
+    display->panTriggered(panGes);
+
+    s.reset(ADDR(QPanGesture, state));
+
+    delete emulation;
+    delete display;
+}
+
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-23
+ 4. @说明:    pinchTriggered单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, pinchTriggered)
+{
+    QWidget parentWidget;
+    TerminalScreen *display = new TerminalScreen(&parentWidget);
+    QPinchGesture *pinchGes = new QPinchGesture(display);
+
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setScreenWindow(emulation->createWindow());
+
+    Stub s;
+    s.set(ADDR(QPinchGesture, state), stub_started_state);
+    display->pinchTriggered(pinchGes);
+
+    s.set(ADDR(QPinchGesture, state), stub_updated_state);
+    display->pinchTriggered(pinchGes);
+
+    s.set(ADDR(QPinchGesture, state), stub_finishedState);
+    display->pinchTriggered(pinchGes);
+
+    s.reset(ADDR(QPinchGesture, state));
+
+    delete emulation;
+    delete display;
+}
+
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-23
+ 4. @说明:    swipeTriggered单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, swipeTriggered)
+{
+    QWidget parentWidget;
+    TerminalScreen *display = new TerminalScreen(&parentWidget);
+    QSwipeGesture *swipeGes = new QSwipeGesture(display);
+
+    display->makeImage();
+    display->setFixedSize(40, 80);
+    display->updateLineProperties();
+
+    //给TerminalDisplay设置Emulation
+    Emulation *emulation = new Vt102Emulation();
+    display->setScreenWindow(emulation->createWindow());
+
+    Stub s;
+    s.set(ADDR(QSwipeGesture, state), stub_started_state);
+    display->swipeTriggered(swipeGes);
+
+    s.set(ADDR(QSwipeGesture, state), stub_updated_state);
+    display->swipeTriggered(swipeGes);
+
+    s.set(ADDR(QSwipeGesture, state), stub_cancelState);
+    display->swipeTriggered(swipeGes);
+
+    s.set(ADDR(QSwipeGesture, state), stub_finishedState);
+    display->swipeTriggered(swipeGes);
+
+    s.reset(ADDR(QSwipeGesture, state));
 
     delete emulation;
     delete display;
