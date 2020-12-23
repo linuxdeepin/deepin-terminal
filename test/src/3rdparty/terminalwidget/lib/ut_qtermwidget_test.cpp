@@ -4,6 +4,9 @@
 #include "Emulation.h"
 #include "SearchBar.h"
 #include "TerminalDisplay.h"
+#include "settings.h"
+#include "ColorScheme.h"
+
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -74,6 +77,18 @@ TEST_F(UT_QTermWidget_Test, setColorScheme)
     m_termWidget->setColorScheme("Light");
 
     m_termWidget->setColorScheme("Dark");
+
+    //增加一个设置自定义主题的测试
+    Settings::instance()->init();
+    m_termWidget->setColorScheme(Settings::instance()->m_configCustomThemePath, true);
+    //立即写入配置文件
+    Settings::instance()->themeSetting->sync();
+    //重新加载主题测试
+    ColorSchemeManager::instance()->realodColorScheme("Dark");
+    ColorSchemeManager::instance()->realodColorScheme("test.colorscheme");
+    ColorSchemeManager::instance()->realodColorScheme(Settings::instance()->m_configCustomThemePath);
+    ColorSchemeManager::instance()->realodColorScheme(Settings::instance()->m_configCustomThemePath);
+
 }
 
 TEST_F(UT_QTermWidget_Test, setShellProgram)
