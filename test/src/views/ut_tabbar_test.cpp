@@ -2,6 +2,8 @@
 
 #include "tabbar.h"
 #include "utils.h"
+#include "stub.h"
+#include "termwidgetpage.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -9,6 +11,8 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QUuid>
+
+#include <DWindowManagerHelper>
 
 UT_Tabbar_Test::UT_Tabbar_Test()
 {
@@ -386,10 +390,80 @@ TEST_F(UT_Tabbar_Test, setClearTabColor)
 #endif
     }
 
+    EXPECT_EQ(tabIdList.size(), tabCount);
+
     QString firstTabId = tabbar.identifier(0);
     tabbar.setChangeTextColor(firstTabId);
 
     tabbar.setClearTabColor(firstTabId);
+}
+
+TermWidgetPage *stub_getTermPage(const QString &identifier)
+{
+    TermProperties properties;
+    TermWidgetPage *widgetPage = new TermWidgetPage(properties, nullptr);
+    widgetPage->resize(800, 600);
+    return widgetPage;
+}
+
+//用于createDragPixmapFromTab测试打桩
+bool stub_hasComposite()
+{
+    return true;
+}
+
+/*******************************************************************************
+ 1. @函数:    Tabbar类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-23
+ 4. @说明:    createDragPixmapFromTab单元测试
+*******************************************************************************/
+TEST_F(UT_Tabbar_Test, createDragPixmapFromTab)
+{
+    Stub s;
+    s.set(ADDR(MainWindow, getTermPage), stub_getTermPage);
+
+    TabBar tabbar;
+    QString tabName = QString("tab01");
+    QString tabIdentifier = generateUniqueId();
+    tabbar.addTab(tabIdentifier, tabName);
+
+    QStyleOptionTab styleOptionTab;
+    QPoint hotSpot = QPoint(1, 1);
+    tabbar.createDragPixmapFromTab(0, styleOptionTab, &hotSpot);
+
+    s.set(ADDR(DWindowManagerHelper, hasComposite), stub_hasComposite);
+
+    tabbar.createDragPixmapFromTab(0, styleOptionTab, &hotSpot);
+
+    s.reset(ADDR(MainWindow, getTermPage));
+    s.reset(ADDR(DWindowManagerHelper, hasComposite));
+}
+
+TEST_F(UT_Tabbar_Test, eventFilter)
+{
+    TabBar tabbar;
+    QString tabName1 = QString("tab01");
+    QString tabIdentifier1 = generateUniqueId();
+    tabbar.addTab(tabIdentifier1, tabName1);
+
+    QString tabName2 = QString("tab02");
+    QString tabIdentifier2 = generateUniqueId();
+    tabbar.addTab(tabIdentifier2, tabName2);
+
+    QPointF localPos(5, 5);
+    Qt::MouseButtons buttons;
+    QMouseEvent *mouseRightButtonEvent = new QMouseEvent(QEvent::MouseButtonPress, localPos, Qt::RightButton,
+                                              buttons, Qt::NoModifier);
+    tabbar.eventFilter(&tabbar, mouseRightButtonEvent);
+
+    localPos = QPointF(0, 0);
+    QMouseEvent *mouseMiddleButtonEvent = new QMouseEvent(QEvent::MouseButtonPress, localPos, Qt::MiddleButton,
+                                              buttons, Qt::NoModifier);
+    tabbar.eventFilter(&tabbar, mouseMiddleButtonEvent);
+
+    delete mouseRightButtonEvent;
+    delete mouseMiddleButtonEvent;
 }
 
 #endif
