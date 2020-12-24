@@ -5,6 +5,7 @@
 #include "tabbar.h"
 #include "termwidget.h"
 #include "termwidget.h"
+#include "stub.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -781,4 +782,23 @@ TEST_F(UT_MainWindow_Test, hasRunningProcesses)
 //    EXPECT_EQ(running, true);
     delete mainWindow;
 }
+
+
+TEST_F(UT_MainWindow_Test, initPlugins)
+{
+    // 新建一个mainWindow
+
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->initTabBar();
+    emit mainWindow->m_tabbar->tabBarClicked(1, "");
+     emit mainWindow->m_tabbar->tabAddRequested();
+    emit mainWindow->m_tabbar->tabCloseRequested(1);
+    emit mainWindow->m_tabbar->menuCloseTab("");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    delete mainWindow;
+}
+
 #endif

@@ -125,4 +125,43 @@ TEST_F(UT_TerminalApplication_Test, pressSpace)
 //    app->exec();
 //}
 
+
+TEST_F(UT_TerminalApplication_Test, notify)
+{
+    int argc = 0;
+    char **argv = nullptr;
+    TerminalApplication *app = new TerminalApplication(argc, argv);
+
+    QtConcurrent::run([ = ]() {
+        QTimer timer;
+        DKeySequenceEdit* object = new DKeySequenceEdit();
+        app->notify(object, new QEvent(QEvent::FocusOut));
+        // app->postEvent(object, new QEvent(QEvent::FocusOut));
+        timer.setSingleShot(true);
+
+        QEventLoop *loop = new QEventLoop;
+        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
+            loop->quit();
+            app->quit();
+        });
+
+        timer.start(2000);
+        loop->exec();
+        delete  object;
+        delete loop;
+
+    });
+
+    QTime useTime;
+    useTime.start();
+    qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+
+    app->setStartTime(startTime);
+
+    qint64 getStartTime = app->getStartTime();
+    EXPECT_EQ(startTime, getStartTime);
+
+    app->exec();
+}
+
 #endif

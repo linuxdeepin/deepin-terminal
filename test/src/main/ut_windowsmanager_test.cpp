@@ -162,4 +162,38 @@ TEST_F(UI_WindowsManager_Test, onMainwindowClosed)
     }
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow(), nullptr);
 }
+
+TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
+{
+    // 若雷神还在就关闭
+    if (WindowsManager::instance()->getQuakeWindow()) {
+        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+        WindowsManager::instance()->m_quakeWindow = nullptr;
+    }
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    // 启动雷神
+    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+    WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 雷神存在
+    EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
+    // 雷神显示
+    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
+    WindowsManager::instance()->getQuakeWindow()->setVisible(false);
+     WindowsManager::instance()->m_quakeWindow->hideQuakeWindow();
+    WindowsManager::instance()->quakeWindowShowOrHide();
+    // 相当于再次Alt+F2
+    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+    // 雷神影藏 => 又开始了新一轮的动画
+    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isNotAnimation, false);
+
+    // 关闭雷神窗口
+    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+    WindowsManager::instance()->m_quakeWindow = nullptr;
+}
 #endif
