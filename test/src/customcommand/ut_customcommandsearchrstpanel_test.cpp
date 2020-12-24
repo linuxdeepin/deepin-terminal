@@ -1,11 +1,15 @@
 
 #include "ut_customcommandsearchrstpanel_test.h"
 #include "customcommandsearchrstpanel.h"
+#include "service.h"
+#include "shortcutmanager.h"
+#include "listview.h"
 
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
 #include <QSignalSpy>
+#include <QKeySequence>
 
 UT_CustomCommandSearchRstPanel_Test::UT_CustomCommandSearchRstPanel_Test()
 {
@@ -14,22 +18,41 @@ UT_CustomCommandSearchRstPanel_Test::UT_CustomCommandSearchRstPanel_Test()
 
 void UT_CustomCommandSearchRstPanel_Test::SetUp()
 {
-    m_cmdSearchPanel = new CustomCommandSearchRstPanel();
+    if (!Service::instance()->property("isServiceInit").toBool()) {
+        Service::instance()->init();
+        Service::instance()->setProperty("isServiceInit", true);
+    }
+
+    DApplicationHelper::instance()->setThemeType(DApplicationHelper::DarkType);
+    m_normalTermProperty[QuakeMode] = false;
+    m_normalTermProperty[SingleFlag] = true;
+    m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
+    m_cmdSearchPanel = new CustomCommandSearchRstPanel(m_normalWindow);
 }
 
 void UT_CustomCommandSearchRstPanel_Test::TearDown()
 {
     delete  m_cmdSearchPanel;
+    delete m_normalWindow;
 
 }
 #ifdef UT_CUSTOMCOMMANDSEARCHRSTPANEL_TEST
+
+TEST_F(UT_CustomCommandSearchRstPanel_Test, CustomCommandSearchRstPanelTest)
+{
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+
+    emit m_cmdSearchPanel->m_rebackButton->focusOut(Qt::FocusReason::TabFocusReason);
+
+    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::FocusReason::TabFocusReason);
+    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::NoFocusReason);
+}
 
 TEST_F(UT_CustomCommandSearchRstPanel_Test, refreshDataTest)
 {
     EXPECT_NE(m_cmdSearchPanel, nullptr);
     m_cmdSearchPanel->show();
-    EXPECT_EQ(m_cmdSearchPanel->isVisible(),true);
-   // m_pccs->doCustomCommand("");  //该接口有问题，如果没有命令，会产生崩溃
 
     m_cmdSearchPanel->refreshData();
 
@@ -38,6 +61,38 @@ TEST_F(UT_CustomCommandSearchRstPanel_Test, refreshDataTest)
 #endif
 
     m_cmdSearchPanel->refreshData("test");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+TEST_F(UT_CustomCommandSearchRstPanel_Test, setSearchFilterTest)
+{
+    EXPECT_NE(m_cmdSearchPanel, nullptr);
+    m_cmdSearchPanel->show();
+
+    m_cmdSearchPanel->setSearchFilter("SearchFilter");
+
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
+
+TEST_F(UT_CustomCommandSearchRstPanel_Test, doCustomCommandTest)
+{
+    EXPECT_NE(m_cmdSearchPanel, nullptr);
+    m_cmdSearchPanel->show();
+
+    QKeySequence keySeq("Ctrl+T");
+    QAction newAction(ShortcutManager::instance());
+    newAction.setObjectName("CustomQAction");
+    newAction.setText("myCommand");
+    newAction.setData("ls -al");
+    newAction.setShortcut(keySeq);
+    ShortcutManager::instance()->addCustomCommand(newAction);
+
+    m_cmdSearchPanel->doCustomCommand("myCommand");
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);

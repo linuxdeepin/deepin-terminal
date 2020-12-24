@@ -10,6 +10,7 @@
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
+#include <DApplicationHelper>
 
 UT_CustomCommandOptDlg_Test::UT_CustomCommandOptDlg_Test()
 {
@@ -27,6 +28,14 @@ void UT_CustomCommandOptDlg_Test::TearDown()
 
 TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
 {
+    DApplicationHelper::instance()->setThemeType(DApplicationHelper::DarkType);
+    CustomCommandOptDlg cmdDlg_new;
+    cmdDlg_new.setIconPixmap(QPixmap());
+    cmdDlg_new.show();
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+    DApplicationHelper::instance()->setThemeType(DApplicationHelper::LightType);
+
     CustomCommandOptDlg cmdDlg;
     cmdDlg.show();
 
@@ -73,8 +82,30 @@ TEST_F(UT_CustomCommandOptDlg_Test, setConfirmBtnText)
     EXPECT_EQ(cmdDlg.m_confirmBtn->text(), confirmText);
 }
 
+TEST_F(UT_CustomCommandOptDlg_Test, addCancelConfirmButtonsTest)
+{
+    CustomCommandOptDlg cmdDlg;
+    cmdDlg.addCancelConfirmButtons();
+    EXPECT_NE(cmdDlg.m_cancelBtn, nullptr);
+    EXPECT_NE(cmdDlg.m_confirmBtn, nullptr);
+
+    Settings::instance()->init();
+    cmdDlg.m_shortCutLineEdit->setKeySequence(QKeySequence("Ctrl+T"));
+    emit cmdDlg.m_cancelBtn->clicked(true);
+    emit cmdDlg.m_confirmBtn->clicked(true);
+    emit cmdDlg.m_shortCutLineEdit->editingFinished(QKeySequence("Ctrl+T"));
+}
+
 TEST_F(UT_CustomCommandOptDlg_Test, slotAddSaveButtonClicked)
 {
+    QKeySequence keySeq("Ctrl+T");
+    QAction newAction(ShortcutManager::instance());
+    newAction.setObjectName("CustomQAction");
+    newAction.setText("cmd");
+    newAction.setData("ls -al");
+    newAction.setShortcut(keySeq);
+    ShortcutManager::instance()->addCustomCommand(newAction);
+
     CustomCommandOptDlg cmdDlg;
     cmdDlg.m_currItemData = new CustomCommandData;
     cmdDlg.m_currItemData->m_cmdName = "";
@@ -89,11 +120,26 @@ TEST_F(UT_CustomCommandOptDlg_Test, slotAddSaveButtonClicked)
     cmdDlg.m_commandLineEdit->setText("ls -al");
     cmdDlg.slotAddSaveButtonClicked();
 
-    QKeySequence keytmp = cmdDlg.m_shortCutLineEdit->setKeySequence(QKeySequence("Ctrl+Shift+T"));
+    cmdDlg.m_shortCutLineEdit->setKeySequence(QKeySequence("Ctrl+Shift+T"));
     cmdDlg.slotAddSaveButtonClicked();
 
     cmdDlg.m_type = CustomCommandOptDlg::CCT_MODIFY;
     cmdDlg.slotAddSaveButtonClicked();
+
+    {
+        cmdDlg.m_bRefreshCheck = true;
+        cmdDlg.slotAddSaveButtonClicked();
+
+        cmdDlg.m_bRefreshCheck = false;
+        cmdDlg.m_currItemData->m_cmdName = "cmd";
+        cmdDlg.m_currItemData->m_cmdText = "ls -al";
+        cmdDlg.m_currItemData->m_cmdShortcut = "Ctrl+Shift+T";
+        cmdDlg.slotAddSaveButtonClicked();
+
+        cmdDlg.m_nameLineEdit->setText("cmd_no");
+        cmdDlg.slotAddSaveButtonClicked();
+
+    }
 }
 
 TEST_F(UT_CustomCommandOptDlg_Test, slotRefreshData)

@@ -3,6 +3,7 @@
 #define UT_CUSTOMCOMMANDSEARCHRSTPANEL_TEST_H
 
 #include "ut_defines.h"
+#include "mainwindow.h"
 
 #include <gtest/gtest.h>
 
@@ -22,6 +23,10 @@ public:
     virtual void TearDown();
 public:
     CustomCommandSearchRstPanel* m_cmdSearchPanel = nullptr;
+
+    //普通窗口
+    MainWindow *m_normalWindow = nullptr;
+    TermProperties m_normalTermProperty;
 };
 
 #endif//UT_CUSTOMCOMMANDSEARCHRSTPANEL_TEST_H
