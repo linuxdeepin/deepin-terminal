@@ -4,6 +4,9 @@
 #include "serverconfigmanager.h"
 #include "utils.h"
 
+// DTK
+#include <DApplicationHelper>
+
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
@@ -85,4 +88,95 @@ TEST_F(UT_ServerConfigOptDlg_Test, resetCurServer)
     serverCfgDlg.resetCurServer(serverConfig);
 }
 
+/*******************************************************************************
+ 1. @函数:    getDataTest
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-24
+ 4. @说明:    测试带值初始化弹窗
+*******************************************************************************/
+TEST_F(UT_ServerConfigOptDlg_Test, getDataTest)
+{
+    // 初始化测试数据
+    ServerConfig config;
+    config.m_serverName = "test_item";
+    config.m_address = "127.0.0.1";
+    config.m_userName = "dzw";
+    config.m_port = "22";
+    // 初始化弹窗
+    ServerConfigOptDlg serverConfigDialog(ServerConfigOptDlg::SCT_MODIFY, &config);
+
+    // 未改变数据前getData
+    // 指向的不是同一片空间,所以只能比较里面的值
+    ServerConfig curConfig = serverConfigDialog.getData();
+    EXPECT_EQ(curConfig.m_serverName, config.m_serverName);
+
+    // 修改弹窗内服务器名称
+    serverConfigDialog.m_serverName->setText("1988");
+    curConfig = serverConfigDialog.getData();
+    EXPECT_EQ(curConfig.m_serverName, "1988");
+
+    // 函数修改数据 => 还原数据
+    serverConfigDialog.updataData(&config);
+    curConfig = serverConfigDialog.getData();
+    EXPECT_EQ(curConfig.m_serverName, config.m_serverName);
+}
+
+/*******************************************************************************
+ 1. @函数:    resetCurServerTest
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-24
+ 4. @说明:    尝试重新修改弹窗原数据
+*******************************************************************************/
+TEST_F(UT_ServerConfigOptDlg_Test, resetCurServerTest)
+{
+    // 初始化测试数据
+    ServerConfig config;
+    config.m_serverName = "test_item";
+    config.m_address = "127.0.0.1";
+    config.m_userName = "dzw";
+    config.m_port = "22";
+    ServerConfig config2;
+    config2.m_serverName = "test_item2";
+    config2.m_address = "127.0.0.1";
+    config2.m_userName = "dzw";
+    config2.m_port = "22";
+    // 初始化弹窗
+    ServerConfigOptDlg serverConfigDialog(ServerConfigOptDlg::SCT_MODIFY, &config);
+
+    // 将数据传入弹窗,获取的指针和原数据指针应该一致
+    ServerConfig *curConfig = serverConfigDialog.getCurServer();
+    EXPECT_EQ(&config, curConfig);
+
+    // 函数修改原数据 => 传入的临时数据不是指针,传入后被拷贝构造,所以还原后指针不一定相同
+    // 只能对比数据是否还原
+    serverConfigDialog.resetCurServer(config2);
+    curConfig = serverConfigDialog.getCurServer();
+    EXPECT_EQ(curConfig->m_serverName, config2.m_serverName);
+}
+
+/*******************************************************************************
+ 1. @函数:    lambda
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-24
+ 4. @说明:    测试lambda表达式
+*******************************************************************************/
+TEST_F(UT_ServerConfigOptDlg_Test, lambda)
+{
+    // 初始化弹窗
+    ServerConfigOptDlg serverConfigDialog(ServerConfigOptDlg::SCT_ADD, nullptr);
+    serverConfigDialog.show();
+
+    // 切换主题
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
+    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    // 扩展弹窗
+    emit serverConfigDialog.m_advancedOptions->click();
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+}
 #endif
