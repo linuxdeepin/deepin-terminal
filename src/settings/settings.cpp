@@ -186,6 +186,30 @@ void Settings::init()
         QColor color1IntenseColor(255, 84, 84);
         themeSetting->setValue("Color1/Color", color2str(color1Color));
         themeSetting->setValue("Color1Intense/Color", color2str(color1IntenseColor));
+
+
+        //参考深色主题与浅色主题的配置文件，增加默认参数，保证python脚本取色在自定义主题下可以取到相应参数的配色，begin
+        //Color3
+        themeSetting->setValue("Color3/Color", color2str(QColor(255, 192, 5)));
+        //Color3Intense
+        themeSetting->setValue("Color3Intense/Color", color2str(QColor(255, 192, 5)));
+
+        //Color5
+        themeSetting->setValue("Color5/Color", color2str(QColor(236, 0, 72)));
+        //Color5Intense
+        themeSetting->setValue("Color5Intense/Color", color2str(QColor(236, 0, 72)));
+
+        //Color6
+        themeSetting->setValue("Color6/Color", color2str(QColor(42, 167, 231)));
+        //Color6Intense
+        themeSetting->setValue("Color6Intense/Color", color2str(QColor(42, 167, 231)));
+
+        //Color7
+        themeSetting->setValue("Color7/Color", color2str(QColor(242, 242, 242)));
+        //Color7Intense
+        themeSetting->setValue("Color7Intense/Color", color2str(QColor(242, 242, 242)));
+
+        //参考深色主题与浅色主题的配置文件，增加默认参数，保证python脚本取色在自定义主题下可以取到相应参数的配色，end
     }
 
 }
