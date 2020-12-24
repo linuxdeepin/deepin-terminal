@@ -137,6 +137,9 @@ public slots:
     /********************* Modify by n014361 wangpeili End ************************/
     void updateSplitStyle();
 
+    void slotShowPluginChanged(const QString name);
+    void slotQuakeHidePlugin();
+
 signals:
     void tabTitleChanged(QString title) const;
     void termTitleChanged(QString title) const;

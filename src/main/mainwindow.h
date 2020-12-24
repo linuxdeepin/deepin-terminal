@@ -314,6 +314,55 @@ protected slots:
     //主题菜单隐藏时设置主题槽函数
     void menuHideSetThemeSlot();
 
+    void slotShowRenameTabDialog(QString Identifier);
+    void slotMenuCloseOtherTab(QString Identifier);
+    void slotMenuCloseTab(QString Identifier);
+    void slotTabBarClicked(int index, QString tabIdentifier);
+    void slotTabCloseRequested(int index);
+    void slotTabAddRequested();
+    void slotTabCurrentChanged(int index);
+
+    void slotNewWindowActionTriggered();
+    void slotClickNewWindowTimeout();
+    void slotOptionButtonPressed();
+
+    void slotFileChanged();
+    void slotLastTermClosed(const QString & identifier);
+    void slotDDialogFinished(int result);
+
+    void slotShortcutBuiltinCopy();
+    void slotShortcutBuiltinPaste();
+    void slotShortcutFocusOut();
+    void slotShortcutRemoteManage();
+    void slotShortcutCustomCommand();
+    void slotShortcutDisplayShortcuts();
+    void slotShortcutRenameTitle();
+    void slotShortcutSwitchFullScreen();
+    void slotShortcutSelectAll();
+    void slotShortcutDefaultSize();
+    void slotShortcutZoomOut();
+    void slotShortcutZoomIn();
+    void slotShortcutFind();
+    void slotShortcutPaste();
+    void slotShortcutCopy();
+    void slotShortcutCloseOtherWorkspaces();
+    void slotShortcutCloseWorkspace();
+    void slotShortcutSelectRightWorkspace();
+    void slotShortcutSelectLeftWorkspace();
+    void slotShortcutSelectLowerWorkspace();
+    void slotShortcutSelectUpperWorkspace();
+    void slotShortcutVerticalSplit();
+    void slotShortcutHorizonzalSplit();
+    void slotShortcutNextTab();
+    void slotShortcutPreviousTab();
+    void slotShortcutCloseOtherTabs();
+    void slotShortcutCloseTab();
+    void slotShortcutNewTab();
+    void slotShortcutSwitchActivated();
+
+    void slotDialogSelectFinished(int code);
+    void slotCustomCommandActionTriggered();
+
 protected:
     void initUI();
     void initWindow();
@@ -475,6 +524,8 @@ public:
     QMap<QString, TermWidgetPage *> m_termWidgetPageMap;
 
     bool m_isInitialized = false;
+
+    QTimer *m_createTimer = nullptr;
 };
 
 /*******************************************************************************
@@ -562,6 +613,8 @@ public:
 public slots:
     // 处理resize消息
     void onResizeWindow();
+
+    void slotWorkAreaResized();
 
 protected:
     // 初始化标题栏

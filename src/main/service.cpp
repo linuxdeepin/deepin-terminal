@@ -737,3 +737,10 @@ void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
         window->focusCurrentPage();
     }
 }
+
+void Service::slotShowSettingsDialog()
+{
+    qInfo() << sender()->parent();
+    MainWindow *mainWindow = qobject_cast<MainWindow *>(sender()->parent());
+    Service::instance()->showSettingDialog(mainWindow);
+}

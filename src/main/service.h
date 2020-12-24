@@ -136,6 +136,8 @@ public slots:
     // 桌面工作区切换
     void onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop);
 
+    void slotShowSettingsDialog();
+
 private:
     explicit Service(QObject *parent = nullptr);
     //显示/隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用

@@ -24,6 +24,7 @@
 #include "utils.h"
 #include "service.h"
 #include "windowsmanager.h"
+#include "mainwindow.h"
 #include "define.h"
 
 #include <DLog>
@@ -1046,6 +1047,35 @@ void TermWidgetPage::updateSplitStyle()
     QList<DSplitter *> splitList = findChildren<DSplitter *>();
     for (DSplitter *splitter : qAsConst(splitList)) {
         setSplitStyle(splitter);
+    }
+}
+
+void TermWidgetPage::slotShowPluginChanged(const QString name)
+{
+    MainWindow *mainWindow = qobject_cast<MainWindow *>(sender());
+    // 判断是否是当前页，不是当前页不用管
+    if (mainWindow->currentPage() == this) {
+        // 显示和隐藏搜索框
+        if (MainWindow::PLUGIN_TYPE_SEARCHBAR == name) {
+            // 显示搜索框
+            this->showSearchBar(SearchBar_Show);
+        } else if (MainWindow::PLUGIN_TYPE_NONE == name) {
+            // 隐藏搜索框，焦点落回终端
+            this->showSearchBar(SearchBar_FocusOut);
+        } else {
+            // 隐藏搜索框
+            this->showSearchBar(SearchBar_Hide);
+        }
+    }
+}
+
+void TermWidgetPage::slotQuakeHidePlugin()
+{
+    MainWindow *mainWindow = qobject_cast<MainWindow *>(sender());
+    // 判断是否是当前页，不是当前页不用管
+    if (mainWindow->currentPage() == this) {
+        // 隐藏搜索框
+        this->showSearchBar(SearchBar_Hide);
     }
 }
 

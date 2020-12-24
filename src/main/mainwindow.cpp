@@ -217,6 +217,57 @@ void MainWindow::initWindow()
     setCentralWidget(m_centralWidget);
 }
 
+void MainWindow::slotTabBarClicked(int index, QString tabIdentifier)
+{
+    //DTabBar在左右移动时右侧会出现空白，点击会导致crash，这里加个判断防止index出现非法的情况
+    if (index < 0) {
+        return;
+    }
+
+    TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
+    TermWidget *term = tabPage->currentTerminal();
+    bool bIdle = !(term->hasRunningProcess());
+
+    if (bIdle && isTabChangeColor(tabIdentifier)) {
+        m_tabVisitMap.insert(tabIdentifier, true);
+        m_tabChangeColorMap.insert(tabIdentifier, false);
+        m_tabbar->removeNeedChangeTextColor(tabIdentifier);
+    }
+}
+
+void MainWindow::slotTabCurrentChanged(int index)
+{
+    focusPage(m_tabbar->identifier(index));
+}
+
+void MainWindow::slotTabAddRequested()
+{
+    createNewTab();
+}
+
+void MainWindow::slotTabCloseRequested(int index)
+{
+
+    closeTab(m_tabbar->identifier(index));
+}
+
+void MainWindow::slotMenuCloseTab(QString Identifier)
+{
+    closeTab(Identifier);
+}
+
+// TAB菜单发来的关闭其它窗口请求,需要逐一关闭
+void MainWindow::slotMenuCloseOtherTab(QString Identifier)
+{
+    closeOtherTab(Identifier);
+}
+
+void MainWindow::slotShowRenameTabDialog(QString Identifier)
+{
+    // 获取标签选中的tab对应的标签标题
+    getPageByIdentifier(Identifier)->showRenameTitleDialog();
+}
+
 /*******************************************************************************
  1. @函数:    initTabBar
  2. @作者:    ut000439 wangpeili
@@ -228,62 +279,24 @@ void MainWindow::initTabBar()
     m_tabbar = new TabBar(this);
     m_tabbar->setFocusPolicy(Qt::NoFocus);
 
-    connect(m_tabbar, &TabBar::tabBarClicked, this, [ = ](int index, QString tabIdentifier) {
-        //DTabBar在左右移动时右侧会出现空白，点击会导致crash，这里加个判断防止index出现非法的情况
-        if (index < 0) {
-            return;
-        }
-
-        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(index));
-        TermWidget *term = tabPage->currentTerminal();
-        bool bIdle = !(term->hasRunningProcess());
-
-        if (bIdle && isTabChangeColor(tabIdentifier)) {
-            m_tabVisitMap.insert(tabIdentifier, true);
-            m_tabChangeColorMap.insert(tabIdentifier, false);
-            m_tabbar->removeNeedChangeTextColor(tabIdentifier);
-        }
-    });
+    connect(m_tabbar, &TabBar::tabBarClicked, this, &MainWindow::slotTabBarClicked);
 
     // 点击TAB上页触发
-    connect(m_tabbar,
-            &DTabBar::currentChanged,
-            this,
-    [this](int index) {
-        focusPage(m_tabbar->identifier(index));
-    },
-    Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::currentChanged, this,&MainWindow::slotTabCurrentChanged, Qt::QueuedConnection);
+
     // 点击TAB上的＂＋＂触发
-    connect(m_tabbar, &DTabBar::tabAddRequested, this, [this]() {
-        createNewTab();
-    }, Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::tabAddRequested, this, &MainWindow::slotTabAddRequested, Qt::QueuedConnection);
 
     // 点击TAB上的＂X＂触发
-    connect(m_tabbar,
-            &DTabBar::tabCloseRequested,
-            this,
-    [this](int index) {
-        closeTab(m_tabbar->identifier(index));
-    },
-    Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::tabCloseRequested, this, &MainWindow::slotTabCloseRequested, Qt::QueuedConnection);
 
     // TAB菜单发来的关闭请求
-    connect(m_tabbar, &TabBar::menuCloseTab, this, [ = ](QString Identifier) {
-        closeTab(Identifier);
-        return;
-    });
+    connect(m_tabbar, &TabBar::menuCloseTab, this, &MainWindow::slotMenuCloseTab);
 
     // TAB菜单发来的关闭其它窗口请求,需要逐一关闭
-    connect(m_tabbar, &TabBar::menuCloseOtherTab, this, [ = ](QString Identifier) {
-        closeOtherTab(Identifier);
-        return;
-    });
+    connect(m_tabbar, &TabBar::menuCloseOtherTab, this, &MainWindow::slotMenuCloseOtherTab);
 
-    connect(m_tabbar, &TabBar::showRenameTabDialog, this, [ = ](QString Identifier) {
-        // 获取标签选中的tab对应的标签标题
-        getPageByIdentifier(Identifier)->showRenameTitleDialog();
-        return;
-    });
+    connect(m_tabbar, &TabBar::showRenameTabDialog, this, &MainWindow::slotShowRenameTabDialog);
 
     // 如果此时是拖拽的窗口，暂时先不添加tab(默认添加tab后会新建工作区)
     // 需要使用拖入/拖出标签对应的那个TermWidgetPage控件
@@ -292,6 +305,39 @@ void MainWindow::initTabBar()
     }
 
     addTab(m_properties);
+}
+
+void MainWindow::slotOptionButtonPressed()
+{
+    showPlugin(PLUGIN_TYPE_NONE);
+    // 判断是否超过最大数量限制
+    QList<QAction *> actionList = m_menu->actions();
+    for (auto item : actionList) {
+        if (item->text() == tr("New window")) {
+            // 菜单根据数量自动设置true or false
+            item->setEnabled(Service::instance()->isCountEnable());
+        }
+    }
+
+    //选中当前的主题项
+    checkThemeItem();
+}
+
+void MainWindow::slotClickNewWindowTimeout()
+{
+    // 创建新的窗口
+    qDebug() << "menu click new window";
+
+    TermWidgetPage *tabPage = currentPage();
+    TermWidget *term = tabPage->currentTerminal();
+    QString currWorkingDir = term->workingDirectory();
+    emit newWindowRequest(currWorkingDir);
+}
+
+void MainWindow::slotNewWindowActionTriggered()
+{
+    // 等待菜单消失  此处影响菜单创建窗口的性能
+    m_createTimer->start(50);
 }
 
 /*******************************************************************************
@@ -317,21 +363,7 @@ void MainWindow::initOptionButton()
     if (optionBtn != nullptr) {
         //optionBtn->setFocusPolicy(Qt::TabFocus);
         // mainwindow的设置按钮触发
-        connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, [this]() {
-            showPlugin(PLUGIN_TYPE_NONE);
-            // 判断是否超过最大数量限制
-            QList<QAction *> actionList = m_menu->actions();
-            for (auto item : actionList) {
-                if (item->text() == tr("New window")) {
-                    // 菜单根据数量自动设置true or false
-                    item->setEnabled(Service::instance()->isCountEnable());
-                }
-            }
-
-            //选中当前的主题项
-            checkThemeItem();
-
-        });
+        connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, &MainWindow::slotOptionButtonPressed);
     } else {
         qDebug() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
     }
@@ -347,23 +379,12 @@ void MainWindow::initOptionMenu()
     titlebar()->setMenu(m_menu);
     /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
     // 防止创建新窗口的action被多次触发
-    QTimer *createTimer = new QTimer(this);
+    m_createTimer = new QTimer(this);
     // 设置定时器,等待菜单消失,触发一次,防止多次被触发
-    createTimer->setSingleShot(true);
+    m_createTimer->setSingleShot(true);
     QAction *newWindowAction(new QAction(tr("New window"), this));
-    connect(createTimer, &QTimer::timeout, this, [ = ]() {
-        // 创建新的窗口
-        qDebug() << "menu click new window";
-
-        TermWidgetPage *tabPage = currentPage();
-        TermWidget *term = tabPage->currentTerminal();
-        QString currWorkingDir = term->workingDirectory();
-        emit newWindowRequest(currWorkingDir);
-    });
-    connect(newWindowAction, &QAction::triggered, this, [ = ]() {
-        // 等待菜单消失  此处影响菜单创建窗口的性能
-        createTimer->start(50);
-    });
+    connect(m_createTimer, &QTimer::timeout, this, &MainWindow::slotClickNewWindowTimeout);
+    connect(newWindowAction, &QAction::triggered, this, &MainWindow::slotNewWindowActionTriggered);
     m_menu->addAction(newWindowAction);
     /********************* Modify by m000714 daizhengwen End ************************/
     for (auto &plugin : m_plugins) {
@@ -386,9 +407,15 @@ void MainWindow::initOptionMenu()
     //增加主题菜单
     addThemeMenuItems();
 
-    connect(settingAction, &QAction::triggered, Service::instance(), [ = ] {
-        Service::instance()->showSettingDialog(this);
-    });
+    connect(settingAction, &QAction::triggered, Service::instance(), &Service::slotShowSettingsDialog);
+}
+
+void MainWindow::slotFileChanged()
+{
+    QFileSystemWatcher *fileWatcher = qobject_cast<QFileSystemWatcher*>(sender());
+    emit  Service::instance()->hostnameChanged();
+    //这句话去了之后filechanged信号只能触发一次
+    fileWatcher->addPath(HOSTNAME_PATH);
 }
 
 /*******************************************************************************
@@ -402,11 +429,7 @@ void MainWindow::initFileWatcher()
     QFileSystemWatcher *fileWatcher  = new QFileSystemWatcher(this);
     fileWatcher->addPath(HOSTNAME_PATH);
     //bug 53565 ut000442 hostname被修改后，全部窗口触发一次修改标题
-    connect(fileWatcher, &QFileSystemWatcher::fileChanged, this, [ = ] {
-        emit  Service::instance()->hostnameChanged();
-        //这句话去了之后filechanged信号只能触发一次
-        fileWatcher->addPath(HOSTNAME_PATH);
-    });
+    connect(fileWatcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::slotFileChanged);
 }
 
 /*******************************************************************************
@@ -561,6 +584,11 @@ bool MainWindow::beginAddTab()
     return true;
 }
 
+void MainWindow::slotLastTermClosed(const QString & identifier)
+{
+    closeTab(identifier);
+}
+
 /*******************************************************************************
  1. @函数:    endAddTab
  2. @作者:    ut000438 王亮
@@ -580,35 +608,12 @@ void MainWindow::endAddTab(TermWidgetPage *termPage, bool activeTab, int index, 
     m_tabbar->saveSessionIdWithTabId(term->getSessionId(), termPage->identifier());
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
 //    connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
-    connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString & identifier) {
-        closeTab(identifier);
-    });
+    connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::slotLastTermClosed);
 
-    connect(this, &MainWindow::showPluginChanged, termPage, [ = ](const QString name) {
-        // 判断是否是当前页，不是当前页不用管
-        if (this->currentPage() == termPage) {
-            // 显示和隐藏搜索框
-            if (PLUGIN_TYPE_SEARCHBAR == name) {
-                // 显示搜索框
-                termPage->showSearchBar(SearchBar_Show);
-            } else if (PLUGIN_TYPE_NONE == name) {
-                // 隐藏搜索框，焦点落回终端
-                termPage->showSearchBar(SearchBar_FocusOut);
-            } else {
-                // 隐藏搜索框
-                termPage->showSearchBar(SearchBar_Hide);
-            }
-        }
-    });
+    connect(this, &MainWindow::showPluginChanged, termPage, &TermWidgetPage::slotShowPluginChanged);
 
     // 快速隐藏搜索框
-    connect(this, &MainWindow::quakeHidePlugin, termPage, [ = ]() {
-        // 判断是否是当前页，不是当前页不用管
-        if (this->currentPage() == termPage) {
-            // 隐藏搜索框
-            termPage->showSearchBar(SearchBar_Hide);
-        }
-    });
+    connect(this, &MainWindow::quakeHidePlugin, termPage, &TermWidgetPage::slotQuakeHidePlugin);
 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
     qint64 endTime = QDateTime::currentMSecsSinceEpoch();
@@ -883,6 +888,23 @@ void MainWindow::closeAllTab()
 
     return;
 }
+
+void MainWindow::slotDDialogFinished(int result)
+{
+    OnHandleCloseType(result, Utils::CloseType(qobject_cast<DDialog *>(sender())->property("type").toInt()));
+    /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
+    if (result != 1 && qobject_cast<DDialog *>(sender())->property("focusCloseBtn").toBool())        {
+        DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
+        if (closeBtn != nullptr) {
+            closeBtn->setFocus();
+            qDebug() << "close button setFocus";
+        } else {
+            qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
+        }
+    }
+    /********************* Modify by n014361 wangpeili End ************************/
+}
+
 /*******************************************************************************
  1. @函数:    showExitConfirmDialog
  2. @作者:    ut000439 王培利
@@ -942,20 +964,7 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     /********************* Modify by n014361 wangpeili End ************************/
 
     /******** Modify by ut001000 renfeixiang 2020-06-03:修改 将dlg的槽函数修改为OnHandleCloseType，处理全部在OnHandleCloseType函数中 Begin***************/
-    connect(dlg, &DDialog::finished, this, [this](int result) {
-        OnHandleCloseType(result, Utils::CloseType(qobject_cast<DDialog *>(sender())->property("type").toInt()));
-        /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
-        if (result != 1 && qobject_cast<DDialog *>(sender())->property("focusCloseBtn").toBool())        {
-            DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-            if (closeBtn != nullptr) {
-                closeBtn->setFocus();
-                qDebug() << "close button setFocus";
-            } else {
-                qDebug() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
-            }
-        }
-        /********************* Modify by n014361 wangpeili End ************************/
-    });
+    connect(dlg, &DDialog::finished, this, &MainWindow::slotDDialogFinished);
 
     return ;
 }
@@ -1278,7 +1287,6 @@ void MainWindow::initWindowPosition(MainWindow *mainwindow)
         mainwindow->move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
     }
 }
-
 /*******************************************************************************
  1. @函数:    initShortcuts
  2. @作者:    ut000439 wangpeili
@@ -1293,304 +1301,397 @@ void MainWindow::initShortcuts()
 
     /******** Modify by n014361 wangpeili 2020-01-10: 增加设置的各种快捷键修改关联***********×****/
     // new_tab 新建标签页
-    connect(createNewShotcut("shortcuts.tab.new_tab", false), &QShortcut::activated, this, [this]() {
-        this->addTab(currentPage()->createCurrentTerminalProperties(), true);
-    });
+    connect(createNewShotcut("shortcuts.tab.new_tab", false), &QShortcut::activated, this, &MainWindow::slotShortcutNewTab);
 
     // close_tab 关闭标签页
-    connect(createNewShotcut("shortcuts.tab.close_tab"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            closeTab(page->identifier());
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.close_tab"), &QShortcut::activated, this, &MainWindow::slotShortcutCloseTab);
 
     // Close_other_tabs
-    connect(createNewShotcut("shortcuts.tab.close_other_tabs"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            closeOtherTab(page->identifier());
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.close_other_tabs"), &QShortcut::activated, this, &MainWindow::slotShortcutCloseOtherTabs);
 
     // previous_tab
-    connect(createNewShotcut("shortcuts.tab.previous_tab"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            int index = m_tabbar->currentIndex();
-            index -= 1;
-            if (index < 0) {
-                index = m_tabbar->count() - 1;
-            }
-            m_tabbar->setCurrentIndex(index);
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.previous_tab"), &QShortcut::activated, this, &MainWindow::slotShortcutPreviousTab);
 
     // next_tab
-    connect(createNewShotcut("shortcuts.tab.next_tab"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            int index = m_tabbar->currentIndex();
-            index += 1;
-            if (index == m_tabbar->count()) {
-                index = 0;
-            }
-            m_tabbar->setCurrentIndex(index);
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.next_tab"), &QShortcut::activated, this, &MainWindow::slotShortcutNextTab);
 
     // horionzal_split
-    connect(createNewShotcut("shortcuts.tab.horionzal_split", false), &QShortcut::activated, this, [this]() {
-        // 判读数量是否允许分屏
-        if (Service::instance()->isCountEnable()) {
-            TermWidgetPage *page = currentPage();
-            if (page) {
-                if (page->currentTerminal()) {
-                    int layer = page->currentTerminal()->getTermLayer();
-                    Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
-                    if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
-                        page->split(Qt::Horizontal);
-                        return ;
-                    }
-                }
-            }
-        }
-        qDebug() << "can't split vertical  again";
-    });
+    connect(createNewShotcut("shortcuts.tab.horionzal_split", false), &QShortcut::activated, this, &MainWindow::slotShortcutHorizonzalSplit);
 
     // vertical_split
-    connect(createNewShotcut("shortcuts.tab.vertical_split", false), &QShortcut::activated, this, [this]() {
-        // 判读数量是否允许分屏
-        if (Service::instance()->isCountEnable()) {
-            TermWidgetPage *page = currentPage();
-            if (page) {
-                if (page->currentTerminal()) {
-                    int layer = page->currentTerminal()->getTermLayer();
-                    Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
-                    if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
-                        page->split(Qt::Vertical);
-                        return ;
-                    }
-                }
-            }
-        }
-        qDebug() << "can't split vertical  again";
-    });
+    connect(createNewShotcut("shortcuts.tab.vertical_split", false), &QShortcut::activated, this, &MainWindow::slotShortcutVerticalSplit);
 
     // select_upper_workspace
-    connect(createNewShotcut("shortcuts.tab.select_upper_workspace"), &QShortcut::activated, this, [this]() {
-        qDebug() << "Alt+k";
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->focusNavigation(Qt::TopEdge);
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.select_upper_workspace"), &QShortcut::activated, this, &MainWindow::slotShortcutSelectUpperWorkspace);
+
     // select_lower_workspace
-    connect(createNewShotcut("shortcuts.tab.select_lower_workspace"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->focusNavigation(Qt::BottomEdge);
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.select_lower_workspace"), &QShortcut::activated, this, &MainWindow::slotShortcutSelectLowerWorkspace);
+
     // select_left_workspace
-    connect(createNewShotcut("shortcuts.tab.select_left_workspace"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->focusNavigation(Qt::LeftEdge);
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.select_left_workspace"), &QShortcut::activated, this, &MainWindow::slotShortcutSelectLeftWorkspace);
+
     // select_right_workspace
-    connect(createNewShotcut("shortcuts.tab.select_right_workspace"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->focusNavigation(Qt::RightEdge);
-            // QMouseEvent e(QEvent::MouseButtonPress, ) QApplication::sendEvent(focusWidget(), &keyPress);
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.select_right_workspace"), &QShortcut::activated, this, &MainWindow::slotShortcutSelectRightWorkspace);
 
     // close_workspace
-    connect(createNewShotcut("shortcuts.tab.close_workspace"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            qDebug() << "CloseWorkspace";
-            page->closeSplit(page->currentTerminal());
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.close_workspace"), &QShortcut::activated, this, &MainWindow::slotShortcutCloseWorkspace);
 
     // close_other_workspaces
-    connect(createNewShotcut("shortcuts.tab.close_other_workspaces"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->closeOtherTerminal();
-        }
-    });
+    connect(createNewShotcut("shortcuts.tab.close_other_workspaces"), &QShortcut::activated, this, &MainWindow::slotShortcutCloseOtherWorkspaces);
 
     // copy
-    connect(createNewShotcut("shortcuts.terminal.copy"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->copyClipboard();
-        }
-    });
+    connect(createNewShotcut("shortcuts.terminal.copy"), &QShortcut::activated, this, &MainWindow::slotShortcutCopy);
 
     // paste
-    connect(createNewShotcut("shortcuts.terminal.paste"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->pasteClipboard();
-        }
-    });
+    connect(createNewShotcut("shortcuts.terminal.paste"), &QShortcut::activated, this, &MainWindow::slotShortcutPaste);
 
     // search
-    connect(createNewShotcut("shortcuts.terminal.find"), &QShortcut::activated, this, [this]() {
-        showPlugin(PLUGIN_TYPE_SEARCHBAR);
-    });
+    connect(createNewShotcut("shortcuts.terminal.find"), &QShortcut::activated, this, &MainWindow::slotShortcutFind);
 
     // zoom_in
-    connect(createNewShotcut("shortcuts.terminal.zoom_in"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->zoomInCurrentTierminal();
-        }
-        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
-        setWindowMinHeightForFont();
-        /******** Add by ut001000 renfeixiang 2020-08-07:zoom_in时改变大小，bug#41436***************/
-        updateMinHeight();
-        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
-    });
+    connect(createNewShotcut("shortcuts.terminal.zoom_in"), &QShortcut::activated, this, &MainWindow::slotShortcutZoomIn);
 
     // zoom_out
-    connect(createNewShotcut("shortcuts.terminal.zoom_out"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->zoomOutCurrentTerminal();
-        }
-        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
-        setWindowMinHeightForFont();
-        /******** Add by ut001000 renfeixiang 2020-08-07:zoom_out时改变大小，bug#41436***************/
-        updateMinHeight();
-        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
-    });
+    connect(createNewShotcut("shortcuts.terminal.zoom_out"), &QShortcut::activated, this, &MainWindow::slotShortcutZoomOut);
 
     // default_size
-    connect(createNewShotcut("shortcuts.terminal.default_size"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->setFontSize(Settings::instance()->fontSize());
-        }
-        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
-        setWindowMinHeightForFont();
-        /******** Add by ut001000 renfeixiang 2020-08-07:default_size时改变大小，bug#41436***************/
-        updateMinHeight();
-        /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
-    });
+    connect(createNewShotcut("shortcuts.terminal.default_size"), &QShortcut::activated, this, &MainWindow::slotShortcutDefaultSize);
 
     // select_all
-    connect(createNewShotcut("shortcuts.terminal.select_all"), &QShortcut::activated, this, [this]() {
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            qDebug() << "selectAll";
-            page->selectAll();
-        }
-    });
+    connect(createNewShotcut("shortcuts.terminal.select_all"), &QShortcut::activated, this, &MainWindow::slotShortcutSelectAll);
 
     // switch_fullscreen
-    connect(createNewShotcut("shortcuts.advanced.switch_fullscreen"), &QShortcut::activated, this, [this]() {
-        switchFullscreen();
-    });
+    connect(createNewShotcut("shortcuts.advanced.switch_fullscreen"), &QShortcut::activated, this, &MainWindow::slotShortcutSwitchFullScreen);
 
     // rename_tab
-    connect(createNewShotcut("shortcuts.advanced.rename_title"), &QShortcut::activated, this, [this]() {
-        showPlugin(PLUGIN_TYPE_NONE);
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->showRenameTitleDialog();
-        }
-    });
+    connect(createNewShotcut("shortcuts.advanced.rename_title"), &QShortcut::activated, this, &MainWindow::slotShortcutRenameTitle);
 
     // display_shortcuts
-    connect(createNewShotcut("shortcuts.advanced.display_shortcuts"), &QShortcut::activated, this, [this]() {
-        qDebug() << "displayShortcuts";
-        displayShortcuts();
-    });
+    connect(createNewShotcut("shortcuts.advanced.display_shortcuts"), &QShortcut::activated, this, &MainWindow::slotShortcutDisplayShortcuts);
 
     // custom_command
-    connect(createNewShotcut("shortcuts.advanced.custom_command"), &QShortcut::activated, this, [this]() {
-        if (m_CurrentShowPlugin == PLUGIN_TYPE_CUSTOMCOMMAND) {
-            showPlugin(PLUGIN_TYPE_NONE);
-        } else {
-            showPlugin(PLUGIN_TYPE_CUSTOMCOMMAND);
-        }
-    });
+    connect(createNewShotcut("shortcuts.advanced.custom_command"), &QShortcut::activated, this, &MainWindow::slotShortcutCustomCommand);
 
     // remote_management
-    connect(createNewShotcut("shortcuts.advanced.remote_management"), &QShortcut::activated, this, [this]() {
-        if (m_CurrentShowPlugin == PLUGIN_TYPE_REMOTEMANAGEMENT) {
-            showPlugin(PLUGIN_TYPE_NONE);
-        } else {
-            showPlugin(PLUGIN_TYPE_REMOTEMANAGEMENT);
-        }
-    });
+    connect(createNewShotcut("shortcuts.advanced.remote_management"), &QShortcut::activated, this, &MainWindow::slotShortcutRemoteManage);
     /********************* Modify by n014361 wangpeili End ************************/
 
     /******** Modify by ut000439 wangpeili 2020-07-17: Super+Tab快捷键   ****************/
     QShortcut *shortcutFoucusOut = new QShortcut(QKeySequence(QKEYSEQUENCE_FOCUSOUT_TIMINAL), this);
-    connect(shortcutFoucusOut, &QShortcut::activated, this, [this]() {
-        qDebug() << "focusout timinal is activated!" << QKEYSEQUENCE_FOCUSOUT_TIMINAL;
-        DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-        if (addButton != nullptr) {
-            addButton->setFocus();
-        } else {
-            qDebug() << "can not found AddButton in DIconButton";
-        }
-    });
+    connect(shortcutFoucusOut, &QShortcut::activated, this, &MainWindow::slotShortcutFocusOut);
     /********************* Modify by n014361 wangpeili End ************************/
     /******** Modify by ut000439 wangpeili 2020-07-27: bug 39494   ****************/
     QShortcut *shortcutBuiltinPaste = new QShortcut(QKeySequence(QKEYSEQUENCE_PASTE_BUILTIN), this);
-    connect(shortcutBuiltinPaste, &QShortcut::activated, this, [this]() {
-        qDebug() << "built in paste shortcut is activated!" << QKEYSEQUENCE_PASTE_BUILTIN;
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->pasteClipboard();
-        }
-    });
+    connect(shortcutBuiltinPaste, &QShortcut::activated, this, &MainWindow::slotShortcutBuiltinPaste);
 
     /******** Modify by ut001000 renfeixiang 2020-08-28:修改 bug 44477***************/
     QShortcut *shortcutBuiltinCopy = new QShortcut(QKeySequence(QKEYSEQUENCE_COPY_BUILTIN), this);
-    connect(shortcutBuiltinCopy, &QShortcut::activated, this, [this]() {
-        qDebug() << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
-        TermWidgetPage *page = currentPage();
-        if (page) {
-            page->copyClipboard();
-        }
-    });
+    connect(shortcutBuiltinCopy, &QShortcut::activated, this, &MainWindow::slotShortcutBuiltinCopy);
     /********************* Modify by n014361 wangpeili End ************************/
 
     for (int i = 1 ; i <= 9; i++) {
         QString strSwitchLabel = QString("shortcuts.tab.switch_label_win_%1").arg(i);
-        connect(createNewShotcut(strSwitchLabel), &QShortcut::activated, this, [this, i]() {
-            TermWidgetPage *page = currentPage();
-            if (page) {
-                assert(m_tabbar);
-                if ((9 == i) && (m_tabbar->count() > 9)) {
-                    m_tabbar->setCurrentIndex(m_tabbar->count() - 1);
-                    return;
-                }
-
-                if (i - 1 >= m_tabbar->count()) {
-                    qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << endl;
-                    return;
-                }
-
-                qDebug() << "index" << i - 1 << endl;
-                m_tabbar->setCurrentIndex(i - 1);
-                return;
-            }
-            qDebug() << "currentPage nullptr ??";
-        });
+        QShortcut *switchShortcut = createNewShotcut(strSwitchLabel);
+        switchShortcut->setProperty("index", QVariant(i));
+        connect(switchShortcut, &QShortcut::activated, this, &MainWindow::slotShortcutSwitchActivated);
 
     }
+}
 
+void MainWindow::slotShortcutSwitchActivated()
+{
+    QShortcut *switchShortcut = qobject_cast<QShortcut *>(sender());
+    int i = switchShortcut->property("index").toInt();
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        assert(m_tabbar);
+        if ((9 == i) && (m_tabbar->count() > 9)) {
+            m_tabbar->setCurrentIndex(m_tabbar->count() - 1);
+            return;
+        }
+
+        if (i - 1 >= m_tabbar->count()) {
+            qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << endl;
+            return;
+        }
+
+        qDebug() << "index" << i - 1 << endl;
+        m_tabbar->setCurrentIndex(i - 1);
+        return;
+    }
+    qDebug() << "currentPage nullptr ??";
+}
+
+void MainWindow::slotShortcutNewTab()
+{
+    this->addTab(currentPage()->createCurrentTerminalProperties(), true);
+}
+
+void MainWindow::slotShortcutCloseTab()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        closeTab(page->identifier());
+    }
+}
+
+void MainWindow::slotShortcutCloseOtherTabs()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        closeOtherTab(page->identifier());
+    }
+}
+
+void MainWindow::slotShortcutPreviousTab()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        int index = m_tabbar->currentIndex();
+        index -= 1;
+        if (index < 0) {
+            index = m_tabbar->count() - 1;
+        }
+        m_tabbar->setCurrentIndex(index);
+    }
+}
+
+void MainWindow::slotShortcutNextTab()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        int index = m_tabbar->currentIndex();
+        index += 1;
+        if (index == m_tabbar->count()) {
+            index = 0;
+        }
+        m_tabbar->setCurrentIndex(index);
+    }
+}
+
+void MainWindow::slotShortcutHorizonzalSplit()
+{
+    // 判读数量是否允许分屏
+    if (Service::instance()->isCountEnable()) {
+        TermWidgetPage *page = currentPage();
+        if (page) {
+            if (page->currentTerminal()) {
+                int layer = page->currentTerminal()->getTermLayer();
+                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
+                if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
+                    page->split(Qt::Horizontal);
+                    return ;
+                }
+            }
+        }
+    }
+    qDebug() << "can't split vertical  again";
+}
+
+void MainWindow::slotShortcutVerticalSplit()
+{
+    // 判读数量是否允许分屏
+    if (Service::instance()->isCountEnable()) {
+        TermWidgetPage *page = currentPage();
+        if (page) {
+            if (page->currentTerminal()) {
+                int layer = page->currentTerminal()->getTermLayer();
+                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
+                if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
+                    page->split(Qt::Vertical);
+                    return ;
+                }
+            }
+        }
+    }
+    qDebug() << "can't split vertical  again";
+}
+
+void MainWindow::slotShortcutSelectUpperWorkspace()
+{
+    qDebug() << "Alt+k";
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->focusNavigation(Qt::TopEdge);
+    }
+}
+
+void MainWindow::slotShortcutSelectLowerWorkspace()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->focusNavigation(Qt::BottomEdge);
+    }
+}
+
+void MainWindow::slotShortcutSelectLeftWorkspace()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->focusNavigation(Qt::LeftEdge);
+    }
+}
+
+void MainWindow::slotShortcutSelectRightWorkspace()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->focusNavigation(Qt::RightEdge);
+        // QMouseEvent e(QEvent::MouseButtonPress, ) QApplication::sendEvent(focusWidget(), &keyPress);
+    }
+}
+
+void MainWindow::slotShortcutCloseWorkspace()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        qDebug() << "CloseWorkspace";
+        page->closeSplit(page->currentTerminal());
+    }
+}
+
+void MainWindow::slotShortcutCloseOtherWorkspaces()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->closeOtherTerminal();
+    }
+}
+
+void MainWindow::slotShortcutCopy()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->copyClipboard();
+    }
+}
+
+void MainWindow::slotShortcutPaste()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->pasteClipboard();
+    }
+}
+
+void MainWindow::slotShortcutFind()
+{
+    showPlugin(PLUGIN_TYPE_SEARCHBAR);
+}
+
+void MainWindow::slotShortcutZoomIn()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->zoomInCurrentTierminal();
+    }
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
+    setWindowMinHeightForFont();
+    /******** Add by ut001000 renfeixiang 2020-08-07:zoom_in时改变大小，bug#41436***************/
+    updateMinHeight();
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
+}
+
+void MainWindow::slotShortcutZoomOut()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->zoomOutCurrentTerminal();
+    }
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
+    setWindowMinHeightForFont();
+    /******** Add by ut001000 renfeixiang 2020-08-07:zoom_out时改变大小，bug#41436***************/
+    updateMinHeight();
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
+}
+
+void MainWindow::slotShortcutDefaultSize()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->setFontSize(Settings::instance()->fontSize());
+    }
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 Begin***************/
+    setWindowMinHeightForFont();
+    /******** Add by ut001000 renfeixiang 2020-08-07:default_size时改变大小，bug#41436***************/
+    updateMinHeight();
+    /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
+}
+
+void MainWindow::slotShortcutSelectAll()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        qDebug() << "selectAll";
+        page->selectAll();
+    }
+}
+
+void MainWindow::slotShortcutSwitchFullScreen()
+{
+    switchFullscreen();
+}
+
+void MainWindow::slotShortcutRenameTitle()
+{
+    showPlugin(PLUGIN_TYPE_NONE);
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->showRenameTitleDialog();
+    }
+}
+
+void MainWindow::slotShortcutDisplayShortcuts()
+{
+    qDebug() << "displayShortcuts";
+    displayShortcuts();
+}
+
+void MainWindow::slotShortcutCustomCommand()
+{
+    if (m_CurrentShowPlugin == PLUGIN_TYPE_CUSTOMCOMMAND) {
+        showPlugin(PLUGIN_TYPE_NONE);
+    } else {
+        showPlugin(PLUGIN_TYPE_CUSTOMCOMMAND);
+    }
+}
+
+void MainWindow::slotShortcutRemoteManage()
+{
+    if (m_CurrentShowPlugin == PLUGIN_TYPE_REMOTEMANAGEMENT) {
+        showPlugin(PLUGIN_TYPE_NONE);
+    } else {
+        showPlugin(PLUGIN_TYPE_REMOTEMANAGEMENT);
+    }
+}
+
+void MainWindow::slotShortcutFocusOut()
+{
+    qDebug() << "focusout timinal is activated!" << QKEYSEQUENCE_FOCUSOUT_TIMINAL;
+    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
+    if (addButton != nullptr) {
+        addButton->setFocus();
+    } else {
+        qDebug() << "can not found AddButton in DIconButton";
+    }
+}
+
+void MainWindow::slotShortcutBuiltinPaste()
+{
+    qDebug() << "built in paste shortcut is activated!" << QKEYSEQUENCE_PASTE_BUILTIN;
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->pasteClipboard();
+    }
+}
+
+void MainWindow::slotShortcutBuiltinCopy()
+{
+    qDebug() << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        page->copyClipboard();
+    }
 }
 
 /*******************************************************************************
@@ -1605,10 +1706,12 @@ void MainWindow::initConnections()
     connect(Settings::instance(), &Settings::windowSettingChanged, this, &MainWindow::onWindowSettingChanged);
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
+#if 0
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
         //变成自动变色的图标以后，不需要来回变了。
         // applyTheme();
     });
+#endif
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &MainWindow::onApplicationStateChanged);
 }
 /*******************************************************************************
@@ -2154,6 +2257,32 @@ void MainWindow::remoteUploadFile()
     dialog->open();
 }
 
+void MainWindow::slotDialogSelectFinished(int code)
+{
+    DFileDialog *dialog = qobject_cast<DFileDialog *>(sender());
+    if (code == QDialog::Accepted && !dialog->selectedFiles().isEmpty()) {
+        QStringList list = dialog->selectedFiles();
+        const QString dirName = list.first();
+        downloadFilePath = dirName;
+    } else {
+        downloadFilePath = "";
+    }
+
+    TermWidget *term = currentPage()->currentTerminal();
+
+    if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
+        //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
+        //currentTab()->sendTextToCurrentTerm(strTxt);
+        //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
+        QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
+        pressEnterKey(strTxt);
+        currentPage()->sendTextToCurrentTerm("\n");
+        //-------------------
+        term->setEnterSzCommand(true);
+        //sleep(100);//
+    }
+}
+
 /**
  * Download file from remote server
  */
@@ -2165,8 +2294,6 @@ void MainWindow::remoteUploadFile()
 *******************************************************************************/
 void MainWindow::remoteDownloadFile()
 {
-    TermWidget *term = currentPage()->currentTerminal();
-
     QString curPath = QDir::currentPath();
     QString dlgTitle = QObject::tr("Select a directory to save the file");
 
@@ -2175,27 +2302,7 @@ void MainWindow::remoteDownloadFile()
     dialog->setFileMode(QFileDialog::Directory);
     dialog->setOption(DFileDialog::DontConfirmOverwrite);
     dialog->setLabelText(QFileDialog::Accept, QObject::tr("Select"));
-    connect(dialog, &DFileDialog::finished, this, [ = ](int code) {
-        if (code == QDialog::Accepted && !dialog->selectedFiles().isEmpty()) {
-            QStringList list = dialog->selectedFiles();
-            const QString dirName = list.first();
-            downloadFilePath = dirName;
-        } else {
-            downloadFilePath = "";
-        }
-
-        if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
-            //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";
-            //currentTab()->sendTextToCurrentTerm(strTxt);
-            //--added by qinyaning(nyq) to slove Unable to download file from server, time: 2020.4.13 18:21--//
-            QString strTxt = QString("read -e -a files -p \"%1: \"").arg(tr("Type path to download file"));
-            pressEnterKey(strTxt);
-            currentPage()->sendTextToCurrentTerm("\n");
-            //-------------------
-            term->setEnterSzCommand(true);
-            //sleep(100);//
-        }
-    });
+    connect(dialog, &DFileDialog::finished, this, &MainWindow::slotDialogSelectFinished);
     dialog->open();
 }
 
@@ -2211,6 +2318,19 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
     return;
 }
 
+void MainWindow::slotCustomCommandActionTriggered()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (!this->isActiveWindow()) {
+        return;
+    }
+    QString command = action->data().toString();
+    if (!command.endsWith('\n')) {
+        command.append('\n');
+    }
+    currentPage()->sendTextToCurrentTerm(command);
+}
+
 /*******************************************************************************
  1. @函数:    addCustomCommandSlot
  2. @作者:    ut000125 sunchengxi
@@ -2224,16 +2344,7 @@ void MainWindow::addCustomCommandSlot(QAction *newAction)
     QAction *action = newAction;
     addAction(action);
 
-    connect(action, &QAction::triggered, this, [this, action]() {
-        if (!this->isActiveWindow()) {
-            return ;
-        }
-        QString command = action->data().toString();
-        if (!command.endsWith('\n')) {
-            command.append('\n');
-        }
-        currentPage()->sendTextToCurrentTerm(command);
-    });
+    connect(action, &QAction::triggered, this, &MainWindow::slotCustomCommandActionTriggered);
 
 }
 
@@ -3295,6 +3406,21 @@ void QuakeWindow::initTitleBar()
 #endif
 }
 
+void QuakeWindow::slotWorkAreaResized()
+{
+    qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
+    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
+    setMinimumWidth(QApplication::desktop()->availableGeometry().width());
+    setWindowMinHeightForFont();
+    /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
+    updateMinHeight();
+    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
+    move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
+    qDebug() << "size" << size();
+    setFixedWidth(QApplication::desktop()->availableGeometry().width());
+    return ;
+}
+
 /*******************************************************************************
  1. @函数:    initWindowAttribute copy from setQuakeWindow
  2. @作者:    n014361 王培利
@@ -3320,19 +3446,7 @@ void QuakeWindow::initWindowAttribute()
     /********************* Modify by m000714 daizhengwen End ************************/
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setFixedWidth(QApplication::desktop()->availableGeometry().width());
-    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, [this]() {
-        qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
-        /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
-        setMinimumWidth(QApplication::desktop()->availableGeometry().width());
-        setWindowMinHeightForFont();
-        /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
-        updateMinHeight();
-        /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
-        move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
-        qDebug() << "size" << size();
-        setFixedWidth(QApplication::desktop()->availableGeometry().width());
-        return ;
-    });
+    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
 
     /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
     int saveHeight = m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();
