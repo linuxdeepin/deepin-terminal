@@ -3,6 +3,7 @@
 #include "remotemanagementtoppanel.h"
 #include "service.h"
 #include "mainwindow.h"
+#include "stub.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -10,6 +11,16 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+
+void stub_focusCurrentPage2()
+{
+    return;
+}
+
+bool stub_isFocusOnList()
+{
+    return true;
+}
 
 UT_RemoteManagementTopPanel_Test::UT_RemoteManagementTopPanel_Test()
 {
@@ -108,5 +119,81 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showGroupPanel)
 #endif
     m_normalWindow->close();
     delete m_normalWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    ShowSearchPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-23
+ 4. @说明:    显示搜索面板 => 组内搜索和无法搜索
+*******************************************************************************/
+TEST_F(UT_RemoteManagementTopPanel_Test, ShowSearchPanelTest)
+{
+    RemoteManagementTopPanel topPanel;
+    // 没数据的情况
+    // 显示分组界面的搜索
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Group;
+    topPanel.m_group = "group";
+    topPanel.showSearchPanel("1988");
+
+    // 未知类型
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
+    topPanel.showSearchPanel("1995");
+}
+
+/*******************************************************************************
+ 1. @函数:    showGroupPanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-23
+ 4. @说明:    显示分组界面
+*******************************************************************************/
+TEST_F(UT_RemoteManagementTopPanel_Test, showGroupPanelTest)
+{
+    Stub s;
+    s.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage2);
+    RemoteManagementTopPanel topPanel;
+    // 没数据的情况
+    // 不用界面显示分组界面
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Manage;
+    topPanel.showGroupPanel("1988", false);
+    topPanel.showGroupPanel("1988", true);
+
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
+    topPanel.showGroupPanel("1995", true);
+
+    // 未知类型
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Group;
+    topPanel.showGroupPanel("1995", true);
+    s.reset(ADDR(MainWindow, focusCurrentPage));
+}
+
+/*******************************************************************************
+ 1. @函数:    showPrePanel
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-23
+ 4. @说明:    显示前一个界面
+*******************************************************************************/
+TEST_F(UT_RemoteManagementTopPanel_Test, showPrePanelTest)
+{
+    Stub s;
+    s.set(ADDR(MainWindow, isFocusOnList), stub_isFocusOnList);
+    // 清空堆栈
+    RemoteManagementTopPanel topPanel;
+    topPanel.m_prevPanelStack.clear();
+
+    // 显示前一个窗口
+    topPanel.showPrevPanel();
+
+    // 搜索返回
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
+    topPanel.showPrevPanel();
+
+    // 分组返回
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
+    topPanel.showPrevPanel();
+
+    // 栈为空,最后返回都是主界面
+    EXPECT_EQ(topPanel.m_currentPanelType, ServerConfigManager::PanelType_Manage);
+    s.reset(ADDR(MainWindow, isFocusOnList));
 }
 #endif

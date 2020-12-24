@@ -132,6 +132,7 @@ TEST_F(UT_CustomThemeSettingDialog_Test, setFocusTest)
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
+    delete customThemeSettingDialog;
 }
 
 TEST_F(UT_CustomThemeSettingDialog_Test, clearFocussSlot)

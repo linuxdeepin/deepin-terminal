@@ -192,7 +192,7 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusBack)
     panel.setFocusBack("group1988");
     listIndex = panel.getListIndex();
     EXPECT_GE(listIndex, 0);
-
+    ServerConfigManager::instance()->m_serverConfigs.clear();
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
 #endif
@@ -228,7 +228,7 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
     panel.show();
     EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
     EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
-
+    ServerConfigManager::instance()->m_serverConfigs.clear();
     // 一个也没有,搜索框隐藏
     panel.refreshSearchState();
     //添加数据,显示搜索框
@@ -255,6 +255,7 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
     // list中数据的数量
     int count = panel.m_listWidget->count();
     EXPECT_EQ(count, 2);
+    ServerConfigManager::instance()->m_serverConfigs.clear();
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
@@ -294,6 +295,7 @@ TEST_F(UT_RemoteManagementPanel_Test, onItemClicked)
 
     // 传来错误的值
     remotePanel.onItemClicked("test_item2");
+    ServerConfigManager::instance()->m_serverConfigs.clear();
 }
 
 /*******************************************************************************
@@ -324,10 +326,11 @@ TEST_F(UT_RemoteManagementPanel_Test, showAddServerConfigDlg)
     // 没有搜索内容
     RemoteManagementPanel remotePanel;
     remotePanel.show();
+    // 打桩
     Stub s;
     s.set(ADDR(Service, setIsDialogShow), stub_return);
 
-    // 需要打桩
+    // 显示弹窗
     remotePanel.showAddServerConfigDlg();
     ServerConfigOptDlg *dialog = remotePanel.findChild<ServerConfigOptDlg *>();
     // 发送弹窗添加失败
@@ -341,9 +344,43 @@ TEST_F(UT_RemoteManagementPanel_Test, showAddServerConfigDlg)
     dialog = remotePanel.findChild<ServerConfigOptDlg *>();
     // 发送弹窗添加失败
     if (dialog) {
-        emit dialog->reject();
+        emit dialog->accept();
     }
-
+    // 打桩还原
     s.reset(ADDR(Service, setIsDialogShow));
+}
+
+/*******************************************************************************
+ 1. @函数:    lambda
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-23
+ 4. @说明:    测试部分lambda表达式是否正常响应信号
+*******************************************************************************/
+TEST_F(UT_RemoteManagementPanel_Test, lambda)
+{
+    // 初始化界面
+    RemoteManagementPanel remotePanel;
+    remotePanel.show();
+    remotePanel.m_isShow = true;
+    // 刷新界面
+    emit ServerConfigManager::instance()->refreshList();
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+
+    // 焦点切入切出
+    // 切出理由
+    emit remotePanel.m_listWidget->focusOut(Qt::TabFocusReason);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    // 列表内没有index
+    EXPECT_EQ(remotePanel.m_listWidget->m_currentIndex, -1);
+    emit remotePanel.m_listWidget->focusOut(Qt::BacktabFocusReason);
+#ifdef ENABLE_UI_TEST
+    QTest::qWait(UT_WAIT_TIME);
+#endif
+    EXPECT_EQ(remotePanel.m_listWidget->m_currentIndex, -1);
+
 }
 #endif
