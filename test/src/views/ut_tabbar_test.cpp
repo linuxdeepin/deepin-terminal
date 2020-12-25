@@ -440,30 +440,4 @@ TEST_F(UT_Tabbar_Test, createDragPixmapFromTab)
     s.reset(ADDR(DWindowManagerHelper, hasComposite));
 }
 
-TEST_F(UT_Tabbar_Test, eventFilter)
-{
-    TabBar tabbar;
-    QString tabName1 = QString("tab01");
-    QString tabIdentifier1 = generateUniqueId();
-    tabbar.addTab(tabIdentifier1, tabName1);
-
-    QString tabName2 = QString("tab02");
-    QString tabIdentifier2 = generateUniqueId();
-    tabbar.addTab(tabIdentifier2, tabName2);
-
-    QPointF localPos(5, 5);
-    Qt::MouseButtons buttons;
-    QMouseEvent *mouseRightButtonEvent = new QMouseEvent(QEvent::MouseButtonPress, localPos, Qt::RightButton,
-                                              buttons, Qt::NoModifier);
-    tabbar.eventFilter(&tabbar, mouseRightButtonEvent);
-
-    localPos = QPointF(0, 0);
-    QMouseEvent *mouseMiddleButtonEvent = new QMouseEvent(QEvent::MouseButtonPress, localPos, Qt::MiddleButton,
-                                              buttons, Qt::NoModifier);
-    tabbar.eventFilter(&tabbar, mouseMiddleButtonEvent);
-
-    delete mouseRightButtonEvent;
-    delete mouseMiddleButtonEvent;
-}
-
 #endif

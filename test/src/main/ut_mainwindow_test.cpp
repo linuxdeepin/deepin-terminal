@@ -738,7 +738,7 @@ TEST_F(UT_MainWindow_Test, clickTabTest)
     }
     TabBar *tabBar = m_normalWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
-    \
+
     QTest::mouseClick(tabBar, Qt::LeftButton, Qt::NoModifier, QPoint(50, 10), UT_WAIT_TIME);
 
 #ifdef ENABLE_UI_TEST
@@ -783,7 +783,6 @@ TEST_F(UT_MainWindow_Test, hasRunningProcesses)
     delete mainWindow;
 }
 
-
 TEST_F(UT_MainWindow_Test, initPlugins)
 {
     // 新建一个mainWindow
@@ -791,7 +790,7 @@ TEST_F(UT_MainWindow_Test, initPlugins)
     MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
     mainWindow->initTabBar();
     emit mainWindow->m_tabbar->tabBarClicked(1, "");
-     emit mainWindow->m_tabbar->tabAddRequested();
+    emit mainWindow->m_tabbar->tabAddRequested();
     emit mainWindow->m_tabbar->tabCloseRequested(1);
     emit mainWindow->m_tabbar->menuCloseTab("");
 
@@ -801,4 +800,297 @@ TEST_F(UT_MainWindow_Test, initPlugins)
     delete mainWindow;
 }
 
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutBuiltinCopy单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutBuiltinCopy)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutBuiltinCopy();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutBuiltinPaste单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutBuiltinPaste)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutBuiltinPaste();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutFocusOut单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutFocusOut)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutFocusOut();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutVerticalSplit单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutVerticalSplit)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutVerticalSplit();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutHorizonzalSplit单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutHorizonzalSplit)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutHorizonzalSplit();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutNextTab单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutNextTab)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+
+    const int tabCount = 3;
+    for (int i = 0; i < tabCount; i++) {
+        mainWindow->addTab(m_normalTermProperty);
+    }
+
+    TabBar *tabBar = mainWindow->m_tabbar;
+    EXPECT_NE(tabBar, nullptr);
+
+    mainWindow->slotTabBarClicked(0, tabBar->identifier(0));
+
+    mainWindow->slotShortcutNextTab();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutPreviousTab单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutPreviousTab)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+
+    const int tabCount = 3;
+    for (int i = 0; i < tabCount; i++) {
+        mainWindow->addTab(m_normalTermProperty);
+    }
+
+    TabBar *tabBar = mainWindow->m_tabbar;
+    EXPECT_NE(tabBar, nullptr);
+
+    mainWindow->slotTabBarClicked(1, tabBar->identifier(0));
+
+    mainWindow->slotShortcutPreviousTab();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutSwitchFullScreen单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutSwitchFullScreen)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutSwitchFullScreen();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutCloseOtherTabs单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutCloseOtherTabs)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+
+    const int tabCount = 3;
+    for (int i = 0; i < tabCount; i++) {
+        mainWindow->addTab(m_normalTermProperty);
+    }
+
+    mainWindow->slotShortcutCloseOtherTabs();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutCloseTab单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutCloseTab)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutCloseTab();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutNewTab单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutNewTab)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutNewTab();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutPaste单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutPaste)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutPaste();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutCopy单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutCopy)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutCopy();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutZoomIn单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutZoomIn)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutZoomIn();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutZoomOut单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutZoomOut)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutZoomOut();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutCloseWorkspace单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutCloseWorkspace)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutCloseWorkspace();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutSelectLowerWorkspace单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutSelectLowerWorkspace)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutSelectLowerWorkspace();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutSelectLeftWorkspace单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutSelectLeftWorkspace)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutSelectLeftWorkspace();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-25
+ 4. @说明:    slotShortcutSelectRightWorkspace单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutSelectRightWorkspace)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutSelectRightWorkspace();
+    delete mainWindow;
+}
 #endif
