@@ -7,7 +7,6 @@
 #include "settings.h"
 #include "ColorScheme.h"
 
-
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
@@ -36,18 +35,36 @@ void UT_QTermWidget_Test::TearDown()
 
 #ifdef UT_QTERMWIDGET_TEST
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setWindowTitle单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setWindowTitle)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setWindowTitle("Terminal");
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setWindowIcon单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setWindowIcon)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setWindowIcon(QIcon());
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setScrollBarPosition单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setScrollBarPosition)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
@@ -57,6 +74,12 @@ TEST_F(UT_QTermWidget_Test, setScrollBarPosition)
     m_termWidget->setScrollBarPosition(QTermWidget::ScrollBarRight);
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setKeyboardCursorShape单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setKeyboardCursorShape)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
@@ -64,13 +87,24 @@ TEST_F(UT_QTermWidget_Test, setKeyboardCursorShape)
     m_termWidget->setKeyboardCursorShape(Emulation::KeyboardCursorShape::BlockCursor);
 }
 
-
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    availableColorSchemes单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, availableColorSchemes)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
     EXPECT_GE(m_termWidget->availableColorSchemes().size(), 0);
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setColorScheme单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setColorScheme)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
@@ -88,9 +122,14 @@ TEST_F(UT_QTermWidget_Test, setColorScheme)
     ColorSchemeManager::instance()->realodColorScheme("test.colorscheme");
     ColorSchemeManager::instance()->realodColorScheme(Settings::instance()->m_configCustomThemePath);
     ColorSchemeManager::instance()->realodColorScheme(Settings::instance()->m_configCustomThemePath);
-
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setShellProgram单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setShellProgram)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
@@ -98,13 +137,25 @@ TEST_F(UT_QTermWidget_Test, setShellProgram)
     m_termWidget->setShellProgram("/bin/bash");
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setKeyBindings单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setKeyBindings)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setKeyBindings("linux");
 }
 
-TEST_F(UT_QTermWidget_Test, getsetTerminalFont)
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setTerminalFont单元测试
+*******************************************************************************/
+TEST_F(UT_QTermWidget_Test, setTerminalFont)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
 
@@ -112,15 +163,27 @@ TEST_F(UT_QTermWidget_Test, getsetTerminalFont)
     QFont font("Noto Mono");
     font.setPixelSize(fontSize);
     m_termWidget->setTerminalFont(font);
-//    EXPECT_EQ(m_termWidget->getTerminalFont().pixelSize(), fontSize);
+    //EXPECT_EQ(m_termWidget->getTerminalFont().pixelSize(), fontSize);
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setTerminalOpacity单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setTerminalOpacity)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setTerminalOpacity(1.0);
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setWorkingDirectory单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setWorkingDirectory)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
@@ -128,12 +191,24 @@ TEST_F(UT_QTermWidget_Test, setWorkingDirectory)
     m_termWidget->setWorkingDirectory(path);
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setEnvironment单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setEnvironment)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
     m_termWidget->setEnvironment(QStringList());
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    startShellProgram单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, startShellProgram)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
@@ -141,6 +216,12 @@ TEST_F(UT_QTermWidget_Test, startShellProgram)
     m_termWidget->startShellProgram();
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setFlowControlEnabled单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, setFlowControlEnabled)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);
@@ -152,6 +233,12 @@ TEST_F(UT_QTermWidget_Test, setFlowControlEnabled)
     EXPECT_EQ(m_termWidget->flowControlEnabled(), true);
 }
 
+/*******************************************************************************
+ 1. @函数:    QTermWidget类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    clear单元测试
+*******************************************************************************/
 TEST_F(UT_QTermWidget_Test, clear)
 {
     EXPECT_EQ(m_termWidget != nullptr, true);

@@ -23,6 +23,12 @@ void UT_KProcess_Test::TearDown()
 
 #ifdef UT_KPROCESS_TEST
 
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setOutputChannelMode单元测试
+*******************************************************************************/
 TEST_F(UT_KProcess_Test, setOutputChannelMode)
 {
     m_process->setOutputChannelMode(KProcess::OnlyStdoutChannel);
@@ -30,6 +36,12 @@ TEST_F(UT_KProcess_Test, setOutputChannelMode)
     EXPECT_EQ(m_process->outputChannelMode(), KProcess::OnlyStdoutChannel);
 }
 
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setOutputChannelMode单元测试
+*******************************************************************************/
 TEST_F(UT_KProcess_Test, processTest)
 {
     QString program = QString("/usr/bin/ls");
@@ -42,7 +54,13 @@ TEST_F(UT_KProcess_Test, processTest)
     m_process->waitForFinished(-1);
 }
 
-TEST_F(UT_KProcess_Test, executeTest)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    execute单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, execute)
 {
     QString program = QString("/usr/bin/ls");
     QStringList arguments;
@@ -52,7 +70,13 @@ TEST_F(UT_KProcess_Test, executeTest)
     m_process->execute();
 }
 
-TEST_F(UT_KProcess_Test, executeWithArgsTest)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    execute单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, executeWithArgs)
 {
     QString program = QString("/usr/bin/ls");
     QStringList arguments;
@@ -60,7 +84,13 @@ TEST_F(UT_KProcess_Test, executeWithArgsTest)
     KProcess::execute(program, arguments);
 }
 
-TEST_F(UT_KProcess_Test, executeWithArgsTest2)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    execute单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, executeOnlyProgram)
 {
     QString program = QString("/usr/bin/ls");
     QStringList programList;
@@ -68,7 +98,13 @@ TEST_F(UT_KProcess_Test, executeWithArgsTest2)
     KProcess::execute(programList);
 }
 
-TEST_F(UT_KProcess_Test, startDetachedTest)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    startDetached单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, startDetached)
 {
     QString program = QString("/usr/bin/ls");
     QStringList arguments;
@@ -78,28 +114,58 @@ TEST_F(UT_KProcess_Test, startDetachedTest)
     m_process->startDetached();
 }
 
-TEST_F(UT_KProcess_Test, startDetachedWithArgsTest)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    startDetached单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, startDetachedWithArgs)
 {
     QStringList arguments;
     arguments << QString("/usr/share");
     KProcess::startDetached("/usr/bin/ls", arguments);
 }
 
-TEST_F(UT_KProcess_Test, setEnvTest)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setEnv单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, setEnv)
 {
     m_process->setEnv("WINDOW_ID", "1234", true);
 }
 
-TEST_F(UT_KProcess_Test, unsetEnvTest)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    unsetEnv单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, unsetEnv)
 {
     m_process->unsetEnv("WINDOW_ID");
 }
 
-TEST_F(UT_KProcess_Test, clearEnvironmentTest)
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    clearEnvironment单元测试
+*******************************************************************************/
+TEST_F(UT_KProcess_Test, clearEnvironment)
 {
     m_process->clearEnvironment();
 }
 
+/*******************************************************************************
+ 1. @函数:    KProcess类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    pid单元测试
+*******************************************************************************/
 TEST_F(UT_KProcess_Test, pidTest)
 {
     QString program = QString("/usr/bin/ls");

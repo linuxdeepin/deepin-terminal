@@ -28,6 +28,12 @@ void UT_TerminalDisplay_Test::TearDown()
 }
 #ifdef UT_TERMINALDISPLAY_TEST
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setScrollBarPosition单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, setScrollBarPosition)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -46,6 +52,12 @@ TEST_F(UT_TerminalDisplay_Test, setScrollBarPosition)
     delete display;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setColorTable单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, setColorTable)
 {
     const ColorEntry defaultTable[TABLE_COLORS] = {
@@ -77,7 +89,13 @@ TEST_F(UT_TerminalDisplay_Test, setColorTable)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, resizeTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    resize单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, resize)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
     display->setBellMode(TerminalDisplay::NotifyBell);
@@ -105,7 +123,13 @@ TEST_F(UT_TerminalDisplay_Test, resizeTest)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, marginTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    margin单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, margin)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
     int margin = display->margin();
@@ -113,9 +137,15 @@ TEST_F(UT_TerminalDisplay_Test, marginTest)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, drawContentsTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    drawContents单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, drawContents)
 {
-    class PainterWidget :  public QWidget
+    class PainterWidget : public QWidget
     {
     public:
         PainterWidget()
@@ -140,7 +170,13 @@ TEST_F(UT_TerminalDisplay_Test, drawContentsTest)
     painterWidget.show();
 }
 
-TEST_F(UT_TerminalDisplay_Test, extendSelectionTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    extendSelection单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, extendSelection)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
 
@@ -227,13 +263,13 @@ void sendKeyEvent(QObject *receiver, QEvent::Type type, Qt::Key key, Qt::Keyboar
  3. @日期:    2020-12-18
  4. @说明:    paintFilters函数 UT
 *******************************************************************************/
-TEST_F(UT_TerminalDisplay_Test, paintFiltersTest)
+TEST_F(UT_TerminalDisplay_Test, paintFilters)
 {
     //创建对象
     TerminalDisplay *display = displayForUrl();
 
     // 模拟Ctrl键按下事件
-    sendKeyEvent(display,QEvent::KeyPress, Qt::Key_Control);
+    sendKeyEvent(display, QEvent::KeyPress, Qt::Key_Control);
 
     //测试paintFilters
     QPainter painter;
@@ -243,7 +279,7 @@ TEST_F(UT_TerminalDisplay_Test, paintFiltersTest)
     Q_ASSERT(display->cursor() == Qt::PointingHandCursor);
 
     // 模拟Ctrl键松开事件
-    sendKeyEvent(display,QEvent::KeyRelease, Qt::Key_Control);
+    sendKeyEvent(display, QEvent::KeyRelease, Qt::Key_Control);
 
     // 设置定时
     QTimer::singleShot(80, display, [ = ]() {
@@ -341,7 +377,6 @@ TEST_F(UT_TerminalDisplay_Test, mousePressEventTest_MidButton)
         //spot和filter随着display释放而被释放
         delete display;
     });
-
 }
 
 /*******************************************************************************
@@ -376,8 +411,13 @@ TEST_F(UT_TerminalDisplay_Test, mousePressEventTest_RightButton)
     });
 }
 
-
-TEST_F(UT_TerminalDisplay_Test, mouseDoubleClickTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    mouseDoubleClick
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, mouseDoubleClick)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
     display->makeImage();
@@ -396,7 +436,13 @@ TEST_F(UT_TerminalDisplay_Test, mouseDoubleClickTest)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, mouseTripleClickTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    mouseTripleClick
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, mouseTripleClick)
 {
     QVector<LineProperty> lineProperties(80);
     for (int line = 0; line < lineProperties.size(); line++) {
@@ -423,7 +469,13 @@ TEST_F(UT_TerminalDisplay_Test, mouseTripleClickTest)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, setKeyboardCursorColorTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setKeyboardCursorColor单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, setKeyboardCursorColor)
 {
     QVector<LineProperty> lineProperties(80);
     for (int line = 0; line < lineProperties.size(); line++) {
@@ -449,33 +501,13 @@ TEST_F(UT_TerminalDisplay_Test, setKeyboardCursorColorTest)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, processFiltersTest)
-{
-    QVector<LineProperty> lineProperties(80);
-    for (int line = 0; line < lineProperties.size(); line++) {
-        lineProperties[line] = (LineProperty)(LINE_DEFAULT | LINE_WRAPPED);
-    }
-
-    TerminalDisplay *display = new TerminalDisplay(nullptr);
-    display->makeImage();
-    display->setFixedSize(40, 80);
-    display->_lineProperties = lineProperties;
-    display->_possibleTripleClick = true;
-    display->updateLineProperties();
-
-    //给TerminalDisplay设置Emulation
-    Emulation *emulation = new Vt102Emulation();
-    display->setUsesMouse(emulation->programUsesMouse());
-    display->setBracketedPasteMode(emulation->programBracketedPasteMode());
-    display->setScreenWindow(emulation->createWindow());
-
-    display->processFilters();
-
-    delete emulation;
-    delete display;
-}
-
-TEST_F(UT_TerminalDisplay_Test, inputMethodQueryTest)
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    inputMethodQuery单元测试
+*******************************************************************************/
+TEST_F(UT_TerminalDisplay_Test, inputMethodQuery)
 {
     QVector<LineProperty> lineProperties(80);
     for (int line = 0; line < lineProperties.size(); line++) {
@@ -505,6 +537,12 @@ TEST_F(UT_TerminalDisplay_Test, inputMethodQueryTest)
     delete display;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setFlowControlWarningEnabled单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, setFlowControlWarningEnabled)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -523,6 +561,12 @@ TEST_F(UT_TerminalDisplay_Test, setFlowControlWarningEnabled)
     delete display;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    widgetToImage单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, widgetToImage)
 {
     QWidget widget;
@@ -537,6 +581,12 @@ TEST_F(UT_TerminalDisplay_Test, widgetToImage)
     delete display;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    imageToWidget单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, imageToWidget)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -549,17 +599,12 @@ TEST_F(UT_TerminalDisplay_Test, imageToWidget)
     delete display;
 }
 
-//TEST_F(UT_TerminalDisplay_Test, doDrag)
-//{
-//    TerminalDisplay *display = new TerminalDisplay(nullptr);
-//    display->makeImage();
-//    display->setFixedSize(40, 80);
-
-//    display->doDrag();
-
-//    delete display;
-//}
-
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    lineSpacing单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, lineSpacing)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -569,6 +614,12 @@ TEST_F(UT_TerminalDisplay_Test, lineSpacing)
     delete display;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setLineSpacing单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, setLineSpacing)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -581,6 +632,12 @@ TEST_F(UT_TerminalDisplay_Test, setLineSpacing)
     delete display;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setVTFont单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, setVTFont)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -594,6 +651,7 @@ TEST_F(UT_TerminalDisplay_Test, setVTFont)
     delete display;
 }
 
+//用于calDrawTextAdditionHeight函数单元测试打桩
 void stub_drawText(const QRect &r, int flags, const QString &text, QRect *br = nullptr)
 {
     Q_UNUSED(r)
@@ -602,10 +660,16 @@ void stub_drawText(const QRect &r, int flags, const QString &text, QRect *br = n
     Q_UNUSED(br)
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    calDrawTextAdditionHeight单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, calDrawTextAdditionHeight)
 {
     Stub s;
-    s.set((void (QPainter::*)(const QRect &, int, const QString &, QRect *br))ADDR(QPainter, drawText), stub_drawText);
+    s.set((void (QPainter::*)(const QRect &, int, const QString &, QRect * br))ADDR(QPainter, drawText), stub_drawText);
 
     TerminalDisplay *display = new TerminalDisplay(nullptr);
 
@@ -614,7 +678,7 @@ TEST_F(UT_TerminalDisplay_Test, calDrawTextAdditionHeight)
 
     delete display;
 
-    s.reset((void (QPainter::*)(const QRect &, int, const QString &, QRect *br))ADDR(QPainter, drawText));
+    s.reset((void (QPainter::*)(const QRect &, int, const QString &, QRect * br))ADDR(QPainter, drawText));
 }
 
 //用于processFilters测试打桩
@@ -624,6 +688,12 @@ QRegion stub_hotSpotRegion()
     return region;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    processFilters单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, processFilters)
 {
     Stub s;
@@ -648,6 +718,12 @@ TEST_F(UT_TerminalDisplay_Test, processFilters)
     s.reset(ADDR(TerminalDisplay, hotSpotRegion));
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setMargin单元测试
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, setMargin)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -659,13 +735,12 @@ TEST_F(UT_TerminalDisplay_Test, setMargin)
     delete display;
 }
 
-TEST_F(UT_TerminalDisplay_Test, margin)
-{
-    TerminalDisplay *display = new TerminalDisplay(nullptr);
-    display->margin();
-    delete display;
-}
-
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    keyEvent
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, keyEvent)
 {
     TerminalDisplay *display = new TerminalDisplay(nullptr);
@@ -673,6 +748,12 @@ TEST_F(UT_TerminalDisplay_Test, keyEvent)
     delete display;
 }
 
+/*******************************************************************************
+ 1. @函数:    TerminalDisplay类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    keyPressEvent
+*******************************************************************************/
 TEST_F(UT_TerminalDisplay_Test, keyPressEvent)
 {
     QWidget parentWidget;

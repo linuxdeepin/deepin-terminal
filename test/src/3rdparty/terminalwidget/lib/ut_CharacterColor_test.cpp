@@ -7,20 +7,19 @@
 
 Q_DECLARE_METATYPE(ColorEntry)
 
-const ColorEntry UT_CharacterColor_Test::DefaultColorTable[TABLE_COLORS] =
-{
-  // normal
-  ColorEntry(QColor(0x00,0x00,0x00), false), ColorEntry( QColor(0xB2,0xB2,0xB2), true), // Dfore, Dback
-  ColorEntry(QColor(0x00,0x00,0x00), false), ColorEntry( QColor(0xB2,0x18,0x18), false), // Black, Red
-  ColorEntry(QColor(0x18,0xB2,0x18), false), ColorEntry( QColor(0xB2,0x68,0x18), false), // Green, Yellow
-  ColorEntry(QColor(0x18,0x18,0xB2), false), ColorEntry( QColor(0xB2,0x18,0xB2), false), // Blue, Magenta
-  ColorEntry(QColor(0x18,0xB2,0xB2), false), ColorEntry( QColor(0xB2,0xB2,0xB2), false), // Cyan, White
-  // intensiv
-  ColorEntry(QColor(0x00,0x00,0x00), false), ColorEntry( QColor(0xFF,0xFF,0xFF), true),
-  ColorEntry(QColor(0x68,0x68,0x68), false), ColorEntry( QColor(0xFF,0x54,0x54), false),
-  ColorEntry(QColor(0x54,0xFF,0x54), false), ColorEntry( QColor(0xFF,0xFF,0x54), false),
-  ColorEntry(QColor(0x54,0x54,0xFF), false), ColorEntry( QColor(0xFF,0x54,0xFF), false),
-  ColorEntry(QColor(0x54,0xFF,0xFF), false), ColorEntry( QColor(0xFF,0xFF,0xFF), false)
+const ColorEntry UT_CharacterColor_Test::DefaultColorTable[TABLE_COLORS] = {
+    // normal
+    ColorEntry(QColor(0x00, 0x00, 0x00), false), ColorEntry(QColor(0xB2, 0xB2, 0xB2), true), // Dfore, Dback
+    ColorEntry(QColor(0x00, 0x00, 0x00), false), ColorEntry(QColor(0xB2, 0x18, 0x18), false), // Black, Red
+    ColorEntry(QColor(0x18, 0xB2, 0x18), false), ColorEntry(QColor(0xB2, 0x68, 0x18), false), // Green, Yellow
+    ColorEntry(QColor(0x18, 0x18, 0xB2), false), ColorEntry(QColor(0xB2, 0x18, 0xB2), false), // Blue, Magenta
+    ColorEntry(QColor(0x18, 0xB2, 0xB2), false), ColorEntry(QColor(0xB2, 0xB2, 0xB2), false), // Cyan, White
+    // intensiv
+    ColorEntry(QColor(0x00, 0x00, 0x00), false), ColorEntry(QColor(0xFF, 0xFF, 0xFF), true),
+    ColorEntry(QColor(0x68, 0x68, 0x68), false), ColorEntry(QColor(0xFF, 0x54, 0x54), false),
+    ColorEntry(QColor(0x54, 0xFF, 0x54), false), ColorEntry(QColor(0xFF, 0xFF, 0x54), false),
+    ColorEntry(QColor(0x54, 0x54, 0xFF), false), ColorEntry(QColor(0xFF, 0x54, 0xFF), false),
+    ColorEntry(QColor(0x54, 0xFF, 0xFF), false), ColorEntry(QColor(0xFF, 0xFF, 0xFF), false)
 };
 
 UT_CharacterColor_Test::UT_CharacterColor_Test()
@@ -36,6 +35,13 @@ void UT_CharacterColor_Test::TearDown()
 }
 
 #ifdef UT_CHARACTERCOLOR_TEST
+
+/*******************************************************************************
+ 1. @类:　   ColorEntry类
+ 2. @作者:   ut000438 王亮
+ 3. @日期:   2020-12-28
+ 4. @说明:   ColorEntry单元测试
+*******************************************************************************/
 TEST_F(UT_CharacterColor_Test, ColorEntryTest)
 {
     ColorEntry black = ColorEntry(QColor(0x00, 0x00, 0x00), false);
@@ -65,13 +71,25 @@ TEST_F(UT_CharacterColor_Test, ColorEntryTest)
     EXPECT_EQ(defaultColorEntry.color.isValid(), false);
 }
 
-TEST_F(UT_CharacterColor_Test, DummyConstructorTest)
+/*******************************************************************************
+ 1. @函数:    CharacterColor类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    isValid单元测试
+*******************************************************************************/
+TEST_F(UT_CharacterColor_Test, isValid)
 {
     CharacterColor charColor;
     EXPECT_EQ(charColor.isValid(), false);
 }
 
-TEST_F(UT_CharacterColor_Test, ColorSpaceDefaultTest_data)
+/*******************************************************************************
+ 1. @函数:    CharacterColor类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    color单元测试
+*******************************************************************************/
+TEST_F(UT_CharacterColor_Test, color)
 {
     CharacterColor charColor(COLOR_SPACE_DEFAULT, 1);
     const QColor result = charColor.color(DefaultColorTable);

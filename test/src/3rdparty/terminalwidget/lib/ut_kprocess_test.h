@@ -14,8 +14,6 @@ class UT_KProcess_Test : public ::testing::Test
 public:
     UT_KProcess_Test();
 
-    //这里的几个函数都会自动调用
-
     //用于做一些初始化操作
     virtual void SetUp();
 

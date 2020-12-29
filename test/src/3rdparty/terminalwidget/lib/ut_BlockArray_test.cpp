@@ -23,6 +23,12 @@ void UT_BlockArray_Test::TearDown()
 
 #ifdef UT_BLOCKARRAY_TEST
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setSize单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, setSize)
 {
     BlockArray blockArray;
@@ -30,6 +36,12 @@ TEST_F(UT_BlockArray_Test, setSize)
     EXPECT_EQ(isSetOk, false);
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setHistorySize单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, setHistorySize)
 {
     BlockArray blockArray;
@@ -37,6 +49,12 @@ TEST_F(UT_BlockArray_Test, setHistorySize)
     EXPECT_EQ(isSetOk, false);
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    newBlock单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, newBlock)
 {
     BlockArray blockArray;
@@ -47,6 +65,12 @@ TEST_F(UT_BlockArray_Test, newBlock)
     EXPECT_EQ(res > 0, true);
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    lastBlock单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, lastBlock)
 {
     BlockArray blockArray;
@@ -63,6 +87,12 @@ TEST_F(UT_BlockArray_Test, lastBlock)
     EXPECT_EQ((block != nullptr), true);
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    len单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, len)
 {
     BlockArray blockArray;
@@ -75,6 +105,12 @@ TEST_F(UT_BlockArray_Test, len)
     EXPECT_EQ(size > 0, true);
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    has单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, has)
 {
     BlockArray blockArray;
@@ -86,6 +122,12 @@ TEST_F(UT_BlockArray_Test, has)
     EXPECT_EQ(hasBlock, true);
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    getCurrent单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, getCurrent)
 {
     BlockArray blockArray;
@@ -97,6 +139,12 @@ TEST_F(UT_BlockArray_Test, getCurrent)
     EXPECT_EQ(current, size_t(-1));
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    increaseBuffer单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, increaseBuffer)
 {
     BlockArray blockArray;
@@ -104,11 +152,18 @@ TEST_F(UT_BlockArray_Test, increaseBuffer)
     size_t res = blockArray.newBlock();
     EXPECT_EQ(res > 0, true);
 
-    //直接调用increaseBuffer/decreaseBuffer会crash
+    //直接调用increaseBuffer会crash
+    //通过先设置一个小的buffer，再设置更大的buffer，间接调用increaseBuffer
     blockArray.setHistorySize(100);
     blockArray.setHistorySize(1000);
 }
 
+/*******************************************************************************
+ 1. @函数:    BlockArray类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    decreaseBuffer单元测试
+*******************************************************************************/
 TEST_F(UT_BlockArray_Test, decreaseBuffer)
 {
     BlockArray blockArray;
@@ -116,6 +171,8 @@ TEST_F(UT_BlockArray_Test, decreaseBuffer)
     size_t res = blockArray.newBlock();
     EXPECT_EQ(res > 0, true);
 
+    //直接调用decreaseBuffer会crash
+    //通过先设置一个大的buffer，再设置更小的buffer，间接调用decreaseBuffer
     blockArray.setHistorySize(1000);
     blockArray.setHistorySize(500);
 }

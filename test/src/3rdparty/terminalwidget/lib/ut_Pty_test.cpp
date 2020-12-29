@@ -20,7 +20,14 @@ void UT_Pty_Test::TearDown()
 }
 
 #ifdef UT_PTY_TEST
-TEST_F(UT_Pty_Test, FlowControlTest)
+
+/*******************************************************************************
+ 1. @函数:    Pty类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setFlowControlEnabled单元测试
+*******************************************************************************/
+TEST_F(UT_Pty_Test, setFlowControlEnabled)
 {
     Pty pty;
     const bool input = true;
@@ -29,7 +36,13 @@ TEST_F(UT_Pty_Test, FlowControlTest)
     EXPECT_EQ(output, input);
 }
 
-TEST_F(UT_Pty_Test, EraseCharTest)
+/*******************************************************************************
+ 1. @函数:    Pty类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    erase单元测试
+*******************************************************************************/
+TEST_F(UT_Pty_Test, erase)
 {
     Pty pty;
     const char input = 'x';
@@ -38,7 +51,13 @@ TEST_F(UT_Pty_Test, EraseCharTest)
     EXPECT_EQ(output, input);
 }
 
-TEST_F(UT_Pty_Test, UseUtmpTest)
+/*******************************************************************************
+ 1. @函数:    Pty类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setUseUtmp单元测试
+*******************************************************************************/
+TEST_F(UT_Pty_Test, setUseUtmp)
 {
     Pty pty;
     const bool input = true;
@@ -47,7 +66,13 @@ TEST_F(UT_Pty_Test, UseUtmpTest)
     EXPECT_EQ(output, input);
 }
 
-TEST_F(UT_Pty_Test, RunProgramTest)
+/*******************************************************************************
+ 1. @函数:    Pty类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    start单元测试
+*******************************************************************************/
+TEST_F(UT_Pty_Test, start)
 {
     Pty pty;
     QString program = QStringLiteral("sh");

@@ -1,16 +1,17 @@
 
-#ifndef UT_COLORSCHEME_TEST_H
-#define UT_COLORSCHEME_TEST_H
+#ifndef UT_QTERMWIDGET_TEST_H
+#define UT_QTERMWIDGET_TEST_H
 
 #include "ut_defines.h"
+#include "konsole_wcwidth.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
 
-class UT_ColorScheme_Test : public ::testing::Test
+class UT_KonsoleWcwidth_Test : public ::testing::Test
 {
 public:
-    UT_ColorScheme_Test();
+    UT_KonsoleWcwidth_Test();
 
     //用于做一些初始化操作
     virtual void SetUp();
@@ -19,4 +20,4 @@ public:
     virtual void TearDown();
 };
 
-#endif // UT_COLORSCHEME_TEST_H
+#endif // UT_QTERMWIDGET_TEST_H

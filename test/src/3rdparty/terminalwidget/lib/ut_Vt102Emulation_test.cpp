@@ -38,14 +38,37 @@ void UT_Vt102Emulation_Test::TearDown()
 }
 
 #ifdef UT_VT102EMULATION_TEST
-TEST_F(UT_Vt102Emulation_Test, Vt102EmulationTest)
+
+/*******************************************************************************
+ 1. @函数:    Vt102Emulation类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    reset单元测试
+*******************************************************************************/
+TEST_F(UT_Vt102Emulation_Test, reset)
 {
     Vt102Emulation emulation;
-    emulation.clearEntireScreen();
-
     emulation.reset();
 }
 
+/*******************************************************************************
+ 1. @函数:    Vt102Emulation类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    clearEntireScreen单元测试
+*******************************************************************************/
+TEST_F(UT_Vt102Emulation_Test, clearEntireScreen)
+{
+    Vt102Emulation emulation;
+    emulation.clearEntireScreen();
+}
+
+/*******************************************************************************
+ 1. @函数:    Vt102Emulation类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    processToken单元测试
+*******************************************************************************/
 TEST_F(UT_Vt102Emulation_Test, processToken)
 {
     Vt102Emulation emulation;

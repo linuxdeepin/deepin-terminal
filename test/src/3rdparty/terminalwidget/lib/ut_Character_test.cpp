@@ -24,43 +24,14 @@ void UT_Character_Test::TearDown()
 }
 
 #ifdef UT_CHARACTER_TEST
-TEST_F(UT_Character_Test, CharacterTest)
-{
-}
 
-TEST_F(UT_Character_Test, decodeLine)
-{
-    Character aLineChar('c');
-
-    QTextStream lineStream(new QString());
-    TerminalCharacterDecoder *decoder = new PlainTextDecoder;
-    decoder->begin(&lineStream);
-    decoder->decodeLine(&aLineChar, 1, 0);
-    decoder->end();
-
-    delete decoder;
-
-    Character bLineChar('<');
-
-    QTextStream htmlLineStream(new QString());
-    decoder = new HTMLDecoder;
-    decoder->begin(&htmlLineStream);
-    decoder->decodeLine(&bLineChar, 1, 0);
-    decoder->end();
-
-    delete decoder;
-}
-
-TEST_F(UT_Character_Test, characterWidthTest)
-{
-    for (uint i = 0; i < 255; i++) {
-        int width = characterWidth(i);
-        EXPECT_GE(width, -1);
-    }
-}
-
-
-TEST_F(UT_Character_Test, drawTest)
+/*******************************************************************************
+ 1. @函数:    LineBlockCharacters类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    draw单元测试
+*******************************************************************************/
+TEST_F(UT_Character_Test, draw)
 {
     class PainterWidget :  public QWidget
     {

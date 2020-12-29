@@ -21,42 +21,65 @@ void UT_ShellCommand_Test::TearDown()
 }
 
 #ifdef UT_SHELLCOMMAND_TEST
-TEST_F(UT_ShellCommand_Test, ShellCommandTest)
+
+/*******************************************************************************
+ 1. @函数:    ShellCommand类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    command单元测试
+*******************************************************************************/
+TEST_F(UT_ShellCommand_Test, command)
 {
     const QString fullCommand(QStringLiteral("sudo apt-get update"));
     ShellCommand shellCommand(fullCommand);
     EXPECT_EQ(shellCommand.command(), QStringLiteral("sudo"));
-    EXPECT_EQ(shellCommand.fullCommand(), fullCommand);
 }
 
-TEST_F(UT_ShellCommand_Test, ConstructorWithTwoArgumentsTest)
+/*******************************************************************************
+ 1. @函数:    ShellCommand类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    arguments单元测试
+*******************************************************************************/
+TEST_F(UT_ShellCommand_Test, arguments)
 {
     const QString command(QStringLiteral("wc"));
     QStringList arguments;
     arguments << QStringLiteral("wc") << QStringLiteral("-l") << QStringLiteral("*.cpp");
 
     ShellCommand shellCommand(command, arguments);
-    EXPECT_EQ(shellCommand.command(), command);
     EXPECT_EQ(shellCommand.arguments(), arguments);
+}
+
+/*******************************************************************************
+ 1. @函数:    ShellCommand类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    fullCommand单元测试
+*******************************************************************************/
+TEST_F(UT_ShellCommand_Test, fullCommand)
+{
+    const QString command(QStringLiteral("wc"));
+    QStringList arguments;
+    arguments << QStringLiteral("wc") << QStringLiteral("-l") << QStringLiteral("*.cpp");
+
+    ShellCommand shellCommand(command, arguments);
     EXPECT_EQ(shellCommand.fullCommand(), arguments.join(QLatin1String(" ")));
 }
 
-TEST_F(UT_ShellCommand_Test, ExpandEnvironmentVariableTest)
+/*******************************************************************************
+ 1. @函数:    ShellCommand类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    expand单元测试
+*******************************************************************************/
+TEST_F(UT_ShellCommand_Test, expand)
 {
     QString text = QStringLiteral("$ABC '$ABC'");
     qputenv("ABC", "123");
     const QString result3 = ShellCommand::expand(text);
     const QString expected3 = QStringLiteral("123 '$ABC'");
     EXPECT_EQ(result3, expected3);
-}
-
-TEST_F(UT_ShellCommand_Test, EmptyCommandTest)
-{
-    const QString command = QString();
-    ShellCommand shellCommand(command);
-    EXPECT_EQ(shellCommand.command(), QString());
-    EXPECT_EQ(shellCommand.arguments(), QStringList());
-    EXPECT_EQ(shellCommand.fullCommand(), QString());
 }
 
 #endif

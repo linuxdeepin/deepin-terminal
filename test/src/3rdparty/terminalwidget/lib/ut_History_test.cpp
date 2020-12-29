@@ -25,7 +25,13 @@ void UT_History_Test::TearDown()
 
 #ifdef UT_HISTORY_TEST
 
-TEST_F(UT_History_Test, HistoryNoneTest)
+/*******************************************************************************
+ 1. @函数:    HistoryTypeNone类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    isEnabled/isUnlimited/maximumLineCount单元测试
+*******************************************************************************/
+TEST_F(UT_History_Test, HistoryTypeNone)
 {
     HistoryType *history;
 
@@ -36,7 +42,13 @@ TEST_F(UT_History_Test, HistoryNoneTest)
     delete history;
 }
 
-TEST_F(UT_History_Test, HistoryFileTest)
+/*******************************************************************************
+ 1. @函数:    HistoryTypeFile类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    isEnabled/isUnlimited/maximumLineCount单元测试
+*******************************************************************************/
+TEST_F(UT_History_Test, HistoryTypeFile)
 {
     HistoryType *history;
 
@@ -47,6 +59,12 @@ TEST_F(UT_History_Test, HistoryFileTest)
     delete history;
 }
 
+/*******************************************************************************
+ 1. @函数:    CompactHistoryType类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    isEnabled/isUnlimited/maximumLineCount单元测试
+*******************************************************************************/
 TEST_F(UT_History_Test, CompactHistoryTest)
 {
     HistoryType *history;
@@ -58,9 +76,15 @@ TEST_F(UT_History_Test, CompactHistoryTest)
     delete history;
 }
 
-TEST_F(UT_History_Test, EmulationHistoryTest)
+/*******************************************************************************
+ 1. @函数:    Emulation类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    Emulation history单元测试
+*******************************************************************************/
+TEST_F(UT_History_Test, history)
 {
-    Session* session = new Session();
+    Session *session = new Session();
     Emulation *emulation = session->emulation();
 
     const HistoryType &historyTypeDefault = emulation->history();
@@ -89,6 +113,12 @@ TEST_F(UT_History_Test, EmulationHistoryTest)
     delete session;
 }
 
+/*******************************************************************************
+ 1. @函数:    HistoryScrollNone/HistoryScrollFile/CompactHistoryScroll
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    Emulation history单元测试
+*******************************************************************************/
 TEST_F(UT_History_Test, HistoryScrollTest)
 {
     HistoryScroll *historyScroll;
@@ -135,6 +165,12 @@ TEST_F(UT_History_Test, HistoryScrollTest)
     delete historyScroll;
 }
 
+/*******************************************************************************
+ 1. @函数:    HistoryScrollBuffer
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    HistoryScrollBuffer单元测试
+*******************************************************************************/
 TEST_F(UT_History_Test, HistoryScrollBufferTest)
 {
     HistoryScrollBuffer *scrollBuffer = new HistoryScrollBuffer(200);
@@ -144,9 +180,8 @@ TEST_F(UT_History_Test, HistoryScrollBufferTest)
     EXPECT_EQ(scrollBuffer->maxNbLines(), 600);
 
     QVector<Character> charVec;
-    for(int i=0; i<20; i++)
-    {
-        Character aChar(static_cast<quint16>('a'+i));
+    for (int i = 0; i < 20; i++) {
+        Character aChar(static_cast<quint16>('a' + i));
         charVec << aChar;
     }
 
@@ -158,14 +193,19 @@ TEST_F(UT_History_Test, HistoryScrollBufferTest)
     EXPECT_GE(lineCount, 1);
 }
 
-TEST_F(UT_History_Test, HistoryScrollBlockArrayTest)
+/*******************************************************************************
+ 1. @函数:    HistoryScrollBlockArray
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    HistoryScrollBlockArray单元测试
+*******************************************************************************/
+TEST_F(UT_History_Test, HistoryScrollBlockArray)
 {
     HistoryScrollBlockArray *scrollBlockArray = new HistoryScrollBlockArray(500);
 
     QVector<Character> charVec;
-    for(int i=0; i<20; i++)
-    {
-        Character aChar(static_cast<quint16>('a'+i));
+    for (int i = 0; i < 20; i++) {
+        Character aChar(static_cast<quint16>('a' + i));
         charVec << aChar;
     }
 

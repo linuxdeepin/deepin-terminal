@@ -31,7 +31,13 @@ typedef struct {
 
 #ifdef UT_KEYBOARDTRANSLATOR_TEST
 
-TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslator::Entry类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    setModifiers单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, setModifiers)
 {
     QList<QByteArray> entry;
     entry << QByteArray("E*")
@@ -80,7 +86,13 @@ TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorTest)
     }
 }
 
-TEST_F(UT_KeyboardTranslator_Test, loadTranslatorTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslator类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    loadTranslator单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, loadTranslator)
 {
     KeyboardTranslator *translator = KeyboardTranslatorManager::instance()->loadTranslator(QLatin1String("default"));
 
@@ -93,22 +105,46 @@ TEST_F(UT_KeyboardTranslator_Test, loadTranslatorTest)
     }
 }
 
-TEST_F(UT_KeyboardTranslator_Test, findTranslatorTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorManager类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    findTranslator单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, findTranslator)
 {
     KeyboardTranslatorManager::instance()->findTranslator("default");
 }
 
-TEST_F(UT_KeyboardTranslator_Test, allTranslatorsTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorManager类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    allTranslators单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, allTranslators)
 {
     KeyboardTranslatorManager::instance()->allTranslators();
 }
 
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslator类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    defaultTranslator单元测试
+*******************************************************************************/
 TEST_F(UT_KeyboardTranslator_Test, defaultTranslator)
 {
     KeyboardTranslatorManager::instance()->defaultTranslator();
 }
 
-TEST_F(UT_KeyboardTranslator_Test, findEntryTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslator类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    findEntry单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, findEntry)
 {
     KeyboardTranslator *translator = new KeyboardTranslator(QLatin1String("default"));
 
@@ -119,7 +155,13 @@ TEST_F(UT_KeyboardTranslator_Test, findEntryTest)
     delete translator;
 }
 
-TEST_F(UT_KeyboardTranslator_Test, addEntryTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslator类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    addEntry单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, addEntry)
 {
     KeyboardTranslator *translator = new KeyboardTranslator(QLatin1String("default"));
 
@@ -146,7 +188,13 @@ TEST_F(UT_KeyboardTranslator_Test, addEntryTest)
     delete translator;
 }
 
-TEST_F(UT_KeyboardTranslator_Test, writeEntryTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorReader类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    writeEntry单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, writeEntry)
 {
     KeyboardTranslator *translator = new KeyboardTranslator(QLatin1String("default"));
 
@@ -172,7 +220,13 @@ TEST_F(UT_KeyboardTranslator_Test, writeEntryTest)
     delete translator;
 }
 
-TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorReaderTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorReader类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    nextEntry单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, nextEntry)
 {
     QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
@@ -200,7 +254,13 @@ TEST_F(UT_KeyboardTranslator_Test, KeyboardTranslatorReaderTest)
     }
 }
 
-TEST_F(UT_KeyboardTranslator_Test, createEntryTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorReader类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:   createEntry单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, createEntry)
 {
     QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
@@ -226,7 +286,13 @@ TEST_F(UT_KeyboardTranslator_Test, createEntryTest)
     }
 }
 
-TEST_F(UT_KeyboardTranslator_Test, parseAsStateFlagTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorReader类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    parseAsStateFlag单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, parseAsStateFlag)
 {
     QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
@@ -265,8 +331,13 @@ TEST_F(UT_KeyboardTranslator_Test, parseAsStateFlagTest)
     }
 }
 
-
-TEST_F(UT_KeyboardTranslator_Test, parseAsModifierTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorReader类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    parseAsModifier单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, parseAsModifier)
 {
     QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
@@ -304,7 +375,13 @@ TEST_F(UT_KeyboardTranslator_Test, parseAsModifierTest)
     }
 }
 
-TEST_F(UT_KeyboardTranslator_Test, decodeSequenceTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslatorReader类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    decodeSequence单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, decodeSequence)
 {
     QDir dir(KB_LAYOUT_DIR);
     QStringList filters;
@@ -343,7 +420,13 @@ TEST_F(UT_KeyboardTranslator_Test, decodeSequenceTest)
     }
 }
 
-TEST_F(UT_KeyboardTranslator_Test, unescapeTest)
+/*******************************************************************************
+ 1. @函数:    KeyboardTranslator类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-12-28
+ 4. @说明:    unescape单元测试
+*******************************************************************************/
+TEST_F(UT_KeyboardTranslator_Test, unescape)
 {
     KeyboardTranslator::Entry keyEntry;
 
