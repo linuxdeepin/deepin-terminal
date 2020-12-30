@@ -31,7 +31,8 @@
 #include <QDebug>
 #include <QDir>
 
-#define INI_FILE_CODEC QTextCodec::codecForName("UTF-8")
+/* del by ut001121 zhangmeng 20201221 修复BUG58747
+#define INI_FILE_CODEC QTextCodec::codecForName("UTF-8")*/
 
 // this class only provided for convenience, do not do anything in the construct function,
 // let the caller decided when to create the shortcuts.
@@ -150,11 +151,15 @@ void ShortcutManager::createCustomCommandsFromConfig()
         return ;
     }
 
-    //QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
+    /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
+    /* del
     QSettings::Format fmt = QSettings::registerFormat("conf", SettingIO::readIniFunc, SettingIO::writeIniFunc);
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
 
-    commandsSettings.setIniCodec(INI_FILE_CODEC);
+    commandsSettings.setIniCodec(INI_FILE_CODEC);*/
+    /* add */
+    USettings commandsSettings(customCommandConfigFilePath);
+    /***modify end by ut001121***/
     QStringList commandGroups = commandsSettings.childGroups();
     for (const QString &commandName : commandGroups) {
         commandsSettings.beginGroup(commandName);
@@ -464,9 +469,14 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
+    /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
+    /* del
     //QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
-    commandsSettings.setIniCodec(INI_FILE_CODEC);
+    commandsSettings.setIniCodec(INI_FILE_CODEC);**/
+    /* add */
+    USettings commandsSettings(customCommandConfigFilePath);
+    /***modify end by ut001121***/
     commandsSettings.beginGroup(action->text());
     commandsSettings.setValue("Command", action->data());
     commandsSettings.setValue("Shortcut", action->shortcut().toString());
@@ -499,9 +509,14 @@ int ShortcutManager::delCustomCommandToConfig(CustomCommandData itemData)
     }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
+    /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
+    /* del
     //QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
     QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
-    commandsSettings.setIniCodec(INI_FILE_CODEC);
+    commandsSettings.setIniCodec(INI_FILE_CODEC);*/
+    /* add */
+    USettings commandsSettings(customCommandConfigFilePath);
+    /***modify end by ut001121***/
     commandsSettings.remove(itemData.m_cmdName);
 
     int removeIndex = -1;

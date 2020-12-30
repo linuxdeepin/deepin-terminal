@@ -31,6 +31,8 @@
 #ifndef SERVERCONFIGMANAGER_H
 #define SERVERCONFIGMANAGER_H
 
+#include "settingio.h"
+
 #include <QList>
 #include <QMap>
 #include <QObject>
@@ -134,7 +136,7 @@ private:
     // 展示的弹窗的键值及弹窗的指针 <服务器名，同类服务器弹窗列表> 弹窗只需存储修改弹窗
     QMap<QString, QList<ServerConfigOptDlg *>> m_serverConfigDialogMap;
     // 添加服务器弹窗
-    inline void settServerConfig(QSettings &commandsSettings, const QString &strGroupName, ServerConfig *config);
+    inline void settServerConfig(USettings &commandsSettings, const QString &strGroupName, ServerConfig *config);
     // 初始化主界面
     void fillManagePanel(ListView *listview);
     // 搜索界面
