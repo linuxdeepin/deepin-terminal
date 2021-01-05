@@ -83,7 +83,6 @@ popd
 
 %install
 %make_install -C build INSTALL_ROOT="%buildroot"
-rm %buildroot/%{getenv:HOME}/.config/deepin/%{name}/install_flag
 
 %post -n %{libname}
 ldconfig
