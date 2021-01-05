@@ -36,6 +36,7 @@ FILE(GLOB allSource
     ../src/main/service.cpp
     ../src/main/windowsmanager.cpp
     ../src/main/mainwindow.cpp
+    ../src/main/tabletwindow.cpp
     ../src/main/terminalapplication.cpp
     ../src/main/termproperties.cpp
     ../src/main/dbusmanager.cpp

@@ -128,6 +128,7 @@ set (DTNG_CPP_FILES
     src/main/service.cpp
     src/main/windowsmanager.cpp
     src/main/mainwindow.cpp
+    src/main/tabletwindow.cpp
     src/main/terminalapplication.cpp
     src/main/termproperties.cpp    
     src/main/dbusmanager.cpp
@@ -165,6 +166,7 @@ set (DTNG_CPP_FILES
     src/views/listview.cpp
     src/views/customthemesettingdialog.cpp
     src/views/themepreviewarea.cpp
+    src/views/switchthememenu.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -183,6 +185,7 @@ set (DTNG_HEADER_FILES
     src/main/windowsmanager.h
     src/main/mainwindow.h
     src/main/mainwindowplugininterface.h
+    src/main/tabletwindow.h
     src/main/service.h
     src/main/terminalapplication.h
     src/main/termproperties.h
@@ -220,6 +223,7 @@ set (DTNG_HEADER_FILES
     src/views/listview.h
     src/views/customthemesettingdialog.h
     src/views/themepreviewarea.h
+    src/views/switchthememenu.h
 )
 
 set (DTNG_QRC_FILES

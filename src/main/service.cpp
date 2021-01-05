@@ -418,7 +418,7 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
         connect(m_customThemeSettingDialog, &CustomThemeSettingDialog::finished, this, [ & ](int result) {
             if (result == CustomThemeSettingDialog::Accepted) {
                 qDebug() << "CustomThemeSettingDialog::Accepted";
-                m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
+                m_settingOwner->switchThemeAction(m_settingOwner->m_themeCustomAction, Settings::instance()->m_configCustomThemePath);
                 return;
             } else {
                 qDebug() << "CustomThemeSettingDialog::Rejected";

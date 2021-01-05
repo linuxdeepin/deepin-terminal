@@ -218,7 +218,7 @@ void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
     /** add begin by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
     /***mod by ut001121 zhangmeng 20200813 触摸屏下移动距离超过COORDINATE_ERROR_Y则认为是滑动事件 修复BUG42261***/
     if (Qt::MouseEventSynthesizedByQt == event->source()
-            && m_touchSlideMaxY > COORDINATE_ERROR_Y) {
+            && m_touchSlideMaxY > ENCODELISTVIEW_COORDINATE_ERROR_Y) {
         event->accept();
         return;
     }

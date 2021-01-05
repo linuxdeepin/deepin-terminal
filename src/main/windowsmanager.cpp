@@ -23,8 +23,13 @@
 #include "utils.h"
 #include "service.h"
 #include "define.h"
+#include "tabletwindow.h"
+
+#include <DGuiApplicationHelper>
 
 #include <QDebug>
+
+DGUI_USE_NAMESPACE
 
 WindowsManager *WindowsManager::pManager = new WindowsManager();
 WindowsManager *WindowsManager::instance()
@@ -129,7 +134,16 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     if (m_normalWindowList.count() == 0) {
         newProperties[SingleFlag] = true;
     }
-    MainWindow *newWindow = new NormalWindow(newProperties);
+
+    MainWindow *newWindow = nullptr;
+    // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
+    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
+    if (isTabletMode) {
+        newWindow = new TabletWindow(newProperties);
+    }
+    else {
+        newWindow = new NormalWindow(newProperties);
+    }
     m_normalWindowList << newWindow;
     qDebug() << "create NormalWindow, current count =" << m_normalWindowList.count()
              << ", SingleFlag" << newProperties[SingleFlag].toBool();

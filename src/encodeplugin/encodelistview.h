@@ -31,7 +31,7 @@ DWIDGET_USE_NAMESPACE
 // add by ut001121 zhangmeng 20200731 定义无效焦点原因 修复BUG40390
 #define INVALID_FOCUS_REASON Qt::MouseFocusReason
 
-#define COORDINATE_ERROR_Y  10
+#define ENCODELISTVIEW_COORDINATE_ERROR_Y  10
 
 /*******************************************************************************
  1. @类名:    EncodeListView

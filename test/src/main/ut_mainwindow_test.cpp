@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 #include "tabbar.h"
 #include "termwidget.h"
-#include "termwidget.h"
+#include "switchthememenu.h"
 #include "stub.h"
 
 //Google GTest 相关头文件
@@ -504,34 +504,34 @@ TEST_F(UT_MainWindow_Test, checkExtendThemeItemTest)
 {
     QAction *pAction = nullptr;
     m_normalWindow->checkExtendThemeItem("Theme1", pAction);
-    EXPECT_EQ(m_normalWindow->themeOneAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeOneAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme2", pAction);
-    EXPECT_EQ(m_normalWindow->themeTwoAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeTwoAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme3", pAction);
-    EXPECT_EQ(m_normalWindow->themeThreeAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeThreeAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme4", pAction);
-    EXPECT_EQ(m_normalWindow->themeFourAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeFourAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme5", pAction);
-    EXPECT_EQ(m_normalWindow->themeFiveAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeFiveAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme6", pAction);
-    EXPECT_EQ(m_normalWindow->themeSixAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeSixAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme7", pAction);
-    EXPECT_EQ(m_normalWindow->themeSevenAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeSevenAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme8", pAction);
-    EXPECT_EQ(m_normalWindow->themeEightAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeEightAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme9", pAction);
-    EXPECT_EQ(m_normalWindow->themeNineAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeNineAction, pAction);
 
     m_normalWindow->checkExtendThemeItem("Theme10", pAction);
-    EXPECT_EQ(m_normalWindow->themeTenAction, pAction);
+    EXPECT_EQ(m_normalWindow->m_themeTenAction, pAction);
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
@@ -547,7 +547,7 @@ TEST_F(UT_MainWindow_Test, checkExtendThemeItemTest)
 TEST_F(UT_MainWindow_Test, checkThemeItemTest)
 {
     m_normalWindow->checkThemeItem();
-    EXPECT_NE(m_normalWindow->currCheckThemeAction, nullptr);
+    EXPECT_NE(m_normalWindow->m_currCheckThemeAction, nullptr);
 
 #ifdef ENABLE_UI_TEST
     QTest::qWait(UT_WAIT_TIME);
@@ -562,12 +562,12 @@ TEST_F(UT_MainWindow_Test, checkThemeItemTest)
 *******************************************************************************/
 TEST_F(UT_MainWindow_Test, switchThemeActionTest)
 {
-    QAction *pAction = m_normalWindow->themeOneAction;
+    QAction *pAction = m_normalWindow->m_themeOneAction;
     QString themeNameStr = "Theme1";
     m_normalWindow->switchThemeAction(pAction, themeNameStr);
     //EXPECT_EQ(Settings::instance()->extendThemeStr, "Theme1");
 
-    pAction = m_normalWindow->themeNineAction;
+    pAction = m_normalWindow->m_themeNineAction;
     themeNameStr = "Theme9";
     m_normalWindow->switchThemeAction(pAction, themeNameStr);
     //EXPECT_EQ(Settings::instance()->extendThemeStr, "Theme9");
@@ -585,43 +585,43 @@ TEST_F(UT_MainWindow_Test, switchThemeActionTest)
 *******************************************************************************/
 TEST_F(UT_MainWindow_Test, switchThemeActionTestOne)
 {
-    QAction *pAction = m_normalWindow->lightThemeAction;
+    QAction *pAction = m_normalWindow->m_lightThemeAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->darkThemeAction;
+    pAction = m_normalWindow->m_darkThemeAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->autoThemeAction;
+    pAction = m_normalWindow->m_autoThemeAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeOneAction;
+    pAction = m_normalWindow->m_themeOneAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeTwoAction;
+    pAction = m_normalWindow->m_themeTwoAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeThreeAction;
+    pAction = m_normalWindow->m_themeThreeAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeFourAction;
+    pAction = m_normalWindow->m_themeFourAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeFiveAction;
+    pAction = m_normalWindow->m_themeFiveAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeSixAction;
+    pAction = m_normalWindow->m_themeSixAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeSevenAction;
+    pAction = m_normalWindow->m_themeSevenAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeEightAction;
+    pAction = m_normalWindow->m_themeEightAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeNineAction;
+    pAction = m_normalWindow->m_themeNineAction;
     m_normalWindow->switchThemeAction(pAction);
 
-    pAction = m_normalWindow->themeTenAction;
+    pAction = m_normalWindow->m_themeTenAction;
     m_normalWindow->switchThemeAction(pAction);
 
 #ifdef ENABLE_UI_TEST
@@ -645,10 +645,10 @@ TEST_F(UT_MainWindow_Test, setThemeCheckItemSlotTest)
     Settings::instance()->extendThemeStr = "";
     m_normalWindow->setThemeCheckItemSlot();
 
-    m_normalWindow->autoThemeAction->setChecked(true);
+    m_normalWindow->m_autoThemeAction->setChecked(true);
     m_normalWindow->setThemeCheckItemSlot();
 
-    m_normalWindow->autoThemeAction->setChecked(false);
+    m_normalWindow->m_autoThemeAction->setChecked(false);
 
     Settings::instance()->extendThemeStr = "Theme1";
     m_normalWindow->setThemeCheckItemSlot();
@@ -681,35 +681,35 @@ TEST_F(UT_MainWindow_Test, setThemeCheckItemSlotTest)
 *******************************************************************************/
 TEST_F(UT_MainWindow_Test, menuHideSetThemeSlotTest)
 {
-    m_normalWindow->currCheckThemeAction = m_normalWindow->lightThemeAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_lightThemeAction;
     m_normalWindow->menuHideSetThemeSlot();
 
-    m_normalWindow->currCheckThemeAction = m_normalWindow->darkThemeAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_darkThemeAction;
     m_normalWindow->menuHideSetThemeSlot();
 
-    m_normalWindow->currCheckThemeAction = m_normalWindow->autoThemeAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_autoThemeAction;
     m_normalWindow->menuHideSetThemeSlot();
 
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeOneAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeOneAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeTwoAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeTwoAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeThreeAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeThreeAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeFourAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeFourAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeFiveAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeFiveAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeSixAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeSixAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeSevenAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeSevenAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeEightAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeEightAction;
     m_normalWindow->menuHideSetThemeSlot();
 
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeNineAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeNineAction;
     m_normalWindow->menuHideSetThemeSlot();
-    m_normalWindow->currCheckThemeAction = m_normalWindow->themeTenAction;
+    m_normalWindow->m_currCheckThemeAction = m_normalWindow->m_themeTenAction;
     m_normalWindow->menuHideSetThemeSlot();
 
 #ifdef ENABLE_UI_TEST

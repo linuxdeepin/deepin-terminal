@@ -58,38 +58,7 @@ class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
-
-
-/*******************************************************************************
- 1. @类名:    SwitchThemeMenu
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-10-28
- 4. @说明:    主题菜单的快捷键项在鼠标离开悬浮时，触发主题还原
-*******************************************************************************/
-class SwitchThemeMenu : public QMenu
-{
-    Q_OBJECT
-public:
-    SwitchThemeMenu(const QString &title, QWidget *parent = nullptr);
-    //捕获鼠标离开主题项事件
-    void leaveEvent(QEvent *) override;
-    //主题菜单栏隐藏时触发
-    void hideEvent(QHideEvent *) override;
-    //捕获鼠标进入主题项事件
-    void enterEvent(QEvent *event) override;
-    //处理键盘主题项左键按下离开事件
-    void keyPressEvent(QKeyEvent *event) override;
-
-signals:
-    //主题项在鼠标停靠离开时触发的信号
-    void mainWindowCheckThemeItemSignal();
-    //主题菜单隐藏时设置主题信号
-    void menuHideSetThemeSignal();
-public:
-    //鼠标悬殊主题记录，防止频繁刷新，鼠标再次进入主题列表负责刷新预览
-    QString hoveredThemeStr = "";
-};
-
+class SwitchThemeMenu;
 
 /*******************************************************************************
  1. @类名:    MainWindow
@@ -293,6 +262,8 @@ protected:
     void checkThemeItem();
     //增加主题菜单
     void addThemeMenuItems();
+    //增加自定义主题菜单项
+    void addCustomThemeMenuItem();
 public:
     //选择主题项
     void switchThemeAction(QAction *);
@@ -412,6 +383,8 @@ protected:
     // 首个终端创建成功结束
     void firstTerminalComplete();
 
+    // 处理titlebar、tabbar中的按钮焦点
+    void handleTitleAndTabButtonsFocus();
 
 protected:
     // 初始化标题栏
@@ -483,42 +456,42 @@ protected:
 
 public:
     //主题菜单
-    SwitchThemeMenu *switchThemeMenu        = nullptr;
+    SwitchThemeMenu *m_switchThemeMenu        = nullptr;
     //浅色主题快捷键
-    QAction         *lightThemeAction       = nullptr;
+    QAction         *m_lightThemeAction       = nullptr;
     //深色主题快捷键
-    QAction         *darkThemeAction        = nullptr;
+    QAction         *m_darkThemeAction        = nullptr;
     //跟随系统主题快捷键
-    QAction         *autoThemeAction        = nullptr;
+    QAction         *m_autoThemeAction        = nullptr;
 
     //内置主题1快捷键
-    QAction         *themeOneAction         = nullptr;
+    QAction         *m_themeOneAction         = nullptr;
     //内置主题2快捷键
-    QAction         *themeTwoAction         = nullptr;
+    QAction         *m_themeTwoAction         = nullptr;
     //内置主题3快捷键
-    QAction         *themeThreeAction       = nullptr;
+    QAction         *m_themeThreeAction       = nullptr;
     //内置主题4快捷键
-    QAction         *themeFourAction        = nullptr;
+    QAction         *m_themeFourAction        = nullptr;
     //内置主题5快捷键
-    QAction         *themeFiveAction        = nullptr;
+    QAction         *m_themeFiveAction        = nullptr;
     //内置主题6快捷键
-    QAction         *themeSixAction         = nullptr;
+    QAction         *m_themeSixAction         = nullptr;
     //内置主题7快捷键
-    QAction         *themeSevenAction       = nullptr;
+    QAction         *m_themeSevenAction       = nullptr;
     //内置主题8快捷键
-    QAction         *themeEightAction       = nullptr;
+    QAction         *m_themeEightAction       = nullptr;
     //内置主题9快捷键
-    QAction         *themeNineAction        = nullptr;
+    QAction         *m_themeNineAction        = nullptr;
     //内置主题10快捷键
-    QAction         *themeTenAction         = nullptr;
+    QAction         *m_themeTenAction         = nullptr;
     //自定义主题快捷键
-    QAction        *themeCustomAction      = nullptr;
+    QAction         *m_themeCustomAction      = nullptr;
 
     //主题快捷键组
-    QActionGroup    *group                  = nullptr;
+    QActionGroup    *m_group                  = nullptr;
 
     //当前勾选的菜单主题快捷键
-    QAction         *currCheckThemeAction   = nullptr;
+    QAction         *m_currCheckThemeAction   = nullptr;
 
     //用于保存identifier/TermWidgetPage键值对的map
     QMap<QString, TermWidgetPage *> m_termWidgetPageMap;
