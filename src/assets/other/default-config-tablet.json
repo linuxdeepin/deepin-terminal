@@ -1,0 +1,373 @@
+{
+    "groups": [
+        {
+            "key": "basic",
+            "name": "Basic",
+            "groups": [
+                {
+                    "key": "interface",
+                    "name": "Interface",
+                    "options": [
+                        {
+                            "key": "opacity",
+                            "name": "Opacity",
+                            "type": "slider",
+                            "max": 100,
+                            "min": 20,
+                            "default": 100
+                        },
+                        {
+                            "key": "font",
+                            "name": "Font",
+                            "type": "fontcombobox",
+                            "default": "Noto Sans Mono"
+                        },
+                        {
+                            "key": "font_size",
+                            "name": "Font size",
+                            "type": "spinbutton",
+                            "default": 11,
+                            "max": 50,
+                            "min": 5
+                        },
+                        {
+                            "key": "theme",
+                            "hide": true,
+                            "reset": false,
+                            "default": "Linux"
+                        },
+                        {
+                            "key": "expand_theme",
+                            "hide": true,
+                            "reset": false,
+                            "default": ""
+                        }  
+                    ]
+                },
+                {
+                    "key": "tab_title",
+                    "name": "Tab titles",
+                    "options": [
+                        {
+                            "key": "tab_title_format",
+                            "name": "Tab title format",
+                            "type": "tabformatedit",
+                            "default": "%w"
+                        },
+                        {
+                            "key": "remote_tab_title_format",
+                            "name": "Remote tab title format",
+                            "type": "remotetabformatedit",
+                            "default": "%U%h"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "shortcuts",
+            "name": "Shortcuts",
+            "groups": [
+                {
+                    "key" : "terminal",
+                    "name" : "Terminal",
+                    "options" : [
+                        {
+                            "key": "copy",
+                            "name": "Copy",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+C"
+                        },
+
+
+                        {
+                            "key": "paste",
+                            "name": "Paste",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+V"
+                        },
+                        {
+                            "key": "find",
+                            "name": "Find",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Alt+F"
+                        },
+                        {
+                            "key": "zoom_in",
+                            "name": "Zoom in",
+                            "type": "shortcut",
+                            "default":  "Ctrl+="
+                        },
+                        {
+                            "key": "zoom_out",
+                            "name": "Zoom out",
+                            "type": "shortcut",
+                            "default":  "Ctrl+-"
+                        },
+                        {
+                            "key": "default_size",
+                            "name": "Default size",
+                            "type": "shortcut",
+                            "default":  "Ctrl+0"
+                        },
+                        {
+                            "key": "select_all",
+                            "name": "Select all",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+A"
+                        }
+                    ]
+                },
+                {
+                    "key" : "tab",
+                    "name" : "Tabs",
+                    "options" : [
+                        {
+                            "key": "new_tab",
+                            "name": "New tab",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+T"
+                        },
+                        {
+                            "key": "close_tab",
+                            "name": "Close tab",
+                            "type": "shortcut",
+                            "default":  "Alt+W"
+                        },
+                        {
+                            "key": "close_other_tabs",
+                            "name": "Close other tabs",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+W"
+                        },
+                        {
+                            "key": "previous_tab",
+                            "name": "Previous tab",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Tab"
+                        },
+                        {
+                            "key": "next_tab",
+                            "name": "Next tab",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+Tab"
+                        },
+                        {
+                            "key": "select_upper_workspace",
+                            "name": "Select upper workspace",
+                            "type": "shortcut",
+                            "default":  "Alt+Up"
+                        },
+                        {
+                            "key": "select_lower_workspace",
+                            "name": "Select lower workspace",
+                            "type": "shortcut",
+                            "default":  "Alt+Down"
+                        },
+                        {
+                            "key": "select_left_workspace",
+                            "name": "Select left workspace",
+                            "type": "shortcut",
+                            "default":  "Alt+Left"
+                        },
+                        {
+                            "key": "select_right_workspace",
+                            "name": "Select right workspace",
+                            "type": "shortcut",
+                            "default":  "Alt+Right"
+                        },
+                        {
+                            "key": "close_workspace",
+                            "name": "Close workspace",
+                            "type": "shortcut",
+                            "default":  "Alt+Q"
+                        },
+                        {
+                            "key": "close_other_workspaces",
+                            "name": "Close other workspaces",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+Q"
+                        },
+                        {
+                            "key": "switch_label_win_1",
+                            "name": "Go to tab 1",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+1"
+                        },
+                        {
+                            "key": "switch_label_win_2",
+                            "name": "Go to tab 2",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+2"
+                        },
+                        {
+                            "key": "switch_label_win_3",
+                            "name": "Go to tab 3",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+3"
+                        },
+                        {
+                            "key": "switch_label_win_4",
+                            "name": "Go to tab 4",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+4"
+                        },
+                        {
+                            "key": "switch_label_win_5",
+                            "name": "Go to tab 5",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+5"
+                        },
+                        {
+                            "key": "switch_label_win_6",
+                            "name": "Go to tab 6",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+6"
+                        },
+                        {
+                            "key": "switch_label_win_7",
+                            "name": "Go to tab 7",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+7"
+                        },
+                        {
+                            "key": "switch_label_win_8",
+                            "name": "Go to tab 8",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+8"
+                        },
+                        {
+                            "key": "switch_label_win_9",
+                            "name": "Go to tab 9",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+9"
+                        }
+                    ]
+                },
+                {
+                    "key" : "advanced",
+                    "name" : "Others",
+                    "options" : [
+                        {
+                            "key": "rename_title",
+                            "name": "Rename title",
+                            "type": "shortcut",
+                            "default":  "F2"
+                        },
+                        {
+                            "key": "display_shortcuts",
+                            "name": "Display shortcuts",
+                            "type": "shortcut",
+                            "default":  "Ctrl+Shift+?"
+                        },
+                        {
+                            "key": "custom_command",
+                            "name": "Custom commands",
+                            "type": "shortcut",
+                            "default":  "Alt+Ins"
+                        },
+                        {
+                            "key": "remote_management",
+                            "name": "Remote management",
+                            "type": "shortcut",
+                            "default":  "Alt+Del"
+                        }
+                    ]
+                }
+             ]
+        },
+        {
+            "key": "advanced",
+            "name": "Advanced",
+            "groups": [
+                {
+                    "key": "cursor",
+                    "name": "Cursor",
+                    "options": [
+                        {
+                            "key": "cursor_shape",
+                            "name": "Cursor style",
+                            "type": "buttongroup",
+                            "items": ["▐","_","|"],
+                            "default": 0,
+                            "i18n_skip_keys": ["items"]
+                        },
+                        {
+                            "key": "cursor_blink",
+                            "type": "checkbox",
+                            "text": "Cursor blink",
+                            "default": true
+                        },
+                          
+                        {
+                            "key": "auto_copy_selection",
+                            "type": "checkbox",
+                            "text": "Copy on select",
+                            "default": true
+                        }
+                    ]
+                },
+                {
+                    "key": "scroll",
+                    "name": "Scroll",
+                    "options": [
+                        {
+                            "key": "scroll_on_key",
+                            "type": "checkbox",
+                            "text": "Scroll on keystroke",
+                            "default": true
+                        },
+                        {
+                            "key": "scroll_on_output",
+                            "type": "checkbox",
+                            "text": "Scroll on output",
+                            "default": true
+                        }
+                    ]
+                },
+                {
+                    "key": "window",
+                    "name": "Window",
+                    "options": [
+                        {
+                            "key": "use_on_starting",
+                            "name": "Use on starting",
+                            "type": "combobox",
+                            "default": "window_normal"
+                        },
+                        {
+                            "key": "blurred_background",
+                            "text": "Blur background",
+                            "type": "checkbox",
+                            "default": "false"
+                        },
+                        {
+                            "key": "auto_hide_raytheon_window",
+                            "text": "Hide Quake window after losing focus",
+                            "type": "checkbox",
+                            "default": "false"
+                        }
+                    ]
+                },
+                {
+                    "key": "shell",
+                    "name": "Shell",
+                    "options": [
+                        {
+                            "key": "default_shell",
+                            "name": "Shell profile",
+                            "type": "shellconfigcombox",
+                            "default": "$SHELL"
+                        },
+                        {
+                            "key": "enable_ctrl_flow",
+                            "text": "Disable flow control using Ctrl+S, Ctrl+Q",
+                            "type": "checkbox",
+                            "default": "false"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

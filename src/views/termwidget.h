@@ -174,6 +174,7 @@ private slots:
 private:
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     void addMenuActions(const QPoint &pos);
+    void addSplitMenuActions();
     // 根据标签格式获取标签标题
     QString getTabTitle(QMap<QString, QString> format, QString TabFormat);
     //分屏时切换到当前选中主题方案

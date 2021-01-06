@@ -1247,12 +1247,6 @@ void MainWindow::initShortcuts()
     // next_tab
     connect(createNewShotcut("shortcuts.tab.next_tab"), &QShortcut::activated, this, &MainWindow::slotShortcutNextTab);
 
-    // horionzal_split
-    connect(createNewShotcut("shortcuts.tab.horionzal_split", false), &QShortcut::activated, this, &MainWindow::slotShortcutHorizonzalSplit);
-
-    // vertical_split
-    connect(createNewShotcut("shortcuts.tab.vertical_split", false), &QShortcut::activated, this, &MainWindow::slotShortcutVerticalSplit);
-
     // select_upper_workspace
     connect(createNewShotcut("shortcuts.tab.select_upper_workspace"), &QShortcut::activated, this, &MainWindow::slotShortcutSelectUpperWorkspace);
 
@@ -1292,9 +1286,6 @@ void MainWindow::initShortcuts()
     // select_all
     connect(createNewShotcut("shortcuts.terminal.select_all"), &QShortcut::activated, this, &MainWindow::slotShortcutSelectAll);
 
-    // switch_fullscreen
-    connect(createNewShotcut("shortcuts.advanced.switch_fullscreen"), &QShortcut::activated, this, &MainWindow::slotShortcutSwitchFullScreen);
-
     // rename_tab
     connect(createNewShotcut("shortcuts.advanced.rename_title"), &QShortcut::activated, this, &MainWindow::slotShortcutRenameTitle);
 
@@ -1328,6 +1319,36 @@ void MainWindow::initShortcuts()
         connect(switchShortcut, &QShortcut::activated, this, &MainWindow::slotShortcutSwitchActivated);
 
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    initSwitchFullScreenShortcut
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-06
+ 4. @说明:    用于F11切换全屏的快捷键，仅供普通模式使用(雷神模式/平板模式下禁用)
+*******************************************************************************/
+void MainWindow::initSwitchFullScreenShortcut()
+{
+    // switch_fullscreen
+    QShortcut *switchFullscreenShortcut = createNewShotcut("shortcuts.advanced.switch_fullscreen");
+    if (nullptr != switchFullscreenShortcut) {
+        connect(switchFullscreenShortcut, &QShortcut::activated, this, &MainWindow::slotShortcutSwitchFullScreen);
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    initSplitShortcuts
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-06
+ 4. @说明:    用于横向、纵向分屏的快捷键，仅供普通模式/雷神模式使用(平板模式下禁用)
+*******************************************************************************/
+void MainWindow::initSplitShortcuts()
+{
+    // horionzal_split
+    connect(createNewShotcut("shortcuts.tab.horionzal_split", false), &QShortcut::activated, this, &MainWindow::slotShortcutHorizonzalSplit);
+
+    // vertical_split
+    connect(createNewShotcut("shortcuts.tab.vertical_split", false), &QShortcut::activated, this, &MainWindow::slotShortcutVerticalSplit);
 }
 
 void MainWindow::slotShortcutSwitchActivated()
@@ -2138,6 +2159,10 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 *******************************************************************************/
 QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 {
+    qDebug() << Settings::instance()->settings->option(key);
+    if (Settings::instance()->settings->option(key).isNull()) {
+        return nullptr;
+    }
     QString value = Settings::instance()->settings->option(key)->value().toString();
     QShortcut *shortcut = new QShortcut(QKeySequence(value), this);
     m_builtInShortcut[key] = shortcut;
@@ -3109,6 +3134,8 @@ NormalWindow::NormalWindow(TermProperties properties, QWidget *parent): MainWind
     initUI();
     initConnections();
     initShortcuts();
+    initSwitchFullScreenShortcut();
+    initSplitShortcuts();
     createWindowComplete();
     setIsQuakeWindowTab(false);
 }
@@ -3286,6 +3313,7 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     initUI();
     initConnections();
     initShortcuts();
+    initSplitShortcuts();
     createWindowComplete();
     setIsQuakeWindowTab(true);
     // 设置雷神resize定时器属性

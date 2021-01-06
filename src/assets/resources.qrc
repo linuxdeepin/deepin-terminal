@@ -20,5 +20,6 @@
         <file>icons/deepin/builtin/warning.svg</file>
         <file>logo/headbar-dark.svg</file>
         <file>logo/headbar-light.svg</file>
+        <file>other/default-config-tablet.json</file>
     </qresource>
 </RCC>

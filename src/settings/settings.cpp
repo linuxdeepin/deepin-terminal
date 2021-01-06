@@ -32,6 +32,7 @@
 #include <DSlider>
 #include <DApplicationHelper>
 #include <DKeySequenceEdit>
+#include <DGuiApplicationHelper>
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -83,8 +84,15 @@ void Settings::init()
     m_backend = new QSettingBackend(m_configPath);
     m_backend->setObjectName("SettingsQSettingBackend");//Add by ut001000 renfeixiang 2020-08-13
 
+    // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
+    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
     // 默认配置
-    settings = DSettings::fromJsonFile(":/other/default-config.json");
+    if (isTabletMode) {
+        settings = DSettings::fromJsonFile(":/other/default-config-tablet.json");
+    }
+    else {
+        settings = DSettings::fromJsonFile(":/other/default-config.json");
+    }
 
     // 加载自定义配置
     settings->setBackend(m_backend);

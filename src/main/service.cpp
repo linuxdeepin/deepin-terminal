@@ -499,8 +499,17 @@ bool Service::isCountEnable()
 void Service::Entry(QStringList arguments)
 {
     m_EntryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+
+    // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
+    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
+    // 参数解析
     TermProperties properties;
-    Utils::parseCommandLine(arguments, properties);
+    if (isTabletMode) {
+        Utils::parseCommandLineTablet(arguments, properties);
+    }
+    else {
+        Utils::parseCommandLine(arguments, properties);
+    }
 
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {

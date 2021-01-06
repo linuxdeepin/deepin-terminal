@@ -653,6 +653,87 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
 
     return;
 }
+
+/*******************************************************************************
+ 1. @函数:    parseCommandLineTablet
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2020-01-06
+ 4. @说明:    平板模式 函数参数解析
+             appControl = true, 为main函数使用，遇到-h -v 时，整个进程会退出
+             为false时，为唯一进程使用，主要是解析变量出来。
+*******************************************************************************/
+void Utils::parseCommandLineTablet(QStringList arguments, TermProperties &Properties, bool appControl)
+{
+    QCommandLineParser parser;
+    parser.setApplicationDescription(qApp->applicationDescription());
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsOptions);
+    parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsCompactedShortOptions);
+    QCommandLineOption optWorkDirectory({ "w", "work-directory" },
+                                        QObject::tr("Set the work directory"),
+                                        "path");
+    QCommandLineOption optExecute({ "e", "execute" },
+                                  QObject::tr("Execute a command in the terminal"),
+                                  "command");
+    QCommandLineOption optScript({ "C", "run-script" },
+                                 QObject::tr("Run script string in the terminal"),
+                                 "script");
+    QCommandLineOption optKeepOpen("keep-open",
+                                   QObject::tr("Keep terminal open when command finishes"),
+                                   "");
+
+    // 平板模式 去掉了雷神模式、窗口模式
+    parser.addOptions({ optWorkDirectory,
+                        optExecute,
+                        optKeepOpen,
+                        optScript });
+    // parser.addPositionalArgument("-e", QObject::tr("Execute command in the terminal"), "command");
+
+    // 解析参数
+    if (!parser.parse(arguments)) {
+        qDebug() << "parser error:" << parser.errorText();
+    }
+
+    if (parser.isSet(optExecute)) {
+        /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
+        Properties[KeepOpen] = false;
+        Properties[Execute] = parseExecutePara(arguments);
+        /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 End ************************/
+    }
+    if (parser.isSet(optWorkDirectory)) {
+        Properties[WorkingDir] = parser.value(optWorkDirectory);
+    }
+    if (parser.isSet(optKeepOpen)) {
+        Properties[KeepOpen] = "";
+    }
+    if (parser.isSet(optScript)) {
+        Properties[Script] = parser.value(optScript);
+    }
+
+    //平板模式 禁止雷神窗口
+    Properties[QuakeMode] = false;
+
+    // 默认均为非首个
+    Properties[SingleFlag] = false;
+
+    if (appControl) {
+        // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
+        //qDebug() << "parse commandLine";
+        parser.process(arguments);
+    } else {
+        qDebug() << "input args:" << qPrintable(arguments.join(" "));
+        qDebug() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
+        qDebug() << "arg: optionExecute" << Properties[Execute].toStringList().join(" ");
+        // 这个位置参数解析出来是无法匹配的，可是不带前面标识符，无法准确使用。
+        // qDebug() << "arg: positionalArguments" << parser.positionalArguments();
+    }
+
+    //qDebug() << "parse commandLine is ok";
+
+    return;
+}
+
 /*******************************************************************************
  1. @函数:    parseExecutePara
  2. @作者:    ut000439 王培利

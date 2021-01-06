@@ -58,9 +58,16 @@ int main(int argc, char *argv[])
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
 
+    // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
+    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
     // 参数解析
     TermProperties properties;
-    Utils::parseCommandLine(app.arguments(), properties, true);
+    if (isTabletMode) {
+        Utils::parseCommandLineTablet(app.arguments(), properties, true);
+    }
+    else {
+        Utils::parseCommandLine(app.arguments(), properties, true);
+    }
 
     qDebug() << endl << endl << endl;
     qDebug() << "new terminal start run";

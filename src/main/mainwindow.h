@@ -344,6 +344,8 @@ protected:
     // 加载插件
     void initPlugins();
     void initShortcuts();
+    void initSwitchFullScreenShortcut();
+    void initSplitShortcuts();
     void initConnections();
     // 初始化标签
     void initTabBar();

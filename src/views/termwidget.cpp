@@ -457,35 +457,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     m_menu->addSeparator();
 
-
-    Qt::Orientation orientation = static_cast<DSplitter *>(parentWidget())->orientation();
-    int layer = getTermLayer();
-
-    if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
-        m_menu->addAction(tr("Horizontal split"), this, [this] {
-            getTermLayer();
-            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
-            QTimer::singleShot(10, this, [ = ]()
-            {
-                parentPage()->split(Qt::Horizontal);
-                //分屏时切换到当前选中主题方案
-                switchThemeOnSplitScreen();
-            });
-
-        });
-    }
-    if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
-        m_menu->addAction(tr("Vertical split"), this, [this] {
-            getTermLayer();
-            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
-            QTimer::singleShot(10, this, [ = ]()
-            {
-                parentPage()->split(Qt::Vertical);
-                //分屏时切换到当前选中主题方案
-                switchThemeOnSplitScreen();
-            });
-        });
-    }
+    addSplitMenuActions();
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     m_menu->addAction(QObject::tr("Close workspace"), this, [this] {
@@ -584,6 +556,50 @@ void TermWidget::addMenuActions(const QPoint &pos)
                 item->setEnabled(false);
             }
         }
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    addSplitMenuActions
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-06
+ 4. @说明:    添加横向/纵向分屏菜单Action
+*******************************************************************************/
+void TermWidget::addSplitMenuActions()
+{
+    // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
+    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
+    if (isTabletMode) {
+        return;
+    }
+
+    Qt::Orientation orientation = static_cast<DSplitter *>(parentWidget())->orientation();
+    int layer = getTermLayer();
+
+    if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
+        m_menu->addAction(tr("Horizontal split"), this, [this] {
+            getTermLayer();
+            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
+            QTimer::singleShot(10, this, [ = ]()
+            {
+                parentPage()->split(Qt::Horizontal);
+                //分屏时切换到当前选中主题方案
+                switchThemeOnSplitScreen();
+            });
+
+        });
+    }
+    if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
+        m_menu->addAction(tr("Vertical split"), this, [this] {
+            getTermLayer();
+            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
+            QTimer::singleShot(10, this, [ = ]()
+            {
+                parentPage()->split(Qt::Vertical);
+                //分屏时切换到当前选中主题方案
+                switchThemeOnSplitScreen();
+            });
+        });
     }
 }
 
