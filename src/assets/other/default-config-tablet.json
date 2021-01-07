@@ -26,7 +26,7 @@
                             "key": "font_size",
                             "name": "Font size",
                             "type": "spinbutton",
-                            "default": 11,
+                            "default": 14,
                             "max": 50,
                             "min": 5
                         },
@@ -330,20 +330,8 @@
                     "name": "Window",
                     "options": [
                         {
-                            "key": "use_on_starting",
-                            "name": "Use on starting",
-                            "type": "combobox",
-                            "default": "window_normal"
-                        },
-                        {
                             "key": "blurred_background",
                             "text": "Blur background",
-                            "type": "checkbox",
-                            "default": "false"
-                        },
-                        {
-                            "key": "auto_hide_raytheon_window",
-                            "text": "Hide Quake window after losing focus",
                             "type": "checkbox",
                             "default": "false"
                         }

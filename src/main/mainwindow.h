@@ -436,7 +436,7 @@ protected:
     QString m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
 
 protected:
-    // 是否需要保存位置开关，雷神窗口不关心这个参数
+    // 是否需要保存位置开关，平板模式/雷神窗口不关心这个参数
     bool m_IfUseLastSize = false;
     // 雷神终端所在桌面
     int m_desktopIndex;

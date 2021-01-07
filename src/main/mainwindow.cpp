@@ -1151,8 +1151,13 @@ void MainWindow::onTabTitleChanged(QString title)
 *******************************************************************************/
 QString MainWindow::getConfigWindowState()
 {
-    QString windowState =
-        Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
+    // 平板模式只有最大化窗口，且配置文件中没有窗口状态选项
+    auto windowStateOption = Settings::instance()->settings->option("advanced.window.use_on_starting");
+    if (windowStateOption.isNull()) {
+        return "";
+    }
+
+    QString windowState = windowStateOption->value().toString();
 
     // 启动参数配置的状态值优先于 内部配置的状态值
     if (m_properties.contains(StartWindowState)) {
@@ -1908,7 +1913,14 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
 
     // use_on_starting重启生效
     if (keyName == "advanced.window.use_on_starting") {
-        QString state = Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
+        auto windowStateOption = Settings::instance()->settings->option("advanced.window.use_on_starting");
+        // 平板模式无需保存窗口位置
+        if (windowStateOption.isNull()) {
+            m_IfUseLastSize = false;
+            return;
+        }
+
+        QString state = windowStateOption ->value().toString();
         if ("window_normal" == state) {
             m_IfUseLastSize = true;
             /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
@@ -3515,8 +3527,9 @@ QPoint QuakeWindow::calculateShortcutsPreviewPoint()
 *******************************************************************************/
 void QuakeWindow::onAppFocusChangeForQuake()
 {
-    // 开关关闭，不处理
-    if (!Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+    // 自动隐藏雷神窗口开关关闭，不处理
+    auto autoHideQuakeOption = Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window");
+    if (!autoHideQuakeOption.isNull() && !autoHideQuakeOption->value().toBool()) {
         return;
     }
 

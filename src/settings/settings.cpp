@@ -115,19 +115,22 @@ void Settings::init()
 
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
-    QMap<QString, QVariant> windowStateMap;
+    // 平板模式只有最大化窗口，且配置文件中没有窗口状态选项
+    if (!windowState.isNull()) {
+        QMap<QString, QVariant> windowStateMap;
 
-    windowStateMap.insert("keys",
-                          QStringList() << "window_normal"
-                          << "split_screen"
-                          << "window_maximum"
-                          << "fullscreen");
-    windowStateMap.insert("values",
-                          QStringList() << tr("Normal window") << tr("Split screen") << tr("Maximum") << tr("Fullscreen"));
-    windowState->setData("items", windowStateMap);
+        windowStateMap.insert("keys",
+                              QStringList() << "window_normal"
+                              << "split_screen"
+                              << "window_maximum"
+                              << "fullscreen");
+        windowStateMap.insert("values",
+                              QStringList() << tr("Normal window") << tr("Split screen") << tr("Maximum") << tr("Fullscreen"));
+        windowState->setData("items", windowStateMap);
 
-    for (QString &key : settings->keys()) {
-        qDebug() << key << settings->value(key);
+        for (QString &key : settings->keys()) {
+            qDebug() << key << settings->value(key);
+        }
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
