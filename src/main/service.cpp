@@ -314,7 +314,7 @@ QMap<QString, QString> Service::getShells()
             QString shellPath;
             shellLine = stream.readLine();
             // 忽略注释
-            if (!shellLine.startsWith(QLatin1String("#")) && !shellLine.isNull()) {
+            if (!shellLine.startsWith(QLatin1String("#")) && !shellLine.isNull() && !shellLine.isEmpty()) {
                 // 获取shell所在目录
                 shellPath = shellLine;
                 // 获取shell进程名称
