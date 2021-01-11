@@ -139,12 +139,13 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
     bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
     if (isTabletMode) {
-        newWindow = new TabletWindow(newProperties);
+        m_isTabletMode = true;
+        newWindow = TabletWindow::instance(newProperties);
     }
     else {
         newWindow = new NormalWindow(newProperties);
+        m_normalWindowList << newWindow;
     }
-    m_normalWindowList << newWindow;
     qDebug() << "create NormalWindow, current count =" << m_normalWindowList.count()
              << ", SingleFlag" << newProperties[SingleFlag].toBool();
     newWindow->show();
@@ -210,10 +211,14 @@ int WindowsManager::widgetCount() const
     if (nullptr == WindowsManager::instance()->getQuakeWindow()) {
         return m_widgetCount;
     } else {
+        //平板模式只有1个窗口
+        if (m_isTabletMode) {
+            return 1;
+        }
+
         // 不将雷神统计在内
         return m_widgetCount - 1;
     }
-
 }
 
 /*******************************************************************************

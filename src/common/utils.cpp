@@ -1091,7 +1091,8 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     QWidget *pWidget = currWidget->parentWidget();
     while (pWidget != nullptr) {
         qDebug() << pWidget->metaObject()->className();
-        if ((pWidget->objectName() == "NormalWindow") || (pWidget->objectName() == "QuakeWindow")) {
+        // 平板模式添加(pWidget->objectName() == "TabletWindow")判断
+        if ((pWidget->objectName() == "NormalWindow") || (pWidget->objectName() == "QuakeWindow")  || (pWidget->objectName() == "TabletWindow")) {
             qDebug() << "has find MainWindow";
             main = static_cast<MainWindow *>(pWidget);
             break;

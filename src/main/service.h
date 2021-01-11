@@ -64,7 +64,7 @@ public:
     ~Service();
     void init();
     // 初始化设置框
-    void initSetting();
+    void initSetting(MainWindow *pOwner=nullptr);
 
     // 显示设置框
     void showSettingDialog(MainWindow *pOwner);
@@ -172,6 +172,9 @@ private:
 
     // 记录进入的时间，只有创建窗口时，才会来取用这个时间
     qint64 m_EntryTime = 0;
+
+    // 是否为平板模式
+    bool m_isTabletMode = false;
 };
 
 #endif // SERVICE_H

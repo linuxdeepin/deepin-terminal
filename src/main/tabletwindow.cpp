@@ -27,6 +27,9 @@
 
 DWIDGET_USE_NAMESPACE
 
+// 平板模式窗口单例
+TabletWindow *TabletWindow::m_window = nullptr;
+
 /**
  平板模式终端窗口
 */
@@ -44,6 +47,21 @@ TabletWindow::TabletWindow(TermProperties properties, QWidget *parent): MainWind
 TabletWindow::~TabletWindow()
 {
 
+}
+
+/*******************************************************************************
+ 1. @函数:    instance
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-11
+ 4. @说明:    平板模式窗口单例
+*******************************************************************************/
+TabletWindow *TabletWindow::instance(TermProperties properties)
+{
+    if (nullptr == m_window) {
+        m_window = new TabletWindow(properties);
+    }
+
+    return m_window;
 }
 
 /*******************************************************************************

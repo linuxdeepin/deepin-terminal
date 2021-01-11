@@ -69,6 +69,7 @@ signals:
 public slots:
     void onMainwindowClosed(MainWindow *);
 private:
+    //平板模式时只有一个窗口，不会添加到m_normalWindowList里
     QList<MainWindow *> m_normalWindowList;
     QuakeWindow *m_quakeWindow = nullptr;
     TermWidgetPage *m_currentPage = nullptr;
@@ -77,6 +78,9 @@ private:
     static WindowsManager *pManager;
     // 窗口数量
     int m_widgetCount = 0;
+
+    // 是否为平板模式
+    bool m_isTabletMode = false;
 };
 
 #endif // WINDOWSMANAGER_H

@@ -48,7 +48,8 @@ Service::~Service()
         delete m_atspiThread;
     }
     releaseShareMemory();
-    if (nullptr != m_settingDialog) {
+    // 判断非平板模式才会delete(因为平板模式设置了对话框的parent窗口)
+    if (!m_isTabletMode && nullptr != m_settingDialog) {
         delete m_settingDialog;
     }
     if (nullptr != m_settingOwner) {
@@ -112,13 +113,13 @@ void Service::init()
  3. @日期:    2020-06-05
  4. @说明:    初始化设置框，在窗口现实后初始化，使第一次出现设置框不至于卡顿
 *******************************************************************************/
-void Service::initSetting()
+void Service::initSetting(MainWindow *pOwner)
 {
     if (nullptr != m_settingDialog) {
         return;
     }
     QDateTime startTime = QDateTime::currentDateTime();
-    m_settingDialog = new DSettingsDialog();
+    m_settingDialog = new DSettingsDialog(pOwner);
     m_settingDialog->setObjectName("SettingDialog");//Add by ut001000 renfeixiang 2020-08-13
     // 关闭后将指针置空，下次重新new
     connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
@@ -141,8 +142,11 @@ void Service::initSetting()
     m_settingDialog->updateSettings(Settings::instance()->settings);
     // 设置窗口模态为没有模态，不阻塞窗口和进程
     m_settingDialog->setWindowModality(Qt::NonModal);
-    // 让设置与窗口等效，隐藏后显示就不会被遮挡
-    m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
+    // 非平板模式设置对话框窗口标志
+    if (!m_isTabletMode) {
+        // 让设置与窗口等效，隐藏后显示就不会被遮挡
+        m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
+    }
     moveToCenter(m_settingDialog);
     QDateTime endTime = QDateTime::currentDateTime();
     qDebug() << "Setting init cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
@@ -353,7 +357,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
 {
     QDateTime startTime = QDateTime::currentDateTime();
     // 第一次初始化dialog
-    initSetting();
+    initSetting(pOwner);
     //保存设置框的有拥者
     m_settingOwner = pOwner;
     if (nullptr != m_settingDialog) {
@@ -505,6 +509,7 @@ void Service::Entry(QStringList arguments)
     // 参数解析
     TermProperties properties;
     if (isTabletMode) {
+        m_isTabletMode = isTabletMode;
         Utils::parseCommandLineTablet(arguments, properties);
     }
     else {

@@ -35,8 +35,9 @@ class TabletWindow : public MainWindow
     Q_OBJECT
 
 public:
-    explicit TabletWindow(TermProperties properties, QWidget *parent = nullptr);
     ~TabletWindow() override;
+
+    static TabletWindow *instance(TermProperties properties);
 
     /******** Add by ut001000 renfeixiang 2020-08-07:普通窗口不做处理***************/
     virtual void updateMinHeight() override {return;}
@@ -59,6 +60,10 @@ protected:
 
 protected:
     void changeEvent(QEvent *event) override;
+
+private:
+    explicit TabletWindow(TermProperties properties, QWidget *parent = nullptr);
+    static TabletWindow *m_window;
 };
 
 #endif  // TABLETWINDOW_H
