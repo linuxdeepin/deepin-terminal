@@ -130,6 +130,12 @@ public:
     // 设置虚拟键盘是否显示(仅供TableWindow类使用)
     void setVirtualKeyboardShow(bool isShow);
 
+    // 设置DMainWindow标题栏高度
+    void setTitleBarHeight(int titleBarHeight);
+
+    // 获取DMainWindow标题栏高度
+    int getTitleBarHeight();
+
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
@@ -195,6 +201,8 @@ private:
     bool m_isVirtualKeyboardShow = false;
     // 虚拟键盘布局Rect
     QRect m_virtualKeyBoardRect;
+
+    int m_titleBarHeight = 0;
 };
 
 #endif // SERVICE_H

@@ -104,13 +104,13 @@ void EncodePanel::resizeEvent(QResizeEvent *event)
     int availableHeight = desktopWidget->availableGeometry().size().height();
     Service *service = Service::instance();
 
+    int titleBarHeight = Service::instance()->getTitleBarHeight();
     if (service->isVirtualKeyboardShow()) {
         int keyboardHeight = service->getVirtualKeyboardHeight();
-        m_encodeView->setFixedHeight(availableHeight - keyboardHeight);
+        m_encodeView->setFixedHeight(availableHeight - keyboardHeight - titleBarHeight);
     }
     else {
         // 获取标题栏高度
-        int titleBarHeight = Utils::getMainWindow(this)->titlebar()->height();
         m_encodeView->setFixedHeight(availableHeight - titleBarHeight);
     }
 }

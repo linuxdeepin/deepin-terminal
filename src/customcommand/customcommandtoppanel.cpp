@@ -25,7 +25,6 @@
 #include <DLog>
 #include <DTitlebar>
 
-#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
@@ -35,9 +34,18 @@ const int iAnimationDuration = 300;
 
 CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
     : RightPanel(parent),
-      m_customCommandPanel(new CustomCommandPanel(this)),
-      m_customCommandSearchPanel(new CustomCommandSearchRstPanel(this))
+      m_customCommandPanel(new CustomCommandPanel()),
+      m_customCommandSearchPanel(new CustomCommandSearchRstPanel())
 {
+    QVBoxLayout *panelLayout = new QVBoxLayout();
+    panelLayout->setSpacing(0);
+    panelLayout->setMargin(0);
+    panelLayout->setContentsMargins(0, 0, 0, 0);
+    this->setLayout(panelLayout);
+
+    panelLayout->addWidget(m_customCommandPanel);
+    panelLayout->addWidget(m_customCommandSearchPanel);
+
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_customCommandPanel->setObjectName("CustomCommandPanel");
@@ -207,15 +215,20 @@ void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
     int availableHeight = desktopWidget->availableGeometry().size().height();
     Service *service = Service::instance();
 
+    // 获取标题栏高度
+    int titleBarHeight = Utils::getMainWindow(this)->titlebar()->height();
+    int topPanelHeight = 0;
     if (service->isVirtualKeyboardShow()) {
         int keyboardHeight = service->getVirtualKeyboardHeight();
-        m_customCommandPanel->resize(QSize(size().width(), availableHeight-keyboardHeight));
+        topPanelHeight = availableHeight - keyboardHeight - titleBarHeight;
     }
     else {
-        // 获取标题栏高度
-        int titleBarHeight = Utils::getMainWindow(this)->titlebar()->height();
-        m_customCommandPanel->resize(QSize(size().width(), availableHeight-titleBarHeight));
+        topPanelHeight = availableHeight - titleBarHeight;
     }
+
+    int topPanelWidth = this->width();
+    m_customCommandPanel->resize(topPanelWidth, topPanelHeight);
+    m_customCommandSearchPanel->resize(topPanelWidth, topPanelHeight);
 }
 
 /*******************************************************************************
@@ -231,7 +244,4 @@ void CustomCommandTopPanel::slotsRefreshCommandPanel()
     //m_customCommandPanel->show();
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandSearchPanel->refreshData();
-
 }
-
-

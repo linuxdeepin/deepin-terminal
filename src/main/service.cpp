@@ -828,3 +828,25 @@ void Service::setVirtualKeyboardShow(bool isShow)
 {
     m_isVirtualKeyboardShow = isShow;
 }
+
+/*******************************************************************************
+ 1. @函数:    setTitleBarHeight
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    设置的标题栏高度来源于DMainWindow
+*******************************************************************************/
+void Service::setTitleBarHeight(int titleBarHeight)
+{
+    m_titleBarHeight = titleBarHeight;
+}
+
+/*******************************************************************************
+ 1. @函数:    getTitleBarHeight
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    获取DMainWindow标题栏高度
+*******************************************************************************/
+int Service::getTitleBarHeight()
+{
+    return m_titleBarHeight;
+}

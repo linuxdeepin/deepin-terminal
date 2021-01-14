@@ -180,8 +180,7 @@ void TabletWindow::slotResizeWindowHeight(int windowHeight)
 void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
 {
     QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-    QSize availableSize = desktopWidget->availableGeometry().size();
+    int availableHeight = desktopWidget->availableGeometry().size().height();
 
     int windowHeight = 0;
 
@@ -191,10 +190,12 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
             m_virtualKeyboardHeight = Service::instance()->getVirtualKeyboardHeight();
         }
 
-        windowHeight = screenRect.height()-m_virtualKeyboardHeight;
+        windowHeight = availableHeight - m_virtualKeyboardHeight;
+        qDebug() << "isShow - windowHeight: " << windowHeight << endl;
     }
     else {
-        windowHeight = availableSize.height();
+        windowHeight = availableHeight;
+        qDebug() << "isHide - windowHeight: " << windowHeight << endl;
     }
 
     // 根据虚拟键盘是否显示，调整主窗口高度
@@ -213,6 +214,9 @@ void TabletWindow::initTitleBar()
     m_titleBar = new TitleBar(this, false);
     m_titleBar->setObjectName("TabletWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
     m_titleBar->setTabBar(m_tabbar);
+
+    // 保存标题栏高度，供其他地方使用
+    Service::instance()->setTitleBarHeight(m_titleBar->height());
 
     titlebar()->setCustomWidget(m_titleBar);
     // titlebar()->setAutoHideOnFullscreen(true);
@@ -300,3 +304,29 @@ void TabletWindow::changeEvent(QEvent *event)
     QMainWindow::changeEvent(event);
 }
 
+void TabletWindow::resizeEvent(QResizeEvent *event)
+{
+    // 调整插件高度
+    resizePlugin();
+
+    MainWindow::resizeEvent(event);
+}
+
+/*******************************************************************************
+ 1. @函数:    resizePlugin
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    平板模式根据窗口大小，动态调整插件高度
+*******************************************************************************/
+void TabletWindow::resizePlugin()
+{
+    if (PLUGIN_TYPE_NONE == m_CurrentShowPlugin) {
+        qDebug() << "Plugin is not show!";
+        return;
+    }
+
+    qDebug() << "resize Plugin" << m_CurrentShowPlugin;
+    QSize windowSize = this->size();
+    qDebug() << "window size is: " << windowSize;
+    emit resizePluginInTabletMode(windowSize);
+}

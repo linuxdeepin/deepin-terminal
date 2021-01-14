@@ -70,6 +70,8 @@ protected:
 protected:
     void changeEvent(QEvent *event) override;
 
+    void resizeEvent(QResizeEvent *event) override;
+
 signals:
     void onResizeWindowHeight(int windowHeight);
 
@@ -88,6 +90,8 @@ private:
 
     // 处理虚拟键盘显示/隐藏的函数
     void handleVirtualKeyboardShowHide(bool isShow);
+
+    void resizePlugin();
 
     static TabletWindow *m_window;
 

@@ -37,23 +37,36 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
 {
     Utils::set_Object_Name(this);
     // 远程主界面
-    m_remoteManagementPanel = new RemoteManagementPanel(this);
+    m_remoteManagementPanel = new RemoteManagementPanel();
     m_remoteManagementPanel->setObjectName("RemoteManagePanel");//Add by ut001000 renfeixiang 2020-08-14
     connect(m_remoteManagementPanel, &RemoteManagementPanel::showSearchPanel, this, &RemoteManagementTopPanel::showSearchPanel);
     connect(m_remoteManagementPanel, &RemoteManagementPanel::showGroupPanel, this, &RemoteManagementTopPanel::showGroupPanel);
     connect(m_remoteManagementPanel, &RemoteManagementPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
+
     // 远程分组界面
-    m_serverConfigGroupPanel = new ServerConfigGroupPanel(this);
+    m_serverConfigGroupPanel = new ServerConfigGroupPanel();
     m_serverConfigGroupPanel->setObjectName("RemoteGroupPanel");//Add by ut001000 renfeixiang 2020-08-14
     connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::showSearchPanel, this, &RemoteManagementTopPanel::showSearchPanel);
     connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::rebackPrevPanel, this, &RemoteManagementTopPanel::showPrevPanel);
     connect(m_serverConfigGroupPanel, &ServerConfigGroupPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
+
     // 远程搜索界面
-    m_remoteManagementSearchPanel = new RemoteManagementSearchPanel(this);
+    m_remoteManagementSearchPanel = new RemoteManagementSearchPanel();
     m_remoteManagementSearchPanel->setObjectName("RemoteSearchPanel");//Add by ut001000 renfeixiang 2020-08-14
     connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::showGroupPanel, this, &RemoteManagementTopPanel::showGroupPanel);
     connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::rebackPrevPanel, this, &RemoteManagementTopPanel::showPrevPanel);
     connect(m_remoteManagementSearchPanel, &RemoteManagementSearchPanel::doConnectServer, this, &RemoteManagementTopPanel::doConnectServer, Qt::QueuedConnection);
+
+    QVBoxLayout *panelLayout = new QVBoxLayout();
+    panelLayout->setSpacing(0);
+    panelLayout->setMargin(0);
+    panelLayout->setContentsMargins(0, 0, 0, 0);
+    this->setLayout(panelLayout);
+
+    panelLayout->addWidget(m_remoteManagementPanel);
+    panelLayout->addWidget(m_serverConfigGroupPanel);
+    panelLayout->addWidget(m_remoteManagementSearchPanel);
+
     // 界面先隐藏
     m_serverConfigGroupPanel->hide();
     m_remoteManagementSearchPanel->hide();
@@ -121,15 +134,21 @@ void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
     int availableHeight = desktopWidget->availableGeometry().size().height();
     Service *service = Service::instance();
 
+    // 获取标题栏高度
+    int titleBarHeight = Service::instance()->getTitleBarHeight();
+    int topPanelHeight = 0;
     if (service->isVirtualKeyboardShow()) {
         int keyboardHeight = service->getVirtualKeyboardHeight();
-        m_remoteManagementPanel->resize(QSize(size().width(), availableHeight - keyboardHeight));
+        topPanelHeight = availableHeight - keyboardHeight - titleBarHeight;
     }
     else {
-        // 获取标题栏高度
-        int titleBarHeight = Utils::getMainWindow(this)->titlebar()->height();
-        m_remoteManagementPanel->resize(QSize(size().width(), availableHeight - titleBarHeight));
+        topPanelHeight = availableHeight - titleBarHeight;
     }
+
+    int topPanelWidth = size().width();
+    m_remoteManagementPanel->resize(QSize(topPanelWidth, topPanelHeight));
+    m_serverConfigGroupPanel->resize(QSize(topPanelWidth, topPanelHeight));
+    m_remoteManagementSearchPanel->resize(QSize(topPanelWidth, topPanelHeight));
 }
 
 /*******************************************************************************

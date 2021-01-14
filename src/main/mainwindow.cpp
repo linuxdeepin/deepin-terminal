@@ -1033,11 +1033,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
     bool isTabletMode = IS_TABLET_MODE;
-    if (isTabletMode) {
-        // 调整插件高度
-        resizePlugin();
-    }
-    else {
+    if (!isTabletMode) {
         // 保存窗口位置
         saveWindowSize();
         // 通知隐藏插件
@@ -1749,24 +1745,6 @@ void MainWindow::hidePlugin()
     qDebug() << "hide Plugin" << m_CurrentShowPlugin;
     m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
     emit quakeHidePlugin();
-}
-
-/*******************************************************************************
- 1. @函数:    resizePlugin
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-01-13
- 4. @说明:    平板模式根据窗口大小，动态调整插件高度
-*******************************************************************************/
-void MainWindow::resizePlugin()
-{
-    if (PLUGIN_TYPE_NONE == m_CurrentShowPlugin) {
-        qDebug() << "Plugin is not show!";
-        return;
-    }
-
-    qDebug() << "resize Plugin" << m_CurrentShowPlugin;
-    QSize windowSize = this->size();
-    emit resizePluginInTabletMode(windowSize);
 }
 
 /*******************************************************************************
@@ -3197,6 +3175,9 @@ void NormalWindow::initTitleBar()
     m_titleBar->setObjectName("NormalWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
     m_titleBar->setTabBar(m_tabbar);
 
+    // 保存标题栏高度，供其他地方使用
+    Service::instance()->setTitleBarHeight(m_titleBar->height());
+
     titlebar()->setCustomWidget(m_titleBar);
     // titlebar()->setAutoHideOnFullscreen(true);
     titlebar()->setTitle("");
@@ -3381,6 +3362,9 @@ void QuakeWindow::initTitleBar()
     m_titleBar = new TitleBar(this, true);
     m_titleBar->setObjectName("QuakeWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
     m_titleBar->setTabBar(m_tabbar);
+
+    // 保存标题栏高度，供其他地方使用
+    Service::instance()->setTitleBarHeight(m_titleBar->height());
 
     /** add by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */
     //雷神终端设置系统标题栏为禁用状态,使其不获取焦点,不影响键盘交互操作.
