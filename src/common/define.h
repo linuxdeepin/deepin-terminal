@@ -65,4 +65,16 @@ enum SearchBar_State {
 const QString SHORTCUT_CONVERSION_UP = "~!@#$%^&*()_+{}:\"|<>?";
 const QString SHORTCUT_CONVERSION_DOWN = "`1234567890-=[];'\\,./";
 
+// 虚拟键盘DBus
+#ifndef DUE_IM_DBUS_NAME
+#define DUE_IM_DBUS_NAME "com.deepin.im"
+#define DUE_IM_DBUS_PATH "/com/deepin/im"
+#define DUE_IM_DBUS_INTERFACE DUE_IM_DBUS_NAME
+#endif
+
+// 平板模式判断开关
+#define IS_TABLET_MODE true
+// TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
+//#define IS_TABLET_MODE DGuiApplicationHelper::instance()->isTabletEnvironment()
+
 #endif // DTNG_DEFINE_H

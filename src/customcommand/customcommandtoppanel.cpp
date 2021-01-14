@@ -23,11 +23,13 @@
 
 #include <DPushButton>
 #include <DLog>
+#include <DTitlebar>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+#include <QDesktopWidget>
 
 const int iAnimationDuration = 300;
 
@@ -186,6 +188,35 @@ void CustomCommandTopPanel::show(bool bSetFocus)
 //    m_customCommandPanel->resize(size());
 //}
 /******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
+
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-14
+ 4. @说明:    根据虚拟键盘高度，动态调整自定义命令插件面板高度
+*******************************************************************************/
+void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
+{
+    bool isTabletMode = IS_TABLET_MODE;
+    // 非平板模式下不处理
+    if (!isTabletMode) {
+        return RightPanel::resizeEvent(event);
+    }
+
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    int availableHeight = desktopWidget->availableGeometry().size().height();
+    Service *service = Service::instance();
+
+    if (service->isVirtualKeyboardShow()) {
+        int keyboardHeight = service->getVirtualKeyboardHeight();
+        m_customCommandPanel->resize(QSize(size().width(), availableHeight-keyboardHeight));
+    }
+    else {
+        // 获取标题栏高度
+        int titleBarHeight = Utils::getMainWindow(this)->titlebar()->height();
+        m_customCommandPanel->resize(QSize(size().width(), availableHeight-titleBarHeight));
+    }
+}
 
 /*******************************************************************************
  1. @函数:    slotsRefreshCommandPanel

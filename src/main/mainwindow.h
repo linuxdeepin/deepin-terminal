@@ -126,6 +126,8 @@ public:
     void showPlugin(const QString &name);
     // 快速隐藏插件
     void hidePlugin();
+    // 平板模式根据窗口大小，动态调整插件高度
+    void resizePlugin();
     // 新建标签页
     void createNewTab();
     // 由mainwindow统一获取当前选择的文本。
@@ -229,6 +231,7 @@ signals:
     // !这两个信号被封装了，请不要单独调用！
     void showPluginChanged(const QString &name, bool bSetFocus = false);
     void quakeHidePlugin();
+    void resizePluginInTabletMode(QSize windowSize);
     void mainwindowClosed(MainWindow *);
     // 编码方式，仅当前mainwindow有效．
     void changeEncodeSig(const QString &name);

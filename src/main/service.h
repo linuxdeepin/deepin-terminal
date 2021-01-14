@@ -118,6 +118,18 @@ public:
     // 获取shells的map,不读取/etc/shells
     QMap<QString, QString> shellsMap();
 
+    // 获取虚拟键盘QRect
+    QRect getVirtualKeyboardGeometry();
+
+    // 获取虚拟键盘高度
+    int getVirtualKeyboardHeight();
+
+    // 判断虚拟键盘是否显示
+    bool isVirtualKeyboardShow();
+
+    // 设置虚拟键盘是否显示(仅供TableWindow类使用)
+    void setVirtualKeyboardShow(bool isShow);
+
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
@@ -129,6 +141,9 @@ signals:
     // 触控板事件 name 事件名称 direction 手势方向 fingers 手指个数
     void touchPadEventSignal(QString name, QString direction, int fingers);
     void hostnameChanged();
+
+    // 虚拟键盘显示/隐藏信号
+    void virtualKeyboardShowHide(bool isShow);
 
 public slots:
     // 创建窗口的入口
@@ -175,6 +190,11 @@ private:
 
     // 是否为平板模式
     bool m_isTabletMode = false;
+
+    // 虚拟键盘是否显示
+    bool m_isVirtualKeyboardShow = false;
+    // 虚拟键盘布局Rect
+    QRect m_virtualKeyBoardRect;
 };
 
 #endif // SERVICE_H

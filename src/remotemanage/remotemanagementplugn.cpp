@@ -85,6 +85,12 @@ void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
         }
         getRemoteManagementTopPanel()->hide();
     });
+
+    // 当虚拟键盘隐藏/显示过程中，MainWindow会改变大小，此时触发插件resize
+    connect(m_mainWindow, &MainWindow::resizePluginInTabletMode, this, [ = ](QSize windowSize) {
+        QSize originPanelSize = getRemoteManagementTopPanel()->size();
+        getRemoteManagementTopPanel()->resize(originPanelSize.width(), windowSize.height());
+    });
 }
 
 /*******************************************************************************

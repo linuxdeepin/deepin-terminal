@@ -300,9 +300,6 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     const int tabCount = 5;
     for (int i = 0; i < tabCount; i++) {
         m_quakeWindow->addTab(m_normalTermProperty);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
     TabBar *tabBar = m_quakeWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
@@ -315,10 +312,6 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     QString lastTabId = tabBar->identifier(tabBar->count() - 1);
     m_quakeWindow->closeTab(lastTabId);
     EXPECT_EQ(tabBar->count(), tabCount - 1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_MainWindow_Test, quake_closeOtherTab)
@@ -327,10 +320,6 @@ TEST_F(UT_MainWindow_Test, quake_closeOtherTab)
     QString firstTabId = tabBar->identifier(0);
     m_quakeWindow->closeOtherTab(firstTabId);
     EXPECT_EQ(tabBar->count(), 1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_MainWindow_Test, quake_getCurrTabTitle)

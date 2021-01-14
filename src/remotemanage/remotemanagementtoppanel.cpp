@@ -21,9 +21,15 @@
 #include "remotemanagementtoppanel.h"
 #include "utils.h"
 #include "mainwindow.h"
+#include "service.h"
 
 #include <QParallelAnimationGroup>
 #include <QDebug>
+#include <QDesktopWidget>
+
+#include <DTitlebar>
+
+DWIDGET_USE_NAMESPACE
 
 const int animationDuration = 300;
 
@@ -95,6 +101,35 @@ void RemoteManagementTopPanel::show()
 void RemoteManagementTopPanel::setFocusInPanel()
 {
     m_remoteManagementPanel->setFocusInPanel();
+}
+
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-14
+ 4. @说明:    根据虚拟键盘高度，动态调整远程管理插件面板高度
+*******************************************************************************/
+void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
+{
+    bool isTabletMode = IS_TABLET_MODE;
+    // 非平板模式下不处理
+    if (!isTabletMode) {
+        return RightPanel::resizeEvent(event);
+    }
+
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    int availableHeight = desktopWidget->availableGeometry().size().height();
+    Service *service = Service::instance();
+
+    if (service->isVirtualKeyboardShow()) {
+        int keyboardHeight = service->getVirtualKeyboardHeight();
+        m_remoteManagementPanel->resize(QSize(size().width(), availableHeight - keyboardHeight));
+    }
+    else {
+        // 获取标题栏高度
+        int titleBarHeight = Utils::getMainWindow(this)->titlebar()->height();
+        m_remoteManagementPanel->resize(QSize(size().width(), availableHeight - titleBarHeight));
+    }
 }
 
 /*******************************************************************************

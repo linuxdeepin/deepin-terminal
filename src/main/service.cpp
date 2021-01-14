@@ -505,7 +505,7 @@ void Service::Entry(QStringList arguments)
     m_EntryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
-    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
+    bool isTabletMode = IS_TABLET_MODE;
     // 参数解析
     TermProperties properties;
     if (isTabletMode) {
@@ -757,4 +757,74 @@ void Service::slotShowSettingsDialog()
     qInfo() << sender()->parent();
     MainWindow *mainWindow = qobject_cast<MainWindow *>(sender()->parent());
     Service::instance()->showSettingDialog(mainWindow);
+}
+
+/*******************************************************************************
+ 1. @函数:    获取虚拟键盘布局(geometry)
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    getVirtualKeyboardGeometry
+*******************************************************************************/
+QRect Service::getVirtualKeyboardGeometry()
+{
+    QRect rectZero(0,0,0,0);
+    // 虚拟键盘不可见时，返回0
+    if (!m_isVirtualKeyboardShow) {
+        return rectZero;
+    }
+
+    QDBusInterface vkinterface(DUE_IM_DBUS_NAME, DUE_IM_DBUS_PATH, DUE_IM_DBUS_INTERFACE, QDBusConnection::sessionBus());
+
+    QVariant varGeometry = vkinterface.property("geometry");
+    if (varGeometry.isValid()) {
+        qDebug() << "geometry is: " << varGeometry;
+        m_virtualKeyBoardRect = varGeometry.toRect();
+        return m_virtualKeyBoardRect;
+    }
+
+    return rectZero;
+}
+
+/*******************************************************************************
+ 1. @函数:    getVirtualKeyboardHeight
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    获取虚拟键盘高度
+*******************************************************************************/
+int Service::getVirtualKeyboardHeight()
+{
+    // 虚拟键盘不可见时，返回0
+    if (!m_isVirtualKeyboardShow) {
+        return 0;
+    }
+
+    return getVirtualKeyboardGeometry().height();
+}
+
+/*******************************************************************************
+ 1. @函数:    isVirtualKeyboardShow
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    判断虚拟键盘是否显示
+*******************************************************************************/
+bool Service::isVirtualKeyboardShow()
+{
+    // 非平板模式，不存在虚拟键盘
+    bool isTabletMode = IS_TABLET_MODE;
+    if (!isTabletMode) {
+        return false;
+    }
+
+    return m_isVirtualKeyboardShow;
+}
+
+/*******************************************************************************
+ 1. @函数:    setVirtualKeyboardShow
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    设置虚拟键盘是否显示
+*******************************************************************************/
+void Service::setVirtualKeyboardShow(bool isShow)
+{
+    m_isVirtualKeyboardShow = isShow;
 }

@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     DLogManager::registerFileAppender();
 
     // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
-    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
+    bool isTabletMode = IS_TABLET_MODE;
     // 参数解析
     TermProperties properties;
     if (isTabletMode) {

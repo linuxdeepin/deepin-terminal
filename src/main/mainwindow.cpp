@@ -1030,10 +1030,19 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     if (!isNotAnimation) {
         return;
     }
-    // 保存窗口位置
-    saveWindowSize();
-    // 通知隐藏插件
-    hidePlugin();
+
+    // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
+    bool isTabletMode = IS_TABLET_MODE;
+    if (isTabletMode) {
+        // 调整插件高度
+        resizePlugin();
+    }
+    else {
+        // 保存窗口位置
+        saveWindowSize();
+        // 通知隐藏插件
+        hidePlugin();
+    }
 
     DMainWindow::resizeEvent(event);
 }
@@ -1740,6 +1749,24 @@ void MainWindow::hidePlugin()
     qDebug() << "hide Plugin" << m_CurrentShowPlugin;
     m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
     emit quakeHidePlugin();
+}
+
+/*******************************************************************************
+ 1. @函数:    resizePlugin
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    平板模式根据窗口大小，动态调整插件高度
+*******************************************************************************/
+void MainWindow::resizePlugin()
+{
+    if (PLUGIN_TYPE_NONE == m_CurrentShowPlugin) {
+        qDebug() << "Plugin is not show!";
+        return;
+    }
+
+    qDebug() << "resize Plugin" << m_CurrentShowPlugin;
+    QSize windowSize = this->size();
+    emit resizePluginInTabletMode(windowSize);
 }
 
 /*******************************************************************************

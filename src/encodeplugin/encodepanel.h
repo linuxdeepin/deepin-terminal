@@ -44,6 +44,9 @@ public:
     void updateEncode(QString encode);
     /********************* Modify by ut000610 daizhengwen End ************************/
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 signals:
 private:
     EncodeListView *m_encodeView = nullptr;

@@ -42,6 +42,15 @@ public:
     /******** Add by ut001000 renfeixiang 2020-08-07:普通窗口不做处理***************/
     virtual void updateMinHeight() override {return;}
 
+    // 虚拟键盘是否激活(即是否显示)的DBus信号
+    void initVirtualKeyboardImActiveChangedSignal();
+
+    // 虚拟键盘是否改变了geometry的DBus信号
+    void initVirtualKeyboardGeometryChangedSignal();
+
+    // 初始化虚拟键盘相关信号连接
+    void initVirtualKeyboardConnections();
+
 protected:
     // 初始化标题栏
     virtual void initTitleBar() override;
@@ -61,9 +70,32 @@ protected:
 protected:
     void changeEvent(QEvent *event) override;
 
+signals:
+    void onResizeWindowHeight(int windowHeight);
+
+private slots:
+    // 判断虚拟键盘是否激活(即是否显示)的槽函数
+    void slotVirtualKeyboardImActiveChanged(bool isShow);
+
+    // 判断虚拟键盘布局(geometry)是否改变的槽函数
+    void slotVirtualKeyboardGeometryChanged(QRect rect);
+
+    // 根据虚拟键盘是否显示，调整主窗口高度
+    void slotResizeWindowHeight(int windowHeight);
+
 private:
     explicit TabletWindow(TermProperties properties, QWidget *parent = nullptr);
+
+    // 处理虚拟键盘显示/隐藏的函数
+    void handleVirtualKeyboardShowHide(bool isShow);
+
     static TabletWindow *m_window;
+
+    // 虚拟键盘是否显示
+    bool m_isVirtualKeyboardShow = false;
+
+    // 虚拟键盘高度
+    int m_virtualKeyboardHeight = -1;
 };
 
 #endif  // TABLETWINDOW_H

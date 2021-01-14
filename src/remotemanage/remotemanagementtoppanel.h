@@ -59,6 +59,9 @@ public:
     // 根据插件给的条件值设置焦点
     void setFocusInPanel();
 
+protected:
+    void resizeEvent(QResizeEvent *event);
+
 public slots:
     // 显示搜索框
     void showSearchPanel(const QString &strFilter);

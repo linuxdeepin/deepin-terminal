@@ -85,7 +85,7 @@ void Settings::init()
     m_backend->setObjectName("SettingsQSettingBackend");//Add by ut001000 renfeixiang 2020-08-13
 
     // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关
-    bool isTabletMode = true;//DGuiApplicationHelper::instance()->isTabletEnvironment();
+    bool isTabletMode = IS_TABLET_MODE;
     // 默认配置
     if (isTabletMode) {
         settings = DSettings::fromJsonFile(":/other/default-config-tablet.json");

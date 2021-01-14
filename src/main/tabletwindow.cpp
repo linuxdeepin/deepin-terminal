@@ -21,6 +21,10 @@
 
 #include "tabletwindow.h"
 #include "tabbar.h"
+#include "service.h"
+
+#include <QtDBus>
+#include <QDesktopWidget>
 
 #include <DTitlebar>
 #include <DIconButton>
@@ -42,6 +46,9 @@ TabletWindow::TabletWindow(TermProperties properties, QWidget *parent): MainWind
     initShortcuts();
     createWindowComplete();
     setIsQuakeWindowTab(false);
+
+    // 初始化虚拟键盘相关信号连接
+    initVirtualKeyboardConnections();
 }
 
 TabletWindow::~TabletWindow()
@@ -62,6 +69,136 @@ TabletWindow *TabletWindow::instance(TermProperties properties)
     }
 
     return m_window;
+}
+
+/*******************************************************************************
+ 1. @函数:    initVirtualKeyboardConnections
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    初始化虚拟键盘相关信号连接
+*******************************************************************************/
+void TabletWindow::initVirtualKeyboardConnections()
+{
+    initVirtualKeyboardImActiveChangedSignal();
+    initVirtualKeyboardGeometryChangedSignal();
+
+    connect(this, &TabletWindow::onResizeWindowHeight, this, &TabletWindow::slotResizeWindowHeight);
+}
+
+/*******************************************************************************
+ 1. @函数:    initVirtualKeyboardImActiveChangedSignal
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    虚拟键盘是否激活(即是否显示)的DBus信号
+*******************************************************************************/
+void TabletWindow::initVirtualKeyboardImActiveChangedSignal()
+{
+    QDBusConnection dbusConn = QDBusConnection::sessionBus();
+
+    if (dbusConn.connect(
+            DUE_IM_DBUS_NAME, // service name
+            DUE_IM_DBUS_PATH, // path name
+            DUE_IM_DBUS_INTERFACE, // interface
+            "imActiveChanged", // signal name
+            this, // receiver
+            SLOT(slotVirtualKeyboardImActiveChanged(bool)))) { // slot
+
+        qDebug() << "dbus connect to imActiveChanged success";
+    } else {
+        qDebug() << "dbus connect to imActiveChanged failed";
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    initVirtualKeyboardGeometryChangedSignal
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    虚拟键盘是否改变了布局(geometry)的DBus信号
+*******************************************************************************/
+void TabletWindow::initVirtualKeyboardGeometryChangedSignal()
+{
+    QDBusConnection dbusConn = QDBusConnection::sessionBus();
+
+    if (dbusConn.connect(
+            DUE_IM_DBUS_NAME, // service name
+            DUE_IM_DBUS_PATH, // path name
+            DUE_IM_DBUS_INTERFACE, // interface
+            "geometryChanged", // signal name
+            this, // receiver
+            SLOT(slotVirtualKeyboardGeometryChanged(QRect)))) { // slot
+
+        qDebug() << "dbus connect to geometryChanged success";
+    } else {
+        qDebug() << "dbus connect to geometryChanged failed";
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    slotVirtualKeyboardImActiveChanged
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    判断虚拟键盘是否激活(即是否显示)的槽函数
+*******************************************************************************/
+void TabletWindow::slotVirtualKeyboardImActiveChanged(bool isShow)
+{
+    m_isVirtualKeyboardShow = isShow;
+
+    Service::instance()->setVirtualKeyboardShow(isShow);
+    handleVirtualKeyboardShowHide(isShow);
+}
+
+/*******************************************************************************
+ 1. @函数:    slotVirtualKeyboardGeometryChanged
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    判断虚拟键盘布局(geometry)是否改变的槽函数
+*******************************************************************************/
+void TabletWindow::slotVirtualKeyboardGeometryChanged(QRect rect)
+{
+    qDebug() << "slotOnVirtualKeyBoardLayoutChanged: " << rect;
+}
+
+/*******************************************************************************
+ 1. @函数:    slotResizeWindowHeight
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-14
+ 4. @说明:    根据虚拟键盘是否显示，调整主窗口高度
+*******************************************************************************/
+void TabletWindow::slotResizeWindowHeight(int windowHeight)
+{
+    // 关闭标签页时，键盘会频繁隐藏/显示，导致多次触发该槽函数
+    // TODO: MainWindow设置setFixedHeight会在关闭标签页的时候卡一下，待优化
+    this->setFixedHeight(windowHeight);
+}
+
+/*******************************************************************************
+ 1. @函数:    slotVirtualKeyboardShowHide
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-13
+ 4. @说明:    处理虚拟键盘显示/隐藏的槽函数
+*******************************************************************************/
+void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
+{
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+    QSize availableSize = desktopWidget->availableGeometry().size();
+
+    int windowHeight = 0;
+
+    if (isShow) {
+        // 获取虚拟键盘高度
+        if (-1 == m_virtualKeyboardHeight) {
+            m_virtualKeyboardHeight = Service::instance()->getVirtualKeyboardHeight();
+        }
+
+        windowHeight = screenRect.height()-m_virtualKeyboardHeight;
+    }
+    else {
+        windowHeight = availableSize.height();
+    }
+
+    // 根据虚拟键盘是否显示，调整主窗口高度
+    emit onResizeWindowHeight(windowHeight);
 }
 
 /*******************************************************************************
