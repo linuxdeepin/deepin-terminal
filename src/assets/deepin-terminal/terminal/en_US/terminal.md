@@ -314,18 +314,19 @@ In the Main Menu, you can create [New Window](#Create Window), customize command
 The window theme provides multiple themes.
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg).
-2. Click **Theme** to choose one theme.
+
+2. Click **Theme** and you can:
+
+   - choose one theme that comes with Terminal.
+
+   - customize the theme in the **Custom Theme** window according to your need.
 
 ### Custom Commands ###
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg).
-
 2. Select **Custom commands**.
-
 3. Select **Add command**.
-
 4. Input **Name**, **Command** and **Shortcuts**.
-
 5. Click **Add**.
 
 ### Settings
@@ -341,14 +342,13 @@ The window theme provides multiple themes.
 
    - Set the type and size for font.
 
-   Click the "+" or "-" icon or scroll the mouse wheel in the Font Size edition box to adjust the font size.
+   - Click the "+" or "-" icon or scroll the mouse wheel in the Font Size edition box to adjust the font size.
 
 3. In the **Tab titles** options, you can set the name for all the tabs and remote tabs in terminal.
 
 #### Shortcuts Settings ####
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg)> **Settings**.
-
 3. In the **Shortcuts** options, you can:
 
   - Modify shortcuts: Click the shortcuts to be modified and input new shortcuts via the keyboard in the editable input box.
@@ -359,7 +359,6 @@ The window theme provides multiple themes.
 #### Advanced Settings ####
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg)> **Settings**.
-
 3. In the **Advanced** options, you can:
 
   - Set cursor style.
@@ -368,28 +367,29 @@ The window theme provides multiple themes.
   - Enable or disable **Scroll on keystroke**.
   - Enable or disable **Scroll on output**.
   - Set the startup mode for window .
-  - Enable or disable **Hide quake window after lost focus**.
   - Enable or disable **Blur background**.
+
    >![notes](../common/notes.svg)Notes: if Window Effect is turned off in Control Center, **Blur background** option will be hidden.
 
-  - Enable or disable flow control by **Ctrl** + **S** and **Ctrl** + **Q**
-  - **Restore defaults**: Click this button to restore to all default settings.  
+   - Enable or disable **Hide quake window after lost focus**.
+   - Select **Shell profile**.
+   - Enable or disable flow control by **Ctrl** + **S** and **Ctrl** + **Q**
+
+3. **Restore defaults**: Click this button to restore to all default settings.  
 
 ### Help
 
-2. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg).
+1. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg).
 2. Click **Help** to view the manual of Terminal.
 
 
 ### About
 
 1. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg).
-
 2. Click **About** to view the version and introduction of Terminal.
 
 
 ### Exit
 
 1. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg).
-
 2. Click **Exit** to exit Terminal.
