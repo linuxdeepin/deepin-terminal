@@ -568,7 +568,7 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
 void ItemWidget::focusInEvent(QFocusEvent *event)
 {
     m_isFocus = true;
-    if (m_functType == ItemFuncType_Item) {
+    if (ItemFuncType_Item == m_functType) {
         m_funcButton->show();
     }
     FocusFrame::focusInEvent(event);
@@ -587,11 +587,11 @@ void ItemWidget::focusOutEvent(QFocusEvent *event)
     m_isFocus = false;
     // Tab切出
     Qt::FocusReason type = event->reason();
-    if (type == Qt::TabFocusReason || type == Qt::BacktabFocusReason) {
+    if (Qt::TabFocusReason == type || Qt::BacktabFocusReason == type) {
         emit focusOut(type);
     }
 
-    if (m_functType == ItemFuncType_Item) {
+    if (ItemFuncType_Item == m_functType) {
         // 编辑按钮也没焦点，则隐藏编辑按钮
         if (!m_funcButton->hasFocus() && !m_isHover) {
             m_funcButton->hide();

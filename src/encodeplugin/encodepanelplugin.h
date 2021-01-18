@@ -25,8 +25,8 @@
 #include "mainwindowplugininterface.h"
 #include "encodepanel.h"
 #include "termwidget.h"
+
 #include <QTextCodec>
-//class EncodePanel;
 
 /*******************************************************************************
  1. @类名:    EncodePanelPlugin

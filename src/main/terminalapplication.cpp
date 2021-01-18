@@ -100,7 +100,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
     // 针对DTK做的特殊处理,等DTK自己完成后,需要删除
     if (object->metaObject()->className() == QStringLiteral("Dtk::Widget::DKeySequenceEdit")) {
         // 焦点移除,移除edit
-        if (event->type() == QEvent::FocusOut) {
+        if (QEvent::FocusOut == event->type()) {
             DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
             // 包含edit
             if (m_keySequenceList.contains(edit)) {
@@ -113,9 +113,9 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             // 获取DKeySequenceEdit
             DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
             // 在dtk的自定义快捷键输入框上按Enter
-            if (keyevent->key() == Qt::Key_Enter
-                    || keyevent->key() == Qt::Key_Return
-                    || keyevent->key() == Qt::Key_Space
+            if (Qt::Key_Enter == keyevent->key()
+                    || Qt::Key_Return == keyevent->key()
+                    || Qt::Key_Space == keyevent->key()
                ) {
                 // 当快捷键输入框内容不为空
                 // 设置里的快捷键输入框
