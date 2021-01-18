@@ -23,14 +23,17 @@
 #include "listview.h"
 #include "iconbutton.h"
 #include "mainwindow.h"
+#include "service.h"
 
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
+#include <DTitlebar>
 
 #include <QKeyEvent>
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDesktopWidget>
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -278,4 +281,38 @@ void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)
     QString showText = filter;
     showText = Utils::getElidedText(m_label->font(), showText, ITEMMAXWIDTH, Qt::ElideMiddle);
     m_label->setText(QString("%1：%2").arg(tr("Search"), showText));
+}
+
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-18
+ 4. @说明:    根据虚拟键盘高度，动态调整编码列表插件面板高度
+*******************************************************************************/
+void RemoteManagementSearchPanel::resizeEvent(QResizeEvent *event)
+{
+    bool isTabletMode = IS_TABLET_MODE;
+    // 非平板模式下不处理
+    if (!isTabletMode) {
+        return CommonPanel::resizeEvent(event);
+    }
+
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    int availableHeight = desktopWidget->availableGeometry().size().height();
+    int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
+    Service *service = Service::instance();
+
+    // 获取标题栏高度
+    int titleBarHeight = service->getTitleBarHeight();
+    int topPanelHeight = 0;
+    if (service->isVirtualKeyboardShow()) {
+        int keyboardHeight = service->getVirtualKeyboardHeight();
+        topPanelHeight = availableHeight - keyboardHeight - titleBarHeight + dockHeight;
+    }
+    else {
+        topPanelHeight = availableHeight - titleBarHeight;
+    }
+
+    int topPanelWidth = this->width();
+    this->resize(topPanelWidth, topPanelHeight);
 }

@@ -59,6 +59,7 @@ class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
 class SwitchThemeMenu;
+class EncodePanelPlugin;
 
 /*******************************************************************************
  1. @类名:    MainWindow
@@ -231,7 +232,6 @@ signals:
     // !这两个信号被封装了，请不要单独调用！
     void showPluginChanged(const QString &name, bool bSetFocus = false);
     void quakeHidePlugin();
-    void resizePluginInTabletMode(QSize windowSize);
     void mainwindowClosed(MainWindow *);
     // 编码方式，仅当前mainwindow有效．
     void changeEncodeSig(const QString &name);
@@ -430,6 +430,7 @@ protected:
     QString downloadFilePath = "";
     RemoteManagementPlugin *remoteManagPlugin = nullptr;
     CustomCommandPlugin *customCommandPlugin = nullptr;
+    EncodePanelPlugin *encodePlugin = nullptr;
     QString m_strWindowId;
     const char *cmd = "ps -elf|grep deepin-terminal$ |wc -l";
 

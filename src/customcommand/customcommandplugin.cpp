@@ -75,12 +75,6 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
     connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
         getCustomCommandTopPanel()->hide();
     });
-
-    // 当虚拟键盘隐藏/显示过程中，MainWindow会改变大小，此时触发插件resize
-    connect(m_mainWindow, &MainWindow::resizePluginInTabletMode, this, [ = ](QSize windowSize) {
-        QSize originPanelSize = getCustomCommandTopPanel()->size();
-        getCustomCommandTopPanel()->resize(originPanelSize.width(), windowSize.height());
-    });
 }
 
 /*******************************************************************************

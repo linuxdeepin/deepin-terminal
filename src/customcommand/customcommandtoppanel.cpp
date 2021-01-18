@@ -213,14 +213,15 @@ void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
 
     QDesktopWidget *desktopWidget = QApplication::desktop();
     int availableHeight = desktopWidget->availableGeometry().size().height();
+    int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
     Service *service = Service::instance();
 
     // 获取标题栏高度
-    int titleBarHeight = Utils::getMainWindow(this)->titlebar()->height();
+    int titleBarHeight = service->getTitleBarHeight();
     int topPanelHeight = 0;
     if (service->isVirtualKeyboardShow()) {
         int keyboardHeight = service->getVirtualKeyboardHeight();
-        topPanelHeight = availableHeight - keyboardHeight - titleBarHeight;
+        topPanelHeight = availableHeight - keyboardHeight - titleBarHeight + dockHeight;
     }
     else {
         topPanelHeight = availableHeight - titleBarHeight;

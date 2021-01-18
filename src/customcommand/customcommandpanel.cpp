@@ -27,11 +27,13 @@
 #include <DVerticalLine>
 #include <DLog>
 #include <DDialog>
+#include <DTitlebar>
 
 #include <QPixmap>
 #include <QEvent>
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
+#include <QDesktopWidget>
 
 CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -274,4 +276,38 @@ void CustomCommandPanel::initUI()
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandPanel::doCustomCommand);
     connect(m_cmdListWidget, &ListView::listItemCountChange, this, &CustomCommandPanel::refreshCmdSearchState);
     connect(m_cmdListWidget, &ListView::focusOut, this, &CustomCommandPanel::onFocusOut);
+}
+
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-18
+ 4. @说明:    根据虚拟键盘高度，动态调整编码列表插件面板高度
+*******************************************************************************/
+void CustomCommandPanel::resizeEvent(QResizeEvent *event)
+{
+    bool isTabletMode = IS_TABLET_MODE;
+    // 非平板模式下不处理
+    if (!isTabletMode) {
+        return CommonPanel::resizeEvent(event);
+    }
+
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    int availableHeight = desktopWidget->availableGeometry().size().height();
+    int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
+    Service *service = Service::instance();
+
+    // 获取标题栏高度
+    int titleBarHeight = service->getTitleBarHeight();
+    int topPanelHeight = 0;
+    if (service->isVirtualKeyboardShow()) {
+        int keyboardHeight = service->getVirtualKeyboardHeight();
+        topPanelHeight = availableHeight - keyboardHeight - titleBarHeight + dockHeight;
+    }
+    else {
+        topPanelHeight = availableHeight - titleBarHeight;
+    }
+
+    int topPanelWidth = this->width();
+    this->resize(topPanelWidth, topPanelHeight);
 }

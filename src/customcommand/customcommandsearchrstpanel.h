@@ -48,6 +48,8 @@ public:
     explicit CustomCommandSearchRstPanel(QWidget *parent = nullptr);
     void refreshData(const QString &strFilter);
     void refreshData();
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 signals:
     void handleCustomCurCommand(const QString &strCommand);
     void showCustomCommandPanel();

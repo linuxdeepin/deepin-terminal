@@ -22,6 +22,9 @@
 #include "tabletwindow.h"
 #include "tabbar.h"
 #include "service.h"
+#include "customcommandplugin.h"
+#include "encodepanelplugin.h"
+#include "remotemanagementplugn.h"
 
 #include <QtDBus>
 #include <QDesktopWidget>
@@ -181,6 +184,8 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
 {
     QDesktopWidget *desktopWidget = QApplication::desktop();
     int availableHeight = desktopWidget->availableGeometry().size().height();
+    int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
+    qDebug() << "dockHeight: " << dockHeight << endl;
 
     int windowHeight = 0;
 
@@ -190,7 +195,7 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
             m_virtualKeyboardHeight = Service::instance()->getVirtualKeyboardHeight();
         }
 
-        windowHeight = availableHeight - m_virtualKeyboardHeight;
+        windowHeight = availableHeight - m_virtualKeyboardHeight + dockHeight;
         qDebug() << "isShow - windowHeight: " << windowHeight << endl;
     }
     else {
@@ -325,8 +330,25 @@ void TabletWindow::resizePlugin()
         return;
     }
 
-    qDebug() << "resize Plugin" << m_CurrentShowPlugin;
     QSize windowSize = this->size();
     qDebug() << "window size is: " << windowSize;
-    emit resizePluginInTabletMode(windowSize);
+    qDebug() << "resize Plugin" << m_CurrentShowPlugin;
+    // 当虚拟键盘隐藏/显示过程中，MainWindow会改变大小时触发自定义命令插件resize
+    if (PLUGIN_TYPE_CUSTOMCOMMAND == m_CurrentShowPlugin) {
+        CustomCommandTopPanel *panel = customCommandPlugin->getCustomCommandTopPanel();
+        QSize originPanelSize = panel->size();
+        panel->resize(originPanelSize.width(), windowSize.height());
+    }
+    // 当虚拟键盘隐藏/显示过程中，MainWindow会改变大小时触发编码插件resize
+    else if (PLUGIN_TYPE_ENCODING == m_CurrentShowPlugin) {
+        EncodePanel *panel = encodePlugin->getEncodePanel();
+        QSize originPanelSize = panel->size();
+        panel->resize(originPanelSize.width(), windowSize.height());
+    }
+    // 当虚拟键盘隐藏/显示过程中，MainWindow会改变大小时触发远程管理插件resize
+    else if (PLUGIN_TYPE_REMOTEMANAGEMENT == m_CurrentShowPlugin) {
+        RemoteManagementTopPanel *panel = remoteManagPlugin->getRemoteManagementTopPanel();
+        QSize originPanelSize = panel->size();
+        panel->resize(originPanelSize.width(), windowSize.height());
+    }
 }

@@ -56,6 +56,8 @@ public:
     void refreshCmdSearchState();
     // 设置焦点进入平面
     void setFocusInPanel();
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 signals:
     void handleCustomCurCommand(const QString &strCommand);
     void focusOut();

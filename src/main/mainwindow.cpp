@@ -375,7 +375,7 @@ void MainWindow::initPlugins()
     // Todo: real plugin loader and plugin support.
     // ThemePanelPlugin *testPlugin = new ThemePanelPlugin(this);
     // testPlugin->initPlugin(this);
-    EncodePanelPlugin *encodePlugin = new EncodePanelPlugin(this);
+    encodePlugin = new EncodePanelPlugin(this);
     encodePlugin->initPlugin(this);
 
     customCommandPlugin = new CustomCommandPlugin(this);

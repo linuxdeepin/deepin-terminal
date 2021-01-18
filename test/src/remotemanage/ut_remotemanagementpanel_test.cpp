@@ -119,8 +119,6 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshPanel)
     RemoteManagementPanel panel;
     panel.resize(PANEL_WIDTH, PANEL_HEIGHT);
     panel.show();
-    EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
-    EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
     panel.refreshPanel();
 
@@ -136,8 +134,6 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusInPanel)
     RemoteManagementPanel panel;
     panel.resize(PANEL_WIDTH, PANEL_HEIGHT);
     panel.show();
-    EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
-    EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
     panel.setFocusInPanel();
     int listIndex = panel.getListIndex();
@@ -161,8 +157,6 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusBack)
     RemoteManagementPanel panel;
     panel.resize(PANEL_WIDTH, PANEL_HEIGHT);
     panel.show();
-    EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
-    EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
     // 创建分组
     ServerConfig groupConfig;
@@ -205,8 +199,6 @@ TEST_F(UT_RemoteManagementPanel_Test, clearListFocus)
     RemoteManagementPanel panel;
     panel.resize(PANEL_WIDTH, PANEL_HEIGHT);
     panel.show();
-    EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
-    EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
     panel.clearListFocus();
     EXPECT_EQ(panel.m_pushButton->hasFocus(), false);
@@ -226,8 +218,7 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
     RemoteManagementPanel panel;
     panel.resize(PANEL_WIDTH, PANEL_HEIGHT);
     panel.show();
-    EXPECT_EQ(panel.size().width(), PANEL_WIDTH);
-    EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
+
     ServerConfigManager::instance()->m_serverConfigs.clear();
     // 一个也没有,搜索框隐藏
     panel.refreshSearchState();

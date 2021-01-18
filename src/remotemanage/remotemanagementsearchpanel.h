@@ -50,6 +50,9 @@ public:
     // 获取列表的index
     int getListIndex();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 signals:
     // 连接远程
     void doConnectServer(ServerConfig *curItemServer);

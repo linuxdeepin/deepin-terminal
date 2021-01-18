@@ -53,6 +53,9 @@ public:
     // 获取列表中当前焦点的位置
     int getListIndex();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 signals:
     // 显示搜索界面
     void showSearchPanel(const QString &strFilter);
