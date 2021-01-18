@@ -29,6 +29,7 @@
 #include "utils.h"
 
 #include <DLog>
+
 #include <QDebug>
 
 EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)

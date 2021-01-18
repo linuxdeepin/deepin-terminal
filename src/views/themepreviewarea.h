@@ -60,26 +60,26 @@ protected:
 
 private:
     //主题风格区域
-    QRectF  *titleRect = nullptr;
+    QRectF  *m_titleRect = nullptr;
     //预览字符串 ps1
-    QString ps1String = "hyde@hyde-PC";
+    QString m_ps1String = "hyde@hyde-PC";
     //预览字符串 ps2
-    QString ps2String = "~/Desktop ";
+    QString m_ps2String = "~/Desktop ";
     //预览字符串 前景色字符
-    QString foregroundLeftString = ":";
+    QString m_foregroundLeftString = ":";
     //预览字符串 前景色字符串
-    QString foregroundRightString = "$  sudo  apt  install  deepin-terminal";
+    QString m_foregroundRightString = "$  sudo  apt  install  deepin-terminal";
 
     //背景色
-    QColor backgroundColor = QColor(248, 248, 248);
+    QColor m_backgroundColor = QColor(248, 248, 248);
     //PS1 配色
-    QColor ps1Color = QColor(133, 153, 0);
+    QColor m_ps1Color = QColor(133, 153, 0);
     //前景色
-    QColor foregroundColor = QColor(0, 0, 0);
+    QColor m_foregroundColor = QColor(0, 0, 0);
     //PS2 配色
-    QColor ps2Color = QColor(52, 101, 164);
+    QColor m_ps2Color = QColor(52, 101, 164);
     //预览主题风格图片
-    QPixmap titlePixmap = QPixmap(":/logo/headbar-light.svg");
+    QPixmap m_titlePixmap = QPixmap(":/logo/headbar-light.svg");
 
 };
 

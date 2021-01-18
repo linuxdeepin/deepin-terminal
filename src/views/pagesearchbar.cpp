@@ -22,16 +22,16 @@
 
 #include "pagesearchbar.h"
 #include "utils.h"
+#include "mainwindow.h"
 
 #include <DLog>
-#include <QToolButton>
 
+#include <QToolButton>
 #include <QGraphicsOpacityEffect>
 #include <QKeyEvent>
 #include <QShortcut>
 #include <QApplication>
 #include <QAction>
-#include <mainwindow.h>
 
 PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
 {

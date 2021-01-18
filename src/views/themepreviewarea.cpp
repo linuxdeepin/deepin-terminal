@@ -36,7 +36,7 @@ ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent)
     this->setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
     setFixedSize(439, 113);
-    titleRect = new QRectF(0, 0, 439, 35);
+    m_titleRect = new QRectF(0, 0, 439, 35);
 }
 
 /*******************************************************************************
@@ -58,20 +58,20 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
     painter->setOpacity(1);
     const QRect &rect = this->rect();
     //绘制标题图片
-    painter->drawPixmap(*titleRect, titlePixmap, *titleRect);
+    painter->drawPixmap(*m_titleRect, m_titlePixmap, *m_titleRect);
 
     //绘制背景色
     QPainterPath backgroundPathTop;
     backgroundPathTop.addRect(
         QRect(rect.x(), rect.y()  + 35, rect.width(), 8));
-    painter->setPen(backgroundColor);
-    painter->fillPath(backgroundPathTop, QColor(backgroundColor));
+    painter->setPen(m_backgroundColor);
+    painter->fillPath(backgroundPathTop, QColor(m_backgroundColor));
 
     QPainterPath backgroundPath;
     backgroundPath.addRoundedRect(
         QRect(rect.x(), rect.y()  + 35, rect.width(), rect.height()  - 35), 8, 8);
-    painter->setPen(backgroundColor);
-    painter->fillPath(backgroundPath, QColor(backgroundColor));
+    painter->setPen(m_backgroundColor);
+    painter->fillPath(backgroundPath, QColor(m_backgroundColor));
 
     QFont font;
     font.setPointSize(8);
@@ -81,21 +81,21 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
 
     int lineHeight = 18;
     //绘制提示符PS1演示文本
-    painter->setPen(QPen(ps1Color));
+    painter->setPen(QPen(m_ps1Color));
     painter->drawText(
-        QRect(rect.x() + 10, rect.y() + 35 + 10, 90, lineHeight), Qt::AlignLeft | Qt::AlignTop, ps1String);
+        QRect(rect.x() + 10, rect.y() + 35 + 10, 90, lineHeight), Qt::AlignLeft | Qt::AlignTop, m_ps1String);
     //绘制前景色演示文本
-    painter->setPen(QPen(foregroundColor));
+    painter->setPen(QPen(m_foregroundColor));
     painter->drawText(
-        QRect(rect.x() + 10 + 90, rect.y()  + 35 + 10, 5, lineHeight), Qt::AlignLeft | Qt::AlignTop, foregroundLeftString);
+        QRect(rect.x() + 10 + 90, rect.y()  + 35 + 10, 5, lineHeight), Qt::AlignLeft | Qt::AlignTop, m_foregroundLeftString);
     //绘制提示符PS2演示文本
-    painter->setPen(QPen(ps2Color));
+    painter->setPen(QPen(m_ps2Color));
     painter->drawText(
-        QRect(rect.x() + 10 + 90 + 5, rect.y() + 35 + 10, 65, lineHeight), Qt::AlignLeft | Qt::AlignTop, ps2String);
+        QRect(rect.x() + 10 + 90 + 5, rect.y() + 35 + 10, 65, lineHeight), Qt::AlignLeft | Qt::AlignTop, m_ps2String);
     //绘制前景色演示文本
-    painter->setPen(QPen(foregroundColor));
+    painter->setPen(QPen(m_foregroundColor));
     painter->drawText(
-        QRect(rect.x() + 10 + 90 + 5 + 65, rect.y() + 35 + 10, 230, lineHeight), Qt::AlignLeft | Qt::AlignTop, foregroundRightString);
+        QRect(rect.x() + 10 + 90 + 5 + 65, rect.y() + 35 + 10, 230, lineHeight), Qt::AlignLeft | Qt::AlignTop, m_foregroundRightString);
 
     // 边框描线，主要深色主题下标题与窗口分界不明显
     QPainterPath FramePath;
@@ -120,9 +120,9 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
 void ThemePreviewArea::setTitleStyle(const QString &titleStyle)
 {
     if ("Light" == titleStyle) {
-        titlePixmap.load(":/logo/headbar-light.svg");
+        m_titlePixmap.load(":/logo/headbar-light.svg");
     } else {
-        titlePixmap.load(":/logo/headbar-dark.svg");
+        m_titlePixmap.load(":/logo/headbar-dark.svg");
     }
 
     update();
@@ -136,7 +136,7 @@ void ThemePreviewArea::setTitleStyle(const QString &titleStyle)
 *******************************************************************************/
 void ThemePreviewArea::setBackgroundColor(const QColor &color)
 {
-    backgroundColor = color;
+    m_backgroundColor = color;
     update();
 }
 
@@ -148,7 +148,7 @@ void ThemePreviewArea::setBackgroundColor(const QColor &color)
 *******************************************************************************/
 void ThemePreviewArea::setForegroundgroundColor(const QColor &color)
 {
-    foregroundColor = color;
+    m_foregroundColor = color;
     update();
 }
 
@@ -160,7 +160,7 @@ void ThemePreviewArea::setForegroundgroundColor(const QColor &color)
 *******************************************************************************/
 void ThemePreviewArea::setPs1Color(const QColor &color)
 {
-    ps1Color = color;
+    m_ps1Color = color;
     update();
 }
 
@@ -172,7 +172,7 @@ void ThemePreviewArea::setPs1Color(const QColor &color)
 *******************************************************************************/
 void ThemePreviewArea::setPs2Color(const QColor &color)
 {
-    ps2Color = color;
+    m_ps2Color = color;
     update();
 }
 
@@ -184,10 +184,10 @@ void ThemePreviewArea::setPs2Color(const QColor &color)
 *******************************************************************************/
 void ThemePreviewArea::setAllColorParameter(const QColor &foregroundColorParameter, const QColor &backgroundColorParameter, const QColor &ps1ColorParameter, const QColor &ps2ColorParameter)
 {
-    foregroundColor = foregroundColorParameter;
-    backgroundColor = backgroundColorParameter;
-    ps1Color = ps1ColorParameter;
-    ps2Color = ps2ColorParameter;
+    m_foregroundColor = foregroundColorParameter;
+    m_backgroundColor = backgroundColorParameter;
+    m_ps1Color = ps1ColorParameter;
+    m_ps2Color = ps2ColorParameter;
     update();
 }
 

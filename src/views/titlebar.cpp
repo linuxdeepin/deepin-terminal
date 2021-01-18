@@ -26,7 +26,6 @@
 
 #include <QIcon>
 #include <QLabel>
-
 #include <QDebug>
 
 DWIDGET_USE_NAMESPACE
