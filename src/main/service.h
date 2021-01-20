@@ -27,8 +27,8 @@
 #include "settings.h"
 #include "atspidesktop.h"
 #include "customthemesettingdialog.h"
+#include "tabletsettingsdialog.h"
 
-#include <DSettingsDialog>
 #include <DDialog>
 #include <QObject>
 #include <QSharedMemory>
@@ -168,7 +168,7 @@ private:
 
     static Service *pService ;
     // 设置框 全局唯一显示
-    DSettingsDialog *m_settingDialog = nullptr;
+    TabletSettingsDialog *m_settingDialog = nullptr;
 
     //自定义主题设置对话框 全局唯一
     CustomThemeSettingDialog *m_customThemeSettingDialog = nullptr;

@@ -30,6 +30,7 @@
 #define SERVERCONFIGOPTDLG_H
 
 #include "serverconfigmanager.h"
+#include "tabletabstractdialog.h"
 
 #include <DAbstractDialog>
 #include <DApplicationHelper>
@@ -59,7 +60,7 @@ DWIDGET_USE_NAMESPACE
 
 class TermCommandLinkButton;
 
-class ServerConfigOptDlg : public DAbstractDialog
+class ServerConfigOptDlg : public TabletAbstractDialog
 {
     Q_OBJECT
 public:

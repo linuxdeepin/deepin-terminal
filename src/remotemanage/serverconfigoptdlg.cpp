@@ -44,7 +44,7 @@
 DGUI_USE_NAMESPACE
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
-    : DAbstractDialog(parent),
+    : TabletAbstractDialog(parent),
       m_type(type),
       m_curServer(curServer),
       m_titleLabel(new DLabel),

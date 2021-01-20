@@ -167,6 +167,8 @@ set (DTNG_CPP_FILES
     src/views/customthemesettingdialog.cpp
     src/views/themepreviewarea.cpp
     src/views/switchthememenu.cpp
+    src/views/tabletabstractdialog.cpp
+    src/views/tabletsettingsdialog.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -224,6 +226,8 @@ set (DTNG_HEADER_FILES
     src/views/customthemesettingdialog.h
     src/views/themepreviewarea.h
     src/views/switchthememenu.h
+    src/views/tabletabstractdialog.h
+    src/views/tabletsettingsdialog.h
 )
 
 set (DTNG_QRC_FILES

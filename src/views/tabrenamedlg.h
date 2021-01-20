@@ -2,6 +2,7 @@
 #define TABRENAMEDLG_H
 
 #include "tabrenamewidget.h"
+#include "tabletabstractdialog.h"
 
 #include <DSuggestButton>
 #include <DLabel>
@@ -18,7 +19,7 @@
 DWIDGET_USE_NAMESPACE
 
 class TabRenameWidget;
-class TabRenameDlg : public DAbstractDialog
+class TabRenameDlg : public TabletAbstractDialog
 {
     Q_OBJECT
 public:

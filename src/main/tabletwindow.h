@@ -73,7 +73,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
 signals:
-    void onResizeWindowHeight(int windowHeight);
+    void onResizeWindowHeight(int windowHeight, bool isKeyboardShow);
 
 private slots:
     // 判断虚拟键盘是否激活(即是否显示)的槽函数
@@ -83,7 +83,7 @@ private slots:
     void slotVirtualKeyboardGeometryChanged(QRect rect);
 
     // 根据虚拟键盘是否显示，调整主窗口高度
-    void slotResizeWindowHeight(int windowHeight);
+    void slotResizeWindowHeight(int windowHeight, bool isKeyboardShow);
 
 private:
     explicit TabletWindow(TermProperties properties, QWidget *parent = nullptr);

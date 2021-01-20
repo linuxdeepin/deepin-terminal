@@ -31,6 +31,7 @@
 
 #include "termbasedialog.h"
 #include "shortcutmanager.h"
+#include "tabletabstractdialog.h"
 
 #include <DDialog>
 #include <DAbstractDialog>
@@ -49,7 +50,7 @@ DWIDGET_USE_NAMESPACE
 
 Q_DECLARE_METATYPE(CustomCommandData)
 
-class CustomCommandOptDlg : public DAbstractDialog
+class CustomCommandOptDlg : public TabletAbstractDialog
 {
     Q_OBJECT
 public:

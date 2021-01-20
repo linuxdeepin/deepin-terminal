@@ -14,7 +14,7 @@
  3. @日期:    2020-10-30
  4. @说明:    标签重命名构造函数
 *******************************************************************************/
-TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
+TabRenameDlg::TabRenameDlg(QWidget *parent) :  TabletAbstractDialog(parent)
 {
     initUi();
     initContentWidget();

@@ -119,10 +119,10 @@ void Service::initSetting(MainWindow *pOwner)
         return;
     }
     QDateTime startTime = QDateTime::currentDateTime();
-    m_settingDialog = new DSettingsDialog(pOwner);
+    m_settingDialog = new TabletSettingsDialog(pOwner);
     m_settingDialog->setObjectName("SettingDialog");//Add by ut001000 renfeixiang 2020-08-13
     // 关闭后将指针置空，下次重新new
-    connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
+    connect(m_settingDialog, &TabletSettingsDialog::finished, this, [ = ](int result) {
         Q_UNUSED(result)
         //激活设置框的有拥者
         if (m_settingOwner) {

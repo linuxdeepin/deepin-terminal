@@ -45,7 +45,7 @@
 #include <QClipboard>
 
 CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandData *currItemData, QWidget *parent)
-    : DAbstractDialog(parent)
+    : TabletAbstractDialog(parent)
     , m_type(type)
     , m_nameLineEdit(new DLineEdit)
     , m_commandLineEdit(new DLineEdit)

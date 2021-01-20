@@ -128,7 +128,7 @@ TEST_F(UT_Service_Test, getEntryTime)
 
 TEST_F(UT_Service_Test, showHideOpacityAndBlurOptions)
 {
-    m_service->m_settingDialog = new DSettingsDialog();
+    m_service->m_settingDialog = new TabletSettingsDialog();
     m_service->m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_service->m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
     m_service->m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
@@ -147,7 +147,7 @@ TEST_F(UT_Service_Test, showHideOpacityAndBlurOptions)
 
 TEST_F(UT_Service_Test, isSettingDialogVisible)
 {
-    m_service->m_settingDialog = new DSettingsDialog();
+    m_service->m_settingDialog = new TabletSettingsDialog();
     m_service->m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_service->m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
     m_service->m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);

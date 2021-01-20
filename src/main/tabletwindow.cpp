@@ -167,8 +167,10 @@ void TabletWindow::slotVirtualKeyboardGeometryChanged(QRect rect)
  3. @日期:    2021-01-14
  4. @说明:    根据虚拟键盘是否显示，调整主窗口高度
 *******************************************************************************/
-void TabletWindow::slotResizeWindowHeight(int windowHeight)
+void TabletWindow::slotResizeWindowHeight(int windowHeight, bool isKeyboardShow)
 {
+    Q_UNUSED(isKeyboardShow)
+
     // 关闭标签页时，键盘会频繁隐藏/显示，导致多次触发该槽函数
     // TODO: MainWindow设置setFixedHeight会在关闭标签页的时候卡一下，待优化
     this->setFixedHeight(windowHeight);
@@ -204,7 +206,7 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
     }
 
     // 根据虚拟键盘是否显示，调整主窗口高度
-    emit onResizeWindowHeight(windowHeight);
+    emit onResizeWindowHeight(windowHeight, isShow);
 }
 
 /*******************************************************************************
