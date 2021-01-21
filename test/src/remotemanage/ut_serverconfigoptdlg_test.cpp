@@ -169,14 +169,8 @@ TEST_F(UT_ServerConfigOptDlg_Test, lambda)
     // 切换主题
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 
     // 扩展弹窗
     emit serverConfigDialog.m_advancedOptions->click();
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 #endif

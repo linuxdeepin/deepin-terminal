@@ -3,6 +3,7 @@
 #include "serverconfigmanager.h"
 #include "service.h"
 #include "mainwindow.h"
+#include "serverconfigoptdlg.h"
 #include "utils.h"
 
 //Google GTest 相关头文件
@@ -109,4 +110,108 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     QTest::qWait(UT_WAIT_TIME);
 #endif
 }
+
+/*******************************************************************************
+ 1. @函数:    initManager
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-25
+ 4. @说明:    初始化Manager
+*******************************************************************************/
+TEST_F(UT_ServerConfigManager_Test, initManager)
+{
+    // 将现在已有的instance删除
+    delete ServerConfigManager::m_instance;
+    ServerConfigManager::m_instance = nullptr;
+
+    // 初始化数据
+    // 先将数据存入配置文件
+    ServerConfig *groupConfig = new ServerConfig;
+    groupConfig->m_serverName = "group_item";
+    groupConfig->m_address = "127.0.0.1";
+    groupConfig->m_group = "group2020";
+    groupConfig->m_userName = "dzw";
+    groupConfig->m_port = "22";
+    ServerConfig *config = new ServerConfig;
+    config->m_serverName = "1988";
+    config->m_address = "127.0.0.1";
+    config->m_group = "";
+    config->m_userName = "dzw";
+    config->m_port = "22";
+    // 保存数据
+    ServerConfigManager::instance()->saveServerConfig(groupConfig);
+    ServerConfigManager::instance()->saveServerConfig(config);
+
+    //初始化数据
+    ServerConfigManager::instance()->initServerConfig();
+
+    // 删除数据
+    ServerConfigManager::instance()->delServerConfig(groupConfig);
+    ServerConfigManager::instance()->delServerConfig(config);
+}
+
+/*******************************************************************************
+ 1. @函数:    removeDialog
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-25
+ 4. @说明:    远程管理弹窗操作
+*******************************************************************************/
+TEST_F(UT_ServerConfigManager_Test, removeDialog)
+{
+    // 初始化数据
+    ServerConfig config;
+    config.m_serverName = "1988";
+    config.m_address = "127.0.0.1";
+    config.m_group = "";
+    config.m_userName = "dzw";
+    config.m_port = "22";
+
+    //初始化弹窗
+    ServerConfigOptDlg *dlg = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, &config, nullptr);
+    dlg->show();
+
+    // 将弹窗记录
+    ServerConfigManager::instance()->setModifyDialog(config.m_serverName, dlg);
+
+    // 删除弹窗
+    ServerConfigManager::instance()->removeDialog(dlg);
+    bool isContain = ServerConfigManager::instance()->m_serverConfigDialogMap.contains(config.m_serverName);
+    EXPECT_EQ(isContain, false);
+}
+
+/*******************************************************************************
+ 1. @函数:    closeAllDialog
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-25
+ 4. @说明:    关闭同类弹窗
+*******************************************************************************/
+TEST_F(UT_ServerConfigManager_Test, closeAllDialog)
+{
+    // 初始化数据
+    ServerConfig config;
+    config.m_serverName = "1988";
+    config.m_address = "127.0.0.1";
+    config.m_group = "";
+    config.m_userName = "dzw";
+    config.m_port = "22";
+
+    // 打开多个同一种弹窗
+    ServerConfigOptDlg *dlg1 = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, &config, nullptr);
+    ServerConfigOptDlg *dlg2 = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, &config, nullptr);
+    dlg1->show();
+    dlg2->show();
+
+    // 将弹窗记录
+    ServerConfigManager::instance()->setModifyDialog(config.m_serverName, dlg1);
+    ServerConfigManager::instance()->setModifyDialog(config.m_serverName, dlg2);
+    // 同一类弹窗
+    int typeCount = ServerConfigManager::instance()->m_serverConfigDialogMap.count();
+    EXPECT_EQ(typeCount, 1);
+    // 弹窗数量
+    int count = ServerConfigManager::instance()->m_serverConfigDialogMap[config.m_serverName].count();
+    EXPECT_EQ(count, 2);
+
+    // 将弹窗全部全部拒绝 => 拒绝后信号槽会自动删除弹窗
+    ServerConfigManager::instance()->closeAllDialog(config.m_serverName);
+}
+
 #endif
