@@ -93,7 +93,10 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
     switch (iconType) {
     case ItemFuncType_Item:
         m_funcButton->setIcon(QIcon::fromTheme("dt_edit"));
-        m_funcButton->hide();
+        if (!IS_TABLET_MODE)
+        {
+            m_funcButton->hide();
+        }
         break;
     case ItemFuncType_Group:
         m_funcButton->setIcon(QIcon::fromTheme("dt_arrow_right"));
@@ -173,7 +176,7 @@ void ItemWidget::lostFocus()
 {
     m_isFocus = false;
     // 项影藏功能键
-    if ((ItemFuncType_Item == m_functType) && (!m_isHover)) {
+    if ((ItemFuncType_Item == m_functType) && (!m_isHover) && !IS_TABLET_MODE) {
         m_funcButton->hide();
     }
 }
@@ -321,7 +324,7 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
     }
     // 项
     if (m_functType == ItemFuncType_Item) {
-        if (type != Qt::OtherFocusReason && !m_isHover) {
+        if (type != Qt::OtherFocusReason && !m_isHover && !IS_TABLET_MODE) {
             m_funcButton->hide();
         }
     }
@@ -459,7 +462,7 @@ void ItemWidget::leaveEvent(QEvent *event)
     // 判断焦点是否是选中状态，不是的话，清除选中效果
     if (!m_isFocus && !m_funcButton->hasFocus()) {
         // 编辑按钮出
-        if (m_functType == ItemFuncType_Item) {
+        if (m_functType == ItemFuncType_Item && !IS_TABLET_MODE) {
             m_funcButton->hide();
         }
     }
@@ -593,7 +596,7 @@ void ItemWidget::focusOutEvent(QFocusEvent *event)
 
     if (ItemFuncType_Item == m_functType) {
         // 编辑按钮也没焦点，则隐藏编辑按钮
-        if (!m_funcButton->hasFocus() && !m_isHover) {
+        if (!m_funcButton->hasFocus() && !m_isHover && !IS_TABLET_MODE) {
             m_funcButton->hide();
         }
     }
