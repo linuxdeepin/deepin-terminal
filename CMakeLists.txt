@@ -278,7 +278,10 @@ endif ()
 
 #install(TARGETS deepin-terminal DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal)
 
-install(FILES src/deepin-terminal.desktop
+#install(FILES src/deepin-terminal.desktop
+#        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
+# 平板模式desktop文件去除了新建窗口、雷神窗口相关项目
+install(FILES src/desktop_tablet/deepin-terminal.desktop
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
 
 install(FILES src/assets/logo/deepin-terminal.svg
