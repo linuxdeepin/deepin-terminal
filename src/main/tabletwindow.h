@@ -72,6 +72,8 @@ protected:
 
     void resizeEvent(QResizeEvent *event) override;
 
+    void closeEvent(QCloseEvent *event) override;
+
 signals:
     void onResizeWindowHeight(int windowHeight, bool isKeyboardShow);
 
@@ -84,6 +86,8 @@ private slots:
 
     // 根据虚拟键盘是否显示，调整主窗口高度
     void slotResizeWindowHeight(int windowHeight, bool isKeyboardShow);
+
+    void slotSetFixedHeight(int windowHeight);
 
 private:
     explicit TabletWindow(TermProperties properties, QWidget *parent = nullptr);

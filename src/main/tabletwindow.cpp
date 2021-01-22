@@ -85,7 +85,7 @@ void TabletWindow::initVirtualKeyboardConnections()
     initVirtualKeyboardImActiveChangedSignal();
     initVirtualKeyboardGeometryChangedSignal();
 
-    connect(this, &TabletWindow::onResizeWindowHeight, this, &TabletWindow::slotResizeWindowHeight);
+    connect(this, &TabletWindow::onResizeWindowHeight, this, &TabletWindow::slotResizeWindowHeight, Qt::QueuedConnection);
 }
 
 /*******************************************************************************
@@ -170,10 +170,21 @@ void TabletWindow::slotVirtualKeyboardGeometryChanged(QRect rect)
 void TabletWindow::slotResizeWindowHeight(int windowHeight, bool isKeyboardShow)
 {
     Q_UNUSED(isKeyboardShow)
-
     // 关闭标签页时，键盘会频繁隐藏/显示，导致多次触发该槽函数
-    // TODO: MainWindow设置setFixedHeight会在关闭标签页的时候卡一下，待优化
-    this->setFixedHeight(windowHeight);
+    QMetaObject::invokeMethod(this, "slotSetFixedHeight", Qt::QueuedConnection, Q_ARG(int, windowHeight));
+}
+
+/*******************************************************************************
+ 1. @函数:    slotSetFixedHeight
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-22
+ 4. @说明:    设置主窗口高度
+*******************************************************************************/
+void TabletWindow::slotSetFixedHeight(int windowHeight)
+{
+    QTimer::singleShot(100, this, [this,windowHeight] {
+        this->setFixedHeight(windowHeight);
+    });
 }
 
 /*******************************************************************************
@@ -317,6 +328,11 @@ void TabletWindow::resizeEvent(QResizeEvent *event)
     resizePlugin();
 
     MainWindow::resizeEvent(event);
+}
+
+void TabletWindow::closeEvent(QCloseEvent *event)
+{
+    MainWindow::closeEvent(event);
 }
 
 /*******************************************************************************
