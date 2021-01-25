@@ -24,11 +24,13 @@
 #include "iconbutton.h"
 #include "utils.h"
 #include "mainwindow.h"
+#include "service.h"
 
 #include <QKeyEvent>
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDesktopWidget>
 
 #define GROUPSEARCHWIDTH 172
 
@@ -257,4 +259,44 @@ void ServerConfigGroupPanel::onItemClicked(const QString &key)
     } else {
         qDebug() << "can't connect to remote" << key;
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    resizeEvent
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-18
+ 4. @说明:    根据虚拟键盘高度，动态调整编码列表插件面板高度
+*******************************************************************************/
+void ServerConfigGroupPanel::resizeEvent(QResizeEvent *event)
+{
+    bool isTabletMode = IS_TABLET_MODE;
+    // 非平板模式下不处理
+    if (!isTabletMode) {
+        return CommonPanel::resizeEvent(event);
+    }
+
+    //防止调用this->resize后循环触发resizeEvent
+    if (m_isResizeBySelf) {
+        m_isResizeBySelf = false;
+        return;
+    }
+
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    int availableHeight = desktopWidget->availableGeometry().size().height();
+    int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
+    Service *service = Service::instance();
+
+    // 获取标题栏高度
+    int titleBarHeight = service->getTitleBarHeight();
+    int panelHeight = 0;
+    if (service->isVirtualKeyboardShow()) {
+        int keyboardHeight = service->getVirtualKeyboardHeight();
+        panelHeight = availableHeight - keyboardHeight - titleBarHeight + dockHeight;
+    }
+    else {
+        panelHeight = availableHeight - titleBarHeight;
+    }
+
+    int panelWidth = this->width();
+    this->resize(panelWidth, panelHeight);
 }

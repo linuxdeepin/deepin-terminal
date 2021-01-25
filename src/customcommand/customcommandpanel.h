@@ -78,6 +78,9 @@ public://private:
     CustomCommandOptDlg *m_pdlg = nullptr;
     QVBoxLayout *m_vlayout = nullptr;
     bool m_bpushButtonHaveFocus = false;
+
+    //防止调用this->resize后循环触发resizeEvent
+    bool m_isResizeBySelf = false;
 };
 
 #endif  // CUSTOMCOMMANDPANEL_H

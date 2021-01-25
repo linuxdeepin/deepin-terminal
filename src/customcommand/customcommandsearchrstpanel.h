@@ -64,6 +64,9 @@ private:
 
     ListView *m_cmdListWidget = nullptr;
     QString m_strFilter;
+
+    //防止调用this->resize后循环触发resizeEvent
+    bool m_isResizeBySelf = false;
 };
 
 #endif  // CUSTOMCOMMANDSEARCHRSTPANEL_H

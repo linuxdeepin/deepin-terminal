@@ -83,7 +83,7 @@ void CustomCommandSearchRstPanel::initUI()
     m_cmdListWidget->setObjectName("CustomcmdSearchListWidget");//Add by ut001000 renfeixiang 2020-08-14
 
     QHBoxLayout *hlayout = new QHBoxLayout();
-    hlayout->addSpacing(10);
+    hlayout->addSpacing(SPACEHEIGHT);
     hlayout->addWidget(m_backButton);
     // 搜索框居中显示
     hlayout->addWidget(m_label, 0, Qt::AlignCenter);
@@ -91,11 +91,11 @@ void CustomCommandSearchRstPanel::initUI()
     hlayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->addSpacing(10);
+    vlayout->addSpacing(SPACEHEIGHT);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_cmdListWidget);
     vlayout->setMargin(0);
-    vlayout->setSpacing(10);
+    vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
@@ -211,6 +211,12 @@ void CustomCommandSearchRstPanel::resizeEvent(QResizeEvent *event)
         return CommonPanel::resizeEvent(event);
     }
 
+    //防止调用this->resize后循环触发resizeEvent
+    if (m_isResizeBySelf) {
+        m_isResizeBySelf = false;
+        return;
+    }
+
     QDesktopWidget *desktopWidget = QApplication::desktop();
     int availableHeight = desktopWidget->availableGeometry().size().height();
     int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
@@ -229,4 +235,5 @@ void CustomCommandSearchRstPanel::resizeEvent(QResizeEvent *event)
 
     int topPanelWidth = this->width();
     this->resize(topPanelWidth, topPanelHeight);
+    m_isResizeBySelf = true;
 }

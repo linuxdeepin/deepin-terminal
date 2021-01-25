@@ -79,6 +79,9 @@ private:
     QString m_strFilter;
     // 判断是组内搜索还是组外搜索
     bool m_isGroupOrNot = false;
+
+    //防止调用this->resize后循环触发resizeEvent
+    bool m_isResizeBySelf = false;
 };
 
 #endif  // REMOTEMANAGEMENTSEARCHPANEL_H

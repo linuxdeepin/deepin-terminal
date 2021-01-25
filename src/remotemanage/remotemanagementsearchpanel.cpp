@@ -297,6 +297,12 @@ void RemoteManagementSearchPanel::resizeEvent(QResizeEvent *event)
         return CommonPanel::resizeEvent(event);
     }
 
+    //防止调用this->resize后循环触发resizeEvent
+    if (m_isResizeBySelf) {
+        m_isResizeBySelf = false;
+        return;
+    }
+
     QDesktopWidget *desktopWidget = QApplication::desktop();
     int availableHeight = desktopWidget->availableGeometry().size().height();
     int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
@@ -315,4 +321,6 @@ void RemoteManagementSearchPanel::resizeEvent(QResizeEvent *event)
 
     int topPanelWidth = this->width();
     this->resize(topPanelWidth, topPanelHeight);
+
+    m_isResizeBySelf = true;
 }

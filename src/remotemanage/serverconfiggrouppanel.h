@@ -49,6 +49,9 @@ public:
     // 清除所有焦点
     void clearAllFocus();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 signals:
     // 显示搜索结果，搜索框有焦点
     void showSearchPanel(const QString &strFilter);
@@ -69,6 +72,9 @@ private:
 private:
     ListView *m_listWidget = nullptr;
     QString m_groupName;
+
+    //防止调用this->resize后循环触发resizeEvent
+    bool m_isResizeBySelf = false;
 };
 
 #endif  // SERVERCONFIGGROUPPANEL_H

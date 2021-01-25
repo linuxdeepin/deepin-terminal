@@ -76,6 +76,9 @@ private:
 
 private:
     ListView *m_listWidget = nullptr;
+
+    //防止调用this->resize后循环触发resizeEvent
+    bool m_isResizeBySelf = false;
 };
 
 #endif  // REMOTEMANAGEMENTPANEL_H
