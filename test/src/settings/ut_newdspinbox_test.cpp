@@ -29,38 +29,20 @@ void UT_NewDSpinBox_Test::TearDown()
 
 TEST_F(UT_NewDSpinBox_Test, WheelEvent_Increase)
 {
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     int value = 20;
     m_spinBox->setValue(value);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     QWheelEvent *e = new QWheelEvent(QPointF(63, 29), 120, Qt::NoButton, Qt::NoModifier);
     m_spinBox->wheelEvent(e);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_NewDSpinBox_Test, WheelEvent_Reduce)
 {
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     int value = 20;
     m_spinBox->setValue(value);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     QWheelEvent *e = new QWheelEvent(QPointF(63, 29), -120, Qt::NoButton, Qt::NoModifier);
     m_spinBox->wheelEvent(e);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_NewDSpinBox_Test, eventFilter_Key_Up)

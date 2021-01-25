@@ -33,9 +33,6 @@ TEST_F(UT_FocusFrame_Test, setFocusTest)
 
     frame->setFocus();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete frame;
 }
 

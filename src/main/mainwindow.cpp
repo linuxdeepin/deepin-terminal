@@ -152,7 +152,7 @@ void MainWindow::initWindow()
     setCentralWidget(m_centralWidget);
 }
 
-void MainWindow::slotTabBarClicked(int index, QString tabIdentifier)
+inline void MainWindow::slotTabBarClicked(int index, QString tabIdentifier)
 {
     //DTabBar在左右移动时右侧会出现空白，点击会导致crash，这里加个判断防止index出现非法的情况
     if (index < 0) {
@@ -170,33 +170,33 @@ void MainWindow::slotTabBarClicked(int index, QString tabIdentifier)
     }
 }
 
-void MainWindow::slotTabCurrentChanged(int index)
+inline void MainWindow::slotTabCurrentChanged(int index)
 {
     focusPage(m_tabbar->identifier(index));
 }
 
-void MainWindow::slotTabAddRequested()
+inline void MainWindow::slotTabAddRequested()
 {
     createNewTab();
 }
 
-void MainWindow::slotTabCloseRequested(int index)
+inline void MainWindow::slotTabCloseRequested(int index)
 {
     closeTab(m_tabbar->identifier(index));
 }
 
-void MainWindow::slotMenuCloseTab(QString Identifier)
+inline void MainWindow::slotMenuCloseTab(QString Identifier)
 {
     closeTab(Identifier);
 }
 
 // TAB菜单发来的关闭其它窗口请求,需要逐一关闭
-void MainWindow::slotMenuCloseOtherTab(QString Identifier)
+inline void MainWindow::slotMenuCloseOtherTab(QString Identifier)
 {
     closeOtherTab(Identifier);
 }
 
-void MainWindow::slotShowRenameTabDialog(QString Identifier)
+inline void MainWindow::slotShowRenameTabDialog(QString Identifier)
 {
     // 获取标签选中的tab对应的标签标题
     getPageByIdentifier(Identifier)->showRenameTitleDialog();
@@ -241,7 +241,7 @@ void MainWindow::initTabBar()
     addTab(m_properties);
 }
 
-void MainWindow::slotOptionButtonPressed()
+inline void MainWindow::slotOptionButtonPressed()
 {
     showPlugin(PLUGIN_TYPE_NONE);
     // 判断是否超过最大数量限制
@@ -257,7 +257,7 @@ void MainWindow::slotOptionButtonPressed()
     checkThemeItem();
 }
 
-void MainWindow::slotClickNewWindowTimeout()
+inline void MainWindow::slotClickNewWindowTimeout()
 {
     // 创建新的窗口
     qDebug() << "menu click new window";
@@ -268,7 +268,7 @@ void MainWindow::slotClickNewWindowTimeout()
     emit newWindowRequest(currWorkingDir);
 }
 
-void MainWindow::slotNewWindowActionTriggered()
+inline void MainWindow::slotNewWindowActionTriggered()
 {
     // 等待菜单消失  此处影响菜单创建窗口的性能
     m_createTimer->start(50);
@@ -342,7 +342,7 @@ void MainWindow::initOptionMenu()
     connect(settingAction, &QAction::triggered, Service::instance(), &Service::slotShowSettingsDialog);
 }
 
-void MainWindow::slotFileChanged()
+inline void MainWindow::slotFileChanged()
 {
     QFileSystemWatcher *fileWatcher = qobject_cast<QFileSystemWatcher*>(sender());
     emit  Service::instance()->hostnameChanged();
@@ -516,7 +516,7 @@ bool MainWindow::beginAddTab()
     return true;
 }
 
-void MainWindow::slotLastTermClosed(const QString & identifier)
+inline void MainWindow::slotLastTermClosed(const QString & identifier)
 {
     closeTab(identifier);
 }
@@ -821,7 +821,7 @@ void MainWindow::closeAllTab()
     return;
 }
 
-void MainWindow::slotDDialogFinished(int result)
+inline void MainWindow::slotDDialogFinished(int result)
 {
     OnHandleCloseType(result, Utils::CloseType(qobject_cast<DDialog *>(sender())->property("type").toInt()));
     /******** Modify by ut000439 wangpeili 2020-07-27:  bug 39643  ****************/
@@ -1361,7 +1361,7 @@ void MainWindow::initSplitShortcuts()
     connect(createNewShotcut("shortcuts.tab.vertical_split", false), &QShortcut::activated, this, &MainWindow::slotShortcutVerticalSplit);
 }
 
-void MainWindow::slotShortcutSwitchActivated()
+inline void MainWindow::slotShortcutSwitchActivated()
 {
     QShortcut *switchShortcut = qobject_cast<QShortcut *>(sender());
     int i = switchShortcut->property("index").toInt();
@@ -1385,12 +1385,12 @@ void MainWindow::slotShortcutSwitchActivated()
     qDebug() << "currentPage nullptr ??";
 }
 
-void MainWindow::slotShortcutNewTab()
+inline void MainWindow::slotShortcutNewTab()
 {
     this->addTab(currentPage()->createCurrentTerminalProperties(), true);
 }
 
-void MainWindow::slotShortcutCloseTab()
+inline void MainWindow::slotShortcutCloseTab()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1398,7 +1398,7 @@ void MainWindow::slotShortcutCloseTab()
     }
 }
 
-void MainWindow::slotShortcutCloseOtherTabs()
+inline void MainWindow::slotShortcutCloseOtherTabs()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1406,7 +1406,7 @@ void MainWindow::slotShortcutCloseOtherTabs()
     }
 }
 
-void MainWindow::slotShortcutPreviousTab()
+inline void MainWindow::slotShortcutPreviousTab()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1419,7 +1419,7 @@ void MainWindow::slotShortcutPreviousTab()
     }
 }
 
-void MainWindow::slotShortcutNextTab()
+inline void MainWindow::slotShortcutNextTab()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1432,7 +1432,7 @@ void MainWindow::slotShortcutNextTab()
     }
 }
 
-void MainWindow::slotShortcutHorizonzalSplit()
+inline void MainWindow::slotShortcutHorizonzalSplit()
 {
     // 判读数量是否允许分屏
     if (Service::instance()->isCountEnable()) {
@@ -1451,7 +1451,7 @@ void MainWindow::slotShortcutHorizonzalSplit()
     qDebug() << "can't split vertical  again";
 }
 
-void MainWindow::slotShortcutVerticalSplit()
+inline void MainWindow::slotShortcutVerticalSplit()
 {
     // 判读数量是否允许分屏
     if (Service::instance()->isCountEnable()) {
@@ -1470,7 +1470,7 @@ void MainWindow::slotShortcutVerticalSplit()
     qDebug() << "can't split vertical  again";
 }
 
-void MainWindow::slotShortcutSelectUpperWorkspace()
+inline void MainWindow::slotShortcutSelectUpperWorkspace()
 {
     qDebug() << "Alt+k";
     TermWidgetPage *page = currentPage();
@@ -1479,7 +1479,7 @@ void MainWindow::slotShortcutSelectUpperWorkspace()
     }
 }
 
-void MainWindow::slotShortcutSelectLowerWorkspace()
+inline void MainWindow::slotShortcutSelectLowerWorkspace()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1487,7 +1487,7 @@ void MainWindow::slotShortcutSelectLowerWorkspace()
     }
 }
 
-void MainWindow::slotShortcutSelectLeftWorkspace()
+inline void MainWindow::slotShortcutSelectLeftWorkspace()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1495,7 +1495,7 @@ void MainWindow::slotShortcutSelectLeftWorkspace()
     }
 }
 
-void MainWindow::slotShortcutSelectRightWorkspace()
+inline void MainWindow::slotShortcutSelectRightWorkspace()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1504,7 +1504,7 @@ void MainWindow::slotShortcutSelectRightWorkspace()
     }
 }
 
-void MainWindow::slotShortcutCloseWorkspace()
+inline void MainWindow::slotShortcutCloseWorkspace()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1513,7 +1513,7 @@ void MainWindow::slotShortcutCloseWorkspace()
     }
 }
 
-void MainWindow::slotShortcutCloseOtherWorkspaces()
+inline void MainWindow::slotShortcutCloseOtherWorkspaces()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1521,7 +1521,7 @@ void MainWindow::slotShortcutCloseOtherWorkspaces()
     }
 }
 
-void MainWindow::slotShortcutCopy()
+inline void MainWindow::slotShortcutCopy()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1529,7 +1529,7 @@ void MainWindow::slotShortcutCopy()
     }
 }
 
-void MainWindow::slotShortcutPaste()
+inline void MainWindow::slotShortcutPaste()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1537,12 +1537,12 @@ void MainWindow::slotShortcutPaste()
     }
 }
 
-void MainWindow::slotShortcutFind()
+inline void MainWindow::slotShortcutFind()
 {
     showPlugin(PLUGIN_TYPE_SEARCHBAR);
 }
 
-void MainWindow::slotShortcutZoomIn()
+inline void MainWindow::slotShortcutZoomIn()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1555,7 +1555,7 @@ void MainWindow::slotShortcutZoomIn()
     /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
 }
 
-void MainWindow::slotShortcutZoomOut()
+inline void MainWindow::slotShortcutZoomOut()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1568,7 +1568,7 @@ void MainWindow::slotShortcutZoomOut()
     /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
 }
 
-void MainWindow::slotShortcutDefaultSize()
+inline void MainWindow::slotShortcutDefaultSize()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1581,7 +1581,7 @@ void MainWindow::slotShortcutDefaultSize()
     /******** Add by nt001000 renfeixiang 2020-05-20:增加 雷神窗口根据字体大小设置最小高度函数 End***************/
 }
 
-void MainWindow::slotShortcutSelectAll()
+inline void MainWindow::slotShortcutSelectAll()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
@@ -1590,12 +1590,12 @@ void MainWindow::slotShortcutSelectAll()
     }
 }
 
-void MainWindow::slotShortcutSwitchFullScreen()
+inline void MainWindow::slotShortcutSwitchFullScreen()
 {
     switchFullscreen();
 }
 
-void MainWindow::slotShortcutRenameTitle()
+inline void MainWindow::slotShortcutRenameTitle()
 {
     showPlugin(PLUGIN_TYPE_NONE);
     TermWidgetPage *page = currentPage();
@@ -1604,13 +1604,13 @@ void MainWindow::slotShortcutRenameTitle()
     }
 }
 
-void MainWindow::slotShortcutDisplayShortcuts()
+inline void MainWindow::slotShortcutDisplayShortcuts()
 {
     qDebug() << "displayShortcuts";
     displayShortcuts();
 }
 
-void MainWindow::slotShortcutCustomCommand()
+inline void MainWindow::slotShortcutCustomCommand()
 {
     if (m_CurrentShowPlugin == PLUGIN_TYPE_CUSTOMCOMMAND) {
         showPlugin(PLUGIN_TYPE_NONE);
@@ -1619,7 +1619,7 @@ void MainWindow::slotShortcutCustomCommand()
     }
 }
 
-void MainWindow::slotShortcutRemoteManage()
+inline void MainWindow::slotShortcutRemoteManage()
 {
     if (m_CurrentShowPlugin == PLUGIN_TYPE_REMOTEMANAGEMENT) {
         showPlugin(PLUGIN_TYPE_NONE);
@@ -1628,7 +1628,7 @@ void MainWindow::slotShortcutRemoteManage()
     }
 }
 
-void MainWindow::slotShortcutFocusOut()
+inline void MainWindow::slotShortcutFocusOut()
 {
     qDebug() << "focusout timinal is activated!" << QKEYSEQUENCE_FOCUSOUT_TIMINAL;
     DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
@@ -1639,7 +1639,7 @@ void MainWindow::slotShortcutFocusOut()
     }
 }
 
-void MainWindow::slotShortcutBuiltinPaste()
+inline void MainWindow::slotShortcutBuiltinPaste()
 {
     qDebug() << "built in paste shortcut is activated!" << QKEYSEQUENCE_PASTE_BUILTIN;
     TermWidgetPage *page = currentPage();
@@ -1648,7 +1648,7 @@ void MainWindow::slotShortcutBuiltinPaste()
     }
 }
 
-void MainWindow::slotShortcutBuiltinCopy()
+inline void MainWindow::slotShortcutBuiltinCopy()
 {
     qDebug() << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
     TermWidgetPage *page = currentPage();
@@ -2292,7 +2292,7 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
     return;
 }
 
-void MainWindow::slotCustomCommandActionTriggered()
+inline void MainWindow::slotCustomCommandActionTriggered()
 {
     QAction *action = qobject_cast<QAction *>(sender());
     if (!this->isActiveWindow()) {

@@ -33,10 +33,6 @@ TEST_F(UT_IconButton_Test, IconButton)
     EXPECT_NE(iconButton, nullptr);
 
     delete iconButton;
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
