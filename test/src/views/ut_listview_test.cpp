@@ -82,10 +82,6 @@ TEST_F(UT_ListView_Test, CustomCommandListViewTest)
         QAction *action = cmdActionList.at(i);
         delete action;
     }
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_ListView_Test, onRemoteItemModify)

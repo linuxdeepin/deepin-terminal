@@ -34,10 +34,6 @@ TEST_F(UT_ItemWidget_Test, setIcon)
     ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
     EXPECT_NE(itemWidget, nullptr);
     itemWidget->setIcon("deepin-terminal");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -46,10 +42,6 @@ TEST_F(UT_ItemWidget_Test, setFuncIcon)
     ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
     EXPECT_NE(itemWidget, nullptr);
     itemWidget->setFuncIcon(ItemFuncType::ItemFuncType_Group);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -65,9 +57,6 @@ TEST_F(UT_ItemWidget_Test, setText)
     EXPECT_EQ(itemWidget->m_firstText, firstText);
     EXPECT_EQ(itemWidget->m_secondText, secondText);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -89,9 +78,6 @@ TEST_F(UT_ItemWidget_Test, isEqual)
     isEqual = itemWidget->isEqual(ItemFuncType_Group, firstText);
     EXPECT_EQ(isEqual, false);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -102,9 +88,6 @@ TEST_F(UT_ItemWidget_Test, getFocus)
 
     itemWidget->getFocus();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -115,9 +98,6 @@ TEST_F(UT_ItemWidget_Test, lostFocus)
 
     itemWidget->lostFocus();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -132,9 +112,6 @@ TEST_F(UT_ItemWidget_Test, setFont)
     itemWidget->setFont(itemWidget->m_secondline, DFontSizeManager::T8, ItemTextColor_TextTips);
     EXPECT_EQ(itemWidget->m_secondline->font().pixelSize(), DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T8));
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -149,9 +126,6 @@ TEST_F(UT_ItemWidget_Test, setFontSize)
     itemWidget->setFontSize(itemWidget->m_secondline, DFontSizeManager::T9);
     EXPECT_EQ(itemWidget->m_secondline->font().pixelSize(), DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T9));
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -168,9 +142,6 @@ TEST_F(UT_ItemWidget_Test, setFontColor)
     DPalette secondPalette = DApplicationHelper::instance()->palette(itemWidget->m_secondline);
     EXPECT_EQ(secondPalette.color(DPalette::Text), itemWidget->getColor(ItemTextColor::ItemTextColor_TextTips));
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete itemWidget;
 }
 
@@ -180,9 +151,6 @@ TEST_F(UT_ItemWidget_Test, getColor)
     EXPECT_NE(itemWidget, nullptr);
 
     delete itemWidget;
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_ItemWidget_Test, onFuncButtonClicked)
@@ -199,9 +167,6 @@ TEST_F(UT_ItemWidget_Test, onFuncButtonClicked)
     itemWidget->onFuncButtonClicked();
 
     delete itemWidget;
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_ItemWidget_Test, onIconButtonClicked)
