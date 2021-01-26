@@ -109,12 +109,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="295"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>ئۇسلۇب بەلگىلەش</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="326"/>
         <source>Style:</source>
-        <translation type="unfinished"/>
+        <translation>ئۇسلۇب خاسلىقى:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="330"/>
@@ -129,22 +129,22 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="392"/>
         <source>Fore color:</source>
-        <translation type="unfinished"/>
+        <translation>ئالدى تەگلىك رەڭگى:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="399"/>
         <source>Back color:</source>
-        <translation type="unfinished"/>
+        <translation>كەينى تەگلىك رەڭگى:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="417"/>
         <source>Prompt PS1:</source>
-        <translation type="unfinished"/>
+        <translation>ئەسكەرتىش بەلگىسىPS1:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="421"/>
         <source>Prompt PS2:</source>
-        <translation type="unfinished"/>
+        <translation>ئەسكەرتىش بەلگىسىPS2:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="504"/>
@@ -202,7 +202,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2570"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>ئۇسلۇب بەلگىلەش</translation>
     </message>
 </context>
 <context>
@@ -450,7 +450,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="159"/>
         <source>Shell profile</source>
-        <translation type="unfinished"/>
+        <translation>Shell سەپلەش</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="259"/>
@@ -532,12 +532,12 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1306"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"/>
+        <translation>«%1”تېپىلمىغاچقا «%2» ئۇنىڭ ئورنىغا قوزغىتىلدى، Shell سەپلىمىسىنى تەكشۈرۈڭ.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1310"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>«%1”» تېپىلمىدى، نورمال ئىشلەتكى بولمايدۇ</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1360"/>
@@ -619,7 +619,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>فوكۇسنى «+» سىنبەلگىسىگە ئالماشتۇرۇش</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2125"/>

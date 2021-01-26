@@ -619,7 +619,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Focussen op &quot;+&quot;-pictogram</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2125"/>
@@ -749,13 +749,13 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="144"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Tab title format</source>
-        <translation>Opmaak van tabbladnamen</translation>
+        <translation>Tabbladnaamopmaak</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="146"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Remote tab title format</source>
-        <translation>Opmaak van tabbladnamen (beheer op afstand)</translation>
+        <translation>Tabbladnaamopmaak (beheer op afstand)</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="588"/>

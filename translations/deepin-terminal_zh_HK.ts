@@ -316,7 +316,7 @@
         <location filename="../src/main/terminalapplication.cpp" line="36"/>
         <location filename="../src/main/mainwindow.cpp" line="2005"/>
         <source>Terminal</source>
-        <translation>终端</translation>
+        <translation>終端</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>

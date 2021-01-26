@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="bo">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="bo" version="2.1">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -109,61 +107,54 @@
 <context>
     <name>CustomThemeSettingDialog</name>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="231"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="295"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>རང་སྒྲུབ་བརྗོད་གཞི།</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="262"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="326"/>
         <source>Style:</source>
-        <translation type="unfinished"></translation>
+        <translation>བརྗོད་གཞིའི་ཁྱད་ཆོས།</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="266"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="330"/>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>མདོག་ཧར་པོ།</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="270"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="336"/>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>མདོག་སྣུམ་་པོ།</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="308"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="392"/>
         <source>Fore color:</source>
-        <translation type="unfinished"></translation>
+        <translation>མདུན་གྱི་ཚོས་གཞི།</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="315"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="399"/>
         <source>Back color:</source>
-        <translation type="unfinished"></translation>
+        <translation>རྒྱབ་ཀྱི་ཚོས་གཞི།</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="333"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="417"/>
         <source>Prompt PS1:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="337"/>
-        <source>Prompt PS2:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="413"/>
-        <source>Cancel</source>
-        <translation type="unfinished">འདོར་བ། </translation>
+        <translation>ཟུར་སྟོན་བརྡ་རྟགས། PS1</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="421"/>
-        <source>Confirm</source>
-        <translation type="unfinished">གཏན་ཁེལ། </translation>
+        <source>Prompt PS2:</source>
+        <translation>ཟུར་སྟོན་བརྡ་རྟགས། PS2</translation>
     </message>
-</context>
-<context>
-    <name>DSettingsDialog</name>
     <message>
-        <source>This shortcut conflicts with %1</source>
-        <translation type="vanished">མྱུར་མཐེབ་འདི་དང་%1འགལ་བ་ཡོད།</translation>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="504"/>
+        <source>Cancel</source>
+        <translation>འདོར་བ། </translation>
+    </message>
+    <message>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="512"/>
+        <source>Confirm</source>
+        <translation>གཏན་ཁེལ། </translation>
     </message>
 </context>
 <context>
@@ -204,14 +195,14 @@
         <translation>ཁ་རྒྱག</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2189"/>
+        <location filename="../src/main/mainwindow.cpp" line="2190"/>
         <source>Type path to download file</source>
         <translation>ཕབ་ལེན་ཡིག་ཆའི་འགྲོ་ལམ་འཇུག་རོགས།</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2569"/>
+        <location filename="../src/main/mainwindow.cpp" line="2570"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>རང་སྒྲུབ་བརྗོད་གཞི།</translation>
     </message>
 </context>
 <context>
@@ -351,234 +342,234 @@
         <translation>རྒྱང་རིང་དོ་དམ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="2055"/>
-        <source>New tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
-        <source>Next tab</source>
-        <translation type="unfinished"></translation>
+        <source>New tab</source>
+        <translation>གསར་བཟོས་གདོང་འཛར།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
-        <source>Previous tab</source>
-        <translation type="unfinished"></translation>
+        <source>Next tab</source>
+        <translation>གདོང་འཛར་ཤོག་ལྷེ་རྗེས་མ། </translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
-        <location filename="../src/main/mainwindow.cpp" line="2057"/>
-        <source>Select left workspace</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/main/mainwindow.cpp" line="2055"/>
+        <source>Previous tab</source>
+        <translation>གདོང་འཛར་ཤོག་ལྷེ་གོང་མ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
-        <location filename="../src/main/mainwindow.cpp" line="2056"/>
-        <source>Select lower workspace</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/main/mainwindow.cpp" line="2057"/>
+        <source>Select left workspace</source>
+        <translation>གཡོན་གྱི་ལས་ཀ་བྱེད་ཁུལ་འདེམས་པ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="2057"/>
-        <source>Select right workspace</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/main/mainwindow.cpp" line="2056"/>
+        <source>Select lower workspace</source>
+        <translation>གཤམ་གྱི་ལས་ཀ་བྱེད་ཁུལ་འདེམས་པ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
+        <location filename="../src/main/mainwindow.cpp" line="2057"/>
+        <source>Select right workspace</source>
+        <translation>གཡས་ཀྱི་ལས་ཀ་བྱེད་ཁུལ་འདེམས་པ།</translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Select upper workspace</source>
-        <translation type="unfinished"></translation>
+        <translation>གོང་གི་ལས་ཀ་བྱེད་ཁུལ་འདེམས་པ། </translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="131"/>
+        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Tab titles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="2058"/>
-        <source>Go to tab 1</source>
-        <translation type="unfinished"></translation>
+        <translation>གདོང་འཛར་གྱི་ཁ་བྱང་།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="2058"/>
-        <source>Go to tab 2</source>
-        <translation type="unfinished"></translation>
+        <source>Go to tab 1</source>
+        <translation>གདོང་འཛར་1བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="2058"/>
-        <source>Go to tab 3</source>
-        <translation type="unfinished"></translation>
+        <source>Go to tab 2</source>
+        <translation>གདོང་འཛར་2བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
-        <location filename="../src/main/mainwindow.cpp" line="2059"/>
-        <source>Go to tab 4</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/main/mainwindow.cpp" line="2058"/>
+        <source>Go to tab 3</source>
+        <translation>གདོང་འཛར་3བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <location filename="../src/main/mainwindow.cpp" line="2059"/>
-        <source>Go to tab 5</source>
-        <translation type="unfinished"></translation>
+        <source>Go to tab 4</source>
+        <translation>གདོང་འཛར་4བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <location filename="../src/main/mainwindow.cpp" line="2059"/>
-        <source>Go to tab 6</source>
-        <translation type="unfinished"></translation>
+        <source>Go to tab 5</source>
+        <translation>གདོང་འཛར་5བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
-        <location filename="../src/main/mainwindow.cpp" line="2060"/>
-        <source>Go to tab 7</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/main/mainwindow.cpp" line="2059"/>
+        <source>Go to tab 6</source>
+        <translation>གདོང་འཛར་6བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <location filename="../src/main/mainwindow.cpp" line="2060"/>
-        <source>Go to tab 8</source>
-        <translation type="unfinished"></translation>
+        <source>Go to tab 7</source>
+        <translation>གདོང་འཛར་7བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <location filename="../src/main/mainwindow.cpp" line="2060"/>
-        <source>Go to tab 9</source>
-        <translation type="unfinished"></translation>
+        <source>Go to tab 8</source>
+        <translation>གདོང་འཛར་8བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="155"/>
-        <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/main/mainwindow.cpp" line="2060"/>
+        <source>Go to tab 9</source>
+        <translation>གདོང་འཛར་9བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="157"/>
+        <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
+        <translation>Ctrl+Sདང་Ctrl+Qསྤྱད་དེ་ཚོད་འཛིན་བྱེད་མི་ཆོག </translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings_translation.cpp" line="159"/>
         <source>Shell profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Shellསྒྲིག་འགོད།</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="259"/>
         <location filename="../src/views/tabbar.cpp" line="591"/>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
+        <location filename="../src/settings/settings_translation.cpp" line="83"/>
         <location filename="../src/main/mainwindow.cpp" line="2075"/>
         <source>Rename title</source>
         <translation>ཁ་བྱང་གི་མིང་བསྐྱར་འདོགས།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="83"/>
+        <location filename="../src/settings/settings_translation.cpp" line="85"/>
         <location filename="../src/main/mainwindow.cpp" line="2075"/>
         <source>Fullscreen</source>
         <translation>ཡོལ་གང་།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="85"/>
+        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Copy</source>
         <translation>མཁོ་ཕབ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="87"/>
+        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Default size</source>
         <translation>སོར་བཞག་ཆེ་ཆུང་།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="89"/>
+        <location filename="../src/settings/settings_translation.cpp" line="91"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Paste</source>
         <translation>སྦྱར་བ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="91"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <source>Search</source>
         <translation>བཤེར་འཚོལ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Select all</source>
         <translation>ཡོངས་འདེམས།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="95"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <source>Jump to next command</source>
         <translation>བཀའ་རྗེས་མར་མཆོང་བ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <source>Jump to previous command</source>
         <translation>བཀའ་སྔ་མར་མཆོང་བ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="99"/>
+        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Zoom in</source>
         <translation>ཆེར་གཏོང་།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="101"/>
+        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Zoom out</source>
         <translation>ཝང་གཏོང་།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="103"/>
+        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Close other windows</source>
         <translation>སྒེའུ་ཁུང་གཞན་ཁ་རྒྱག</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
+        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Close other workspaces</source>
         <translation>ལས་ཀ་བྱེད་ཡུལ་གཞན་དག་ཁ་རྒྱག</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1307"/>
+        <location filename="../src/views/termwidget.cpp" line="1306"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"></translation>
+        <translation>“%1”རྙེད་མེད་པས། “%2”ཚབ་བྱས་པ། Shellསྒྲིག་འགོད་ལ་ཞིབ་བཤེར་བྱེད།</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1311"/>
+        <location filename="../src/views/termwidget.cpp" line="1310"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"></translation>
+        <translation>“%1”རྙེད་མེད་པས། རྒྱུན་ལྡན་ལྟར་བེད་སྤྱོད་བྱ་ཐབས་བྲལ།</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1361"/>
+        <location filename="../src/views/termwidget.cpp" line="1360"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Sམནན་ནས་བཀལ་ཟིན་པས། Ctrl+Qམནན་ན་མུ་མཐུད་བེད་སྤྱོད་བྱེད་ཆོག </translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="107"/>
+        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Close window</source>
         <translation>སྒེའུ་ཁུང་བརྒྱབ་པ།</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="491"/>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
+        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Close workspace</source>
         <translation>ལས་ཀྱ་བྱེད་ཡུལ་ཁ་རྒྱག</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="111"/>
+        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Horizontal split</source>
         <translation>བརྙན་ཡོལ་འཕྲེད་དུ་འབྱེད་པ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="127"/>
+        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Vertical split</source>
         <translation>བརྙན་ཡོལ་གཞུང་དུ་འབྱེད་པ།</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="129"/>
+        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Find</source>
         <translation>འཚོལ་བཤེར།</translation>
@@ -611,27 +602,33 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2003"/>
         <source>Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>གདོང་འཛར་ཤོག་ངོས། </translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="585"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
         <source>Close tab</source>
-        <translation type="unfinished"></translation>
+        <translation>གདོང་འཛར་ཤོག་ངོས་ཁ་རྒྱག་པ།</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Select tab</source>
-        <translation type="unfinished"></translation>
+        <translation>གདོང་འཛར་ཤོག་ངོས་འདེམས་པ།</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2124"/>
+        <location filename="../src/settings/settings_translation.cpp" line="81"/>
+        <location filename="../src/main/mainwindow.cpp" line="2076"/>
+        <source>Switch focus to &quot;+&quot; icon</source>
+        <translation>འོད་རྟགས་མདོ་ཚེག་པར་རིས་“+”ལ་བརྗེ་བ།</translation>
+    </message>
+    <message>
+        <location filename="../src/main/mainwindow.cpp" line="2125"/>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Select file to upload</source>
         <translation>སྐྱེལ་འཇོག་བྱེད་པའི་ཡིག་ཆ་འདེམས་རྒྱུ།</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2151"/>
+        <location filename="../src/main/mainwindow.cpp" line="2152"/>
         <location filename="../src/common/utils.cpp" line="340"/>
         <source>Upload</source>
         <translation>སྐྱེལ་འཇོག</translation>
@@ -640,14 +637,6 @@
         <location filename="../src/common/utils.cpp" line="426"/>
         <source>Programs are still running in terminal</source>
         <translation>མཐའ་སྣེར་སྔར་བཞིན་བཀོལ་སྤྱོད་བྱེད་བཞིན་པའི་བྱ་རིམ་འདུག</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to exit?</source>
-        <translation type="vanished">ཁྱེད་ཀྱིས་ཕྱིར་འཐེན་བྱ་རྒྱུ་གཏན་ཁེལ་ལམ།</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation type="vanished">འཐོན་སྒོ།</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="366"/>
@@ -680,7 +669,7 @@
         <translation>སྒེའུ་ཁུང་ནང་གི་མཐའ་སྣེ་འགར་ད་དུང་བྱ་རིམ་བཀོལ་སྤྱོད་བྱེད་བཞིན་ཡོད་པས། སྒེའུ་ཁུང་ཁ་རྒྱག་ན་བྱ་རིམ་ཡང་ཁ་རྒྱག་སྲིད།</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2169"/>
+        <location filename="../src/main/mainwindow.cpp" line="2170"/>
         <location filename="../src/common/utils.cpp" line="309"/>
         <source>Select a directory to save the file</source>
         <translation>ཕབ་ལེན་བྱས་པའི་ཡིག་ཆའི་ཉར་ཚགས་དཀར་ཆག་བྱ་ཡུལ་འདེམས་རྒྱུ།</translation>
@@ -701,14 +690,6 @@
         <location filename="../src/common/utils.cpp" line="449"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation>བཤིག་འདོན་བྱས་རྗེས་ཉེར་སྤྱོད་འདི་སྤྱོད་ཐབས་མེད།</translation>
-    </message>
-    <message>
-        <source>Click on Add to make this shortcut effective immediately</source>
-        <translation type="vanished">སྣོན་པ་མནན་ནས་མྱུར་མཐེབ་འདི་ལམ་སེང་ནུས་པ་ཐོན་པ་བྱ་རྒྱུ།</translation>
-    </message>
-    <message>
-        <source>Replace</source>
-        <translation type="vanished">བརྗེ་བ།</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="576"/>
@@ -748,7 +729,7 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="641"/>
-        <location filename="../src/main/mainwindow.cpp" line="2175"/>
+        <location filename="../src/main/mainwindow.cpp" line="2176"/>
         <location filename="../src/common/utils.cpp" line="315"/>
         <source>Select</source>
         <translation>ཡིག་བརྙན་འདེམས་པ།</translation>
@@ -766,21 +747,21 @@
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="144"/>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
+        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Tab title format</source>
-        <translation type="unfinished"></translation>
+        <translation>གདོང་འཛར་ཁ་བྱང་གི་རྣམ་གཞག</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="146"/>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
+        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Remote tab title format</source>
-        <translation type="unfinished"></translation>
+        <translation>རྒྱང་སྦྲེལ་གདོང་འཛར་ཁ་བྱང་གི་རྣམ་གཞག </translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="588"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
         <source>Close other tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>གདོང་འཛར་ཤོག་ངོས་གཞན་དག་ཁ་རྒྱོབ།</translation>
     </message>
 </context>
 <context>
@@ -796,7 +777,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="98"/>
         <source>Remote management</source>
-        <translation>རྒྱང་རིང་དོ་དམ།</translation>
+        <translation>རྒྱང་སྦྲེལ་དོ་དམ།</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="241"/>
@@ -1029,66 +1010,55 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="42"/>
         <source>Insert</source>
-        <translation type="unfinished"></translation>
+        <translation>བར་འཇུག </translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>username: %u</source>
-        <translation type="unfinished"></translation>
+        <translation>སྤྱོད་མཁན་མིང་། %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>username@: %U</source>
-        <translation type="unfinished"></translation>
+        <translation>སྤྱོད་མཁན་མིང་། @ %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>remote host: %h</source>
-        <translation type="unfinished"></translation>
+        <translation>རྒྱང་སྦྲེལ་རྩིས་འཁོར་ཨ་མ། %h</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>session number: %#</source>
-        <translation type="unfinished"></translation>
+        <translation>བགྲོ་གླེང་ཨང་རྟགས། %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>title set by shell: %w</source>
-        <translation type="unfinished"></translation>
+        <translation>shellསྒྲིག་བཀོད་བྱས་པའི་སྒེའུ་ཁུང་གི་ཁ་བྱང་། %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
         <source>program name: %n</source>
-        <translation type="unfinished"></translation>
+        <translation>བྱ་རིམ་མིང་། %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
         <source>current directory (short): %d</source>
-        <translation type="unfinished"></translation>
+        <translation>མིག་སྔའི་དཀར་ཆག （ཐུང་ངུ་）：%d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>current directory (long): %D</source>
-        <translation type="unfinished"></translation>
+        <translation>མིག་སྔའི་དཀར་ཆག་（རིང་བ་）：%D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>local host: %h</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TermInputDialog</name>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">འདོར་བ། </translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">གཏན་ཁེལ། </translation>
+        <translation>རང་སའི་རྩིས་འཁོར་ཨ་མ།</translation>
     </message>
 </context>
 <context>
@@ -1129,7 +1099,7 @@
         <location filename="../src/views/termwidget.cpp" line="503"/>
         <location filename="../src/views/termwidget.cpp" line="582"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation>གསར་བཟོས་གདོང་འཛར།</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="512"/>
@@ -1164,7 +1134,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>Remote management</source>
-        <translation>རྒྱང་རིང་དོ་དམ།</translation>
+        <translation>རྒྱང་སྦྲེལ་དོ་དམ།</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="564"/>

@@ -597,7 +597,7 @@
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="39"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>Терминал је напредни емулатор терминала са дељивим прозорима, радним просторима, даљинским управљањем, спуштајућим режимом и осталим функцијама.</translation>
+        <translation>Терминал је напредни емулатор терминала са дељивим прозорима, радним просторима, даљинским управљањем, спуштајућим режимом и другим функцијама.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2003"/>
@@ -619,7 +619,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Пребаци фокус на &quot;+&quot; иконицу</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2125"/>

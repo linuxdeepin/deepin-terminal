@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sq" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="118"/>
         <source>Name:</source>
-        <translation>Emër:</translation>
+        <translation>Имя:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="120"/>
         <source>Command:</source>
-        <translation>Urdhër:</translation>
+        <translation>Команда:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="122"/>
         <source>Shortcuts:</source>
-        <translation>Shkurtore:</translation>
+        <translation>Сочетание клавиш:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="133"/>
@@ -22,57 +22,57 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="155"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="162"/>
         <source>Required</source>
-        <translation>E domosdoshme</translation>
+        <translation>Необходимо</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="170"/>
         <source>Add Command</source>
-        <translation>Shtoni Urdhër</translation>
+        <translation>Добавить команду </translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="176"/>
         <source>Edit Command</source>
-        <translation>Përpunoni Urdhër</translation>
+        <translation>Редактировать команду</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="186"/>
         <source>Delete Command</source>
-        <translation>Fshije Urdhrin</translation>
+        <translation>Удалить команду</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="211"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="213"/>
         <source>Add</source>
-        <translation>Shto</translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="215"/>
         <source>Save</source>
-        <translation>Ruaje</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="420"/>
         <source>Please enter a name</source>
-        <translation>Ju lutemi, jepni një emër</translation>
+        <translation>Пожалуйста, введите название</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="434"/>
         <source>Please enter a command</source>
-        <translation>Ju lutemi, jepni një urdhër</translation>
+        <translation>Пожалуйста, введите комманду</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="485"/>
         <source>The name already exists,</source>
-        <translation>Emri ekziston tashmë,</translation>
+        <translation>Имя уже существует,</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="486"/>
         <source>please input another one.</source>
-        <translation>ju lutemi, jepni një tjetër.</translation>
+        <translation>пожалуйста, введите другое.</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="739"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="246"/>
         <source>Add Command</source>
-        <translation>Shtoni Urdhër</translation>
+        <translation>Добавить команду </translation>
     </message>
 </context>
 <context>
@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/customcommand/customcommandplugin.cpp" line="88"/>
         <source>Custom commands</source>
-        <translation>Urdhra vetjakë</translation>
+        <translation>Пользовательские команды</translation>
     </message>
 </context>
 <context>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="151"/>
         <source>Search</source>
-        <translation>Kërko</translation>
+        <translation>Поиск</translation>
     </message>
 </context>
 <context>
@@ -109,52 +109,52 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="295"/>
         <source>Custom Theme</source>
-        <translation>Temë Vetjake</translation>
+        <translation>Пользовательская тема</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="326"/>
         <source>Style:</source>
-        <translation>Stil:</translation>
+        <translation>Стиль:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="330"/>
         <source>Light</source>
-        <translation>E çelët</translation>
+        <translation>Светлый</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="336"/>
         <source>Dark</source>
-        <translation>E errët</translation>
+        <translation>Темный</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="392"/>
         <source>Fore color:</source>
-        <translation>Ngjyrë përpara:</translation>
+        <translation>Передний цвет:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="399"/>
         <source>Back color:</source>
-        <translation>Ngjyrë pas:</translation>
+        <translation>Задний цвет:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="417"/>
         <source>Prompt PS1:</source>
-        <translation type="unfinished"/>
+        <translation>Подсказка PS1:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="421"/>
         <source>Prompt PS2:</source>
-        <translation type="unfinished"/>
+        <translation>Подсказка PS2:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="504"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="512"/>
         <source>Confirm</source>
-        <translation>Ripohojeni</translation>
+        <translation>Подтвердить</translation>
     </message>
 </context>
 <context>
@@ -162,13 +162,13 @@
     <message>
         <location filename="../src/views/listview.cpp" line="366"/>
         <source>Delete Server</source>
-        <translation>Fshije Shërbyesin</translation>
+        <translation>Удалить сервер</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="366"/>
         <location filename="../src/views/listview.cpp" line="565"/>
         <source>Are you sure you want to delete %1?</source>
-        <translation>Jeni i sigurt se doni të fshihet %1?</translation>
+        <translation>Вы уверены, что хотите удалить %1?</translation>
     </message>
 </context>
 <context>
@@ -177,32 +177,32 @@
         <location filename="../src/main/mainwindow.cpp" line="325"/>
         <location filename="../src/main/mainwindow.cpp" line="353"/>
         <source>New window</source>
-        <translation>Dritare e re</translation>
+        <translation>Новое окно</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="380"/>
         <source>Settings</source>
-        <translation>Rregullime</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="927"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="929"/>
         <source>Close</source>
-        <translation>Mbylle</translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2190"/>
         <source>Type path to download file</source>
-        <translation>Shtypni shteg për shkarkim kartele</translation>
+        <translation>Введите путь для загрузки файла</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2570"/>
         <source>Custom Theme</source>
-        <translation>Temë Vetjake</translation>
+        <translation>Пользовательская тема</translation>
     </message>
 </context>
 <context>
@@ -216,241 +216,241 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Copy on select</source>
-        <translation>Kopjo kur përzgjidhet</translation>
+        <translation>Копировать при выборе</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Cursor blink</source>
-        <translation>Xixëllim kursori</translation>
+        <translation>Частота мигания курсора</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
         <source>Cursor style</source>
-        <translation>Stil kursori</translation>
+        <translation>Стиль курсора</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="39"/>
         <source>Scroll on keystroke</source>
-        <translation type="unfinished"/>
+        <translation>Прокрутка нажатием клавиши</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Scroll on output</source>
-        <translation type="unfinished"/>
+        <translation>Прокрутка при выводе</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>Fshihe dritaren Quake pas humbjes së fokusit</translation>
+        <translation>Скрыть окно Выпадающего Терминала после потери фокуса</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
         <location filename="../src/main/service.cpp" line="182"/>
         <source>Blur background</source>
-        <translation>Turbulloje sfondin</translation>
+        <translation>Размытие фона</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="47"/>
         <source>Use on starting</source>
-        <translation>Përdore gjatë nisjes</translation>
+        <translation>Использовать при запуске</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="49"/>
         <source>Font</source>
-        <translation>Shkronja</translation>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="51"/>
         <source>Font size</source>
-        <translation>Madhësi shkronjash</translation>
+        <translation>Размер шрифта</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
         <location filename="../src/main/service.cpp" line="209"/>
         <source>Opacity</source>
-        <translation>Patejdukshmëri</translation>
+        <translation>Непрозрачность</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="55"/>
         <source>Advanced</source>
-        <translation>Të mëtejshme</translation>
+        <translation>Дополнительные</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Cursor</source>
-        <translation>Kursor</translation>
+        <translation>Курсор</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Scroll</source>
-        <translation>Rrëshqitje</translation>
+        <translation>Прокрутка</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="61"/>
         <source>Window</source>
-        <translation>Dritare</translation>
+        <translation>Окно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Basic</source>
-        <translation>Elementare</translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Interface</source>
-        <translation>Ndërfaqe</translation>
+        <translation>Интерфейс</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Shortcuts</source>
-        <translation>Shkurtore</translation>
+        <translation>Сочетание клавиш</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="2007"/>
         <source>Others</source>
-        <translation>Të tjera</translation>
+        <translation>Другое</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/terminalapplication.cpp" line="36"/>
         <location filename="../src/main/mainwindow.cpp" line="2005"/>
         <source>Terminal</source>
-        <translation>Terminal</translation>
+        <translation>Терминал</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Workspace</source>
-        <translation>Hapësirë Pune</translation>
+        <translation>Рабочая область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="2075"/>
         <source>Custom commands</source>
-        <translation>Urdhra vetjakë</translation>
+        <translation>Пользовательские команды</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <location filename="../src/main/mainwindow.cpp" line="2075"/>
         <source>Display shortcuts</source>
-        <translation>Shfaq shkurtore</translation>
+        <translation>Показать сочетания клавиш</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
         <location filename="../src/main/mainwindow.cpp" line="2075"/>
         <source>Remote management</source>
-        <translation>Administrim së largëti</translation>
+        <translation>Удаленное управление</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
         <source>New tab</source>
-        <translation>Skedë e re</translation>
+        <translation>Новая вкладка</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
         <source>Next tab</source>
-        <translation>Skeda pasuese</translation>
+        <translation>Следующая вкладка</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
         <source>Previous tab</source>
-        <translation>Skeda e mëparshme</translation>
+        <translation>Предыдущая вкладка</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Select left workspace</source>
-        <translation>Përzgjidhni hapësirën e punës majtas</translation>
+        <translation>Выбрать левую рабочую область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Select lower workspace</source>
-        <translation>Përzgjidhni hapësirën e poshtme të punës</translation>
+        <translation>Выбрать нижнюю рабочую область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Select right workspace</source>
-        <translation>Përzgjidhni hapësirën e punës djathtas</translation>
+        <translation>Выбрать правую рабочую область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Select upper workspace</source>
-        <translation>Përzgjidhni hapësirën e sipërme të punës</translation>
+        <translation>Выбрать верхнюю рабочую область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Tab titles</source>
-        <translation>Tituj skedash</translation>
+        <translation>Заголовки вкладок</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="2058"/>
         <source>Go to tab 1</source>
-        <translation>Shko te skeda 1</translation>
+        <translation>Перейти на вкладку 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="2058"/>
         <source>Go to tab 2</source>
-        <translation>Kalo te skeda 2</translation>
+        <translation>Перейти на вкладку 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <location filename="../src/main/mainwindow.cpp" line="2058"/>
         <source>Go to tab 3</source>
-        <translation>Kalo te skeda 3</translation>
+        <translation>Перейти на вкладку 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <location filename="../src/main/mainwindow.cpp" line="2059"/>
         <source>Go to tab 4</source>
-        <translation>Kalo te skeda 4</translation>
+        <translation>Перейти на вкладку 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <location filename="../src/main/mainwindow.cpp" line="2059"/>
         <source>Go to tab 5</source>
-        <translation>Kalo te skeda 5</translation>
+        <translation>Перейти на вкладку 5</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <location filename="../src/main/mainwindow.cpp" line="2059"/>
         <source>Go to tab 6</source>
-        <translation>Kalo te skeda 6</translation>
+        <translation>Перейти на вкладку 6</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <location filename="../src/main/mainwindow.cpp" line="2060"/>
         <source>Go to tab 7</source>
-        <translation>Kalo te skeda 7</translation>
+        <translation>Перейти на вкладку 7</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <location filename="../src/main/mainwindow.cpp" line="2060"/>
         <source>Go to tab 8</source>
-        <translation>Kalo te skeda 8</translation>
+        <translation>Перейти на вкладку 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="155"/>
         <location filename="../src/main/mainwindow.cpp" line="2060"/>
         <source>Go to tab 9</source>
-        <translation>Kalo te skeda 9</translation>
+        <translation>Перейти на вкладку 9</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="157"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>Çaktivizoni kontroll rrjedhe duke përdorur Ctrl+S, Ctrl+Q</translation>
+        <translation>Отключить управление потоком с помощью Ctrl+S, Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="159"/>
         <source>Shell profile</source>
-        <translation>Profil shelli</translation>
+        <translation>Профиль оболочки</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="259"/>
@@ -458,121 +458,121 @@
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
         <location filename="../src/main/mainwindow.cpp" line="2075"/>
         <source>Rename title</source>
-        <translation>Titull riemërtimi</translation>
+        <translation>Переименовать заголовок</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
         <location filename="../src/main/mainwindow.cpp" line="2075"/>
         <source>Fullscreen</source>
-        <translation>Sa krejt ekrani</translation>
+        <translation>Полноэкранный режим</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Copy</source>
-        <translation>Kopjoje</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Default size</source>
-        <translation>Madhësi parazgjedhje</translation>
+        <translation>Размер по умолчанию</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="91"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Paste</source>
-        <translation>Ngjite</translation>
+        <translation>Вставить</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <source>Search</source>
-        <translation>Kërko</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Select all</source>
-        <translation>Përzgjidhi krejt</translation>
+        <translation>Выбрать всё</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <source>Jump to next command</source>
-        <translation>Kalo te urdhri pasues</translation>
+        <translation>Перейти к следующий команде</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <source>Jump to previous command</source>
-        <translation>Kalo te urdhri i mëparshëm</translation>
+        <translation>Перейти к предыдущей команде</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Zoom in</source>
-        <translation>Zmadhoje</translation>
+        <translation>Приблизить</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Zoom out</source>
-        <translation>Zvogëloje</translation>
+        <translation>Отдалить</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Close other windows</source>
-        <translation>Mbylli dritaret e tjera</translation>
+        <translation>Закрыть другие окна</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="496"/>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Close other workspaces</source>
-        <translation>Mbyll hapësira të tjera pune</translation>
+        <translation>Закрыть другие рабочие области</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1306"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>S’u gjet dot &quot;%1&quot;, në vend të tij po niset &quot;%2&quot;. Ju lutemi, kontrolloni profilin tuaj për shellin.</translation>
+        <translation>Не удалось найти &quot;%1&quot;, вместо этого начинается &quot;%2&quot;. Пожалуйста, проверьте свой профиль оболочки.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1310"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>S’u gjet dot &quot;%1&quot;, s’arrihet të xhirohet</translation>
+        <translation>Не удалось найти &quot;%1&quot;, невозможно его запустить</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1360"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation>Shfaqja e përfundimit është pezulluar nga shtypja e tasteve Ctrl+S. Shtypni Ctrl+Q që të vazhdojë.</translation>
+        <translation>Вывод был приостановлен нажатием Ctrl+S. Нажмите Ctrl+Q, чтобы продолжить.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Close window</source>
-        <translation>Mbylle dritaren</translation>
+        <translation>Закрыть окно</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="491"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Close workspace</source>
-        <translation>Mbylle hapësirën e punës</translation>
+        <translation>Закрыть рабочую область</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Horizontal split</source>
-        <translation>Ndarje horizontale</translation>
+        <translation>Разделить по горизонтали</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Vertical split</source>
-        <translation>Ndarje vertikale</translation>
+        <translation>Разделить по вертикали</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="2040"/>
         <source>Find</source>
-        <translation>Gjej</translation>
+        <translation>Найти</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="401"/>
@@ -580,188 +580,188 @@
         <location filename="../src/views/tabrenamedlg.cpp" line="306"/>
         <location filename="../src/common/utils.cpp" line="454"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="402"/>
         <source>Delete</source>
-        <translation>Fshije</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="476"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="742"/>
         <location filename="../src/common/utils.cpp" line="472"/>
         <source>please set another one.</source>
-        <translation>ju lutemi, caktoni një tjetër.</translation>
+        <translation>пожалуйста, установите другой.</translation>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="39"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>Terminali është një emulues i thelluar terminali, me hapësira pune, dritare të shumta, administrim së largëti, mënyrë Quake dhe veçori të tjera.</translation>
+        <translation>Deepin Терминал является передовым эмулятором терминала с рабочими областями, многооконным интерфейсом, удаленным управлением, выпадающим режимом и другими функциями. </translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2003"/>
         <source>Tabs</source>
-        <translation>Skeda</translation>
+        <translation>Вкладки</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="585"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
         <source>Close tab</source>
-        <translation>Mbylle skedën</translation>
+        <translation>Закрыть вкладку</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Select tab</source>
-        <translation>Përzgjidhni skedë</translation>
+        <translation>Выбрать вкладку</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>Kaloje fokusin te ikona &quot;+&quot;</translation>
+        <translation>Переключить фокус на значок &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2125"/>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Select file to upload</source>
-        <translation>Përzgjidhni kartelë për ngarkim</translation>
+        <translation>Выберите файл для загрузки</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2152"/>
         <location filename="../src/common/utils.cpp" line="340"/>
         <source>Upload</source>
-        <translation>Ngarkim</translation>
+        <translation>Загрузить</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="426"/>
         <source>Programs are still running in terminal</source>
-        <translation>Ka ende programe që xhirojnë në terminal</translation>
+        <translation>Программы все еще работают в терминале</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="366"/>
         <location filename="../src/common/utils.cpp" line="407"/>
         <source>Close this terminal?</source>
-        <translation>Të mbyllet ky terminal?</translation>
+        <translation>Закрыть этот терминал?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="367"/>
         <location filename="../src/common/utils.cpp" line="408"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
-        <translation>Ka ende një proces që xhiron në këtë terminal. Mbyllja e terminalit do ta asgjësojë.</translation>
+        <translation>В этом терминале все еще выполняется процесс. Закрытие терминала убьет его.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="371"/>
         <location filename="../src/common/utils.cpp" line="412"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
-        <translation>Ka ende %1 procese që xhirojnë në këtë terminal. Mbyllja e terminalit do t’i asgjësojë krejt ata.</translation>
+        <translation>В этом терминале все еще выполняется %1 процесса(ов). Закрытие терминала убьет их всех.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="376"/>
         <location filename="../src/common/utils.cpp" line="403"/>
         <source>Close this window?</source>
-        <translation>Të mbyllet dritarja?</translation>
+        <translation>Закрыть это окно?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="377"/>
         <location filename="../src/common/utils.cpp" line="404"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
-        <translation>Ka ende procese që xhirojnë në këtë dritare. Mbyllja e dritares do t’i asgjësojë krejt ata.</translation>
+        <translation>В этом окне все еще выполняются процессы. Закрытие окна убьет их всех.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2170"/>
         <location filename="../src/common/utils.cpp" line="309"/>
         <source>Select a directory to save the file</source>
-        <translation>Përzgjidhni një drejtori ku të ruhet kartela</translation>
+        <translation>Выберите каталог для сохранения файла</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="426"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation>Jeni i sigurt se doni të çinstalohet?</translation>
+        <translation>Вы действительно хотите его удалить?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="444"/>
         <location filename="../src/common/utils.cpp" line="448"/>
         <source>Are you sure you want to uninstall this application?</source>
-        <translation>Jeni i sigurt se doni të çinstalohet ky aplikacion?</translation>
+        <translation>Вы действительно хотите удалить это приложение?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="445"/>
         <location filename="../src/common/utils.cpp" line="449"/>
         <source>You will not be able to use Terminal any longer.</source>
-        <translation>S’do të jeni më në gjendje të xhironi Terminal-in.</translation>
+        <translation>Вы больше не сможете использовать Терминал.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="576"/>
         <source>Execute a command in the terminal</source>
-        <translation>Ekzekutoni një urdhër te terminali</translation>
+        <translation>Выполнить команду в терминале</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="579"/>
         <source>Run script string in the terminal</source>
-        <translation>Xhironi te terminali varg programthi</translation>
+        <translation>Запустить строку скрипта в терминале</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="570"/>
         <source>Set the work directory</source>
-        <translation>Caktoni drejtorinë e punës</translation>
+        <translation>Установить рабочий каталог</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="573"/>
         <source>Set the window mode on starting</source>
-        <translation>Caktoni mënyrë dritareje kur hapet</translation>
+        <translation>Установить оконный режим при запуске</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="583"/>
         <source>Run in quake mode</source>
-        <translation>Xhiroje nën mënyrën dridhje</translation>
+        <translation>Запуск в выпадающем режиме</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="586"/>
         <source>Keep terminal open when command finishes</source>
-        <translation>Kur urdhri përfundon, mbaje hapur terminalin</translation>
+        <translation>Держать терминал открытым после завершения команды</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="565"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="427"/>
         <source>The name should be no more than 32 characters</source>
-        <translation>Emri s’duhet të jetë më tepër se 32 shenja</translation>
+        <translation>Имя должно быть не более 32 символов.</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="641"/>
         <location filename="../src/main/mainwindow.cpp" line="2176"/>
         <location filename="../src/common/utils.cpp" line="315"/>
         <source>Select</source>
-        <translation>Përzgjidhe</translation>
+        <translation>Выбрать</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="637"/>
         <source>Select the private key file</source>
-        <translation>Përzgjidhni kartelën e kyçit privat</translation>
+        <translation>Выберите файл закрытого ключа</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="567"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="311"/>
         <source>Confirm</source>
-        <translation>Ripohojeni</translation>
+        <translation>Подтвердить</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="144"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Tab title format</source>
-        <translation>Format titulli skede</translation>
+        <translation>Формат заголовка вкладки</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="146"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Remote tab title format</source>
-        <translation>Format titulli skede të largët</translation>
+        <translation>Формат заголовка удаленной вкладки</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="588"/>
         <location filename="../src/main/mainwindow.cpp" line="2055"/>
         <source>Close other tabs</source>
-        <translation>Mbylli skedat e tjera</translation>
+        <translation>Закрыть другие вкладки</translation>
     </message>
 </context>
 <context>
@@ -769,7 +769,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="238"/>
         <source>Add Server</source>
-        <translation>Shtoni Shërbyes</translation>
+        <translation>Добавить Сервер</translation>
     </message>
 </context>
 <context>
@@ -777,12 +777,12 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="98"/>
         <source>Remote management</source>
-        <translation>Administrim së largëti</translation>
+        <translation>Удаленное управление</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="241"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation>Përpara se të djathtasklikoni për ngarkim dhe shkarkim kartelash, sigurohuni që urdhrat rz dhe sz janë të instaluar te shërbyesi.</translation>
+        <translation>Убедитесь, что на сервере установлены команды rz и sz, прежде чем щелкнуть правой кнопкой мыши для загрузки и скачивания файлов.</translation>
     </message>
 </context>
 <context>
@@ -790,7 +790,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="280"/>
         <source>Search</source>
-        <translation>Kërko</translation>
+        <translation>Поиск</translation>
     </message>
 </context>
 <context>
@@ -798,99 +798,99 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="66"/>
         <source>Advanced options</source>
-        <translation>Mundësi të mëtejshme</translation>
+        <translation>Дополнительные опции</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="112"/>
         <source>Add Server</source>
-        <translation>Shtoni Shërbyes</translation>
+        <translation>Добавить Сервер</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="149"/>
         <source>Server name:</source>
-        <translation>Emër shërbyesi:</translation>
+        <translation>Имя сервера:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="152"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="161"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="190"/>
         <source>Required</source>
-        <translation>E domosdoshme</translation>
+        <translation>Необходимо</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="159"/>
         <source>Address:</source>
-        <translation>Adresë:</translation>
+        <translation>Адрес:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="167"/>
         <source>Port:</source>
-        <translation>Portë:</translation>
+        <translation>Порт:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="188"/>
         <source>Username:</source>
-        <translation>Emër përdoruesi:</translation>
+        <translation>Имя пользователя:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="194"/>
         <source>Password:</source>
-        <translation>Fjalekalim:</translation>
+        <translation>Пароль:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="201"/>
         <source>Certificate:</source>
-        <translation>Dëshmi:</translation>
+        <translation>Сертификат:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="227"/>
         <source>Group:</source>
-        <translation>Grup:</translation>
+        <translation>Группа:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="233"/>
         <source>Path:</source>
-        <translation>Shteg:</translation>
+        <translation>Путь:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="239"/>
         <source>Command:</source>
-        <translation>Urdhër:</translation>
+        <translation>Команда:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="245"/>
         <source>Encoding:</source>
-        <translation>Kodim:</translation>
+        <translation>Кодировка:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="251"/>
         <source>Backspace key:</source>
-        <translation>Tasti Backspace:</translation>
+        <translation>Клавиша Backspace:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="257"/>
         <source>Delete key:</source>
-        <translation>Fshije tastin:</translation>
+        <translation>Удалить ключ:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="279"/>
         <source>Delete server</source>
-        <translation>Fshije shërbyesin</translation>
+        <translation>Удалить сервер</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="300"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
         <source>Add</source>
-        <translation>Shto</translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="305"/>
         <source>Edit Server</source>
-        <translation>Përpunoni Shërbyes</translation>
+        <translation>Редактировать Сервер</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="430"/>
@@ -901,27 +901,27 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="559"/>
         <source>Please enter a server name</source>
-        <translation>Ju lutemi, jepni një emër shërbyesi</translation>
+        <translation>Пожалуйста, введите имя сервера</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="572"/>
         <source>Please enter an IP address</source>
-        <translation>Ju lutemi, jepni një adresë IP</translation>
+        <translation>Пожалуйста, введите IP-адрес</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="577"/>
         <source>Please enter a port</source>
-        <translation>Ju lutemi, jepni një portë</translation>
+        <translation>Пожалуйста, введите порт</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="583"/>
         <source>Please enter a username</source>
-        <translation>Ju lutemi, jepni një emër përdoruesi</translation>
+        <translation>Пожалуйста введите имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="306"/>
         <source>Save</source>
-        <translation>Ruaje</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="426"/>
@@ -950,12 +950,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="597"/>
         <source>The server name already exists,</source>
-        <translation>Emri i shërbyesit ekziston tashmë,</translation>
+        <translation>Имя сервера уже существует,</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="598"/>
         <source>please input another one. </source>
-        <translation>ju lutemi, jepni një tjetër.</translation>
+        <translation>пожалуйста, введите другое.</translation>
     </message>
 </context>
 <context>
@@ -971,22 +971,22 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="118"/>
         <source>Split screen</source>
-        <translation>Ndaje ekranin</translation>
+        <translation>Разделенный экран</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="118"/>
         <source>Fullscreen</source>
-        <translation>Sa krejt ekrani</translation>
+        <translation>Полноэкранный режим</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="118"/>
         <source>Normal window</source>
-        <translation>Dritare normale</translation>
+        <translation>Обычное окно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="118"/>
         <source>Maximum</source>
-        <translation>Maksimum</translation>
+        <translation>Максимум</translation>
     </message>
 </context>
 <context>
@@ -995,14 +995,14 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="373"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="382"/>
         <source>The shortcut %1 is invalid, </source>
-        <translation>Shkurtorja %1 është e pavlefshme,</translation>
+        <translation>Комбинация %1 недействительна,</translation>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="389"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="396"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="402"/>
         <source>The shortcut %1 was already in use, </source>
-        <translation>Shkurtorja %1 është tashmë në përdorim,</translation>
+        <translation>Комбинация %1 уже используется,</translation>
     </message>
 </context>
 <context>
@@ -1010,55 +1010,55 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="42"/>
         <source>Insert</source>
-        <translation>Futni</translation>
+        <translation>Вставить</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>username: %u</source>
-        <translation>emër përdoruesi: %u</translation>
+        <translation>имя пользователя: %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>username@: %U</source>
-        <translation>emër_përdoruesi@: %U</translation>
+        <translation>имя пользователя@: %U</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>remote host: %h</source>
-        <translation>strehë e largët: %h</translation>
+        <translation>удаленный узел: %h</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>session number: %#</source>
-        <translation>numër sesionesh: %#</translation>
+        <translation>номер сеанса: %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>title set by shell: %w</source>
-        <translation>titull i caktuar nga shelli: %w</translation>
+        <translation>заголовок установлен оболочкой: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
         <source>program name: %n</source>
-        <translation>emër programi: %n</translation>
+        <translation>название программы: %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
         <source>current directory (short): %d</source>
-        <translation>drejtoria e tanishme (shkurt): %d</translation>
+        <translation>текущий каталог (короткий): %d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>current directory (long): %D</source>
-        <translation>drejtoria e tanishme (gjatë): %D</translation>
+        <translation>текущий каталог (длинный): %D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>local host: %h</source>
-        <translation>strehë vendore: %h</translation>
+        <translation>локальный хост: %h</translation>
     </message>
 </context>
 <context>
@@ -1066,90 +1066,90 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="411"/>
         <source>Copy</source>
-        <translation>Kopjoje</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="414"/>
         <source>Paste</source>
-        <translation>Ngjite</translation>
+        <translation>Вставить</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="420"/>
         <source>Open</source>
-        <translation>Hap</translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="431"/>
         <source>Open in file manager</source>
-        <translation>Hape në përgjegjës kartelash</translation>
+        <translation>Открыть в файловом менеджере</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="465"/>
         <location filename="../src/views/termwidget.cpp" line="582"/>
         <source>Horizontal split</source>
-        <translation>Ndarje horizontale</translation>
+        <translation>Разделить по горизонтали</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="478"/>
         <location filename="../src/views/termwidget.cpp" line="582"/>
         <source>Vertical split</source>
-        <translation>Ndarje vertikale</translation>
+        <translation>Разделить по вертикали</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="503"/>
         <location filename="../src/views/termwidget.cpp" line="582"/>
         <source>New tab</source>
-        <translation>Skedë e re</translation>
+        <translation>Новая вкладка</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="512"/>
         <source>Exit fullscreen</source>
-        <translation>Dil nga mënyra sa krejt ekrani</translation>
+        <translation>Выйти из полноэкранного режима</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="516"/>
         <source>Fullscreen</source>
-        <translation>Sa krejt ekrani</translation>
+        <translation>Полноэкранный режим</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="522"/>
         <source>Find</source>
-        <translation>Gjej</translation>
+        <translation>Найти</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="528"/>
         <source>Search</source>
-        <translation>Kërko</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="550"/>
         <source>Encoding</source>
-        <translation>Kodim</translation>
+        <translation>Кодировка</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="554"/>
         <source>Custom commands</source>
-        <translation>Urdhra vetjakë</translation>
+        <translation>Пользовательские команды</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>Remote management</source>
-        <translation>Administrim së largëti</translation>
+        <translation>Удаленное управление</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="564"/>
         <source>Upload file</source>
-        <translation>Ngarkoni kartelë</translation>
+        <translation>Загрузить файл</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Download file</source>
-        <translation>Shkarkoje kartelën</translation>
+        <translation>Скачать файл</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="574"/>
         <source>Settings</source>
-        <translation>Rregullime</translation>
+        <translation>Настройки</translation>
     </message>
 </context>
 <context>
@@ -1158,12 +1158,12 @@
         <location filename="../src/common/utils.cpp" line="382"/>
         <location filename="../src/common/utils.cpp" line="428"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="384"/>
         <source>Close</source>
-        <translation>Mbylle</translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="429"/>

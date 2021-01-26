@@ -129,12 +129,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="392"/>
         <source>Fore color:</source>
-        <translation>Cor da frente</translation>
+        <translation>Cor dianteira:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="399"/>
         <source>Back color:</source>
-        <translation>Cor de trás:</translation>
+        <translation>Cor traseira:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="417"/>
@@ -363,30 +363,30 @@
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Select left workspace</source>
-        <translation>Selecionar área de trabalho à esquerda</translation>
+        <translation>Selecionar a área de trabalho à esquerda</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Select lower workspace</source>
-        <translation>Selecionar área de trabalho inferior</translation>
+        <translation>Selecionar a área de trabalho inferior</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="2057"/>
         <source>Select right workspace</source>
-        <translation>Selecionar área de trabalho à direita</translation>
+        <translation>Selecionar a área de trabalho à direita</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="2056"/>
         <source>Select upper workspace</source>
-        <translation>Selecionar área de trabalho superior</translation>
+        <translation>Selecionar a área de trabalho superior</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Tab titles</source>
-        <translation>Títulos de separadores</translation>
+        <translation>Títulos de separador</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="157"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>Desativar o controlo de fluxo usando Ctrl+S, Ctrl+Q</translation>
+        <translation>Desativar o controlo de fluxo utilizando Ctrl+S, Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="159"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1306"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>Não foi possível localizar &quot;%1&quot;, a iniciar &quot;%2&quot; ao invés. Por favor, verifique o seu perfil da shell.</translation>
+        <translation>Não foi possível localizar &quot;%1&quot;, a iniciar &quot;%2&quot; ao invés. Verifique o seu perfil da shell.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1310"/>
@@ -542,7 +542,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1360"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation>O resultado foi suspenso ao pressionar Ctrl+S. Pressionando Ctrl+Q para retomar.</translation>
+        <translation>O resultado foi suspenso pressionando Ctrl+S. Pressionando Ctrl+Q para retomar.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
@@ -619,7 +619,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Mudar o foco para o ícone &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2125"/>
@@ -1038,7 +1038,7 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>title set by shell: %w</source>
-        <translation>título definido pela interface: %w</translation>
+        <translation>título definido pela shell: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="106"/>

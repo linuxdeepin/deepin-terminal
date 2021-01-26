@@ -619,7 +619,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Basculer le focus avec l&apos;icône &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2125"/>

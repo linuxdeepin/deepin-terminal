@@ -620,7 +620,7 @@ Localizzazione italiana a cura di Massimo A. Carofano</translation>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Sposta il focus con l&apos;icona &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2125"/>
