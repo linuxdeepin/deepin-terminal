@@ -299,4 +299,6 @@ void ServerConfigGroupPanel::resizeEvent(QResizeEvent *event)
 
     int panelWidth = this->width();
     this->resize(panelWidth, panelHeight);
+
+    m_isResizeBySelf = true;
 }

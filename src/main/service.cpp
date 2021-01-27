@@ -798,7 +798,12 @@ int Service::getVirtualKeyboardHeight()
         return 0;
     }
 
-    return getVirtualKeyboardGeometry().height();
+    // 获取虚拟键盘高度
+    if (-1 == m_virtualKeyboardHeight) {
+        m_virtualKeyboardHeight = getVirtualKeyboardGeometry().height();
+    }
+
+    return m_virtualKeyboardHeight;
 }
 
 /*******************************************************************************
@@ -849,4 +854,26 @@ void Service::setTitleBarHeight(int titleBarHeight)
 int Service::getTitleBarHeight()
 {
     return m_titleBarHeight;
+}
+
+/*******************************************************************************
+ 1. @函数:    setIsPanelMovingBack
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-27
+ 4. @说明:    设置插件面板是否正在进行返回动画
+*******************************************************************************/
+void Service::setIsPanelMovingBack(bool isPanelMovingBack)
+{
+    m_isPanelMovingBack = isPanelMovingBack;
+}
+
+/*******************************************************************************
+ 1. @函数:    isPanelMovingBack
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-27
+ 4. @说明:    获取插件面板是否正在进行返回动画
+*******************************************************************************/
+bool Service::isPanelMovingBack()
+{
+    return m_isPanelMovingBack;
 }

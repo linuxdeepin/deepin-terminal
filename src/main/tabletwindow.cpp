@@ -170,8 +170,10 @@ void TabletWindow::slotVirtualKeyboardGeometryChanged(QRect rect)
 void TabletWindow::slotResizeWindowHeight(int windowHeight, bool isKeyboardShow)
 {
     Q_UNUSED(isKeyboardShow)
-    // 关闭标签页时，键盘会频繁隐藏/显示，导致多次触发该槽函数
-    QMetaObject::invokeMethod(this, "slotSetFixedHeight", Qt::QueuedConnection, Q_ARG(int, windowHeight));
+    if (!Service::instance()->isPanelMovingBack()) {
+        // 关闭标签页时，键盘会频繁隐藏/显示，导致多次触发该槽函数
+        QMetaObject::invokeMethod(this, "slotSetFixedHeight", Qt::QueuedConnection, Q_ARG(int, windowHeight));
+    }
 }
 
 /*******************************************************************************

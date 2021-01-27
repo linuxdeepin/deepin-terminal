@@ -234,6 +234,8 @@ void CustomCommandSearchRstPanel::resizeEvent(QResizeEvent *event)
     }
 
     int topPanelWidth = this->width();
-    this->resize(topPanelWidth, topPanelHeight);
+    //这里如果不+1或者-1, resize出来的高度与topPanelHeight数值不一致，待查找原因
+    this->resize(topPanelWidth, topPanelHeight+1);
+
     m_isResizeBySelf = true;
 }

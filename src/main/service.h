@@ -136,6 +136,12 @@ public:
     // 获取DMainWindow标题栏高度
     int getTitleBarHeight();
 
+    // 设置插件面板是否正在进行返回动画
+    void setIsPanelMovingBack(bool isPanelMovingBack);
+
+    // 获取插件面板是否正在进行返回动画
+    bool isPanelMovingBack();
+
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
@@ -203,6 +209,12 @@ private:
     QRect m_virtualKeyBoardRect;
 
     int m_titleBarHeight = 0;
+
+    // 虚拟键盘高度
+    int m_virtualKeyboardHeight = -1;
+
+    // 插件面板是否正在进行返回动画
+    bool m_isPanelMovingBack = false;
 };
 
 #endif // SERVICE_H

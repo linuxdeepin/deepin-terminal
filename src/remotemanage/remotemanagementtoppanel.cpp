@@ -130,6 +130,11 @@ void RemoteManagementTopPanel::resizeEvent(QResizeEvent *event)
         return RightPanel::resizeEvent(event);
     }
 
+    // 正在返回动画过程中，不能resize否则界面会卡死
+    if (Service::instance()->isPanelMovingBack()) {
+        return RightPanel::resizeEvent(event);
+    }
+
     QDesktopWidget *desktopWidget = QApplication::desktop();
     int availableHeight = desktopWidget->availableGeometry().size().height();
     int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
@@ -289,6 +294,9 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
 *******************************************************************************/
 void RemoteManagementTopPanel::showPrevPanel()
 {
+    // 标记正在返回动画过程中的状态
+    Service::instance()->setIsPanelMovingBack(true);
+
     qDebug() << "RemoteManagementTopPanel show previous panel.";
     PanelState state;
     ServerConfigManager::PanelType prevType;
@@ -404,6 +412,9 @@ void RemoteManagementTopPanel::showPrevPanel()
     m_currentPanelType = prevType;
     // 设置平面状态
     setPanelShowState(m_currentPanelType);
+
+    // 标记正在返回动画过程中的状态
+    Service::instance()->setIsPanelMovingBack(false);
 }
 
 /*******************************************************************************
