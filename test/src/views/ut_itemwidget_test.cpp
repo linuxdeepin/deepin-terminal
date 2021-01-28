@@ -183,9 +183,6 @@ TEST_F(UT_ItemWidget_Test, onIconButtonClicked)
     itemWidget->onIconButtonClicked();
 
     delete itemWidget;
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_ItemWidget_Test, onItemClicked)
@@ -202,9 +199,6 @@ TEST_F(UT_ItemWidget_Test, onItemClicked)
     itemWidget->onItemClicked();
 
     delete itemWidget;
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_ItemWidget_Test, rightKeyPress)
@@ -218,9 +212,6 @@ TEST_F(UT_ItemWidget_Test, rightKeyPress)
     itemWidget->rightKeyPress();
 
     delete itemWidget;
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 #endif

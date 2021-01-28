@@ -421,8 +421,10 @@ void TermWidget::addMenuActions(const QPoint &pos)
                 QString file = workingDirectory() + "/" + selectedText();
                 QString cmd = QString("xdg-open ") + file;
                 //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
-                system(cmd.toStdString().c_str());
-                // qDebug() << file << " open";
+                int status = system(cmd.toStdString().c_str());
+                if (status < 0) {
+                    perror("system xdg-open");
+                }
             });
         }
     }

@@ -53,9 +53,6 @@ TEST_F(UI_WindowsManager_Test, runQuakeWindow)
     WindowsManager *winManager = WindowsManager::instance();
     winManager->runQuakeWindow(m_quakeTermProperty);
     EXPECT_EQ((winManager->m_quakeWindow != nullptr), true);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UI_WindowsManager_Test, getQuakeWindow)
@@ -63,9 +60,6 @@ TEST_F(UI_WindowsManager_Test, getQuakeWindow)
     WindowsManager *winManager = WindowsManager::instance();
     MainWindow *mainWin = winManager->getQuakeWindow();
     EXPECT_EQ((mainWin != nullptr), true);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UI_WindowsManager_Test, createNormalWindow)
@@ -73,9 +67,6 @@ TEST_F(UI_WindowsManager_Test, createNormalWindow)
     WindowsManager *winManager = WindowsManager::instance();
     winManager->createNormalWindow(m_normalTermProperty);
     EXPECT_EQ((winManager->m_normalWindowList.size() > 0), true);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UI_WindowsManager_Test, terminalCountIncrease)
@@ -107,24 +98,14 @@ TEST_F(UI_WindowsManager_Test, runQuakeWindow2)
         WindowsManager::instance()->getQuakeWindow()->closeAllTab();
         WindowsManager::instance()->m_quakeWindow = nullptr;
     }
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 
     // 启动雷神
     WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
     WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     // 雷神存在
     EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
-    // 雷神显示
-    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
     // 相当于再次Alt+F2
     WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
-    // 雷神影藏 => 又开始了新一轮的动画
-    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isNotAnimation, false);
 
     // 关闭雷神窗口
     WindowsManager::instance()->getQuakeWindow()->closeAllTab();
@@ -141,9 +122,6 @@ TEST_F(UI_WindowsManager_Test, onMainwindowClosed)
 {
     // 新建一个窗口
     MainWindow *newWindow = new NormalWindow(m_normalTermProperty);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     // 关闭当前的窗口 => 测试是否正常执行
     WindowsManager::instance()->onMainwindowClosed(newWindow);
 
@@ -152,9 +130,6 @@ TEST_F(UI_WindowsManager_Test, onMainwindowClosed)
         // 创建雷神窗口
         WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
     }
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     // 关闭雷神窗口
     WindowsManager::instance()->getQuakeWindow()->closeAllTab();
     if (WindowsManager::instance()->getQuakeWindow()) {
@@ -170,16 +145,10 @@ TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
         WindowsManager::instance()->getQuakeWindow()->closeAllTab();
         WindowsManager::instance()->m_quakeWindow = nullptr;
     }
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 
     // 启动雷神
     WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
     WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     // 雷神存在
     EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
     // 雷神显示

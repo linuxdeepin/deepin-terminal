@@ -57,10 +57,6 @@ TEST_F(UT_RemoteManagementTopPanel_Test, setFocusInPanel)
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
     remoteTopPanel->setFocusInPanel();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     m_normalWindow->close();
     delete m_normalWindow;
 }
@@ -82,10 +78,6 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showSearchPanel)
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
     remoteTopPanel->showSearchPanel("group");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     m_normalWindow->close();
     delete m_normalWindow;
 }
@@ -108,15 +100,9 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showGroupPanel)
 
     remoteTopPanel->showSearchPanel("group");
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     //显示前一个界面（返回）
     remoteTopPanel->showPrevPanel();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     m_normalWindow->close();
     delete m_normalWindow;
 }

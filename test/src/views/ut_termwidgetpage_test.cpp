@@ -58,9 +58,6 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
     //设置透明度，提示符会出现异常，且显示2个光标
     for (qreal opacity = 0.01; opacity <= 1.0; opacity += 0.01) {
         parentWidget.setTerminalOpacity(opacity);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QStringList fontFamilyList;
@@ -73,10 +70,6 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
         parentWidget.setFont(fontFamily);
         QFont currFont = currTermWidget->getTerminalFont();
         EXPECT_EQ(currFont.family(), fontFamily);
-
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QString lastFontFamily = fontFamilyList.last();
@@ -89,14 +82,7 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
         parentWidget.setFontSize(fontSize);
         QFont currFont = currTermWidget->getTerminalFont();
         EXPECT_EQ(currFont.pointSize(), fontSize);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
@@ -126,24 +112,16 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
     Konsole::Emulation::KeyboardCursorShape blockShape = Konsole::Emulation::KeyboardCursorShape::BlockCursor;
     Konsole::Emulation::KeyboardCursorShape underlineShape = Konsole::Emulation::KeyboardCursorShape::UnderlineCursor;
     Konsole::Emulation::KeyboardCursorShape ibeamShape = Konsole::Emulation::KeyboardCursorShape::IBeamCursor;
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     parentWidget.setcursorShape(static_cast<int>(blockShape));
     EXPECT_EQ(blockShape, termDisplay->_cursorShape);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     parentWidget.setcursorShape(static_cast<int>(underlineShape));
     EXPECT_EQ(underlineShape, termDisplay->_cursorShape);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     parentWidget.setcursorShape(static_cast<int>(ibeamShape));
     EXPECT_EQ(ibeamShape, termDisplay->_cursorShape);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
 }
 
 TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
@@ -155,27 +133,12 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     EXPECT_EQ(currTermPage->isVisible(), true);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     //测试分屏
     currTermPage->split(Qt::Orientation::Vertical);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     //测试分屏
     currTermPage->split(Qt::Orientation::Horizontal);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     //测试关闭分屏
     currTermPage->closeSplit(currTermPage->currentTerminal(), true);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_TermWidgetPage_Test, showRenameTitleDialog)
@@ -188,10 +151,6 @@ TEST_F(UT_TermWidgetPage_Test, showRenameTitleDialog)
     EXPECT_EQ(currTermPage->isVisible(), true);
 
     currTermPage->showRenameTitleDialog();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 #endif

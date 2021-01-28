@@ -113,10 +113,6 @@ TEST_F(UT_TerminalDisplay_Test, resize)
     display->resize(800, 600);
     display->show();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     display->resize(500, 300);
 
     delete emulation;
@@ -774,58 +770,26 @@ TEST_F(UT_TerminalDisplay_Test, keyPressEvent)
     QTest::keyEvent(QTest::KeyAction::Press, display, Qt::Key_Left, Qt::ShiftModifier);
     QTest::keyEvent(QTest::KeyAction::Release, display, Qt::Key_Left, Qt::ShiftModifier);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QTest::keyEvent(QTest::KeyAction::Press, display, Qt::Key_Right, Qt::ShiftModifier);
     QTest::keyEvent(QTest::KeyAction::Release, display, Qt::Key_Right, Qt::ShiftModifier);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 
     QTest::keyEvent(QTest::KeyAction::Press, display, Qt::Key_PageUp, Qt::ShiftModifier);
     QTest::keyEvent(QTest::KeyAction::Release, display, Qt::Key_PageUp, Qt::ShiftModifier);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QTest::keyEvent(QTest::KeyAction::Press, display, Qt::Key_PageDown, Qt::ShiftModifier);
     QTest::keyEvent(QTest::KeyAction::Release, display, Qt::Key_PageDown, Qt::ShiftModifier);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyPress, Qt::Key_Left, Qt::ShiftModifier));
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyRelease, Qt::Key_Left, Qt::ShiftModifier));
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyPress, Qt::Key_Right, Qt::ShiftModifier));
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyRelease, Qt::Key_Right, Qt::ShiftModifier));
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyPress, Qt::Key_PageUp, Qt::ShiftModifier));
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyRelease, Qt::Key_PageUp, Qt::ShiftModifier));
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyPress, Qt::Key_PageDown, Qt::ShiftModifier));
     QCoreApplication::postEvent(display, new QKeyEvent(QEvent::KeyRelease, Qt::Key_PageDown, Qt::ShiftModifier));
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 
     delete emulation;
     delete display;

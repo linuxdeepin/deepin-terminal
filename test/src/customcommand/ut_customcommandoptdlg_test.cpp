@@ -28,13 +28,13 @@ void UT_CustomCommandOptDlg_Test::TearDown()
 
 TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
 {
-    DApplicationHelper::instance()->setThemeType(DApplicationHelper::DarkType);
+    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::DarkType);
     CustomCommandOptDlg cmdDlg_new;
     cmdDlg_new.setIconPixmap(QPixmap());
     cmdDlg_new.show();
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
-    DApplicationHelper::instance()->setThemeType(DApplicationHelper::LightType);
+    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::LightType);
 
     CustomCommandOptDlg cmdDlg;
     cmdDlg.show();
@@ -52,10 +52,6 @@ TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
     DKeySequenceEdit *shortcutEdit = cmdDlg.findChild<DKeySequenceEdit *>();
     EXPECT_NE(shortcutEdit, nullptr);
     shortcutEdit->setKeySequence(QKeySequence("Ctrl+Shift+K"));
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_CustomCommandOptDlg_Test, setCancelBtnText)

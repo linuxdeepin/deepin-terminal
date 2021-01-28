@@ -341,21 +341,15 @@ TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
     Utils::parseCommandLine(QStringList() << "deepin-terminal" << "-q", properties);
     // 显示雷神
     WindowsManager::instance()->runQuakeWindow(properties);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     // 切换桌面1到桌面2
     m_service->onDesktopWorkspaceSwitched(1, 2);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     // 切换桌面雷神影藏
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isHidden(), true);
     // 切回
     m_service->onDesktopWorkspaceSwitched(2, WindowsManager::instance()->getQuakeWindow()->m_desktopIndex);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     // 雷神显示
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
     // 关闭雷神

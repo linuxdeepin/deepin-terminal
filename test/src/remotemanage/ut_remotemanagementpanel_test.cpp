@@ -78,8 +78,6 @@ void UT_RemoteManagementPanel_Test::prepareData()
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
     EXPECT_NE(currConfig, nullptr);
 
-    QTest::qWait(UT_WAIT_TIME);
-
     qsrand(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
     newConfig->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
@@ -103,8 +101,6 @@ void UT_RemoteManagementPanel_Test::prepareData()
     EXPECT_EQ(getServerConfigCount(), serverConfigCount);
 
     EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount - 1);
-
-    QTest::qWait(UT_WAIT_TIME);
 }
 
 void UT_RemoteManagementPanel_Test::TearDown()
@@ -124,9 +120,7 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshPanel)
 
     panel.refreshPanel();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
 }
 
 TEST_F(UT_RemoteManagementPanel_Test, setFocusInPanel)
@@ -149,9 +143,7 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusInPanel)
     panel.m_listWidget->hide();
     panel.setFocusInPanel();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
 }
 
 TEST_F(UT_RemoteManagementPanel_Test, setFocusBack)
@@ -193,9 +185,7 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusBack)
     listIndex = panel.getListIndex();
     EXPECT_GE(listIndex, 0);
     ServerConfigManager::instance()->m_serverConfigs.clear();
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
 }
 
 TEST_F(UT_RemoteManagementPanel_Test, clearListFocus)
@@ -213,10 +203,6 @@ TEST_F(UT_RemoteManagementPanel_Test, clearListFocus)
     EXPECT_EQ(panel.m_listWidget->hasFocus(), false);
     EXPECT_EQ(panel.m_searchEdit->hasFocus(), false);
     EXPECT_EQ(panel.m_listWidget->currentIndex(), -1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
@@ -256,10 +242,6 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
     int count = panel.m_listWidget->count();
     EXPECT_EQ(count, 2);
     ServerConfigManager::instance()->m_serverConfigs.clear();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -364,22 +346,16 @@ TEST_F(UT_RemoteManagementPanel_Test, lambda)
     remotePanel.m_isShow = true;
     // 刷新界面
     emit ServerConfigManager::instance()->refreshList();
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
 
     // 焦点切入切出
     // 切出理由
     emit remotePanel.m_listWidget->focusOut(Qt::TabFocusReason);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     // 列表内没有index
     EXPECT_EQ(remotePanel.m_listWidget->m_currentIndex, -1);
     emit remotePanel.m_listWidget->focusOut(Qt::BacktabFocusReason);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     EXPECT_EQ(remotePanel.m_listWidget->m_currentIndex, -1);
 
 }

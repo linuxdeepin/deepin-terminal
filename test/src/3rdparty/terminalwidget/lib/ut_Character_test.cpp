@@ -70,10 +70,6 @@ TEST_F(UT_Character_Test, draw)
     painterWidget.resize(800, 600);
     painterWidget.show();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     EXPECT_EQ(painterWidget.isVisible(), true);
 }
 

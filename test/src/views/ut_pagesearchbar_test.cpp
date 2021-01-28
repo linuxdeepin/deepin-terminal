@@ -60,10 +60,6 @@ TEST_F(UT_PageSearchBar_Test, PageSearchBarTest)
     QString searchTxt = searchBar->searchKeytxt();
     EXPECT_EQ(searchTxt.length(), 0);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QString searchCmd = QString("rw");
     searchBar->m_searchEdit->setText(searchCmd);
     EXPECT_EQ(searchBar->m_searchEdit->text().length(), searchCmd.length());
@@ -77,9 +73,6 @@ TEST_F(UT_PageSearchBar_Test, PageSearchBarTest)
         EXPECT_EQ(spyNext.count(), 0);
         QTest::mouseClick(findNextButton, Qt::LeftButton, Qt::NoModifier, clickPoint);
         EXPECT_EQ(spyNext.count(), 1);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     const int findPrevCount = 2;
@@ -90,13 +83,6 @@ TEST_F(UT_PageSearchBar_Test, PageSearchBarTest)
         EXPECT_EQ(spyPrev.count(), 0);
         QTest::mouseClick(findPrevButton, Qt::LeftButton, Qt::NoModifier, clickPoint);
         EXPECT_EQ(spyPrev.count(), 1);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 #endif

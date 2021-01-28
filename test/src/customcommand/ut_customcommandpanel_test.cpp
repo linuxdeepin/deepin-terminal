@@ -46,10 +46,6 @@ TEST_F(UT_CustomCommandPanel_Test, CustomCommandPanelTest)
     EXPECT_EQ(cmdActionlist.size(), cmdListWidget->count());
 
     panel.refreshCmdSearchState();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_CustomCommandPanel_Test, showAddCustomCommandDlg)

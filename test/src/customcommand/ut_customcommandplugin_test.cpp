@@ -41,10 +41,6 @@ TEST_F(UT_Customcommandplugin_Test,initPlugin)
     EXPECT_NE(m_cmdPlugin->getCustomCommandTopPanel(), nullptr);
 
     delete  pNewNorm;
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 #endif

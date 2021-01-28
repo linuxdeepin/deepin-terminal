@@ -83,9 +83,6 @@ TEST_F(UT_Tabbar_Test, addTab)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
     EXPECT_EQ(tabbar.count(), tabCount);
 }
@@ -104,9 +101,6 @@ TEST_F(UT_Tabbar_Test, insertTab)
         QString tabIdentifier = generateUniqueId();
         tabbar.insertTab(i, tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
     EXPECT_EQ(tabbar.count(), tabCount);
 }
@@ -127,9 +121,6 @@ TEST_F(UT_Tabbar_Test, removeTab)
         QString tabIdentifier = generateUniqueId();
         tabbar.insertTab(i, tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
     EXPECT_EQ(tabbar.count(), tabCount);
 
@@ -154,9 +145,6 @@ TEST_F(UT_Tabbar_Test, identifier)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     int firstTabIndex = 0;
@@ -177,9 +165,6 @@ TEST_F(UT_Tabbar_Test, getIndexByIdentifier)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     int firstTabIndex = 0;
@@ -201,9 +186,6 @@ TEST_F(UT_Tabbar_Test, setTabText)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     int firstTabIndex = 0;
@@ -285,9 +267,6 @@ TEST_F(UT_Tabbar_Test, setChangeTextColor)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QString firstTabId = tabbar.identifier(0);
@@ -308,9 +287,6 @@ TEST_F(UT_Tabbar_Test, setNeedChangeTextColor)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QColor redColor = QColor(Qt::red);
@@ -333,9 +309,6 @@ TEST_F(UT_Tabbar_Test, removeNeedChangeTextColor)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QString firstTabId = tabbar.identifier(0);
@@ -358,9 +331,6 @@ TEST_F(UT_Tabbar_Test, isNeedChangeTextColor)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QColor redColor = QColor(Qt::red);
@@ -385,9 +355,6 @@ TEST_F(UT_Tabbar_Test, setClearTabColor)
         QString tabIdentifier = generateUniqueId();
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     EXPECT_EQ(tabIdList.size(), tabCount);

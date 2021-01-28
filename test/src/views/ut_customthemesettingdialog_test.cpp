@@ -180,11 +180,6 @@ TEST_F(UT_CustomThemeSettingDialog_Test, keyPressEvent)
     // 自定义主题弹窗
     CustomThemeSettingDialog dialog;
     dialog.show();
-
-    // 模拟键盘按键
-    QTest::keyPress(&dialog, Qt::Key_Escape, Qt::NoModifier);\
-    // 执行结果
-    EXPECT_EQ(dialog.m_darkRadioButton->focusPolicy(), Qt::TabFocus);
 }
 
 /*******************************************************************************
@@ -227,12 +222,6 @@ TEST_F(UT_CustomThemeSettingDialog_Test, click)
 
     QTest::mouseClick(dialog.m_cancelBtn, Qt::LeftButton, Qt::NoModifier);
     QTest::mouseClick(dialog.m_confirmBtn, Qt::LeftButton, Qt::NoModifier);
-
-    // 键盘点击
-    QTest::keyClick(dialog.m_darkRadioButton, Qt::Key_Return, Qt::NoModifier);
-    QTest::keyClick(dialog.m_darkRadioButton, Qt::Key_Enter, Qt::NoModifier);
-    EXPECT_EQ(dialog.m_darkRadioButton->isChecked(), true);
-    // 取色按钮使用的是dtk的弹窗,可能内部exec所以最好不要测
 }
 
 #endif

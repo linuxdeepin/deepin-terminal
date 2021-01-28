@@ -37,10 +37,6 @@ TEST_F(UT_CustomCommandTopPanel_Test, showCustomCommandPanel)
 
     m_cmdTopPanel->showCustomCommandPanel();
     EXPECT_EQ(m_cmdTopPanel->m_customCommandPanel->isVisible(), true);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_CustomCommandTopPanel_Test, showCustomCommandSearchPanel)
@@ -50,10 +46,6 @@ TEST_F(UT_CustomCommandTopPanel_Test, showCustomCommandSearchPanel)
 
     m_cmdTopPanel->showCustomCommandSearchPanel("cmd");
     EXPECT_EQ(m_cmdTopPanel->m_customCommandSearchPanel->isVisible(), true);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_CustomCommandTopPanel_Test, slotsRefreshCommandPanel)
@@ -62,10 +54,6 @@ TEST_F(UT_CustomCommandTopPanel_Test, slotsRefreshCommandPanel)
     EXPECT_EQ(m_cmdTopPanel->isVisible(), true);
 
     m_cmdTopPanel->slotsRefreshCommandPanel();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 #endif

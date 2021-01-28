@@ -48,10 +48,6 @@ TEST_F(UT_RemoteManagementPlugin_Test, setRemoteEncode)
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
     remotePlugin->setRemoteEncode(QString("UTF-8"));
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_RemoteManagementPlugin_Test, setBackspaceKey)
@@ -71,9 +67,6 @@ TEST_F(UT_RemoteManagementPlugin_Test, setBackspaceKey)
     remotePlugin->setBackspaceKey(termWidget, QString("escape-sequence"));
     remotePlugin->setBackspaceKey(termWidget, QString("ascii-del"));
     remotePlugin->setBackspaceKey(termWidget, QString("tty"));
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_RemoteManagementPlugin_Test, setDeleteKey)
@@ -93,9 +86,6 @@ TEST_F(UT_RemoteManagementPlugin_Test, setDeleteKey)
     remotePlugin->setDeleteKey(termWidget, QString("escape-sequence"));
     remotePlugin->setDeleteKey(termWidget, QString("ascii-del"));
     remotePlugin->setDeleteKey(termWidget, QString("tty"));
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_RemoteManagementPlugin_Test, createShellFile)
@@ -125,9 +115,6 @@ TEST_F(UT_RemoteManagementPlugin_Test, createShellFile)
     config->m_deleteKey = QString("");
 
     QString shellFile = remotePlugin->createShellFile(config);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     EXPECT_NE(shellFile.length(), 0);
     delete config;
 }

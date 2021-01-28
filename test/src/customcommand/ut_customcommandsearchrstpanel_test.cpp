@@ -23,7 +23,7 @@ void UT_CustomCommandSearchRstPanel_Test::SetUp()
         Service::instance()->setProperty("isServiceInit", true);
     }
 
-    DApplicationHelper::instance()->setThemeType(DApplicationHelper::DarkType);
+    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::DarkType);
     m_normalTermProperty[QuakeMode] = false;
     m_normalTermProperty[SingleFlag] = true;
     m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
@@ -56,15 +56,7 @@ TEST_F(UT_CustomCommandSearchRstPanel_Test, refreshDataTest)
 
     m_cmdSearchPanel->refreshData();
 
-#ifdef ENABLE_UI_TEST
-     QTest::qWait(UT_WAIT_TIME);
-#endif
-
     m_cmdSearchPanel->refreshData("test");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_CustomCommandSearchRstPanel_Test, setSearchFilterTest)
@@ -73,10 +65,6 @@ TEST_F(UT_CustomCommandSearchRstPanel_Test, setSearchFilterTest)
     m_cmdSearchPanel->show();
 
     m_cmdSearchPanel->setSearchFilter("SearchFilter");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_CustomCommandSearchRstPanel_Test, doCustomCommandTest)
@@ -93,10 +81,6 @@ TEST_F(UT_CustomCommandSearchRstPanel_Test, doCustomCommandTest)
     ShortcutManager::instance()->addCustomCommand(newAction);
 
     m_cmdSearchPanel->doCustomCommand("myCommand");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 #endif

@@ -68,9 +68,6 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
     //设置透明度
     for (qreal opacity = 0.01; opacity <= 1.0; opacity += 0.01) {
         termWidget->setTermOpacity(opacity);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QStringList fontFamilyList;
@@ -83,10 +80,6 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
         termWidget->setTermFont(fontFamily);
         QFont currFont = termWidget->getTerminalFont();
         EXPECT_EQ(currFont.family(), fontFamily);
-
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
     QString lastFontFamily = fontFamilyList.last();
@@ -99,14 +92,8 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
         termWidget->setTermFontSize(fontSize);
         QFont currFont = termWidget->getTerminalFont();
         EXPECT_EQ(currFont.pointSize(), fontSize);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_TermWidget_Test, getsetEncode)

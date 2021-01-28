@@ -210,10 +210,6 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, getListIndex)
     RemoteManagementSearchPanel *searchPanel = remoteTopPanel->findChild<RemoteManagementSearchPanel *>();
     int listIndex = searchPanel->getListIndex();
     EXPECT_EQ(listIndex, -1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -266,14 +262,8 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, lambda)
 //    emit searchPanel.m_listWidget->focusOut(Qt::TabFocusReason);
 //    searchPanel.show();
     emit searchPanel.m_listWidget->focusOut(Qt::BacktabFocusReason);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     // 切换主题
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 #endif

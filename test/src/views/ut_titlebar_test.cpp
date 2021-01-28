@@ -74,9 +74,5 @@ TEST_F(UT_TitleBar_Test, TitleBarTest)
 
     int rightSpace = titleBar->rightSpace();
     EXPECT_EQ(rightSpace, titleBar->m_rightSpace);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 #endif

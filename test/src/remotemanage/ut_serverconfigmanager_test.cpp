@@ -80,8 +80,6 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
 //    EXPECT_NE(currConfig, nullptr);
 
-    QTest::qWait(UT_WAIT_TIME);
-
     qsrand(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
     newConfig->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
@@ -105,10 +103,6 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
 //    EXPECT_EQ(getServerConfigCount(), serverConfigCount);
 
 //    EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount - 1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************

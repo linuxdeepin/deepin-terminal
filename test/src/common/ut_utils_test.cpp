@@ -100,8 +100,6 @@ TEST(UT_Utils_Test, showDirDialog)
 
     QString dirName = Utils::showDirDialog(parentWidget);
     EXPECT_GE(dirName.length(), 0);
-
-    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 
@@ -137,7 +135,7 @@ TEST(UT_Utils_Test, showFilesSelectDialog)
     QStringList fileList = Utils::showFilesSelectDialog(parentWidget);
     EXPECT_GE(fileList.size(), 0);
 
-    QTest::qWait(UT_WAIT_TIME);
+    
 #endif
 }
 
@@ -166,7 +164,7 @@ TEST(UT_Utils_Test, showExitConfirmDialogTab_CloseTypeTab)
     bool isAccepted = Utils::showExitConfirmDialog(Utils::CloseType::CloseType_Tab);
     EXPECT_EQ(isAccepted, false);
 
-    QTest::qWait(UT_WAIT_TIME);
+    
 #endif
 }
 
@@ -194,7 +192,7 @@ TEST(UT_Utils_Test, showExitConfirmDialog_CloseTypeWindow)
     bool isAccepted = Utils::showExitConfirmDialog(Utils::CloseType::CloseType_Window);
     EXPECT_EQ(isAccepted, false);
 
-    QTest::qWait(UT_WAIT_TIME);
+    
 #endif
 }
 
@@ -254,7 +252,7 @@ TEST(UT_Utils_Test, showExitUninstallConfirmDialog)
     bool isAccepted = Utils::showExitUninstallConfirmDialog();
     EXPECT_EQ(isAccepted, false);
 
-    QTest::qWait(UT_WAIT_TIME);
+    
 #endif
 }
 
@@ -284,7 +282,7 @@ TEST(UT_Utils_Test, showUnistallConfirmDialog)
     bool isAccepted = Utils::showUnistallConfirmDialog(commandName);
     EXPECT_EQ(isAccepted, false);
 
-    QTest::qWait(UT_WAIT_TIME);
+    
 #endif
 }
 
@@ -314,7 +312,7 @@ TEST(UT_Utils_Test, showShortcutConflictMsgbox)
     bool isAccepted = Utils::showShortcutConflictMsgbox(shortcutName);
     EXPECT_EQ(isAccepted, true);
 
-    QTest::qWait(UT_WAIT_TIME);
+    
 #endif
 }
 
@@ -343,7 +341,7 @@ TEST(UT_Utils_Test, showSameNameDialog)
 
     Utils::showSameNameDialog(parentWidget, "servername1", "servername1");
 
-    QTest::qWait(UT_WAIT_TIME);
+    
 #endif
 }
 

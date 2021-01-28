@@ -44,10 +44,6 @@ TEST_F(UT_SwitchThemeMenu_Test, SwitchThemeMenuTest)
     EXPECT_NE(m_themeMenu, nullptr);
     m_themeMenu->show();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QEvent e(QEvent::None);
     m_themeMenu->leaveEvent(&e);
 
@@ -60,10 +56,6 @@ TEST_F(UT_SwitchThemeMenu_Test, SwitchThemeMenuTest)
     QHideEvent he;
     m_themeMenu->hideEvent(&he);
     EXPECT_EQ(m_themeMenu->hoveredThemeStr, "");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 #endif
 
@@ -111,10 +103,8 @@ TEST_F(UT_MainWindow_Test, QuakeAnimationTest)
     quakeWindow->setAnimationFlag(false);
     quakeWindow->show();
     quakeWindow->topToBottomAnimation();
-    QTest::qWait(UT_WAIT_TIME);
 
     quakeWindow->bottomToTopAnimation();
-    QTest::qWait(UT_WAIT_TIME);
 
     delete quakeWindow;
     quakeWindow = nullptr;
@@ -129,10 +119,6 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
 
     m_normalWindow->show();
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     EXPECT_GE(m_normalWindow->width(), MainWindow::m_MinWidth);
     EXPECT_GE(m_normalWindow->height(), MainWindow::m_MinHeight);
 
@@ -142,9 +128,6 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     const int tabCount = 5;
     for (int i = 0; i < tabCount; i++) {
         m_normalWindow->addTab(m_normalTermProperty);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
     TabBar *tabBar = m_normalWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
@@ -165,7 +148,6 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     m_service->showHideOpacityAndBlurOptions(true);
 
 #ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
     //只有在开启UI测试的模式下，才能判断焦点
     currTerm->hasFocus();
 #endif
@@ -177,10 +159,6 @@ TEST_F(UT_MainWindow_Test, closeOtherTab)
     QString firstTabId = tabBar->identifier(0);
     m_normalWindow->closeOtherTab(firstTabId);
     EXPECT_EQ(tabBar->count(), 1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_MainWindow_Test, getCurrTabTitle)
@@ -239,9 +217,6 @@ TEST_F(UT_MainWindow_Test, showPlugin)
 {
     m_normalWindow->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     EXPECT_EQ(m_normalWindow->m_CurrentShowPlugin, QString(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND));
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 
@@ -249,9 +224,6 @@ TEST_F(UT_MainWindow_Test, hidePlugin)
 {
     m_normalWindow->hidePlugin();
     EXPECT_EQ(m_normalWindow->m_CurrentShowPlugin, QString(MainWindow::PLUGIN_TYPE_NONE));
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_MainWindow_Test, selectedText)
@@ -300,9 +272,6 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     const int tabCount = 5;
     for (int i = 0; i < tabCount; i++) {
         m_quakeWindow->addTab(m_normalTermProperty);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
     TabBar *tabBar = m_quakeWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
@@ -315,10 +284,6 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     QString lastTabId = tabBar->identifier(tabBar->count() - 1);
     m_quakeWindow->closeTab(lastTabId);
     EXPECT_EQ(tabBar->count(), tabCount - 1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_MainWindow_Test, quake_closeOtherTab)
@@ -327,10 +292,6 @@ TEST_F(UT_MainWindow_Test, quake_closeOtherTab)
     QString firstTabId = tabBar->identifier(0);
     m_quakeWindow->closeOtherTab(firstTabId);
     EXPECT_EQ(tabBar->count(), 1);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_MainWindow_Test, quake_getCurrTabTitle)
@@ -388,9 +349,6 @@ TEST_F(UT_MainWindow_Test, quake_showPlugin)
 {
     m_quakeWindow->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     EXPECT_EQ(m_quakeWindow->m_CurrentShowPlugin, QString(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND));
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 
@@ -398,9 +356,6 @@ TEST_F(UT_MainWindow_Test, quake_hidePlugin)
 {
     m_quakeWindow->hidePlugin();
     EXPECT_EQ(m_quakeWindow->m_CurrentShowPlugin, QString(MainWindow::PLUGIN_TYPE_NONE));
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_MainWindow_Test, quake_selectedText)
@@ -490,7 +445,6 @@ TEST_F(UT_MainWindow_Test, showExitConfirmDialog)
     m_normalWindow->createNewTab();
     m_normalWindow->showExitConfirmDialog(Utils::CloseType::CloseType_Tab, 1, m_normalWindow);
 
-    QTest::qWait(UT_WAIT_TIME);
 #endif
 }
 
@@ -532,10 +486,6 @@ TEST_F(UT_MainWindow_Test, checkExtendThemeItemTest)
 
     m_normalWindow->checkExtendThemeItem("Theme10", pAction);
     EXPECT_EQ(m_normalWindow->themeTenAction, pAction);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -548,10 +498,6 @@ TEST_F(UT_MainWindow_Test, checkThemeItemTest)
 {
     m_normalWindow->checkThemeItem();
     EXPECT_NE(m_normalWindow->currCheckThemeAction, nullptr);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -571,10 +517,6 @@ TEST_F(UT_MainWindow_Test, switchThemeActionTest)
     themeNameStr = "Theme9";
     m_normalWindow->switchThemeAction(pAction, themeNameStr);
     //EXPECT_EQ(Settings::instance()->extendThemeStr, "Theme9");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -623,10 +565,6 @@ TEST_F(UT_MainWindow_Test, switchThemeActionTestOne)
 
     pAction = m_normalWindow->themeTenAction;
     m_normalWindow->switchThemeAction(pAction);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -667,10 +605,6 @@ TEST_F(UT_MainWindow_Test, setThemeCheckItemSlotTest)
 
     Settings::instance()->extendThemeStr = "Theme9";
     m_normalWindow->setThemeCheckItemSlot();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -711,10 +645,6 @@ TEST_F(UT_MainWindow_Test, menuHideSetThemeSlotTest)
     m_normalWindow->menuHideSetThemeSlot();
     m_normalWindow->currCheckThemeAction = m_normalWindow->themeTenAction;
     m_normalWindow->menuHideSetThemeSlot();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -732,30 +662,15 @@ TEST_F(UT_MainWindow_Test, clickTabTest)
     const int tabCount = 5;
     for (int i = 0; i < tabCount; i++) {
         m_normalWindow->addTab(m_normalTermProperty);
-#ifdef ENABLE_UI_TEST
-        QTest::qWait(UT_WAIT_TIME);
-#endif
     }
     TabBar *tabBar = m_normalWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
 
     QTest::mouseClick(tabBar, Qt::LeftButton, Qt::NoModifier, QPoint(50, 10), UT_WAIT_TIME);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QTest::mouseClick(tabBar, Qt::LeftButton, Qt::NoModifier, QPoint(100, 10), UT_WAIT_TIME);
 
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
-
     QTest::mouseClick(tabBar, Qt::LeftButton, Qt::NoModifier, QPoint(200, 10), UT_WAIT_TIME);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -774,9 +689,6 @@ TEST_F(UT_MainWindow_Test, hasRunningProcesses)
 
     // 发送数据
     mainWindow->currentPage()->sendTextToCurrentTerm("ping 127.0.0.1\n");
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     bool running = mainWindow->hasRunningProcesses();
     qDebug() << "has running process :" << running;
 //    EXPECT_EQ(running, true);
@@ -793,10 +705,6 @@ TEST_F(UT_MainWindow_Test, initPlugins)
     emit mainWindow->m_tabbar->tabAddRequested();
     emit mainWindow->m_tabbar->tabCloseRequested(1);
     emit mainWindow->m_tabbar->menuCloseTab("");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
     delete mainWindow;
 }
 

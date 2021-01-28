@@ -91,9 +91,6 @@ TEST_F(UT_TerminalApplication_Test, pressSpace)
 //    app->pressSpace(&pushButton);
 
     app->exec();
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 //TEST_F(UT_TerminalApplication_Test, handleQuitAction)

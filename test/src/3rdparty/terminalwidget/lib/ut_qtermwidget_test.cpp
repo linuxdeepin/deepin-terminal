@@ -23,9 +23,6 @@ void UT_QTermWidget_Test::SetUp()
     m_termWidget = new QTermWidget;
     m_termWidget->startShellProgram();
     m_termWidget->show();
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 void UT_QTermWidget_Test::TearDown()
@@ -259,9 +256,7 @@ TEST_F(UT_QTermWidget_Test, hasRunningProcess)
 
     // 运行ping
     m_termWidget->sendText("ping 127.0.0.1\n");
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     hasRunning = m_termWidget->hasRunningProcess();
     qDebug() << "has process running:" << hasRunning;
 //    EXPECT_EQ(hasRunning, true);
@@ -397,9 +392,7 @@ TEST_F(UT_QTermWidget_Test, getForegroundProcessId)
 
     // ping的pid
     m_termWidget->sendText("ping 127.0.0.1\n");
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     int pid2 = m_termWidget->getForegroundProcessId();
     qDebug() << "pid :" << pid << "pid2 :" << pid2;
 //    EXPECT_NE(pid2, pid);
@@ -415,9 +408,7 @@ TEST_F(UT_QTermWidget_Test, getForegroundProcessName)
 {
     // ping
     m_termWidget->sendText("ping 127.0.0.1\n");
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     QString processName = m_termWidget->getForegroundProcessName();
     qDebug() << "foreground process name:" << processName;
 //    EXPECT_EQ(processName, QString("ping"));
@@ -519,9 +510,7 @@ TEST_F(UT_QTermWidget_Test, startTerminalTeletype)
     // runEmptyPTY
     term->startTerminalTeletype();
     term->show();
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
     // 正常运行
     EXPECT_EQ(term->isVisible(), true);
 }

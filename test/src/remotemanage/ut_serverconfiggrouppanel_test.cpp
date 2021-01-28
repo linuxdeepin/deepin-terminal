@@ -49,10 +49,6 @@ TEST_F(UT_ServerConfigGroupPanel_Test, refreshData)
     ServerConfigGroupPanel *groupPanel = remoteTopPanel->findChild<ServerConfigGroupPanel *>();
     EXPECT_NE(groupPanel, nullptr);
     groupPanel->refreshData("group01");
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_ServerConfigGroupPanel_Test, setFocusBack)
@@ -69,10 +65,6 @@ TEST_F(UT_ServerConfigGroupPanel_Test, setFocusBack)
     ServerConfigGroupPanel *groupPanel = remoteTopPanel->findChild<ServerConfigGroupPanel *>();
     EXPECT_NE(groupPanel, nullptr);
     groupPanel->setFocusBack();
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 TEST_F(UT_ServerConfigGroupPanel_Test, clearAllFocus)
@@ -93,10 +85,6 @@ TEST_F(UT_ServerConfigGroupPanel_Test, clearAllFocus)
     EXPECT_EQ(groupPanel->m_rebackButton->hasFocus(), false);
     EXPECT_EQ(groupPanel->m_searchEdit->hasFocus(), false);
     EXPECT_EQ(groupPanel->m_listWidget->hasFocus(), false);
-
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
 }
 
 /*******************************************************************************
@@ -227,14 +215,10 @@ TEST_F(UT_ServerConfigGroupPanel_Test, lambda)
     emit groupPanel.m_listWidget->focusOut(Qt::BacktabFocusReason);
     emit groupPanel.m_listWidget->focusOut(Qt::OtherFocusReason);
     emit groupPanel.m_listWidget->focusOut(Qt::NoFocusReason);
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
 
     emit ServerConfigManager::instance()->refreshList();
-#ifdef ENABLE_UI_TEST
-    QTest::qWait(UT_WAIT_TIME);
-#endif
+
 
 }
 #endif
