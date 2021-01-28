@@ -185,6 +185,15 @@ TEST_F(UT_TerminalDisplay_Test, extendSelection)
     QPoint selectPos(0, 0);
     display->extendSelection(selectPos);
 
+    QPoint selectPos2(10, 10);
+    display->_lineSelectionMode = true;
+    display->extendSelection(selectPos2);
+
+    QPoint selectPos3(10, 20);
+    display->_wordSelectionMode = false;
+    display->_lineSelectionMode = false;
+    display->extendSelection(selectPos3);
+
     delete emulation;
     delete display;
 }

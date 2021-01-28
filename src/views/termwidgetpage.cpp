@@ -374,63 +374,6 @@ void TermWidgetPage::closeOtherTerminal(bool hasConfirmed)
     m_MainWindow->focusCurrentPage();
 }
 
-#if 0
-// 待删除
-typedef struct {
-    QPoint topLeft;
-    QPoint middle;
-    QPoint bottomRight;
-} CoordinateRect;
-
-// 待删除
-static void transpose(QPoint *point)
-{
-    int x = point->x();
-    point->setX(point->y());
-    point->setY(x);
-}
-
-// 待删除
-static void transposeTransform(CoordinateRect *point)
-{
-    transpose(&point->topLeft);
-    transpose(&point->middle);
-    transpose(&point->bottomRight);
-}
-
-// 待删除
-static void flipTransform(CoordinateRect *point)
-{
-    QPoint oldTopLeft = point->topLeft;
-    point->topLeft = -(point->bottomRight);
-    point->bottomRight = -(oldTopLeft);
-    point->middle = -(point->middle);
-}
-
-// 待删除
-static void normalizeToRight(CoordinateRect *point, Qt::Edge dir)
-{
-    switch (dir) {
-    case Qt::LeftEdge:
-        flipTransform(point);
-        break;
-    case Qt::RightEdge:
-        // No-op
-        break;
-    case Qt::TopEdge:
-        flipTransform(point);
-        transposeTransform(point);
-        break;
-    case Qt::BottomEdge:
-        transposeTransform(point);
-        break;
-    default:
-        qFatal("Invalid navigation");
-        return;
-    }
-}
-#endif
-
 /******** Modify by ut000439 wangpeili 2020-01-07:  修改了计算上下左右判断的方法 ********×****/
 /*******************************************************************************
  1. @函数:    focusNavigation

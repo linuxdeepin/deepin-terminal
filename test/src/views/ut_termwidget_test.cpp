@@ -186,6 +186,22 @@ TEST_F(UT_TermWidget_Test, customContextMenuCall)
     s.reset((QAction *(QMenu::*)(const QPoint &, QAction *))ADDR(QMenu, exec));
 }
 
+TEST_F(UT_TermWidget_Test, addMenuActions)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    termWidget->m_menu = new DMenu(termWidget);
+
+    QPoint pos(50, 50);
+    termWidget->addMenuActions(pos);
+}
+
 TEST_F(UT_TermWidget_Test, onSettingValueChanged)
 {
     m_normalWindow->resize(800, 600);

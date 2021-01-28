@@ -17,15 +17,40 @@
 #include <QtGlobal>
 #include <QPainter>
 
+#ifdef UNIT_TEST
+    #define STATIC_METHOD
+    #define INLINE_METHOD
+#else
+    #define STATIC_METHOD static
+    #define INLINE_METHOD inline
+#endif
+
 int konsole_wcwidth(wchar_t ucs);
 
 int string_width( const std::wstring & wstr );
+
 namespace Konsole {
 
 /**
  * Helper functions for drawing characters from "Box Drawing" and "Block Elements" Unicode blocks.
  */
 namespace LineBlockCharacters {
+
+#ifdef UNIT_TEST
+    bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, uchar code,
+                                       bool bold);
+
+    uint lineWidth(uint fontWidth, bool heavy, bool bold);
+
+    bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
+                                               bool bold);
+    bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y, int w, int h,
+                                                      uchar code, bool bold);
+    bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int w, int h,
+                                                 uchar code, bool bold);
+    bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
+                                          bool bold);
+#endif
 
     /**
      * Returns true if the character can be drawn by draw() function.

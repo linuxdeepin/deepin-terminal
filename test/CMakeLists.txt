@@ -14,6 +14,7 @@ find_package(Qt5Test REQUIRED)
 find_package(GTest REQUIRED)
 
 add_definitions(${Qt5Test_DEFINITIONS})
+add_definitions(-D UNIT_TEST)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories("src/common")

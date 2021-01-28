@@ -284,7 +284,7 @@ inline static const QPen pen(const QPainter &paint, uint lineWidth)
 
 
 
-static inline uint lineWidth(uint fontWidth, bool heavy, bool bold)
+STATIC_METHOD INLINE_METHOD uint lineWidth(uint fontWidth, bool heavy, bool bold)
 {
     static const qreal LightWidthToFontWidthRatio = 1.0 / 6.5;
     static const qreal HeavyHalfExtraToLightRatio = 1.0 / 3.0;
@@ -306,7 +306,7 @@ static inline uint lineWidth(uint fontWidth, bool heavy, bool bold)
 }
 
 // Draws characters composed of straight solid lines
-static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, uchar code,
+STATIC_METHOD INLINE_METHOD bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, uchar code,
                                    bool bold)
 {
     quint8 packedLineTypes = code >= sizeof(PackedLineTypesLut) ? 0 : PackedLineTypesLut[code];
@@ -513,7 +513,7 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
     return true;
 }
 
-static inline bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
+STATIC_METHOD INLINE_METHOD bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
                                            bool bold)
 {
     if (!((0x04 <= code && code <= 0x0B) || (0x4C <= code && code <= 0x4F))) {
@@ -588,7 +588,7 @@ static inline bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w,
     return true;
 }
 
-static inline bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y, int w, int h,
+STATIC_METHOD INLINE_METHOD bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y, int w, int h,
                                                   uchar code, bool bold)
 {
     if (!(0x6D <= code && code <= 0x70)) {
@@ -638,7 +638,7 @@ static inline bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y,
     return true;
 }
 
-static inline bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int w, int h,
+STATIC_METHOD INLINE_METHOD bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int w, int h,
                                              uchar code, bool bold)
 {
     if (!(0x71 <= code && code <= 0x73)) {
@@ -672,7 +672,7 @@ static inline bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int 
     return true;
 }
 
-static inline bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
+STATIC_METHOD INLINE_METHOD bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
                                       bool bold)
 {
     Q_UNUSED(bold)

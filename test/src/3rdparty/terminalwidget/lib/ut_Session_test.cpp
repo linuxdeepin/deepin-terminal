@@ -105,4 +105,17 @@ TEST_F(UT_Session_Test, setUserTitle)
     delete session;
 }
 
+TEST_F(UT_Session_Test, setHistoryType)
+{
+    Session *session = new Session();
+
+    session->setHistoryType(HistoryTypeFile());
+
+    session->setHistoryType(HistoryTypeBuffer(1000));
+
+    session->setHistoryType(CompactHistoryType(200));
+
+    delete session;
+}
+
 #endif

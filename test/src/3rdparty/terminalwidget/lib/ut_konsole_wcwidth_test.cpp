@@ -1,6 +1,5 @@
 #include "ut_konsole_wcwidth_test.h"
 
-
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
@@ -22,6 +21,57 @@ void UT_KonsoleWcwidth_Test::TearDown()
 
 #ifdef UT_QTERMWIDGET_TEST
 
+class PainterWidget :  public QWidget
+{
+    Q_OBJECT
+public:
+    PainterWidget(QWidget* parent = nullptr) : QWidget(parent)
+    {
+    }
+protected:
+    void paintEvent(QPaintEvent *event)
+    {
+        Q_UNUSED(event);
+        QPainter painter(this);
+
+        int fontWidth = 15;
+        int fontHeight = 15;
+
+        QStringList drawStringList;
+        QString str = QString("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()");
+        QString str2 = QString("╌╍╎╏┄┅┆┇┈┉┊┋╚╝╔ ╗╠ ╩ ╣ ╦╬╨╞ ╥ ╡║ ╫ ═ ╪");
+        QString str3 = QString("╄  ╃ ╆ ╅┗  ┛ ┏ ┓└  ┘ ┌ ┐┖  ┙ ┍ ┒┚  ┕ ┎ ┑╘  ╜ ╓ ╕ ╛  ╙ ╒ ╖");
+        QString str4 = QString("▖▗▘▙▚▛▜▝▞▞▟");
+        drawStringList << str << str2 << str3 << str4;
+        QRect cellRect = {0, 0, fontWidth, fontHeight};
+        bool bold = true;
+        for (int strIndex = 0; strIndex < drawStringList.size(); strIndex++) {
+            QString drawStr = drawStringList.at(strIndex);
+            for (int i = 0 ; i < drawStr.length(); i++) {
+                static const ushort FirstBoxDrawingCharacterCodePoint = 0x2500;
+                QChar chr = drawStr[i];
+                const uchar code = chr.unicode() - FirstBoxDrawingCharacterCodePoint;
+
+                int x = cellRect.x();
+                int y = cellRect.y();
+                int w = cellRect.width();
+                int h = cellRect.height();
+
+                LineBlockCharacters::drawBasicLineCharacter(painter, x, y, w, h, code, bold);
+                LineBlockCharacters::drawDashedLineCharacter(painter, x, y, w, h, code, bold);
+                LineBlockCharacters::drawRoundedCornerLineCharacter(painter, x, y, w, h, code, bold);
+                LineBlockCharacters::drawDiagonalLineCharacter(painter, x, y, w, h, code, bold);
+                LineBlockCharacters::drawBlockCharacter(painter, x, y, w, h, code, bold);
+
+                int codeArray[] = {0x80, 0x90, 0x91, 0x92, 0x93, 0x94, 0x95};
+                for(int codeIndex=0; codeIndex<5; codeIndex++) {
+                    LineBlockCharacters::drawBlockCharacter(painter, x, y, w, h, codeArray[codeIndex], bold);
+                }
+            }
+        }
+    }
+};
+
 /*******************************************************************************
  1. @函数:    konsole_wcwidth.cpp文件中
  2. @作者:    ut000438 王亮
@@ -35,5 +85,17 @@ TEST_F(UT_KonsoleWcwidth_Test, characterWidth)
         EXPECT_GE(width, -1);
     }
 }
+
+TEST_F(UT_KonsoleWcwidth_Test, drawCharacter)
+{
+    PainterWidget painterWidget;
+    painterWidget.resize(800, 600);
+    painterWidget.show();
+
+    QPaintEvent *event = new QPaintEvent(painterWidget.rect());
+    painterWidget.paintEvent(event);
+}
+
+#include "ut_konsole_wcwidth_test.moc"
 
 #endif
