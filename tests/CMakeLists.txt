@@ -140,7 +140,7 @@ add_custom_command(TARGET test
 #    #1.清理原先的gcov信息
 #    COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME_TEST}.dir --zerocounters
 #    COMMAND lcov --directory ./CMakeFiles/${PROJECT_NAME}.dir --zerocounters
-    COMMAND ${CMAKE_BINARY_DIR}/test/${PROJECT_NAME_TEST}
+    COMMAND ${CMAKE_BINARY_DIR}/tests/${PROJECT_NAME_TEST}
 
 #    #2.收集gcov信息到.info文件中
 #    COMMAND lcov --directory . --capture --output-file ./coverageResult/${PROJECT_NAME}_Coverage.info
@@ -148,7 +148,7 @@ add_custom_command(TARGET test
 #    #3.过滤一些我们不感兴趣的文件的覆盖率信息
 #    COMMAND echo " =================== do filter begin ==================== "
 #    COMMAND lcov --remove ./coverageResult/${PROJECT_NAME}_Coverage.info
-#    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/theme/*' '*/quaketerminal/*' '*/test/*' 'qtermwidget.h' '*/lib/SearchBar.*' '*/build-*/*' '*/googletest/*'
+#    '*/${PROJECT_NAME_TEST}_autogen/*' '*/${PROJECT_NAME}_autogen/*' '*/usr/include/*' '*/theme/*' '*/quaketerminal/*' '*/tests/*' 'qtermwidget.h' '*/lib/SearchBar.*' '*/build-*/*' '*/googletest/*'
 #    -o ./coverageResult/${PROJECT_NAME}_Coverage.info
 #    COMMAND echo " =================== do filter end ==================== "
 
