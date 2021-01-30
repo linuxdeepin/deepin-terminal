@@ -19,14 +19,14 @@ cd $pathname/tests
 
 mkdir -p coverage
 
-lcov --directory ../ --capture --output-file ./coverage/coverage.info
+lcov -d ../ -c -o ./coverage/coverage.info
 
 #以下几行是过滤一些我们不感兴趣的文件的覆盖率信息
-lcov --remove ./coverage/coverage.info '*/${project_name}_test_autogen/*' '*/${project_name}_autogen/*' '*/usr/include/*' '*/theme/*' '*/quaketerminal/*' '*/tests/*' '*/lib/SearchBar.*' '*/build-*/*' -o ./coverage/coverage.info
+lcov --extract ./coverage/coverage.info '*/src/*' -o ./coverage/coverage.info
+
+lcov --remove ./coverage/coverage.info '*/tests/*' -o ./coverage/coverage.info
 
 mkdir ../report
 genhtml -o ../report ./coverage/coverage.info
-
-lcov -d $build_dir –z
 
 exit 0

@@ -288,8 +288,4 @@ install(DIRECTORY src/assets/deepin-terminal
         DESTINATION /usr/share/deepin-manual/manual-assets/application/)
 
 # Unit Test
-option(UT_SWITCH "Do you want to run ut code" ON)
-#if ((${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") AND UT_SWITCH)
-if (UT_SWITCH)
-    add_subdirectory(tests)
-endif()
+add_subdirectory(tests)
