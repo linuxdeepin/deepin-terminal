@@ -216,6 +216,8 @@ private:
     //分屏时切换到当前选中主题方案
     void switchThemeOnSplitScreen();
     void openUrl(QString strUrl);
+    //根据选择的文件名字符串得到合法的文件名，去除文件名开头/结尾的''或""
+    QString getFormatFileName(QString selectedText);
 
 
     TermWidgetPage *m_page = nullptr;

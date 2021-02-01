@@ -488,8 +488,11 @@ void TermWidget::addMenuActions(const QPoint &pos)
     }
     /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
     if (!isRemoting && !selectedText().isEmpty()) {
-        QFileInfo tempfile(workingDirectory() + "/" + selectedText());
-        if (tempfile.exists()) {
+        QString fileName = getFormatFileName(selectedText());
+        QString filePath = workingDirectory() + "/" + fileName;
+        QUrl fileUrl = QUrl::fromLocalFile(filePath);
+        QFileInfo tempfile(fileUrl.path());
+        if (fileName.length() > 0 && tempfile.exists()) {
             m_menu->addAction(tr("Open"), this, &TermWidget::onOpenFile);
         }
     }
@@ -686,15 +689,37 @@ inline void TermWidget::openUrl(QString strUrl)
     QDesktopServices::openUrl(QUrl(strUrl));
 }
 
+/*******************************************************************************
+ 1. @函数:    getFormatFileName
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-30
+ 4. @说明:    根据选择的文件名字符串得到合法的文件名，去除文件名开头/结尾的''或""
+*******************************************************************************/
+inline QString TermWidget::getFormatFileName(QString selectedText)
+{
+    QString fileName = selectedText.trimmed();
+    if ( (fileName.startsWith("'") && fileName.endsWith("'"))
+            || (fileName.startsWith("\"") && fileName.endsWith("\"")) ) {
+        fileName = fileName.remove(0, 1);
+        fileName = fileName.remove(fileName.length()-1, 1);
+        qDebug() << "fileName is :" << fileName;
+    }
+
+    return fileName;
+}
+
+/*******************************************************************************
+ 1. @函数:    onOpenFile
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-01
+ 4. @说明:    根据文件路径打开文件
+*******************************************************************************/
 inline void TermWidget::onOpenFile()
 {
-    QString file = workingDirectory() + "/" + selectedText();
-    QString cmd = QString("xdg-open ") + file;
-    //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
-    int status = system(cmd.toStdString().c_str());
-    if (status < 0) {
-        perror("system xdg-open");
-    }
+    QString fileName = getFormatFileName(selectedText());
+    QString filePath = workingDirectory() + "/" + fileName;
+    QUrl fileUrl = QUrl::fromLocalFile(filePath);
+    QDesktopServices::openUrl(fileUrl);
 }
 
 /*******************************************************************************
