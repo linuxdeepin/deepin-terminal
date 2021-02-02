@@ -218,7 +218,8 @@ private:
     void openUrl(QString strUrl);
     //根据选择的文件名字符串得到合法的文件名，去除文件名开头/结尾的''或""
     QString getFormatFileName(QString selectedText);
-
+    //根据文件名拼接得到文件路径
+    QString getFilePath(QString fileName);
 
     TermWidgetPage *m_page = nullptr;
     TermProperties m_properties;

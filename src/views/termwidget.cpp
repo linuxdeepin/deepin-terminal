@@ -489,7 +489,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
     /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
     if (!isRemoting && !selectedText().isEmpty()) {
         QString fileName = getFormatFileName(selectedText());
-        QString filePath = workingDirectory() + "/" + fileName;
+        QString filePath = getFilePath(fileName);
         QUrl fileUrl = QUrl::fromLocalFile(filePath);
         QFileInfo tempfile(fileUrl.path());
         if (fileName.length() > 0 && tempfile.exists()) {
@@ -709,6 +709,22 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
 }
 
 /*******************************************************************************
+ 1. @函数:    getFilePath
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-02
+ 4. @说明:    根据文件名拼接得到文件路径
+*******************************************************************************/
+inline QString TermWidget::getFilePath(QString fileName)
+{
+    //如果fileName本身已经是一个文件路径
+    if (fileName.startsWith("/")) {
+        return fileName;
+    }
+
+    return workingDirectory() + "/" + fileName;
+}
+
+/*******************************************************************************
  1. @函数:    onOpenFile
  2. @作者:    ut000438 王亮
  3. @日期:    2021-02-01
@@ -717,7 +733,7 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
 inline void TermWidget::onOpenFile()
 {
     QString fileName = getFormatFileName(selectedText());
-    QString filePath = workingDirectory() + "/" + fileName;
+    QString filePath = getFilePath(fileName);
     QUrl fileUrl = QUrl::fromLocalFile(filePath);
     QDesktopServices::openUrl(fileUrl);
 }
