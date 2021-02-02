@@ -24,7 +24,7 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
        QTextStream stream(&device);
        stream.setCodec("UTF-8");
        QString data;
-       bool ok = true;
+       //bool ok = true;
        rewrite = false;
        while (!stream.atEnd()) {
            data = stream.readLine();
@@ -35,7 +35,7 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                QString iniSection;
                int inx = data.indexOf(QChar(']'));
                if (inx == -1){
-                   ok = false;
+                   //ok = false;
                    iniSection = data.mid(1);
                } else {
                    iniSection = data.mid(1, inx - 1);
@@ -466,7 +466,7 @@ QString SettingIO::canTransfer(const QString &str)
     {
         rewrite = true;
         //uincode
-        bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
+        iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
       //  qDebug()<< "uincode" <<ok << res;
     }
     //如果是%是Latin1格式的字符串
@@ -474,7 +474,7 @@ QString SettingIO::canTransfer(const QString &str)
     {
         rewrite = true;
         //utf-8转换为uincode过了
-        bool ok = iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
+        iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
       //  qDebug()<< "utf-8 to uincode" <<ok << res;
        // qDebug() << QString::fromLocal8Bit(res.toLatin1());
         res = QString::fromLocal8Bit(res.toLatin1());

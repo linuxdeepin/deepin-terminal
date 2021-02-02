@@ -552,8 +552,6 @@ protected:
 class QuakeWindow : public MainWindow
 {
     Q_OBJECT
-    Q_PROPERTY(int height WRITE setHeight)//为动画增加一个设置高度的函数
-
     // 雷神resize是否拖拽的状态
     enum Quake_Resize_State {
         // 不进行resize

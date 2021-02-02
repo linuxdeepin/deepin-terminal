@@ -171,6 +171,43 @@ private slots:
     void onTitleArgsChange(QString key, QString value);
     // hostname名称变化
     void onHostnameChanged();
+
+    void onQTermWidgetReceivedData(QString value);
+    void onTermWidgetReceivedData(QString value);
+    void onExitRemoteServer();
+    void onUrlActivated(const QUrl & url, bool fromContextMenu);
+    void onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme);
+    void onTermIsIdle(bool bIdle);
+    void onTitleChanged();
+    void onWindowEffectEnabled(bool isWinEffectEnabled);
+    void onCopyAvailable(bool enable);
+    void onSetTerminalFont();
+    void onSig_matchFound();
+    void onSig_noMatchFound();
+
+    void onCopy();
+    void onPaste();
+    void onOpenFile();
+    void onOpenFileInFileManager();
+    void onUploadFile();
+    void onDownloadFile();
+    void onShowSettings();
+    void onShowEncoding();
+    void onShowCustomCommands();
+    void onShowRemoteManagement();
+    void onShowSearchBar();
+    void onHorizontalSplit();
+    void onVerticalSplit();
+    void splitHorizontal();
+    void splitVertical();
+    void onCloseCurrWorkSpace();
+    void onCloseOtherWorkSpaces();
+    void onCreateNewTab();
+    void onSwitchFullScreen();
+    void openBing();
+    void openBaidu();
+    void openGithub();
+    void openStackOverflow();
 private:
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     void addMenuActions(const QPoint &pos);
@@ -179,7 +216,11 @@ private:
     QString getTabTitle(QMap<QString, QString> format, QString TabFormat);
     //分屏时切换到当前选中主题方案
     void switchThemeOnSplitScreen();
-
+    void openUrl(QString strUrl);
+    //根据选择的文件名字符串得到合法的文件名，去除文件名开头/结尾的''或""
+    QString getFormatFileName(QString selectedText);
+    //根据文件名拼接得到文件路径
+    QString getFilePath(QString fileName);
 
     TermWidgetPage *m_page = nullptr;
     TermProperties m_properties;

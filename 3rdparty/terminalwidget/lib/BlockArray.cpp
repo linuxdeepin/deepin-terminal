@@ -230,7 +230,11 @@ bool BlockArray::setHistorySize(size_t newsize)
         return false;
     } else {
         decreaseBuffer(newsize);
-        ftruncate(ion, length*blocksize);
+        int status = ftruncate(ion, length*blocksize);
+        if (status < 0) {
+            perror("ftruncate");
+        }
+
         size = newsize;
 
         return true;

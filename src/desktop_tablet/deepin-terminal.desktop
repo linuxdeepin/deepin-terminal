@@ -119,7 +119,7 @@ GenericName[ug]=تېرمىنال
 GenericName[uk]=Термінал
 GenericName[vi]=Đầu cuối
 GenericName[zh_CN]=终端
-GenericName[zh_HK]=終端機
+GenericName[zh_HK]=終端
 GenericName[zh_TW]=終端機
 Keywords[ar]=shell;prompt;command;commandline;
 Keywords[ast]=shell;comandu;llinia;llinia de comandos;comandos;
@@ -212,6 +212,6 @@ Name[ug]=Deepin تېرمىنالى
 Name[uk]=Термінал Deepin
 Name[vi]=Deepin Terminal
 Name[zh_CN]=深度终端
-Name[zh_HK]=Deepin 終端機
-Name[zh_TW]=Deepin 終端器
+Name[zh_HK]=Deepin 終端
+Name[zh_TW]=Deepin 終端機
 

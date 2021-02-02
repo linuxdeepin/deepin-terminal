@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ug" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ug">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -83,7 +85,7 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandpanel.cpp" line="246"/>
+        <location filename="../src/customcommand/customcommandpanel.cpp" line="248"/>
         <source>Add Command</source>
         <translation>بۇيرۇق قوشۇش</translation>
     </message>
@@ -99,7 +101,7 @@
 <context>
     <name>CustomCommandSearchRstPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="151"/>
+        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="154"/>
         <source>Search</source>
         <translation>ئىزدەش</translation>
     </message>
@@ -109,12 +111,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="295"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>ئۇسلۇب بەلگىلەش</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="326"/>
         <source>Style:</source>
-        <translation type="unfinished"/>
+        <translation>ئۇسلۇب خاسلىقى:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="330"/>
@@ -129,22 +131,22 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="392"/>
         <source>Fore color:</source>
-        <translation type="unfinished"/>
+        <translation>ئالدى تەگلىك رەڭگى:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="399"/>
         <source>Back color:</source>
-        <translation type="unfinished"/>
+        <translation>كەينى تەگلىك رەڭگى:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="417"/>
         <source>Prompt PS1:</source>
-        <translation type="unfinished"/>
+        <translation>ئەسكەرتىش بەلگىسىPS1:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="421"/>
         <source>Prompt PS2:</source>
-        <translation type="unfinished"/>
+        <translation>ئەسكەرتىش بەلگىسىPS2:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="504"/>
@@ -174,42 +176,42 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="325"/>
-        <location filename="../src/main/mainwindow.cpp" line="353"/>
+        <location filename="../src/main/mainwindow.cpp" line="250"/>
+        <location filename="../src/main/mainwindow.cpp" line="319"/>
         <source>New window</source>
         <translation>يېڭىدىن كۆزنەك قۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="380"/>
+        <location filename="../src/main/mainwindow.cpp" line="335"/>
         <source>Settings</source>
         <translation>تەڭشەك</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="927"/>
+        <location filename="../src/main/mainwindow.cpp" line="881"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="929"/>
+        <location filename="../src/main/mainwindow.cpp" line="883"/>
         <source>Close</source>
         <translation>تاقاش</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2190"/>
+        <location filename="../src/main/mainwindow.cpp" line="2251"/>
         <source>Type path to download file</source>
         <translation>ھۆججەت ئورنىنى كىرگۈزۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2570"/>
+        <location filename="../src/main/mainwindow.cpp" line="2782"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>ئۇسلۇب بەلگىلەش</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="455"/>
-        <location filename="../src/common/utils.cpp" line="519"/>
+        <location filename="../src/common/utils.cpp" line="454"/>
+        <location filename="../src/common/utils.cpp" line="518"/>
         <source>OK</source>
         <translation>ھەئە</translation>
     </message>
@@ -245,7 +247,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
-        <location filename="../src/main/service.cpp" line="182"/>
+        <location filename="../src/main/service.cpp" line="186"/>
         <source>Blur background</source>
         <translation>ئارقا كۆرۈنۈش غۇۋا</translation>
     </message>
@@ -266,7 +268,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
-        <location filename="../src/main/service.cpp" line="209"/>
+        <location filename="../src/main/service.cpp" line="213"/>
         <source>Opacity</source>
         <translation>سۈزۈكلۈكى</translation>
     </message>
@@ -307,14 +309,14 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="2007"/>
+        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Others</source>
         <translation>باشقىلار</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/terminalapplication.cpp" line="36"/>
-        <location filename="../src/main/mainwindow.cpp" line="2005"/>
+        <location filename="../src/main/mainwindow.cpp" line="2078"/>
         <source>Terminal</source>
         <translation>تېرمىنال</translation>
     </message>
@@ -325,260 +327,260 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="2075"/>
+        <location filename="../src/main/mainwindow.cpp" line="2149"/>
         <source>Custom commands</source>
         <translation>بۇيرۇق بەلگىلەش</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
-        <location filename="../src/main/mainwindow.cpp" line="2075"/>
+        <location filename="../src/main/mainwindow.cpp" line="2149"/>
         <source>Display shortcuts</source>
         <translation>تېزلەتمە كۆرسىتىش</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
-        <location filename="../src/main/mainwindow.cpp" line="2075"/>
+        <location filename="../src/main/mainwindow.cpp" line="2149"/>
         <source>Remote management</source>
         <translation>يىراقتىن باشقۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="2055"/>
+        <location filename="../src/settings/settings_translation.cpp" line="113"/>
+        <location filename="../src/main/mainwindow.cpp" line="2129"/>
         <source>New tab</source>
         <translation>يېڭى بەتكۈچ قۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="117"/>
-        <location filename="../src/main/mainwindow.cpp" line="2055"/>
+        <location filename="../src/settings/settings_translation.cpp" line="115"/>
+        <location filename="../src/main/mainwindow.cpp" line="2129"/>
         <source>Next tab</source>
         <translation>كېيىنكى بەتكۈچ</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="119"/>
-        <location filename="../src/main/mainwindow.cpp" line="2055"/>
+        <location filename="../src/settings/settings_translation.cpp" line="117"/>
+        <location filename="../src/main/mainwindow.cpp" line="2129"/>
         <source>Previous tab</source>
         <translation>ئالدىنقى بەتكۈچ</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="121"/>
-        <location filename="../src/main/mainwindow.cpp" line="2057"/>
+        <location filename="../src/settings/settings_translation.cpp" line="119"/>
+        <location filename="../src/main/mainwindow.cpp" line="2131"/>
         <source>Select left workspace</source>
         <translation>سولدىكى خىزمەت رايونىنى تاللاش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="2056"/>
+        <location filename="../src/settings/settings_translation.cpp" line="121"/>
+        <location filename="../src/main/mainwindow.cpp" line="2130"/>
         <source>Select lower workspace</source>
         <translation>ئاستىدىكى خىزمەت رايونىنى تاللاش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="2057"/>
+        <location filename="../src/settings/settings_translation.cpp" line="123"/>
+        <location filename="../src/main/mainwindow.cpp" line="2131"/>
         <source>Select right workspace</source>
         <translation>ئوڭدىكى خىزمەت رايونىنى تاللاش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="2056"/>
+        <location filename="../src/settings/settings_translation.cpp" line="125"/>
+        <location filename="../src/main/mainwindow.cpp" line="2130"/>
         <source>Select upper workspace</source>
         <translation>ئۈستىدىكى خىزمەت رايونىنى تاللاش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
+        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Tab titles</source>
         <translation>بەتكۈچ نامى</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="2058"/>
+        <location filename="../src/settings/settings_translation.cpp" line="137"/>
+        <location filename="../src/main/mainwindow.cpp" line="2132"/>
         <source>Go to tab 1</source>
         <translation>بەتكۈچ 1 گە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="141"/>
-        <location filename="../src/main/mainwindow.cpp" line="2058"/>
+        <location filename="../src/settings/settings_translation.cpp" line="139"/>
+        <location filename="../src/main/mainwindow.cpp" line="2132"/>
         <source>Go to tab 2</source>
         <translation>بەتكۈچ 2 گە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="143"/>
-        <location filename="../src/main/mainwindow.cpp" line="2058"/>
+        <location filename="../src/settings/settings_translation.cpp" line="141"/>
+        <location filename="../src/main/mainwindow.cpp" line="2132"/>
         <source>Go to tab 3</source>
         <translation>بەتكۈچ 3 كە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="145"/>
-        <location filename="../src/main/mainwindow.cpp" line="2059"/>
+        <location filename="../src/settings/settings_translation.cpp" line="143"/>
+        <location filename="../src/main/mainwindow.cpp" line="2133"/>
         <source>Go to tab 4</source>
         <translation>بەتكۈچ 4 كە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="147"/>
-        <location filename="../src/main/mainwindow.cpp" line="2059"/>
+        <location filename="../src/settings/settings_translation.cpp" line="145"/>
+        <location filename="../src/main/mainwindow.cpp" line="2133"/>
         <source>Go to tab 5</source>
         <translation>بەتكۈچ 5 كە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="149"/>
-        <location filename="../src/main/mainwindow.cpp" line="2059"/>
+        <location filename="../src/settings/settings_translation.cpp" line="147"/>
+        <location filename="../src/main/mainwindow.cpp" line="2133"/>
         <source>Go to tab 6</source>
         <translation>بەتكۈچ 6 گە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="151"/>
-        <location filename="../src/main/mainwindow.cpp" line="2060"/>
+        <location filename="../src/settings/settings_translation.cpp" line="149"/>
+        <location filename="../src/main/mainwindow.cpp" line="2134"/>
         <source>Go to tab 7</source>
         <translation>بەتكۈچ 7 گە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="153"/>
-        <location filename="../src/main/mainwindow.cpp" line="2060"/>
+        <location filename="../src/settings/settings_translation.cpp" line="151"/>
+        <location filename="../src/main/mainwindow.cpp" line="2134"/>
         <source>Go to tab 8</source>
         <translation>بەتكۈچ 8 گە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="155"/>
-        <location filename="../src/main/mainwindow.cpp" line="2060"/>
+        <location filename="../src/settings/settings_translation.cpp" line="153"/>
+        <location filename="../src/main/mainwindow.cpp" line="2134"/>
         <source>Go to tab 9</source>
         <translation>بەتكۈچ 9 غا ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="157"/>
+        <location filename="../src/settings/settings_translation.cpp" line="155"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
         <translation>Ctrl+S ۋە Ctrl+Q بىلەن كونتروللاشنى چەكلەش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="159"/>
+        <location filename="../src/settings/settings_translation.cpp" line="157"/>
         <source>Shell profile</source>
-        <translation type="unfinished"/>
+        <translation>Shell سەپلەش</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="259"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="260"/>
         <location filename="../src/views/tabbar.cpp" line="591"/>
-        <location filename="../src/settings/settings_translation.cpp" line="83"/>
-        <location filename="../src/main/mainwindow.cpp" line="2075"/>
+        <location filename="../src/settings/settings_translation.cpp" line="81"/>
+        <location filename="../src/main/mainwindow.cpp" line="2149"/>
         <source>Rename title</source>
         <translation>تېمىغا قايتا نام قويۇش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="85"/>
-        <location filename="../src/main/mainwindow.cpp" line="2075"/>
+        <location filename="../src/settings/settings_translation.cpp" line="83"/>
+        <location filename="../src/main/mainwindow.cpp" line="2149"/>
         <source>Fullscreen</source>
         <translation>تولۇق ئېكران</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="2040"/>
+        <location filename="../src/settings/settings_translation.cpp" line="85"/>
+        <location filename="../src/main/mainwindow.cpp" line="2114"/>
         <source>Copy</source>
         <translation>كۆچۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="89"/>
-        <location filename="../src/main/mainwindow.cpp" line="2040"/>
+        <location filename="../src/settings/settings_translation.cpp" line="87"/>
+        <location filename="../src/main/mainwindow.cpp" line="2114"/>
         <source>Default size</source>
         <translation>سۈكۈتتىكى سىغىمى</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="91"/>
-        <location filename="../src/main/mainwindow.cpp" line="2040"/>
+        <location filename="../src/settings/settings_translation.cpp" line="89"/>
+        <location filename="../src/main/mainwindow.cpp" line="2114"/>
         <source>Paste</source>
         <translation>Paste</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/settings/settings_translation.cpp" line="91"/>
         <source>Search</source>
         <translation>ئىزدەش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="95"/>
-        <location filename="../src/main/mainwindow.cpp" line="2040"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/main/mainwindow.cpp" line="2114"/>
         <source>Select all</source>
         <translation>Select all</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <source>Jump to next command</source>
         <translation>كېيىنكىسى</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="99"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <source>Jump to previous command</source>
         <translation>ئالدىنقىسى</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="2040"/>
+        <location filename="../src/settings/settings_translation.cpp" line="99"/>
+        <location filename="../src/main/mainwindow.cpp" line="2114"/>
         <source>Zoom in</source>
         <translation>چوڭايتىش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="103"/>
-        <location filename="../src/main/mainwindow.cpp" line="2040"/>
+        <location filename="../src/settings/settings_translation.cpp" line="101"/>
+        <location filename="../src/main/mainwindow.cpp" line="2114"/>
         <source>Zoom out</source>
         <translation>كىچىكلىتىش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
+        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Close other windows</source>
         <translation>باشقا كۆزنەكلەرنى تاقاش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/settings/settings_translation.cpp" line="107"/>
-        <location filename="../src/main/mainwindow.cpp" line="2057"/>
+        <location filename="../src/views/termwidget.cpp" line="511"/>
+        <location filename="../src/settings/settings_translation.cpp" line="105"/>
+        <location filename="../src/main/mainwindow.cpp" line="2131"/>
         <source>Close other workspaces</source>
         <translation>باشقا خىزمەت رايونىنى تاقاش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1306"/>
+        <location filename="../src/views/termwidget.cpp" line="1473"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"/>
+        <translation>«%1”تېپىلمىغاچقا «%2» ئۇنىڭ ئورنىغا قوزغىتىلدى، Shell سەپلىمىسىنى تەكشۈرۈڭ.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1310"/>
+        <location filename="../src/views/termwidget.cpp" line="1477"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>«%1”» تېپىلمىدى، نورمال ئىشلەتكى بولمايدۇ</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1360"/>
+        <location filename="../src/views/termwidget.cpp" line="1527"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>Ctrl+S نى بېسىپ بولدىڭىز، چىقىرىش توختىتىلدى. Ctrl+Q نى بېسىپ داۋاملاشتۇرۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
+        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Close window</source>
         <translation>كۆزنەكنى تاقاش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="491"/>
-        <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="2057"/>
+        <location filename="../src/views/termwidget.cpp" line="508"/>
+        <location filename="../src/settings/settings_translation.cpp" line="109"/>
+        <location filename="../src/main/mainwindow.cpp" line="2131"/>
         <source>Close workspace</source>
         <translation>خىزمەت رايونىنى تاقاش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="2056"/>
+        <location filename="../src/settings/settings_translation.cpp" line="111"/>
+        <location filename="../src/main/mainwindow.cpp" line="2130"/>
         <source>Horizontal split</source>
         <translation>ئېكراننى توغرىسىغا بۆلۈش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="2056"/>
+        <location filename="../src/settings/settings_translation.cpp" line="127"/>
+        <location filename="../src/main/mainwindow.cpp" line="2130"/>
         <source>Vertical split</source>
         <translation>تىك ھالەتتە ئېكراننى بۆلۈش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="131"/>
-        <location filename="../src/main/mainwindow.cpp" line="2040"/>
+        <location filename="../src/settings/settings_translation.cpp" line="129"/>
+        <location filename="../src/main/mainwindow.cpp" line="2114"/>
         <source>Find</source>
         <translation>ئىزدەش</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="401"/>
         <location filename="../src/views/listview.cpp" line="566"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="306"/>
-        <location filename="../src/common/utils.cpp" line="454"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="305"/>
+        <location filename="../src/common/utils.cpp" line="453"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
     </message>
@@ -588,9 +590,9 @@
         <translation>ئۆچۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="476"/>
+        <location filename="../src/main/service.cpp" line="480"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="742"/>
-        <location filename="../src/common/utils.cpp" line="472"/>
+        <location filename="../src/common/utils.cpp" line="471"/>
         <source>please set another one.</source>
         <translation>قايتا تەڭشەش</translation>
     </message>
@@ -600,124 +602,127 @@
         <translation>تېرمىنال بىر گەۋدىلەشتۈرۈلگەن خىزمەت رايونى، كۆپ كۆزنەك، يىراقتىن باشقۇرۇش ۋە quake ھالىتى قاتارلىق ئىقتىدارلىرى بار ئىلغار تېرمىنال تەقلىدلىگۈچىسى.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2003"/>
+        <location filename="../src/main/mainwindow.cpp" line="2076"/>
         <source>Tabs</source>
         <translation>بەتكۈچ</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="585"/>
-        <location filename="../src/main/mainwindow.cpp" line="2055"/>
+        <location filename="../src/main/mainwindow.cpp" line="2129"/>
         <source>Close tab</source>
         <translation>بەتكۈچنى تاقاش</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2056"/>
+        <location filename="../src/main/mainwindow.cpp" line="2130"/>
         <source>Select tab</source>
         <translation>بەتكۈچنى تاللاش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
-        <location filename="../src/main/mainwindow.cpp" line="2076"/>
+        <location filename="../src/main/mainwindow.cpp" line="2101"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>فوكۇسنى «+» سىنبەلگىسىگە ئالماشتۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2125"/>
-        <location filename="../src/common/utils.cpp" line="335"/>
+        <location filename="../src/main/mainwindow.cpp" line="2203"/>
+        <location filename="../src/common/utils.cpp" line="334"/>
         <source>Select file to upload</source>
         <translation>يوللىماقچى بولغان ھۆججەتنى تاللاڭ</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2152"/>
-        <location filename="../src/common/utils.cpp" line="340"/>
+        <location filename="../src/main/mainwindow.cpp" line="2230"/>
+        <location filename="../src/common/utils.cpp" line="339"/>
         <source>Upload</source>
         <translation>يوللاش</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="426"/>
+        <location filename="../src/common/utils.cpp" line="425"/>
         <source>Programs are still running in terminal</source>
         <translation>تېرمىنالدا يەنىلا پروگراممىلار ئىجرا بولۇۋاتىدۇ</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="366"/>
-        <location filename="../src/common/utils.cpp" line="407"/>
+        <location filename="../src/common/utils.cpp" line="365"/>
+        <location filename="../src/common/utils.cpp" line="406"/>
         <source>Close this terminal?</source>
         <translation>تېرمىنالنى تاقامسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="367"/>
-        <location filename="../src/common/utils.cpp" line="408"/>
+        <location filename="../src/common/utils.cpp" line="366"/>
+        <location filename="../src/common/utils.cpp" line="407"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation>تېرمىنالدا يەنىلا 1 پىروگرامما ئىجرا بولۇۋاتىدۇ، تېرمىنالنى تاقىسىڭىز بۇ پىروگراممىمۇ تاقىلىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="371"/>
-        <location filename="../src/common/utils.cpp" line="412"/>
+        <location filename="../src/common/utils.cpp" line="370"/>
+        <location filename="../src/common/utils.cpp" line="411"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
         <translation>تېرمىنالدا يەنىلا %1 پىروگرامما ئىجرا بولۇۋاتىدۇ، تېرمىنالنى تاقىسىڭىز بۇ پىروگراممىمۇ تاقىلىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="376"/>
-        <location filename="../src/common/utils.cpp" line="403"/>
+        <location filename="../src/common/utils.cpp" line="375"/>
+        <location filename="../src/common/utils.cpp" line="402"/>
         <source>Close this window?</source>
         <translation>بۇ كۆزنەكنى تاقامسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="377"/>
-        <location filename="../src/common/utils.cpp" line="404"/>
+        <location filename="../src/common/utils.cpp" line="376"/>
+        <location filename="../src/common/utils.cpp" line="403"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
         <translation>كۆزنەكتىكى بەزى تېرمىناللاردا يەنىلا پىروگرامما ئىجرا بولۇۋاتىدۇ. كۆزنەكنى تاقاش بارلىق پىروگراممىلارنى يوقىتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2170"/>
-        <location filename="../src/common/utils.cpp" line="309"/>
+        <location filename="../src/main/mainwindow.cpp" line="2272"/>
+        <location filename="../src/common/utils.cpp" line="308"/>
         <source>Select a directory to save the file</source>
         <translation>چۈشۈرۈلگەن ھۆججەتنى ساقلاش ئۈچۈن مۇندەرىجىنى تاللاڭ</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="426"/>
+        <location filename="../src/common/utils.cpp" line="425"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation>راستلا ئۆچۈرەمسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="444"/>
-        <location filename="../src/common/utils.cpp" line="448"/>
+        <location filename="../src/common/utils.cpp" line="443"/>
+        <location filename="../src/common/utils.cpp" line="447"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation>تېرمىنالنى راستلا ئۆچۈرەمسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="445"/>
-        <location filename="../src/common/utils.cpp" line="449"/>
+        <location filename="../src/common/utils.cpp" line="444"/>
+        <location filename="../src/common/utils.cpp" line="448"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation>ئۆچۈرسىڭىز بۇ ئىقتىدارنى ئىشلىتەلمەيسىز.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="576"/>
+        <location filename="../src/common/utils.cpp" line="575"/>
+        <location filename="../src/common/utils.cpp" line="677"/>
         <source>Execute a command in the terminal</source>
         <translation>تېرمىنالدا پىروگرامما ئىجرا قىلىڭ</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="579"/>
+        <location filename="../src/common/utils.cpp" line="578"/>
+        <location filename="../src/common/utils.cpp" line="680"/>
         <source>Run script string in the terminal</source>
         <translation>تېرمىنالدا قوليازما تىزىمىغا يول قويۇڭ</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="570"/>
+        <location filename="../src/common/utils.cpp" line="569"/>
+        <location filename="../src/common/utils.cpp" line="674"/>
         <source>Set the work directory</source>
         <translation>تېرمىنالنىڭ قوزغىلىش مۇندەرىجىسىنى تەڭشەڭ</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="573"/>
+        <location filename="../src/common/utils.cpp" line="572"/>
         <source>Set the window mode on starting</source>
         <translation>تېرمىنالنىڭ ئېچىلىش ھالىتىنى تەڭشەڭ</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="583"/>
+        <location filename="../src/common/utils.cpp" line="582"/>
         <source>Run in quake mode</source>
         <translation>تېرمىنال quake ھالىتىدە قوزغالسۇن </translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="586"/>
+        <location filename="../src/common/utils.cpp" line="585"/>
+        <location filename="../src/common/utils.cpp" line="683"/>
         <source>Keep terminal open when command finishes</source>
         <translation>تېرمىنالنى  بۇيرۇق ياكى قوليازما ئىجرا نەتىجىسىنى كۆرسىتىدىغان قىلىپ تەڭشەش</translation>
     </message>
@@ -729,8 +734,8 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="641"/>
-        <location filename="../src/main/mainwindow.cpp" line="2176"/>
-        <location filename="../src/common/utils.cpp" line="315"/>
+        <location filename="../src/main/mainwindow.cpp" line="2278"/>
+        <location filename="../src/common/utils.cpp" line="314"/>
         <source>Select</source>
         <translation>تاللاش</translation>
     </message>
@@ -741,25 +746,25 @@
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="567"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="311"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="310"/>
         <source>Confirm</source>
         <translation>جەزملەشتۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="144"/>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="150"/>
+        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Tab title format</source>
         <translation>بەتكۈچ نامى فورماتى</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="146"/>
-        <location filename="../src/settings/settings_translation.cpp" line="137"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="152"/>
+        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Remote tab title format</source>
         <translation>يىراق مۇساپىلىك بەتكۈچ نامى فورماتى</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="588"/>
-        <location filename="../src/main/mainwindow.cpp" line="2055"/>
+        <location filename="../src/main/mainwindow.cpp" line="2129"/>
         <source>Close other tabs</source>
         <translation>باشقا بەتكۈچلەرنى تاقاش</translation>
     </message>
@@ -767,7 +772,7 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="238"/>
+        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="241"/>
         <source>Add Server</source>
         <translation>مۇلازىمىتېر قوشۇش</translation>
     </message>
@@ -788,7 +793,7 @@
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="280"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="283"/>
         <source>Search</source>
         <translation>ئىزدەش</translation>
     </message>
@@ -961,7 +966,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="474"/>
+        <location filename="../src/main/service.cpp" line="478"/>
         <source>OK</source>
         <translation>جەزىملەشتۈرۈش</translation>
     </message>
@@ -969,22 +974,22 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Split screen</source>
         <translation>ئېكران بۆلۈش</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Fullscreen</source>
         <translation>تولۇق ئېكران</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Normal window</source>
         <translation>نورمال كۆزنەك</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Maximum</source>
         <translation>چوڭايتىش</translation>
     </message>
@@ -992,15 +997,15 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="373"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="382"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="379"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="388"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>%1 تېزلەتكە كۇنۇپكا ئىناۋەتسىز</translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="389"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="396"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="395"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="402"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="408"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>%1 تېزلەتمە كۇنۇپكا ئىشلىتىلىپ بولغان</translation>
     </message>
@@ -1008,55 +1013,55 @@
 <context>
     <name>TabRenameWidget</name>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="42"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="48"/>
         <source>Insert</source>
         <translation>كىرگۈزۈش</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="115"/>
         <source>username: %u</source>
         <translation>ئىشلەتكۈچى ئىسمى: %u</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <source>username@: %U</source>
         <translation>ئىشلەتكۈچى ئىسمى@: %U</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <source>remote host: %h</source>
         <translation>يىراق مۇساپىلىك باش ئاپپارات: %h</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="114"/>
         <source>session number: %#</source>
         <translation>سۆزلىشىش نومۇرى: %#</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
         <source>title set by shell: %w</source>
         <translation>shell بەلگىلىگەن كۆزنەك نامى: %w</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>program name: %n</source>
         <translation>پىروگرامما نامى: %n</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>current directory (short): %d</source>
         <translation>نۆۋەتتىكى مۇندەرىجە(قىسقا): %d</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="114"/>
         <source>current directory (long): %D</source>
         <translation>نۆۋەتتىكى مۇندەرىجە(ئۇزۇن): %D</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="115"/>
         <source>local host: %h</source>
         <translation>يەرلىك باش ئاپپارات: %h</translation>
     </message>
@@ -1064,90 +1069,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="411"/>
+        <location filename="../src/views/termwidget.cpp" line="484"/>
         <source>Copy</source>
         <translation>كۆچۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="414"/>
+        <location filename="../src/views/termwidget.cpp" line="487"/>
         <source>Paste</source>
         <translation>Paste</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="420"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
         <source>Open</source>
         <translation>ئوچۇق</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="431"/>
+        <location filename="../src/views/termwidget.cpp" line="501"/>
         <source>Open in file manager</source>
         <translation>ھۆججەت باشقۇرغۇچتا ئاچسۇن</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="465"/>
-        <location filename="../src/views/termwidget.cpp" line="582"/>
+        <location filename="../src/views/termwidget.cpp" line="563"/>
+        <location filename="../src/views/termwidget.cpp" line="750"/>
         <source>Horizontal split</source>
         <translation>ئېكراننى توغرىسىغا بۆلۈش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="478"/>
-        <location filename="../src/views/termwidget.cpp" line="582"/>
+        <location filename="../src/views/termwidget.cpp" line="563"/>
+        <location filename="../src/views/termwidget.cpp" line="753"/>
         <source>Vertical split</source>
         <translation>تىك ھالەتتە ئېكراننى بۆلۈش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="503"/>
-        <location filename="../src/views/termwidget.cpp" line="582"/>
+        <location filename="../src/views/termwidget.cpp" line="516"/>
+        <location filename="../src/views/termwidget.cpp" line="563"/>
         <source>New tab</source>
         <translation>يېڭى بەتكۈچ قۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="512"/>
+        <location filename="../src/views/termwidget.cpp" line="523"/>
         <source>Exit fullscreen</source>
         <translation>پۈتۈن ئېكراندىن چېكىنىش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="516"/>
+        <location filename="../src/views/termwidget.cpp" line="525"/>
         <source>Fullscreen</source>
         <translation>تولۇق ئېكران</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="522"/>
+        <location filename="../src/views/termwidget.cpp" line="529"/>
         <source>Find</source>
         <translation>ئىزدەش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="528"/>
+        <location filename="../src/views/termwidget.cpp" line="533"/>
         <source>Search</source>
         <translation>ئىزدەش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="550"/>
+        <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Encoding</source>
         <translation>كودلاش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="554"/>
+        <location filename="../src/views/termwidget.cpp" line="545"/>
         <source>Custom commands</source>
         <translation>بۇيرۇق بەلگىلەش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="558"/>
+        <location filename="../src/views/termwidget.cpp" line="547"/>
         <source>Remote management</source>
         <translation>يىراقتىن باشقۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="564"/>
+        <location filename="../src/views/termwidget.cpp" line="551"/>
         <source>Upload file</source>
         <translation>ھۆججەت يوللاش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="567"/>
+        <location filename="../src/views/termwidget.cpp" line="552"/>
         <source>Download file</source>
         <translation>ھۆججەت چۈشۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="574"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>Settings</source>
         <translation>تەڭشەك</translation>
     </message>
@@ -1155,19 +1160,19 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="382"/>
-        <location filename="../src/common/utils.cpp" line="428"/>
+        <location filename="../src/common/utils.cpp" line="381"/>
+        <location filename="../src/common/utils.cpp" line="427"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="384"/>
+        <location filename="../src/common/utils.cpp" line="383"/>
         <source>Close</source>
         <translation>تاقاش</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="429"/>
-        <location filename="../src/common/utils.cpp" line="474"/>
+        <location filename="../src/common/utils.cpp" line="428"/>
+        <location filename="../src/common/utils.cpp" line="473"/>
         <source>OK</source>
         <translation>جەزىملەشتۈرۈش</translation>
     </message>

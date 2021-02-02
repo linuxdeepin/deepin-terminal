@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
 <context>
     <name>Konsole::TerminalDisplay</name>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1279"/>
         <source>Size: XXX x XXX</source>
-        <translation>Taille : XXX x XXX</translation>
+        <translation>Размер: XXX x XXX</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1291"/>
         <source>Size: %1 x %2</source>
-        <translation>Taille : %1 x %2</translation>
+        <translation>Размер: %1 x %2</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
         <source>&lt;qt&gt;Output has been &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspended&lt;/a&gt; by pressing Ctrl+S.  Press &lt;b&gt;Ctrl+Q&lt;/b&gt; to resume.&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;La sortie a été &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspendue&lt;/a&gt; en pressant Ctrl+S.  Pressez &lt;b&gt;Ctrl+Q&lt;/b&gt; pour reprendre.&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Вывод был &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;приостановлен&lt;/a&gt; нажатием Ctrl+S. Нажмите &lt;b&gt;Ctrl+Q&lt;/b&gt;, чтобы продолжить.&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>Aucun traducteur disponible. L&apos;information nécessaire à la conversion des touches pressées en caractères à envoyer au terminal est absente.</translation>
+        <translation>Переводчика клавиатуры нет. Информация, необходимая для преобразования нажатий клавиш в символы для отправки на терминал, отсутствует.</translation>
     </message>
 </context>
 <context>
@@ -31,32 +31,32 @@
         <location filename="../ColorScheme.cpp" line="278"/>
         <location filename="../ColorScheme.cpp" line="293"/>
         <source>Un-named Color Scheme</source>
-        <translation>Schéma de couleurs non nommé</translation>
+        <translation>Безымянная цветовая схема</translation>
     </message>
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
         <source>Accessible Color Scheme</source>
-        <translation>Schéma des couleurs accessible</translation>
+        <translation>Доступная цветовая схема</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
         <source>Open link</source>
-        <translation>Ouvrir le lien</translation>
+        <translation>Открыть ссылку</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
         <source>Copy link</source>
-        <translation>Copier le lien</translation>
+        <translation>Копировать ссылку</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation>Envoyer un email à...</translation>
+        <translation>Отправить письмо по адресу...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation>Copier l&apos;adresse email</translation>
+        <translation>Копировать адрес электронной почты</translation>
     </message>
 </context>
 <context>
@@ -64,12 +64,12 @@
     <message>
         <location filename="../qtermwidget.cpp" line="451"/>
         <source>Color Scheme Error</source>
-        <translation>Erreur du schéma des couleurs</translation>
+        <translation>Ошибка цветовой схемы</translation>
     </message>
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation>Impossible de charger le schéma de couleurs : %1</translation>
+        <translation>Невозможно загрузить цветовую схему: %1</translation>
     </message>
 </context>
 <context>
@@ -77,22 +77,22 @@
     <message>
         <location filename="../SearchBar.cpp" line="40"/>
         <source>Match case</source>
-        <translation>Sensible à la casse</translation>
+        <translation>Учитывать регистр</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="46"/>
         <source>Regular expression</source>
-        <translation>Expression régulière</translation>
+        <translation>Регулярное выражение</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="50"/>
         <source>Highlight all matches</source>
-        <translation>Surbrillance de toutes les concordances</translation>
+        <translation>Выделить все совпадения</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="14"/>
         <source>SearchBar</source>
-        <translation>Barre de recherche</translation>
+        <translation>Панель поиска</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="20"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../SearchBar.ui" line="32"/>
         <source>Find:</source>
-        <translation>Trouver :</translation>
+        <translation>Найти:</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="42"/>

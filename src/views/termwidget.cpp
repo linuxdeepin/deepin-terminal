@@ -121,12 +121,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     // 字体和字体大小, 8#字体立即设置的时候会有BUG显示，做个延迟生效就好了。
     if (Settings::instance()->fontSize() == 8) {
-        QTimer::singleShot(10, this, [this]() {
-            QFont font = getTerminalFont();
-            font.setFamily(Settings::instance()->fontName());
-            font.setPointSize(Settings::instance()->fontSize());
-            setTerminalFont(font);
-        });
+        QTimer::singleShot(10, this, &TermWidget::onSetTerminalFont);
     } else {
         QFont font = getTerminalFont();
         font.setFamily(Settings::instance()->fontName());
@@ -149,102 +144,30 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     /********************* Modify by n014361 wangpeili End ************************/
 
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
-    connect(this, &QTermWidget::receivedData, this, [this](QString value) {
-        Q_UNUSED(value)
-        // 获取是否允许输出时滚动
-        if (getIsAllowScroll()) {
-            // 允许,则滚动到最新位置
-            setTrackOutput(Settings::instance()->OutputtingScroll());
-        } else {
-            // 不允许,则不滚动
-            // 将标志位置位
-            setIsAllowScroll(true);
-        }
-    });
+    connect(this, &QTermWidget::receivedData, this, &TermWidget::onQTermWidgetReceivedData);
 
     // 接收到输出
-    connect(this, &TermWidget::receivedData, this, [this](QString value) {
-        /******** Modify by ut000610 daizhengwen 2020-05-25: quit download****************/
-        if (value.contains("Transfer incomplete")) {
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
-            QApplication::sendEvent(focusWidget(), &keyPress);
-        }
-        if (value.endsWith("\b \b #")) {                     // 结束的时候有乱码的话，将它清除
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
-            QApplication::sendEvent(focusWidget(), &keyPress);
-        }
-        /********************* Modify by ut000610 daizhengwen End ************************/
-        // 退出远程后，设置成false
-        if ((value.contains("Connection to") && value.contains(" closed.")) || value.contains("Permission denied")) {
-            QTimer::singleShot(100, this, [&]() {
-                // 判断是否此时退出远程
-                if (!isInRemoteServer()) {
-                    qDebug() << "exit remote";
-                    setIsConnectRemote(false);
-                    // 还原编码
-                    setTextCodec(QTextCodec::codecForName(encode().toLocal8Bit()));
-                    qDebug() << "current encode " << encode();
-                    setBackspaceMode(m_backspaceMode);
-                    setDeleteMode(m_deleteMode);
-                    emit Service::instance()->checkEncode(encode());
-                }
-            });
-        }
-    });
+    connect(this, &TermWidget::receivedData, this, &TermWidget::onTermWidgetReceivedData);
 
     // 接收到拖拽文件的Urls数据
     connect(this, &QTermWidget::sendUrlsToTerm, this, &TermWidget::onDropInUrls);
 
-    connect(this, &QTermWidget::urlActivated, this, [](const QUrl & url, bool fromContextMenu) {
-        if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
-            QDesktopServices::openUrl(url);
-        }
-    });
+    connect(this, &QTermWidget::urlActivated, this, &TermWidget::onUrlActivated);
 
     connect(this, &QWidget::customContextMenuRequested, this, &TermWidget::customContextMenuCall);
 
     connect(DApplicationHelper::instance(),
             &DApplicationHelper::themeTypeChanged,
             this,
-    [ = ](DGuiApplicationHelper::ColorType builtInTheme) {
-        qDebug() << "themeChanged" << builtInTheme;
-        // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
-        QString theme = "Dark";
-        /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-        //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
-        if (builtInTheme == DGuiApplicationHelper::LightType) {
-            theme = "Light";
-        }
-        /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-        //setColorScheme(theme);
-        //Settings::instance()->setColorScheme(theme);
-        QString  expandThemeStr = "";
-        expandThemeStr = Settings::instance()->extendColorScheme();
-        if (expandThemeStr.isEmpty()) {
-            if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType) {
-                theme = "Light";
-            }
-            setColorScheme(theme);
-            Settings::instance()->setColorScheme(theme);
-        } else {
-            setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
-            Settings::instance()->m_customThemeModify = false;
-        }
-    });
+            &TermWidget::onThemeTypeChanged);
 
     // 未找到搜索的匹配结果
-    connect(this, &QTermWidget::sig_noMatchFound, this, [this]() {
-        parentPage()->setMismatchAlert(true);
-    });
+    connect(this, &QTermWidget::sig_noMatchFound, this, &TermWidget::onSig_noMatchFound);
     // 找到搜索匹配的结果 => 记录查找时间 => 打印日志，方便性能测试
-    connect(this, &QTermWidget::sig_matchFound, this, [this]() {
-        parentPage()->printSearchCostTime();
-    });
+    connect(this, &QTermWidget::sig_matchFound, this, &TermWidget::onSig_matchFound);
     /********************* Modify by n014361 wangpeili End ************************/
 
-    connect(this, &QTermWidget::isTermIdle, this, [this](bool bIdle) {
-        emit termIsIdle(m_page->identifier(), bIdle);
-    });
+    connect(this, &QTermWidget::isTermIdle, this, &TermWidget::onTermIsIdle);
 
     connect(this, &QTermWidget::shellWarningMessage, this, &TermWidget::onShellMessage);
 
@@ -266,35 +189,16 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         sendText(args);
     }
 
-    connect(this, &QTermWidget::titleChanged, this, [this] {
-        // 解析shell传来的title 用户名 主机名 地址/目录
-        QString tabTitle = TermWidget::title();
-        // %w shell设置的窗口标题
-        m_tabArgs[SHELL_TITLE] = tabTitle;
-        m_remoteTabArgs[SHELL_TITLE] = tabTitle;
-        // 将标题参数变更信息传出
-        emit termTitleChanged(getTabTitle());
-    });
+    connect(this, &QTermWidget::titleChanged, this, &TermWidget::onTitleChanged);
 
     // 标题参数变化
     connect(this, &QTermWidget::titleArgsChange, this, &TermWidget::onTitleArgsChange);
-    connect(this, &TermWidget::copyAvailable, this, [this](bool enable) {
-        if (Settings::instance()->IsPasteSelection() && enable) {
-            qDebug() << "hasCopySelection";
-            QString strSelected = selectedText();
-            QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
-        }
-    });
+    connect(this, &TermWidget::copyAvailable, this, &TermWidget::onCopyAvailable);
+
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
 
     //窗口特效开启则使用设置的透明度，窗口特效关闭时直接把窗口置为不透明
-    connect(Service::instance(), &Service::onWindowEffectEnabled, this, [this](bool isWinEffectEnabled) {
-        if (isWinEffectEnabled) {
-            this->setTermOpacity(Settings::instance()->opacity());
-        } else {
-            this->setTermOpacity(1.0);
-        }
-    });
+    connect(Service::instance(), &Service::onWindowEffectEnabled, this, &TermWidget::onWindowEffectEnabled);
 
     // 接收触控板事件
     connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
@@ -303,9 +207,141 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setFocusPolicy(Qt::NoFocus);
 }
 
+inline void TermWidget::onSetTerminalFont()
+{
+    QFont font = getTerminalFont();
+    font.setFamily(Settings::instance()->fontName());
+    font.setPointSize(Settings::instance()->fontSize());
+    setTerminalFont(font);
+}
+
+inline void TermWidget::onSig_matchFound()
+{
+    parentPage()->printSearchCostTime();
+}
+
+inline void TermWidget::onSig_noMatchFound()
+{
+    parentPage()->setMismatchAlert(true);
+}
+
+inline void TermWidget::onQTermWidgetReceivedData(QString value)
+{
+    Q_UNUSED(value)
+    // 获取是否允许输出时滚动
+    if (getIsAllowScroll()) {
+        // 允许,则滚动到最新位置
+        setTrackOutput(Settings::instance()->OutputtingScroll());
+    } else {
+        // 不允许,则不滚动
+        // 将标志位置位
+        setIsAllowScroll(true);
+    }
+}
+
+inline void TermWidget::onTermWidgetReceivedData(QString value)
+{
+    /******** Modify by ut000610 daizhengwen 2020-05-25: quit download****************/
+    if (value.contains("Transfer incomplete")) {
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
+        QApplication::sendEvent(focusWidget(), &keyPress);
+    }
+    if (value.endsWith("\b \b #")) {                     // 结束的时候有乱码的话，将它清除
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
+        QApplication::sendEvent(focusWidget(), &keyPress);
+    }
+    /********************* Modify by ut000610 daizhengwen End ************************/
+    // 退出远程后，设置成false
+    if ((value.contains("Connection to") && value.contains(" closed.")) || value.contains("Permission denied")) {
+        QTimer::singleShot(100, this, &TermWidget::onExitRemoteServer);
+    }
+}
+
+inline void TermWidget::onExitRemoteServer()
+{
+    // 判断是否此时退出远程
+    if (!isInRemoteServer()) {
+        qDebug() << "exit remote";
+        setIsConnectRemote(false);
+        // 还原编码
+        setTextCodec(QTextCodec::codecForName(encode().toLocal8Bit()));
+        qDebug() << "current encode " << encode();
+        setBackspaceMode(m_backspaceMode);
+        setDeleteMode(m_deleteMode);
+        emit Service::instance()->checkEncode(encode());
+    }
+}
+
+inline void TermWidget::onUrlActivated(const QUrl & url, bool fromContextMenu)
+{
+    if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
+        QDesktopServices::openUrl(url);
+    }
+}
+
+inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
+{
+    qDebug() << "themeChanged" << builtInTheme;
+    // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
+    QString theme = "Dark";
+    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
+    //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
+    if (builtInTheme == DGuiApplicationHelper::LightType) {
+        theme = "Light";
+    }
+    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
+    //setColorScheme(theme);
+    //Settings::instance()->setColorScheme(theme);
+    QString  expandThemeStr = "";
+    expandThemeStr = Settings::instance()->extendColorScheme();
+    if (expandThemeStr.isEmpty()) {
+        if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType) {
+            theme = "Light";
+        }
+        setColorScheme(theme);
+        Settings::instance()->setColorScheme(theme);
+    } else {
+        setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
+        Settings::instance()->m_customThemeModify = false;
+    }
+}
+
+inline void TermWidget::onTermIsIdle(bool bIdle)
+{
+    emit termIsIdle(m_page->identifier(), bIdle);
+}
+
+inline void TermWidget::onTitleChanged()
+{
+    // 解析shell传来的title 用户名 主机名 地址/目录
+    QString tabTitle = TermWidget::title();
+    // %w shell设置的窗口标题
+    m_tabArgs[SHELL_TITLE] = tabTitle;
+    m_remoteTabArgs[SHELL_TITLE] = tabTitle;
+    // 将标题参数变更信息传出
+    emit termTitleChanged(getTabTitle());
+}
+
+inline void TermWidget::onCopyAvailable(bool enable)
+{
+    if (Settings::instance()->IsPasteSelection() && enable) {
+        qDebug() << "hasCopySelection";
+        QString strSelected = selectedText();
+        QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
+    }
+}
+
+inline void TermWidget::onWindowEffectEnabled(bool isWinEffectEnabled)
+{
+    if (isWinEffectEnabled) {
+        this->setTermOpacity(Settings::instance()->opacity());
+    } else {
+        this->setTermOpacity(1.0);
+    }
+}
+
 TermWidget::~TermWidget()
 {
-
     // 窗口减1
     WindowsManager::instance()->terminalCountReduce();
 }
@@ -385,6 +421,43 @@ void TermWidget::onHostnameChanged()
     emit termTitleChanged(getTabTitle());
 }
 
+inline void TermWidget::onCopy()
+{
+    copyClipboard();
+}
+
+inline void TermWidget::onPaste()
+{
+    pasteClipboard();
+}
+
+inline void TermWidget::onOpenFileInFileManager()
+{
+   //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
+
+   //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
+   //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
+   //dde-file-manager --show-item a.pdf
+
+   QProcess process;
+   //未选择内容
+   if (selectedText().isEmpty())
+   {
+       process.startDetached("dde-file-manager -n " + workingDirectory());
+       return;
+   }
+
+   QFileInfo fi(workingDirectory() + "/" + selectedText());
+   //选择的内容是文件或者文件夹
+   if (fi.isFile() || fi.isDir())
+   {
+       process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
+       return;
+   }
+   //选择的文本不是文件也不是文件夹
+   process.startDetached("dde-file-manager -n " + workingDirectory());
+}
+
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
 /*******************************************************************************
  1. @函数:    addMenuActions
@@ -408,144 +481,80 @@ void TermWidget::addMenuActions(const QPoint &pos)
     // add other actions here.
     if (!selectedText().isEmpty()) {
 
-        m_menu->addAction(tr("Copy"), this, [this] { copyClipboard(); });
+        m_menu->addAction(tr("Copy"), this, &TermWidget::onCopy);
     }
     if (!QApplication::clipboard()->text(QClipboard::Clipboard).isEmpty()) {
-        m_menu->addAction(tr("Paste"), this, [this] { pasteClipboard(); });
+        m_menu->addAction(tr("Paste"), this, &TermWidget::onPaste);
     }
     /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
     if (!isRemoting && !selectedText().isEmpty()) {
-        QFileInfo tempfile(workingDirectory() + "/" + selectedText());
-        if (tempfile.exists()) {
-            m_menu->addAction(tr("Open"), this, [this] {
-                QString file = workingDirectory() + "/" + selectedText();
-                QString cmd = QString("xdg-open ") + file;
-                //在linux下，可以通过system来xdg-open命令调用默认程序打开文件；
-                system(cmd.toStdString().c_str());
-                // qDebug() << file << " open";
-            });
+        QString fileName = getFormatFileName(selectedText());
+        QString filePath = getFilePath(fileName);
+        QUrl fileUrl = QUrl::fromLocalFile(filePath);
+        QFileInfo tempfile(fileUrl.path());
+        if (fileName.length() > 0 && tempfile.exists()) {
+            m_menu->addAction(tr("Open"), this, &TermWidget::onOpenFile);
         }
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
-    m_menu->addAction(tr("Open in file manager"), this, [this] {
-        //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
-
-        //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
-        //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
-        //dde-file-manager --show-item a.pdf
-
-        QProcess process;
-        //未选择内容
-        if (selectedText().isEmpty())
-        {
-            process.startDetached("dde-file-manager -n " + workingDirectory());
-            return;
-        }
-
-        QFileInfo fi(workingDirectory() + "/" + selectedText());
-        //选择的内容是文件或者文件夹
-        if (fi.isFile() || fi.isDir())
-        {
-            process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
-            return;
-        }
-        //选择的文本不是文件也不是文件夹
-        process.startDetached("dde-file-manager -n " + workingDirectory());
-
-    });
+    m_menu->addAction(tr("Open in file manager"), this, &TermWidget::onOpenFileInFileManager);
 
     m_menu->addSeparator();
 
     addSplitMenuActions();
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
-    m_menu->addAction(QObject::tr("Close workspace"), this, [this] {
-        parentPage()->closeSplit(parentPage()->currentTerminal());
-    });
+    m_menu->addAction(QObject::tr("Close workspace"), this, &TermWidget::onCloseCurrWorkSpace);
     //m_menu->addAction(tr("Close Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
     if (parentPage()->getTerminalCount() > 1) {
-        m_menu->addAction(QObject::tr("Close other workspaces"), this, [this] {
-            parentPage()->closeOtherTerminal();
-        });
+        m_menu->addAction(QObject::tr("Close other workspaces"), this, &TermWidget::onCloseOtherWorkSpaces);
     };
 
     /********************* Modify by n014361 wangpeili End ************************/
     m_menu->addSeparator();
-    m_menu->addAction(tr("New tab"), this, [this] {
-        parentPage()->parentMainWindow()->createNewTab();
-    });
+    m_menu->addAction(tr("New tab"), this, &TermWidget::onCreateNewTab);
 
     m_menu->addSeparator();
 
     if (!parentPage()->parentMainWindow()->isQuakeMode()) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
         if (isFullScreen) {
-            m_menu->addAction(tr("Exit fullscreen"), this, [this] {
-                parentPage()->parentMainWindow()->switchFullscreen();
-            });
+            m_menu->addAction(tr("Exit fullscreen"), this, &TermWidget::onSwitchFullScreen);
         } else {
-            m_menu->addAction(tr("Fullscreen"), this, [this] {
-                parentPage()->parentMainWindow()->switchFullscreen();
-            });
+            m_menu->addAction(tr("Fullscreen"), this, &TermWidget::onSwitchFullScreen);
         }
     }
 
-    m_menu->addAction(tr("Find"), this, [this] {
-        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
-    });
+    m_menu->addAction(tr("Find"), this, &TermWidget::onShowSearchBar);
     m_menu->addSeparator();
 
     if (!selectedText().isEmpty()) {
         DMenu *search = new DMenu(tr("Search"), this);
 
-        search->addAction("Bing", this, [this] {
-            QString strurl = "https://cn.bing.com/search?q=" + selectedText();
-            QDesktopServices::openUrl(QUrl(strurl));
-        });
-        search->addAction("Baidu", this, [this] {
-            QString strurl = "https://www.baidu.com/s?wd=" + selectedText();
-            QDesktopServices::openUrl(QUrl(strurl));
-        });
-        search->addAction("Github", this, [this] {
-            QString strurl = "https://github.com/search?q=" + selectedText();
-            QDesktopServices::openUrl(QUrl(strurl));
-        });
-        search->addAction("Stack Overflow", this, [this] {
-            QString strurl = "https://stackoverflow.com/search?q=" + selectedText();
-            QDesktopServices::openUrl(QUrl(strurl));
-        });
+        search->addAction("Bing", this, &TermWidget::openBing);
+        search->addAction("Baidu", this, &TermWidget::openBaidu);
+        search->addAction("Github", this, &TermWidget::openGithub);
+        search->addAction("Stack Overflow", this, &TermWidget::openStackOverflow);
         m_menu->addMenu(search);
         m_menu->addSeparator();
     }
 
-    m_menu->addAction(tr("Encoding"), this, [this] {
-        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
-    });
+    m_menu->addAction(tr("Encoding"), this, &TermWidget::onShowEncoding);
 
-    m_menu->addAction(tr("Custom commands"), this, [this] {
-        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
-    });
+    m_menu->addAction(tr("Custom commands"), this, &TermWidget::onShowCustomCommands);
 
-    m_menu->addAction(tr("Remote management"), this, [this] {
-        parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
-    });
+    m_menu->addAction(tr("Remote management"), this, &TermWidget::onShowRemoteManagement);
 
     if (isConnectRemote()) {
         m_menu->addSeparator();
-        m_menu->addAction(tr("Upload file"), this, [this] {
-            parentPage()->parentMainWindow()->remoteUploadFile();
-        });
-        m_menu->addAction(tr("Download file"), this, [this] {
-            parentPage()->parentMainWindow()->remoteDownloadFile();
-        });
+        m_menu->addAction(tr("Upload file"), this, &TermWidget::onUploadFile);
+        m_menu->addAction(tr("Download file"), this, &TermWidget::onDownloadFile);
     }
 
     m_menu->addSeparator();
 
-    m_menu->addAction(tr("Settings"), this, [ = ] {
-        Service::instance()->showSettingDialog(parentPage()->parentMainWindow());
-    });
+    m_menu->addAction(tr("Settings"), this, &TermWidget::onShowSettings);
 
     // 判断是否到达最大数量
     if (!Service::instance()->isCountEnable()) {
@@ -557,6 +566,167 @@ void TermWidget::addMenuActions(const QPoint &pos)
             }
         }
     }
+}
+
+void TermWidget::onHorizontalSplit()
+{
+    getTermLayer();
+    // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
+    QTimer::singleShot(10, this, &TermWidget::splitHorizontal);
+}
+
+void TermWidget::onVerticalSplit()
+{
+    getTermLayer();
+    // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
+    QTimer::singleShot(10, this, &TermWidget::splitVertical);
+}
+
+void TermWidget::splitHorizontal()
+{
+    parentPage()->split(Qt::Horizontal);
+    //分屏时切换到当前选中主题方案
+    switchThemeOnSplitScreen();
+}
+
+void TermWidget::splitVertical()
+{
+    parentPage()->split(Qt::Vertical);
+    //分屏时切换到当前选中主题方案
+    switchThemeOnSplitScreen();
+}
+
+inline void TermWidget::onCloseCurrWorkSpace()
+{
+    parentPage()->closeSplit(parentPage()->currentTerminal());
+}
+
+inline void TermWidget::onCloseOtherWorkSpaces()
+{
+    parentPage()->closeOtherTerminal();
+}
+
+inline void TermWidget::onCreateNewTab()
+{
+    parentPage()->parentMainWindow()->createNewTab();
+}
+
+inline void TermWidget::onSwitchFullScreen()
+{
+    parentPage()->parentMainWindow()->switchFullscreen();
+}
+
+inline void TermWidget::openBing()
+{
+    QString strUrl = "https://cn.bing.com/search?q=" + selectedText();
+    openUrl(strUrl);
+}
+
+inline void TermWidget::openBaidu()
+{
+    QString strUrl = "https://www.baidu.com/s?wd=" + selectedText();
+    openUrl(strUrl);
+}
+
+inline void TermWidget::openGithub()
+{
+    QString strUrl = "https://github.com/search?q=" + selectedText();
+    openUrl(strUrl);
+}
+
+inline void TermWidget::openStackOverflow()
+{
+    QString strUrl = "https://stackoverflow.com/search?q=" + selectedText();
+    openUrl(strUrl);
+}
+
+inline void TermWidget::onShowSearchBar()
+{
+    parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
+}
+
+inline void TermWidget::onShowEncoding()
+{
+    parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
+}
+
+inline void TermWidget::onShowCustomCommands()
+{
+    parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
+}
+
+inline void TermWidget::onShowRemoteManagement()
+{
+    parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
+}
+
+inline void TermWidget::onUploadFile()
+{
+    parentPage()->parentMainWindow()->remoteUploadFile();
+}
+
+inline void TermWidget::onDownloadFile()
+{
+    parentPage()->parentMainWindow()->remoteDownloadFile();
+}
+
+inline void TermWidget::onShowSettings()
+{
+    Service::instance()->showSettingDialog(parentPage()->parentMainWindow());
+}
+
+inline void TermWidget::openUrl(QString strUrl)
+{
+    QDesktopServices::openUrl(QUrl(strUrl));
+}
+
+/*******************************************************************************
+ 1. @函数:    getFormatFileName
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-01-30
+ 4. @说明:    根据选择的文件名字符串得到合法的文件名，去除文件名开头/结尾的''或""
+*******************************************************************************/
+inline QString TermWidget::getFormatFileName(QString selectedText)
+{
+    QString fileName = selectedText.trimmed();
+    if ( (fileName.startsWith("'") && fileName.endsWith("'"))
+            || (fileName.startsWith("\"") && fileName.endsWith("\"")) ) {
+        fileName = fileName.remove(0, 1);
+        fileName = fileName.remove(fileName.length()-1, 1);
+        qDebug() << "fileName is :" << fileName;
+    }
+
+    return fileName;
+}
+
+/*******************************************************************************
+ 1. @函数:    getFilePath
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-02
+ 4. @说明:    根据文件名拼接得到文件路径
+*******************************************************************************/
+inline QString TermWidget::getFilePath(QString fileName)
+{
+    //如果fileName本身已经是一个文件路径
+    if (fileName.startsWith("/")) {
+        return fileName;
+    }
+
+    return workingDirectory() + "/" + fileName;
+}
+
+/*******************************************************************************
+ 1. @函数:    onOpenFile
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-01
+ 4. @说明:    根据文件路径打开文件
+*******************************************************************************/
+inline void TermWidget::onOpenFile()
+{
+    QString fileName = getFormatFileName(selectedText());
+    QString filePath = getFilePath(fileName);
+    QUrl fileUrl = QUrl::fromLocalFile(filePath);
+    QDesktopServices::openUrl(fileUrl);
 }
 
 /*******************************************************************************
@@ -577,29 +747,10 @@ void TermWidget::addSplitMenuActions()
     int layer = getTermLayer();
 
     if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
-        m_menu->addAction(tr("Horizontal split"), this, [this] {
-            getTermLayer();
-            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
-            QTimer::singleShot(10, this, [ = ]()
-            {
-                parentPage()->split(Qt::Horizontal);
-                //分屏时切换到当前选中主题方案
-                switchThemeOnSplitScreen();
-            });
-
-        });
+        m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
     }
     if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
-        m_menu->addAction(tr("Vertical split"), this, [this] {
-            getTermLayer();
-            // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
-            QTimer::singleShot(10, this, [ = ]()
-            {
-                parentPage()->split(Qt::Vertical);
-                //分屏时切换到当前选中主题方案
-                switchThemeOnSplitScreen();
-            });
-        });
+        m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
     }
 }
 
@@ -998,7 +1149,7 @@ void TermWidget::setEnterSzCommand(bool enterSzCommand)
  3. @日期:    2020-08-11
  4. @说明:    自定义上下文菜单调用
 *******************************************************************************/
-void TermWidget::customContextMenuCall(const QPoint &pos)
+inline void TermWidget::customContextMenuCall(const QPoint &pos)
 {
     /***add by ut001121 zhangmeng 20200514 右键获取焦点, 修复BUG#26003***/
     setFocus();
@@ -1288,7 +1439,7 @@ void TermWidget::onDropInUrls(const char *urls)
  3) 参数 fingers   : 手指数量 (1,2,3,4,5)
  注意libinput接收到触摸板事件后将接收到的数据通过Event广播出去
 *******************************************************************************/
-void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
+inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 {
     qDebug() << __FUNCTION__;
     qDebug() << name << direction << fingers;
@@ -1314,7 +1465,7 @@ void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 第一个参数: currentShell当前使用的shell,
 第二个参数：isSuccess 启用shell是否成功 true 替换了shell false 替换shell但启动失败
 *******************************************************************************/
-void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
+inline void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 {
     if (isSuccess) {
         // 替换了shell提示
