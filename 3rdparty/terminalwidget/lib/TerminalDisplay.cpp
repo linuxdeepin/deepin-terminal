@@ -717,7 +717,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QColor& /*backgroundColor*/,
                                  bool& invertCharacterColor)
 {
-    QRect cursorRect = rect;
+    QRectF cursorRect = rect.adjusted(0, 1, 0, 0);
     cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
 
     if (!_cursorBlinking)
