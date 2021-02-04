@@ -717,7 +717,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QColor& /*backgroundColor*/,
                                  bool& invertCharacterColor)
 {
-    QRect cursorRect = rect;
+    QRectF cursorRect = rect.adjusted(0, 1, 0, 0);
     cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
 
     if (!_cursorBlinking)
@@ -747,7 +747,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                 int penWidth = 1;
 
                 painter.drawRect(cursorRect.adjusted(penWidth/2,
-                                                     penWidth/2,
+                                                     penWidth/2+2,
                                                      - penWidth/2 - penWidth%2,
                                                      - penWidth/2 - penWidth%2));
             }
