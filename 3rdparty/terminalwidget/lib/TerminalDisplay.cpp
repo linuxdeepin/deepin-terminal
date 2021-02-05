@@ -747,7 +747,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                 int penWidth = 1;
 
                 painter.drawRect(cursorRect.adjusted(penWidth/2,
-                                                     penWidth/2+2,
+                                                     penWidth/2,
                                                      - penWidth/2 - penWidth%2,
                                                      - penWidth/2 - penWidth%2));
             }
