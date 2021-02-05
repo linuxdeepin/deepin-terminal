@@ -573,6 +573,9 @@ protected:
 class QuakeWindow : public MainWindow
 {
     Q_OBJECT
+    //之前修改代码误删了这个属性，导致雷神动画失效，而且会导致雷神窗口属性异常(第一次雷神不可关闭，隐藏/显示后可关闭)
+    //fix bug:63057 dock栏雷神终端缩略图右上角无关闭x按钮
+    Q_PROPERTY(int height READ height WRITE setHeight)
     // 雷神resize是否拖拽的状态
     enum Quake_Resize_State {
         // 不进行resize
