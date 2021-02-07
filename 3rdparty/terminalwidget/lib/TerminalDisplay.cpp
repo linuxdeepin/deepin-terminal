@@ -541,6 +541,9 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
   new AutoScrollHandler(this);
 
   m_bUserIsResizing = false;
+
+  // 隐藏QScrollBar默认的右键菜单
+  hideQScrollBarRightMenu();
 }
 
 TerminalDisplay::~TerminalDisplay()
@@ -3320,6 +3323,27 @@ void TerminalDisplay::selectionChanged()
 void TerminalDisplay::selectionCleared()
 {
     initKeyBoardSelection();
+}
+
+/*******************************************************************************
+ 1. @函数:    hideQScrollBarRightMenu
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-07
+ 4. @说明:    隐藏QScrollBar默认的右键菜单
+*******************************************************************************/
+void TerminalDisplay::hideQScrollBarRightMenu()
+{
+    // fix bug 63308: 鼠标放置在右侧滚动条上点击鼠标右键，界面出现黑色长条
+    QWidgetList widgetList = qApp->allWidgets();
+    for(int i=0; i<widgetList.size(); i++)
+    {
+        QWidget *widget = widgetList.at(i);
+        QScrollBar *scrollBar = dynamic_cast<QScrollBar*>(widget);
+        if(scrollBar)
+        {
+            scrollBar->setContextMenuPolicy(Qt::NoContextMenu);
+        }
+    }
 }
 
 void TerminalDisplay::swapColorTable()
