@@ -439,6 +439,7 @@ void Pty::sendData(const char *data, int length)
         return;
     }
 
+    //判断是否是点了自定义命令面板列表项触发的命令
     bool isCustomCommand = false;
     QString currCommand = QString::fromLatin1(data);
     if (currCommand.length() > 0 && currCommand.endsWith('\n')) {
@@ -450,6 +451,14 @@ void Pty::sendData(const char *data, int length)
         QString strCurrCommand = SessionManager::instance()->getCurrShellCommand(_sessionId);
         if (isCustomCommand) {
             strCurrCommand = currCommand;
+        }
+
+        //检测到当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
+        bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
+        if (isSendByRemoteManage && strCurrCommand.startsWith("expect -f")) {
+            _bNeedBlockCommand = true;
+            //立即修改回false，防止误认其他命令
+            this->setProperty("isSendByRemoteManage", QVariant(false));
         }
 
         /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 Begin***************/
@@ -495,6 +504,33 @@ void Pty::dataReceived()
     QByteArray data = pty()->readAll();
 
     QString recvData = QString(data);
+
+    if (_bNeedBlockCommand) {
+        QString judgeData = recvData.replace("\r", "");
+        judgeData = judgeData.replace("\n", "");
+        //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
+        if (judgeData.startsWith("expect -f")) {
+            _receiveDataIndex = 0;
+            return;
+        }
+
+        if (_receiveDataIndex >= 0) {
+            if (judgeData.startsWith("Press")) {
+                //这里需要置回false，否则后面其他命令也会被拦截
+                _bNeedBlockCommand = false;
+
+                _receiveDataIndex = -1;
+                QString helpData = recvData.replace("\n", "");
+                recvData = "\r\n" + helpData + "\r\n";
+                data = recvData.toUtf8();
+                emit receivedData(data.constData(), data.count());
+            }
+            else {
+                ++_receiveDataIndex;
+            }
+            return;
+        }
+    }
 
     /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
     // 乱码提示信息不显示
