@@ -582,6 +582,12 @@ void Session::close()
 
 void Session::sendText(const QString & text) const
 {
+    //检测到当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
+    bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
+    if (isSendByRemoteManage) {
+        //将isSendByRemoteManage标记同步给Pty
+        _shellProcess->setProperty("isSendByRemoteManage", QVariant(true));
+    }
     _emulation->sendText(text);
 }
 

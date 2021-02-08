@@ -160,7 +160,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
         m_mainWindow->pressCtrlU();
         m_mainWindow->sleep(100);
         /********************* Modify by m000714 daizhengwen End ************************/
-        m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt);
+        m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt, true);
         // 等待连接 100ms等待命令发过去正常立即执行，100ms足够，一下的信号槽只是判断是否开启另一个程序去连接
         // 若有程序去连接，则判断已连接，若连接失败，则判断为断开连接
         QTimer::singleShot(100, this, [ = ]() {

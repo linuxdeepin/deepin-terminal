@@ -585,10 +585,12 @@ void TermWidgetPage::setColorScheme(const QString &name)
  3. @日期:    2020-08-12
  4. @说明:    发送文本到当前终端
 *******************************************************************************/
-void TermWidgetPage::sendTextToCurrentTerm(const QString &text)
+void TermWidgetPage::sendTextToCurrentTerm(const QString &text, bool isRemoteConnect)
 {
     TermWidget *term = currentTerminal();
     if (term) {
+        //标记当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
+        term->setProperty("isSendByRemoteManage", QVariant(isRemoteConnect));
         term->sendText(text);
     }
 }
