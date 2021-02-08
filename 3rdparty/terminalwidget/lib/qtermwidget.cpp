@@ -740,7 +740,20 @@ void QTermWidget::setTrackOutput(bool enable)
 
 void QTermWidget::sendText(const QString &text)
 {
+    //标记当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
+    bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
+    if (isSendByRemoteManage) {
+        //将isSendByRemoteManage标记同步给Session
+        m_impl->m_session->setProperty("isSendByRemoteManage", QVariant(true));
+
+        //立即修改回false，防止误认其他命令
+        this->setProperty("isSendByRemoteManage", QVariant(false));
+    }
+
     m_impl->m_session->sendText(text);
+
+    //标记后立即修改回false，防止误认其他命令
+    m_impl->m_session->setProperty("isSendByRemoteManage", QVariant(false));
 }
 
 void QTermWidget::sendKeyEvent(QKeyEvent *e)

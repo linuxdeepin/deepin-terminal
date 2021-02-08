@@ -77,7 +77,7 @@ public:
     void setTerminalOpacity(qreal opacity);
     void setColorScheme(const QString &name);
 
-    void sendTextToCurrentTerm(const QString &text);
+    void sendTextToCurrentTerm(const QString &text, bool isRemoteConnect = false);
 
     void copyClipboard();
     void pasteClipboard();

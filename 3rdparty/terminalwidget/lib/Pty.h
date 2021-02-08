@@ -221,6 +221,8 @@ Q_OBJECT
 
     int _sessionId;
     bool _bUninstall;
+    bool _bNeedBlockCommand;
+    int _receiveDataIndex = -1;
 };
 
 }
