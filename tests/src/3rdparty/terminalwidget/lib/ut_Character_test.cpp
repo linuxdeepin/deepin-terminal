@@ -28,7 +28,7 @@ void UT_Character_Test::TearDown()
 class PainterWidget :  public QWidget
 {
 public:
-    PainterWidget(QWidget* parent = nullptr) : QWidget(parent)
+    explicit PainterWidget(QWidget* parent = nullptr) : QWidget(parent)
     {
         resize(800, 600);
         setWindowTitle(tr("Paint Demo"));

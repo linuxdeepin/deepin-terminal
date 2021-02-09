@@ -22,13 +22,6 @@ void UT_KeyboardTranslator_Test::TearDown()
 {
 }
 
-typedef struct {
-    QByteArray text;
-    QByteArray result;
-    bool wildcards;
-    Qt::KeyboardModifiers modifiers;
-} KeyBoardTranslatorData;
-
 #ifdef UT_KEYBOARDTRANSLATOR_TEST
 
 /*******************************************************************************
@@ -102,6 +95,7 @@ TEST_F(UT_KeyboardTranslator_Test, loadTranslator)
         textBuffer.setData(defaultTranslatorText);
         textBuffer.open(QIODevice::ReadOnly);
         translator = KeyboardTranslatorManager::instance()->loadTranslator(&textBuffer, QLatin1String("fallback"));
+        qDebug() << translator << endl;
     }
 }
 
@@ -207,7 +201,7 @@ TEST_F(UT_KeyboardTranslator_Test, writeEntry)
         QString path = list.first();
 
         QFile destination(path);
-        bool isOpenSuccess = destination.open(QIODevice::WriteOnly | QIODevice::Text);
+        destination.open(QIODevice::WriteOnly | QIODevice::Text);
 
         KeyboardTranslatorWriter writer(&destination);
 

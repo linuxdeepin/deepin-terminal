@@ -9,6 +9,8 @@
 #include <QSignalSpy>
 
 UT_CustomCommandTopPanel_Test::UT_CustomCommandTopPanel_Test()
+    : m_normalWindow(nullptr)
+    , m_cmdTopPanel(nullptr)
 {
 }
 
@@ -25,7 +27,14 @@ void UT_CustomCommandTopPanel_Test::SetUp()
 
 void UT_CustomCommandTopPanel_Test::TearDown()
 {
-    delete m_cmdTopPanel;
+    if (m_cmdTopPanel != nullptr) {
+        delete m_cmdTopPanel;
+        m_cmdTopPanel = nullptr;
+    }
+    if (m_normalWindow != nullptr) {
+        delete m_normalWindow;
+        m_normalWindow = nullptr;
+    }
 }
 
 #ifdef UT_CUSTOMCOMMANDTOPPANEL_TEST

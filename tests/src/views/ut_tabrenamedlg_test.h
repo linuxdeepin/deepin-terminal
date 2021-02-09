@@ -14,18 +14,12 @@
 
 class Ut_TabRenameDlg_Test : public ::testing::Test
 {
-protected:
-    void SetUp()
-    {
-        m_renameDlg = new TabRenameDlg;
-    }
-
-    void TearDown()
-    {
-        delete m_renameDlg;
-    }
-
 public:
+    Ut_TabRenameDlg_Test();
+
+    ~Ut_TabRenameDlg_Test();
+
+private:
     TabRenameDlg *m_renameDlg = nullptr;
     TermProperties m_normalTermProperty;
 };

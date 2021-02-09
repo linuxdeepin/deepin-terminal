@@ -13,23 +13,13 @@ class Ut_TabRenameWidget_Test : public ::testing::Test
 {
 protected:
     //用于做一些初始化操作
-    void SetUp()
-    {
-        m_renameWidgetRS = new TabRenameWidget(true, true);
-
-    }
+    virtual void SetUp();
 
     //用于做一些清理操作
-    void TearDown()
-    {
-        delete m_renameWidgetRS;
+    virtual void TearDown();
 
-    }
-
-public:
+private:
     TabRenameWidget *m_renameWidgetRS = nullptr;
-
-    //普通窗口
 };
 
 #endif // UT_TABRENAMEWIDGET_TEST_H

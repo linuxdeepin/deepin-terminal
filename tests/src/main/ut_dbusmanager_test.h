@@ -12,12 +12,8 @@ class UT_Dbusmanager_Test: public ::testing::Test
 {
 public:
     UT_Dbusmanager_Test();
-    //用于做一些初始化操作
-    virtual void SetUp();
-
-    //用于做一些清理操作
-    virtual void TearDown();
-public:
+    ~UT_Dbusmanager_Test();
+private:
     DBusManager *m_pDbusManager;
 };
 

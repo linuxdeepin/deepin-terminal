@@ -59,7 +59,7 @@ void UT_SettingIO_Test::TearDown()
  3. @日期:    2020-12-15
  4. @说明:    canTransfer函数测试
 *******************************************************************************/
-TEST(UT_SettingIO_Test, canTransferTest)
+TEST_F(UT_SettingIO_Test, canTransferTest)
 {
     //"%U4E2D%U56FD%U4EBA" Unicode编码 对应中文为"中国人"
     QString strUnicode = "%U4E2D%U56FD%U4EBA";
@@ -80,7 +80,7 @@ TEST(UT_SettingIO_Test, canTransferTest)
  3. @日期:    2020-12-15
  4. @说明:    escapedString函数测试
 *******************************************************************************/
-TEST(UT_SettingIO_Test, escapedStringTest)
+TEST_F(UT_SettingIO_Test, escapedStringTest)
 {
     QString strTest = "a;b,c=d#e\\0";
     QString strResut = SettingIO::escapedString(strTest);
@@ -97,7 +97,7 @@ TEST(UT_SettingIO_Test, escapedStringTest)
  3. @日期:    2020-12-15
  4. @说明:    unescapedString函数测试
 *******************************************************************************/
-TEST(UT_SettingIO_Test, unescapedStringTest)
+TEST_F(UT_SettingIO_Test, unescapedStringTest)
 {
     QString strTest = "123\1?\\t\\x1Bb\a\t ";
     QString strResut = SettingIO::unescapedString(strTest);

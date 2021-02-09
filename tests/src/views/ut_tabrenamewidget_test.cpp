@@ -1,6 +1,18 @@
 
 #include "ut_tabrenamewidget_test.h"
 
+//用于做一些初始化操作
+void Ut_TabRenameWidget_Test::SetUp()
+{
+    m_renameWidgetRS = new TabRenameWidget(true, true);
+}
+
+//用于做一些清理操作
+void Ut_TabRenameWidget_Test::TearDown()
+{
+    delete m_renameWidgetRS;
+}
+
 //远程 设置界面
 TEST_F(Ut_TabRenameWidget_Test, TestInitConnection)
 {

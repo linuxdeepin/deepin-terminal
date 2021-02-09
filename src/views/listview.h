@@ -96,6 +96,19 @@ public slots:
     // 列表项被修改
     void onItemModify(const QString &key, bool isFocusOn);
 
+private slots:
+    void onFocusOut(Qt::FocusReason type);
+    void onItemClicked();
+    void onGroupClicked(const QString & strName, bool isFocus = false);
+
+    //自定义命令相关
+    void onCustomCommandOptDlgFinished(int result);
+    void onDeleteCustomCommandFinished(int result);
+
+    //远程服务器相关
+    void onServerConfigOptDlgFinished(int result);
+    void onDeleteServerDialogFinished(int result);
+
 signals:
     // 列表数量变化
     void listItemCountChange();

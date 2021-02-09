@@ -11,7 +11,7 @@
 #include <QTest>
 #include <QtGui>
 
-UT_CustomCommandPanel_Test::UT_CustomCommandPanel_Test()
+UT_CustomCommandPanel_Test::UT_CustomCommandPanel_Test():m_scManager(nullptr)
 {
 }
 

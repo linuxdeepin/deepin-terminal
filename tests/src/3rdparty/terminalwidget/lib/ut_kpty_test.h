@@ -13,12 +13,7 @@ class UT_KPty_Test : public ::testing::Test
 {
 public:
     UT_KPty_Test();
-
-    //用于做一些初始化操作
-    virtual void SetUp();
-
-    //用于做一些清理操作
-    virtual void TearDown();
+    ~UT_KPty_Test();
 
 private:
     KPty *m_pty = nullptr;

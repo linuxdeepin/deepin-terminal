@@ -25,7 +25,7 @@ class PainterWidget :  public QWidget
 {
     Q_OBJECT
 public:
-    PainterWidget(QWidget* parent = nullptr) : QWidget(parent)
+    explicit PainterWidget(QWidget* parent = nullptr) : QWidget(parent)
     {
     }
 protected:

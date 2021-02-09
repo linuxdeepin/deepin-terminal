@@ -25,17 +25,14 @@
 
 UT_KPty_Test::UT_KPty_Test()
 {
-}
-
-void UT_KPty_Test::SetUp()
-{
     m_pty = new KPty();
 }
 
-void UT_KPty_Test::TearDown()
+UT_KPty_Test::~UT_KPty_Test()
 {
     delete m_pty;
 }
+
 
 #ifdef UT_KPTY_TEST
 

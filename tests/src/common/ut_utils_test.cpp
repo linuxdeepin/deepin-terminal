@@ -33,35 +33,35 @@ void UT_Utils_Test::TearDown()
 
 #ifdef UT_UTILS_TEST
 
-TEST(UT_Utils_Test, getQssContentEmpty)
+TEST_F(UT_Utils_Test, getQssContentEmpty)
 {
     EXPECT_TRUE(Utils::getQssContent(QString()).isEmpty());
 }
 
-TEST(UT_Utils_Test, getQssContentNoFile)
+TEST_F(UT_Utils_Test, getQssContentNoFile)
 {
     EXPECT_TRUE(Utils::getQssContent(QString("/opt/qt.qss")).isEmpty());
 }
 
-TEST(UT_Utils_Test, getQssContentOKFile)
+TEST_F(UT_Utils_Test, getQssContentOKFile)
 {
     system("echo '' > qts.qss");
     EXPECT_FALSE(Utils::getQssContent(QString("./qts.qss")).isEmpty());
 }
 
 
-TEST(UT_Utils_Test, getConfigPath)
+TEST_F(UT_Utils_Test, getConfigPath)
 {
     EXPECT_FALSE(Utils::getConfigPath().isEmpty());
 }
 
 
-TEST(UT_Utils_Test, suffixList)
+TEST_F(UT_Utils_Test, suffixList)
 {
     EXPECT_FALSE(Utils::suffixList().isEmpty());
 }
 
-TEST(UT_Utils_Test, getRandString)
+TEST_F(UT_Utils_Test, getRandString)
 {
     EXPECT_FALSE(Utils::getRandString().isEmpty());
 
@@ -75,7 +75,7 @@ TEST(UT_Utils_Test, getRandString)
     }
 }
 
-TEST(UT_Utils_Test, showDirDialog)
+TEST_F(UT_Utils_Test, showDirDialog)
 {
 #ifdef ENABLE_UI_TEST
     QWidget *parentWidget = new QWidget;
@@ -108,7 +108,7 @@ TEST(UT_Utils_Test, showDirDialog)
 //static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
 
 //static void showSameNameDialog(QWidget *parent, const QString &firstLine, const QString &secondLine);
-TEST(UT_Utils_Test, showFilesSelectDialog)
+TEST_F(UT_Utils_Test, showFilesSelectDialog)
 {
 #ifdef ENABLE_UI_TEST
     QWidget *parentWidget = new QWidget;
@@ -139,7 +139,7 @@ TEST(UT_Utils_Test, showFilesSelectDialog)
 #endif
 }
 
-TEST(UT_Utils_Test, showExitConfirmDialogTab_CloseTypeTab)
+TEST_F(UT_Utils_Test, showExitConfirmDialogTab_CloseTypeTab)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
@@ -168,7 +168,7 @@ TEST(UT_Utils_Test, showExitConfirmDialogTab_CloseTypeTab)
 #endif
 }
 
-TEST(UT_Utils_Test, showExitConfirmDialog_CloseTypeWindow)
+TEST_F(UT_Utils_Test, showExitConfirmDialog_CloseTypeWindow)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
@@ -196,7 +196,7 @@ TEST(UT_Utils_Test, showExitConfirmDialog_CloseTypeWindow)
 #endif
 }
 
-TEST(UT_Utils_Test, getExitDialogText)
+TEST_F(UT_Utils_Test, getExitDialogText)
 {
     QString title;
     QString txt;
@@ -228,7 +228,7 @@ TEST(UT_Utils_Test, getExitDialogText)
 }
 
 
-TEST(UT_Utils_Test, showExitUninstallConfirmDialog)
+TEST_F(UT_Utils_Test, showExitUninstallConfirmDialog)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
@@ -257,7 +257,7 @@ TEST(UT_Utils_Test, showExitUninstallConfirmDialog)
 }
 
 
-TEST(UT_Utils_Test, showUnistallConfirmDialog)
+TEST_F(UT_Utils_Test, showUnistallConfirmDialog)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
@@ -287,7 +287,7 @@ TEST(UT_Utils_Test, showUnistallConfirmDialog)
 }
 
 
-TEST(UT_Utils_Test, showShortcutConflictMsgbox)
+TEST_F(UT_Utils_Test, showShortcutConflictMsgbox)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
@@ -316,7 +316,7 @@ TEST(UT_Utils_Test, showShortcutConflictMsgbox)
 #endif
 }
 
-TEST(UT_Utils_Test, showSameNameDialog)
+TEST_F(UT_Utils_Test, showSameNameDialog)
 {
 #ifdef ENABLE_UI_TEST
     QWidget *parentWidget = new QWidget;
@@ -346,7 +346,7 @@ TEST(UT_Utils_Test, showSameNameDialog)
 }
 
 // 参数解析
-TEST(UT_Utils_Test, parseCommandLine)
+TEST_F(UT_Utils_Test, parseCommandLine)
 {
     QStringList appArguments;
     appArguments << "deepin-terminal" << QString("-h");
@@ -367,7 +367,7 @@ TEST(UT_Utils_Test, parseCommandLine)
     Utils::parseCommandLine(appArguments, properties, false);
 }
 
-TEST(UT_Utils_Test, parseExecutePara)
+TEST_F(UT_Utils_Test, parseExecutePara)
 {
     QStringList appArguments;
     appArguments << "deepin-terminal" << "-e" << "ls /home/";
@@ -385,7 +385,7 @@ TEST(UT_Utils_Test, parseExecutePara)
     EXPECT_EQ(paraList.size(), 3);
 }
 
-TEST(UT_Utils_Test, parseNestedQString)
+TEST_F(UT_Utils_Test, parseNestedQString)
 {
     QString str = QString("bash -c 'ping 127.0.0.1'");
     QStringList paraList = Utils::parseNestedQString(str);
@@ -396,7 +396,7 @@ TEST(UT_Utils_Test, parseNestedQString)
     EXPECT_EQ(paraList.size(), 3);
 }
 
-TEST(UT_Utils_Test, FontFilterTest)
+TEST_F(UT_Utils_Test, FontFilterTest)
 {
     FontFilter *ff = FontFilter::instance();
     ff->HandleWidthFont();

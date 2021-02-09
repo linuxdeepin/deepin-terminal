@@ -86,32 +86,59 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     emit listItemCountChange();
 
     // 分组项被点击
-    connect(itemWidget, &ItemWidget::groupClicked, this, [ = ](const QString & strName, bool isFocus = false) {
-        emit groupClicked(strName, isFocus);
-        // 若焦点不在项上
-        if (!isFocus) {
-            // 清空index记录
-            clearIndex();
-            // 焦点状态为false
-            m_focusState = false;
-        }
-    });
+    connect(itemWidget, &ItemWidget::groupClicked, this, &ListView::onGroupClicked);
     // 列表项被点击
     connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::itemClicked);
     // 修改列表
     // connect(itemWidget, &ItemWidget::itemModify, this, &ListView::itemModify);
     connect(itemWidget, &ItemWidget::itemModify, this, &ListView::onItemModify);
     // 焦点切出 Tab切出不返回
-    connect(itemWidget, &ItemWidget::focusOut, this, [ = ](Qt::FocusReason type) {
-        emit focusOut(type);
-        lostFocus(m_currentIndex);
-        m_focusState = false;
-    });
+    connect(itemWidget, &ItemWidget::focusOut, this, &ListView::onFocusOut);
     // 列表被点击，编辑按钮隐藏
-    connect(itemWidget, &ItemWidget::itemClicked, this, [ = ]() {
-        lostFocus(m_currentIndex);
-    });
+    connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::onItemClicked);
 
+}
+
+/*******************************************************************************
+ 1. @函数:    onItemClicked
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    列表项被点击
+*******************************************************************************/
+inline void ListView::onItemClicked()
+{
+    lostFocus(m_currentIndex);
+}
+
+/*******************************************************************************
+ 1. @函数:    onFocusOut
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    焦点切出
+*******************************************************************************/
+inline void ListView::onFocusOut(Qt::FocusReason type)
+{
+    emit focusOut(type);
+    lostFocus(m_currentIndex);
+    m_focusState = false;
+}
+
+/*******************************************************************************
+ 1. @函数:    onGroupClicked
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    分组项被点击
+*******************************************************************************/
+inline void ListView::onGroupClicked(const QString & strName, bool isFocus)
+{
+    emit groupClicked(strName, isFocus);
+    // 若焦点不在项上
+    if (!isFocus) {
+        // 清空index记录
+        clearIndex();
+        // 焦点状态为false
+        m_focusState = false;
+    }
 }
 
 /*******************************************************************************
@@ -353,117 +380,134 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
 
     // 1.显示弹窗
     m_configDialog = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, this);
-    connect(m_configDialog, &ServerConfigOptDlg::finished, this, [ = ](int result) {
-        // 弹窗隐藏或消失
-        qDebug() << "focus state " << m_focusState;
-        // 3. 对弹窗操作进行分析
-        // 判断是否删除
-        if (result == ServerConfigOptDlg::Accepted) {
-            // 判断是否需要删除
-            if (m_configDialog->isDelServer()) {
-                // 弹出删除弹窗
-                qDebug() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
-                DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), m_configDialog);
-                deleteDialog->setObjectName("RemoteDeleteDialog");
-                deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
-                connect(deleteDialog, &DDialog::finished, this, [ = ](int result2) {
-                    // 获取index
-                    int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-                    // 删除
-                    if (DDialog::Accepted == result2) {
-                        // 关闭所有相关弹窗
-                        ServerConfigManager::instance()->closeAllDialog(m_configDialog->getCurServer()->m_serverName);
-                        ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
-                        emit ServerConfigManager::instance()->refreshList();
-                        emit listItemCountChange();
-                    } else {
-                        // 关闭后及时将弹窗删除
-                        ServerConfigManager::instance()->removeDialog(m_configDialog);
-                    }
-                    // Todo : 焦点返回下一个
-                    index = getNextIndex(index);
-                    if (m_focusState) {
-                        // 根据返回值判断焦点位置
-                        if (index >= 0) {
-                            // 回到列表,仅回到大的列表，没有回到具体的哪个点
-                            setFocus();
-                            // 列表不为空
-                            setCurrentIndex(index);
-                        } else {
-                            // 列表为空焦点自动往下
-                            m_focusState = false;
-                            emit focusOut(Qt::NoFocusReason);
-                        }
-                    }
-                });
-                deleteDialog->setWindowModality(Qt::WindowModal);
-                deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
-                deleteDialog->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-                deleteDialog->addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
-                deleteDialog->show();
-                // 释放窗口
-                Service::instance()->setIsDialogShow(window(), false);
-            } else {
-                // 不删除，修改
-                // 释放窗口
-                Service::instance()->setIsDialogShow(window(), false);
-                // 修改后会有信号刷新列表
-                // 不需要删除，修改了转到这条修改的记录
-                // 设置滚轮
-                // 关闭后及时将弹窗删除
-                // 记住修改前的位置 m_currentIndex
-                qDebug() << "index before modify " << m_currentIndex;
-                ServerConfigManager::instance()->removeDialog(m_configDialog);
-                // 刷新列表
-                emit ServerConfigManager::instance()->refreshList();
-                // 获取index
-                int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-                // 若找不到
-                if (index  < 0) {
-                    // 旧位置的下一个
-                    index = getNextIndex(m_currentIndex);
-                }
-                // 依旧没有找到啦
-                if (index < 0) {
-                    qDebug() << "no next item";
-                    if (m_focusState) {
-                        // 有焦点，焦点出
-                        emit focusOut(Qt::NoFocusReason);
-                    }
-                }
-                // 找的到
-                else {
-                    if (m_focusState) {
-                        // 设置焦点
-                        setFocus();
-                        // 有焦点，设置焦点
-                        setCurrentIndex(index);
-                    } else {
-                        // 没焦点,设置滚轮
-                        setScroll(index);
-                    }
-                }
-            }
-        }
-        // 不接受，reject 修改弹窗
-        else {
-            // 释放窗口
-            Service::instance()->setIsDialogShow(window(), false);
-            if (m_focusState) {
-                int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-                // 回到列表,仅回到大的列表，没有回到具体的哪个点
-                setFocus();
-                qDebug() << "current Index ListView" << m_currentIndex;
-                setCurrentIndex(index);
-            }
-            // 取消后及时将弹窗删除
-            ServerConfigManager::instance()->removeDialog(m_configDialog);
-        }
-
-    });
+    connect(m_configDialog, &ServerConfigOptDlg::finished, this, &ListView::onServerConfigOptDlgFinished);
     // 2. 记录弹窗
     ServerConfigManager::instance()->setModifyDialog(curItemServer->m_serverName, m_configDialog);
     m_configDialog->show();
+}
+
+/*******************************************************************************
+ 1. @函数:    onServerConfigOptDlgFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    编辑远程服务器弹窗finished
+*******************************************************************************/
+inline void ListView::onServerConfigOptDlgFinished(int result)
+{
+    // 弹窗隐藏或消失
+    qDebug() << "focus state " << m_focusState;
+    // 3. 对弹窗操作进行分析
+    // 判断是否删除
+    if (result == ServerConfigOptDlg::Accepted) {
+        // 判断是否需要删除
+        if (m_configDialog->isDelServer()) {
+            // 弹出删除弹窗
+            qDebug() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
+            DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), m_configDialog);
+            deleteDialog->setObjectName("RemoteDeleteDialog");
+            deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
+            connect(deleteDialog, &DDialog::finished, this, &ListView::onDeleteServerDialogFinished);
+            deleteDialog->setWindowModality(Qt::WindowModal);
+            deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+            deleteDialog->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+            deleteDialog->addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
+            deleteDialog->show();
+            // 释放窗口
+            Service::instance()->setIsDialogShow(window(), false);
+        } else {
+            // 不删除，修改
+            // 释放窗口
+            Service::instance()->setIsDialogShow(window(), false);
+            // 修改后会有信号刷新列表
+            // 不需要删除，修改了转到这条修改的记录
+            // 设置滚轮
+            // 关闭后及时将弹窗删除
+            // 记住修改前的位置 m_currentIndex
+            qDebug() << "index before modify " << m_currentIndex;
+            ServerConfigManager::instance()->removeDialog(m_configDialog);
+            // 刷新列表
+            emit ServerConfigManager::instance()->refreshList();
+            // 获取index
+            int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
+            // 若找不到
+            if (index  < 0) {
+                // 旧位置的下一个
+                index = getNextIndex(m_currentIndex);
+            }
+            // 依旧没有找到啦
+            if (index < 0) {
+                qDebug() << "no next item";
+                if (m_focusState) {
+                    // 有焦点，焦点出
+                    emit focusOut(Qt::NoFocusReason);
+                }
+            }
+            // 找的到
+            else {
+                if (m_focusState) {
+                    // 设置焦点
+                    setFocus();
+                    // 有焦点，设置焦点
+                    setCurrentIndex(index);
+                } else {
+                    // 没焦点,设置滚轮
+                    setScroll(index);
+                }
+            }
+        }
+    }
+    // 不接受，reject 修改弹窗
+    else {
+        // 释放窗口
+        Service::instance()->setIsDialogShow(window(), false);
+        if (m_focusState) {
+            int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
+            // 回到列表,仅回到大的列表，没有回到具体的哪个点
+            setFocus();
+            qDebug() << "current Index ListView" << m_currentIndex;
+            setCurrentIndex(index);
+        }
+        // 取消后及时将弹窗删除
+        ServerConfigManager::instance()->removeDialog(m_configDialog);
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    onDeleteServerDialogFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    删除远程服务器弹窗finished
+*******************************************************************************/
+inline void ListView::onDeleteServerDialogFinished(int result)
+{
+    // 获取index
+    int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
+    // 删除
+    if (DDialog::Accepted == result) {
+        // 关闭所有相关弹窗
+        ServerConfigManager::instance()->closeAllDialog(m_configDialog->getCurServer()->m_serverName);
+        ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
+        emit ServerConfigManager::instance()->refreshList();
+        emit listItemCountChange();
+    } else {
+        // 关闭后及时将弹窗删除
+        ServerConfigManager::instance()->removeDialog(m_configDialog);
+    }
+    // Todo : 焦点返回下一个
+    index = getNextIndex(index);
+    if (m_focusState) {
+        // 根据返回值判断焦点位置
+        if (index >= 0) {
+            // 回到列表,仅回到大的列表，没有回到具体的哪个点
+            setFocus();
+            // 列表不为空
+            setCurrentIndex(index);
+        } else {
+            // 列表为空焦点自动往下
+            m_focusState = false;
+            emit focusOut(Qt::NoFocusReason);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -507,114 +551,129 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
     itemData.m_cmdShortcut = itemAction->shortcut().toString();
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, this);
-    connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
+    connect(m_pdlg, &CustomCommandOptDlg::finished, this, &ListView::onCustomCommandOptDlgFinished);
+    m_pdlg->show();
+}
 
-        int tempResult = result;
+/*******************************************************************************
+ 1. @函数:    onCustomCommandOptDlgFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    编辑自定义命令弹窗finished
+*******************************************************************************/
+inline void ListView::onCustomCommandOptDlgFinished(int result)
+{
+    int tempResult = result;
 
-        // 弹窗隐藏或消失
-        //Service::instance()->setIsDialogShow(window(), false);//暂时保留
+    // 弹窗隐藏或消失
+    //Service::instance()->setIsDialogShow(window(), false);//暂时保留
 
-        if (QDialog::Accepted == result) {
-            //确认修改处理
-            qDebug() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
-            QAction *newAction = m_pdlg->getCurCustomCmd();
-            CustomCommandData itemData = *(m_pdlg->m_currItemData);
-            CustomCommandData itemDel = itemData;
+    if (QDialog::Accepted == result) {
+        //确认修改处理
+        qDebug() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
+        QAction *newAction = m_pdlg->getCurCustomCmd();
+        CustomCommandData itemData = *(m_pdlg->m_currItemData);
+        CustomCommandData itemDel = itemData;
 
-            itemData.m_cmdName = newAction->text();
-            itemData.m_cmdText = newAction->data().toString();
-            itemData.m_cmdShortcut = newAction->shortcut().toString();
+        itemData.m_cmdName = newAction->text();
+        itemData.m_cmdText = newAction->data().toString();
+        itemData.m_cmdShortcut = newAction->shortcut().toString();
 
-            //newAction->setData(newAction->data());
-            //newAction->setShortcut(newAction->shortcut());
+        //newAction->setData(newAction->data());
+        //newAction->setShortcut(newAction->shortcut());
 
 
-            ShortcutManager::instance()->delCustomCommand(itemDel);
-            ShortcutManager::instance()->addCustomCommand(*newAction);
-            // 更新列表项
-            //updateItem(ItemFuncType_Item, itemData.m_cmdName, itemData.m_cmdShortcut);
-            updateItem(ItemFuncType_Item, itemDel.m_cmdName, itemData.m_cmdName);
-            // 找到值
-            m_pdlg->closeRefreshDataConnection();
-            emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
+        ShortcutManager::instance()->delCustomCommand(itemDel);
+        ShortcutManager::instance()->addCustomCommand(*newAction);
+        // 更新列表项
+        //updateItem(ItemFuncType_Item, itemData.m_cmdName, itemData.m_cmdShortcut);
+        updateItem(ItemFuncType_Item, itemDel.m_cmdName, itemData.m_cmdName);
+        // 找到值
+        m_pdlg->closeRefreshDataConnection();
+        emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
 
-            int index = indexFromString(itemData.m_cmdName);
-            qDebug() << "-------------------------------------------index=" << index << ",itemData.m_cmdName=" << itemData.m_cmdName;
-            if (m_focusState) {
-                // 将焦点落回
-                m_currentIndex = index;
-                setCurrentIndex(index);
-
-                // 滚轮滚动到最新的位置
-                setScroll(index);
-                setFocus();
-            }
-
-        } else if (QDialog::Rejected == result) {
-
-            //Delete custom command 删除自定义命令处理
-            if (m_pdlg->isDelCurCommand()) {
-                qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
-                DDialog *dlgDelete = new DDialog(this);
-                dlgDelete->setObjectName("CustomDeleteDialog");
-                dlgDelete->setAttribute(Qt::WA_DeleteOnClose);
-                dlgDelete->setWindowModality(Qt::WindowModal);
-                m_pdlg->m_dlgDelete = dlgDelete;
-
-                dlgDelete->setIcon(QIcon::fromTheme("deepin-terminal"));
-                dlgDelete->setTitle(tr("Are you sure you want to delete %1?").arg(m_pdlg->m_currItemData->m_cmdName));
-                dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-                dlgDelete->addButton(QObject::tr("Confirm"), true, DDialog::ButtonWarning);
-                connect(dlgDelete, &DDialog::finished, this, [ & ](int result) {
-                    //是否删除自定义命令再次确认操作
-                    if (QDialog::Accepted == result) {
-                        // 删除前获取位置
-                        int index = indexFromString(m_pdlg->m_currItemData->m_cmdName);
-                        ShortcutManager::instance()->delCustomCommand(*(m_pdlg->m_currItemData));
-                        // 删除项
-                        removeItem(ItemFuncType_Item, m_pdlg->m_currItemData->m_cmdName);
-                        emit listItemCountChange();
-                        // 删除后焦点位置
-                        if (m_focusState) {
-                            // 获取下一个的位置
-                            index = getNextIndex(index);
-                            if (index >= 0) {
-                                // 找的到
-                                setCurrentIndex(index);
-                                setScroll(index);
-                                setFocus();
-                            } else {
-                                // 找不到
-                                qDebug() << "can't find index" << index;
-                                if (m_itemList.count() == 0) {
-                                    emit focusOut(Qt::NoFocusReason);
-                                }
-                            }
-                        }
-                        m_pdlg->closeRefreshDataConnection();
-                        emit Service::instance()->refreshCommandPanel(m_pdlg->m_currItemData->m_cmdName, m_pdlg->m_currItemData->m_cmdName);//emit Service::instance()->refreshCommandPanel("", "");
-                    }
-
-                });
-                dlgDelete->show();
-            }
-        }
-
-        Service::instance()->setIsDialogShow(window(), false);
-
+        int index = indexFromString(itemData.m_cmdName);
+        qDebug() << "-------------------------------------------index=" << index << ",itemData.m_cmdName=" << itemData.m_cmdName;
         if (m_focusState) {
             // 将焦点落回
-            setCurrentIndex(m_currentIndex);
+            m_currentIndex = index;
+            setCurrentIndex(index);
 
             // 滚轮滚动到最新的位置
-            setScroll(m_currentIndex);
+            setScroll(index);
             setFocus();
         }
 
-        qDebug() << "================================tempResult=" << tempResult;
+    } else if (QDialog::Rejected == result) {
 
-    });
-    m_pdlg->show();
+        //Delete custom command 删除自定义命令处理
+        if (m_pdlg->isDelCurCommand()) {
+            qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
+            DDialog *dlgDelete = new DDialog(this);
+            dlgDelete->setObjectName("CustomDeleteDialog");
+            dlgDelete->setAttribute(Qt::WA_DeleteOnClose);
+            dlgDelete->setWindowModality(Qt::WindowModal);
+            m_pdlg->m_dlgDelete = dlgDelete;
+
+            dlgDelete->setIcon(QIcon::fromTheme("deepin-terminal"));
+            dlgDelete->setTitle(tr("Are you sure you want to delete %1?").arg(m_pdlg->m_currItemData->m_cmdName));
+            dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
+            dlgDelete->addButton(QObject::tr("Confirm"), true, DDialog::ButtonWarning);
+            connect(dlgDelete, &DDialog::finished, this, &ListView::onDeleteCustomCommandFinished);
+            dlgDelete->show();
+        }
+    }
+
+    Service::instance()->setIsDialogShow(window(), false);
+
+    if (m_focusState) {
+        // 将焦点落回
+        setCurrentIndex(m_currentIndex);
+
+        // 滚轮滚动到最新的位置
+        setScroll(m_currentIndex);
+        setFocus();
+    }
+
+    qDebug() << "================================tempResult=" << tempResult;
+}
+
+/*******************************************************************************
+ 1. @函数:    onDeleteCustomCommandFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    删除自定义命令弹窗finished
+*******************************************************************************/
+inline void ListView::onDeleteCustomCommandFinished(int result)
+{
+    //是否删除自定义命令再次确认操作
+    if (QDialog::Accepted == result) {
+        // 删除前获取位置
+        int index = indexFromString(m_pdlg->m_currItemData->m_cmdName);
+        ShortcutManager::instance()->delCustomCommand(*(m_pdlg->m_currItemData));
+        // 删除项
+        removeItem(ItemFuncType_Item, m_pdlg->m_currItemData->m_cmdName);
+        emit listItemCountChange();
+        // 删除后焦点位置
+        if (m_focusState) {
+            // 获取下一个的位置
+            index = getNextIndex(index);
+            if (index >= 0) {
+                // 找的到
+                setCurrentIndex(index);
+                setScroll(index);
+                setFocus();
+            } else {
+                // 找不到
+                qDebug() << "can't find index" << index;
+                if (m_itemList.count() == 0) {
+                    emit focusOut(Qt::NoFocusReason);
+                }
+            }
+        }
+        m_pdlg->closeRefreshDataConnection();
+        emit Service::instance()->refreshCommandPanel(m_pdlg->m_currItemData->m_cmdName, m_pdlg->m_currItemData->m_cmdName);
+    }
 }
 
 /*******************************************************************************

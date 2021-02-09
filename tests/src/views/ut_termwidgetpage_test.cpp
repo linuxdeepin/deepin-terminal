@@ -15,10 +15,6 @@
 
 UT_TermWidgetPage_Test::UT_TermWidgetPage_Test()
 {
-}
-
-void UT_TermWidgetPage_Test::SetUp()
-{
     if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
@@ -29,7 +25,7 @@ void UT_TermWidgetPage_Test::SetUp()
     m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
 }
 
-void UT_TermWidgetPage_Test::TearDown()
+UT_TermWidgetPage_Test::~UT_TermWidgetPage_Test()
 {
     delete m_normalWindow;
 }
@@ -73,8 +69,8 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
     }
 
     QString lastFontFamily = fontFamilyList.last();
-    QFont currFont = currTermWidget->getTerminalFont();
-    EXPECT_EQ(currFont.family(), lastFontFamily);
+    QFont currTermFont = currTermWidget->getTerminalFont();
+    EXPECT_EQ(currTermFont.family(), lastFontFamily);
 
     //字体大小大于20时界面提示符显示会有异常
     //设置字体大小时会不停刷日志：Using a variable-width font in the terminal.  This may cause performance degradation and display/alignment errors.

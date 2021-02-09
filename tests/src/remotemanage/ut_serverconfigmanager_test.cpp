@@ -29,9 +29,9 @@ int UT_ServerConfigManager_Test::getServerConfigCount()
 {
     QList<ServerConfig *> serverConfigList;
     QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
-    for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
+    for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); ++iter) {
         QList<ServerConfig *> value = iter.value();
-        for (int i = 0; i < value.size(); i++) {
+        for (int i = 0; i < value.size(); ++i) {
             serverConfigList.append(value.at(i));
         }
     }
@@ -45,12 +45,6 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
 {
     ServerConfigManager *serverConfigManager = ServerConfigManager::instance();
     serverConfigManager->initServerConfig();
-
-    QDir serverConfigBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-//    EXPECT_EQ(serverConfigBasePath.exists(), true);
-
-    QString serverConfigFilePath(serverConfigBasePath.filePath("server-config.conf"));
-//    EXPECT_EQ(QFile::exists(serverConfigFilePath), true);
 
     int serverConfigCount = getServerConfigCount();
     qDebug() << serverConfigCount << endl;
@@ -73,12 +67,10 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     config->m_deleteKey = QString("");
 
     serverConfigManager->saveServerConfig(config);
-//    EXPECT_EQ(getServerConfigCount(), serverConfigCount + 1);
 
-    int serverCount = serverConfigManager->getServerCount(config->m_group);
+    serverConfigManager->getServerCount(config->m_group);
 
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
-//    EXPECT_NE(currConfig, nullptr);
 
     qsrand(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
@@ -95,14 +87,8 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     newConfig->m_backspaceKey = QString("");
     newConfig->m_deleteKey = QString("");
     serverConfigManager->modifyServerConfig(newConfig, currConfig);
-//    EXPECT_EQ(newConfig, serverConfigManager->getServerConfig(newConfig->m_serverName));
-
-//    EXPECT_GE(serverCount, 1);
 
     serverConfigManager->delServerConfig(newConfig);
-//    EXPECT_EQ(getServerConfigCount(), serverConfigCount);
-
-//    EXPECT_EQ(serverConfigManager->getServerCount(groupName), serverCount - 1);
 }
 
 /*******************************************************************************

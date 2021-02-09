@@ -17,10 +17,6 @@ DWIDGET_USE_NAMESPACE
 
 UT_TitleBar_Test::UT_TitleBar_Test()
 {
-}
-
-void UT_TitleBar_Test::SetUp()
-{
     if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
@@ -31,7 +27,7 @@ void UT_TitleBar_Test::SetUp()
     m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
 }
 
-void UT_TitleBar_Test::TearDown()
+UT_TitleBar_Test::~UT_TitleBar_Test()
 {
     delete m_normalWindow;
 }

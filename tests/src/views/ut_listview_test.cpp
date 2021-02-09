@@ -6,7 +6,9 @@
 #include "remotemanagementpanel.h"
 #include "utils.h"
 #include "shortcutmanager.h"
+#include "customcommandoptdlg.h"
 #include "service.h"
+#include "stub.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -149,6 +151,69 @@ TEST_F(UT_ListView_Test, setFocusFromeIndex)
     listWidget.setFocusFromeIndex(0, true);
 
     listWidget.setFocusFromeIndex(0, false);
+}
+
+//为测试onCustomCommandOptDlgFinished打桩
+QAction *stub_getCurCustomCmd()
+{
+    return ShortcutManager::instance()->getCustomCommandActionList().first();
+}
+
+//为测试onCustomCommandOptDlgFinished打桩
+void stub_setIsDialogShow(QWidget *parent, bool isDialogShow)
+{
+    Q_UNUSED(parent)
+    Q_UNUSED(isDialogShow)
+}
+
+bool stub_isDelCurCommand()
+{
+    return true;
+}
+
+/*******************************************************************************
+ 1. @函数:    onCustomCommandOptDlgFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-09
+ 4. @说明:    onCustomCommandOptDlgFinished单元测试
+*******************************************************************************/
+TEST_F(UT_ListView_Test, onCustomCommandOptDlgFinished)
+{
+    ListView listWidget(ListType_Custom, nullptr);
+
+    const int count = 3;
+    for (int i = 0; i <= count; i++) {
+        QString key = QString(QChar('A' + i));
+        QAction *newAction = new QAction;
+        newAction->setText(QString("cmd_%1").arg(i));
+        newAction->setShortcut(QKeySequence(QString("Ctrl+Shift+%1").arg(key)));
+        listWidget.addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
+
+        ShortcutManager::instance()->addCustomCommand(*newAction);
+    }
+
+    QAction *firstAction = ShortcutManager::instance()->getCustomCommandActionList().first();
+    CustomCommandData itemData;
+    itemData.m_cmdName = firstAction->text() + "_modify";
+    itemData.m_cmdText = firstAction->data().toString() + "_modify";
+    itemData.m_cmdShortcut = firstAction->shortcut().toString() + "_modify";
+
+    Stub s;
+    s.set(ADDR(CustomCommandOptDlg, getCurCustomCmd), stub_getCurCustomCmd);
+    s.set(ADDR(Service, setIsDialogShow), stub_setIsDialogShow);
+
+    listWidget.m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, nullptr);
+    listWidget.onCustomCommandOptDlgFinished(QDialog::Accepted);
+
+    s.set(ADDR(CustomCommandOptDlg, isDelCurCommand), stub_isDelCurCommand);
+
+    listWidget.onCustomCommandOptDlgFinished(QDialog::Rejected);
+
+    // 打桩还原
+    s.reset(ADDR(CustomCommandOptDlg, isDelCurCommand));
+
+    s.reset(ADDR(CustomCommandOptDlg, getCurCustomCmd));
+    s.reset(ADDR(Service, setIsDialogShow));
 }
 
 #endif

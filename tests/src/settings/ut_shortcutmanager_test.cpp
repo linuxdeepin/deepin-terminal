@@ -17,10 +17,6 @@ DCORE_USE_NAMESPACE
 
 UT_ShortcutManager_Test::UT_ShortcutManager_Test()
 {
-}
-
-void UT_ShortcutManager_Test::SetUp()
-{
     //Service中默认已经初始化了ShortcutManager
     if (!Service::instance()->property("isServiceInit").toBool()) {
         Service::instance()->init();
@@ -30,23 +26,17 @@ void UT_ShortcutManager_Test::SetUp()
     m_shortcutManager = ShortcutManager::instance();
 }
 
-void UT_ShortcutManager_Test::TearDown()
-{
-}
-
 #ifdef UT_SHORTCUTMANAGER_TEST
 TEST_F(UT_ShortcutManager_Test, createBuiltinShortcutsFromConfig)
 {
-    QList<QAction *> builtinShortcuts = m_shortcutManager->createBuiltinShortcutsFromConfig();
-//    EXPECT_GE(builtinShortcuts.count(), 0);
+    m_shortcutManager->createBuiltinShortcutsFromConfig();
 }
 
 
 TEST_F(UT_ShortcutManager_Test, getCustomCommandActionList)
 {
     QList<QAction *> &commandActionList = m_shortcutManager->getCustomCommandActionList();
-    int commandCount = commandActionList.count();
-//    EXPECT_GE(commandCount, 0);
+    commandActionList.count();
 }
 
 
@@ -59,7 +49,6 @@ TEST_F(UT_ShortcutManager_Test, addCustomCommand)
     newAction->setText(cmdName);
     newAction->setShortcut(QKeySequence(shortcutKey));
     m_shortcutManager->addCustomCommand(*newAction);
-//    EXPECT_GE(m_shortcutManager->getCustomCommandActionList().count(), commandCount + 1);
 }
 
 TEST_F(UT_ShortcutManager_Test, checkActionIsExist)
@@ -71,8 +60,7 @@ TEST_F(UT_ShortcutManager_Test, checkActionIsExist)
     newAction->setText(cmdName);
     newAction->setShortcut(QKeySequence(shortcutKey));
     m_shortcutManager->addCustomCommand(*newAction);
-    QAction *currAction = m_shortcutManager->checkActionIsExist(*newAction);
-//    EXPECT_NE(currAction, nullptr);
+    m_shortcutManager->checkActionIsExist(*newAction);
 }
 
 
@@ -84,8 +72,7 @@ TEST_F(UT_ShortcutManager_Test, checkActionIsExistForModify)
     QAction *newAction = new QAction;
     newAction->setText(cmdName);
     newAction->setShortcut(QKeySequence(shortcutKey));
-    QAction *currAction = m_shortcutManager->checkActionIsExistForModify(*newAction);
-//    EXPECT_NE(currAction, nullptr);
+    m_shortcutManager->checkActionIsExistForModify(*newAction);
 }
 
 TEST_F(UT_ShortcutManager_Test, findActionByKey)
@@ -96,9 +83,7 @@ TEST_F(UT_ShortcutManager_Test, findActionByKey)
     QAction *newAction = new QAction;
     newAction->setText(cmdName);
     newAction->setShortcut(QKeySequence(shortcutKey));
-    QAction *currAction = m_shortcutManager->findActionByKey(cmdName);
-//    EXPECT_NE(currAction, nullptr);
-//    EXPECT_EQ(currAction->text(), cmdName);
+    m_shortcutManager->findActionByKey(cmdName);
 }
 
 
@@ -111,8 +96,7 @@ TEST_F(UT_ShortcutManager_Test, isShortcutConflictInCustom)
     newAction->setText(cmdName);
     newAction->setShortcut(QKeySequence(shortcutKey));
 
-    bool isConflict = m_shortcutManager->isShortcutConflictInCustom(cmdName, shortcutKey);
-//    EXPECT_EQ(isConflict, true);
+    m_shortcutManager->isShortcutConflictInCustom(cmdName, shortcutKey);
 }
 
 bool stub_checkShortcutValid(const QString &Name, const QString &Key, QString &Reason)
@@ -138,7 +122,6 @@ TEST_F(UT_ShortcutManager_Test, isValidShortcut)
     QString newCmdName = QString("cmd_new_%1").arg(Utils::getRandString());
     QString forCheckShortcutKey = QString("Ctrl+Alt+Shift+Tab+T");
     m_shortcutManager->isValidShortcut(newCmdName, forCheckShortcutKey);
-//    EXPECT_EQ(isValid, true);
 
     s.reset(ADDR(ShortcutManager, checkShortcutValid));
     s.reset(ADDR(Utils, showShortcutConflictMsgbox));
@@ -155,7 +138,6 @@ TEST_F(UT_ShortcutManager_Test, checkShortcutValid)
 
     QString reason;
     m_shortcutManager->checkShortcutValid(cmdName, shortcutKey, reason);
-//    EXPECT_EQ(isValid, false);
 }
 
 #endif

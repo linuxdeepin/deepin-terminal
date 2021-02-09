@@ -367,6 +367,8 @@ TEST_F(UT_Tabbar_Test, setClearTabColor)
 
 TermWidgetPage *stub_getTermPage(const QString &identifier)
 {
+    Q_UNUSED(identifier)
+
     TermProperties properties;
     TermWidgetPage *widgetPage = new TermWidgetPage(properties, nullptr);
     widgetPage->resize(800, 600);

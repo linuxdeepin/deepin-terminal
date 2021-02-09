@@ -34,9 +34,9 @@ int UT_RemoteManagementPanel_Test::getServerConfigCount()
 {
     QList<ServerConfig *> serverConfigList;
     QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
-    for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
+    for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); ++iter) {
         QList<ServerConfig *> value = iter.value();
-        for (int i = 0; i < value.size(); i++) {
+        for (int i = 0; i < value.size(); ++i) {
             serverConfigList.append(value.at(i));
         }
     }

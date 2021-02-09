@@ -21,7 +21,7 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
-public:
+private:
     TermProperties m_normalTermProperty;
     MainWindow *m_normalWindow = nullptr;
     CustomCommandTopPanel* m_cmdTopPanel = nullptr;
