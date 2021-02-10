@@ -3093,7 +3093,26 @@ void MainWindow::themeActionHoveredSlot(QAction *action)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    onCommandActionTriggered
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-10
+ 4. @说明:    QAction触发对应的自定义命令槽函数
+*******************************************************************************/
+void MainWindow::onCommandActionTriggered()
+{
+    QAction *commandAction = qobject_cast<QAction *>(sender());
 
+    qDebug() << "commandAction->data().toString() is triggered" << this;
+    if (!this->isActiveWindow()) {
+        return ;
+    }
+    QString command = commandAction->data().toString();
+    if (!command.endsWith('\n')) {
+        command.append('\n');
+    }
+    this->currentPage()->sendTextToCurrentTerm(command);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /**

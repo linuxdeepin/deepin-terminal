@@ -102,17 +102,7 @@ ShortcutManager::~ShortcutManager()
 void ShortcutManager::initConnect(MainWindow *mainWindow)
 {
     for (auto &commandAction : m_customCommandActionList) {
-        connect(commandAction, &QAction::triggered, mainWindow, [ = ]() {
-            qDebug() << "commandAction->data().toString() is triggered" << mainWindow;
-            if (!mainWindow->isActiveWindow()) {
-                return ;
-            }
-            QString command = commandAction->data().toString();
-            if (!command.endsWith('\n')) {
-                command.append('\n');
-            }
-            mainWindow->currentPage()->sendTextToCurrentTerm(command);
-        });
+        connect(commandAction, &QAction::triggered, mainWindow, &MainWindow::onCommandActionTriggered);
     }
     mainWindow->addActions(m_customCommandActionList);
 }

@@ -561,78 +561,14 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 
         if (mouseEvent->button() == Qt::RightButton) {
-            QPoint position = mouseEvent->pos();
-            m_rightClickTab = -1;
-
-            for (int i = 0; i < this->count(); i++) {
-                if (tabRect(i).contains(position)) {
-                    m_rightClickTab = i;
-                    break;
-                }
-            }
-            qDebug() << "currIndex" << m_rightClickTab << endl;
-
-            // 弹出tab标签的右键菜单
-            if (m_rightClickTab >= 0) {
-                if (m_rightMenu == nullptr) {
-                    m_rightMenu = new DMenu(this);
-                    m_rightMenu->setObjectName("TabBarRightMenu");//Add by ut001000 renfeixiang 2020-08-13
-                } else {
-                    // clear时，对于绑在menu下面的action会自动释放，无需单独处理action释放
-                    m_rightMenu->clear();
-                }
-
-                m_closeTabAction = new QAction(QObject::tr("Close tab"), m_rightMenu);
-                m_closeTabAction->setObjectName("TabBarCloseTabAction");//Add by ut001000 renfeixiang 2020-08-13
-
-                m_closeOtherTabAction = new QAction(QObject::tr("Close other tabs"), m_rightMenu);
-                m_closeOtherTabAction->setObjectName("TabBarCloseOtherTabAction");//Add by ut001000 renfeixiang 2020-08-13
-
-                m_renameTabAction = new QAction(QObject::tr("Rename title"), m_rightMenu);
-                m_renameTabAction->setObjectName("TabTitleRenameAction");//Add by dzw 2020-11-02
-
-                connect(m_closeTabAction, &QAction::triggered, this, [ = ] {
-                    Q_EMIT tabCloseRequested(m_rightClickTab);
-                });
-
-                connect(m_closeOtherTabAction, &QAction::triggered, this, [ = ] {
-                    emit menuCloseOtherTab(identifier(m_rightClickTab));
-                });
-
-                connect(m_renameTabAction, &QAction::triggered, this, [ = ] {
-                    emit showRenameTabDialog(identifier(m_rightClickTab));
-                });
-
-                m_rightMenu->addAction(m_closeTabAction);
-                m_rightMenu->addAction(m_closeOtherTabAction);
-                m_rightMenu->addAction(m_renameTabAction);
-
-                m_closeOtherTabAction->setEnabled(true);
-                if (this->count() < 2) {
-                    m_closeOtherTabAction->setEnabled(false);
-                }
-
-                m_rightMenu->exec(mapToGlobal(position));
-
-                return true;
+            bool isHandle = handleRightButtonClick(mouseEvent);
+            if (isHandle) {
+                return isHandle;
             }
         }
         else if(mouseEvent->button() ==  Qt::MiddleButton)                                                                                                               
         {
-            //鼠标中键点击关闭标签页  
-            int index = -1;     
-            QPoint position = mouseEvent->pos();
-
-            for (int i = 0; i < this->count(); i++) { 
-                if (tabRect(i).contains(position)) {
-                    index = i;     
-                    break;     
-                }
-            }
-            if(index >= 0)     
-            {
-                emit tabCloseRequested(index); 
-            }
+            handleMiddleButtonClick(mouseEvent);
         }
     } else if (event->type() == QEvent::DragEnter) {
     } else if (event->type() == QEvent::DragLeave) {
@@ -642,6 +578,124 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
     }
 
     return false;
+}
+
+/*******************************************************************************
+ 1. @函数:    handleMiddleButtonClick
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-10
+ 4. @说明:    处理标签鼠标中键点击
+*******************************************************************************/
+inline void TabBar::handleMiddleButtonClick(QMouseEvent *mouseEvent)
+{
+    //鼠标中键点击关闭标签页
+    int index = -1;
+    QPoint position = mouseEvent->pos();
+
+    for (int i = 0; i < this->count(); i++) {
+        if (tabRect(i).contains(position)) {
+            index = i;
+            break;
+        }
+    }
+    if(index >= 0)
+    {
+        emit tabCloseRequested(index);
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    handleRightButtonClick
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-10
+ 4. @说明:    处理标签鼠标右键点击
+*******************************************************************************/
+inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
+{
+    QPoint position = mouseEvent->pos();
+    m_rightClickTab = -1;
+
+    for (int i = 0; i < this->count(); i++) {
+        if (tabRect(i).contains(position)) {
+            m_rightClickTab = i;
+            break;
+        }
+    }
+    qDebug() << "currIndex" << m_rightClickTab << endl;
+
+    // 弹出tab标签的右键菜单
+    if (m_rightClickTab >= 0) {
+        if (m_rightMenu == nullptr) {
+            m_rightMenu = new DMenu(this);
+            m_rightMenu->setObjectName("TabBarRightMenu");//Add by ut001000 renfeixiang 2020-08-13
+        } else {
+            // clear时，对于绑在menu下面的action会自动释放，无需单独处理action释放
+            m_rightMenu->clear();
+        }
+
+        m_closeTabAction = new QAction(QObject::tr("Close tab"), m_rightMenu);
+        m_closeTabAction->setObjectName("TabBarCloseTabAction");//Add by ut001000 renfeixiang 2020-08-13
+
+        m_closeOtherTabAction = new QAction(QObject::tr("Close other tabs"), m_rightMenu);
+        m_closeOtherTabAction->setObjectName("TabBarCloseOtherTabAction");//Add by ut001000 renfeixiang 2020-08-13
+
+        m_renameTabAction = new QAction(QObject::tr("Rename title"), m_rightMenu);
+        m_renameTabAction->setObjectName("TabTitleRenameAction");//Add by dzw 2020-11-02
+
+        connect(m_closeTabAction, &QAction::triggered, this, &TabBar::onCloseTabActionTriggered);
+
+        connect(m_closeOtherTabAction, &QAction::triggered, this, &TabBar::onCloseOtherTabActionTriggered);
+
+        connect(m_renameTabAction, &QAction::triggered, this, &TabBar::onRenameTabActionTriggered);
+
+        m_rightMenu->addAction(m_closeTabAction);
+        m_rightMenu->addAction(m_closeOtherTabAction);
+        m_rightMenu->addAction(m_renameTabAction);
+
+        m_closeOtherTabAction->setEnabled(true);
+        if (this->count() < 2) {
+            m_closeOtherTabAction->setEnabled(false);
+        }
+
+        m_rightMenu->exec(mapToGlobal(position));
+
+        return true;
+    }
+
+    return false;
+}
+
+/*******************************************************************************
+ 1. @函数:    onCloseTabActionTriggered
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-10
+ 4. @说明:    触发关闭标签页的Action
+*******************************************************************************/
+inline void TabBar::onCloseTabActionTriggered()
+{
+    Q_EMIT tabCloseRequested(m_rightClickTab);
+}
+
+/*******************************************************************************
+ 1. @函数:    onCloseOtherTabActionTriggered
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-10
+ 4. @说明:    触发关闭其他标签页的Action
+*******************************************************************************/
+inline void TabBar::onCloseOtherTabActionTriggered()
+{
+    emit menuCloseOtherTab(identifier(m_rightClickTab));
+}
+
+/*******************************************************************************
+ 1. @函数:    onRenameTabActionTriggered
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-10
+ 4. @说明:    触发重命名标签页的Action
+*******************************************************************************/
+inline void TabBar::onRenameTabActionTriggered()
+{
+    emit showRenameTabDialog(identifier(m_rightClickTab));
 }
 
 /*******************************************************************************

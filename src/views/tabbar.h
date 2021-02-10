@@ -148,7 +148,14 @@ private slots:
     void handleTabDroped(int index, Qt::DropAction dropAction, QObject *target);
     void handleDragActionChanged(Qt::DropAction action);
 
+    void onCloseTabActionTriggered();
+    void onCloseOtherTabActionTriggered();
+    void onRenameTabActionTriggered();
+
 private:
+    void handleMiddleButtonClick(QMouseEvent *mouseEvent);
+    bool handleRightButtonClick(QMouseEvent *mouseEvent);
+
     QAction *m_closeOtherTabAction = nullptr;
     QAction *m_closeTabAction = nullptr;
     QAction *m_renameTabAction = nullptr;

@@ -279,6 +279,9 @@ public slots:
     void OnHandleCloseType(int result, Utils::CloseType type);
     /******** Add by ut001000 renfeixiang 2020-06-03:增加 End***************/
 
+    //QAction触发对应的自定义命令槽函数
+    void onCommandActionTriggered();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
