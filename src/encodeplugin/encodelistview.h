@@ -46,7 +46,7 @@ class EncodeListView : public DListView
     Q_OBJECT
 
 public:
-    EncodeListView(QWidget *parent = nullptr);
+    explicit EncodeListView(QWidget *parent = nullptr);
 
 protected:
     void focusInEvent(QFocusEvent *event) override;
@@ -56,8 +56,6 @@ protected:
     void mousePressEvent(QMouseEvent *) override;
     void mouseReleaseEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
-
-    QSize contentsSize() const;
 
 signals:
     void focusOut();

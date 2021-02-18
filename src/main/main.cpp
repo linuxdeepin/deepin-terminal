@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
         bool isCurrentPaht = false;
         for (QString &arg : args) {
             // 若已有-w和--work-directory参数，直接将参数传给主进程执行
-            if (arg == "-w" || arg == "--work-directory") {
+            if (arg == QStringLiteral("-w") || arg == QStringLiteral("--work-directory")) {
                 isCurrentPaht = true;
                 break;
             }

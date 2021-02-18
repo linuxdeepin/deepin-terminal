@@ -87,7 +87,7 @@ public:
     QMap<QString, QList<ServerConfig *>> &getServerConfigs();
 
     // 填充列表
-    void refreshServerList(PanelType type, ListView *listview, const QString &group = "", const QString &filter = "");
+    void refreshServerList(PanelType type, ListView *listview, const QString &filter = "", const QString &group = "");
     // 添加修改弹窗
     void setModifyDialog(QString key, ServerConfigOptDlg *dlg);
     // 删除弹窗
@@ -123,7 +123,7 @@ Q_SIGNALS:
     void lookupSerceats(const QString &key, const QString &password);
 
 private:
-    ServerConfigManager(QObject *parent = nullptr);
+    explicit ServerConfigManager(QObject *parent = nullptr);
 
     static ServerConfigManager *m_instance;
 

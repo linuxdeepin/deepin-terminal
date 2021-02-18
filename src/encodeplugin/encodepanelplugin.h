@@ -41,7 +41,7 @@ class EncodePanelPlugin : public MainWindowPluginInterface
 {
     Q_OBJECT
 public:
-    EncodePanelPlugin(QObject *parent);
+    explicit EncodePanelPlugin(QObject *parent = nullptr);
 
     void initPlugin(MainWindow *mainWindow) override;
     QAction *titlebarMenu(MainWindow *mainWindow) override;

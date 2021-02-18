@@ -409,7 +409,7 @@ QMap<QString, QList<ServerConfig *>> &ServerConfigManager::getServerConfigs()
  2）参数2  所需填充的列表
  3) 参数3  分组界面的组名 搜索界面的搜索条件
 *******************************************************************************/
-void ServerConfigManager::refreshServerList(PanelType type, ListView *listview, const QString &key, const QString &group)
+void ServerConfigManager::refreshServerList(PanelType type, ListView *listview, const QString &filter, const QString &group)
 {
     switch (type) {
     case PanelType_Manage:
@@ -419,7 +419,7 @@ void ServerConfigManager::refreshServerList(PanelType type, ListView *listview, 
         fillGroupPanel(listview, group);
         break;
     case PanelType_Search:
-        fillSearchPanel(listview, key, group);
+        fillSearchPanel(listview, filter, group);
         break;
     }
 }

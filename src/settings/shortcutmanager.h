@@ -47,7 +47,7 @@ class ShortcutManager : public QObject
 {
     Q_OBJECT
 public:
-    ShortcutManager(QObject *parent = nullptr);
+    explicit ShortcutManager(QObject *parent = nullptr);
     static ShortcutManager *instance();
     ~ShortcutManager();
     void initShortcuts();

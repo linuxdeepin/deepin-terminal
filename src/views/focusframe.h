@@ -45,7 +45,7 @@ class FocusFrame : public DFrame
 {
     Q_OBJECT
 public:
-    FocusFrame(QWidget *parent = nullptr);
+    explicit FocusFrame(QWidget *parent = nullptr);
     // 鼠标是否悬浮
     bool m_isHover = false;
 

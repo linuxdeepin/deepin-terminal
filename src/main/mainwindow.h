@@ -141,8 +141,6 @@ public:
     void setCurrentPage(TermWidgetPage *page);
     TermWidgetPage *getPageByIdentifier(const QString &identifier);
 
-    void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
-
     // 基类终端是否闲置响应函数(闲置即没有程序运行)
     void onTermIsIdle(QString tabIdentifier, bool bIdle);
 
@@ -150,7 +148,6 @@ public:
 
     void pressCtrlAt();
     void pressCtrlU();
-    void pressCtrlC();
     void sleep(int msec);
 
     // 由mainwindow统一指令当前显示哪个插件
@@ -305,7 +302,6 @@ public:
 
 protected slots:
     void onTermTitleChanged(QString title);
-    void onTabTitleChanged(QString title);
     void onCreateNewWindow(QString workingDir);
 
     //鼠标选择时主题切换触发的槽函数
@@ -330,7 +326,7 @@ protected slots:
     void slotOptionButtonPressed();
 
     void slotFileChanged();
-    void slotLastTermClosed(const QString & identifier);
+    void slotLastTermClosed(const QString &identifier);
     void slotDDialogFinished(int result);
 
     void slotShortcutBuiltinCopy();
@@ -386,9 +382,7 @@ protected:
     void setNewTermPage(TermWidgetPage *termPage, bool activePage = true);
 
     QString getWinInfoConfigPath();
-    void initWindowPosition(MainWindow *mainwindow);
     void handleTitleBarMenuFocusPolicy();
-    int executeCMD(const char *cmd);
 
     bool isTabVisited(const QString &tabIdentifier);
     bool isTabChangeColor(const QString &tabIdentifier);
@@ -398,8 +392,6 @@ protected:
 
     // 终端退出保护
     bool closeConfirm();
-
-    MainWindowPluginInterface *getPluginByName(const QString &name);
 
     // 显示快捷键功能
     void displayShortcuts();
@@ -467,7 +459,7 @@ protected:
     // 是否需要保存位置开关，雷神窗口不关心这个参数
     bool m_IfUseLastSize = false;
     // 雷神终端所在桌面
-    int m_desktopIndex;
+    int m_desktopIndex = 0;
     bool m_hasConfirmedClose = false;
 
     // 对应的程序启动时间，主进程或子进程

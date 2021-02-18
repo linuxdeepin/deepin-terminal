@@ -56,10 +56,6 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     m_layout->addWidget(m_findPrevButton);
     m_layout->addWidget(m_findNextButton);
     setLayout(m_layout);
-
-    // Esc隐藏
-    // QShortcut *shortcut = new QShortcut(QKeySequence::Cancel, this);
-    // connect(shortcut, &QShortcut::activated, this, [this]() { findCancel(); });
 }
 
 /*******************************************************************************
@@ -184,26 +180,13 @@ void PageSearchBar::recoveryHoldContent()
 *******************************************************************************/
 qint64 PageSearchBar::searchCostTime()
 {
-    if (0 == m_searchStartTime)
-    {
+    if (0 == m_searchStartTime) {
         qDebug() << __FUNCTION__ << "search time error!";
         return -1;
     }
     qint64 costTime = QDateTime::currentMSecsSinceEpoch() - m_searchStartTime;
     m_searchStartTime = 0;
     return costTime;
-}
-
-/*******************************************************************************
- 1. @函数:    findCancel
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    查找取消按钮
-*******************************************************************************/
-void PageSearchBar::findCancel()
-{
-    QWidget::hide();
-    emit closeSearchBar();
 }
 
 /*******************************************************************************

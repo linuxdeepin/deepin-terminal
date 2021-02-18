@@ -147,7 +147,6 @@ public:
     void showShellMessage(QString strWarnings);
 
 public slots:
-    void wpasteSelection();
     void onSettingValueChanged(const QString &keyName);
     // 处理拖拽进来的文件名Urls
     void onDropInUrls(const char *urls);
@@ -166,7 +165,6 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
 private slots:
     void customContextMenuCall(const QPoint &pos);
-    void handleTermIdle(bool bIdle);
     // 处理标签标题参数变化
     void onTitleArgsChange(QString key, QString value);
     // hostname名称变化

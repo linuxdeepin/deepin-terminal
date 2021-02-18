@@ -118,16 +118,16 @@ public slots:
     void setCurrentIndex(int index);
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event);
-    QSize minimumTabSizeHint(int index) const;
-    QSize maximumTabSizeHint(int index) const;
+    bool eventFilter(QObject *watched, QEvent *event) override;
+    QSize minimumTabSizeHint(int index) const override;
+    QSize maximumTabSizeHint(int index) const override;
 
     //tab拖动
-    QPixmap createDragPixmapFromTab(int index, const QStyleOptionTab &option, QPoint *hotspot) const;
-    QMimeData *createMimeDataFromTab(int index, const QStyleOptionTab &option) const;
-    void insertFromMimeDataOnDragEnter(int index, const QMimeData *source);
-    void insertFromMimeData(int index, const QMimeData *source);
-    bool canInsertFromMimeData(int index, const QMimeData *source) const;
+    QPixmap createDragPixmapFromTab(int index, const QStyleOptionTab &option, QPoint *hotspot) const override;
+    QMimeData *createMimeDataFromTab(int index, const QStyleOptionTab &option) const override;
+    void insertFromMimeDataOnDragEnter(int index, const QMimeData *source) override;
+    void insertFromMimeData(int index, const QMimeData *source) override;
+    bool canInsertFromMimeData(int index, const QMimeData *source) const override;
 
     void createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab);
     MainWindow *createNormalWindow();

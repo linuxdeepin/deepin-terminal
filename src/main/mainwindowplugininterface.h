@@ -36,7 +36,7 @@ class MainWindowPluginInterface : public QObject
 {
     Q_OBJECT
 public:
-    MainWindowPluginInterface(QObject *parent) : QObject(parent)
+    explicit MainWindowPluginInterface(QObject *parent = nullptr) : QObject(parent)
     {
     }
 

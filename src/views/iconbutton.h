@@ -44,7 +44,7 @@ class IconButton : public DIconButton
 {
     Q_OBJECT
 public:
-    IconButton(QWidget *parent = nullptr);
+    explicit IconButton(QWidget *parent = nullptr);
 
 signals:
     // 焦点交给前一个

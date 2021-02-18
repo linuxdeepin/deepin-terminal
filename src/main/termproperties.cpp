@@ -31,9 +31,8 @@ TermProperties::TermProperties(QString workingDir, QString colorScheme)
     m_properties.insert(ColorScheme, colorScheme);
 }
 
-TermProperties::TermProperties(QMap<TermProperty, QVariant> list)
+TermProperties::TermProperties(QMap<TermProperty, QVariant> list) : m_properties(list)
 {
-    m_properties = list;
 }
 
 /*******************************************************************************

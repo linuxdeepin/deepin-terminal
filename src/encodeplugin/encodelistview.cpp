@@ -246,17 +246,6 @@ void EncodeListView::mouseMoveEvent(QMouseEvent *event)
 }
 
 /*******************************************************************************
- 1. @函数:    contentsSize
- 2. @作者:    ut001121 zhangmeng
- 3. @日期:    2020-08-11
- 4. @说明:    返回内容大小
-*******************************************************************************/
-QSize EncodeListView::contentsSize() const
-{
-    return itemSize();
-}
-
-/*******************************************************************************
  1. @函数:    onListViewClicked
  2. @作者:    ut001121 zhangmeng
  3. @日期:    2020-08-11
@@ -328,16 +317,9 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing, true);
 
-        QVariant varDisplay = index.data(Qt::DisplayRole);
-
         //用来在视图中画一个item
         QStyleOptionViewItem viewOption(option);
         initStyleOption(&viewOption, index);
-        DPalette::ColorGroup cg = option.state & QStyle::State_Enabled
-                                  ? DPalette::Normal : DPalette::Disabled;
-        if (cg == DPalette::Normal && !(option.state & QStyle::State_Active)) {
-            cg = DPalette::Inactive;
-        }
 
         // 背景区域
         QRect bgRect;

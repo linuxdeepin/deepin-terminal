@@ -32,7 +32,6 @@ FILE(GLOB allSource
     ../src/encodeplugin/*.cpp
     ../src/remotemanage/*.cpp
     ../src/settings/*.cpp
-    ../src/theme/*.cpp
     ../src/views/*.cpp
     ../src/main/service.cpp
     ../src/main/windowsmanager.cpp
@@ -50,7 +49,6 @@ FILE(GLOB allHeaders
     ../src/main/*.h
     ../src/remotemanage/*.h
     ../src/settings/*.h
-    ../src/theme/*.h
     ../src/views/*.h
 )
 
@@ -69,7 +67,6 @@ FILE(GLOB allTestHeader
     src/main/*.h
     src/remotemanage/*.h
     src/settings/*.h
-    src/theme/*.h
     src/views/*.h
     src/3rdparty/terminalwidget/lib/*.h
 )
@@ -81,7 +78,6 @@ FILE(GLOB allTestSource
     src/main/*.cpp
     src/remotemanage/*.cpp
     src/settings/*.cpp
-    src/theme/*.cpp
     src/views/*.cpp
     src/3rdparty/terminalwidget/lib/*.cpp
 )

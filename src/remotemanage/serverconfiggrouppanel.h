@@ -59,7 +59,6 @@ signals:
 public slots:
     void handleShowSearchResult();
     void refreshSearchState();
-    void listItemClicked(ServerConfig *curItemServer);
     // 列表项被点击
     void onItemClicked(const QString &key);
 

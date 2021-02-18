@@ -359,17 +359,6 @@ TermWidgetPage *TermWidget::parentPage()
 }
 
 /*******************************************************************************
- 1. @函数:    handleTermIdle
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    处理终端空闲
-*******************************************************************************/
-void TermWidget::handleTermIdle(bool bIdle)
-{
-    emit termIsIdle(this->m_page->identifier(), bIdle);
-}
-
-/*******************************************************************************
  1. @函数:    onTitleArgsChange
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-12-02
@@ -1297,23 +1286,6 @@ void TermWidget::selectEncode(QString encode)
         setRemoteEncode(encode);
         qDebug() << "Remote encode " << encode;
     }
-}
-
-/*******************************************************************************
- 1. @函数:   void TermWidgetWrapper::pasteSelection()
- 2. @作者:     n014361 王培利
- 3. @日期:     2020-01-10
- 4. @说明:     粘贴选择内容
-*******************************************************************************/
-void TermWidget::wpasteSelection()
-{
-    int x1, y1, x2, y2;
-    getSelectionStart(x1, y1);
-    qDebug() << x1 << y1;
-    getSelectionEnd(x2, y2);
-    qDebug() << x2 << y2;
-
-    pasteSelection();
 }
 
 /*******************************************************************************

@@ -35,7 +35,7 @@ class EncodeListModel : public QStandardItemModel
 {
     Q_OBJECT
 public:
-    EncodeListModel(QObject *parent = nullptr);
+    explicit EncodeListModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;

@@ -48,7 +48,7 @@ class PageSearchBar : public DFloatingWidget
 {
     Q_OBJECT
 public:
-    PageSearchBar(QWidget *parent = nullptr);
+    explicit PageSearchBar(QWidget *parent = nullptr);
 
     bool isFocus();
     void focus();
@@ -67,9 +67,6 @@ signals:
     void findPrev();
     void keywordChanged(QString keyword);
     void closeSearchBar();
-
-public slots:
-    void findCancel();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

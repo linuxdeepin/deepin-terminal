@@ -935,14 +935,14 @@ void TermWidgetPage::handleFindPrev()
  3. @日期:    2020-08-12
  4. @说明:    空函数，待处理
 *******************************************************************************/
-void TermWidgetPage::slotFindbarClose()
-{
-    //    EditWrapper *wrapper = currentWrapper();
-    //    if (wrapper->bottomBar()->isHidden())
-    //    {
-    //        wrapper->bottomBar()->show();
-    //    }
-}
+//void TermWidgetPage::slotFindbarClose()
+//{
+//    EditWrapper *wrapper = currentWrapper();
+//    if (wrapper->bottomBar()->isHidden())
+//    {
+//        wrapper->bottomBar()->show();
+//    }
+//}
 
 /*******************************************************************************
  1. @函数:    handleRemoveSearchKeyword
@@ -950,10 +950,10 @@ void TermWidgetPage::slotFindbarClose()
  3. @日期:    2020-08-12
  4. @说明:    空函数，待处理
 *******************************************************************************/
-void TermWidgetPage::handleRemoveSearchKeyword()
-{
-    //    currentWrapper()->textEditor()->removeKeywords();
-}
+//void TermWidgetPage::handleRemoveSearchKeyword()
+//{
+//    currentWrapper()->textEditor()->removeKeywords();
+//}
 /*******************************************************************************
  1. @函数:    handleUpdateSearchKeyword
  2. @作者:    ut000439 王培利

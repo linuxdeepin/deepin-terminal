@@ -287,7 +287,7 @@ void MainWindow::initTabBar()
     connect(m_tabbar, &TabBar::tabBarClicked, this, &MainWindow::slotTabBarClicked);
 
     // 点击TAB上页触发
-    connect(m_tabbar, &DTabBar::currentChanged, this,&MainWindow::slotTabCurrentChanged, Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::currentChanged, this, &MainWindow::slotTabCurrentChanged, Qt::QueuedConnection);
 
     // 点击TAB上的＂＋＂触发
     connect(m_tabbar, &DTabBar::tabAddRequested, this, &MainWindow::slotTabAddRequested, Qt::QueuedConnection);
@@ -417,7 +417,7 @@ void MainWindow::initOptionMenu()
 
 inline void MainWindow::slotFileChanged()
 {
-    QFileSystemWatcher *fileWatcher = qobject_cast<QFileSystemWatcher*>(sender());
+    QFileSystemWatcher *fileWatcher = qobject_cast<QFileSystemWatcher *>(sender());
     emit  Service::instance()->hostnameChanged();
     //这句话去了之后filechanged信号只能触发一次
     fileWatcher->addPath(HOSTNAME_PATH);
@@ -589,7 +589,7 @@ bool MainWindow::beginAddTab()
     return true;
 }
 
-inline void MainWindow::slotLastTermClosed(const QString & identifier)
+inline void MainWindow::slotLastTermClosed(const QString &identifier)
 {
     closeTab(identifier);
 }
@@ -612,7 +612,6 @@ void MainWindow::endAddTab(TermWidgetPage *termPage, bool activeTab, int index, 
     m_tabbar->saveSessionIdWithTabIndex(term->getSessionId(), index);
     m_tabbar->saveSessionIdWithTabId(term->getSessionId(), termPage->identifier());
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
-//    connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, &MainWindow::slotLastTermClosed);
 
     connect(this, &MainWindow::showPluginChanged, termPage, &TermWidgetPage::slotShowPluginChanged);
@@ -806,11 +805,11 @@ void MainWindow::remoteUploadFile(QString strFileNames)
 bool MainWindow::isFocusOnList()
 {
     bool isFocus = true;
-    DIconButton *button = m_tabbar->findChild<DIconButton *>("AddButton");
+    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
     // 判断是否找到
-    if (button != nullptr) {
+    if (addButton != nullptr) {
         // 判断按钮是否有焦点
-        if (button->hasFocus()) {
+        if (addButton->hasFocus()) {
             isFocus = false;
             qDebug() << "focus on AddButton";
         }
@@ -1033,22 +1032,6 @@ TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)
 }
 
 /*******************************************************************************
- 1. @函数:    forAllTabPage
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    基类对所有标签页执行func
-*******************************************************************************/
-void MainWindow::forAllTabPage(const std::function<void(TermWidgetPage *)> &func)
-{
-    for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
-        TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
-        if (tabPage) {
-            func(tabPage);
-        }
-    }
-}
-
-/*******************************************************************************
  1. @函数:    onTermIsIdle
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-11
@@ -1203,20 +1186,6 @@ void MainWindow::onTermTitleChanged(QString title)
 }
 
 /*******************************************************************************
- 1. @函数:    onTabTitleChanged
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    基类标签标题变化响应函数
-*******************************************************************************/
-void MainWindow::onTabTitleChanged(QString title)
-{
-    TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(sender());
-    TermWidget *term = tabPage->currentTerminal();
-    term->setProperty("currTabTitle", QVariant::fromValue(title));
-    m_tabbar->setTabText(tabPage->identifier(), title);
-}
-
-/*******************************************************************************
  1. @函数:    getConfigWindowState
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-11
@@ -1231,7 +1200,7 @@ QString MainWindow::getConfigWindowState()
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
         qDebug() << "use line state set:" << state;
-        if ("maximum" == state ) {
+        if ("maximum" == state) {
             windowState = "window_maximum";
         } else if (state == "splitscreen") {
             windowState = "split_screen";
@@ -1279,19 +1248,6 @@ QString MainWindow::getWinInfoConfigPath()
     return winInfoFilePath;
 }
 
-/*******************************************************************************
- 1. @函数:    initWindowPosition
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    基类初始化窗口位置
-*******************************************************************************/
-void MainWindow::initWindowPosition(MainWindow *mainwindow)
-{
-    int m_WindowNumber = executeCMD(cmd);
-    if (1 == m_WindowNumber) {
-        mainwindow->move((QApplication::desktop()->width() - width()) / 2, (QApplication::desktop()->height() - height()) / 2);
-    }
-}
 /*******************************************************************************
  1. @函数:    initShortcuts
  2. @作者:    ut000439 wangpeili
@@ -1719,26 +1675,6 @@ void MainWindow::initConnections()
 #endif
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &MainWindow::onApplicationStateChanged);
 }
-/*******************************************************************************
- 1. @函数:    executeCMD
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-07-31
- 4. @说明:    运行终端命令
-*******************************************************************************/
-int MainWindow::executeCMD(const char *cmd)
-{
-    char *result;
-    char buf_ps[1024] = {0};
-    FILE *ptr;
-
-    ptr = popen(cmd, "r");
-    result = fgets(buf_ps, 1024, ptr);
-
-    QString qStr(result);
-    int num = qStr.toInt() ;
-    pclose(ptr);
-    return  num;
-}
 
 /*******************************************************************************
  1. @函数:    showPlugin
@@ -1953,13 +1889,13 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 void MainWindow::onWindowSettingChanged(const QString &keyName)
 // void MainWindow::onSettingValueChanged(const int &keyIndex, const QVariant &value)
 {
-    if (keyName == "advanced.window.blurred_background") {
+    if (keyName == QStringLiteral("advanced.window.blurred_background")) {
         setEnableBlurWindow(Settings::instance()->backgroundBlur());
         return;
     }
 
     // use_on_starting重启生效
-    if (keyName == "advanced.window.use_on_starting") {
+    if (keyName == QStringLiteral("advanced.window.use_on_starting")) {
         QString state = Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
         if ("window_normal" == state) {
             m_IfUseLastSize = true;
@@ -1976,7 +1912,7 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
         return;
     }
     // auto_hide_raytheon_window在使用中自动读取生效
-    if ((keyName == "advanced.window.auto_hide_raytheon_window") || (keyName == "advanced.window.use_on_starting")) {
+    if ((keyName == QStringLiteral("advanced.window.auto_hide_raytheon_window")) || (keyName == QStringLiteral("advanced.window.use_on_starting"))) {
         qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                  << ", auto effective when happen";
         /***mod begin by ut001121 zhangmeng 20200528 修复BUG28920***/
@@ -2047,22 +1983,6 @@ void MainWindow::createNewTab()
 void MainWindow::applyTheme()
 {
     return;
-}
-
-/*******************************************************************************
- 1. @函数:    getPluginByName
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    基类通过名字获取面板
-*******************************************************************************/
-MainWindowPluginInterface *MainWindow::getPluginByName(const QString &name)
-{
-    for (int i = 0; i < m_plugins.count(); i++) {
-        if (m_plugins.at(i)->getPluginName() == name) {
-            return m_plugins.at(i);
-        }
-    }
-    return nullptr;
 }
 
 /*******************************************************************************
@@ -2468,18 +2388,6 @@ void MainWindow::pressCtrlAt()
 void MainWindow::pressCtrlU()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
-    QApplication::sendEvent(focusWidget(), &keyPress);
-}
-
-/*******************************************************************************
- 1. @函数:    pressCtrlC
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    基类按下Ctrl+C函数
-*******************************************************************************/
-void MainWindow::pressCtrlC()
-{
-    QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
     QApplication::sendEvent(focusWidget(), &keyPress);
 }
 

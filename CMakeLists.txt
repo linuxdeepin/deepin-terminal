@@ -90,7 +90,6 @@ include_directories("src/encodeplugin")
 include_directories("src/main")
 include_directories("src/remotemanage")
 include_directories("src/settings")
-include_directories("src/theme")
 include_directories("src/views")
 include_directories("3rdparty/terminalwidget/lib")
 
@@ -143,11 +142,6 @@ set (DTNG_CPP_FILES
     src/settings/settings.cpp
     src/settings/settings_translation.cpp
     src/settings/shortcutmanager.cpp
-    src/theme/themeitemdelegate.cpp
-    src/theme/themelistmodel.cpp
-    src/theme/themelistview.cpp
-    src/theme/themepanel.cpp
-    src/theme/themepanelplugin.cpp
     src/views/commonpanel.cpp
     src/views/pagesearchbar.cpp
     src/views/rightpanel.cpp
@@ -198,11 +192,6 @@ set (DTNG_HEADER_FILES
     src/settings/newdspinbox.h
     src/settings/settings.h
     src/settings/shortcutmanager.h
-    src/theme/themeitemdelegate.h
-    src/theme/themelistmodel.h
-    src/theme/themelistview.h
-    src/theme/themepanel.h
-    src/theme/themepanelplugin.h
     src/views/commonpanel.h
     src/views/pagesearchbar.h
     src/views/rightpanel.h

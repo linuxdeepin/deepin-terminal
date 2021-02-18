@@ -58,13 +58,13 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                bool inQuotes = false;
                int equalsPos = -1;
                QList<int> commaPos;
-                int i = 0;
-               while (i < data.size())
+               int charPos = 0;
+               while (charPos < data.size())
                {
-                   QChar ch = data.at(i);
+                   QChar ch = data.at(charPos);
                    if (ch == QChar('=')) {
                        if (!inQuotes && equalsPos == -1) {
-                           equalsPos = i;
+                           equalsPos = charPos;
                        }
                    } else if (ch == QChar('"')) {
                        inQuotes = !inQuotes;
@@ -87,7 +87,7 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                        }
                    }
                    */
-                   i++;
+                   charPos++;
                }
                 if (equalsPos == -1) {
                    break;
@@ -121,8 +121,8 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                        commaPos.prepend(equalsPos);
                        commaPos.append(-1);
                        QVariantList vals;
-                       for (int i=1; i<commaPos.size(); ++i) {
-                           QString d = data.mid(commaPos.at(i-1)+1, commaPos.at(i)-commaPos.at(i-1)-1);
+                       for (int pos=1; pos<commaPos.size(); ++pos) {
+                           QString d = data.mid(commaPos.at(pos-1)+1, commaPos.at(pos)-commaPos.at(pos-1)-1);
                            QString v = d.trimmed();
                            if (v.startsWith("\"") && v.endsWith("\"") && v.length()>1) {
                                v = v.mid(1, v.length()-2);

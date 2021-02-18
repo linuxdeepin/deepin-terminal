@@ -590,7 +590,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
             || ((m_type == SCT_MODIFY && m_curServer != nullptr)
                 && (m_curServer->m_serverName.trimmed() != m_serverName->text().trimmed()))) { /*此时用户已经在修改模式下修改了服务器名称*/
         QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
-        for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); iter++) {
+        for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); ++iter) {
             QList<ServerConfig *> value = iter.value();
             for (int i = 0; i < value.size(); i++) {
                 if (value[i]->m_serverName.trimmed() == m_serverName->text().trimmed()) { //服务器名相同
