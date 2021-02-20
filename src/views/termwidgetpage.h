@@ -157,6 +157,12 @@ signals:
 private slots:
     void setCurrentTerminal(TermWidget *term);
 
+    void handleKeywordChanged(QString keyword);
+    void handleThemeTypeChanged();
+    bool handleUninstallTerminal(QString commandname);
+    void handleTabRenameDlgFinished();
+    void handleLeftMouseClick();
+
 private:
     TermWidget *createTerm(TermProperties properties);
     void setSplitStyle(DSplitter *splitter);

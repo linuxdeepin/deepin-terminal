@@ -12,7 +12,7 @@
 #include <QTest>
 #include <QtGui>
 
-void stub_focusCurrentPage2()
+void stub_focusCurrentPage_remote()
 {
     return;
 }
@@ -136,7 +136,7 @@ TEST_F(UT_RemoteManagementTopPanel_Test, ShowSearchPanelTest)
 TEST_F(UT_RemoteManagementTopPanel_Test, showGroupPanelTest)
 {
     Stub s;
-    s.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage2);
+    s.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_remote);
     RemoteManagementTopPanel topPanel;
     // 没数据的情况
     // 不用界面显示分组界面

@@ -60,27 +60,54 @@ TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     // Init find bar.
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
     connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
-    connect(m_findBar, &PageSearchBar::keywordChanged, this, [ = ](QString keyword) {
-        handleUpdateSearchKeyword(keyword);
-    });
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
-        applyTheme();
-    });
+    connect(m_findBar, &PageSearchBar::keywordChanged, this, &TermWidgetPage::handleKeywordChanged);
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &TermWidgetPage::handleThemeTypeChanged);
 
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 2020-05-28 优化代码 Begin***************/
-    connect(this, &TermWidgetPage::uninstallTerminal, this, [this](QString commandname) {
-        //MainWindow *mainWindow = qobject_cast<MainWindow *>(parent);
-        //构造函数中已经获取了mainwindow窗口，无需在获取一遍
-        if (m_MainWindow->hasRunningProcesses()) {
-            if (!Utils::showExitUninstallConfirmDialog()) {
-                return false;
-            }
-        }
-        return Utils::showUnistallConfirmDialog(commandname);
-    });
+    connect(this, &TermWidgetPage::uninstallTerminal, this, &TermWidgetPage::handleUninstallTerminal);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
     m_currentTerm = w;
+}
+
+/*******************************************************************************
+ 1. @函数:    handleKeywordChanged
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-20
+ 4. @说明:    处理搜索关键词变化的槽
+*******************************************************************************/
+inline void TermWidgetPage::handleKeywordChanged(QString keyword)
+{
+    handleUpdateSearchKeyword(keyword);
+}
+
+/*******************************************************************************
+ 1. @函数:    handleThemeTypeChanged
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-20
+ 4. @说明:    处理主题变化的槽
+*******************************************************************************/
+inline void TermWidgetPage::handleThemeTypeChanged()
+{
+    applyTheme();
+}
+
+/*******************************************************************************
+ 1. @函数:    handleUninstallTerminal
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-20
+ 4. @说明:    处理卸载终端时的确认对话框
+*******************************************************************************/
+inline bool TermWidgetPage::handleUninstallTerminal(QString commandname)
+{
+    //MainWindow *mainWindow = qobject_cast<MainWindow *>(parent);
+    //构造函数中已经获取了mainwindow窗口，无需在获取一遍
+    if (m_MainWindow->hasRunningProcesses()) {
+        if (!Utils::showExitUninstallConfirmDialog()) {
+            return false;
+        }
+    }
+    return Utils::showUnistallConfirmDialog(commandname);
 }
 
 /*******************************************************************************
@@ -814,14 +841,23 @@ void TermWidgetPage::showRenameTitleDialog()
 
         m_renameDlg->open();
 
-        connect(m_renameDlg, &TabRenameDlg::finished, m_renameDlg, [ = ]() {
-            // 弹窗隐藏或消失
-            Service::instance()->setIsDialogShow(window(), false);
-            m_renameDlg = nullptr;
-        });
+        connect(m_renameDlg, &TabRenameDlg::finished, this, &TermWidgetPage::handleTabRenameDlgFinished);
 
         connect(m_renameDlg, &TabRenameDlg::tabTitleFormatRename, this, &TermWidgetPage::tabTitleFormatChanged);
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    handleTabRenameDlgFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-20
+ 4. @说明:    处理重命名标签标题对话框关闭
+*******************************************************************************/
+inline void TermWidgetPage::handleTabRenameDlgFinished()
+{
+    // 弹窗隐藏或消失
+    Service::instance()->setIsDialogShow(window(), false);
+    m_renameDlg = nullptr;
 }
 
 /*******************************************************************************
@@ -900,7 +936,7 @@ void TermWidgetPage::onTermClosed()
     TermWidget *w = qobject_cast<TermWidget *>(sender());
     if (!w) {
         qDebug() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
-        Q_ASSERT(0);
+        return;
     }
     closeSplit(w);
 }
@@ -1060,15 +1096,24 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::termRequestRenameTab, this, &TermWidgetPage::onTermRequestRenameTab);
     connect(term, &TermWidget::termTitleChanged, this, &TermWidgetPage::onTermTitleChanged);
     connect(term, &TermWidget::termGetFocus, this, &TermWidgetPage::onTermGetFocus);
-    connect(term, &TermWidget::leftMouseClick, this, [this]() {
-        parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
-    });
+    connect(term, &TermWidget::leftMouseClick, this, &TermWidgetPage::handleLeftMouseClick);
 
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
     qDebug() << "create Terminal, sessionId = " << term->getSessionId();
     // 对标签页重命名设置
     connect(this, &TermWidgetPage::tabTitleFormatChanged, term, &TermWidget::renameTabFormat);
     return term;
+}
+
+/*******************************************************************************
+ 1. @函数:    handleLeftMouseClick
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-20
+ 4. @说明:    处理在终端内点击鼠标左键
+*******************************************************************************/
+inline void TermWidgetPage::handleLeftMouseClick()
+{
+    parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
 }
 
 /*******************************************************************************

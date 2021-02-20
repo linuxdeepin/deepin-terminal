@@ -4,6 +4,7 @@
 #include "termwidget.h"
 #include "service.h"
 #include "TerminalDisplay.h"
+#include "stub.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -31,6 +32,15 @@ UT_TermWidgetPage_Test::~UT_TermWidgetPage_Test()
 }
 
 #ifdef UT_TERMWIDGETPAGE_TEST
+
+void stub_toggleShowSearchBar()
+{
+}
+
+void stub_focusCurrentPage_TermWidgetPage()
+{
+}
+
 TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
 {
     QMainWindow mainWin;
@@ -43,17 +53,16 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
     termProperty[SingleFlag] = true;
 
     //需要将控件放在一个QMainWindow中，否则无法看到正确的透明度调节效果
-    TermWidgetPage parentWidget(termProperty, &mainWin);
-    parentWidget.resize(mainWin.size().width(), mainWin.size().height());
-    parentWidget.show();
-    EXPECT_EQ(parentWidget.isVisible(), true);
+    TermWidgetPage termWidgetPage(termProperty, &mainWin);
+    termWidgetPage.resize(mainWin.size().width(), mainWin.size().height());
+    termWidgetPage.show();
 
-    TermWidget *currTermWidget = parentWidget.m_currentTerm;
+    TermWidget *currTermWidget = termWidgetPage.m_currentTerm;
     EXPECT_NE(currTermWidget, nullptr);
 
     //设置透明度，提示符会出现异常，且显示2个光标
     for (qreal opacity = 0.01; opacity <= 1.0; opacity += 0.01) {
-        parentWidget.setTerminalOpacity(opacity);
+        termWidgetPage.setTerminalOpacity(opacity);
     }
 
     QStringList fontFamilyList;
@@ -63,7 +72,7 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
                    << "Noto Sans Mono CJK TC";
     for (int i = 0; i < fontFamilyList.size(); i++) {
         QString fontFamily = fontFamilyList.at(i);
-        parentWidget.setFont(fontFamily);
+        termWidgetPage.setFont(fontFamily);
         QFont currFont = currTermWidget->getTerminalFont();
         EXPECT_EQ(currFont.family(), fontFamily);
     }
@@ -75,7 +84,7 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest)
     //字体大小大于20时界面提示符显示会有异常
     //设置字体大小时会不停刷日志：Using a variable-width font in the terminal.  This may cause performance degradation and display/alignment errors.
     for (int fontSize = 5; fontSize <= 50; fontSize++) {
-        parentWidget.setFontSize(fontSize);
+        termWidgetPage.setFontSize(fontSize);
         QFont currFont = currTermWidget->getTerminalFont();
         EXPECT_EQ(currFont.pointSize(), fontSize);
     }
@@ -87,12 +96,11 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
     termProperty[QuakeMode] = false;
     termProperty[SingleFlag] = true;
 
-    TermWidgetPage parentWidget(termProperty, nullptr);
-    parentWidget.resize(800, 600);
-    parentWidget.show();
-    EXPECT_EQ(parentWidget.isVisible(), true);
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
 
-    TermWidget *currTermWidget = parentWidget.m_currentTerm;
+    TermWidget *currTermWidget = termWidgetPage.m_currentTerm;
     EXPECT_NE(currTermWidget, nullptr);
 
     enum class KeyboardCursorShape {
@@ -109,13 +117,13 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
     Konsole::Emulation::KeyboardCursorShape underlineShape = Konsole::Emulation::KeyboardCursorShape::UnderlineCursor;
     Konsole::Emulation::KeyboardCursorShape ibeamShape = Konsole::Emulation::KeyboardCursorShape::IBeamCursor;
 
-    parentWidget.setcursorShape(static_cast<int>(blockShape));
+    termWidgetPage.setcursorShape(static_cast<int>(blockShape));
     EXPECT_EQ(blockShape, termDisplay->_cursorShape);
 
-    parentWidget.setcursorShape(static_cast<int>(underlineShape));
+    termWidgetPage.setcursorShape(static_cast<int>(underlineShape));
     EXPECT_EQ(underlineShape, termDisplay->_cursorShape);
 
-    parentWidget.setcursorShape(static_cast<int>(ibeamShape));
+    termWidgetPage.setcursorShape(static_cast<int>(ibeamShape));
     EXPECT_EQ(ibeamShape, termDisplay->_cursorShape);
 
 }
@@ -124,10 +132,8 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
 {
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();
-    EXPECT_EQ(m_normalWindow->isVisible(), true);
 
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-    EXPECT_EQ(currTermPage->isVisible(), true);
 
     //测试分屏
     currTermPage->split(Qt::Orientation::Vertical);
@@ -141,12 +147,237 @@ TEST_F(UT_TermWidgetPage_Test, showRenameTitleDialog)
 {
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();
-    EXPECT_EQ(m_normalWindow->isVisible(), true);
 
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-    EXPECT_EQ(currTermPage->isVisible(), true);
-
     currTermPage->showRenameTitleDialog();
+
+    EXPECT_EQ((currTermPage->m_renameDlg != nullptr), true);
+}
+
+TEST_F(UT_TermWidgetPage_Test, setParentMainWindow)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.setParentMainWindow(m_normalWindow);
+}
+
+TEST_F(UT_TermWidgetPage_Test, closeOtherTerminal)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.closeOtherTerminal(true);
+}
+
+TEST_F(UT_TermWidgetPage_Test, setColorScheme)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.setColorScheme("Light");
+
+    termWidgetPage.setColorScheme("Dark");
+}
+
+TEST_F(UT_TermWidgetPage_Test, toggleShowSearchBar)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+
+    Stub s;
+    s.set(ADDR(QTermWidget, toggleShowSearchBar), stub_toggleShowSearchBar);
+
+    currTermPage->toggleShowSearchBar();
+
+    s.reset(ADDR(QTermWidget, toggleShowSearchBar));
+}
+
+TEST_F(UT_TermWidgetPage_Test, selectAll)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.selectAll();
+}
+
+TEST_F(UT_TermWidgetPage_Test, skipToPreCommand)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.skipToPreCommand();
+}
+
+TEST_F(UT_TermWidgetPage_Test, skipToNextCommand)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.skipToNextCommand();
+}
+
+TEST_F(UT_TermWidgetPage_Test, setBlinkingCursor)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.setBlinkingCursor(false);
+
+    termWidgetPage.setBlinkingCursor(true);
+}
+
+TEST_F(UT_TermWidgetPage_Test, setPressingScroll)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.setPressingScroll(false);
+
+    termWidgetPage.setPressingScroll(true);
+}
+
+TEST_F(UT_TermWidgetPage_Test, handleTabRenameDlgFinished)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    Stub s;
+    s.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_TermWidgetPage);
+
+    termWidgetPage.handleTabRenameDlgFinished();
+
+    s.reset(ADDR(MainWindow, focusCurrentPage));
+}
+
+TEST_F(UT_TermWidgetPage_Test, printSearchCostTime)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.printSearchCostTime();
+}
+
+TEST_F(UT_TermWidgetPage_Test, onTermRequestRenameTab)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.onTermRequestRenameTab(QStringLiteral(""));
+
+    termWidgetPage.onTermRequestRenameTab(QStringLiteral("tab001"));
+}
+
+TEST_F(UT_TermWidgetPage_Test, onTermClosed)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.onTermClosed();
+}
+
+TermWidgetPage *stub_currentPage()
+{
+    return nullptr;
+}
+
+TEST_F(UT_TermWidgetPage_Test, slotQuakeHidePlugin)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+
+    Stub s;
+    s.set(ADDR(MainWindow, currentPage), stub_currentPage);
+
+    currTermPage->slotQuakeHidePlugin();
+
+    s.reset(ADDR(MainWindow, currentPage));
+}
+
+TEST_F(UT_TermWidgetPage_Test, handleLeftMouseClick)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    currTermPage->handleLeftMouseClick();
+}
+
+TEST_F(UT_TermWidgetPage_Test, setTextCodec)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+
+    termWidgetPage.setTextCodec(QTextCodec::codecForName("UTF-8"));
 }
 
 #endif
