@@ -320,8 +320,8 @@ void Session::run()
 
     if (result < 0) {
         //qDebug() << "CRASHED! result: " << result<<arguments;
-        QString infoText = QString("There was an error ctreating the child processfor this teminal. \n"
-                 "Faild to execute child process \"%1\"(No such file or directory)!").arg(exec);
+        QString infoText = QString("There was an error creating the child process for this terminal. \n"
+                 "Failed to execute child process \"%1\"(No such file or directory)!").arg(exec);
         sendText(infoText);
         _userTitle = QString::fromLatin1("Session crashed");
         emit titleChanged();
@@ -646,12 +646,12 @@ void Session::done(int exitStatus)
         QString message;
         QString infoText;
         if (exitStatus == -1){
-            infoText.sprintf("There was an error ctreating the child processfor this teminal. \n"
-                     "Faild to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
+            infoText.sprintf("There was an error creating the child process for this terminal. \n"
+                     "Failed to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
             message = "Session crashed.";
         }
         else {
-            infoText.sprintf("The child process exit normally with status %d.", exitStatus);
+            infoText.sprintf("The child process exited normally with status %d.", exitStatus);
             message.sprintf("Session '%s' exited with status %d.",
                       _nameTitle.toUtf8().data(), exitStatus);
         }
