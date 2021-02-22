@@ -214,4 +214,77 @@ TEST_F(UT_ItemWidget_Test, rightKeyPress)
     delete itemWidget;
 }
 
+TEST_F(UT_ItemWidget_Test, paintEvent)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->resize(50, 50);
+    itemWidget->show();
+
+    QPaintEvent *event = new QPaintEvent(itemWidget->rect());
+
+    itemWidget->paintEvent(event);
+
+    delete itemWidget;
+}
+
+TEST_F(UT_ItemWidget_Test, mousePressEvent)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->resize(50, 50);
+    itemWidget->show();
+
+    QMouseEvent *event = new QMouseEvent(QMouseEvent::MouseButtonPress, QPointF(5, 5), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    itemWidget->mousePressEvent(event);
+
+    delete itemWidget;
+}
+
+TEST_F(UT_ItemWidget_Test, mouseReleaseEvent)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->resize(50, 50);
+    itemWidget->show();
+
+    QMouseEvent *event = new QMouseEvent(QMouseEvent::MouseButtonPress, QPointF(5, 5), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    itemWidget->mousePressEvent(event);
+
+    event = new QMouseEvent(QMouseEvent::MouseButtonRelease, QPointF(5, 5), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    itemWidget->mouseReleaseEvent(event);
+
+    delete itemWidget;
+}
+
+TEST_F(UT_ItemWidget_Test, keyPressEvent)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->resize(50, 50);
+    itemWidget->show();
+
+    // 发送键盘按键
+    // 右键
+    QKeyEvent keyRight(QEvent::KeyPress, Qt::Key_Right, Qt::NoModifier);
+    itemWidget->keyPressEvent(&keyRight);
+    // Enter键
+    QKeyEvent keyEnter(QEvent::KeyPress, Qt::Key_Enter, Qt::NoModifier);
+    itemWidget->keyPressEvent(&keyEnter);
+    // Return键
+    QKeyEvent keyReturn(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+    itemWidget->keyPressEvent(&keyReturn);
+    // Space键
+    QKeyEvent keySpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier);
+    itemWidget->keyPressEvent(&keySpace);
+    // 其他按键
+    QKeyEvent keyOther(QEvent::KeyPress, Qt::Key_A, Qt::NoModifier);
+    itemWidget->keyPressEvent(&keyOther);
+
+    delete itemWidget;
+}
 #endif

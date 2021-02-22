@@ -37,7 +37,6 @@ TEST_F(UT_Tabbar_Test, setTabHeight)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     int tabHeight = 36;
     tabbar.setTabHeight(tabHeight);
@@ -49,7 +48,6 @@ TEST_F(UT_Tabbar_Test, setTabItemMinWidth)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     int tabItemMinWidth = 110;
     tabbar.setTabItemMinWidth(tabItemMinWidth);
@@ -62,7 +60,6 @@ TEST_F(UT_Tabbar_Test, setTabItemMaxWidth)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     int tabItemMaxWidth = 450;
     tabbar.setTabItemMaxWidth(tabItemMaxWidth);
@@ -74,7 +71,6 @@ TEST_F(UT_Tabbar_Test, addTab)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -92,7 +88,6 @@ TEST_F(UT_Tabbar_Test, insertTab)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -110,7 +105,6 @@ TEST_F(UT_Tabbar_Test, removeTab)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QObject::disconnect(&tabbar, &DTabBar::tabIsRemoved, nullptr, nullptr);
 
@@ -136,7 +130,6 @@ TEST_F(UT_Tabbar_Test, identifier)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -156,7 +149,6 @@ TEST_F(UT_Tabbar_Test, getIndexByIdentifier)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -177,7 +169,6 @@ TEST_F(UT_Tabbar_Test, setTabText)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -199,7 +190,6 @@ TEST_F(UT_Tabbar_Test, getSessionIdTabIndexMap)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QMap<int, int> sessionIdTabIndexMap = tabbar.getSessionIdTabIndexMap();
     EXPECT_EQ(sessionIdTabIndexMap.isEmpty(), true);
@@ -210,7 +200,6 @@ TEST_F(UT_Tabbar_Test, saveSessionIdWithTabIndex)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     const int mapSize = 5;
     for (int i = 0; i < mapSize; i++) {
@@ -226,7 +215,6 @@ TEST_F(UT_Tabbar_Test, saveSessionIdWithTabId)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     const int mapSize = 5;
     for (int i = 0; i < mapSize; i++) {
@@ -242,7 +230,6 @@ TEST_F(UT_Tabbar_Test, queryIndexBySessionId)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     const int mapSize = 5;
     for (int i = 0; i < mapSize; i++) {
@@ -258,7 +245,6 @@ TEST_F(UT_Tabbar_Test, setChangeTextColor)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -278,7 +264,6 @@ TEST_F(UT_Tabbar_Test, setNeedChangeTextColor)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -300,7 +285,6 @@ TEST_F(UT_Tabbar_Test, removeNeedChangeTextColor)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -322,7 +306,6 @@ TEST_F(UT_Tabbar_Test, isNeedChangeTextColor)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -346,7 +329,6 @@ TEST_F(UT_Tabbar_Test, setClearTabColor)
     TabBar tabbar;
     tabbar.resize(800, 50);
     tabbar.show();
-    EXPECT_EQ(tabbar.isVisible(), true);
 
     QList<QString> tabIdList;
     const int tabCount = 6;
@@ -365,6 +347,7 @@ TEST_F(UT_Tabbar_Test, setClearTabColor)
     tabbar.setClearTabColor(firstTabId);
 }
 
+//用于createDragPixmapFromTab测试打桩
 TermWidgetPage *stub_getTermPage(const QString &identifier)
 {
     Q_UNUSED(identifier)
@@ -407,6 +390,17 @@ TEST_F(UT_Tabbar_Test, createDragPixmapFromTab)
 
     s.reset(ADDR(MainWindow, getTermPage));
     s.reset(ADDR(DWindowManagerHelper, hasComposite));
+}
+
+TEST_F(UT_Tabbar_Test, handleDragActionChanged)
+{
+    TabBar tabbar;
+    tabbar.resize(800, 50);
+    tabbar.show();
+
+    tabbar.handleDragActionChanged(Qt::MoveAction);
+
+    tabbar.handleDragActionChanged(Qt::IgnoreAction);
 }
 
 #endif

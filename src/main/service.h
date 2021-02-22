@@ -138,6 +138,12 @@ public slots:
 
     void slotShowSettingsDialog();
 
+    void handleSettingsDialogFinished(int result);
+
+    void handleWMChanged(const QString &wmName);
+
+    void handleCustomThemeSettingDialogFinished(int result);
+
 private:
     explicit Service(QObject *parent = nullptr);
     //显示/隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用

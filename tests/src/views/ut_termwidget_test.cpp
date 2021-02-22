@@ -722,4 +722,178 @@ TEST_F(UT_TermWidget_Test, onHostnameChanged)
     EXPECT_EQ(hostName, result);
 }
 
+TEST_F(UT_TermWidget_Test, onHorizontalSplit)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onHorizontalSplit();
+}
+
+TEST_F(UT_TermWidget_Test, onVerticalSplit)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onVerticalSplit();
+}
+
+TEST_F(UT_TermWidget_Test, splitHorizontal)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->splitHorizontal();
+}
+
+TEST_F(UT_TermWidget_Test, splitVertical)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->splitVertical();
+}
+
+TEST_F(UT_TermWidget_Test, onCloseCurrWorkSpace)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onCloseCurrWorkSpace();
+}
+
+TEST_F(UT_TermWidget_Test, onCloseOtherWorkSpaces)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onCloseOtherWorkSpaces();
+}
+
+TEST_F(UT_TermWidget_Test, onCreateNewTab)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onCreateNewTab();
+}
+
+TEST_F(UT_TermWidget_Test, onSwitchFullScreen)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onSwitchFullScreen();
+}
+
+TEST_F(UT_TermWidget_Test, openBing)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->openBing();
+}
+
+TEST_F(UT_TermWidget_Test, openBaidu)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->openBaidu();
+}
+
+TEST_F(UT_TermWidget_Test, openGithub)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->openGithub();
+}
+
+TEST_F(UT_TermWidget_Test, openStackOverflow)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->openStackOverflow();
+}
+
+
+TEST_F(UT_TermWidget_Test, onShowSearchBar)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onShowSearchBar();
+}
+
+TEST_F(UT_TermWidget_Test, onShowEncoding)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onShowEncoding();
+}
+
+TEST_F(UT_TermWidget_Test, onShowCustomCommands)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onShowCustomCommands();
+}
+
+TEST_F(UT_TermWidget_Test, onShowRemoteManagement)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onShowRemoteManagement();
+}
+
+
+TEST_F(UT_TermWidget_Test, onUploadFile)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onUploadFile();
+}
+
+TEST_F(UT_TermWidget_Test, onDownloadFile)
+{
+    // 获取当前term
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    TermWidget *term = currTermPage->m_currentTerm;
+
+    term->onDownloadFile();
+}
+
+// 测试该函数会crash，待查找原因
+//TEST_F(UT_TermWidget_Test, onShowSettings)
+//{
+//    // 获取当前term
+//    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+//    TermWidget *term = currTermPage->m_currentTerm;
+
+//    term->onShowSettings();
+//}
+
 #endif

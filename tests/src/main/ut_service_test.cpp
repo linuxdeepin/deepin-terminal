@@ -163,12 +163,6 @@ TEST_F(UT_Service_Test, isSettingDialogVisible)
     m_service->m_settingDialog->close();
 }
 
-TEST_F(UT_Service_Test, resetSettingOwner)
-{
-    m_service->resetSettingOwner();
-    EXPECT_EQ(m_service->m_settingOwner, nullptr);
-}
-
 /*******************************************************************************
  1. @函数:    init
  2. @作者:    ut000610 戴正文
@@ -306,7 +300,7 @@ TEST_F(UT_Service_Test, getSettingOwner)
  3. @日期:    2020-12-08
  4. @说明:    重置设置框的所有者
 *******************************************************************************/
-TEST_F(UT_Service_Test, resetSettingOwner2)
+TEST_F(UT_Service_Test, resetSettingOwner)
 {
     // 显示设置
     MainWindow *window = new NormalWindow(TermProperties("/"));

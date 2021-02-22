@@ -152,6 +152,8 @@ private slots:
     void onCloseOtherTabActionTriggered();
     void onRenameTabActionTriggered();
 
+    void handleWindowClose();
+
 private:
     void handleMiddleButtonClick(QMouseEvent *mouseEvent);
     bool handleRightButtonClick(QMouseEvent *mouseEvent);

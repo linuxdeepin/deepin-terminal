@@ -1001,22 +1001,34 @@ MainWindow *TabBar::createNormalWindow()
     MainWindow *window = WindowsManager::instance()->getNormalWindowList().last();
 
     //当关闭最后一个窗口时退出整个应用
-    connect(window, &MainWindow::close, this, [ = ] {
-        int windowIndex = WindowsManager::instance()->getNormalWindowList().indexOf(window);
-        qDebug() << "Close window at index: " << windowIndex;
-
-        if (windowIndex >= 0)
-        {
-            WindowsManager::instance()->getNormalWindowList().takeAt(windowIndex);
-        }
-
-        if (WindowsManager::instance()->getNormalWindowList().isEmpty())
-        {
-            QApplication::quit();
-        }
-    });
+    connect(window, &MainWindow::close, this, &TabBar::handleWindowClose);
 
     return window;
+}
+
+/*******************************************************************************
+ 1. @函数:    handleWindowClose
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-22
+ 4. @说明:    窗口关闭处理
+*******************************************************************************/
+inline void TabBar::handleWindowClose()
+{
+    MainWindow *window = qobject_cast<MainWindow*>(sender());
+    if (nullptr == window) {
+        return;
+    }
+
+    int windowIndex = WindowsManager::instance()->getNormalWindowList().indexOf(window);
+    qDebug() << "Close window at index: " << windowIndex;
+
+    if (windowIndex >= 0) {
+        WindowsManager::instance()->getNormalWindowList().takeAt(windowIndex);
+    }
+
+    if (WindowsManager::instance()->getNormalWindowList().isEmpty()) {
+        QApplication::quit();
+    }
 }
 
 /*******************************************************************************

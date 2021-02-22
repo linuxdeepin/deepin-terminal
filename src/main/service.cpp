@@ -46,16 +46,20 @@ Service::~Service()
         // 结束线程
         m_atspiThread->stopThread();
         delete m_atspiThread;
+        m_atspiThread = nullptr;
     }
     releaseShareMemory();
     if (nullptr != m_settingDialog) {
         delete m_settingDialog;
+        m_settingDialog = nullptr;
     }
     if (nullptr != m_settingOwner) {
         delete m_settingOwner;
+        m_settingOwner = nullptr;
     }
     if (nullptr != m_settingShortcutConflictDialog) {
         delete m_settingShortcutConflictDialog;
+        m_settingShortcutConflictDialog = nullptr;
     }
     if (nullptr != m_customThemeSettingDialog) {
         delete m_customThemeSettingDialog;
@@ -121,14 +125,7 @@ void Service::initSetting()
     m_settingDialog = new DSettingsDialog();
     m_settingDialog->setObjectName("SettingDialog");//Add by ut001000 renfeixiang 2020-08-13
     // 关闭后将指针置空，下次重新new
-    connect(m_settingDialog, &DSettingsDialog::finished, this, [ = ](int result) {
-        Q_UNUSED(result)
-        //激活设置框的有拥者
-        if (m_settingOwner) {
-            m_settingOwner->activateWindow();
-            m_settingOwner->focusCurrentPage();
-        }
-    });
+    connect(m_settingDialog, &DSettingsDialog::finished, this, &Service::handleSettingsDialogFinished);
     // 关闭时delete
     m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
@@ -154,6 +151,22 @@ void Service::initSetting()
     }
 
     showHideOpacityAndBlurOptions(isWindowEffectEnabled());
+}
+
+/*******************************************************************************
+ 1. @函数:    handleSettingsDialogFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-22
+ 4. @说明:    DSettingsDialog对话框关闭后的处理
+*******************************************************************************/
+inline void Service::handleSettingsDialogFinished(int result)
+{
+    Q_UNUSED(result)
+    //激活设置框的有拥者
+    if (m_settingOwner) {
+        m_settingOwner->activateWindow();
+        m_settingOwner->focusCurrentPage();
+    }
 }
 
 /*******************************************************************************
@@ -236,19 +249,27 @@ void Service::listenWindowEffectSwitcher()
     if (nullptr == m_wmSwitcher) {
         m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
         m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, [this](const QString & wmName) {
-
-            qDebug() << "changed wm name:" << wmName;
-            bool isWinEffectEnabled = false;
-            if (wmName == "deepin wm") {
-                isWinEffectEnabled = true;
-            }
-
-            showHideOpacityAndBlurOptions(isWinEffectEnabled);
-
-            emit Service::instance()->onWindowEffectEnabled(isWinEffectEnabled);
-        }, Qt::QueuedConnection);
+        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::handleWMChanged, Qt::QueuedConnection);
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    handleWMChanged
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-22
+ 4. @说明:    处理窗口特效打开/关闭时，相关设置项目的显示/隐藏
+*******************************************************************************/
+inline void Service::handleWMChanged(const QString &wmName)
+{
+    qDebug() << "changed wm name:" << wmName;
+    bool isWinEffectEnabled = false;
+    if (wmName == "deepin wm") {
+        isWinEffectEnabled = true;
+    }
+
+    showHideOpacityAndBlurOptions(isWinEffectEnabled);
+
+    emit Service::instance()->onWindowEffectEnabled(isWinEffectEnabled);
 }
 
 /*******************************************************************************
@@ -415,16 +436,7 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
     } else {
         m_customThemeSettingDialog = new CustomThemeSettingDialog();
 
-        connect(m_customThemeSettingDialog, &CustomThemeSettingDialog::finished, this, [ & ](int result) {
-            if (result == CustomThemeSettingDialog::Accepted) {
-                qDebug() << "CustomThemeSettingDialog::Accepted";
-                m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
-                return;
-            } else {
-                qDebug() << "CustomThemeSettingDialog::Rejected";
-            }
-
-        });
+        connect(m_customThemeSettingDialog, &CustomThemeSettingDialog::finished, this, &Service::handleCustomThemeSettingDialogFinished);
         // 设置窗口模态为没有模态，不阻塞窗口和进程
         m_customThemeSettingDialog->setWindowModality(Qt::NonModal);
         // 让设置与窗口等效，隐藏后显示就不会被遮挡
@@ -440,6 +452,22 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
     }
 }
 
+/*******************************************************************************
+ 1. @函数:    handleCustomThemeSettingDialogFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-22
+ 4. @说明:    自定义主题对话框关闭后的处理
+*******************************************************************************/
+inline void Service::handleCustomThemeSettingDialogFinished(int result)
+{
+    if (result == CustomThemeSettingDialog::Accepted) {
+        qDebug() << "CustomThemeSettingDialog::Accepted";
+        m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
+        return;
+    } else {
+        qDebug() << "CustomThemeSettingDialog::Rejected";
+    }
+}
 
 /*******************************************************************************
  1. @函数:    showShortcutConflictMsgbox

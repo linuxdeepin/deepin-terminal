@@ -1001,4 +1001,46 @@ TEST_F(UT_MainWindow_Test, slotShortcutSelectRightWorkspace)
     mainWindow->slotShortcutSelectRightWorkspace();
     delete mainWindow;
 }
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-2-22
+ 4. @说明:    slotShortcutSelectAll单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutSelectAll)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutSelectAll();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-2-22
+ 4. @说明:    slotShortcutCustomCommand单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutCustomCommand)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutCustomCommand();
+    delete mainWindow;
+}
+
+/*******************************************************************************
+ 1. @函数:    MainWindow类的函数
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-2-22
+ 4. @说明:    slotShortcutRemoteManage单元测试
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, slotShortcutRemoteManage)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotShortcutRemoteManage();
+    delete mainWindow;
+}
 #endif
