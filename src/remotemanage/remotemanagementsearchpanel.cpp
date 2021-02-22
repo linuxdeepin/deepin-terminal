@@ -25,7 +25,6 @@
 #include "mainwindow.h"
 
 #include <DApplicationHelper>
-#include <DGuiApplicationHelper>
 
 #include <QKeyEvent>
 #include <QApplication>
@@ -93,33 +92,38 @@ void RemoteManagementSearchPanel::initUI()
     connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementSearchPanel::onItemClicked);
     connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementSearchPanel::showGroupPanel);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, &RemoteManagementSearchPanel::onRefreshList);
-    connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
-        if (Qt::TabFocusReason == type) {
-            // tab 进入 +
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-            qDebug() << "search panel focus on '+'";
-            m_listWidget->clearIndex();
-        } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
-            // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
-            m_rebackButton->setFocus();
-            m_listWidget->clearIndex();
-            qDebug() << "search panel type" << type;
-        }
-
-    });
+    connect(m_listWidget, &ListView::focusOut, this, &RemoteManagementSearchPanel::handleListViewFocusOut);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
-        DPalette palette = m_label->palette();
-        QColor color;
-        if (themeType == DApplicationHelper::DarkType) {
-            color = QColor::fromRgb(192, 198, 212, 102);
-        } else {
-            color = QColor::fromRgb(85, 85, 85, 102);
-        }
-        palette.setBrush(QPalette::Text, color);
-        m_label->setPalette(palette);
-    });
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &RemoteManagementSearchPanel::handleThemeTypeChanged);
+}
+
+inline void RemoteManagementSearchPanel::handleListViewFocusOut(Qt::FocusReason type)
+{
+    if (Qt::TabFocusReason == type) {
+        // tab 进入 +
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+        QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        qDebug() << "search panel focus on '+'";
+        m_listWidget->clearIndex();
+    } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
+        // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
+        m_rebackButton->setFocus();
+        m_listWidget->clearIndex();
+        qDebug() << "search panel type" << type;
+    }
+}
+
+inline void RemoteManagementSearchPanel::handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType)
+{
+    DPalette palette = m_label->palette();
+    QColor color;
+    if (themeType == DApplicationHelper::DarkType) {
+        color = QColor::fromRgb(192, 198, 212, 102);
+    } else {
+        color = QColor::fromRgb(85, 85, 85, 102);
+    }
+    palette.setBrush(QPalette::Text, color);
+    m_label->setPalette(palette);
 }
 
 /*******************************************************************************

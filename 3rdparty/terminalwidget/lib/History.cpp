@@ -88,9 +88,10 @@ FIXME: There is noticeable decrease in speed, also. Perhaps,
 */
 
 HistoryFile::HistoryFile()
-  : ion(-1),
-    length(0),
-    fileMap(nullptr)
+  : ion(-1)
+  , length(0)
+  , fileMap(nullptr)
+  , readWriteBalance(0)
 {
   if (tmpFile.open())
   {

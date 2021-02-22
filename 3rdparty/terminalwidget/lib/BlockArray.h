@@ -34,6 +34,7 @@ namespace Konsole {
 
 struct Block {
     Block() {
+        memset((void*)data, 0, sizeof(data));
         size = 0;
     }
     unsigned char data[ENTRIES];

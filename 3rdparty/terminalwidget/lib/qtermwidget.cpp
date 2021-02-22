@@ -54,7 +54,7 @@ void *createTermWidget(int startnow, void *parent)
 }
 
 struct TermWidgetImpl {
-    TermWidgetImpl(QWidget *parent = 0);
+    explicit TermWidgetImpl(QWidget *parent = 0);
 
     TerminalDisplay *m_terminalDisplay;
     Session *m_session;
@@ -628,9 +628,9 @@ QString QTermWidget::workingDirectory()
         goto fallback;
     }
     return d.canonicalPath();
-#endif
 
 fallback:
+#endif
     // fallback, initial WD
     return m_impl->m_session->initialWorkingDirectory();
 }

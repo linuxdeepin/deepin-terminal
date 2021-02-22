@@ -99,6 +99,7 @@ public:
 private slots:
     void slotAddSaveButtonClicked();
     void slotFileChooseDialog();
+    void handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType);
 
 private:
     ServerConfigOptType m_type;

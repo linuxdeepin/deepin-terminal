@@ -58,10 +58,8 @@ ShellCommand::ShellCommand(const QString & fullCommand)
         }
     }
 }
-ShellCommand::ShellCommand(const QString & command , const QStringList & arguments)
+ShellCommand::ShellCommand(const QString & command , const QStringList & arguments) : _arguments(arguments)
 {
-    _arguments = arguments;
-
     if ( !_arguments.isEmpty() ) {
         _arguments[0] = command;
     }

@@ -331,25 +331,28 @@ void ServerConfigOptDlg::initUI()
         accept();
     });
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleLabel, [ = ](DGuiApplicationHelper::ColorType themeType) {
-        DPalette palette = m_titleLabel->palette();
-        //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
-        QColor color;
-        if (themeType == DApplicationHelper::DarkType) {
-            color = QColor::fromRgb(192, 198, 212, 255);
-        } else {
-            color = QColor::fromRgb(0, 26, 46, 255);
-        }
-        palette.setBrush(QPalette::WindowText, color);
-        m_titleLabel->setPalette(palette);
-
-        palette = DApplicationHelper::instance()->palette(m_delServer);
-        palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
-        m_delServer->setPalette(palette);
-    });
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ServerConfigOptDlg::handleThemeTypeChanged);
 
     // 设置焦点顺序
     setTabOrder(pAddSaveButton, m_closeButton);
+}
+
+inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType)
+{
+    DPalette palette = m_titleLabel->palette();
+    //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
+    QColor color;
+    if (themeType == DApplicationHelper::DarkType) {
+        color = QColor::fromRgb(192, 198, 212, 255);
+    } else {
+        color = QColor::fromRgb(0, 26, 46, 255);
+    }
+    palette.setBrush(QPalette::WindowText, color);
+    m_titleLabel->setPalette(palette);
+
+    palette = DApplicationHelper::instance()->palette(m_delServer);
+    palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
+    m_delServer->setPalette(palette);
 }
 
 /*******************************************************************************

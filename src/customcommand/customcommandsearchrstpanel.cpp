@@ -27,7 +27,6 @@
 #include "mainwindow.h"
 
 #include <DApplicationHelper>
-#include <DGuiApplicationHelper>
 #include <DMessageBox>
 
 #include <QAction>
@@ -98,44 +97,52 @@ void CustomCommandSearchRstPanel::initUI()
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_label, [ = ](DGuiApplicationHelper::ColorType themeType) {
-        DPalette palette = m_label->palette();
-        QColor color;
-        if (themeType == DApplicationHelper::DarkType) {
-            color = QColor::fromRgb(192, 198, 212, 102);
-        } else {
-            color = QColor::fromRgb(85, 85, 85, 102);
-        }
-        palette.setBrush(QPalette::Text, color);
-        m_label->setPalette(palette);
-    });
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandSearchRstPanel::handleThemeTypeChanged);
 
-    connect(m_rebackButton, &IconButton::focusOut, this, [ = ](Qt::FocusReason type) {
-        // 焦点切出，没值的时候
-        if (type == Qt::TabFocusReason && m_cmdListWidget->count() == 0) {
-            // tab 进入 +
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-            qDebug() << "search panel focus to '+'";
-        }
-    });
+    connect(m_rebackButton, &IconButton::focusOut, this, &CustomCommandSearchRstPanel::handleIconButtonFocusOut);
 
-    connect(m_cmdListWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
-        Q_UNUSED(type);
-        if (Qt::TabFocusReason == type) {
-            // tab 进入 +
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-            qDebug() << "search panel focus on '+'";
-            m_cmdListWidget->clearIndex();
-        } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
-            // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
-            m_rebackButton->setFocus();
-            m_cmdListWidget->clearIndex();
-            qDebug() << "search panel type" << type;
-        }
+    connect(m_cmdListWidget, &ListView::focusOut, this, &CustomCommandSearchRstPanel::handleListViewFocusOut);
+}
 
-    });
+inline void CustomCommandSearchRstPanel::handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType)
+{
+    DPalette palette = m_label->palette();
+    QColor color;
+    if (themeType == DApplicationHelper::DarkType) {
+        color = QColor::fromRgb(192, 198, 212, 102);
+    } else {
+        color = QColor::fromRgb(85, 85, 85, 102);
+    }
+    palette.setBrush(QPalette::Text, color);
+    m_label->setPalette(palette);
+}
+
+inline void CustomCommandSearchRstPanel::handleIconButtonFocusOut(Qt::FocusReason type)
+{
+    // 焦点切出，没值的时候
+    if (type == Qt::TabFocusReason && m_cmdListWidget->count() == 0) {
+        // tab 进入 +
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+        QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        qDebug() << "search panel focus to '+'";
+    }
+}
+
+inline void CustomCommandSearchRstPanel::handleListViewFocusOut(Qt::FocusReason type)
+{
+    Q_UNUSED(type);
+    if (Qt::TabFocusReason == type) {
+        // tab 进入 +
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+        QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        qDebug() << "search panel focus on '+'";
+        m_cmdListWidget->clearIndex();
+    } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
+        // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
+        m_rebackButton->setFocus();
+        m_cmdListWidget->clearIndex();
+        qDebug() << "search panel type" << type;
+    }
 }
 
 /*******************************************************************************

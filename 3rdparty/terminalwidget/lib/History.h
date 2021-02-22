@@ -92,8 +92,8 @@ class HistoryType;
 class HistoryScroll
 {
 public:
-  HistoryScroll(HistoryType*);
- virtual ~HistoryScroll();
+  explicit HistoryScroll(HistoryType*);
+  virtual ~HistoryScroll();
 
   virtual bool hasScroll();
 
@@ -138,7 +138,7 @@ protected:
 class HistoryScrollFile : public HistoryScroll
 {
 public:
-  HistoryScrollFile(const QString &logFileName);
+  explicit HistoryScrollFile(const QString &logFileName);
   ~HistoryScrollFile() override;
 
   int  getLines() override;
@@ -167,7 +167,7 @@ class HistoryScrollBuffer : public HistoryScroll
 public:
   typedef QVector<Character> HistoryLine;
 
-  HistoryScrollBuffer(unsigned int maxNbLines = 1000);
+  explicit HistoryScrollBuffer(unsigned int maxNbLines = 1000);
   ~HistoryScrollBuffer() override;
 
   int  getLines() override;
@@ -242,7 +242,7 @@ public:
 class HistoryScrollBlockArray : public HistoryScroll
 {
 public:
-  HistoryScrollBlockArray(size_t size);
+  explicit HistoryScrollBlockArray(size_t size);
   ~HistoryScrollBlockArray() override;
 
   int  getLines() override;
@@ -362,7 +362,7 @@ class CompactHistoryScroll : public HistoryScroll
   typedef QList<CompactHistoryLine*> HistoryArray;
 
 public:
-  CompactHistoryScroll(unsigned int maxNbLines = 1000);
+  explicit CompactHistoryScroll(unsigned int maxNbLines = 1000);
   ~CompactHistoryScroll() override;
 
   int  getLines() override;
@@ -427,7 +427,7 @@ public:
 class HistoryTypeBlockArray : public HistoryType
 {
 public:
-  HistoryTypeBlockArray(size_t size);
+  explicit HistoryTypeBlockArray(size_t size);
 
   bool isEnabled() const override;
   int maximumLineCount() const override;
@@ -442,7 +442,7 @@ protected:
 class HistoryTypeFile : public HistoryType
 {
 public:
-  HistoryTypeFile(const QString& fileName=QString());
+  explicit HistoryTypeFile(const QString& fileName=QString());
 
   bool isEnabled() const override;
   virtual const QString& getFileName() const;
@@ -460,7 +460,7 @@ class HistoryTypeBuffer : public HistoryType
     friend class HistoryScrollBuffer;
 
 public:
-  HistoryTypeBuffer(unsigned int nbLines);
+  explicit HistoryTypeBuffer(unsigned int nbLines);
 
   bool isEnabled() const override;
   int maximumLineCount() const override;
@@ -474,7 +474,7 @@ protected:
 class CompactHistoryType : public HistoryType
 {
 public:
-  CompactHistoryType(unsigned int size);
+  explicit CompactHistoryType(unsigned int size);
 
   bool isEnabled() const override;
   int maximumLineCount() const override;

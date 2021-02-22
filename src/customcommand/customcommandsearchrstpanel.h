@@ -34,9 +34,11 @@
 
 #include <DPushButton>
 #include <DIconButton>
+#include <DGuiApplicationHelper>
 
 #include <QWidget>
 
+DGUI_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
 
 class CustomCommandItem;
@@ -54,6 +56,9 @@ signals:
 
 public slots:
     void doCustomCommand(const QString &strKey);
+    void handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType);
+    void handleListViewFocusOut(Qt::FocusReason type);
+    void handleIconButtonFocusOut(Qt::FocusReason type);
 
 private:
     void initUI();

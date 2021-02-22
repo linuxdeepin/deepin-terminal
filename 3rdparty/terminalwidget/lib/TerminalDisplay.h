@@ -99,7 +99,7 @@ class KONSOLEPRIVATE_EXPORT TerminalDisplay : public QWidget
 
 public:
     /** Constructs a new terminal display widget with the specified parent. */
-    TerminalDisplay(QWidget *parent=nullptr);
+    explicit TerminalDisplay(QWidget *parent=nullptr);
     ~TerminalDisplay() override;
 
     /** Returns the terminal color palette used by the display. */
@@ -919,7 +919,7 @@ class AutoScrollHandler : public QObject
 Q_OBJECT
 
 public:
-    AutoScrollHandler(QWidget* parent);
+    explicit AutoScrollHandler(QWidget* parent);
 protected:
     void timerEvent(QTimerEvent* event) override;
     bool eventFilter(QObject* watched,QEvent* event) override;
@@ -932,7 +932,7 @@ class KONSOLEPRIVATE_EXPORT TerminalScreen : public TerminalDisplay{
     Q_OBJECT
 
  public:
-     TerminalScreen(QWidget *parent=nullptr);
+     explicit TerminalScreen(QWidget *parent=nullptr);
      ~TerminalScreen() override;
 
 protected:
@@ -964,8 +964,8 @@ private:
     qint64 m_tapBeginTime = 0;
     bool m_slideContinue = false;
 
-    int m_lastMouseYpos;
-    ulong m_lastMouseTime;
+    int m_lastMouseYpos = 0;
+    ulong m_lastMouseTime = 0;
     qreal m_stepSpeed = 0;
 
     Qt::GestureState m_tapStatus = Qt::NoGesture;

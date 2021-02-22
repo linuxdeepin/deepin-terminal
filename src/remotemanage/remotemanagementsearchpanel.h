@@ -32,7 +32,11 @@
 #include "commonpanel.h"
 #include "serverconfigmanager.h"
 
+#include <DGuiApplicationHelper>
+
 #include <QWidget>
+
+DGUI_USE_NAMESPACE
 
 class ListView;
 class RemoteManagementSearchPanel : public CommonPanel
@@ -65,6 +69,9 @@ public slots:
     void onFocusOutList(Qt::FocusReason type);
     // 处理刷新列表信号
     void onRefreshList();
+
+    void handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType);
+    void handleListViewFocusOut(Qt::FocusReason type);
 
 private:
     void initUI();

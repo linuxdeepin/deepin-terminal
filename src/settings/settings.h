@@ -60,7 +60,7 @@ public:
     int fontSize();
     bool PressingScroll();
     bool OutputtingScroll();
-    void reload();
+//    void reload();
     // 标签标题
     QString tabTitleFormat() const;
     // 远程标签标题
@@ -75,9 +75,9 @@ public:
     // 设置主题
     void setColorScheme(const QString &name);
     // 设置编码格式, 这个现在限定当前mainwindow生效，不再使用这个全局接口了
-    void setEncoding(const QString &name);
+//    void setEncoding(const QString &name);
     // 通用设置
-    void setKeyValue(const QString &name, const QString &value);
+//    void setKeyValue(const QString &name, const QString &value);
 
     //获取内置主题
     QString extendColorScheme() const;
@@ -117,7 +117,7 @@ public:
 
 
 public:
-    QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);
+//    QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);
 
     static QPair<QWidget *, QWidget *> createFontComBoBoxHandle(QObject *obj);
     // 新增自定义slider控件

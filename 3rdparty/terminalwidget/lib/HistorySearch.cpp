@@ -32,7 +32,13 @@ HistorySearch::HistorySearch(EmulationPtr emulation, QRegExp regExp,
     m_regExp(regExp),
     m_forwards(forwards),
     m_startColumn(startColumn),
-    m_startLine(startLine)
+    m_startLine(startLine),
+    m_foundStartColumn(0),
+    m_foundStartLine(0),
+    m_foundEndColumn(0),
+    m_foundEndLine(0),
+    m_loseChinese(0),
+    m_matchChinese(0)
 {
 }
 

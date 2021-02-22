@@ -58,7 +58,7 @@ public:
     static SessionManager *instance();
 
     /** Kill all running sessions. */
-    void closeAllSessions();
+//    void closeAllSessions();
 
     /**
      * Returns a list of active sessions.
@@ -102,7 +102,6 @@ private:
     QList<Session *> _sessions; // list of running sessions
     QHash<Session *, int> _restoreMapping;
 
-    int _currTabSessionId;
     //存储当前的命令提示符Map
     QMap<int, QString> _shellPromptSessionMap;
     //存储当前的执行的命令字符串Map

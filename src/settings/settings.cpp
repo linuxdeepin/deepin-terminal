@@ -453,22 +453,22 @@ bool Settings::OutputtingScroll()
  3. @日期:    2020-08-11
  4. @说明:    设置界面重新加载设置的键值
 *******************************************************************************/
-void Settings::reload()
-{
-    QSettings  newSettings(m_configPath, QSettings::IniFormat);
-    for (QString &key : newSettings.childGroups()) {
-        //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
-        if (!settings->keys().contains(key)) {
-            qDebug() << "reload failed: system not found " << key << "now remove it";
-            newSettings.remove(key);
-            continue;
-        }
-        if (settings->value(key) != newSettings.value(key + "/value")) {
-            qDebug() << "reload update:" << key << settings->value(key);
-            settings->option(key)->setValue(newSettings.value(key + "/value"));
-        }
-    }
-}
+//void Settings::reload()
+//{
+//    QSettings  newSettings(m_configPath, QSettings::IniFormat);
+//    for (QString &key : newSettings.childGroups()) {
+//        //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
+//        if (!settings->keys().contains(key)) {
+//            qDebug() << "reload failed: system not found " << key << "now remove it";
+//            newSettings.remove(key);
+//            continue;
+//        }
+//        if (settings->value(key) != newSettings.value(key + "/value")) {
+//            qDebug() << "reload update:" << key << settings->value(key);
+//            settings->option(key)->setValue(newSettings.value(key + "/value"));
+//        }
+//    }
+//}
 
 /*******************************************************************************
  1. @函数:    tabTitleFormat
@@ -599,14 +599,14 @@ void Settings::setExtendColorScheme(const QString &name)
  3. @日期:    2020-08-11
  4. @说明:    设置界面设置编码
 *******************************************************************************/
-void Settings::setEncoding(const QString &name)
-{
-    if (name != m_EncodeName) {
-        m_EncodeName = name;
-        emit encodeSettingChanged(name);
-        qDebug() << "encode changed to" << name;
-    }
-}
+//void Settings::setEncoding(const QString &name)
+//{
+//    if (name != m_EncodeName) {
+//        m_EncodeName = name;
+//        emit encodeSettingChanged(name);
+//        qDebug() << "encode changed to" << name;
+//    }
+//}
 
 /*******************************************************************************
  1. @函数:    setKeyValue
@@ -614,10 +614,10 @@ void Settings::setEncoding(const QString &name)
  3. @日期:    2020-08-11
  4. @说明:    设置界面设置键值
 *******************************************************************************/
-void Settings::setKeyValue(const QString &name, const QString &value)
-{
-    settings->option(name)->setValue(value);
-}
+//void Settings::setKeyValue(const QString &name, const QString &value)
+//{
+//    settings->option(name)->setValue(value);
+//}
 
 /*******************************************************************************
  1. @函数:   bool Settings::IsPasteSelection()
@@ -716,10 +716,10 @@ bool Settings::enableControlFlow(void)
  3. @日期:    2020-08-11
  4. @说明:    设置界面从键盘映射获取密钥快捷方式
 *******************************************************************************/
-QString Settings::getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName)
-{
-    return settings->option(QString("shortcuts.%1.%2").arg(keyCategory, keyName))->value().toString();
-}
+//QString Settings::getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName)
+//{
+//    return settings->option(QString("shortcuts.%1.%2").arg(keyCategory, keyName))->value().toString();
+//}
 
 /******** Modify by n014361 wangpeili 2020-01-04: 创建Combox控件        ***********×****/
 /*******************************************************************************

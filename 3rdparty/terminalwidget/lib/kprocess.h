@@ -352,7 +352,9 @@ class KProcessPrivate {
 
 protected:
     KProcessPrivate() :
-        openMode(QIODevice::ReadWrite)
+        outputChannelMode(KProcess::ForwardedChannels),
+        openMode(QIODevice::ReadWrite),
+        q_ptr(nullptr)
     {
     }
     virtual ~KProcessPrivate()

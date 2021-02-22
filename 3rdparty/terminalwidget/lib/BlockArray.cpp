@@ -292,9 +292,9 @@ void BlockArray::decreaseBuffer(size_t newsize)
         firstblock = 0;
     }
 
-    size_t oldpos;
+    //size_t oldpos;
     for (size_t i = 0, cursor=firstblock; i < newsize; i++) {
-        oldpos = (size + cursor + offset) % size;
+        size_t oldpos = (size + cursor + offset) % size;
         moveBlock(fion, oldpos, cursor, buffer1);
         if (oldpos < newsize) {
             cursor = oldpos;
@@ -343,11 +343,11 @@ void BlockArray::increaseBuffer()
         return;
     }
 
-    int res;
+    //int res;
     for (int i = 0; i < runs; i++) {
         // free one block in chain
         int firstblock = (offset + i) % size;
-        res = fseek(fion, firstblock * blocksize, SEEK_SET);
+        int res = fseek(fion, firstblock * blocksize, SEEK_SET);
         if (res) {
             perror("fseek");
         }
@@ -355,10 +355,10 @@ void BlockArray::increaseBuffer()
         if (res != 1) {
             perror("fread");
         }
-        int newpos = 0;
+        //int newpos = 0;
         for (int j = 1, cursor=firstblock; j < bpr; j++) {
             cursor = (cursor + offset) % size;
-            newpos = (cursor - offset + size) % size;
+            int newpos = (cursor - offset + size) % size;
             moveBlock(fion, cursor, newpos, buffer2);
         }
         res = fseek(fion, i * blocksize, SEEK_SET);

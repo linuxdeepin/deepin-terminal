@@ -45,18 +45,17 @@ SessionManager::SessionManager()
 
 SessionManager::~SessionManager()
 {
-    //closeAllSessions();
 }
 
-void SessionManager::closeAllSessions()
-{
-    // close remaining sessions
-    for (int i = 0; i < _sessions.size(); i++) {
-        Session *session = _sessions.at(i);
-        session->close();
-    }
-    _sessions.clear();
-}
+//void SessionManager::closeAllSessions()
+//{
+//    // close remaining sessions
+//    for (int i = 0; i < _sessions.size(); i++) {
+//        Session *session = _sessions.at(i);
+//        session->close();
+//    }
+//    _sessions.clear();
+//}
 
 QList<Session *> SessionManager::sessions() const
 {
