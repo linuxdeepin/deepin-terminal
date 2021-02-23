@@ -43,6 +43,7 @@
 #include <DThemeManager>
 #include <DTitlebar>
 #include <DFileDialog>
+#include <DAboutDialog>
 #include <DImageButton>
 #include <DLog>
 
@@ -1103,6 +1104,22 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     saveWindowSize();
+
+    //fix bug: 64134 新建两个窗口，打开A窗口关于后关闭应用，B窗口打开关于，应用出现闪退
+    TerminalApplication *app = static_cast<TerminalApplication *>(qApp);
+    DAboutDialog *aboutDialog = app->aboutDialog();
+
+    if (aboutDialog != nullptr) {
+        disconnect(aboutDialog, &DAboutDialog::aboutToClose, nullptr, nullptr);
+
+        //目前的关于对话框是非模态的,这里的处理是防止关于对话框可以打开多个的情况
+        // 不能使用aboutToClose信号 应用能够打开多个的情况下 打开关于后直接关闭程序
+        // 此时aboutToColose信号不会触发 再次打开程序并打开关于会出现访问野指针 程序崩溃的情况
+        connect(aboutDialog, &DAboutDialog::destroyed, this, [=] {
+            app->setAboutDialog(nullptr);
+        });
+    }
+    //fix bug: 64134 end
 
     // 注销和关机时不需要确认了
     if (qApp->isSavingSession()) {
