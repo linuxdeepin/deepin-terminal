@@ -216,4 +216,66 @@ TEST_F(UT_ListView_Test, onCustomCommandOptDlgFinished)
     s.reset(ADDR(Service, setIsDialogShow));
 }
 
+ServerConfig* generateNewServerConfig()
+{
+    ServerConfig *config = new ServerConfig();
+    config->m_serverName = QStringLiteral("new_server_listview_test");
+    config->m_address = QStringLiteral("192.168.10.%1").arg(qrand() % 255);
+    config->m_userName = QStringLiteral("server_user");
+    config->m_password = QStringLiteral("123456");
+    config->m_privateKey = QStringLiteral("");
+    config->m_port = QStringLiteral("");
+    config->m_group = QStringLiteral("new group");
+    config->m_path = QStringLiteral("");
+    config->m_command = QStringLiteral("");
+    config->m_encoding = QStringLiteral("");
+    config->m_backspaceKey = QStringLiteral("");
+    config->m_deleteKey = QStringLiteral("");
+
+    ServerConfigManager::instance()->saveServerConfig(config);
+
+    ServerConfigManager::instance()->getServerCount(config->m_group);
+
+    ServerConfig *currConfig = ServerConfigManager::instance()->getServerConfig(config->m_serverName);
+    return currConfig;
+}
+
+//用于onServerConfigOptDlgFinished函数单元测试打桩
+void stub_focusCurrentPage_listview()
+{
+}
+
+//用于onServerConfigOptDlgFinished函数单元测试打桩
+bool stub_isDelServer_true()
+{
+    return true;
+}
+//用于onServerConfigOptDlgFinished函数单元测试打桩
+bool stub_isDelServer_false()
+{
+    return false;
+}
+
+TEST_F(UT_ListView_Test, onServerConfigOptDlgFinished)
+{
+    ListView listWidget(ListType_Custom, nullptr);
+    ServerConfig *curItemServer = generateNewServerConfig();
+    listWidget.m_configDialog = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, &listWidget);
+
+    Stub s;
+    s.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_listview);
+
+    listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Rejected);
+
+    s.set(ADDR(ServerConfigOptDlg, isDelServer), stub_isDelServer_false);
+    listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Accepted);
+    s.reset(ADDR(ServerConfigOptDlg, isDelServer));
+
+    s.set(ADDR(ServerConfigOptDlg, isDelServer), stub_isDelServer_true);
+    listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Accepted);
+    s.reset(ADDR(ServerConfigOptDlg, isDelServer));
+
+    s.reset(ADDR(MainWindow, focusCurrentPage));
+}
+
 #endif

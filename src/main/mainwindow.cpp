@@ -1684,12 +1684,6 @@ void MainWindow::initConnections()
     connect(Settings::instance(), &Settings::windowSettingChanged, this, &MainWindow::onWindowSettingChanged);
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
-#if 0
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, [ = ]() {
-        //变成自动变色的图标以后，不需要来回变了。
-        // applyTheme();
-    });
-#endif
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &MainWindow::onApplicationStateChanged);
 }
 
@@ -1991,16 +1985,6 @@ void MainWindow::createNewTab()
 {
     addTab(currentPage()->createCurrentTerminalProperties(), true);
 }
-/*******************************************************************************
- 1. @函数:    applyTheme
- 2. @作者:    n014361 王培利
- 3. @日期:    2020-03-09
- 4. @说明:    非DTK控件手动匹配系统主题的修改
-*******************************************************************************/
-void MainWindow::applyTheme()
-{
-    return;
-}
 
 /*******************************************************************************
  1. @函数:void MainWindow::displayShortcuts()
@@ -2172,31 +2156,44 @@ void MainWindow::remoteUploadFile()
 
     // 设置弹窗
     DFileDialog *dialog = new DFileDialog(this, dlgTitle, curPath);
-    connect(dialog, &DFileDialog::finished, this, [ = ](int code) {
-        QStringList fileName;
-
-        if (code == QDialog::Accepted) {
-            fileName = dialog->selectedFiles();
-        } else {
-            // 选择文件，却点击了叉号
-            fileName = QStringList();
-        }
-
-        if (!fileName.isEmpty()) {
-            QString strTxt = "sz ";
-            for (QString &str : fileName) {
-                strTxt += str + " ";
-            }
-            remoteUploadFile(strTxt);
-        } else {
-            qDebug() << "remoteUploadFile file name is Null";
-        }
-
-    });
+    connect(dialog, &DFileDialog::finished, this, &MainWindow::onUploadFileDialogFinished);
     dialog->setAcceptMode(QFileDialog::AcceptOpen);
     dialog->setFileMode(QFileDialog::ExistingFiles);
     dialog->setLabelText(QFileDialog::Accept, QObject::tr("Upload"));
     dialog->open();
+}
+
+/*******************************************************************************
+ 1. @函数:    onUploadFileDialogFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-24
+ 4. @说明:    上传文件对话框关闭处理
+*******************************************************************************/
+inline void MainWindow::onUploadFileDialogFinished(int code)
+{
+    DFileDialog *dialog = qobject_cast<DFileDialog *>(sender());
+    if (nullptr == dialog) {
+        return;
+    }
+
+    QStringList fileName;
+
+    if (code == QDialog::Accepted) {
+        fileName = dialog->selectedFiles();
+    } else {
+        // 选择文件，却点击了叉号
+        fileName = QStringList();
+    }
+
+    if (!fileName.isEmpty()) {
+        QString strTxt = "sz ";
+        for (QString &str : fileName) {
+            strTxt += str + " ";
+        }
+        remoteUploadFile(strTxt);
+    } else {
+        qDebug() << "remoteUploadFile file name is Null";
+    }
 }
 
 void MainWindow::slotDialogSelectFinished(int code)
@@ -3603,16 +3600,25 @@ void QuakeWindow::topToBottomAnimation()
     m_heightAni->setEndValue(getQuakeHeight());
     m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
-    connect(m_heightAni, &QPropertyAnimation::finished, this, [ = ]() {
-        updateMinHeight();//恢复外框的原有最小高度值
-        // 保证currentPage有值，不然ut多线程下可能会崩溃
-        if (currentPage()) {
-            currentPage()->setMinimumHeight(this->minimumHeight() - tabbarHeight);//恢复page的原有最小高度值 tabbarHeight是tabbar的高度
-        }
-        isNotAnimation = true;
-        /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
-        switchEnableResize();
-    });
+    connect(m_heightAni, &QPropertyAnimation::finished, this, &QuakeWindow::onTopToBottomAnimationFinished);
+}
+
+/*******************************************************************************
+ 1. @函数:    onTopToBottomAnimationFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-24
+ 4. @说明:    雷神窗口从上而下的动画结束的处理
+*******************************************************************************/
+inline void QuakeWindow::onTopToBottomAnimationFinished()
+{
+    updateMinHeight();//恢复外框的原有最小高度值
+    // 保证currentPage有值，不然ut多线程下可能会崩溃
+    if (currentPage()) {
+        currentPage()->setMinimumHeight(this->minimumHeight() - tabbarHeight);//恢复page的原有最小高度值 tabbarHeight是tabbar的高度
+    }
+    isNotAnimation = true;
+    /***add by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
+    switchEnableResize();
 }
 
 /*******************************************************************************
@@ -3641,10 +3647,19 @@ void QuakeWindow::bottomToTopAnimation()
     m_heightAni->setEndValue(0);
     m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
-    connect(m_heightAni, &QPropertyAnimation::finished, this, [ = ]() {
-        this->hide();
-        isNotAnimation = true;
-    });
+    connect(m_heightAni, &QPropertyAnimation::finished, this, &QuakeWindow::onBottomToTopAnimationFinished);
+}
+
+/*******************************************************************************
+ 1. @函数:    onBottomToTopAnimationFinished
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-24
+ 4. @说明:    雷神窗口从下而上的动画结束的处理
+*******************************************************************************/
+inline void QuakeWindow::onBottomToTopAnimationFinished()
+{
+    this->hide();
+    isNotAnimation = true;
 }
 
 /*******************************************************************************

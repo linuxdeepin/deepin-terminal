@@ -86,56 +86,61 @@ void ServerConfigGroupPanel::initUI()
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &ServerConfigGroupPanel::handleShowSearchResult);  //
     connect(m_listWidget, &ListView::itemClicked, this, &ServerConfigGroupPanel::onItemClicked);
     connect(m_listWidget, &ListView::listItemCountChange, this, &ServerConfigGroupPanel::refreshSearchState);
-    connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
-        if (!m_isShow) {
-            // 不显示，不处理焦点
-            return;
-        }
-        if (type == Qt::TabFocusReason) {
-            qDebug() << "group focus out!";
-            QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
-            QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-            m_listWidget->clearIndex();
-        } else if (type == Qt::BacktabFocusReason) {
-            // 判断是否可见，可见设置焦点
-            if (m_searchEdit->isVisible()) {
-                m_searchEdit->lineEdit()->setFocus();
-            } else {
-                m_rebackButton->setFocus();
-            }
-            m_listWidget->clearIndex();
-        } else if (type == Qt::NoFocusReason) {
-            qDebug() << "group NoFocusReason";
-            int isFocus = false;
-            // 列表没有内容，焦点返回到返回键上
-            if (m_listWidget->hasFocus() || m_rebackButton->hasFocus()) {
-                isFocus  = true;
-            }
-            int count  = ServerConfigManager::instance()->getServerCount(m_groupName);
-            if (count == 0) {
-                emit rebackPrevPanel();
-                qDebug() << "showRemoteManagementPanel" << isFocus << count;
-                m_isShow = false;
-                return;
-            }
-            m_listWidget->clearIndex();
-        }
-
-    });
+    connect(m_listWidget, &ListView::focusOut, this, &ServerConfigGroupPanel::onListViewFocusOut);
     connect(m_rebackButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::rebackPrevPanel);
     connect(m_rebackButton, &IconButton::preFocus, this, &ServerConfigGroupPanel::rebackPrevPanel);
-    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
-        qDebug() << "group refresh list";
-        if (m_isShow) {
-            refreshData(m_groupName);
-            QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
-            if (!configMap.contains(m_groupName)) {
-                // 没有这个组 ==> 组内没成员，则返回
-                emit rebackPrevPanel();
-                m_isShow = false;
-            }
+    connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, &ServerConfigGroupPanel::onRefreshList);
+}
+
+inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
+{
+    if (!m_isShow) {
+        // 不显示，不处理焦点
+        return;
+    }
+    if (type == Qt::TabFocusReason) {
+        qDebug() << "group focus out!";
+        QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
+        QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
+        m_listWidget->clearIndex();
+    } else if (type == Qt::BacktabFocusReason) {
+        // 判断是否可见，可见设置焦点
+        if (m_searchEdit->isVisible()) {
+            m_searchEdit->lineEdit()->setFocus();
+        } else {
+            m_rebackButton->setFocus();
         }
-    });
+        m_listWidget->clearIndex();
+    } else if (type == Qt::NoFocusReason) {
+        qDebug() << "group NoFocusReason";
+        int isFocus = false;
+        // 列表没有内容，焦点返回到返回键上
+        if (m_listWidget->hasFocus() || m_rebackButton->hasFocus()) {
+            isFocus  = true;
+        }
+        int count  = ServerConfigManager::instance()->getServerCount(m_groupName);
+        if (count == 0) {
+            emit rebackPrevPanel();
+            qDebug() << "showRemoteManagementPanel" << isFocus << count;
+            m_isShow = false;
+            return;
+        }
+        m_listWidget->clearIndex();
+    }
+}
+
+inline void ServerConfigGroupPanel::onRefreshList()
+{
+    qDebug() << "group refresh list";
+    if (m_isShow) {
+        refreshData(m_groupName);
+        QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
+        if (!configMap.contains(m_groupName)) {
+            // 没有这个组 ==> 组内没成员，则返回
+            emit rebackPrevPanel();
+            m_isShow = false;
+        }
+    }
 }
 
 /*******************************************************************************

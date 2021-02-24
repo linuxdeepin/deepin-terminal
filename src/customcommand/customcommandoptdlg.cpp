@@ -36,7 +36,6 @@
 #include <DLog>
 #include <DFontSizeManager>
 #include <DVerticalLine>
-#include <DGuiApplicationHelper>
 
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -149,19 +148,9 @@ void CustomCommandOptDlg::initUI()
 
     contentFrame->setLayout(contentLayout);
 
-    connect(m_nameLineEdit, &DLineEdit::editingFinished, this, [ = ] {
-        if (m_nameLineEdit->text().isEmpty())
-        {
-            m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
-        }
-    });
+    connect(m_nameLineEdit, &DLineEdit::editingFinished, this, &CustomCommandOptDlg::slotNameLineEditingFinished);
 
-    connect(m_commandLineEdit, &DLineEdit::editingFinished, this, [ = ] {
-        if (m_commandLineEdit->text().isEmpty())
-        {
-            m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
-        }
-    });
+    connect(m_commandLineEdit, &DLineEdit::editingFinished, this, &CustomCommandOptDlg::slotCommandLineEditingFinished);
 
     addContent(contentFrame);
     //判断是添加操作窗口还是修改操作窗口
@@ -216,43 +205,62 @@ void CustomCommandOptDlg::initUI()
     }
     m_lastCmdShortcut = m_shortCutLineEdit->keySequence().toString();
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
-    connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, this, [ = ](const QKeySequence & sequence) {
-        //删除
-        if ("Backspace" == sequence.toString()) {
-            qDebug() << "The KeySequenceE is Backspace";
-            m_shortCutLineEdit->clear();
-            m_lastCmdShortcut = "";
-            return;
+    connect(m_shortCutLineEdit, &KeySequenceEdit::editingFinished, this, &CustomCommandOptDlg::slotShortCutLineEditingFinished);
+}
+
+inline void CustomCommandOptDlg::slotNameLineEditingFinished()
+{
+    if (m_nameLineEdit->text().isEmpty())
+    {
+        m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
+    }
+}
+
+inline void CustomCommandOptDlg::slotCommandLineEditingFinished()
+{
+    if (m_commandLineEdit->text().isEmpty())
+    {
+        m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
+    }
+}
+
+inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySequence & sequence)
+{
+    //删除
+    if ("Backspace" == sequence.toString()) {
+        qDebug() << "The KeySequenceE is Backspace";
+        m_shortCutLineEdit->clear();
+        m_lastCmdShortcut = "";
+        return;
+    }
+    // 取消
+    if ("Esc" == sequence.toString()) {
+        qDebug() << "The KeySequenceE is Esc";
+        m_shortCutLineEdit->clear();
+        m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
+        /***add by ut001121 zhangmeng 20200521 在快捷键编辑框中按下ESC键时退出窗口 修复BUG27554***/
+        close();
+        return;
+    }
+    QString checkName;
+    //QString seq = m_shortCutLineEdit->text();
+    if (m_type != CCT_ADD) {
+        checkName = m_nameLineEdit->text();
+    }
+    QString reason;
+    // 判断快捷键是否冲突
+    if (!ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
+        qDebug() << "checkShortcutValid";
+        // 冲突
+        if (sequence.toString() != "Esc") {
+            qDebug() << "sequence != Esc";
+            showShortcutConflictMsgbox(reason);
         }
-        // 取消
-        if ("Esc" == sequence.toString()) {
-            qDebug() << "The KeySequenceE is Esc";
-            m_shortCutLineEdit->clear();
-            m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
-            /***add by ut001121 zhangmeng 20200521 在快捷键编辑框中按下ESC键时退出窗口 修复BUG27554***/
-            close();
-            return;
-        }
-        QString checkName;
-        //QString seq = m_shortCutLineEdit->text();
-        if (m_type != CCT_ADD) {
-            checkName = m_nameLineEdit->text();
-        }
-        QString reason;
-        // 判断快捷键是否冲突
-        if (!ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
-            qDebug() << "checkShortcutValid";
-            // 冲突
-            if (sequence.toString() != "Esc") {
-                qDebug() << "sequence != Esc";
-                showShortcutConflictMsgbox(reason);
-            }
-            m_shortCutLineEdit->clear();
-            m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
-            return;
-        }
-        m_lastCmdShortcut = sequence.toString();
-    });
+        m_shortCutLineEdit->clear();
+        m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
+        return;
+    }
+    m_lastCmdShortcut = sequence.toString();
 
 #ifdef UI_DEBUG
     contentFrame->setStyleSheet("background:cyan");
@@ -345,21 +353,27 @@ void CustomCommandOptDlg::initUITitle()
 *******************************************************************************/
 void CustomCommandOptDlg::initTitleConnections()
 {
-    connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
-        this->close();
-    });
+    connect(m_closeButton, &DWindowCloseButton::clicked, this, &CustomCommandOptDlg::slotCloseButtonClicked);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
-        DPalette palette = m_titleText->palette();
-        QColor color;
-        if (DApplicationHelper::DarkType == themeType) {
-            color = QColor::fromRgb(192, 198, 212, 255);
-        } else {
-            color = QColor::fromRgb(0, 26, 46, 255);
-        }
-        palette.setBrush(QPalette::WindowText, color);
-        m_titleText->setPalette(palette);
-    });
+    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandOptDlg::slotThemeTypeChanged);
+}
+
+inline void CustomCommandOptDlg::slotCloseButtonClicked()
+{
+    this->close();
+}
+
+inline void CustomCommandOptDlg::slotThemeTypeChanged(DGuiApplicationHelper::ColorType themeType)
+{
+    DPalette palette = m_titleText->palette();
+    QColor color;
+    if (DApplicationHelper::DarkType == themeType) {
+        color = QColor::fromRgb(192, 198, 212, 255);
+    } else {
+        color = QColor::fromRgb(0, 26, 46, 255);
+    }
+    palette.setBrush(QPalette::WindowText, color);
+    m_titleText->setPalette(palette);
 }
 
 /*******************************************************************************
@@ -595,30 +609,39 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
     m_confirmBtn->setDefault(true);
     /************************ Add by m000743 sunchengxi 2020-04-15:默认enter回车按下，走确认校验流程 End ************************/
 
-    connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
-        qDebug() << "cancelBtnClicked";
-        m_confirmResultCode = QDialog::Rejected;
-        reject();
-        close();
-    });
+    connect(m_cancelBtn, &DPushButton::clicked, this, &CustomCommandOptDlg::slotCancelBtnClicked);
 
-    connect(m_confirmBtn, &DPushButton::clicked, this, [ = ]() {
-        qDebug() << "confirmBtnClicked";
-        m_confirmResultCode = QDialog::Accepted;
-        emit confirmBtnClicked();
-    });
+    connect(m_confirmBtn, &DPushButton::clicked, this, &CustomCommandOptDlg::slotConfirmBtnClicked);
 
     /************************ Add by m000743 sunchengxi 2020-04-21:快捷键编辑结束后，enter按下可以响应校验 Begin************************/
-    connect(m_shortCutLineEdit, &DKeySequenceEdit::editingFinished, this, [ = ]() {
-        qDebug() << "shourtCut editingFinished";
-        /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 Begin***************/
-        //m_confirmBtn->setFocus();
-        m_shortCutLineEdit->setFocus();
-        /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 End***************/
-    });
+    connect(m_shortCutLineEdit, &DKeySequenceEdit::editingFinished, this, &CustomCommandOptDlg::slotShortCutLineEditFinished);
     /************************ Add by m000743 sunchengxi 2020-04-21:快捷键编辑结束后，enter按下可以响应校验 End  ************************/
 
     m_mainLayout->addLayout(buttonsLayout);
+}
+
+inline void CustomCommandOptDlg::slotCancelBtnClicked()
+{
+    qDebug() << "cancelBtnClicked";
+    m_confirmResultCode = QDialog::Rejected;
+    reject();
+    close();
+}
+
+inline void CustomCommandOptDlg::slotConfirmBtnClicked()
+{
+    qDebug() << "confirmBtnClicked";
+    m_confirmResultCode = QDialog::Accepted;
+    emit confirmBtnClicked();
+}
+
+inline void CustomCommandOptDlg::slotShortCutLineEditFinished()
+{
+    qDebug() << "shourtCut editingFinished";
+    /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 Begin***************/
+    //m_confirmBtn->setFocus();
+    m_shortCutLineEdit->setFocus();
+    /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 End***************/
 }
 
 /*******************************************************************************
@@ -725,14 +748,7 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
         m_shortcutConflictDialog = new DDialog(this);
         m_shortcutConflictDialog->setObjectName("CustomShortcutConflictDialog");//Add by ut001000 renfeixiang 2020-08-13
         /******** Modify by nt001000 renfeixiang 2020-05-29:修改 因为弹框改为非模态之后，快捷框冲突选中快捷框功能移动这 Begin***************/
-        connect(m_shortcutConflictDialog, &DDialog::finished, m_shortcutConflictDialog, [this]() {
-            m_shortcutConflictDialog->hide();
-            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 Begin***************/
-            QTimer::singleShot(30, this, [&]() {
-                m_shortCutLineEdit->setFocus();
-            });
-            /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/
-        });
+        connect(m_shortcutConflictDialog, &DDialog::finished, this, &CustomCommandOptDlg::slotShortcutConflictDialogFinished);
         /******** Modify by nt001000 renfeixiang 2020-05-29:修改 修改因为弹框改为非模态之后，快捷框冲突选中快捷框功能移动这 End***************/
         m_shortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
         /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
@@ -741,6 +757,19 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
     // 存在后显示
     m_shortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));
     m_shortcutConflictDialog->show();
+}
+
+inline void CustomCommandOptDlg::slotShortcutConflictDialogFinished()
+{
+    m_shortcutConflictDialog->hide();
+    /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 Begin***************/
+    QTimer::singleShot(30, this, &CustomCommandOptDlg::slotSetShortCutLineEditFocus);
+    /******** Add by nt001000 renfeixiang 2020-05-14:快捷框输入已经存在的快捷后，快捷框依然是选中状态 End***************/
+}
+
+inline void CustomCommandOptDlg::slotSetShortCutLineEditFocus()
+{
+    m_shortCutLineEdit->setFocus();
 }
 
 /*******************************************************************************

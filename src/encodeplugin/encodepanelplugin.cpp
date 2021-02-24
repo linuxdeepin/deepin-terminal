@@ -48,38 +48,43 @@ void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
     m_mainWindow = mainWindow;
 //    initEncodePanel();
-    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name) {
-        if (MainWindow::PLUGIN_TYPE_ENCODING != name) {
-            // 判断插件是否显示
-            if (m_isShow) {
-                // 插件显示，则隐藏
-                getEncodePanel()->hideAnim();
-                m_isShow = false;
-            }
-        } else {
-            /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 Begin***************/
-            if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < LISTMINHEIGHT) {
-                //因为拉伸函数设置了FixSize，导致自定义界面弹出时死循环，然后崩溃的问题
-                QuakeWindow *quakeWindow = qobject_cast<QuakeWindow *>(m_mainWindow);
-                quakeWindow->switchEnableResize(true);
-                m_mainWindow->resize(m_mainWindow->width(), LISTMINHEIGHT); //首先设置雷神界面的大小
-                m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);//重新打开编码界面，当前流程结束
-                //窗口弹出后，重新判断雷神窗口是否需要有拉伸属性
-                quakeWindow->switchEnableResize();
-                return;
-            }
-            /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 End***************/
-            getEncodePanel()->show();
-            m_isShow = true;
-            // 先初始化列表后，才能设置焦点
-            TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
-            setCurrentTermEncode(term);
+    connect(m_mainWindow, &MainWindow::showPluginChanged,  this, &EncodePanelPlugin::slotShowPluginChanged);
+    connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, &EncodePanelPlugin::slotQuakeHidePlugin);
+}
 
+inline void EncodePanelPlugin::slotShowPluginChanged(const QString name)
+{
+    if (MainWindow::PLUGIN_TYPE_ENCODING != name) {
+        // 判断插件是否显示
+        if (m_isShow) {
+            // 插件显示，则隐藏
+            getEncodePanel()->hideAnim();
+            m_isShow = false;
         }
-    });
-    connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, [ = ]() {
-        getEncodePanel()->hide();
-    });
+    } else {
+        /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 Begin***************/
+        if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < LISTMINHEIGHT) {
+            //因为拉伸函数设置了FixSize，导致自定义界面弹出时死循环，然后崩溃的问题
+            QuakeWindow *quakeWindow = qobject_cast<QuakeWindow *>(m_mainWindow);
+            quakeWindow->switchEnableResize(true);
+            m_mainWindow->resize(m_mainWindow->width(), LISTMINHEIGHT); //首先设置雷神界面的大小
+            m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);//重新打开编码界面，当前流程结束
+            //窗口弹出后，重新判断雷神窗口是否需要有拉伸属性
+            quakeWindow->switchEnableResize();
+            return;
+        }
+        /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，编码界面使用不方便，将雷神窗口变大适应正常的编码界面 End***************/
+        getEncodePanel()->show();
+        m_isShow = true;
+        // 先初始化列表后，才能设置焦点
+        TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+        setCurrentTermEncode(term);
+    }
+}
+
+inline void EncodePanelPlugin::slotQuakeHidePlugin()
+{
+    getEncodePanel()->hide();
 }
 
 /*******************************************************************************

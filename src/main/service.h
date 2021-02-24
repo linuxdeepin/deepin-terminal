@@ -144,6 +144,8 @@ public slots:
 
     void handleCustomThemeSettingDialogFinished(int result);
 
+    void handleSettingShortcutConflictDialogFinished();
+
 private:
     explicit Service(QObject *parent = nullptr);
     //显示/隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用
@@ -151,7 +153,7 @@ private:
     //监听窗口特效开关对应DBus信号，并实时显示/隐藏透明度和背景模糊选项
     void listenWindowEffectSwitcher();
 
-    static Service *pService ;
+    static Service *g_pService;
     // 设置框 全局唯一显示
     DSettingsDialog *m_settingDialog = nullptr;
 

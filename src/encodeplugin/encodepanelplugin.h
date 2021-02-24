@@ -51,6 +51,10 @@ public:
     // 设置当前term编码
     inline void setCurrentTermEncode(TermWidget *term);
 
+private slots:
+    void slotShowPluginChanged(const QString name);
+    void slotQuakeHidePlugin();
+
 private:
     MainWindow *m_mainWindow = nullptr;
     EncodePanel *m_encodePanel = nullptr;

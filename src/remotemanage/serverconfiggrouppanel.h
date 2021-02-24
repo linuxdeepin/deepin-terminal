@@ -62,6 +62,9 @@ public slots:
     // 列表项被点击
     void onItemClicked(const QString &key);
 
+    void onRefreshList();
+    void onListViewFocusOut(Qt::FocusReason type);
+
 private:
     void initUI();
 

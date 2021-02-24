@@ -279,6 +279,8 @@ public slots:
     //QAction触发对应的自定义命令槽函数
     void onCommandActionTriggered();
 
+    void onUploadFileDialogFinished(int code);
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
@@ -387,8 +389,6 @@ protected:
     bool isTabVisited(const QString &tabIdentifier);
     bool isTabChangeColor(const QString &tabIdentifier);
     void updateTabStatus();
-    // 非DTK控件手动匹配系统主题的修改
-    void applyTheme();
 
     // 终端退出保护
     bool closeConfirm();
@@ -611,6 +611,12 @@ public slots:
     void onResizeWindow();
 
     void slotWorkAreaResized();
+
+    //雷神窗口从上而下的动画结束的处理
+    void onTopToBottomAnimationFinished();
+
+    //雷神窗口从下而上的动画结束的处理
+    void onBottomToTopAnimationFinished();
 
 protected:
     // 初始化标题栏

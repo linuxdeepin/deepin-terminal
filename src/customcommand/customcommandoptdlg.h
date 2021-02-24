@@ -40,6 +40,7 @@
 #include <DWindowCloseButton>
 #include <DPushButton>
 #include <DSuggestButton>
+#include <DGuiApplicationHelper>
 
 #include <QVBoxLayout>
 #include <QAction>
@@ -103,6 +104,20 @@ private slots:
     void slotAddSaveButtonClicked();
     void slotDelCurCustomCommand();
     void slotRefreshData(QString oldCmdName, QString newCmdName);
+
+    void slotNameLineEditingFinished();
+    void slotCommandLineEditingFinished();
+    void slotShortCutLineEditingFinished(const QKeySequence & sequence);
+
+    void slotCloseButtonClicked();
+    void slotThemeTypeChanged(DGuiApplicationHelper::ColorType themeType);
+
+    void slotCancelBtnClicked();
+    void slotConfirmBtnClicked();
+    void slotShortCutLineEditFinished();
+    void slotShortcutConflictDialogFinished();
+
+    void slotSetShortCutLineEditFocus();
 
 private:
     void initUI();

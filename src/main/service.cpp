@@ -33,10 +33,10 @@
 #include <QCheckBox>
 #include <QLabel>
 
-Service *Service::pService = new Service();
+Service *Service::g_pService = new Service();
 Service *Service::instance()
 {
-    return pService;
+    return g_pService;
 }
 
 Service::~Service()
@@ -493,10 +493,7 @@ void Service::showShortcutConflictMsgbox(QString txt)
     if (nullptr == m_settingShortcutConflictDialog) {
         m_settingShortcutConflictDialog = new DDialog(m_settingDialog);
         m_settingShortcutConflictDialog->setObjectName("ServiceSettingShortcutConflictDialog");// Add by ut001000 renfeixiang 2020-08-13
-        connect(m_settingShortcutConflictDialog, &DDialog::finished, m_settingShortcutConflictDialog, [ = ]() {
-            delete m_settingShortcutConflictDialog;
-            m_settingShortcutConflictDialog = nullptr;
-        });
+        connect(m_settingShortcutConflictDialog, &DDialog::finished, this, &Service::handleSettingShortcutConflictDialogFinished);
         m_settingShortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
         /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
         m_settingShortcutConflictDialog->addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
@@ -505,6 +502,12 @@ void Service::showShortcutConflictMsgbox(QString txt)
     m_settingShortcutConflictDialog->show();
     // 将冲突窗口移到窗口中央
     moveToCenter(m_settingShortcutConflictDialog);
+}
+
+inline void Service::handleSettingShortcutConflictDialogFinished()
+{
+    delete m_settingShortcutConflictDialog;
+    m_settingShortcutConflictDialog = nullptr;
 }
 
 /*******************************************************************************
