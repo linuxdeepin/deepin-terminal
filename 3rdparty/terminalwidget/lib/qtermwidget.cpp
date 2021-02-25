@@ -231,7 +231,7 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
     HistorySearch *historySearch =
         new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
     connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int)));
-    connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
+    connect(this, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
 
     connect(historySearch, &HistorySearch::noMatchFound, this, [this]() { emit sig_noMatchFound(); });
     // connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(noMatchFound()));

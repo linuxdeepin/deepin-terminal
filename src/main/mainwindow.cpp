@@ -2725,6 +2725,16 @@ bool QuakeWindow::event(QEvent *event)
 *******************************************************************************/
 bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
 {
+    //fix bug: 64490 勾选“丢失焦点后隐藏雷神窗口”，最小化雷神终端后不能再次调出雷神终端
+    // 丢失焦点后隐藏雷神窗口开关打开的情况下
+    if (Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+        //此处通过该操作禁止雷神终端窗口最小化
+        if (event->type() == QEvent::WindowStateChange) {
+            event->ignore();
+            this->activateWindow();
+            return true;
+        }
+    }
 #if 0
     // 由于MainWindow是qApp注册的时间过滤器,所以这里需要判断
     // 只处理雷神的事件 QuakeWindowWindow是Qt内置用来管理QuakeWindow的Mouse事件的object
