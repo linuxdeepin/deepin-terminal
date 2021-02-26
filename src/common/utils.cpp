@@ -74,6 +74,7 @@ QString Utils::getQssContent(const QString &filePath)
 
     return qss;
 }
+
 /*******************************************************************************
  1. @函数:    getConfigPath
  2. @作者:    ut000439 wangpeili
@@ -89,6 +90,7 @@ QString Utils::getConfigPath()
 
     return dir.filePath(qApp->applicationName());
 }
+
 /*******************************************************************************
  1. @函数:    suffixList
  2. @作者:    ut000439 wangpeili
@@ -99,66 +101,7 @@ QString Utils::suffixList()
 {
     return QString("Font Files (*.ttf *.ttc *.otf)");
 }
-/*******************************************************************************
- 1. @函数:    renderSVG
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:
-*******************************************************************************/
-//QPixmap Utils::renderSVG(const QString &filePath, const QSize &size)
-//{
-//    if (m_imgCacheHash.contains(filePath)) {
-//        return m_imgCacheHash.value(filePath);
-//    }
 
-//    QImageReader reader;
-//    QPixmap pixmap;
-
-//    reader.setFileName(filePath);
-
-//    if (reader.canRead()) {
-//        const qreal ratio = qApp->devicePixelRatio();
-//        reader.setScaledSize(size * ratio);
-//        pixmap = QPixmap::fromImage(reader.read());
-//        pixmap.setDevicePixelRatio(ratio);
-//    } else {
-//        pixmap.load(filePath);
-//    }
-
-//    m_imgCacheHash.insert(filePath, pixmap);
-
-//    return pixmap;
-//}
-/*******************************************************************************
- 1. @函数:    loadFontFamilyFromFiles
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    从文件中加载字体系列
-*******************************************************************************/
-//QString Utils::loadFontFamilyFromFiles(const QString &fontFileName)
-//{
-//    if (m_fontNameCache.contains(fontFileName)) {
-//        return m_fontNameCache.value(fontFileName);
-//    }
-
-//    QString fontFamilyName = "";
-
-//    QFile fontFile(fontFileName);
-//    if (!fontFile.open(QIODevice::ReadOnly)) {
-//        qDebug() << "Open font file error";
-//        return fontFamilyName;
-//    }
-
-//    int loadedFontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll());
-//    QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(loadedFontID);
-//    if (!loadedFontFamilies.empty()) {
-//        fontFamilyName = loadedFontFamilies.at(0);
-//    }
-//    fontFile.close();
-
-//    m_fontNameCache.insert(fontFileName, fontFamilyName);
-//    return fontFamilyName;
-//}
 /*******************************************************************************
  1. @函数:    getElidedText
  2. @作者:    ut000439 wangpeili
@@ -184,98 +127,7 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElid
 
     return text;
 }
-/*******************************************************************************
- 1. @函数:    holdTextInRect
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    在矩形中保留文本
-*******************************************************************************/
-//const QString Utils::holdTextInRect(const QFont &font, QString text, const QSize &size)
-//{
-//    QFontMetrics fm(font);
-//    QTextLayout layout(text);
 
-//    layout.setFont(font);
-
-//    QStringList lines;
-//    QTextOption &text_option = *const_cast<QTextOption *>(&layout.textOption());
-
-//    text_option.setWrapMode(QTextOption::WordWrap);
-//    text_option.setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
-//    layout.beginLayout();
-
-//    QTextLine line = layout.createLine();
-//    int height = 0;
-//    int lineHeight = fm.height();
-
-//    while (line.isValid()) {
-//        height += lineHeight;
-
-//        if (height + lineHeight > size.height()) {
-//            const QString &end_str = fm.elidedText(text.mid(line.textStart()), Qt::ElideRight, size.width());
-
-//            layout.endLayout();
-//            layout.setText(end_str);
-
-//            text_option.setWrapMode(QTextOption::NoWrap);
-//            layout.beginLayout();
-//            line = layout.createLine();
-//            line.setLineWidth(size.width() - 1);
-//            text = end_str;
-//        } else {
-//            line.setLineWidth(size.width());
-//        }
-
-//        lines.append(text.mid(line.textStart(), line.textLength()));
-
-//        if (height + lineHeight > size.height())
-//            break;
-
-//        line = layout.createLine();
-//    }
-
-//    layout.endLayout();
-
-//    return lines.join("");
-//}
-/*******************************************************************************
- 1. @函数:    convertToPreviewString
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    转换为预览字符串
-*******************************************************************************/
-//QString Utils::convertToPreviewString(QString fontFilePath, QString srcString)
-//{
-//    if (fontFilePath.isEmpty()) {
-//        return srcString;
-//    }
-
-//    QString strFontPreview = srcString;
-
-//    QRawFont rawFont(fontFilePath, 0, QFont::PreferNoHinting);
-//    bool isSupport = rawFont.supportsCharacter(QChar('a'));
-//    bool isSupportF = rawFont.supportsCharacter(QChar('a' | 0xf000));
-//    if ((!isSupport && isSupportF)) {
-//        QChar *chArr = new QChar[srcString.length() + 1];
-//        for (int i = 0; i < srcString.length(); i++) {
-//            int ch = srcString.at(i).toLatin1();
-//            //判断字符ascii在32～126范围内(共95个)
-//            if (ch >= 32 && ch <= 126) {
-//                ch |= 0xf000;
-//                chArr[i] = QChar(ch);
-//            } else {
-//                chArr[i] = srcString.at(i);
-//            }
-//        }
-//        chArr[srcString.length()] = '\0';
-//        QString strResult(chArr);
-//        strFontPreview = strResult;
-//        delete[] chArr;
-//    }
-
-//    return strFontPreview;
-//}
 /*******************************************************************************
  1. @函数:    getRandString
  2. @作者:    ut000439 wangpeili
@@ -296,6 +148,7 @@ QString Utils::getRandString()
     }
     return str;
 }
+
 /*******************************************************************************
  1. @函数:    showDirDialog
  2. @作者:    ut000439 wangpeili
@@ -322,6 +175,7 @@ QString Utils::showDirDialog(QWidget *widget)
         return "";
     }
 }
+
 /*******************************************************************************
  1. @函数:    showFilesSelectDialog
  2. @作者:    ut000439 wangpeili
@@ -346,6 +200,7 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
         return QStringList();
     }
 }
+
 /*******************************************************************************
  1. @函数:    showExitConfirmDialog
  2. @作者:    ut000439 wangpeili
@@ -384,6 +239,7 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
     /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
     return (dlg.exec() == DDialog::Accepted);
 }
+
 /*******************************************************************************
  1. @函数:    getExitDialogText
  2. @作者:    ut000439 wangpeili
@@ -414,6 +270,7 @@ void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int 
         }
     }
 }
+
 /*******************************************************************************
  1. @函数:    showExitUninstallConfirmDialog
  2. @作者:    ut000439 wangpeili
@@ -428,6 +285,7 @@ bool Utils::showExitUninstallConfirmDialog()
     dlg.addButton(QString(tr("OK")), true, DDialog::ButtonWarning);
     return (dlg.exec() == DDialog::Accepted);
 }
+
 /*******************************************************************************
  1. @函数:    showUnistallConfirmDialog
  2. @作者:    ut000439 wangpeili
@@ -465,8 +323,6 @@ bool Utils::showShortcutConflictMsgbox(QString txt)
 {
 
     DDialog dlg;
-//    dlg.setTitle(QString(txt ));
-//    dlg.setMessage(QObject::tr(" please set another one."));
     dlg.setIcon(QIcon::fromTheme("dialog-warning"));
     dlg.setTitle(QString(txt + QObject::tr("please set another one.")));
     /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
@@ -780,35 +636,6 @@ QList<QByteArray> Utils::encodeList()
     QList<QByteArray> all = QTextCodec::availableCodecs();
     QList<QByteArray> showEncodeList;
     // 这是ubuntu18.04支持的编码格式，按国家排列的
-//    showEncodeList << "GB18030" << "GB2312" << "GBK"
-//                   << "BIG5" << "BIG5-HKSCS" << "EUC-TW"
-//                   << "EUC-JP" << "ISO-2022-JP" << "SHIFT_JIS"
-//                   << "EUC-KR" << "ISO-2022-KR" << "UHC"
-//                   << "IBM864" << "ISO-8859-6" << "MAC_ARABIC" << "WINDOWS-1256"
-//                   << "ARMSCII-8"
-//                   << "ISO-8859-13" << "ISO-8859-4" << "WINDOWS-1257"
-//                   << "ISO-8859-14"
-//                   << "IBM-852" << "ISO-8859-2" << "MAC_CE" << "WINDOWS-1250"
-//                   << "MAC_CROATIAN"
-//                   << "IBM855" << "ISO-8859-5" << "ISO-IR-111" << "ISO-IR-111" << "KOI8-R" << "MAC-CYRILLIC" << "WINDOWS-1251"
-//                   << "CP866"
-//                   << "KOI8-U" << "MAC_UKRAINIAN"
-//                   << "GEORGIAN-PS"
-//                   << "ISO-8859-7" << "MAC_GREEK" << "WINDOWS-1253"
-//                   << "MAC_GUJARATI"
-//                   << "MAC_GURMUKHI"
-//                   << "IBM862" << "ISO-8859-8-I" << "MAC_HEBREW" << "WINDOWS-1255"
-//                   << "ISO-8859-8"
-//                   << "MAC_DEVANAGARI"
-//                   << "MAC_ICELANDIC"
-//                   << "ISO-8859-10"
-//                   << "MAC_FARSI"
-//                   << "ISO-8859-16" << "MAC_ROMANIAN"
-//                   << "ISO-8859-3"
-//                   << "TIS-620"
-//                   << "IBM857" << "ISO-8859-9" << "MAC_TURKISH" << "WINDOWS-1254"
-//                   << "TCVN" << "VISCII" << "WINDOWS-1258"
-//                   << "IBM850" << "ISO-8859-1" << "ISO-8859-15" << "MAC_ROMAN" << "WINDOWS-1252";
     showEncodeList << "UTF-8" << "GB18030" << "GB2312" << "GBK" /*简体中文*/
                    << "BIG5" << "BIG5-HKSCS" //<< "EUC-TW"      /*繁体中文*/
                    << "EUC-JP"  << "SHIFT_JIS"  //<< "ISO-2022-JP"/*日语*/
@@ -838,71 +665,6 @@ QList<QByteArray> Utils::encodeList()
                    << "IBM857" << "ISO-8859-9" << "x-mac-TURKISH" << "WINDOWS-1254" /*土耳其语*/
                    << "WINDOWS-1258" //<< "TCVN" << "VISCII"  /*越南语*/
                    << "IBM850" << "ISO-8859-1" << "ISO-8859-15" << "x-ROMAN8" << "WINDOWS-1252"; /*西方国家*/
-
-
-    // meld提供的编码格式,按名称排列的
-//    showEncodeList<<"UTF-8"
-//                 <<"ISO-8859-1"
-//                 <<"ISO-8859-2"
-//                 <<"ISO-8859-3"
-//                 <<"ISO-8859-4"
-//                 <<"ISO-8859-5"
-//                 <<"ISO-8859-6"
-//                 <<"ISO-8859-7"
-//                 <<"ISO-8859-8"
-//                 <<"ISO-8859-9"
-//                 <<"ISO-8859-10"
-//                 <<"ISO-8859-13"
-//                 <<"ISO-8859-14"
-//                 <<"ISO-8859-15"
-//                 //<<"ISO-8859-16"
-//                 <<"UTF-7"
-//                 <<"UTF-16"
-//                 <<"UTF-16BE"
-//                 <<"UTF-16LE"
-//                 <<"UTF-32"
-//                 <<"UCS-2"
-//                 <<"UCS-4"
-//                 //<<"ARMSCII-8"
-//                 <<"BIG5"
-//                 <<"BIG5-HKSCS"
-//                 <<"CP866"
-//                 <<"EUC-JP"
-//                 //<<"EUC-JP-MS"
-//                 <<"CP932"
-//                 <<"EUC-KR"
-//                 //<<"EUC-TW"
-//                 <<"GB18030"
-//                 <<"GB2312"
-//                 <<"GBK"
-//                 //<<"GEORGIAN-ACADEMY"
-//                 <<"IBM850"
-//                 <<"IBM852"
-//                 <<"IBM855"
-//                 <<"IBM857"
-//                 <<"IBM862"
-//                 <<"IBM864"
-//                 <<"ISO-2022-JP"
-//                 <<"ISO-2022-KR"
-//                 //<<"ISO-IR-111"
-//                 //<<"JOHAB"
-//                 <<"KOI8-R"
-//                 <<"KOI8-U"
-//                 <<"SHIFT_JIS"
-//                 //<<"TCVN"
-//                 <<"TIS-620"
-//                 //<<"UHC"
-//                 //<<"VISCII"
-//                 <<"WINDOWS-1250"
-//                 <<"WINDOWS-1251"
-//                 <<"WINDOWS-1252"
-//                 <<"WINDOWS-1253"
-//                 <<"WINDOWS-1254"
-//                 <<"WINDOWS-1255"
-//                 <<"WINDOWS-1256"
-//                 <<"WINDOWS-1257"
-//                 <<"WINDOWS-1258";
-
 
     QList<QByteArray> encodeList;
     // 自定义的名称，系统里不一定大小写完全一样，再同步一下。

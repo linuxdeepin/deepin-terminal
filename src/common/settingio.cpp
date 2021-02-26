@@ -21,122 +21,99 @@ SettingIO::SettingIO(QObject *parent) : QObject(parent)
 bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsMap)
 {
     QString currentSection;
-       QTextStream stream(&device);
-       stream.setCodec("UTF-8");
-       QString data;
-       //bool ok = true;
-       rewrite = false;
-       while (!stream.atEnd()) {
-           data = stream.readLine();
-           if (data.trimmed().isEmpty()) {
-               continue;
-           }
-           if (data[0] == QChar('[')) {
-               QString iniSection;
-               int inx = data.indexOf(QChar(']'));
-               if (inx == -1){
-                   //ok = false;
-                   iniSection = data.mid(1);
-               } else {
-                   iniSection = data.mid(1, inx - 1);
-               }
+    QTextStream stream(&device);
+    stream.setCodec("UTF-8");
+    QString data;
+    rewrite = false;
+    while (!stream.atEnd()) {
+        data = stream.readLine();
+        if (data.trimmed().isEmpty()) {
+            continue;
+        }
+        if (QChar('[') == data[0]) {
+            QString iniSection;
+            int inx = data.indexOf(QChar(']'));
+            if (inx == -1) {
+                iniSection = data.mid(1);
+            } else {
+                iniSection = data.mid(1, inx - 1);
+            }
 
-               iniSection = iniSection.trimmed();
-               if (iniSection.compare(QString("general"), Qt::CaseInsensitive) == 0) {
-                   currentSection.clear();
-               } else {
-                   if (iniSection.compare(QString("%general"), Qt::CaseInsensitive) == 0) {
-                       currentSection = QString("general");
-                   } else {
-                      iniSection = canTransfer(iniSection);
-                       currentSection = iniSection;
-                   }
-                   currentSection.replace('/', SLASH_REPLACE_CHAR);
-                   currentSection += QChar('/');
-               }
-           } else {
-               bool inQuotes = false;
-               int equalsPos = -1;
-               QList<int> commaPos;
-               int charPos = 0;
-               while (charPos < data.size())
-               {
-                   QChar ch = data.at(charPos);
-                   if (ch == QChar('=')) {
-                       if (!inQuotes && equalsPos == -1) {
-                           equalsPos = charPos;
-                       }
-                   } else if (ch == QChar('"')) {
-                       inQuotes = !inQuotes;
-                   } /*else if (ch == QChar(',')) {
-
-                       if (!inQuotes && equalsPos != -1) {
-                           commaPos.append(i);
-                       }
-
-                   }*/ /*else if (ch == QChar(';') || ch == QChar('#')) {
-                       if (!inQuotes) {
-                           data.resize(i);
-                           break;
-                       }
-                   }*/ /*else if (ch == QChar('\\')) {
-                       if (++i < data.size()) {
-                        } else {
-                           ok = false;
-                           break;
-                       }
-                   }
-                   */
-                   charPos++;
-               }
-                if (equalsPos == -1) {
-                   break;
-               } else {
-                   QString key = data.mid(0, equalsPos).trimmed();
-                   if (key.isEmpty()) {
-                       break;
-                   } else {
-                       key = currentSection + key;
-                   }
-                   if (commaPos.isEmpty()) { //value
-                       QString v = data.mid(equalsPos+1).trimmed();
-                       if (v.startsWith("\"") && v.endsWith("\"") && v.length()>1) {
-                           v = v.mid(1, v.length()-2);
-                       }
-                        QString str = unescapedString(v);
-                        //如果是3字节的Latin1中文，转换中文编码
-                        if(v.count("\\x") > 0 && v.count("\\x") %3 == 0)
-                        {
-                            int first = v.indexOf("\\x");
-                            int next = v.indexOf("\\x",first+1);
-                            int len = next-first;
-                            if(len == 4)
-                            {
-                                str = QString::fromLocal8Bit(str.toLatin1());
-                            }
+            iniSection = iniSection.trimmed();
+            if (iniSection.compare(QString("general"), Qt::CaseInsensitive) == 0) {
+                currentSection.clear();
+            } else {
+                if (iniSection.compare(QString("%general"), Qt::CaseInsensitive) == 0) {
+                    currentSection = QString("general");
+                } else {
+                    iniSection = canTransfer(iniSection);
+                    currentSection = iniSection;
+                }
+                currentSection.replace('/', SLASH_REPLACE_CHAR);
+                currentSection += QChar('/');
+            }
+        } else {
+            bool inQuotes = false;
+            int equalsPos = -1;
+            QList<int> commaPos;
+            int charPos = 0;
+            while (charPos < data.size()) {
+                QChar ch = data.at(charPos);
+                if (ch == QChar('=')) {
+                    if (!inQuotes && equalsPos == -1) {
+                        equalsPos = charPos;
+                    }
+                } else if (ch == QChar('"')) {
+                    inQuotes = !inQuotes;
+                }
+                charPos++;
+            }
+            if (equalsPos == -1) {
+                break;
+            } else {
+                QString key = data.mid(0, equalsPos).trimmed();
+                if (key.isEmpty()) {
+                    break;
+                } else {
+                    key = currentSection + key;
+                }
+                if (commaPos.isEmpty()) { //value
+                    QString v = data.mid(equalsPos + 1).trimmed();
+                    if (v.startsWith("\"") && v.endsWith("\"") && v.length() > 1) {
+                        v = v.mid(1, v.length() - 2);
+                    }
+                    QString str = unescapedString(v);
+                    //如果是3字节的Latin1中文，转换中文编码
+                    if (v.count("\\x") > 0 && v.count("\\x") % 3 == 0) {
+                        int first = v.indexOf("\\x");
+                        int next = v.indexOf("\\x", first + 1);
+                        int len = next - first;
+                        if (len == 4) {
+                            str = QString::fromLocal8Bit(str.toLatin1());
                         }
+                    }
 
-                        settingsMap[key] = stringToVariant(str);
-                   } else { //value list
-                       commaPos.prepend(equalsPos);
-                       commaPos.append(-1);
-                       QVariantList vals;
-                       for (int pos=1; pos<commaPos.size(); ++pos) {
-                           QString d = data.mid(commaPos.at(pos-1)+1, commaPos.at(pos)-commaPos.at(pos-1)-1);
-                           QString v = d.trimmed();
-                           if (v.startsWith("\"") && v.endsWith("\"") && v.length()>1) {
-                               v = v.mid(1, v.length()-2);
-                           }
-                           vals.append(stringToVariant(unescapedString(v)));
-                       }
-                       settingsMap[key] = vals;
-                   }
-               }
-           }
-       }
-       return true;
-      //return ok;
+                    settingsMap[key] = stringToVariant(str);
+                } else { //value list
+                    commaPos.prepend(equalsPos);
+                    commaPos.append(-1);
+                    QVariantList vals;
+                    for (int pos = 1; pos < commaPos.size(); ++pos) {
+                        QString d = data.mid(commaPos.at(pos - 1) + 1, commaPos.at(pos) - commaPos.at(pos - 1) - 1);
+                        QString v = d.trimmed();
+                        if (v.startsWith("\"") && v.endsWith("\"") && v.length() > 1) {
+                            v = v.mid(1, v.length() - 2);
+                        }
+                        vals.append(stringToVariant(unescapedString(v)));
+                    }
+                    settingsMap[key] = vals;
+                }
+            }
+        }
+    }
+    return true;
 }
+
 /*******************************************************************************
  1. @函数:    writeIniFunc
  2. @作者:    ut001811 朱科伟
@@ -146,72 +123,70 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
 bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &settingsMap)
 {
 #ifdef Q_OS_WIN
-    const char * const eol = "\r\n";
+    const char *const eol = "\r\n";
 #else
-    const char* eol = "\n";
+    const char *eol = "\n";
 #endif
     bool writeError = false;
 
     QString lastSection;
-    QMapIterator<QString,QVariant> it(settingsMap);
-    while(it.hasNext() && !writeError) {
-      it.next();
-      QString key = it.key();
-      QString section;
-     // qDebug()<<"key: "<<key;
-      int idx = key.lastIndexOf(QChar('/'));
-      if (idx == -1) {
-          section = QString("[General]");
-      } else {
-          section = key.left(idx);
-          key = key.mid(idx+1);
-          if (section.compare(QString("General"), Qt::CaseInsensitive) == 0) {
-              section = QString("[%General]");
-          } else {
-              section.prepend(QChar('['));
-              section.append(QChar(']'));
-          }
+    QMapIterator<QString, QVariant> it(settingsMap);
+    while (it.hasNext() && !writeError) {
+        it.next();
+        QString key = it.key();
+        QString section;
+        // qDebug()<<"key: "<<key;
+        int idx = key.lastIndexOf(QChar('/'));
+        if (idx == -1) {
+            section = QString("[General]");
+        } else {
+            section = key.left(idx);
+            key = key.mid(idx + 1);
+            if (section.compare(QString("General"), Qt::CaseInsensitive) == 0) {
+                section = QString("[%General]");
+            } else {
+                section.prepend(QChar('['));
+                section.append(QChar(']'));
+            }
 
-          section.replace(SLASH_REPLACE_CHAR, '/');
-      }
-      if (section.compare(lastSection, Qt::CaseInsensitive))
-      {
-          if (!lastSection.isEmpty()) {
-              device.write(eol);
-          }
-          lastSection = section;
-          if (device.write(section.toUtf8() + eol) == -1) {
-              writeError = true;
-          }
-      }
-       QByteArray block = key.toUtf8();
-      block += " = ";
-      if (it.value().type() == QVariant::StringList) {
-          foreach (QString s, it.value().toStringList()) {
-              block += escapedString(s);
-              block += ", ";
-          }
-          if (block.endsWith(", ")) {
-              block.chop(2);
-          }
-       } else if (it.value().type() == QVariant::List) {
-          foreach (QVariant v, it.value().toList()) {
-              block += escapedString(variantToString(v));
-              block += ", ";
-          }
-          if (block.endsWith(", ")) {
-              block.chop(2);
-          }
-      } else {
-          block += escapedString(variantToString(it.value()));
-      }
-      block += eol;
-      if (device.write(block) == -1) {
-          writeError = true;
-      }
-     }
+            section.replace(SLASH_REPLACE_CHAR, '/');
+        }
+        if (section.compare(lastSection, Qt::CaseInsensitive)) {
+            if (!lastSection.isEmpty()) {
+                device.write(eol);
+            }
+            lastSection = section;
+            if (device.write(section.toUtf8() + eol) == -1) {
+                writeError = true;
+            }
+        }
+        QByteArray block = key.toUtf8();
+        block += " = ";
+        if (it.value().type() == QVariant::StringList) {
+            foreach (QString s, it.value().toStringList()) {
+                block += escapedString(s);
+                block += ", ";
+            }
+            if (block.endsWith(", ")) {
+                block.chop(2);
+            }
+        } else if (it.value().type() == QVariant::List) {
+            foreach (QVariant v, it.value().toList()) {
+                block += escapedString(variantToString(v));
+                block += ", ";
+            }
+            if (block.endsWith(", ")) {
+                block.chop(2);
+            }
+        } else {
+            block += escapedString(variantToString(it.value()));
+        }
+        block += eol;
+        if (device.write(block) == -1) {
+            writeError = true;
+        }
+    }
     return true;
-    //return writeError;
 }
 
 /*******************************************************************************
@@ -224,32 +199,32 @@ QString SettingIO::variantToString(const QVariant &v)
 {
     QString result;
     switch (v.type()) {
-        case QVariant::String:
-        case QVariant::LongLong:
-        case QVariant::ULongLong:
-        case QVariant::Int:
-        case QVariant::UInt:
-        case QVariant::Bool:
-        case QVariant::Double:
-        case QVariant::KeySequence: {
-            result = v.toString();
-            if (result.startsWith(QChar('@')))
-                result.prepend(QChar('@'));
-            break;
+    case QVariant::String:
+    case QVariant::LongLong:
+    case QVariant::ULongLong:
+    case QVariant::Int:
+    case QVariant::UInt:
+    case QVariant::Bool:
+    case QVariant::Double:
+    case QVariant::KeySequence: {
+        result = v.toString();
+        if (result.startsWith(QChar('@')))
+            result.prepend(QChar('@'));
+        break;
+    }
+    default: {
+        QByteArray a;
+        {
+            QDataStream s(&a, QIODevice::WriteOnly);
+            s.setVersion(QDataStream::Qt_4_0);
+            s << v;
         }
-        default: {
-            QByteArray a;
-            {
-                QDataStream s(&a, QIODevice::WriteOnly);
-                s.setVersion(QDataStream::Qt_4_0);
-                s << v;
-            }
 
-            result = QString("@Variant(");
-            result += QString::fromLatin1(a.constData(), a.size());
-            result += QChar(')');
-            break;
-        }
+        result = QString("@Variant(");
+        result += QString::fromLatin1(a.constData(), a.size());
+        result += QChar(')');
+        break;
+    }
     }
 
     return result;
@@ -295,11 +270,11 @@ QByteArray SettingIO::escapedString(const QString &src)
     result.reserve(src.size() * 3 / 2);
     for (i = 0; i < src.size(); ++i) {
         uint ch = src.at(i).unicode();
-        if (ch == ';' || ch == ',' || ch == '=' || ch == '#') {
+        if (';' == ch || ',' == ch || '=' == ch || '#' == ch) {
             needsQuotes = true;
         }
         if (escapeNextIfDigit && ((ch >= '0' && ch <= '9')
-                 || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F'))) {
+                                  || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F'))) {
             result += "\\x";
             result += QByteArray::number(ch, 16);
             continue;
@@ -331,12 +306,12 @@ QByteArray SettingIO::escapedString(const QString &src)
                 result += "\\x";
                 result += QByteArray::number(ch, 16);
                 escapeNextIfDigit = true;
-            } else{
+            } else {
                 result += QString(src[i]).toUtf8();
             }
         }
     }
-    if (result.size()>0 && (result.at(0)==' ' || result.at(result.size() - 1) == ' ')) {
+    if (result.size() > 0 && (result.at(0) == ' ' || result.at(result.size() - 1) == ' ')) {
         needsQuotes = true;
     }
     if (needsQuotes) {
@@ -356,8 +331,7 @@ const char hexDigits[] = "0123456789ABCDEF";
 *******************************************************************************/
 QString SettingIO::unescapedString(const QString &src)
 {
-    static const char escapeCodes[][2] =
-    {
+    static const char escapeCodes[][2] = {
         { 'a', '\a' },
         { 'b', '\b' },
         { 'f', '\f' },
@@ -409,7 +383,7 @@ normal:
         } else {
             stringResult += ch;
         }
-                i++;
+        i++;
     }
     goto end;
 
@@ -462,25 +436,18 @@ QString SettingIO::canTransfer(const QString &str)
 {
     QString res;
     //如果有%U，是Uincode字符串
-    if(str.contains("%U") || str.contains("%u"))
-    {
+    if (str.contains("%U") || str.contains("%u")) {
         rewrite = true;
         //uincode
-        iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
-      //  qDebug()<< "uincode" <<ok << res;
+        iniUnescapedKey(str.toLocal8Bit(), 0, str.size(), res);
     }
     //如果是%是Latin1格式的字符串
-    else if(str.contains("%"))
-    {
+    else if (str.contains("%")) {
         rewrite = true;
         //utf-8转换为uincode过了
-        iniUnescapedKey(str.toLocal8Bit(),0,str.size(),res);
-      //  qDebug()<< "utf-8 to uincode" <<ok << res;
-       // qDebug() << QString::fromLocal8Bit(res.toLatin1());
+        iniUnescapedKey(str.toLocal8Bit(), 0, str.size(), res);
         res = QString::fromLocal8Bit(res.toLatin1());
-    }
-    else
-    {
+    } else {
         res = str;
     }
 
@@ -554,13 +521,13 @@ QSettings::Format USettings::g_customFormat = QSettings::registerFormat("conf", 
 
 //构造函数
 USettings::USettings(const QString &fileName, QObject *parent)
-    : QSettings (fileName, g_customFormat, parent)
+    : QSettings(fileName, g_customFormat, parent)
 {
     QSettings::setIniCodec(QTextCodec::codecForName("UTF-8"));
 }
 
 //析构函数
-USettings::~USettings(){}
+USettings::~USettings() {}
 
 /*******************************************************************************
  1. @函数:    beginGroup

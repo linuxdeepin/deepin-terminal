@@ -119,16 +119,7 @@ public:
     static QString getQssContent(const QString &filePath);
     static QString getConfigPath();
     static QString suffixList();
-    //此接口暂时注释保留不删除，2020.12.23
-    //static QPixmap renderSVG(const QString &filePath, const QSize &size);
-    //static QString loadFontFamilyFromFiles(const QString &fontFileName);
     static QString getElidedText(QFont font, QString str, int MaxWith, Qt::TextElideMode elideMode = Qt::ElideRight);
-
-    //此接口暂时注释保留不删除，2020.12.23
-    //static const QString holdTextInRect(const QFont &font, QString text, const QSize &size);
-    //此接口暂时注释保留不删除，2020.12.23
-    //static QString convertToPreviewString(QString fontFilePath, QString srcString);
-
     static QString getRandString();
 
     static QString showDirDialog(QWidget *widget);
