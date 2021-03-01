@@ -63,6 +63,7 @@
 #include "Filter.h"
 #include "konsole_wcwidth.h"
 #include "ScreenWindow.h"
+#include "Screen.h"
 #include "TerminalCharacterDecoder.h"
 
 using namespace Konsole;
@@ -153,6 +154,8 @@ void TerminalDisplay::setScreenWindow(ScreenWindow* window)
         connect( _screenWindow , SIGNAL(scrolled(int)) , this , SLOT(updateFilters()) );
         connect( _screenWindow, SIGNAL(selectionCleared()), this, SLOT(selectionCleared()) );
         window->setWindowLines(_lines);
+        window->screen()->setSessionId(_sessionId);
+        window->screen()->setReflowLines(true);
     }
 }
 
@@ -2458,7 +2461,7 @@ void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
     {
       if ( _actSel > 1 )
       {
-          setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
+          setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
       }
 
       _actSel = 0;
@@ -2626,7 +2629,7 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
 
      _screenWindow->setSelectionEnd( endSel.x() , endSel.y() );
 
-     setSelection( _screenWindow->selectedText(_preserveLineBreaks) );
+     setSelection( _screenWindow->selectedText(currentDecodingOptions()) );
    }
 
   _possibleTripleClick=true;
@@ -2704,6 +2707,16 @@ void TerminalDisplay::tripleClickTimeout()
   _possibleTripleClick=false;
 }
 
+Screen::DecodingOptions TerminalDisplay::currentDecodingOptions()
+{
+    Screen::DecodingOptions decodingOptions;
+    if (_preserveLineBreaks) {
+        decodingOptions |= Screen::PreserveLineBreaks;
+    }
+
+    return decodingOptions;
+}
+
 void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 {
   if ( !_screenWindow ) return;
@@ -2758,7 +2771,7 @@ void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 
   _screenWindow->setSelectionEnd( _columns - 1 , _iPntSel.y() );
 
-  setSelection(_screenWindow->selectedText(_preserveLineBreaks));
+  setSelection(_screenWindow->selectedText(currentDecodingOptions()));
 
   _iPntSel.ry() += _scrollBar->value();
 }
@@ -2867,7 +2880,7 @@ void TerminalDisplay::setSelection(const QString& t)
 void TerminalDisplay::setSelectionAll()
 {
     _screenWindow->setSelectionAll();
-    setSelection(_screenWindow->selectedText(_preserveLineBreaks));
+    setSelection(_screenWindow->selectedText(currentDecodingOptions()));
 }
 
 void TerminalDisplay::copyClipboard()
@@ -2875,7 +2888,7 @@ void TerminalDisplay::copyClipboard()
   if ( !_screenWindow )
       return;
 
-  QString text = _screenWindow->selectedText(_preserveLineBreaks);
+  QString text = _screenWindow->selectedText(currentDecodingOptions());
   if (!text.isEmpty())
     QApplication::clipboard()->setText(text);
 }
@@ -3136,7 +3149,7 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             _lastLeftEndColumn = _selEndColumn;
 
-            setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
+            setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
         }
         else if ( event->key() == Qt::Key_Right)
         {
@@ -3150,7 +3163,7 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             _lastRightEndColumn = _selEndColumn;
 
-            setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
+            setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
         }
         else
         {
@@ -3317,7 +3330,7 @@ void TerminalDisplay::bell(const QString& message)
 
 void TerminalDisplay::selectionChanged()
 {
-    emit copyAvailable(_screenWindow->selectedText(false).isEmpty() == false);
+    emit copyAvailable(_screenWindow->selectedText(Screen::PlainText).isEmpty() == false);
 }
 
 void TerminalDisplay::selectionCleared()

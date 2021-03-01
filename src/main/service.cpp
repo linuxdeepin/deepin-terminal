@@ -409,7 +409,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
     QDateTime endTime = QDateTime::currentDateTime();
     qDebug() << "Setting show cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
     QString strSettingsShowTime = GRAB_POINT + LOGO_TYPE + SHOW_SETTINGS_TIME + QString::number(endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch());
-    qInfo() << qPrintable(strSettingsShowTime);
+    qDebug() << qPrintable(strSettingsShowTime);
 }
 
 /*******************************************************************************
@@ -771,7 +771,7 @@ void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 
 void Service::slotShowSettingsDialog()
 {
-    qInfo() << sender()->parent();
+    qDebug() << sender()->parent();
     MainWindow *mainWindow = qobject_cast<MainWindow *>(sender()->parent());
     Service::instance()->showSettingDialog(mainWindow);
 }

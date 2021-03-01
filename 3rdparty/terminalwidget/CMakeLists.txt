@@ -64,9 +64,21 @@ set(TERMINALWIDGET_LIBRARY_NAME terminalwidget5)
 set(SRCS
     lib/BlockArray.cpp
     lib/ColorScheme.cpp
+    lib/CharacterFormat.cpp
     lib/Emulation.cpp
     lib/Filter.cpp
-    lib/History.cpp
+    lib/history/HistoryFile.cpp
+    lib/history/HistoryScroll.cpp
+    lib/history/HistoryScrollFile.cpp
+    lib/history/HistoryScrollNone.cpp
+    lib/history/HistoryType.cpp
+    lib/history/HistoryTypeFile.cpp
+    lib/history/HistoryTypeNone.cpp
+    lib/history/compact/CompactHistoryBlock.cpp
+    lib/history/compact/CompactHistoryBlockList.cpp
+    lib/history/compact/CompactHistoryLine.cpp
+    lib/history/compact/CompactHistoryScroll.cpp
+    lib/history/compact/CompactHistoryType.cpp
     lib/HistorySearch.cpp
     lib/KeyboardTranslator.cpp
     lib/konsole_wcwidth.cpp
@@ -93,6 +105,18 @@ set(SRCS
 set(HDRS
     lib/Emulation.h
     lib/Filter.h
+    lib/history/HistoryFile.h
+    lib/history/HistoryScroll.h
+    lib/history/HistoryScrollFile.h
+    lib/history/HistoryScrollNone.h
+    lib/history/HistoryType.h
+    lib/history/HistoryTypeFile.h
+    lib/history/HistoryTypeNone.h
+    lib/history/compact/CompactHistoryBlock.h
+    lib/history/compact/CompactHistoryBlockList.h
+    lib/history/compact/CompactHistoryLine.h
+    lib/history/compact/CompactHistoryScroll.h
+    lib/history/compact/CompactHistoryType.h
     lib/HistorySearch.h
     lib/kprocess.h
     lib/kptydevice.h
@@ -119,7 +143,18 @@ set(HDRS_DISTRIB
     lib/Filter.h
     lib/Session.h
     lib/SessionManager.h
-    lib/History.h
+    lib/history/HistoryFile.h
+    lib/history/HistoryScroll.h
+    lib/history/HistoryScrollFile.h
+    lib/history/HistoryScrollNone.h
+    lib/history/HistoryType.h
+    lib/history/HistoryTypeFile.h
+    lib/history/HistoryTypeNone.h
+    lib/history/compact/CompactHistoryBlock.h
+    lib/history/compact/CompactHistoryBlockList.h
+    lib/history/compact/CompactHistoryLine.h
+    lib/history/compact/CompactHistoryScroll.h
+    lib/history/compact/CompactHistoryType.h
     lib/BlockArray.h
     lib/Character.h
     lib/CharacterColor.h

@@ -644,6 +644,7 @@ protected:
 
     void clearImage();
 
+    Screen::DecodingOptions currentDecodingOptions();
     void mouseTripleClickEvent(QMouseEvent* ev);
 
     // reimplemented

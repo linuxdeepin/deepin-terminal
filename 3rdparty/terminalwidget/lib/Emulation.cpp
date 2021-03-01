@@ -436,6 +436,11 @@ int Emulation::lineCount() const
     return _currentScreen->getLines() + _currentScreen->getHistLines();
 }
 
+int Emulation::columnCount() const
+{
+    return _currentScreen->getColumns();
+}
+
 #define BULK_TIMEOUT1 10
 #define BULK_TIMEOUT2 40
 

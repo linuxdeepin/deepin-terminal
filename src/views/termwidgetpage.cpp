@@ -871,7 +871,7 @@ void TermWidgetPage::printSearchCostTime()
     qint64 costTime = m_findBar->searchCostTime();
     if (costTime != -1) {
         QString strSearchTime = GRAB_POINT + LOGO_TYPE + SEARCH_TIME + QString::number(costTime);
-        qInfo() << qPrintable(strSearchTime);
+        qDebug() << qPrintable(strSearchTime);
     }
 }
 

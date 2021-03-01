@@ -27,6 +27,7 @@
 
 // Konsole
 #include "Character.h"
+#include "Screen.h"
 
 namespace Konsole
 {
@@ -218,7 +219,7 @@ public:
      *
      * @param preserveLineBreaks See Screen::selectedText()
      */
-    QString selectedText( bool preserveLineBreaks ) const;
+    QString selectedText( const Screen::DecodingOptions options ) const;
 
 public slots:
     /**

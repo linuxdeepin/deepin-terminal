@@ -33,13 +33,19 @@
 // Qt
 #include <QTextStream>
 #include <QDate>
+#include <QDebug>
 
 // KDE
 //#include <kdebug.h>
 
 // Konsole
 #include "konsole_wcwidth.h"
+#include "Session.h"
+#include "SessionManager.h"
 #include "TerminalCharacterDecoder.h"
+#include "TerminalDisplay.h"
+#include "history/HistoryType.h"
+#include "history/HistoryScrollNone.h"
 
 using namespace Konsole;
 
@@ -68,20 +74,27 @@ Character Screen::defaultChar = Character(' ',
 
 //#define REVERSE_WRAPPED_LINES  // for wrapped line debug
 
-    Screen::Screen(int l, int c)
-: lines(l),
-    columns(c),
-    screenLines(new ImageLine[lines+1] ),
-    _scrolledLines(0),
-    _droppedLines(0),
-    history(new HistoryScrollNone()),
-    cuX(0), cuY(0),
-    currentRendition(0),
-    _topMargin(0), _bottomMargin(0),
-    selBegin(0), selTopLeft(0), selBottomRight(0),
-    blockSelectionMode(false),
-    effectiveForeground(CharacterColor()), effectiveBackground(CharacterColor()), effectiveRendition(0),
-    lastPos(-1)
+Screen::Screen(int l, int c)
+    : lines(l)
+    , columns(c)
+    , screenLines(lines+1)
+    , _screenLinesSize(lines)
+    , _scrolledLines(0)
+    , _droppedLines(0)
+    , history(new HistoryScrollNone())
+    , cuX(0)
+    , cuY(0)
+    , currentRendition(0)
+    , _topMargin(0)
+    , _bottomMargin(0)
+    , selBegin(0)
+    , selTopLeft(0)
+    , selBottomRight(0)
+    , blockSelectionMode(false)
+    , effectiveForeground(CharacterColor())
+    , effectiveBackground(CharacterColor())
+    , effectiveRendition(0)
+    , lastPos(-1)
 {
     lineProperties.resize(lines+1);
     for (int i=0;i<lines+1;i++)
@@ -97,7 +110,6 @@ Character Screen::defaultChar = Character(' ',
 
 Screen::~Screen()
 {
-    delete[] screenLines;
     delete history;
 }
 
@@ -314,42 +326,116 @@ void Screen::restoreCursor()
 
 void Screen::resizeImage(int new_lines, int new_columns)
 {
-    if ((new_lines==lines) && (new_columns==columns)) return;
+    if ((new_lines == lines) && (new_columns == columns)) {
+        return;
+    }
 
-    if (cuY > new_lines-1)
-    { // attempt to preserve focus and lines
-        _bottomMargin = lines-1; //FIXME: margin lost
-        for (int i = 0; i < cuY-(new_lines-1); i++)
-        {
-            addHistLine(); scrollUp(0,1);
+    // Adjust scroll position, and fix glitches
+    _oldTotalLines = getLines() + getHistLines();
+    _isResize = true;
+
+    int cursorLine = getCursorLine();
+    const int oldCursorLine = (cursorLine == lines - 1 || cursorLine > new_lines - 1) ? new_lines - 1 : cursorLine;
+
+    // Check if history need to change
+    if (_enableReflowLines && new_columns != columns && history->getLines() && history->getMaxLines()) {
+        // Join next line from _screenLine to history
+        while (history->isWrappedLine(history->getLines() - 1)) {
+            fastAddHistLine();
+            cursorLine--;
+        }
+        auto removedLines = history->reflowLines(new_columns);
+
+        // If history size > max history size it will drop a line from history.
+        // We need to verify if we need to remove a URL.
+        if (removedLines) {
+//            _escapeSequenceUrlExtractor->historyLinesRemoved(removedLines);
         }
     }
 
-    // create new screen lines and copy from old to new
+    if (_enableReflowLines && new_columns != columns) {
+        int cursorLineCorrection = 0;
+        if (_currentTerminalDisplay) {
+            // The 'zsh' works different from other shells when writting the command line.
+            // It needs to identify the 'zsh' and calculate the new command line.
+//            auto currentSession = _currentTerminalDisplay->getCurrentSession();
+//            auto terminal = currentSession->foregroundProcessName();
+//            if (terminal == QLatin1String("zsh") && cursorLine > 0 && (lineProperties[cursorLine - 1] & LINE_WRAPPED) != 0) {
+//                while (cursorLine + cursorLineCorrection > 0 && (lineProperties[cursorLine + cursorLineCorrection - 1] & LINE_WRAPPED) != 0) {
+//                    cursorLineCorrection--;
+//                }
+//            }
+        }
 
-    ImageLine* newScreenLines = new ImageLine[new_lines+1];
-    for (int i=0; i < qMin(lines,new_lines+1) ;i++)
-        newScreenLines[i]=screenLines[i];
-    for (int i=lines;(i > 0) && (i<new_lines+1);i++)
-        newScreenLines[i].resize( new_columns );
+        // Analize the lines and move the data to lines below.
+        int currentPos = 0;
+        while (currentPos < (cursorLine + cursorLineCorrection) && currentPos < screenLines.count() - 1) {
+            // Join wrapped line in current position
+            if ((lineProperties[currentPos] & LINE_WRAPPED) != 0) {
+                screenLines[currentPos].append(std::move(screenLines[currentPos + 1]));
+                screenLines.remove(currentPos + 1);
+                lineProperties.remove(currentPos);
+                cursorLine--;
+                continue;
+            }
 
-    lineProperties.resize(new_lines+1);
-    for (int i=lines;(i > 0) && (i<new_lines+1);i++)
-        lineProperties[i] = LINE_DEFAULT;
+            // Ignore whitespaces at the end of the line
+            int lineSize = screenLines[currentPos].size();
+            while (lineSize > 0 && QChar(screenLines[currentPos][lineSize - 1].character).isSpace()) {
+                lineSize--;
+            }
 
-    clearSelection();
+            // If need to move to line below, copy from the current line, to the next one.
+            if (lineSize > new_columns) {
+                auto values = screenLines[currentPos].mid(new_columns);
+                screenLines[currentPos].resize(new_columns);
+                lineProperties.insert(currentPos + 1, lineProperties[currentPos]);
+                screenLines.insert(currentPos + 1, std::move(values));
+                lineProperties[currentPos] |= LINE_WRAPPED;
+                cursorLine++;
+            }
+            currentPos += 1;
+        }
+    }
 
-    delete[] screenLines;
-    screenLines = newScreenLines;
+    // Check if it need to move from _screenLine to history
+    while (cursorLine > new_lines - 1) {
+        fastAddHistLine();
+        cursorLine--;
+    }
 
+    if (_enableReflowLines) {
+        // Check cursor position and send from history to screenLines
+        ImageLine histLine;
+        histLine.reserve(1024);
+        while (cursorLine < oldCursorLine && history->getLines()) {
+            int histPos = history->getLines() - 1;
+            int histLineLen = history->getLineLen(histPos);
+            int isWrapped = history->isWrappedLine(histPos) ? LINE_WRAPPED : LINE_DEFAULT;
+            histLine.resize(histLineLen);
+            history->getCells(histPos, 0, histLineLen, histLine.data());
+            screenLines.insert(0, histLine);
+            lineProperties.insert(0, isWrapped);
+            history->removeCells(histPos);
+            cursorLine++;
+        }
+    }
+
+    lineProperties.resize(new_lines + 1);
+    if (lineProperties.size() > screenLines.size()) {
+        std::fill(lineProperties.begin() + screenLines.size(), lineProperties.end(), LINE_DEFAULT);
+    }
+    screenLines.resize(new_lines + 1);
+
+    _screenLinesSize = new_lines;
     lines = new_lines;
     columns = new_columns;
-    cuX = qMin(cuX,columns-1);
-    cuY = qMin(cuY,lines-1);
+    cuX = qMin(cuX, columns - 1);
+    cursorLine = qBound(0, cursorLine, lines - 1);
+    setCursorLine(cursorLine);
 
     // FIXME: try to keep values, evtl.
-    _topMargin=0;
-    _bottomMargin=lines-1;
+    setDefaultMargins();
     initTabStops();
     clearSelection();
 }
@@ -1145,15 +1231,33 @@ bool Screen::isSelected(const int x, const int y) const
     return pos >= selTopLeft && pos <= selBottomRight && columnInSelection;
 }
 
-QString Screen::selectedText(bool preserveLineBreaks) const
+QString Screen::selectedText(const DecodingOptions options) const
+{
+    if (!isSelectionValid()) {
+        return QString();
+    }
+
+    return text(selTopLeft, selBottomRight, options);
+}
+
+QString Screen::text(int startIndex, int endIndex, const DecodingOptions options) const
 {
     QString result;
     QTextStream stream(&result, QIODevice::ReadWrite);
 
-    PlainTextDecoder decoder;
-    decoder.begin(&stream);
-    writeSelectionToStream(&decoder , preserveLineBreaks);
-    decoder.end();
+    HTMLDecoder htmlDecoder;
+    PlainTextDecoder plainTextDecoder;
+
+    TerminalCharacterDecoder *decoder;
+    if((options & ConvertToHtml) != 0U) {
+        decoder = &htmlDecoder;
+    } else {
+        decoder = &plainTextDecoder;
+    }
+
+    decoder->begin(&stream);
+    writeToStream(decoder, startIndex, endIndex, options);
+    decoder->end();
 
     return result;
 }
@@ -1163,17 +1267,17 @@ bool Screen::isSelectionValid() const
     return selTopLeft >= 0 && selBottomRight >= 0;
 }
 
-void Screen::writeSelectionToStream(TerminalCharacterDecoder* decoder ,
-        bool preserveLineBreaks) const
+void Screen::writeSelectionToStream(TerminalCharacterDecoder* decoder, const DecodingOptions options) const
 {
     if (!isSelectionValid())
         return;
-    writeToStream(decoder,selTopLeft,selBottomRight,preserveLineBreaks);
+    writeToStream(decoder,selTopLeft,selBottomRight,options);
 }
 
 void Screen::writeToStream(TerminalCharacterDecoder* decoder,
-        int startIndex, int endIndex,
-        bool preserveLineBreaks) const
+                           int startIndex,
+                           int endIndex,
+                           const DecodingOptions options) const
 {
     int top = startIndex / columns;
     int left = startIndex % columns;
@@ -1197,7 +1301,7 @@ void Screen::writeToStream(TerminalCharacterDecoder* decoder,
                 count,
                 decoder,
                 appendNewLine,
-                preserveLineBreaks );
+                options );
 
         // if the selection goes beyond the end of the last line then
         // append a new line character.
@@ -1213,99 +1317,157 @@ void Screen::writeToStream(TerminalCharacterDecoder* decoder,
     }
 }
 
+int Screen::getLineLength(const int line) const
+{
+    // determine if the line is in the history buffer or the screen image
+    const bool isInHistoryBuffer = line < history->getLines();
+
+    if (isInHistoryBuffer) {
+        return history->getLineLen(line);
+    }
+
+    return columns;
+}
+
+Character *Screen::getCharacterBuffer(const int size)
+{
+    // buffer to hold characters for decoding
+    // the buffer is static to avoid initializing every
+    // element on each call to copyLineToStream
+    // (which is unnecessary since all elements will be overwritten anyway)
+    static const int MAX_CHARS = 1024;
+    static QVector<Character> characterBuffer(MAX_CHARS);
+
+    if (characterBuffer.count() < size) {
+        characterBuffer.resize(size);
+    }
+
+    return characterBuffer.data();
+}
+
 int Screen::copyLineToStream(int line ,
         int start,
         int count,
         TerminalCharacterDecoder* decoder,
         bool appendNewLine,
-        bool preserveLineBreaks) const
+        const DecodingOptions options) const
 {
-    //buffer to hold characters for decoding
-    //the buffer is static to avoid initialising every
-    //element on each call to copyLineToStream
-    //(which is unnecessary since all elements will be overwritten anyway)
-    static const int MAX_CHARS = 1024;
-    static Character characterBuffer[MAX_CHARS];
-
-    Q_ASSERT( count < MAX_CHARS );
-
+    const int lineLength = getLineLength(line);
+    // ensure that this method, can append space or 'eol' character to
+    // the selection
+    Character *characterBuffer = getCharacterBuffer((count > -1 ? count : lineLength - start) + 1);
     LineProperty currentLineProperties = 0;
 
-    //determine if the line is in the history buffer or the screen image
-    if (line < history->getLines())
-    {
-        const int lineLength = history->getLineLen(line);
-
+    // determine if the line is in the history buffer or the screen image
+    if (line < history->getLines()) {
         // ensure that start position is before end of line
-        start = qMin(start,qMax(0,lineLength-1));
+        start = qBound(0, start, lineLength - 1);
 
         // retrieve line from history buffer.  It is assumed
         // that the history buffer does not store trailing white space
         // at the end of the line, so it does not need to be trimmed here
-        if (count == -1)
-        {
-            count = lineLength-start;
-        }
-        else
-        {
-            count = qMin(start+count,lineLength)-start;
+        if (count == -1) {
+            count = lineLength - start;
+        } else {
+            count = qMin(start + count, lineLength) - start;
         }
 
         // safety checks
-        Q_ASSERT( start >= 0 );
-        Q_ASSERT( count >= 0 );
-        Q_ASSERT( (start+count) <= history->getLineLen(line) );
+        Q_ASSERT(start >= 0);
+        Q_ASSERT(count >= 0);
+        Q_ASSERT((start + count) <= history->getLineLen(line));
 
-        history->getCells(line,start,count,characterBuffer);
+        history->getCells(line, start, count, characterBuffer);
 
-        if ( history->isWrappedLine(line) )
+        if (history->isWrappedLine(line)) {
             currentLineProperties |= LINE_WRAPPED;
-    }
-    else
-    {
-        if ( count == -1 )
-            count = columns - start;
+        }
+    } else {
+        if (count == -1) {
+            count = lineLength - start;
+        }
 
-        Q_ASSERT( count >= 0 );
+        Q_ASSERT(count >= 0);
 
-        const int screenLine = line-history->getLines();
+        int screenLine = line - history->getLines();
 
-        Character* data = screenLines[screenLine].data();
+        Q_ASSERT(screenLine <= _screenLinesSize);
+
+        screenLine = qMin(screenLine, _screenLinesSize);
+
+        auto* data = screenLines[screenLine].data();
         int length = screenLines[screenLine].count();
 
-        //retrieve line from screen image
-        for (int i=start;i < qMin(start+count,length);i++)
+        // Don't remove end spaces in lines that wrap
+        if (options.testFlag(TrimTrailingWhitespace) && ((lineProperties[screenLine] & LINE_WRAPPED) == 0))
         {
-            characterBuffer[i-start] = data[i];
+            // ignore trailing white space at the end of the line
+            while (length > 0 && QChar(data[length - 1].character).isSpace()) {
+                length--;
+            }
+        }
+
+        //retrieve line from screen image
+        auto end = qMin(start + count, length);
+        if (start < end) {
+            std::copy(data + start, data + end, characterBuffer);
         }
 
         // count cannot be any greater than length
-        count = qBound(0,count,length-start);
+        count = qBound(0, count, length - start);
 
-        Q_ASSERT( screenLine < lineProperties.count() );
+        Q_ASSERT(screenLine < lineProperties.count());
         currentLineProperties |= lineProperties[screenLine];
     }
 
-    // add new line character at end
-    const bool omitLineBreak = (currentLineProperties & LINE_WRAPPED) ||
-        !preserveLineBreaks;
+    if (appendNewLine) {
+        if ((currentLineProperties & LINE_WRAPPED) != 0) {
+            // do nothing extra when this line is wrapped.
+        } else {
+            // When users ask not to preserve the linebreaks, they usually mean:
+            // `treat LINEBREAK as SPACE, thus joining multiple _lines into
+            // single line in the same way as 'J' does in VIM.`
+            characterBuffer[count] = options.testFlag(PreserveLineBreaks) ? Character('\n') : Character(' ');
+            count++;
+        }
+    }
 
-    if ( !omitLineBreak && appendNewLine && (count+1 < MAX_CHARS) )
-    {
-        characterBuffer[count] = '\n';
-        count++;
+    if ((options & TrimLeadingWhitespace) != 0U) {
+        int spacesCount = 0;
+        for (spacesCount = 0; spacesCount < count; spacesCount++) {
+            if (QChar::category(characterBuffer[spacesCount].character) != QChar::Category::Separator_Space) {
+                break;
+            }
+        }
+
+        if (spacesCount >= count) {
+            return 0;
+        }
+
+        std::copy(characterBuffer + spacesCount, characterBuffer + count, characterBuffer);
+
+        count -= spacesCount;
     }
 
     //decode line and write to text stream
-    decoder->decodeLine( (Character*) characterBuffer ,
-            count, currentLineProperties );
+    decoder->decodeLine(characterBuffer,
+                        count, currentLineProperties);
 
     return count;
 }
 
 void Screen::writeLinesToStream(TerminalCharacterDecoder* decoder, int fromLine, int toLine) const
 {
-    writeToStream(decoder,loc(0,fromLine),loc(columns-1,toLine));
+    writeToStream(decoder, loc(0,fromLine), loc(columns-1,toLine), PreserveLineBreaks);
+}
+
+void Screen::fastAddHistLine()
+{
+    history->addCellsVector(screenLines[0]);
+    history->addLine((lineProperties[0] & LINE_WRAPPED) != 0);
+
+    screenLines.pop_front();
+    lineProperties.remove(0);
 }
 
 void Screen::addHistLine()
@@ -1407,4 +1569,45 @@ void Screen::fillWithDefaultChar(Character* dest, int count)
 {
     for (int i=0;i<count;i++)
         dest[i] = defaultChar;
+}
+
+int Screen::getOldTotalLines()
+{
+    return _oldTotalLines;
+}
+
+bool Screen::isResize()
+{
+    if (_isResize) {
+        _isResize = false;
+        return true;
+    }
+    return _isResize;
+}
+
+void Screen::setReflowLines(bool enable)
+{
+    _enableReflowLines = enable;
+}
+
+void Screen::setSessionId(int sessionId)
+{
+    _sessionId = sessionId;
+}
+
+int Screen::getCursorLine()
+{
+    if (currentModes[MODE_AppScreen] == 1) {
+        return savedState.cursorLine;
+    }
+    return cuY;
+}
+
+void Screen::setCursorLine(int newLine)
+{
+    if (currentModes[MODE_AppScreen] == 1) {
+        savedState.cursorLine = newLine;
+    } else {
+        cuY = newLine;
+    }
 }

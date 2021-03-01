@@ -623,7 +623,7 @@ void MainWindow::endAddTab(TermWidgetPage *termPage, bool activeTab, int index, 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
     qint64 endTime = QDateTime::currentMSecsSinceEpoch();
     QString strNewTabTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_TAB_TIME + QString::number(endTime - startTime);
-    qInfo() << qPrintable(strNewTabTime);
+    qDebug() << qPrintable(strNewTabTime);
 
     QString  expandThemeStr = "";
     expandThemeStr = Settings::instance()->extendColorScheme();
@@ -1742,12 +1742,12 @@ void MainWindow::hidePlugin()
  3. @日期:    2020-08-11
  4. @说明:    基类选择文本
 *******************************************************************************/
-QString MainWindow::selectedText(bool preserveLineBreaks)
+QString MainWindow::selectedText()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
         if (page->currentTerminal()) {
-            return page->currentTerminal()->selectedText(preserveLineBreaks);
+            return page->currentTerminal()->selectedText();
         }
     }
     qDebug() << "not point terminal??";

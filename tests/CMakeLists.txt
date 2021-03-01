@@ -25,6 +25,8 @@ include_directories("src/views")
 include_directories("src/main")
 include_directories("src/stub")
 include_directories("src/3rdparty/terminalwidget/lib/")
+include_directories("src/3rdparty/terminalwidget/lib/history")
+include_directories("src/3rdparty/terminalwidget/lib/history/compact")
 
 FILE(GLOB allSource
     ../src/common/*.cpp
@@ -54,6 +56,8 @@ FILE(GLOB allHeaders
 
 FILE(GLOB allThirdPartySource
     ../3rdparty/terminalwidget/lib/*.cpp
+    ../3rdparty/terminalwidget/lib/history/*.cpp
+    ../3rdparty/terminalwidget/lib/history/compact/*.cpp
 )
 
 FILE(GLOB qrcFiles

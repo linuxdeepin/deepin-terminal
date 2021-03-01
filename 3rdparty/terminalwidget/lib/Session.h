@@ -29,7 +29,8 @@
 #include <QWidget>
 
 #include "Emulation.h"
-#include "History.h"
+#include "history/HistoryType.h"
+#include "history/HistoryScrollNone.h"
 
 class KProcess;
 

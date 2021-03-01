@@ -160,6 +160,10 @@ public:
      * Returns the total number of lines, including those stored in the history.
      */
     int lineCount() const;
+    /**
+     * Returns the total number of columns.
+     */
+    int columnCount() const;
 
     /**
      * Sets the history store used by this emulation.  When new lines

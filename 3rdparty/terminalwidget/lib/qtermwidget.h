@@ -25,11 +25,9 @@
 #include <QPointer>
 #include "Emulation.h"
 #include "Filter.h"
-#ifdef USE_QMAKE
-#include "../build/lib/qtermwidget_export.h"
-#else
+#include "HistorySearch.h"
+
 #include "qtermwidget_export.h"
-#endif
 
 class QVBoxLayout;
 class TermWidgetImpl;
@@ -198,7 +196,7 @@ public:
      * @param preserveLineBreaks Specifies whether new line characters should
      * be inserted into the returned text at the end of each terminal line.
      */
-    QString selectedText(bool preserveLineBreaks = true);
+    QString selectedText(const Screen::DecodingOptions options=Screen::PreserveLineBreaks);
 
     void setMonitorActivity(bool);
     void setMonitorSilence(bool);
@@ -388,10 +386,7 @@ protected slots:
     void selectionChanged(bool textSelected);
 
 private slots:
-    void find();
-    void findNext();
-    void findPrevious();
-    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese);
+    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int lastBackwardsPosition, int loseChinese, int matchChinese);
 
     /**
      * Emulation::cursorChanged() signal propogates to here and QTermWidget
@@ -401,7 +396,6 @@ private slots:
     void snapshot();
 
 private:
-    void search(bool forwards, bool next);
     void setZoom(int step);
     void init(int startnow);
     void addSnapShotTimer();
@@ -419,6 +413,9 @@ private:
     int m_startLine = 0;
     int m_endColumn = 0;
     int m_endLine = 0;
+    int m_lastBackwardsPosition = -1;
+    //上一次是正向搜索还是反向搜索
+    bool m_isLastForwards = false;
 };
 
 // Maybe useful, maybe not

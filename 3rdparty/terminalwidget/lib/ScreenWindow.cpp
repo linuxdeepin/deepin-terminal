@@ -23,9 +23,6 @@
 // Qt
 #include <QtDebug>
 
-// Konsole
-#include "Screen.h"
-
 using namespace Konsole;
 
 ScreenWindow::ScreenWindow(QObject* parent)
@@ -116,9 +113,9 @@ QVector<LineProperty> ScreenWindow::getLineProperties()
     return result;
 }
 
-QString ScreenWindow::selectedText( bool preserveLineBreaks ) const
+QString ScreenWindow::selectedText( const Screen::DecodingOptions options ) const
 {
-    return _screen->selectedText( preserveLineBreaks );
+    return _screen->selectedText( options );
 }
 
 void ScreenWindow::getSelectionStart( int& column , int& line )

@@ -286,29 +286,6 @@ TEST_F(UT_QTermWidget_Test, workingDirectory)
 }
 
 /*******************************************************************************
- 1. @函数:    find
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-12-12
- 4. @说明:    测试原装查找函数
-*******************************************************************************/
-TEST_F(UT_QTermWidget_Test, find)
-{
-    // 初始化searchBar
-    m_termWidget->m_searchBar = new SearchBar(m_termWidget);
-    // 调用查找函数
-    m_termWidget->find();
-    m_termWidget->findNext();
-    m_termWidget->findPrevious();
-    // 无异常
-    EXPECT_NE(m_termWidget, nullptr);
-
-    // 调用search函数
-    m_termWidget->search(false, true);
-    m_termWidget->search(true, false);
-    EXPECT_NE(m_termWidget, nullptr);
-}
-
-/*******************************************************************************
  1. @函数:    setIsAllowScroll
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-12-12

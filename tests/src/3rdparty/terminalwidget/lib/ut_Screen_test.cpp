@@ -30,7 +30,7 @@ void UT_Screen_Test::doScreenCopyVerify(QString &putToScreen, QString &expectedS
 
     screen.setSelectionStart(0, 0, false);
     screen.setSelectionEnd(largeScreenColumns, 0);
-    EXPECT_EQ(screen.selectedText(true), expectedSelection);
+    EXPECT_EQ(screen.selectedText(Screen::PreserveLineBreaks), expectedSelection);
 }
 
 #ifdef UT_SCREEN_TEST

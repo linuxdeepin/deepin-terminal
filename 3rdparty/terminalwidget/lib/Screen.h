@@ -26,12 +26,12 @@
 // Qt
 #include <QRect>
 #include <QTextStream>
+#include <QBitArray>
 #include <QVarLengthArray>
 #include <QSet>
 
 // Konsole
 #include "Character.h"
-#include "History.h"
 
 #define MODE_Origin    0
 #define MODE_Wrap      1
@@ -40,11 +40,15 @@
 #define MODE_Cursor    4
 #define MODE_NewLine   5
 #define MODES_SCREEN   6
+#define MODE_AppScreen       (MODES_SCREEN+0)   // Mode #1
 
 namespace Konsole
 {
 
 class TerminalCharacterDecoder;
+class TerminalDisplay;
+class HistoryType;
+class HistoryScroll;
 
 /**
     \brief An image of characters with associated attributes.
@@ -72,6 +76,24 @@ class TerminalCharacterDecoder;
 class Screen
 {
 public:
+    /* PlainText: Return plain text (default)
+     * ConvertToHtml: Specifies if returned text should have HTML tags.
+     * PreserveLineBreaks: Specifies whether new line characters should be
+     *      inserted into the returned text at the end of each terminal line.
+     * TrimLeadingWhitespace: Specifies whether leading spaces should be
+     *      trimmed in the returned text.
+     * TrimTrailingWhitespace: Specifies whether trailing spaces should be
+     *      trimmed in the returned text.
+     */
+    enum DecodingOption {
+        PlainText = 0x0,
+        ConvertToHtml = 0x1,
+        PreserveLineBreaks = 0x2,
+        TrimLeadingWhitespace = 0x4,
+        TrimTrailingWhitespace = 0x8
+    };
+    Q_DECLARE_FLAGS(DecodingOptions, DecodingOption)
+
     /** Construct a new screen image of size @p lines by @p columns. */
     Screen(int lines, int columns);
     ~Screen();
@@ -458,7 +480,15 @@ public:
      * @param preserveLineBreaks Specifies whether new line characters should
      * be inserted into the returned text at the end of each terminal line.
      */
-    QString selectedText(bool preserveLineBreaks) const;
+    QString selectedText(const DecodingOptions options) const;
+
+    /**
+     * Convenience method.  Returns the text between two indices.
+     * @param startIndex Specifies the starting text index
+     * @param endIndex Specifies the ending text index
+     * @param options See Screen::DecodingOptions
+     */
+    QString text(int startIndex, int endIndex, const DecodingOptions options) const;
 
     /**
      * Copies part of the output to a stream.
@@ -479,8 +509,7 @@ public:
      * @param preserveLineBreaks Specifies whether new line characters should
      * be inserted into the returned text at the end of each terminal line.
      */
-    void writeSelectionToStream(TerminalCharacterDecoder* decoder , bool
-                                preserveLineBreaks = true) const;
+    void writeSelectionToStream(TerminalCharacterDecoder* decoder, const DecodingOptions options) const;
 
     /**
      * Checks if the text between from and to is inside the current
@@ -559,6 +588,16 @@ public:
       */
     static void fillWithDefaultChar(Character* dest, int count);
 
+    void setCurrentTerminalDisplay(TerminalDisplay *display)
+    {
+        _currentTerminalDisplay = display;
+    }
+
+    TerminalDisplay *currentTerminalDisplay()
+    {
+        return _currentTerminalDisplay;
+    }
+
     QSet<uint> usedExtendedChars() const
     {
         QSet<uint> result;
@@ -572,6 +611,19 @@ public:
         }
         return result;
     }
+
+    // Return the total number of lines before resize (fix scroll glitch)
+    int getOldTotalLines();
+
+    // Return if it was a resize signal (fix scroll glitch)
+    bool isResize();
+
+    // Set reflow condition
+    void setReflowLines(bool enable);
+
+    // 设置sessionId
+    void setSessionId(int sessionId);
+
 private:
 
     //copies a line of text from the screen or history into a stream using a
@@ -590,7 +642,7 @@ private:
                           int count,
                           TerminalCharacterDecoder* decoder,
                           bool appendNewLine,
-                          bool preserveLineBreaks) const;
+                          const DecodingOptions options) const;
 
     //fills a section of the screen image with the character 'c'
     //the parameters are specified as offsets from the start of the screen image.
@@ -609,6 +661,8 @@ private:
     void scrollDown(int from, int i);
 
     void addHistLine();
+    // add lines from screen to history and remove from screen the added lines (used to resize lines and columns)
+    void fastAddHistLine();
 
     void initTabStops();
 
@@ -619,7 +673,7 @@ private:
     // copies text from 'startIndex' to 'endIndex' to a stream
     // startIndex and endIndex are positions generated using the loc(x,y) macro
     void writeToStream(TerminalCharacterDecoder* decoder, int startIndex,
-                       int endIndex, bool preserveLineBreaks = true) const;
+                       int endIndex, const DecodingOptions options) const;
     // copies 'count' lines from the screen buffer into 'dest',
     // starting from 'startLine', where 0 is the first line in the screen buffer
     void copyFromScreen(Character* dest, int startLine, int count) const;
@@ -627,18 +681,34 @@ private:
     // starting from 'startLine', where 0 is the first line in the history
     void copyFromHistory(Character* dest, int startLine, int count) const;
 
+    // returns a buffer that can hold at most 'count' characters,
+    // where the number of reallocations and object reinitializations
+    // should be as minimal as possible
+    static Character *getCharacterBuffer(const int size);
+
+    // Get the cursor line after checking if its app mode or not
+    int getCursorLine();
+    // Set the cursor line after checking if its app mode or not
+    void setCursorLine (int newLine);
+
+    int getLineLength(const int line) const;
 
     // screen image ----------------
     int lines;
     int columns;
 
     typedef QVector<Character> ImageLine;      // [0..columns]
-    ImageLine*          screenLines;    // [lines]
+    QVector<ImageLine> screenLines;           // [lines]
+    int _screenLinesSize;                      // _screenLines.size()
 
     int _scrolledLines;
     QRect _lastScrolledRegion;
 
     int _droppedLines;
+
+    int _oldTotalLines;
+    bool _isResize;
+    bool _enableReflowLines;
 
     QVarLengthArray<LineProperty,64> lineProperties;
 
@@ -695,9 +765,15 @@ private:
     int lastPos;
 
     // used in REP (repeating char)
-    unsigned short lastDrawnChar;
+    quint32 lastDrawnChar;
 
     static Character defaultChar;
+
+    //when we handle scroll commands, we need to know which screenwindow will scroll
+    TerminalDisplay *_currentTerminalDisplay;
+
+    //用于标识Session
+    int _sessionId;
 };
 
 }

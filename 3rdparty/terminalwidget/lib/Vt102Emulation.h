@@ -35,7 +35,8 @@
 #include "Emulation.h"
 #include "Screen.h"
 
-#define MODE_AppScreen       (MODES_SCREEN+0)   // Mode #1
+//下面这行宏定义被移到Screen.h，因为Screen类中也用到了MODE_AppScreen
+//#define MODE_AppScreen       (MODES_SCREEN+0)   // Mode #1
 #define MODE_AppCuKeys       (MODES_SCREEN+1)   // Application cursor keys (DECCKM)
 #define MODE_AppKeyPad       (MODES_SCREEN+2)   //
 #define MODE_Mouse1000       (MODES_SCREEN+3)   // Send mouse X,Y position on press and release
