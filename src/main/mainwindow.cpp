@@ -127,16 +127,10 @@ void SwitchThemeMenu::enterEvent(QEvent *event)
 *******************************************************************************/
 void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)
 {
-    switch (event->key()) {
-    case Qt::Key_Left:
-        emit mainWindowCheckThemeItemSignal();
-        break;
-    default:
-        break;
-    }
+    //fix bug#64969主题中点击tab键不可以切换主题
     //内置主题屏蔽 除了 上下左右回车键的其他按键响应 处理bug#53439
-    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Up || event->key() == Qt::Key_Right
-            || event->key() == Qt::Key_Down || event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+    if (event->key() != Qt::Key_Space) {
+        emit mainWindowCheckThemeItemSignal();
         return QMenu::keyPressEvent(event);
     }
 }
