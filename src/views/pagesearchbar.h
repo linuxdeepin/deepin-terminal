@@ -75,6 +75,7 @@ private:
     void initFindPrevButton();
     void initFindNextButton();
     void initSearchEdit();
+    void initTabOrder();
 
     DIconButton *m_findNextButton = nullptr;
     DIconButton *m_findPrevButton = nullptr;

@@ -225,6 +225,9 @@ void RemoteManagementPanel::initUI()
     this->setAutoFillBackground(true);
 
     m_searchEdit = new DSearchEdit(this);
+    //fix bug#64976 按tab键循环切换到右上角X按钮时继续按tab键，焦点不能切换到搜索框
+    m_searchEdit->setFocusPolicy(Qt::StrongFocus);
+    m_searchEdit->setFocusProxy(m_searchEdit->lineEdit());
     m_searchEdit->setObjectName("RemoteSearchEdit");
     m_listWidget = new ListView(ListType_Remote, this);
     m_listWidget->setObjectName("RemoteManageListWidget");

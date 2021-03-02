@@ -233,6 +233,9 @@ void CustomCommandPanel::initUI()
     setAutoFillBackground(true);
 
     m_searchEdit = new DSearchEdit(this);
+    //fix bug#64976 按tab键循环切换到右上角X按钮时继续按tab键，焦点不能切换到搜索框
+    m_searchEdit->setFocusPolicy(Qt::StrongFocus);
+    m_searchEdit->setFocusProxy(m_searchEdit->lineEdit());
     m_searchEdit->setObjectName("CustomSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);

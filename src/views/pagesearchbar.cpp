@@ -48,6 +48,9 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     initFindNextButton();
     initFindPrevButton();
 
+    //fix bug#64976 按tab键循环切换到右上角X按钮时继续按tab键，焦点不能切换到搜索框
+    initTabOrder();
+
     // Init layout and widgets.
     QHBoxLayout *m_layout = new QHBoxLayout();
     m_layout->setSpacing(widgetSpace);
@@ -304,6 +307,22 @@ void PageSearchBar::initSearchEdit()
     connect(m_searchEdit, &DSearchEdit::textChanged, this, [this]() {
         emit keywordChanged(m_searchEdit->lineEdit()->text());
     });
+}
+
+/*******************************************************************************
+ 1. @函数:    initTabOrder
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-03-02
+ 4. @说明:    设置m_searchEdit和m_findPrevButton、m_findNextButton两个按钮之间的tab焦点顺序
+*******************************************************************************/
+void PageSearchBar::initTabOrder()
+{
+    //设置m_searchEdit->lineEdit()为m_searchEdit的focus代理
+    m_searchEdit->setFocusPolicy(Qt::StrongFocus);
+    m_searchEdit->setFocusProxy(m_searchEdit->lineEdit());
+
+    setTabOrder(m_searchEdit, m_findPrevButton);
+    setTabOrder(m_findPrevButton, m_findNextButton);
 }
 
 /*******************************************************************************
