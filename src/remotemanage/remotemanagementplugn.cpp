@@ -200,10 +200,23 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
 }
 
 /*******************************************************************************
+ 1. @函数:    convertStringToAscii
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-03-03
+ 4. @说明:    把字符串123转成形如313233的ASCII编码字符串
+*******************************************************************************/
+inline QString RemoteManagementPlugin::convertStringToAscii(const QString &strSrc)
+{
+    QByteArray byte = strSrc.toLatin1();
+
+    return QString(byte.toHex());
+}
+
+/*******************************************************************************
  1. @函数:    createShellFile
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-31
- 4. @说明:    创建连接远程的的临时shell文件
+ 4. @说明:    创建连接远程的临时shell文件
 *******************************************************************************/
 QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 {
@@ -228,7 +241,10 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
     if (curServer->m_privateKey.isNull() || curServer->m_privateKey.isEmpty()) {
         fileString.replace("<<AUTHENTICATION>>", "no");
         strArgs.replace("<<PRIVATE_KEY>>", "NoPrivateKeyPath");
-        strArgs.replace("<<PASSWORD>>", curServer->m_password);
+        // fix bug#64758 修改服务器密码，点击连接没有密码错误提示语，且可以成功连接
+        // 由于密码中可能存在各种特殊符号如!、#、$等，不处理的话shell命令运行会报错，需要转成ASCII编码处理下
+        QString asciiPassword = convertStringToAscii(curServer->m_password);
+        strArgs.replace("<<PASSWORD>>", asciiPassword);
     } else {
         fileString.replace("<<AUTHENTICATION>>", "yes");
         strArgs.replace("<<PRIVATE_KEY>>", curServer->m_privateKey);

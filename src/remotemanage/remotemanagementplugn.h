@@ -65,6 +65,9 @@ public slots:
     void doCennectServer(ServerConfig *curServer);
 
 private:
+    // 把字符串123转成形如313233的ASCII编码字符串
+    QString convertStringToAscii(const QString &strSrc);
+
     MainWindow *m_mainWindow = nullptr;
     RemoteManagementTopPanel *m_remoteManagementTopPanel = nullptr;
 };
