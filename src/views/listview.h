@@ -91,6 +91,8 @@ public:
     bool getFocusState() const;
     // 设置焦点状态
     void setFocusState(bool focusState);
+    // 添加项到布局
+    int getWidgetIndex(ItemWidget *itemWidget);
 
 public slots:
     // 列表项被修改
@@ -155,8 +157,6 @@ private:
     void initUI();
     // 设置项图标
     void setItemIcon(ItemFuncType type, ItemWidget *item);
-    // 添加项到布局
-    int getWidgetIndex(ItemWidget *itemWidget);
     // 判断index的有效性
     bool indexIsValid(int index);
     // 计算range

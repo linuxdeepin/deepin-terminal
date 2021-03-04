@@ -83,8 +83,12 @@ public:
     void setIcon(const QString &icon);
     // 设置功能图标
     void setFuncIcon(ItemFuncType iconType);
+    ItemFuncType getFuncType();
+
     // 设置文字
     void setText(const QString &firstline, const QString &secondline = "");
+    const QString getFirstText();
+
     // 是否匹配
     bool isEqual(ItemFuncType type, const QString &key);
     // 获取焦点
@@ -160,7 +164,7 @@ private:
     QString m_firstText = "";
     QString m_secondText = "";
     // 功能按键默认是编辑按钮
-    int m_functType;
+    ItemFuncType m_functType;
     // 焦点是否在窗口上 用于编辑按钮是否显示
     bool m_isFocus = false;
   

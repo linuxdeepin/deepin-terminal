@@ -104,6 +104,17 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
 }
 
 /*******************************************************************************
+ 1. @函数:    getFuncType
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-03-04
+ 4. @说明:    获取功能键类型
+*******************************************************************************/
+ItemFuncType ItemWidget::getFuncType()
+{
+    return m_functType;
+}
+
+/*******************************************************************************
  1. @函数:    setText
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-10
@@ -136,6 +147,17 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
 }
 
 /*******************************************************************************
+ 1. @函数:    getFirstText
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-03-04
+ 4. @说明:    获取第一行信息
+*******************************************************************************/
+const QString ItemWidget::getFirstText()
+{
+    return m_firstText;
+}
+
+/*******************************************************************************
  1. @函数:    isEqual
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-20
@@ -159,6 +181,7 @@ void ItemWidget::getFocus()
     // 项显示功能键
     if (m_functType == ItemFuncType_Item) {
         m_funcButton->show();
+        m_funcButton->setFocus();
         qDebug() << "edit button show";
     }
 }

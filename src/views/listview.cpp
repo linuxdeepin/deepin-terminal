@@ -77,11 +77,11 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     // 添加到布局
     // 远程管理的分组和项需要排序
     // 首先获得位置
+    // 添加到列表
+    m_itemList.append(itemWidget);
     int index = getWidgetIndex(itemWidget);
     // 添加进去
     m_mainLayout->insertWidget(index, itemWidget);
-    // 添加到列表
-    m_itemList.append(itemWidget);
     // 列表数量变化
     emit listItemCountChange();
 
@@ -463,9 +463,13 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
         if (m_focusState) {
             int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
             // 回到列表,仅回到大的列表，没有回到具体的哪个点
-            setFocus();
+//            setFocus();
             qDebug() << "current Index ListView" << m_currentIndex;
             setCurrentIndex(index);
+
+            // fix bug#65109焦点在自定义编辑按钮上，enter键进入后按esc退出，焦点不在编辑按钮上
+            ItemWidget *itemWidget = m_itemList.at(m_currentIndex);
+            itemWidget->getFocus();
         }
         // 取消后及时将弹窗删除
         ServerConfigManager::instance()->removeDialog(m_configDialog);
@@ -632,7 +636,24 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
 
         // 滚轮滚动到最新的位置
         setScroll(m_currentIndex);
-        setFocus();
+
+        // fix bug#65109焦点在自定义编辑按钮上，enter键进入后按esc退出，焦点不在编辑按钮上
+        if (QDialog::Rejected == result) {
+            qDebug() << "QDialog::Rejected";
+            ItemWidget *itemWidget = m_itemList.at(m_currentIndex);
+            itemWidget->getFocus();
+        }
+        else {
+            qDebug() << "QDialog::Accepted result is:" << result;
+            if (-1 != result) {
+                setFocus();
+            }
+            else {
+                qDebug() << "QDialog::Rejected";
+                ItemWidget *itemWidget = m_itemList.at(m_currentIndex);
+                itemWidget->getFocus();
+            }
+        }
     }
 
     qDebug() << "================================tempResult=" << tempResult;
@@ -798,6 +819,33 @@ void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
 }
 
 /*******************************************************************************
+ 1. @函数:    用于getWidgetIndex中qSort排序的比较函数
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-07-20
+ 4. @说明:    根据类型，文字比较大小
+*******************************************************************************/
+static inline bool comparator(ItemWidget *item1, ItemWidget *item2)
+{
+    // item1 item2都是组 或 item1 item2 都不是组
+    if (item1->getFuncType() == item2->getFuncType()) {
+        // 比较文字
+        if (QString::compare(item1->getFirstText(), item2->getFirstText()) < 0) {
+            // 小于 0 例:ab bc
+            return true;
+        } else {
+            // 其他情况
+            return false;
+        }
+    } else if (item1->getFuncType() > item2->getFuncType()) {
+        // item1 是组 1 item2不是 0
+        return true;
+    } else {
+        // item1 不是组 0 item2是 1
+        return false;
+    }
+}
+
+/*******************************************************************************
  1. @函数:    getWidgetIndex
  2. @作者:    ut000610 戴正文
  3. @日期:    2020-07-20
@@ -805,16 +853,20 @@ void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
 *******************************************************************************/
 int ListView::getWidgetIndex(ItemWidget *itemWidget)
 {
+    qSort(m_itemList.begin(), m_itemList.end(), comparator);
     // 从0开始
     int index = 0;
+    int currentIndex = 0;
     // 遍历列表
     for (ItemWidget *item : m_itemList) {
         // 判断是否小于，是就将index++
-        if (*itemWidget < *item) {
-            ++index;
+        if (itemWidget->isEqual((item->getFuncType()), item->getFirstText())) {
+            currentIndex = index;
+            break;
         }
+        ++index;
     }
-    return index;
+    return currentIndex;
 }
 
 /*******************************************************************************
