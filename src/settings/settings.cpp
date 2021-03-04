@@ -794,7 +794,10 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     slider->setRightIcon(QIcon::fromTheme("dt_opacity_right"));
     slider->setMaximum(option->data("max").toInt());
     slider->setMinimum(option->data("min").toInt());
-    slider->setValue(int(instance()->opacity() * 100));
+    slider->setValue(static_cast<int>(instance()->opacity() * 100));
+    //fix bug 65140 焦点在透明度，点击Page up/ down，点击8次即可调节到最前/后，和控制中心不一致
+    slider->setPageStep(1);
+    slider->slider()->setTickInterval(1);
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
 
     connect(option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) {

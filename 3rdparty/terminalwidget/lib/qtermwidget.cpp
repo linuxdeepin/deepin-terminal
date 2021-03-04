@@ -892,7 +892,7 @@ void QTermWidget::setBackspaceMode(char *key, int length)
 
 QString QTermWidget::selectedText(const Screen::DecodingOptions options)
 {
-    return m_impl->m_terminalDisplay->screenWindow()->screen()->selectedText(Screen::PreserveLineBreaks);
+    return m_impl->m_terminalDisplay->screenWindow()->screen()->selectedText(options);
 }
 
 void QTermWidget::setMonitorActivity(bool monitor)
