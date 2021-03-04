@@ -366,7 +366,9 @@ void Session::run()
     // tell the terminal exactly which colors are being used, but instead approximates
     // the color scheme as "black on white" or "white on black" depending on whether
     // the background color is deemed dark or not
-    QString backgroundColorHint = _hasDarkBackground ? QLatin1String("COLORFGBG=15;0") : QLatin1String("COLORFGBG=0;15");
+    // fix bug#39147 终端使用vim编辑脚本，命令行终端的主题为跟随系统时无法清楚查看脚本内容
+    // 移除该环境变量，因为终端的主题颜色会实时变化，不能通过设置环境变量的方式
+    //QString backgroundColorHint = _hasDarkBackground ? QLatin1String("COLORFGBG=15;0") : QLatin1String("COLORFGBG=0;15");
 
     /* if we do all the checking if this shell exists then we use it ;)
      * Dont know about the arguments though.. maybe youll need some more checking im not sure
@@ -374,7 +376,7 @@ void Session::run()
      */
     int result = _shellProcess->start(exec,
                                       arguments,
-                                      _environment << backgroundColorHint,
+                                      _environment,// << backgroundColorHint,
                                       windowId(),
                                       _addToUtmp);
 
