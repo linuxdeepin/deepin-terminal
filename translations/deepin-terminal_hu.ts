@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Basic</source>
-        <translation>Alap</translation>
+        <translation>Alapvető</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>

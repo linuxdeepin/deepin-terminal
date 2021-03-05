@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="az" version="2.1">
 <context>
     <name>Konsole::TerminalDisplay</name>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1279"/>
         <source>Size: XXX x XXX</source>
-        <translation>Taille : XXX x XXX</translation>
+        <translation>Ölçü: XXX x XXX</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1291"/>
         <source>Size: %1 x %2</source>
-        <translation>Taille : %1 x %2</translation>
+        <translation>Ölçü: %1 x %2</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
         <source>&lt;qt&gt;Output has been &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspended&lt;/a&gt; by pressing Ctrl+S.  Press &lt;b&gt;Ctrl+Q&lt;/b&gt; to resume.&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;La sortie a été &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspendue&lt;/a&gt; en pressant Ctrl+S.  Pressez &lt;b&gt;Ctrl+Q&lt;/b&gt; pour reprendre.&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Çıxış Ctrl+S vurmaqla &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;dayandırldı&lt;/a&gt;. Davam etmək üçün &lt;b&gt;Ctrl+Q&lt;/b&gt; vurun.&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>Aucun traducteur disponible. L&apos;information nécessaire à la conversion des touches pressées en caractères à envoyer au terminal est absente.</translation>
+        <translation>Klaviatura tərcüməçisi yoxdur.  Terminala göndərmək məqsədi ilə düymələrə basılmanın simvollara çevrilməsi üçün lazım olan məlumatlar çatışmır.</translation>
     </message>
 </context>
 <context>
@@ -31,32 +31,32 @@
         <location filename="../ColorScheme.cpp" line="278"/>
         <location filename="../ColorScheme.cpp" line="293"/>
         <source>Un-named Color Scheme</source>
-        <translation>Schéma de couleurs non nommé</translation>
+        <translation>Adlandırılmamış Rəng Sxemi</translation>
     </message>
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
         <source>Accessible Color Scheme</source>
-        <translation>Schéma des couleurs accessible</translation>
+        <translation>Əlçatan Rəng Sxemi</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
         <source>Open link</source>
-        <translation>Ouvrir le lien</translation>
+        <translation>Keçidi açmaq</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
         <source>Copy link</source>
-        <translation>Copier le lien</translation>
+        <translation>Keçidi kopyalamaq</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation>Envoyer un mail à...</translation>
+        <translation>E-poçtu buraya göndərmək...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation>Copier l&apos;adresse mail</translation>
+        <translation>E-poçt ünvanını kopyalamaq</translation>
     </message>
 </context>
 <context>
@@ -64,12 +64,12 @@
     <message>
         <location filename="../qtermwidget.cpp" line="451"/>
         <source>Color Scheme Error</source>
-        <translation>Erreur du schéma des couleurs</translation>
+        <translation>Rəng Sxemi Xətası</translation>
     </message>
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation>Impossible de charger le schéma de couleurs : %1</translation>
+        <translation>Rəng sxemi yüklənə bilmədi: %1</translation>
     </message>
 </context>
 <context>
@@ -77,22 +77,22 @@
     <message>
         <location filename="../SearchBar.cpp" line="40"/>
         <source>Match case</source>
-        <translation>Sensible à la casse</translation>
+        <translation>Böyük/kiçik hərf nəzərə almaqla</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="46"/>
         <source>Regular expression</source>
-        <translation>Expression régulière</translation>
+        <translation>Müntəzəm ifadə</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="50"/>
         <source>Highlight all matches</source>
-        <translation>Surbrillance de toutes les concordances</translation>
+        <translation>Bütün oxşarları vurğulamaq</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="14"/>
         <source>SearchBar</source>
-        <translation>Barre de recherche</translation>
+        <translation>Axtarış çubuğu</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="20"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../SearchBar.ui" line="32"/>
         <source>Find:</source>
-        <translation>Trouver :</translation>
+        <translation>Tapmaq:</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="42"/>

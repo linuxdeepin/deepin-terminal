@@ -597,7 +597,7 @@
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="39"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>终端是⼀款集⼯作区、多窗⼝、远程管理、雷神模式等功能的⾼级终端模拟器。</translation>
+        <translation>终端是一款集工作区、多窗口、远程管理、雷神模式等功能的高级终端模拟器。</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2003"/>
@@ -694,7 +694,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="576"/>
         <source>Execute a command in the terminal</source>
-        <translation>在终端中运⾏⼀个程序</translation>
+        <translation>在终端中运行⼀个程序</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="579"/>
@@ -704,7 +704,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="570"/>
         <source>Set the work directory</source>
-        <translation>设置终端的启动⽬录</translation>
+        <translation>设置终端的启动目录</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="573"/>
@@ -782,7 +782,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="241"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation>在您使⽤右键菜单进⾏上传和下载⽂件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
+        <translation>在您使用右键菜单进行上传和下载文件之前， 请先确保服务器已经安装了 rz和sz 命令。</translation>
     </message>
 </context>
 <context>
@@ -986,7 +986,7 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="118"/>
         <source>Maximum</source>
-        <translation>最⼤化</translation>
+        <translation>最大化</translation>
     </message>
 </context>
 <context>

@@ -123,6 +123,7 @@ GenericName[zh_HK]=終端
 GenericName[zh_TW]=終端機
 Keywords[ar]=shell;prompt;command;commandline;
 Keywords[ast]=shell;comandu;llinia;llinia de comandos;comandos;
+Keywords[az]=shell;prompt;command;commandline;üz qabığı;dəvət;əmr;əmrsətri;
 Keywords[bg]=shell;prompt;command;commandline;
 Keywords[bo]=shell;prompt;command;commandline;
 Keywords[br]=shell;prompt;command;commandline;
@@ -223,6 +224,7 @@ Name=New Window
 # Do not manually modify!
 Name[ar]=نافذة جديدة
 Name[ast]=Ventana nueva
+Name[az]=Yeni Pəncərə
 Name[bg]=Нов прозорец
 Name[bo]=སྒེའུ་ཁུང་གསར་བཟོ།
 Name[br]=Prenestr nevez
@@ -272,6 +274,7 @@ Name=Quake Terminal
 # Do not manually modify!
 Name[ar]=طرفية كواك
 Name[ast]=Terminal Quake
+Name[az]=Quake Terminal
 Name[bg]=Quake терминал
 Name[bo]=ཐོག་ལྷའི་མཐའ་སྣེ།
 Name[br]=Terminal Quake
