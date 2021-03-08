@@ -37,24 +37,6 @@
                             "default": "Linux"
                         }  
                     ]
-                },
-                {
-                    "key": "tab_title",
-                    "name": "Tab titles",
-                    "options": [
-                        {
-                            "key": "tab_title_format",
-                            "name": "Tab title format",
-                            "type": "tabformatedit",
-                            "default": "%w"
-                        },
-                        {
-                            "key": "remote_tab_title_format",
-                            "name": "Remote tab title format",
-                            "type": "remotetabformatedit",
-                            "default": "%U%h"
-                        }
-                    ]
                 }
             ]
         },

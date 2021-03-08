@@ -220,17 +220,18 @@ void Settings::initConnection()
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
-    // 标签标题格式变化
-    QPointer<DSettingsOption> tabFormat = settings->option("basic.tab_title.tab_title_format");
-    connect(tabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
-        emit tabFormatChanged(value.toString());
-    });
+    //fix bug#65937:【修改引入】基础设置下多一个功能“Tab titles"菜单
+//    // 标签标题格式变化
+//    QPointer<DSettingsOption> tabFormat = settings->option("basic.tab_title.tab_title_format");
+//    connect(tabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+//        emit tabFormatChanged(value.toString());
+//    });
 
-    // 远程标签标题格式变化
-    QPointer<DSettingsOption> remoteTabFormat = settings->option("basic.tab_title.remote_tab_title_format");
-    connect(remoteTabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
-        emit remoteTabFormatChanged(value.toString());
-    });
+//    // 远程标签标题格式变化
+//    QPointer<DSettingsOption> remoteTabFormat = settings->option("basic.tab_title.remote_tab_title_format");
+//    connect(remoteTabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+//        emit remoteTabFormatChanged(value.toString());
+//    });
 }
 
 /*******************************************************************************
@@ -341,7 +342,8 @@ void Settings::reload()
 *******************************************************************************/
 QString Settings::tabTitleFormat() const
 {
-    return settings->option("basic.tab_title.tab_title_format")->value().toString();
+    //fix bug#65937:【修改引入】基础设置下多一个功能“Tab titles"菜单
+    return QStringLiteral("%w");//settings->option("basic.tab_title.tab_title_format")->value().toString();
 }
 
 /*******************************************************************************
@@ -352,7 +354,8 @@ QString Settings::tabTitleFormat() const
 *******************************************************************************/
 QString Settings::remoteTabTitleFormat() const
 {
-    return settings->option("basic.tab_title.remote_tab_title_format")->value().toString();
+    //fix bug#65937:【修改引入】基础设置下多一个功能“Tab titles"菜单
+    return QStringLiteral("%U%h");//settings->option("basic.tab_title.remote_tab_title_format")->value().toString();
 }
 
 /*******************************************************************************
