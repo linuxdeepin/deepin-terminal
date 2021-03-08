@@ -42,6 +42,7 @@
 #include <QSettings>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QMenu>
 
 #include <functional>
 #include <QShortcut>
@@ -101,7 +102,7 @@ public:
     void forAllTabPage(const std::function<void(TermWidgetPage *)> &func);
 
     //
-    void onTermIsIdle(int currSessionId, bool bIdle);
+    void onTermIsIdle(QString tabIdentifier, bool bIdle);
     //ShortcutManager *getShortcutManager();
 
     void executeDownloadFile();
@@ -210,8 +211,8 @@ protected:
     void handleTitleBarMenuFocusPolicy();
     int executeCMD(const char *cmd);
 
-    bool isTabVisited(int tabSessionId);
-    bool isTabChangeColor(int tabSessionId);
+    bool isTabVisited(const QString &tabIdentifier);
+    bool isTabChangeColor(const QString &tabIdentifier);
     void updateTabStatus();
     // 非DTK控件手动匹配系统主题的修改
     void applyTheme();
@@ -266,8 +267,8 @@ protected:
     TermProperties m_properties;
     TitleBar *m_titleBar = nullptr;
     bool m_isQuakeWindow = false;
-    QMap<int, bool> m_tabVisitMap;
-    QMap<int, bool> m_tabChangeColorMap;
+    QMap<QString, bool> m_tabVisitMap;
+    QMap<QString, bool> m_tabChangeColorMap;
 
     /******** Modify by n014361 wangpeili 2020-02-20: 内置快捷键集中管理 ****************/
     QMap<QString, QShortcut *> m_BuiltInShortcut;

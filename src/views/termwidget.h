@@ -31,6 +31,30 @@
  4. @说明:
 *******************************************************************************/
 
+// 程序名 %n
+const QString PROGRAM_NAME = "%n";
+// 当前目录长 %D
+const QString DIR_L = "%D";
+// 当前目录短 %d
+const QString DIR_S = "%d";
+// 会话编号 %#
+const QString TAB_NUM = "%#";
+// 用户名
+const QString USER_NAME = "%u";
+// 用户名@
+const QString USER_NAME_L = "%U";
+// 本地主机
+const QString LOCAL_HOST_NAME = "%h";
+// 远程主机
+const QString REMOTE_HOST_NAME = "%h";
+// shell设置的窗口标题
+const QString SHELL_TITLE = "%w";
+
+// 标签标题格式参数
+const QString TAB_ARGS = "%n %d %D %# %u %h %w";
+// 远程标签标题格式参数
+const QString REMOTE_ARGS = "%u %U %h %# %w";
+
 // 删除和退格键可选模式
 enum EraseMode {
     EraseMode_Auto,
@@ -38,6 +62,16 @@ enum EraseMode {
     EraseMode_Control_H,
     EraseMode_TTY,
     EraseMode_Escape_Sequeue
+};
+
+// 标签标题格式
+struct TabFormat {
+    // 当前标签标题格式
+    QString currentTabFormat;
+    // 远程标签标题格式
+    QString remoteTabFormat;
+    // 是否是全局设置
+    bool isGlobal = true;
 };
 
 class TermProperties;
@@ -86,6 +120,25 @@ public:
     // 获取该终端距离page的层次
     int getTermLayer();
 
+    // 修改当前标签格式
+    void setTabFormat(const QString &tabFormat);
+    // 修改远程标签格式
+    void setRemoteTabFormat(const QString &remoteTabFormat);
+    // 修改所有的标签标题格式
+    void renameTabFormat(const QString &tabFormat, const QString &remoteTabFormat);
+    // 获取标签标题对应的标签标题
+    QString getTabTitle();
+    // 初始化终端标签
+    void initTabTitle();
+    // 初始化标签标题参数列表
+    void initTabTitleArgs();
+    // 获取标签标题格式
+    QString getTabTitleFormat();
+    // 获取远程标签标题格式
+    QString getRemoteTabTitleFormat();
+    // 获取当前标签标题格式
+    QString getCurrentTabTitleFormat();
+
 public slots:
     void wpasteSelection();
     void onSettingValueChanged(const QString &keyName);
@@ -94,7 +147,7 @@ public slots:
 
 signals:
     void termRequestRenameTab(QString newTabName);
-    void termIsIdle(int currSessionId, bool bIdle);
+    void termIsIdle(QString tabIdentifier, bool bIdle);
     void termTitleChanged(QString titleText);
 
 protected:
@@ -107,6 +160,10 @@ private slots:
 private:
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     void addMenuActions(const QPoint &pos);
+    // 解析shell默认标题
+    void parseShellTitle();
+    // 根据标签格式获取标签标题
+    QString getTabTitle(QMap<QString, QString> format, QString TabFormat);
 
     TermWidgetPage *m_page = nullptr;
     TermProperties m_properties;
@@ -126,6 +183,16 @@ private:
     EraseMode m_backspaceMode = EraseMode_Ascii_Delete;
     // 当前终端删除信号
     EraseMode m_deleteMode = EraseMode_Escape_Sequeue;
+
+    // 标签格式
+    // 当前标签标题参数
+    QMap<QString, QString> m_tabArgs;
+    // 远程标签标题参数
+    QMap<QString, QString> m_remoteTabArgs;
+    // 标签标题格式
+    TabFormat m_tabFormat;
+    // 会话编号
+    int m_sessionNumber;
 };
 
 #endif  // TERMWIDGET_H

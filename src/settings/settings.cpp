@@ -219,6 +219,18 @@ void Settings::initConnection()
         emit pressingScrollChanged(value.toBool());
     });
     /********************* Modify by n014361 wangpeili End ************************/
+
+    // 标签标题格式变化
+    QPointer<DSettingsOption> tabFormat = settings->option("basic.tab_title.tab_title_format");
+    connect(tabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit tabFormatChanged(value.toString());
+    });
+
+    // 远程标签标题格式变化
+    QPointer<DSettingsOption> remoteTabFormat = settings->option("basic.tab_title.remote_tab_title_format");
+    connect(remoteTabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit remoteTabFormatChanged(value.toString());
+    });
 }
 
 /*******************************************************************************
@@ -319,6 +331,28 @@ void Settings::reload()
             settings->option(key)->setValue(newSettings.value(key + "/value"));
         }
     }
+}
+
+/*******************************************************************************
+ 1. @函数:    tabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    标签标题
+*******************************************************************************/
+QString Settings::tabTitleFormat() const
+{
+    return settings->option("basic.tab_title.tab_title_format")->value().toString();
+}
+
+/*******************************************************************************
+ 1. @函数:    remoteTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    远程标签标题
+*******************************************************************************/
+QString Settings::remoteTabTitleFormat() const
+{
+    return settings->option("basic.tab_title.remote_tab_title_format")->value().toString();
 }
 
 /*******************************************************************************

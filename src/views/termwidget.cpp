@@ -52,6 +52,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     Utils::set_Object_Name(this);
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
+    // 初始化标题
+    initTabTitle();
     //qDebug() << " TermWidgetparent " << parentWidget();
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -80,7 +82,7 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     // theme
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    theme=Settings::instance()->colorScheme();
+    theme = Settings::instance()->colorScheme();
     //if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
     //    theme = "Light";
     //}
@@ -217,13 +219,13 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         parentPage()->setMismatchAlert(true);
     });
     // 找到搜索匹配的结果 => 记录查找时间 => 打印日志，方便性能测试
-    connect(this, &QTermWidget::sig_matchFound, this, [this](){
+    connect(this, &QTermWidget::sig_matchFound, this, [this]() {
         parentPage()->printSearchCostTime();
     });
     /********************* Modify by n014361 wangpeili End ************************/
 
     connect(this, &QTermWidget::isTermIdle, this, [this](bool bIdle) {
-        emit termIsIdle(getSessionId(), bIdle);
+        emit termIsIdle(m_page->identifier(), bIdle);
     });
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
@@ -302,7 +304,7 @@ TermWidgetPage *TermWidget::parentPage()
 *******************************************************************************/
 void TermWidget::handleTermIdle(bool bIdle)
 {
-    emit termIsIdle(this->getSessionId(), bIdle);
+    emit termIsIdle(this->m_page->identifier(), bIdle);
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
@@ -631,6 +633,181 @@ int TermWidget::getTermLayer()
     }
     qDebug() << "getTermLayer = " << layer;
     return  layer;
+}
+
+/*******************************************************************************
+ 1. @函数:    setTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    设置标签标题格式（全局设置）
+*******************************************************************************/
+void TermWidget::setTabFormat(const QString &tabFormat)
+{
+    // 非全局设置优先级更高
+    if (m_tabFormat.isGlobal != false && m_tabFormat.currentTabFormat != tabFormat) {
+        m_tabFormat.currentTabFormat = tabFormat;
+        // 有变化，就将变化发出，但此时可能显示的不是变化的项
+        emit termTitleChanged(getTabTitle());
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    setRemoteTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    设置远程标签标题格式(全局设置)
+*******************************************************************************/
+void TermWidget::setRemoteTabFormat(const QString &remoteTabFormat)
+{
+    // 非全局设置优先级更高
+    if (m_tabFormat.isGlobal != false && m_tabFormat.remoteTabFormat != remoteTabFormat) {
+        m_tabFormat.remoteTabFormat = remoteTabFormat;
+        // 有变化，就将变化发出，但此时可能显示的不是变化的项
+        emit termTitleChanged(getTabTitle());
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    renameTabFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    重命名标签标题/远程标签标题格式
+*******************************************************************************/
+void TermWidget::renameTabFormat(const QString &tabFormat, const QString &remoteTabFormat)
+{
+    // 重命名优先级高
+    m_tabFormat.currentTabFormat = tabFormat;
+    m_tabFormat.remoteTabFormat = remoteTabFormat;
+    m_tabFormat.isGlobal = false;
+    emit termTitleChanged(getTabTitle());
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    返回标签对应的标题
+*******************************************************************************/
+QString TermWidget::getTabTitle()
+{
+    QString strTabName;
+    // 判断当前是否连接远程
+    if (isConnectRemote() /*|| getForegroundProcessName() == "ssh"*/) {
+        // 连接远程 远程标签标题格式
+        strTabName = getTabTitle(m_remoteTabArgs, m_tabFormat.remoteTabFormat);
+    } else {
+        // 当前标签标题格式
+        strTabName = getTabTitle(m_tabArgs, m_tabFormat.currentTabFormat);
+    }
+
+    // 没有内容则给Terminal作为默认标题
+    if (strTabName.trimmed().isEmpty()) {
+        strTabName = DEFAULT_TAB_TITLE;
+    }
+    return strTabName;
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    根据格式和对应参数获取标题
+*******************************************************************************/
+QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat)
+{
+    // 遍历参数列表
+    for (QString key : format.keys()) {
+        // 判断是否包含改参数
+        if (TabFormat.contains(key)) {
+            // 包含的话，把参数替换为参数对应的内容
+            TabFormat.replace(key, format[key]);
+            // qDebug() << "replace " << key << "to " << format[key];
+        }
+    }
+    return TabFormat;
+}
+
+/*******************************************************************************
+ 1. @函数:    initTabTitle
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-29
+ 4. @说明:    初始化标签标题
+*******************************************************************************/
+void TermWidget::initTabTitle()
+{
+    static ushort sessionNumber = 0;
+    // 初始化标签标题参数
+    initTabTitleArgs();
+    // 会话编号赋值
+    m_sessionNumber = ++sessionNumber;
+    m_tabArgs[TAB_NUM] = QString::number(m_sessionNumber);
+    m_remoteTabArgs[TAB_NUM] = QString::number(m_sessionNumber);
+    // 设置标签标题格式
+    setTabFormat(Settings::instance()->tabTitleFormat());
+    setRemoteTabFormat(Settings::instance()->remoteTabTitleFormat());
+    // 标签标题变化，则每个term变化
+    connect(Settings::instance(), &Settings::tabFormatChanged, this, &TermWidget::setTabFormat);
+    connect(Settings::instance(), &Settings::remoteTabFormatChanged, this, &TermWidget::setRemoteTabFormat);
+}
+
+/*******************************************************************************
+ 1. @函数:    initTabTitleArgs
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-10-28
+ 4. @说明:    初始化参数列表
+*******************************************************************************/
+void TermWidget::initTabTitleArgs()
+{
+    QStringList strTabArgs = TAB_ARGS.split(" ");
+    // 填充标签标题参数
+    for (QString arg : strTabArgs) {
+        m_tabArgs.insert(arg, " ");
+    }
+    // 填充远程标题标签参数
+    QStringList strRemoteTabArgs = REMOTE_ARGS.split(" ");
+    for (QString arg : strRemoteTabArgs) {
+        m_remoteTabArgs.insert(arg, " ");
+    }
+    qDebug() << "Tab args init! tab title count : " << m_tabArgs.count() << " remote title count : " << m_remoteTabArgs.count();
+}
+
+/*******************************************************************************
+ 1. @函数:    getTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-02
+ 4. @说明:    获取标签标题格式
+*******************************************************************************/
+QString TermWidget::getTabTitleFormat()
+{
+    return m_tabFormat.currentTabFormat;
+}
+
+/*******************************************************************************
+ 1. @函数:    getRemoteTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-02
+ 4. @说明:    获取远程标签标题格式
+*******************************************************************************/
+QString TermWidget::getRemoteTabTitleFormat()
+{
+    return m_tabFormat.remoteTabFormat;
+}
+
+/*******************************************************************************
+ 1. @函数:    getCurrentTabTitleFormat
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-11-06
+ 4. @说明:    获取当前term显示的标签标题
+*******************************************************************************/
+QString TermWidget::getCurrentTabTitleFormat()
+{
+    // 连接远程
+    if (isConnectRemote()) {
+        return m_tabFormat.remoteTabFormat;
+    }
+
+    // 未连接远程
+    return m_tabFormat.currentTabFormat;
 }
 
 /*******************************************************************************

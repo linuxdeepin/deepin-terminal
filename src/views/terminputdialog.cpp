@@ -201,7 +201,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     });
     /********************* Modify by ut000610 daizhengwen End ************************/
 
-    DLabel *label = new DLabel(tr("Rename title"));
+    DLabel *label = new DLabel(QObject::tr("Rename title"));
     /***mod begin by ut001121 zhangmeng 20200428 修复BUG#22995 标签截断显示的问题***/
     /* delete
      * label->setFixedSize(360, 20);*/

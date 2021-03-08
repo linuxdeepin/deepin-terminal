@@ -898,10 +898,12 @@ void TermWidgetPage::onTermRequestRenameTab(QString newTabName)
  3. @日期:    2020-08-12
  4. @说明:    终端标题变化响应函数
 *******************************************************************************/
-void TermWidgetPage::onTermTitleChanged(QString title) const
+void TermWidgetPage::onTermTitleChanged(QString title)
 {
     TermWidget *term = qobject_cast<TermWidget *>(sender());
-    if (m_currentTerm == term) {
+    // 标题内容没变化的话不发，不是当前终端改变，不发
+    if (m_currentTerm == term && m_tabTitle != title) {
+        m_tabTitle = title;
         emit termTitleChanged(title);
     }
 }
@@ -1038,12 +1040,16 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     TermWidget *oldTerm = m_currentTerm;
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
+        // 当前界面切换
         qDebug() << "m_currentTerm change" << m_currentTerm->getSessionId();
-        if (m_currentTerm->isTitleChanged()) {
-            emit termTitleChanged(m_currentTerm->title());
-        } else {
-            emit termTitleChanged(windowTitle());
+        QString tabTitle = term->getTabTitle();
+        // 当前标签为空，标签格式不为空 => 未得到term参数，暂不上传数据
+        if ((tabTitle == DEFAULT_TAB_TITLE) && !term->getCurrentTabTitleFormat().trimmed().isEmpty()) {
+            return;
         }
+        m_tabTitle = tabTitle;
+        // 当前窗口变化修改标签标题
+        emit termTitleChanged(m_tabTitle);
     }
 }
 

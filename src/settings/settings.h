@@ -61,6 +61,10 @@ public:
     bool PressingScroll();
     bool OutputtingScroll();
     void reload();
+    // 标签标题
+    QString tabTitleFormat() const;
+    // 远程标签标题
+    QString remoteTabTitleFormat() const;
 
     // 设置主题
     void setColorScheme(const QString &name);
@@ -103,6 +107,12 @@ signals:
     void OutputScrollChanged(bool enabled);
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
+
+    // 设置中的标签标题格式变化
+    void tabFormatChanged(const QString &tabFormat);
+    // 设置中的远程标签标题格式变化
+    void remoteTabFormatChanged(const QString &remoteTabFormat);
+
 
 private:
     Settings();
