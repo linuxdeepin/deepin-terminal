@@ -173,7 +173,7 @@ private:
     // 这个指针实际上与上面指针指向同一地址，不需要二次释放
     ShareMemoryInfo *m_pShareMemoryInfo = nullptr;
     // 初始化和运行无障碍辅助工具的线程
-    AtspiDesktop *m_atspiThread = nullptr;
+//    AtspiDesktop *m_atspiThread = nullptr;
 
     // shells
     QMap<QString, QString> m_shellsMap;

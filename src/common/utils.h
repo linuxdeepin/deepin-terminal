@@ -151,7 +151,7 @@ public:
     // 快捷键转换
     static QString converUpToDown(QKeySequence keysequence);
     //此接口暂时注释保留不删除，2020.12.23
-    //static QString converDownToUp(QKeySequence keysequence);
+    static QString converDownToUp(QKeySequence keysequence);
 
 };
 

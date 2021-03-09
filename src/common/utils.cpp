@@ -738,27 +738,27 @@ QString Utils::converUpToDown(QKeySequence keysequence)
  3. @日期:    2020-12-15
  4. @说明:    转换down2up
 *******************************************************************************/
-//QString Utils::converDownToUp(QKeySequence keysequence)
-//{
-//    // 获取现在的快捷键字符串
-//    QString strKey = keysequence.toString();
-//    // 是否有shift修饰
-//    if (!(strKey.contains("Shift") || strKey.contains("shift"))) {
-//        // 没有直接返回字符串
-//        return strKey;
-//    }
+QString Utils::converDownToUp(QKeySequence keysequence)
+{
+    // 获取现在的快捷键字符串
+    QString strKey = keysequence.toString();
+    // 是否有shift修饰
+    if (!(strKey.contains("Shift") || strKey.contains("shift"))) {
+        // 没有直接返回字符串
+        return strKey;
+    }
 
-//    // 遍历是否存在有shift修饰的字符串
-//    for (int i = 0; i < SHORTCUT_CONVERSION_DOWN.count(); ++i) {
-//        QString key = SHORTCUT_CONVERSION_DOWN[i];
-//        if (strKey.contains(key)) {
-//            // 若存在则替换字符
-//            strKey.replace(key, SHORTCUT_CONVERSION_UP[i]);
-//        }
-//    }
+    // 遍历是否存在有shift修饰的字符串
+    for (int i = 0; i < SHORTCUT_CONVERSION_DOWN.count(); ++i) {
+        QString key = SHORTCUT_CONVERSION_DOWN[i];
+        if (strKey.contains(key)) {
+            // 若存在则替换字符
+            strKey.replace(key, SHORTCUT_CONVERSION_UP[i]);
+        }
+    }
 
-//    return strKey;
-//}
+    return strKey;
+}
 
 /*******************************************************************************
  1. @函数:    getMainWindow
