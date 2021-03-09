@@ -418,7 +418,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     m_tabbar->saveSessionIdWithTabIndex(term->getSessionId(), index);
     m_tabbar->saveSessionIdWithTabId(term->getSessionId(), termPage->identifier());
     connect(termPage, &TermWidgetPage::termTitleChanged, this, &MainWindow::onTermTitleChanged);
-//    connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
+    connect(termPage, &TermWidgetPage::tabTitleChanged, this, &MainWindow::onTabTitleChanged);
     connect(termPage, &TermWidgetPage::lastTermClosed, this, [this](const QString & identifier) {
         closeTab(identifier);
     });
