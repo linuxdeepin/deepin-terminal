@@ -167,9 +167,13 @@ TEST_F(UT_ListView_Test, setFocusFromeIndex)
         ShortcutManager::instance()->addCustomCommand(*newAction);
     }
 
-    listWidget.setFocusFromeIndex(0, true);
+    listWidget.setFocusFromeIndex(0, ListFocusUp);
 
-    listWidget.setFocusFromeIndex(0, false);
+    listWidget.setFocusFromeIndex(0, ListFocusDown);
+
+    listWidget.setFocusFromeIndex(0, ListFocusHome);
+
+    listWidget.setFocusFromeIndex(0, ListFocusEnd);
 }
 
 //为测试onCustomCommandOptDlgFinished打桩

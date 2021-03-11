@@ -52,6 +52,15 @@ enum ListType {
     ListType_Remote
 };
 
+enum ListFocusType {
+    ListFocusUp,
+    ListFocusDown,
+    ListFocusHome,
+    ListFocusEnd,
+    ListFocusPageUp,
+    ListFocusPageDown
+};
+
 class ServerConfigOptDlg;
 class CustomCommandOptDlg;
 class ListView : public QScrollArea
@@ -82,7 +91,7 @@ public:
     // 清空焦点
     void clearIndex();
     // 切换焦点
-    void setFocusFromeIndex(int currentIndex, bool UpOrDown);
+    void setFocusFromeIndex(int currentIndex, ListFocusType focusType);
     // 丢失焦点
     void lostFocus(int preIndex);
     // 设置滚轮

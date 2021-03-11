@@ -707,10 +707,16 @@ void ListView::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Up:
-        setFocusFromeIndex(m_currentIndex, true);
+        setFocusFromeIndex(m_currentIndex, ListFocusUp);
         break;
     case Qt::Key_Down:
-        setFocusFromeIndex(m_currentIndex, false);
+        setFocusFromeIndex(m_currentIndex, ListFocusDown);
+        break;
+    case Qt::Key_Home:
+        setFocusFromeIndex(m_currentIndex, ListFocusHome);
+        break;
+    case Qt::Key_End:
+        setFocusFromeIndex(m_currentIndex, ListFocusEnd);
         break;
     default:
         QScrollArea::keyPressEvent(event);
@@ -875,18 +881,31 @@ int ListView::getWidgetIndex(ItemWidget *itemWidget)
  3. @日期:    2020-07-20
  4. @说明:    根据index切换焦点
  1)参数1 currentIndex 当前项的值
- 2)参数2 UpOrDown 向上或者向下 true 上  false 下
+ 2)参数2 ListFocusType
+    ListFocusUp,   向上
+    ListFocusDown, 向下
+    ListFocusHome, 第一个
+    ListFocusEnd,  最后一个
+    ListFocusPageUp, 向上翻页
+    ListFocusPageDown 向下翻页
 *******************************************************************************/
-void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
+void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
 {
     int count = m_itemList.count();
 
     int index = currentIndex;
-    if (UpOrDown) {
+    if (ListFocusUp == focusType) {
         --index;
-    } else {
+    } else if (ListFocusDown == focusType) {
         ++index;
+    } else if (ListFocusHome == focusType) {
+        index = 0;
+    } else if (ListFocusEnd == focusType) {
+        index = this->count()-1;
+    } else {
+        qDebug() << "index:" << index << endl;
     }
+    qDebug() << "focus index:" << index << endl;
 
     // index >= 0 < 最大数量
     // 最上
@@ -923,10 +942,18 @@ void ListView::setFocusFromeIndex(int currentIndex, bool UpOrDown)
             if (widget->y() + widget->height() < height()) {
                 verticalScrollBar()->setValue(0);
             } else {
-                if (UpOrDown) {
-                    m_scrollPostion -= 70;
-                } else if (currentIndex < count/* - 1*/) {
-                    m_scrollPostion += 70;
+                const int listItemHeight = 70;
+                if (ListFocusUp == focusType) {
+                    m_scrollPostion -= listItemHeight;
+                } else if (ListFocusDown == focusType && currentIndex < count/* - 1*/) {
+                    m_scrollPostion += listItemHeight;
+                } else if (ListFocusHome == focusType) {
+                    m_scrollPostion = 0;
+                } else if (ListFocusEnd == focusType) {
+                    m_scrollPostion += (count-1) * listItemHeight;
+                } else {
+                    m_scrollPostion = verticalScrollBar()->value();
+                    qDebug() << "m_scrollPostion" << m_scrollPostion << endl;
                 }
             }
         }
