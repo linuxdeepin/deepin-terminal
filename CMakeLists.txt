@@ -67,7 +67,6 @@ pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
 pkg_search_module(DtkCore REQUIRED dtkcore)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
-pkg_check_modules(ATSPI2 REQUIRED atspi-2)
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
 
@@ -104,7 +103,6 @@ set(LINK_LIBS
     ${DtkCore_LIBRARIES}
     ${DtkGUI_LIBRARIES}
     ${DFrameworkDBus_LIBRARIES}
-    ${ATSPI2_LIBRARIES}
     ${GOBJECT_LIBRARIES}
     ${LIBSECRET_LIBRARIES}
 )
@@ -130,7 +128,6 @@ set (DTNG_CPP_FILES
     src/main/terminalapplication.cpp
     src/main/termproperties.cpp    
     src/main/dbusmanager.cpp
-    src/main/atspidesktop.cpp
     src/remotemanage/remotemanagementpanel.cpp
     src/remotemanage/remotemanagementplugn.cpp
     src/remotemanage/remotemanagementsearchpanel.cpp
@@ -181,7 +178,6 @@ set (DTNG_HEADER_FILES
     src/main/terminalapplication.h
     src/main/termproperties.h
     src/main/dbusmanager.h
-    src/main/atspidesktop.h
     src/remotemanage/remotemanagementpanel.h
     src/remotemanage/remotemanagementplugn.h
     src/remotemanage/remotemanagementsearchpanel.h

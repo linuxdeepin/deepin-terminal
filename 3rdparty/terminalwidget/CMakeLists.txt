@@ -323,18 +323,6 @@ lxqt_create_pkgconfig_file(
     COMPONENT Devel
 )
 
-configure_file(
-    "${PROJECT_SOURCE_DIR}/cmake/${TERMINALWIDGET_LIBRARY_NAME}-config.cmake.in"
-    "${CMAKE_BINARY_DIR}/${TERMINALWIDGET_LIBRARY_NAME}-config.cmake"
-    @ONLY
-)
-
-install(FILES
-    "${CMAKE_BINARY_DIR}/${TERMINALWIDGET_LIBRARY_NAME}-config.cmake"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${TERMINALWIDGET_LIBRARY_NAME}"
-    COMPONENT Devel
-)
-
 install(TARGETS ${TERMINALWIDGET_LIBRARY_NAME}
     DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     EXPORT "${TERMINALWIDGET_LIBRARY_NAME}-targets"
@@ -348,28 +336,3 @@ export(TARGETS ${TERMINALWIDGET_LIBRARY_NAME}
     EXPORT_LINK_INTERFACE_LIBRARIES
 )
 # end of main library
-
-
-# example application
-if(BUILD_EXAMPLE)
-    set(EXAMPLE_SRC example/main.cpp)
-    add_executable(example ${EXAMPLE_SRC})
-    target_link_libraries(example ${TERMINALWIDGET_LIBRARY_NAME})
-endif()
-# end of example application
-
-# python binding
-if (TERMINALWIDGET_BUILD_PYTHON_BINDING)
-    add_subdirectory(pyqt)
-endif()
-# end of python binding
-
-
-CONFIGURE_FILE(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY
-)
-ADD_CUSTOM_TARGET(uninstall
-    "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-)

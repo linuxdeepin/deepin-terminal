@@ -2,8 +2,6 @@
 
     Copyright (C) 2003,2007 Oswald Buddenhagen <ossi@kde.org>
 
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
@@ -18,6 +16,8 @@
     along with this library; see the file COPYING.LIB.  If not, write to
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
     Boston, MA 02110-1301, USA.
+
+    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
 */
 
 #ifndef kpty_h

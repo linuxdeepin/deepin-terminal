@@ -1,11 +1,25 @@
-/* $XFree86: xc/programs/xterm/wcwidth.character,v 1.3 2001/07/29 22:08:16 tsi Exp $ */
 /*
- * This is an implementation of wcwidth() and wcswidth() as defined in
- * "The Single UNIX Specification, Version 2, The Open Group, 1997"
- * <http://www.UNIX-systems.org/online.html>
- *
- * Markus Kuhn -- 2001-01-12 -- public domain
- */
+    This file is part of Konsole, an X terminal.
+
+    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301  USA.
+*/
+
+
 #include "konsole_wcwidth.h"
 #include <QPainter>
 #include <QPainterPath>

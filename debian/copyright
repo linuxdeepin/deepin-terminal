@@ -1,14 +1,130 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: https://gitlabnj.uniontech.com/nanjing/deepin-terminal
+Upstream-Name: deepin-terminal
+Source: https://github.com/linuxdeepin/deepin-terminal
 
 Files: *
-Copyright: 2017 Deepin.Inc <support@deepin.com>
+Copyright: 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
 License: GPL-3+
 
-Files: debian/*
-Copyright: 2020 Zhang Meng <zhangmeng@uniontech.com>
-License: Expat
+Files:     tests/src/stub/addr_pri.h
+           tests/src/stub/stub.h
+Copyright: 2019 coolxv
+License:   Expat
 
+Files:     src/assets/other/ssh_login.sh
+Copyright: 2011 ~ 2016 Deepin, Inc.
+           2011 ~ 2016 Wang Yong
+License:   GPL-3+
+
+Files:     src/DtkSettingsToolsMacros.cmake
+Copyright: 2019 Gary Wang
+License:   BSD-3-Clause
+
+Files:     3rdparty/terminalwidget/lib/BlockArray.cpp
+           3rdparty/terminalwidget/lib/BlockArray.h
+           3rdparty/terminalwidget/lib/Character.h
+           3rdparty/terminalwidget/lib/CharacterColor.h
+           3rdparty/terminalwidget/lib/CharacterFormat.cpp
+           3rdparty/terminalwidget/lib/CharacterFormat.h
+           3rdparty/terminalwidget/lib/ColorScheme.h
+           3rdparty/terminalwidget/lib/Emulation.h
+           3rdparty/terminalwidget/lib/Filter.h
+           3rdparty/terminalwidget/lib/HistorySearch.cpp
+           3rdparty/terminalwidget/lib/HistorySearch.h
+           3rdparty/terminalwidget/lib/KeyboardTranslator.h
+           3rdparty/terminalwidget/lib/ProcessInfo.h
+           3rdparty/terminalwidget/lib/Pty.h
+           3rdparty/terminalwidget/lib/Screen.h
+           3rdparty/terminalwidget/lib/ScreenWindow.h
+           3rdparty/terminalwidget/lib/SearchBar.cpp
+           3rdparty/terminalwidget/lib/SearchBar.h
+           3rdparty/terminalwidget/lib/Session.cpp
+           3rdparty/terminalwidget/lib/Session.h
+           3rdparty/terminalwidget/lib/SessionManager.h
+           3rdparty/terminalwidget/lib/ShellCommand.cpp
+           3rdparty/terminalwidget/lib/ShellCommand.h
+           3rdparty/terminalwidget/lib/TerminalDisplay.h
+           3rdparty/terminalwidget/lib/Vt102Emulation.h
+           3rdparty/terminalwidget/lib/history/HistoryFile.h
+           3rdparty/terminalwidget/lib/history/HistoryScroll.h
+           3rdparty/terminalwidget/lib/history/HistoryScrollFile.cpp
+           3rdparty/terminalwidget/lib/history/HistoryScrollFile.h
+           3rdparty/terminalwidget/lib/history/HistoryScrollNone.h
+           3rdparty/terminalwidget/lib/history/HistoryType.cpp
+           3rdparty/terminalwidget/lib/history/HistoryType.h
+           3rdparty/terminalwidget/lib/history/HistoryTypeFile.cpp
+           3rdparty/terminalwidget/lib/history/HistoryTypeFile.h
+           3rdparty/terminalwidget/lib/history/HistoryTypeNone.cpp
+           3rdparty/terminalwidget/lib/history/HistoryTypeNone.h
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlock.h
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlockList.h
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryLine.cpp
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryLine.h
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryScroll.h
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryType.h
+Copyright: 1997-1998 Lars Doelle <lars.doelle@on-line.de>
+           2000 Stephan Kulow <coolo@kde.org>
+           2006-2008 Robert Knight <robertknight@gmail.com>
+           2013 Christian Surlykke
+License:   GPL-2+
+
+Files:     3rdparty/terminalwidget/lib/ColorScheme.cpp
+           3rdparty/terminalwidget/lib/Emulation.cpp
+           3rdparty/terminalwidget/lib/Filter.cpp
+           3rdparty/terminalwidget/lib/KeyboardTranslator.cpp
+           3rdparty/terminalwidget/lib/ProcessInfo.cpp
+           3rdparty/terminalwidget/lib/Pty.cpp
+           3rdparty/terminalwidget/lib/Screen.cpp
+           3rdparty/terminalwidget/lib/ScreenWindow.cpp
+           3rdparty/terminalwidget/lib/SessionManager.cpp
+           3rdparty/terminalwidget/lib/TerminalDisplay.cpp
+           3rdparty/terminalwidget/lib/Vt102Emulation.cpp
+           3rdparty/terminalwidget/lib/history/HistoryFile.cpp
+           3rdparty/terminalwidget/lib/history/HistoryScroll.cpp
+           3rdparty/terminalwidget/lib/history/HistoryScrollNone.cpp
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlock.cpp
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlockList.cpp
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryScroll.cpp
+           3rdparty/terminalwidget/lib/history/compact/CompactHistoryType.cpp
+Copyright: 1996 Matthias Ettrich <ettrich@kde.org>
+           1997-1998 Lars Doelle <lars.doelle@on-line.de>
+           2006-2008 Robert Knight <robertknight@gmail.com>
+           2007-2008 Robert Knight <robert.knight@gmail.com>
+           2007-2008 Robert Knight <robertknight@gmail.countm>
+License:   GPL-2+
+
+Files:     3rdparty/terminalwidget/lib/LineFont.h
+           3rdparty/terminalwidget/lib/TerminalCharacterDecoder.cpp
+Copyright: 2006-2008 Robert Knight <robertknight@gmail.com>
+License:   LGPL-2+
+
+Files:     3rdparty/terminalwidget/lib/kprocess.cpp
+           3rdparty/terminalwidget/lib/kprocess.h
+           3rdparty/terminalwidget/lib/kpty.cpp
+           3rdparty/terminalwidget/lib/kpty.h
+           3rdparty/terminalwidget/lib/kpty_p.h
+           3rdparty/terminalwidget/lib/kptydevice.cpp
+           3rdparty/terminalwidget/lib/kptydevice.h
+           3rdparty/terminalwidget/lib/kptyprocess.cpp
+           3rdparty/terminalwidget/lib/kptyprocess.h
+           3rdparty/terminalwidget/lib/qtermwidget.cpp
+           3rdparty/terminalwidget/lib/qtermwidget.h
+           3rdparty/terminalwidget/lib/tools.cpp
+           3rdparty/terminalwidget/lib/tools.h
+Copyright: 2002 Waldo Bastian <bastian@kde.org>
+           2002-2007 Oswald Buddenhagen <ossi@kde.org>
+           2008 e_k (e_k@users.sourceforge.net)
+           2010 KDE e.V. <kde-ev-board@kde.org>
+License:   LGPL-2+
+
+Files:     3rdparty/terminalwidget/lib/ColorTables.h
+           3rdparty/terminalwidget/lib/DefaultTranslatorText.h
+           3rdparty/terminalwidget/lib/ExtendedDefaultTranslator.h
+           3rdparty/terminalwidget/lib/TerminalCharacterDecoder.h
+           3rdparty/terminalwidget/lib/konsole_wcwidth.cpp
+           3rdparty/terminalwidget/lib/konsole_wcwidth.h
+Copyright: 2006-2008 Robert Knight <robertknight@gmail.com>
+License:   LGPL-2+
 
 License: GPL-3+
  This package is free software; you can redistribute it and/or modify
@@ -45,3 +161,75 @@ License: Expat
  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFT
+
+License: GPL-2+
+ This program is free software; you can redistribute it
+ and/or modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later
+ version.
+ .
+ This program is distributed in the hope that it will be
+ useful, but WITHOUT ANY WARRANTY; without even the implied
+ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.  See the GNU General Public License for more
+ details.
+ .
+ You should have received a copy of the GNU General Public
+ License along with this package; if not, write to the Free
+ Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ Boston, MA  02110-1301 USA
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ "/usr/share/common-licenses/GPL-2".
+
+License: LGPL-2+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+ .
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+ .
+ You should have received a copy of the GNU Library General Public License
+ along with this library; see the file COPYING.LIB.  If not, write to
+ the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ Boston, MA 02110-1301, USA.
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ "/usr/share/common-licenses/LGPL-2".
+
+License: BSD-3-Clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. Neither the name of the University nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ "/usr/share/common-licenses/BSD".
+

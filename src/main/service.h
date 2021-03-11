@@ -25,7 +25,6 @@
 #include "windowsmanager.h"
 #include "shortcutmanager.h"
 #include "settings.h"
-#include "atspidesktop.h"
 #include "customthemesettingdialog.h"
 
 #include <DSettingsDialog>

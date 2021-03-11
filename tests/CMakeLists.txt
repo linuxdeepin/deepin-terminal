@@ -120,7 +120,6 @@ target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
                                                         ${DtkCore_LIBRARIES}
                                                         ${DtkGUI_INCLUDE_DIRS}
                                                         ${DFrameworkDBus_INCLUDE_DIRS}
-                                                        ${ATSPI2_INCLUDE_DIRS}
                                                         ${GOBJECT_INCLUDE_DIRS}
                                                         ${LIBSECRET_INCLUDE_DIRS})
 
