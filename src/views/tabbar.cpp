@@ -39,6 +39,7 @@
 #include <QStylePainter>
 #include <QMouseEvent>
 #include <QDesktopWidget>
+#include <QPainterPath>
 
 //TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
@@ -565,9 +566,7 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
             if (isHandle) {
                 return isHandle;
             }
-        }
-        else if(mouseEvent->button() ==  Qt::MiddleButton)                                                                                                               
-        {
+        } else if (mouseEvent->button() ==  Qt::MiddleButton) {
             handleMiddleButtonClick(mouseEvent);
         }
     } else if (event->type() == QEvent::DragEnter) {
@@ -598,8 +597,7 @@ inline void TabBar::handleMiddleButtonClick(QMouseEvent *mouseEvent)
             break;
         }
     }
-    if(index >= 0)
-    {
+    if (index >= 0) {
         emit tabCloseRequested(index);
     }
 }
@@ -1014,7 +1012,7 @@ MainWindow *TabBar::createNormalWindow()
 *******************************************************************************/
 inline void TabBar::handleWindowClose()
 {
-    MainWindow *window = qobject_cast<MainWindow*>(sender());
+    MainWindow *window = qobject_cast<MainWindow *>(sender());
     if (nullptr == window) {
         return;
     }

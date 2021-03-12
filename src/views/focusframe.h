@@ -38,6 +38,7 @@
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include <QEvent>
+#include <QPainterPath>
 
 DWIDGET_USE_NAMESPACE
 

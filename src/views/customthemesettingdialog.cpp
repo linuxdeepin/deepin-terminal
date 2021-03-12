@@ -39,8 +39,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QTimer>
-
-
+#include <QPainterPath>
 
 TitleStyleRadioButton::TitleStyleRadioButton(const QString &text, QWidget *parent): DRadioButton(text, parent)
 {

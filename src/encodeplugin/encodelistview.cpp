@@ -31,6 +31,7 @@
 #include <QStandardItemModel>
 #include <QDebug>
 #include <QScroller>
+#include <QPainterPath>
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {

@@ -29,7 +29,7 @@
 #include <QPixmap>
 #include <QPaintEvent>
 #include <QBitmap>
-
+#include <QPainterPath>
 
 ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent)
 {
@@ -51,7 +51,7 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
 {
     QPainter *painter = new QPainter(this);
     //抗锯设置
-    painter->setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform);
+    painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::NoBrush);
 
