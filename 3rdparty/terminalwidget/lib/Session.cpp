@@ -133,7 +133,17 @@ Session::Session(QObject* parent) :
     // 定时更新term信息 => 目前为了更新标签标题信息
     QTimer *updateTimer = new QTimer(this);
     connect(updateTimer, &QTimer::timeout, this, &Session::onUpdateTitleArgs);
-    updateTimer->start(500);
+    updateTimer->start(10);
+
+    //用于更改updateTimer的时间间隔，防止CPU占用太高
+    QTimer *monitorUpdateTimer = new QTimer(this);
+    monitorUpdateTimer->setSingleShot(true);
+    monitorUpdateTimer->start(1000);
+    connect(monitorUpdateTimer, &QTimer::timeout, this, [=] {
+        if (updateTimer->interval() < 1000) {
+            updateTimer->setInterval(1000);
+        }
+    });
 }
 
 WId Session::windowId() const
