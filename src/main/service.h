@@ -64,7 +64,7 @@ public:
     ~Service();
     void init();
     // 初始化设置框
-    void initSetting(MainWindow *pOwner=nullptr);
+    void initSetting(MainWindow *pOwner = nullptr);
 
     // 显示设置框
     void showSettingDialog(MainWindow *pOwner);
