@@ -155,6 +155,8 @@ public:
     //此接口暂时注释保留不删除，2020.12.23
     static QString converDownToUp(QKeySequence keysequence);
 
+    // 从环境变量里面获取当前语言
+    static QString getCurrentEnvLanguage();
 };
 
 /*******************************************************************************

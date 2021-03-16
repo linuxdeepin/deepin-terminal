@@ -762,6 +762,17 @@ QString Utils::converDownToUp(QKeySequence keysequence)
 }
 
 /*******************************************************************************
+ 1. @函数:    getCurrentEnvLanguage
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-03-16
+ 4. @说明:    从环境变量里面获取当前语言
+*******************************************************************************/
+QString Utils::getCurrentEnvLanguage()
+{
+    return QString::fromLocal8Bit(qgetenv("LANGUAGE"));
+}
+
+/*******************************************************************************
  1. @函数:    getMainWindow
  2. @作者:    ut000125 sunchengxi
  3. @日期:    2020-06-02

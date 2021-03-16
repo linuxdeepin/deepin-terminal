@@ -143,6 +143,44 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     setMinimumSize(MainWindow::m_MinWidth / 2, (MainWindow::m_MinHeight - WIN_TITLE_BAR_HEIGHT) / 2);
     /********************* Modify by n014361 wangpeili End ************************/
 
+    QString currentEnvLanguage = Utils::getCurrentEnvLanguage();
+    // 判断是维吾尔语或者藏语时
+    if (QStringLiteral("bo_CN") == currentEnvLanguage || QStringLiteral("ug_CN") == currentEnvLanguage) {
+        // 启用双向文本渲染支持
+        setBidiEnabled(true);
+    }
+
+    // 启动shell
+    startShellProgram();
+
+    // 增加可以自动运行脚本的命令，不需要的话，可以删除
+    if (m_properties.contains(Script)) {
+        QString args = m_properties[Script].toString();
+        qDebug() << "run cmd:" << args;
+        args.append("\n");
+        if (!m_properties.contains(KeepOpen)) {
+            args.append("exit\n");
+        }
+        sendText(args);
+    }
+
+    setFocusPolicy(Qt::NoFocus);
+
+    initConnections();
+
+    TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
+    //qDebug() << parentPage << endl;
+    connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
+}
+
+/*******************************************************************************
+ 1. @函数:    initConnections
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-03-16
+ 4. @说明:    初始化信号槽连接
+*******************************************************************************/
+void TermWidget::initConnections()
+{
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, &TermWidget::onQTermWidgetReceivedData);
 
@@ -171,24 +209,6 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     connect(this, &QTermWidget::shellWarningMessage, this, &TermWidget::onShellMessage);
 
-    TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
-    //qDebug() << parentPage << endl;
-    connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
-
-    // 启动shell
-    startShellProgram();
-
-    // 增加可以自动运行脚本的命令，不需要的话，可以删除
-    if (m_properties.contains(Script)) {
-        QString args = m_properties[Script].toString();
-        qDebug() << "run cmd:" << args;
-        args.append("\n");
-        if (!m_properties.contains(KeepOpen)) {
-            args.append("exit\n");
-        }
-        sendText(args);
-    }
-
     connect(this, &QTermWidget::titleChanged, this, &TermWidget::onTitleChanged);
 
     // 标题参数变化
@@ -204,7 +224,6 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
 
     connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
-    setFocusPolicy(Qt::NoFocus);
 }
 
 inline void TermWidget::onSetTerminalFont()

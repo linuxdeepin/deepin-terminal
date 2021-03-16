@@ -207,6 +207,8 @@ private slots:
     void openGithub();
     void openStackOverflow();
 private:
+    // 初始化信号槽连接
+    void initConnections();
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     void addMenuActions(const QPoint &pos);
     // 根据标签格式获取标签标题
