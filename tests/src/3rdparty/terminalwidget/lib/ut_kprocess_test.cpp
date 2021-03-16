@@ -181,25 +181,4 @@ TEST_F(UT_KProcess_Test, clearEnvironment)
     m_process->clearEnvironment();
 }
 
-/*******************************************************************************
- 1. @函数:    KProcess类的函数
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-12-28
- 4. @说明:    pid单元测试
-*******************************************************************************/
-TEST_F(UT_KProcess_Test, pidTest)
-{
-    QString program = QString("/usr/bin/ls");
-    QStringList arguments;
-    arguments << QString("/usr/share");
-    m_process->setNextOpenMode(QIODevice::ReadOnly);
-    m_process->setProgram(program, arguments);
-    m_process->start();
-
-    int pid = m_process->pid();
-    EXPECT_EQ(pid > 1, true);
-
-    m_process->waitForFinished(-1);
-}
-
 #endif

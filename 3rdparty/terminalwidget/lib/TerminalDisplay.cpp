@@ -723,7 +723,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QColor& /*backgroundColor*/,
                                  bool& invertCharacterColor)
 {
-    QRectF cursorRect = rect.adjusted(0, 1, 0, 0);
+    QRectF cursorRect = rect;
     cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
 
     if (!_cursorBlinking)
@@ -750,12 +750,12 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             {
                 // draw the cursor outline, adjusting the area so that
                 // it is draw entirely inside 'rect'
-                int penWidth = 1;
+                float penWidth = qMax(1,painter.pen().width());
 
                 painter.drawRect(cursorRect.adjusted(penWidth/2,
                                                      penWidth/2,
-                                                     - penWidth/2 - penWidth%2,
-                                                     - penWidth/2 - penWidth%2));
+                                                     - penWidth/2,
+                                                     - penWidth/2));
             }
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )

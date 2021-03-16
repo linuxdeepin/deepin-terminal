@@ -138,10 +138,10 @@ Session::Session(QObject* parent) :
     //用于更改updateTimer的时间间隔，防止CPU占用太高
     QTimer *monitorUpdateTimer = new QTimer(this);
     monitorUpdateTimer->setSingleShot(true);
-    monitorUpdateTimer->start(1000);
+    monitorUpdateTimer->start(500);
     connect(monitorUpdateTimer, &QTimer::timeout, this, [=] {
-        if (updateTimer->interval() < 1000) {
-            updateTimer->setInterval(1000);
+        if (updateTimer->interval() < 500) {
+            updateTimer->setInterval(500);
         }
     });
 }
@@ -635,7 +635,7 @@ void Session::refresh()
 
 bool Session::sendSignal(int signal)
 {
-    int result = ::kill(_shellProcess->pid(),signal);
+    int result = ::kill(static_cast<pid_t>(_shellProcess->processId()),signal);
 
      if ( result == 0 )
      {
@@ -1111,7 +1111,7 @@ int Session::foregroundProcessId()
 bool Session::isForegroundProcessActive()
 {
     // foreground process info is always updated after this
-    return (_shellProcess->pid() != _shellProcess->foregroundProcessGroup());
+    return (_shellProcess->processId() != _shellProcess->foregroundProcessGroup());
 }
 
 QString Session::foregroundProcessName()
@@ -1131,7 +1131,7 @@ QString Session::foregroundProcessName()
 
 int Session::processId() const
 {
-    return _shellProcess->pid();
+    return static_cast<int>(_shellProcess->processId());
 }
 
 ProcessInfo *Session::getProcessInfo()

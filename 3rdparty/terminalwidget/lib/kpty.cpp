@@ -265,7 +265,7 @@ bool KPty::open()
             d->ttyName = ptsn;
 #else
     int ptyno;
-    if (!ioctl(d->masterFd, TIOCGPTN, &ptyno)) {
+    if (ioctl(d->masterFd, TIOCGPTN, &ptyno) != -1) {
         d->ttyName = QByteArray("/dev/pts/") + QByteArray::number(ptyno);
 #endif
 #ifdef HAVE_GRANTPT
@@ -296,7 +296,7 @@ bool KPty::open()
                  * and we need to get another one.
                  */
                 int pgrp_rtn;
-                if (ioctl(d->masterFd, TIOCGPGRP, &pgrp_rtn) == 0 || errno != EIO) {
+                if (ioctl(d->masterFd, TIOCGPGRP, &pgrp_rtn) != -1 || errno != EIO) {
                     ::close(d->masterFd);
                     d->masterFd = -1;
                     continue;
@@ -337,7 +337,12 @@ gotpty:
             !d->chownpty(true)) {
         qWarning()
         << "chownpty failed for device " << ptyName << "::" << d->ttyName
-        << "\nThis means the communication can be eavesdropped." << endl;
+        << "\nThis means the communication can be eavesdropped."
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+        << Qt::endl;
+#else
+        << endl;
+#endif
     }
 
 #if defined (HAVE__GETPTY) || defined (HAVE_GRANTPT)
@@ -398,7 +403,7 @@ bool KPty::open(int fd)
         d->ttyName = ptsn;
 # else
     int ptyno;
-    if (!ioctl(fd, TIOCGPTN, &ptyno)) {
+    if (ioctl(fd, TIOCGPTN, &ptyno) != -1) {
         const size_t sz = 32;
         char buf[sz];
         const size_t r = snprintf(buf, sz, "/dev/pts/%d", ptyno);
@@ -693,7 +698,7 @@ bool KPty::setWinSize(int lines, int columns)
     memset(&winSize, 0, sizeof(winSize));
     winSize.ws_row = (unsigned short)lines;
     winSize.ws_col = (unsigned short)columns;
-    return ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) == 0;
+    return ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) != -1;
 }
 
 bool KPty::setEcho(bool echo)
