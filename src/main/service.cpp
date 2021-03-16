@@ -637,6 +637,9 @@ void Service::setSubAppStartTime(qint64 time)
 *******************************************************************************/
 qint64 Service::getSubAppStartTime()
 {
+    if (nullptr == m_pShareMemoryInfo)
+        return 0;
+
     return  m_pShareMemoryInfo->appStartTime;
 }
 /*******************************************************************************
