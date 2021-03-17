@@ -118,33 +118,47 @@ QColor ColorPushButton::getBackGroundColor()
 *******************************************************************************/
 void ColorPushButton::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event)
 
-    QPainter *painter = new QPainter(this);
+    QPainter painter(this);
     //去锯齿
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->setOpacity(1);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setOpacity(1);
 
-    //绘制背景色
-    QPainterPath backgroundPath;
-    backgroundPath.addRoundedRect(QRectF(3, 3, 28, 28), 8, 8);
-    painter->fillPath(backgroundPath, QColor(m_color));
+    QColor borderColor;
+    if (DApplicationHelper::LightType == DApplicationHelper::instance()->themeType()) {
+        borderColor = QColor::fromRgb(0, 0, 0, static_cast<int>(255 * 0.05));
+    } else {
+        borderColor = QColor::fromRgb(255, 255, 255, static_cast<int>(255 * 0.2));
+    }
+
+    //绘制背景色,边框
+    {
+        QPainterPath path;
+        path.addRoundedRect(QRectF(3, 3, 28, 28), 8, 8);
+        painter.fillPath(path, QColor(m_color));
+        painter.fillPath(path, borderColor);
+    }
+    {
+        QPainterPath path;
+        path.addRoundedRect(QRectF(4, 4, 26, 26), 7, 7);
+        painter.fillPath(path, QColor(m_color));
+    }
 
     //tab焦点存在，绘制边框
     if (m_isFocus) {
-        //边框绘制路径
-        QPainterPath pathFrame;
-        pathFrame.addRoundedRect(QRectF(1, 1, 32, 32), 8, 8);
+      //边框绘制路径
+      QPainterPath pathFrame;
+      pathFrame.addRoundedRect(QRectF(1, 1, 32, 32), 8, 8);
 
-        //绘画边框
-        QPen framePen;
-        DPalette pax = DApplicationHelper::instance()->palette(this);
-        //获取活动色
-        framePen = QPen(pax.color(DPalette::Highlight), 2);
-        painter->setPen(framePen);
-        painter->drawPath(pathFrame);
+      //绘画边框
+      QPen framePen;
+      DPalette pax = DApplicationHelper::instance()->palette(this);
+      //获取活动色
+      framePen = QPen(pax.color(DPalette::Highlight), 2);
+      painter.setPen(framePen);
+      painter.drawPath(pathFrame);
     }
-    painter->end();
-    event->accept();
 }
 
 /*******************************************************************************
