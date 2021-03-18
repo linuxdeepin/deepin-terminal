@@ -1,32 +1,27 @@
-#!/bin/bash
-workspace=$1
+utdir=build-ut
+rm -r $utdir
+rm -r ../$utdir
+mkdir ../$utdir
+cd ../$utdir
 
-cd $workspace
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make -j16
 
-dpkg-buildpackage -b -d -uc -us
+workdir=$(cd ../$(dirname $0)/$utdir; pwd)
 
-project_path=$(cd `dirname $0`; pwd)
-#获取工程名
-project_name="${project_path##*/}"
-echo "project name is: $project_name"
+app_name=deepin-terminal-test
 
-#获取打包生成文件夹路径
-pathname=$(find . -name obj*)
+mkdir -p report
 
-echo $pathname
+./tests/$app_name --gtest_output=xml:./report/report.xml
 
-cd $pathname/tests
-
-mkdir -p coverage
-
-lcov -d ../ -c -o ./coverage/coverage.info
+lcov -d $workdir -c -o ./report/coverage.info
 
 #以下几行是过滤一些我们不感兴趣的文件的覆盖率信息
-lcov --extract ./coverage/coverage.info '*/src/*' -o ./coverage/coverage.info
+lcov --extract ./report/coverage.info '*/src/*' -o ./report/coverage.info
 
-lcov --remove ./coverage/coverage.info '*/tests/*' -o ./coverage/coverage.info
+lcov --remove ./report/coverage.info '*/tests/*' -o ./report/coverage.info
 
-mkdir ../report
-genhtml -o ../report ./coverage/coverage.info
+genhtml -o ./report ./report/coverage.info
 
 exit 0
