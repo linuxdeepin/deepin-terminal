@@ -44,7 +44,8 @@ if(USE_UTF8PROC)
     find_package(Utf8Proc REQUIRED)
 endif()
 
-include(LXQtPreventInSourceBuilds)
+#注释掉下面这行，否则无法支持命令行cmake构建
+#include(LXQtPreventInSourceBuilds)
 include(LXQtTranslateTs)
 include(LXQtCompilerSettings NO_POLICY_SCOPE)
 include(LXQtCreatePkgConfigFile)
