@@ -453,6 +453,7 @@ void Pty::sendData(const char *data, int length)
             strCurrCommand = currCommand;
         }
 
+        _bNeedBlockCommand = false;
         //检测到当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
         bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
         if (isSendByRemoteManage && strCurrCommand.startsWith("expect -f")) {
@@ -506,20 +507,39 @@ void Pty::dataReceived()
     QString recvData = QString(data);
 
     if (_bNeedBlockCommand) {
-        QString judgeData = recvData.replace("\r", "");
-        judgeData = judgeData.replace("\n", "");
-        //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
-        if (judgeData.startsWith("expect -f")) {
+        QString judgeData = recvData;
+        if (recvData.length() > 1) {
+            judgeData = recvData.replace("\r", "");
+            judgeData = judgeData.replace("\n", "");
+        }
+
+        //处理zsh进行远程登录的时候，会出现形如e\bexpect的字符串，有时候e字符会单独出现
+        if ((judgeData.length() == 1) && ("e" == judgeData) && (_receiveDataIndex < 1)) {
             _receiveDataIndex = 0;
             return;
         }
 
-        if (_receiveDataIndex >= 0) {
-            if (judgeData.startsWith("Press")) {
+        //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
+        //同时考虑了zsh的情况
+        if (judgeData.startsWith("expect -f")
+                || judgeData.startsWith("\bexpect")
+                || judgeData.startsWith("\be")
+                || judgeData.startsWith("e\bexpect")
+                || judgeData.startsWith("e\be")) {
+            _receiveDataIndex = 1;
+            return;
+        }
+
+        if (_receiveDataIndex >= 1) {
+            if (judgeData.contains("Press")) {
                 //这里需要置回false，否则后面其他命令也会被拦截
                 _bNeedBlockCommand = false;
 
                 _receiveDataIndex = -1;
+                int pressStringIndex = recvData.indexOf("Press");
+                if (pressStringIndex > 0) {
+                    recvData = recvData.mid(pressStringIndex);
+                }
                 QString helpData = recvData.replace("\n", "");
                 recvData = "\r\n" + helpData + "\r\n";
                 data = recvData.toUtf8();
