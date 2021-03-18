@@ -83,7 +83,6 @@ FILE(GLOB allTestSource
     src/remotemanage/*.cpp
     src/settings/*.cpp
     src/views/*.cpp
-    src/3rdparty/terminalwidget/lib/*.cpp
 )
 
 set(UI ../3rdparty/terminalwidget/lib/SearchBar.ui)
