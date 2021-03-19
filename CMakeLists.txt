@@ -57,20 +57,13 @@ find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
-#find_package(DtkWidget REQUIRED)
-#find_package(DtkCore REQUIRED)
-#find_package(DtkGui REQUIRED)
 
 include(FindPkgConfig)
 
-pkg_search_module(DtkWidget REQUIRED dtkwidget)
-pkg_search_module(DtkGui REQUIRED dtkgui)
-pkg_search_module(DtkCore REQUIRED dtkcore)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(ATSPI2 REQUIRED atspi-2)
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
-
 
 # Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
@@ -80,9 +73,13 @@ set(TERMINALWIDGET_VERSION_PATCH "1")
 
 add_subdirectory(3rdparty/terminalwidget)
 
-include_directories(${DtkWidget_INCLUDE_DIRS})
-include_directories(${DtkGui_INCLUDE_DIRS})
-include_directories(${DtkCore_INCLUDE_DIRS})
+#include_directories(${DtkWidget_INCLUDE_DIRS})
+#include_directories(${DtkGui_INCLUDE_DIRS})
+#include_directories(${DtkCore_INCLUDE_DIRS})
+
+include_directories("/usr/include/libdtk-5.5.0/DWidget5.5")
+include_directories("/usr/include/libdtk-5.5.0/DGui5.5")
+include_directories("/usr/include/libdtk-5.5.0/DCore5.5")
 
 include_directories("src/common")
 include_directories("src/customcommand")
@@ -101,9 +98,9 @@ set(LINK_LIBS
     Qt5::WidgetsPrivate
     Qt5::Network
 
-    ${DtkWidget_LIBRARIES}
-    ${DtkCore_LIBRARIES}
-    ${DtkGUI_LIBRARIES}
+    dtkgui5.5
+    dtkwidget5.5
+    dtkcore5.5
     ${DFrameworkDBus_LIBRARIES}
     ${ATSPI2_LIBRARIES}
     ${GOBJECT_LIBRARIES}

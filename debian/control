@@ -9,7 +9,6 @@ Build-Depends:
  qtbase5-dev,
  qttools5-dev-tools,
  qtbase5-private-dev,
- libdtkwidget-dev,
  libdframeworkdbus-dev,
  lxqt-build-tools(>= 0.6.0~),
  libutf8proc-dev,
@@ -17,7 +16,10 @@ Build-Depends:
  libglib2.0-dev,
  libsecret-1-dev,
  libgtest-dev,
- libgmock-dev
+ libgmock-dev,
+ libdtkwidget5.5-dev,
+ libdtkgui5.5-dev,
+ libdtkcore5.5-dev
 Standards-Version: 3.9.8
 Homepage: https://www.deepin.com/
 
