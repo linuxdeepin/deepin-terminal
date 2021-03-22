@@ -513,12 +513,6 @@ void Pty::dataReceived()
             judgeData = judgeData.replace("\n", "");
         }
 
-        //处理zsh进行远程登录的时候，会出现形如e\bexpect的字符串，有时候e字符会单独出现
-        if ((judgeData.length() == 1) && ("e" == judgeData) && (_receiveDataIndex < 1)) {
-            _receiveDataIndex = 0;
-            return;
-        }
-
         //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
         //同时考虑了zsh的情况
         if (judgeData.startsWith("expect -f")
@@ -526,11 +520,11 @@ void Pty::dataReceived()
                 || judgeData.startsWith("\be")
                 || judgeData.startsWith("e\bexpect")
                 || judgeData.startsWith("e\be")) {
-            _receiveDataIndex = 1;
+            _receiveDataIndex = 0;
             return;
         }
 
-        if (_receiveDataIndex >= 1) {
+        if (_receiveDataIndex >= 0) {
             if (judgeData.contains("Press")) {
                 //这里需要置回false，否则后面其他命令也会被拦截
                 _bNeedBlockCommand = false;

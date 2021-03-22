@@ -150,6 +150,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
         setBidiEnabled(true);
     }
 
+    // fix bug#67979 Shell配置中设置无效shell程序名后，新增窗口无悬浮框提示
+    initConnections();
+
     // 启动shell
     startShellProgram();
 
@@ -165,8 +168,6 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     }
 
     setFocusPolicy(Qt::NoFocus);
-
-    initConnections();
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
     //qDebug() << parentPage << endl;
@@ -1440,7 +1441,7 @@ inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fi
 第一个参数: currentShell当前使用的shell,
 第二个参数：isSuccess 启用shell是否成功 true 替换了shell false 替换shell但启动失败
 *******************************************************************************/
-inline void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
+void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 {
     if (isSuccess) {
         // 替换了shell提示
