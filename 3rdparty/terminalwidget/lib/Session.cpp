@@ -131,19 +131,9 @@ Session::Session(QObject* parent) :
     connect(_monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerDone()));
 
     // 定时更新term信息 => 目前为了更新标签标题信息
-    QTimer *updateTimer = new QTimer(this);
-    connect(updateTimer, &QTimer::timeout, this, &Session::onUpdateTitleArgs);
-    updateTimer->start(10);
-
-    //用于更改updateTimer的时间间隔，防止CPU占用太高
-    QTimer *monitorUpdateTimer = new QTimer(this);
-    monitorUpdateTimer->setSingleShot(true);
-    monitorUpdateTimer->start(500);
-    connect(monitorUpdateTimer, &QTimer::timeout, this, [=] {
-        if (updateTimer->interval() < 500) {
-            updateTimer->setInterval(500);
-        }
-    });
+    _updateTimer = new QTimer(this);
+    connect(_updateTimer, &QTimer::timeout, this, &Session::onUpdateTitleArgs);
+    _updateTimer->start(500);
 }
 
 WId Session::windowId() const
@@ -176,6 +166,20 @@ void Session::setCodec(QTextCodec * codec)
 void Session::setProgram(const QString & program)
 {
     _program = ShellCommand::expand(program);
+    if (_program.endsWith(QStringLiteral("/dash"))
+            || _program.endsWith(QStringLiteral("/sh"))) {
+        _updateTimer->setInterval(10);
+
+        //用于更改updateTimer的时间间隔，防止CPU占用太高
+        QTimer *monitorUpdateTimer = new QTimer(this);
+        monitorUpdateTimer->setSingleShot(true);
+        monitorUpdateTimer->start(500);
+        connect(monitorUpdateTimer, &QTimer::timeout, this, [this] {
+            if (_updateTimer->interval() < 500) {
+                _updateTimer->setInterval(500);
+            }
+        });
+    }
 }
 void Session::setInitialWorkingDirectory(const QString & dir)
 {

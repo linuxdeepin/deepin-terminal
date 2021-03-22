@@ -634,6 +634,7 @@ private:
     QString _currentDir;
     QString _programName;
 
+    QTimer *_updateTimer = nullptr;
 };
 
 /**
