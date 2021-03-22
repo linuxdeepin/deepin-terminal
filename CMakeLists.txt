@@ -57,6 +57,9 @@ find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(DtkWidget5.5 REQUIRED)
+find_package(DtkGui5.5 REQUIRED)
+find_package(DtkCore5.5 REQUIRED)
 
 include(FindPkgConfig)
 
@@ -73,14 +76,9 @@ set(TERMINALWIDGET_VERSION_PATCH "1")
 
 add_subdirectory(3rdparty/terminalwidget)
 
-#include_directories(${DtkWidget_INCLUDE_DIRS})
-#include_directories(${DtkGui_INCLUDE_DIRS})
-#include_directories(${DtkCore_INCLUDE_DIRS})
-
-include_directories("/usr/include/libdtk-5.5.0/DWidget5.5")
-include_directories("/usr/include/libdtk-5.5.0/DGui5.5")
-include_directories("/usr/include/libdtk-5.5.0/DCore5.5")
-
+include_directories(${DtkWidget5.5_INCLUDE_DIRS})
+include_directories(${DtkGui5.5_INCLUDE_DIRS})
+include_directories(${DtkCore5.5_INCLUDE_DIRS})
 include_directories("src/common")
 include_directories("src/customcommand")
 include_directories("src/encodeplugin")
@@ -98,9 +96,9 @@ set(LINK_LIBS
     Qt5::WidgetsPrivate
     Qt5::Network
 
-    dtkgui5.5
-    dtkwidget5.5
-    dtkcore5.5
+    ${DtkWidget5.5_LIBRARIES}
+    ${DtkCore5.5_LIBRARIES}
+    ${DtkGUI5.5_LIBRARIES}
     ${DFrameworkDBus_LIBRARIES}
     ${ATSPI2_LIBRARIES}
     ${GOBJECT_LIBRARIES}
@@ -255,9 +253,9 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
                                               ${Qt5Core_PRIVATE_INCLUDE_DIRS}
                                               ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
                                               ${PROJECT_BINARY_DIR}
-                                              ${DtkWidget_INCLUDE_DIRS}
-                                              ${DtkCore_LIBRARIES}
-                                              ${DtkGUI_INCLUDE_DIRS}
+                                              ${DtkWidget5.5_INCLUDE_DIRS}
+                                              ${DtkCore5.5_LIBRARIES}
+                                              ${DtkGUI5.5_INCLUDE_DIRS}
                                               ${DFrameworkDBus_INCLUDE_DIRS}
                                               ${ATSPI2_INCLUDE_DIRS}
                                               ${GOBJECT_INCLUDE_DIRS}
