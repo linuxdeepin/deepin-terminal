@@ -608,6 +608,7 @@ static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer u
         secret_password_free(password);
     }
 
+    delete reback;
 }
 
 /*******************************************************************************
@@ -789,3 +790,31 @@ void ServerConfigManager::onLookupFinish(const QString &key, const QString &pass
 
 }
 
+ServerConfigManager::~ServerConfigManager()
+{
+/*
+    if (m_remoteConfigs.size() > 0) {
+        QList<QString> keys = m_remoteConfigs.keys();
+
+        for(int i=0; i<keys.length(); i++) {
+            ServerConfig *config = m_remoteConfigs.value(keys[i]);
+            if (config) {
+                delete config;
+                config = nullptr;
+            }
+        }
+        m_remoteConfigs.clear();
+    }
+
+    if (m_serverConfigs.size() > 0) {
+        QList<QString> keys = m_serverConfigs.keys();
+
+        for(int i=0; i<keys.length(); i++) {
+            QList<ServerConfig *> configList = m_serverConfigs.value(keys[i]);
+            qDeleteAll(configList);
+            configList.clear();
+        }
+        m_serverConfigs.clear();
+    }
+*/
+}

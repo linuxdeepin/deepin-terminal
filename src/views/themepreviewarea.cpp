@@ -31,12 +31,11 @@
 #include <QBitmap>
 #include <QPainterPath>
 
-ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent)
+ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent),m_titleRect(0, 0, 439, 35)
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
     setFixedSize(439, 113);
-    m_titleRect = new QRectF(0, 0, 439, 35);
 }
 
 /*******************************************************************************
@@ -58,7 +57,7 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
     painter->setOpacity(1);
     const QRect &rect = this->rect();
     //绘制标题图片
-    painter->drawPixmap(*m_titleRect, m_titlePixmap, *m_titleRect);
+    painter->drawPixmap(m_titleRect, m_titlePixmap, m_titleRect);
 
     //绘制背景色
     QPainterPath backgroundPathTop;

@@ -38,7 +38,7 @@ public:
 
     void hideEvent(QHideEvent *event) override;
 public slots:
-    void show();
+    void showAnim();
     void hideAnim();
 
 };

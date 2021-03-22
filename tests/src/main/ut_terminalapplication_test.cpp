@@ -79,71 +79,6 @@ TEST_F(UT_TerminalApplication_Test, getsetStartTime)
     app->exec();
 }
 
-TEST_F(UT_TerminalApplication_Test, pressSpace)
-{
-    int argc = 0;
-    char **argv = nullptr;
-    TerminalApplication *app = new TerminalApplication(argc, argv);
-
-    QtConcurrent::run([ = ]() {
-        QTimer timer;
-        timer.setSingleShot(true);
-
-        QEventLoop *loop = new QEventLoop;
-        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
-            loop->quit();
-            app->quit();
-        });
-
-        timer.start(1000);
-        loop->exec();
-
-        delete loop;
-    });
-
-    QMainWindow mainWin;
-    mainWin.setFixedSize(800, 600);
-
-    DPushButton pushButton(&mainWin);
-    pushButton.setFixedSize(200, 50);
-
-    mainWin.show();
-
-//    app->pressSpace(&pushButton);
-
-    app->exec();
-}
-
-//TEST_F(UT_TerminalApplication_Test, handleQuitAction)
-//{
-//    int argc = 0;
-//    char **argv = nullptr;
-//    TerminalApplication *app = new TerminalApplication(argc, argv);
-
-//    QtConcurrent::run([=]() {
-//        QTimer timer;
-//        timer.setSingleShot(true);
-
-//        QEventLoop *loop = new QEventLoop;
-//        QObject::connect(&timer, &QTimer::timeout, [=]() {
-//            loop->quit();
-
-//            app->handleQuitAction();
-//        });
-
-//        timer.start(1000);
-//        loop->exec();
-
-//        delete loop;
-//    });
-
-//    QMainWindow mainWin;
-//    mainWin.show();
-//    mainWin.activateWindow();
-//    app->exec();
-//}
-
-
 TEST_F(UT_TerminalApplication_Test, notify)
 {
     int argc = 0;
@@ -153,21 +88,23 @@ TEST_F(UT_TerminalApplication_Test, notify)
     QtConcurrent::run([ = ]() {
         QTimer timer;
         DKeySequenceEdit* object = new DKeySequenceEdit();
-        app->notify(object, new QEvent(QEvent::FocusOut));
-        // app->postEvent(object, new QEvent(QEvent::FocusOut));
+        QEvent *event = new QEvent(QEvent::FocusOut);
+        app->notify(object, event);
+        if (event) {
+            delete event;
+        }
         timer.setSingleShot(true);
 
         QEventLoop *loop = new QEventLoop;
         QObject::connect(&timer, &QTimer::timeout, [ = ]() {
             loop->quit();
             app->quit();
+            delete object;
+            delete loop;
         });
 
         timer.start(2000);
         loop->exec();
-        delete  object;
-        delete loop;
-
     });
 
     QTime useTime;

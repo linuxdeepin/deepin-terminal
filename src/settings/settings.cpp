@@ -152,7 +152,7 @@ void Settings::init()
     //自定义主题配置初始化处理
     m_configCustomThemePath = QString("%1/%2/%3/customTheme.colorscheme")
                               .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
-    themeSetting = new QSettings(m_configCustomThemePath, QSettings::IniFormat);
+    themeSetting = new QSettings(m_configCustomThemePath, QSettings::IniFormat, this);
 
     QFile customThemeFile(m_configCustomThemePath);
     if (!customThemeFile.exists()) {

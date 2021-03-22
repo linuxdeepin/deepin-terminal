@@ -178,6 +178,8 @@ private:
 
     bool m_isEnableCloseTabAnimation;
     bool m_isQuakeWindowTab;
+
+    TermTabStyle *m_termTabStyle = nullptr;
 };
 
 #endif  // TABBAR_H

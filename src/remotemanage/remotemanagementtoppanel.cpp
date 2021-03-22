@@ -62,7 +62,7 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
 *******************************************************************************/
 void RemoteManagementTopPanel::show()
 {
-    RightPanel::show();
+    this->showAnim();
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->move(0, 0);
     // 每次显示前清空之前的记录
@@ -138,6 +138,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
         connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
+        animation1->deleteLater();
         qDebug() << "unknow current panel!";
         return;
     }
@@ -190,6 +191,7 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
         qDebug() << "unknow current panel!";
+        animation1->deleteLater();
         return;
     }
     // 执行动画
@@ -313,6 +315,9 @@ void RemoteManagementTopPanel::showPrevPanel()
     }
     if (nullptr == animation || nullptr == animation1) {
         qDebug() << "do not has animation";
+        if (nullptr != animation1) {
+            animation1->deleteLater();
+        }
         return;
     }
 
@@ -400,6 +405,7 @@ void RemoteManagementTopPanel::panelLeftToRight(QPropertyAnimation *animation, Q
     group->addAnimation(animation1);
     // 已验证：这个设定，会释放group以及所有组内动画。
     group->start(QAbstractAnimation::DeleteWhenStopped);
+    connect(group, &QParallelAnimationGroup::finished, group, &QParallelAnimationGroup::deleteLater);
 }
 
 /*******************************************************************************

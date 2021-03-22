@@ -48,7 +48,7 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
  3. @日期:    2020-08-11
  4. @说明:    动画显示
 *******************************************************************************/
-void RightPanel::show()
+void RightPanel::showAnim()
 {
     QWidget::show();
     QWidget::raise();

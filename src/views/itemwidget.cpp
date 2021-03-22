@@ -66,6 +66,10 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
 
 ItemWidget::~ItemWidget()
 {
+    if (nullptr != m_moveSource) {
+        delete m_moveSource;
+        m_moveSource = nullptr;
+    }
 }
 
 /*******************************************************************************

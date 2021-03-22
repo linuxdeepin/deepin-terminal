@@ -99,7 +99,7 @@ TEST_F(UT_Utils_Test, getRandString)
 TEST_F(UT_Utils_Test, showDirDialog)
 {
 #ifdef ENABLE_UI_TEST
-    QWidget *parentWidget = new QWidget;
+    QWidget parentWidget;
 
     //要自己退出，否则对话框窗口会一直阻塞
     QtConcurrent::run([ = ]() {
@@ -119,7 +119,7 @@ TEST_F(UT_Utils_Test, showDirDialog)
         delete loop;
     });
 
-    QString dirName = Utils::showDirDialog(parentWidget);
+    QString dirName = Utils::showDirDialog(&parentWidget);
     EXPECT_GE(dirName.length(), 0);
 #endif
 }

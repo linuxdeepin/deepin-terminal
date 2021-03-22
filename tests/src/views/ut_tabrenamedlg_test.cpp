@@ -47,8 +47,11 @@ TEST_F(Ut_TabRenameDlg_Test, TesSetText)
 
 TEST_F(Ut_TabRenameDlg_Test, TestEventFilter)
 {
-    QKeyEvent *e = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+    QKeyEvent *event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
 
     m_renameDlg->m_confirmButton->setFocus();
-    m_renameDlg->eventFilter(m_renameDlg->m_confirmButton, e);
+    m_renameDlg->eventFilter(m_renameDlg->m_confirmButton, event);
+    if (event) {
+        delete event;
+    }
 }

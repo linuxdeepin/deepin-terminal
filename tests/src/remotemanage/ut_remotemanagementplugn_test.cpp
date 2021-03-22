@@ -175,5 +175,7 @@ TEST_F(UT_RemoteManagementPlugin_Test, createShellFile2)
     EXPECT_EQ(file.exists(), true);
     // 删除文件
     file.remove();
+
+    delete pRemotePlugin;
 }
 #endif

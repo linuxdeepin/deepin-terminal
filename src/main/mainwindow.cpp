@@ -2007,10 +2007,10 @@ void MainWindow::displayShortcuts()
     QString param2 = "-p=" + QString::number(pos.x()) + "," + QString::number(pos.y());
     shortcutString << param1 << param2;
 
-    QProcess *shortcutViewProcess = new QProcess();
+    QScopedPointer<QProcess> shortcutViewProcess(new QProcess());
     shortcutViewProcess->startDetached("deepin-shortcut-viewer", shortcutString);
 
-    connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
+//    connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
 }
 
 /*******************************************************************************

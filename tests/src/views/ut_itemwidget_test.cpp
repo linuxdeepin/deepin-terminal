@@ -181,12 +181,15 @@ TEST_F(UT_ItemWidget_Test, onFuncButtonClicked)
 
     itemWidget->onFuncButtonClicked();
 
-    itemWidget->m_moveSource = new QObject();
+    QObject *moveSource = new QObject();
+    itemWidget->m_moveSource = moveSource;
     itemWidget->onFuncButtonClicked();
 
     itemWidget->m_functType = ItemFuncType_Item;
     itemWidget->onFuncButtonClicked();
 
+    delete moveSource;
+    itemWidget->m_moveSource = nullptr;
     delete itemWidget;
 }
 
@@ -197,12 +200,15 @@ TEST_F(UT_ItemWidget_Test, onIconButtonClicked)
 
     itemWidget->onIconButtonClicked();
 
-    itemWidget->m_moveSource = new QObject();
+    QObject *moveSource = new QObject();
+    itemWidget->m_moveSource = moveSource;
     itemWidget->onIconButtonClicked();
 
     itemWidget->m_functType = ItemFuncType_Item;
     itemWidget->onIconButtonClicked();
 
+    delete moveSource;
+    itemWidget->m_moveSource = nullptr;
     delete itemWidget;
 }
 
@@ -213,12 +219,15 @@ TEST_F(UT_ItemWidget_Test, onItemClicked)
 
     itemWidget->onItemClicked();
 
-    itemWidget->m_moveSource = new QObject();
+    QObject *moveSource = new QObject();
+    itemWidget->m_moveSource = moveSource;
     itemWidget->onItemClicked();
 
     itemWidget->m_functType = ItemFuncType_Item;
     itemWidget->onItemClicked();
 
+    delete moveSource;
+    itemWidget->m_moveSource = nullptr;
     delete itemWidget;
 }
 
@@ -244,8 +253,10 @@ TEST_F(UT_ItemWidget_Test, paintEvent)
     itemWidget->show();
 
     QPaintEvent *event = new QPaintEvent(itemWidget->rect());
-
     itemWidget->paintEvent(event);
+    if (event) {
+        delete event;
+    }
 
     delete itemWidget;
 }
@@ -260,6 +271,9 @@ TEST_F(UT_ItemWidget_Test, mousePressEvent)
 
     QMouseEvent *event = new QMouseEvent(QMouseEvent::MouseButtonPress, QPointF(5, 5), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     itemWidget->mousePressEvent(event);
+    if (event) {
+        delete event;
+    }
 
     delete itemWidget;
 }
@@ -274,9 +288,15 @@ TEST_F(UT_ItemWidget_Test, mouseReleaseEvent)
 
     QMouseEvent *event = new QMouseEvent(QMouseEvent::MouseButtonPress, QPointF(5, 5), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     itemWidget->mousePressEvent(event);
+    if (event) {
+        delete event;
+    }
 
     event = new QMouseEvent(QMouseEvent::MouseButtonRelease, QPointF(5, 5), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     itemWidget->mouseReleaseEvent(event);
+    if (event) {
+        delete event;
+    }
 
     delete itemWidget;
 }

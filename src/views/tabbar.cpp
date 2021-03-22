@@ -195,7 +195,8 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 {
     Utils::set_Object_Name(this);
-    setStyle(new TermTabStyle());
+    m_termTabStyle = new TermTabStyle();
+    setStyle(m_termTabStyle);
 
     m_sessionIdTabIndexMap.clear();
     m_sessionIdTabIdMap.clear();
@@ -239,6 +240,9 @@ TabBar::~TabBar()
 {
     if (m_rightMenu != nullptr) {
         m_rightMenu->deleteLater();
+    }
+    if (m_termTabStyle != nullptr) {
+        m_termTabStyle->deleteLater();
     }
 }
 

@@ -131,6 +131,11 @@ Emulation::~Emulation()
     delete _screen[0];
     delete _screen[1];
     delete _decoder;
+
+    if (nullptr != _keyTranslator) {
+        delete _keyTranslator;
+        _keyTranslator = nullptr;
+    }
 }
 
 void Emulation::setScreen(int n)

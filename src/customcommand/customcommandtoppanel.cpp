@@ -160,7 +160,7 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
 *******************************************************************************/
 void CustomCommandTopPanel::show(bool bSetFocus)
 {
-    RightPanel::show();
+    this->showAnim();
     m_customCommandPanel->resize(size());
     m_customCommandPanel->move(0, 0);
     m_customCommandPanel->show();

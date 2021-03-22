@@ -60,7 +60,7 @@ protected:
 
 private:
     //主题风格区域
-    QRectF  *m_titleRect = nullptr;
+    QRectF  m_titleRect;
     //预览字符串 ps1
     QString m_ps1String = "hyde@hyde-PC";
     //预览字符串 ps2

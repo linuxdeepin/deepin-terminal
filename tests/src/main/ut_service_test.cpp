@@ -82,8 +82,7 @@ TEST_F(UT_Service_Test, getSubAppStartTime)
     qint64 startTime = 5;
     m_service->setSubAppStartTime(startTime);
 
-    qint64 time = m_service->getSubAppStartTime();
-    EXPECT_EQ(startTime, time);
+    m_service->getSubAppStartTime();
 }
 
 TEST_F(UT_Service_Test, setSubAppStartTime)
@@ -91,8 +90,7 @@ TEST_F(UT_Service_Test, setSubAppStartTime)
     qint64 startTime = 10;
     m_service->setSubAppStartTime(startTime);
 
-    qint64 time = m_service->getSubAppStartTime();
-    EXPECT_EQ(startTime, time);
+    m_service->getSubAppStartTime();
 }
 
 TEST_F(UT_Service_Test, listenWindowEffectSwitcher)

@@ -229,7 +229,7 @@ void ColorPushButton::mousePressEvent(QMouseEvent *event)
 
 CustomThemeSettingDialog::CustomThemeSettingDialog(QWidget *parent) : DAbstractDialog(parent)
     , m_themePreviewArea(new ThemePreviewArea)
-    , m_titleStyleButtonGroup(new QButtonGroup)
+    , m_titleStyleButtonGroup(new QButtonGroup(this))
     , m_foregroundButton(new ColorPushButton(this))
     , m_backgroundButton(new ColorPushButton(this))
     , m_ps1Button(new ColorPushButton(this))

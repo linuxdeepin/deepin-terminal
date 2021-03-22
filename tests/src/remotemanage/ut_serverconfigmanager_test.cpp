@@ -121,7 +121,7 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
 TEST_F(UT_ServerConfigManager_Test, initManager)
 {
     // 将现在已有的instance删除
-    delete ServerConfigManager::m_instance;
+    //delete ServerConfigManager::m_instance;
     ServerConfigManager::m_instance = nullptr;
 
     // 初始化数据

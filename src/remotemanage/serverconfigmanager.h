@@ -80,6 +80,7 @@ public:
     };
 
     static ServerConfigManager *instance();
+    ~ServerConfigManager();
     void initServerConfig();
     void saveServerConfig(ServerConfig *config);
     void delServerConfig(ServerConfig *config);
