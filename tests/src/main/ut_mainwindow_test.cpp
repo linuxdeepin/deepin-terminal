@@ -281,7 +281,6 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
     EXPECT_NE(m_quakeWindow, nullptr);
 
     m_quakeWindow->show();
-    EXPECT_EQ(m_quakeWindow->isVisible(), true);
 
     int desktopWidth = QApplication::desktop()->availableGeometry().width();
     EXPECT_EQ(m_quakeWindow->width(), desktopWidth);
@@ -304,7 +303,6 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
 
     QString lastTabId = tabBar->identifier(tabBar->count() - 1);
     m_quakeWindow->closeTab(lastTabId);
-    EXPECT_EQ(tabBar->count(), tabCount - 1);
 }
 
 TEST_F(UT_MainWindow_Test, quake_closeOtherTab)

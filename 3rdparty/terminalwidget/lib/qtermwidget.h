@@ -315,7 +315,7 @@ signals:
      * (redirected for external recipient). It can be used for
      * control and display the remote terminal.
      */
-    void sendData(const char *, int);
+    void sendData(const char *, int, const QTextCodec *);
 
     void profileChanged(const QString &profile);
 
