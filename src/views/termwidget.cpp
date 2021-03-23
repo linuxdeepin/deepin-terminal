@@ -248,6 +248,12 @@ inline void TermWidget::onSig_noMatchFound()
 inline void TermWidget::onQTermWidgetReceivedData(QString value)
 {
     Q_UNUSED(value)
+    // 完善终端输出滚动相关功能，默认设置为"智能滚动"(即滚动条滑到最底下时自动滚动)
+    if (!Settings::instance()->OutputtingScroll()) {
+        setIsAllowScroll(true);
+        return;
+    }
+
     // 获取是否允许输出时滚动
     if (getIsAllowScroll()) {
         // 允许,则滚动到最新位置
