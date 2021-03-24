@@ -298,7 +298,7 @@ public slots:
      * @param buffer A string of characters received from the terminal program.
      * @param len The length of @p buffer
      */
-    void receiveData(const char *buffer, int len);
+    void receiveData(const char *buffer, int len, bool isCommandExec);
 
 signals:
 
@@ -309,7 +309,7 @@ signals:
      * @param data The buffer of data ready to be sent
      * @param len The length of @p data in bytes
      */
-    void sendData(const char *data, int len);
+    void sendData(const char *data, int len, const QTextCodec *codec);
 
     /**
      * Requests that sending of input to the emulation

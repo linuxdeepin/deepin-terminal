@@ -428,7 +428,7 @@ void QTermWidget::startTerminalTeletype()
     m_impl->m_session->runEmptyPTY();
     // redirect data from TTY to external recipient
     connect(
-        m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int)), this, SIGNAL(sendData(const char *, int)));
+        m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int, const QTextCodec *)), this, SIGNAL(sendData(const char *, int, const QTextCodec *)));
 }
 
 void QTermWidget::init(int startnow)

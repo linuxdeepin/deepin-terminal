@@ -45,6 +45,7 @@
 #include <QDir>
 #include <QRegExp>
 #include <QRegExpValidator>
+#include <QTextCodec>
 
 #include "kpty.h"
 #include "kptydevice.h"
@@ -167,6 +168,7 @@ int Pty::start(const QString &program,
     // but the first argument to pass to setProgram()
     Q_ASSERT(programArguments.count() >= 1);
     setProgram(program, programArguments.mid(1));
+    _program = program;
 
     addEnvironmentVariables(environment);
 
@@ -433,8 +435,10 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
 }
 /******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
 
-void Pty::sendData(const char *data, int length)
+void Pty::sendData(const char *data, int length, const QTextCodec *codec)
 {
+    _textCodec = codec;
+
     if (!length) {
         return;
     }
@@ -446,8 +450,10 @@ void Pty::sendData(const char *data, int length)
         isCustomCommand = true;
     }
 
+    _isCommandExec = false;
     //检测到按了回车键
     if (((*data) == '\r' || isCustomCommand) && _bUninstall == false) {
+        _isCommandExec = true;
         QString strCurrCommand = SessionManager::instance()->getCurrShellCommand(_sessionId);
         if (isCustomCommand) {
             strCurrCommand = currCommand;
@@ -493,10 +499,24 @@ void Pty::sendData(const char *data, int length)
         }
     }
 
-    if (!pty()->write(data, length)) {
-        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-        return;
+    //为GBK/GB2312/GB18030编码，且不是输入命令执行的情况（没有按回车）
+    if (QString(codec->name()).toUpper().startsWith("GB") && !_isCommandExec) {
+        QTextCodec *utf8Codec = QTextCodec::codecForName("UTF-8");
+        QString unicodeData = codec->toUnicode(data);
+        QByteArray unicode = utf8Codec->fromUnicode(unicodeData);
+
+        if (!pty()->write(unicode.constData(), unicode.length())) {
+            qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+            return;
+        }
     }
+    else {
+        if (!pty()->write(data, length)) {
+            qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+            return;
+        }
+    }
+
 }
 
 void Pty::dataReceived()
@@ -523,7 +543,7 @@ void Pty::dataReceived()
                 QString helpData = recvData.replace("\n", "");
                 recvData = "\r\n" + helpData + "\r\n";
                 data = recvData.toUtf8();
-                emit receivedData(data.constData(), data.count());
+                emit receivedData(data.constData(), data.count(), _isCommandExec);
             }
             else {
                 ++_receiveDataIndex;
@@ -552,7 +572,7 @@ void Pty::dataReceived()
         data = recvData.toUtf8();
     }
     /********************* Modify by m000714 daizhengwen End ************************/
-    emit receivedData(data.constData(), data.count());
+    emit receivedData(data.constData(), data.count(), _isCommandExec);
 }
 
 void Pty::lockPty(bool lock)

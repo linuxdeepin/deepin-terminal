@@ -110,10 +110,10 @@ Session::Session(QObject* parent) :
     //connect teletype to emulation backend
     _shellProcess->setUtf8Mode(_emulation->utf8());
 
-    connect( _shellProcess,SIGNAL(receivedData(const char *,int)),this,
-             SLOT(onReceiveBlock(const char *,int)) );
-    connect( _emulation,SIGNAL(sendData(const char *,int)),_shellProcess,
-             SLOT(sendData(const char *,int)) );
+    connect( _shellProcess,SIGNAL(receivedData(const char *,int,bool)),this,
+             SLOT(onReceiveBlock(const char *,int,bool)) );
+    connect( _emulation,SIGNAL(sendData(const char *,int,const QTextCodec *)),_shellProcess,
+             SLOT(sendData(const char *,int,const QTextCodec *)) );
     connect( _emulation,SIGNAL(lockPtyRequest(bool)),_shellProcess,SLOT(lockPty(bool)) );
     connect( _emulation,SIGNAL(useUtf8Request(bool)),_shellProcess,SLOT(setUtf8Mode(bool)) );
 
@@ -966,9 +966,9 @@ void Session::zmodemFinished()
   }
 }
 */
-void Session::onReceiveBlock( const char * buf, int len )
+void Session::onReceiveBlock(const char * buf, int len, bool isCommandExec)
 {
-    _emulation->receiveData( buf, len );
+    _emulation->receiveData(buf, len, isCommandExec);
     emit receivedData( QString::fromLatin1( buf, len ) );
 }
 
@@ -1238,8 +1238,8 @@ void SessionGroup::connectPair(Session * master , Session * other)
     if ( _masterMode & CopyInputToAll ) {
         qDebug() << "Connection session " << master->nameTitle() << "to" << other->nameTitle();
 
-        connect( master->emulation() , SIGNAL(sendData(const char *,int)) , other->emulation() ,
-                 SLOT(sendString(const char *,int)) );
+        connect( master->emulation() , SIGNAL(sendData(const char *, int, const QTextCodec *)) , other->emulation() ,
+                 SLOT(sendString(const char *, int, const QTextCodec *)) );
     }
 }
 void SessionGroup::disconnectPair(Session * master , Session * other)
@@ -1249,8 +1249,8 @@ void SessionGroup::disconnectPair(Session * master , Session * other)
     if ( _masterMode & CopyInputToAll ) {
         qDebug() << "Disconnecting session " << master->nameTitle() << "from" << other->nameTitle();
 
-        disconnect( master->emulation() , SIGNAL(sendData(const char *,int)) , other->emulation() ,
-                    SLOT(sendString(const char *,int)) );
+        disconnect( master->emulation() , SIGNAL(sendData(const char *, int, const QTextCodec *)) , other->emulation() ,
+                    SLOT(sendString(const char *, int, const QTextCodec *)) );
     }
 }
 

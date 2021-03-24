@@ -536,7 +536,7 @@ private slots:
 
 //  void fireZModemDetected();
 
-    void onReceiveBlock( const char * buffer, int len );
+    void onReceiveBlock(const char * buffer, int len, bool isCommandExec);
     void monitorTimerDone();
 
     void onViewSizeChange(int height, int width);
