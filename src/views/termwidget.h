@@ -145,7 +145,8 @@ public:
     void showFlowMessage(bool show);
     // shell启动失败悬浮框
     void showShellMessage(QString strWarnings);
-
+    //弹窗安装事件过滤器
+    void installEventMessageText(DFloatingMessage *widget, const QString &text);
 public slots:
     void onSettingValueChanged(const QString &keyName);
     // 处理拖拽进来的文件名Urls
@@ -163,6 +164,9 @@ signals:
 protected:
     // 鼠标滚轮事件
     void wheelEvent(QWheelEvent *event) override;
+    //监控事件过滤
+    bool eventFilter(QObject *o, QEvent *e) override;
+
 private slots:
     void customContextMenuCall(const QPoint &pos);
     // 处理标签标题参数变化
@@ -173,7 +177,7 @@ private slots:
     void onQTermWidgetReceivedData(QString value);
     void onTermWidgetReceivedData(QString value);
     void onExitRemoteServer();
-    void onUrlActivated(const QUrl & url, bool fromContextMenu);
+    void onUrlActivated(const QUrl &url, bool fromContextMenu);
     void onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme);
     void onTermIsIdle(bool bIdle);
     void onTitleChanged();
@@ -251,6 +255,8 @@ private:
     int m_sessionNumber;
     // Ctrl+Q/Ctrl+S的悬浮框
     DFloatingMessage *m_flowMessage = nullptr;
+    //记录弹窗的信息
+    QMap<QObject *, QString> m_messageTextMap;
 };
 
 #endif  // TERMWIDGET_H

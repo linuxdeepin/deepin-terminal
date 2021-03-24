@@ -298,7 +298,7 @@ inline void TermWidget::onExitRemoteServer()
     }
 }
 
-inline void TermWidget::onUrlActivated(const QUrl & url, bool fromContextMenu)
+inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
         QDesktopServices::openUrl(url);
@@ -448,29 +448,27 @@ inline void TermWidget::onPaste()
 
 inline void TermWidget::onOpenFileInFileManager()
 {
-   //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
+    //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 
-   //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
-   //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
-   //dde-file-manager --show-item a.pdf
+    //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
+    //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
+    //dde-file-manager --show-item a.pdf
 
-   QProcess process;
-   //未选择内容
-   if (selectedText().isEmpty())
-   {
-       process.startDetached("dde-file-manager -n " + workingDirectory());
-       return;
-   }
+    QProcess process;
+    //未选择内容
+    if (selectedText().isEmpty()) {
+        process.startDetached("dde-file-manager -n " + workingDirectory());
+        return;
+    }
 
-   QFileInfo fi(workingDirectory() + "/" + selectedText());
-   //选择的内容是文件或者文件夹
-   if (fi.isFile() || fi.isDir())
-   {
-       process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
-       return;
-   }
-   //选择的文本不是文件也不是文件夹
-   process.startDetached("dde-file-manager -n " + workingDirectory());
+    QFileInfo fi(workingDirectory() + "/" + selectedText());
+    //选择的内容是文件或者文件夹
+    if (fi.isFile() || fi.isDir()) {
+        process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
+        return;
+    }
+    //选择的文本不是文件也不是文件夹
+    process.startDetached("dde-file-manager -n " + workingDirectory());
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
@@ -713,10 +711,10 @@ inline void TermWidget::openUrl(QString strUrl)
 inline QString TermWidget::getFormatFileName(QString selectedText)
 {
     QString fileName = selectedText.trimmed();
-    if ( (fileName.startsWith("'") && fileName.endsWith("'"))
-            || (fileName.startsWith("\"") && fileName.endsWith("\"")) ) {
+    if ((fileName.startsWith("'") && fileName.endsWith("'"))
+            || (fileName.startsWith("\"") && fileName.endsWith("\""))) {
         fileName = fileName.remove(0, 1);
-        fileName = fileName.remove(fileName.length()-1, 1);
+        fileName = fileName.remove(fileName.length() - 1, 1);
         qDebug() << "fileName is :" << fileName;
     }
 
@@ -1488,6 +1486,24 @@ void TermWidget::wheelEvent(QWheelEvent *event)
     QTermWidget::wheelEvent(event);
 }
 
+/*******************************************************************************
+ 1. @函数:    eventFilter
+ 2. @作者:    ut003135 changze
+ 3. @日期:    2021-03-23
+ 4. @说明:    终端宽度缩小时，相关弹窗也同步变化
+*******************************************************************************/
+bool TermWidget::eventFilter(QObject *o, QEvent *e)
+{
+    if (m_messageTextMap.contains(o) && e->type() == QEvent::Resize) {
+        QLabel *label = static_cast<QLabel *>(o);
+        QString orgText = m_messageTextMap[o];
+        QString elideText = Utils::getElidedText(label->font(), orgText, label->width(), Qt::ElideRight);
+        if (elideText != label->text())
+            label->setText(elideText);
+    }
+    return QTermWidget::eventFilter(o, e);
+}
+
 /*
  ***************************************************************************************
  *函数:  showFlowMessage
@@ -1507,7 +1523,7 @@ void TermWidget::showFlowMessage(bool show)
         }
         m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
         QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
-        m_flowMessage->setMessage(strText);
+        installEventMessageText(m_flowMessage, strText);
         if (show) {
             DMessageManager::instance()->sendMessage(this, m_flowMessage);
         }
@@ -1541,9 +1557,28 @@ void TermWidget::showShellMessage(QString strWarnings)
     connect(shellWarningsMessage, &DFloatingMessage::closeButtonClicked, shellWarningsMessage, &DFloatingMessage::deleteLater);
     // 设置icon和文字
     shellWarningsMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
-    shellWarningsMessage->setMessage(strWarnings);
+    installEventMessageText(shellWarningsMessage, strWarnings);
     // 调用DTK的方法关闭悬浮框
     DMessageManager::instance()->sendMessage(this, shellWarningsMessage);
+}
+
+/*******************************************************************************
+ 1. @函数:    installEventMessageText
+ 2. @作者:    ut003135 changze
+ 3. @日期:    2021-03-23
+ 4. @说明:    通过事件过滤器，更新DFloatingMessage的text
+*******************************************************************************/
+void TermWidget::installEventMessageText(DFloatingMessage *widget, const QString &text)
+{
+    widget->setMessage("the sentence for searching MessageLabel of DFloatingMessage");
+    for (auto label : widget->findChildren<QLabel *>()) {
+        if (label->text() == "the sentence for searching MessageLabel of DFloatingMessage") {
+            label->installEventFilter(this);
+            m_messageTextMap[label] = text;
+            break;
+        }
+    }
+    widget->setMessage(text);
 }
 
 
