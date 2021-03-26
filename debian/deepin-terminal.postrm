@@ -1,4 +1,8 @@
 #!/bin/sh
+# postinst script 
+# see: dh_installdeb(1)
+#DEBHELPER#
+
 userName=$(who)
 if [ $1 = "purge" ]; then 
 	rm -rf /home/${userName%% *}/.config/deepin/deepin-terminal/*

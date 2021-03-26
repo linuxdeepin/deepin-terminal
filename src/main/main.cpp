@@ -22,6 +22,8 @@ DCORE_USE_NAMESPACE
 /********************* Modify by n014361 wangpeili End ************************/
 int main(int argc, char *argv[])
 {
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
+
     //计时
     qint64 starttime = QDateTime::currentMSecsSinceEpoch();
     //DApplication::loadDXcbPlugin();
@@ -30,7 +32,6 @@ int main(int argc, char *argv[])
     TerminalApplication app(argc, argv);
     app.loadTranslator();
     app.setOrganizationName("deepin");
-    app.setOrganizationDomain("deepin.org");
     app.setApplicationVersion(VERSION);
     app.setApplicationName("deepin-terminal");
     app.setApplicationDisplayName(QObject::tr("Terminal"));
