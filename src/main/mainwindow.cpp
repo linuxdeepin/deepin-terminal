@@ -413,6 +413,8 @@ void MainWindow::initOptionMenu()
 inline void MainWindow::slotFileChanged()
 {
     QFileSystemWatcher *fileWatcher = qobject_cast<QFileSystemWatcher *>(sender());
+    if (nullptr == fileWatcher)
+        return;
     emit  Service::instance()->hostnameChanged();
     //这句话去了之后filechanged信号只能触发一次
     fileWatcher->addPath(HOSTNAME_PATH);
@@ -1109,7 +1111,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         //目前的关于对话框是非模态的,这里的处理是防止关于对话框可以打开多个的情况
         // 不能使用aboutToClose信号 应用能够打开多个的情况下 打开关于后直接关闭程序
         // 此时aboutToColose信号不会触发 再次打开程序并打开关于会出现访问野指针 程序崩溃的情况
-        connect(aboutDialog, &DAboutDialog::destroyed, this, [=] {
+        connect(aboutDialog, &DAboutDialog::destroyed, this, [ = ] {
             app->setAboutDialog(nullptr);
         });
     }
@@ -2010,7 +2012,7 @@ void MainWindow::displayShortcuts()
     QScopedPointer<QProcess> shortcutViewProcess(new QProcess());
     shortcutViewProcess->startDetached("deepin-shortcut-viewer", shortcutString);
 
-//    connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
+    //    connect(shortcutViewProcess, SIGNAL(finished(int)), shortcutViewProcess, SLOT(deleteLater()));
 }
 
 /*******************************************************************************
@@ -2040,11 +2042,6 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
             Settings::instance()->settings->group(groupname)->options()) {  // Settings::instance()->settings->keys())
         QJsonObject jsonItem;
         QString name = QObject::tr(opt->name().toUtf8().data());
-        /***del begin by ut001121 zhangmeng 修复BUG#23269 快捷键菜单“切换全屏”显示与文案不一致***/
-        /*if (opt->name() == "Fullscreen")
-            name = tr("Toggle fullscreen");
-        */
-        /***del end by ut001121 zhangmeng***/
         jsonItem.insert("name", name);
         jsonItem.insert("value", opt->value().toString());
         JsonArry.append(jsonItem);
@@ -2129,12 +2126,10 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 {
     QString value = Settings::instance()->settings->option(key)->value().toString();
-    //QShortcut *shortcut = new QShortcut(QKeySequence(value), this);
     // 初始化设置中的快捷键,使用小写 up2down dzw 20201215
     QShortcut *shortcut = new QShortcut(Utils::converUpToDown(value), this);
     m_builtInShortcut[key] = shortcut;
     shortcut->setAutoRepeat(AutoRepeat);
-    // qDebug() << "createNewShotcut" << key << value;
     return shortcut;
 }
 
@@ -2339,6 +2334,8 @@ void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
     case Utils::CloseType_OtherTerminals:
         page->closeOtherTerminal(true);
         break;
+    default:
+        break;
     }
 }
 
@@ -2440,7 +2437,6 @@ void MainWindow::pressEnterKey(const QString &text)
 void MainWindow::createWindowComplete()
 {
     m_WindowCompleteTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    // qDebug()<<"MainWindow Create complete, Time use"<<m_WindowCompleteTime - m_CreateWindowTime;
 }
 /*******************************************************************************
  1. @函数:    firstTerminalComplete
@@ -2454,7 +2450,6 @@ void MainWindow::firstTerminalComplete()
     qDebug() << "app create all complete," << "MainWindowID = " << m_MainWindowID << ",all time use" << m_FirstTerminalCompleteTime - m_ReferedAppStartTime << "ms";
     qDebug() << "before entry use" << m_CreateWindowTime - m_ReferedAppStartTime << "ms";
     // 创建mainwidow时间，这个时候terminal并没有创建好，不能代表什么。
-    //qDebug() << "create mainwidow use " << m_WindowCompleteTime - m_CreateWindowTime << "ms";
     qDebug() << "cretae first Terminal use" << m_FirstTerminalCompleteTime - m_CreateWindowTime << "ms";
 }
 
@@ -3077,9 +3072,6 @@ void NormalWindow::initTitleBar()
     titlebar()->setFocusPolicy(Qt::NoFocus);
     initOptionButton();
     initOptionMenu();
-
-    //fix bug 17566 正常窗口下，新建和关闭窗口菜单栏会高亮
-    //handleTitleBarMenuFocusPolicy();
 
     /******** Modify by ut000439 wangpeili 2020-07-22:  SP3.1 DTK TAB控件 ****************/
     // 清理titlebar、titlebar所有控件不可获取焦点

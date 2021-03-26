@@ -210,21 +210,19 @@ void CustomCommandOptDlg::initUI()
 
 inline void CustomCommandOptDlg::slotNameLineEditingFinished()
 {
-    if (m_nameLineEdit->text().isEmpty())
-    {
+    if (m_nameLineEdit->text().isEmpty()) {
         m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     }
 }
 
 inline void CustomCommandOptDlg::slotCommandLineEditingFinished()
 {
-    if (m_commandLineEdit->text().isEmpty())
-    {
+    if (m_commandLineEdit->text().isEmpty()) {
         m_commandLineEdit->lineEdit()->setPlaceholderText(tr("Required"));
     }
 }
 
-inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySequence & sequence)
+inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySequence &sequence)
 {
     //删除
     if ("Backspace" == sequence.toString()) {
@@ -842,6 +840,7 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
     if (nullptr == currAction) {
         qDebug() << "slotRefreshData---new QAction error!!!";
         close();
+        return;
     }
     currAction->setText(newCmdName);
     QAction *existAction = nullptr;

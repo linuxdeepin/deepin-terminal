@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Deepin Packages Builder <packages@deepin.org>
 Build-Depends:
- debhelper(>= 9),
+ debhelper(>= 11),
  cmake,
  pkg-config,
  qtbase5-dev,
@@ -17,7 +17,7 @@ Build-Depends:
  libsecret-1-dev,
  libgtest-dev,
  libgmock-dev
-Standards-Version: 3.9.8
+Standards-Version: 4.5.1
 Homepage: https://www.deepin.com/
 
 Package: deepin-terminal
@@ -27,5 +27,9 @@ Depends:
  ${misc:Depends},
  expect,
  zssh
-Description: Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.
- Terminal is a terminal emulator with simple interface, rich and powerful functions such as multi-windows, workspace, remote management, Quake mode and etc. You can instantly start and close Terminal smoothly like normal file window, allowing you to input commands with facility and no distractions.
+Description: Terminal is an advanced terminal emulator with workspace, multiple
+ windows, remote management, quake mode and other features.
+ Terminal is a terminal emulator with simple interface, rich and powerful
+ functions such as multi-windows, workspace, remote management, Quake mode
+ and etc. You can instantly start and close Terminal smoothly like normal
+ file window, allowing you to input commands with facility and no distractions.

@@ -136,7 +136,7 @@ inline void ListView::onFocusOut(Qt::FocusReason type)
  3. @日期:    2021-02-09
  4. @说明:    分组项被点击
 *******************************************************************************/
-inline void ListView::onGroupClicked(const QString & strName, bool isFocus)
+inline void ListView::onGroupClicked(const QString &strName, bool isFocus)
 {
     emit groupClicked(strName, isFocus);
     // 若焦点不在项上
@@ -237,13 +237,11 @@ int ListView::indexFromString(const QString &key, ItemFuncType type)
     for (int i = 0; i < m_mainLayout->count(); ++i) {
         // 获取每个窗口
         QLayoutItem *item = m_mainLayout->itemAt(i);
-        ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
-        if (nullptr != widget) {
-            // 比较是否相等
-            if (widget->isEqual(type, key)) {
-                // 相等 返回index
-                return i;
-            }
+        ItemWidget *widget = item ? qobject_cast<ItemWidget *>(item->widget()) : nullptr;
+        // 比较是否相等
+        if (widget && widget->isEqual(type, key)) {
+            // 相等 返回index
+            return i;
         }
     }
     // 没找到，返回-1
@@ -312,8 +310,8 @@ void ListView::setCurrentIndex(int currentIndex)
     }
     // 设置焦点
     QLayoutItem *item = m_mainLayout->itemAt(currentIndex);
-    ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
-    if (item != nullptr) {
+    ItemWidget *widget = item ? qobject_cast<ItemWidget *>(item->widget()) : nullptr;
+    if (widget != nullptr) {
         // 设置焦点
         qDebug() << widget << "get focus" << "current index" << currentIndex;
         // Todo 让焦点不要进入主窗口
@@ -469,9 +467,6 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
         Service::instance()->setIsDialogShow(window(), false);
         if (m_focusState) {
             int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-            // 回到列表,仅回到大的列表，没有回到具体的哪个点
-//            setFocus();
-            qDebug() << "current Index ListView" << m_currentIndex;
             setCurrentIndex(index);
 
             // fix bug#65109焦点在自定义编辑按钮上，enter键进入后按esc退出，焦点不在编辑按钮上
@@ -649,13 +644,11 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
             qDebug() << "QDialog::Rejected";
             ItemWidget *itemWidget = m_itemList.at(m_currentIndex);
             itemWidget->getFocus();
-        }
-        else {
+        } else {
             qDebug() << "QDialog::Accepted result is:" << result;
             if (-1 != result) {
                 setFocus();
-            }
-            else {
+            } else {
                 qDebug() << "QDialog::Rejected";
                 ItemWidget *itemWidget = m_itemList.at(m_currentIndex);
                 itemWidget->getFocus();
@@ -908,7 +901,7 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
     } else if (ListFocusHome == focusType) {
         index = 0;
     } else if (ListFocusEnd == focusType) {
-        index = this->count()-1;
+        index = this->count() - 1;
     } else {
         qDebug() << "index:" << index << endl;
     }
@@ -936,8 +929,8 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
         DBusManager::callSystemSound();
     } else {
         QLayoutItem *item = m_mainLayout->itemAt(index);
-        ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
-        if (item != nullptr) {
+        ItemWidget *widget = item ? qobject_cast<ItemWidget *>(item->widget()) : nullptr;
+        if (widget != nullptr) {
             // 设置焦点
             widget->setFocus();
             int widget_y1 = widget->y();
@@ -957,7 +950,7 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
                 } else if (ListFocusHome == focusType) {
                     m_scrollPostion = 0;
                 } else if (ListFocusEnd == focusType) {
-                    m_scrollPostion += (count-1) * listItemHeight;
+                    m_scrollPostion += (count - 1) * listItemHeight;
                 } else {
                     m_scrollPostion = verticalScrollBar()->value();
                     qDebug() << "m_scrollPostion" << m_scrollPostion << endl;
@@ -994,7 +987,7 @@ void ListView::lostFocus(int preIndex)
     }
 
     QLayoutItem *item = m_mainLayout->itemAt(preIndex);
-    ItemWidget *widget = qobject_cast<ItemWidget *>(item->widget());
+    ItemWidget *widget = item ? qobject_cast<ItemWidget *>(item->widget()) : nullptr;
     if (widget != nullptr) {
         // 丢失焦点
         widget->lostFocus();

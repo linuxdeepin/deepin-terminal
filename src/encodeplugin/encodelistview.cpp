@@ -287,6 +287,8 @@ void EncodeListView::checkEncode(QString encode)
     if (this->isActiveWindow()) {
         qDebug() << __FUNCTION__ << encode;
         QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
+        if (nullptr == model)
+            return;
         // 遍历编码
         for (int row = 0; row < model->rowCount(); row++) {
             QModelIndex modelindex = model->index(row, 0);

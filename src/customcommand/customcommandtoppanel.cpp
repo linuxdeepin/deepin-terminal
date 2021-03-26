@@ -58,9 +58,6 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
             &CustomCommandSearchRstPanel::handleCustomCurCommand,
             this,
             &CustomCommandTopPanel::handleCustomCurCommand);
-    /******** Modify by nt001000 renfeixiang 2020-05-28:修改将该行隐藏，RightPanel::hideAnim函数不会将自定义窗口标志设置未PLUGIN_TYPE_NONEbug#21992 Begin***************/
-    //    connect(this, &CustomCommandTopPanel::handleCustomCurCommand, this, &RightPanel::hideAnim);
-    /******** Modify by nt001000 renfeixiang 2020-05-28:修改将该行隐藏，RightPanel::hideAnim函数不会将自定义窗口标志设置未PLUGIN_TYPE_NONEbug#21992 Begin***************/
     m_customCommandPanel->hide();
     m_customCommandSearchPanel->hide();
     connect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandTopPanel::slotsRefreshCommandPanel);
@@ -179,13 +176,6 @@ void CustomCommandTopPanel::show(bool bSetFocus)
     }
 
 }
-
-/******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 Begin***************/
-//void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
-//{
-//    m_customCommandPanel->resize(size());
-//}
-/******** Modify by nt001000 renfeixiang 2020-05-15:修改自定义界面，在Alt+F2时，隐藏在显示，高度变大问题 End***************/
 
 /*******************************************************************************
  1. @函数:    slotsRefreshCommandPanel

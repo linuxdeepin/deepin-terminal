@@ -107,7 +107,7 @@ private slots:
 
     void slotNameLineEditingFinished();
     void slotCommandLineEditingFinished();
-    void slotShortCutLineEditingFinished(const QKeySequence & sequence);
+    void slotShortCutLineEditingFinished(const QKeySequence &sequence);
 
     void slotCloseButtonClicked();
     void slotThemeTypeChanged(DGuiApplicationHelper::ColorType themeType);
@@ -129,7 +129,7 @@ private:
     DLineEdit *m_commandLineEdit = nullptr;
     DKeySequenceEdit *m_shortCutLineEdit = nullptr;
     QString m_lastCmdShortcut;
-    bool m_bDelOpt;
+    bool m_bDelOpt = false;
 
     QWidget *m_titleBar = nullptr;
     DLabel  *m_logoIcon = nullptr;

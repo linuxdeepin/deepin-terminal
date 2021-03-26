@@ -66,6 +66,8 @@ inline void EncodePanelPlugin::slotShowPluginChanged(const QString name)
         if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < LISTMINHEIGHT) {
             //因为拉伸函数设置了FixSize，导致自定义界面弹出时死循环，然后崩溃的问题
             QuakeWindow *quakeWindow = qobject_cast<QuakeWindow *>(m_mainWindow);
+            if (nullptr == quakeWindow)
+                return;
             quakeWindow->switchEnableResize(true);
             m_mainWindow->resize(m_mainWindow->width(), LISTMINHEIGHT); //首先设置雷神界面的大小
             m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);//重新打开编码界面，当前流程结束

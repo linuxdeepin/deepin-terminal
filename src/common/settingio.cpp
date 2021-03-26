@@ -330,6 +330,7 @@ QByteArray SettingIO::escapedString(const QString &src)
             } else {
                 result += QString(src[i]).toUtf8();
             }
+            break;
         }
     }
     if (result.size() > 0 && (result.at(0) == ' ' || result.at(result.size() - 1) == ' ')) {

@@ -783,6 +783,8 @@ void TermWidgetPage::showSearchBar(int state)
         if (m_MainWindow->isQuakeMode() && m_MainWindow->height() < LISTMINHEIGHT) {
             //因为拉伸函数设置了FixSize，导致自定义界面弹出时死循环，然后崩溃的问题
             QuakeWindow *quakeWindow = qobject_cast<QuakeWindow *>(m_MainWindow);
+            if (nullptr == quakeWindow)
+                return;
             quakeWindow->switchEnableResize(true);
             m_MainWindow->resize(m_MainWindow->width(), LISTMINHEIGHT); //首先设置雷神界面的大小
             m_MainWindow->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);//重新打开查询界面，当前流程结束
@@ -1035,7 +1037,7 @@ void TermWidgetPage::slotShowPluginChanged(const QString name)
 {
     MainWindow *mainWindow = qobject_cast<MainWindow *>(sender());
     // 判断是否是当前页，不是当前页不用管
-    if (mainWindow->currentPage() == this) {
+    if (mainWindow && mainWindow->currentPage() == this) {
         // 显示和隐藏搜索框
         if (MainWindow::PLUGIN_TYPE_SEARCHBAR == name) {
             // 显示搜索框
@@ -1054,7 +1056,7 @@ void TermWidgetPage::slotQuakeHidePlugin()
 {
     MainWindow *mainWindow = qobject_cast<MainWindow *>(sender());
     // 判断是否是当前页，不是当前页不用管
-    if (mainWindow->currentPage() == this) {
+    if (mainWindow && mainWindow->currentPage() == this) {
         // 隐藏搜索框
         this->showSearchBar(SearchBar_Hide);
     }

@@ -193,7 +193,7 @@ void CustomCommandSearchRstPanel::doCustomCommand(const QString &strKey)
 {
     qDebug() << "doCustomCommand,key=" << strKey;
     QAction *item = ShortcutManager::instance()->findActionByKey(strKey);
-    QString strCommand = item->data().toString();
+    QString strCommand = item ? item->data().toString() : "";
     if (!strCommand.endsWith('\n')) {
         strCommand.append('\n');
     }

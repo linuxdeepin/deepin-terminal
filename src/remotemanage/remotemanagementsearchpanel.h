@@ -78,7 +78,7 @@ private:
     void setSearchFilter(const QString &filter);
 
 private:
-    ListView *m_listWidget;
+    ListView *m_listWidget = nullptr;
     QString m_strGroupName;
     QString m_strFilter;
     // 判断是组内搜索还是组外搜索

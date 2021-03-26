@@ -1091,9 +1091,8 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
         }
         window->show();
         window->activateWindow();
-    }
-    //拖入的标签--需要关闭拖入窗口的标签页
-    else {
+    } else {
+        //拖入的标签--需要关闭拖入窗口的标签页
         qDebug() << "tabbar != nullptr " << index << endl;
         closeTab(index);
     }
@@ -1148,8 +1147,10 @@ void TabBar::removeNeedChangeTextColor(const QString &tabIdentifier)
     m_tabStatusMap.remove(tabIdentifier);
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
-    style->setTabStatusMap(m_tabStatusMap);
-    style->polish(this);
+    if (style) {
+        style->setTabStatusMap(m_tabStatusMap);
+        style->polish(this);
+    }
 }
 
 /*******************************************************************************
@@ -1164,10 +1165,11 @@ void TabBar::setChangeTextColor(const QString &tabIdentifier)
     QColor color = m_tabChangedTextColor;
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
-    style->setTabTextColor(color);
-    style->setTabStatusMap(m_tabStatusMap);
-    style->polish(this);
-
+    if (style) {
+        style->setTabTextColor(color);
+        style->setTabStatusMap(m_tabStatusMap);
+        style->polish(this);
+    }
     //fix bug 53782程序运行完后，标签页字体颜色未变色
     this->update();
 }
@@ -1194,15 +1196,17 @@ void TabBar::setClearTabColor(const QString &tabIdentifier)
     m_tabStatusMap.insert(tabIdentifier, TabTextColorStatus_Default);
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
-    style->setTabStatusMap(m_tabStatusMap);
-    style->polish(this);
+    if (style) {
+        style->setTabStatusMap(m_tabStatusMap);
+        style->polish(this);
+    }
 }
 
 /*******************************************************************************
- 1. @函数:    setTabStatusMap
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    设置标签状态图
+1. @函数:    setTabStatusMap
+2. @作者:    ut000610 daizhengwen
+3. @日期:    2020-08-11
+4. @说明:    设置标签状态图
 *******************************************************************************/
 void TabBar::setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusMap)
 {
@@ -1210,10 +1214,10 @@ void TabBar::setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusM
 }
 
 /*******************************************************************************
- 1. @函数:    setEnableCloseTabAnimation
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    设置启用关闭标签动画
+1. @函数:    setEnableCloseTabAnimation
+2. @作者:    ut000610 daizhengwen
+3. @日期:    2020-08-11
+4. @说明:    设置启用关闭标签动画
 *******************************************************************************/
 void TabBar::setEnableCloseTabAnimation(bool isEnableCloseTabAnimation)
 {
@@ -1221,10 +1225,10 @@ void TabBar::setEnableCloseTabAnimation(bool isEnableCloseTabAnimation)
 }
 
 /*******************************************************************************
- 1. @函数:    isEnableCloseTabAnimation
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    是启用关闭标签动画
+1. @函数:    isEnableCloseTabAnimation
+2. @作者:    ut000610 daizhengwen
+3. @日期:    2020-08-11
+4. @说明:    是启用关闭标签动画
 *******************************************************************************/
 bool TabBar::isEnableCloseTabAnimation()
 {
@@ -1232,10 +1236,10 @@ bool TabBar::isEnableCloseTabAnimation()
 }
 
 /*******************************************************************************
- 1. @函数:    setIsQuakeWindowTab
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-11-16
- 4. @说明:    用于标记当前tab是否为雷神窗口的tab
+1. @函数:    setIsQuakeWindowTab
+2. @作者:    ut000438 王亮
+3. @日期:    2020-11-16
+4. @说明:    用于标记当前tab是否为雷神窗口的tab
 *******************************************************************************/
 void TabBar::setIsQuakeWindowTab(bool isQuakeWindowTab)
 {
@@ -1246,10 +1250,10 @@ void TabBar::setIsQuakeWindowTab(bool isQuakeWindowTab)
 }
 
 /*******************************************************************************
- 1. @函数:    setTabDragMoveStatus
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-11-16
- 4. @说明:    用于设置tab拖拽状态，仅当窗口为雷神模式且标签页数量为1时不允许拖拽
+1. @函数:    setTabDragMoveStatus
+2. @作者:    ut000438 王亮
+3. @日期:    2020-11-16
+4. @说明:    用于设置tab拖拽状态，仅当窗口为雷神模式且标签页数量为1时不允许拖拽
 *******************************************************************************/
 void TabBar::updateTabDragMoveStatus()
 {
@@ -1278,10 +1282,10 @@ void TabBar::updateTabDragMoveStatus()
 }
 
 /*******************************************************************************
- 1. @函数:    setCurrentIndex
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-11-16
- 4. @说明:    切换到对应index的标签，并移除标签文字颜色
+1. @函数:    setCurrentIndex
+2. @作者:    ut000438 王亮
+3. @日期:    2020-11-16
+4. @说明:    切换到对应index的标签，并移除标签文字颜色
 *******************************************************************************/
 void TabBar::setCurrentIndex(int index)
 {
@@ -1290,10 +1294,10 @@ void TabBar::setCurrentIndex(int index)
 }
 
 /*******************************************************************************
- 1. @函数:    handleTabBarClicked
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-11-16
- 4. @说明:    点击某个标签触发，并发出tabBarClicked信号，传递index和标签identifier参数
+1. @函数:    handleTabBarClicked
+2. @作者:    ut000438 王亮
+3. @日期:    2020-11-16
+4. @说明:    点击某个标签触发，并发出tabBarClicked信号，传递index和标签identifier参数
 *******************************************************************************/
 void TabBar::handleTabBarClicked(int index)
 {

@@ -85,7 +85,7 @@ QString Utils::getQssContent(const QString &filePath)
 QString Utils::getConfigPath()
 {
     static QStringList list = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
-    const QString path = list.first();
+    const QString path = list.value(0);
     QDir dir(
         QDir(path).filePath(qApp->organizationName()));
 
@@ -197,9 +197,8 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
     int code = dialog.exec();
     if (code == QDialog::Accepted) {
         return dialog.selectedFiles();
-    } else {
-        return QStringList();
     }
+    return QStringList();
 }
 
 /*******************************************************************************
@@ -910,7 +909,7 @@ void FontFilter::CompareWhiteList()
               << "Noto Serif Tamil" << "Noto Serif Tamil Slanted" << "Noto Serif Telugu" << "Noto Serif Thai" << "Noto Serif Tibetan" << "Sans Serif" << "Serif"
               << "Symbola" << "Unifont CSUR" << "Unifont Upper" << "Wingdings" << "Wingdings 2" << "Wingdings 3";
 
-    for (QString &sfont : fontLst) {
+    for (const QString &sfont : fontLst) {
         if (m_bstop) {
             break;
         }

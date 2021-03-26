@@ -83,7 +83,7 @@ int DBusManager::callKDECurrentDesktop()
     if (response.type() == QDBusMessage::ReplyMessage) {
         qDebug() << "call currentDesktop Success!";
         QList<QVariant> list = response.arguments();
-        return list.takeFirst().toInt();
+        return list.value(0).toInt();
     }
 
     qDebug() << "call currentDesktop Fail!" << response.errorMessage();
