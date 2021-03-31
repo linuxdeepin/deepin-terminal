@@ -1277,12 +1277,15 @@ void TerminalDisplay::showResizeNotification()
         _resizeTimer->setSingleShot(true);
         connect(_resizeTimer, &QTimer::timeout, this, [this](){
             //计时器timeout，终端控件结束调整大小
-            this->m_bUserIsResizing = false;
+            m_bUserIsResizing = false;
+            screenWindow()->screen()->setIsUserResizing(m_bUserIsResizing);
             SessionManager::instance()->setTerminalResizing(_sessionId, m_bUserIsResizing);
         });
      }
      //显示resizeWidget的时候，标记当前session对应终端控件正在调整大小
-     SessionManager::instance()->setTerminalResizing(_sessionId, true);
+     m_bUserIsResizing = true;
+     screenWindow()->screen()->setIsUserResizing(m_bUserIsResizing);
+     SessionManager::instance()->setTerminalResizing(_sessionId, m_bUserIsResizing);
      _resizeWidget->setText(tr("Size: %1 x %2").arg(_columns).arg(_lines));
      _resizeWidget->move((width()-_resizeWidget->width())/2,
                          (height()-_resizeWidget->height())/2+20);
@@ -1777,6 +1780,7 @@ void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
             textArea.moveTopLeft(textScale.inverted().map(textArea.topLeft()));
 
             QString unistr = QString::fromUcs4(univec.data(), univec.length());
+            univec.clear();
 
             //paint text fragment
             drawTextFragment(paint,
@@ -3191,15 +3195,12 @@ QVariant TerminalDisplay::inputMethodQuery( Qt::InputMethodQuery query ) const
     switch ( query )
     {
         case Qt::ImMicroFocus:
-                return imageToWidget(QRect(cursorPos.x(),cursorPos.y(),1,1));
-            break;
+            return imageToWidget(QRect(cursorPos.x(),cursorPos.y(), 1, 1));
         case Qt::ImFont:
-                return font();
-            break;
+            return font();
         case Qt::ImCursorPosition:
                 // return the cursor position within the current line
-                return cursorPos.x();
-            break;
+            return cursorPos.x();
         case Qt::ImSurroundingText:
             {
                 // return the text from the current line
@@ -3213,8 +3214,7 @@ QVariant TerminalDisplay::inputMethodQuery( Qt::InputMethodQuery query ) const
             }
             break;
         case Qt::ImCurrentSelection:
-                return QString();
-            break;
+            return QString();
         default:
             break;
     }

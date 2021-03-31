@@ -280,7 +280,7 @@ void Vt102Emulation::initTokenizer()
 #define DEL 127
 
 // process an incoming unicode character
-void Vt102Emulation::receiveChar(wchar_t cc)
+void Vt102Emulation::receiveChar(wchar_t cc, bool isKeyboardBackspace)
 {
   if (cc == DEL)
     return; //VT100: ignore.
@@ -302,7 +302,7 @@ void Vt102Emulation::receiveChar(wchar_t cc)
         resetTokenizer(); //VT100: CAN or SUB
     if (cc != ESC)
     {
-        processToken(TY_CTL(cc+'@' ),0,0);
+        processToken(TY_CTL(cc+'@' ),0,0,isKeyboardBackspace);
         return;
     }
   }
@@ -315,21 +315,21 @@ void Vt102Emulation::receiveChar(wchar_t cc)
   if (getMode(MODE_Ansi))
   {
     if (lec(1,0,ESC)) { return; }
-    if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('['); return; }
+    if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('[', isKeyboardBackspace); return; }
     if (les(2,1,GRP)) { return; }
     if (Xte         ) { processWindowAttributeChange(); resetTokenizer(); return; }
     if (Xpe         ) { prevCC = cc; return; }
     if (lec(3,2,'?')) { return; }
     if (lec(3,2,'>')) { return; }
     if (lec(3,2,'!')) { return; }
-    if (lun(       )) { processToken( TY_CHR(), applyCharset(cc), 0);   resetTokenizer(); return; }
-    if (lec(2,0,ESC)) { processToken( TY_ESC(s[1]), 0, 0);              resetTokenizer(); return; }
-    if (les(3,1,SCS)) { processToken( TY_ESC_CS(s[1],s[2]), 0, 0);      resetTokenizer(); return; }
-    if (lec(3,1,'#')) { processToken( TY_ESC_DE(s[2]), 0, 0);           resetTokenizer(); return; }
-    if (eps(    CPN)) { processToken( TY_CSI_PN(cc), argv[0],argv[1]);  resetTokenizer(); return; }
+    if (lun(       )) { processToken( TY_CHR(), applyCharset(cc), 0,isKeyboardBackspace);   resetTokenizer(); return; }
+    if (lec(2,0,ESC)) { processToken( TY_ESC(s[1]), 0, 0,isKeyboardBackspace);              resetTokenizer(); return; }
+    if (les(3,1,SCS)) { processToken( TY_ESC_CS(s[1],s[2]), 0, 0,isKeyboardBackspace);      resetTokenizer(); return; }
+    if (lec(3,1,'#')) { processToken( TY_ESC_DE(s[2]), 0, 0,isKeyboardBackspace);           resetTokenizer(); return; }
+    if (eps(    CPN)) { processToken( TY_CSI_PN(cc), argv[0],argv[1],isKeyboardBackspace);  resetTokenizer(); return; }
     if (esp(       )) { return; }
     if (lec(5, 4, 'q') && s[3] == ' ') {
-      processToken( TY_CSI_PS_SP(cc, argv[0]), argv[0], 0);
+      processToken( TY_CSI_PS_SP(cc, argv[0]), argv[0], 0, isKeyboardBackspace);
       resetTokenizer();
       return;
     }
@@ -337,35 +337,35 @@ void Vt102Emulation::receiveChar(wchar_t cc)
     // resize = \e[8;<row>;<col>t
     if (eps(CPS))
     {
-        processToken( TY_CSI_PS(cc, argv[0]), argv[1], argv[2]);
+        processToken( TY_CSI_PS(cc, argv[0]), argv[1], argv[2], isKeyboardBackspace);
         resetTokenizer();
         return;
     }
 
-    if (epe(   )) { processToken( TY_CSI_PE(cc), 0, 0); resetTokenizer(); return; }
+    if (epe(   )) { processToken( TY_CSI_PE(cc), 0, 0, isKeyboardBackspace); resetTokenizer(); return; }
     if (ees(DIG)) { addDigit(cc-'0'); return; }
     if (eec(';') || eec(':')) { addArgument(); return; }
     for (int i=0;i<=argc;i++)
     {
         if (epp())
-            processToken( TY_CSI_PR(cc,argv[i]), 0, 0);
+            processToken( TY_CSI_PR(cc,argv[i]), 0, 0, isKeyboardBackspace);
         else if (egt())
-            processToken( TY_CSI_PG(cc), 0, 0); // spec. case for ESC]>0c or ESC]>c
+            processToken( TY_CSI_PG(cc), 0, 0, isKeyboardBackspace); // spec. case for ESC]>0c or ESC]>c
         else if (cc == 'm' && argc - i >= 4 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 2)
         {
             // ESC[ ... 48;2;<red>;<green>;<blue> ... m -or- ESC[ ... 38;2;<red>;<green>;<blue> ... m
             i += 2;
-            processToken( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_RGB, (argv[i] << 16) | (argv[i+1] << 8) | argv[i+2]);
+            processToken( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_RGB, (argv[i] << 16) | (argv[i+1] << 8) | argv[i+2], isKeyboardBackspace);
             i += 2;
         }
         else if (cc == 'm' && argc - i >= 2 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 5)
         {
             // ESC[ ... 48;5;<index> ... m -or- ESC[ ... 38;5;<index> ... m
             i += 2;
-            processToken( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_256, argv[i]);
+            processToken( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_256, argv[i], isKeyboardBackspace);
         }
         else
-            processToken( TY_CSI_PS(cc,argv[i]), 0, 0);
+            processToken( TY_CSI_PS(cc,argv[i]), 0, 0, isKeyboardBackspace);
     }
     resetTokenizer();
   }
@@ -376,7 +376,7 @@ void Vt102Emulation::receiveChar(wchar_t cc)
         return;
     if (les(1,0,CHR))
     {
-        processToken( TY_CHR(), s[0], 0);
+        processToken( TY_CHR(), s[0], 0, isKeyboardBackspace);
         resetTokenizer();
         return;
     }
@@ -386,11 +386,11 @@ void Vt102Emulation::receiveChar(wchar_t cc)
         return;
     if (p < 4)
     {
-        processToken( TY_VT52(s[1] ), 0, 0);
+        processToken( TY_VT52(s[1] ), 0, 0, isKeyboardBackspace);
         resetTokenizer();
         return;
     }
-    processToken( TY_VT52(s[1]), s[2], s[3]);
+    processToken( TY_VT52(s[1]), s[2], s[3], isKeyboardBackspace);
     resetTokenizer();
     return;
   }
@@ -451,7 +451,7 @@ void Vt102Emulation::updateTitle()
    about this mapping.
 */
 
-void Vt102Emulation::processToken(int token, wchar_t p, int q)
+void Vt102Emulation::processToken(int token, wchar_t p, int q, bool isKeyboardBackspace)
 {
   switch (token)
   {
@@ -469,7 +469,7 @@ void Vt102Emulation::processToken(int token, wchar_t p, int q)
     case TY_CTL('F'      ) : /* ACK: ignored                      */ break;
     case TY_CTL('G'      ) : emit stateSet(NOTIFYBELL);
                                 break; //VT100
-    case TY_CTL('H'      ) : _currentScreen->backspace            (          ); break; //VT100
+    case TY_CTL('H'      ) : _currentScreen->backspace            (isKeyboardBackspace); break; //VT100
     case TY_CTL('I'      ) : _currentScreen->tab                  (          ); break; //VT100
     case TY_CTL('J'      ) : _currentScreen->newLine              (          ); break; //VT100
     case TY_CTL('K'      ) : _currentScreen->newLine              (          ); break; //VT100
@@ -864,9 +864,9 @@ void Vt102Emulation::clearScreenAndSetColumns(int columnCount)
 void Vt102Emulation::sendString(const char* s , int length)
 {
   if ( length >= 0 )
-    emit sendData(s, length, _codec);
+    emit sendData(s, length, _codec, false);
   else
-    emit sendData(s, static_cast<int>(strlen(s)), _codec);
+    emit sendData(s, static_cast<int>(strlen(s)), _codec, false);
 }
 
 void Vt102Emulation::reportCursorPosition()
@@ -1047,6 +1047,11 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
         }
     }
 
+    bool isKeyboardBackspace = false;
+    if (event->key() == Qt::Key_Backspace) {
+        isKeyboardBackspace = true;
+    }
+
     // lookup key binding
     if ( _keyTranslator )
     {
@@ -1105,7 +1110,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
             textToSend += _codec->fromUnicode(event->text());
         }
 
-        Q_EMIT sendData( textToSend.constData(), textToSend.length(), _codec );
+        Q_EMIT sendData( textToSend.constData(), textToSend.length(), _codec, isKeyboardBackspace);
     }
     else
     {
@@ -1116,7 +1121,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
                                          "into characters to send to the terminal "
                                          "is missing.");
         reset();
-        receiveData(translatorError.toUtf8().constData() , translatorError.count(), false);
+        receiveData(translatorError.toUtf8().constData() , translatorError.count(), false, isKeyboardBackspace);
     }
 }
 

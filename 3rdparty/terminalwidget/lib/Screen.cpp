@@ -655,8 +655,12 @@ void Screen::clear()
     home();
 }
 
-void Screen::backspace()
+void Screen::backspace(bool isKeyboardBackspace)
 {
+    if (!isKeyboardBackspace && _isUserResizing) {
+        return;
+    }
+
     cuX = qMin(columns-1,cuX); // nowrap!
     cuX = qMax(0,cuX-1);
 
@@ -1583,6 +1587,11 @@ bool Screen::isResize()
         return true;
     }
     return _isResize;
+}
+
+void Screen::setIsUserResizing(bool isUserResizing)
+{
+    _isUserResizing = isUserResizing;
 }
 
 void Screen::setReflowLines(bool enable)

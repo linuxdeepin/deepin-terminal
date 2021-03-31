@@ -35,16 +35,15 @@
 #include "Emulation.h"
 #include "Screen.h"
 
-//下面这行宏定义被移到Screen.h，因为Screen类中也用到了MODE_AppScreen
-//#define MODE_AppScreen       (MODES_SCREEN+0)   // Mode #1
-#define MODE_AppCuKeys       (MODES_SCREEN+1)   // Application cursor keys (DECCKM)
-#define MODE_AppKeyPad       (MODES_SCREEN+2)   //
-#define MODE_Mouse1000       (MODES_SCREEN+3)   // Send mouse X,Y position on press and release
-#define MODE_Mouse1001       (MODES_SCREEN+4)   // Use Hilight mouse tracking
-#define MODE_Mouse1002       (MODES_SCREEN+5)   // Use cell motion mouse tracking
-#define MODE_Mouse1003       (MODES_SCREEN+6)   // Use all motion mouse tracking
-#define MODE_Mouse1005       (MODES_SCREEN+7)   // Xterm-style extended coordinates
-#define MODE_Mouse1006       (MODES_SCREEN+8)   // 2nd Xterm-style extended coordinates
+#define MODE_AppCuKeys       (MODES_SCREEN+0)   // Application cursor keys (DECCKM)
+#define MODE_AppKeyPad       (MODES_SCREEN+1)   //
+#define MODE_Mouse1000       (MODES_SCREEN+2)   // Send mouse X,Y position on press and release
+#define MODE_Mouse1001       (MODES_SCREEN+3)   // Use Hilight mouse tracking
+#define MODE_Mouse1002       (MODES_SCREEN+4)   // Use cell motion mouse tracking
+#define MODE_Mouse1003       (MODES_SCREEN+5)   // Use all motion mouse tracking
+#define MODE_Mouse1005       (MODES_SCREEN+6)   // Xterm-style extended coordinates
+#define MODE_Mouse1006       (MODES_SCREEN+7)   // 2nd Xterm-style extended coordinates
+#define MODE_Mouse1007       (MODES_SCREEN+8)   // XTerm Alternate Scroll mode; also check AlternateScrolling profile property
 #define MODE_Mouse1015       (MODES_SCREEN+9)   // Urxvt-style extended coordinates
 #define MODE_Ansi            (MODES_SCREEN+10)   // Use US Ascii for character sets G0-G3 (DECANM)
 #define MODE_132Columns      (MODES_SCREEN+11)  // 80 <-> 132 column mode switch (DECCOLM)
@@ -103,7 +102,7 @@ protected:
   // reimplemented from Emulation
   void setMode(int mode) override;
   void resetMode(int mode) override;
-  void receiveChar(wchar_t cc) override;
+  void receiveChar(wchar_t cc, bool isKeyboardBackspace) override;
 
 private slots:
   //causes changeTitle() to be emitted for each (int,QString) pair in pendingTitleUpdates
@@ -153,7 +152,7 @@ private:
 
   void reportDecodingError();
 
-  void processToken(int code, wchar_t p, int q);
+  void processToken(int code, wchar_t p, int q, bool isKeyboardBackspace);
   void processWindowAttributeChange();
   void requestWindowAttribute(int);
 

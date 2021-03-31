@@ -177,7 +177,7 @@ Q_OBJECT
      * @param buffer Pointer to the data to send.
      * @param length Length of @p buffer.
      */
-    void sendData(const char* buffer, int length, const QTextCodec *codec);
+    void sendData(const char* buffer, int length, const QTextCodec *codec, bool isKeyboardBackspace);
 
   signals:
 
@@ -188,7 +188,7 @@ Q_OBJECT
      * @param buffer Pointer to the data received.
      * @param length Length of @p buffer
      */
-    void receivedData(const char* buffer, int length, bool isCommandExec);
+    void receivedData(const char* buffer, int length, bool isCommandExec, bool isKeyboardBackspace);
 
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     bool ptyUninstallTerminal(QString commandname);
@@ -225,6 +225,7 @@ Q_OBJECT
     int _receiveDataIndex = -1;
     const QTextCodec *_textCodec = nullptr;
     bool _isCommandExec = false;
+    bool _isKeyboardBackspace = false;
 
     QString _program;
 };

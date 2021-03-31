@@ -247,13 +247,13 @@ QString Emulation::keyBindings() const
     return _keyTranslator->name();
 }
 
-void Emulation::receiveChar(wchar_t c)
+void Emulation::receiveChar(wchar_t c, bool isKeyboardBackspace)
 // process application unicode input to terminal
 // this is a trivial scanner
 {
     c &= 0xff;
     switch (c) {
-    case '\b'      : _currentScreen->backspace();                 break;
+    case '\b'      : _currentScreen->backspace(isKeyboardBackspace);   break;
     case '\t'      : _currentScreen->tab();                       break;
     case '\n'      : _currentScreen->newLine();                   break;
     case '\r'      : _currentScreen->toStartOfLine();             break;
@@ -271,7 +271,7 @@ void Emulation::sendKeyEvent(QKeyEvent *ev)
         // A block of text
         // Note that the text is proper unicode.
         // We should do a conversion here
-        emit sendData(ev->text().toUtf8().constData(), ev->text().length(), _codec);
+        emit sendData(ev->text().toUtf8().constData(), ev->text().length(), _codec, true);
     }
 }
 
@@ -290,7 +290,7 @@ void Emulation::sendMouseEvent(int /*buttons*/, int /*column*/, int /*row*/, int
 TODO: Character composition from the old code.  See #96536
 */
 
-void Emulation::receiveData(const char *text, int length, bool isCommandExec)
+void Emulation::receiveData(const char *text, int length, bool isCommandExec, bool isKeyboardBackspace)
 {
     emit stateSet(NOTIFYACTIVITY);
 
@@ -329,7 +329,7 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec)
 
     //send characters to terminal emulator
     for (size_t i = 0; i < unicodeText.length(); i++)
-        receiveChar(unicodeText[i]);
+        receiveChar(unicodeText[i], isKeyboardBackspace);
 
     //look for z-modem indicator
     //-- someone who understands more about z-modems that I do may be able to move
