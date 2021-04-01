@@ -30,12 +30,6 @@ IconButton::IconButton(QWidget *parent)
     Utils::set_Object_Name(this);
 }
 
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-17
- 4. @说明:    处理右键点击事件
-*******************************************************************************/
 void IconButton::keyPressEvent(QKeyEvent *event)
 {
     // 不处理向右的事件
@@ -54,12 +48,6 @@ void IconButton::keyPressEvent(QKeyEvent *event)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    focusOutEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-21
- 4. @说明:    焦点出
-*******************************************************************************/
 void IconButton::focusOutEvent(QFocusEvent *event)
 {
     qDebug() << event->reason() << "IconButton" << this;

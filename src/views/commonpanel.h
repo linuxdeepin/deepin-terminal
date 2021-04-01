@@ -46,10 +46,17 @@ class CommonPanel : public QFrame
     Q_OBJECT
 public:
     explicit CommonPanel(QWidget *parent = nullptr);
+    /**
+     * @brief 清除搜索信息
+     * @author ut000610 daizhengwen
+     */
     void clearSearchInfo();
 
 public slots:
-    // 返回键被选中
+    /**
+     * @brief 回车后，焦点进入返回键
+     * @author ut000610 戴正文
+     */
     void onFocusInBackButton();
 
 signals:

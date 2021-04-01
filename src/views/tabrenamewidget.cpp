@@ -25,13 +25,6 @@
 
 #include <DFontSizeManager>
 
-/*******************************************************************************
- 1. @函数:    TabRenameWidget
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    标签重命名控件构造函数，由输入条与一个内置菜单的按钮组成，isRemote表示是否为远程
-              ,isSetting表示是否在设置中调用
-*******************************************************************************/
 TabRenameWidget::TabRenameWidget(bool isRemote, bool isSetting, QWidget *parent)
     : QWidget(parent)
     , m_isRemote(isRemote)
@@ -42,12 +35,6 @@ TabRenameWidget::TabRenameWidget(bool isRemote, bool isSetting, QWidget *parent)
     initConnections();
 }
 
-/*******************************************************************************
- 1. @函数:    initUi
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化标签重命名控件的ui
-*******************************************************************************/
 void TabRenameWidget::initUi()
 {
     m_layout = new QHBoxLayout(this);
@@ -85,12 +72,6 @@ void TabRenameWidget::initUi()
     m_layout->addWidget(m_choseButton);
 }
 
-/*******************************************************************************
- 1. @函数:    initChoseMenu
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化按钮内置的菜单
-*******************************************************************************/
 void TabRenameWidget::initChoseMenu()
 {
     m_choseMenu = new DMenu(this);
@@ -104,12 +85,6 @@ void TabRenameWidget::initChoseMenu()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    initRemoteChoseMenu
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化远程标签按钮内置的菜单
-*******************************************************************************/
 void TabRenameWidget::initRemoteChoseMenu()
 {
     QStringList list;
@@ -122,12 +97,6 @@ void TabRenameWidget::initRemoteChoseMenu()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    initNormalChoseMenu
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化普通标签按钮内置的菜单
-*******************************************************************************/
 void TabRenameWidget::initNormalChoseMenu()
 {
     QStringList list;
@@ -142,12 +111,6 @@ void TabRenameWidget::initNormalChoseMenu()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    initConnections
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化链接
-*******************************************************************************/
 void TabRenameWidget::initConnections()
 {
     connect(m_choseMenu, &DMenu::triggered, this, [ = ](QAction * ac) {
@@ -158,12 +121,6 @@ void TabRenameWidget::initConnections()
     });
 }
 
-/*******************************************************************************
- 1. @函数:    initLabel
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化小标题
-*******************************************************************************/
 void TabRenameWidget::initLabel()
 {
     m_Label = new QLabel;
@@ -180,12 +137,6 @@ void TabRenameWidget::initLabel()
     m_layout->addWidget(m_Label);
 }
 
-/*******************************************************************************
- 1. @函数:    inputedit
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    获取输入条接口
-*******************************************************************************/
 DLineEdit *TabRenameWidget::getInputedit() const
 {
     return m_inputedit;

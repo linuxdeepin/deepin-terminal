@@ -55,9 +55,17 @@ signals:
     void keyPressClicked();
 
 protected:
-    // 键盘事件处理向右案件
+    /**
+     * @brief 键盘事件处理右键点击事件
+     * @author ut000610 戴正文
+     * @param event 右键点击事件
+     */
     void keyPressEvent(QKeyEvent *event) override;
-    // 焦点切出
+    /**
+     * @brief 焦点切出
+     * @author ut000610 戴正文
+     * @param event 焦点移出事件
+     */
     void focusOutEvent(QFocusEvent *event) override;
 };
 

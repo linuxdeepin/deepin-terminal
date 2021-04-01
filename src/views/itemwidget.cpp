@@ -72,24 +72,12 @@ ItemWidget::~ItemWidget()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    setIcon
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-10
- 4. @说明:    设置图表(远程组图标 dt_server_group 远程服务器图标 dt_server 自定义图标 dt_command)
-*******************************************************************************/
 void ItemWidget::setIcon(const QString &icon)
 {
     m_iconButton->setIcon(QIcon::fromTheme(icon));
     m_iconButton->setIconSize(QSize(44, 44));
 }
 
-/*******************************************************************************
- 1. @函数:    setFuncIcon
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-10
- 4. @说明:    根据类型设置功能图标 (编辑 dt_edit 显示分组 dt_arrow_right)
-*******************************************************************************/
 void ItemWidget::setFuncIcon(ItemFuncType iconType)
 {
     // 统一设置大小
@@ -107,23 +95,11 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
 
 }
 
-/*******************************************************************************
- 1. @函数:    getFuncType
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-03-04
- 4. @说明:    获取功能键类型
-*******************************************************************************/
 ItemFuncType ItemWidget::getFuncType()
 {
     return m_functType;
 }
 
-/*******************************************************************************
- 1. @函数:    setText
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-10
- 4. @说明:    设置文字内容
-*******************************************************************************/
 void ItemWidget::setText(const QString &firstline, const QString &secondline)
 {
     // 第一行信息 唯一值
@@ -150,35 +126,17 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
     m_secondline->setText(m_secondText);
 }
 
-/*******************************************************************************
- 1. @函数:    getFirstText
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-03-04
- 4. @说明:    获取第一行信息
-*******************************************************************************/
 const QString ItemWidget::getFirstText()
 {
     return m_firstText;
 }
 
-/*******************************************************************************
- 1. @函数:    isEqual
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    判断是否是此widget
-*******************************************************************************/
 bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
 {
     // fistText是唯一值
     return ((m_functType == type) && (key == m_firstText));
 }
 
-/*******************************************************************************
- 1. @函数:    getFocus
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    获取焦点，显示编辑按钮, 这是键盘获取焦点
-*******************************************************************************/
 void ItemWidget::getFocus()
 {
     m_isFocus = true;
@@ -190,12 +148,6 @@ void ItemWidget::getFocus()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    lostFocus
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    丢失焦点，显示编辑按钮
-*******************************************************************************/
 void ItemWidget::lostFocus()
 {
     m_isFocus = false;
@@ -205,12 +157,6 @@ void ItemWidget::lostFocus()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    重载比较 >
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    根据类型，文字比较大小
-*******************************************************************************/
 bool operator >(const ItemWidget &item1, const ItemWidget &item2)
 {
     // item1 item2都是组 或 item1 item2 都不是组
@@ -232,29 +178,15 @@ bool operator >(const ItemWidget &item1, const ItemWidget &item2)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    重载比较 <
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    根据类型，文字比较大小
-*******************************************************************************/
 bool operator <(const ItemWidget &item1, const ItemWidget &item2)
 {
     return !(item1 > item2);
 }
 
-/*******************************************************************************
- 1. @函数:    onFuncButtonClicked
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-13
- 4. @说明:    处理功能键点击的点击事件
-              1) 分组=>显示分组所有的项
-              2) 项=>修改项
-*******************************************************************************/
 void ItemWidget::onFuncButtonClicked()
 {
     /***add begin by ut001121 zhangmeng 20200924 判断移动事件来源 修复BUG48618***/
-    if(m_moveSource){
+    if (m_moveSource) {
         m_moveSource = nullptr;
         return ;
     }
@@ -284,18 +216,11 @@ void ItemWidget::onFuncButtonClicked()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    onFuncButtonClicked
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-16
- 4. @说明:    处理图标点击的点击事件
-              1) 分组=>显示分组所有的项
-              2) 项=>执行操作
-*******************************************************************************/
+
 void ItemWidget::onIconButtonClicked()
 {
     /***add begin by ut001121 zhangmeng 20200924 判断移动事件来源 修复BUG48618***/
-    if(m_moveSource){
+    if (m_moveSource) {
         m_moveSource = nullptr;
         return ;
     }
@@ -317,24 +242,12 @@ void ItemWidget::onIconButtonClicked()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    onFuncButtonFocusOut
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-17
- 4. @说明:    功能键丢失焦点，当前窗口获得焦点
-*******************************************************************************/
 void ItemWidget::onFocusReback()
 {
     qDebug() << __FUNCTION__;
     setFocus();
 }
 
-/*******************************************************************************
- 1. @函数:    onFocusOut
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-21
- 4. @说明:    焦点从功能键切出，切不在当前控件上
-*******************************************************************************/
 void ItemWidget::onFocusOut(Qt::FocusReason type)
 {
     // Tab切出
@@ -355,12 +268,6 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
 
 }
 
-/*******************************************************************************
- 1. @函数:    initUI
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-08
- 4. @说明:    初始化单个窗口组建的布局和空间大小
-*******************************************************************************/
 void ItemWidget::initUI()
 {
     // 初始化控件大小
@@ -415,12 +322,6 @@ void ItemWidget::initUI()
     setLayout(m_mainLayout);
 }
 
-/*******************************************************************************
- 1. @函数:    initConnections
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-08
- 4. @说明:    关联信号槽
-*******************************************************************************/
 void ItemWidget::initConnections()
 {
     // 颜色随主题变化
@@ -436,13 +337,6 @@ void ItemWidget::initConnections()
 
 }
 
-// 重绘事件
-/*******************************************************************************
- 1. @函数:    paintEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-10
- 4. @说明:    1.字体变长便短导致的问题 2. 悬浮的背景色
-*******************************************************************************/
 void ItemWidget::paintEvent(QPaintEvent *event)
 {
     // 绘制文字长短
@@ -458,12 +352,6 @@ void ItemWidget::paintEvent(QPaintEvent *event)
     FocusFrame::paintEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    enterEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-10
- 4. @说明:    进入，编辑按钮显示
-*******************************************************************************/
 void ItemWidget::enterEvent(QEvent *event)
 {
     qDebug() << __FUNCTION__;
@@ -475,12 +363,6 @@ void ItemWidget::enterEvent(QEvent *event)
     FocusFrame::enterEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    leaveEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-10
- 4. @说明:    移出，编辑按钮消失
-*******************************************************************************/
 void ItemWidget::leaveEvent(QEvent *event)
 {
     // 判断焦点是否是选中状态，不是的话，清除选中效果
@@ -494,25 +376,11 @@ void ItemWidget::leaveEvent(QEvent *event)
     FocusFrame::leaveEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    mousePressEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-13
- 4. @说明:    处理item的点击事件
-              1) 分组=>显示分组所有的项
-              2) 项=>连接远程
-*******************************************************************************/
 void ItemWidget::mousePressEvent(QMouseEvent *event)
 {
     FocusFrame::mousePressEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    mouseReleaseEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-13
- 4. @说明:    处理item的点击事件
-*******************************************************************************/
 void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     // 判断类型执行操作
@@ -523,18 +391,12 @@ void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
     FocusFrame::mouseReleaseEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    eventFilter
- 2. @作者:    ut001121 张猛
- 3. @日期:    2020-09-24
- 4. @说明:    事件过滤
-*******************************************************************************/
 bool ItemWidget::eventFilter(QObject *watched, QEvent *event)
 {
     /***add begin by ut001121 zhangmeng 20200924 过滤并处理鼠标事件 修复BUG48618***/
-    QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
-    if(event->type() == QEvent::MouseButtonPress
-            && mouse->source() == Qt::MouseEventSynthesizedByQt){
+    QMouseEvent *mouse = static_cast<QMouseEvent *>(event);
+    if (event->type() == QEvent::MouseButtonPress
+            && mouse->source() == Qt::MouseEventSynthesizedByQt) {
         //记录移动事件来源
         m_moveSource = watched;
         //记录移动事件起点
@@ -542,16 +404,16 @@ bool ItemWidget::eventFilter(QObject *watched, QEvent *event)
         //重置滑动最大距离
         m_touchSlideMaxY = 0;
     }
-    if(event->type() == QEvent::MouseButtonRelease
-            && mouse->source() == Qt::MouseEventSynthesizedByQt){
+    if (event->type() == QEvent::MouseButtonRelease
+            && mouse->source() == Qt::MouseEventSynthesizedByQt) {
         //判断最大移动距离
-        if (m_touchSlideMaxY<=COORDINATE_ERROR_Y) {
+        if (m_touchSlideMaxY <= COORDINATE_ERROR_Y) {
             //移动事件源为空,表示未曾移动过
             m_moveSource = nullptr;
         }
     }
-    if(event->type() == QEvent::MouseMove /*&& m_moveSource == watched*/
-            && mouse->source() == Qt::MouseEventSynthesizedByQt){
+    if (event->type() == QEvent::MouseMove /*&& m_moveSource == watched*/
+            && mouse->source() == Qt::MouseEventSynthesizedByQt) {
         //记录滑动最大距离
         m_touchSlideMaxY = qMax(m_touchSlideMaxY, qAbs(m_touchPressPosY - mouse->globalPos().y()));
     }
@@ -559,12 +421,6 @@ bool ItemWidget::eventFilter(QObject *watched, QEvent *event)
     return FocusFrame::eventFilter(watched, event);
 }
 
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-17
- 4. @说明:    键盘点击事件，处理右键操作
-*******************************************************************************/
 void ItemWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
@@ -586,12 +442,6 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
 
 }
 
-/*******************************************************************************
- 1. @函数:    focusInEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-23
- 4. @说明:    焦点进入事件
-*******************************************************************************/
 void ItemWidget::focusInEvent(QFocusEvent *event)
 {
     m_isFocus = true;
@@ -601,12 +451,6 @@ void ItemWidget::focusInEvent(QFocusEvent *event)
     FocusFrame::focusInEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    __FUNCTION__
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-23
- 4. @说明:    焦点丢失事件
-*******************************************************************************/
 void ItemWidget::focusOutEvent(QFocusEvent *event)
 {
     qDebug() << "ItemWidget" << __FUNCTION__ << event->reason();
@@ -627,36 +471,18 @@ void ItemWidget::focusOutEvent(QFocusEvent *event)
     FocusFrame::focusOutEvent(event);
 }
 
-/*******************************************************************************
-1. @函数:    setFont
-2. @作者:    ut000610 戴正文
-3. @日期:    2020 - 07 - 08
-4. @说明:    给指定label设置初始化字体和颜色
-******************************************************************************* */
 void ItemWidget::setFont(DLabel *label, DFontSizeManager::SizeType fontSize, ItemTextColor colorType)
 {
     setFontSize(label, fontSize);
     setFontColor(label, colorType);
 }
 
-/*******************************************************************************
- 1. @函数:    setFontSize
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-08
- 4. @说明:    设置字体大小
-*******************************************************************************/
 void ItemWidget::setFontSize(DLabel *label, DFontSizeManager::SizeType fontSize)
 {
     // 设置字体大小随系统变化
     DFontSizeManager::instance()->bind(label, fontSize);
 }
 
-/*******************************************************************************
- 1. @函数:    setFontColor
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-08
- 4. @说明:    设置字体颜色
-*******************************************************************************/
 void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
 {
     DPalette fontPalette = DApplicationHelper::instance()->palette(label);
@@ -671,13 +497,6 @@ void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    getColor
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-08
- 4. @说明:    根据指定值，返回颜色
-             目的兼容DPalette::ColorType 和 QPalette::ColorRole
-*******************************************************************************/
 QColor ItemWidget::getColor(ItemTextColor colorType)
 {
     // 获取标准颜色
@@ -701,12 +520,6 @@ QColor ItemWidget::getColor(ItemTextColor colorType)
     return color;
 }
 
-/*******************************************************************************
- 1. @函数:    RightKeyPress
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-17
- 4. @说明:    右键操作，组 => 显示分组 项 => 设置焦点
-*******************************************************************************/
 void ItemWidget::rightKeyPress()
 {
     switch (m_functType) {
@@ -727,16 +540,10 @@ void ItemWidget::rightKeyPress()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    onItemClicked
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-22
- 4. @说明:    根据类型发送不同的点击信号
-*******************************************************************************/
 void ItemWidget::onItemClicked()
 {
     /***add begin by ut001121 zhangmeng 20200924 判断移动事件来源 修复BUG48618***/
-    if(m_moveSource){
+    if (m_moveSource) {
         m_moveSource = nullptr;
         return ;
     }
@@ -757,12 +564,6 @@ void ItemWidget::onItemClicked()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    slotThemeChange
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-08
- 4. @说明:    部分组件随主题颜色变化而变化
-*******************************************************************************/
 void ItemWidget::slotThemeChange(DGuiApplicationHelper::ColorType themeType)
 {
     Q_UNUSED(themeType);

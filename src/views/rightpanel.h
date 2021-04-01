@@ -36,9 +36,22 @@ class RightPanel : public QWidget
 public:
     explicit RightPanel(QWidget *parent = nullptr);
 
+    /**
+     * @brief 处理隐藏事件
+     * @author ut001121 张猛
+     * @param event 隐藏事件
+     */
     void hideEvent(QHideEvent *event) override;
 public slots:
+    /**
+     * @brief 动画显示
+     * @author ut000610 daizhengwen
+     */
     void showAnim();
+    /**
+     * @brief 动画隐藏
+     * @author ut000610 daizhengwen
+     */
     void hideAnim();
 
 };

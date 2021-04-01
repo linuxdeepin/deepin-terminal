@@ -42,12 +42,6 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
 //    DAnchorsBase::setAnchor(this, Qt::AnchorRight, parent, Qt::AnchorRight);
 }
 
-/*******************************************************************************
- 1. @函数:    show
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    动画显示
-*******************************************************************************/
 void RightPanel::showAnim()
 {
     QWidget::show();
@@ -60,7 +54,7 @@ void RightPanel::showAnim()
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/
     int panelHeight = windowRect.height();
-    if(Utils::getMainWindow(this)->titlebar()->isVisible()){
+    if (Utils::getMainWindow(this)->titlebar()->isVisible()) {
         panelHeight -= WIN_TITLE_BAR_HEIGHT;
     }
     animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), panelHeight));
@@ -69,12 +63,6 @@ void RightPanel::showAnim()
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-/*******************************************************************************
- 1. @函数:    hideAnim
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    动画隐藏
-*******************************************************************************/
 void RightPanel::hideAnim()
 {
     // 隐藏状态不处理
@@ -89,7 +77,7 @@ void RightPanel::hideAnim()
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/
     int panelHeight = windowRect.height();
-    if(Utils::getMainWindow(this)->titlebar()->isVisible()){
+    if (Utils::getMainWindow(this)->titlebar()->isVisible()) {
         panelHeight -= WIN_TITLE_BAR_HEIGHT;
     }
     animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), panelHeight));
@@ -98,7 +86,7 @@ void RightPanel::hideAnim()
 
     /***mod begin by ut001121 zhangmeng 20200924 修复BUG49378***/
     //结束处理
-    connect(animation, &QPropertyAnimation::finished, this, [=]{
+    connect(animation, &QPropertyAnimation::finished, this, [ = ] {
         //启用面板
         setEnabled(true);
         //隐藏面板
@@ -113,24 +101,17 @@ void RightPanel::hideAnim()
     /***mod end by ut001121***/
 }
 
-/*******************************************************************************
- 1. @函数:    hideEvent
- 2. @作者:    ut001121 张猛
- 3. @日期:    2020-08-01
- 4. @说明:    处理隐藏事件
-*******************************************************************************/
 void RightPanel::hideEvent(QHideEvent *event)
 {
     /***add begin by ut001121 zhangmeng 20200801 解决终端插件被隐藏时焦点回退到工作区的问题***/
-    if(QApplication::focusWidget())
-    {
+    if (QApplication::focusWidget()) {
         // 焦点控件的全局坐标
-        QPoint focusPoint = QApplication::focusWidget()->mapToGlobal(QPoint(0,0));
+        QPoint focusPoint = QApplication::focusWidget()->mapToGlobal(QPoint(0, 0));
         // 焦点相对当前控件坐标
         focusPoint = mapFromGlobal(focusPoint);
 
         // 判断是否包含坐标
-        if(rect().contains(focusPoint)){
+        if (rect().contains(focusPoint)) {
             Utils::getMainWindow(this)->focusCurrentPage();
         }
     }

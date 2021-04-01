@@ -46,12 +46,6 @@ TitleStyleRadioButton::TitleStyleRadioButton(const QString &text, QWidget *paren
 
 }
 
-/*******************************************************************************
- 1. @函数:    setBackGroundColor
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    设置背景色
-*******************************************************************************/
 void TitleStyleRadioButton::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
@@ -60,12 +54,6 @@ void TitleStyleRadioButton::mousePressEvent(QMouseEvent *event)
     DRadioButton::mousePressEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    按键按下事件
-*******************************************************************************/
 void TitleStyleRadioButton::keyPressEvent(QKeyEvent *event)
 {
     //增加设置按键捕获，让单选按钮在键盘操作下同样支持enter键盘控制作为选中操作，原生已经支持空格键作为选中操作
@@ -76,46 +64,22 @@ void TitleStyleRadioButton::keyPressEvent(QKeyEvent *event)
 }
 
 
-/*******************************************************************************
- 1. @函数:    ColorPushButton
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    构造函数初始化
-*******************************************************************************/
 ColorPushButton::ColorPushButton(QWidget *parent): DPushButton(parent)
 {
     setFocusPolicy(Qt::TabFocus);
 }
 
-/*******************************************************************************
- 1. @函数:    setBackGroundColor
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    设置背景色
-*******************************************************************************/
 void ColorPushButton::setBackGroundColor(const QColor &color)
 {
     m_color = color;
     update();
 }
 
-/*******************************************************************************
- 1. @函数:    getBackGroundColor
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    getBackGroundColor
-*******************************************************************************/
 QColor ColorPushButton::getBackGroundColor()
 {
     return  m_color;
 }
 
-/*******************************************************************************
- 1. @函数:    paintEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    处理重绘事件
-*******************************************************************************/
 void ColorPushButton::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
@@ -147,26 +111,20 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
 
     //tab焦点存在，绘制边框
     if (m_isFocus) {
-      //边框绘制路径
-      QPainterPath pathFrame;
-      pathFrame.addRoundedRect(QRectF(1, 1, 32, 32), 8, 8);
+        //边框绘制路径
+        QPainterPath pathFrame;
+        pathFrame.addRoundedRect(QRectF(1, 1, 32, 32), 8, 8);
 
-      //绘画边框
-      QPen framePen;
-      DPalette pax = DApplicationHelper::instance()->palette(this);
-      //获取活动色
-      framePen = QPen(pax.color(DPalette::Highlight), 2);
-      painter.setPen(framePen);
-      painter.drawPath(pathFrame);
+        //绘画边框
+        QPen framePen;
+        DPalette pax = DApplicationHelper::instance()->palette(this);
+        //获取活动色
+        framePen = QPen(pax.color(DPalette::Highlight), 2);
+        painter.setPen(framePen);
+        painter.drawPath(pathFrame);
     }
 }
 
-/*******************************************************************************
- 1. @函数:    focusInEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    焦点进入事件
-*******************************************************************************/
 void ColorPushButton::focusInEvent(QFocusEvent *event)
 {
     // 焦点入
@@ -182,12 +140,6 @@ void ColorPushButton::focusInEvent(QFocusEvent *event)
     DPushButton::focusInEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    focusOutEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    焦点离开事件
-*******************************************************************************/
 void ColorPushButton::focusOutEvent(QFocusEvent *event)
 {
     // 焦点Tab出
@@ -198,12 +150,6 @@ void ColorPushButton::focusOutEvent(QFocusEvent *event)
     DPushButton::focusOutEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    按键按下事件
-*******************************************************************************/
 void ColorPushButton::keyPressEvent(QKeyEvent *event)
 {
     if ((Qt::Key_Return == event->key()) || (Qt::Key_Enter == event->key())) {
@@ -213,12 +159,6 @@ void ColorPushButton::keyPressEvent(QKeyEvent *event)
     DPushButton::keyPressEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    mousePressEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    鼠标按下事件
-*******************************************************************************/
 void ColorPushButton::mousePressEvent(QMouseEvent *event)
 {
     emit clearFocussSignal();
@@ -243,12 +183,6 @@ CustomThemeSettingDialog::CustomThemeSettingDialog(QWidget *parent) : DAbstractD
     setFixedSize(459, 378);
 }
 
-/*******************************************************************************
- 1. @函数:    initUITitle
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    标题栏初始化
-*******************************************************************************/
 void CustomThemeSettingDialog::initUITitle()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -310,12 +244,6 @@ void CustomThemeSettingDialog::initUITitle()
     m_mainLayout = mainLayout;
 }
 
-/*******************************************************************************
- 1. @函数:    initUI
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    工作区初始化
-*******************************************************************************/
 void CustomThemeSettingDialog::initUI()
 {
     QWidget *contentFrame = new QWidget;
@@ -470,12 +398,6 @@ void CustomThemeSettingDialog::initUI()
     loadConfiguration();
 }
 
-/*******************************************************************************
- 1. @函数:    initTitleConnections
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    标题栏初始化信号槽
-*******************************************************************************/
 void CustomThemeSettingDialog::initTitleConnections()
 {
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
@@ -496,12 +418,6 @@ void CustomThemeSettingDialog::initTitleConnections()
     });
 }
 
-/*******************************************************************************
- 1. @函数:    addCancelConfirmButtons
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    增加确认取消按钮
-*******************************************************************************/
 void CustomThemeSettingDialog::addCancelConfirmButtons()
 {
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
@@ -582,12 +498,6 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
 
 }
 
-/*******************************************************************************
- 1. @函数:    onSelectColor
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    选择配色槽
-*******************************************************************************/
 void CustomThemeSettingDialog::onSelectColor()
 {
     ColorPushButton *pushButton = qobject_cast<ColorPushButton *>(sender());
@@ -611,12 +521,6 @@ void CustomThemeSettingDialog::onSelectColor()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    clearFocussSlot
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    清理按钮焦点槽
-*******************************************************************************/
 void CustomThemeSettingDialog::clearFocussSlot()
 {
     m_closeButton->clearFocus();
@@ -637,12 +541,6 @@ void CustomThemeSettingDialog::clearFocussSlot()
     m_logoIcon->setFocus();
 }
 
-/*******************************************************************************
- 1. @函数:    loadConfiguration
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    加载主题配置
-*******************************************************************************/
 void CustomThemeSettingDialog::loadConfiguration()
 {
     //重置单选按钮的tab焦点状态
@@ -715,12 +613,6 @@ void CustomThemeSettingDialog::loadConfiguration()
     m_themePreviewArea->setAllColorParameter(foregroundColorParameter, backgroundColorParameter, ps1ColorParameter, ps2ColorParameter);
 }
 
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    键盘事件
-*******************************************************************************/
 void CustomThemeSettingDialog::keyPressEvent(QKeyEvent *event)
 {
     if (Qt::Key_Escape == event->key()) {
@@ -729,24 +621,12 @@ void CustomThemeSettingDialog::keyPressEvent(QKeyEvent *event)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    showEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    显示事件
-*******************************************************************************/
 void CustomThemeSettingDialog::showEvent(QShowEvent *event)
 {
     clearFocussSlot();
     DAbstractDialog::showEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    resetFocusState
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    重置单选按钮的tab焦点状态，保证每次打开时，第一个单选按钮是tab键盘控制的选中按钮
-*******************************************************************************/
 void CustomThemeSettingDialog::resetFocusState()
 {
     m_darkRadioButton->setFocusPolicy(Qt::NoFocus);

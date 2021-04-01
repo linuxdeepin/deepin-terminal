@@ -36,6 +36,11 @@ class TermCommandLinkButton : public DPushButton
 {
     Q_OBJECT
 public:
+    /**
+     * @brief 设置DPushButton属性，字体颜色，焦点， 提高边框
+     * @author ut000610 daizhengwen
+     * @param parent
+     */
     explicit TermCommandLinkButton(QWidget *parent = nullptr);
 };
 

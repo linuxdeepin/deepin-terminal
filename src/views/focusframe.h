@@ -51,21 +51,53 @@ public:
     bool m_isHover = false;
 
 protected:
-    // 处理重绘事件
+    /**
+     * @brief 处理重绘事件，绘制圆角和边框
+     * @author ut000610 戴正文
+     * @param event
+     */
     void paintEvent(QPaintEvent *event) override;
-    // 进入事件和出事件
+    /**
+     * @brief 鼠标进入，显示DPalette::ObviousBackground背景色
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void enterEvent(QEvent *event) override;
+
+    /**
+     * @brief 鼠标移除，显示DPalette::ItemBackground背景色
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void leaveEvent(QEvent *event) override;
-    // 焦点出入事件
+    /**
+     * @brief 焦点进入
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void focusInEvent(QFocusEvent *event) override;
+    /**
+     * @brief 焦点移除
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void focusOutEvent(QFocusEvent *event) override;
 
 private:
     // 焦点是否在 用于背景和边框
     bool m_isFocus = false;
-    // 画一个圆角矩形路径
+    /**
+     * @brief 画一个圆角矩形,根据矩形大小 => 获取圆角矩形
+     * @author ut000610 戴正文
+     * @param path 路径
+     * @param background 背景
+     */
     void paintRoundedRect(QPainterPath &path, const QRect &background);
-    // 设置背景色
+    /**
+     * @brief 根据是否悬浮和是否被选中，判断界面的背景色
+     * @author ut000610 戴正文
+     * @return
+     */
     int getBackgroudColorRole();
 };
 

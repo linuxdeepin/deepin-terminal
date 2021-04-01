@@ -38,7 +38,17 @@ public:
     TitleBar(QWidget *parent = nullptr, bool isQuakeWindowStyle = false);
     ~TitleBar();
 
+    /**
+     * @brief 设置标签栏
+     * @author ut000610 daizhengwen
+     * @param widget
+     */
     void setTabBar(QWidget *widget);
+    /**
+     * @brief 右边的空间
+     * @author ut000610 daizhengwen
+     * @return
+     */
     int rightSpace();
 
 private:

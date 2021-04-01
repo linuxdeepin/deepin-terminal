@@ -31,21 +31,13 @@
 #include <QBitmap>
 #include <QPainterPath>
 
-ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent),m_titleRect(0, 0, 439, 35)
+ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent), m_titleRect(0, 0, 439, 35)
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
     setFixedSize(439, 113);
 }
 
-/*******************************************************************************
- 1. @函数:    paintEvent
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    处理重绘事件
-             备注：预览界面的视觉错觉，在深色区域和预览背景的蓝色（ rgb(85,0,255) ）接触边线最明显，
-             左上两边看起来是紫红色，右下两边看起来是蓝色。关联的bug#57007
-*******************************************************************************/
 void ThemePreviewArea::paintEvent(QPaintEvent *event)
 {
     QPainter *painter = new QPainter(this);
@@ -110,12 +102,6 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
     DWidget::paintEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    setTitleStyle
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    设置主题风格
-*******************************************************************************/
 void ThemePreviewArea::setTitleStyle(const QString &titleStyle)
 {
     if ("Light" == titleStyle) {
@@ -127,60 +113,30 @@ void ThemePreviewArea::setTitleStyle(const QString &titleStyle)
     update();
 }
 
-/*******************************************************************************
- 1. @函数:    setBackgroundColor
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    设置背景色
-*******************************************************************************/
 void ThemePreviewArea::setBackgroundColor(const QColor &color)
 {
     m_backgroundColor = color;
     update();
 }
 
-/*******************************************************************************
- 1. @函数:    setForegroundgroundColor
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    设置前景色
-*******************************************************************************/
 void ThemePreviewArea::setForegroundgroundColor(const QColor &color)
 {
     m_foregroundColor = color;
     update();
 }
 
-/*******************************************************************************
- 1. @函数:    setPs1Color
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    设置ps1颜色
-*******************************************************************************/
 void ThemePreviewArea::setPs1Color(const QColor &color)
 {
     m_ps1Color = color;
     update();
 }
 
-/*******************************************************************************
- 1. @函数:    setPs2Color
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    设置ps2颜色
-*******************************************************************************/
 void ThemePreviewArea::setPs2Color(const QColor &color)
 {
     m_ps2Color = color;
     update();
 }
 
-/*******************************************************************************
- 1. @函数:    setAllColorParameter
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    setAllColorParameter
-*******************************************************************************/
 void ThemePreviewArea::setAllColorParameter(const QColor &foregroundColorParameter, const QColor &backgroundColorParameter, const QColor &ps1ColorParameter, const QColor &ps2ColorParameter)
 {
     m_foregroundColor = foregroundColorParameter;

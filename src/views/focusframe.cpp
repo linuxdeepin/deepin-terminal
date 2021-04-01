@@ -38,12 +38,6 @@ FocusFrame::FocusFrame(QWidget *parent)
 }
 
 
-/*******************************************************************************
- 1. @函数:    paintEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-16
- 4. @说明:    绘制圆角和边框
-*******************************************************************************/
 void FocusFrame::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
@@ -84,12 +78,6 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     event->ignore();
 }
 
-/*******************************************************************************
- 1. @函数:    enterEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-16
- 4. @说明:    鼠标进入，显示DPalette::ObviousBackground背景色
-*******************************************************************************/
 void FocusFrame::enterEvent(QEvent *event)
 {
     // 鼠标进入
@@ -101,12 +89,6 @@ void FocusFrame::enterEvent(QEvent *event)
     DFrame::enterEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    leaveEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-16
- 4. @说明:    鼠标移除，显示DPalette::ItemBackground背景色
-*******************************************************************************/
 void FocusFrame::leaveEvent(QEvent *event)
 {
     // 鼠标出
@@ -118,12 +100,6 @@ void FocusFrame::leaveEvent(QEvent *event)
     DFrame::leaveEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    focusInEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-16
- 4. @说明:    焦点进入
-*******************************************************************************/
 void FocusFrame::focusInEvent(QFocusEvent *event)
 {
     qDebug() << __FUNCTION__ << event << event->reason();
@@ -132,12 +108,6 @@ void FocusFrame::focusInEvent(QFocusEvent *event)
     DFrame::focusInEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    focusOutEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-16
- 4. @说明:    焦点移除
-*******************************************************************************/
 void FocusFrame::focusOutEvent(QFocusEvent *event)
 {
     qDebug() << __FUNCTION__ << event << event->reason();
@@ -146,12 +116,6 @@ void FocusFrame::focusOutEvent(QFocusEvent *event)
     DFrame::focusOutEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    getRoundedRect
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-17
- 4. @说明:    更具矩形大小 => 获取圆角矩形
-*******************************************************************************/
 void FocusFrame::paintRoundedRect(QPainterPath &path, const QRect &background)
 {
     // 这两个参数调整可以调整圆角
@@ -169,12 +133,6 @@ void FocusFrame::paintRoundedRect(QPainterPath &path, const QRect &background)
     path.lineTo(background.left() + arcRadius, background.top());
 }
 
-/*******************************************************************************
- 1. @函数:    getBackgroudColorRole
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-17
- 4. @说明:    根据是否悬浮和是否被选中，判断界面的背景色
-*******************************************************************************/
 int FocusFrame::getBackgroudColorRole()
 {
     if (m_isHover) {

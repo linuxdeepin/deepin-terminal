@@ -29,12 +29,6 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-/*******************************************************************************
- 1. @函数:    TabRenameDlg
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    标签重命名构造函数
-*******************************************************************************/
 TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
 {
     initUi();
@@ -42,12 +36,6 @@ TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
     initConnections();
 }
 
-/*******************************************************************************
- 1. @函数:    initUi
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化主窗口的ui
-*******************************************************************************/
 void TabRenameDlg::initUi()
 {
     setWindowModality(Qt::ApplicationModal);
@@ -107,12 +95,6 @@ void TabRenameDlg::initUi()
     setLayout(mainLayout);
 }
 
-/*******************************************************************************
- 1. @函数:    addContent
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    向主窗口中添加控件
-*******************************************************************************/
 void TabRenameDlg::addContent(QWidget *content)
 {
     Q_ASSERT(nullptr != getContentLayout());
@@ -120,69 +102,33 @@ void TabRenameDlg::addContent(QWidget *content)
     getContentLayout()->addWidget(content);
 }
 
-/*******************************************************************************
- 1. @函数:    getContentLayout
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    获取主窗口最外层布局接口
-*******************************************************************************/
 QLayout *TabRenameDlg::getContentLayout()
 {
     return m_contentLayout;
 }
 
-/*******************************************************************************
- 1. @函数:    setText
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-11-02
- 4. @说明:    设置lineedit显示的文字
-*******************************************************************************/
 void TabRenameDlg::setText(const QString &tabTitleFormat, const QString &remoteTabTitleFormat)
 {
     setNormalLineEditText(tabTitleFormat);
     setRemoteLineEditText(remoteTabTitleFormat);
 }
 
-/*******************************************************************************
- 1. @函数:    setNormalLineEditText
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-31
- 4. @说明:    窗口普通输入条内容设置接口
-*******************************************************************************/
 void TabRenameDlg::setNormalLineEditText(const QString &text)
 {
     m_tabTitleEdit->getInputedit()->setText(text);
 }
 
-/*******************************************************************************
- 1. @函数:    setRemoteLineEditText
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-31
- 4. @说明:    窗口远程输入条内容设置接口
-*******************************************************************************/
 void TabRenameDlg::setRemoteLineEditText(const QString &text)
 {
     m_remoteTabTitleEdit->getInputedit()->setText(text);
 }
 
 
-/*******************************************************************************
- 1. @函数:    getRemoteTabTitleEdit
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-11-4
- 4. @说明:    获取远程重命名控件接口
-*******************************************************************************/
 QLineEdit *TabRenameDlg::getRemoteTabTitleEdit() const
 {
     return m_remoteTabTitleEdit->getInputedit()->lineEdit();
 }
 
-/*******************************************************************************
- 1. @函数:    setFocusOnEdit
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-11-20
- 4. @说明:    将焦点设置在输入框内
-*******************************************************************************/
 void TabRenameDlg::setFocusOnEdit(bool isRemote)
 {
     QLineEdit *lineEdit = nullptr;
@@ -199,23 +145,11 @@ void TabRenameDlg::setFocusOnEdit(bool isRemote)
     lineEdit->selectAll();
 }
 
-/*******************************************************************************
- 1. @函数:    getTabTitleEdit
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-11-4
- 4. @说明:    获取普通重命名控件接口
-*******************************************************************************/
 QLineEdit *TabRenameDlg::getTabTitleEdit() const
 {
     return m_tabTitleEdit->getInputedit()->lineEdit();
 }
 
-/*******************************************************************************
- 1. @函数:    getContentLayout
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化窗口包含的控件
-*******************************************************************************/
 void TabRenameDlg::initContentWidget()
 {
     m_mainLayout = new QVBoxLayout();
@@ -244,12 +178,6 @@ void TabRenameDlg::initContentWidget()
     m_confirmButton->setDefault(true);
 }
 
-/*******************************************************************************
- 1. @函数:    initConnections
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化链接
-*******************************************************************************/
 void TabRenameDlg::initConnections()
 {
     connect(m_cancelButton, &DPushButton::clicked, this, [ = ] {
@@ -270,12 +198,6 @@ void TabRenameDlg::initConnections()
     });
 }
 
-/*******************************************************************************
- 1. @函数:    initTitleLabel
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化标题
-*******************************************************************************/
 void TabRenameDlg::initTitleLabel()
 {
     m_titlelabel = new DLabel(QObject::tr("Rename title"), this);
@@ -284,12 +206,6 @@ void TabRenameDlg::initTitleLabel()
     DFontSizeManager::instance()->bind(m_titlelabel, DFontSizeManager::T6);
 }
 
-/*******************************************************************************
- 1. @函数:    initRenameWidget
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化窗口中第二，三行，参数 isRemote表示是否为远程
-*******************************************************************************/
 void TabRenameDlg::initRenameWidget(bool isRemote)
 {
     QHBoxLayout *TAbLayout = new QHBoxLayout();
@@ -309,12 +225,6 @@ void TabRenameDlg::initRenameWidget(bool isRemote)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    initButtonWidget
- 2. @作者:    ut000442 赵公强
- 3. @日期:    2020-10-30
- 4. @说明:    初始化按钮控件
-*******************************************************************************/
 void TabRenameDlg::initButtonWidget()
 {
     m_buttonWidget = new QWidget;

@@ -54,24 +54,11 @@ ListView::ListView(ListType type, QWidget *parent)
     });
 }
 
-/*******************************************************************************
- 1. @函数:    ~ListView
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    析构，用于释放列表中的数据
-*******************************************************************************/
 ListView::~ListView()
 {
     clearData();
 }
 
-/*******************************************************************************
- 1. @函数:    addItem
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    根据所给信息添加项
- 1）参数 type ItemFuncType_Item 可执行的项 ItemFuncType_Group 分组
-*******************************************************************************/
 void ListView::addItem(ItemFuncType type, const QString &key, const QString &strDescription)
 {
     // 初始化项
@@ -106,23 +93,11 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
 
 }
 
-/*******************************************************************************
- 1. @函数:    onItemClicked
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-09
- 4. @说明:    列表项被点击
-*******************************************************************************/
 inline void ListView::onItemClicked()
 {
     lostFocus(m_currentIndex);
 }
 
-/*******************************************************************************
- 1. @函数:    onFocusOut
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-09
- 4. @说明:    焦点切出
-*******************************************************************************/
 inline void ListView::onFocusOut(Qt::FocusReason type)
 {
     emit focusOut(type);
@@ -130,12 +105,6 @@ inline void ListView::onFocusOut(Qt::FocusReason type)
     m_focusState = false;
 }
 
-/*******************************************************************************
- 1. @函数:    onGroupClicked
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-09
- 4. @说明:    分组项被点击
-*******************************************************************************/
 inline void ListView::onGroupClicked(const QString &strName, bool isFocus)
 {
     emit groupClicked(strName, isFocus);
@@ -148,12 +117,6 @@ inline void ListView::onGroupClicked(const QString &strName, bool isFocus)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    removeItem
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    根据类型和key值移除项
-*******************************************************************************/
 bool ListView::removeItem(ItemFuncType type, const QString &key)
 {
     bool isFind = false;
@@ -173,12 +136,6 @@ bool ListView::removeItem(ItemFuncType type, const QString &key)
     return isFind;
 }
 
-/*******************************************************************************
- 1. @函数:    updateItem
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    针对列表中的一项进行更新
-*******************************************************************************/
 bool ListView::updateItem(ItemFuncType type, const QString &key, const QString &newKey, const QString &strDescription)
 {
     bool isFind = false;
@@ -198,23 +155,11 @@ bool ListView::updateItem(ItemFuncType type, const QString &key, const QString &
     return isFind;
 }
 
-/*******************************************************************************
- 1. @函数:    count
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    获取列表中项的数量
-*******************************************************************************/
 int ListView::count()
 {
     return m_itemList.count();
 }
 
-/*******************************************************************************
- 1. @函数:    clearData
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    刷新列表需要清空数据
-*******************************************************************************/
 void ListView::clearData()
 {
     for (ItemWidget *item : m_itemList) {
@@ -225,12 +170,6 @@ void ListView::clearData()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    indexFromString
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-21
- 4. @说明:    根据名称获取现有列表的index
-*******************************************************************************/
 int ListView::indexFromString(const QString &key, ItemFuncType type)
 {
     // 遍历布局
@@ -248,23 +187,11 @@ int ListView::indexFromString(const QString &key, ItemFuncType type)
     return -1;
 }
 
-/*******************************************************************************
- 1. @函数:    currentIndex
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-28
- 4. @说明:    返回焦点选中的index
-*******************************************************************************/
 int ListView::currentIndex()
 {
     return m_currentIndex;
 }
 
-/*******************************************************************************
- 1. @函数:    getNextIndex
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-24
- 4. @说明:    获取当前下一个的index 实质判断现在此index是否可用
-*******************************************************************************/
 int ListView::getNextIndex(int index)
 {
     if (index < 0) {
@@ -287,12 +214,6 @@ int ListView::getNextIndex(int index)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    setCurrentIndex
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-23
- 4. @说明:    设置当前焦点
-*******************************************************************************/
 void ListView::setCurrentIndex(int currentIndex)
 {
     // 首先判断currentIndex的有效性
@@ -323,24 +244,12 @@ void ListView::setCurrentIndex(int currentIndex)
     m_currentIndex = currentIndex;
 }
 
-/*******************************************************************************
- 1. @函数:    clearIndex
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-28
- 4. @说明:    清空index
-*******************************************************************************/
 void ListView::clearIndex()
 {
     m_currentIndex = -1;
     qDebug() << __FUNCTION__ << "clear index to  -1";
 }
 
-/*******************************************************************************
- 1. @函数:    onItemModify
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-21
- 4. @说明:    列表项被修改，弹出弹窗给用户修改
-*******************************************************************************/
 void ListView::onItemModify(const QString &key, bool isFocusOn)
 {
     switch (m_type) {
@@ -354,12 +263,6 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
 
 }
 
-/*******************************************************************************
- 1. @函数:    onRemoteItemModify
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-08-03
- 4. @说明:    处理远程管理修改项的弹窗操作
-*******************************************************************************/
 void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
 {
     int curIndex = m_currentIndex;
@@ -391,12 +294,6 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
     m_configDialog->show();
 }
 
-/*******************************************************************************
- 1. @函数:    onServerConfigOptDlgFinished
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-09
- 4. @说明:    编辑远程服务器弹窗finished
-*******************************************************************************/
 inline void ListView::onServerConfigOptDlgFinished(int result)
 {
     // 弹窗隐藏或消失
@@ -478,12 +375,6 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    onDeleteServerDialogFinished
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-09
- 4. @说明:    删除远程服务器弹窗finished
-*******************************************************************************/
 inline void ListView::onDeleteServerDialogFinished(int result)
 {
     // 获取index
@@ -516,12 +407,6 @@ inline void ListView::onDeleteServerDialogFinished(int result)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    onCustomItemModify
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-08-03
- 4. @说明:    修改自定义项处理弹窗的操作
-*******************************************************************************/
 void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
 {
     qDebug() <<  __FUNCTION__ << __LINE__;
@@ -561,12 +446,6 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
     m_pdlg->show();
 }
 
-/*******************************************************************************
- 1. @函数:    onCustomCommandOptDlgFinished
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-09
- 4. @说明:    编辑自定义命令弹窗finished
-*******************************************************************************/
 inline void ListView::onCustomCommandOptDlgFinished(int result)
 {
     int tempResult = result;
@@ -659,12 +538,6 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
     qDebug() << "================================tempResult=" << tempResult;
 }
 
-/*******************************************************************************
- 1. @函数:    onDeleteCustomCommandFinished
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-09
- 4. @说明:    删除自定义命令弹窗finished
-*******************************************************************************/
 inline void ListView::onDeleteCustomCommandFinished(int result)
 {
     //是否删除自定义命令再次确认操作
@@ -697,12 +570,6 @@ inline void ListView::onDeleteCustomCommandFinished(int result)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    keyPressEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    对Tab和上下键进行处理
-*******************************************************************************/
 void ListView::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
@@ -724,12 +591,6 @@ void ListView::keyPressEvent(QKeyEvent *event)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    focusInEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-21
- 4. @说明:    焦点进
-*******************************************************************************/
 void ListView::focusInEvent(QFocusEvent *event)
 {
     qDebug() << __FUNCTION__ << event->reason();
@@ -746,34 +607,16 @@ void ListView::focusInEvent(QFocusEvent *event)
     QScrollArea::focusInEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    setFocusState
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-24
- 4. @说明:    设置焦点状态
-*******************************************************************************/
 void ListView::setFocusState(bool focusState)
 {
     m_focusState = focusState;
 }
 
-/*******************************************************************************
- 1. @函数:    getFocusState
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-24
- 4. @说明:    获得焦点状态
-*******************************************************************************/
 bool ListView::getFocusState() const
 {
     return m_focusState;
 }
 
-/*******************************************************************************
- 1. @函数:    initUI
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    初始化列表，设置列表内布局，垂直布局，控件间隔10px
-*******************************************************************************/
 void ListView::initUI()
 {
     // 间隔
@@ -797,13 +640,6 @@ void ListView::initUI()
 
 }
 
-/*******************************************************************************
- 1. @函数:    setItemIcon
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    根据列表类型设置图标
- (远程组图标 dt_server_group 远程服务器图标 dt_server 自定义图标 dt_command)
-*******************************************************************************/
 void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
 {
     switch (type) {
@@ -851,12 +687,6 @@ static inline bool comparator(ItemWidget *item1, ItemWidget *item2)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    getWidgetIndex
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    根据类型进行数据的插入位置的选择，按type和key值，以及strDescription排序
-*******************************************************************************/
 int ListView::getWidgetIndex(ItemWidget *itemWidget)
 {
     qSort(m_itemList.begin(), m_itemList.end(), comparator);
@@ -875,20 +705,6 @@ int ListView::getWidgetIndex(ItemWidget *itemWidget)
     return currentIndex;
 }
 
-/*******************************************************************************
- 1. @函数:    setFocusFromeIndex
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    根据index切换焦点
- 1)参数1 currentIndex 当前项的值
- 2)参数2 ListFocusType
-    ListFocusUp,   向上
-    ListFocusDown, 向下
-    ListFocusHome, 第一个
-    ListFocusEnd,  最后一个
-    ListFocusPageUp, 向上翻页
-    ListFocusPageDown 向下翻页
-*******************************************************************************/
 void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
 {
     int count = m_itemList.count();
@@ -972,12 +788,6 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
     qDebug() << "current index : " << m_currentIndex;
 }
 
-/*******************************************************************************
- 1. @函数:    lostFocus
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-20
- 4. @说明:    因为上下键或者Tab丢失焦点
-*******************************************************************************/
 void ListView::lostFocus(int preIndex)
 {
     qDebug() << __FUNCTION__;
@@ -995,12 +805,6 @@ void ListView::lostFocus(int preIndex)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    setScroll
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-21
- 4. @说明:    将滚轮设置到当前项
-*******************************************************************************/
 void ListView::setScroll(int currentIndex)
 {
     qDebug() << __FUNCTION__;
@@ -1029,24 +833,12 @@ void ListView::setScroll(int currentIndex)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    indexIsValid
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-23
- 4. @说明:    判断index的有效性
-*******************************************************************************/
 bool ListView::indexIsValid(int index)
 {
     qDebug() << index << m_itemList.count();
     return ((index >= 0) && (index < m_itemList.count()));
 }
 
-/*******************************************************************************
- 1. @函数:    calculateRange
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-27
- 4. @说明:    计算滚动条的range
-*******************************************************************************/
 int ListView::calculateRange(int height)
 {
     int count = m_itemList.count();
@@ -1054,24 +846,12 @@ int ListView::calculateRange(int height)
     return range;
 }
 
-/*******************************************************************************
- 1. @函数:    mousePressEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-27
- 4. @说明:    鼠标按下
-*******************************************************************************/
 void ListView::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
     //return QScrollArea::mousePressEvent(event);
 }
 
-/*******************************************************************************
- 1. @函数:    mouseMoveEvent
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-07-27
- 4. @说明:    鼠标移动
-*******************************************************************************/
 void ListView::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)

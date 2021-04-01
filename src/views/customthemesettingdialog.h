@@ -58,9 +58,17 @@ class TitleStyleRadioButton: public DRadioButton
 public:
     explicit TitleStyleRadioButton(const QString &text, QWidget *parent = nullptr);
 protected:
-    //鼠标按下事件
+    /**
+     * @brief 设置背景色
+     * @author ut000125 sunchengxi
+     * @param event 鼠标按下事件
+     */
     void mousePressEvent(QMouseEvent *event) override;
-    //按键按下事件
+    /**
+     * @brief 按键按下事件
+     * @author ut000125 sunchengxi
+     * @param event 按键按下事件
+     */
     void keyPressEvent(QKeyEvent *event) override;
 public:
     //鼠标操作标志位
@@ -77,10 +85,23 @@ class ColorPushButton: public DPushButton
 {
     Q_OBJECT
 public:
+    /**
+     * @brief 构造函数初始化
+     * @author ut000125 sunchengxi
+     * @param parent
+     */
     explicit ColorPushButton(QWidget *parent = nullptr);
-    //设置背景色
+    /**
+     * @brief 设置背景色
+     * @author ut000125 sunchengxi
+     * @param color 颜色
+     */
     void setBackGroundColor(const QColor &color);
-    //获取背景色
+    /**
+     * @brief 获取背景色
+     * @author ut000125 sunchengxi
+     * @return
+     */
     QColor getBackGroundColor();
 
 signals:
@@ -88,15 +109,42 @@ signals:
     void clearFocussSignal();
 
 protected:
-    //处理重绘事件
+    /**
+     * @brief 处理重绘事件
+     * @anchor ut000125 sunchengxi
+     * @param event 重绘事件
+     */
     void paintEvent(QPaintEvent *event) override;
-    //焦点进入事件
+    /**
+     * @brief 焦点进入事件
+     * @author ut000125 sunchengxi
+     * @param event 事件
+     */
     void focusInEvent(QFocusEvent *event) override;
     //焦点离开事件
+    /*******************************************************************************
+     1. @函数:    focusOutEvent
+     2. @作者:    ut000125 sunchengxi
+     3. @日期:    2020-12-01
+     4. @说明:    焦点离开事件
+    *******************************************************************************/
+    /**
+     * @brief 焦点离开事件
+     * @author ut000125 sunchengxi
+     * @param event 事件
+     */
     void focusOutEvent(QFocusEvent *event) override;
-    //按键按下事件
+    /**
+     * @brief 按键按下事件
+     * @author ut000125 sunchengxi
+     * @param event 事件
+     */
     void keyPressEvent(QKeyEvent *event) override;
-    //鼠标按下事件
+    /**
+     * @brief 鼠标按下事件
+     * @author ut000125 sunchengxi
+     * @param event 事件
+     */
     void mousePressEvent(QMouseEvent *event) override;
 public:
     //背景色
@@ -117,29 +165,61 @@ class CustomThemeSettingDialog : public DAbstractDialog
     Q_OBJECT
 public:
     explicit CustomThemeSettingDialog(QWidget *parent = nullptr);
-    //重置单选按钮的tab焦点状态，保证每次打开时，第一个单选按钮是tab键盘控制的选中按钮
+    /**
+     * @brief 重置单选按钮的tab焦点状态，保证每次打开时，第一个单选按钮是tab键盘控制的选中按钮
+     * @author ut000125 sunchengxi
+     */
     void resetFocusState();
 
 protected:
-    //标题栏初始化
+    /**
+     * @brief 标题栏初始化
+     * @author ut000125 sunchengxi
+     */
     void initUITitle();
-    //工作区初始化
+    /**
+     * @brief 工作区初始化
+     * @author ut000125 sunchengxi
+     */
     void initUI();
-    //标题栏初始化信号槽
+    /**
+     * @brief 标题栏初始化信号槽
+     * @author ut000125 sunchengxi
+     */
     void initTitleConnections();
-    //增加确认取消按钮
+    /**
+     * @brief 增加确认取消按钮
+     * @author ut000125 sunchengxi
+     */
     void addCancelConfirmButtons();
-    //加载主题配置
+    /**
+     * @brief 加载主题配置
+     * @author ut000125 sunchengxi
+     */
     void loadConfiguration();
-    //键盘事件
+    /**
+     * @brief 键盘事件
+     * @author ut000125 sunchengxi
+     * @param 事件
+     */
     void keyPressEvent(QKeyEvent *event) override;
-    //显示事件
+    /**
+     * @brief 显示事件
+     * @author ut000125 sunchengxi
+     * @param 事件
+     */
     void showEvent(QShowEvent *event) override;
 
 public slots:
-    //选择配色槽
+    /**
+     * @brief 选择配色槽
+     * @author ut000125 sunchengxi
+     */
     void onSelectColor();
-    //清理按钮焦点槽
+    /**
+     * @brief 清理按钮焦点槽
+     * @author ut000125 sunchengxi
+     */
     void clearFocussSlot();
 
 private:

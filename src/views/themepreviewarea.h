@@ -41,21 +41,50 @@ class ThemePreviewArea : public DWidget
     Q_OBJECT
 public:
     explicit ThemePreviewArea(QWidget *parent = nullptr);
-    //设置主题风格
+    /**
+     * @brief 设置主题风格
+     * @author ut000125 sunchengxi
+     * @param titleStyle 主题类型
+     */
     void setTitleStyle(const QString &titleStyle);
-    //设置背景色
+    /**
+     * @brief 设置背景色
+     * @author ut000125 sunchengxi
+     * @param color 颜色
+     */
     void setBackgroundColor(const QColor &color);
-    //设置前景色
+    /**
+     * @brief 设置前景色
+     * @author ut000125 sunchengxi
+     * @param color 颜色
+     */
     void setForegroundgroundColor(const QColor &color);
-    //设置ps1颜色
+    /**
+     * @brief 设置ps1颜色
+     * @author ut000125 sunchengxi
+     * @param color 颜色
+     */
     void setPs1Color(const QColor &color);
-    //设置ps2颜色
+    /**
+     * @brief 设置ps2颜色
+     * @author ut000125 sunchengxi
+     * @param color 颜色
+     */
     void setPs2Color(const QColor &color);
-    //设置全部配色
+    /**
+     * @brief 设置全部配色
+     * @param foregroundColorParameter 前景色
+     * @param backgroundColorParameter 背景色
+     * @param ps1ColorParameter ps1颜色
+     * @param ps2ColorParameter ps2颜色
+     */
     void setAllColorParameter(const QColor &foregroundColorParameter, const QColor &backgroundColorParameter, const QColor &ps1ColorParameter, const QColor &ps2ColorParameter);
 
 protected:
-    //处理重绘事件
+    /**
+     * @brief 处理重绘事件 备注：预览界面的视觉错觉，在深色区域和预览背景的蓝色（ rgb(85,0,255) ）接触边线最明显，左上两边看起来是紫红色，右下两边看起来是蓝色。关联的bug#57007
+     * @author ut000125 sunchengxi
+     */
     void paintEvent(QPaintEvent *) override;
 
 private:
