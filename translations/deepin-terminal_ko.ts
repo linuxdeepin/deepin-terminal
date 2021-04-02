@@ -21,8 +21,8 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="132"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="133"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="215"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="223"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="214"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="221"/>
         <source>Required</source>
         <translation>필수 항목</translation>
     </message>
@@ -57,27 +57,27 @@
         <translation>저장</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="434"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="432"/>
         <source>Please enter a name</source>
         <translation>이름을 입력하십시오</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="448"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="446"/>
         <source>Please enter a command</source>
         <translation>명령을 입력하십시오</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="499"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="497"/>
         <source>The name already exists,</source>
         <translation>이름이 이미 존재합니다</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="500"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="498"/>
         <source>please input another one.</source>
         <translation>다른 이름을 입력하십시오</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="755"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="753"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -109,52 +109,52 @@
 <context>
     <name>CustomThemeSettingDialog</name>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="294"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="308"/>
         <source>Custom Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="339"/>
         <source>Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="329"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="343"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="335"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="349"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="391"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="405"/>
         <source>Fore color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="398"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="412"/>
         <source>Back color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="416"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="430"/>
         <source>Prompt PS1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="420"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="434"/>
         <source>Prompt PS2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="503"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="517"/>
         <source>Cancel</source>
         <translation type="unfinished">취소</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="511"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="525"/>
         <source>Confirm</source>
         <translation type="unfinished">확인</translation>
     </message>
@@ -169,13 +169,13 @@
 <context>
     <name>ListView</name>
     <message>
-        <location filename="../src/views/listview.cpp" line="406"/>
+        <location filename="../src/views/listview.cpp" line="411"/>
         <source>Delete Server</source>
         <translation>서버 삭제</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="406"/>
-        <location filename="../src/views/listview.cpp" line="623"/>
+        <location filename="../src/views/listview.cpp" line="411"/>
+        <location filename="../src/views/listview.cpp" line="625"/>
         <source>Are you sure you want to delete %1?</source>
         <translation>%1을(를) 삭제하시겠습니까?</translation>
     </message>
@@ -183,33 +183,33 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="316"/>
-        <location filename="../src/main/mainwindow.cpp" line="385"/>
+        <location filename="../src/main/mainwindow.cpp" line="317"/>
+        <location filename="../src/main/mainwindow.cpp" line="386"/>
         <source>New window</source>
         <translation>새 창</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="401"/>
+        <location filename="../src/main/mainwindow.cpp" line="402"/>
         <source>Settings</source>
         <translation>설정 </translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="948"/>
+        <location filename="../src/main/mainwindow.cpp" line="951"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="950"/>
+        <location filename="../src/main/mainwindow.cpp" line="953"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2214"/>
+        <location filename="../src/main/mainwindow.cpp" line="2210"/>
         <source>Type path to download file</source>
         <translation>파일을 다운로드할 경로 입력</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2609"/>
+        <location filename="../src/main/mainwindow.cpp" line="2605"/>
         <source>Custom Theme</source>
         <translation type="unfinished"></translation>
     </message>
@@ -217,8 +217,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="313"/>
-        <location filename="../src/common/utils.cpp" line="375"/>
+        <location filename="../src/common/utils.cpp" line="312"/>
+        <location filename="../src/common/utils.cpp" line="374"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -316,14 +316,14 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="2032"/>
+        <location filename="../src/main/mainwindow.cpp" line="2035"/>
         <source>Others</source>
         <translation>기타</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
-        <location filename="../src/main/terminalapplication.cpp" line="36"/>
-        <location filename="../src/main/mainwindow.cpp" line="2030"/>
+        <location filename="../src/main/terminalapplication.cpp" line="35"/>
+        <location filename="../src/main/mainwindow.cpp" line="2033"/>
         <source>Terminal</source>
         <translation>터미널</translation>
     </message>
@@ -334,61 +334,61 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="2101"/>
+        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Custom commands</source>
         <translation>사용자 지정 명령</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
-        <location filename="../src/main/mainwindow.cpp" line="2101"/>
+        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Display shortcuts</source>
         <translation>단축키 표시</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
-        <location filename="../src/main/mainwindow.cpp" line="2101"/>
+        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Remote management</source>
         <translation>원격 관리</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
+        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
+        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>Next tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
+        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>Previous tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
-        <location filename="../src/main/mainwindow.cpp" line="2083"/>
+        <location filename="../src/main/mainwindow.cpp" line="2081"/>
         <source>Select left workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
+        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Select lower workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="2083"/>
+        <location filename="../src/main/mainwindow.cpp" line="2081"/>
         <source>Select right workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
+        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Select upper workspace</source>
         <translation type="unfinished"></translation>
     </message>
@@ -399,55 +399,55 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="2084"/>
+        <location filename="../src/main/mainwindow.cpp" line="2082"/>
         <source>Go to tab 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="2084"/>
+        <location filename="../src/main/mainwindow.cpp" line="2082"/>
         <source>Go to tab 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
-        <location filename="../src/main/mainwindow.cpp" line="2084"/>
+        <location filename="../src/main/mainwindow.cpp" line="2082"/>
         <source>Go to tab 3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
-        <location filename="../src/main/mainwindow.cpp" line="2085"/>
+        <location filename="../src/main/mainwindow.cpp" line="2083"/>
         <source>Go to tab 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
-        <location filename="../src/main/mainwindow.cpp" line="2085"/>
+        <location filename="../src/main/mainwindow.cpp" line="2083"/>
         <source>Go to tab 5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
-        <location filename="../src/main/mainwindow.cpp" line="2085"/>
+        <location filename="../src/main/mainwindow.cpp" line="2083"/>
         <source>Go to tab 6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
-        <location filename="../src/main/mainwindow.cpp" line="2086"/>
+        <location filename="../src/main/mainwindow.cpp" line="2084"/>
         <source>Go to tab 7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
-        <location filename="../src/main/mainwindow.cpp" line="2086"/>
+        <location filename="../src/main/mainwindow.cpp" line="2084"/>
         <source>Go to tab 8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
-        <location filename="../src/main/mainwindow.cpp" line="2086"/>
+        <location filename="../src/main/mainwindow.cpp" line="2084"/>
         <source>Go to tab 9</source>
         <translation type="unfinished"></translation>
     </message>
@@ -463,33 +463,33 @@
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="281"/>
-        <location filename="../src/views/tabbar.cpp" line="640"/>
+        <location filename="../src/views/tabbar.cpp" line="644"/>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
-        <location filename="../src/main/mainwindow.cpp" line="2101"/>
+        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Rename title</source>
         <translation>제목 이름 변경</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
-        <location filename="../src/main/mainwindow.cpp" line="2101"/>
+        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Fullscreen</source>
         <translation>전체화면</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
-        <location filename="../src/main/mainwindow.cpp" line="2066"/>
+        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="2066"/>
+        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Default size</source>
         <translation>기본 크기</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
-        <location filename="../src/main/mainwindow.cpp" line="2066"/>
+        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Paste</source>
         <translation>붙여넣기</translation>
     </message>
@@ -500,7 +500,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
-        <location filename="../src/main/mainwindow.cpp" line="2066"/>
+        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Select all</source>
         <translation>전체 선택</translation>
     </message>
@@ -516,13 +516,13 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
-        <location filename="../src/main/mainwindow.cpp" line="2066"/>
+        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Zoom in</source>
         <translation>확대</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="2066"/>
+        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Zoom out</source>
         <translation>축소</translation>
     </message>
@@ -532,24 +532,24 @@
         <translation>다른 창 닫기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="509"/>
+        <location filename="../src/views/termwidget.cpp" line="533"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
-        <location filename="../src/main/mainwindow.cpp" line="2083"/>
+        <location filename="../src/main/mainwindow.cpp" line="2081"/>
         <source>Close other workspaces</source>
         <translation>다른 작업 공간 닫기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1429"/>
+        <location filename="../src/views/termwidget.cpp" line="1453"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1433"/>
+        <location filename="../src/views/termwidget.cpp" line="1457"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1483"/>
+        <location filename="../src/views/termwidget.cpp" line="1525"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -559,90 +559,90 @@
         <translation>창 닫기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="506"/>
+        <location filename="../src/views/termwidget.cpp" line="530"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
-        <location filename="../src/main/mainwindow.cpp" line="2083"/>
+        <location filename="../src/main/mainwindow.cpp" line="2081"/>
         <source>Close workspace</source>
         <translation>작업공간 닫기</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
+        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Horizontal split</source>
         <translation>수평 분할</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
+        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Vertical split</source>
         <translation>수직 분할</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="2066"/>
+        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="412"/>
-        <location filename="../src/views/listview.cpp" line="624"/>
+        <location filename="../src/views/listview.cpp" line="417"/>
+        <location filename="../src/views/listview.cpp" line="626"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="326"/>
-        <location filename="../src/common/utils.cpp" line="312"/>
+        <location filename="../src/common/utils.cpp" line="311"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="413"/>
+        <location filename="../src/views/listview.cpp" line="418"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="501"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="758"/>
-        <location filename="../src/common/utils.cpp" line="328"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="756"/>
+        <location filename="../src/common/utils.cpp" line="327"/>
         <source>please set another one.</source>
         <translation>다른 것을 설정하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/main/terminalapplication.cpp" line="39"/>
+        <location filename="../src/main/terminalapplication.cpp" line="38"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation>터미널은 작업 공간, 여러 창, 원격 관리, 지진 모드 및 기타 기능을 갖춘 고급 터미널 에뮬레이터입니다.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2028"/>
+        <location filename="../src/main/mainwindow.cpp" line="2031"/>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="634"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
+        <location filename="../src/views/tabbar.cpp" line="638"/>
+        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>Close tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2053"/>
+        <location filename="../src/main/mainwindow.cpp" line="2051"/>
         <source>Switch focus to &quot;+&quot; icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
+        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Select tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2153"/>
+        <location filename="../src/main/mainwindow.cpp" line="2149"/>
         <location filename="../src/common/utils.cpp" line="189"/>
         <source>Select file to upload</source>
         <translation>업로드할 파일 선택</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2160"/>
+        <location filename="../src/main/mainwindow.cpp" line="2156"/>
         <location filename="../src/common/utils.cpp" line="194"/>
         <source>Upload</source>
         <translation>업로드</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="283"/>
+        <location filename="../src/common/utils.cpp" line="282"/>
         <source>Programs are still running in terminal</source>
         <translation>터미널에서 프로그램이 여전히 실행 중입니다</translation>
     </message>
@@ -655,55 +655,55 @@
         <translation type="vanished">나가기</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="221"/>
-        <location filename="../src/common/utils.cpp" line="263"/>
+        <location filename="../src/common/utils.cpp" line="220"/>
+        <location filename="../src/common/utils.cpp" line="262"/>
         <source>Close this terminal?</source>
         <translation>이 터미널을 닫으시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="222"/>
-        <location filename="../src/common/utils.cpp" line="264"/>
+        <location filename="../src/common/utils.cpp" line="221"/>
+        <location filename="../src/common/utils.cpp" line="263"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation>이 터미널에서 여전히 실행중인 프로세스가 있습니다. 터미널을 닫으면 터미널이 종료됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="226"/>
-        <location filename="../src/common/utils.cpp" line="268"/>
+        <location filename="../src/common/utils.cpp" line="225"/>
+        <location filename="../src/common/utils.cpp" line="267"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
         <translation>이 터미널에서 여전히 %1 개의 프로세스가 실행 중입니다. 터미널을 닫으면 모든 터미널이 종료됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="231"/>
-        <location filename="../src/common/utils.cpp" line="259"/>
+        <location filename="../src/common/utils.cpp" line="230"/>
+        <location filename="../src/common/utils.cpp" line="258"/>
         <source>Close this window?</source>
         <translation>이 창을 닫으시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="232"/>
-        <location filename="../src/common/utils.cpp" line="260"/>
+        <location filename="../src/common/utils.cpp" line="231"/>
+        <location filename="../src/common/utils.cpp" line="259"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
         <translation>이 창에서 여전히 실행중인 프로세스가 있습니다. 창을 닫으면 모든 창이 종료됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2235"/>
+        <location filename="../src/main/mainwindow.cpp" line="2231"/>
         <location filename="../src/common/utils.cpp" line="162"/>
         <source>Select a directory to save the file</source>
         <translation>파일을 저장할 디렉터리 선택</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="283"/>
+        <location filename="../src/common/utils.cpp" line="282"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation>제거하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="302"/>
-        <location filename="../src/common/utils.cpp" line="306"/>
+        <location filename="../src/common/utils.cpp" line="301"/>
+        <location filename="../src/common/utils.cpp" line="305"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation>이 응용프로그램을 제거하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="303"/>
-        <location filename="../src/common/utils.cpp" line="307"/>
+        <location filename="../src/common/utils.cpp" line="302"/>
+        <location filename="../src/common/utils.cpp" line="306"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation>더 이상 터미널을 사용할 수 없습니다.</translation>
     </message>
@@ -716,44 +716,44 @@
         <translation type="vanished">교체</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="432"/>
+        <location filename="../src/common/utils.cpp" line="431"/>
         <source>Execute a command in the terminal</source>
         <translation>터미널에서 명령 실행</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="435"/>
+        <location filename="../src/common/utils.cpp" line="434"/>
         <source>Run script string in the terminal</source>
         <translation>터미널에서 스크립트 문자열 실행</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="426"/>
+        <location filename="../src/common/utils.cpp" line="425"/>
         <source>Set the work directory</source>
         <translation>작업 디렉토리 지정하기</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="429"/>
+        <location filename="../src/common/utils.cpp" line="428"/>
         <source>Set the window mode on starting</source>
         <translation>시작 시 윈도우 모드 지정하기</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="439"/>
+        <location filename="../src/common/utils.cpp" line="438"/>
         <source>Run in quake mode</source>
         <translation>진동 모드에서 실행</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="442"/>
+        <location filename="../src/common/utils.cpp" line="441"/>
         <source>Keep terminal open when command finishes</source>
         <translation>명령이 완료될 때 터미널 열기 유지하기</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="568"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="441"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="439"/>
         <source>The name should be no more than 32 characters</source>
         <translation>이름은 32자 이하여야 합니다</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="644"/>
-        <location filename="../src/main/mainwindow.cpp" line="2241"/>
+        <location filename="../src/main/mainwindow.cpp" line="2237"/>
         <location filename="../src/common/utils.cpp" line="168"/>
         <source>Select</source>
         <translation>선택</translation>
@@ -764,7 +764,7 @@
         <translation>개인 키 파일 선택</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="625"/>
+        <location filename="../src/views/listview.cpp" line="627"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="331"/>
         <source>Confirm</source>
         <translation>확인</translation>
@@ -782,8 +782,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="637"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
+        <location filename="../src/views/tabbar.cpp" line="641"/>
+        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>Close other tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -799,12 +799,12 @@
 <context>
     <name>RemoteManagementPlugin</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="98"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="100"/>
         <source>Remote management</source>
         <translation>원격 관리</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="257"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="259"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation>파일을 업로드 및 다운로드하려면 마우스 오른쪽 단추를 클릭하기 전에 rz 및 sz 명령이 서버에 설치되어 있는지 확인하십시오.</translation>
     </message>
@@ -1099,90 +1099,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="473"/>
+        <location filename="../src/views/termwidget.cpp" line="497"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="476"/>
+        <location filename="../src/views/termwidget.cpp" line="500"/>
         <source>Paste</source>
         <translation>붙여넣기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="485"/>
+        <location filename="../src/views/termwidget.cpp" line="509"/>
         <source>Open</source>
         <translation>열기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="490"/>
+        <location filename="../src/views/termwidget.cpp" line="514"/>
         <source>Open in file manager</source>
         <translation>파일 관리도구에서 열기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
-        <location filename="../src/views/termwidget.cpp" line="561"/>
+        <location filename="../src/views/termwidget.cpp" line="523"/>
+        <location filename="../src/views/termwidget.cpp" line="585"/>
         <source>Horizontal split</source>
         <translation>수평 분할</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="502"/>
-        <location filename="../src/views/termwidget.cpp" line="561"/>
+        <location filename="../src/views/termwidget.cpp" line="526"/>
+        <location filename="../src/views/termwidget.cpp" line="585"/>
         <source>Vertical split</source>
         <translation>수직 분할</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="514"/>
-        <location filename="../src/views/termwidget.cpp" line="561"/>
+        <location filename="../src/views/termwidget.cpp" line="538"/>
+        <location filename="../src/views/termwidget.cpp" line="585"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="521"/>
+        <location filename="../src/views/termwidget.cpp" line="545"/>
         <source>Exit fullscreen</source>
         <translation>전체화면 종료</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="523"/>
+        <location filename="../src/views/termwidget.cpp" line="547"/>
         <source>Fullscreen</source>
         <translation>전체화면</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="527"/>
+        <location filename="../src/views/termwidget.cpp" line="551"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="531"/>
+        <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>Search</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="541"/>
+        <location filename="../src/views/termwidget.cpp" line="565"/>
         <source>Encoding</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Custom commands</source>
         <translation>사용자 지정 명령</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="545"/>
+        <location filename="../src/views/termwidget.cpp" line="569"/>
         <source>Remote management</source>
         <translation>원격 관리</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="549"/>
+        <location filename="../src/views/termwidget.cpp" line="573"/>
         <source>Upload file</source>
         <translation>파일 업로드</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="550"/>
+        <location filename="../src/views/termwidget.cpp" line="574"/>
         <source>Download file</source>
         <translation>다운로드 파일</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="555"/>
+        <location filename="../src/views/termwidget.cpp" line="579"/>
         <source>Settings</source>
         <translation>설정 </translation>
     </message>
@@ -1190,19 +1190,19 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="237"/>
-        <location filename="../src/common/utils.cpp" line="285"/>
+        <location filename="../src/common/utils.cpp" line="236"/>
+        <location filename="../src/common/utils.cpp" line="284"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="239"/>
+        <location filename="../src/common/utils.cpp" line="238"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="286"/>
-        <location filename="../src/common/utils.cpp" line="330"/>
+        <location filename="../src/common/utils.cpp" line="285"/>
+        <location filename="../src/common/utils.cpp" line="329"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
