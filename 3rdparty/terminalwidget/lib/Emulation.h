@@ -302,7 +302,7 @@ public slots:
      * @param buffer A string of characters received from the terminal program.
      * @param len The length of @p buffer
      */
-    void receiveData(const char *buffer, int len, bool isCommandExec, bool isKeyboardBackspace);
+    void receiveData(const char *buffer, int len, bool isCommandExec);
 
 signals:
 
@@ -313,7 +313,7 @@ signals:
      * @param data The buffer of data ready to be sent
      * @param len The length of @p data in bytes
      */
-    void sendData(const char *data, int len, const QTextCodec *codec, bool isKeyboardBackspace);
+    void sendData(const char *data, int len, const QTextCodec *codec);
 
     /**
      * Requests that sending of input to the emulation
@@ -470,7 +470,7 @@ protected:
      * Processes an incoming character.  See receiveData()
      * @p ch A unicode character code.
      */
-    virtual void receiveChar(wchar_t ch, bool isKeyboardBackspace);
+    virtual void receiveChar(wchar_t ch);
 
     /**
      * Sets the active screen.  The terminal has two screens, primary and alternate.

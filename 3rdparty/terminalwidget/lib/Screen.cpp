@@ -46,7 +46,6 @@
 #include "TerminalDisplay.h"
 #include "history/HistoryType.h"
 #include "history/HistoryScrollNone.h"
-#include "SessionManager.h"
 
 using namespace Konsole;
 
@@ -656,16 +655,8 @@ void Screen::clear()
     home();
 }
 
-void Screen::backspace(bool isKeyboardBackspace)
+void Screen::backspace()
 {
-    //光标错位是由于误触发退格操作，导致cuX坐标减少，使得光标跑到提示符之前
-    //只有当终端shell输入的命令为空 或者 正在resize窗口且不是由键盘触发退格操作 两种情况
-    //fix bug 67102 打开超长名称的文件夹，终端界面光标位置不在最后一位
-    QString strCurrCommand = SessionManager::instance()->getCurrShellCommand(_sessionId);
-    if (strCurrCommand.isEmpty() || (!isKeyboardBackspace && _isUserResizing)) {
-        return;
-    }
-
     cuX = qMin(columns-1,cuX); // nowrap!
     cuX = qMax(0,cuX-1);
 
@@ -1592,11 +1583,6 @@ bool Screen::isResize()
         return true;
     }
     return _isResize;
-}
-
-void Screen::setIsUserResizing(bool isUserResizing)
-{
-    _isUserResizing = isUserResizing;
 }
 
 void Screen::setReflowLines(bool enable)

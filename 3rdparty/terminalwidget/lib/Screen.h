@@ -39,8 +39,8 @@
 #define MODE_Screen    3
 #define MODE_Cursor    4
 #define MODE_NewLine   5
-#define MODE_AppScreen 6
-#define MODES_SCREEN   7
+#define MODES_SCREEN   6
+#define MODE_AppScreen       (MODES_SCREEN+0)   // Mode #1
 
 namespace Konsole
 {
@@ -194,7 +194,7 @@ public:
      * Moves the cursor one column to the left and erases the character
      * at the new cursor position.
      */
-    void backspace(bool isKeyboardBackspace);
+    void backspace();
     /** Moves the cursor @p n tab-stops to the right. */
     void tab(int n = 1);
     /** Moves the cursor @p n tab-stops to the left. */
@@ -618,9 +618,6 @@ public:
     // Return if it was a resize signal (fix scroll glitch)
     bool isResize();
 
-    // 设置当前是否正在resize窗口
-    void setIsUserResizing(bool isUserResizing);
-
     // Set reflow condition
     void setReflowLines(bool enable);
 
@@ -779,11 +776,6 @@ private:
 
     //用于标识Session
     int _sessionId;
-
-    // Vt102Emulation defined max argument value that can be passed to a Screen function
-    const int MAX_SCREEN_ARGUMENT = 40960;
-
-    bool _isUserResizing = false;
 };
 
 }

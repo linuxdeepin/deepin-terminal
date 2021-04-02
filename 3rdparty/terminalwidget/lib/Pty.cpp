@@ -435,9 +435,8 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
 }
 /******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
 
-void Pty::sendData(const char *data, int length, const QTextCodec *codec, bool isKeyboardBackspace)
+void Pty::sendData(const char *data, int length, const QTextCodec *codec)
 {
-    _isKeyboardBackspace = isKeyboardBackspace;
     _textCodec = codec;
 
     if (!length) {
@@ -567,7 +566,7 @@ void Pty::dataReceived()
                 QString helpData = recvData.replace("\n", "");
                 recvData = "\r\n" + helpData + "\r\n";
                 data = recvData.toUtf8();
-                emit receivedData(data.constData(), data.count(), _textCodec, false);
+                emit receivedData(data.constData(), data.count(), _textCodec);
             }
             else {
                 ++_receiveDataIndex;
@@ -596,8 +595,7 @@ void Pty::dataReceived()
         data = recvData.toUtf8();
     }
     /********************* Modify by m000714 daizhengwen End ************************/
-    emit receivedData(data.constData(), data.count(), _isCommandExec, _isKeyboardBackspace);
-    _isKeyboardBackspace = false;
+    emit receivedData(data.constData(), data.count(), _isCommandExec);
 }
 
 void Pty::lockPty(bool lock)

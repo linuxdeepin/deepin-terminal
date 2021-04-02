@@ -247,13 +247,13 @@ QString Emulation::keyBindings() const
     return _keyTranslator->name();
 }
 
-void Emulation::receiveChar(wchar_t c, bool isKeyboardBackspace)
+void Emulation::receiveChar(wchar_t c)
 // process application unicode input to terminal
 // this is a trivial scanner
 {
     c &= 0xff;
     switch (c) {
-    case '\b'      : _currentScreen->backspace(isKeyboardBackspace);   break;
+    case '\b'      : _currentScreen->backspace();                 break;
     case '\t'      : _currentScreen->tab();                       break;
     case '\n'      : _currentScreen->newLine();                   break;
     case '\r'      : _currentScreen->toStartOfLine();             break;
@@ -271,7 +271,7 @@ void Emulation::sendKeyEvent(QKeyEvent *ev)
         // A block of text
         // Note that the text is proper unicode.
         // We should do a conversion here
-        emit sendData(ev->text().toUtf8().constData(), ev->text().length(), _codec, true);
+        emit sendData(ev->text().toUtf8().constData(), ev->text().length(), _codec);
     }
 }
 
@@ -290,7 +290,7 @@ void Emulation::sendMouseEvent(int /*buttons*/, int /*column*/, int /*row*/, int
 TODO: Character composition from the old code.  See #96536
 */
 
-void Emulation::receiveData(const char *text, int length, bool isCommandExec, bool isKeyboardBackspace)
+void Emulation::receiveData(const char *text, int length, bool isCommandExec)
 {
     emit stateSet(NOTIFYACTIVITY);
 
@@ -325,11 +325,20 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec, bo
         utf16Text = _decoder->toUnicode(text, length);
     }
 
+    //fix bug 67102 打开超长名称的文件夹，终端界面光标位置不在最后一位
+    //bash 提示符很长的情况下，会有较大概率以五个\b字符结尾，导致光标错位
+    if (utf16Text.endsWith("\b\b\b\b\b")) {
+        Session *currSession = SessionManager::instance()->idToSession(_sessionId);
+        if (currSession && QStringLiteral("bash") == currSession->foregroundProcessName()) {
+            utf16Text.replace("\b\b\b\b\b", "");
+        }
+    }
+
     std::wstring unicodeText = utf16Text.toStdWString();
 
     //send characters to terminal emulator
     for (size_t i = 0; i < unicodeText.length(); i++)
-        receiveChar(unicodeText[i], isKeyboardBackspace);
+        receiveChar(unicodeText[i]);
 
     //look for z-modem indicator
     //-- someone who understands more about z-modems that I do may be able to move
