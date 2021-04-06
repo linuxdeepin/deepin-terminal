@@ -69,12 +69,6 @@ Service::~Service()
     qDebug() << "service release finish!";
 }
 
-/*******************************************************************************
- 1. @函数:    init
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    初始化
-*******************************************************************************/
 void Service::init()
 {
     /******** Modify by ut000610 daizhengwen 2020-07-09:在linux上兼容快捷键 Begin***************/
@@ -110,12 +104,6 @@ void Service::init()
     listenWindowEffectSwitcher();
 }
 
-/*******************************************************************************
- 1. @函数:    initSetting
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-06-05
- 4. @说明:    初始化设置框，在窗口现实后初始化，使第一次出现设置框不至于卡顿
-*******************************************************************************/
 void Service::initSetting()
 {
     if (nullptr != m_settingDialog) {
@@ -153,12 +141,6 @@ void Service::initSetting()
     showHideOpacityAndBlurOptions(isWindowEffectEnabled());
 }
 
-/*******************************************************************************
- 1. @函数:    handleSettingsDialogFinished
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-22
- 4. @说明:    DSettingsDialog对话框关闭后的处理
-*******************************************************************************/
 inline void Service::handleSettingsDialogFinished(int result)
 {
     Q_UNUSED(result)
@@ -169,12 +151,6 @@ inline void Service::handleSettingsDialogFinished(int result)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    showHideOpacityAndBlurOptions
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-06-24
- 4. @说明:   显示/隐藏设置的透明度和背景模糊选项-- 仅UOS服务器版本使用
-*******************************************************************************/
 void Service::showHideOpacityAndBlurOptions(bool isShow)
 {
     QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
@@ -238,12 +214,6 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    listenWindowEffectSwitcher
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-06-24
- 4. @说明:   监听窗口特效开关对应DBus信号，并实时显示/隐藏设置的透明度和背景模糊选项
-*******************************************************************************/
 void Service::listenWindowEffectSwitcher()
 {
     if (nullptr == m_wmSwitcher) {
@@ -253,12 +223,6 @@ void Service::listenWindowEffectSwitcher()
     }
 }
 
-/*******************************************************************************
- 1. @函数:    handleWMChanged
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-22
- 4. @说明:    处理窗口特效打开/关闭时，相关设置项目的显示/隐藏
-*******************************************************************************/
 inline void Service::handleWMChanged(const QString &wmName)
 {
     qDebug() << "changed wm name:" << wmName;
@@ -272,12 +236,6 @@ inline void Service::handleWMChanged(const QString &wmName)
     emit Service::instance()->onWindowEffectEnabled(isWinEffectEnabled);
 }
 
-/*******************************************************************************
- 1. @函数:    isWindowEffectEnabled
- 2. @作者:    ut000438 王亮
- 3. @日期:    2020-06-24
- 4. @说明:   判断当前是否开启窗口特效  开启-true 关闭-false
-*******************************************************************************/
 bool Service::isWindowEffectEnabled()
 {
     QDBusMessage msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
@@ -298,23 +256,11 @@ bool Service::isWindowEffectEnabled()
     return false;
 }
 
-/*******************************************************************************
- 1. @函数:    getEntryTime
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    获取主程序初始进入的时间
-*******************************************************************************/
 qint64 Service::getEntryTime()
 {
     return m_EntryTime;
 }
 
-/*******************************************************************************
- 1. @函数:    getShells
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-11-26
- 4. @说明:    从/etc/shells获取shell列表
-*******************************************************************************/
 QMap<QString, QString> Service::getShells()
 {
     qint64 startTime = QDateTime::currentMSecsSinceEpoch();
@@ -353,23 +299,11 @@ QMap<QString, QString> Service::getShells()
     return m_shellsMap;
 }
 
-/*******************************************************************************
- 1. @函数:    shellsMap
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-11-26
- 4. @说明:    获取shellsMap
-*******************************************************************************/
 QMap<QString, QString> Service::shellsMap()
 {
     return m_shellsMap;
 }
 
-/*******************************************************************************
- 1. @函数:    showSettingDialog
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-05-20
- 4. @说明:    唯一显示设置框
-*******************************************************************************/
 void Service::showSettingDialog(MainWindow *pOwner)
 {
     QDateTime startTime = QDateTime::currentDateTime();
@@ -412,12 +346,6 @@ void Service::showSettingDialog(MainWindow *pOwner)
     qDebug() << qPrintable(strSettingsShowTime);
 }
 
-/*******************************************************************************
- 1. @函数:    showCustomThemeSettingDialog
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-12-01
- 4. @说明:    显示自定义主题设置框
-*******************************************************************************/
 void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
 {
     //保存设置框的有拥者
@@ -452,12 +380,6 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    handleCustomThemeSettingDialogFinished
- 2. @作者:    ut000438 王亮
- 3. @日期:    2021-02-22
- 4. @说明:    自定义主题对话框关闭后的处理
-*******************************************************************************/
 inline void Service::handleCustomThemeSettingDialogFinished(int result)
 {
     if (result == CustomThemeSettingDialog::Accepted) {
@@ -469,12 +391,6 @@ inline void Service::handleCustomThemeSettingDialogFinished(int result)
     }
 }
 
-/*******************************************************************************
- 1. @函数:    showShortcutConflictMsgbox
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-05-21
- 4. @说明:    设置弹窗的快捷键冲突弹窗
-*******************************************************************************/
 void Service::showShortcutConflictMsgbox(QString txt)
 {
     /******** Modify by ut000610 daizhengwen 2020-05-27: 出现提示和快捷键显示不一致的问题 bug#28507****************/
@@ -510,23 +426,11 @@ inline void Service::handleSettingShortcutConflictDialogFinished()
     m_settingShortcutConflictDialog = nullptr;
 }
 
-/*******************************************************************************
- 1. @函数:    isCountEnable
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-06-15
- 4. @说明:    从term数量的角度判断是否允许继续创建
-*******************************************************************************/
 bool Service::isCountEnable()
 {
     return WindowsManager::instance()->widgetCount() < MAXWIDGETCOUNT;
 }
 
-/*******************************************************************************
- 1. @函数:    Entry
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    Service进入接口
-*******************************************************************************/
 void Service::Entry(QStringList arguments)
 {
     m_EntryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
@@ -544,12 +448,6 @@ void Service::Entry(QStringList arguments)
     return;
 }
 
-/*******************************************************************************
- 1. @函数:    desktopWorkspaceSwitched
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-08-24
- 4. @说明:    对桌面切换事件的处理
-*******************************************************************************/
 void Service::onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop)
 {
     qDebug() << __FUNCTION__ << curDesktop << nextDesktop;
@@ -591,13 +489,6 @@ Service::Service(QObject *parent) : QObject(parent)
     m_enableShareMemory->setObjectName("EnableShareMemory");// Add by ut001000 renfeixiang 2020-08-13
 }
 
-/*******************************************************************************
- 1. @函数:    getEnable
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-06-17
- 4. @说明:    子进程获取是否可以创建窗口许可，获取到权限立即将标志位置为false
-              增加子进程启动的时间，如果可以创建，把该时间写入共享内存，当创建mainwindow的时候，取走这个数据
-*******************************************************************************/
 bool Service::getEnable(qint64 time)
 {
     if (!isCountEnable()) {
@@ -628,12 +519,7 @@ bool Service::getEnable(qint64 time)
     releaseShareMemory();
     return true;
 }
-/*******************************************************************************
- 1. @函数:    setSubAppStartTime
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-08-08
- 4. @说明:    设置子进程启动时间到共享内存
-*******************************************************************************/
+
 void Service::setSubAppStartTime(qint64 time)
 {
     // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
@@ -647,25 +533,15 @@ void Service::setSubAppStartTime(qint64 time)
 
     return ;
 }
-/*******************************************************************************
- 1. @函数:    getSubAppStartTime
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-08-08
- 4. @说明:    获取子进程在共享的启动时间
-*******************************************************************************/
+
 qint64 Service::getSubAppStartTime()
 {
-    if (nullptr == m_pShareMemoryInfo){
+    if (nullptr == m_pShareMemoryInfo) {
         return 0;
     }
     return m_pShareMemoryInfo->appStartTime;
 }
-/*******************************************************************************
- 1. @函数:    updateShareMemoryCount
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-07-02
- 4. @说明:    ShareMemoryCount这个为当前总的终端数，但是雷神创建的第一个不包括在内
-*******************************************************************************/
+
 void Service::updateShareMemoryCount(int count)
 {
     if (!m_enableShareMemory->isAttached()) {
@@ -679,22 +555,11 @@ void Service::updateShareMemoryCount(int count)
     return  ;
 }
 
-/*******************************************************************************
- 1. @函数:    getShareMemoryCount
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    获取共享内存计数
-*******************************************************************************/
 int Service::getShareMemoryCount()
 {
     return m_pShareMemoryInfo->TerminalsCount;
 }
-/*******************************************************************************
- 1. @函数:    setMemoryEnable
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-06-17
- 4. @说明:    设置共享内存信息，1=true(主进程), 0=false(主进程首次或子进程获得许可以后)
-*******************************************************************************/
+
 bool Service::setMemoryEnable(bool enable)
 {
     if (!m_enableShareMemory->isAttached()) {
@@ -709,24 +574,14 @@ bool Service::setMemoryEnable(bool enable)
     qDebug() << "m_enableShareMemory set" << enable << m_pShareMemoryInfo->enableCreateTerminal;
     return  true;
 }
-/*******************************************************************************
- 1. @函数:    releaseShareMemory
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-06-17
- 4. @说明:    释放共享内存连接
-*******************************************************************************/
+
 void Service::releaseShareMemory()
 {
     qDebug() << "[sub app] m_enableShareMemory released" << m_enableShareMemory->key();
     m_enableShareMemory->detach();
     m_enableShareMemory->deleteLater();
 }
-/*******************************************************************************
- 1. @函数:    getMemoryEnable
- 2. @作者:    ut000439 王培利
- 3. @日期:    2020-06-17
- 4. @说明:    获取共享内存标志， 1=true,0=false
-*******************************************************************************/
+
 bool Service::getMemoryEnable()
 {
     if (m_pShareMemoryInfo->enableCreateTerminal == 0) {
@@ -737,23 +592,11 @@ bool Service::getMemoryEnable()
     return  true;
 }
 
-/*******************************************************************************
- 1. @函数:    getIsDialogShow
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    获取是否是对话框显示
-*******************************************************************************/
 bool Service::getIsDialogShow() const
 {
     return m_isDialogShow;
 }
 
-/*******************************************************************************
- 1. @函数:    setIsDialogShow
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    设置是否对话框显示
-*******************************************************************************/
 void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 {
     MainWindow *window = static_cast<MainWindow *>(parent);

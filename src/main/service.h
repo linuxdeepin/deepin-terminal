@@ -61,16 +61,35 @@ class Service : public QObject
 public:
     static Service *instance();
     ~Service();
+    /**
+     * @brief 初始化
+     * @author ut000439 wangpeili
+     */
     void init();
-    // 初始化设置框
+    /**
+     * @brief 初始化设置框，在窗口现实后初始化，使第一次出现设置框不至于卡顿
+     * @author ut000610 戴正文
+     */
     void initSetting();
 
-    // 显示设置框
+    /**
+     * @brief 唯一显示设置框
+     * @author ut000610 戴正文
+     * @param pOwner
+     */
     void showSettingDialog(MainWindow *pOwner);
 
-    //显示自定义主题设置框
+    /**
+     * @brief 显示自定义主题设置框
+     * @author ut000125 sunchengxi
+     * @param pOwner
+     */
     void showCustomThemeSettingDialog(MainWindow *pOwner);
-    // 显示设置快捷键冲突弹窗
+    /**
+     * @brief 显示设置快捷键冲突弹窗
+     * @author ut000610 戴正文
+     * @param txt
+     */
     void showShortcutConflictMsgbox(QString txt);
     // 设置框是否显示
     bool isSettingDialogVisible()
@@ -88,33 +107,109 @@ public:
         m_settingOwner = nullptr;
     }
 
-    // 是否允许继续创建
+    /**
+     * @brief i从term数量的角度判断是否允许继续创建
+     * @author ut000610 戴正文
+     * @return
+     */
     bool isCountEnable();
 
+    /**
+     * @brief 获取是否是对话框显示
+     * @author ut000439 wangpeili
+     * @return
+     */
     bool getIsDialogShow() const;
+    /**
+     * @brief 设置是否对话框显示
+     * @author ut000439 wangpeili
+     * @param parent
+     * @param isDialogShow
+     */
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
     // 主进程是否允许创建新的窗口，如果允许，把子进程的创建时间设置到共享内存传递过去。
+    /**
+     * @brief 子进程获取是否可以创建窗口许可，获取到权限立即将标志位置为false
+              增加子进程启动的时间，如果可以创建，把该时间写入共享内存，当创建mainwindow的时候，取走这个数据
+     * @author ut000439 王培利
+     * @param time
+     * @return
+     */
     bool getEnable(qint64 time) ;
-    // 设置子进程启动时间到共享内存
+    /**
+     * @brief 设置子进程启动时间到共享内存
+     * @author ut000439 王培利
+     */
     void setSubAppStartTime(qint64);
-    // 获取子进程在共享的启动时间
+    /**
+     * @brief 获取子进程在共享的启动时间
+     * @author ut000439 王培利
+     * @return
+     */
     qint64 getSubAppStartTime();
 
+    /**
+     * @brief ShareMemoryCount这个为当前总的终端数，但是雷神创建的第一个不包括在内
+     * @author ut000439 王培利
+     * @param count 总的终端数
+     */
     void updateShareMemoryCount(int count);
+    /*******************************************************************************
+     1. @函数:    getShareMemoryCount
+     2. @作者:    ut000439 wangpeili
+     3. @日期:    2020-08-11
+     4. @说明:    获取共享内存计数
+    *******************************************************************************/
+    /**
+     * @brief 获取共享内存计数
+     * @author ut000439 wangpeili
+     * @return
+     */
     int  getShareMemoryCount();
+    /**
+     * @brief 设置共享内存信息
+     * @author ut000439 王培利
+     * @param enable 1=true(主进程), 0=false(主进程首次或子进程获得许可以后)
+     * @return
+     */
     bool setMemoryEnable(bool enable);
+    /**
+     * @brief 获取共享内存标志， 1=true,0=false
+     * @author ut000439 王培利
+     * @return
+     */
     bool getMemoryEnable();
+    /**
+     * @brief 释放共享内存连接
+     * @author ut000439 王培利
+     */
     void releaseShareMemory();
 
-    //判断当前是否开启窗口特效  开启-true 关闭-false
+    /**
+     * @brief 判断当前是否开启窗口特效  开启-true 关闭-false
+     * @author ut000438 王亮
+     * @return
+     */
     bool isWindowEffectEnabled();
-    // 获取主程序初始进入的时间
+    /**
+     * @brief 获取主程序初始进入的时间
+     * @author ut000439 wangpeili
+     * @return
+     */
     qint64 getEntryTime();
 
-    // 获取/etc/shells下的shell列表
+    /**
+     * @brief 从/etc/shells获取shell列表
+     * @author ut000610 戴正文
+     * @return
+     */
     QMap<QString, QString> getShells();
-    // 获取shells的map,不读取/etc/shells
+    /**
+     * @brief 获取shells的map,不读取/etc/shells
+     * @author ut000610 戴正文
+     * @return
+     */
     QMap<QString, QString> shellsMap();
 
 signals:
@@ -130,26 +225,57 @@ signals:
     void hostnameChanged();
 
 public slots:
-    // 创建窗口的入口
+    /**
+     * @brief 创建窗口的入口,Service进入接口
+     * @author ut000439 wangpeili
+     * @param arguments
+     */
     void Entry(QStringList arguments);
-    // 桌面工作区切换
+    /**
+     * @brief 对桌面工作区切换事件的处理
+     * @author ut000610 戴正文
+     * @param curDesktop 当前工作区
+     * @param nextDesktop 下一个工作区
+     */
     void onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop);
 
     void slotShowSettingsDialog();
 
+    /**
+     * @brief DSettingsDialog对话框关闭后的处理
+     * @author ut000438 王亮
+     * @param result
+     */
     void handleSettingsDialogFinished(int result);
 
+    /**
+     * @brief 处理窗口特效打开/关闭时，相关设置项目的显示/隐藏
+     * @author ut000438 王亮
+     * @param wmName
+     */
     void handleWMChanged(const QString &wmName);
 
+    /**
+     * @brief 自定义主题对话框关闭后的处理
+     * @author ut000438 王亮
+     * @param result
+     */
     void handleCustomThemeSettingDialogFinished(int result);
 
     void handleSettingShortcutConflictDialogFinished();
 
 private:
     explicit Service(QObject *parent = nullptr);
-    //显示/隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用
+    /**
+     * @brief 显示/隐藏设置的透明度和背景模糊选项-- 仅UOS服务器版本使用
+     * @author ut000438 王亮
+     * @param isShow
+     */
     void showHideOpacityAndBlurOptions(bool isShow);
-    //监听窗口特效开关对应DBus信号，并实时显示/隐藏透明度和背景模糊选项
+    /**
+     * @brief 监听窗口特效开关对应DBus信号，并实时显示/隐藏设置的透明度和背景模糊选项
+     * @author ut000438 王亮
+     */
     void listenWindowEffectSwitcher();
 
     static Service *g_pService;
