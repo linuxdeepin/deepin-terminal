@@ -92,12 +92,35 @@ public:
         return m_currentServerName;
     }
 
+    /**
+     * @brief 服务器配置选项更新数据
+     * @author ut000610 daizhengwen
+     * @param curServer 当前服务器
+     */
     void updataData(ServerConfig *curServer);
+    /**
+     * @brief 服务器配置选项获取数据
+     * @author ut000610 daizhengwen
+     * @return
+     */
     ServerConfig getData();
+    /**
+     * @brief 服务器配置选项重置当前服务器
+     * @author ut000610 daizhengwen
+     * @param curServer 当前服务器
+     */
     void resetCurServer(ServerConfig curServer);
 
 private slots:
+    /**
+     * @brief 服务器配置选项增加和保存按钮点击响应函数
+     * @author ut000610 daizhengwen
+     */
     void slotAddSaveButtonClicked();
+    /**
+     * @brief 获取FileName
+     * @author m000714 戴正文
+     */
     void slotFileChooseDialog();
     void handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType);
 
@@ -124,14 +147,41 @@ private:
     TermCommandLinkButton *m_delServer = nullptr;
     bool m_bDelOpt = false;
 
+    /**
+     * @brief 服务器配置选项初始化UI界面
+     * @author ut000610 daizhengwen
+     */
     void initUI();
+    /**
+     * @brief 服务器配置选项初始化数据
+     * @author ut000610 daizhengwen
+     */
     void initData();
+    /**
+     * @brief 服务器配置选项获取文本的编码
+     * @author ut000610 daizhengwen
+     * @return
+     */
     QList<QString> getTextCodec();
+    /**
+     * @brief 服务器配置选项获取退格键
+     * @author ut000610 daizhengwen
+     * @return
+     */
     QList<QString> getBackSpaceKey();
+    /**
+     * @brief 服务器配置选项获取删除键
+     * @author ut000610 daizhengwen
+     * @return
+     */
     QList<QString> getDeleteKey();
 
     QString m_currentServerName;
 
+    /**
+     * @brief 设置label格式
+     * @author m000714 戴正文
+     */
     inline void setLabelStyle(DLabel *);
 
 };
