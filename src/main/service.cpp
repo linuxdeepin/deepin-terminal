@@ -27,6 +27,7 @@
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
 #include <DSysInfo>
+#include <DWindowManagerHelper>
 
 #include <QDebug>
 #include <QDateTime>
@@ -132,8 +133,8 @@ void Service::initSetting()
     QDateTime endTime = QDateTime::currentDateTime();
     qDebug() << "Setting init cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
 
-    //判断为UOS服务器版本时，隐藏透明度/背景模糊选项
-    if (DSysInfo::deepinType() == DSysInfo::DeepinServer) {
+    //判断未开启窗口特效时，隐藏透明度/背景模糊选项
+    if (!DWindowManagerHelper::instance()->hasComposite()) {
         showHideOpacityAndBlurOptions(false);
         return;
     }
