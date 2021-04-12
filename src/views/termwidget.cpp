@@ -517,14 +517,15 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     m_menu->addSeparator();
 
-    if (!parentPage()->parentMainWindow()->isQuakeMode()) {
-        bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
-        if (isFullScreen) {
-            m_menu->addAction(tr("Exit fullscreen"), this, &TermWidget::onSwitchFullScreen);
-        } else {
-            m_menu->addAction(tr("Fullscreen"), this, &TermWidget::onSwitchFullScreen);
-        }
-    }
+    //bug:71228,右键菜单需去除”全屏“选项
+//    if (!parentPage()->parentMainWindow()->isQuakeMode()) {
+//        bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
+//        if (isFullScreen) {
+//            m_menu->addAction(tr("Exit fullscreen"), this, &TermWidget::onSwitchFullScreen);
+//        } else {
+//            m_menu->addAction(tr("Fullscreen"), this, &TermWidget::onSwitchFullScreen);
+//        }
+//    }
 
     m_menu->addAction(tr("Find"), this, &TermWidget::onShowSearchBar);
     m_menu->addSeparator();
@@ -611,10 +612,10 @@ inline void TermWidget::onCreateNewTab()
     parentPage()->parentMainWindow()->createNewTab();
 }
 
-inline void TermWidget::onSwitchFullScreen()
-{
-    parentPage()->parentMainWindow()->switchFullscreen();
-}
+//inline void TermWidget::onSwitchFullScreen()
+//{
+//    parentPage()->parentMainWindow()->switchFullscreen();
+//}
 
 inline void TermWidget::openBing()
 {

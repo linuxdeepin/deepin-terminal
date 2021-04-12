@@ -296,7 +296,7 @@ protected slots:
     void slotTabAddRequested();
     void slotTabCurrentChanged(int index);
 
-    void slotNewWindowActionTriggered();
+    //void slotNewWindowActionTriggered();
     void slotClickNewWindowTimeout();
     void slotOptionButtonPressed();
 

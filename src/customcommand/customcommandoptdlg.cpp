@@ -140,8 +140,11 @@ void CustomCommandOptDlg::initUI()
     cmdLayout->addWidget(cmdLabel);
     cmdLayout->addWidget(m_commandLineEdit);
 
-    scLayout->addWidget(shortCutLabel);
-    scLayout->addWidget(m_shortCutLineEdit);
+    //bug:71220,设置、自定义弹框界面需去除快捷键菜单
+   // scLayout->addWidget(shortCutLabel);
+   // scLayout->addWidget(m_shortCutLineEdit);
+    shortCutLabel->hide();
+    m_shortCutLineEdit->hide();
 
     contentLayout->addWidget(nameFrame);
     contentLayout->addWidget(cmdFrame);

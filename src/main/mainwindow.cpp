@@ -268,11 +268,11 @@ inline void MainWindow::slotClickNewWindowTimeout()
     emit newWindowRequest(currWorkingDir);
 }
 
-inline void MainWindow::slotNewWindowActionTriggered()
-{
-    // 等待菜单消失  此处影响菜单创建窗口的性能
-    m_createTimer->start(50);
-}
+//inline void MainWindow::slotNewWindowActionTriggered()
+//{
+//    // 等待菜单消失  此处影响菜单创建窗口的性能
+//    m_createTimer->start(50);
+//}
 
 /*******************************************************************************
  1. @函数:    initOptionButton
@@ -316,10 +316,10 @@ void MainWindow::initOptionMenu()
     m_createTimer = new QTimer(this);
     // 设置定时器,等待菜单消失,触发一次,防止多次被触发
     m_createTimer->setSingleShot(true);
-    QAction *newWindowAction(new QAction(tr("New window"), this));
+    //QAction *newWindowAction(new QAction(tr("New window"), this));
     connect(m_createTimer, &QTimer::timeout, this, &MainWindow::slotClickNewWindowTimeout);
-    connect(newWindowAction, &QAction::triggered, this, &MainWindow::slotNewWindowActionTriggered);
-    m_menu->addAction(newWindowAction);
+    //connect(newWindowAction, &QAction::triggered, this, &MainWindow::slotNewWindowActionTriggered);
+    //m_menu->addAction(newWindowAction);
     /********************* Modify by m000714 daizhengwen End ************************/
     for (auto &plugin : m_plugins) {
         QAction *pluginMenu = plugin->titlebarMenu(this);
@@ -1325,6 +1325,8 @@ void MainWindow::initShortcuts()
     for (int i = 1 ; i <= 9; i++) {
         QString strSwitchLabel = QString("shortcuts.tab.switch_label_win_%1").arg(i);
         QShortcut *switchShortcut = createNewShotcut(strSwitchLabel);
+        if(nullptr == switchShortcut)
+            continue;
         switchShortcut->setProperty("index", QVariant(i));
         connect(switchShortcut, &QShortcut::activated, this, &MainWindow::slotShortcutSwitchActivated);
 

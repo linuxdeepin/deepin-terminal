@@ -203,7 +203,7 @@ private slots:
     void onCloseCurrWorkSpace();
     void onCloseOtherWorkSpaces();
     void onCreateNewTab();
-    void onSwitchFullScreen();
+//    void onSwitchFullScreen();
     void openBing();
     void openBaidu();
     void openGithub();

@@ -143,8 +143,8 @@ private:
     const int m_iFixedWidth = 459;
     const int m_iFixedHeight = 54;
 
-    const int m_iFixedHeightAddSize = 262;
-    const int m_iFixedHeightEditSize = 296;
+    const int m_iFixedHeightAddSize = 262 - 54;//FixedHeight:54
+    const int m_iFixedHeightEditSize = 296 - 54;
 
     const int m_iLineEditWidth = 285;
 
