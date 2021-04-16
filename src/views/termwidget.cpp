@@ -82,16 +82,9 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
-    // theme
-    QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    theme = Settings::instance()->colorScheme();
-    //if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-    //    theme = "Light";
-    //}
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
+    // 平板默认主题随系统bug#71612
+    QString theme = Settings::instance()->colorScheme();
     setColorScheme(theme);
-    Settings::instance()->setColorScheme(theme);
 
     // 这个参数启动为默认值UTF-8
     setTextCodec(QTextCodec::codecForName("UTF-8"));

@@ -97,22 +97,6 @@ void Settings::init()
     // 加载自定义配置
     settings->setBackend(m_backend);
 
-    /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light Begin************************/
-    QFile file(m_configPath);
-    if (!file.exists() || "Light" != m_backend->getOption("basic.interface.theme").toString()) {
-        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 Begin************************/
-        //DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
-        //DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        //setColorScheme("Dark");
-        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 End ************************/
-        if (m_backend->getOption("basic.interface.expand_theme").toString().isEmpty()) {
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-            setColorScheme("Dark");
-        }
-
-    }
-    /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light End ************************/
-
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
     // 平板模式只有最大化窗口，且配置文件中没有窗口状态选项
@@ -400,7 +384,12 @@ qreal Settings::opacity() const
 *******************************************************************************/
 QString Settings::colorScheme() const
 {
-    return settings->option("basic.interface.theme")->value().toString();
+    // 平板默认主题随系统bug#71612
+    QString curTheme = settings->option("basic.interface.theme")->value().toString();
+    //配置文件未设置主题时，返回读取系统保存的
+    if("" == curTheme.trimmed())
+        curTheme = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? "Light" : "Dark";
+    return curTheme;
 }
 
 /*******************************************************************************

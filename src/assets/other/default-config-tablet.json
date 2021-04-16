@@ -34,7 +34,7 @@
                             "key": "theme",
                             "hide": true,
                             "reset": false,
-                            "default": "Linux"
+                            "default": ""
                         },
                         {
                             "key": "expand_theme",
