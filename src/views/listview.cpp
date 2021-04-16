@@ -45,6 +45,11 @@ ListView::ListView(ListType type, QWidget *parent)
 
     /***add by ut001121 zhangmeng 20200924 修复BUG48618***/
     QScroller::grabGesture(this, QScroller::TouchGesture);
+    //修改平板触摸滚动动画异常的问题,bug#71868
+    connect(QScroller::scroller(this->viewport()), &QScroller::stateChanged, this, [this](QScroller::State newstate) {
+        bool isDragging = (newstate == QScroller::Dragging);
+        this->viewport()->setAttribute(Qt::WA_TransparentForMouseEvents, isDragging);
+    });
 }
 
 /*******************************************************************************
