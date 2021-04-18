@@ -598,8 +598,8 @@
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="39"/>
-        <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>终端是⼀款集⼯作区、多窗⼝、远程管理、雷神模式等功能的⾼级终端模拟器。</translation>
+        <source>Terminal is an advanced terminal emulator with workspaces, remote management, custom commands, and other features.</source>
+        <translation>终端是⼀款集⼯作区、远程管理、自定义命令等功能的⾼级终端模拟器。</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2076"/>

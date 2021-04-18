@@ -36,8 +36,7 @@ TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication
     setApplicationDisplayName(QObject::tr("Terminal"));
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     setProductIcon(QIcon::fromTheme("deepin-terminal"));
-    QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace"
-                                  ", multiple windows, remote management, quake mode and other features.");
+    QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspaces, remote management, custom commands, and other features.");
     setApplicationDescription(appDesc);
 
     /***add by ut001121 zhangmeng 20200617 禁用应用程序自动退出 修复BUG33541***/
