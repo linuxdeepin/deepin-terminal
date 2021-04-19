@@ -338,9 +338,6 @@ The window theme provides multiple themes.
 
 2. In the **Basic** options, you can:
 
-   - Set **Opacity** for the background.
-   >![notes](../common/notes.svg)Notes: if Window Effect is turned off in Control Center, **Opacity** scroll bar will be hidden.
-
    - Set the font type and size.
 
    - Click the "+" or "-" icon or scroll the mouse wheel in the Font Size edition box to adjust the font size.
@@ -370,9 +367,6 @@ The window theme provides multiple themes.
   - Enable or disable **Scroll on keystroke**.
   - Enable or disable **Scroll on output**.
   - Set the window startup mode.
-  - Enable or disable **Blur background**.
-   >![notes](../common/notes.svg)Notes: If Window Effect is turned off in Control Center, **Blur background** option will be hidden.
-
   - Enable or disable **Hide quake window after lost focus**.
   - Select **Shell profile**.
 
