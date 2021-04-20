@@ -145,7 +145,7 @@ public:
      * @param elideMode
      * @return
      */
-    static QString getElidedText(QFont font, QString str, int MaxWith, Qt::TextElideMode elideMode = Qt::ElideRight);
+    static QString getElidedText(QFont font, QString text, int MaxWith, Qt::TextElideMode elideMode = Qt::ElideRight);
     /**
      * @brief 获取随机字符串
      * @author ut000439 wangpeili

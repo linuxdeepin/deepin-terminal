@@ -33,7 +33,7 @@
 #include <QVBoxLayout>
 #include <QApplication>
 
-TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
+TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
     Utils::set_Object_Name(this);

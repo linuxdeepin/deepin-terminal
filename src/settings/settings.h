@@ -277,7 +277,7 @@ public:
      * @param opt
      * @return
      */
-    static QPair<QWidget *, QWidget *> createShellConfigComboxOptionHandle(QObject *opt);
+    static QPair<QWidget *, QWidget *> createShellConfigComboxOptionHandle(QObject *obj);
 
 signals:
     void windowSettingChanged(const QString &key);

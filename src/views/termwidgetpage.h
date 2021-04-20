@@ -47,7 +47,7 @@ class TermWidgetPage : public QWidget
 {
     Q_OBJECT
 public:
-    TermWidgetPage(TermProperties properties, QWidget *parent = nullptr);
+    TermWidgetPage(const TermProperties &properties, QWidget *parent = nullptr);
     // mainwindow指针，parent()会变化？？？所以要在构造的时候保存。
     /**
      * @brief 获取父主窗口

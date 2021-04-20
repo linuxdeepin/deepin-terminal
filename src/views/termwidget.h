@@ -80,7 +80,7 @@ class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
-    TermWidget(TermProperties properties, QWidget *parent = nullptr);
+    TermWidget(const TermProperties &properties, QWidget *parent = nullptr);
     ~TermWidget();
     /**
      * @brief 获取父页面
