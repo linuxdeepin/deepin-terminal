@@ -1225,9 +1225,7 @@ void TermWidget::showFlowMessage(bool show)
         m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
         QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
         installEventMessageText(m_flowMessage, strText);
-        if (show) {
-            DMessageManager::instance()->sendMessage(this, m_flowMessage);
-        }
+        DMessageManager::instance()->sendMessage(this, m_flowMessage);
     }
     assert(m_flowMessage);
 
