@@ -35,6 +35,7 @@
 #include <QLabel>
 
 Service *Service::g_pService = new Service();
+
 Service *Service::instance()
 {
     return g_pService;
@@ -42,13 +43,6 @@ Service *Service::instance()
 
 Service::~Service()
 {
-    qDebug() << __FUNCTION__;
-//    if (nullptr != m_atspiThread) {
-//        // 结束线程
-//        m_atspiThread->stopThread();
-//        delete m_atspiThread;
-//        m_atspiThread = nullptr;
-//    }
     releaseShareMemory();
     if (nullptr != m_settingDialog) {
         delete m_settingDialog;
@@ -66,19 +60,10 @@ Service::~Service()
         delete m_customThemeSettingDialog;
         m_customThemeSettingDialog = nullptr;
     }
-
-    qDebug() << "service release finish!";
 }
 
 void Service::init()
 {
-    /******** Modify by ut000610 daizhengwen 2020-07-09:在linux上兼容快捷键 Begin***************/
-//    // 初始化qt-at-spi
-//    // 该线程负责在linux上兼容快捷键，如ctrl+shift+? （服务器版暂不支持此兼容）
-//    m_atspiThread = new AtspiDesktop;
-//    // 运行线程
-//    m_atspiThread->start();
-    /********************* Modify by ut000610 daizhengwen End ************************/
     // 初始化配置
     Settings::instance()->init();
     // 初始化自定义快捷键
@@ -89,7 +74,6 @@ void Service::init()
     // 主进程：共享内存如果不存在即创建
     if (!m_enableShareMemory->attach()) {
         m_enableShareMemory->create(sizeof(ShareMemoryInfo));
-        qDebug() << "m_enableShareMemory create" << m_enableShareMemory->key();
     }
     // 创建好以后，保持共享内存连接，防止释放。
     m_enableShareMemory->attach();
@@ -99,10 +83,16 @@ void Service::init()
     setMemoryEnable(false);
     // 清理共享内存
     setSubAppStartTime(0);
-    qDebug() << "All init data complete! m_enableShareMemory is" << m_enableShareMemory->key();
-
     //监听窗口特效变化
     listenWindowEffectSwitcher();
+}
+
+void Service::releaseInstance()
+{
+    if(nullptr == g_pService) {
+        delete g_pService;
+        g_pService = nullptr;
+    }
 }
 
 void Service::initSetting()
@@ -112,9 +102,9 @@ void Service::initSetting()
     }
     QDateTime startTime = QDateTime::currentDateTime();
     m_settingDialog = new DSettingsDialog();
-    m_settingDialog->setObjectName("SettingDialog");//Add by ut001000 renfeixiang 2020-08-13
+    m_settingDialog->setObjectName("SettingDialog");
     // 关闭后将指针置空，下次重新new
-    connect(m_settingDialog, &DSettingsDialog::finished, this, &Service::handleSettingsDialogFinished);
+    connect(m_settingDialog, &DSettingsDialog::finished, this, &Service::slotSettingsDialogFinished);
     // 关闭时delete
     m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
@@ -131,7 +121,6 @@ void Service::initSetting()
     m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
     moveToCenter(m_settingDialog);
     QDateTime endTime = QDateTime::currentDateTime();
-    qDebug() << "Setting init cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
 
     //判断未开启窗口特效时，隐藏透明度/背景模糊选项
     if (!DWindowManagerHelper::instance()->hasComposite()) {
@@ -142,7 +131,7 @@ void Service::initSetting()
     showHideOpacityAndBlurOptions(isWindowEffectEnabled());
 }
 
-inline void Service::handleSettingsDialogFinished(int result)
+void Service::slotSettingsDialogFinished(int result)
 {
     Q_UNUSED(result)
     //激活设置框的有拥者
@@ -161,7 +150,6 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
     }
 
     QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
-
     for (int i = 0; i < rightWidgetList.size(); i++) {
         QWidget *widget = rightWidgetList.at(i);
         if (widget == nullptr) {
@@ -172,7 +160,6 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             if (checkText == QObject::tr("Blur background")) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
-                qDebug() << parentWidget << endl;
                 if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0) {
                     optionWidget = parentWidget;
                 }
@@ -185,29 +172,25 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
         } else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
             QWidget *optionWidget = widget;
             QWidget *parentWidget = widget->parentWidget();
-            qDebug() << parentWidget << endl;
             if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0) {
                 optionWidget = parentWidget;
             }
-            if (isShow) {
+            if (isShow)
                 optionWidget->show();
-            } else {
+            else
                 optionWidget->hide();
-            }
         } else if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
             QString lblText = (qobject_cast<QLabel *>(widget))->text();
             if (lblText == QObject::tr("Opacity")) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
-                qDebug() << parentWidget << endl;
                 if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0) {
                     optionWidget = parentWidget;
                 }
-                if (isShow) {
+                if (isShow)
                     optionWidget->show();
-                } else {
+                else
                     optionWidget->hide();
-                }
             }
         } else {
             //do nothing
@@ -220,21 +203,19 @@ void Service::listenWindowEffectSwitcher()
     if (nullptr == m_wmSwitcher) {
         m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
         m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::handleWMChanged, Qt::QueuedConnection);
+        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
     }
 }
 
-inline void Service::handleWMChanged(const QString &wmName)
+void Service::slotWMChanged(const QString &wmName)
 {
-    qDebug() << "changed wm name:" << wmName;
     bool isWinEffectEnabled = false;
     if (wmName == "deepin wm") {
         isWinEffectEnabled = true;
     }
 
     showHideOpacityAndBlurOptions(isWinEffectEnabled);
-
-    emit Service::instance()->onWindowEffectEnabled(isWinEffectEnabled);
+    emit onWindowEffectEnabled(isWinEffectEnabled);
 }
 
 bool Service::isWindowEffectEnabled()
@@ -259,7 +240,7 @@ bool Service::isWindowEffectEnabled()
 
 qint64 Service::getEntryTime()
 {
-    return m_EntryTime;
+    return m_entryTime;
 }
 
 QMap<QString, QString> Service::getShells()
@@ -286,17 +267,13 @@ QMap<QString, QString> Service::getShells()
                 QString shellProgram = shellPaths.back();
                 // 添加数据入map
                 m_shellsMap.insert(shellProgram, shellPath);
-                // qDebug() << "shell : " << shellProgram << " path : " << shellPath;
             }
         } while (!shellLine.isNull());
     } else {
-        // 读取数据失败报错
         qDebug() << "read /etc/shells fail! error : " << shellsInfo.error();
     }
     // 关闭文件
     shellsInfo.close();
-    qint64 endTime = QDateTime::currentMSecsSinceEpoch();
-    qDebug() << "read /etc/shells cost time : " << endTime - startTime;
     return m_shellsMap;
 }
 
@@ -323,12 +300,10 @@ void Service::showSettingDialog(MainWindow *pOwner)
             }
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
         }
-        // 显示窗口
-//        m_settingDialog->move(m_settingDialog->pos());
-        /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置窗口时，执行等宽字体出来 Begin***************/
+        //更新设置的等宽字体
         Settings::instance()->HandleWidthFont();
         FontFilter::instance()->HandleWidthFont();
-        /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置窗口时，执行等宽字体出来 End***************/
+
         // 重新加载shell配置数据
         Settings::instance()->reloadShellOptions();
         m_settingDialog->show();
@@ -336,15 +311,8 @@ void Service::showSettingDialog(MainWindow *pOwner)
         qDebug() << "No setting dialog.";
         return;
     }
-
-    // 若设置窗口已显示，则激活窗口
-    if (!m_settingDialog->isActiveWindow()) {
-        m_settingDialog->activateWindow();
-    }
-    QDateTime endTime = QDateTime::currentDateTime();
-    qDebug() << "Setting show cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
-    QString strSettingsShowTime = GRAB_POINT + LOGO_TYPE + SHOW_SETTINGS_TIME + QString::number(endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch());
-    qDebug() << qPrintable(strSettingsShowTime);
+    // 激活窗口
+    m_settingDialog->activateWindow();
 }
 
 void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
@@ -365,7 +333,7 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
     } else {
         m_customThemeSettingDialog = new CustomThemeSettingDialog();
 
-        connect(m_customThemeSettingDialog, &CustomThemeSettingDialog::finished, this, &Service::handleCustomThemeSettingDialogFinished);
+        connect(m_customThemeSettingDialog, &CustomThemeSettingDialog::finished, this, &Service::slotCustomThemeSettingDialogFinished);
         // 设置窗口模态为没有模态，不阻塞窗口和进程
         m_customThemeSettingDialog->setWindowModality(Qt::NonModal);
         // 让设置与窗口等效，隐藏后显示就不会被遮挡
@@ -375,53 +343,47 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
 
     m_customThemeSettingDialog->show();
 
-    // 若设置窗口已显示，则激活窗口
-    if (!m_customThemeSettingDialog->isActiveWindow()) {
-        m_customThemeSettingDialog->activateWindow();
-    }
+    // 激活窗口
+    m_customThemeSettingDialog->activateWindow();
 }
 
-inline void Service::handleCustomThemeSettingDialogFinished(int result)
+void Service::slotCustomThemeSettingDialogFinished(int result)
 {
-    if (result == CustomThemeSettingDialog::Accepted) {
-        qDebug() << "CustomThemeSettingDialog::Accepted";
+    if (CustomThemeSettingDialog::Accepted == result) {
         m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
         return;
-    } else {
-        qDebug() << "CustomThemeSettingDialog::Rejected";
     }
 }
 
 void Service::showShortcutConflictMsgbox(QString txt)
 {
-    /******** Modify by ut000610 daizhengwen 2020-05-27: 出现提示和快捷键显示不一致的问题 bug#28507****************/
-    // fix#bug 37399
+    // 同步提示和快捷键
     for (QString key : ShortcutManager::instance()->m_mapReplaceText.keys()) {
         if (txt.contains(key)) {
             txt.replace(key, ShortcutManager::instance()->m_mapReplaceText[key]);
         }
     }
-    /********************* Modify by ut000610 daizhengwen End ************************/
     // 若没有设置弹框则退出，谈不上显示设置的快捷键冲突
-    if (nullptr == m_settingDialog) {
+    if (nullptr == m_settingDialog)
         return;
-    }
+
     // 若没有弹窗，初始化
     if (nullptr == m_settingShortcutConflictDialog) {
         m_settingShortcutConflictDialog = new DDialog(m_settingDialog);
-        m_settingShortcutConflictDialog->setObjectName("ServiceSettingShortcutConflictDialog");// Add by ut001000 renfeixiang 2020-08-13
-        connect(m_settingShortcutConflictDialog, &DDialog::finished, this, &Service::handleSettingShortcutConflictDialogFinished);
+        m_settingShortcutConflictDialog->setObjectName("ServiceSettingShortcutConflictDialog");
         m_settingShortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
-        /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
-        m_settingShortcutConflictDialog->addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
+        //将确认按钮设置为默认按钮
+        m_settingShortcutConflictDialog->addButton(tr("OK"), true, DDialog::ButtonNormal);
+
+        connect(m_settingShortcutConflictDialog, &DDialog::finished, this, &Service::slotSettingShortcutConflictDialogFinished);
     }
-    m_settingShortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));
+    m_settingShortcutConflictDialog->setTitle(txt + QObject::tr("please set another one."));
     m_settingShortcutConflictDialog->show();
     // 将冲突窗口移到窗口中央
     moveToCenter(m_settingShortcutConflictDialog);
 }
 
-inline void Service::handleSettingShortcutConflictDialogFinished()
+void Service::slotSettingShortcutConflictDialogFinished()
 {
     delete m_settingShortcutConflictDialog;
     m_settingShortcutConflictDialog = nullptr;
@@ -434,7 +396,7 @@ bool Service::isCountEnable()
 
 void Service::Entry(QStringList arguments)
 {
-    m_EntryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    m_entryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     TermProperties properties;
     Utils::parseCommandLine(arguments, properties);
 
@@ -446,18 +408,17 @@ void Service::Entry(QStringList arguments)
 
     // 普通窗口处理入口
     WindowsManager::instance()->createNormalWindow(properties);
-    return;
 }
 
 void Service::onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop)
 {
-    qDebug() << __FUNCTION__ << curDesktop << nextDesktop;
+    Q_UNUSED(curDesktop)
+
     // 获取雷神窗口
     QuakeWindow *window = static_cast<QuakeWindow *>(WindowsManager::instance()->getQuakeWindow());
     // 没有雷神,直接返回
-    if (nullptr == window) {
+    if (nullptr == window)
         return;
-    }
     // 雷神在所在桌面是否显示
     bool isQuakeVisible = window->isShowOnCurrentDesktop();
     // 判断下一个窗口是否是雷神所在的窗口
@@ -485,29 +446,28 @@ Service::Service(QObject *parent) : QObject(parent)
     // 不同用户不能交叉使用共享内存，以及dbus, 所以共享内存的名字和登陆使用的用户有关。
     // 如sudo 用户名为root, 使用的配置也是root的配置。
     QString ShareMemoryName = QString(getenv("LOGNAME")) + "_enableCreateTerminal";
-    //qDebug() << "ShareMemoryName: " << ShareMemoryName;
     m_enableShareMemory = new QSharedMemory(ShareMemoryName);
     m_enableShareMemory->setObjectName("EnableShareMemory");// Add by ut001000 renfeixiang 2020-08-13
 }
 
 bool Service::getEnable(qint64 time)
 {
-    if (!isCountEnable()) {
+    if (!isCountEnable())
         return false;
-    }
+
     // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
     if (!m_enableShareMemory->attach()) {
-        qDebug() << "[sub app] m_enableShareMemory  can't attach" << m_enableShareMemory->key();
+        qDebug() << "[sub app] m_enableShareMemory  can't attach";
         return  false;
     }
     // sub app首次赋值m_pShareMemoryInfo
     m_pShareMemoryInfo = static_cast<ShareMemoryInfo *>(m_enableShareMemory->data());
     if (getShareMemoryCount() >= MAXWIDGETCOUNT) {
-        qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->TerminalsCount
+        qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->terminalsCount
                  << ", can't create terminal any more.";
         return false;
     }
-    qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->TerminalsCount;
+    qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->terminalsCount;
     // 如果标志位为false，则表示正在创建窗口，不可以再创建
     if (!getMemoryEnable()) {
         releaseShareMemory();
@@ -550,15 +510,13 @@ void Service::updateShareMemoryCount(int count)
         return ;
     }
 
-    m_pShareMemoryInfo->TerminalsCount = count;
-    qDebug() << "[main app] TerminalsCount  set " << count;
-
-    return  ;
+    m_pShareMemoryInfo->terminalsCount = count;
+    qDebug() << "[main app] terminalsCount  set " << count;
 }
 
 int Service::getShareMemoryCount()
 {
-    return m_pShareMemoryInfo->TerminalsCount;
+    return m_pShareMemoryInfo->terminalsCount;
 }
 
 bool Service::setMemoryEnable(bool enable)
@@ -618,7 +576,6 @@ void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 
 void Service::slotShowSettingsDialog()
 {
-    qDebug() << sender()->parent();
     MainWindow *mainWindow = qobject_cast<MainWindow *>(sender()->parent());
     Service::instance()->showSettingDialog(mainWindow);
 }

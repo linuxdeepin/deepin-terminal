@@ -52,10 +52,7 @@ TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication
 
 TerminalApplication::~TerminalApplication()
 {
-    // app结束时，释放Service
-    if (nullptr != Service::instance()) {
-        delete Service::instance();
-    }
+    Service::releaseInstance();
 }
 
 void TerminalApplication::setStartTime(qint64 time)
