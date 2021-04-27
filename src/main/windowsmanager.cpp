@@ -53,56 +53,45 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
 
 void WindowsManager::quakeWindowShowOrHide()
 {
-    //MainWindow *mainWindow = getMainWindow();
-    qDebug() << "ShowOrHide" << m_quakeWindow->winId();
-
-    // 没有显示，就显示．
+    //隐藏 则 显示终端
     if (!m_quakeWindow->isVisible()) {
-        qDebug() << "!mainWindow  isVisible now show !" << m_quakeWindow->winId();
-        // 判断终端在原来窗口是否隐藏.原来窗口隐藏的情况下,显示
-        if (!m_quakeWindow->isShowOnCurrentDesktop()) {
-            //Add by ut001000 renfeixiang 2020-11-16  设置开始雷神动画效果标志
-            m_quakeWindow->setAnimationFlag(false);
-            m_quakeWindow->show();
-            //Add by ut001000 renfeixiang 2020-11-16  开始从上到下的动画
-            m_quakeWindow->topToBottomAnimation();
-            m_quakeWindow->activateWindow();
-        }
+        m_quakeWindow->setAnimationFlag(false);
+        m_quakeWindow->show();
+        m_quakeWindow->topToBottomAnimation();
+        m_quakeWindow->activateWindow();
+        return;
     }
 
-    // 没有激活就激活
-    if (!m_quakeWindow->isActiveWindow()) {
-        qDebug() << "QuakeWindow is activate, now activateWindow" << m_quakeWindow->winId();
-        int index = DBusManager::callKDECurrentDesktop();
-        if ((index != -1) && (m_quakeWindow->getDesktopIndex() != index)) {
-            // 不在同一个桌面
-            DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
-            // 选择拉伸方式，因为此时不知道鼠标位置
-            m_quakeWindow->switchEnableResize();
-            qDebug() << "isActiveWindow 拉伸函数" << m_quakeWindow->minimumHeight();
-        }
+    //不在当前桌面显示时，切换到终端所在桌面
+    int curDesktopIndex = DBusManager::callKDECurrentDesktop();
+    if(curDesktopIndex != -1 && curDesktopIndex != m_quakeWindow->getDesktopIndex()) {
+        //切换 桌面
+        DBusManager::callKDESetCurrentDesktop(m_quakeWindow->getDesktopIndex());
+        //选择拉伸方式，因为此时不知道鼠标位置
+        m_quakeWindow->switchEnableResize();
         m_quakeWindow->activateWindow();
-        // fix#42497 防止隐藏显示后"+"号高亮
         m_quakeWindow->focusCurrentPage();
         return;
     }
-
-    // 如果已经激活，那么就隐藏
-    qDebug() << "isWinVisible mainWindow->isActiveWindow() : start hide" << m_quakeWindow->winId();
-    // 雷神的普通对话框,不处理
+    // 终端的普通对话框,不处理
     if (Service::instance()->getIsDialogShow()) {
         return;
     }
-    // 雷神设置框显示,不处理
-    if (Service::instance()->isSettingDialogVisible() && (Service::instance()->getSettingOwner() == m_quakeWindow)) {
-        if (m_quakeWindow->isActiveWindow()) {
-            Service::instance()->showSettingDialog(m_quakeWindow);
-        }
+
+    //若终端和设置界面同时存在，则隐藏终端和设置界面
+    if (Service::instance()->isSettingDialogVisible() && Service::instance()->getSettingOwner() == m_quakeWindow) {
+        Service::instance()->hideSettingDialog();
+        m_quakeWindow->hideQuakeWindow();
         return;
     }
-    // 隐藏雷神
+    //终端未激活则激活
+    if(!m_quakeWindow->isActiveWindow()) {
+        m_quakeWindow->activateWindow();
+        m_quakeWindow->focusCurrentPage();
+        return;
+    }
+    //隐藏终端
     m_quakeWindow->hideQuakeWindow();
-
 }
 
 void WindowsManager::createNormalWindow(TermProperties properties)

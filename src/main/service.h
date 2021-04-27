@@ -83,9 +83,14 @@ public:
     void initSetting();
 
     /**
-     * @brief 唯一显示设置框
+     * @brief 显示设置框
      */
     void showSettingDialog(MainWindow *pOwner);
+
+    /**
+     * @brief 隐藏设置框
+     */
+    void hideSettingDialog();
 
     /**
      * @brief 显示自定义主题设置框
@@ -309,17 +314,17 @@ private:
 
 private:
     static Service             *g_pService;
-    DSettingsDialog            *m_settingDialog = nullptr;// 设置框 全局唯一显示
-    CustomThemeSettingDialog   *m_customThemeSettingDialog = nullptr;//自定义主题设置对话框 全局唯一
-    WMSwitcher                 *m_wmSwitcher = nullptr;
-    MainWindow                 *m_settingOwner = nullptr;//设置框的所有者
-    DDialog                    *m_settingShortcutConflictDialog = nullptr;// 设置框，快捷键冲突弹窗
-    bool                        m_isDialogShow = false;// 雷神用来判断是否有弹窗显示
-    bool                        m_enable = false;// 是否允许创建新的窗口
-    QSharedMemory              *m_enableShareMemory = nullptr;
-    ShareMemoryInfo            *m_pShareMemoryInfo = nullptr;// 这个指针实际上与上面指针指向同一地址，不需要二次释放
+    DSettingsDialog            *m_settingDialog                     = nullptr;// 设置框 全局唯一显示
+    CustomThemeSettingDialog   *m_customThemeSettingDialog          = nullptr;// 自定义主题设置对话框 全局唯一
+    WMSwitcher                 *m_wmSwitcher                        = nullptr;
+    MainWindow                 *m_settingOwner                      = nullptr;// 设置框的所有者
+    DDialog                    *m_settingShortcutConflictDialog     = nullptr;// 设置框，快捷键冲突弹窗
+    bool                        m_isDialogShow                      = false;  // 雷神用来判断是否有弹窗显示
+    bool                        m_enable                            = false;  // 是否允许创建新的窗口
+    QSharedMemory              *m_enableShareMemory                 = nullptr;
+    ShareMemoryInfo            *m_pShareMemoryInfo                  = nullptr;// 这个指针实际上与上面指针指向同一地址，不需要二次释放
     QMap<QString, QString>      m_shellsMap;
-    qint64                      m_entryTime = 0;// 记录进入的时间，只有创建窗口时，才会来取用这个时间
+    qint64                      m_entryTime                         = 0;      // 记录进入的时间，只有创建窗口时，才会来取用这个时间
 };
 
 #endif // SERVICE_H

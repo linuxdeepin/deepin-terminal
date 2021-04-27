@@ -315,6 +315,12 @@ void Service::showSettingDialog(MainWindow *pOwner)
     m_settingDialog->activateWindow();
 }
 
+void Service::hideSettingDialog()
+{
+    if(m_settingDialog)
+        m_settingDialog->hide();
+}
+
 void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
 {
     //保存设置框的有拥者
