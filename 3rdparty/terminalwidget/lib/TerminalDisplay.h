@@ -543,6 +543,9 @@ public slots:
 
     void selectionCleared();
 
+    // 隐藏QScrollBar默认的右键菜单
+    void hideQScrollBarRightMenu();
+
 signals:
 
     /**
