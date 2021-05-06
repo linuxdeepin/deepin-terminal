@@ -110,6 +110,7 @@ set(LINK_LIBS
 set (DTNG_CPP_FILES
     src/common/utils.cpp
     src/common/settingio.cpp
+    src/common/ImInterface.cpp
     src/customcommand/customcommandoptdlg.cpp
     src/customcommand/customcommandpanel.cpp
     src/customcommand/customcommandplugin.cpp
@@ -170,6 +171,7 @@ set (DTNG_HEADER_FILES
     src/common/define.h
     src/common/utils.h
     src/common/settingio.h
+    src/common/ImInterface.h
     src/customcommand/customcommandoptdlg.h
     src/customcommand/customcommandpanel.h
     src/customcommand/customcommandplugin.h

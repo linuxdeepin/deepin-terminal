@@ -50,7 +50,8 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
-TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
+TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties),
+    m_pImInterface(new ComDeepinImInterface(DUE_IM_DBUS_NAME, DUE_IM_DBUS_PATH, QDBusConnection::sessionBus(), this))
 {
     Utils::set_Object_Name(this);
     // 窗口数量加1
@@ -198,6 +199,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
 
     connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
     setFocusPolicy(Qt::NoFocus);
+
+    installEventFilter(this);
 }
 
 inline void TermWidget::onSetTerminalFont()
@@ -265,7 +268,7 @@ inline void TermWidget::onExitRemoteServer()
     }
 }
 
-inline void TermWidget::onUrlActivated(const QUrl & url, bool fromContextMenu)
+inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
         QDesktopServices::openUrl(url);
@@ -426,29 +429,27 @@ inline void TermWidget::onPaste()
 
 inline void TermWidget::onOpenFileInFileManager()
 {
-   //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
+    //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 
-   //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
-   //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
-   //dde-file-manager --show-item a.pdf
+    //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
+    //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
+    //dde-file-manager --show-item a.pdf
 
-   QProcess process;
-   //未选择内容
-   if (selectedText().isEmpty())
-   {
-       process.startDetached("dde-file-manager -n " + workingDirectory());
-       return;
-   }
+    QProcess process;
+    //未选择内容
+    if (selectedText().isEmpty()) {
+        process.startDetached("dde-file-manager -n " + workingDirectory());
+        return;
+    }
 
-   QFileInfo fi(workingDirectory() + "/" + selectedText());
-   //选择的内容是文件或者文件夹
-   if (fi.isFile() || fi.isDir())
-   {
-       process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
-       return;
-   }
-   //选择的文本不是文件也不是文件夹
-   process.startDetached("dde-file-manager -n " + workingDirectory());
+    QFileInfo fi(workingDirectory() + "/" + selectedText());
+    //选择的内容是文件或者文件夹
+    if (fi.isFile() || fi.isDir()) {
+        process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
+        return;
+    }
+    //选择的文本不是文件也不是文件夹
+    process.startDetached("dde-file-manager -n " + workingDirectory());
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
@@ -683,10 +684,10 @@ inline void TermWidget::openUrl(QString strUrl)
 inline QString TermWidget::getFormatFileName(QString selectedText)
 {
     QString fileName = selectedText.trimmed();
-    if ( (fileName.startsWith("'") && fileName.endsWith("'"))
-            || (fileName.startsWith("\"") && fileName.endsWith("\"")) ) {
+    if ((fileName.startsWith("'") && fileName.endsWith("'"))
+            || (fileName.startsWith("\"") && fileName.endsWith("\""))) {
         fileName = fileName.remove(0, 1);
-        fileName = fileName.remove(fileName.length()-1, 1);
+        fileName = fileName.remove(fileName.length() - 1, 1);
         qDebug() << "fileName is :" << fileName;
     }
 
@@ -1558,4 +1559,18 @@ void TermWidget::showShellMessage(QString strWarnings)
     DMessageManager::instance()->sendMessage(this, shellWarningsMessage);
 }
 
-
+//事件过滤器，适配虚拟键盘的显示与隐藏
+//fix: bug#71068 在终端收起虚拟键盘后,点击输入框区域无法唤起
+bool TermWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    Q_UNUSED(watched)
+    if (event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::LeftButton && !m_pImInterface->imActive()) {
+            m_pImInterface->setImActive(true);
+            event->accept();
+        }
+        return true;
+    }
+    return false;
+}

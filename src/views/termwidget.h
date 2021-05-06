@@ -23,6 +23,7 @@
 
 #include "qtermwidget.h"
 #include "termwidgetpage.h"
+#include "../common/ImInterface.h"
 
 /*******************************************************************************
  1. @类名:    TermWidget
@@ -164,6 +165,9 @@ signals:
 protected:
     // 鼠标滚轮事件
     void wheelEvent(QWheelEvent *event) override;
+    //事件过滤器
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private slots:
     void customContextMenuCall(const QPoint &pos);
     void handleTermIdle(bool bIdle);
@@ -175,7 +179,7 @@ private slots:
     void onQTermWidgetReceivedData(QString value);
     void onTermWidgetReceivedData(QString value);
     void onExitRemoteServer();
-    void onUrlActivated(const QUrl & url, bool fromContextMenu);
+    void onUrlActivated(const QUrl &url, bool fromContextMenu);
     void onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme);
     void onTermIsIdle(bool bIdle);
     void onTitleChanged();
@@ -252,6 +256,8 @@ private:
     int m_sessionNumber;
     // Ctrl+Q/Ctrl+S的悬浮框
     DFloatingMessage *m_flowMessage = nullptr;
+    //虚拟键盘 due-im
+    ComDeepinImInterface *m_pImInterface = nullptr;
 };
 
 #endif  // TERMWIDGET_H

@@ -99,12 +99,12 @@ void TabletWindow::initVirtualKeyboardImActiveChangedSignal()
     QDBusConnection dbusConn = QDBusConnection::sessionBus();
 
     if (dbusConn.connect(
-            DUE_IM_DBUS_NAME, // service name
-            DUE_IM_DBUS_PATH, // path name
-            DUE_IM_DBUS_INTERFACE, // interface
-            "imActiveChanged", // signal name
-            this, // receiver
-            SLOT(slotVirtualKeyboardImActiveChanged(bool)))) { // slot
+                DUE_IM_DBUS_NAME, // service name
+                DUE_IM_DBUS_PATH, // path name
+                DUE_IM_DBUS_INTERFACE, // interface
+                "imActiveChanged", // signal name
+                this, // receiver
+                SLOT(slotVirtualKeyboardImActiveChanged(bool)))) { // slot
 
         qDebug() << "dbus connect to imActiveChanged success";
     } else {
@@ -123,12 +123,12 @@ void TabletWindow::initVirtualKeyboardGeometryChangedSignal()
     QDBusConnection dbusConn = QDBusConnection::sessionBus();
 
     if (dbusConn.connect(
-            DUE_IM_DBUS_NAME, // service name
-            DUE_IM_DBUS_PATH, // path name
-            DUE_IM_DBUS_INTERFACE, // interface
-            "geometryChanged", // signal name
-            this, // receiver
-            SLOT(slotVirtualKeyboardGeometryChanged(QRect)))) { // slot
+                DUE_IM_DBUS_NAME, // service name
+                DUE_IM_DBUS_PATH, // path name
+                DUE_IM_DBUS_INTERFACE, // interface
+                "geometryChanged", // signal name
+                this, // receiver
+                SLOT(slotVirtualKeyboardGeometryChanged(QRect)))) { // slot
 
         qDebug() << "dbus connect to geometryChanged success";
     } else {
@@ -184,7 +184,7 @@ void TabletWindow::slotResizeWindowHeight(int windowHeight, bool isKeyboardShow)
 *******************************************************************************/
 void TabletWindow::slotSetFixedHeight(int windowHeight)
 {
-    QTimer::singleShot(100, this, [this,windowHeight] {
+    QTimer::singleShot(100, this, [this, windowHeight] {
         this->setFixedHeight(windowHeight);
     });
 }
@@ -212,8 +212,7 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
 
         windowHeight = availableHeight - m_virtualKeyboardHeight + dockHeight;
         qDebug() << "isShow - windowHeight: " << windowHeight << endl;
-    }
-    else {
+    } else {
         windowHeight = availableHeight;
         qDebug() << "isHide - windowHeight: " << windowHeight << endl;
     }
