@@ -1217,7 +1217,6 @@ void TermWidget::showFlowMessage(bool show)
 {
     if (nullptr == m_flowMessage) {
         m_flowMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
-        assert(m_flowMessage);
         QList<QLabel *> lst = m_flowMessage->findChildren<QLabel *>();
         for (auto label : lst) {
             label->setWordWrap(false);
@@ -1227,15 +1226,7 @@ void TermWidget::showFlowMessage(bool show)
         installEventMessageText(m_flowMessage, strText);
         DMessageManager::instance()->sendMessage(this, m_flowMessage);
     }
-    assert(m_flowMessage);
-
-    if (show) {
-        m_flowMessage->show();
-    } else {
-        if (!m_flowMessage->isHidden()) {
-            m_flowMessage->hide();
-        }
-    }
+    m_flowMessage->setVisible(show);
 }
 
 void TermWidget::showShellMessage(QString strWarnings)
