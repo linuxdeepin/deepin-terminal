@@ -1,5 +1,9 @@
 project(deepin-terminal)
 
+if (NOT DEFINED VERSION)
+    set(VERSION 5.3.0.14-2)
+endif ()
+
 cmake_minimum_required(VERSION 3.9.5)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})

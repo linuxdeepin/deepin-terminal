@@ -1,3 +1,9 @@
+deepin-terminal (5.3.0.14-2) UNRELEASED; urgency=medium
+
+  * 修改龙芯5000的版本  
+
+ -- Deepin Packages Builder <chz@chz-PC>  Sat, 08 May 2021 16:02:01 +0800
+
 deepin-terminal (5.2.0) unstable; urgency=medium
 
   * Initial Release.
