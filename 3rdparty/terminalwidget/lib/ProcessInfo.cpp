@@ -250,7 +250,9 @@ void ProcessInfo::setFileError(QFile::FileError error)
 UnixProcessInfo::UnixProcessInfo(int pid, const QString &titleFormat) :
     ProcessInfo(pid)
 {
-    setUserNameRequired(titleFormat.contains(QLatin1String("%u")));
+    // 目前的机制是需要用户名的，但是没有用到库里的titleFormat用的我们自己的机制
+    Q_UNUSED(titleFormat);
+    // setUserNameRequired(titleFormat.contains(QLatin1String("%u")));
 }
 
 void UnixProcessInfo::readProcessInfo(int pid)

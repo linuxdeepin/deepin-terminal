@@ -58,7 +58,7 @@ public:
     static SessionManager *instance();
 
     /** Kill all running sessions. */
-    void closeAllSessions();
+//    void closeAllSessions();
 
     /**
      * Returns a list of active sessions.
@@ -83,10 +83,6 @@ public:
     void setTerminalResizing(int sessionId, bool bTerminalResizing);
     bool isTerminalResizing(int sessionId);
 
-    //用于存储当前shell提示符的路径深度(比如/home/test 路径深度为2)
-    void setTerminalPathDepth(int sessionId, int pathDepth);
-    int getTerminalPathDepth(int sessionId);
-
 signals:
     void sessionIdle(bool isIdle);
 
@@ -102,7 +98,6 @@ private:
     QList<Session *> _sessions; // list of running sessions
     QHash<Session *, int> _restoreMapping;
 
-    int _currTabSessionId;
     //存储当前的命令提示符Map
     QMap<int, QString> _shellPromptSessionMap;
     //存储当前的执行的命令字符串Map

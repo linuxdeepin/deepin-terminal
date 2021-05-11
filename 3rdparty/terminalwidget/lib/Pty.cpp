@@ -45,6 +45,7 @@
 #include <QDir>
 #include <QRegExp>
 #include <QRegExpValidator>
+#include <QTextCodec>
 
 #include "kpty.h"
 #include "kptydevice.h"
@@ -167,6 +168,7 @@ int Pty::start(const QString &program,
     // but the first argument to pass to setProgram()
     Q_ASSERT(programArguments.count() >= 1);
     setProgram(program, programArguments.mid(1));
+    _program = program;
 
     addEnvironmentVariables(environment);
 
@@ -433,23 +435,37 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
 }
 /******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 End***************/
 
-void Pty::sendData(const char *data, int length)
+void Pty::sendData(const char *data, int length, const QTextCodec *codec)
 {
+    _textCodec = codec;
+
     if (!length) {
         return;
     }
 
+    //判断是否是点了自定义命令面板列表项触发的命令
     bool isCustomCommand = false;
     QString currCommand = QString::fromLatin1(data);
     if (currCommand.length() > 0 && currCommand.endsWith('\n')) {
         isCustomCommand = true;
     }
 
+    _isCommandExec = false;
+    _bNeedBlockCommand = false;
     //检测到按了回车键
     if (((*data) == '\r' || isCustomCommand) && _bUninstall == false) {
+        _isCommandExec = true;
         QString strCurrCommand = SessionManager::instance()->getCurrShellCommand(_sessionId);
         if (isCustomCommand) {
             strCurrCommand = currCommand;
+        }
+
+        //检测到当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
+        bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
+        if (isSendByRemoteManage && strCurrCommand.startsWith("expect -f")) {
+            _bNeedBlockCommand = true;
+            //立即修改回false，防止误认其他命令
+            this->setProperty("isSendByRemoteManage", QVariant(false));
         }
 
         /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 Begin***************/
@@ -484,10 +500,24 @@ void Pty::sendData(const char *data, int length)
         }
     }
 
-    if (!pty()->write(data, length)) {
-        qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-        return;
+    //为GBK/GB2312/GB18030编码，且不是输入命令执行的情况（没有按回车）
+    if (QString(codec->name()).toUpper().startsWith("GB") && !_isCommandExec) {
+        QTextCodec *utf8Codec = QTextCodec::codecForName("UTF-8");
+        QString unicodeData = codec->toUnicode(data);
+        QByteArray unicode = utf8Codec->fromUnicode(unicodeData);
+
+        if (!pty()->write(unicode.constData(), unicode.length())) {
+            qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+            return;
+        }
     }
+    else {
+        if (!pty()->write(data, length)) {
+            qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+            return;
+        }
+    }
+
 }
 
 void Pty::dataReceived()
@@ -495,6 +525,55 @@ void Pty::dataReceived()
     QByteArray data = pty()->readAll();
 
     QString recvData = QString(data);
+
+    if (_bNeedBlockCommand) {
+        QString judgeData = recvData;
+        if (recvData.length() > 1) {
+            judgeData = recvData.replace("\r", "");
+            judgeData = judgeData.replace("\n", "");
+        }
+
+        //使用zsh的时候，发送过来的字符会残留一个字母"e"，需要特殊处理下
+        if (_program.endsWith("/zsh")
+                && 1 == judgeData.length()
+                && judgeData.startsWith("e")
+                && -1 == _receiveDataIndex) {
+            _receiveDataIndex = 0;
+            return;
+        }
+
+        //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
+        //同时考虑了zsh的情况
+        if (judgeData.startsWith("expect -f")
+                || judgeData.startsWith("\bexpect")
+                || judgeData.startsWith("\be")
+                || judgeData.startsWith("e\bexpect")
+                || judgeData.startsWith("e\be")) {
+            _receiveDataIndex = 1;
+            return;
+        }
+
+        if (_receiveDataIndex >= 1) {
+            if (judgeData.contains("Press")) {
+                //这里需要置回false，否则后面其他命令也会被拦截
+                _bNeedBlockCommand = false;
+
+                _receiveDataIndex = -1;
+                int pressStringIndex = recvData.indexOf("Press");
+                if (pressStringIndex > 0) {
+                    recvData = recvData.mid(pressStringIndex);
+                }
+                QString helpData = recvData.replace("\n", "");
+                recvData = "\r\n" + helpData + "\r\n";
+                data = recvData.toUtf8();
+                emit receivedData(data.constData(), data.count(), _textCodec);
+            }
+            else {
+                ++_receiveDataIndex;
+            }
+            return;
+        }
+    }
 
     /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
     // 乱码提示信息不显示
@@ -516,7 +595,7 @@ void Pty::dataReceived()
         data = recvData.toUtf8();
     }
     /********************* Modify by m000714 daizhengwen End ************************/
-    emit receivedData(data.constData(), data.count());
+    emit receivedData(data.constData(), data.count(), _isCommandExec);
 }
 
 void Pty::lockPty(bool lock)

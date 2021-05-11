@@ -1,3 +1,21 @@
+/*  Copyright (C) 2008 e_k (e_k@users.sourceforge.net)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+    Boston, MA 02110-1301, USA.
+*/
+
 #include "tools.h"
 
 #include <QCoreApplication>
@@ -103,20 +121,3 @@ const QStringList get_color_schemes_dirs()
 #endif
     return rval;
 }
-
-/*TerminalHeaderBar::TerminalHeaderBar(QWidget *parent)
-    : QWidget(parent)
-{
-    m_boxLayout = new QBoxLayout(QBoxLayout::LeftToRight);
-    m_boxLayout->setSpacing(0);
-    m_boxLayout->setContentsMargins(0, 0, 0, 0);
-
-    //通过查看Konsole 20.04.2版本源码发现加QToolButton作为Header放在TerminalDisplay控件布局顶部，
-    //可以在分屏拖拽的时候减少提示符出现残存在界面上的情况
-    for(int i=0; i<6; i++) {
-        QToolButton *toolBtn = new QToolButton(this);
-        toolBtn->setFixedHeight(1);
-        m_boxLayout->addWidget(toolBtn);
-    }
-    setLayout(m_boxLayout);
-}*/

@@ -45,18 +45,17 @@ SessionManager::SessionManager()
 
 SessionManager::~SessionManager()
 {
-    //closeAllSessions();
 }
 
-void SessionManager::closeAllSessions()
-{
-    // close remaining sessions
-    for (int i = 0; i < _sessions.size(); i++) {
-        Session *session = _sessions.at(i);
-        session->close();
-    }
-    _sessions.clear();
-}
+//void SessionManager::closeAllSessions()
+//{
+//    // close remaining sessions
+//    for (int i = 0; i < _sessions.size(); i++) {
+//        Session *session = _sessions.at(i);
+//        session->close();
+//    }
+//    _sessions.clear();
+//}
 
 QList<Session *> SessionManager::sessions() const
 {
@@ -148,14 +147,4 @@ void SessionManager::setTerminalResizing(int sessionId, bool bTerminalResizing)
 bool SessionManager::isTerminalResizing(int sessionId)
 {
     return _terminalResizeStateMap.value(sessionId);
-}
-
-void SessionManager::setTerminalPathDepth(int sessionId, int pathDepth)
-{
-    _terminalPathDepthMap.insert(sessionId, pathDepth);
-}
-
-int SessionManager::getTerminalPathDepth(int sessionId)
-{
-    return _terminalPathDepthMap.value(sessionId);
 }

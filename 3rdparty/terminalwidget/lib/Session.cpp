@@ -4,8 +4,6 @@
     Copyright (C) 2006-2007 by Robert Knight <robertknight@gmail.com>
     Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
 
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -20,6 +18,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301  USA.
+
+    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
 */
 
 // Own
@@ -110,10 +110,10 @@ Session::Session(QObject* parent) :
     //connect teletype to emulation backend
     _shellProcess->setUtf8Mode(_emulation->utf8());
 
-    connect( _shellProcess,SIGNAL(receivedData(const char *,int)),this,
-             SLOT(onReceiveBlock(const char *,int)) );
-    connect( _emulation,SIGNAL(sendData(const char *,int)),_shellProcess,
-             SLOT(sendData(const char *,int)) );
+    connect( _shellProcess,SIGNAL(receivedData(const char *,int,bool)),this,
+             SLOT(onReceiveBlock(const char *,int,bool)) );
+    connect( _emulation,SIGNAL(sendData(const char *,int,const QTextCodec *)),_shellProcess,
+             SLOT(sendData(const char *,int,const QTextCodec *)) );
     connect( _emulation,SIGNAL(lockPtyRequest(bool)),_shellProcess,SLOT(lockPty(bool)) );
     connect( _emulation,SIGNAL(useUtf8Request(bool)),_shellProcess,SLOT(setUtf8Mode(bool)) );
 
@@ -129,6 +129,11 @@ Session::Session(QObject* parent) :
     _monitorTimer = new QTimer(this);
     _monitorTimer->setSingleShot(true);
     connect(_monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerDone()));
+
+    // 定时更新term信息 => 目前为了更新标签标题信息
+    _updateTimer = new QTimer(this);
+    connect(_updateTimer, &QTimer::timeout, this, &Session::onUpdateTitleArgs);
+    _updateTimer->start(500);
 }
 
 WId Session::windowId() const
@@ -161,6 +166,20 @@ void Session::setCodec(QTextCodec * codec)
 void Session::setProgram(const QString & program)
 {
     _program = ShellCommand::expand(program);
+    if (_program.endsWith(QStringLiteral("/dash"))
+            || _program.endsWith(QStringLiteral("/sh"))) {
+        _updateTimer->setInterval(10);
+
+        //用于更改updateTimer的时间间隔，防止CPU占用太高
+        QTimer *monitorUpdateTimer = new QTimer(this);
+        monitorUpdateTimer->setSingleShot(true);
+        monitorUpdateTimer->start(500);
+        connect(monitorUpdateTimer, &QTimer::timeout, this, [this] {
+            if (_updateTimer->interval() < 500) {
+                _updateTimer->setInterval(500);
+            }
+        });
+    }
 }
 void Session::setInitialWorkingDirectory(const QString & dir)
 {
@@ -188,8 +207,8 @@ void Session::addView(TerminalDisplay * widget)
                  SLOT(sendKeyEvent(QKeyEvent *)) );
         connect( widget , SIGNAL(mouseSignal(int,int,int,int)) , _emulation ,
                  SLOT(sendMouseEvent(int,int,int,int)) );
-        connect( widget , SIGNAL(sendStringToEmu(const char *)) , _emulation ,
-                 SLOT(sendString(const char *)) );
+        // 先判断是否有远程连接,若有,则连接远程
+        // connect(widget, SIGNAL(sendStringToEmu(const char *)), _emulation, SLOT(sendString(const char *)));
 
         // allow emulation to notify view when the foreground process
         // indicates whether or not it is interested in mouse signals
@@ -226,7 +245,53 @@ void Session::viewDestroyed(QObject * view)
     removeView(display);
 }
 
-void Session::removeView(TerminalDisplay * widget)
+/*******************************************************************************
+ 1. @函数:    onUpdateTitleArgs
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-02
+ 4. @说明:    更新标签标题参数
+*******************************************************************************/
+void Session::onUpdateTitleArgs()
+{
+    ProcessInfo *process = getProcessInfo();
+
+    // format tab titles using process info
+    bool ok = false;
+
+    // 用户名 %u
+    QString userName = process->userName();
+    if (_userName != userName) {
+        _userName = userName;
+        emit titleArgsChange(QLatin1String("%u"), _userName);
+    }
+
+    //title.replace(QLatin1String("%h"), Konsole::ProcessInfo::localHost());
+    // 程序名 %n
+    QString programName = process->name(&ok);
+    if (_programName != programName) {
+        _programName = programName;
+        emit titleArgsChange(QLatin1String("%n"), _programName);
+    }
+
+
+    // 获取当前目录 %D
+    QString dir = _reportedWorkingUrl.toLocalFile();
+    ok = true;
+    if (dir.isEmpty()) {
+        // update current directory from process
+        updateWorkingDirectory();
+        // Previous process may have been freed in updateSessionProcessInfo()
+        process = getProcessInfo();
+        dir = process->currentDir(&ok);
+    }
+    if (_currentDir != dir) {
+        _currentDir = dir;
+        emit titleArgsChange(QLatin1String("%D"), _currentDir);
+    }
+
+}
+
+void Session::removeView(TerminalDisplay *widget)
 {
     _views.removeAll(widget);
 
@@ -268,20 +333,29 @@ void Session::run()
 
     // here we expect full path. If there is no fullpath let's expect it's
     // a custom shell (eg. python, etc.) available in the PATH.
-    if (exec.startsWith(QLatin1Char('/')) || exec.isEmpty())
-    {
-        const QString defaultShell{QLatin1String("/bin/sh")};
+    QString programPath = exec;
+    if (exec.startsWith(QLatin1Char('/')) || exec.isEmpty()) {
+        const QString defaultShell{QLatin1String("/bin/bash")};
 
         QFile excheck(exec);
-        if ( exec.isEmpty() || !excheck.exists() ) {
+#if 0 // 下一期优化
+        // exec是空的，或者文件不存在，则替换exec为$SHELL
+        if (exec.isEmpty() || !excheck.exists()) {
             exec = QString::fromLocal8Bit(qgetenv("SHELL"));
         }
         excheck.setFileName(exec);
-
-        if ( exec.isEmpty() || !excheck.exists() ) {
+#endif
+        // SHELL是空的，或者文件不存在，则替换exec为/bin/sh
+        if (exec.isEmpty() || !excheck.exists()) {
             qWarning() << "Neither default shell nor $SHELL is set to a correct path. Fallback to" << defaultShell;
             exec = defaultShell;
         }
+
+    }
+
+    if (programPath != exec) {
+        // 说明有文件不存在，取最后找到的文件进行替换
+        emit shellWarningMessage(exec, true);
     }
 
     // _arguments sometimes contain ("") so isEmpty()
@@ -306,7 +380,9 @@ void Session::run()
     // tell the terminal exactly which colors are being used, but instead approximates
     // the color scheme as "black on white" or "white on black" depending on whether
     // the background color is deemed dark or not
-    QString backgroundColorHint = _hasDarkBackground ? QLatin1String("COLORFGBG=15;0") : QLatin1String("COLORFGBG=0;15");
+    // fix bug#39147 终端使用vim编辑脚本，命令行终端的主题为跟随系统时无法清楚查看脚本内容
+    // 移除该环境变量，因为终端的主题颜色会实时变化，不能通过设置环境变量的方式
+    //QString backgroundColorHint = _hasDarkBackground ? QLatin1String("COLORFGBG=15;0") : QLatin1String("COLORFGBG=0;15");
 
     /* if we do all the checking if this shell exists then we use it ;)
      * Dont know about the arguments though.. maybe youll need some more checking im not sure
@@ -314,17 +390,18 @@ void Session::run()
      */
     int result = _shellProcess->start(exec,
                                       arguments,
-                                      _environment << backgroundColorHint,
+                                      _environment,// << backgroundColorHint,
                                       windowId(),
                                       _addToUtmp);
 
     if (result < 0) {
         //qDebug() << "CRASHED! result: " << result<<arguments;
-        QString infoText = QString("There was an error ctreating the child processfor this teminal. \n"
-                 "Faild to execute child process \"%1\"(No such file or directory)!").arg(exec);
+        QString infoText = QString("There was an error creating the child process for this terminal. \n"
+                 "Failed to execute child process \"%1\"(No such file or directory)!").arg(exec);
         sendText(infoText);
         _userTitle = QString::fromLatin1("Session crashed");
         emit titleChanged();
+        emit shellWarningMessage(exec, false);
         return;
     }
 
@@ -415,7 +492,10 @@ void Session::setUserTitle( int what, const QString & caption )
         return;
     }
 
-    if ( modified ) {
+    if (modified) {
+        // 标签标题变化前更新标签标题参数
+        onUpdateTitleArgs();
+        // 标签标题有变化，发送信号通知terminal
         emit titleChanged();
     }
 }
@@ -559,7 +639,7 @@ void Session::refresh()
 
 bool Session::sendSignal(int signal)
 {
-    int result = ::kill(_shellProcess->pid(),signal);
+    int result = ::kill(static_cast<pid_t>(_shellProcess->processId()),signal);
 
      if ( result == 0 )
      {
@@ -582,6 +662,12 @@ void Session::close()
 
 void Session::sendText(const QString & text) const
 {
+    //检测到当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
+    bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
+    if (isSendByRemoteManage) {
+        //将isSendByRemoteManage标记同步给Pty
+        _shellProcess->setProperty("isSendByRemoteManage", QVariant(true));
+    }
     _emulation->sendText(text);
 }
 
@@ -627,7 +713,7 @@ void Session::done(int exitStatus)
     }
 
     /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
-    if (false == _autoClose && false == _wantedClose && 0 == exitStatus && _shellProcess->exitStatus() == QProcess::NormalExit) {
+    if (false == _autoClose && false == _wantedClose && _shellProcess->exitStatus() == QProcess::NormalExit) {
         qDebug() << "autoClose is false.";
         emit titleChanged();
         emit finished();
@@ -640,12 +726,12 @@ void Session::done(int exitStatus)
         QString message;
         QString infoText;
         if (exitStatus == -1){
-            infoText.sprintf("There was an error ctreating the child processfor this teminal. \n"
-                     "Faild to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
+            infoText.sprintf("There was an error creating the child process for this terminal. \n"
+                     "Failed to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
             message = "Session crashed.";
         }
         else {
-            infoText.sprintf("The child process exit normally with status %d.", exitStatus);
+            infoText.sprintf("The child process exited normally with status %d.", exitStatus);
             message.sprintf("Session '%s' exited with status %d.",
                       _nameTitle.toUtf8().data(), exitStatus);
         }
@@ -958,9 +1044,9 @@ void Session::zmodemFinished()
   }
 }
 */
-void Session::onReceiveBlock( const char * buf, int len )
+void Session::onReceiveBlock(const char * buf, int len, bool isCommandExec)
 {
-    _emulation->receiveData( buf, len );
+    _emulation->receiveData(buf, len, isCommandExec);
     emit receivedData( QString::fromLatin1( buf, len ) );
 }
 
@@ -1029,7 +1115,7 @@ int Session::foregroundProcessId()
 bool Session::isForegroundProcessActive()
 {
     // foreground process info is always updated after this
-    return (_shellProcess->pid() != _shellProcess->foregroundProcessGroup());
+    return (_shellProcess->processId() != _shellProcess->foregroundProcessGroup());
 }
 
 QString Session::foregroundProcessName()
@@ -1049,7 +1135,7 @@ QString Session::foregroundProcessName()
 
 int Session::processId() const
 {
-    return _shellProcess->pid();
+    return static_cast<int>(_shellProcess->processId());
 }
 
 ProcessInfo *Session::getProcessInfo()
@@ -1230,8 +1316,8 @@ void SessionGroup::connectPair(Session * master , Session * other)
     if ( _masterMode & CopyInputToAll ) {
         qDebug() << "Connection session " << master->nameTitle() << "to" << other->nameTitle();
 
-        connect( master->emulation() , SIGNAL(sendData(const char *,int)) , other->emulation() ,
-                 SLOT(sendString(const char *,int)) );
+        connect( master->emulation() , SIGNAL(sendData(const char *, int, const QTextCodec *)) , other->emulation() ,
+                 SLOT(sendString(const char *, int, const QTextCodec *)) );
     }
 }
 void SessionGroup::disconnectPair(Session * master , Session * other)
@@ -1241,8 +1327,8 @@ void SessionGroup::disconnectPair(Session * master , Session * other)
     if ( _masterMode & CopyInputToAll ) {
         qDebug() << "Disconnecting session " << master->nameTitle() << "from" << other->nameTitle();
 
-        disconnect( master->emulation() , SIGNAL(sendData(const char *,int)) , other->emulation() ,
-                    SLOT(sendString(const char *,int)) );
+        disconnect( master->emulation() , SIGNAL(sendData(const char *, int, const QTextCodec *)) , other->emulation() ,
+                    SLOT(sendString(const char *, int, const QTextCodec *)) );
     }
 }
 

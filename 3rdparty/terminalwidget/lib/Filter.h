@@ -294,7 +294,7 @@ class TERMINALWIDGET_EXPORT FilterObject : public QObject
 {
     Q_OBJECT
 public:
-    FilterObject(Filter::HotSpot *filter) : _filter(filter) {}
+    explicit FilterObject(Filter::HotSpot *filter) : _filter(filter) {}
 
     void emitActivated(const QUrl &url, bool fromContextMenu);
 public slots:

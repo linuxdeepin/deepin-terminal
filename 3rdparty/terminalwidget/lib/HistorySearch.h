@@ -38,15 +38,20 @@ class HistorySearch : public QObject
     Q_OBJECT
 
 public:
-    explicit HistorySearch(EmulationPtr emulation, QRegExp regExp, bool forwards,
-                           int startColumn, int startLine, QObject* parent);
+    explicit HistorySearch(EmulationPtr emulation,
+                           QString searchText,
+                           bool forwards,
+                           bool isLastForwards,
+                           int startColumn,
+                           int startLine,
+                           QObject* parent);
 
     ~HistorySearch() override;
 
-    void search();
+    void search(int currBackwardsPosition, int lastFoundStartColumn, int lastFoundStartLine);
 
 signals:
-    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese);
+    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int lastBackwardsPosition, int loseChinese, int matchChinese);
     void noMatchFound();
 
 private:
@@ -55,8 +60,9 @@ private:
 
 
     EmulationPtr m_emulation;
-    QRegExp m_regExp;
+    QString m_searchText;
     bool m_forwards;
+    bool m_isLastForwards;
     int m_startColumn;
     int m_startLine;
 
@@ -67,6 +73,11 @@ private:
 
     int m_loseChinese;
     int m_matchChinese;
+    int m_currBackwardsPosition;
+    int m_lastBackwardsPosition;
+
+    int m_lastFoundStartColumn;
+    int m_lastFoundStartLine;
 };
 
 #endif	/* TASK_H */

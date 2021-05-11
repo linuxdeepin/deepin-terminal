@@ -1,25 +1,25 @@
 /*
 
-   This file is part of the KDE libraries
-   Copyright (C) 2002 Waldo Bastian <bastian@kde.org>
-   Copyright (C) 2002-2003,2007 Oswald Buddenhagen <ossi@kde.org>
+    This file is part of the KDE libraries
+    Copyright (C) 2002 Waldo Bastian <bastian@kde.org>
+    Copyright (C) 2002-2003,2007 Oswald Buddenhagen <ossi@kde.org>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+    Boston, MA 02110-1301, USA.
 
     Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.
 */
 
 #include "kpty_p.h"
@@ -265,7 +265,7 @@ bool KPty::open()
             d->ttyName = ptsn;
 #else
     int ptyno;
-    if (!ioctl(d->masterFd, TIOCGPTN, &ptyno)) {
+    if (ioctl(d->masterFd, TIOCGPTN, &ptyno) != -1) {
         d->ttyName = QByteArray("/dev/pts/") + QByteArray::number(ptyno);
 #endif
 #ifdef HAVE_GRANTPT
@@ -296,7 +296,7 @@ bool KPty::open()
                  * and we need to get another one.
                  */
                 int pgrp_rtn;
-                if (ioctl(d->masterFd, TIOCGPGRP, &pgrp_rtn) == 0 || errno != EIO) {
+                if (ioctl(d->masterFd, TIOCGPGRP, &pgrp_rtn) != -1 || errno != EIO) {
                     ::close(d->masterFd);
                     d->masterFd = -1;
                     continue;
@@ -337,7 +337,12 @@ gotpty:
             !d->chownpty(true)) {
         qWarning()
         << "chownpty failed for device " << ptyName << "::" << d->ttyName
-        << "\nThis means the communication can be eavesdropped." << endl;
+        << "\nThis means the communication can be eavesdropped."
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+        << Qt::endl;
+#else
+        << endl;
+#endif
     }
 
 #if defined (HAVE__GETPTY) || defined (HAVE_GRANTPT)
@@ -398,7 +403,7 @@ bool KPty::open(int fd)
         d->ttyName = ptsn;
 # else
     int ptyno;
-    if (!ioctl(fd, TIOCGPTN, &ptyno)) {
+    if (ioctl(fd, TIOCGPTN, &ptyno) != -1) {
         const size_t sz = 32;
         char buf[sz];
         const size_t r = snprintf(buf, sz, "/dev/pts/%d", ptyno);
@@ -467,7 +472,10 @@ void KPty::close()
         if (!geteuid()) {
             struct stat st;
             if (!stat(d->ttyName.data(), &st)) {
-                chown(d->ttyName.data(), 0, st.st_gid == getgid() ? 0 : -1);
+                int status = chown(d->ttyName.data(), 0, st.st_gid == getgid() ? 0 : -1);
+                if (status < 0) {
+                    perror("chown");
+                }
                 chmod(d->ttyName.data(), S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
             }
         } else {
@@ -690,7 +698,7 @@ bool KPty::setWinSize(int lines, int columns)
     memset(&winSize, 0, sizeof(winSize));
     winSize.ws_row = (unsigned short)lines;
     winSize.ws_col = (unsigned short)columns;
-    return ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) == 0;
+    return ioctl(d->masterFd, TIOCSWINSZ, (char *)&winSize) != -1;
 }
 
 bool KPty::setEcho(bool echo)

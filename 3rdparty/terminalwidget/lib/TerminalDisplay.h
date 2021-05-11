@@ -33,6 +33,17 @@
 //#include "konsole_export.h"
 #include "tools.h"
 
+#include <QGesture>
+#include <QPanGesture>
+#include <QSwipeGesture>
+#include <QPinchGesture>
+#include <QTapAndHoldGesture>
+#include <QGestureEvent>
+
+#include <math.h>
+#define CELL_TIME   15
+#define TAP_MOVE_DELAY 300
+
 #define KONSOLEPRIVATE_EXPORT
 
 class QDrag;
@@ -64,6 +75,10 @@ namespace Konsole
         MoveEndScreenWindow = 2
     };
 
+/***add begin by ut001121 zhangmeng 20200912 声明字号限制 修复42250***/
+extern __attribute__((visibility("default"))) int __minFontSize;
+extern __attribute__((visibility("default"))) int __maxFontSize;
+/***add end by ut001121***/
 
 extern unsigned short vt100_graphics[32];
 
@@ -84,7 +99,7 @@ class KONSOLEPRIVATE_EXPORT TerminalDisplay : public QWidget
 
 public:
     /** Constructs a new terminal display widget with the specified parent. */
-    TerminalDisplay(QWidget *parent=nullptr);
+    explicit TerminalDisplay(QWidget *parent=nullptr);
     ~TerminalDisplay() override;
 
     /** Returns the terminal color palette used by the display. */
@@ -426,6 +441,11 @@ public:
 
     void setSessionId(int sessionId);
 
+    // 获取是否允许输出时滚动
+    bool getIsAllowScroll() const;
+    // 设置是否允许输出时滚动
+    void setIsAllowScroll(bool isAllowScroll);
+
 public slots:
 
     /**
@@ -521,6 +541,11 @@ public slots:
 
     void selectionChanged();
 
+    void selectionCleared();
+
+    // 隐藏QScrollBar默认的右键菜单
+    void hideQScrollBarRightMenu();
+
 signals:
 
     /**
@@ -583,6 +608,7 @@ protected:
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent* ev) override;
     void mousePressEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
@@ -596,6 +622,10 @@ protected:
     void dragEnterEvent(QDragEnterEvent* event) override;
     void dropEvent(QDropEvent* event) override;
     void doDrag();
+    void initSelectionStates();
+    void initKeyBoardSelection();
+    void checkAndInitSelectionState();
+
     enum DragState { diNone, diPending, diDragging };
 
     struct _dragInfo {
@@ -614,6 +644,7 @@ protected:
 
     void clearImage();
 
+    Screen::DecodingOptions currentDecodingOptions();
     void mouseTripleClickEvent(QMouseEvent* ev);
 
     // reimplemented
@@ -859,11 +890,29 @@ private:
 
     //TerminalHeaderBar *_headerBar;
 
+    int _selStartLine = 0;
+    int _selStartColumn = 0;
+    int _selEndLine = 0;
+    int _selEndColumn = 0;
+
+    int _lastLeftEndColumn = 0;
+    int _lastLeftEndLine = 0;
+    int _lastRightEndColumn = 0;
+    int _lastRightEndLine = 0;
+    int _lastEndColumn = 0;
+
+    bool _selBegin = false;
+
+    // 当前窗口是否允许输出时回滚的标志位
+    bool m_isAllowScroll = true;
+
 public:
     static void setTransparencyEnabled(bool enable)
     {
         HAVE_TRANSPARENCY = enable;
     }
+
+    QScrollBar* getScrollBar() {return _scrollBar;}
 };
 
 class AutoScrollHandler : public QObject
@@ -871,13 +920,152 @@ class AutoScrollHandler : public QObject
 Q_OBJECT
 
 public:
-    AutoScrollHandler(QWidget* parent);
+    explicit AutoScrollHandler(QWidget* parent);
 protected:
     void timerEvent(QTimerEvent* event) override;
     bool eventFilter(QObject* watched,QEvent* event) override;
 private:
     QWidget* widget() const { return static_cast<QWidget*>(parent()); }
     int _timerId;
+};
+
+class KONSOLEPRIVATE_EXPORT TerminalScreen : public TerminalDisplay{
+    Q_OBJECT
+
+ public:
+     explicit TerminalScreen(QWidget *parent=nullptr);
+     ~TerminalScreen() override;
+
+protected:
+    bool event(QEvent* evt) override;
+
+private:
+    bool gestureEvent(QGestureEvent *event);
+    void tapGestureTriggered(QTapGesture*);
+    void tapAndHoldGestureTriggered(QTapAndHoldGesture*);
+    void panTriggered(QPanGesture*);
+    void pinchTriggered(QPinchGesture*);
+    void swipeTriggered(QSwipeGesture*);
+
+    void slideGesture(qreal diff);
+
+    enum GestureAction{
+        GA_null,
+        GA_tap,
+        GA_slide,
+        GA_pinch,
+        GA_hold,
+        GA_pan,
+        GA_swipe
+    };
+
+    qreal m_scaleFactor = 1;
+    qreal m_currentStepScaleFactor = 1;
+
+    qint64 m_tapBeginTime = 0;
+    bool m_slideContinue = false;
+
+    int m_lastMouseYpos = 0;
+    ulong m_lastMouseTime = 0;
+    qreal m_stepSpeed = 0;
+
+    Qt::GestureState m_tapStatus = Qt::NoGesture;
+    GestureAction m_gestureAction = GA_null;
+};
+
+// Tween算法(模拟惯性)
+typedef std::function<void (qreal)> FunSlideInertial;
+class FlashTween : public QObject
+{
+    Q_OBJECT
+public:
+    FlashTween();
+    ~FlashTween(){}
+
+public:
+    void start(qreal t,qreal b,qreal c,qreal d, FunSlideInertial fSlideGesture);
+    void stop(){m_timer->stop();}
+    bool active(){return m_timer->isActive();}
+
+private slots:
+    void __run();
+
+private:
+    QTimer* m_timer = nullptr;
+    FunSlideInertial m_fSlideGesture = nullptr;
+
+    qreal m_currentTime = 0;
+    qreal m_beginValue = 0;
+    qreal m_changeValue = 0;
+    qreal m_durationTime = 0;
+
+    qreal m_direction = 1;
+    qreal m_lastValue = 0;
+
+private:
+    /**
+    链接:https://www.cnblogs.com/cloudgamer/archive/2009/01/06/Tween.html
+    效果说明
+        Linear：无缓动效果；
+        Quadratic：二次方的缓动（t^2）；
+        Cubic：三次方的缓动（t^3）；
+        Quartic：四次方的缓动（t^4）；
+        Quintic：五次方的缓动（t^5）；
+        Sinusoidal：正弦曲线的缓动（sin(t)）；
+        Exponential：指数曲线的缓动（2^t）；
+        Circular：圆形曲线的缓动（sqrt(1-t^2)）；
+        Elastic：指数衰减的正弦曲线缓动；
+        Back：超过范围的三次方缓动（(s+1)*t^3 - s*t^2）；
+        Bounce：指数衰减的反弹缓动。
+    每个效果都分三个缓动方式（方法），分别是：
+        easeIn：从0开始加速的缓动；
+        easeOut：减速到0的缓动；
+        easeInOut：前半段从0开始加速，后半段减速到0的缓动。
+        其中Linear是无缓动效果，没有以上效果。
+    四个参数分别是：
+        t: current time（当前时间）；
+        b: beginning value（初始值）；
+        c: change in value（变化量）；
+        d: duration（持续时间）。
+    */
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsequence-point"
+    static qreal quadraticEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return -c *(t/=d)*(t-2) + b;
+    }
+
+    static qreal cubicEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c*((t=t/d-1)*t*t + 1) + b;
+    }
+
+    static qreal quarticEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return -c * ((t=t/d-1)*t*t*t - 1) + b;
+    }
+
+    static qreal quinticEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c*((t=t/d-1)*t*t*t*t + 1) + b;
+    }
+
+    static qreal sinusoidalEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c * sin(t/d * (3.14/2)) + b;
+    }
+
+    static qreal circularEaseOut(qreal t,qreal b,qreal c,qreal d){
+        return c * sqrt(1 - (t=t/d-1)*t) + b;
+    }
+
+    static qreal bounceEaseOut(qreal t,qreal b,qreal c,qreal d){
+        if ((t/=d) < (1/2.75)) {
+            return c*(7.5625*t*t) + b;
+        } else if (t < (2/2.75)) {
+            return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+        } else if (t < (2.5/2.75)) {
+            return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+        } else {
+            return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+        }
+    }
+    #pragma GCC diagnostic pop
 };
 
 }

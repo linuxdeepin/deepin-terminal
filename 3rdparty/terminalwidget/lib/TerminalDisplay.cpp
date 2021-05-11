@@ -44,6 +44,7 @@
 #include <QUrl>
 #include <QMimeData>
 #include <QDrag>
+#include <QScroller>
 
 // KDE
 //#include <kshell.h>
@@ -62,6 +63,7 @@
 #include "Filter.h"
 #include "konsole_wcwidth.h"
 #include "ScreenWindow.h"
+#include "Screen.h"
 #include "TerminalCharacterDecoder.h"
 
 using namespace Konsole;
@@ -104,6 +106,11 @@ const ColorEntry Konsole::base_color_table[TABLE_COLORS] =
 bool TerminalDisplay::_antialiasText = true;
 bool TerminalDisplay::HAVE_TRANSPARENCY = true;
 
+/***add begin by ut001121 zhangmeng 20200912 初始化字号限制 修复42250***/
+int Konsole::__minFontSize = 0;
+int Konsole::__maxFontSize = 0x7fffffff;
+/***add end by ut001121***/
+
 // we use this to force QPainter to display text in LTR mode
 // more information can be found in: http://unicode.org/reports/tr9/
 const QChar LTR_OVERRIDE_CHAR( 0x202D );
@@ -145,7 +152,10 @@ void TerminalDisplay::setScreenWindow(ScreenWindow* window)
         connect( _screenWindow , SIGNAL(outputChanged()) , this , SLOT(updateImage()) );
         connect( _screenWindow , SIGNAL(outputChanged()) , this , SLOT(updateFilters()) );
         connect( _screenWindow , SIGNAL(scrolled(int)) , this , SLOT(updateFilters()) );
+        connect( _screenWindow, SIGNAL(selectionCleared()), this, SLOT(selectionCleared()) );
         window->setWindowLines(_lines);
+        window->screen()->setSessionId(_sessionId);
+        window->screen()->setReflowLines(true);
     }
 }
 
@@ -207,6 +217,30 @@ bool TerminalDisplay::isLineCharString(const QString& string) const {
     }
 
     return canDraw(string.at(0).unicode());
+}
+
+/*******************************************************************************
+ 1. @函数:    setIsAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-16
+ 4. @说明:     设置是否允许滚动到最新的位置
+ 当有输出且并不是在setZoom之后,此标志为true 允许滚动
+ 当有输出且在setZoom之后,比标志位false 不允许滚动
+*******************************************************************************/
+void TerminalDisplay::setIsAllowScroll(bool isAllowScroll)
+{
+    m_isAllowScroll = isAllowScroll;
+}
+
+/*******************************************************************************
+ 1. @函数:    getIsAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-16
+ 4. @说明:    获取是否允许输出时滚动
+*******************************************************************************/
+bool TerminalDisplay::getIsAllowScroll() const
+{
+    return m_isAllowScroll;
 }
 
 
@@ -283,6 +317,18 @@ void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
 
 void TerminalDisplay::setVTFont(const QFont& f)
 {
+    /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42250***/
+    /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42412***/
+    if(f.pointSize() < __minFontSize || f.pointSize() > __maxFontSize){
+        return;
+    }
+    /***add end by ut001121***/
+
+    // 放大缩小时需要一个标志位
+    // 该标志位负责取消输出时滚动
+    // 发送信号修改标志位 => 调整大小时,不允许接收输出时滚动的设置
+    m_isAllowScroll = false;
+
     QFont newFont(f);
     int strategy = 0;
 
@@ -498,6 +544,9 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
   new AutoScrollHandler(this);
 
   m_bUserIsResizing = false;
+
+  // 隐藏QScrollBar默认的右键菜单
+  hideQScrollBarRightMenu();
 }
 
 TerminalDisplay::~TerminalDisplay()
@@ -674,7 +723,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QColor& /*backgroundColor*/,
                                  bool& invertCharacterColor)
 {
-    QRect cursorRect = rect;
+    QRectF cursorRect = rect;
     cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
 
     if (!_cursorBlinking)
@@ -701,25 +750,26 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             {
                 // draw the cursor outline, adjusting the area so that
                 // it is draw entirely inside 'rect'
-                int penWidth = 1;
+                float penWidth = qMax(1,painter.pen().width());
 
                 painter.drawRect(cursorRect.adjusted(penWidth/2,
                                                      penWidth/2,
-                                                     - penWidth/2 - penWidth%2,
-                                                     - penWidth/2 - penWidth%2));
+                                                     - penWidth/2,
+                                                     - penWidth/2));
             }
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
-            painter.drawLine(cursorRect.left(),
-                             cursorRect.bottom(),
-                             cursorRect.right(),
-                             cursorRect.bottom());
+            painter.drawLine(QLineF(
+                                 QPointF(cursorRect.left(),
+                                         cursorRect.bottom()),
+                                 QPointF(cursorRect.right(),
+                                         cursorRect.bottom())));
        else if ( _cursorShape == Emulation::KeyboardCursorShape::IBeamCursor )
-            painter.drawLine(cursorRect.left(),
-                             cursorRect.top(),
-                             cursorRect.left(),
-                             cursorRect.bottom());
-
+            painter.drawLine(QLineF(
+                                QPointF(cursorRect.left(),
+                             		cursorRect.top()),
+                                QPointF(cursorRect.left(),
+                             		cursorRect.bottom())));
     }
 }
 
@@ -1516,8 +1566,11 @@ void TerminalDisplay::paintFilters(QPainter& painter)
     }
 
     /***add begin by ut001121 zhangmeng 20200624 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
-    if(bDrawLineForHotSpotLink){
-        if(cursor().shape() != Qt::PointingHandCursor) setCursor(Qt::PointingHandCursor);
+    /** modify by ut001121 zhangmeng 20201215 for 1040-4 Ctrl键+鼠标点击超链接打开网页 */
+    if(bDrawLineForHotSpotLink && (QApplication::queryKeyboardModifiers() & Qt::ControlModifier)){
+        if(cursor().shape() != Qt::PointingHandCursor) {
+          setCursor(Qt::PointingHandCursor);
+        }
     }
     else if(cursor().shape() != Qt::IBeamCursor){
         setCursor(Qt::IBeamCursor);
@@ -1805,6 +1858,7 @@ void TerminalDisplay::blinkCursorEvent()
 
 void TerminalDisplay::resizeEvent(QResizeEvent*)
 {
+  initKeyBoardSelection();
   updateImageSize();
   processFilters();
 }
@@ -1945,8 +1999,32 @@ void TerminalDisplay::setScrollBarPosition(QTermWidget::ScrollBarPosition positi
   update();
 }
 
+void TerminalDisplay::initSelectionStates()
+{
+    if (!_screenWindow)
+    {
+        return;
+    }
+
+    _selStartColumn = _screenWindow->cursorPosition().x();
+    _selStartLine = _screenWindow->cursorPosition().y();
+
+    _selEndColumn = _selStartColumn;
+    _selEndLine = _selStartLine;
+}
+
+void TerminalDisplay::initKeyBoardSelection()
+{
+    _selBegin = false;
+
+    initSelectionStates();
+}
+
 void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
 {
+  //判断有鼠标点击的时候，初始化键盘选择状态
+  initKeyBoardSelection();
+
   if ( _possibleTripleClick && (ev->button()==Qt::LeftButton) ) {
     mouseTripleClickEvent(ev);
     return;
@@ -2383,7 +2461,7 @@ void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
     {
       if ( _actSel > 1 )
       {
-          setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
+          setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
       }
 
       _actSel = 0;
@@ -2551,7 +2629,7 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
 
      _screenWindow->setSelectionEnd( endSel.x() , endSel.y() );
 
-     setSelection( _screenWindow->selectedText(_preserveLineBreaks) );
+     setSelection( _screenWindow->selectedText(currentDecodingOptions()) );
    }
 
   _possibleTripleClick=true;
@@ -2562,6 +2640,16 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
 
 void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 {
+    // 当前窗口被激活,且有焦点,不处理Ctrl+滚轮事件
+    if (isActiveWindow() && hasFocus()) {
+        if (ev->modifiers() == Qt::ControlModifier) {
+            QWidget::wheelEvent(ev);
+            return;
+        }
+    }
+    //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
+    initKeyBoardSelection();
+
   if (ev->orientation() != Qt::Vertical)
     return;
 
@@ -2619,6 +2707,16 @@ void TerminalDisplay::tripleClickTimeout()
   _possibleTripleClick=false;
 }
 
+Screen::DecodingOptions TerminalDisplay::currentDecodingOptions()
+{
+    Screen::DecodingOptions decodingOptions;
+    if (_preserveLineBreaks) {
+        decodingOptions |= Screen::PreserveLineBreaks;
+    }
+
+    return decodingOptions;
+}
+
 void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 {
   if ( !_screenWindow ) return;
@@ -2673,7 +2771,7 @@ void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 
   _screenWindow->setSelectionEnd( _columns - 1 , _iPntSel.y() );
 
-  setSelection(_screenWindow->selectedText(_preserveLineBreaks));
+  setSelection(_screenWindow->selectedText(currentDecodingOptions()));
 
   _iPntSel.ry() += _scrollBar->value();
 }
@@ -2782,7 +2880,7 @@ void TerminalDisplay::setSelection(const QString& t)
 void TerminalDisplay::setSelectionAll()
 {
     _screenWindow->setSelectionAll();
-    setSelection(_screenWindow->selectedText(_preserveLineBreaks));
+    setSelection(_screenWindow->selectedText(currentDecodingOptions()));
 }
 
 void TerminalDisplay::copyClipboard()
@@ -2790,7 +2888,7 @@ void TerminalDisplay::copyClipboard()
   if ( !_screenWindow )
       return;
 
-  QString text = _screenWindow->selectedText(_preserveLineBreaks);
+  QString text = _screenWindow->selectedText(currentDecodingOptions());
   if (!text.isEmpty())
     QApplication::clipboard()->setText(text);
 }
@@ -2831,6 +2929,17 @@ int TerminalDisplay::motionAfterPasting()
     return mMotionAfterPasting;
 }
 
+//在使用键盘选择文字之前，判断如果光标位置不是当前已选择区域的起点，则重新初始化选择状态
+void TerminalDisplay::checkAndInitSelectionState()
+{
+    if (_selStartColumn != _screenWindow->cursorPosition().x()
+            || _selStartLine != _screenWindow->cursorPosition().y() )
+    {
+        qDebug() << "checkAndInitSelectionState!" << endl;
+        initKeyBoardSelection();
+    }
+}
+
 void TerminalDisplay::keyPressEvent( QKeyEvent* event )
 {
     bool emitKeyPressSignal = true;
@@ -2840,20 +2949,116 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
     {
         bool update = true;
 
+        //列的index从0开始，所以最大index需要减1
+        int maxColumnIndex = _screenWindow->windowColumns() - 1;
+
         if ( event->key() == Qt::Key_PageUp )
         {
+            if (_scrollBar->value() != _scrollBar->maximum())
+            {
+                initKeyBoardSelection();
+            }
             _screenWindow->scrollBy( ScreenWindow::ScrollPages , -1 );
         }
         else if ( event->key() == Qt::Key_PageDown )
         {
+            if (_scrollBar->value() != _scrollBar->maximum())
+            {
+                initKeyBoardSelection();
+            }
             _screenWindow->scrollBy( ScreenWindow::ScrollPages , 1 );
+        }
+        else if ( event->key() == Qt::Key_Left )
+        {
+            if (!_selBegin)
+            {
+                checkAndInitSelectionState();
+
+                _selBegin = true;
+
+                //键盘按下时设置--开始选择
+                //判断只有开始结束选择位置相等时，才允许开始选择
+                if (_selStartLine == _selEndLine && _selStartColumn == _selEndColumn)
+                {
+                    _screenWindow->scrollTo(_scrollBar->maximum());
+                    qDebug() << "left selection start";
+                    _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+                }
+            }
+            else
+            {
+                //每一格设置一次选择结束状态，这样才能看到选择的区域;键盘一直按住则一直选
+                _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            }
+
+            //向左选择
+            if (_selEndColumn >= 1)
+            {
+                _selEndColumn--;
+            }
+            //左键选择到最左边的时候，向上选中上一行末尾（如果当前没到第一行的话）
+            else if (_selEndLine > 0)
+            {
+                _selEndColumn = maxColumnIndex;
+                _selEndLine--;
+            }
+            qDebug() << "left: _selStartColumn" << _selStartColumn
+                        << "_selStartLine" << _selStartLine
+                        << "_selEndColumn" << _selEndColumn
+                        << "_selEndLine" << _selEndLine;
+        }
+        else if ( event->key() == Qt::Key_Right )
+        {
+            if (!_selBegin)
+            {
+                checkAndInitSelectionState();
+
+                _selBegin = true;
+                //键盘按下时设置--开始选择
+                if (_selStartLine == _selEndLine && _selStartColumn == _selEndColumn)
+                {
+                    //滚动到光标所在位置开始选择
+                    _screenWindow->scrollTo(_scrollBar->maximum());
+
+                    //开始选择
+                    qDebug() << "right selection start";
+                    _screenWindow->setSelectionStart(_selStartColumn, _selStartLine, false);
+                }
+            }
+            else
+            {
+                _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            }
+
+            //向右选择，最大行数为屏幕当前显示的最大行数（即屏幕当前显示了多少行就算多少行，并不包含历史行的行数）
+            int maxLineIndex = _screenWindow->windowLines() - 1;
+            //向右选择
+            if (_selEndColumn < maxColumnIndex)
+            {
+                _selEndColumn++;
+            }
+            //右边到了最右边时，向下选中下一行的开头(如果当前没到最后一行的话)
+            else if (_selEndLine < maxLineIndex)
+            {
+                _selEndColumn = 0;
+                _selEndLine++;
+            }
+            qDebug() << "maxLineIndex: " << maxLineIndex << endl;
+            qDebug() << "right: _selStartColumn" << _selStartColumn
+                        << "_selStartLine" << _selStartLine
+                        << "_selEndColumn" << _selEndColumn
+                        << "_selEndLine" << _selEndLine;
         }
         else if ( event->key() == Qt::Key_Up )
         {
+            //使用了Shift+上下键，由于屏幕发生滚动，会导致计算的行列位置不对，需要重新初始化选择状态
+            initKeyBoardSelection();
             _screenWindow->scrollBy( ScreenWindow::ScrollLines , -1 );
         }
         else if ( event->key() == Qt::Key_Down )
         {
+            //使用了Shift+上下键，由于屏幕发生滚动，会导致计算的行列位置不对，需要重新初始化选择状态
+             initKeyBoardSelection();
             _screenWindow->scrollBy( ScreenWindow::ScrollLines , 1 );
         }
         else if ( event->key() == Qt::Key_End)
@@ -2862,10 +3067,14 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
         }
         else if ( event->key() == Qt::Key_Home)
         {
+            //使用了Shift+Home键，由于屏幕发生滚动，会导致计算的行列位置不对，需要重新初始化选择状态
+            initKeyBoardSelection();
             _screenWindow->scrollTo(0);
         }
         else
+        {
             update = false;
+        }
 
         if ( update )
         {
@@ -2877,6 +3086,10 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
             // do not send key press to terminal
             emitKeyPressSignal = false;
         }
+    }
+    else
+    {
+        initKeyBoardSelection();
     }
 
     _actSel=0; // Key stroke implies a screen update, so TerminalDisplay won't
@@ -2898,27 +3111,65 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
         /******** Modify by wangpeili n014361 2020-02-14: 按键滚动功能***********/
         // 按键滚动原为默认。现在修改为可以设置是否滚动
         // 暂时取消了原系统shift/alt/ctrl键的单独跳转功能。
-//        if(event->modifiers().testFlag(Qt::ShiftModifier)
-//             || event->modifiers().testFlag(Qt::ControlModifier)
-//             || event->modifiers().testFlag(Qt::AltModifier))
-//        {
-            switch(mMotionAfterPasting)
-            {
-            case MoveStartScreenWindow:
-                _screenWindow->scrollTo(0);
-                break;
-            case MoveEndScreenWindow:
+        switch (mMotionAfterPasting) {
+        case MoveStartScreenWindow:
+            _screenWindow->scrollTo(0);
+            break;
+        case MoveEndScreenWindow:
+            if (!(event->key() == Qt::Key_Control
+                    || event->key() == Qt::Key_Shift
+                    || event->key() == Qt::Key_Alt)) {
                 scrollToEnd();
-                break;
-            case NoMoveScreenWindow:
-                break;
             }
-//        }
-//        else
-//        {
-//            scrollToEnd();
-//        }
-          /***************** Modify by wangpeili n014361 End *****************/
+            break;
+        case NoMoveScreenWindow:
+            break;
+        }
+
+        /***************** Modify by wangpeili n014361 End *****************/
+    }
+
+    event->accept();
+}
+
+void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
+{
+    //处理使用Shift+左右键选择文字，处理键盘释放的情况
+    if ( event->modifiers() == Qt::ShiftModifier )
+    {
+        if ( event->key() == Qt::Key_Left )
+        {
+            //由于会有一定概率出现，长按后再同时短按一次Shift+左或者右方向键，出现一次选择两个字符的情况
+            //这里做了一个数据纠正
+            if (2 == abs(_lastLeftEndColumn - _selEndColumn))
+            {
+                _selEndColumn = _lastEndColumn;
+            }
+
+            _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            _lastLeftEndColumn = _selEndColumn;
+
+            setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
+        }
+        else if ( event->key() == Qt::Key_Right)
+        {
+            //由于会有一定概率出现，长按后再短按Shift+左或者右方向键，出现一次选择两个字符的情况
+            //这里做了一个数据纠正
+            if (2 == abs(_lastRightEndColumn - _selEndColumn))
+            {
+                _selEndColumn = _lastEndColumn;
+            }
+
+            _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
+            _lastRightEndColumn = _selEndColumn;
+
+            setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
+        }
+        else
+        {
+            _selBegin = false;
+            _lastEndColumn = _selEndColumn;
+        }
     }
 
     event->accept();
@@ -3079,7 +3330,33 @@ void TerminalDisplay::bell(const QString& message)
 
 void TerminalDisplay::selectionChanged()
 {
-    emit copyAvailable(_screenWindow->selectedText(false).isEmpty() == false);
+    emit copyAvailable(_screenWindow->selectedText(Screen::PlainText).isEmpty() == false);
+}
+
+void TerminalDisplay::selectionCleared()
+{
+    initKeyBoardSelection();
+}
+
+/*******************************************************************************
+ 1. @函数:    hideQScrollBarRightMenu
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-07
+ 4. @说明:    隐藏QScrollBar默认的右键菜单
+*******************************************************************************/
+void TerminalDisplay::hideQScrollBarRightMenu()
+{
+    // fix bug 63308: 鼠标放置在右侧滚动条上点击鼠标右键，界面出现黑色长条
+    QWidgetList widgetList = qApp->allWidgets();
+    for(int i=0; i<widgetList.size(); i++)
+    {
+        QWidget *widget = widgetList.at(i);
+        QScrollBar *scrollBar = dynamic_cast<QScrollBar*>(widget);
+        if(scrollBar)
+        {
+            scrollBar->setContextMenuPolicy(Qt::NoContextMenu);
+        }
+    }
 }
 
 void TerminalDisplay::swapColorTable()
@@ -3256,6 +3533,11 @@ void TerminalDisplay::dropEvent(QDropEvent* event)
     dropText = event->mimeData()->text();
   }
 
+  /***add begin by ut001121 zhangmeng 20201030 for SP4.1 拖拽文件到工作区文件路径加引号***/
+  dropText.insert(0, '\'');
+  dropText.append('\'');
+  /***add end ut001121***/
+
     emit sendStringToEmu(dropText.toLocal8Bit().constData());
 }
 
@@ -3391,3 +3673,392 @@ bool AutoScrollHandler::eventFilter(QObject* watched,QEvent* event)
 }
 
 //#include "TerminalDisplay.moc"
+
+TerminalScreen::TerminalScreen(QWidget *parent):TerminalDisplay (parent)
+{
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    grabGesture(Qt::TapGesture);
+    grabGesture(Qt::TapAndHoldGesture);
+    grabGesture(Qt::PanGesture);
+    grabGesture(Qt::PinchGesture);
+    grabGesture(Qt::SwipeGesture);
+}
+
+TerminalScreen::~TerminalScreen()
+{
+
+}
+
+/*******************************************************************************
+ 1. @函数:    gestureEvent
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    手势事件
+*******************************************************************************/
+bool TerminalScreen::gestureEvent(QGestureEvent *event)
+{
+    if (QGesture *tap = event->gesture(Qt::TapGesture))
+        tapGestureTriggered(static_cast<QTapGesture *>(tap));
+    if (QGesture *tapAndHold = event->gesture(Qt::TapAndHoldGesture))
+        tapAndHoldGestureTriggered(static_cast<QTapAndHoldGesture *>(tapAndHold));
+    if (QGesture *pan = event->gesture(Qt::PanGesture))
+        panTriggered(static_cast<QPanGesture *>(pan));
+    if (QGesture *pinch = event->gesture(Qt::PinchGesture))
+        pinchTriggered(static_cast<QPinchGesture *>(pinch));
+    if (QGesture *swipe = event->gesture(Qt::SwipeGesture))
+        swipeTriggered(static_cast<QSwipeGesture *>(swipe));
+
+    return true;
+}
+
+/*******************************************************************************
+ 1. @函数:    tapGestureTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    单指点击手势
+*******************************************************************************/
+void TerminalScreen::tapGestureTriggered(QTapGesture* tap)
+{
+    //qDebug()<<"------"<<"tapGestureTriggered" << tap ;
+    switch (tap->state()) {
+    case Qt::GestureStarted:
+    {
+        m_gestureAction = GA_tap;
+        m_tapBeginTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+        break;
+    }
+    case Qt::GestureUpdated:
+    {
+        break;
+    }
+    case Qt::GestureCanceled:
+    {
+        //根据时间长短区分轻触滑动
+        qint64 timeSpace = QDateTime::currentDateTime().toMSecsSinceEpoch() - m_tapBeginTime;
+        if(timeSpace < TAP_MOVE_DELAY || m_slideContinue){
+            m_slideContinue = false;
+            m_gestureAction = GA_slide;
+            qDebug() << "slide start" << timeSpace;
+        } else {
+            qDebug() << "null start" << timeSpace;
+            /***add by ut001121 zhangmeng 20200917 修复BUG48402***/
+            m_gestureAction = GA_null;
+        }
+        break;
+    }
+    case Qt::GestureFinished:
+    {
+        /***add by ut001121 zhangmeng 20200917 修复BUG48402***/
+        m_gestureAction = GA_null;
+        break;
+    }
+    default:
+    {
+        Q_ASSERT(false);
+        break;
+    }
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    tapAndHoldGestureTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    单指长按手势
+*******************************************************************************/
+void TerminalScreen::tapAndHoldGestureTriggered(QTapAndHoldGesture* tapAndHold)
+{
+    //qDebug()<<"------"<<"tapAndHoldGestureTriggered"<<tapAndHold;
+    switch (tapAndHold->state()) {
+    case Qt::GestureStarted:
+        m_gestureAction = GA_hold;
+        break;
+    case Qt::GestureUpdated:
+        Q_ASSERT(false);
+        break;
+    case Qt::GestureCanceled:
+        Q_ASSERT(false);
+        break;
+    case Qt::GestureFinished:
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
+        break;
+    default:
+        Q_ASSERT(false);
+        break;
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    panTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    两指平移手势
+*******************************************************************************/
+void TerminalScreen::panTriggered(QPanGesture *pan)
+{
+    //qDebug()<<"------"<<"panTriggered"<<pan;
+    switch (pan->state()) {
+    case Qt::GestureStarted:
+        m_gestureAction = GA_pan;
+        break;
+    case Qt::GestureUpdated:
+        break;
+    case Qt::GestureCanceled:
+        break;
+    case Qt::GestureFinished:
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
+        break;
+    default:
+        Q_ASSERT(false);
+        break;
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    pinchTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    两指捏合手势
+*******************************************************************************/
+void TerminalScreen::pinchTriggered(QPinchGesture *pinch)
+{
+    //qDebug()<<"------"<<"pinchTriggered"<<pinch;
+    switch (pinch->state()) {
+    case Qt::GestureStarted:
+    {
+        qDebug()<<"------"<<"pinchTriggered start";
+        m_gestureAction = GA_pinch;
+        /**add begin by ut001121 zhangmeng 20200812 捏合手势触发时判断是否重新获取字体大小 修复BUG42424 */
+        QFont font = getVTFont();
+        if(static_cast<int>(m_scaleFactor) != font.pointSize()){
+            m_scaleFactor = font.pointSize();
+        }
+        /**add end by ut001121 */
+        break;
+    }
+    case Qt::GestureUpdated:
+    {
+        QPinchGesture::ChangeFlags changeFlags = pinch->changeFlags();
+        if (changeFlags & QPinchGesture::ScaleFactorChanged) {
+            m_currentStepScaleFactor = pinch->totalScaleFactor();
+        }
+        break;
+    }
+    case Qt::GestureCanceled:
+    {
+        Q_ASSERT(false);
+        break;
+    }
+    case Qt::GestureFinished:
+    {
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
+        m_scaleFactor *= m_currentStepScaleFactor;
+        m_currentStepScaleFactor = 1;
+        qDebug()<<"------"<<"pinchTriggered over";
+        break;
+    }
+    default:
+    {
+        Q_ASSERT(false);
+        break;
+    }
+    }//switch
+
+    QFont font = getVTFont();
+    font.setPointSize(static_cast<int>(m_scaleFactor*m_currentStepScaleFactor));
+    setVTFont(font);
+}
+
+/*******************************************************************************
+ 1. @函数:    swipeTriggered
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    三指滑动手势
+*******************************************************************************/
+void TerminalScreen::swipeTriggered(QSwipeGesture* swipe)
+{
+    //qDebug()<<"------"<<"swipeTriggered"<<swipe;
+    switch (swipe->state()) {
+    case Qt::GestureStarted:
+        m_gestureAction = GA_swipe;
+        break;
+    case Qt::GestureUpdated:
+        break;
+    case Qt::GestureCanceled:
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
+        break;
+    case Qt::GestureFinished:
+        /***del by ut001121 zhangmeng 20200915 修复BUG46979
+        m_gestureAction = GA_null;***/
+        break;
+    default:
+        Q_ASSERT(false);
+        break;
+    }
+}
+
+/*******************************************************************************
+ 1. @函数:    slideGesture
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    单指滑动手势(通过原生触摸屏事件进行抽象模拟)
+*******************************************************************************/
+void TerminalScreen::slideGesture(qreal diff)
+{
+    static qreal delta = 0.0;
+    int step = static_cast<int>(diff+delta);
+    delta = diff+delta - step;
+
+    getScrollBar()->setValue(getScrollBar()->value()+step);
+}
+
+/*******************************************************************************
+ 1. @函数:    event
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    事件处理
+*******************************************************************************/
+bool TerminalScreen::event(QEvent* event)
+{
+    static FlashTween tween;
+    static qreal change = 0.0;
+    static qreal duration = 0.0;
+
+    if (event->type() == QEvent::Gesture)
+        return gestureEvent(static_cast<QGestureEvent*>(event));
+
+    QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+    if (event->type() == QEvent::MouseButtonRelease && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    {
+        qDebug()<< "action is over" << m_gestureAction;
+
+        if(m_gestureAction == GA_slide){
+            tween.start(0, 0, change, duration, std::bind(&TerminalScreen::slideGesture, this, std::placeholders::_1));
+        }
+
+        m_gestureAction = GA_null;
+    }
+    if (event->type() == QEvent::MouseButtonPress && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    {
+        m_lastMouseTime = mouseEvent->timestamp();
+        m_lastMouseYpos = mouseEvent->pos().y();
+
+        if(tween.active())
+        {
+            m_slideContinue = true;
+            tween.stop();
+        }
+    }
+    if (event->type() == QEvent::MouseMove && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    {
+        const ulong diffTime = mouseEvent->timestamp() - m_lastMouseTime;
+        const int diffYpos = mouseEvent->pos().y() - m_lastMouseYpos;
+        m_lastMouseTime = mouseEvent->timestamp();
+        m_lastMouseYpos = mouseEvent->pos().y();
+
+        if(m_gestureAction == GA_slide)
+        {
+            QFont font = getVTFont();
+
+            /*开根号时数值越大衰减比例越大*/
+            qreal direction = diffYpos>0?1.0:-1.0;
+            slideGesture(-direction*sqrt(abs(diffYpos))/font.pointSize());
+
+            /*预算惯性滑动时间*/
+            m_stepSpeed = static_cast<qreal>(diffYpos)/static_cast<qreal>(diffTime+0.000001);
+            duration = sqrt(abs(m_stepSpeed))*1000;
+
+            /*预算惯性滑动距离,4.0为调优数值*/
+            m_stepSpeed /= sqrt(font.pointSize()*4.0);
+            change = m_stepSpeed*sqrt(abs(m_stepSpeed))*100;
+
+            return true;
+        }
+
+        if(m_gestureAction != GA_null)
+        {
+            return true;
+        }
+    }
+
+    /***add by ut001121 zhangmeng 20200915 修复BUG46979***/
+    if (event->type() == QEvent::MouseMove
+            && mouseEvent->source() != Qt::MouseEventSynthesizedByQt
+            && m_gestureAction == GA_slide){
+        return true;
+    }
+    /***add end ut001121***/
+
+    /** 待删除
+    QTouchEvent *touchEvent = static_cast<QTouchEvent *>(event);
+    switch (event->type()) {
+    case QEvent::TouchBegin:
+    {
+        QList<QTouchEvent::TouchPoint> touchPoints = touchEvent->touchPoints();
+        qDebug()<<"========================================================"<<touchPoints.count();
+        break;//不能return true;
+    }
+    case QEvent::TouchUpdate:
+    case QEvent::TouchCancel:
+    case QEvent::TouchEnd:
+    {
+        //qDebug()<< "----" << event->type()<<touchEvent->timestamp();
+        break;//不能return true;
+    }
+    default: break;
+    }*/
+    return TerminalDisplay::event(event);
+}
+
+FlashTween::FlashTween()
+{
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this ,&FlashTween::__run);
+}
+
+/*******************************************************************************
+ 1. @函数:    start
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    开始惯性
+*******************************************************************************/
+void FlashTween::start(qreal t,qreal b,qreal c,qreal d, FunSlideInertial f)
+{
+    if(c==0.0 || d==0.0) return;
+    m_currentTime = t;
+    m_beginValue = b;
+    m_changeValue = c;
+    m_durationTime = d;
+
+    m_lastValue = 0;
+    m_fSlideGesture = f;
+    m_direction = m_changeValue<0?1:-1;
+
+    m_timer->stop();
+    m_timer->start(CELL_TIME);
+}
+
+/*******************************************************************************
+ 1. @函数:    __run
+ 2. @作者:    ut001121 zhangmeng
+ 3. @日期:    2020-08-18
+ 4. @说明:    运行惯性
+*******************************************************************************/
+void FlashTween::__run()
+{
+    qreal tempValue = m_lastValue;
+    m_lastValue = FlashTween::sinusoidalEaseOut(m_currentTime, m_beginValue, abs(m_changeValue), m_durationTime);
+    m_fSlideGesture(m_direction*(m_lastValue-tempValue));
+    //qDebug()<<"###############################"<<m_lastValue<<temp<<m_lastValue-temp;
+
+    if(m_currentTime<m_durationTime){
+        m_currentTime+=CELL_TIME;
+    }
+    else {
+        m_timer->stop();
+    }
+}
