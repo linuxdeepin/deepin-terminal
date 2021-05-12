@@ -69,6 +69,11 @@ public:
     TermWidget *currentTerminal();
 
     /**
+     * @brief 获取当前终端的title
+     */
+    QString getCurrentTerminalTitle();
+
+    /**
      * @brief 分屏
      * @author ut000439 王培利
      * @param orientation 方向

@@ -434,7 +434,7 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
 
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
-    int index = m_tabbar->addTab(termPage->identifier(), m_tabbar->tabText(m_tabbar->currentIndex()));
+    int index = m_tabbar->addTab(termPage->identifier(), termPage->getCurrentTerminalTitle());
     qDebug() << "addTab index" << index;
     endAddTab(termPage, activeTab, index, startTime);
 }

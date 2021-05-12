@@ -126,6 +126,13 @@ TermWidget *TermWidgetPage::currentTerminal()
     return m_currentTerm;
 }
 
+QString TermWidgetPage::getCurrentTerminalTitle()
+{
+    if (nullptr == m_currentTerm)
+        return "";
+    return m_currentTerm->getTabTitle();
+}
+
 void TermWidgetPage::split(Qt::Orientation orientation)
 {
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
