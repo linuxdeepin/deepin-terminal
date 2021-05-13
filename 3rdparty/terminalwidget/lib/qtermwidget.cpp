@@ -21,6 +21,7 @@
 #include <QtDebug>
 #include <QDir>
 #include <QMessageBox>
+#include <QApplication>
 
 #include "ColorTables.h"
 #include "Session.h"
@@ -33,6 +34,8 @@
 #include "ColorScheme.h"
 #include "SearchBar.h"
 #include "qtermwidget.h"
+#include "history/compact/CompactHistoryType.h"
+#include "history/HistoryTypeFile.h"
 
 #ifdef Q_OS_MACOS
 // Qt does not support fontconfig on macOS, so we need to use a "real" font name.
@@ -45,13 +48,16 @@
 
 using namespace Konsole;
 
+// 翻译文件加载
+QTranslator *QTermWidget::m_translator = nullptr;
+
 void *createTermWidget(int startnow, void *parent)
 {
     return (void *) new QTermWidget(startnow, (QWidget *)parent);
 }
 
 struct TermWidgetImpl {
-    TermWidgetImpl(QWidget *parent = 0);
+    explicit TermWidgetImpl(QWidget *parent = 0);
 
     TerminalDisplay *m_terminalDisplay;
     Session *m_session;
@@ -73,7 +79,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
 {
     Session *session = new Session(parent);
 
-    session->setTitle(Session::NameRole, QLatin1String("QTermWidget"));
+    session->setTitle(Session::NameRole, QLatin1String("Terminal"));
 
     /* Thats a freaking bad idea!!!!
      * /bin/bash is not there on every system
@@ -93,7 +99,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
     session->setCodec(QTextCodec::codecForName("UTF-8"));
 
     session->setFlowControlEnabled(true);
-    session->setHistoryType(HistoryTypeBuffer(1000));
+    session->setHistoryType(CompactHistoryType(10000));
 
     session->setDarkBackground(true);
 
@@ -104,7 +110,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
 TerminalDisplay *TermWidgetImpl::createTerminalDisplay(Session *session, QWidget *parent)
 {
     //TerminalDisplay* display = new TerminalDisplay(this);
-    TerminalDisplay *display = new TerminalDisplay(parent);
+    TerminalDisplay *display = new TerminalScreen(parent);
 
     display->setBellMode(TerminalDisplay::NotifyBell);
     display->setTerminalSizeHint(true);
@@ -132,80 +138,26 @@ void QTermWidget::selectionChanged(bool textSelected)
     emit copyAvailable(textSelected);
 }
 
-void QTermWidget::find()
-{
-    search(true, false);
-}
-
-void QTermWidget::findNext()
-{
-    search(true, true);
-}
-
-void QTermWidget::findPrevious()
-{
-    search(false, false);
-}
-
-void QTermWidget::search(bool forwards, bool next)
-{
-    /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
-    int startColumn, startLine;
-
-    if (m_bHasSelect) {
-        if (next) {
-            startColumn = m_endColumn + 1;
-            startLine = m_endLine;
-        } else {
-            if (m_startColumn == 0) {
-                startColumn = -1;
-                startLine = m_startLine - 1;
-            } else {
-                startColumn = m_startColumn;
-                startLine = m_startLine;
-            }
-        }
-    } else if (next) { // search from just after current selection
-        m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
-        startColumn++;
-    } else {  // search from start of current selection
-        m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionStart(startColumn, startLine);
-    }
-
-    qDebug() << "current selection starts at: " << startColumn << startLine;
-    qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
-
-    QRegExp regExp(m_searchBar->searchText());
-    regExp.setPatternSyntax(m_searchBar->useRegularExpression() ? QRegExp::RegExp : QRegExp::FixedString);
-    regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
-
-    HistorySearch *historySearch =
-        new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
-    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int)));
-    connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
-    connect(historySearch, SIGNAL(sig_noMatchFound()), m_searchBar, SLOT(clearSelection()));
-    historySearch->search();
-    /***mod end by ut001121***/
-}
-
 void QTermWidget::search(QString txt, bool forwards, bool next)
 {
     /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
     int startColumn, startLine;
 
     if (m_bHasSelect) {
+        /***mod begin by ut001121 zhangmeng 20200814 修复BUG40895***/
         if (next) {
             startColumn = m_endColumn + 1;
             startLine = m_endLine;
         } else {
             if (m_startColumn == 0) {
                 startColumn = -1;
-                startLine = m_startLine - 1;
+                startLine = m_startLine > 0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
             } else {
                 startColumn = m_startColumn;
                 startLine = m_startLine;
             }
         }
+        /***mod end by ut001121 zhangmeng 20200814***/
     } else if (next) { // search from just after current selection
         m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
         startColumn++;
@@ -215,24 +167,27 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
 
     qDebug() << "current selection starts at: " << startColumn << startLine;
     qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
+    qDebug() << "current backwardsPosition" << m_lastBackwardsPosition << endl;
 
-    QRegExp regExp(txt);
+    QString searchText(txt);
     // qDebug() << "regExp??????" << regExp.isEmpty();
-    regExp.setPatternSyntax(m_searchBar->useRegularExpression() ? QRegExp::RegExp : QRegExp::FixedString);
-    regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
+    //regExp.setPatternSyntax(QRegExp::FixedString);
+    //regExp.setCaseSensitivity(Qt::CaseSensitive);
 
     HistorySearch *historySearch =
-        new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
-    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int)));
-    connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
+        new HistorySearch(m_impl->m_session->emulation(), searchText, forwards, m_isLastForwards, startColumn, startLine, this);
+    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int, int)));
+    connect(this, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
 
     connect(historySearch, &HistorySearch::noMatchFound, this, [this]() { emit sig_noMatchFound(); });
     // connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(noMatchFound()));
-    historySearch->search();
+    historySearch->search(m_lastBackwardsPosition, m_startColumn, m_startLine);
     /***mod end by ut001121***/
+
+    m_isLastForwards = forwards;
 }
 
-void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese)
+void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int endLine, int lastBackwardsPosition, int loseChinese, int matchChinese)
 {
     /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
     m_bHasSelect = true;
@@ -240,6 +195,9 @@ void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int 
     m_startLine = startLine;
     m_endColumn = endColumn;
     m_endLine = endLine;
+    if (lastBackwardsPosition != -1) {
+        m_lastBackwardsPosition = lastBackwardsPosition;
+    }
 
     ScreenWindow *sw = m_impl->m_terminalDisplay->screenWindow();
     qDebug() << "Scroll to" << startLine;
@@ -249,6 +207,8 @@ void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int 
     sw->setSelectionEnd(endColumn + matchChinese, endLine - sw->currentLine());
     sw->notifyOutputChanged();
     /***mod end by ut001121***/
+    // 结束查找
+    emit sig_matchFound();
 }
 
 void QTermWidget::clearSelection()
@@ -375,6 +335,51 @@ void QTermWidget::interactionHandler()
     m_interactionTimer->start();
 }
 
+/*******************************************************************************
+ 1. @函数:    setisAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-14
+ 4. @说明:    设置是否允许滚动到最新的位置
+ 当有输出且并不是在setZoom之后,此标志为true 允许滚动
+ 当有输出且在setZoom之后,比标志位false 不允许滚动
+*******************************************************************************/
+void QTermWidget::setIsAllowScroll(bool isAllowScroll)
+{
+    m_impl->m_terminalDisplay->setIsAllowScroll(isAllowScroll);
+}
+
+/*******************************************************************************
+ 1. @函数:    setNoHasSelect
+ 2. @作者:    ut001000 任飞翔
+ 3. @日期:    2020-12-02
+ 4. @说明:    当搜索框出现时，设置m_bHasSelect为false,避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
+*******************************************************************************/
+void QTermWidget::setNoHasSelect()
+{
+    if(m_bHasSelect) {
+        //清除搜索状态
+        m_lastBackwardsPosition = -1;
+        m_isLastForwards = false;
+        m_startColumn = 0;
+        m_startLine = 0;
+        m_endColumn = 0;
+        m_endLine = 0;
+    }
+
+    m_bHasSelect = false;
+}
+
+/*******************************************************************************
+ 1. @函数:    getisAllowScroll
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-09-14
+ 4. @说明:    获取是否允许输出时滚动
+*******************************************************************************/
+bool QTermWidget::getIsAllowScroll() const
+{
+    return m_impl->m_terminalDisplay->getIsAllowScroll();
+}
+
 void QTermWidget::startTerminalTeletype()
 {
     if (m_impl->m_session->isRunning()) {
@@ -384,7 +389,7 @@ void QTermWidget::startTerminalTeletype()
     m_impl->m_session->runEmptyPTY();
     // redirect data from TTY to external recipient
     connect(
-        m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int)), this, SIGNAL(sendData(const char *, int)));
+        m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int, const QTextCodec *)), this, SIGNAL(sendData(const char *, int, const QTextCodec *)));
 }
 
 void QTermWidget::init(int startnow)
@@ -396,22 +401,29 @@ void QTermWidget::init(int startnow)
     // translations
     // First check $XDG_DATA_DIRS. This follows the implementation in libqtxdg
     QString d = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+    QStringList dirs = d.split(QLatin1Char(':'), Qt::SkipEmptyParts);
+#else
     QStringList dirs = d.split(QLatin1Char(':'), QString::SkipEmptyParts);
+#endif
     if (dirs.isEmpty()) {
         dirs.append(QString::fromLatin1("/usr/local/share"));
         dirs.append(QString::fromLatin1("/usr/share"));
     }
     dirs.append(QFile::decodeName(TRANSLATIONS_DIR));
 
-    m_translator = new QTranslator(this);
-
-    for (const QString &dir : qAsConst(dirs)) {
-        qDebug() << "Trying to load translation file from dir" << dir;
-        if (m_translator->load(
-                    QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
-            qApp->installTranslator(m_translator);
-            qDebug() << "Translations found in" << dir;
-            break;
+    // 语言，整个应用程序只需要设置一次
+    if (nullptr == m_translator) {
+        // 绑定的父类需要是全局的，不能是this防止窗口被关闭后翻译也随之消失
+        m_translator = new QTranslator(qApp);
+        for (const QString &dir : qAsConst(dirs)) {
+            qDebug() << "Trying to load translation file from dir" << dir;
+            if (m_translator->load(
+                        QLocale::system(), QLatin1String("terminalwidget"), QLatin1String(QLatin1String("_")), dir)) {
+                qApp->installTranslator(m_translator);
+                qDebug() << "Translations found in" << dir;
+                break;
+            }
         }
     }
 
@@ -426,6 +438,8 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, &Session::profileChangeCommandReceived, this, &QTermWidget::profileChanged);
     connect(m_impl->m_session, &Session::receivedData, this, &QTermWidget::receivedData);
     connect(m_impl->m_session, &Session::started, this, &QTermWidget::processStarted);
+    // 标签标题参数变化
+    connect(m_impl->m_session, &Session::titleArgsChange, this, &QTermWidget::titleArgsChange);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     // 用于卸载终端弹出框提示
     connect(m_impl->m_session, SIGNAL(sessionUninstallTerminal(QString)), this, SIGNAL(uninstallTerminal(QString)));
@@ -441,13 +455,13 @@ void QTermWidget::init(int startnow)
     m_impl->m_terminalDisplay->filterChain()->addFilter(urlFilter);
     m_impl->m_terminalDisplay->filterChain()->setSessionId(m_impl->m_session->sessionId());
 
-    m_searchBar = new SearchBar(this);
-    m_searchBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
-    connect(m_searchBar, SIGNAL(searchCriteriaChanged()), this, SLOT(find()));
-    connect(m_searchBar, SIGNAL(findNext()), this, SLOT(findNext()));
-    connect(m_searchBar, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
-    m_layout->addWidget(m_searchBar);
-    m_searchBar->hide();
+//    m_searchBar = new SearchBar(this);
+//    m_searchBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
+//    connect(m_searchBar, SIGNAL(searchCriteriaChanged()), this, SLOT(find()));
+//    connect(m_searchBar, SIGNAL(findNext()), this, SLOT(findNext()));
+//    connect(m_searchBar, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
+//    m_layout->addWidget(m_searchBar);
+//    m_searchBar->hide();
 
     if (startnow && m_impl->m_session) {
         m_impl->m_session->run();
@@ -462,6 +476,8 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_terminalDisplay, SIGNAL(termGetFocus()), this, SIGNAL(termGetFocus()));
     connect(m_impl->m_terminalDisplay, SIGNAL(leftMouseClick()), this, SIGNAL(leftMouseClick()));
     connect(m_impl->m_terminalDisplay, SIGNAL(termLostFocus()), this, SIGNAL(termLostFocus()));
+    // 将拖拽进入的urls名返回给终端 将要转发给Emu的数据
+    connect(m_impl->m_terminalDisplay, SIGNAL(sendStringToEmu(const char *)), this, SIGNAL(sendUrlsToTerm(const char *)));
     connect(
         m_impl->m_terminalDisplay, SIGNAL(keyPressedSignal(QKeyEvent *)), this, SIGNAL(termKeyPressed(QKeyEvent *)));
     //    m_impl->m_terminalDisplay->setSize(80, 40);
@@ -471,7 +487,7 @@ void QTermWidget::init(int startnow)
     font.setPointSize(10);
     font.setStyleHint(QFont::TypeWriter);
     setTerminalFont(font);
-    m_searchBar->setFont(font);
+//    m_searchBar->setFont(font);
 
     setScrollBarPosition(NoScrollBar);
     setKeyboardCursorShape(Emulation::KeyboardCursorShape::BlockCursor);
@@ -482,6 +498,7 @@ void QTermWidget::init(int startnow)
     connect(m_impl->m_session, SIGNAL(finished()), this, SLOT(sessionFinished()));
     connect(m_impl->m_session, &Session::titleChanged, this, &QTermWidget::titleChanged);
     connect(m_impl->m_session, &Session::cursorChanged, this, &QTermWidget::cursorChanged);
+    connect(m_impl->m_session, &Session::shellWarningMessage, this, &QTermWidget::shellWarningMessage);
 
     //将终端活动状态传给SessionManager单例
     connect(this, SIGNAL(isTermIdle(bool)), SessionManager::instance(), SIGNAL(sessionIdle(bool)));
@@ -576,9 +593,9 @@ QString QTermWidget::workingDirectory()
         goto fallback;
     }
     return d.canonicalPath();
-#endif
 
 fallback:
+#endif
     // fallback, initial WD
     return m_impl->m_session->initialWorkingDirectory();
 }
@@ -598,7 +615,13 @@ void QTermWidget::setTextCodec(QTextCodec *codec)
     m_impl->m_session->setCodec(codec);
 }
 
-void QTermWidget::setColorScheme(const QString &origName)
+/*******************************************************************************
+ 1. @函数:    setColorScheme
+ 2. @作者:    ut000125 sunchengxi
+ 3. @日期:    2020-12-01
+ 4. @说明:    设置主题的配色方案,根据参数 needReloadTheme 判断是否需要重新加载
+*******************************************************************************/
+void QTermWidget::setColorScheme(const QString &origName, bool needReloadTheme)
 {
     const ColorScheme *cs = nullptr;
 
@@ -608,16 +631,21 @@ void QTermWidget::setColorScheme(const QString &origName)
     // avoid legacy (int) solution
     if (!availableColorSchemes().contains(name)) {
         if (isFile) {
-            if (ColorSchemeManager::instance()->loadCustomColorScheme(origName))
+            if (ColorSchemeManager::instance()->loadCustomColorScheme(origName)) {
                 cs = ColorSchemeManager::instance()->findColorScheme(name);
-            else
+            } else {
                 qWarning() << Q_FUNC_INFO << "cannot load color scheme from" << origName;
+            }
         }
-
-        if (!cs)
+        if (!cs) {
             cs = ColorSchemeManager::instance()->defaultColorScheme();
-    } else
+        }
+    } else {
+        if (name == "customTheme" && needReloadTheme) {
+            ColorSchemeManager::instance()->realodColorScheme(origName);
+        }
         cs = ColorSchemeManager::instance()->findColorScheme(name);
+    }
 
     if (!cs) {
         QMessageBox::information(this, tr("Color Scheme Error"), tr("Cannot load color scheme: %1").arg(name));
@@ -652,7 +680,7 @@ void QTermWidget::setHistorySize(int lines)
     if (lines < 0)
         m_impl->m_session->setHistoryType(HistoryTypeFile());
     else
-        m_impl->m_session->setHistoryType(HistoryTypeBuffer(lines));
+        m_impl->m_session->setHistoryType(CompactHistoryType(lines));
 }
 
 void QTermWidget::setScrollBarPosition(ScrollBarPosition pos)
@@ -677,7 +705,20 @@ void QTermWidget::setTrackOutput(bool enable)
 
 void QTermWidget::sendText(const QString &text)
 {
+    //标记当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
+    bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
+    if (isSendByRemoteManage) {
+        //将isSendByRemoteManage标记同步给Session
+        m_impl->m_session->setProperty("isSendByRemoteManage", QVariant(true));
+
+        //立即修改回false，防止误认其他命令
+        this->setProperty("isSendByRemoteManage", QVariant(false));
+    }
+
     m_impl->m_session->sendText(text);
+
+    //标记后立即修改回false，防止误认其他命令
+    m_impl->m_session->setProperty("isSendByRemoteManage", QVariant(false));
 }
 
 void QTermWidget::sendKeyEvent(QKeyEvent *e)
@@ -720,8 +761,10 @@ void QTermWidget::pasteSelection()
 
 void QTermWidget::setZoom(int step)
 {
+    // 获取字体
     QFont font = m_impl->m_terminalDisplay->getVTFont();
 
+    // 设置字体
     font.setPointSize(font.pointSize() + step);
     setTerminalFont(font);
 }
@@ -851,9 +894,9 @@ void QTermWidget::setBackspaceMode(char *key, int length)
     m_impl->m_session->setBackspaceMode(key, length);
 }
 
-QString QTermWidget::selectedText(bool preserveLineBreaks)
+QString QTermWidget::selectedText(const Screen::DecodingOptions options)
 {
-    return m_impl->m_terminalDisplay->screenWindow()->screen()->selectedText(preserveLineBreaks);
+    return m_impl->m_terminalDisplay->screenWindow()->screen()->selectedText(options);
 }
 
 void QTermWidget::setMonitorActivity(bool monitor)
@@ -977,5 +1020,10 @@ void QTermWidget::setBoldIntense(bool boldIntense)
 int QTermWidget::getForegroundProcessId() const
 {
     return m_impl->m_session->foregroundProcessId();
+}
+
+QString QTermWidget::getForegroundProcessName() const
+{
+    return m_impl->m_session->foregroundProcessName();
 }
 

@@ -160,6 +160,10 @@ public:
      * Returns the total number of lines, including those stored in the history.
      */
     int lineCount() const;
+    /**
+     * Returns the total number of columns.
+     */
+    int columnCount() const;
 
     /**
      * Sets the history store used by this emulation.  When new lines
@@ -298,7 +302,7 @@ public slots:
      * @param buffer A string of characters received from the terminal program.
      * @param len The length of @p buffer
      */
-    void receiveData(const char *buffer, int len);
+    void receiveData(const char *buffer, int len, bool isCommandExec);
 
 signals:
 
@@ -309,7 +313,7 @@ signals:
      * @param data The buffer of data ready to be sent
      * @param len The length of @p data in bytes
      */
-    void sendData(const char *data, int len);
+    void sendData(const char *data, int len, const QTextCodec *codec);
 
     /**
      * Requests that sending of input to the emulation
@@ -528,6 +532,11 @@ private:
     QTimer _bulkTimer2;
 
     int _sessionId;
+
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加保存上一次的屏幕行列数，用于比较终端屏宽是否发生变化 Begin***************/
+//    int _lastcol = 0;
+//    int _lastline = 0;
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 };
 
 }

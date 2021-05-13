@@ -154,6 +154,7 @@ KeyboardTranslator* KeyboardTranslatorManager::loadTranslator(const QString& nam
     const QString& path = findTranslatorPath(name);
 
     QFile source(path);
+    qDebug() << __FUNCTION__ << path << endl;
     if (name.isEmpty() || !source.open(QIODevice::ReadOnly | QIODevice::Text))
         return nullptr;
 
@@ -345,7 +346,7 @@ bool KeyboardTranslatorReader::decodeSequence(const QString& text,
                                               KeyboardTranslator::States& flagMask)
 {
     bool isWanted = true;
-    bool endOfItem = false;
+    //bool endOfItem = false;
     QString buffer;
 
     Qt::KeyboardModifiers tempModifiers = modifiers;
@@ -358,7 +359,7 @@ bool KeyboardTranslatorReader::decodeSequence(const QString& text,
         const QChar& ch = text[i];
         bool isFirstLetter = i == 0;
         bool isLastLetter = ( i == text.count()-1 );
-        endOfItem = true;
+        bool endOfItem = true;
         if ( ch.isLetterOrNumber() )
         {
             endOfItem = false;

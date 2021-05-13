@@ -1166,12 +1166,12 @@ void MainWindow::hidePlugin()
     emit quakeHidePlugin();
 }
 
-QString MainWindow::selectedText(bool preserveLineBreaks)
+QString MainWindow::selectedText()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
         if (page->currentTerminal()) {
-            return page->currentTerminal()->selectedText(preserveLineBreaks);
+            return page->currentTerminal()->selectedText();
         }
     }
     qDebug() << "not point terminal??";

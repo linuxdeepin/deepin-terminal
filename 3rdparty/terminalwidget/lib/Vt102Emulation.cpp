@@ -45,6 +45,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 #include <QByteRef>
+#include <QDebug>
 
 // KDE
 //#include <kdebug.h>
@@ -863,9 +864,9 @@ void Vt102Emulation::clearScreenAndSetColumns(int columnCount)
 void Vt102Emulation::sendString(const char* s , int length)
 {
   if ( length >= 0 )
-    emit sendData(s,length);
+    emit sendData(s, length, _codec);
   else
-    emit sendData(s,static_cast<int>(strlen(s)));
+    emit sendData(s, static_cast<int>(strlen(s)), _codec);
 }
 
 void Vt102Emulation::reportCursorPosition()
@@ -1104,7 +1105,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
             textToSend += _codec->fromUnicode(event->text());
         }
 
-        Q_EMIT sendData( textToSend.constData() , textToSend.length() );
+        Q_EMIT sendData( textToSend.constData(), textToSend.length(), _codec );
     }
     else
     {
@@ -1115,7 +1116,7 @@ void Vt102Emulation::sendKeyEvent( QKeyEvent* event )
                                          "into characters to send to the terminal "
                                          "is missing.");
         reset();
-        receiveData( translatorError.toUtf8().constData() , translatorError.count() );
+        receiveData(translatorError.toUtf8().constData() , translatorError.count(), false);
     }
 }
 
@@ -1359,28 +1360,11 @@ char Vt102Emulation::eraseChar() const
       return '\b';
 }
 
-// print contents of the scan buffer
-static void hexdump(wchar_t* s, int len)
-{ int i;
-  for (i = 0; i < len; i++)
-  {
-    if (s[i] == '\\')
-      printf("\\\\");
-    else
-    if ((s[i]) > 32 && s[i] < 127)
-      printf("%c",s[i]);
-    else
-      printf("\\%04x(hex)",s[i]);
-  }
-}
-
 void Vt102Emulation::reportDecodingError()
 {
   if (tokenBufferPos == 0 || ( tokenBufferPos == 1 && (tokenBuffer[0] & 0xff) >= 32) )
     return;
-  printf("Undecodable sequence: ");
-  hexdump(tokenBuffer,tokenBufferPos);
-  printf("\n");
+  qDebug() << "Undecodable sequence:" << QString::fromWCharArray(tokenBuffer, tokenBufferPos);
 }
 
 //#include "Vt102Emulation.moc"

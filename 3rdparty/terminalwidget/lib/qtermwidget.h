@@ -25,11 +25,9 @@
 #include <QPointer>
 #include "Emulation.h"
 #include "Filter.h"
-#ifdef USE_QMAKE
-#include "../build/lib/qtermwidget_export.h"
-#else
+#include "HistorySearch.h"
+
 #include "qtermwidget_export.h"
-#endif
 
 class QVBoxLayout;
 class TermWidgetImpl;
@@ -61,7 +59,7 @@ public:
     QTermWidget(int startnow, // 1 = start shell programm immediatelly
                 QWidget *parent = nullptr);
     // A dummy constructor for Qt Designer. startnow is 1 by default
-    QTermWidget(QWidget *parent = nullptr);
+    explicit QTermWidget(QWidget *parent = nullptr);
 
     ~QTermWidget() override;
 
@@ -126,7 +124,8 @@ public:
      * @param[in] name The name of the color scheme, either returned from
      * availableColorSchemes() or a full path to a color scheme.
      */
-    void setColorScheme(const QString &name);
+    //设置主题的配色方案
+    void setColorScheme(const QString &name, bool needReloadTheme = false);
     static QStringList availableColorSchemes();
     static void addCustomColorSchemeDir(const QString &custom_dir);
 
@@ -197,7 +196,7 @@ public:
      * @param preserveLineBreaks Specifies whether new line characters should
      * be inserted into the returned text at the end of each terminal line.
      */
-    QString selectedText(bool preserveLineBreaks = true);
+    QString selectedText(const Screen::DecodingOptions options=Screen::PreserveLineBreaks);
 
     void setMonitorActivity(bool);
     void setMonitorSilence(bool);
@@ -266,9 +265,23 @@ public:
     /** Get the foreground pid in terminal */
     int getForegroundProcessId() const;
 
+    // 获取foreground名称
+    QString getForegroundProcessName() const;
+
     void setDrawLineChars(bool drawLineChars);
 
     void setBoldIntense(bool boldIntense);
+
+    // 获取是否允许输出时滚动
+    bool getIsAllowScroll() const;
+
+    // 设置是否允许输出时滚动
+    void setIsAllowScroll(bool isAllowScroll);
+
+    //Add by ut001000 renfeixiang 2020-12-02 当搜索框出现时，设置m_bHasSelect为false,
+    //避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
+    void setNoHasSelect();
+
 signals:
     void finished();
     void copyAvailable(bool);
@@ -293,16 +306,23 @@ signals:
     /******** Modify by ut000610 daizhengwen 2020-06-11: QProcess start finished signal****************/
     void processStarted();
     /********************* Modify by ut000610 daizhengwen End ************************/
+
+    /******** Modify by ut000610 daizhengwen 2020-09-03:将拖拽过来的数据传送给终端 Begin***************/
+    void sendUrlsToTerm(const char *);
+    /********************* Modify by ut000610 daizhengwen End ************************/
     /**
      * Emitted when emulator send data to the terminal process
      * (redirected for external recipient). It can be used for
      * control and display the remote terminal.
      */
-    void sendData(const char *, int);
+    void sendData(const char *, int, const QTextCodec *);
 
     void profileChanged(const QString &profile);
 
     void titleChanged();
+
+    // warning提示信息 currentShell当前使用的shell, 启用shell是否成功 true 替换了shell false 替换shell但启动失败
+    void shellWarningMessage(QString currentShell, bool isSuccess);
 
     /**
      * Signals that we received new data from the process running in the
@@ -316,6 +336,11 @@ signals:
     void isTermIdle(bool bIdle);
     // 将库里返回信号透传出来。原来的noMatchFound方法改名为clearSelection
     void sig_noMatchFound();
+    // 找到的信号
+    void sig_matchFound();
+
+    // 标签标题参数改变 dzw 2020-12-2
+    void titleArgsChange(QString key, QString value);
 
 public slots:
     // Copy selection to clipboard
@@ -361,10 +386,7 @@ protected slots:
     void selectionChanged(bool textSelected);
 
 private slots:
-    void find();
-    void findNext();
-    void findPrevious();
-    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese);
+    void matchFound(int startColumn, int startLine, int endColumn, int endLine, int lastBackwardsPosition, int loseChinese, int matchChinese);
 
     /**
      * Emulation::cursorChanged() signal propogates to here and QTermWidget
@@ -374,7 +396,6 @@ private slots:
     void snapshot();
 
 private:
-    void search(bool forwards, bool next);
     void setZoom(int step);
     void init(int startnow);
     void addSnapShotTimer();
@@ -383,7 +404,7 @@ private:
     TermWidgetImpl *m_impl;
     SearchBar *m_searchBar;
     QVBoxLayout *m_layout;
-    QTranslator *m_translator;
+    static QTranslator *m_translator;
     QPointer<Konsole::TerminalDisplay> m_termDisplay;
     QTimer *m_interactionTimer = nullptr;
 
@@ -392,6 +413,9 @@ private:
     int m_startLine = 0;
     int m_endColumn = 0;
     int m_endLine = 0;
+    int m_lastBackwardsPosition = -1;
+    //上一次是正向搜索还是反向搜索
+    bool m_isLastForwards = false;
 };
 
 // Maybe useful, maybe not

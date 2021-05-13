@@ -22,7 +22,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>Aucun traducteur disponible.  L&apos;information nécessaire à la conversion des touches pressées en caractères à envoyer au terminal est absente.</translation>
+        <translation>Aucun traducteur disponible. L&apos;information nécessaire à la conversion des touches pressées en caractères à envoyer au terminal est absente.</translation>
     </message>
 </context>
 <context>
@@ -31,12 +31,12 @@
         <location filename="../ColorScheme.cpp" line="278"/>
         <location filename="../ColorScheme.cpp" line="293"/>
         <source>Un-named Color Scheme</source>
-        <translation>Schéma des couleurs non nommé</translation>
+        <translation>Schéma de couleurs non nommé</translation>
     </message>
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
         <source>Accessible Color Scheme</source>
-        <translation>Schéma des couleur accessible</translation>
+        <translation>Schéma des couleurs accessible</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
@@ -51,12 +51,12 @@
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation>Envoyer un email à...</translation>
+        <translation>Envoyer un mail à...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation>Copier l&apos;adresse email</translation>
+        <translation>Copier l&apos;adresse mail</translation>
     </message>
 </context>
 <context>

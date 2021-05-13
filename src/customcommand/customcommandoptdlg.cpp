@@ -278,7 +278,7 @@ void CustomCommandOptDlg::initCommandFromClipBoardText()
         // QString clipText = ShortcutManager::instance()->getClipboardCommandData();
         MainWindow *main = Utils::getMainWindow(this);//;getMainWindow();
         if (main != nullptr) {
-            QString clipText = main->selectedText(true);
+            QString clipText = main->selectedText();
             m_commandLineEdit->setText(clipText.trimmed());
         }
     }

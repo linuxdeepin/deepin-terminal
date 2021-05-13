@@ -38,6 +38,7 @@
 #include <QThread>
 #include <QList>
 #include <QTime>
+#include <QDebug>
 
 // KDE
 //#include <kdebug.h>
@@ -49,6 +50,7 @@
 #include "ScreenWindow.h"
 #include "Session.h"
 #include "SessionManager.h"
+#include "TerminalDisplay.h"
 
 using namespace Konsole;
 
@@ -78,6 +80,10 @@ Emulation::Emulation() :
         emit titleChanged(50, QString(QLatin1String("CursorShape=%1;BlinkingCursorEnabled=%2"))
                           .arg(static_cast<int>(cursorShape)).arg(blinkingCursorEnabled));
     });
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加初始化保存开始的屏幕行列数 Begin***************/
+//    _lastcol = _currentScreen->getColumns();
+//    _lastline = _currentScreen->getLines();
+    /******** Add by ut001000 renfeixiang 2020-07-16:增加 End***************/
 }
 
 bool Emulation::programUsesMouse() const
@@ -125,6 +131,11 @@ Emulation::~Emulation()
     delete _screen[0];
     delete _screen[1];
     delete _decoder;
+
+    if (nullptr != _keyTranslator) {
+        delete _keyTranslator;
+        _keyTranslator = nullptr;
+    }
 }
 
 void Emulation::setScreen(int n)
@@ -260,7 +271,7 @@ void Emulation::sendKeyEvent(QKeyEvent *ev)
         // A block of text
         // Note that the text is proper unicode.
         // We should do a conversion here
-        emit sendData(ev->text().toUtf8().constData(), ev->text().length());
+        emit sendData(ev->text().toUtf8().constData(), ev->text().length(), _codec);
     }
 }
 
@@ -279,7 +290,7 @@ void Emulation::sendMouseEvent(int /*buttons*/, int /*column*/, int /*row*/, int
 TODO: Character composition from the old code.  See #96536
 */
 
-void Emulation::receiveData(const char *text, int length)
+void Emulation::receiveData(const char *text, int length, bool isCommandExec)
 {
     emit stateSet(NOTIFYACTIVITY);
 
@@ -290,52 +301,38 @@ void Emulation::receiveData(const char *text, int length)
      * U+10FFFF
      * https://unicodebook.readthedocs.io/unicode_encodings.html#surrogates
      */
-    QString utf16Text = _decoder->toUnicode(text, length);
+    QString utf16Text = "";
 
-    /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 Begin ***************/
-//    int maxPathDepth = 1;
-//    bool bWindowResizing = false;
-//    QList<Session *> allSession = SessionManager::instance()->sessions();
-//    for (int i = 0; i < allSession.size(); ++i) {
-//        Session *session = allSession.at(i);
-//        int currSessionId = session->sessionId();
-//        //遍历所有Session, 如果有一个控件正在resize，则标记为窗口整体正在resize
-//        if (SessionManager::instance()->isTerminalResizing(currSessionId)) {
-//            bWindowResizing = true;
-//        }
+    if (QString(_codec->name()).toUpper().startsWith("GB") && !isCommandExec) {
+        if (_decoder != nullptr) {
+            delete _decoder;
+        }
+        QTextCodec *textCodec = QTextCodec::codecForName("UTF-8");
+        _decoder = textCodec->makeDecoder();
+        utf16Text = _decoder->toUnicode(text, length);
 
-//        //获取所有Session中shell提示符路径最长的那个对应路径的路径深度
-//        int currPathDepth = SessionManager::instance()->getTerminalPathDepth(currSessionId);
-//        if (currPathDepth >= maxPathDepth) {
-//            maxPathDepth = currPathDepth;
-//        }
-//    }
+        QTextCodec* gbk = QTextCodec::codecForName(_codec->name());
+        QByteArray gbkarr = gbk->fromUnicode(utf16Text);
 
-//    //判断是bash发送过来的提示符数据[utf16Text.startsWith("\r\u001B[K\u001B")], 且当前正在调整窗口大小resizing时，才进行下面的处理
-//    if (utf16Text.length() > 0 && utf16Text.startsWith("\r\u001B[K\u001B") && bWindowResizing) {
-//        //用于后面构造使用的转移字符，主要是通过对比bash5.0.3和bash4.4.x版本接收到的utf16Text差异得到
-//        QString codeLine = "\u001B[A";
-//        int pathDepth = utf16Text.count("/");
-//        //存储终端控件当前shell提示符的路径深度(比如/home/test 路径深度为2)
-//        SessionManager::instance()->setTerminalPathDepth(_sessionId, pathDepth);
+        if (_decoder != nullptr) {
+            delete _decoder;
+        }
+        textCodec = QTextCodec::codecForName(_codec->name());
+        _decoder = textCodec->makeDecoder();
+        utf16Text = _decoder->toUnicode(gbkarr);
+    }
+    else {
+        utf16Text = _decoder->toUnicode(text, length);
+    }
 
-//        //取shell提示符路最大的那个路径深度
-//        if (pathDepth < maxPathDepth) {
-//            pathDepth = maxPathDepth;
-//        }
-
-//        //发现了一个规律，路径深度越深，需要加入的\u001B[A越多才能够较好清除重复的shell提示符
-//        QString insertCode = codeLine;
-//        if (pathDepth > 0) {
-//            int codeLineCount = pathDepth;
-//            for (int i=0; i<codeLineCount; i++) {
-//                insertCode.append(codeLine);
-//            }
-//        }
-//        //将\u001B[A转移字符插入到bash发送过来的数据中，参考了bash4.4.x版本接收的数据格式
-//        utf16Text = utf16Text.replace("\r\u001B[K", QString("\r\u001B[K%1").arg(insertCode));
-//    }
-    /******** Add by wangliang 2020-07-09 解决bug 22619:当shell名称较长时，鼠标拖动窗口大小会出现shell名称显示重复现象 End ***************/
+    //fix bug 67102 打开超长名称的文件夹，终端界面光标位置不在最后一位
+    //bash 提示符很长的情况下，会有较大概率以五个\b字符结尾，导致光标错位
+    if (utf16Text.startsWith("\u001B]0;") && utf16Text.endsWith("\b\b\b\b\b")) {
+        Session *currSession = SessionManager::instance()->idToSession(_sessionId);
+        if (currSession && (QStringLiteral("bash") == currSession->foregroundProcessName())) {
+            utf16Text.replace("\b\b\b\b\b", "");
+        }
+    }
 
     std::wstring unicodeText = utf16Text.toStdWString();
 
@@ -416,6 +413,11 @@ int Emulation::lineCount() const
     return _currentScreen->getLines() + _currentScreen->getHistLines();
 }
 
+int Emulation::columnCount() const
+{
+    return _currentScreen->getColumns();
+}
+
 #define BULK_TIMEOUT1 10
 #define BULK_TIMEOUT2 40
 
@@ -473,17 +475,17 @@ QSize Emulation::imageSize() const
     return {_currentScreen->getColumns(), _currentScreen->getLines()};
 }
 
-ushort ExtendedCharTable::extendedCharHash(ushort *unicodePoints, ushort length) const
+uint ExtendedCharTable::extendedCharHash(uint *unicodePoints, ushort length) const
 {
-    ushort hash = 0;
+    uint hash = 0;
     for (ushort i = 0 ; i < length ; i++) {
         hash = 31 * hash + unicodePoints[i];
     }
     return hash;
 }
-bool ExtendedCharTable::extendedCharMatch(ushort hash, ushort *unicodePoints, ushort length) const
+bool ExtendedCharTable::extendedCharMatch(uint hash, uint *unicodePoints, ushort length) const
 {
-    ushort *entry = extendedCharTable[hash];
+    uint *entry = extendedCharTable[hash];
 
     // compare given length with stored sequence length ( given as the first ushort in the
     // stored buffer )
@@ -497,50 +499,81 @@ bool ExtendedCharTable::extendedCharMatch(ushort hash, ushort *unicodePoints, us
     }
     return true;
 }
-ushort ExtendedCharTable::createExtendedChar(ushort *unicodePoints, ushort length)
+
+uint ExtendedCharTable::createExtendedChar(uint *unicodePoints, ushort length)
 {
+
     // look for this sequence of points in the table
-    ushort hash = extendedCharHash(unicodePoints, length);
+    uint hash = extendedCharHash(unicodePoints, length);
+    const uint initialHash = hash;
+    bool triedCleaningSolution = false;
 
     // check existing entry for match
-    while (extendedCharTable.contains(hash)) {
+    while (extendedCharTable.contains(hash) && hash != 0) { // 0 has a special meaning for chars so we don't use it
         if (extendedCharMatch(hash, unicodePoints, length)) {
             // this sequence already has an entry in the table,
             // return its hash
             return hash;
-        } else {
-            // if hash is already used by another, different sequence of unicode character
-            // points then try next hash
-            hash++;
+        }
+        // if hash is already used by another, different sequence of unicode character
+        // points then try next hash
+        hash++;
+
+        if (hash == initialHash) {
+            if (!triedCleaningSolution) {
+                triedCleaningSolution = true;
+                // All the hashes are full, go to all Screens and try to free any
+                // This is slow but should happen very rarely
+                QSet<uint> usedExtendedChars;
+                const QList<Session *> sessionsList = SessionManager::instance()->sessions();
+                for (const Session *s : sessionsList) {
+                    const QList<TerminalDisplay *> displayList = s->views();
+                    for (const TerminalDisplay *display : displayList) {
+                        usedExtendedChars += display->screenWindow()->screen()->usedExtendedChars();
+                    }
+                }
+
+                QHash<uint, uint *>::iterator it = extendedCharTable.begin();
+                QHash<uint, uint *>::iterator itEnd = extendedCharTable.end();
+                while (it != itEnd) {
+                    if (usedExtendedChars.contains(it.key())) {
+                        ++it;
+                    } else {
+                        it = extendedCharTable.erase(it);
+                    }
+                }
+            } else {
+                qDebug() << "Using all the extended char hashes, going to miss this extended character";
+                return 0;
+            }
         }
     }
 
-
     // add the new sequence to the table and
     // return that index
-    ushort *buffer = new ushort[length + 1];
+    auto buffer = new uint[length + 1];
     buffer[0] = length;
-    for (int i = 0 ; i < length ; i++)
+    for (int i = 0; i < length; i++) {
         buffer[i + 1] = unicodePoints[i];
+    }
 
     extendedCharTable.insert(hash, buffer);
 
     return hash;
 }
 
-ushort *ExtendedCharTable::lookupExtendedChar(ushort hash, ushort &length) const
+uint *ExtendedCharTable::lookupExtendedChar(uint hash, ushort &length) const
 {
     // lookup index in table and if found, set the length
     // argument and return a pointer to the character sequence
 
-    ushort *buffer = extendedCharTable[hash];
-    if (buffer) {
-        length = buffer[0];
+    uint *buffer = extendedCharTable[hash];
+    if (buffer != nullptr) {
+        length = ushort(buffer[0]);
         return buffer + 1;
-    } else {
-        length = 0;
-        return nullptr;
     }
+    length = 0;
+    return nullptr;
 }
 
 ExtendedCharTable::ExtendedCharTable()
@@ -549,7 +582,7 @@ ExtendedCharTable::ExtendedCharTable()
 ExtendedCharTable::~ExtendedCharTable()
 {
     // free all allocated character buffers
-    QHashIterator<ushort, ushort *> iter(extendedCharTable);
+    QHashIterator<uint, uint *> iter(extendedCharTable);
     while (iter.hasNext()) {
         iter.next();
         delete[] iter.value();

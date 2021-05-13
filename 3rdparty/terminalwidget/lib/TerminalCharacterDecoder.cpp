@@ -108,7 +108,7 @@ void PlainTextDecoder::decodeLine(const Character* const characters, int count, 
     for (int i=0;i<outputCount;)
     {
         plainText.push_back( characters[i].character );
-        i += qMax(1,konsole_wcwidth(characters[i].character));
+        i += qMax(1,Character::width(characters[i].character));
     }
     *_output << QString::fromStdWString(plainText);
 }
