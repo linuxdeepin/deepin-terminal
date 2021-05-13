@@ -20,6 +20,7 @@
 /******** Add by ut001000 renfeixiang 2020-06-08:增加 Begin***************/
 #include "dbusmanager.h"
 /******** Add by ut001000 renfeixiang 2020-06-08:增加 End***************/
+#include "TerminalDisplay.h"
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
@@ -95,6 +96,17 @@ void Settings::init()
     });
     */
     /********************* Modify by n014361 wangpeili End ************************/
+
+    /***add begin by ut001121 zhangmeng 20200912 设置字号限制 修复42250***/
+    auto option = settings->option("basic.interface.font_size");
+    Konsole::__minFontSize = option->data("min").isValid() ? option->data("min").toInt() : DEFAULT_MIN_FONT_SZIE;
+    Konsole::__maxFontSize = option->data("max").isValid() ? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
+
+    // 校验正确
+    if (Konsole::__minFontSize > Konsole::__maxFontSize) {
+        qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
+    }
+    /***add end by ut001121***/
 }
 
 //重新安装终端后在这里重置状态

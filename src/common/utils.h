@@ -47,6 +47,10 @@
 
 #define MAX_NAME_LEN 32
 
+// limit font size
+#define DEFAULT_MIN_FONT_SZIE 5
+#define DEFAULT_MAX_FONT_SZIE 50
+
 class MainWindow;
 class Utils : public QObject
 {
