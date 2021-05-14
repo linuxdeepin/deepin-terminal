@@ -45,6 +45,7 @@
 #include <DPasswordEdit>
 #include <DSuggestButton>
 #include <DPushButton>
+#include <DAlertControl>
 #include <dfilechooseredit.h>
 
 #include <QAction>
@@ -133,6 +134,7 @@ private:
     DLineEdit *m_serverName = nullptr;
     DLineEdit *m_address = nullptr;
     DSpinBox *m_port = nullptr;
+    DAlertControl *m_port_tip = nullptr;
     DLineEdit *m_userName = nullptr;
     DPasswordEdit *m_password = nullptr;
     DLineEdit *m_privateKey = nullptr;
