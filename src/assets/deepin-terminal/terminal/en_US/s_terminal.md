@@ -304,7 +304,7 @@ You can upload and download files after logging into a remote server.
 
 ## Main Menu
 
-In the Main Menu, you can create [New Window](#Create Window), customize commands,  perform [Remote Management](#Remote Server Management), switch themes, view help manual and get more information about Album.
+In the Main Menu, you can create [New Window](#Create Window), customize commands,  perform [Remote Management](#Remote Management), switch themes, view help manual and get more information about Album.
 
 ### Theme 
 
@@ -370,9 +370,7 @@ The window theme provides multiple themes.
   - Enable or disable **Hide quake window after lost focus**.
   - Select **Shell profile**.
 
-  - Enable or disable flow control by **Ctrl** + **S** and **Ctrl** + **Q**
-
-3. **Restore defaults**: Click this button to restore to all default settings.  
+  - Enable or disable flow control by **Ctrl** + **S** and **Ctrl** + **Q**.
 
 ### Help
 
