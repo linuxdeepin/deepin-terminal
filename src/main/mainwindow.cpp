@@ -2978,7 +2978,7 @@ void QuakeWindow::topToBottomAnimation()
     m_heightAni->setEasingCurve(QEasingCurve::Linear);
     int durationTime = getQuakeAnimationTime();
     m_heightAni->setDuration(durationTime);
-    m_heightAni->setStartValue(0);
+    m_heightAni->setStartValue(1);
     m_heightAni->setEndValue(getQuakeHeight());
     m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
