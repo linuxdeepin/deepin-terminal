@@ -169,6 +169,8 @@ private:
     explicit Service(QObject *parent = nullptr);
     //显示/隐藏设置透明度和背景模糊选项-- 仅UOS服务器版本使用
     void showHideOpacityAndBlurOptions(bool isShow);
+    //显示/隐藏设置页面背景模糊选项
+    void showHideBlurOptions(bool isShow);
     //监听窗口特效开关对应DBus信号，并实时显示/隐藏透明度和背景模糊选项
     void listenWindowEffectSwitcher();
 

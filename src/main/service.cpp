@@ -152,13 +152,19 @@ void Service::initSetting(MainWindow *pOwner)
     QDateTime endTime = QDateTime::currentDateTime();
     qDebug() << "Setting init cost time " << endTime.toMSecsSinceEpoch() - startTime.toMSecsSinceEpoch() << "ms";
 
-    //判断未开启窗口特效时，隐藏透明度/背景模糊选项
+    //判断窗口是否支持混成特效，不支持，隐藏透明度/背景模糊选项
     if (!DWindowManagerHelper::instance()->hasComposite()) {
         showHideOpacityAndBlurOptions(false);
         return;
+    } else {
+        if (DWindowManagerHelper::instance()->hasBlurWindow()) {
+            showHideBlurOptions(true);
+        } else {
+            showHideBlurOptions(false);
+        }
+        return;
     }
-
-    showHideOpacityAndBlurOptions(isWindowEffectEnabled());
+    //showHideOpacityAndBlurOptions(isWindowEffectEnabled());
 }
 
 /*******************************************************************************
@@ -226,6 +232,42 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             }
         } else {
             //do nothing
+        }
+    }
+}
+
+//显示/隐藏设置页面背景模糊选项
+void Service::showHideBlurOptions(bool isShow)
+{
+    QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
+    if (nullptr == rightFrame) {
+        qDebug() << "can not found RightFrame in QWidget";
+        return;
+    }
+
+    QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
+
+    for (int i = 0; i < rightWidgetList.size(); i++) {
+        QWidget *widget = rightWidgetList.at(i);
+        if (widget == nullptr) {
+            continue;
+        }
+        if (strcmp(widget->metaObject()->className(), "QCheckBox") == 0) {
+            QString checkText = (qobject_cast<QCheckBox *>(widget))->text();
+            if (QObject::tr("Blur background") == checkText) {
+                QWidget *optionWidget = widget;
+                QWidget *parentWidget = widget->parentWidget();
+                qDebug() << parentWidget << endl;
+                if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0) {
+                    optionWidget = parentWidget;
+                }
+                if (isShow) {
+                    optionWidget->show();
+                } else {
+                    optionWidget->hide();
+                }
+                break;
+            }
         }
     }
 }
