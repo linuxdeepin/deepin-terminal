@@ -85,6 +85,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     , m_properties(properties)
     , m_isQuakeWindow(properties[QuakeMode].toBool())
     , m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
+    , m_pImInterface(new ComDeepinImInterface(DUE_IM_DBUS_NAME, DUE_IM_DBUS_PATH, QDBusConnection::sessionBus(), this))
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     m_menu->setObjectName("MainWindowQMenu");
@@ -216,7 +217,7 @@ void MainWindow::initTabBar()
     connect(m_tabbar, &TabBar::tabBarClicked, this, &MainWindow::slotTabBarClicked);
 
     // 点击TAB上页触发
-    connect(m_tabbar, &DTabBar::currentChanged, this,&MainWindow::slotTabCurrentChanged, Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::currentChanged, this, &MainWindow::slotTabCurrentChanged, Qt::QueuedConnection);
 
     // 点击TAB上的＂＋＂触发
     connect(m_tabbar, &DTabBar::tabAddRequested, this, &MainWindow::slotTabAddRequested, Qt::QueuedConnection);
@@ -344,7 +345,7 @@ void MainWindow::initOptionMenu()
 
 inline void MainWindow::slotFileChanged()
 {
-    QFileSystemWatcher *fileWatcher = qobject_cast<QFileSystemWatcher*>(sender());
+    QFileSystemWatcher *fileWatcher = qobject_cast<QFileSystemWatcher *>(sender());
     emit  Service::instance()->hostnameChanged();
     //这句话去了之后filechanged信号只能触发一次
     fileWatcher->addPath(HOSTNAME_PATH);
@@ -516,7 +517,7 @@ bool MainWindow::beginAddTab()
     return true;
 }
 
-inline void MainWindow::slotLastTermClosed(const QString & identifier)
+inline void MainWindow::slotLastTermClosed(const QString &identifier)
 {
     closeTab(identifier);
 }
@@ -623,6 +624,8 @@ void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
         updateTabStatus();
         focusCurrentPage();
         return;
+    } else if (m_pImInterface->imActive()) {
+        m_pImInterface->setImActive(false);
     }
     qDebug() << "mainwindow close";
     close();
@@ -1168,7 +1171,7 @@ QString MainWindow::getConfigWindowState()
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
         qDebug() << "use line state set:" << state;
-        if ("maximum" == state ) {
+        if ("maximum" == state) {
             windowState = "window_maximum";
         } else if (state == "splitscreen") {
             windowState = "split_screen";
@@ -1325,7 +1328,7 @@ void MainWindow::initShortcuts()
     for (int i = 1 ; i <= 9; i++) {
         QString strSwitchLabel = QString("shortcuts.tab.switch_label_win_%1").arg(i);
         QShortcut *switchShortcut = createNewShotcut(strSwitchLabel);
-        if(nullptr == switchShortcut)
+        if (nullptr == switchShortcut)
             continue;
         switchShortcut->setProperty("index", QVariant(i));
         connect(switchShortcut, &QShortcut::activated, this, &MainWindow::slotShortcutSwitchActivated);

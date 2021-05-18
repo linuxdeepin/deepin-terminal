@@ -29,6 +29,7 @@
 #include "utils.h"
 #include "define.h"
 #include "customthemesettingdialog.h"
+#include "../common/ImInterface.h"
 
 // dtk
 #include <DMainWindow>
@@ -301,7 +302,7 @@ protected slots:
     void slotOptionButtonPressed();
 
     void slotFileChanged();
-    void slotLastTermClosed(const QString & identifier);
+    void slotLastTermClosed(const QString &identifier);
     void slotDDialogFinished(int result);
 
     void slotShortcutBuiltinCopy();
@@ -505,6 +506,8 @@ public:
     bool m_isInitialized = false;
 
     QTimer *m_createTimer = nullptr;
+    //虚拟键盘 due-im
+    ComDeepinImInterface *m_pImInterface = nullptr;
 };
 
 /*******************************************************************************
