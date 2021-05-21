@@ -90,36 +90,38 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
 *******************************************************************************/
 void CustomCommandOptDlg::initUI()
 {
-    QWidget *contentFrame = new QWidget;
+    //QWidget *contentFrame = new QWidget;
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
     contentLayout->setSpacing(m_iSpaceSizeTen);
     contentLayout->setContentsMargins(m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero);
 
-    QWidget *nameFrame = new QWidget;
-    nameFrame->setFixedWidth(m_iFixedWidth);
+    //QWidget *nameFrame = new QWidget;
+    //nameFrame->setFixedWidth(m_iFixedWidth);
     QHBoxLayout *nameLayout = new QHBoxLayout;
     nameLayout->setSpacing(m_iSpaceSizeZero);
     nameLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
-    nameFrame->setLayout(nameLayout);
+    //nameFrame->setLayout(nameLayout);
 
-    QWidget *cmdFrame = new QWidget;
+    //QWidget *cmdFrame = new QWidget;
     QHBoxLayout *cmdLayout = new QHBoxLayout;
     cmdLayout->setSpacing(m_iSpaceSizeZero);
     cmdLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
-    cmdFrame->setLayout(cmdLayout);
+    //cmdFrame->setLayout(cmdLayout);
 
-    QWidget *scFrame = new QWidget;
+    //QWidget *scFrame = new QWidget;
     QHBoxLayout *scLayout = new QHBoxLayout;
     scLayout->setSpacing(m_iSpaceSizeZero);
     scLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
-    scFrame->setLayout(scLayout);
+    //scFrame->setLayout(scLayout);
 
+    int labelWidth = m_iFixedWidth - m_iLineEditWidth - m_iLayoutLeftSize - m_iLayoutRightSize - m_iSpaceSizeZero;
     DLabel *nameLabel = new DLabel(tr("Name:"));
-
+    nameLabel->setFixedWidth(labelWidth);
     DLabel *cmdLabel = new DLabel(tr("Command:"));
-
+    cmdLabel->setFixedWidth(labelWidth);
     DLabel *shortCutLabel = new DLabel(tr("Shortcuts:"));
+    shortCutLabel->setFixedWidth(labelWidth);
 
     m_nameLineEdit->setFixedWidth(m_iLineEditWidth);
     m_commandLineEdit->setFixedWidth(m_iLineEditWidth);
@@ -146,11 +148,11 @@ void CustomCommandOptDlg::initUI()
     shortCutLabel->hide();
     m_shortCutLineEdit->hide();
 
-    contentLayout->addWidget(nameFrame);
-    contentLayout->addWidget(cmdFrame);
-    contentLayout->addWidget(scFrame);
+    contentLayout->addLayout(nameLayout);
+    contentLayout->addLayout(cmdLayout);
+    contentLayout->addLayout(scLayout);
 
-    contentFrame->setLayout(contentLayout);
+    //contentFrame->setLayout(contentLayout);
 
     connect(m_nameLineEdit, &DLineEdit::editingFinished, this, [ = ] {
         if (m_nameLineEdit->text().isEmpty())
@@ -166,7 +168,8 @@ void CustomCommandOptDlg::initUI()
         }
     });
 
-    addContent(contentFrame);
+    //    addContent(contentLayout);
+    m_contentLayout->addLayout(contentLayout);
     //判断是添加操作窗口还是修改操作窗口
     if (CCT_ADD == m_type) {
         setFixedSize(m_iFixedWidth, m_iFixedHeightAddSize);
