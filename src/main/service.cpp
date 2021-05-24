@@ -141,8 +141,8 @@ void Service::initSetting(MainWindow *pOwner)
     m_settingDialog->widgetFactory()->registerWidget("shellconfigcombox", Settings::createShellConfigComboxOptionHandle);
     // 将数据重新读入
     m_settingDialog->updateSettings(Settings::instance()->settings);
-    // 设置窗口模态为没有模态，不阻塞窗口和进程
-    m_settingDialog->setWindowModality(Qt::NonModal);
+    //fix:bug 79438 点击最近任务视图中的终端应用/设置弹框，进入应用，不显示设置弹框
+    m_settingDialog->setWindowModality(Qt::WindowModal);
     // 非平板模式设置对话框窗口标志
     if (!m_isTabletMode) {
         // 让设置与窗口等效，隐藏后显示就不会被遮挡
