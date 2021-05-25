@@ -89,8 +89,7 @@ void Settings::init()
     // 默认配置
     if (isTabletMode) {
         settings = DSettings::fromJsonFile(":/other/default-config-tablet.json");
-    }
-    else {
+    } else {
         settings = DSettings::fromJsonFile(":/other/default-config.json");
     }
 
@@ -387,7 +386,7 @@ QString Settings::colorScheme() const
     // 平板默认主题随系统bug#71612
     QString curTheme = settings->option("basic.interface.theme")->value().toString();
     //配置文件未设置主题时，返回读取系统保存的
-    if("" == curTheme.trimmed())
+    if ("" == curTheme.trimmed())
         curTheme = DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType ? "Light" : "Dark";
     return curTheme;
 }
@@ -960,6 +959,15 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     option->connect(g_shellConfigCombox, &DComboBox::currentTextChanged, option, [ = ](const QString & strShell) {
         QMap<QString, QString> shellMap = Service::instance()->shellsMap();
         option->setValue(shellMap[strShell]);
+        //fix: bug#79465 切换为zsh后， 新建标签页，应用窗口上移，中间显示桌面，下方显示虚拟键盘
+        if (strShell == "zsh") {
+            QString path = QProcessEnvironment::systemEnvironment().value("HOME");
+            QFile fi(path + "/" + ".zshrc");
+            if (!fi.exists()) {
+                fi.open(QIODevice::ReadWrite | QIODevice::Text); //不存在的情况下，打开包含了新建文件的操作
+                fi.close();
+            }
+        }
     });
 
     QMap<QString, QString> shellMap = Service::instance()->shellsMap();
