@@ -96,16 +96,13 @@ QAction *EncodePanelPlugin::titlebarMenu(MainWindow *mainWindow)
 
 EncodePanel *EncodePanelPlugin::getEncodePanel()
 {
-    if (m_encodePanel == nullptr) {
+    if (nullptr == m_encodePanel)
         initEncodePanel();
-    }
-
     return m_encodePanel;
 }
 
 void EncodePanelPlugin::initEncodePanel()
 {
-    qDebug() << __FUNCTION__;
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
     connect(Service::instance(), &Service::currentTermChange, m_encodePanel, [ = ](QWidget * term) {
         TermWidget *pterm = m_mainWindow->currentPage()->currentTerminal();
@@ -131,7 +128,7 @@ void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
     }
 
     //更新编码
-    qDebug() << __FUNCTION__ << term->isConnectRemote() << encode;
+    qInfo() << __FUNCTION__ << term->isConnectRemote() << encode;
     m_encodePanel->updateEncode(encode);
 }
 

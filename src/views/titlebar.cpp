@@ -45,9 +45,8 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
     /********************* Modify by m000714 daizhengwen End ************************/
     m_layout->setContentsMargins(0, 0, 0, 0);
 
-    if (isQuakeWindowStyle) {
+    if (isQuakeWindowStyle)
         return;
-    }
 
     if (DApplication::isDXcbPlatform()) {
 

@@ -104,8 +104,8 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
     m_foucusReason = event->reason();
 
     // 判断焦点
-    if (m_foucusReason == Qt::TabFocusReason || m_foucusReason == Qt::BacktabFocusReason) {
-        qDebug() << __FUNCTION__ << m_foucusReason << "Current Encode:" << m_modelIndexChecked.data().toString();
+    if (Qt::TabFocusReason == m_foucusReason || Qt::BacktabFocusReason == m_foucusReason) {
+        qInfo() << __FUNCTION__ << m_foucusReason << "Current Encode:" << m_modelIndexChecked.data().toString();
         setCurrentIndex(m_modelIndexChecked);
     }
     /** add end by ut001121 zhangmeng 20200718 */
@@ -190,9 +190,8 @@ void EncodeListView::mouseReleaseEvent(QMouseEvent *event)
 void EncodeListView::mouseMoveEvent(QMouseEvent *event)
 {
     /***add begin by ut001121 zhangmeng 20200813 记录触摸屏下移动最大距离 修复BUG42261***/
-    if (Qt::MouseEventSynthesizedByQt == event->source()) {
+    if (Qt::MouseEventSynthesizedByQt == event->source())
         m_touchSlideMaxY = qMax(m_touchSlideMaxY, qAbs(event->y() - m_touchPressPosY));
-    }
     /***add end by ut001121***/
 
     return DListView::mouseMoveEvent(event);
@@ -201,11 +200,11 @@ void EncodeListView::mouseMoveEvent(QMouseEvent *event)
 void EncodeListView::onListViewClicked(const QModelIndex &index)
 {
     if (!index.isValid()) {
-        qDebug() << __FUNCTION__ << "Error:" << index;
+        qInfo() << __FUNCTION__ << "Error:" << index;
         return;
     }
 
-    qDebug() << __FUNCTION__ << "Old:" << m_modelIndexChecked.data().toString() << "New:" << index.data().toString();
+    qInfo() << __FUNCTION__ << "Old:" << m_modelIndexChecked.data().toString() << "New:" << index.data().toString();
 
     //当前Checked子项改为Unchecked状态
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
@@ -225,7 +224,6 @@ void EncodeListView::checkEncode(QString encode)
 {
     // 判断是否是当前窗口
     if (this->isActiveWindow()) {
-        qDebug() << __FUNCTION__ << encode;
         QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
         if (nullptr == model)
             return;

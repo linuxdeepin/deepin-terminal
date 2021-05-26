@@ -104,11 +104,10 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
 
 void ThemePreviewArea::setTitleStyle(const QString &titleStyle)
 {
-    if ("Light" == titleStyle) {
+    if ("Light" == titleStyle)
         m_titlePixmap.load(":/logo/headbar-light.svg");
-    } else {
+    else
         m_titlePixmap.load(":/logo/headbar-dark.svg");
-    }
 
     update();
 }

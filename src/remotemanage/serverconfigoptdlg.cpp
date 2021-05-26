@@ -116,11 +116,11 @@ void ServerConfigOptDlg::initUI()
     // 字色
     DPalette palette = m_titleLabel->palette();
     QColor color;
-    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
-    } else {
+    else
         color = QColor::fromRgb(0, 26, 46, 255);
-    }
+
     palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
 
@@ -283,10 +283,10 @@ void ServerConfigOptDlg::initUI()
         m_advancedOptions->hide();
         upItem->changeSize(this->width(), 0);
         downItem->changeSize(this->width(), 0);
-        if (m_type == SCT_MODIFY) {
+        if (SCT_MODIFY == m_type) {
             m_delServer->show();
             this->setFixedHeight(670);
-            qDebug() << "remote dialog show advance options";
+            qInfo() << "remote dialog show advance options";
         } else {
             this->setFixedHeight(630);
         }
@@ -296,7 +296,7 @@ void ServerConfigOptDlg::initUI()
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add", "button"));
     //Add a line by m000750 zhangmeng 2020-04-22设置回车触发默认按钮
     pAddSaveButton->setDefault(true);
-    if (m_type == SCT_MODIFY) {
+    if (SCT_MODIFY == m_type) {
         m_titleLabel->setText(tr("Edit Server"));
         pAddSaveButton->setText(tr("Save", "button"));
     }
@@ -337,11 +337,11 @@ inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::Co
     DPalette palette = m_titleLabel->palette();
     //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
     QColor color;
-    if (themeType == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 255);
-    } else {
+    else
         color = QColor::fromRgb(0, 26, 46, 255);
-    }
+
     palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
 
@@ -358,7 +358,7 @@ void ServerConfigOptDlg::initData()
     m_backSapceKey->addItems(backSpaceKeyList);
     QList<QString> deleteKeyList = getDeleteKey();
     m_deleteKey->addItems(deleteKeyList);
-    if (m_type == SCT_MODIFY && m_curServer != nullptr) {
+    if (SCT_MODIFY == m_type && m_curServer != nullptr) {
         m_serverName->setText(m_curServer->m_serverName);
         m_currentServerName = m_serverName->text();
         m_address->setText(m_curServer->m_address);
@@ -393,9 +393,8 @@ QList<QString> ServerConfigOptDlg::getTextCodec()
     QList<QString> textCodecList;
     for (QByteArray &byteArr : list) {
         QString str = QString(byteArr);
-        if (!textCodecList.contains(str)) {
+        if (!textCodecList.contains(str))
             textCodecList.append(str);
-        }
     }
     return textCodecList;
 }
@@ -438,7 +437,7 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 
 void ServerConfigOptDlg::updataData(ServerConfig *curServer)
 {
-    qDebug() << "ServerConfigOptDlg server configuration options updata data.";
+    qInfo() << "ServerConfigOptDlg server configuration options updata data.";
     // 读取配置
     QList<QString> textCodeList = getTextCodec();
     QList<QString> backSpaceKeyList = getBackSpaceKey();
@@ -497,7 +496,7 @@ void ServerConfigOptDlg::resetCurServer(ServerConfig config)
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
-    qDebug() << "ServerConfigOptDlg add and save button clicled slot function.";
+    qInfo() << "ServerConfigOptDlg add and save button clicled slot function.";
     // 服务器名为空
     if (m_serverName->text().trimmed().isEmpty()) {
         m_serverName->showAlertMessage(tr("Please enter a server name"), m_serverName);
@@ -530,8 +529,8 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     m_currentServerName = m_serverName->text();
     //------------------------------------------------------------------//
     //--added by qinyaning(nyq) to solve the bug 19116: You can create a new remote server with the same name--//
-    if ((m_type == SCT_ADD)
-            || ((m_type == SCT_MODIFY && m_curServer != nullptr)
+    if ((SCT_ADD == m_type)
+            || ((SCT_MODIFY == m_type  && m_curServer != nullptr)
                 && (m_curServer->m_serverName.trimmed() != m_serverName->text().trimmed()))) { /*此时用户已经在修改模式下修改了服务器名称*/
         QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
         for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); ++iter) {
@@ -560,15 +559,14 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     config->m_encoding = m_coding->currentText();
     config->m_backspaceKey = m_backSapceKey->currentText();
     config->m_deleteKey = m_deleteKey->currentText();
-    if (m_type == SCT_ADD) {
+    if (SCT_ADD == m_type) {
         ServerConfigManager::instance()->saveServerConfig(config);
         ServerConfigManager::instance()->refreshList();
-    } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
+    } else if (SCT_MODIFY == m_type && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
-    qDebug() << __FUNCTION__ << "add or save remote config";
     accept();
-    qDebug() << __FUNCTION__ << "add or save remote config finish";
+    qInfo() << __FUNCTION__ << "add or save remote config finish";
 }
 
 void ServerConfigOptDlg::slotFileChooseDialog()
@@ -581,7 +579,7 @@ void ServerConfigOptDlg::slotFileChooseDialog()
 
     int code = dialog.exec();
 
-    if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
+    if (QDialog::Accepted == code && !dialog.selectedFiles().isEmpty()) {
         QStringList list = dialog.selectedFiles();
         const QString fileName = list.first();
 

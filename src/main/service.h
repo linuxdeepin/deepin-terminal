@@ -27,14 +27,14 @@
 #include "settings.h"
 #include "customthemesettingdialog.h"
 
-#include <com_deepin_wmswitcher.h>
-
 #include <DSettingsDialog>
 #include <DDialog>
 
 #include <QObject>
 #include <QSharedMemory>
 #include <QMap>
+
+#include <com_deepin_wmswitcher.h>
 
 DWIDGET_USE_NAMESPACE
 

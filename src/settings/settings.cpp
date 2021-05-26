@@ -58,15 +58,14 @@ Settings *Settings::instance()
 
 Settings::~Settings()
 {
-    if (nullptr != m_Watcher) {
+    if (nullptr != m_Watcher)
         m_Watcher->deleteLater();
-    }
-    if (nullptr != m_backend) {
+
+    if (nullptr != m_backend)
         m_backend->deleteLater();
-    }
-    if (nullptr != settings) {
+
+    if (nullptr != settings)
         settings->deleteLater();
-    }
 }
 
 // 统一初始化以后方可使用。
@@ -112,9 +111,8 @@ void Settings::init()
                           QStringList() << tr("Normal window") << tr("Split screen") << tr("Maximum") << tr("Fullscreen"));
     windowState->setData("items", windowStateMap);
 
-    for (QString &key : settings->keys()) {
-        qDebug() << key << settings->value(key);
-    }
+    for (QString &key : settings->keys())
+        qInfo() << key << settings->value(key);
     /********************* Modify by n014361 wangpeili End ************************/
 
     initConnection();
@@ -125,7 +123,7 @@ void Settings::init()
     m_Watcher = new QFileSystemWatcher();
     m_Watcher->addPath(m_configPath);
     connect(m_Watcher, &QFileSystemWatcher::fileChanged, this, [this](QString file) {
-        qDebug() << "fileChanged" << file;
+        qInfo() << "fileChanged" << file;
         reload();
         //监控完一次就不再监控了，所以要再添加
         m_Watcher->addPath(m_configPath);
@@ -138,9 +136,9 @@ void Settings::init()
     Konsole::__maxFontSize = option->data("max").isValid() ? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
 
     // 校验正确
-    if (Konsole::__minFontSize > Konsole::__maxFontSize) {
+    if (Konsole::__minFontSize > Konsole::__maxFontSize)
         qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
-    }
+
     /***add end by ut001121***/
 
     //自定义主题配置初始化处理
@@ -221,9 +219,8 @@ QStringList Settings::color2str(QColor color)
 void Settings::loadDefaultsWhenReinstall()
 {
     QDir installFlagPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!installFlagPath.exists()) {
+    if (!installFlagPath.exists())
         installFlagPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
 }
 
 void Settings::addShellOption()
@@ -236,9 +233,8 @@ void Settings::addShellOption()
     // 初始值
     keysList << DEFAULT_SHELL;
     // 数据转换
-    for (const QString key : shellsMap.keys()) {
+    for (const QString key : shellsMap.keys())
         keysList << key;
-    }
     g_shellConfigCombox->addItems(keysList);
 }
 
@@ -266,8 +262,6 @@ QPair<QWidget *, QWidget *>  Settings::createTabTitleFormatWidget(QObject *opt, 
         option->setValue(tabTitleFormat->getInputedit()->text());
     });
 
-
-
     return optionWidget;
 }
 
@@ -275,13 +269,12 @@ void Settings::initConnection()
 {
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
         Q_UNUSED(value)
-        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.")) {
+        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll."))
             emit terminalSettingChanged(key);
-        } else if (key.contains("shortcuts.")) {
+        else if (key.contains("shortcuts."))
             emit shortcutSettingChanged(key);
-        } else {
+        else
             emit windowSettingChanged(key);
-        }
     });
 
     QPointer<DSettingsOption> opacity = settings->option("basic.interface.opacity");
@@ -381,12 +374,12 @@ bool Settings::OutputtingScroll()
 //    for (QString &key : newSettings.childGroups()) {
 //        //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
 //        if (!settings->keys().contains(key)) {
-//            qDebug() << "reload failed: system not found " << key << "now remove it";
+//            qInfo() << "reload failed: system not found " << key << "now remove it";
 //            newSettings.remove(key);
 //            continue;
 //        }
 //        if (settings->value(key) != newSettings.value(key + "/value")) {
-//            qDebug() << "reload update:" << key << settings->value(key);
+//            qInfo() << "reload update:" << key << settings->value(key);
 //            settings->option(key)->setValue(newSettings.value(key + "/value"));
 //        }
 //    }
@@ -466,7 +459,7 @@ void Settings::setExtendColorScheme(const QString &name)
 //    if (name != m_EncodeName) {
 //        m_EncodeName = name;
 //        emit encodeSettingChanged(name);
-//        qDebug() << "encode changed to" << name;
+//        qInfo() << "encode changed to" << name;
 //    }
 //}
 
@@ -495,7 +488,7 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
         // 例ctlr+shift+? => ctrl+shift+/
         if (Utils::converUpToDown(strKey) == Utils::converUpToDown(Key)) {
             if (Name != tmpKey) {
-                qDebug() << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
+                qInfo() << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
                 return  true;
             }
         }
@@ -516,13 +509,13 @@ void Settings::HandleWidthFont()
         if (-1 == comboBox->findText(name)) {
             QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/";// + name + ".ttf";
             QDir dir(fontpath);
-            if (dir.count() > 2) {
+            if (dir.count() > 2)
                 fontpath = fontpath + dir[2];
-            }
+
             int ret = base.addApplicationFont(fontpath);
-            if (-1 == ret) {
-                qDebug() << "load " << name << " font faild";
-            }
+            if (-1 == ret)
+                qInfo() << "load " << name << " font faild";
+
         }
     }
     std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
@@ -533,7 +526,7 @@ void Settings::HandleWidthFont()
     QString fontname = comboBox->currentText();
     comboBox->clear();
     comboBox->addItems(Whitelist);
-    qDebug() << "HandleWidthFont has update";
+    qInfo() << "HandleWidthFont has update";
     if (Whitelist.contains(fontname)) {
         comboBox->setCurrentText(fontname);
     }
@@ -579,10 +572,10 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
         return qc.compare(str1, str2) < 0;
     });
 
-    qDebug() << "createFontComBoBoxHandle get system monospacefont";
+    qInfo() << "createFontComBoBoxHandle get system monospacefont";
     if (Whitelist.size() <= 0) {
         //一般不会走这个分支，除非DBUS出现问题
-        qDebug() << "DBusManager::callAppearanceFont failed, get control font failed.";
+        qInfo() << "DBusManager::callAppearanceFont failed, get control font failed.";
         //DBUS获取字体失败后，设置系统默认的等宽字体
         Whitelist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
                   << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
@@ -592,9 +585,8 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     comboBox->addItems(Whitelist);
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 End***************/
 
-    if (option->value().toString().isEmpty()) {
+    if (option->value().toString().isEmpty())
         option->setValue(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());
-    }
 
     // init.
     comboBox->setCurrentText(option->value().toString());
@@ -676,9 +668,9 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
         Q_UNUSED(opt)
         QKeySequence sequence(optionValue.toString());
         QString keyseq = sequence.toString();
-        if (keyseq == SHORTCUT_VALUE) {
+        if (keyseq == SHORTCUT_VALUE)
             return;
-        }
+
         rightWidget->setKeySequence(sequence);
     };
     updateWidgetValue(optionValue, option);
@@ -686,13 +678,13 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 控件输入
     option->connect(rightWidget, &KeySequenceEdit::editingFinished, rightWidget, [ = ](const QKeySequence & sequence) {
         // 删除
-        if (sequence.toString() == "Backspace") {
+        if ("Backspace" == sequence.toString()) {
             rightWidget->clear();
             option->setValue(SHORTCUT_VALUE);
             return ;
         }
         // 取消
-        if (sequence.toString() == "Esc") {
+        if ("Esc" == sequence.toString()) {
             rightWidget->clear();
             rightWidget->setKeySequence(QKeySequence(rightWidget->option()->value().toString()));
             return ;
@@ -701,9 +693,9 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
         QString reason;
         // 有效查询
         if (!ShortcutManager::instance()->checkShortcutValid(rightWidget->option()->key(), sequence.toString(), reason)) {
-            if (sequence.toString() != "Esc") {
+            if (sequence.toString() != "Esc")
                 Service::instance()->showShortcutConflictMsgbox(reason);
-            }
+
             // 界面数据还原
             rightWidget->clear();
             rightWidget->setKeySequence(QKeySequence(rightWidget->option()->value().toString()));
@@ -715,8 +707,8 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 配置修改
     option->connect(option, &DTK_CORE_NAMESPACE::DSettingsOption::valueChanged, rightWidget, [ = ](const QVariant & value) {
         QString keyseq = value.toString();
-        qDebug() << "valueChanged" << rightWidget->option()->key() << keyseq;
-        if (keyseq == SHORTCUT_VALUE || keyseq.isEmpty()) {
+        qInfo() << "valueChanged" << rightWidget->option()->key() << keyseq;
+        if (SHORTCUT_VALUE == keyseq || keyseq.isEmpty()) {
             rightWidget->clear();
             return;
         }

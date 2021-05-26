@@ -62,16 +62,15 @@ int main(int argc, char *argv[])
     TermProperties properties;
     Utils::parseCommandLine(app.arguments(), properties, true);
 
-    qDebug() << endl << endl << endl;
-    qDebug() << "new terminal start run";
+    qInfo() << "new terminal start run";
     DBusManager manager;
     if (!manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
         // 判断是否能创建新的的窗口
         // 不是雷神且正在创建
         if (!properties[QuakeMode].toBool() && !Service::instance()->getEnable(startTime)) {
-            qDebug() << "[sub app] Server can't create, drop this create request! time use "
-                     << useTime.elapsed() << "ms";
+            qInfo() << "[sub app] Server can't create, drop this create request! time use "
+                    << useTime.elapsed() << "ms";
             return 0;
         }
 
@@ -91,10 +90,10 @@ int main(int argc, char *argv[])
             args += QDir::currentPath();
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
-        qDebug() << "[sub app] start to call main terminal entry! app args " << args;
+        qInfo() << "[sub app] start to call main terminal entry! app args " << args;
         DBusManager::callTerminalEntry(args);
-        qDebug() << "[sub app] task complete! sub app quit, time use "
-                 << useTime.elapsed() << "ms";
+        qInfo() << "[sub app] task complete! sub app quit, time use "
+                << useTime.elapsed() << "ms";
         return 0;
     }
     // 这行不要删除
@@ -107,9 +106,9 @@ int main(int argc, char *argv[])
     service->init();
     // 创建窗口
     service->Entry(app.arguments());
-    qDebug() << "First Terminal Window create complete! time use " << useTime.elapsed() << "ms";
+    qInfo() << "First Terminal Window create complete! time use " << useTime.elapsed() << "ms";
     QString strInitAppTime = GRAB_POINT + LOGO_TYPE + INIT_APP_TIME + QString::number(useTime.elapsed());
-    qDebug() << qPrintable(strInitAppTime);
+    qInfo() << qPrintable(strInitAppTime);
     // 监听触控板事件
     manager.listenTouchPadSignal();
 

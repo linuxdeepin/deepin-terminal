@@ -186,7 +186,7 @@ void TabRenameDlg::initConnections()
     });
 
     connect(m_confirmButton, &DSuggestButton::clicked, this, [ = ] {
-        qDebug() << "confirm rename title";
+        qInfo() << "confirm rename title";
         QString tabTitleFormat = getTabTitleEdit()->text();
         QString remoteTabTitleFormat = getRemoteTabTitleEdit()->text();
         emit tabTitleFormatRename(tabTitleFormat, remoteTabTitleFormat);

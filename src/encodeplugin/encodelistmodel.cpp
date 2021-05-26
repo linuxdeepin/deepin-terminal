@@ -57,7 +57,6 @@ QList<QByteArray> EncodeListModel::listData()
 
 void EncodeListModel::initEncodeData()
 {
-    // m_encodeData = QTextCodec::availableCodecs().toSet().toList();
     QList<QByteArray> showEncodeList;
     showEncodeList << "UTF-8" << "GB18030" << "GB2312" << "GBK" /*简体中文*/
                    << "BIG5" << "BIG5-HKSCS" //<< "EUC-TW"      /*繁体中文*/
@@ -97,18 +96,17 @@ void EncodeListModel::initEncodeData()
         QByteArray encodename;
         for (const QByteArray &name2 : all) {
             QString strname2 = name2;
-            if (strname1.compare(strname2, Qt::CaseInsensitive) == 0) {
+            if (0 == strname1.compare(strname2, Qt::CaseInsensitive)) {
                 bFind = true;
                 encodename = name2;
                 break;
             }
         }
-        if (!bFind) {
-            qDebug() << "encode name :" << name << "not find!";
-        } else {
+        if (!bFind)
+            qInfo() << "encode name :" << name << "not find!";
+        else
             m_encodeData << encodename;
-        }
     }
 
-    qDebug() << "QTextCodec::availableCodecs" << m_encodeData.count();
+    qInfo() << "QTextCodec::availableCodecs" << m_encodeData.count();
 }

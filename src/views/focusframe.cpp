@@ -102,7 +102,6 @@ void FocusFrame::leaveEvent(QEvent *event)
 
 void FocusFrame::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __FUNCTION__ << event << event->reason();
     // 焦点入
     m_isFocus = true;
     DFrame::focusInEvent(event);
@@ -110,7 +109,6 @@ void FocusFrame::focusInEvent(QFocusEvent *event)
 
 void FocusFrame::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << __FUNCTION__ << event << event->reason();
     // 焦点Tab出
     m_isFocus = false;
     DFrame::focusOutEvent(event);

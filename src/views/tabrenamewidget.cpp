@@ -62,11 +62,10 @@ void TabRenameWidget::initUi()
     m_choseButton->setDefault(false);
 
     //  设置界面隐藏clearbutton并且不需要初始化标题 重命名窗口不用隐藏clearbutton需要初始化标题
-    if (!m_isSetting) {
+    if (!m_isSetting)
         initLabel();
-    } else {
+    else
         m_inputedit->lineEdit()->setClearButtonEnabled(false);
-    }
 
     m_layout->addWidget(m_inputedit);
     m_layout->addWidget(m_choseButton);
@@ -124,11 +123,10 @@ void TabRenameWidget::initConnections()
 void TabRenameWidget::initLabel()
 {
     m_Label = new QLabel;
-    if (!m_isRemote) {
+    if (!m_isRemote)
         m_Label->setText(QObject::tr("Tab title format"));
-    } else {
+    else
         m_Label->setText(QObject::tr("Remote tab title format"));
-    }
 
     DFontSizeManager::instance()->bind(m_Label, DFontSizeManager::T6);
 

@@ -64,9 +64,8 @@ QString Utils::getQssContent(const QString &filePath)
     QFile file(filePath);
     QString qss;
 
-    if (file.open(QIODevice::ReadOnly)) {
+    if (file.open(QIODevice::ReadOnly))
         qss = file.readAll();
-    }
 
     return qss;
 }
@@ -88,9 +87,8 @@ QString Utils::suffixList()
 
 QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElideMode elideMode)
 {
-    if (text.isEmpty()) {
+    if (text.isEmpty())
         return "";
-    }
 
     QFontMetrics fontWidth(font);
 
@@ -133,7 +131,7 @@ QString Utils::showDirDialog(QWidget *widget)
     dialog.setLabelText(QFileDialog::Accept, QObject::tr("Select"));
     int code = dialog.exec();
 
-    if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
+    if (QDialog::Accepted == code && !dialog.selectedFiles().isEmpty()) {
         QStringList list = dialog.selectedFiles();
         const QString dirName = list.first();
         return dirName;
@@ -154,18 +152,18 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
 
     // 选择文件，却点击了叉号
     int code = dialog.exec();
-    if (code == QDialog::Accepted) {
+    if (code == QDialog::Accepted)
         return dialog.selectedFiles();
-    }
+
     return QStringList();
 }
 
 bool Utils::showExitConfirmDialog(CloseType type, int count)
 {
     // count < 1 不提示
-    if (count < 1) {
+    if (count < 1)
         return true;
-    }
+
     QString title;
     QString txt;
     if (type != CloseType_Window) {
@@ -190,18 +188,18 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
     /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close Begin***************/
     dlg.addButton(QString(tr("Close", "button")), true, DDialog::ButtonWarning);
     /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
-    return (dlg.exec() == DDialog::Accepted);
+    return (DDialog::Accepted == dlg.exec());
 }
 
 void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int count)
 {
     // count < 1 不提示
-    if (count < 1) {
+    if (count < 1)
         return ;
-    }
+
     //QString title;
     //QString txt;
-    if (type == CloseType_Window) {
+    if (CloseType_Window == type) {
         title = QObject::tr("Close this window?");
         txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
     } else {
@@ -224,7 +222,7 @@ bool Utils::showExitUninstallConfirmDialog()
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
     dlg.addButton(QString(tr("Cancel", "button")), false, DDialog::ButtonNormal);
     dlg.addButton(QString(tr("OK", "button")), true, DDialog::ButtonWarning);
-    return (dlg.exec() == DDialog::Accepted);
+    return (DDialog::Accepted == dlg.exec());
 }
 
 //单词可能拼错了showUninstallConfirmDialog
@@ -232,10 +230,10 @@ bool Utils::showUnistallConfirmDialog(QString commandname)
 {
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，显示不同的弹框信息 Begin***************/
     QString title = "", text = "";
-    if (commandname == "remove") {
+    if ("remove" == commandname) {
         title = QObject::tr("Are you sure you want to uninstall this application?");
         text = QObject::tr("You will not be able to use Terminal any longer.");
-    } else if (commandname == "purge") {
+    } else if ("purge" == commandname) {
         //后面根据产品提供的信息，修改此处purge命令卸载时的弹框信息
         title = QObject::tr("Are you sure you want to uninstall this application?");
         text = QObject::tr("You will not be able to use Terminal any longer.");
@@ -245,7 +243,7 @@ bool Utils::showUnistallConfirmDialog(QString commandname)
     dlg.setIcon(QIcon::fromTheme("dialog-warning"));
     dlg.addButton(QObject::tr("Cancel", "button"), false, DDialog::ButtonNormal);
     dlg.addButton(QObject::tr("OK", "button"), true, DDialog::ButtonWarning);
-    return (dlg.exec() == DDialog::Accepted);
+    return (DDialog::Accepted == dlg.exec());
 }
 
 bool Utils::showShortcutConflictMsgbox(QString txt)
@@ -264,7 +262,7 @@ void Utils::setSpaceInWord(DPushButton *button)
 {
     const QString &text = button->text();
 
-    if (text.count() == 2) {
+    if (2 == text.count()) {
         for (const QChar &ch : text) {
             switch (ch.script()) {
             case QChar::Script_Han:
@@ -299,22 +297,19 @@ void Utils::clearChildrenFocus(QObject *objParent)
     QStringList foucswidgetlist;
     foucswidgetlist << "QLineEdit" << TERM_WIDGET_NAME;
 
-    //qDebug() << "checkChildrenFocus start" << objParent->children().size();
+    //qInfo() << "checkChildrenFocus start" << objParent->children().size();
     for (QObject *obj : objParent->children()) {
-        if (!obj->isWidgetType()) {
+        if (!obj->isWidgetType())
             continue;
-        }
+
         QWidget *widget = static_cast<QWidget *>(obj);
         if (Qt::NoFocus != widget->focusPolicy()) {
-            //qDebug() << widget << widget->focusPolicy() << widget->metaObject()->className();
-            if (!foucswidgetlist.contains(widget->metaObject()->className())) {
+            if (!foucswidgetlist.contains(widget->metaObject()->className()))
                 widget->setFocusPolicy(Qt::NoFocus);
-            }
+
         }
         clearChildrenFocus(obj);
     }
-
-    //qDebug() << "checkChildrenFocus over" << objParent->children().size();
 }
 
 void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, bool appControl)
@@ -355,9 +350,8 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     // parser.addPositionalArgument("-e", QObject::tr("Execute command in the terminal"), "command");
 
     // 解析参数
-    if (!parser.parse(arguments)) {
-        qDebug() << "parser error:" << parser.errorText();
-    }
+    if (!parser.parse(arguments))
+        qInfo() << "parser error:" << parser.errorText();
 
     if (parser.isSet(optExecute)) {
         /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
@@ -365,21 +359,21 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
         Properties[Execute] = parseExecutePara(arguments);
         /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 End ************************/
     }
-    if (parser.isSet(optWorkDirectory)) {
+    if (parser.isSet(optWorkDirectory))
         Properties[WorkingDir] = parser.value(optWorkDirectory);
-    }
-    if (parser.isSet(optKeepOpen)) {
-        Properties[KeepOpen] = "";
-    }
-    if (parser.isSet(optScript)) {
-        Properties[Script] = parser.value(optScript);
-    }
 
-    if (parser.isSet(optQuakeMode)) {
+    if (parser.isSet(optKeepOpen))
+        Properties[KeepOpen] = "";
+
+    if (parser.isSet(optScript))
+        Properties[Script] = parser.value(optScript);
+
+
+    if (parser.isSet(optQuakeMode))
         Properties[QuakeMode] = true;
-    } else {
+    else
         Properties[QuakeMode] = false;
-    }
+
     // 默认均为非首个
     Properties[SingleFlag] = false;
     if (parser.isSet(optWindowState)) {
@@ -396,21 +390,15 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
 
     if (appControl) {
         // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
-        //qDebug() << "parse commandLine";
         parser.process(arguments);
     } else {
-        qDebug() << "input args:" << qPrintable(arguments.join(" "));
-        qDebug() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
-        qDebug() << "arg: optionExecute" << Properties[Execute].toStringList().join(" ");
-        //    qDebug() << "optionExecute2"<<parser.value(optionExecute2);
-        qDebug() << "arg: optionQuakeMode" << parser.isSet(optQuakeMode);
-        qDebug() << "arg: optionWindowState" << parser.isSet(optWindowState);
+        qInfo() << "input args:" << qPrintable(arguments.join(" "));
+        qInfo() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
+        qInfo() << "arg: optionExecute" << Properties[Execute].toStringList().join(" ");
+        qInfo() << "arg: optionQuakeMode" << parser.isSet(optQuakeMode);
+        qInfo() << "arg: optionWindowState" << parser.isSet(optWindowState);
         // 这个位置参数解析出来是无法匹配的，可是不带前面标识符，无法准确使用。
-        // qDebug() << "arg: positionalArguments" << parser.positionalArguments();
     }
-
-    //qDebug() << "parse commandLine is ok";
-
     return;
 }
 
@@ -434,7 +422,7 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
          << "--run-script";
     QString opt = "-e";
     int index = arguments.indexOf(opt);
-    if (index == -1) {
+    if (-1 == index) {
         opt = "--execute";
         index = arguments.indexOf(opt);
     }
@@ -444,11 +432,10 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
     QStringList paraList;
     while (index < arguments.size()) {
         QString str = arguments.at(index);
-        // qDebug()<<"check arg"<<str;
         // 如果找到下一个指令符就停
-        if (keys.contains(str)) {
+        if (keys.contains(str))
             break;
-        }
+
         if (index == startIndex) {
             // 第一个参数，支持嵌入二次解析，其它的参数不支持
             paraList += parseNestedQString(str);
@@ -462,11 +449,11 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
     if (paraList.size() != 0) {
         for (int i = 0; i < index - startIndex; i++) {
             arguments.removeAt(startIndex);
-            qDebug() << arguments.size();
+            qInfo() << arguments.size();
         }
         arguments.removeOne("-e");
         arguments.removeOne("--execute");
-        qDebug() <<  opt << paraList << "arguments" << arguments;
+        qInfo() <<  opt << paraList << "arguments" << arguments;
     }
 
     return paraList;
@@ -490,7 +477,7 @@ QStringList Utils::parseNestedQString(QString str)
         //对路径带空格的脚本，右键执行时不进行拆分处理， //./deepin-terminal "-e"  "/home/lx777/Desktop/a b/PerfTools_1.9.sh"
         QFileInfo fi(str);
         if (fi.isFile()) {
-            qDebug() << "this is file,not split.";
+            qInfo() << "this is file,not split.";
             paraList.append(str);
             return paraList;
         }
@@ -501,9 +488,9 @@ QStringList Utils::parseNestedQString(QString str)
 
     paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
     paraList.append(str.mid(iLeft + 1, iRight - iLeft - 1));
-    if (str.size() != iRight + 1) {
+    if (str.size() != iRight + 1)
         paraList.append(str.right(str.size() - iRight - 1).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
-    }
+
     return paraList;
 }
 
@@ -556,11 +543,11 @@ QList<QByteArray> Utils::encodeList()
                 break;
             }
         }
-        if (!bFind) {
-            qDebug() << "encode name :" << name << "not find!";
-        } else {
+        if (!bFind)
+            qInfo() << "encode name :" << name << "not find!";
+        else
             encodeList << encodename;
-        }
+
     }
     // 返回需要的值
     return encodeList;
@@ -568,9 +555,8 @@ QList<QByteArray> Utils::encodeList()
 
 void Utils::set_Object_Name(QObject *object)
 {
-    if (object != nullptr) {
+    if (object != nullptr)
         object->setObjectName(object->metaObject()->className());
-    }
 }
 
 QString Utils::converUpToDown(QKeySequence keysequence)
@@ -628,9 +614,9 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     MainWindow *main = nullptr;
     QWidget *pWidget = currWidget->parentWidget();
     while (pWidget != nullptr) {
-        qDebug() << pWidget->metaObject()->className();
-        if ((pWidget->objectName() == "NormalWindow") || (pWidget->objectName() == "QuakeWindow")) {
-            qDebug() << "has find MainWindow";
+        qInfo() << pWidget->metaObject()->className();
+        if (("NormalWindow" == pWidget->objectName()) || ("QuakeWindow" == pWidget->objectName())) {
+            qInfo() << "has find MainWindow";
             main = static_cast<MainWindow *>(pWidget);
             break;
         }
@@ -673,7 +659,7 @@ void FontFilter::HandleWidthFont()
         m_thread->start();
         return;
     }
-    qDebug() << "m_thread is Running";
+    qInfo() << "m_thread is Running";
 }
 
 void FontFilter::setStop(bool stop)
@@ -738,17 +724,16 @@ void FontFilter::CompareWhiteList()
               << "Symbola" << "Unifont CSUR" << "Unifont Upper" << "Wingdings" << "Wingdings 2" << "Wingdings 3";
 
     for (const QString &sfont : fontLst) {
-        if (m_bstop) {
+        if (m_bstop)
             break;
-        }
-        if (Whitelist.contains(sfont) | Blacklist.contains(sfont)) {
+
+        if (Whitelist.contains(sfont) | Blacklist.contains(sfont))
             continue;
-        }
+
         bool fixedFont = true;
         QFont font(sfont);
         QFontMetrics fm(font);
         int fw = fm.width(REPCHAR[0]);
-        //qDebug() << "sfont" << sfont;
 
         for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
             if (fw != fm.width(QLatin1Char(REPCHAR[i]))) {
@@ -756,13 +741,12 @@ void FontFilter::CompareWhiteList()
                 break;
             }
         }
-        if (fixedFont) {
+        if (fixedFont)
             Whitelist.append(sfont);
-        } else {
+        else
             Blacklist.append(sfont);
-        }
     }
-    qDebug() << "DBUS get font:" << DBUSWhitelist;
-    qDebug() << "Compare font get font:" << Whitelist;
+    qInfo() << "DBUS get font:" << DBUSWhitelist;
+    qInfo() << "Compare font get font:" << Whitelist;
 }
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/

@@ -67,7 +67,6 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     itemWidget->setText(key, strDescription);
     // 设置图标
     setItemIcon(type, itemWidget);
-    // qDebug() << "add item to list type:" << type << "key:" << key;
     // 添加到布局
     // 远程管理的分组和项需要排序
     // 首先获得位置
@@ -196,14 +195,14 @@ int ListView::getNextIndex(int index)
 {
     if (index < 0) {
         // 输入错误的index
-        qDebug() << __FUNCTION__ << "input wrong index" << index;
+        qInfo() << __FUNCTION__ << "input wrong index" << index;
         return -1;
     }
     int count = m_itemList.count();
     // index小于列表最大数量
-    if (index < count) {
+    if (index < count)
         return index;
-    }
+
     // index大于最大数量,且列表数量不为0
     if (index >= count && m_itemList.count() != 0) {
         index = count - 1;
@@ -219,22 +218,22 @@ void ListView::setCurrentIndex(int currentIndex)
     // 首先判断currentIndex的有效性
     if (!indexIsValid(currentIndex)) {
         // 无效，返回
-        qDebug() << "index : " << currentIndex << " is wrong";
+        qInfo() << "index : " << currentIndex << " is wrong";
         emit focusOut(Qt::NoFocusReason);
         m_focusState = false;
         return;
     }
-    qDebug() << __FUNCTION__ << currentIndex;
+    qInfo() << __FUNCTION__ << currentIndex;
     // 之前的焦点丢失
-    if (currentIndex != m_currentIndex) {
+    if (currentIndex != m_currentIndex)
         lostFocus(m_currentIndex);
-    }
+
     // 设置焦点
     QLayoutItem *item = m_mainLayout->itemAt(currentIndex);
     ItemWidget *widget = item ? qobject_cast<ItemWidget *>(item->widget()) : nullptr;
     if (widget != nullptr) {
         // 设置焦点
-        qDebug() << widget << "get focus" << "current index" << currentIndex;
+        qInfo() << widget << "get focus" << "current index" << currentIndex;
         // Todo 让焦点不要进入主窗口
         widget->setFocus();
         m_focusState = true;
@@ -247,7 +246,7 @@ void ListView::setCurrentIndex(int currentIndex)
 void ListView::clearIndex()
 {
     m_currentIndex = -1;
-    qDebug() << __FUNCTION__ << "clear index to  -1";
+    qInfo() << __FUNCTION__ << "clear index to  -1";
 }
 
 void ListView::onItemModify(const QString &key, bool isFocusOn)
@@ -260,7 +259,6 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
         onCustomItemModify(key, isFocusOn);
         break;
     }
-
 }
 
 void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
@@ -271,17 +269,17 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
     m_currentIndex = curIndex;
     // 弹窗显示
     ServerConfig *curItemServer = ServerConfigManager::instance()->getServerConfig(key);
-    qDebug() << __FUNCTION__ << "modify remote " << curItemServer->m_serverName;
+    qInfo() << __FUNCTION__ << "modify remote " << curItemServer->m_serverName;
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
     // 根据点击事件还是键盘事件设置焦点状态
     if (isFocusOn) {
         // 键盘
         m_focusState = true;
-        qDebug() << "keyboard clicked";
+        qInfo() << "keyboard clicked";
     } else {
         // 鼠标
-        qDebug() << "mouse press";
+        qInfo() << "mouse press";
         m_focusState = false;
         m_currentIndex = -1;
     }
@@ -297,14 +295,14 @@ void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
 inline void ListView::onServerConfigOptDlgFinished(int result)
 {
     // 弹窗隐藏或消失
-    qDebug() << "focus state " << m_focusState;
+    qInfo() << "focus state " << m_focusState;
     // 3. 对弹窗操作进行分析
     // 判断是否删除
-    if (result == ServerConfigOptDlg::Accepted) {
+    if (ServerConfigOptDlg::Accepted == result) {
         // 判断是否需要删除
         if (m_configDialog->isDelServer()) {
             // 弹出删除弹窗
-            qDebug() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
+            qInfo() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
             DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), m_configDialog);
             deleteDialog->setObjectName("RemoteDeleteDialog");
             deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -325,7 +323,7 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
             // 设置滚轮
             // 关闭后及时将弹窗删除
             // 记住修改前的位置 m_currentIndex
-            qDebug() << "index before modify " << m_currentIndex;
+            qInfo() << "index before modify " << m_currentIndex;
             ServerConfigManager::instance()->removeDialog(m_configDialog);
             // 刷新列表
             emit ServerConfigManager::instance()->refreshList();
@@ -338,7 +336,7 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
             }
             // 依旧没有找到啦
             if (index < 0) {
-                qDebug() << "no next item";
+                qInfo() << "no next item";
                 if (m_focusState) {
                     // 有焦点，焦点出
                     emit focusOut(Qt::NoFocusReason);
@@ -409,7 +407,6 @@ inline void ListView::onDeleteServerDialogFinished(int result)
 
 void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
@@ -423,7 +420,7 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
 
-    qDebug() << "this->count()=" << this->count();
+    qInfo() << "this->count()=" << this->count();
     // 根据点击事件还是键盘事件设置焦点状态
     if (isFocusOn) {
         // 键盘
@@ -455,7 +452,7 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
 
     if (QDialog::Accepted == result) {
         //确认修改处理
-        qDebug() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
+        qInfo() <<  __FUNCTION__ << __LINE__ << ":mod Custom Command";
         QAction *newAction = m_pdlg->getCurCustomCmd();
         CustomCommandData itemData = *(m_pdlg->m_currItemData);
         CustomCommandData itemDel = itemData;
@@ -467,7 +464,6 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
         //newAction->setData(newAction->data());
         //newAction->setShortcut(newAction->shortcut());
 
-
         ShortcutManager::instance()->delCustomCommand(itemDel);
         ShortcutManager::instance()->addCustomCommand(*newAction);
         // 更新列表项
@@ -478,7 +474,7 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
         emit Service::instance()->refreshCommandPanel(itemDel.m_cmdName, itemData.m_cmdName);
 
         int index = indexFromString(itemData.m_cmdName);
-        qDebug() << "-------------------------------------------index=" << index << ",itemData.m_cmdName=" << itemData.m_cmdName;
+        qInfo() << "-------------------------------------------index=" << index << ",itemData.m_cmdName=" << itemData.m_cmdName;
         if (m_focusState) {
             // 将焦点落回
             m_currentIndex = index;
@@ -493,7 +489,7 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
 
         //Delete custom command 删除自定义命令处理
         if (m_pdlg->isDelCurCommand()) {
-            qDebug() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
+            qInfo() <<  __FUNCTION__ << __LINE__ << ":del Custom Command";
             DDialog *dlgDelete = new DDialog(this);
             dlgDelete->setObjectName("CustomDeleteDialog");
             dlgDelete->setAttribute(Qt::WA_DeleteOnClose);
@@ -520,22 +516,22 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
 
         // fix bug#65109焦点在自定义编辑按钮上，enter键进入后按esc退出，焦点不在编辑按钮上
         if (QDialog::Rejected == result) {
-            qDebug() << "QDialog::Rejected";
+            qInfo() << "QDialog::Rejected";
             ItemWidget *itemWidget = m_itemList.at(m_currentIndex);
             itemWidget->getFocus();
         } else {
-            qDebug() << "QDialog::Accepted result is:" << result;
+            qInfo() << "QDialog::Accepted result is:" << result;
             if (-1 != result) {
                 setFocus();
             } else {
-                qDebug() << "QDialog::Rejected";
+                qInfo() << "QDialog::Rejected";
                 ItemWidget *itemWidget = m_itemList.at(m_currentIndex);
                 itemWidget->getFocus();
             }
         }
     }
 
-    qDebug() << "================================tempResult=" << tempResult;
+    qInfo() << "================================tempResult=" << tempResult;
 }
 
 inline void ListView::onDeleteCustomCommandFinished(int result)
@@ -559,7 +555,7 @@ inline void ListView::onDeleteCustomCommandFinished(int result)
                 setFocus();
             } else {
                 // 找不到
-                qDebug() << "can't find index" << index;
+                qInfo() << "can't find index" << index;
                 if (m_itemList.count() == 0) {
                     emit focusOut(Qt::NoFocusReason);
                 }
@@ -593,16 +589,16 @@ void ListView::keyPressEvent(QKeyEvent *event)
 
 void ListView::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __FUNCTION__ << event->reason();
-    if (m_currentIndex == -1) {
+    qInfo() << __FUNCTION__ << event->reason();
+    if (m_currentIndex == -1)
         m_currentIndex = 0;
-    }
-    if (event->reason() == Qt::TabFocusReason) {
+
+    if (event->reason() == Qt::TabFocusReason)
         setCurrentIndex(0);
-    } else {
+    else
         setCurrentIndex(m_currentIndex);
-    }
-    qDebug() << "ListView current index : " << m_currentIndex << event->reason();
+
+    qInfo() << "ListView current index : " << m_currentIndex << event->reason();
     m_focusState = true;
     QScrollArea::focusInEvent(event);
 }
@@ -710,18 +706,18 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
     int count = m_itemList.count();
 
     int index = currentIndex;
-    if (ListFocusUp == focusType) {
+    if (ListFocusUp == focusType)
         --index;
-    } else if (ListFocusDown == focusType) {
+    else if (ListFocusDown == focusType)
         ++index;
-    } else if (ListFocusHome == focusType) {
+    else if (ListFocusHome == focusType)
         index = 0;
-    } else if (ListFocusEnd == focusType) {
+    else if (ListFocusEnd == focusType)
         index = this->count() - 1;
-    } else {
-        qDebug() << "index:" << index << endl;
-    }
-    qDebug() << "focus index:" << index << endl;
+    else
+        qInfo() << "index:" << index << endl;
+
+    qInfo() << "focus index:" << index << endl;
 
     // index >= 0 < 最大数量
     // 最上
@@ -751,9 +747,9 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
             widget->setFocus();
             int widget_y1 = widget->y();
             int widget_y2 = widget->y() + widget->height();
-            qDebug() << "y1" << widget_y1;
-            qDebug() << "y2" << widget_y2;
-            qDebug() << "height" << height();
+            qInfo() << "y1" << widget_y1;
+            qInfo() << "y2" << widget_y2;
+            qInfo() << "height" << height();
             // 设置滚动条 上下移动
             if (widget->y() + widget->height() < height()) {
                 verticalScrollBar()->setValue(0);
@@ -769,7 +765,7 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
                     m_scrollPostion += (count - 1) * listItemHeight;
                 } else {
                     m_scrollPostion = verticalScrollBar()->value();
-                    qDebug() << "m_scrollPostion" << m_scrollPostion << endl;
+                    qInfo() << "m_scrollPostion" << m_scrollPostion << endl;
                 }
             }
         }
@@ -777,44 +773,41 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
     // 计算range
     int range = calculateRange(height());
     verticalScrollBar()->setRange(0, range);
-    if (0 == index) {
+    if (0 == index)
         m_scrollPostion = 0;
-    }
+
     verticalScrollBar()->setValue(m_scrollPostion);
-    qDebug() << "up down scrollPostion : " << m_scrollPostion << verticalScrollBar()->value();
+    qInfo() << "up down scrollPostion : " << m_scrollPostion << verticalScrollBar()->value();
 
     // 需要让m_currentIndex于焦点所在位置同步
     m_currentIndex = index;
-    qDebug() << "current index : " << m_currentIndex;
+    qInfo() << "current index : " << m_currentIndex;
 }
 
 void ListView::lostFocus(int preIndex)
 {
-    qDebug() << __FUNCTION__;
     // 没有前一个
-    if (-1 == preIndex) {
+    if (-1 == preIndex)
         return;
-    }
 
     QLayoutItem *item = m_mainLayout->itemAt(preIndex);
     ItemWidget *widget = item ? qobject_cast<ItemWidget *>(item->widget()) : nullptr;
     if (widget != nullptr) {
         // 丢失焦点
         widget->lostFocus();
-        qDebug() << widget << "lost focus";
+        qInfo() << widget << "lost focus";
     }
 }
 
 void ListView::setScroll(int currentIndex)
 {
-    qDebug() << __FUNCTION__;
     // 计算range
     int range = calculateRange(height());
     verticalScrollBar()->setRange(0, range);
     QLayoutItem *item = m_mainLayout->itemAt(currentIndex);
     if (item != nullptr) {
         int postion = currentIndex  * 70;
-        qDebug() << "postion : " << postion;
+        qInfo() << "postion : " << postion;
         if ((postion + 60) < height()) {
             verticalScrollBar()->setValue(0);
             m_scrollPostion = 0;
@@ -829,13 +822,13 @@ void ListView::setScroll(int currentIndex)
             }
             verticalScrollBar()->setValue(m_scrollPostion);
         }
-        qDebug() << "scrollPostion " << m_scrollPostion;
+        qInfo() << "scrollPostion " << m_scrollPostion;
     }
 }
 
 bool ListView::indexIsValid(int index)
 {
-    qDebug() << index << m_itemList.count();
+    qInfo() << index << m_itemList.count();
     return ((index >= 0) && (index < m_itemList.count()));
 }
 
