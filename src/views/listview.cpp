@@ -311,8 +311,8 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
             connect(deleteDialog, &DDialog::finished, this, &ListView::onDeleteServerDialogFinished);
             deleteDialog->setWindowModality(Qt::WindowModal);
             deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
-            deleteDialog->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-            deleteDialog->addButton(QObject::tr("Delete"), true, DDialog::ButtonWarning);
+            deleteDialog->addButton(QObject::tr("Cancel", "button"), false, DDialog::ButtonNormal);
+            deleteDialog->addButton(QObject::tr("Delete", "button"), true, DDialog::ButtonWarning);
             deleteDialog->show();
             // 释放窗口
             Service::instance()->setIsDialogShow(window(), false);
@@ -502,8 +502,8 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
 
             dlgDelete->setIcon(QIcon::fromTheme("deepin-terminal"));
             dlgDelete->setTitle(tr("Are you sure you want to delete %1?").arg(m_pdlg->m_currItemData->m_cmdName));
-            dlgDelete->addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-            dlgDelete->addButton(QObject::tr("Confirm"), true, DDialog::ButtonWarning);
+            dlgDelete->addButton(QObject::tr("Cancel", "button"), false, DDialog::ButtonNormal);
+            dlgDelete->addButton(QObject::tr("Confirm", "button"), true, DDialog::ButtonWarning);
             connect(dlgDelete, &DDialog::finished, this, &ListView::onDeleteCustomCommandFinished);
             dlgDelete->show();
         }

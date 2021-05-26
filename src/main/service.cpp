@@ -379,7 +379,7 @@ void Service::showShortcutConflictMsgbox(QString txt)
         m_settingShortcutConflictDialog->setObjectName("ServiceSettingShortcutConflictDialog");
         m_settingShortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
         //将确认按钮设置为默认按钮
-        m_settingShortcutConflictDialog->addButton(tr("OK"), true, DDialog::ButtonNormal);
+        m_settingShortcutConflictDialog->addButton(tr("OK", "button"), true, DDialog::ButtonNormal);
 
         connect(m_settingShortcutConflictDialog, &DDialog::finished, this, &Service::slotSettingShortcutConflictDialogFinished);
     }

@@ -191,11 +191,11 @@ void CustomCommandOptDlg::initUI()
     }
 
     addCancelConfirmButtons();
-    setCancelBtnText(tr("Cancel"));
+    setCancelBtnText(tr("Cancel", "button"));
     if (CCT_ADD == m_type) {
-        setConfirmBtnText(tr("Add"));
+        setConfirmBtnText(tr("Add", "button"));
     } else {
-        setConfirmBtnText(tr("Save"));
+        setConfirmBtnText(tr("Save", "button"));
     }
     m_lastCmdShortcut = m_shortCutLineEdit->keySequence().toString();
     connect(this, &CustomCommandOptDlg::confirmBtnClicked, this, &CustomCommandOptDlg::slotAddSaveButtonClicked);
@@ -642,7 +642,7 @@ void CustomCommandOptDlg::showShortcutConflictMsgbox(QString txt)
         /******** Modify by nt001000 renfeixiang 2020-05-29:修改 修改因为弹框改为非模态之后，快捷框冲突选中快捷框功能移动这 End***************/
         m_shortcutConflictDialog->setIcon(QIcon::fromTheme("dialog-warning"));
         /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
-        m_shortcutConflictDialog->addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
+        m_shortcutConflictDialog->addButton(QString(tr("OK", "button")), true, DDialog::ButtonNormal);
     }
     // 存在后显示
     m_shortcutConflictDialog->setTitle(QString(txt + QObject::tr("please set another one.")));

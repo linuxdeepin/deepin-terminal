@@ -44,16 +44,25 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="194"/>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="196"/>
         <source>Add</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="198"/>
         <source>Save</source>
+        <comment>button</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="645"/>
+        <source>OK</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -74,11 +83,6 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="456"/>
         <source>please input another one.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="645"/>
-        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -151,11 +155,13 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="433"/>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="441"/>
         <source>Confirm</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -189,11 +195,13 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="773"/>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="775"/>
         <source>Close</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -209,12 +217,6 @@
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <location filename="../src/common/utils.cpp" line="247"/>
-        <location filename="../src/common/utils.cpp" line="291"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Copy on select</source>
@@ -582,19 +584,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="246"/>
-        <location filename="../src/views/listview.cpp" line="314"/>
-        <location filename="../src/views/listview.cpp" line="505"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="236"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/listview.cpp" line="315"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/common/utils.cpp" line="256"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="648"/>
         <location filename="../src/main/service.cpp" line="386"/>
@@ -698,6 +687,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/common/utils.cpp" line="246"/>
+        <location filename="../src/views/listview.cpp" line="314"/>
+        <location filename="../src/views/listview.cpp" line="505"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="236"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="247"/>
+        <location filename="../src/common/utils.cpp" line="291"/>
+        <source>OK</source>
+        <comment>button</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Execute a command in the terminal</source>
         <translation type="unfinished"></translation>
@@ -746,12 +751,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="506"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
-        <source>Confirm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="128"/>
         <source>Tab title format</source>
@@ -767,6 +766,19 @@
         <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/views/tabbar.cpp" line="509"/>
         <source>Close other tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/views/listview.cpp" line="315"/>
+        <source>Delete</source>
+        <comment>button</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/views/listview.cpp" line="506"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
+        <source>Confirm</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -886,16 +898,24 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="295"/>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="296"/>
         <source>Add</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="300"/>
         <source>Edit Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
+        <source>Save</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -922,11 +942,6 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="527"/>
         <source>Please enter a username</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
-        <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -969,6 +984,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="382"/>
         <source>OK</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1164,17 +1180,20 @@
         <location filename="../src/common/utils.cpp" line="189"/>
         <location filename="../src/common/utils.cpp" line="225"/>
         <source>Cancel</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="191"/>
         <source>Close</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="226"/>
         <location filename="../src/common/utils.cpp" line="258"/>
         <source>OK</source>
+        <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

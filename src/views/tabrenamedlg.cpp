@@ -233,12 +233,12 @@ void TabRenameDlg::initButtonWidget()
     buttonTAbLayout->setContentsMargins(0, 0, 0, 0);
     buttonTAbLayout->setSpacing(10);
 
-    m_cancelButton = new DPushButton(QObject::tr("Cancel"));
+    m_cancelButton = new DPushButton(QObject::tr("Cancel", "button"));
     Utils::setSpaceInWord(m_cancelButton);
     m_cancelButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_cancelButton, DFontSizeManager::T6);
 
-    m_confirmButton = new DSuggestButton(QObject::tr("Confirm"));
+    m_confirmButton = new DSuggestButton(QObject::tr("Confirm", "button"));
     Utils::setSpaceInWord(m_confirmButton);
     m_confirmButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_confirmButton, DFontSizeManager::T6);

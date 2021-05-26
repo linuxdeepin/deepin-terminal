@@ -430,7 +430,7 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
     m_cancelBtn->setFixedHeight(36);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
-    m_cancelBtn->setText(tr("Cancel"));
+    m_cancelBtn->setText(tr("Cancel", "button"));
     Utils::setSpaceInWord(m_cancelBtn);
 
     m_confirmBtn = new DSuggestButton(this);
@@ -438,7 +438,7 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
     m_confirmBtn->setFixedHeight(36);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setFont(btnFont);
-    m_confirmBtn->setText(tr("Confirm"));
+    m_confirmBtn->setText(tr("Confirm", "button"));
     Utils::setSpaceInWord(m_confirmBtn);
 
     m_cancelBtn->setFocusPolicy(Qt::TabFocus);

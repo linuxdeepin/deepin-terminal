@@ -186,9 +186,9 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
 
     DDialog dlg(title, txt);
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
-    dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
+    dlg.addButton(QString(tr("Cancel", "button")), false, DDialog::ButtonNormal);
     /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close Begin***************/
-    dlg.addButton(QString(tr("Close")), true, DDialog::ButtonWarning);
+    dlg.addButton(QString(tr("Close", "button")), true, DDialog::ButtonWarning);
     /******** Modify by nt001000 renfeixiang 2020-05-21:修改Exit成Close End***************/
     return (dlg.exec() == DDialog::Accepted);
 }
@@ -222,8 +222,8 @@ bool Utils::showExitUninstallConfirmDialog()
 {
     DDialog dlg(QObject::tr("Programs are still running in terminal"), QObject::tr("Are you sure you want to uninstall it?"));
     dlg.setIcon(QIcon::fromTheme("deepin-terminal"));
-    dlg.addButton(QString(tr("Cancel")), false, DDialog::ButtonNormal);
-    dlg.addButton(QString(tr("OK")), true, DDialog::ButtonWarning);
+    dlg.addButton(QString(tr("Cancel", "button")), false, DDialog::ButtonNormal);
+    dlg.addButton(QString(tr("OK", "button")), true, DDialog::ButtonWarning);
     return (dlg.exec() == DDialog::Accepted);
 }
 
@@ -243,8 +243,8 @@ bool Utils::showUnistallConfirmDialog(QString commandname)
     DDialog dlg(title, text);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，显示不同的弹框信息 Begin***************/
     dlg.setIcon(QIcon::fromTheme("dialog-warning"));
-    dlg.addButton(QObject::tr("Cancel"), false, DDialog::ButtonNormal);
-    dlg.addButton(QObject::tr("OK"), true, DDialog::ButtonWarning);
+    dlg.addButton(QObject::tr("Cancel", "button"), false, DDialog::ButtonNormal);
+    dlg.addButton(QObject::tr("OK", "button"), true, DDialog::ButtonWarning);
     return (dlg.exec() == DDialog::Accepted);
 }
 
@@ -255,7 +255,7 @@ bool Utils::showShortcutConflictMsgbox(QString txt)
     dlg.setIcon(QIcon::fromTheme("dialog-warning"));
     dlg.setTitle(QString(txt + QObject::tr("please set another one.")));
     /***mod by ut001121 zhangmeng 20200521 将确认按钮设置为默认按钮 修复BUG26960***/
-    dlg.addButton(QString(tr("OK")), true, DDialog::ButtonNormal);
+    dlg.addButton(QString(tr("OK", "button")), true, DDialog::ButtonNormal);
     dlg.exec();
     return  true;
 }
@@ -288,7 +288,7 @@ void Utils::showSameNameDialog(QWidget *parent, const QString &firstLine, const 
     dlg->setWindowModality(Qt::WindowModal);
     dlg->setTitle(QString(firstLine + secondLine));
     dlg->setIcon(QIcon::fromTheme("dialog-warning"));
-    dlg->addButton(QString(QObject::tr("OK")), true, DDialog::ButtonNormal);
+    dlg->addButton(QString(QObject::tr("OK", "button")), true, DDialog::ButtonNormal);
     dlg->show();
     moveToCenter(dlg);
 }

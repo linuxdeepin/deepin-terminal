@@ -292,13 +292,13 @@ void ServerConfigOptDlg::initUI()
         }
     });
 
-    DPushButton *pCancelButton = new DPushButton(tr("Cancel"));
-    DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add"));
+    DPushButton *pCancelButton = new DPushButton(tr("Cancel", "button"));
+    DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add", "button"));
     //Add a line by m000750 zhangmeng 2020-04-22设置回车触发默认按钮
     pAddSaveButton->setDefault(true);
     if (m_type == SCT_MODIFY) {
         m_titleLabel->setText(tr("Edit Server"));
-        pAddSaveButton->setText(tr("Save"));
+        pAddSaveButton->setText(tr("Save", "button"));
     }
     Utils::setSpaceInWord(pCancelButton);
     Utils::setSpaceInWord(pAddSaveButton);
