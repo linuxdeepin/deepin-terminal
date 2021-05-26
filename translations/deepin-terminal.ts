@@ -4,80 +4,80 @@
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="117"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="111"/>
         <source>Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="119"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="113"/>
         <source>Command:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="121"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="115"/>
         <source>Shortcuts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="132"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="133"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="214"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="221"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="126"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="127"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="208"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="215"/>
         <source>Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="159"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="153"/>
         <source>Add Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="165"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="159"/>
         <source>Edit Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="175"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="169"/>
         <source>Delete Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="200"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="194"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="202"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="196"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="204"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="198"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="432"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="390"/>
         <source>Please enter a name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="446"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="404"/>
         <source>Please enter a command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="497"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="455"/>
         <source>The name already exists,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="498"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="456"/>
         <source>please input another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="753"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="645"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -85,7 +85,7 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandpanel.cpp" line="251"/>
+        <location filename="../src/customcommand/customcommandpanel.cpp" line="200"/>
         <source>Add Command</source>
         <translation type="unfinished"></translation>
     </message>
@@ -93,7 +93,7 @@
 <context>
     <name>CustomCommandPlugin</name>
     <message>
-        <location filename="../src/customcommand/customcommandplugin.cpp" line="88"/>
+        <location filename="../src/customcommand/customcommandplugin.cpp" line="76"/>
         <source>Custom commands</source>
         <translation type="unfinished"></translation>
     </message>
@@ -101,7 +101,7 @@
 <context>
     <name>CustomCommandSearchRstPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="158"/>
+        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="146"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,52 +109,52 @@
 <context>
     <name>CustomThemeSettingDialog</name>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="308"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="242"/>
         <source>Custom Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="339"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="267"/>
         <source>Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="343"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="271"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="349"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="277"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="405"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="333"/>
         <source>Fore color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="412"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="340"/>
         <source>Back color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="430"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="358"/>
         <source>Prompt PS1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="434"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="362"/>
         <source>Prompt PS2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="517"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="433"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="525"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="441"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -162,13 +162,13 @@
 <context>
     <name>ListView</name>
     <message>
-        <location filename="../src/views/listview.cpp" line="411"/>
+        <location filename="../src/views/listview.cpp" line="308"/>
         <source>Delete Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="411"/>
-        <location filename="../src/views/listview.cpp" line="625"/>
+        <location filename="../src/views/listview.cpp" line="308"/>
+        <location filename="../src/views/listview.cpp" line="504"/>
         <source>Are you sure you want to delete %1?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,33 +176,33 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="317"/>
-        <location filename="../src/main/mainwindow.cpp" line="386"/>
+        <location filename="../src/main/mainwindow.cpp" line="275"/>
+        <location filename="../src/main/mainwindow.cpp" line="333"/>
         <source>New window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="402"/>
+        <location filename="../src/main/mainwindow.cpp" line="349"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="951"/>
+        <location filename="../src/main/mainwindow.cpp" line="773"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="953"/>
+        <location filename="../src/main/mainwindow.cpp" line="775"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2210"/>
+        <location filename="../src/main/mainwindow.cpp" line="1859"/>
         <source>Type path to download file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2605"/>
+        <location filename="../src/main/mainwindow.cpp" line="2150"/>
         <source>Custom Theme</source>
         <translation type="unfinished"></translation>
     </message>
@@ -210,8 +210,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="312"/>
-        <location filename="../src/common/utils.cpp" line="374"/>
+        <location filename="../src/common/utils.cpp" line="247"/>
+        <location filename="../src/common/utils.cpp" line="291"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,8 +246,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/service.cpp" line="160"/>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
-        <location filename="../src/main/service.cpp" line="195"/>
         <source>Blur background</source>
         <translation type="unfinished"></translation>
     </message>
@@ -267,8 +267,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/service.cpp" line="184"/>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
-        <location filename="../src/main/service.cpp" line="222"/>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -308,15 +308,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="2035"/>
         <source>Others</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/main/terminalapplication.cpp" line="36"/>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
-        <location filename="../src/main/terminalapplication.cpp" line="35"/>
-        <location filename="../src/main/mainwindow.cpp" line="2033"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -326,62 +326,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Custom commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
-        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Display shortcuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
-        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Remote management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>Next tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
-        <location filename="../src/main/mainwindow.cpp" line="2079"/>
         <source>Previous tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
         <source>Select left workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
-        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Select lower workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
         <source>Select right workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Select upper workspace</source>
         <translation type="unfinished"></translation>
     </message>
@@ -391,56 +391,56 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1750"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
         <source>Go to tab 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1750"/>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
         <source>Go to tab 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1750"/>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
-        <location filename="../src/main/mainwindow.cpp" line="2082"/>
         <source>Go to tab 3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1751"/>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
-        <location filename="../src/main/mainwindow.cpp" line="2083"/>
         <source>Go to tab 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1751"/>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
-        <location filename="../src/main/mainwindow.cpp" line="2083"/>
         <source>Go to tab 5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1751"/>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
-        <location filename="../src/main/mainwindow.cpp" line="2083"/>
         <source>Go to tab 6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1752"/>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
-        <location filename="../src/main/mainwindow.cpp" line="2084"/>
         <source>Go to tab 7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1752"/>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
-        <location filename="../src/main/mainwindow.cpp" line="2084"/>
         <source>Go to tab 8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1752"/>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
-        <location filename="../src/main/mainwindow.cpp" line="2084"/>
         <source>Go to tab 9</source>
         <translation type="unfinished"></translation>
     </message>
@@ -455,34 +455,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="281"/>
-        <location filename="../src/views/tabbar.cpp" line="644"/>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
-        <location filename="../src/main/mainwindow.cpp" line="2099"/>
+        <location filename="../src/views/tabbar.cpp" line="512"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="203"/>
         <source>Rename title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
-        <location filename="../src/main/mainwindow.cpp" line="2099"/>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
-        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Default size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
-        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
@@ -492,8 +492,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
-        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -508,14 +508,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
-        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Zoom in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Zoom out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -525,24 +525,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="533"/>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
+        <location filename="../src/views/termwidget.cpp" line="503"/>
         <source>Close other workspaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1453"/>
+        <location filename="../src/views/termwidget.cpp" line="1176"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1457"/>
+        <location filename="../src/views/termwidget.cpp" line="1182"/>
+        <source>Could not open &quot;%1&quot;, unable to run it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/views/termwidget.cpp" line="1184"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1525"/>
+        <location filename="../src/views/termwidget.cpp" line="1230"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -552,215 +557,215 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="530"/>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
-        <location filename="../src/main/mainwindow.cpp" line="2081"/>
+        <location filename="../src/views/termwidget.cpp" line="500"/>
         <source>Close workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Horizontal split</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="2080"/>
         <source>Vertical split</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="2064"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="417"/>
-        <location filename="../src/views/listview.cpp" line="626"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="326"/>
-        <location filename="../src/common/utils.cpp" line="311"/>
+        <location filename="../src/common/utils.cpp" line="246"/>
+        <location filename="../src/views/listview.cpp" line="314"/>
+        <location filename="../src/views/listview.cpp" line="505"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="236"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="418"/>
+        <location filename="../src/views/listview.cpp" line="315"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="501"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="756"/>
-        <location filename="../src/common/utils.cpp" line="327"/>
+        <location filename="../src/common/utils.cpp" line="256"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="648"/>
+        <location filename="../src/main/service.cpp" line="386"/>
         <source>please set another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/terminalapplication.cpp" line="38"/>
+        <location filename="../src/main/terminalapplication.cpp" line="39"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2031"/>
+        <location filename="../src/main/mainwindow.cpp" line="1699"/>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="638"/>
-        <location filename="../src/main/mainwindow.cpp" line="2079"/>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
+        <location filename="../src/views/tabbar.cpp" line="506"/>
         <source>Close tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2080"/>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <source>Select tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2051"/>
+        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Switch focus to &quot;+&quot; icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2149"/>
-        <location filename="../src/common/utils.cpp" line="189"/>
+        <location filename="../src/common/utils.cpp" line="148"/>
+        <location filename="../src/main/mainwindow.cpp" line="1804"/>
         <source>Select file to upload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2156"/>
-        <location filename="../src/common/utils.cpp" line="194"/>
+        <location filename="../src/common/utils.cpp" line="153"/>
+        <location filename="../src/main/mainwindow.cpp" line="1811"/>
         <source>Upload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="282"/>
+        <location filename="../src/common/utils.cpp" line="223"/>
         <source>Programs are still running in terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="220"/>
-        <location filename="../src/common/utils.cpp" line="262"/>
+        <location filename="../src/common/utils.cpp" line="173"/>
+        <location filename="../src/common/utils.cpp" line="209"/>
         <source>Close this terminal?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="221"/>
-        <location filename="../src/common/utils.cpp" line="263"/>
+        <location filename="../src/common/utils.cpp" line="174"/>
+        <location filename="../src/common/utils.cpp" line="210"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="225"/>
-        <location filename="../src/common/utils.cpp" line="267"/>
+        <location filename="../src/common/utils.cpp" line="178"/>
+        <location filename="../src/common/utils.cpp" line="214"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="230"/>
-        <location filename="../src/common/utils.cpp" line="258"/>
+        <location filename="../src/common/utils.cpp" line="183"/>
+        <location filename="../src/common/utils.cpp" line="205"/>
         <source>Close this window?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="231"/>
-        <location filename="../src/common/utils.cpp" line="259"/>
+        <location filename="../src/common/utils.cpp" line="184"/>
+        <location filename="../src/common/utils.cpp" line="206"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2231"/>
-        <location filename="../src/common/utils.cpp" line="162"/>
+        <location filename="../src/common/utils.cpp" line="127"/>
+        <location filename="../src/main/mainwindow.cpp" line="1875"/>
         <source>Select a directory to save the file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="282"/>
+        <location filename="../src/common/utils.cpp" line="223"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="301"/>
-        <location filename="../src/common/utils.cpp" line="305"/>
+        <location filename="../src/common/utils.cpp" line="236"/>
+        <location filename="../src/common/utils.cpp" line="240"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="302"/>
-        <location filename="../src/common/utils.cpp" line="306"/>
+        <location filename="../src/common/utils.cpp" line="237"/>
+        <location filename="../src/common/utils.cpp" line="241"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="431"/>
+        <location filename="../src/common/utils.cpp" line="335"/>
         <source>Execute a command in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="434"/>
+        <location filename="../src/common/utils.cpp" line="338"/>
         <source>Run script string in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="425"/>
+        <location filename="../src/common/utils.cpp" line="329"/>
         <source>Set the work directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="428"/>
+        <location filename="../src/common/utils.cpp" line="332"/>
         <source>Set the window mode on starting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="438"/>
+        <location filename="../src/common/utils.cpp" line="342"/>
         <source>Run in quake mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="441"/>
+        <location filename="../src/common/utils.cpp" line="345"/>
         <source>Keep terminal open when command finishes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="568"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="439"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="397"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="509"/>
         <source>The name should be no more than 32 characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="644"/>
-        <location filename="../src/main/mainwindow.cpp" line="2237"/>
-        <location filename="../src/common/utils.cpp" line="168"/>
+        <location filename="../src/common/utils.cpp" line="133"/>
+        <location filename="../src/main/mainwindow.cpp" line="1881"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="580"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="640"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="576"/>
         <source>Select the private key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="627"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="331"/>
+        <location filename="../src/views/listview.cpp" line="506"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="171"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="128"/>
         <source>Tab title format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="173"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="130"/>
         <source>Remote tab title format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="641"/>
-        <location filename="../src/main/mainwindow.cpp" line="2079"/>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
+        <location filename="../src/views/tabbar.cpp" line="509"/>
         <source>Close other tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -768,7 +773,7 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="241"/>
+        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="181"/>
         <source>Add Server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -776,12 +781,12 @@
 <context>
     <name>RemoteManagementPlugin</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="100"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="88"/>
         <source>Remote management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="259"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="217"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -789,7 +794,7 @@
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="284"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="224"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -797,164 +802,164 @@
 <context>
     <name>ServerConfigOptDlg</name>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="66"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="67"/>
         <source>Advanced options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="112"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="107"/>
         <source>Add Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="149"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="144"/>
         <source>Server name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="152"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="161"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="190"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="147"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="156"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="185"/>
         <source>Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="159"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="154"/>
         <source>Address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="167"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="162"/>
         <source>Port:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="188"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="183"/>
         <source>Username:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="194"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>Password:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="201"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="196"/>
         <source>Certificate:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="227"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="222"/>
         <source>Group:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="233"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="228"/>
         <source>Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="239"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="234"/>
         <source>Command:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="245"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="240"/>
         <source>Encoding:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="251"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="246"/>
         <source>Backspace key:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="257"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="252"/>
         <source>Delete key:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="279"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="274"/>
         <source>Delete server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="300"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="295"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="296"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="305"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="300"/>
         <source>Edit Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="433"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="450"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="410"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="421"/>
         <source>tty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="562"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="503"/>
         <source>Please enter a server name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="575"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="516"/>
         <source>Please enter an IP address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="580"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="521"/>
         <source>Please enter a port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="586"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="527"/>
         <source>Please enter a username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="306"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="429"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="447"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="406"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="418"/>
         <source>ascii-del</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="430"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="448"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="407"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="419"/>
         <source>auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="431"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="449"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="408"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="420"/>
         <source>control-h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="432"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="446"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="409"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="417"/>
         <source>escape-sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="600"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="541"/>
         <source>The server name already exists,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="601"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="542"/>
         <source>please input another one. </source>
         <translation type="unfinished"></translation>
     </message>
@@ -962,7 +967,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="499"/>
+        <location filename="../src/main/service.cpp" line="382"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -970,22 +975,22 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Split screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Normal window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="118"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Maximum</source>
         <translation type="unfinished"></translation>
     </message>
@@ -993,15 +998,15 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="373"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="382"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="306"/>
         <source>The shortcut %1 is invalid, </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="389"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="396"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="402"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="313"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="320"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="326"/>
         <source>The shortcut %1 was already in use, </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1009,55 +1014,55 @@
 <context>
     <name>TabRenameWidget</name>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="69"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="56"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="136"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="105"/>
         <source>username: %u</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>username@: %U</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>remote host: %h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="117"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="135"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="104"/>
         <source>session number: %#</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="117"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="137"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
         <source>title set by shell: %w</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="134"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="103"/>
         <source>program name: %n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="134"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="103"/>
         <source>current directory (short): %d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="135"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="104"/>
         <source>current directory (long): %D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="136"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="105"/>
         <source>local host: %h</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1065,90 +1070,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="497"/>
+        <location filename="../src/views/termwidget.cpp" line="467"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="500"/>
+        <location filename="../src/views/termwidget.cpp" line="470"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="509"/>
+        <location filename="../src/views/termwidget.cpp" line="479"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="514"/>
+        <location filename="../src/views/termwidget.cpp" line="484"/>
         <source>Open in file manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="523"/>
-        <location filename="../src/views/termwidget.cpp" line="585"/>
+        <location filename="../src/views/termwidget.cpp" line="493"/>
+        <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>Horizontal split</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="526"/>
-        <location filename="../src/views/termwidget.cpp" line="585"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
+        <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>Vertical split</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="538"/>
-        <location filename="../src/views/termwidget.cpp" line="585"/>
+        <location filename="../src/views/termwidget.cpp" line="508"/>
+        <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="545"/>
+        <location filename="../src/views/termwidget.cpp" line="515"/>
         <source>Exit fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="547"/>
+        <location filename="../src/views/termwidget.cpp" line="517"/>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="551"/>
+        <location filename="../src/views/termwidget.cpp" line="521"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="555"/>
+        <location filename="../src/views/termwidget.cpp" line="525"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="565"/>
+        <location filename="../src/views/termwidget.cpp" line="535"/>
         <source>Encoding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="567"/>
+        <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Custom commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="569"/>
+        <location filename="../src/views/termwidget.cpp" line="539"/>
         <source>Remote management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="573"/>
+        <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Upload file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="574"/>
+        <location filename="../src/views/termwidget.cpp" line="544"/>
         <source>Download file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="579"/>
+        <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1156,19 +1161,19 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="236"/>
-        <location filename="../src/common/utils.cpp" line="284"/>
+        <location filename="../src/common/utils.cpp" line="189"/>
+        <location filename="../src/common/utils.cpp" line="225"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="238"/>
+        <location filename="../src/common/utils.cpp" line="191"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="285"/>
-        <location filename="../src/common/utils.cpp" line="329"/>
+        <location filename="../src/common/utils.cpp" line="226"/>
+        <location filename="../src/common/utils.cpp" line="258"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>

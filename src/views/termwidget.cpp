@@ -1177,7 +1177,12 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
         showShellMessage(strShellWarning);
     } else {
         // 启动shell失败
-        QString strShellNoFound = QObject::tr("Could not find \"%1\", unable to run it").arg(currentShell);
+        QString strShellNoFound;
+        if(QFile::exists(currentShell))
+            strShellNoFound = QObject::tr("Could not open \"%1\", unable to run it").arg(currentShell);
+        else
+            strShellNoFound = QObject::tr("Could not find \"%1\", unable to run it").arg(currentShell);
+
         showShellMessage(strShellNoFound);
     }
 }

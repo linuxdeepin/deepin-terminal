@@ -402,6 +402,7 @@ void Session::run()
         _userTitle = QString::fromLatin1("Session crashed");
         emit titleChanged();
         emit shellWarningMessage(exec, false);
+        qWarning() << _shellProcess->errorString();
         return;
     }
 

@@ -4,12 +4,12 @@
     <message>
         <location filename="../TerminalDisplay.cpp" line="1279"/>
         <source>Size: XXX x XXX</source>
-        <translation>Grootte: XXX x XXX</translation>
+        <translation>Afmetingen: XXX x XXX</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1291"/>
         <source>Size: %1 x %2</source>
-        <translation>Grootte: %1 x %2</translation>
+        <translation>Afmetingen: %1 x %2</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
@@ -51,7 +51,7 @@
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation>E-mail versturen naar...</translation>
+        <translation>E-mail versturen naar…</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
@@ -117,7 +117,7 @@
     <message>
         <location filename="../SearchBar.ui" line="66"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
 </context>
 </TS>
