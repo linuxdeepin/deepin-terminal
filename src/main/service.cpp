@@ -844,9 +844,8 @@ int Service::getVirtualKeyboardHeight()
     }
 
     // 获取虚拟键盘高度
-    if (-1 == m_virtualKeyboardHeight) {
-        m_virtualKeyboardHeight = getVirtualKeyboardGeometry().height();
-    }
+    //fix:bug#79678 横屏下，调出虚拟键盘，顶部显示应用窗口，中间显示桌面背景，下面显示虚拟键盘
+    m_virtualKeyboardHeight = getVirtualKeyboardGeometry().height();
 
     return m_virtualKeyboardHeight;
 }
