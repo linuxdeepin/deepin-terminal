@@ -53,6 +53,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_serverName(new DLineEdit),
       m_address(new DLineEdit),
       m_port(new DSpinBox),
+      m_port_tip(new DAlertControl(m_port)),
       m_userName(new DLineEdit),
       m_password(new DPasswordEdit),
       m_privateKey(new DLineEdit),
@@ -574,7 +575,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     }
     // 端口为空
     if (m_port->text().trimmed().isEmpty()) {
-        m_address->showAlertMessage(tr("Please enter a port"), m_port);
+        m_port_tip->showAlertMessage(tr("Please enter a port"));
         return;
     }
 
