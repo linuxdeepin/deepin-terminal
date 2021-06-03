@@ -119,7 +119,7 @@ public:
     // 新建工作区
     void createNewWorkspace();
     // 由mainwindow统一获取当前选择的文本。
-    QString selectedText(bool preserveLineBreaks = true);
+    QString selectedText();
 
     // 新建窗口时间(ms)
     qint64 createNewMainWindowTime();

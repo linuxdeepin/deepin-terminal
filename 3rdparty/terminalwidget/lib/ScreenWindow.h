@@ -27,6 +27,7 @@
 
 // Konsole
 #include "Character.h"
+#include "Screen.h"
 
 namespace Konsole
 {
@@ -64,7 +65,7 @@ public:
      * to notify the window when the associated screen has changed and synchronize selection updates
      * between all views on a session.
      */
-    ScreenWindow(QObject* parent = nullptr);
+    explicit ScreenWindow(QObject* parent = nullptr);
     ~ScreenWindow() override;
 
     /** Sets the screen which this window looks onto */
@@ -218,7 +219,7 @@ public:
      *
      * @param preserveLineBreaks See Screen::selectedText()
      */
-    QString selectedText( bool preserveLineBreaks ) const;
+    QString selectedText( const Screen::DecodingOptions options ) const;
 
 public slots:
     /**

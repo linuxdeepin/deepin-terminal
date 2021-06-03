@@ -451,6 +451,7 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
     }
 
     _isCommandExec = false;
+    _bNeedBlockCommand = false;
     //检测到按了回车键
     if (((*data) == '\r' || isCustomCommand) && _bUninstall == false) {
         _isCommandExec = true;
@@ -526,24 +527,46 @@ void Pty::dataReceived()
     QString recvData = QString(data);
 
     if (_bNeedBlockCommand) {
-        QString judgeData = recvData.replace("\r", "");
-        judgeData = judgeData.replace("\n", "");
-        //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
-        if (judgeData.startsWith("expect -f")) {
+        QString judgeData = recvData;
+        if (recvData.length() > 1) {
+            judgeData = recvData.replace("\r", "");
+            judgeData = judgeData.replace("\n", "");
+        }
+
+        //使用zsh的时候，发送过来的字符会残留一个字母"e"，需要特殊处理下
+        if (_program.endsWith("/zsh")
+                && 1 == judgeData.length()
+                && judgeData.startsWith("e")
+                && -1 == _receiveDataIndex) {
             _receiveDataIndex = 0;
             return;
         }
 
-        if (_receiveDataIndex >= 0) {
-            if (judgeData.startsWith("Press")) {
+        //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
+        //同时考虑了zsh的情况
+        if (judgeData.startsWith("expect -f")
+                || judgeData.startsWith("\bexpect")
+                || judgeData.startsWith("\be")
+                || judgeData.startsWith("e\bexpect")
+                || judgeData.startsWith("e\be")) {
+            _receiveDataIndex = 1;
+            return;
+        }
+
+        if (_receiveDataIndex >= 1) {
+            if (judgeData.contains("Press")) {
                 //这里需要置回false，否则后面其他命令也会被拦截
                 _bNeedBlockCommand = false;
 
                 _receiveDataIndex = -1;
+                int pressStringIndex = recvData.indexOf("Press");
+                if (pressStringIndex > 0) {
+                    recvData = recvData.mid(pressStringIndex);
+                }
                 QString helpData = recvData.replace("\n", "");
                 recvData = "\r\n" + helpData + "\r\n";
                 data = recvData.toUtf8();
-                emit receivedData(data.constData(), data.count(), _isCommandExec);
+                emit receivedData(data.constData(), data.count(), _textCodec);
             }
             else {
                 ++_receiveDataIndex;

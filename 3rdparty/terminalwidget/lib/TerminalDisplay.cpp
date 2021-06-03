@@ -63,6 +63,7 @@
 #include "Filter.h"
 #include "konsole_wcwidth.h"
 #include "ScreenWindow.h"
+#include "Screen.h"
 #include "TerminalCharacterDecoder.h"
 
 using namespace Konsole;
@@ -153,6 +154,8 @@ void TerminalDisplay::setScreenWindow(ScreenWindow* window)
         connect( _screenWindow , SIGNAL(scrolled(int)) , this , SLOT(updateFilters()) );
         connect( _screenWindow, SIGNAL(selectionCleared()), this, SLOT(selectionCleared()) );
         window->setWindowLines(_lines);
+        window->screen()->setSessionId(_sessionId);
+        window->screen()->setReflowLines(true);
     }
 }
 
@@ -541,6 +544,9 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
   new AutoScrollHandler(this);
 
   m_bUserIsResizing = false;
+
+  // 隐藏QScrollBar默认的右键菜单
+  hideQScrollBarRightMenu();
 }
 
 TerminalDisplay::~TerminalDisplay()
@@ -717,7 +723,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QColor& /*backgroundColor*/,
                                  bool& invertCharacterColor)
 {
-    QRectF cursorRect = rect.adjusted(0, 1, 0, 0);
+    QRectF cursorRect = rect;
     cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
 
     if (!_cursorBlinking)
@@ -744,12 +750,12 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             {
                 // draw the cursor outline, adjusting the area so that
                 // it is draw entirely inside 'rect'
-                int penWidth = 1;
+                float penWidth = qMax(1,painter.pen().width());
 
                 painter.drawRect(cursorRect.adjusted(penWidth/2,
                                                      penWidth/2,
-                                                     - penWidth/2 - penWidth%2,
-                                                     - penWidth/2 - penWidth%2));
+                                                     - penWidth/2,
+                                                     - penWidth/2));
             }
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
@@ -1560,8 +1566,11 @@ void TerminalDisplay::paintFilters(QPainter& painter)
     }
 
     /***add begin by ut001121 zhangmeng 20200624 光标悬浮在链接上面时变成手形光标 修复BUG34676***/
-    if(bDrawLineForHotSpotLink){
-        if(cursor().shape() != Qt::PointingHandCursor) setCursor(Qt::PointingHandCursor);
+    /** modify by ut001121 zhangmeng 20201215 for 1040-4 Ctrl键+鼠标点击超链接打开网页 */
+    if(bDrawLineForHotSpotLink && (QApplication::queryKeyboardModifiers() & Qt::ControlModifier)){
+        if(cursor().shape() != Qt::PointingHandCursor) {
+          setCursor(Qt::PointingHandCursor);
+        }
     }
     else if(cursor().shape() != Qt::IBeamCursor){
         setCursor(Qt::IBeamCursor);
@@ -2452,7 +2461,7 @@ void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
     {
       if ( _actSel > 1 )
       {
-          setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
+          setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
       }
 
       _actSel = 0;
@@ -2620,7 +2629,7 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
 
      _screenWindow->setSelectionEnd( endSel.x() , endSel.y() );
 
-     setSelection( _screenWindow->selectedText(_preserveLineBreaks) );
+     setSelection( _screenWindow->selectedText(currentDecodingOptions()) );
    }
 
   _possibleTripleClick=true;
@@ -2698,6 +2707,16 @@ void TerminalDisplay::tripleClickTimeout()
   _possibleTripleClick=false;
 }
 
+Screen::DecodingOptions TerminalDisplay::currentDecodingOptions()
+{
+    Screen::DecodingOptions decodingOptions;
+    if (_preserveLineBreaks) {
+        decodingOptions |= Screen::PreserveLineBreaks;
+    }
+
+    return decodingOptions;
+}
+
 void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 {
   if ( !_screenWindow ) return;
@@ -2752,7 +2771,7 @@ void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 
   _screenWindow->setSelectionEnd( _columns - 1 , _iPntSel.y() );
 
-  setSelection(_screenWindow->selectedText(_preserveLineBreaks));
+  setSelection(_screenWindow->selectedText(currentDecodingOptions()));
 
   _iPntSel.ry() += _scrollBar->value();
 }
@@ -2861,7 +2880,7 @@ void TerminalDisplay::setSelection(const QString& t)
 void TerminalDisplay::setSelectionAll()
 {
     _screenWindow->setSelectionAll();
-    setSelection(_screenWindow->selectedText(_preserveLineBreaks));
+    setSelection(_screenWindow->selectedText(currentDecodingOptions()));
 }
 
 void TerminalDisplay::copyClipboard()
@@ -2869,7 +2888,7 @@ void TerminalDisplay::copyClipboard()
   if ( !_screenWindow )
       return;
 
-  QString text = _screenWindow->selectedText(_preserveLineBreaks);
+  QString text = _screenWindow->selectedText(currentDecodingOptions());
   if (!text.isEmpty())
     QApplication::clipboard()->setText(text);
 }
@@ -3130,7 +3149,7 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             _lastLeftEndColumn = _selEndColumn;
 
-            setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
+            setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
         }
         else if ( event->key() == Qt::Key_Right)
         {
@@ -3144,7 +3163,7 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
             _screenWindow->setSelectionEnd(_selEndColumn, _selEndLine);
             _lastRightEndColumn = _selEndColumn;
 
-            setSelection(  _screenWindow->selectedText(_preserveLineBreaks)  );
+            setSelection(  _screenWindow->selectedText(currentDecodingOptions())  );
         }
         else
         {
@@ -3311,12 +3330,33 @@ void TerminalDisplay::bell(const QString& message)
 
 void TerminalDisplay::selectionChanged()
 {
-    emit copyAvailable(_screenWindow->selectedText(false).isEmpty() == false);
+    emit copyAvailable(_screenWindow->selectedText(Screen::PlainText).isEmpty() == false);
 }
 
 void TerminalDisplay::selectionCleared()
 {
     initKeyBoardSelection();
+}
+
+/*******************************************************************************
+ 1. @函数:    hideQScrollBarRightMenu
+ 2. @作者:    ut000438 王亮
+ 3. @日期:    2021-02-07
+ 4. @说明:    隐藏QScrollBar默认的右键菜单
+*******************************************************************************/
+void TerminalDisplay::hideQScrollBarRightMenu()
+{
+    // fix bug 63308: 鼠标放置在右侧滚动条上点击鼠标右键，界面出现黑色长条
+    QWidgetList widgetList = qApp->allWidgets();
+    for(int i=0; i<widgetList.size(); i++)
+    {
+        QWidget *widget = widgetList.at(i);
+        QScrollBar *scrollBar = dynamic_cast<QScrollBar*>(widget);
+        if(scrollBar)
+        {
+            scrollBar->setContextMenuPolicy(Qt::NoContextMenu);
+        }
+    }
 }
 
 void TerminalDisplay::swapColorTable()
@@ -3492,6 +3532,11 @@ void TerminalDisplay::dropEvent(QDropEvent* event)
   {
     dropText = event->mimeData()->text();
   }
+
+  /***add begin by ut001121 zhangmeng 20201030 for SP4.1 拖拽文件到工作区文件路径加引号***/
+  dropText.insert(0, '\'');
+  dropText.append('\'');
+  /***add end ut001121***/
 
     emit sendStringToEmu(dropText.toLocal8Bit().constData());
 }

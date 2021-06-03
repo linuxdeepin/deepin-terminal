@@ -4,8 +4,6 @@
     Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
     Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
 
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -20,6 +18,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301  USA.
+
+    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
 */
 
 #ifndef SESSION_H
@@ -29,7 +29,8 @@
 #include <QWidget>
 
 #include "Emulation.h"
-#include "History.h"
+#include "history/HistoryType.h"
+#include "history/HistoryScrollNone.h"
 
 class KProcess;
 
@@ -531,6 +532,12 @@ signals:
     bool sessionUninstallTerminal(QString commandname);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 end***************/
 
+    // 标签标题参数改变 dzw 2020-12-2
+    void titleArgsChange(QString key, QString value);
+
+    // warning提示信息 currentShell当前使用的shell, 启用shell是否成功 true 替换了shell false 替换shell但启动失败
+    void shellWarningMessage(QString currentShell, bool isSuccess);
+
 private slots:
     void done(int);
 
@@ -551,6 +558,9 @@ private slots:
 //  void zmodemReadAndSendBlock();
 //  void zmodemRcvBlock(const char *data, int len);
 //  void zmodemFinished();
+
+    // 目前为了更新标签标题信息
+    void onUpdateTitleArgs();
 
 private:
 
@@ -619,6 +629,12 @@ private:
 
     int ptySlaveFd;
 
+    // title format args
+    QString _userName;
+    QString _currentDir;
+    QString _programName;
+
+    QTimer *_updateTimer = nullptr;
 };
 
 /**

@@ -4,7 +4,7 @@
     <message>
         <location filename="../TerminalDisplay.cpp" line="1279"/>
         <source>Size: XXX x XXX</source>
-        <translation>Taille: XXX x XXX</translation>
+        <translation>Taille : XXX x XXX</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1291"/>
@@ -51,12 +51,12 @@
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation>Envoyer un email à...</translation>
+        <translation>Envoyer un mail à...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation>Copier l&apos;adresse email</translation>
+        <translation>Copier l&apos;adresse mail</translation>
     </message>
 </context>
 <context>

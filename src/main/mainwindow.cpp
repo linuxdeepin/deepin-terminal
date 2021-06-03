@@ -1443,12 +1443,12 @@ void MainWindow::hidePlugin()
  3. @日期:    2020-08-11
  4. @说明:    基类选择文本
 *******************************************************************************/
-QString MainWindow::selectedText(bool preserveLineBreaks)
+QString MainWindow::selectedText()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
         if (page->currentTerminal()) {
-            return page->currentTerminal()->selectedText(preserveLineBreaks);
+            return page->currentTerminal()->selectedText();
         }
     }
     qDebug() << "not point terminal??";

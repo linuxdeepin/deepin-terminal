@@ -4,8 +4,6 @@
     Copyright (C) 2006-2007 by Robert Knight <robertknight@gmail.com>
     Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
 
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -20,6 +18,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301  USA.
+
+    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
 */
 
 // Own
@@ -129,6 +129,11 @@ Session::Session(QObject* parent) :
     _monitorTimer = new QTimer(this);
     _monitorTimer->setSingleShot(true);
     connect(_monitorTimer, SIGNAL(timeout()), this, SLOT(monitorTimerDone()));
+
+    // 定时更新term信息 => 目前为了更新标签标题信息
+    _updateTimer = new QTimer(this);
+    connect(_updateTimer, &QTimer::timeout, this, &Session::onUpdateTitleArgs);
+    _updateTimer->start(500);
 }
 
 WId Session::windowId() const
@@ -161,6 +166,20 @@ void Session::setCodec(QTextCodec * codec)
 void Session::setProgram(const QString & program)
 {
     _program = ShellCommand::expand(program);
+    if (_program.endsWith(QStringLiteral("/dash"))
+            || _program.endsWith(QStringLiteral("/sh"))) {
+        _updateTimer->setInterval(10);
+
+        //用于更改updateTimer的时间间隔，防止CPU占用太高
+        QTimer *monitorUpdateTimer = new QTimer(this);
+        monitorUpdateTimer->setSingleShot(true);
+        monitorUpdateTimer->start(500);
+        connect(monitorUpdateTimer, &QTimer::timeout, this, [this] {
+            if (_updateTimer->interval() < 500) {
+                _updateTimer->setInterval(500);
+            }
+        });
+    }
 }
 void Session::setInitialWorkingDirectory(const QString & dir)
 {
@@ -188,8 +207,8 @@ void Session::addView(TerminalDisplay * widget)
                  SLOT(sendKeyEvent(QKeyEvent *)) );
         connect( widget , SIGNAL(mouseSignal(int,int,int,int)) , _emulation ,
                  SLOT(sendMouseEvent(int,int,int,int)) );
-        connect( widget , SIGNAL(sendStringToEmu(const char *)) , _emulation ,
-                 SLOT(sendString(const char *)) );
+        // 先判断是否有远程连接,若有,则连接远程
+        // connect(widget, SIGNAL(sendStringToEmu(const char *)), _emulation, SLOT(sendString(const char *)));
 
         // allow emulation to notify view when the foreground process
         // indicates whether or not it is interested in mouse signals
@@ -226,7 +245,53 @@ void Session::viewDestroyed(QObject * view)
     removeView(display);
 }
 
-void Session::removeView(TerminalDisplay * widget)
+/*******************************************************************************
+ 1. @函数:    onUpdateTitleArgs
+ 2. @作者:    ut000610 戴正文
+ 3. @日期:    2020-12-02
+ 4. @说明:    更新标签标题参数
+*******************************************************************************/
+void Session::onUpdateTitleArgs()
+{
+    ProcessInfo *process = getProcessInfo();
+
+    // format tab titles using process info
+    bool ok = false;
+
+    // 用户名 %u
+    QString userName = process->userName();
+    if (_userName != userName) {
+        _userName = userName;
+        emit titleArgsChange(QLatin1String("%u"), _userName);
+    }
+
+    //title.replace(QLatin1String("%h"), Konsole::ProcessInfo::localHost());
+    // 程序名 %n
+    QString programName = process->name(&ok);
+    if (_programName != programName) {
+        _programName = programName;
+        emit titleArgsChange(QLatin1String("%n"), _programName);
+    }
+
+
+    // 获取当前目录 %D
+    QString dir = _reportedWorkingUrl.toLocalFile();
+    ok = true;
+    if (dir.isEmpty()) {
+        // update current directory from process
+        updateWorkingDirectory();
+        // Previous process may have been freed in updateSessionProcessInfo()
+        process = getProcessInfo();
+        dir = process->currentDir(&ok);
+    }
+    if (_currentDir != dir) {
+        _currentDir = dir;
+        emit titleArgsChange(QLatin1String("%D"), _currentDir);
+    }
+
+}
+
+void Session::removeView(TerminalDisplay *widget)
 {
     _views.removeAll(widget);
 
@@ -268,20 +333,29 @@ void Session::run()
 
     // here we expect full path. If there is no fullpath let's expect it's
     // a custom shell (eg. python, etc.) available in the PATH.
-    if (exec.startsWith(QLatin1Char('/')) || exec.isEmpty())
-    {
-        const QString defaultShell{QLatin1String("/bin/sh")};
+    QString programPath = exec;
+    if (exec.startsWith(QLatin1Char('/')) || exec.isEmpty()) {
+        const QString defaultShell{QLatin1String("/bin/bash")};
 
         QFile excheck(exec);
-        if ( exec.isEmpty() || !excheck.exists() ) {
+#if 0 // 下一期优化
+        // exec是空的，或者文件不存在，则替换exec为$SHELL
+        if (exec.isEmpty() || !excheck.exists()) {
             exec = QString::fromLocal8Bit(qgetenv("SHELL"));
         }
         excheck.setFileName(exec);
-
-        if ( exec.isEmpty() || !excheck.exists() ) {
+#endif
+        // SHELL是空的，或者文件不存在，则替换exec为/bin/sh
+        if (exec.isEmpty() || !excheck.exists()) {
             qWarning() << "Neither default shell nor $SHELL is set to a correct path. Fallback to" << defaultShell;
             exec = defaultShell;
         }
+
+    }
+
+    if (programPath != exec) {
+        // 说明有文件不存在，取最后找到的文件进行替换
+        emit shellWarningMessage(exec, true);
     }
 
     // _arguments sometimes contain ("") so isEmpty()
@@ -327,6 +401,8 @@ void Session::run()
         sendText(infoText);
         _userTitle = QString::fromLatin1("Session crashed");
         emit titleChanged();
+        emit shellWarningMessage(exec, false);
+        qWarning() << _shellProcess->errorString();
         return;
     }
 
@@ -417,7 +493,10 @@ void Session::setUserTitle( int what, const QString & caption )
         return;
     }
 
-    if ( modified ) {
+    if (modified) {
+        // 标签标题变化前更新标签标题参数
+        onUpdateTitleArgs();
+        // 标签标题有变化，发送信号通知terminal
         emit titleChanged();
     }
 }
@@ -561,7 +640,7 @@ void Session::refresh()
 
 bool Session::sendSignal(int signal)
 {
-    int result = ::kill(_shellProcess->pid(),signal);
+    int result = ::kill(static_cast<pid_t>(_shellProcess->processId()),signal);
 
      if ( result == 0 )
      {
@@ -1037,7 +1116,7 @@ int Session::foregroundProcessId()
 bool Session::isForegroundProcessActive()
 {
     // foreground process info is always updated after this
-    return (_shellProcess->pid() != _shellProcess->foregroundProcessGroup());
+    return (_shellProcess->processId() != _shellProcess->foregroundProcessGroup());
 }
 
 QString Session::foregroundProcessName()
@@ -1057,7 +1136,7 @@ QString Session::foregroundProcessName()
 
 int Session::processId() const
 {
-    return _shellProcess->pid();
+    return static_cast<int>(_shellProcess->processId());
 }
 
 ProcessInfo *Session::getProcessInfo()

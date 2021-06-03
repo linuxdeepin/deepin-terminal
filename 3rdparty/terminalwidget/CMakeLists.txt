@@ -44,7 +44,8 @@ if(USE_UTF8PROC)
     find_package(Utf8Proc REQUIRED)
 endif()
 
-include(LXQtPreventInSourceBuilds)
+#注释掉下面这行，否则无法支持命令行cmake构建
+#include(LXQtPreventInSourceBuilds)
 include(LXQtTranslateTs)
 include(LXQtCompilerSettings NO_POLICY_SCOPE)
 include(LXQtCreatePkgConfigFile)
@@ -64,9 +65,21 @@ set(TERMINALWIDGET_LIBRARY_NAME terminalwidget5)
 set(SRCS
     lib/BlockArray.cpp
     lib/ColorScheme.cpp
+    lib/CharacterFormat.cpp
     lib/Emulation.cpp
     lib/Filter.cpp
-    lib/History.cpp
+    lib/history/HistoryFile.cpp
+    lib/history/HistoryScroll.cpp
+    lib/history/HistoryScrollFile.cpp
+    lib/history/HistoryScrollNone.cpp
+    lib/history/HistoryType.cpp
+    lib/history/HistoryTypeFile.cpp
+    lib/history/HistoryTypeNone.cpp
+    lib/history/compact/CompactHistoryBlock.cpp
+    lib/history/compact/CompactHistoryBlockList.cpp
+    lib/history/compact/CompactHistoryLine.cpp
+    lib/history/compact/CompactHistoryScroll.cpp
+    lib/history/compact/CompactHistoryType.cpp
     lib/HistorySearch.cpp
     lib/KeyboardTranslator.cpp
     lib/konsole_wcwidth.cpp
@@ -93,6 +106,18 @@ set(SRCS
 set(HDRS
     lib/Emulation.h
     lib/Filter.h
+    lib/history/HistoryFile.h
+    lib/history/HistoryScroll.h
+    lib/history/HistoryScrollFile.h
+    lib/history/HistoryScrollNone.h
+    lib/history/HistoryType.h
+    lib/history/HistoryTypeFile.h
+    lib/history/HistoryTypeNone.h
+    lib/history/compact/CompactHistoryBlock.h
+    lib/history/compact/CompactHistoryBlockList.h
+    lib/history/compact/CompactHistoryLine.h
+    lib/history/compact/CompactHistoryScroll.h
+    lib/history/compact/CompactHistoryType.h
     lib/HistorySearch.h
     lib/kprocess.h
     lib/kptydevice.h
@@ -119,7 +144,18 @@ set(HDRS_DISTRIB
     lib/Filter.h
     lib/Session.h
     lib/SessionManager.h
-    lib/History.h
+    lib/history/HistoryFile.h
+    lib/history/HistoryScroll.h
+    lib/history/HistoryScrollFile.h
+    lib/history/HistoryScrollNone.h
+    lib/history/HistoryType.h
+    lib/history/HistoryTypeFile.h
+    lib/history/HistoryTypeNone.h
+    lib/history/compact/CompactHistoryBlock.h
+    lib/history/compact/CompactHistoryBlockList.h
+    lib/history/compact/CompactHistoryLine.h
+    lib/history/compact/CompactHistoryScroll.h
+    lib/history/compact/CompactHistoryType.h
     lib/BlockArray.h
     lib/Character.h
     lib/CharacterColor.h
@@ -158,6 +194,10 @@ lxqt_translate_ts(TERMINALWIDGET_QM
 
 add_library(${TERMINALWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS} ${TERMINALWIDGET_QM})
 target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME} Qt5::Widgets)
+if (USE_TEST)
+    #仅在单元测试模式下设置fvisibility为default
+    target_compile_options(${TERMINALWIDGET_LIBRARY_NAME} PUBLIC "-fvisibility=default")
+endif()
 set_target_properties( ${TERMINALWIDGET_LIBRARY_NAME} PROPERTIES
                        SOVERSION ${TERMINALWIDGET_VERSION_MAJOR}
                        VERSION ${TERMINALWIDGET_VERSION}
@@ -284,18 +324,6 @@ lxqt_create_pkgconfig_file(
     COMPONENT Devel
 )
 
-configure_file(
-    "${PROJECT_SOURCE_DIR}/cmake/${TERMINALWIDGET_LIBRARY_NAME}-config.cmake.in"
-    "${CMAKE_BINARY_DIR}/${TERMINALWIDGET_LIBRARY_NAME}-config.cmake"
-    @ONLY
-)
-
-install(FILES
-    "${CMAKE_BINARY_DIR}/${TERMINALWIDGET_LIBRARY_NAME}-config.cmake"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${TERMINALWIDGET_LIBRARY_NAME}"
-    COMPONENT Devel
-)
-
 install(TARGETS ${TERMINALWIDGET_LIBRARY_NAME}
     DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     EXPORT "${TERMINALWIDGET_LIBRARY_NAME}-targets"
@@ -309,28 +337,3 @@ export(TARGETS ${TERMINALWIDGET_LIBRARY_NAME}
     EXPORT_LINK_INTERFACE_LIBRARIES
 )
 # end of main library
-
-
-# example application
-if(BUILD_EXAMPLE)
-    set(EXAMPLE_SRC example/main.cpp)
-    add_executable(example ${EXAMPLE_SRC})
-    target_link_libraries(example ${TERMINALWIDGET_LIBRARY_NAME})
-endif()
-# end of example application
-
-# python binding
-if (TERMINALWIDGET_BUILD_PYTHON_BINDING)
-    add_subdirectory(pyqt)
-endif()
-# end of python binding
-
-
-CONFIGURE_FILE(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY
-)
-ADD_CUSTOM_TARGET(uninstall
-    "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-)

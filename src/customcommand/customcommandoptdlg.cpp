@@ -373,7 +373,7 @@ void CustomCommandOptDlg::initCommandFromClipBoardText()
     if (m_commandLineEdit) {
         MainWindow *main = Utils::getMainWindow(this);//;getMainWindow();
         if (main != nullptr) {
-            QString clipText = main->selectedText(true);
+            QString clipText = main->selectedText();
             m_commandLineEdit->setText(clipText.trimmed());
         }
     }
