@@ -39,7 +39,7 @@
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
-Settings *Settings::m_settings_instance = new Settings();
+Settings *Settings::m_settings_instance = nullptr;
 DComboBox *Settings::comboBox = nullptr;
 DComboBox *Settings::g_shellConfigCombox = nullptr;
 
@@ -53,6 +53,10 @@ Settings::Settings() : QObject(qApp)
 
 Settings *Settings::instance()
 {
+    if(nullptr == m_settings_instance) {
+        m_settings_instance = new Settings();
+        m_settings_instance->init();
+    }
     return m_settings_instance;
 }
 
@@ -325,6 +329,14 @@ void Settings::initConnection()
     connect(remoteTabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit remoteTabFormatChanged(value.toString());
     });
+}
+
+void Settings::releaseInstance()
+{
+    if(nullptr == m_settings_instance) {
+        delete m_settings_instance;
+        m_settings_instance = nullptr;
+    }
 }
 
 qreal Settings::opacity() const

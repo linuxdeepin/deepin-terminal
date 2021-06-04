@@ -43,8 +43,6 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
         //Add by ut001000 renfeixiang 2020-11-16 开始从上到下的动画
         m_quakeWindow->topToBottomAnimation();
         m_quakeWindow->activateWindow();
-        // 雷神创建的第一个时候，m_quakeWindow仍为null，需要在这里更正一下．
-        Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
         return;
     }
     // Alt+F2的显隐功能实现点
@@ -156,14 +154,9 @@ int WindowsManager::widgetCount() const
 void WindowsManager::terminalCountIncrease()
 {
     ++m_widgetCount;
-    // 雷神首次创建的时候m_quakeWindow　= nullptr,　统计数据会多出来一个,后面流程会修正．
-    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
-    qInfo() << "++ Terminals Count : " << m_widgetCount;
 }
 
 void WindowsManager::terminalCountReduce()
 {
     --m_widgetCount;
-    Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
-    qInfo() << "-- Terminals Count : " << m_widgetCount;
 }

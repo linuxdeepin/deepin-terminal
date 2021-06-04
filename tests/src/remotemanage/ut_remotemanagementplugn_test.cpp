@@ -40,7 +40,6 @@ UT_RemoteManagementPlugin_Test::UT_RemoteManagementPlugin_Test()
 void UT_RemoteManagementPlugin_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

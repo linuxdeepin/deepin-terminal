@@ -54,44 +54,7 @@ void UT_Service_Test::TearDown()
 }
 
 #ifdef UT_SERVICE_TEST
-TEST_F(UT_Service_Test, ServiceTest)
-{
-    m_service->setMemoryEnable(true);
 
-    bool bMemoryEnable = m_service->getMemoryEnable();
-    EXPECT_EQ(bMemoryEnable, true);
-
-    int shareMemoryCount = m_service->getShareMemoryCount();
-    qDebug() << "shareMemoryCount" << shareMemoryCount << endl;
-//    EXPECT_EQ(shareMemoryCount, 0);
-
-    const int UPDATE_COUNT = 2;
-    m_service->updateShareMemoryCount(UPDATE_COUNT);
-    shareMemoryCount = m_service->getShareMemoryCount();
-    EXPECT_EQ(shareMemoryCount, UPDATE_COUNT);
-
-    //暂时不测试释放共享内存操作，因为其他地方已经自动调用了，再次释放会crash
-//    if (!m_service->m_enableShareMemory->lock())
-//    {
-//        m_service->releaseShareMemory();
-//    }
-}
-
-TEST_F(UT_Service_Test, getSubAppStartTime)
-{
-    qint64 startTime = 5;
-    m_service->setSubAppStartTime(startTime);
-
-    m_service->getSubAppStartTime();
-}
-
-TEST_F(UT_Service_Test, setSubAppStartTime)
-{
-    qint64 startTime = 10;
-    m_service->setSubAppStartTime(startTime);
-
-    m_service->getSubAppStartTime();
-}
 
 TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
 {
@@ -130,13 +93,6 @@ TEST_F(UT_Service_Test, getsetIsDialogShow)
 
 //    m_service->setIsDialogShow(nullptr, true);
 //    EXPECT_EQ(m_service->getIsDialogShow(), true);
-}
-
-TEST_F(UT_Service_Test, getEnable)
-{
-    qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    bool isEnable = m_service->getEnable(startTime);
-    EXPECT_EQ(isEnable, false);
 }
 
 TEST_F(UT_Service_Test, getEntryTime)
@@ -255,18 +211,6 @@ TEST_F(UT_Service_Test, Entry)
     int widgetCount = WindowsManager::instance()->widgetCount();
     m_service->Entry(QStringList() << "");
     EXPECT_EQ(WindowsManager::instance()->widgetCount(), widgetCount + 1);
-}
-
-/*******************************************************************************
- 1. @函数:    getMemoryEnable
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-12-04
- 4. @说明:    获取是否允许继续创建窗口
-*******************************************************************************/
-TEST_F(UT_Service_Test, getMemoryEnable)
-{
-    // 此时没有窗口新建，应该得到true
-    EXPECT_EQ(m_service->getMemoryEnable(), true);
 }
 
 /*******************************************************************************

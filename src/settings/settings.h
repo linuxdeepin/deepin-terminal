@@ -46,17 +46,17 @@ class Settings : public QObject
 public:
     static Settings *instance();
     ~Settings();
-    /**
-     * @brief 设置界面初始化
-     * @author ut001121 zhangmeng
-     */
-    void init();
 
     /**
      * @brief 设置界面初始化连接
      * @author ut001121 zhangmeng
      */
     void initConnection();
+
+    /**
+     * @brief 释放settings实例
+     */
+    static void releaseInstance();
 
     /**
      * @brief 设置界面获取透明度的值
@@ -298,6 +298,13 @@ signals:
     void tabFormatChanged(const QString &tabFormat);
     // 设置中的远程标签标题格式变化
     void remoteTabFormatChanged(const QString &remoteTabFormat);
+
+private:
+    /**
+     * @brief 设置界面初始化
+     * @author ut001121 zhangmeng
+     */
+    void init();
 
 private:
     Settings();

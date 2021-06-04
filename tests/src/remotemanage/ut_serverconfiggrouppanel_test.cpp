@@ -39,7 +39,6 @@ UT_ServerConfigGroupPanel_Test::UT_ServerConfigGroupPanel_Test()
 void UT_ServerConfigGroupPanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

@@ -41,7 +41,6 @@ UT_EncodeListView_Test::UT_EncodeListView_Test()
 void UT_EncodeListView_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

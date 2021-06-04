@@ -40,7 +40,6 @@ UT_PageSearchBar_Test::UT_PageSearchBar_Test()
 void UT_PageSearchBar_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

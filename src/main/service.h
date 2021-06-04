@@ -43,15 +43,6 @@ using WMSwitcher = com::deepin::WMSwitcher;
 #define WMSwitcherPath "/com/deepin/WMSwitcher"
 
 /**
- * @brief 共享内存的数据结构
- */
-struct ShareMemoryInfo {
-    int     enableCreateTerminal = 0; //是否允许创建终端
-    int     terminalsCount       = 0; //当前终端启东的数量
-    qint64  appStartTime         = 0; //sub app 启动的时间
-};
-
-/**
  * @brief 全局的后台服务类
  *        管理所有底层数据的加载
  *        管理所有特殊的通知信号
@@ -71,11 +62,6 @@ public:
      * @brief 释放
      */
     static void releaseInstance();
-
-    /**
-     * @brief 初始化
-     */
-    void init();
 
     /**
      * @brief 初始化设置框，在窗口现实后初始化，使第一次出现设置框不至于卡顿
@@ -146,55 +132,6 @@ public:
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
 
     /**
-     * @brief 子进程获取是否可以创建窗口许可，获取到权限立即将标志位置为false
-              增加子进程启动的时间，如果可以创建，把该时间写入共享内存，当创建mainwindow的时候，取走这个数据
-     * @param time
-     * @return
-     */
-    bool getEnable(qint64 time);
-
-    /**
-     * @brief 设置子进程启动时间到共享内存
-     */
-    void setSubAppStartTime(qint64);
-
-    /**
-     * @brief 获取子进程在共享的启动时间
-     * @return
-     */
-    qint64 getSubAppStartTime();
-
-    /**
-     * @brief ShareMemoryCount这个为当前总的终端数，但是雷神创建的第一个不包括在内
-     * @param count 总的终端数
-     */
-    void updateShareMemoryCount(int count);
-
-    /**
-     * @brief 获取共享内存计数
-     * @return
-     */
-    int  getShareMemoryCount();
-
-    /**
-     * @brief 设置共享内存信息
-     * @param enable 1=true(主进程), 0=false(主进程首次或子进程获得许可以后)
-     * @return
-     */
-    bool setMemoryEnable(bool enable);
-
-    /**
-     * @brief 获取共享内存标志， 1=true,0=false
-     * @return
-     */
-    bool getMemoryEnable();
-
-    /**
-     * @brief 释放共享内存连接
-     */
-    void releaseShareMemory();
-
-    /**
      * @brief 判断当前是否开启窗口特效,  开启-true 关闭-false
      * @return
      */
@@ -214,6 +151,17 @@ public:
      * @brief 获取shells的map,不读取/etc/shells
      */
     QMap<QString, QString> shellsMap();
+
+    /**
+     * @brief 设置主程序是否启动
+     * @param started 是否启动
+     */
+    void setMainTerminalIsStarted(bool started);
+
+    /**
+     * @brief 主程序是否启动
+     */
+    bool mainTerminalIsStarted();
 
 signals:
     /**
@@ -260,6 +208,13 @@ public slots:
      * @param arguments
      */
     void Entry(QStringList arguments);
+
+    /**
+     * @brief 创建窗口的入口
+     * @param arguments 参数
+     * @param isMain 是否主程序
+     */
+    void EntryTerminal(QStringList arguments, bool isMain = true);
 
     /**
      * @brief 对桌面工作区切换事件的处理
@@ -312,6 +267,11 @@ private:
      */
     void listenWindowEffectSwitcher();
 
+    /**
+     * @brief 初始化
+     */
+    void init();
+
 private:
     static Service             *g_pService;
     DSettingsDialog            *m_settingDialog                     = nullptr;// 设置框 全局唯一显示
@@ -321,10 +281,9 @@ private:
     DDialog                    *m_settingShortcutConflictDialog     = nullptr;// 设置框，快捷键冲突弹窗
     bool                        m_isDialogShow                      = false;  // 雷神用来判断是否有弹窗显示
     bool                        m_enable                            = false;  // 是否允许创建新的窗口
-    QSharedMemory              *m_enableShareMemory                 = nullptr;
-    ShareMemoryInfo            *m_pShareMemoryInfo                  = nullptr;// 这个指针实际上与上面指针指向同一地址，不需要二次释放
     QMap<QString, QString>      m_shellsMap;
     qint64                      m_entryTime                         = 0;      // 记录进入的时间，只有创建窗口时，才会来取用这个时间
+    bool                        m_mainTerminalIsStarted             = false;
 };
 
 #endif // SERVICE_H

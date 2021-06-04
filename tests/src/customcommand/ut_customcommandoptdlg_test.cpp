@@ -106,7 +106,6 @@ TEST_F(UT_CustomCommandOptDlg_Test, addCancelConfirmButtonsTest)
     EXPECT_NE(cmdDlg.m_cancelBtn, nullptr);
     EXPECT_NE(cmdDlg.m_confirmBtn, nullptr);
 
-    Settings::instance()->init();
     cmdDlg.m_shortCutLineEdit->setKeySequence(QKeySequence("Ctrl+T"));
     emit cmdDlg.m_cancelBtn->clicked(true);
     emit cmdDlg.m_confirmBtn->clicked(true);

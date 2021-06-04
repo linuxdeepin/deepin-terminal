@@ -38,7 +38,6 @@ void UT_Customcommandplugin_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool())
     {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
     m_cmdPlugin = new CustomCommandPlugin;

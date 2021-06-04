@@ -48,7 +48,6 @@ UT_RemoteManagementSearchPanel_Test::UT_RemoteManagementSearchPanel_Test()
 void UT_RemoteManagementSearchPanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

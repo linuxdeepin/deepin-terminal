@@ -40,7 +40,6 @@ void UT_EncodePanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool())
     {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

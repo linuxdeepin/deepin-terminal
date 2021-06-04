@@ -43,6 +43,7 @@ public:
     //用于做一些清理操作
     virtual void TearDown();
 
+private:
     Service *m_service = nullptr;
 };
 

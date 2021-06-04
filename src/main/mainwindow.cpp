@@ -129,8 +129,6 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     static int id = 0;
     m_MainWindowID = ++id;
-    // 首先到 “此刻的共享内存”里面找，如果找不到内容，说明这个不是子进程
-    m_ReferedAppStartTime = Service::instance()->getSubAppStartTime();
     if (0 == m_ReferedAppStartTime) {
         // 主进程的启动时间存在APP中
         TerminalApplication *app = static_cast<TerminalApplication *>(qApp);
@@ -938,7 +936,7 @@ void MainWindow::onTermTitleChanged(QString title)
     // 判定第一次修改标题的时候，认为终端已经创建成功
     // 以此认为第一次打开终端窗口结束，记录时间
     if (!hasCreateFirstTermialComplete) {
-        Service::instance()->setMemoryEnable(true);
+        Service::instance()->setMainTerminalIsStarted(true);
         firstTerminalComplete();
         hasCreateFirstTermialComplete = true;
     }
@@ -1937,13 +1935,15 @@ void MainWindow::executeDownloadFile()
 void MainWindow::pressCtrlAt()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_At, Qt::ControlModifier);
-    QApplication::sendEvent(focusWidget(), &keyPress);
+    if(focusWidget())
+        QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
 void MainWindow::pressCtrlU()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
-    QApplication::sendEvent(focusWidget(), &keyPress);
+    if(focusWidget())
+        QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
 void MainWindow::sleep(int msec)
@@ -1959,7 +1959,8 @@ void MainWindow::sleep(int msec)
 void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
-    QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
+    if(focusWidget())
+        QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
 }
 
 void MainWindow::createWindowComplete()
@@ -3049,7 +3050,7 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
             // 延时发送,避免resize过于频繁,导致titlebar抖动
             m_resizeTimer->start(5);
             break;
-        // 若没到边缘或者到边缘还没点击
+            // 若没到边缘或者到边缘还没点击
         default:
             // 判断鼠标位置
             if (qAbs(margin) < QUAKE_EDGE) {

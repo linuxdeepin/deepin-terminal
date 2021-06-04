@@ -37,6 +37,7 @@
 #include <QDesktopWidget>
 #include <QtConcurrent/QtConcurrent>
 #include <QKeyEvent>
+#include <QShortcut>
 
 
 UT_SwitchThemeMenu_Test::UT_SwitchThemeMenu_Test()
@@ -209,11 +210,11 @@ TEST_F(UT_MainWindow_Test, focusPage)
     TermWidgetPage *tabPage = m_normalWindow->getPageByIdentifier(firstTabId);
     EXPECT_NE(tabPage, nullptr);
 
-//#ifdef ENABLE_UI_TEST
-//    QTest::qWait(UT_WAIT_TIME);
-//    //只有在开启UI测试的模式下，才能判断焦点
-//    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
-//#endif
+    //#ifdef ENABLE_UI_TEST
+    //    QTest::qWait(UT_WAIT_TIME);
+    //    //只有在开启UI测试的模式下，才能判断焦点
+    //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
+    //#endif
 }
 
 
@@ -227,11 +228,11 @@ TEST_F(UT_MainWindow_Test, focusCurrentPage)
     TermWidgetPage *tabPage = m_normalWindow->getPageByIdentifier(firstTabId);
     EXPECT_NE(tabPage, nullptr);
 
-//#ifdef ENABLE_UI_TEST
-//    QTest::qWait(UT_WAIT_TIME);
-//    //只有在开启UI测试的模式下，才能判断焦点
-//    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
-//#endif
+    //#ifdef ENABLE_UI_TEST
+    //    QTest::qWait(UT_WAIT_TIME);
+    //    //只有在开启UI测试的模式下，才能判断焦点
+    //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
+    //#endif
 }
 
 TEST_F(UT_MainWindow_Test, showPlugin)
@@ -340,11 +341,11 @@ TEST_F(UT_MainWindow_Test, quake_focusPage)
     TermWidgetPage *tabPage = m_quakeWindow->getPageByIdentifier(firstTabId);
     EXPECT_NE(tabPage, nullptr);
 
-//#ifdef ENABLE_UI_TEST
-//    QTest::qWait(UT_WAIT_TIME);
-//    //只有在开启UI测试的模式下，才能判断焦点
-//    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
-//#endif
+    //#ifdef ENABLE_UI_TEST
+    //    QTest::qWait(UT_WAIT_TIME);
+    //    //只有在开启UI测试的模式下，才能判断焦点
+    //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
+    //#endif
 }
 
 TEST_F(UT_MainWindow_Test, quake_focusCurrentPage)
@@ -357,11 +358,11 @@ TEST_F(UT_MainWindow_Test, quake_focusCurrentPage)
     TermWidgetPage *tabPage = m_quakeWindow->getPageByIdentifier(firstTabId);
     EXPECT_NE(tabPage, nullptr);
 
-//#ifdef ENABLE_UI_TEST
-//    QTest::qWait(UT_WAIT_TIME);
-//    //只有在开启UI测试的模式下，才能判断焦点
-//    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
-//#endif
+    //#ifdef ENABLE_UI_TEST
+    //    QTest::qWait(UT_WAIT_TIME);
+    //    //只有在开启UI测试的模式下，才能判断焦点
+    //    EXPECT_EQ(tabPage->currentTerminal()->hasFocus(), true);
+    //#endif
 }
 
 TEST_F(UT_MainWindow_Test, quake_showPlugin)
@@ -710,7 +711,7 @@ TEST_F(UT_MainWindow_Test, hasRunningProcesses)
     mainWindow->currentPage()->sendTextToCurrentTerm("ping 127.0.0.1\n");
     bool running = mainWindow->hasRunningProcesses();
     qDebug() << "has running process :" << running;
-//    EXPECT_EQ(running, true);
+    //    EXPECT_EQ(running, true);
     delete mainWindow;
 }
 
@@ -1062,4 +1063,84 @@ TEST_F(UT_MainWindow_Test, slotShortcutRemoteManage)
     mainWindow->slotShortcutRemoteManage();
     delete mainWindow;
 }
+
+//MainWindow类的函数
+TEST_F(UT_MainWindow_Test, slotOptionButtonPressed)
+{
+    NormalWindow(TermProperties("/")).slotOptionButtonPressed();
+}
+
+//MainWindow类的函数
+TEST_F(UT_MainWindow_Test, slotClickNewWindowTimeout)
+{
+    qCritical()<< "会导致无限循环";
+    //NormalWindow(TermProperties("/")).slotClickNewWindowTimeout();
+}
+//MainWindow类的函数
+TEST_F(UT_MainWindow_Test, slotShortcutSwitchActivated)
+{
+    qCritical()<< "会导致崩溃";
+    //    NormalWindow(TermProperties("/")).slotShortcutSwitchActivated();
+}
+
+//MainWindow类的函数
+TEST_F(UT_MainWindow_Test, slotShortcutSelectUpperWorkspace)
+{
+    NormalWindow(TermProperties("/")).slotShortcutSelectUpperWorkspace();
+}
+
+//MainWindow类的函数
+TEST_F(UT_MainWindow_Test, slotShortcutFind)
+{
+    NormalWindow(TermProperties("/")).slotShortcutFind();
+}
+
+//调用一个新的进程，开启终端
+TEST_F(UT_MainWindow_Test, onCreateNewWindow)
+{
+    qCritical()<< "会导致无限循环";
+    //    NormalWindow(TermProperties("/")).onCreateNewWindow("/");
+}
+
+//MainWindow类的函数
+TEST_F(UT_MainWindow_Test, onShortcutSettingChanged)
+{
+   // NormalWindow w(TermProperties("/"));
+    //w.m_builtInShortcut["Ctrl+O"] = new QShortcut(QKeySequence("Ctrl+O"), &w);
+    //w.onShortcutSettingChanged("Ctrl+O");
+}
+
+TEST_F(UT_MainWindow_Test, onCommandActionTriggered)
+{
+    NormalWindow(TermProperties("/")).onCommandActionTriggered();
+}
+
+TEST_F(UT_MainWindow_Test, pressCtrlAt)
+{
+    NormalWindow(TermProperties("/")).pressCtrlAt();
+}
+
+TEST_F(UT_MainWindow_Test, pressEnterKey)
+{
+    NormalWindow(TermProperties("/")).pressEnterKey("");
+}
+
+TEST_F(UT_MainWindow_Test, pressCtrlU)
+{
+    NormalWindow(TermProperties("/")).pressCtrlU();
+}
+
+TEST_F(UT_MainWindow_Test, sleep)
+{
+    NormalWindow(TermProperties("/")).sleep(100);
+}
+
+TEST_F(UT_MainWindow_Test, slotWorkAreaResized)
+{
+    TermProperties arg("/");
+    arg[QuakeMode] = true;
+    QuakeWindow(arg).slotWorkAreaResized();
+}
+
+
 #endif

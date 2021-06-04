@@ -21,6 +21,7 @@
 #include "terminalapplication.h"
 #include "mainwindow.h"
 #include "service.h"
+#include "settings.h"
 
 // qt
 #include <QDebug>
@@ -53,6 +54,7 @@ TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication
 TerminalApplication::~TerminalApplication()
 {
     Service::releaseInstance();
+    Settings::releaseInstance();
 }
 
 void TerminalApplication::setStartTime(qint64 time)

@@ -39,7 +39,6 @@ DWIDGET_USE_NAMESPACE
 UT_TitleBar_Test::UT_TitleBar_Test()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

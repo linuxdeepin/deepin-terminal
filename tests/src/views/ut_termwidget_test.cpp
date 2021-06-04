@@ -39,7 +39,6 @@
 UT_TermWidget_Test::UT_TermWidget_Test()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

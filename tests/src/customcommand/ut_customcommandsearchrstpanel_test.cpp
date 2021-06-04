@@ -39,7 +39,6 @@ UT_CustomCommandSearchRstPanel_Test::UT_CustomCommandSearchRstPanel_Test()
 void UT_CustomCommandSearchRstPanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 

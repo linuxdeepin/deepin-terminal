@@ -56,15 +56,18 @@ void UT_ColorPushButton_Test::TearDown()
 TEST_F(UT_ColorPushButton_Test, paintEvent)
 {
     ColorPushButton colorPushBtn;
-    colorPushBtn.resize(200, 30);
-    QPaintEvent *event = new QPaintEvent(colorPushBtn.rect());
-
-    colorPushBtn.paintEvent(event);
-
+//    colorPushBtn.resize(200, 30);
+    colorPushBtn.grab();
     colorPushBtn.m_isFocus = true;
-    colorPushBtn.paintEvent(event);
+    colorPushBtn.grab();
+//    QPaintEvent *event = new QPaintEvent(colorPushBtn.rect());
 
-    delete event;
+//    colorPushBtn.paintEvent(event);
+
+//    colorPushBtn.m_isFocus = true;
+//    colorPushBtn.paintEvent(event);
+
+//    delete event;
 }
 
 /*******************************************************************************

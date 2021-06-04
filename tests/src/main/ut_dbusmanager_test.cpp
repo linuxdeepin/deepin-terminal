@@ -27,6 +27,7 @@
 UT_Dbusmanager_Test::UT_Dbusmanager_Test()
 {
     m_pDbusManager = new DBusManager();
+    m_pDbusManager->initDBus();
 }
 
 UT_Dbusmanager_Test::~UT_Dbusmanager_Test()
@@ -59,6 +60,12 @@ TEST_F(UT_Dbusmanager_Test, otherfailfont)
 {
     QStringList lstFont = m_pDbusManager->callAppearanceFont("otherfailfont");
     EXPECT_EQ(lstFont.size(), 0);
+}
+
+//唤醒终端
+TEST_F(UT_Dbusmanager_Test, callTerminal)
+{
+    m_pDbusManager->callTerminalEntry({"deepin-terminal", "-C", "void_script"});
 }
 
 

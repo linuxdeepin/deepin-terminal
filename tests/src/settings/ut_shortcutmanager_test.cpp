@@ -40,7 +40,6 @@ UT_ShortcutManager_Test::UT_ShortcutManager_Test()
 {
     //Service中默认已经初始化了ShortcutManager
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
