@@ -25,7 +25,6 @@
 #include "windowsmanager.h"
 #include "shortcutmanager.h"
 #include "settings.h"
-#include "atspidesktop.h"
 
 #include <DSettingsDialog>
 #include <DDialog>
@@ -148,8 +147,6 @@ private:
     QSharedMemory *m_enableShareMemory = nullptr;
     // 这个指针实际上与上面指针指向同一地址，不需要二次释放
     ShareMemoryInfo *m_pShareMemoryInfo = nullptr;
-    // 初始化和运行无障碍辅助工具的线程
-    AtspiDesktop *m_atspiThread = nullptr;
 
     // 记录进入的时间，只有创建窗口时，才会来取用这个时间
     qint64 m_EntryTime = 0;
