@@ -396,8 +396,15 @@ void Session::run()
 
     if (result < 0) {
         //qDebug() << "CRASHED! result: " << result<<arguments;
+        QString processError = _shellProcess->errorString();
+        processError = processError.mid(processError.indexOf(":") + 1).trimmed();
+        if(!processError.isEmpty())
+            processError = "(" +processError + ")";
+
         QString infoText = QString("There was an error creating the child process for this terminal. \n"
-                 "Failed to execute child process \"%1\"(No such file or directory)!").arg(exec);
+                 "Failed to execute child process \"%1\"%2!")
+                .arg(exec)
+                .arg(processError);
         sendText(infoText);
         _userTitle = QString::fromLatin1("Session crashed");
         emit titleChanged();
