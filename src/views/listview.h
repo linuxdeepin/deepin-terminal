@@ -52,6 +52,15 @@ enum ListType {
     ListType_Remote
 };
 
+enum ListFocusType {
+    ListFocusUp,
+    ListFocusDown,
+    ListFocusHome,
+    ListFocusEnd,
+    ListFocusPageUp,
+    ListFocusPageDown
+};
+
 class ServerConfigOptDlg;
 class CustomCommandOptDlg;
 class ListView : public QScrollArea
@@ -59,42 +68,173 @@ class ListView : public QScrollArea
     Q_OBJECT
 public:
     ListView(ListType type, QWidget *parent = nullptr);
+    /**
+     * @brief 析构，用于释放列表中的数据
+     * @author ut000610 戴正文
+     */
     ~ListView() override;
 
-    // 添加项
+    /**
+     * @brief 根据所给信息添加项
+     * @author ut000610 戴正文
+     * @param type 可执行的项
+     * @param key
+     * @param strDescription
+     */
     void addItem(ItemFuncType type, const QString &key, const QString &strDescription = "");
-    // 删除项
+    /**
+     * @brief 根据类型和key值移除项
+     * @author ut000610 戴正文
+     * @param type 类型
+     * @param key key值
+     * @return
+     */
     bool removeItem(ItemFuncType type, const QString &key);
-    // 更新选项
+    /**
+     * @brief 针对列表中的一项进行更新
+     * @author ut000610 戴正文
+     * @param type
+     * @param key
+     * @param newKey
+     * @param strDescription 新key值
+     * @return
+     */
     bool updateItem(ItemFuncType type, const QString &key, const QString &newKey, const QString &strDescription = "");
-    // 获取数量
+    /**
+     * @brief 获取列表中项的数量
+     * @author ut000610 戴正文
+     * @return
+     */
     int count();
-    // 清空数据
+    /**
+     * @brief 清空数据,刷新列表需要清空数据
+     * @author ut000610 戴正文
+     */
     void clearData();
-    // 根据名称获取index
+    /**
+     * @brief 根据名称获取现有列表的index
+     * @author ut000610 戴正文
+     * @param key
+     * @param type
+     * @return
+     */
     int indexFromString(const QString &key, ItemFuncType type = ItemFuncType_Item);
-    // 获取当前焦点位置
+    /**
+     * @brief 返回焦点选中的index
+     * @author ut000610 戴正文
+     * @return
+     */
     int currentIndex();
-    // 获取下一个的index
+    /**
+     * @brief 获取当前下一个的index 实质判断现在此index是否可用
+     * @author ut000610 戴正文
+     * @param index
+     * @return
+     */
     int getNextIndex(int index);
-    // 设置当前焦点
+    /**
+     * @brief 设置当前焦点
+     * @author ut000610 戴正文
+     * @param currentIndex 当前index
+     */
     void setCurrentIndex(int currentIndex);
-    // 清空焦点
+    /**
+     * @brief 清空焦点 清空index
+     * @author ut000610 戴正文
+     */
     void clearIndex();
-    // 切换焦点
-    void setFocusFromeIndex(int currentIndex, bool UpOrDown);
-    // 丢失焦点
+    /**
+     * @brief 根据index切换焦点
+     * @author ut000610 戴正文
+     * @param currentIndex 当前项的值
+     * @param focusType:ListFocusUp,向上;ListFocusDown, 向下;ListFocusHome, 第一个;ListFocusEnd,  最后一个;ListFocusPageUp, 向上翻页;ListFocusPageDown 向下翻页
+     */
+    void setFocusFromeIndex(int currentIndex, ListFocusType focusType);
+    /**
+     * @brief 因为上下键或者Tab丢失焦点
+     * @author ut000610 戴正文
+     * @param preIndex 丢失焦点前的项
+     */
     void lostFocus(int preIndex);
-    // 设置滚轮
+    /**
+     * @brief 将滚轮设置到当前项
+     * @author ut000610 戴正文
+     * @param currentIndex 当前项的值
+     */
     void setScroll(int currentIndex);
-    // 获取焦点状态
+    /**
+     * @brief 获得焦点状态
+     * @author ut000610 戴正文
+     * @return
+     */
     bool getFocusState() const;
-    // 设置焦点状态
+    /**
+     * @brief 设置焦点状态
+     * @author ut000610 戴正文
+     * @param focusState
+     */
     void setFocusState(bool focusState);
+    /**
+     * @brief 添加项到布局,根据类型进行数据的插入位置的选择，按type和key值，以及strDescription排序
+     * @author ut000610 戴正文
+     * @param itemWidget
+     * @return
+     */
+    int getWidgetIndex(ItemWidget *itemWidget);
 
 public slots:
-    // 列表项被修改
+    /**
+     * @brief 表项被修改，弹出弹窗给用户修改
+     * @param key Item项
+     * @param isFocusOn 是否有焦点
+     */
     void onItemModify(const QString &key, bool isFocusOn);
+
+private slots:
+    /**
+     * @brief 焦点切出
+     * @author ut000438 王亮
+     * @param type
+     */
+    void onFocusOut(Qt::FocusReason type);
+    /**
+     * @brief 列表项点击事件
+     * @author ut000438 王亮
+     */
+    void onItemClicked();
+    /**
+     * @brief 分组项被点击
+     * @author
+     * @param strName 分组项名称
+     * @param isFocus 是否有焦点
+     */
+    void onGroupClicked(const QString &strName, bool isFocus = false);
+
+    /**
+     * @brief 编辑自定义命令弹窗finished
+     * @author ut000438 王亮
+     * @param result
+     */
+    void onCustomCommandOptDlgFinished(int result);
+    /**
+     * @brief 删除自定义命令弹窗finished
+     * @author ut000438 王亮
+     * @param result
+     */
+    void onDeleteCustomCommandFinished(int result);
+
+    /**
+     * @brief 编辑远程服务器弹窗finished
+     * @author ut000438 王亮
+     * @param result
+     */
+    void onServerConfigOptDlgFinished(int result);
+    /**
+     * @brief 删除远程服务器弹窗finished
+     * @author ut000438 王亮
+     * @param result
+     */
+    void onDeleteServerDialogFinished(int result);
 
 signals:
     // 列表数量变化
@@ -109,13 +249,27 @@ signals:
     void focusOut(Qt::FocusReason type);
 
 protected:
-    // 键盘事件
+    /**
+     * @brief 键盘事件 对Tab和上下键进行处理
+     * @author ut000610 戴正文
+     * @param event 键盘事件
+     */
     void keyPressEvent(QKeyEvent *event) override;
-    // 焦点事件
+    /**
+     * @brief 焦点进入事件
+     * @author ut000610 戴正文
+     * @param event 焦点事件
+     */
     void focusInEvent(QFocusEvent *event) override;
-    // 鼠标移动
+    /**
+     * @brief 鼠标移动事件
+     * @author ut000610 戴正文
+     */
     void mouseMoveEvent(QMouseEvent *) override;
-    // 鼠标按下
+    /**
+     * @brief 鼠标按下事件
+     * @author ut000610 戴正文
+     */
     void mousePressEvent(QMouseEvent *) override;
 
 private:
@@ -138,19 +292,45 @@ private:
     // 列表项数据
     QList<ItemWidget *> m_itemList;
 
-    // 初始化界面
+    /**
+     * @brief 初始化UI界面,初始化列表，设置列表内布局，垂直布局，控件间隔10px
+     * @author ut000610 戴正文
+     */
     void initUI();
-    // 设置项图标
+    /**
+     * @brief 根据列表类型设置项图标,远程组图标 dt_server_group 远程服务器图标 dt_server 自定义图标 dt_command
+     * @author ut000610 戴正文
+     * @param type 列表类型
+     * @param item 列表项
+     */
     void setItemIcon(ItemFuncType type, ItemWidget *item);
-    // 添加项到布局
-    int getWidgetIndex(ItemWidget *itemWidget);
-    // 判断index的有效性
+    /**
+     * @brief 判断index的有效性
+     * @author ut000610 戴正文
+     * @param index
+     * @return
+     */
     bool indexIsValid(int index);
-    // 计算range
+    /**
+     * @brief 计算滚动条的range
+     * @author ut000610 戴正文
+     * @param height 高度
+     * @return
+     */
     int calculateRange(int height);
-    // 远程管理修改项
+    /**
+     * @brief 理远程管理修改项的弹窗操作
+     * @author ut000610 戴正文
+     * @param key 修改项
+     * @param isFocusOn 是否有焦点
+     */
     void onRemoteItemModify(const QString &key, bool isFocusOn);
-    // 自定义修改项
+    /**
+     * @brief 自定义修改项 修改自定义项处理弹窗的操作
+     * @author ut000610 戴正文
+     * @param key 修改项
+     * @param isFocusOn 是否有焦点
+     */
     void onCustomItemModify(const QString &key, bool isFocusOn);
 };
 

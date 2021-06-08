@@ -78,30 +78,96 @@ public:
     ItemWidget(ItemFuncType itemType, QWidget *parent = nullptr);
     ~ItemWidget();
 
-    // 设置图标
-    // 根据名称设置图标
+    /**
+     * @brief 根据名称设置图标(远程组图标 dt_server_group 远程服务器图标 dt_server 自定义图标 dt_command)
+     * @author ut000610 戴正文
+     * @param 图标名称
+     */
     void setIcon(const QString &icon);
-    // 设置功能图标
+    /**
+     * @brief 根据类型设置功能图标 (编辑 dt_edit 显示分组 dt_arrow_right)
+     * @author ut000610 戴正文
+     * @param 图标类型
+     */
     void setFuncIcon(ItemFuncType iconType);
-    // 设置文字
+    /**
+     * @brief 获取功能键类型
+     * @author ut000610 戴正文
+     * @return
+     */
+    ItemFuncType getFuncType();
+
+    /**
+     * @brief 设置文字内容
+     * @author ut000610 戴正文
+     * @param firstline 第一行信息
+     * @param secondline 第二行信息
+     */
     void setText(const QString &firstline, const QString &secondline = "");
-    // 是否匹配
+    /**
+     * @brief 获取第一行信息
+     * @author ut000438 王亮
+     * @return
+     */
+    const QString getFirstText();
+
+    /**
+     * @brief 是否匹配,判断是否是此widget
+     * @author ut000610 戴正文
+     * @param type 功能键类型
+     * @param key 值
+     * @return
+     */
     bool isEqual(ItemFuncType type, const QString &key);
-    // 获取焦点
+    /**
+     * @brief 获取焦点，显示编辑按钮, 这是键盘获取焦点
+     * @author ut000610 戴正文
+     */
     void getFocus();
-    // 丢失焦点
+    /**
+     * @brief 丢失焦点，显示编辑按钮
+     * @author ut000610 戴正文
+     */
     void lostFocus();
-    // 比较大小
+    /**
+     * @brief 重载比较 >  根据类型，文字比较大小
+     * @author ut000610 戴正文
+     * @param item1
+     * @param item2
+     * @return
+     */
     friend bool operator >(const ItemWidget &item1, const ItemWidget &item2);
+    /**
+     * @brief 重载比较 < 根据类型，文字比较大小
+     * @author ut000610 戴正文
+     * @param item1
+     * @param item2
+     * @return
+     */
     friend bool operator <(const ItemWidget &item1, const ItemWidget &item2);
 
 public slots:
-    // 处理功能键被点击的点击事件
+    /**
+     * @brief 处理功能键点击事件: 1) 分组=>显示分组所有的项 2) 项=>修改项
+     * @author ut000610 戴正文
+     */
     void onFuncButtonClicked();
-    // 处理图标被点击的事件
+    /**
+     * @brief 处理图标点击的事件: 1) 分组=>显示分组所有的项 2) 项=>修改项
+     * @author ut000610 戴正文
+     */
     void onIconButtonClicked();
-    // 处理焦点出事件
+    /**
+     * @brief 功能键丢失焦点，当前窗口获得焦点
+     * @author ut000610 戴正文
+     */
     void onFocusReback();
+
+    /**
+     * @brief 焦点从功能键切出，且不在当前控件上
+     * @author ut000610 戴正文
+     * @param type 类型
+     */
     void onFocusOut(Qt::FocusReason type);
 
 signals:
@@ -117,25 +183,71 @@ signals:
     void focusOut(Qt::FocusReason type);
 
 protected:
-    // 初始化UI界面
+    /**
+     * @brief 初始化UI界面,初始化单个窗口组件的布局和空间大小
+     * @author ut000610 戴正文
+     */
     void initUI();
-    // 初始化信号槽
+    /**
+     * @brief 初始化信号槽,关联信号槽
+     * @author ut000610 戴正文
+     */
     void initConnections();
-    // 处理重绘事件
+    /**
+     * @brief 处理重绘事件:1.字体变长便短导致的问题 2. 悬浮的背景色
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void paintEvent(QPaintEvent *event) override;
-    // 进入事件和出事件
+    /**
+     * @brief 进入，编辑按钮显示
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void enterEvent(QEvent *event) override;
+    /**
+     * @brief 移出，编辑按钮消失
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void leaveEvent(QEvent *event) override;
-    // 鼠标点击事件
+    /**
+     * @brief 鼠标点击事件,处理item的点击事件
+     * @author ut000610 戴正文
+     * @param event 鼠标点击事件
+     */
     void mousePressEvent(QMouseEvent *event) override;
+    /**
+     * @brief 处理item的点击事件
+     * @author ut000610 戴正文
+     * @param event 事件
+     */
     void mouseReleaseEvent(QMouseEvent *event) override;
-    // 事件过滤
+    /**
+     * @brief 事件过滤
+     * @author ut001121 张猛
+     * @param watched
+     * @param event 事件
+     * @return
+     */
     bool eventFilter(QObject *watched, QEvent *event) override;
-
-    // 键盘事件
+    /**
+     * @brief 键盘点击事件，处理右键操作
+     * @author ut000610 戴正文
+     * @param event 键盘点击事件
+     */
     void keyPressEvent(QKeyEvent *event) override;
-    // 焦点出入
+    /**
+     * @brief 焦点进入事件
+     * @author ut000610 戴正文
+     * @param event 焦点进入事件
+     */
     void focusInEvent(QFocusEvent *event) override;
+    /**
+     * @brief 焦点丢失事件
+     * @author ut000610 戴正文
+     * @param event 焦点丢失事件
+     */
     void focusOutEvent(QFocusEvent *event) override;
 
 private:
@@ -160,33 +272,62 @@ private:
     QString m_firstText = "";
     QString m_secondText = "";
     // 功能按键默认是编辑按钮
-    int m_functType;
+    ItemFuncType m_functType;
     // 焦点是否在窗口上 用于编辑按钮是否显示
     bool m_isFocus = false;
-  
+
     /***add begin by ut001121 zhangmeng 20200924 修复BUG48618***/
     //记录触摸屏下点击时Y轴坐标
     int m_touchPressPosY = 0;
     //记录触摸屏下滑动时Y轴移动最大距离
     int m_touchSlideMaxY = 0;
     // 移动事件来源
-    QObject* m_moveSource = nullptr;
+    QObject *m_moveSource = nullptr;
     /***add end by ut001121***/
 
-    // 设置文字大小和颜色
+    /**
+     * @brief 设置文字大小和颜色:给指定label设置初始化字体和颜色
+     * @param label 标签
+     * @param fontSize 字体大小
+     * @param colorType 颜色
+     */
     void setFont(DLabel *label, DFontSizeManager::SizeType fontSize, ItemTextColor colorType);
-    // 设置字体大小
+    /**
+     * @brief 设置字体大小
+     * @author ut000610 戴正文
+     * @param label 标签
+     * @param fontSize 字体大小
+     */
     void setFontSize(DLabel *label, DFontSizeManager::SizeType fontSize);
-    // 设置字体颜色
+    /**
+     * @brief 设置字体颜色
+     * @author ut000610 戴正文
+     * @param label 标签
+     * @param colorType 颜色
+     */
     void setFontColor(DLabel *label, ItemTextColor colorType);
-    // 返回指定颜色值
+    /**
+     * @brief 根据指定值，返回颜色
+     * @author ut000610 戴正文
+     * @param colorType 颜色
+     * @return
+     */
     QColor getColor(ItemTextColor colorType);
-    // 处理键盘事件
+    /**
+     * @brief 处理键盘事件: 右键操作，组 => 显示分组 项 => 设置焦点
+     * @author ut000610 戴正文
+     */
     void rightKeyPress();
-    // 项被点击
+    /**
+     * @brief 项被点击事件：根据类型发送不同的点击信号
+     * @author ut000610 戴正文
+     */
     void onItemClicked();
 private slots:
-    // 设置颜色随主题变化变化（部分组件不支持，需要手动变色）
+    /**
+     * @brief 部分组件随主题颜色变化而变化
+     * @param themeType 主题
+     */
     void slotThemeChange(DGuiApplicationHelper::ColorType themeType);
 };
 
