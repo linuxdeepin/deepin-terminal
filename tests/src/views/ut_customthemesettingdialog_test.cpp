@@ -21,6 +21,7 @@
 
 #include "ut_customthemesettingdialog_test.h"
 #include "customthemesettingdialog.h"
+#include "stub.h"
 
 // DTK
 #include <DTitlebar>
@@ -86,6 +87,10 @@ TEST_F(UT_ColorPushButton_Test, focusEvent)
     QFocusEvent focusIn(QEvent::FocusIn, Qt::TabFocusReason);
     colorPushBtn.focusInEvent(&focusIn);
 
+    QFocusEvent focusIn1(QEvent::FocusIn, Qt::ActiveWindowFocusReason);
+    colorPushBtn.m_isFocus = true;
+    colorPushBtn.focusInEvent(&focusIn1);
+
     // 焦点出
     QFocusEvent focusOut(QEvent::FocusOut, Qt::TabFocusReason);
     colorPushBtn.focusOutEvent(&focusOut);
@@ -142,6 +147,7 @@ TEST_F(UT_CustomThemeSettingDialog_Test, resetFocusState)
     // 重置焦点状态
     dialog.resetFocusState();
     EXPECT_EQ(dialog.m_darkRadioButton->focusPolicy(), Qt::TabFocus);
+    dialog.onSelectColor();
 }
 
 
@@ -153,6 +159,10 @@ TEST_F(UT_CustomThemeSettingDialog_Test, clearFocussSlot)
     customThemeSettingDialog->clearFocussSlot();
 
     delete customThemeSettingDialog;
+}
+
+QStringList ut_toStringList(){
+    return QStringList() << "1" << "2";
 }
 
 /*******************************************************************************
@@ -169,6 +179,8 @@ TEST_F(UT_CustomThemeSettingDialog_Test, loadConfiguration)
 
     // 最好能重新设置配置文件然后再加载调用的函数
     // 重新加载配置文件
+    Stub stub;
+    stub.set(ADDR(QVariant,toStringList),ut_toStringList);
     dialog.loadConfiguration();
     dialog.update();
 }

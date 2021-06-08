@@ -35,6 +35,7 @@
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 #include <QHostInfo>
+#include <QProcess>
 
 UT_TermWidget_Test::UT_TermWidget_Test()
 {
@@ -52,6 +53,15 @@ UT_TermWidget_Test::~UT_TermWidget_Test()
     delete m_normalWindow;
 }
 
+QStringList ut_TermWidget_toStringList(){
+    return QStringList() << "1" << "2";
+}
+
+bool ut_contains()
+{
+    return true;
+}
+
 #ifdef UT_TERMWIDGET_TEST
 TEST_F(UT_TermWidget_Test, TermWidgetTest)
 {
@@ -62,8 +72,11 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     EXPECT_EQ(currTermPage->isVisible(), true);
 
-    TermWidget *termWidget = currTermPage->m_currentTerm;
+    Stub stub;
+    stub.set(ADDR(QVariant,toStringList),ut_TermWidget_toStringList);
+    stub.set(ADDR(TermProperties,contains),ut_contains);
 
+    TermWidget *termWidget = currTermPage->m_currentTerm;
     bool isInRemoteServer = termWidget->isInRemoteServer();
     EXPECT_EQ(isInRemoteServer, false);
 
@@ -218,6 +231,23 @@ TEST_F(UT_TermWidget_Test, addMenuActions)
     termWidget->addMenuActions(pos);
 }
 
+TEST_F(UT_TermWidget_Test, onSetTerminalFont)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    termWidget->m_menu = new DMenu(termWidget);
+
+    QPoint pos(50, 50);
+    termWidget->onSetTerminalFont();
+    termWidget->onSig_matchFound();
+}
+
 TEST_F(UT_TermWidget_Test, onSettingValueChanged)
 {
     m_normalWindow->resize(800, 600);
@@ -251,6 +281,23 @@ TEST_F(UT_TermWidget_Test, search)
     termWidget->search("~", false, true);
 }
 
+TEST_F(UT_TermWidget_Test, onTermWidgetReceivedData)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+    termWidget->onTermWidgetReceivedData("Permission denied");
+    termWidget->onExitRemoteServer();
+    termWidget->onUrlActivated(QUrl(""),true);
+    termWidget->onWindowEffectEnabled(true);
+    termWidget->onWindowEffectEnabled(false);
+}
+
 TEST_F(UT_TermWidget_Test, onTouchPadSignal)
 {
     m_normalWindow->resize(800, 600);
@@ -263,6 +310,46 @@ TEST_F(UT_TermWidget_Test, onTouchPadSignal)
     TermWidget *termWidget = currTermPage->m_currentTerm;
     termWidget->onTouchPadSignal("pinch", "in", 2);
     termWidget->onTouchPadSignal("pinch", "out", 2);
+}
+
+TEST_F(UT_TermWidget_Test, wheelEvent)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+
+    QWheelEvent event(QPointF(QPoint(0,0)),QPointF(QPoint(0,0)),0,0,0,Qt::Horizontal);
+    QCoreApplication::sendEvent(termWidget,&event);
+}
+
+bool ut_process_startDetached()
+{
+    return false;
+}
+
+TEST_F(UT_TermWidget_Test, getFormatFileName)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+    EXPECT_EQ(m_normalWindow->isVisible(), true);
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    EXPECT_EQ(currTermPage->isVisible(), true);
+
+//    Stub stub;
+
+//    stub.set((bool (QProcess::*)(const QString))ADDR(QProcess,startDetached), ut_process_startDetached);
+
+    TermWidget *termWidget = currTermPage->m_currentTerm;
+//    termWidget->onOpenFileInFileManager();
+//    termWidget->getFormatFileName("\\");
+     termWidget->onShellMessage("",true);
+     termWidget->onShellMessage("",false);
 }
 
 TEST_F(UT_TermWidget_Test, showFlowMessage)
@@ -574,6 +661,7 @@ TEST_F(UT_TermWidget_Test, RemoteEncode)
     // 测试函数修改是否获取正确的值
     QString remoteEncode = "GBK";
     term->setRemoteEncode(remoteEncode);
+    term->getFilePath("/");
     EXPECT_EQ(term->RemoteEncode(), remoteEncode);
     // 测试直接修改变量是否获取正确的值
     remoteEncode = "UTF-8";

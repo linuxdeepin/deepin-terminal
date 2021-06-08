@@ -237,6 +237,8 @@ TEST_F(UT_ListView_Test, onCustomCommandOptDlgFinished)
 
     s.reset(ADDR(CustomCommandOptDlg, getCurCustomCmd));
     s.reset(ADDR(Service, setIsDialogShow));
+
+    listWidget.onGroupClicked("/",true);
 }
 
 ServerConfig* generateNewServerConfig()
@@ -299,6 +301,9 @@ TEST_F(UT_ListView_Test, onServerConfigOptDlgFinished)
     s.reset(ADDR(ServerConfigOptDlg, isDelServer));
 
     s.reset(ADDR(MainWindow, focusCurrentPage));
+
+    listWidget.onDeleteServerDialogFinished(DDialog::Accepted);
+    listWidget.onDeleteServerDialogFinished(DDialog::Rejected);
 }
 
 #endif

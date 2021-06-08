@@ -193,6 +193,16 @@ TEST_F(UT_ItemWidget_Test, onFuncButtonClicked)
     delete itemWidget;
 }
 
+TEST_F(UT_ItemWidget_Test, slotThemeChange)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->slotThemeChange(DApplicationHelper::LightType);
+
+    delete itemWidget;
+}
+
 TEST_F(UT_ItemWidget_Test, onIconButtonClicked)
 {
     ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
@@ -221,10 +231,14 @@ TEST_F(UT_ItemWidget_Test, onItemClicked)
 
     QObject *moveSource = new QObject();
     itemWidget->m_moveSource = moveSource;
+
+    itemWidget->m_functType = ItemFuncType_Group;
     itemWidget->onItemClicked();
 
     itemWidget->m_functType = ItemFuncType_Item;
     itemWidget->onItemClicked();
+
+    itemWidget->onFocusReback();
 
     delete moveSource;
     itemWidget->m_moveSource = nullptr;

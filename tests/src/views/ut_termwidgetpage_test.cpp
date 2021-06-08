@@ -33,6 +33,7 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QRect>
 #include <QtConcurrent/QtConcurrent>
 
 UT_TermWidgetPage_Test::UT_TermWidgetPage_Test()
@@ -148,6 +149,11 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
 
 }
 
+bool ut_term_hasRunningProcesses()
+{
+    return true;
+}
+
 TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
 {
     m_normalWindow->resize(800, 600);
@@ -161,6 +167,9 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
     currTermPage->split(Qt::Orientation::Horizontal);
     //测试关闭分屏
     currTermPage->closeSplit(currTermPage->currentTerminal(), true);
+    Stub stub;
+    stub.set(ADDR(TermWidget,hasRunningProcess),ut_term_hasRunningProcesses);
+    currTermPage->closeSplit(currTermPage->currentTerminal(), false);
 }
 
 TEST_F(UT_TermWidgetPage_Test, showRenameTitleDialog)
@@ -187,6 +196,30 @@ TEST_F(UT_TermWidgetPage_Test, setParentMainWindow)
     termWidgetPage.setParentMainWindow(m_normalWindow);
 }
 
+bool ut_showExitUninstallConfirmDialog(){
+    return false;
+}
+
+TEST_F(UT_TermWidgetPage_Test, handleUninstallTerminal)
+{
+    TermProperties termProperty;
+    termProperty[QuakeMode] = false;
+    termProperty[SingleFlag] = true;
+
+    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    termWidgetPage.resize(800, 600);
+    termWidgetPage.show();
+    Stub stub;
+    stub.set(ADDR(MainWindow,hasRunningProcesses),ut_term_hasRunningProcesses);
+    stub.set(ADDR(Utils,showExitUninstallConfirmDialog),ut_showExitUninstallConfirmDialog);
+    termWidgetPage.handleUninstallTerminal("");
+}
+
+int ut_runningTerminalCount()
+{
+    return 5;
+}
+
 TEST_F(UT_TermWidgetPage_Test, closeOtherTerminal)
 {
     TermProperties termProperty;
@@ -196,7 +229,8 @@ TEST_F(UT_TermWidgetPage_Test, closeOtherTerminal)
     TermWidgetPage termWidgetPage(termProperty, nullptr);
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
-
+    Stub stub;
+    stub.set(ADDR(TermWidgetPage,runningTerminalCount),ut_runningTerminalCount);
     termWidgetPage.closeOtherTerminal(true);
 }
 
@@ -228,6 +262,49 @@ TEST_F(UT_TermWidgetPage_Test, toggleShowSearchBar)
     currTermPage->toggleShowSearchBar();
 
     s.reset(ADDR(QTermWidget, toggleShowSearchBar));
+}
+
+bool ut_isQuakeMode()
+{
+    return true;
+}
+
+int ut_height()
+{
+    return 200;
+}
+
+TEST_F(UT_TermWidgetPage_Test, showSearchBar)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+
+    Stub stub;
+    stub.set(ADDR(MainWindow,isQuakeMode),ut_isQuakeMode);
+    currTermPage->showSearchBar(0);
+    stub.set(ADDR(QWidget,height),ut_height);
+    currTermPage->showSearchBar(2);
+    currTermPage->showSearchBar(1);
+}
+
+bool ut_focusNavigation_contains()
+{
+    return true;
+}
+
+TEST_F(UT_TermWidgetPage_Test, focusNavigation)
+{
+    m_normalWindow->resize(800, 600);
+    m_normalWindow->show();
+
+    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+
+    Stub stub;
+    stub.set((bool(QRect::*)(const QPoint &, bool) const)ADDR(QRect,contains),ut_focusNavigation_contains);
+
+    currTermPage->focusNavigation(Qt::TopEdge);
 }
 
 TEST_F(UT_TermWidgetPage_Test, selectAll)
@@ -317,6 +394,11 @@ TEST_F(UT_TermWidgetPage_Test, handleTabRenameDlgFinished)
     s.reset(ADDR(MainWindow, focusCurrentPage));
 }
 
+qint64 ut_searchCostTime()
+{
+    return 1;
+}
+
 TEST_F(UT_TermWidgetPage_Test, printSearchCostTime)
 {
     TermProperties termProperty;
@@ -326,6 +408,9 @@ TEST_F(UT_TermWidgetPage_Test, printSearchCostTime)
     TermWidgetPage termWidgetPage(termProperty, nullptr);
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
+
+    Stub stub;
+    stub.set(ADDR(PageSearchBar,searchCostTime),ut_searchCostTime);
 
     termWidgetPage.printSearchCostTime();
 }
@@ -401,3 +486,27 @@ TEST_F(UT_TermWidgetPage_Test, setTextCodec)
 }
 
 #endif
+
+class UT_ThemePreviewArea_Test : public ::testing::Test
+{
+public:
+    void SetUp()
+    {
+        m_area = new ThemePreviewArea;
+    }
+    void TearDown()
+    {
+        delete m_area;
+    }
+    ThemePreviewArea *m_area = nullptr;
+};
+
+TEST_F(UT_ThemePreviewArea_Test, ut_paintEvent)
+{
+    QPaintEvent paint(QRect(m_area->rect()));
+    m_area->paintEvent(&paint);
+    m_area->setPs1Color(Qt::red);
+    m_area->setPs2Color(Qt::red);
+    m_area->setBackgroundColor(Qt::red);
+    m_area->setForegroundgroundColor(Qt::red);
+}

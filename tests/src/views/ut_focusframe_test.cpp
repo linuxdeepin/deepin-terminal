@@ -51,7 +51,7 @@ TEST_F(UT_FocusFrame_Test, paintEvent)
 {
     FocusFrame frame;
     frame.resize(50, 50);
-
+    frame.m_isFocus = true;
     QPaintEvent *event = new QPaintEvent(frame.rect());
 
     frame.paintEvent(event);
