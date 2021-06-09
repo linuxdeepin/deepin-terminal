@@ -114,18 +114,6 @@
                     ]
                 },
                 {
-                    "key": "window",
-                    "name": "Window",
-                    "options": [
-                        {
-                            "key": "blurred_background",
-                            "text": "Blur background",
-                            "type": "checkbox",
-                            "default": "false"
-                        }
-                    ]
-                },
-                {
                     "key": "shell",
                     "name": "Shell",
                     "options": [

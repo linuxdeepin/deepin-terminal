@@ -143,7 +143,7 @@ void MainWindow::initWindow()
 {
     setAttribute(Qt::WA_TranslucentBackground);
     setMinimumSize(m_MinWidth, m_MinHeight);
-    setEnableBlurWindow(Settings::instance()->backgroundBlur());
+    //setEnableBlurWindow(Settings::instance()->backgroundBlur());
     setWindowIcon(QIcon::fromTheme("deepin-terminal"));
 
     // Init layout
