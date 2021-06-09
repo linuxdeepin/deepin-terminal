@@ -424,11 +424,11 @@ QList<QString> ServerConfigOptDlg::getTextCodec()
 QList<QString> ServerConfigOptDlg::getBackSpaceKey()
 {
     QList<QString> eraseKeyList;
-    eraseKeyList.append(tr("ascii-del"));
-    eraseKeyList.append(tr("auto"));
-    eraseKeyList.append(tr("control-h"));
-    eraseKeyList.append(tr("escape-sequence"));
-    eraseKeyList.append(tr("tty"));
+    eraseKeyList.append(("ascii-del"));
+    eraseKeyList.append(("auto"));
+    eraseKeyList.append(("control-h"));
+    eraseKeyList.append(("escape-sequence"));
+    eraseKeyList.append(("tty"));
     return eraseKeyList;
 }
 
@@ -441,11 +441,11 @@ QList<QString> ServerConfigOptDlg::getBackSpaceKey()
 QList<QString> ServerConfigOptDlg::getDeleteKey()
 {
     QList<QString> eraseKeyList;
-    eraseKeyList.append(tr("escape-sequence"));
-    eraseKeyList.append(tr("ascii-del"));
-    eraseKeyList.append(tr("auto"));
-    eraseKeyList.append(tr("control-h"));
-    eraseKeyList.append(tr("tty"));
+    eraseKeyList.append(("escape-sequence"));
+    eraseKeyList.append(("ascii-del"));
+    eraseKeyList.append(("auto"));
+    eraseKeyList.append(("control-h"));
+    eraseKeyList.append(("tty"));
     return eraseKeyList;
 }
 
