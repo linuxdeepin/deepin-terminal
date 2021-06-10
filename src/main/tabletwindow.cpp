@@ -199,8 +199,24 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
 {
     QDesktopWidget *desktopWidget = QApplication::desktop();
     int availableHeight = desktopWidget->availableGeometry().size().height();
-    int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
-    qDebug() << "dockHeight: " << dockHeight << endl;
+    int statusbarHeight = 0;
+
+    //先通过 QDBusInterface QDBus::AutoDetect 设置状态栏接口
+    QList<QVariant> argumentList;
+    QDBusInterface interface("com.deepin.due.statusbar", "/com/deepin/due/statusbar", "com.deepin.due.statusbar");
+    if (interface.isValid()) {
+        //判断接口是否有效，有效，调用接口获取状态栏高度
+        QDBusMessage msg = interface.call(QDBus::AutoDetect, "height");
+
+        if (QDBusMessage::ReplyMessage == msg.type()) {
+            qInfo() << "get statusbar height Success!";
+            QList<QVariant> list = msg.arguments();
+            statusbarHeight = list.takeFirst().toInt();
+            qInfo() << "dockHeight: " << statusbarHeight << endl;
+        } else {
+            qInfo() << "get statusbar height Fail!" << msg.errorMessage();
+        }
+    }
 
     int windowHeight = 0;
 
@@ -209,7 +225,7 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
         //fix:bug#79678 横屏下，调出虚拟键盘，顶部显示应用窗口，中间显示桌面背景，下面显示虚拟键盘
         m_virtualKeyboardHeight = Service::instance()->getVirtualKeyboardHeight();
 
-        windowHeight = availableHeight - m_virtualKeyboardHeight + dockHeight;
+        windowHeight = availableHeight - m_virtualKeyboardHeight + statusbarHeight;
         qDebug() << "isShow - windowHeight: " << windowHeight << endl;
     } else {
         windowHeight = availableHeight;
