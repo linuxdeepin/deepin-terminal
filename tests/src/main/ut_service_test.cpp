@@ -23,8 +23,10 @@
 
 #include "service.h"
 #include "mainwindow.h"
+#include "windowsmanager.h"
 #include "dbusmanager.h"
 #include "utils.h"
+#include "stub.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -79,6 +81,26 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
 //        EXPECT_EQ(spyWinEffectEnable.count(), 1);
 #endif
     }
+}
+
+TEST_F(UT_Service_Test, slotCustomThemeSettingDialogFinished)
+{
+    m_service->slotCustomThemeSettingDialogFinished(CustomThemeSettingDialog::Accepted);
+    m_service->m_settingDialog = new DSettingsDialog();
+    m_service->showShortcutConflictMsgbox("name");
+    m_service->slotSettingShortcutConflictDialogFinished();
+}
+
+int ut_window_widgetCount()
+{
+    return 200;
+}
+
+TEST_F(UT_Service_Test, EntryTerminal)
+{
+    Stub stub;
+    stub.set(ADDR(WindowsManager,widgetCount),ut_window_widgetCount);
+    m_service->EntryTerminal(QStringList() << "1" << "2",true);
 }
 
 TEST_F(UT_Service_Test, isCountEnable)

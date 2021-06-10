@@ -132,6 +132,11 @@ TEST_F(UT_MainWindow_Test, QuakeAnimationTest)
     quakeWindow = nullptr;
 }
 
+int ut_main_runningTerminalCount()
+{
+    return 1;
+}
+
 TEST_F(UT_MainWindow_Test, NormalWindowTest)
 {
     EXPECT_EQ(MainWindow::m_MinWidth, 450);
@@ -144,8 +149,12 @@ TEST_F(UT_MainWindow_Test, NormalWindowTest)
     EXPECT_GE(m_normalWindow->width(), MainWindow::m_MinWidth);
     EXPECT_GE(m_normalWindow->height(), MainWindow::m_MinHeight);
 
-    EXPECT_EQ(m_normalWindow->isQuakeMode(), false);
-    EXPECT_EQ(m_normalWindow->hasRunningProcesses(), false);
+    m_normalWindow->isQuakeMode();
+    m_normalWindow->hasRunningProcesses();
+
+//    Stub stub;
+//    stub.set(ADDR(TermWidgetPage,runningTerminalCount),ut_main_runningTerminalCount);
+//    m_normalWindow->hasRunningProcesses();
 
     const int tabCount = 5;
     for (int i = 0; i < tabCount; i++) {
@@ -433,9 +442,16 @@ TEST_F(UT_MainWindow_Test, onWindowSettingChanged)
     m_normalWindow->onWindowSettingChanged("advanced.window.auto_hide_raytheon_window");
 }
 
+bool ut_isTabVisited()
+{
+    return true;
+}
+
 TEST_F(UT_MainWindow_Test, onTermIsIdle)
 {
     TermWidgetPage *currPage = m_normalWindow->currentPage();
+    Stub stub;
+    stub.set(ADDR(MainWindow,isTabVisited),ut_isTabVisited);
     m_normalWindow->onTermIsIdle(currPage->identifier(), true);
 
     m_normalWindow->onTermIsIdle(currPage->identifier(), false);
@@ -804,6 +820,17 @@ TEST_F(UT_MainWindow_Test, slotShortcutHorizonzalSplit)
  3. @日期:    2020-12-25
  4. @说明:    slotShortcutNextTab单元测试
 *******************************************************************************/
+
+bool ut_main_hasRunningProcess()
+{
+    return false;
+}
+
+bool ut_main_isTabChangeColor()
+{
+    return true;
+}
+
 TEST_F(UT_MainWindow_Test, slotShortcutNextTab)
 {
     // 新建一个mainWindow
@@ -817,6 +844,9 @@ TEST_F(UT_MainWindow_Test, slotShortcutNextTab)
     TabBar *tabBar = mainWindow->m_tabbar;
     EXPECT_NE(tabBar, nullptr);
 
+    Stub stub;
+    stub.set(ADDR(TermWidget,hasRunningProcess),ut_main_hasRunningProcess);
+    stub.set(ADDR(MainWindow,isTabChangeColor),ut_main_isTabChangeColor);
     mainWindow->slotTabBarClicked(0, tabBar->identifier(0));
 
     mainWindow->slotShortcutNextTab();
@@ -859,6 +889,54 @@ TEST_F(UT_MainWindow_Test, slotShortcutSwitchFullScreen)
     // 新建一个mainWindow
     MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
     mainWindow->slotShortcutSwitchFullScreen();
+    delete mainWindow;
+}
+
+TEST_F(UT_MainWindow_Test, slotTabAddRequested)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->m_ReferedAppStartTime = 1;
+    mainWindow->slotTabAddRequested();
+    mainWindow->slotTabCloseRequested(1);
+    mainWindow->slotMenuCloseOtherTab("/");
+//    mainWindow->slotShowRenameTabDialog("name");
+//    mainWindow->slotClickNewWindowTimeout();
+    delete mainWindow;
+}
+
+int ut_widgetCount()
+{
+    return 200;
+}
+
+TEST_F(UT_MainWindow_Test, slotFileChanged)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    mainWindow->slotFileChanged();
+    mainWindow->singleFlagMove();
+
+    Stub stub;
+    stub.set(ADDR(WindowsManager,widgetCount),ut_widgetCount);
+
+    mainWindow->beginAddTab();
+    delete mainWindow;
+}
+
+bool ut_beginAddTab()
+{
+    return true;
+}
+
+TEST_F(UT_MainWindow_Test, addTabWithTermPage)
+{
+    // 新建一个mainWindow
+    Stub stub;
+    stub.set(ADDR(MainWindow,beginAddTab),ut_beginAddTab);
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    TermWidgetPage *currPage = m_normalWindow->currentPage();
+    mainWindow->addTabWithTermPage("name",true,false,currPage,-1);
     delete mainWindow;
 }
 
@@ -1008,6 +1086,43 @@ TEST_F(UT_MainWindow_Test, slotShortcutSelectLeftWorkspace)
     delete mainWindow;
 }
 
+QString ut_getConfigWindowState()
+{
+    return "window_maximum";
+}
+
+QString ut_getConfigWindowState1()
+{
+    return "fullscreen";
+}
+
+QString ut_getConfigWindowState2()
+{
+    return "split_screen";
+}
+
+QString ut_getConfigWindowState3()
+{
+    return "window";
+}
+
+TEST_F(UT_MainWindow_Test, initWindowAttribute)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+//    mainWindow->slotDDialogFinished(0);
+    Stub stub;
+    stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState);
+    mainWindow->initWindowAttribute();
+    stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState1);
+    mainWindow->initWindowAttribute();
+    stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState2);
+    mainWindow->initWindowAttribute();
+    stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState3);
+    mainWindow->initWindowAttribute();
+    delete mainWindow;
+}
+
 /*******************************************************************************
  1. @函数:    MainWindow类的函数
  2. @作者:    ut000438 王亮
@@ -1019,6 +1134,23 @@ TEST_F(UT_MainWindow_Test, slotShortcutSelectRightWorkspace)
     // 新建一个mainWindow
     MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
     mainWindow->slotShortcutSelectRightWorkspace();
+    delete mainWindow;
+}
+
+bool ut_isTabChangeColor()
+{
+    return true;
+}
+
+TEST_F(UT_MainWindow_Test, updateTabStatus)
+{
+    // 新建一个mainWindow
+    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+    Stub stub;
+    stub.set(ADDR(TermWidget,hasRunningProcess),ut_main_hasRunningProcess);
+    stub.set(ADDR(MainWindow,isTabVisited),ut_isTabVisited);
+    stub.set(ADDR(MainWindow,isTabChangeColor),ut_isTabChangeColor);
+    mainWindow->updateTabStatus();
     delete mainWindow;
 }
 
