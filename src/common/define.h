@@ -72,6 +72,13 @@ const QString SHORTCUT_CONVERSION_DOWN = "`1234567890-=[];'\\,./";
 #define DUE_IM_DBUS_INTERFACE DUE_IM_DBUS_NAME
 #endif
 
+// 状态栏DBus
+#ifndef DUE_STATUSBAR_DBUS_NAME
+#define DUE_STATUSBAR_DBUS_NAME "com.deepin.due.statusbar"
+#define DUE_STATUSBAR_DBUS_PATH "/com/deepin/due/statusbar"
+#define DUE_STATUSBAR_DBUS_INTERFACE DUE_STATUSBAR_DBUS_NAME
+#endif
+
 // 平板模式判断开关
 #define IS_TABLET_MODE true
 // TODO: 暂时dtkgui版本还是5.4.0，等后面升级5.4.3以上才可以用这个开关

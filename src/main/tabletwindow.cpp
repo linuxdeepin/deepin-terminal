@@ -197,13 +197,11 @@ void TabletWindow::slotSetFixedHeight(int windowHeight)
 *******************************************************************************/
 void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
 {
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    int availableHeight = desktopWidget->availableGeometry().size().height();
     int statusbarHeight = 0;
 
     //先通过 QDBusInterface QDBus::AutoDetect 设置状态栏接口
     QList<QVariant> argumentList;
-    QDBusInterface interface("com.deepin.due.statusbar", "/com/deepin/due/statusbar", "com.deepin.due.statusbar");
+    QDBusInterface interface(DUE_STATUSBAR_DBUS_NAME, DUE_STATUSBAR_DBUS_PATH, DUE_STATUSBAR_DBUS_NAME);
     if (interface.isValid()) {
         //判断接口是否有效，有效，调用接口获取状态栏高度
         QDBusMessage msg = interface.call(QDBus::AutoDetect, "height");
@@ -225,15 +223,17 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
         //fix:bug#79678 横屏下，调出虚拟键盘，顶部显示应用窗口，中间显示桌面背景，下面显示虚拟键盘
         m_virtualKeyboardHeight = Service::instance()->getVirtualKeyboardHeight();
 
-        windowHeight = availableHeight - m_virtualKeyboardHeight + statusbarHeight;
+        windowHeight = QApplication::desktop()->geometry().height() - m_virtualKeyboardHeight - statusbarHeight;
+        this->setFixedHeight(windowHeight);
         qDebug() << "isShow - windowHeight: " << windowHeight << endl;
     } else {
-        windowHeight = availableHeight;
+        windowHeight = QApplication::desktop()->availableGeometry().height();
+        this->setFixedHeight(windowHeight);
         qDebug() << "isHide - windowHeight: " << windowHeight << endl;
     }
 
     // 根据虚拟键盘是否显示，调整主窗口高度
-    emit onResizeWindowHeight(windowHeight, isShow);
+    //emit onResizeWindowHeight(windowHeight, isShow);
 }
 
 /*******************************************************************************
