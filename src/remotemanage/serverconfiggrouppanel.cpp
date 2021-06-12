@@ -281,24 +281,38 @@ void ServerConfigGroupPanel::resizeEvent(QResizeEvent *event)
         return;
     }
 
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    int availableHeight = desktopWidget->availableGeometry().size().height();
-    int dockHeight = desktopWidget->screenGeometry().size().height() - availableHeight;
+    int statusbarHeight = 0;
+
+    //先通过 QDBusInterface QDBus::AutoDetect 设置状态栏接口
+    QDBusInterface interface(DUE_STATUSBAR_DBUS_NAME, DUE_STATUSBAR_DBUS_PATH, DUE_STATUSBAR_DBUS_NAME);
+    if (interface.isValid()) {
+        //判断接口是否有效，有效，调用接口获取状态栏高度
+        QDBusMessage msg = interface.call(QDBus::AutoDetect, "height");
+
+        if (QDBusMessage::ReplyMessage == msg.type()) {
+            qInfo() << "get statusbar height Success!";
+            QList<QVariant> list = msg.arguments();
+            statusbarHeight = list.takeFirst().toInt();
+            qInfo() << "dockHeight: " << statusbarHeight << endl;
+        } else {
+            qInfo() << "get statusbar height Fail!" << msg.errorMessage();
+        }
+    }
     Service *service = Service::instance();
 
     // 获取标题栏高度
     int titleBarHeight = service->getTitleBarHeight();
-    int panelHeight = 0;
+    int topPanelHeight = 0;
     if (service->isVirtualKeyboardShow()) {
         int keyboardHeight = service->getVirtualKeyboardHeight();
-        panelHeight = availableHeight - keyboardHeight - titleBarHeight + dockHeight;
-    }
-    else {
-        panelHeight = availableHeight - titleBarHeight;
+        topPanelHeight = QApplication::desktop()->geometry().height() - keyboardHeight - titleBarHeight - statusbarHeight;
+    } else {
+        topPanelHeight = QApplication::desktop()->geometry().height() - titleBarHeight - statusbarHeight;
     }
 
+
     int panelWidth = this->width();
-    this->resize(panelWidth, panelHeight);
+    this->resize(panelWidth, topPanelHeight);
 
     m_isResizeBySelf = true;
 }
