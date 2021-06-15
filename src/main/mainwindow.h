@@ -126,6 +126,8 @@ public:
 
     bool hasRunningProcesses();
     bool isQuakeMode();
+    // 关闭About界面
+    void closeAboutForWindow();
 
     static constexpr const char *PLUGIN_TYPE_SEARCHBAR = "Search Bar";
     static constexpr const char *PLUGIN_TYPE_THEME = "Theme";
@@ -177,7 +179,7 @@ public slots:
     /******** Add by ut001000 renfeixiang 2020-06-03:增加 End***************/
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;

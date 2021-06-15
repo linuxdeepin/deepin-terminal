@@ -46,6 +46,7 @@
 #include <DTitlebar>
 #include <DFileDialog>
 #include <DLog>
+#include <DAboutDialog>
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -885,6 +886,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
     // 一页一页退出，当全部退出以后，mainwindow自然关闭．
     event->ignore();
 
+    //关闭窗口时，关闭对应的about界面
+    closeAboutForWindow();
+
     int runningCount = 0;
     QList<QString> closeTabIdList;
     int count = m_termStackWidget->count();
@@ -923,6 +927,16 @@ void MainWindow::closeEvent(QCloseEvent *event)
 bool MainWindow::isQuakeMode()
 {
     return  m_isQuakeWindow;
+}
+
+void MainWindow::closeAboutForWindow()
+{
+    if (qApp != nullptr) {
+        DAboutDialog *pAboutDialog = qApp->aboutDialog();
+        if (pAboutDialog != nullptr && pAboutDialog->parent() == this) {
+            pAboutDialog->close();
+        }
+    }
 }
 
 /*******************************************************************************
