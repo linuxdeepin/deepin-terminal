@@ -54,6 +54,11 @@ public:
     void setParentMainWindow(MainWindow *mainWin);
     TermWidget *currentTerminal();
 
+    /**
+     * @brief 获取当前终端的title
+     */
+    QString getCurrentTerminalTitle();
+
     // 分屏功能
     void split(Qt::Orientation orientation);
     DSplitter *createSubSplit(TermWidget *term, Qt::Orientation orientation);
