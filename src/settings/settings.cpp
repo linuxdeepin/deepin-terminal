@@ -764,6 +764,15 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     option->connect(g_shellConfigCombox, &DComboBox::currentTextChanged, option, [ = ](const QString & strShell) {
         QMap<QString, QString> shellMap = Service::instance()->shellsMap();
         option->setValue(shellMap[strShell]);
+        //fix: bug#68644 shell切换为zsh，再次连接远程管理，跳转到新标签页时远程管理未连接
+        if (strShell == "zsh") {
+            QString path = QProcessEnvironment::systemEnvironment().value("HOME");
+            QFile fi(path + "/" + ".zshrc");
+            if (!fi.exists()) {
+                fi.open(QIODevice::ReadWrite | QIODevice::Text); //不存在的情况下，打开包含了新建文件的操作
+                fi.close();
+            }
+        }
     });
 
     QMap<QString, QString> shellMap = Service::instance()->shellsMap();
