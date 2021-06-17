@@ -143,6 +143,12 @@ public:
     qint64 getEntryTime();
 
     /**
+     * @brief 设置scroll的滚动模式
+     * @param widget  Scroll
+     */
+    void setScrollerTouchGesture(QAbstractScrollArea *widget);
+
+    /**
      * @brief 从/etc/shells获取shell列表
      */
     QMap<QString, QString> getShells();

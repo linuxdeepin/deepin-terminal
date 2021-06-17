@@ -43,15 +43,7 @@ ListView::ListView(ListType type, QWidget *parent)
     // 初始化界面
     initUI();
 
-    /***add by ut001121 zhangmeng 20200924 修复BUG48618***/
-    QScroller::grabGesture(this->viewport(), QScroller::TouchGesture);
-
-    connect(QScroller::scroller(this->viewport()), &QScroller::stateChanged, this, [this](QScroller::State newstate) {
-        // fix bug#66335 触摸屏上滑动远程管理/自定义命令滚动条，列表滑动动画显示异常
-        // 防止滑动时的鼠标事件导致viewport位置发生偏移。
-        bool isDragging = (newstate == QScroller::Dragging);
-        this->viewport()->setAttribute(Qt::WA_TransparentForMouseEvents, isDragging);
-    });
+    Service::instance()->setScrollerTouchGesture(this);
 }
 
 ListView::~ListView()
