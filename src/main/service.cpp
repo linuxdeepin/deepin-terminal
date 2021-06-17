@@ -32,6 +32,7 @@
 #include <QDateTime>
 #include <QCheckBox>
 #include <QLabel>
+#include <QScroller>
 
 Service *Service::pService = new Service();
 Service *Service::instance()
@@ -265,6 +266,18 @@ bool Service::isWindowEffectEnabled()
 qint64 Service::getEntryTime()
 {
     return m_EntryTime;
+}
+
+void Service::setScrollerTouchGesture(QAbstractScrollArea *widget)
+{
+    QScroller::grabGesture(widget->viewport(), QScroller::TouchGesture);
+
+    connect(QScroller::scroller(widget->viewport()), &QScroller::stateChanged, widget, [widget](QScroller::State newstate) {
+        // fix bug#66335 触摸屏上滑动远程管理/自定义命令滚动条，列表滑动动画显示异常
+        // 防止滑动时的鼠标事件导致viewport位置发生偏移。
+        bool isDragging = (newstate == QScroller::Dragging);
+        widget->viewport()->setAttribute(Qt::WA_TransparentForMouseEvents, isDragging);
+    });
 }
 
 /*******************************************************************************

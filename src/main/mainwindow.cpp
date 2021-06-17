@@ -2410,7 +2410,8 @@ void QuakeWindow::initTitleBar()
 
     /** add by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */
     //雷神终端设置系统标题栏为禁用状态,使其不获取焦点,不影响键盘交互操作.
-    setWindowFlags(this->windowFlags() | Qt::BypassWindowManagerHint);
+//    setWindowFlags(this->windowFlags() | Qt::BypassWindowManagerHint);
+    titlebar()->setEnabled(false);//禁止titlebar tab切换焦点
     titlebar()->setFixedHeight(0);
     m_centralLayout->addWidget(m_titleBar);
 

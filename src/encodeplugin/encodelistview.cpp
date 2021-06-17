@@ -74,7 +74,7 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setItemDelegate(new EncodeDelegate(this));
 
     /** add by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
-    QScroller::grabGesture(this, QScroller::TouchGesture);
+    Service::instance()->setScrollerTouchGesture(this);
 }
 
 /*******************************************************************************

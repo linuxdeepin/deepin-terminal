@@ -107,6 +107,7 @@ public:
     // 获取主程序初始进入的时间
     qint64 getEntryTime();
 
+    void setScrollerTouchGesture(QAbstractScrollArea *widget);
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
