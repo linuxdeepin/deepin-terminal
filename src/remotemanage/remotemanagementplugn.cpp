@@ -157,12 +157,12 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
         /******** Modify by m000714 daizhengwen 2020-04-30: 将当前还没执行的命令清空****************/
         m_mainWindow->focusCurrentPage();
         m_mainWindow->pressCtrlU();
-        m_mainWindow->sleep(100);
+        m_mainWindow->sleep(500);
         /********************* Modify by m000714 daizhengwen End ************************/
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt, true);
         // 等待连接 100ms等待命令发过去正常立即执行，100ms足够，一下的信号槽只是判断是否开启另一个程序去连接
         // 若有程序去连接，则判断已连接，若连接失败，则判断为断开连接
-        QTimer::singleShot(100, this, [ = ]() {
+        QTimer::singleShot(500, this, [ = ]() {
             TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
             if (!term) {
                 // 若term为空
@@ -191,7 +191,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
     /******** Modify by ut000610 daizhengwen 2020-06-04: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
     m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     // 隐藏列表后，将焦点设置到主窗口 100ms足够
-    QTimer::singleShot(100, this, [&]() {
+    QTimer::singleShot(500, this, [&]() {
         if (m_mainWindow->isActiveWindow()) {
             m_mainWindow->focusCurrentPage();
         }
