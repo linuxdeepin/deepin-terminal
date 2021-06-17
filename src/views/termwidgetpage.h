@@ -27,6 +27,7 @@
 #include "mainwindow.h"
 #include "utils.h"
 #include "tabrenamedlg.h"
+#include "../common/ImInterface.h"
 
 #include <DSplitter>
 
@@ -175,5 +176,8 @@ private:
     TabRenameDlg *m_renameDlg = nullptr;
     // 标签标题
     QString m_tabTitle;
+
+    //虚拟键盘 due-im
+    ComDeepinImInterface *m_pImInterface = nullptr;
 };
 #endif  // TERMWIDGETPAGE_H

@@ -35,6 +35,7 @@
 
 TermWidgetPage::TermWidgetPage(TermProperties properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
+    , m_pImInterface(new ComDeepinImInterface(DUE_IM_DBUS_NAME, DUE_IM_DBUS_PATH, QDBusConnection::sessionBus(), this))
 {
     Utils::set_Object_Name(this);
     //qDebug() << "parentTermWidgetPage" << parentWidget();
@@ -345,6 +346,12 @@ const QString TermWidgetPage::identifier()
 void TermWidgetPage::focusCurrentTerm()
 {
     m_currentTerm->setFocus();
+
+    //焦点到终端时，显示虚拟键盘
+    Service *service = Service::instance();
+    if (!service->isVirtualKeyboardShow()) {
+        m_pImInterface->setImActive(true);
+    }
 }
 
 /*******************************************************************************
