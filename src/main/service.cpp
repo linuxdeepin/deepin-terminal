@@ -77,7 +77,7 @@ void Service::init()
 
 void Service::releaseInstance()
 {
-    if (nullptr == g_pService) {
+    if (nullptr != g_pService) {
         delete g_pService;
         g_pService = nullptr;
     }

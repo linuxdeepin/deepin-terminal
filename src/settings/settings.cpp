@@ -333,7 +333,7 @@ void Settings::initConnection()
 
 void Settings::releaseInstance()
 {
-    if(nullptr == m_settings_instance) {
+    if(nullptr != m_settings_instance) {
         delete m_settings_instance;
         m_settings_instance = nullptr;
     }
