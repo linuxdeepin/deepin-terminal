@@ -85,7 +85,7 @@ void TabletWindow::initVirtualKeyboardConnections()
     initVirtualKeyboardImActiveChangedSignal();
     initVirtualKeyboardGeometryChangedSignal();
 
-    connect(this, &TabletWindow::onResizeWindowHeight, this, &TabletWindow::slotResizeWindowHeight, Qt::QueuedConnection);
+    //connect(this, &TabletWindow::onResizeWindowHeight, this, &TabletWindow::slotResizeWindowHeight, Qt::QueuedConnection);
 }
 
 /*******************************************************************************
@@ -200,7 +200,6 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
     int statusbarHeight = 0;
 
     //先通过 QDBusInterface QDBus::AutoDetect 设置状态栏接口
-    QList<QVariant> argumentList;
     QDBusInterface interface(DUE_STATUSBAR_DBUS_NAME, DUE_STATUSBAR_DBUS_PATH, DUE_STATUSBAR_DBUS_NAME);
     if (interface.isValid()) {
         //判断接口是否有效，有效，调用接口获取状态栏高度
@@ -232,8 +231,8 @@ void TabletWindow::handleVirtualKeyboardShowHide(bool isShow)
         qDebug() << "isHide - windowHeight: " << windowHeight << endl;
     }
 
-    // 根据虚拟键盘是否显示，调整主窗口高度
-    //emit onResizeWindowHeight(windowHeight, isShow);
+    // 根据虚拟键盘是否显示，调整弹窗高度
+    emit onResizeWindowHeight(windowHeight, isShow);
 }
 
 /*******************************************************************************
