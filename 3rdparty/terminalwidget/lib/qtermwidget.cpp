@@ -21,6 +21,7 @@
 #include <QtDebug>
 #include <QDir>
 #include <QMessageBox>
+#include <QApplication>
 
 #include "ColorTables.h"
 #include "Session.h"
@@ -33,6 +34,8 @@
 #include "ColorScheme.h"
 #include "SearchBar.h"
 #include "qtermwidget.h"
+#include "history/compact/CompactHistoryType.h"
+#include "history/HistoryTypeFile.h"
 
 #ifdef Q_OS_MACOS
 // Qt does not support fontconfig on macOS, so we need to use a "real" font name.
@@ -54,7 +57,7 @@ void *createTermWidget(int startnow, void *parent)
 }
 
 struct TermWidgetImpl {
-    TermWidgetImpl(QWidget *parent = 0);
+    explicit TermWidgetImpl(QWidget *parent = 0);
 
     TerminalDisplay *m_terminalDisplay;
     Session *m_session;
@@ -96,7 +99,7 @@ Session *TermWidgetImpl::createSession(QWidget *parent)
     session->setCodec(QTextCodec::codecForName("UTF-8"));
 
     session->setFlowControlEnabled(true);
-    session->setHistoryType(HistoryTypeBuffer(1000));
+    session->setHistoryType(CompactHistoryType(10000));
 
     session->setDarkBackground(true);
 
@@ -135,64 +138,6 @@ void QTermWidget::selectionChanged(bool textSelected)
     emit copyAvailable(textSelected);
 }
 
-void QTermWidget::find()
-{
-    search(true, false);
-}
-
-void QTermWidget::findNext()
-{
-    search(true, true);
-}
-
-void QTermWidget::findPrevious()
-{
-    search(false, false);
-}
-
-void QTermWidget::search(bool forwards, bool next)
-{
-    /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
-    int startColumn, startLine;
-
-    if (m_bHasSelect) {
-        /***mod begin by ut001121 zhangmeng 20200814 修复BUG40895***/
-        if (next) {
-            startColumn = m_endColumn + 1;
-            startLine = m_endLine;
-        } else {
-            if (m_startColumn == 0) {
-                startColumn = -1;
-                startLine = m_startLine > 0 ? m_startLine - 1 : m_impl->m_session->emulation()->lineCount();
-            } else {
-                startColumn = m_startColumn;
-                startLine = m_startLine;
-            }
-        }
-        /***mod end by ut001121 zhangmeng 20200814***/
-    } else if (next) { // search from just after current selection
-        m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionEnd(startColumn, startLine);
-        startColumn++;
-    } else {  // search from start of current selection
-        m_impl->m_terminalDisplay->screenWindow()->screen()->getSelectionStart(startColumn, startLine);
-    }
-
-    qDebug() << "current selection starts at: " << startColumn << startLine;
-    qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
-
-    QRegExp regExp(m_searchBar->searchText());
-    regExp.setPatternSyntax(m_searchBar->useRegularExpression() ? QRegExp::RegExp : QRegExp::FixedString);
-    regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
-
-    HistorySearch *historySearch =
-        new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
-    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int)));
-    connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
-    connect(historySearch, SIGNAL(sig_noMatchFound()), m_searchBar, SLOT(clearSelection()));
-    historySearch->search();
-    /***mod end by ut001121***/
-}
-
 void QTermWidget::search(QString txt, bool forwards, bool next)
 {
     /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
@@ -222,24 +167,27 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
 
     qDebug() << "current selection starts at: " << startColumn << startLine;
     qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
+    qDebug() << "current backwardsPosition" << m_lastBackwardsPosition << endl;
 
-    QRegExp regExp(txt);
+    QString searchText(txt);
     // qDebug() << "regExp??????" << regExp.isEmpty();
-    regExp.setPatternSyntax(QRegExp::FixedString);
-    regExp.setCaseSensitivity(Qt::CaseSensitive);
+    //regExp.setPatternSyntax(QRegExp::FixedString);
+    //regExp.setCaseSensitivity(Qt::CaseSensitive);
 
     HistorySearch *historySearch =
-        new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
-    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int)));
-    connect(historySearch, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
+        new HistorySearch(m_impl->m_session->emulation(), searchText, forwards, m_isLastForwards, startColumn, startLine, this);
+    connect(historySearch, SIGNAL(matchFound(int, int, int, int, int, int, int)), this, SLOT(matchFound(int, int, int, int, int, int, int)));
+    connect(this, SIGNAL(sig_noMatchFound()), this, SLOT(clearSelection()));
 
     connect(historySearch, &HistorySearch::noMatchFound, this, [this]() { emit sig_noMatchFound(); });
     // connect(historySearch, SIGNAL(noMatchFound()), m_searchBar, SLOT(noMatchFound()));
-    historySearch->search();
+    historySearch->search(m_lastBackwardsPosition, m_startColumn, m_startLine);
     /***mod end by ut001121***/
+
+    m_isLastForwards = forwards;
 }
 
-void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int endLine, int loseChinese, int matchChinese)
+void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int endLine, int lastBackwardsPosition, int loseChinese, int matchChinese)
 {
     /***mod begin by ut001121 zhangmeng 20200515 修复BUG22626***/
     m_bHasSelect = true;
@@ -247,6 +195,9 @@ void QTermWidget::matchFound(int startColumn, int startLine, int endColumn, int 
     m_startLine = startLine;
     m_endColumn = endColumn;
     m_endLine = endLine;
+    if (lastBackwardsPosition != -1) {
+        m_lastBackwardsPosition = lastBackwardsPosition;
+    }
 
     ScreenWindow *sw = m_impl->m_terminalDisplay->screenWindow();
     qDebug() << "Scroll to" << startLine;
@@ -405,6 +356,16 @@ void QTermWidget::setIsAllowScroll(bool isAllowScroll)
 *******************************************************************************/
 void QTermWidget::setNoHasSelect()
 {
+    if(m_bHasSelect) {
+        //清除搜索状态
+        m_lastBackwardsPosition = -1;
+        m_isLastForwards = false;
+        m_startColumn = 0;
+        m_startLine = 0;
+        m_endColumn = 0;
+        m_endLine = 0;
+    }
+
     m_bHasSelect = false;
 }
 
@@ -428,7 +389,7 @@ void QTermWidget::startTerminalTeletype()
     m_impl->m_session->runEmptyPTY();
     // redirect data from TTY to external recipient
     connect(
-        m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int)), this, SIGNAL(sendData(const char *, int)));
+        m_impl->m_session->emulation(), SIGNAL(sendData(const char *, int, const QTextCodec *)), this, SIGNAL(sendData(const char *, int, const QTextCodec *)));
 }
 
 void QTermWidget::init(int startnow)
@@ -440,7 +401,11 @@ void QTermWidget::init(int startnow)
     // translations
     // First check $XDG_DATA_DIRS. This follows the implementation in libqtxdg
     QString d = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+    QStringList dirs = d.split(QLatin1Char(':'), Qt::SkipEmptyParts);
+#else
     QStringList dirs = d.split(QLatin1Char(':'), QString::SkipEmptyParts);
+#endif
     if (dirs.isEmpty()) {
         dirs.append(QString::fromLatin1("/usr/local/share"));
         dirs.append(QString::fromLatin1("/usr/share"));
@@ -628,9 +593,9 @@ QString QTermWidget::workingDirectory()
         goto fallback;
     }
     return d.canonicalPath();
-#endif
 
 fallback:
+#endif
     // fallback, initial WD
     return m_impl->m_session->initialWorkingDirectory();
 }
@@ -715,7 +680,7 @@ void QTermWidget::setHistorySize(int lines)
     if (lines < 0)
         m_impl->m_session->setHistoryType(HistoryTypeFile());
     else
-        m_impl->m_session->setHistoryType(HistoryTypeBuffer(lines));
+        m_impl->m_session->setHistoryType(CompactHistoryType(lines));
 }
 
 void QTermWidget::setScrollBarPosition(ScrollBarPosition pos)
@@ -929,9 +894,9 @@ void QTermWidget::setBackspaceMode(char *key, int length)
     m_impl->m_session->setBackspaceMode(key, length);
 }
 
-QString QTermWidget::selectedText(bool preserveLineBreaks)
+QString QTermWidget::selectedText(const Screen::DecodingOptions options)
 {
-    return m_impl->m_terminalDisplay->screenWindow()->screen()->selectedText(preserveLineBreaks);
+    return m_impl->m_terminalDisplay->screenWindow()->screen()->selectedText(options);
 }
 
 void QTermWidget::setMonitorActivity(bool monitor)

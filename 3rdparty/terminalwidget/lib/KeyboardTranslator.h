@@ -263,7 +263,7 @@ public:
     };
 
     /** Constructs a new keyboard translator with the given @p name */
-    KeyboardTranslator(const QString& name);
+    explicit KeyboardTranslator(const QString& name);
 
     //KeyboardTranslator(const KeyboardTranslator& other);
 
@@ -430,7 +430,7 @@ public:
      * Constructs a new writer which saves data into @p destination.
      * The caller is responsible for closing the device when writing is complete.
      */
-    KeyboardTranslatorWriter(QIODevice* destination);
+    explicit KeyboardTranslatorWriter(QIODevice* destination);
     ~KeyboardTranslatorWriter();
 
     /**

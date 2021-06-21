@@ -2,8 +2,6 @@
     This file is part of Konsole, an X terminal.
     Copyright (C) 2000 by Stephan Kulow <coolo@kde.org>
 
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -19,6 +17,7 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301  USA.
 
+    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
 */
 
 #include <QtDebug>
@@ -292,9 +291,9 @@ void BlockArray::decreaseBuffer(size_t newsize)
         firstblock = 0;
     }
 
-    size_t oldpos;
+    //size_t oldpos;
     for (size_t i = 0, cursor=firstblock; i < newsize; i++) {
-        oldpos = (size + cursor + offset) % size;
+        size_t oldpos = (size + cursor + offset) % size;
         moveBlock(fion, oldpos, cursor, buffer1);
         if (oldpos < newsize) {
             cursor = oldpos;
@@ -343,11 +342,11 @@ void BlockArray::increaseBuffer()
         return;
     }
 
-    int res;
+    //int res;
     for (int i = 0; i < runs; i++) {
         // free one block in chain
         int firstblock = (offset + i) % size;
-        res = fseek(fion, firstblock * blocksize, SEEK_SET);
+        int res = fseek(fion, firstblock * blocksize, SEEK_SET);
         if (res) {
             perror("fseek");
         }
@@ -355,10 +354,10 @@ void BlockArray::increaseBuffer()
         if (res != 1) {
             perror("fread");
         }
-        int newpos = 0;
+        //int newpos = 0;
         for (int j = 1, cursor=firstblock; j < bpr; j++) {
             cursor = (cursor + offset) % size;
-            newpos = (cursor - offset + size) % size;
+            int newpos = (cursor - offset + size) % size;
             moveBlock(fion, cursor, newpos, buffer2);
         }
         res = fseek(fion, i * blocksize, SEEK_SET);

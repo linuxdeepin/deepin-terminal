@@ -121,15 +121,16 @@ const char* const ColorScheme::translatedColorNames[TABLE_COLORS] =
 };
 
 ColorScheme::ColorScheme()
+    : _opacity(1.0)
+    , _table(nullptr)
+    , _randomTable(nullptr)
 {
-    _table = nullptr;
-    _randomTable = nullptr;
-    _opacity = 1.0;
 }
+
 ColorScheme::ColorScheme(const ColorScheme& other)
-      : _opacity(other._opacity)
-       ,_table(nullptr)
-       ,_randomTable(nullptr)
+    : _opacity(other._opacity)
+    , _table(nullptr)
+    , _randomTable(nullptr)
 {
     setName(other.name());
     setDescription(other.description());

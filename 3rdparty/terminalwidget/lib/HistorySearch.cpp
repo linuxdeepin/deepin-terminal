@@ -24,15 +24,27 @@
 #include "Emulation.h"
 #include "HistorySearch.h"
 
-HistorySearch::HistorySearch(EmulationPtr emulation, QRegExp regExp,
-                             bool forwards, int startColumn, int startLine,
+HistorySearch::HistorySearch(EmulationPtr emulation,
+                             QString searchText,
+                             bool forwards,
+                             bool isLastForwards,
+                             int startColumn,
+                             int startLine,
                              QObject *parent) :
     QObject(parent),
     m_emulation(emulation),
-    m_regExp(regExp),
+    m_searchText(searchText),
     m_forwards(forwards),
+    m_isLastForwards(isLastForwards),
     m_startColumn(startColumn),
-    m_startLine(startLine)
+    m_startLine(startLine),
+    m_foundStartColumn(0),
+    m_foundStartLine(0),
+    m_foundEndColumn(0),
+    m_foundEndLine(0),
+    m_loseChinese(0),
+    m_matchChinese(0),
+    m_lastBackwardsPosition(-1)
 {
 }
 
@@ -40,11 +52,15 @@ HistorySearch::~HistorySearch()
 {
 }
 
-void HistorySearch::search()
+void HistorySearch::search(int currBackwardsPosition, int lastFoundStartColumn, int lastFoundStartLine)
 {
     bool found = false;
 
-    if (! m_regExp.isEmpty()) {
+    m_currBackwardsPosition = currBackwardsPosition;
+    m_lastFoundStartColumn = lastFoundStartColumn;
+    m_lastFoundStartLine = lastFoundStartLine;
+
+    if (!m_searchText.isEmpty()) {
         if (m_forwards) {
             found = search(m_startColumn, m_startLine, -1, m_emulation->lineCount()) || search(0, 0, m_startColumn, m_startLine);
         } else {
@@ -52,7 +68,7 @@ void HistorySearch::search()
         }
 
         if (found) {
-            emit matchFound(m_foundStartColumn, m_foundStartLine, m_foundEndColumn, m_foundEndLine, m_loseChinese, m_matchChinese);
+            emit matchFound(m_foundStartColumn, m_foundStartLine, m_foundEndColumn, m_foundEndLine, m_lastBackwardsPosition, m_loseChinese, m_matchChinese);
         } else {
             emit noMatchFound();
         }
@@ -71,21 +87,26 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
 
     qDebug() << "linesToRead:" << linesToRead;
 
+    QString stringBackwardsAfterForwards;
+    QTextStream backwardsAfterForwardsStream(&stringBackwardsAfterForwards);
+
+    QString string;
+    QTextStream searchStream(&string);
     // We read process history from (and including) startLine to (and including) endLine in
     // blocks of at most 10K lines so that we do not use unhealthy amounts of memory
     int blockSize;
     while ((blockSize = qMin(10000, linesToRead - linesRead)) > 0) {
 
-        QString string;
-        QTextStream searchStream(&string);
         PlainTextDecoder decoder;
         decoder.begin(&searchStream);
         decoder.setRecordLinePositions(true);
 
         // Calculate lines to read and read them
         int blockStartLine = m_forwards ? startLine + linesRead : endLine - linesRead - blockSize + 1;
-        int chunkEndLine = blockStartLine + blockSize - 1;
-        m_emulation->writeToStream(&decoder, blockStartLine, chunkEndLine);
+        int blockEndLine = blockStartLine + blockSize - 1;
+        m_emulation->writeToStream(&decoder, blockStartLine, blockEndLine);
+
+        decoder.end();
 
         // We search between startColumn in the first line of the string and endColumn in the last
         // line of the string. First we calculate the position (in the string) of endColumn in the
@@ -97,26 +118,105 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
         int numberOfLinesInString = decoder.linePositions().size() - 1;
         if (numberOfLinesInString > 0 && endColumn > -1) {
             endPosition = decoder.linePositions().at(numberOfLinesInString - 1) + endColumn;
+            qDebug() << "endPosition 0:" << endPosition;
+            if (!m_forwards) {
+                qDebug() << "numberOfLinesInString string.size():" << string.size();
+                if ((endPosition - string.size()) > 0) {
+                    endPosition = string.size();
+                    qDebug() << "endPosition 1:" << endPosition;
+                }
+                else {
+                    qDebug() << "m_currBackwardsPosition:" << m_currBackwardsPosition;
+                    //上次进行正向搜索，当前采用反向搜索
+                    if (m_isLastForwards) {
+                        PlainTextDecoder decoder;
+                        decoder.begin(&backwardsAfterForwardsStream);
+                        decoder.setRecordLinePositions(false);
+                        int blockStartLine = 0;
+                        int blockEndLine = m_lastFoundStartLine-1;
+                        if (-1 == blockEndLine) {
+                            blockEndLine = m_emulation->lineCount();
+                        }
+                        m_emulation->writeToStream(&decoder, blockStartLine, blockEndLine);
+
+                        decoder.end();
+
+                        endPosition = stringBackwardsAfterForwards.length() + endColumn;
+                        qDebug() << "endPosition 2:" << endPosition;
+                    }
+                    else {
+                        qDebug() << "endPosition now is:" << endPosition;
+                        //endPosition值比上次搜索结果的位置还大，则重新计算endPosition
+                        if (m_currBackwardsPosition > -1) {
+                            if ((endPosition - m_currBackwardsPosition > m_searchText.length())) {
+                                endPosition = m_currBackwardsPosition - m_searchText.length();
+                                qDebug() << "endPosition > m_currBackwardsPosition 111:" << endPosition;
+                            }
+                            else {
+                                endPosition = m_currBackwardsPosition;
+                                qDebug() << "endPosition < m_currBackwardsPosition 222:" << endPosition;
+                            }
+                        }
+                        qDebug() << "endPosition 3:" << endPosition;
+                    }
+                }
+
+                //保存上次反向搜索的结束位置
+                if (endPosition != -1) {
+                    m_lastBackwardsPosition = endPosition;
+                    qDebug() << "backwards save m_lastBackwardsPosition 1:" << m_lastBackwardsPosition;
+                }
+            }
         } else {
-            endPosition = string.size();
+            if (m_forwards) {
+                endPosition = string.size();
+                qDebug() << "endPosition 4:" << endPosition;
+            }
+            else {
+                endPosition = endColumn;
+                //保存上次反向搜索的结束位置
+                if (endPosition != -1) {
+                    m_lastBackwardsPosition = endPosition;
+                    qDebug() << "backwards save m_lastBackwardsPosition2:" << m_lastBackwardsPosition;
+                }
+                qDebug() << "endPosition 5!!!!!!!!!!!! == endColumn:" << endPosition;
+            }
         }
 
+        qDebug() << "At last, endPosition is:" << endPosition;
+
         // So now we can log for m_regExp in the string between startColumn and endPosition
-        int matchStart;
+        int matchStart = -1;
         if (m_forwards) {
-            matchStart = string.indexOf(m_regExp, startColumn);
+            matchStart = string.indexOf(m_searchText, startColumn, Qt::CaseSensitive);
+            qDebug() << "forwards matchStart:" << matchStart << ", startColumn:" << startColumn;
             if (matchStart >= endPosition) {
                 matchStart = -1;
+                qDebug() << "forwards matchStart == -1:" << matchStart;
             }
         } else {
-            matchStart = string.lastIndexOf(m_regExp, endPosition - 1);
-            if (matchStart < startColumn) {
-                matchStart = -1;
+            qDebug() << "string:" << string;
+            qDebug() << "m_lastBackwardsPosition:" << m_lastBackwardsPosition;
+            qDebug() << "string length:" << string.length() << ", endPosition:" << endPosition;
+            //考虑了查找结果在第一行的情况
+            if (0 == startLine && startLine == endLine && endPosition > endColumn) {
+                endPosition = endColumn;
             }
+
+            matchStart = string.lastIndexOf(m_searchText, endPosition - 1, Qt::CaseSensitive);
+            if (matchStart != -1) {
+                m_lastBackwardsPosition = matchStart;
+                qDebug() << "backwards save m_lastBackwardsPosition3:" << m_lastBackwardsPosition;
+            }
+            qDebug() << "backwards matchStart:" << matchStart << ", startColumn:" << startColumn;
+//            if (matchStart < startColumn) {
+//                matchStart = -1;
+//                qDebug() << "backwards matchStart == -1:" << matchStart;
+//            }
         }
 
         if (matchStart > -1) {
-            int matchEnd = matchStart + m_regExp.matchedLength() - 1;
+            int matchEnd = matchStart + m_searchText.length() - 1;
             qDebug() << "Found in string from" << matchStart << "to" << matchEnd;
 
             // Translate startPos and endPos to startColum, startLine, endColumn and endLine in history.
@@ -127,6 +227,40 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             int endLineNumberInString = findLineNumberInString(decoder.linePositions(), matchEnd);
             m_foundEndColumn = matchEnd - decoder.linePositions().at(endLineNumberInString);
             m_foundEndLine = endLineNumberInString + startLine + linesRead;
+
+            //特殊情况, 反向查找需要重新计算下endPosition并保存到m_lastBackwardsPosition
+            if (!m_forwards) {
+                //考虑了查找结果在第一行的情况
+                if (0 == m_foundStartLine && m_foundStartLine == m_foundEndLine) {
+                    m_lastBackwardsPosition = m_foundStartColumn;
+                    qDebug() << "!!! ready to change m_foundStartColumn: " << m_foundStartColumn;
+                    qDebug() << "!!! ready to change m_foundEndColumn: " << m_foundEndColumn;
+                    qDebug() << "!!! ready to change m_foundStartLine: " << m_foundStartLine;
+                    qDebug() << "!!! ready to change m_foundEndLine: " << m_foundEndLine;
+                }
+                else if (-1 == endPosition || -1 == endColumn) {
+                    QString stringAfterSearch;
+                    QTextStream afterSearchStream(&stringAfterSearch);
+                    PlainTextDecoder decoder;
+                    decoder.begin(&afterSearchStream);
+                    decoder.setRecordLinePositions(false);
+                    int blockStartLine = 0;
+                    int blockEndLine = m_foundStartLine-1;
+                    if (-1 == blockEndLine) {
+                        blockEndLine = m_emulation->lineCount();
+                    }
+                    m_emulation->writeToStream(&decoder, blockStartLine, blockEndLine);
+
+                    decoder.end();
+
+                    m_lastBackwardsPosition = stringAfterSearch.length() + m_foundStartColumn;
+                    qDebug() << "!!! ready to change m_lastBackwardsPosition: " << m_lastBackwardsPosition;
+                }
+            }
+
+            //看看能不能从m_foundEndColumn m_foundEndLine和m_foundStartColumn m_foundStartLine推算出目前查找的字符串index
+            //在正向查找的时候，保存当前indexOf(search, totalString) 到 m_lastBackwardsPosition
+            // 总共读了多少行，记录下字符串总长度，加上当前偏移量
 
             qDebug() << "m_foundStartColumn" << m_foundStartColumn
                      << "m_foundStartLine" << m_foundStartLine
@@ -174,7 +308,7 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
                  * 匹配字符的当前逻辑行:(匹配字符-当前逻辑行-开始位置)--->(匹配字符-当前逻辑行-结束位置
                 */
                 //匹配字符包含中文字符数量
-                QString txt = m_regExp.pattern();
+                QString txt = m_searchText;//m_regExp.pattern();
                 m_matchChinese = txt.count(regEx);
                 m_matchChinese += m_loseChinese;
             } else {
