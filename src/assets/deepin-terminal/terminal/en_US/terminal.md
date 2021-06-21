@@ -13,11 +13,11 @@ You can run, exit or create shortcuts for Terminal.
 
 ### Run Terminal 
 
-1. Click ![deepin_launcher](../common/deepin_launcher.svg) in the dock to enter launcher interface.
-2. Locate ![deepin_terminal](../common/deepin_terminal.svg) by scrolling the mouse wheel or searching "terminal" in the Launcher interface and click it to run.
+1. Click the Launcher icon ![deepin_launcher](../common/deepin_launcher.svg) in the Dock to enter launcher interface.
+2. Locate Terminal ![deepin_terminal](../common/deepin_terminal.svg) by scrolling the mouse wheel or searching "terminal" in the Launcher interface and click it to run.
 3. Right-click ![deepin_terminal](../common/deepin_terminal.svg) to: 
  - Select **Send to desktop** to create a desktop shortcut.
- - Select **Send to dock** to fix it in the dock.
+ - Select **Send to dock** to fix it in the Dock.
  - Select **Add to startup** to add the application to startup and it will automatically run when the system starts up.
 
 > ![notes](../common/notes.svg)Notes: You can also press **Ctrl** + **Alt** + **T** to open Terminal.
@@ -26,8 +26,7 @@ You can run, exit or create shortcuts for Terminal.
 ### Exit Terminal 
 
 1. On the Terminal interface, click  ![close_icon](../common/close_icon.svg) to exit.
-2. Right-click ![deepin_terminal](../common/deepin_terminal.svg) in the Dock and select **Close All** or **Force Quit** to exit.
-
+2. Right-click ![deepin_terminal](../common/deepin_terminal.svg) in the Dock and select **Close All** to exit.
 3. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg) to select **Exit**.
 
 > ![notes](../common/notes.svg)Notes: A prompt will display when programs are still running in Terminal to avoid your data loss.
@@ -52,9 +51,9 @@ You can right-click on the Terminal interface for daily operations.
 You can use **Find** function to quickly search contents in terminal.
 
 1. Right-click on the Terminal interface to select **Find** or click the **Ctrl** + **Alt** + **F** key on the keyboard.
-2. Type the word in search box.
+2. Type the word in the search box.
 3. Press the **Enter** key on the keyboard and the search results will be highlighted.
-4. Press **Esc** on keyboard or click any blank area on the Terminal interface to hide search.
+4. Press **Esc** on the keyboard or click any blank area on the Terminal interface to hide search.
 
 > ![tips](../common/tips.svg)Tips: Press **Enter** to search down from the current location. You can also search by clicking ![up](../common/up.svg) and ![down](../common/down.svg) on the interface.
 
@@ -80,14 +79,14 @@ You can use browser in Terminal for quick and convenient web search against sele
    - On the Terminal interface, right-click and select **Paste**.
 
 > ![tips](../common/tips.svg)  Tips: 
-    > - If you want to copy a hyperlink, you don't need to select any content. Just simply copy it with a right-click.
-    > - Check **Copy on select** in **Settings** under the main menu to copy the selected text to clipboard automatically.
+> - If you want to copy a hyperlink, you don't need to select any content. Just simply copy it with a right-click.
+> - Check **Copy on select** in **Settings** under the main menu to copy the selected text to clipboard automatically.
 
 ### Select Quake Mode
 
 Quake Mode is a unique function of Terminal. Press **Alt** + **F2** to open a quake window, and press again to hide it.
 
-> ![tips](../common/tips.svg)Tips: You can also right-click ![deepin_terminal](../common/deepin_terminal.svg) in the Dock to select **Quake Terminal** to open a quake window.
+> ![tips](../common/tips.svg) Tips: You can also right-click ![deepin_terminal](../common/deepin_terminal.svg) in the Dock to select **Quake Terminal** to open a quake window.
 
 ### Open Files and Applications 
 
@@ -122,18 +121,15 @@ Window serves as the foundation for your operations in Terminal. A window is cre
 You can create a new window in the following ways:
 
 - Open Terminal and click ![icon_menu](../common/icon_menu.svg)> **New Window**.
-
 - Click ![deepin_terminal](../common/deepin_terminal.svg) in the Dock to select **New Window**.
 
 
 ![0|new_window](fig/newwindow.png)
 
-### Display Window in Fullscreen
+### Display Windows in Fullscreen
 
 1. Open Terminal in the launcher interface.
-
 2. Press **F11** to display Terminal in fullscreen.
-
 3. If you want to restore to the normal display, please press **F11**.
 
 > ![notes](../common/notes.svg) Notes: You can also right-click to select **Fullscreen** or **Exit fullscreen** on the Terminal interface.
@@ -141,14 +137,12 @@ You can create a new window in the following ways:
 
 ### Split Windows 
 
-1. Open Terminal in Launcher.
-2. On the Terminal interface, right-click to:
+1. On the Terminal interface, right-click to:
 
   - Select **Vertical split** to split the interface into left and right columns.
-
   - Select **Horizontal split** to split the interface into top and bottom rows.
 
-3. You can input commands in each terminal window, and view execution results of different commands in different windows simultaneously.
+2. You can input commands in each terminal window, and view execution results of different commands in different windows simultaneously.
 
 > ![tips](../common/tips.svg)Tips: You can also press **Ctrl**+ **Shift** +**J** on the keyboard to split windows vertically, and press **Ctrl** + **Shift** + **H** to split windows horizontally.
 
@@ -161,11 +155,9 @@ You can create a new window in the following ways:
 You can close multiple split workspaces in the following steps:
 
 1. On the Terminal interface, move the cursor over one of the split workspaces.
-
 2. Right-click to:
 
   - Select **Close workspace** to close this split workspace.
-
   - Select **Close other workspaces** to close other split workspaces except for the current one.
 
  ![1|closewindow](fig/closesplitscreen.png)
@@ -178,7 +170,6 @@ You can close multiple split workspaces in the following steps:
 You can create new tabs as follows:
 
 - On the Terminal interface, right-click and select **New tab** to create a new tab.
-
 - Click ![add](../common/+.svg) on the top to create a tab.
 - Press **Ctrl** + **Shift** + **T** on the keyboard to create a new tab.
 
@@ -267,7 +258,7 @@ When there are multiple servers or groups, the search box will be displayed on t
 ![0|searchssh](fig/searchssh.png)
 
 
-### Upload/Download File 
+### Upload/Download Files 
 
 You can upload and download files after logging into a remote server.
 
@@ -311,23 +302,17 @@ In the Main Menu, you can [Create Windows](#Create Windows), customize commands,
 The window theme provides multiple themes.
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg).
-
 2. Click **Theme** and you can:
 
    - choose one theme that comes with Terminal.
-
    - customize the theme in the **Custom Theme** window according to your need.
 
 ### Custom Commands 
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg).
-
 2. Select **Custom commands**.
-
 3. Select **Add command**.
-
 4. Input **Name**, **Command** and **Shortcuts**.
-
 5. Click **Add**.
 
 ### Settings
@@ -335,14 +320,13 @@ The window theme provides multiple themes.
 #### Basic Settings
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg)> **Settings**.
-
 2. In the **Basic** options, you can:
 
    - Set **Opacity** for the background.
-   >![notes](../common/notes.svg)Notes: if Window Effect is turned off in Control Center, **Opacity** scroll bar will be hidden.
+   
+   >![notes](../common/notes.svg)Notes: if Window Effect is turned off in Control Center, the **Opacity** scroll bar will be hidden.
 
    - Set the font type and size.
-
    - Click the "+" or "-" icon or scroll the mouse wheel in the Font Size edition box to adjust the font size.
 
 3. In the **Tab titles** options, you can set the name for all the tabs and remote tabs in terminal.
@@ -350,18 +334,15 @@ The window theme provides multiple themes.
 #### Shortcuts Settings 
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg)> **Settings**.
-
 2. In the **Shortcuts** options, you can:
 
   - Modify shortcuts: Click the shortcuts to be modified and input new shortcuts via the keyboard in the editable input box.
-
   - Disable shortcuts: Click the shortcuts to be modified and the input box will be editable.  Press **Backspace** on the keyboard to disable the shortcut.
 
 
 #### Advanced Settings 
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg)> **Settings**.
-
 2. In the **Advanced** options, you can:
 
   - Set **Cursor style**.
@@ -373,9 +354,8 @@ The window theme provides multiple themes.
   - Enable or disable **Blur background**.
    >![notes](../common/notes.svg)Notes: If Window Effect is turned off in Control Center, **Blur background** option will be hidden.
 
-  - Enable or disable **Hide quake window after lost focus**.
+  - Enable or disable **Hide quake window after losing focus**.
   - Select **Shell profile**.
-
   - Enable or disable flow control by **Ctrl** + **S** and **Ctrl** + **Q**.
 
 ### Help
@@ -387,12 +367,10 @@ The window theme provides multiple themes.
 ### About
 
 1. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg).
-
 2. Click **About** to view the version and introduction of Terminal.
 
 
 ### Exit
 
 1. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg).
-
 2. Click **Exit** to exit Terminal.
