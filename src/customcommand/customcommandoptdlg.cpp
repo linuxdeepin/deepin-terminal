@@ -68,6 +68,8 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandDat
     initTitleConnections();
     initUI();
 
+    m_confirmBtn->setDefault(true);
+
     connect(Service::instance(), &Service::refreshCommandPanel, this, &CustomCommandOptDlg::slotRefreshData);
 }
 

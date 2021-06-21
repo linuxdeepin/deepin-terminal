@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     qDebug() << endl << endl << endl;
     qDebug() << "new terminal start run";
     DBusManager manager;
-    if (!manager.initDBus()) {
+    if (false && !manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
         // 判断是否能创建新的的窗口
         // 不是雷神且正在创建
