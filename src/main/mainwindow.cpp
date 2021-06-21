@@ -145,6 +145,7 @@ void MainWindow::initWindow()
     setMinimumSize(m_MinWidth, m_MinHeight);
     //setEnableBlurWindow(Settings::instance()->backgroundBlur());
     setWindowIcon(QIcon::fromTheme("deepin-terminal"));
+    setWindowRadius(0);
 
     // Init layout
     m_centralLayout->setMargin(0);
