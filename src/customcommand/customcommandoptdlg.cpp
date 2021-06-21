@@ -47,9 +47,9 @@
 CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandData *currItemData, QWidget *parent)
     : DAbstractDialog(parent),
       m_type(type),
-      m_nameLineEdit(new DLineEdit),
-      m_commandLineEdit(new DLineEdit),
-      m_shortCutLineEdit(new DKeySequenceEdit),
+      m_nameLineEdit(new DLineEdit(this)),
+      m_commandLineEdit(new DLineEdit(this)),
+      m_shortCutLineEdit(new DKeySequenceEdit(this)),
       m_bDelOpt(false)
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
@@ -90,26 +90,26 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
 *******************************************************************************/
 void CustomCommandOptDlg::initUI()
 {
-    QWidget *contentFrame = new QWidget;
+    QWidget *contentFrame = new QWidget(this);
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
     contentLayout->setSpacing(m_iSpaceSizeTen);
     contentLayout->setContentsMargins(m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero);
 
-    QWidget *nameFrame = new QWidget;
+    QWidget *nameFrame = new QWidget(this);
     nameFrame->setFixedWidth(m_iFixedWidth);
     QHBoxLayout *nameLayout = new QHBoxLayout;
     nameLayout->setSpacing(m_iSpaceSizeZero);
     nameLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
     nameFrame->setLayout(nameLayout);
 
-    QWidget *cmdFrame = new QWidget;
+    QWidget *cmdFrame = new QWidget(this);
     QHBoxLayout *cmdLayout = new QHBoxLayout;
     cmdLayout->setSpacing(m_iSpaceSizeZero);
     cmdLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
     cmdFrame->setLayout(cmdLayout);
 
-    QWidget *scFrame = new QWidget;
+    QWidget *scFrame = new QWidget(this);
     QHBoxLayout *scLayout = new QHBoxLayout;
     scLayout->setSpacing(m_iSpaceSizeZero);
     scLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
@@ -175,7 +175,7 @@ void CustomCommandOptDlg::initUI()
         setFixedSize(m_iFixedWidth, m_iFixedHeightEditSize);
         setTitle(tr("Edit Command"));
 
-        QWidget *deleteCmdWidget = new QWidget;
+        QWidget *deleteCmdWidget = new QWidget(this);
         deleteCmdWidget->setFixedHeight(m_iFixedHeight);
 
         QHBoxLayout *deleteCmdLayout = new QHBoxLayout();

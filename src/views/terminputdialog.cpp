@@ -191,7 +191,6 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     m_lineEdit->setClearButtonEnabled(false);
     m_lineEdit->setFocusPolicy(Qt::ClickFocus);
     this->setFocusProxy(m_lineEdit->lineEdit());
-    m_lineEdit->lineEdit()->setFocus();
     /******** Modify by ut000610 daizhengwen 2020-05-21: 初始化重命名lineEdit全选****************/
     connect(m_lineEdit, &DLineEdit::focusChanged, m_lineEdit->lineEdit(), [ = ](bool onFocus) {
         // 初始化重命名lineEdit全选
@@ -260,6 +259,7 @@ void TermInputDialog::showDialog(QString oldTitle, QWidget *parentWidget)
     this->setWindowModality(Qt::WindowModal);
     // 显示
     this->show();
+    m_lineEdit->lineEdit()->setFocus();
 }
 
 /*******************************************************************************
