@@ -237,8 +237,10 @@ protected:
     void createWindowComplete();
     // 首个终端创建成功结束
     void firstTerminalComplete();
-
-
+    //获取obj下ObjectName不为空的children，递归
+    QObjectList getNamedChildren(QObject *obj);
+    //设置titlebar的子控件为NoFocus
+    void setTitlebarNoFocus(QWidget * titlebar);
 protected:
     // 初始化标题栏
     virtual void initTitleBar() = 0;
