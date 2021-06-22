@@ -23,6 +23,7 @@
 #include "pagesearchbar.h"
 #include "utils.h"
 #include "mainwindow.h"
+#include "tsearchedit.h"
 
 #include <DLog>
 
@@ -184,8 +185,7 @@ void PageSearchBar::recoveryHoldContent()
 *******************************************************************************/
 qint64 PageSearchBar::searchCostTime()
 {
-    if (0 == m_searchStartTime)
-    {
+    if (0 == m_searchStartTime) {
         qDebug() << __FUNCTION__ << "search time error!";
         return -1;
     }
@@ -204,6 +204,13 @@ void PageSearchBar::findCancel()
 {
     QWidget::hide();
     emit closeSearchBar();
+}
+
+void PageSearchBar::slotEnterInSearchEdit()
+{
+    if (m_searchEdit->lineEdit()->hasFocus()) {
+        m_findNextButton->animateClick(80);
+    }
 }
 
 /*******************************************************************************
@@ -289,7 +296,7 @@ void PageSearchBar::initFindNextButton()
 *******************************************************************************/
 void PageSearchBar::initSearchEdit()
 {
-    m_searchEdit = new DSearchEdit(this);
+    m_searchEdit = new TSearchEdit(this);
     m_searchEdit->setObjectName("PageSearchBarSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
     m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
 

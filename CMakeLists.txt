@@ -165,6 +165,7 @@ set (DTNG_CPP_FILES
     src/views/switchthememenu.cpp
     src/views/tabletabstractdialog.cpp
     src/views/tabletsettingsdialog.cpp
+    src/views/tsearchedit.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -225,6 +226,7 @@ set (DTNG_HEADER_FILES
     src/views/switchthememenu.h
     src/views/tabletabstractdialog.h
     src/views/tabletsettingsdialog.h
+    src/views/tsearchedit.h
 )
 
 set (DTNG_QRC_FILES

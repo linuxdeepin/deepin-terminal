@@ -35,6 +35,8 @@
 #include <QHBoxLayout>
 #include <QKeyEvent>
 
+class TSearchEdit;
+
 DWIDGET_USE_NAMESPACE
 
 /*******************************************************************************
@@ -70,6 +72,11 @@ signals:
 
 public slots:
     void findCancel();
+    /**
+     * @brief slotEnterInSearchEdit
+     *   接受TSearchEdit发来的虚拟键盘回车消息
+     */
+    void slotEnterInSearchEdit();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
@@ -81,7 +88,7 @@ private:
 
     DIconButton *m_findNextButton = nullptr;
     DIconButton *m_findPrevButton = nullptr;
-    DSearchEdit *m_searchEdit = nullptr;
+    TSearchEdit *m_searchEdit = nullptr;
 
     const int barHight = 50;
     const int barWidth = 382;
