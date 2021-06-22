@@ -363,7 +363,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
         Properties[WorkingDir] = parser.value(optWorkDirectory);
 
     if (parser.isSet(optKeepOpen))
-        Properties[KeepOpen] = "";
+        Properties[KeepOpen] = true;
 
     if (parser.isSet(optScript))
         Properties[Script] = parser.value(optScript);

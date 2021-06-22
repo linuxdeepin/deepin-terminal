@@ -715,14 +715,16 @@ QString Session::profileKey() const
 void Session::done(int exitStatus)
 {
     qDebug()<<"done exitStatus:"<<exitStatus<< _shellProcess->exitStatus();
-    if (_autoClose || _wantedClose) {
+    /********2021-06-22 keep-open 参数不生效问题 Bug#80199********/
+    if (_autoClose && _wantedClose) {
         emit finished();
         return;
     }
 
     /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
-    if (false == _autoClose && false == _wantedClose && _shellProcess->exitStatus() == QProcess::NormalExit) {
-        qDebug() << "autoClose is false.";
+    /********2021-06-22 keep-open 参数不生效问题 Bug#80199********/
+    if (true == _autoClose && false == _wantedClose && _shellProcess->exitStatus() == QProcess::NormalExit) {
+        qDebug() << "autoClose is true.";
         emit titleChanged();
         emit finished();
         return;

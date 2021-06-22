@@ -97,7 +97,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setTextCodec(QTextCodec::codecForName("UTF-8"));
 
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
-    setAutoClose(!m_properties.contains(KeepOpen));
+    /******* 2021-06-22  通过保持打开参数控制的值控制************/
+    setAutoClose(!m_properties[KeepOpen].toBool());
     /********************* Modify by n014361 wangpeili End ************************/
 
     // WorkingDir
