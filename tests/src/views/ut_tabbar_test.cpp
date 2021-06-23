@@ -23,7 +23,7 @@
 
 #include "tabbar.h"
 #include "utils.h"
-#include "stub.h"
+#include "../stub.h"
 #include "termwidgetpage.h"
 
 //Qt单元测试相关头文件

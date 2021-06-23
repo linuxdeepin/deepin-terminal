@@ -26,7 +26,7 @@
 #include "windowsmanager.h"
 #include "dbusmanager.h"
 #include "utils.h"
-#include "stub.h"
+#include "../stub.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -68,27 +68,31 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
     bool isWindowEffectEnabled = m_service->isWindowEffectEnabled();
     if (isWindowEffectEnabled) {
 #ifdef ENABLE_UI_TEST
-//        模拟自动关闭窗口特效
-//        QTest::qWait(UT_WAIT_TIME);
-//        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
-//        EXPECT_EQ(spyWinEffectEnable.count(), 1);
+        //        模拟自动关闭窗口特效
+        //        QTest::qWait(UT_WAIT_TIME);
+        //        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
+        //        EXPECT_EQ(spyWinEffectEnable.count(), 1);
 #endif
     } else {
 #ifdef ENABLE_UI_TEST
-//        模拟自动开启窗口特效
-//        QTest::qWait(UT_WAIT_TIME);
-//        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
-//        EXPECT_EQ(spyWinEffectEnable.count(), 1);
+        //        模拟自动开启窗口特效
+        //        QTest::qWait(UT_WAIT_TIME);
+        //        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
+        //        EXPECT_EQ(spyWinEffectEnable.count(), 1);
 #endif
     }
 }
 
 TEST_F(UT_Service_Test, slotCustomThemeSettingDialogFinished)
 {
-    m_service->slotCustomThemeSettingDialogFinished(CustomThemeSettingDialog::Accepted);
-    m_service->m_settingDialog = new DSettingsDialog();
-    m_service->showShortcutConflictMsgbox("name");
-    m_service->slotSettingShortcutConflictDialogFinished();
+//    TermProperties properties;
+//    QuakeWindow w(properties);
+//    m_service->showCustomThemeSettingDialog(&w);
+//    m_service->m_settingDialog = new DSettingsDialog();
+//    m_service->slotCustomThemeSettingDialogFinished(CustomThemeSettingDialog::Accepted);
+//    m_service->showShortcutConflictMsgbox("name");
+//    m_service->slotSettingShortcutConflictDialogFinished();
+//    m_service->showCustomThemeSettingDialog(nullptr);
 }
 
 int ut_window_widgetCount()
@@ -113,8 +117,8 @@ TEST_F(UT_Service_Test, getsetIsDialogShow)
 {
     EXPECT_EQ(m_service->getIsDialogShow(), false);
 
-//    m_service->setIsDialogShow(nullptr, true);
-//    EXPECT_EQ(m_service->getIsDialogShow(), true);
+    //    m_service->setIsDialogShow(nullptr, true);
+    //    EXPECT_EQ(m_service->getIsDialogShow(), true);
 }
 
 TEST_F(UT_Service_Test, getEntryTime)

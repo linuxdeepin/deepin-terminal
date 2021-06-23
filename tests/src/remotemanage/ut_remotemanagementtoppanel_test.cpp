@@ -24,7 +24,7 @@
 #include "remotemanagementtoppanel.h"
 #include "service.h"
 #include "mainwindow.h"
-#include "stub.h"
+#include "../stub.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>

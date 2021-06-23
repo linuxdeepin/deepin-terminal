@@ -24,7 +24,7 @@
 #include "remotemanagementsearchpanel.h"
 #include "service.h"
 #include "mainwindow.h"
-#include "stub.h"
+#include "../stub.h"
 
 // DTK
 #include <DApplicationHelper>

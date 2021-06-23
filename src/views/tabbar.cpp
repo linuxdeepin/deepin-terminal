@@ -203,7 +203,7 @@ TabBar::~TabBar()
         m_rightMenu->deleteLater();
 
     if (m_termTabStyle != nullptr)
-        m_termTabStyle->deleteLater();
+        delete m_termTabStyle;
 }
 
 void TabBar::setTabHeight(int tabHeight)

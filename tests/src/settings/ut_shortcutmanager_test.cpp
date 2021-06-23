@@ -23,7 +23,7 @@
 
 #include "service.h"
 #include "shortcutmanager.h"
-#include "stub.h"
+#include "../stub.h"
 
 //Qt单元测试相关头文件
 #include <QTest>

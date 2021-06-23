@@ -43,7 +43,9 @@ void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
             // 判断窗口是否已经显示
             if (m_isShow) {
                 // 若显示，则隐藏
-                getRemoteManagementTopPanel()->hideAnim();
+                RemoteManagementTopPanel * panel = getRemoteManagementTopPanel();
+                if(panel)
+                    panel->hideAnim();
                 m_isShow = false;
             }
 

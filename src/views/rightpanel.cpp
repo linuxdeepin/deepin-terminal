@@ -49,7 +49,7 @@ void RightPanel::showAnim()
 
     QRect rect = geometry();
     QRect windowRect = window()->geometry();
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry",this);
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/
@@ -71,7 +71,7 @@ void RightPanel::hideAnim()
 
     QRect rect = geometry();
     QRect windowRect = window()->geometry();
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry", this);
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/

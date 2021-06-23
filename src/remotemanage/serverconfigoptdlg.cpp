@@ -53,7 +53,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_serverName(new DLineEdit),
       m_address(new DLineEdit),
       m_port(new DSpinBox),
-      m_port_tip(new DAlertControl(m_port)),
+      m_port_tip(new DAlertControl(m_port, this)),
       m_userName(new DLineEdit),
       m_password(new DPasswordEdit),
       m_privateKey(new DLineEdit),

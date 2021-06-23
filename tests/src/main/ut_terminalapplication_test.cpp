@@ -22,7 +22,7 @@
 #include "ut_terminalapplication_test.h"
 
 #include "terminalapplication.h"
-#include "stub.h"
+#include "../stub.h"
 
 //Qt单元测试相关头文件
 #include <QObject>

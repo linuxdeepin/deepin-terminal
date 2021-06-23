@@ -23,7 +23,7 @@
 
 #include "remotemanagementpanel.h"
 #include "utils.h"
-#include "stub.h"
+#include "../stub.h"
 #include "service.h"
 
 //Google GTest 相关头文件

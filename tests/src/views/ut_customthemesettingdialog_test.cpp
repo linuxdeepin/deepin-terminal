@@ -21,7 +21,7 @@
 
 #include "ut_customthemesettingdialog_test.h"
 #include "customthemesettingdialog.h"
-#include "stub.h"
+#include "../stub.h"
 
 // DTK
 #include <DTitlebar>
