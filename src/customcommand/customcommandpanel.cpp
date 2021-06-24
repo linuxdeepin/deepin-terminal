@@ -75,36 +75,7 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     m_pdlg->setObjectName("CustomAddCommandDialog");//Add by ut001000 renfeixiang 2020-08-14
-    connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
-        // 弹窗隐藏或消失
-        Service::instance()->setIsDialogShow(window(), false);
-
-        qInfo() << "finished" << result;
-
-        if (QDialog::Accepted == result) {
-            qInfo() << "Accepted";
-            QAction *newAction = m_pdlg->getCurCustomCmd();
-            //m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
-            // 新增快捷键 => 显示在列表中使用大写 down2up dzw 20201215
-            m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), Utils::converDownToUp(newAction->shortcut().toString()));
-            /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
-            ShortcutManager::instance()->addCustomCommand(*newAction);
-            /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
-
-            emit Service::instance()->refreshCommandPanel("", "");
-
-            refreshCmdSearchState();
-            /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
-            int index = m_cmdListWidget->indexFromString(newAction->text());
-            m_cmdListWidget->setScroll(index);
-            /********************* Modify by m000714 daizhengwen End ************************/
-
-        }
-
-        if (m_bpushButtonHaveFocus)
-            m_pushButton->setFocus(Qt::TabFocusReason);
-
-    });
+    connect(m_pdlg, &CustomCommandOptDlg::finished, this, &CustomCommandPanel::onAddCommandResponse);
     m_pdlg->show();
 }
 
@@ -134,6 +105,37 @@ void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
             qInfo() << "set focus on add search edit";
         }
     }
+}
+
+void CustomCommandPanel::onAddCommandResponse(int result)
+{
+        // 弹窗隐藏或消失
+        Service::instance()->setIsDialogShow(window(), false);
+
+        qInfo() << "finished" << result;
+
+        if (QDialog::Accepted == result) {
+            qInfo() << "Accepted";
+            QAction *newAction = m_pdlg->getCurCustomCmd();
+            //m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
+            // 新增快捷键 => 显示在列表中使用大写 down2up dzw 20201215
+            m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), Utils::converDownToUp(newAction->shortcut().toString()));
+            /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
+            ShortcutManager::instance()->addCustomCommand(*newAction);
+            /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 End  ************************/
+
+            emit Service::instance()->refreshCommandPanel("", "");
+
+            refreshCmdSearchState();
+            /******** Modify by m000714 daizhengwen 2020-04-10: 滚动条滑至最底端****************/
+            int index = m_cmdListWidget->indexFromString(newAction->text());
+            m_cmdListWidget->setScroll(index);
+            /********************* Modify by m000714 daizhengwen End ************************/
+
+        }
+
+        if (m_bpushButtonHaveFocus)
+            m_pushButton->setFocus(Qt::TabFocusReason);
 }
 
 void CustomCommandPanel::refreshCmdPanel()

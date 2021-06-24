@@ -157,7 +157,7 @@ QList<QAction *> &ShortcutManager::getCustomCommandActionList()
     return m_customCommandActionList;
 }
 
-QAction *ShortcutManager::addCustomCommand(QAction &action)
+QAction *ShortcutManager::addCustomCommand(const QAction &action)
 {
     QAction *addAction = new QAction(action.text(), this);
     addAction->setData(action.data());

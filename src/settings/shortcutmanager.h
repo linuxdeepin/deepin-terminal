@@ -86,7 +86,7 @@ public:
      * @param action 增加操作
      * @return
      */
-    QAction *addCustomCommand(QAction &action);
+    QAction *addCustomCommand(const QAction &action);
     /**
      * @brief 删除自定义命令
      * @author ut000125 sunchengxi

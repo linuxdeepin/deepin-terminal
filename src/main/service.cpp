@@ -479,7 +479,9 @@ bool Service::getIsDialogShow() const
 
 void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 {
-    MainWindow *window = static_cast<MainWindow *>(parent);
+    MainWindow *window = qobject_cast<MainWindow *>(parent);
+    if(nullptr == window)
+        return;
     if (window == WindowsManager::instance()->getQuakeWindow()) {
         qInfo() << "QuakeWindow show or hide dialog " << isDialogShow;
         m_isDialogShow = isDialogShow;

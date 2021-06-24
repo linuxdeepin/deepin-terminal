@@ -18,10 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#include "ut_customcommandpanel_test.h"
-
 #include "customcommandpanel.h"
+#include "customcommandoptdlg.h"
+#include "ut_defines.h"
+#include "shortcutmanager.h"
+#include "../stub.h"
 
 #include <QDebug>
 
@@ -31,6 +32,28 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+
+
+#include <gtest/gtest.h>
+
+class UT_CustomCommandPanel_Test : public ::testing::Test
+{
+public:
+    UT_CustomCommandPanel_Test();
+
+    //用于做一些初始化操作
+    virtual void SetUp();
+
+    //用于做一些清理操作
+    virtual void TearDown();
+private:
+    ShortcutManager *m_scManager;
+};
+
+static QAction m_action;
+static QAction *ut_m_pdlg_getCurCustomCmd() {
+    return &m_action;
+}
 
 UT_CustomCommandPanel_Test::UT_CustomCommandPanel_Test():m_scManager(nullptr)
 {
@@ -69,6 +92,13 @@ TEST_F(UT_CustomCommandPanel_Test, CustomCommandPanelTest)
     panel.refreshCmdSearchState();
 }
 
+TEST_F(UT_CustomCommandPanel_Test, showCurSearchResult)
+{
+    CustomCommandPanel panel;
+    panel.m_searchEdit->setText("1");
+    panel.showCurSearchResult();
+}
+
 TEST_F(UT_CustomCommandPanel_Test, showAddCustomCommandDlg)
 {
     QList<QAction *> cmdActionlist = m_scManager->getCustomCommandActionList();
@@ -87,7 +117,28 @@ TEST_F(UT_CustomCommandPanel_Test, showAddCustomCommandDlg)
     EXPECT_EQ(cmdActionlist.size(), cmdListWidget->count());
 
     panel.refreshCmdSearchState();
+    panel.m_pushButton->setFocus();
     panel.showAddCustomCommandDlg();
+    panel.showAddCustomCommandDlg();
+    panel.m_bpushButtonHaveFocus = true;
+    //打桩
+    Stub stub;
+    stub.set(ADDR(CustomCommandOptDlg, getCurCustomCmd), ut_m_pdlg_getCurCustomCmd);
+
+    panel.onAddCommandResponse(QDialog::Accepted);
+    //打桩还原
+    stub.reset(ADDR(CustomCommandOptDlg, getCurCustomCmd));
+
+    ShortcutManager::instance()->addCustomCommand(QAction("xxx"));
+    QAction *action = ShortcutManager::instance()->getCustomCommandActionList().value(0);
+    panel.doCustomCommand(action->text());
 }
 
+TEST_F(UT_CustomCommandPanel_Test, onFocusOut)
+{
+    CustomCommandPanel panel;
+    panel.onFocusOut(Qt::TabFocusReason);
+    panel.m_searchEdit->setFocus();
+    panel.onFocusOut(Qt::BacktabFocusReason);
+}
 #endif
