@@ -297,6 +297,7 @@ void PageSearchBar::initFindNextButton()
 void PageSearchBar::initSearchEdit()
 {
     m_searchEdit = new TSearchEdit(this);
+    connect(m_searchEdit, &TSearchEdit::enter, this, &PageSearchBar::slotEnterInSearchEdit);
     m_searchEdit->setObjectName("PageSearchBarSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
     m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
 
