@@ -51,6 +51,8 @@ public:
     // 初始化虚拟键盘相关信号连接
     void initVirtualKeyboardConnections();
 
+    // 虚拟键盘存在时，更新控件的位置
+    static void updateWidgetPositionForVirutalKeyboard();
 protected:
     // 初始化标题栏
     virtual void initTitleBar() override;

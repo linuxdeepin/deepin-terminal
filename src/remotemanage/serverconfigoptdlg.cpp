@@ -22,6 +22,7 @@
 #include "serverconfigmanager.h"
 #include "termcommandlinkbutton.h"
 #include "utils.h"
+#include "tabletwindow.h"
 
 #include <DFontSizeManager>
 #include <DPushButton>
@@ -296,6 +297,8 @@ void ServerConfigOptDlg::initUI()
         } else {
             this->setFixedHeight(630);
         }
+
+        TabletWindow::updateWidgetPositionForVirutalKeyboard();
     });
 
     DPushButton *pCancelButton = new DPushButton(tr("Cancel"));

@@ -88,6 +88,13 @@ void TabletWindow::initVirtualKeyboardConnections()
     //connect(this, &TabletWindow::onResizeWindowHeight, this, &TabletWindow::slotResizeWindowHeight, Qt::QueuedConnection);
 }
 
+void TabletWindow::updateWidgetPositionForVirutalKeyboard()
+{
+    if(nullptr == m_window)
+        return;
+    m_window->handleVirtualKeyboardShowHide(m_window->m_isVirtualKeyboardShow);
+}
+
 /*******************************************************************************
  1. @函数:    initVirtualKeyboardImActiveChangedSignal
  2. @作者:    ut000438 王亮
