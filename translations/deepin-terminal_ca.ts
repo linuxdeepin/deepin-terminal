@@ -539,7 +539,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1182"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut obrir &quot;%1&quot;. No es pot executar.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1184"/>
