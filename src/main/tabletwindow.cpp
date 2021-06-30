@@ -52,6 +52,9 @@ TabletWindow::TabletWindow(TermProperties properties, QWidget *parent): MainWind
 
     // 初始化虚拟键盘相关信号连接
     initVirtualKeyboardConnections();
+
+    //忽略虚拟键盘对控件的适配
+    qApp->ignoreVirtualKeyboard(this);
 }
 
 TabletWindow::~TabletWindow()

@@ -324,7 +324,7 @@ void CustomCommandPanel::resizeEvent(QResizeEvent *event)
         int keyboardHeight = service->getVirtualKeyboardHeight();
         topPanelHeight = QApplication::desktop()->geometry().height() - keyboardHeight - titleBarHeight - statusbarHeight;
     } else {
-        topPanelHeight = QApplication::desktop()->geometry().height() - titleBarHeight - statusbarHeight;
+        topPanelHeight = QApplication::desktop()->availableGeometry().height() - titleBarHeight - statusbarHeight;
     }
 
     int topPanelWidth = this->width();
