@@ -88,7 +88,7 @@ inline bool TermWidgetPage::handleUninstallTerminal(QString commandname)
         if (!Utils::showExitUninstallConfirmDialog())
             return false;
     }
-    return Utils::showUnistallConfirmDialog(commandname);
+    return Utils::showUninstallConfirmDialog(commandname);
 }
 
 MainWindow *TermWidgetPage::parentMainWindow()

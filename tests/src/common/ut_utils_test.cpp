@@ -278,7 +278,7 @@ TEST_F(UT_Utils_Test, showExitUninstallConfirmDialog)
 }
 
 
-TEST_F(UT_Utils_Test, showUnistallConfirmDialog)
+TEST_F(UT_Utils_Test, showUninstallConfirmDialog)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
@@ -300,7 +300,7 @@ TEST_F(UT_Utils_Test, showUnistallConfirmDialog)
     });
 
     QString commandName = "python";
-    bool isAccepted = Utils::showUnistallConfirmDialog(commandName);
+    bool isAccepted = Utils::showUninstallConfirmDialog(commandName);
     EXPECT_EQ(isAccepted, false);
 
     
@@ -420,12 +420,12 @@ TEST_F(UT_Utils_Test, parseNestedQString)
 TEST_F(UT_Utils_Test, FontFilterTest)
 {
     FontFilter *ff = FontFilter::instance();
-    ff->HandleWidthFont();
+    ff->handleWidthFont();
 
     ff->setStop(true);
     EXPECT_EQ(ff->m_bstop, true);
 
-    ff->CompareWhiteList();
+    ff->compareWhiteList();
 }
 
 #endif

@@ -308,8 +308,8 @@ void Service::showSettingDialog(MainWindow *pOwner)
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
         }
         //更新设置的等宽字体
-        Settings::instance()->HandleWidthFont();
-        FontFilter::instance()->HandleWidthFont();
+        Settings::instance()->handleWidthFont();
+        FontFilter::instance()->handleWidthFont();
 
         // 重新加载shell配置数据
         Settings::instance()->reloadShellOptions();

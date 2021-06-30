@@ -166,22 +166,23 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
             if (-1 == device.write(section.toUtf8() + eol))
                 writeError = true;
         }
+        const QByteArray dot = ", ";
         QByteArray block = key.toUtf8();
         block += " = ";
         if (QVariant::StringList == it.value().type()) {
             foreach (QString s, it.value().toStringList()) {
                 block += escapedString(s);
-                block += ", ";
+                block += dot;
             }
-            if (block.endsWith(", "))
+            if (block.endsWith(dot))
                 block.chop(2);
 
         } else if (QVariant::List == it.value().type()) {
             foreach (QVariant v, it.value().toList()) {
                 block += escapedString(variantToString(v));
-                block += ", ";
+                block += dot;
             }
-            if (block.endsWith(", "))
+            if (block.endsWith(dot))
                 block.chop(2);
 
         } else {
@@ -252,10 +253,9 @@ QByteArray SettingIO::escapedString(const QString &src)
 {
     bool needsQuotes = false;
     bool escapeNextIfDigit = false;
-    int i;
     QByteArray result;
     result.reserve(src.size() * 3 / 2);
-    for (i = 0; i < src.size(); ++i) {
+    for (int i = 0; i < src.size(); ++i) {
         uint ch = src.at(i).unicode();
         if (';' == ch || ',' == ch || '=' == ch || '#' == ch)
             needsQuotes = true;
@@ -437,7 +437,7 @@ bool SettingIO::iniUnescapedKey(const QByteArray &key, int from, int to, QString
     bool lowercaseOnly = true;
     int i = from;
     result.reserve(result.length() + (to - from));
-    while (i < to) {
+    while (i < to && i < key.count()) {
         int ch = (uchar)key.at(i);
 
         if ('\\' == ch) {

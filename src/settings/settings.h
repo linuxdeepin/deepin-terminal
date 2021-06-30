@@ -204,7 +204,7 @@ public:
      * @brief 每次显示设置界面时，更新设置的等宽字体
      * @author ut001000 任飞翔
      */
-    void HandleWidthFont();
+    void handleWidthFont();
     /**
      * @brief 是否禁用Ctrl+S和Ctrl+Q流控制
      * @author 朱科伟

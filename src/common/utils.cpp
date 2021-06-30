@@ -111,7 +111,7 @@ QString Utils::getRandString()
     QString str;
     QTime t;
     t = QTime::currentTime();
-    qsrand(t.msec() + t.second() * 1000);
+    qsrand(static_cast<uint>(t.msec() + t.second() * 1000));
     for (int i = 0; i < max; i++) {
         int len = qrand() % tmp.length();
         str[i] = tmp.at(len);
@@ -133,7 +133,7 @@ QString Utils::showDirDialog(QWidget *widget)
 
     if (QDialog::Accepted == code && !dialog.selectedFiles().isEmpty()) {
         QStringList list = dialog.selectedFiles();
-        const QString dirName = list.first();
+        const QString dirName = list.value(0);
         return dirName;
     } else {
         return "";
@@ -226,7 +226,7 @@ bool Utils::showExitUninstallConfirmDialog()
 }
 
 //单词可能拼错了showUninstallConfirmDialog
-bool Utils::showUnistallConfirmDialog(QString commandname)
+bool Utils::showUninstallConfirmDialog(QString commandname)
 {
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，显示不同的弹框信息 Begin***************/
     QString title = "", text = "";
@@ -531,7 +531,7 @@ QList<QByteArray> Utils::encodeList()
 
     QList<QByteArray> encodeList;
     // 自定义的名称，系统里不一定大小写完全一样，再同步一下。
-    for (QByteArray &name : showEncodeList) {
+    for (const QByteArray &name : showEncodeList) {
         QString strname1 = name;
         bool bFind = false;
         QByteArray encodename;
@@ -637,7 +637,7 @@ FontFilter::FontFilter()
     m_thread = new QThread();
     this->moveToThread(m_thread);
     QObject::connect(m_thread, &QThread::started, this, [ = ]() {
-        CompareWhiteList();
+        compareWhiteList();
         m_thread->quit();
     });
 }
@@ -653,7 +653,7 @@ FontFilter::~FontFilter()
     }
 }
 
-void FontFilter::HandleWidthFont()
+void FontFilter::handleWidthFont()
 {
     if (!m_thread->isRunning()) {
         m_thread->start();
@@ -667,7 +667,7 @@ void FontFilter::setStop(bool stop)
     m_bstop = stop;
 }
 
-void FontFilter::CompareWhiteList()
+void FontFilter::compareWhiteList()
 {
     QStringList DBUSWhitelist = DBusManager::callAppearanceFont("monospacefont");
     std::sort(DBUSWhitelist.begin(), DBUSWhitelist.end(), [ = ](const QString & str1, const QString & str2) {

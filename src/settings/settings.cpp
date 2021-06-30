@@ -509,7 +509,7 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
-void Settings::HandleWidthFont()
+void Settings::handleWidthFont()
 {
     QStringList Whitelist;
     Whitelist = DBusManager::callAppearanceFont("monospacefont");
@@ -538,7 +538,7 @@ void Settings::HandleWidthFont()
     QString fontname = comboBox->currentText();
     comboBox->clear();
     comboBox->addItems(Whitelist);
-    qInfo() << "HandleWidthFont has update";
+    qInfo() << "handleWidthFont has update";
     if (Whitelist.contains(fontname)) {
         comboBox->setCurrentText(fontname);
     }

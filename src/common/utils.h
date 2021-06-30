@@ -198,7 +198,7 @@ public:
      * @param commandname
      * @return
      */
-    static bool showUnistallConfirmDialog(QString commandname);
+    static bool showUninstallConfirmDialog(QString commandname);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     /**
      * @brief 显示快捷方式冲突消息框
@@ -326,7 +326,7 @@ public:
      * @brief 启动thread，打印等宽字体函数
      * @author ut001000 任飞翔
      */
-    void HandleWidthFont();
+    void handleWidthFont();
     /**
      * @brief 设置线程结束标志
      * @param stop true = 结束 false = 正常
@@ -338,7 +338,7 @@ private:
      * @brief 打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
      * @author ut001000 任飞翔
      */
-    void CompareWhiteList();
+    void compareWhiteList();
     //线程成员变量
     QThread *m_thread = nullptr;
     //线程结束标志位
