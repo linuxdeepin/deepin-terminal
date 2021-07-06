@@ -378,9 +378,13 @@ void TermWidget::onTitleArgsChange(QString key, QString value)
         if ("~" == dir || dir.startsWith(QDir::homePath())) {
             // 出现家目录~的情况
             QString homePath = QDir::homePath();
-            QStringList pathList = homePath.split("/");
-            // 当前目录短
-            m_tabArgs[DIR_S] = pathList.last();
+            QStringList pathList;
+            if("~" == dir)
+                pathList = homePath.split("/");
+            else
+                pathList = dir.split("/");
+            // 当前目录短，返回当前文件夹名
+            m_tabArgs[DIR_S] = pathList.value(pathList.count() - 1);
             // 当前目录长对于~的处理 => 传过来的不是~但要填进去~和提示符保持一致
             dir.replace(homePath, "~");
             m_tabArgs[DIR_L] = dir;
