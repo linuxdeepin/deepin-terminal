@@ -32,6 +32,7 @@
 #include <DSlider>
 #include <DApplicationHelper>
 #include <DKeySequenceEdit>
+#include <DSysInfo>
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -80,7 +81,15 @@ void Settings::init()
     m_backend->setObjectName("SettingsQSettingBackend");//Add by ut001000 renfeixiang 2020-08-13
 
     // 默认配置
-    settings = DSettings::fromJsonFile(":/other/default-config.json");
+    {
+        QFile file(":/other/default-config.json");
+        if(!file.open(QFile::ReadOnly)) {
+            qInfo() << "can not open default-config.json";
+        }
+        QByteArray json = file.readAll();
+        defaultConfigAdjustToServer(json);
+        settings = DSettings::fromJson(json);
+    }
 
     // 加载自定义配置
     settings->setBackend(m_backend);
@@ -162,6 +171,59 @@ void Settings::loadDefaultsWhenReinstall()
 //        this->settings->setOption("basic.interface.opacity", 100);
 //        installFlagFile.remove();
 //    }
+}
+
+void Settings::defaultConfigAdjustToServer(QByteArray &json)
+{
+    //服务器版
+    if(DSysInfo::uosType() == DSysInfo::UosServer)
+    {
+        QJsonDocument doc = QJsonDocument::fromJson(json);
+        QVariant jsonVar = doc.toVariant();
+        //隐藏透明度界面
+        {
+            QVariantMap *obj = nullptr;
+            if(jsonVar.type() == QVariant::Map)
+                obj = reinterpret_cast<QVariantMap *>(&jsonVar);
+            obj = objArrayFind(obj, "groups", "key", "basic");
+            obj = objArrayFind(obj, "groups", "key", "interface");
+            obj = objArrayFind(obj, "options", "key", "opacity");
+            if(obj)
+                obj->insert("hide", true);
+        }
+
+        //隐藏背景模糊界面
+        {
+            QVariantMap *obj = nullptr;
+            if(jsonVar.type() == QVariant::Map)
+                obj = reinterpret_cast<QVariantMap *>(&jsonVar);
+            obj = objArrayFind(obj, "groups", "key", "advanced");
+            obj = objArrayFind(obj, "groups", "key", "window");
+            obj = objArrayFind(obj, "options", "key", "blurred_background");
+            if(obj)
+                obj->insert("hide", true);
+        }
+
+        //更新json
+        json = QJsonDocument::fromVariant(jsonVar).toJson();
+    }
+}
+
+QVariantMap *Settings::objArrayFind(QVariantMap *obj, const QString &objKey, const QString &arrKey, const QString &arrValue)
+{
+    if(!obj)
+        return nullptr;
+    if(!obj->contains(objKey))
+        return nullptr;
+    QVariant *var = &(*obj)[objKey];
+    QVariantList &array = *reinterpret_cast<QVariantList *>(var);
+    for(QVariant &sub : array) {
+        QVariantMap &obj = *reinterpret_cast<QVariantMap *>(&sub);
+        if(arrValue == obj.value(arrKey).toString()) {
+            return &obj;
+        }
+    }
+    return nullptr;
 }
 
 /*******************************************************************************

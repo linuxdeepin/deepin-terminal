@@ -118,6 +118,11 @@ private:
     Settings();
     void loadDefaultsWhenReinstall();
 
+    //当龙芯5000服务器企业版，修改json
+    void defaultConfigAdjustToServer(QByteArray &json);
+    //按特定的顺序查找json
+    QVariantMap *objArrayFind(QVariantMap *obj, const QString &objKey, const QString &arrKey, const QString &arrValue);
+
     static Settings *m_settings_instance;
 
     Dtk::Core::QSettingBackend *m_backend;
