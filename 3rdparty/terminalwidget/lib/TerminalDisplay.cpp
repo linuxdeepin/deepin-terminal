@@ -3638,11 +3638,11 @@ bool AutoScrollHandler::eventFilter(QObject* watched,QEvent* event)
     Q_ASSERT( watched == parent() );
     Q_UNUSED( watched );
 
-    QMouseEvent* mouseEvent = (QMouseEvent*)event;
     switch (event->type())
     {
         case QEvent::MouseMove:
         {
+            QMouseEvent* mouseEvent = static_cast<QMouseEvent *>(event);
             bool mouseInWidget = widget()->rect().contains(mouseEvent->pos());
 
             if (mouseInWidget)
@@ -3659,7 +3659,7 @@ bool AutoScrollHandler::eventFilter(QObject* watched,QEvent* event)
                 break;
         }
         case QEvent::MouseButtonRelease:
-            if (_timerId && (mouseEvent->buttons() & ~Qt::LeftButton))
+            if (_timerId && (static_cast<QMouseEvent *>(event)->buttons() & ~Qt::LeftButton))
             {
                 killTimer(_timerId);
                 _timerId = 0;
@@ -3931,8 +3931,7 @@ bool TerminalScreen::event(QEvent* event)
     if (event->type() == QEvent::Gesture)
         return gestureEvent(static_cast<QGestureEvent*>(event));
 
-    QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-    if (event->type() == QEvent::MouseButtonRelease && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    if (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent*>(event)->source() == Qt::MouseEventSynthesizedByQt)
     {
         qDebug()<< "action is over" << m_gestureAction;
 
@@ -3942,8 +3941,9 @@ bool TerminalScreen::event(QEvent* event)
 
         m_gestureAction = GA_null;
     }
-    if (event->type() == QEvent::MouseButtonPress && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    if (event->type() == QEvent::MouseButtonPress && static_cast<QMouseEvent *>(event)->source() == Qt::MouseEventSynthesizedByQt)
     {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
         m_lastMouseTime = mouseEvent->timestamp();
         m_lastMouseYpos = mouseEvent->pos().y();
 
@@ -3953,8 +3953,9 @@ bool TerminalScreen::event(QEvent* event)
             tween.stop();
         }
     }
-    if (event->type() == QEvent::MouseMove && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    if (event->type() == QEvent::MouseMove && static_cast<QMouseEvent *>(event)->source() == Qt::MouseEventSynthesizedByQt)
     {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
         const ulong diffTime = mouseEvent->timestamp() - m_lastMouseTime;
         const int diffYpos = mouseEvent->pos().y() - m_lastMouseYpos;
         m_lastMouseTime = mouseEvent->timestamp();
@@ -3987,7 +3988,7 @@ bool TerminalScreen::event(QEvent* event)
 
     /***add by ut001121 zhangmeng 20200915 修复BUG46979***/
     if (event->type() == QEvent::MouseMove
-            && mouseEvent->source() != Qt::MouseEventSynthesizedByQt
+            && static_cast<QMouseEvent *>(event)->source() != Qt::MouseEventSynthesizedByQt
             && m_gestureAction == GA_slide){
         return true;
     }

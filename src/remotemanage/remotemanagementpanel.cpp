@@ -82,7 +82,9 @@ void RemoteManagementPanel::setFocusBack(const QString &strGroup)
     }
     // 不要焦点
     else {
-        Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if(w)
+            w->focusCurrentPage();
     }
 }
 

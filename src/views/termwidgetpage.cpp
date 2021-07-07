@@ -38,7 +38,7 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
 {
     Utils::set_Object_Name(this);
     //qInfo() << "parentTermWidgetPage" << parentWidget();
-    m_MainWindow = static_cast<MainWindow *>(parentWidget());
+    m_MainWindow = qobject_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
 
@@ -84,7 +84,7 @@ inline bool TermWidgetPage::handleUninstallTerminal(QString commandname)
 {
     //MainWindow *mainWindow = qobject_cast<MainWindow *>(parent);
     //构造函数中已经获取了mainwindow窗口，无需在获取一遍
-    if (m_MainWindow->hasRunningProcesses()) {
+    if (m_MainWindow && m_MainWindow->hasRunningProcesses()) {
         if (!Utils::showExitUninstallConfirmDialog())
             return false;
     }
@@ -561,8 +561,9 @@ void TermWidgetPage::showSearchBar(int state)
 
         qInfo() << __FUNCTION__ << "hide search bar! focus in term!";
         /******** Modify by ut001000 renfeixiang 2020-08-28:修改bug 45227,焦点只有在m_findBar上时，才将焦点设置到CurrentPage Begin***************/
-        if (Utils::getMainWindow(this)->isFocusOnList())
-            Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if (w && w->isFocusOnList())
+            w->focusCurrentPage();
         m_findBar->hide();
         /******** Modify by ut001000 renfeixiang 2020-08-28 End***************/
     }

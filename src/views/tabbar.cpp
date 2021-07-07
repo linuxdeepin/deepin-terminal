@@ -567,7 +567,10 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
     const qreal ratio = qApp->devicePixelRatio();
 
     QString termIdentifer = identifier(index);
-    TermWidgetPage *termPage = static_cast<MainWindow *>(this->window())->getTermPage(termIdentifer);
+    MainWindow *w = qobject_cast<MainWindow *>(this->window());
+    if(!w)
+        return QPixmap();
+    TermWidgetPage *termPage = w->getTermPage(termIdentifer);
     /******** fix bug 70389:连接高分屏，合并/分开窗口动画显示异常 ***************/
     int width = termPage->width();
     int height =  termPage->height();

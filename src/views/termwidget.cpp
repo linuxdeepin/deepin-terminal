@@ -481,13 +481,13 @@ void TermWidget::addMenuActions(const QPoint &pos)
     m_menu->addSeparator();
 
 
-    Qt::Orientation orientation = static_cast<DSplitter *>(parentWidget())->orientation();
+    DSplitter *splitter = qobject_cast<DSplitter *>(parentWidget());
     int layer = getTermLayer();
 
-    if (1 == layer || (2 == layer && Qt::Horizontal == orientation))
+    if (1 == layer || (2 == layer && splitter && Qt::Horizontal == splitter->orientation()))
         m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
 
-    if (1 == layer || (2 == layer && Qt::Vertical == orientation))
+    if (1 == layer || (2 == layer && splitter && Qt::Vertical == splitter->orientation()))
         m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/

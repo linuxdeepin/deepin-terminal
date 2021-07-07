@@ -151,7 +151,9 @@ void CustomCommandTopPanel::show(bool bSetFocus)
     } else {
         qInfo() << "Focus is in Current page";
         // 将焦点落回终端
-        Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if(w)
+            w->focusCurrentPage();
     }
 
 }

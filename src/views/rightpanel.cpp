@@ -54,7 +54,8 @@ void RightPanel::showAnim()
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/
     int panelHeight = windowRect.height();
-    if (Utils::getMainWindow(this)->titlebar()->isVisible())
+    MainWindow *w = Utils::getMainWindow(this);
+    if (w && w->titlebar()->isVisible())
         panelHeight -= WIN_TITLE_BAR_HEIGHT;
 
     animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), panelHeight));
@@ -76,7 +77,8 @@ void RightPanel::hideAnim()
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/
     int panelHeight = windowRect.height();
-    if (Utils::getMainWindow(this)->titlebar()->isVisible())
+    MainWindow *w = Utils::getMainWindow(this);
+    if (w && w->titlebar()->isVisible())
         panelHeight -= WIN_TITLE_BAR_HEIGHT;
 
     animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), panelHeight));
@@ -110,8 +112,11 @@ void RightPanel::hideEvent(QHideEvent *event)
         focusPoint = mapFromGlobal(focusPoint);
 
         // 判断是否包含坐标
-        if (rect().contains(focusPoint))
-            Utils::getMainWindow(this)->focusCurrentPage();
+        if (rect().contains(focusPoint)) {
+            MainWindow *w = Utils::getMainWindow(this);
+            if(w)
+                w->focusCurrentPage();
+        }
     }
     /***add end by ut001121***/
 

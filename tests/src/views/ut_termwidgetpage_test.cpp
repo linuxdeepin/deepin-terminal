@@ -206,7 +206,7 @@ TEST_F(UT_TermWidgetPage_Test, handleUninstallTerminal)
     termProperty[QuakeMode] = false;
     termProperty[SingleFlag] = true;
 
-    TermWidgetPage termWidgetPage(termProperty, nullptr);
+    TermWidgetPage termWidgetPage(termProperty, m_normalWindow);
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
     Stub stub;

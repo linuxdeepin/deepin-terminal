@@ -179,7 +179,9 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
         m_serverConfigGroupPanel->onFocusInBackButton();
     } else {
         // 是鼠标点击，当前项没有焦点
-        Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if(w)
+            w->focusCurrentPage();
         qInfo() << "show group but not focus in group";
     }
 
@@ -292,7 +294,8 @@ void RemoteManagementTopPanel::showPrevPanel()
     panelLeftToRight(animation, animation1);
 
     // 焦点在列表上
-    if (Utils::getMainWindow(this)->isFocusOnList()) {
+    MainWindow *w = Utils::getMainWindow(this);
+    if (w && w->isFocusOnList()) {
         // 焦点返回
         if (ServerConfigManager::PanelType_Search == m_currentPanelType) {
             // 搜索返回

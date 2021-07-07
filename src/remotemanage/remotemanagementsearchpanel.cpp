@@ -206,7 +206,9 @@ void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup, bool isF
     }
     // 不要焦点
     else {
-        Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if(w)
+            w->focusCurrentPage();
     }
 }
 

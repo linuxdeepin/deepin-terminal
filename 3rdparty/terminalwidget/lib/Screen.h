@@ -710,7 +710,7 @@ private:
 
     int _oldTotalLines;
     bool _isResize;
-    bool _enableReflowLines;
+    bool _enableReflowLines = true;//自动换行功能，默认为true
 
     QVarLengthArray<LineProperty,64> lineProperties;
 

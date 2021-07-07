@@ -58,6 +58,11 @@ void UT_RemoteManagementTopPanel_Test::TearDown()
 {
 }
 
+static void doDeleteLater(RemoteManagementTopPanel *obj)
+{
+    obj->deleteLater();
+}
+
 #ifdef UT_REMOTEMANAGEMENTTOPPANEL_TEST
 
 TEST_F(UT_RemoteManagementTopPanel_Test, setFocusInPanel)
@@ -184,22 +189,23 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showPrePanelTest)
     Stub s;
     s.set(ADDR(MainWindow, isFocusOnList), stub_isFocusOnList);
     // 清空堆栈
-    RemoteManagementTopPanel topPanel;
-    topPanel.m_prevPanelStack.clear();
+    QSharedPointer<RemoteManagementTopPanel> topPanel(new RemoteManagementTopPanel, doDeleteLater);
+    topPanel->m_prevPanelStack.clear();
 
     // 显示前一个窗口
-    topPanel.showPrevPanel();
+    topPanel->m_currentPanelType = ServerConfigManager::PanelType_Manage;
+    topPanel->showPrevPanel();
 
     // 搜索返回
-    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
-    topPanel.showPrevPanel();
+    topPanel->m_currentPanelType = ServerConfigManager::PanelType_Search;
+    topPanel->showPrevPanel();
 
     // 分组返回
-    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
-    topPanel.showPrevPanel();
+    topPanel->m_currentPanelType = ServerConfigManager::PanelType_Search;
+    topPanel->showPrevPanel();
 
     // 栈为空,最后返回都是主界面
-    EXPECT_EQ(topPanel.m_currentPanelType, ServerConfigManager::PanelType_Manage);
+    EXPECT_EQ(topPanel->m_currentPanelType, ServerConfigManager::PanelType_Manage);
     s.reset(ADDR(MainWindow, isFocusOnList));
 }
 #endif

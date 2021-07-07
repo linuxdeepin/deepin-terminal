@@ -487,8 +487,8 @@ private:
     QMap<QString, TabTextColorStatus> m_tabStatusMap;
     QColor m_tabChangedTextColor;
 
-    bool m_isEnableCloseTabAnimation;
-    bool m_isQuakeWindowTab;
+    bool m_isEnableCloseTabAnimation = true;//是否关闭tab动画,默认关闭动画
+    bool m_isQuakeWindowTab = false;//是否是雷神窗口的tab，默认不是雷神窗口
 
     TermTabStyle *m_termTabStyle = nullptr;
 };

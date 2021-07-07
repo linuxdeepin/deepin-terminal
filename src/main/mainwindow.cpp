@@ -1167,8 +1167,8 @@ inline void MainWindow::slotShortcutHorizonzalSplit()
         if (page) {
             if (page->currentTerminal()) {
                 int layer = page->currentTerminal()->getTermLayer();
-                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
-                if (1 == layer  || (2 == layer  &&  Qt::Horizontal == orientation)) {
+                DSplitter *splitter = qobject_cast<DSplitter *>(page->currentTerminal()->parentWidget());
+                if (1 == layer  || (2 == layer  &&  splitter && Qt::Horizontal == splitter->orientation())) {
                     page->split(Qt::Horizontal);
                     return ;
                 }
@@ -1186,8 +1186,8 @@ inline void MainWindow::slotShortcutVerticalSplit()
         if (page) {
             if (page->currentTerminal()) {
                 int layer = page->currentTerminal()->getTermLayer();
-                Qt::Orientation orientation = static_cast<DSplitter *>(page->currentTerminal()->parentWidget())->orientation();
-                if (1 == layer  || (2 == layer  &&  Qt::Vertical == orientation)) {
+                DSplitter *splitter = qobject_cast<DSplitter *>(page->currentTerminal()->parentWidget());
+                if (1 == layer  || (2 == layer  &&  splitter && Qt::Vertical == splitter->orientation())) {
                     page->split(Qt::Vertical);
                     return ;
                 }

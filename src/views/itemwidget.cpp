@@ -387,9 +387,10 @@ void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
 bool ItemWidget::eventFilter(QObject *watched, QEvent *event)
 {
     /***add begin by ut001121 zhangmeng 20200924 过滤并处理鼠标事件 修复BUG48618***/
-    QMouseEvent *mouse = static_cast<QMouseEvent *>(event);
+
     if (QEvent::MouseButtonPress == event->type()
-            && Qt::MouseEventSynthesizedByQt == mouse->source()) {
+            && Qt::MouseEventSynthesizedByQt == static_cast<QMouseEvent *>(event)->source()) {
+        QMouseEvent *mouse = static_cast<QMouseEvent *>(event);
         //记录移动事件来源
         m_moveSource = watched;
         //记录移动事件起点
@@ -398,15 +399,16 @@ bool ItemWidget::eventFilter(QObject *watched, QEvent *event)
         m_touchSlideMaxY = 0;
     }
     if (QEvent::MouseButtonRelease == event->type()
-            && Qt::MouseEventSynthesizedByQt == mouse->source()) {
+            && Qt::MouseEventSynthesizedByQt == static_cast<QMouseEvent *>(event)->source()) {
         //判断最大移动距离
         if (m_touchSlideMaxY <= COORDINATE_ERROR_Y) {
             //移动事件源为空,表示未曾移动过
             m_moveSource = nullptr;
         }
     }
-    if (QEvent::MouseMove == event->type() /*&& m_moveSource == watched*/
-            && Qt::MouseEventSynthesizedByQt == mouse->source()) {
+    if (QEvent::MouseMove == event->type()
+            && Qt::MouseEventSynthesizedByQt == static_cast<QMouseEvent *>(event)->source()) {
+        QMouseEvent *mouse = static_cast<QMouseEvent *>(event);
         //记录滑动最大距离
         m_touchSlideMaxY = qMax(m_touchSlideMaxY, qAbs(m_touchPressPosY - mouse->globalPos().y()));
     }
