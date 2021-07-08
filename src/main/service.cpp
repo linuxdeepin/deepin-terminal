@@ -924,8 +924,9 @@ bool Service::isPanelMovingBack()
     return m_isPanelMovingBack;
 }
 
-void Service::generateParameterForVirtualKeyboard(int &topPanelHeight)
+int Service::getAvailableHeightForVirtualKeyboard()
 {
+    int topPanelHeight = 0;
     int statusbarHeight = 0;
 
     //先通过 QDBusInterface QDBus::AutoDetect 设置状态栏接口
@@ -953,4 +954,6 @@ void Service::generateParameterForVirtualKeyboard(int &topPanelHeight)
     } else {
         topPanelHeight = QApplication::desktop()->availableGeometry().height() - titleBarHeight - statusbarHeight;
     }
+
+    return topPanelHeight;
 }

@@ -211,10 +211,7 @@ void CustomCommandTopPanel::resizeEvent(QResizeEvent *event)
         return RightPanel::resizeEvent(event);
     }
 
-    int topPanelHeight = 0;
-    Service::generateParameterForVirtualKeyboard(topPanelHeight);
-
-
+    int topPanelHeight = Service::getAvailableHeightForVirtualKeyboard();
     int topPanelWidth = this->width();
     m_customCommandPanel->resize(topPanelWidth, topPanelHeight);
     m_customCommandSearchPanel->resize(topPanelWidth, topPanelHeight);

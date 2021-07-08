@@ -100,8 +100,6 @@ void EncodePanel::resizeEvent(QResizeEvent *event)
         return RightPanel::resizeEvent(event);
     }
 
-    int topPanelHeight = 0;
-    Service::generateParameterForVirtualKeyboard(topPanelHeight);
-
+    int topPanelHeight = Service::getAvailableHeightForVirtualKeyboard();
     m_encodeView->setFixedHeight(topPanelHeight);
 }

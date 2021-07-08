@@ -282,9 +282,7 @@ void ServerConfigGroupPanel::resizeEvent(QResizeEvent *event)
     }
 
 
-    int topPanelHeight = 0;
-    Service::generateParameterForVirtualKeyboard(topPanelHeight);
-
+    int topPanelHeight = Service::getAvailableHeightForVirtualKeyboard();
     int panelWidth = this->width();
     this->resize(panelWidth, topPanelHeight);
 

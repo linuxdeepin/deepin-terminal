@@ -316,9 +316,7 @@ void RemoteManagementPanel::resizeEvent(QResizeEvent *event)
     }
 
 
-    int topPanelHeight = 0;
-    Service::generateParameterForVirtualKeyboard(topPanelHeight);
-
+    int topPanelHeight = Service::getAvailableHeightForVirtualKeyboard();
     int topPanelWidth = this->width();
     this->resize(topPanelWidth, topPanelHeight);
 
