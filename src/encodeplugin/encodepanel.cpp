@@ -99,9 +99,9 @@ void EncodePanel::resizeEvent(QResizeEvent *event)
     if (!isTabletMode) {
         return RightPanel::resizeEvent(event);
     }
-    int statusbarHeight = 0;
+
     int topPanelHeight = 0;
-    Service::generateParameterForVirtualKeyboard(statusbarHeight, topPanelHeight);
+    Service::generateParameterForVirtualKeyboard(topPanelHeight);
 
     m_encodeView->setFixedHeight(topPanelHeight);
 }
