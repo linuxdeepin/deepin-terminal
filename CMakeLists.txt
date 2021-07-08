@@ -301,5 +301,5 @@ install(DIRECTORY src/assets/deepin-terminal
 option(UT_SWITCH "Do you want to run ut code" OFF)
 #if ((${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") AND UT_SWITCH)
 if (UT_SWITCH)
-    add_subdirectory(test)
+#    add_subdirectory(test)
 endif()

@@ -142,6 +142,7 @@ public:
     // 获取插件面板是否正在进行返回动画
     bool isPanelMovingBack();
 
+    static void generateParameterForVirtualKeyboard(int &topPanelHeight);
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
