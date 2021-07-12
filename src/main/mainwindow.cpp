@@ -46,6 +46,7 @@
 #include <DAboutDialog>
 #include <DImageButton>
 #include <DLog>
+#include <DWindowManagerHelper>
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -967,11 +968,15 @@ QString MainWindow::getConfigWindowState()
 
 QSize MainWindow::halfScreenSize()
 {
-    QDesktopWidget w;
-    int x = w.availableGeometry().width() / 2;
-    int y = w.availableGeometry().height() - 1;
-    QSize size(x, y);
-    //qInfo() << "halfScreenSize:" << size;
+    int w = qApp->desktop()->availableGeometry().width();
+    int h = qApp->desktop()->availableGeometry().height();
+
+    QSize size;
+    //开启窗管特效时会有1px的border
+    if(!DWindowManagerHelper::instance()->hasComposite())
+        size = QSize(w / 2 - 2, h - 2 - 1);
+    else
+        size = QSize(w / 2, h - 1);
     return size;
 }
 
@@ -2598,10 +2603,9 @@ void NormalWindow::saveWindowSize()
 
     // (真.假)半屏窗口大小时就不记录了
     /******** Modify by ut001000 renfeixiang 2020-07-03:fix# 36482 ***************/
-    // 1.高度-1,如果不-1,最大后无法正常还原
-    // 2.+ QSize(0, 1) 适应原始高度
-    // 3.- QSize(0, 1) 适应关闭窗口特效， 半屏后无法还原
-    if ((size() == halfScreenSize()) || (size() == (halfScreenSize() + QSize(0, 1))) || (size() == (halfScreenSize() - QSize(0, 1))))
+    // 1.高度-1,如果不-1, 半屏启动-》最大化-》后无法正常还原
+    // 2.+ QSize(0, 1)，拖动终端到半屏时触发
+    if ((size() == halfScreenSize()) || size() == (halfScreenSize() + QSize(0, 1)))
         return;
 
     if (Qt::WindowNoState == windowState()) {
