@@ -215,8 +215,10 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
             qInfo() << "can not found nextTerm in TermWidget";
         }
 
-        // 释放控件
+        // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
+        term->hide();
         term->deleteLater();
+        upSplit->hide();
         upSplit->setParent(nullptr);
         upSplit->deleteLater();
         qInfo() << "page terminal count =" << getTerminalCount();
