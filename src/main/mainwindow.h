@@ -788,6 +788,18 @@ protected:
      */
     void firstTerminalComplete();
 
+    /**
+     * @brief 递归遍历，获取obj下ObjectName不为空的children
+     * @param obj
+     * @return
+     */
+    QObjectList getNamedChildren(QObject *obj);
+
+    /**
+     * @brief 设置titlebar的子控件为NoFocus
+     * @param titlebar
+     */
+    void setTitlebarNoFocus(QWidget * titlebar);
 
 protected:
     // 初始化标题栏

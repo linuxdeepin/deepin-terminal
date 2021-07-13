@@ -1982,6 +1982,30 @@ void MainWindow::firstTerminalComplete()
     qInfo() << "cretae first Terminal use" << m_FirstTerminalCompleteTime - m_CreateWindowTime << "ms";
 }
 
+QObjectList MainWindow::getNamedChildren(QObject *obj)
+{
+    QObjectList list;
+    if(nullptr == obj)
+        return list;
+
+    foreach(QObject *o, obj->children()) {
+        if(!o->objectName().isEmpty()) {
+            list << o;
+        }
+        list << getNamedChildren(o);
+    }
+    return list;
+}
+
+void MainWindow::setTitlebarNoFocus(QWidget *titlebar)
+{
+    foreach(QObject *obj, getNamedChildren(titlebar)) {
+        QWidget *w = qobject_cast<QWidget *>(obj);
+        if(w)
+            w->setFocusPolicy(Qt::NoFocus);
+    }
+}
+
 qint64 MainWindow::createNewMainWindowTime()
 {
     // 当前时间减去创建时间
@@ -2683,7 +2707,7 @@ void QuakeWindow::initTitleBar()
 
     /** add by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */
     //雷神终端设置系统标题栏为禁用状态,使其不获取焦点,不影响键盘交互操作.
-    titlebar()->setEnabled(false);//禁止titlebar tab切换焦点
+    setTitlebarNoFocus(titlebar());
     titlebar()->setFixedHeight(0);
     m_centralLayout->addWidget(m_titleBar);
 
@@ -2759,7 +2783,7 @@ void QuakeWindow::initWindowAttribute()
     QDesktopWidget *desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
-    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint /*| Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
+    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint/* | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
 
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
