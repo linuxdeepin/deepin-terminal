@@ -130,8 +130,8 @@ private:
     ServerConfig *m_curServer = nullptr;
     DLabel *m_titleLabel = nullptr;
     DLabel *m_iconLabel = nullptr;
-    DWindowCloseButton *m_closeButton = nullptr;
     DLineEdit *m_serverName = nullptr;
+    DWindowCloseButton *m_closeButton = nullptr;
     DLineEdit *m_address = nullptr;
     DSpinBox *m_port = nullptr;
     DAlertControl *m_port_tip = nullptr;
