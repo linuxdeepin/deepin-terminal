@@ -37,7 +37,7 @@
 
 // 窗口最大数量
 #define MAXWIDGETCOUNT 190
-
+class TabletWindow;
 class WindowsManager : public QObject
 {
     Q_OBJECT
@@ -63,6 +63,11 @@ public:
     {
         return m_normalWindowList;
     }
+    // 获取平板主界面
+    inline TabletWindow *getTableWindow()
+    {
+        return m_tabletWindow;
+    }
 
 signals:
 
@@ -72,6 +77,7 @@ private:
     //平板模式时只有一个窗口，不会添加到m_normalWindowList里
     QList<MainWindow *> m_normalWindowList;
     QuakeWindow *m_quakeWindow = nullptr;
+    TabletWindow *m_tabletWindow = nullptr;
     TermWidgetPage *m_currentPage = nullptr;
 private:
     explicit WindowsManager(QObject *parent = nullptr);

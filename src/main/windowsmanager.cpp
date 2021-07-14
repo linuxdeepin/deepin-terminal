@@ -140,7 +140,8 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     bool isTabletMode = IS_TABLET_MODE;
     if (isTabletMode) {
         m_isTabletMode = true;
-        newWindow = TabletWindow::instance(newProperties);
+        m_tabletWindow = TabletWindow::instance(newProperties);
+        newWindow = m_tabletWindow;
     }
     else {
         newWindow = new NormalWindow(newProperties);
