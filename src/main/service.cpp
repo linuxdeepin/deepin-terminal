@@ -964,7 +964,10 @@ void Service::updateWidgetGeometryForVirtualKeyboard(QWidget *widget)
 {
     int topStatusBarHeight = 0;
     int padHeight = Service::getAvailableHeightForVirtualKeyboard(&topStatusBarHeight);
+    //
+    if(widget->y() >= topStatusBarHeight && widget->height() < padHeight)
+        return;
+    //
     int y = (topStatusBarHeight + padHeight - widget->height()) / 2;
-
     widget->move(widget->x(), qMax(topStatusBarHeight, y));
 }

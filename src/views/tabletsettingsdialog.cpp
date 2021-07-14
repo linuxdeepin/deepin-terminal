@@ -29,8 +29,6 @@
 TabletSettingsDialog::TabletSettingsDialog(QWidget *parent) : DSettingsDialog(parent)
 {
     initConnections();
-    //忽略虚拟键盘对控件的适配
-    qApp->ignoreVirtualKeyboard(this);
 }
 
 void TabletSettingsDialog::initConnections()

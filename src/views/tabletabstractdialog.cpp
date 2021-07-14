@@ -29,8 +29,6 @@
 TabletAbstractDialog::TabletAbstractDialog(QWidget *parent) : DAbstractDialog(parent)
 {
     initConnections();
-    //忽略虚拟键盘对控件的适配
-    qApp->ignoreVirtualKeyboard(this);
 }
 
 void TabletAbstractDialog::initConnections()
