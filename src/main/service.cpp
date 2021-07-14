@@ -924,7 +924,7 @@ bool Service::isPanelMovingBack()
     return m_isPanelMovingBack;
 }
 
-int Service::getAvailableHeightForVirtualKeyboard()
+int Service::getAvailableHeightForVirtualKeyboard(int *topStatusBarHeight)
 {
     int topPanelHeight = 0;
     int statusbarHeight = 0;
@@ -955,5 +955,20 @@ int Service::getAvailableHeightForVirtualKeyboard()
         topPanelHeight = QApplication::desktop()->availableGeometry().height() - titleBarHeight - statusbarHeight;
     }
 
+    if(topStatusBarHeight)
+        *topStatusBarHeight = statusbarHeight;
     return topPanelHeight;
+}
+
+void Service::updateWidgetGeometryForVirtualKeyboard(QWidget *widget)
+{
+    int topStatusBarHeight = 0;
+    int padHeight = Service::getAvailableHeightForVirtualKeyboard(&topStatusBarHeight);
+    //对话框窗口和顶部状态栏不重复 且 和虚拟键盘不重叠 则不需要调整对话框位置
+    if(widget->y() >= topStatusBarHeight && widget->height() < padHeight)
+        return;
+    //
+    int y = (topStatusBarHeight + padHeight - widget->height()) / 2;
+    y = qMax(topStatusBarHeight, y);
+    widget->move(widget->x(), y);
 }

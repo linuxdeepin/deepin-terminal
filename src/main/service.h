@@ -143,7 +143,10 @@ public:
     bool isPanelMovingBack();
 
     // 获取平板下可操作区域的高度：除 顶部系统栏、tab栏、虚拟键盘
-    static int getAvailableHeightForVirtualKeyboard();
+    static int getAvailableHeightForVirtualKeyboard(int *topStatusBarHeight = nullptr);
+
+    // 更新控件的位置
+    static void updateWidgetGeometryForVirtualKeyboard(QWidget *widget);
 signals:
     void refreshCommandPanel(QString oldCmdName, QString newCmdName);
     // 切换编码列表的编码
