@@ -54,42 +54,5 @@ void TabletAbstractDialog::initConnections()
 *******************************************************************************/
 void TabletAbstractDialog::slotOnVirtualKeyboardShowHide(int windowHeight, bool isKeyboardShow)
 {
-    qDebug() << "windowHeight: " << windowHeight << endl;
-    int keyboardHeight = Service::instance()->getVirtualKeyboardHeight();
-    int originX = this->geometry().x();
-    int originWidth = this->geometry().width();
-    int originHeight = this->geometry().height();
-
-    if (isKeyboardShow) {
-        qDebug() << "keyboardHeight: " << keyboardHeight << endl;
-        m_originY = this->geometry().y();
-        int statusbarHeight = 0;
-
-        //先通过 QDBusInterface QDBus::AutoDetect 设置状态栏接口
-        QDBusInterface interface(DUE_STATUSBAR_DBUS_NAME, DUE_STATUSBAR_DBUS_PATH, DUE_STATUSBAR_DBUS_NAME);
-        if (interface.isValid()) {
-            //判断接口是否有效，有效，调用接口获取状态栏高度
-            QDBusMessage msg = interface.call(QDBus::AutoDetect, "height");
-
-            if (QDBusMessage::ReplyMessage == msg.type()) {
-                qInfo() << "get statusbar height Success!";
-                QList<QVariant> list = msg.arguments();
-                statusbarHeight = list.takeFirst().toInt();
-                qInfo() << "dockHeight: " << statusbarHeight << endl;
-            } else {
-                qInfo() << "get statusbar height Fail!" << msg.errorMessage();
-            }
-        }
-
-        int nowY = QApplication::desktop()->geometry().height() - keyboardHeight - originHeight - statusbarHeight;
-
-        // 对话框窗口和虚拟键盘不重叠的情况，不需要调整对话框位置
-        if (m_originY < nowY) {
-            return;
-        }
-
-        this->setGeometry(originX, nowY, originWidth, originHeight);
-    } else {
-//        this->setGeometry(originX, m_originY, originWidth, originHeight);
-    }
+    Service::updateWidgetGeometryForVirtualKeyboard(this);
 }

@@ -54,27 +54,5 @@ void TabletSettingsDialog::initConnections()
 *******************************************************************************/
 void TabletSettingsDialog::slotOnVirtualKeyboardShowHide(int windowHeight, bool isKeyboardShow)
 {
-    qDebug() << "windowHeight: " << windowHeight << endl;
-    int keyboardHeight = Service::instance()->getVirtualKeyboardHeight();
-    int originX = this->geometry().x();
-    int originWidth = this->geometry().width();
-    int originHeight = this->geometry().height();
-
-    if (isKeyboardShow) {
-        qDebug() << "keyboardHeight: " << keyboardHeight << endl;
-        m_originY = this->geometry().y();
-        QDesktopWidget *desktopWidget = QApplication::desktop();
-        int screenHeight = desktopWidget->screenGeometry().size().height();
-        int nowY = screenHeight - keyboardHeight - originHeight;
-
-        // 对话框窗口和虚拟键盘不重叠的情况，不需要调整对话框位置
-        if (m_originY < nowY) {
-            return;
-        }
-
-        this->setGeometry(originX, nowY, originWidth, originHeight);
-    }
-    else {
-//        this->setGeometry(originX, m_originY, originWidth, originHeight);
-    }
+    Service::updateWidgetGeometryForVirtualKeyboard(this);
 }

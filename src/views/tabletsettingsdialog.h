@@ -36,8 +36,6 @@ private slots:
 
 private:
     void initConnections();
-
-    int m_originY = -1;
 };
 
 #endif // TABLETSETTINGSDIALOG_H

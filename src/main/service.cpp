@@ -924,7 +924,7 @@ bool Service::isPanelMovingBack()
     return m_isPanelMovingBack;
 }
 
-int Service::getAvailableHeightForVirtualKeyboard()
+int Service::getAvailableHeightForVirtualKeyboard(int *topStatusBarHeight)
 {
     int topPanelHeight = 0;
     int statusbarHeight = 0;
@@ -955,5 +955,16 @@ int Service::getAvailableHeightForVirtualKeyboard()
         topPanelHeight = QApplication::desktop()->availableGeometry().height() - titleBarHeight - statusbarHeight;
     }
 
+    if(topStatusBarHeight)
+        *topStatusBarHeight = statusbarHeight;
     return topPanelHeight;
+}
+
+void Service::updateWidgetGeometryForVirtualKeyboard(QWidget *widget)
+{
+    int topStatusBarHeight = 0;
+    int padHeight = Service::getAvailableHeightForVirtualKeyboard(&topStatusBarHeight);
+    int y = (topStatusBarHeight + padHeight - widget->height()) / 2;
+
+    widget->move(widget->x(), qMax(topStatusBarHeight, y));
 }
