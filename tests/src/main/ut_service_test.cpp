@@ -26,6 +26,7 @@
 #include "windowsmanager.h"
 #include "dbusmanager.h"
 #include "utils.h"
+#include "customthemesettingdialog.h"
 #include "../stub.h"
 
 //Google GTest 相关头文件
@@ -37,6 +38,14 @@
 #include <QtConcurrent/QtConcurrent>
 
 #include <DSettingsWidgetFactory>
+#include <DWindowManagerHelper>
+
+#define DELETE_PTR(ptr) \
+    if(ptr) {\
+    delete ptr;\
+    ptr = nullptr;\
+    }
+
 
 UT_Service_Test::UT_Service_Test()
 {
@@ -45,14 +54,31 @@ UT_Service_Test::UT_Service_Test()
 void UT_Service_Test::SetUp()
 {
     m_service = Service::instance();
+    m_service->m_settingOwner = new NormalWindow(TermProperties());
+    m_service->m_settingShortcutConflictDialog = new DDialog;
+    m_service->m_customThemeSettingDialog = new CustomThemeSettingDialog;
     if (!m_service->property("isServiceInit").toBool()) {
-        m_service->init();
         m_service->setProperty("isServiceInit", true);
     }
 }
 
 void UT_Service_Test::TearDown()
 {
+}
+
+static bool ut_dtk_managerhelper_hasComposite()
+{
+    return false;
+}
+
+static int ut_dbus_type()
+{
+    return QDBusMessage::InvalidMessage;
+}
+
+static void ui_dialog_show()
+{
+
 }
 
 #ifdef UT_SERVICE_TEST
@@ -65,6 +91,11 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
     QSignalSpy spyWinEffectEnable(Service::instance(), SIGNAL(Service::onWindowEffectEnabled(bool)));
     EXPECT_EQ(spyWinEffectEnable.count(), 0);
 
+    {
+        Stub stub;
+        stub.set(ADDR(QDBusMessage,type),ut_dbus_type);
+        m_service->isWindowEffectEnabled();
+    }
     bool isWindowEffectEnabled = m_service->isWindowEffectEnabled();
     if (isWindowEffectEnabled) {
 #ifdef ENABLE_UI_TEST
@@ -85,14 +116,7 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
 
 TEST_F(UT_Service_Test, slotCustomThemeSettingDialogFinished)
 {
-//    TermProperties properties;
-//    QuakeWindow w(properties);
-//    m_service->showCustomThemeSettingDialog(&w);
-//    m_service->m_settingDialog = new DSettingsDialog();
-//    m_service->slotCustomThemeSettingDialogFinished(CustomThemeSettingDialog::Accepted);
-//    m_service->showShortcutConflictMsgbox("name");
-//    m_service->slotSettingShortcutConflictDialogFinished();
-//    m_service->showCustomThemeSettingDialog(nullptr);
+    m_service->slotCustomThemeSettingDialogFinished(QDialog::Accepted);
 }
 
 int ut_window_widgetCount()
@@ -116,9 +140,13 @@ TEST_F(UT_Service_Test, isCountEnable)
 TEST_F(UT_Service_Test, getsetIsDialogShow)
 {
     EXPECT_EQ(m_service->getIsDialogShow(), false);
+    if(nullptr == WindowsManager::instance()->m_quakeWindow) {
+        TermProperties properties;
+        Utils::parseCommandLine({"deepin-terminal", "--quake-mode"}, properties);
+        WindowsManager::instance()->m_quakeWindow = new QuakeWindow(properties);
+    }
 
-    //    m_service->setIsDialogShow(nullptr, true);
-    //    EXPECT_EQ(m_service->getIsDialogShow(), true);
+    m_service->setIsDialogShow(WindowsManager::instance()->getQuakeWindow(), true);
 }
 
 TEST_F(UT_Service_Test, getEntryTime)
@@ -142,6 +170,16 @@ TEST_F(UT_Service_Test, showHideOpacityAndBlurOptions)
     m_service->m_settingDialog->show();
 
     m_service->showHideOpacityAndBlurOptions(true);
+    m_service->showHideOpacityAndBlurOptions(false);
+
+    {
+        QWidget *rightFrame = m_service->m_settingDialog->findChild<QWidget *>("RightFrame");
+        if(rightFrame){
+            rightFrame->setObjectName("RightFrame1");
+            m_service->showHideOpacityAndBlurOptions(true);
+            rightFrame->setObjectName("RightFrame");
+        }
+    }
 
     m_service->m_settingDialog->close();
 }
@@ -172,9 +210,16 @@ TEST_F(UT_Service_Test, isSettingDialogVisible)
 *******************************************************************************/
 TEST_F(UT_Service_Test, initSetting)
 {
-    m_service->m_settingDialog = nullptr;
+    DELETE_PTR(m_service->m_settingDialog);
     // 初始化设置框
     m_service->initSetting();
+
+    DELETE_PTR(m_service->m_settingDialog);
+    // 初始化设置框
+    Stub stub;
+    stub.set(ADDR(DWindowManagerHelper,hasComposite),ut_dtk_managerhelper_hasComposite);
+    m_service->initSetting();
+
     // 判断设置框是否被初始化
     EXPECT_NE(m_service->m_settingDialog, nullptr);
     // 获取刚刚生成的dialog
@@ -337,6 +382,41 @@ TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
     // 关闭雷神
     WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+}
+
+TEST_F(UT_Service_Test, slotWMChanged)
+{
+    m_service->slotWMChanged("deepin wm");
+}
+
+TEST_F(UT_Service_Test, showShortcutConflictMsgbox)
+{
+    Stub sub;
+    sub.set(ADDR(DDialog, show), ui_dialog_show);
+
+    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
+    m_service->showShortcutConflictMsgbox(ShortcutManager::instance()->m_mapReplaceText.keys().value(0));
+    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
+}
+
+TEST_F(UT_Service_Test, slotSettingShortcutConflictDialogFinished)
+{
+    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
+    m_service->m_settingShortcutConflictDialog = new DDialog;
+    m_service->slotSettingShortcutConflictDialogFinished();
+    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
+}
+
+TEST_F(UT_Service_Test, hideSettingDialog)
+{
+    if(nullptr == m_service->m_settingDialog)
+        m_service->m_settingDialog = new DSettingsDialog();
+    m_service->hideSettingDialog();
+}
+
+TEST_F(UT_Service_Test, showCustomThemeSettingDialog)
+{
+
 }
 
 #endif
