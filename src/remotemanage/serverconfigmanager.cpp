@@ -49,6 +49,9 @@ ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
 void ServerConfigManager::settServerConfig(USettings &commandsSettings, const QString &strGroupName, ServerConfig *config)
 {
     commandsSettings.beginGroup(strGroupName);
+    commandsSettings.setValue("userName", config->m_userName);
+    commandsSettings.setValue("address", config->m_address);
+    commandsSettings.setValue("port", config->m_port);
     commandsSettings.setValue("Name", config->m_serverName);
     // 不将密码写入配置文件中
     //commandsSettings.setValue("Password", config->m_password);
@@ -181,9 +184,18 @@ void ServerConfigManager::initServerConfig()
             continue;
         }
         // 新版数据的读取方式
-        pServerConfig->m_userName = strList.at(0);
-        pServerConfig->m_address = strList.at(1);
-        pServerConfig->m_port = strList.at(2);
+        // 读取方式优化，原本保存到groupName的值，改为保存到value里
+        // 若配置文件没有包含userName、address、port，则读取groupName的，反之读取key-value
+        if(!serversSettings.contains("userName"))
+            serversSettings.setValue("userName", strList.at(0));
+        if(!serversSettings.contains("address"))
+            serversSettings.setValue("address", strList.at(1));
+        if(!serversSettings.contains("port"))
+            serversSettings.setValue("port", strList.at(2));
+
+        pServerConfig->m_userName = serversSettings.value("userName").toString();
+        pServerConfig->m_address = serversSettings.value("address").toString();
+        pServerConfig->m_port = serversSettings.value("port").toString();
         pServerConfig->m_serverName = serversSettings.value("Name").toString();
         pServerConfig->m_password = serversSettings.value("Password").toString();
         pServerConfig->m_group = serversSettings.value("GroupName").toString();
