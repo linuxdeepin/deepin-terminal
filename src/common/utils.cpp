@@ -512,9 +512,7 @@ void Utils::setSpaceInWord(DPushButton *button)
 *******************************************************************************/
 void Utils::showSameNameDialog(QWidget *parent, const QString &firstLine, const QString &secondLine)
 {
-    Q_UNUSED(parent)
-    //平板下弹窗的父类强制为主界面TableWindow,修复bug#86902
-    DDialog *dlg = new DDialog(WindowsManager::instance()->getTableWindow());
+    DDialog *dlg = new DDialog(parent);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setWindowModality(Qt::WindowModal);
     dlg->setTitle(QString(firstLine + secondLine));
