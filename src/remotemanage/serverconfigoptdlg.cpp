@@ -154,6 +154,8 @@ void ServerConfigOptDlg::initUI()
     m_serverName->lineEdit()->setPlaceholderText(tr("Required"));
     QTimer::singleShot(30, this, [&]() {
         m_serverName->lineEdit()->selectAll();
+        //弹出界面 焦点在输入框内时 弹出虚拟键盘
+        qApp->inputMethod()->show();
     });
     pGridLayout->addWidget(pServerNameLabel);
     pGridLayout->addWidget(m_serverName);

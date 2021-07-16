@@ -964,8 +964,8 @@ void Service::updateWidgetGeometryForVirtualKeyboard(QWidget *widget)
 {
     int topStatusBarHeight = 0;
     int padHeight = Service::getAvailableHeightForVirtualKeyboard(&topStatusBarHeight);
-    //对话框窗口和顶部状态栏不重复 且 和虚拟键盘不重叠 则不需要调整对话框位置
-    if(widget->y() >= topStatusBarHeight && widget->height() < padHeight)
+    //对话框窗口在可现实区域内
+    if(QRect(0, topStatusBarHeight, widget->width(), padHeight).contains(widget->geometry()))
         return;
     //
     int y = (topStatusBarHeight + padHeight - widget->height()) / 2;

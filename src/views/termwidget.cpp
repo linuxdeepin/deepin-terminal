@@ -1574,8 +1574,9 @@ bool TermWidget::eventFilter(QObject *watched, QEvent *event)
 
     //终端主界面失去焦点时，关闭虚拟键盘
     if(event->type() == QEvent::FocusOut
-            && watched == this->getTermDisplay()){
-        m_pImInterface->setImActive(false);
+            && watched == this->getTermDisplay()
+            && m_pImInterface->imActive()){
+            m_pImInterface->setImActive(false);
     }
     return QWidget::eventFilter(watched, event);
 }

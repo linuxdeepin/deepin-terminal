@@ -130,6 +130,8 @@ void CustomCommandOptDlg::initUI()
 
     QTimer::singleShot(m_iSingleShotTime, this, [&]() {
         m_nameLineEdit->lineEdit()->selectAll();
+        //弹出界面 焦点在输入框内时 弹出虚拟键盘
+        qApp->inputMethod()->show();
     });
 
     m_nameLineEdit->lineEdit()->setPlaceholderText(tr("Required"));

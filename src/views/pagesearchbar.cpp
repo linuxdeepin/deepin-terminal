@@ -93,6 +93,8 @@ void PageSearchBar::focus()
 {
     m_searchEdit->lineEdit()->setFocus();
     m_searchEdit->lineEdit()->selectAll();
+    //弹出界面 焦点在输入框内时 弹出虚拟键盘
+    qApp->inputMethod()->show();
     //　焦点一进入以后，就设置文字和图标，用于失去焦点后显示
     recoveryHoldContent();
 }
