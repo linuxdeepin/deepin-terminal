@@ -282,6 +282,8 @@ public:
     //避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
     void setNoHasSelect();
 
+    //终端输入相关的widget
+    QWidget* getTermDisplay();
 signals:
     void finished();
     void copyAvailable(bool);

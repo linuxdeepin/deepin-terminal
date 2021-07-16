@@ -335,6 +335,11 @@ void QTermWidget::interactionHandler()
     m_interactionTimer->start();
 }
 
+QWidget *QTermWidget::getTermDisplay()
+{
+    return m_impl->m_terminalDisplay;
+}
+
 /*******************************************************************************
  1. @函数:    setisAllowScroll
  2. @作者:    ut000610 戴正文

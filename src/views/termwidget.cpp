@@ -200,6 +200,8 @@ TermWidget::TermWidget(TermProperties properties, QWidget *parent) : QTermWidget
     connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
     setFocusPolicy(Qt::NoFocus);
 
+    if(this->getTermDisplay())
+        this->getTermDisplay()->installEventFilter(this);
     installEventFilter(this);
 }
 
@@ -1563,14 +1565,18 @@ void TermWidget::showShellMessage(QString strWarnings)
 //fix: bug#71068 在终端收起虚拟键盘后,点击输入框区域无法唤起
 bool TermWidget::eventFilter(QObject *watched, QEvent *event)
 {
-    Q_UNUSED(watched)
     if (event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
         if (mouseEvent->button() == Qt::LeftButton && !m_pImInterface->imActive()) {
             m_pImInterface->setImActive(true);
-            event->accept();
         }
-        return true;
     }
-    return false;
+
+    //终端主界面失去焦点时，关闭虚拟键盘
+    if(event->type() == QEvent::FocusOut
+            && watched == this->getTermDisplay()){
+        m_pImInterface->setImActive(false);
+    }
+    return QWidget::eventFilter(watched, event);
 }
+
