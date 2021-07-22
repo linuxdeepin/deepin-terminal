@@ -132,7 +132,7 @@ void MainWindow::initUI()
     initWindowAttribute();
 
 
-    qApp->installEventFilter(this);
+    this->installEventFilter(this);
 }
 /*******************************************************************************
  1. @函数:    initWindow
