@@ -569,15 +569,11 @@ inline void TermWidget::onVerticalSplit()
 inline void TermWidget::splitHorizontal()
 {
     parentPage()->split(Qt::Horizontal);
-    //分屏时切换到当前选中主题方案
-    switchThemeOnSplitScreen();
 }
 
 inline void TermWidget::splitVertical()
 {
     parentPage()->split(Qt::Vertical);
-    //分屏时切换到当前选中主题方案
-    switchThemeOnSplitScreen();
 }
 
 inline void TermWidget::onCloseCurrWorkSpace()
@@ -836,14 +832,6 @@ QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat
         }
     }
     return TabFormat;
-}
-
-void TermWidget::switchThemeOnSplitScreen()
-{
-    QString  expandThemeStr = "";
-    expandThemeStr = Settings::instance()->extendColorScheme();
-    if (!expandThemeStr.isEmpty())
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
 }
 
 void TermWidget::initTabTitle()
