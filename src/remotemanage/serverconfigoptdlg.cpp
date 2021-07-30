@@ -575,7 +575,9 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     }
     // 端口为空
     if (m_port->text().trimmed().isEmpty()) {
-        m_address->showAlertMessage(tr("Please enter a port"), m_port);
+        DLineEdit *edit = m_port->findChild<DLineEdit *>();
+        if(edit)
+            edit->showAlertMessage(tr("Please enter a port"), m_port);
         return;
     }
 
