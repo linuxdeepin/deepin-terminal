@@ -157,7 +157,7 @@ void MainWindow::initUI()
     initWindowAttribute();
     initFileWatcher();
 
-    qApp->installEventFilter(this);
+    this->installEventFilter(this);
 }
 
 void MainWindow::initWindow()
