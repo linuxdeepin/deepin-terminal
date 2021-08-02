@@ -302,8 +302,8 @@ void Utils::clearChildrenFocus(QObject *objParent)
         if (!obj->isWidgetType())
             continue;
 
-        QWidget *widget = static_cast<QWidget *>(obj);
-        if (Qt::NoFocus != widget->focusPolicy()) {
+        QWidget *widget = qobject_cast<QWidget *>(obj);
+        if (widget && Qt::NoFocus != widget->focusPolicy()) {
             if (!foucswidgetlist.contains(widget->metaObject()->className()))
                 widget->setFocusPolicy(Qt::NoFocus);
 

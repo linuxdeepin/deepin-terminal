@@ -136,8 +136,8 @@ void ShortcutManager::createCustomCommandsFromConfig()
     if (SettingIO::rewrite) {
         //删除自定义命令文件
         QFile fileTemp(customCommandConfigFilePath);
-        fileTemp.remove();
-        qInfo() << "remove file:" << customCommandConfigFilePath;
+        if(!fileTemp.remove())
+            qWarning() << " remove file error" << customCommandConfigFilePath << fileTemp.errorString();
 
         //将内存数据写入配置文件
         for (QAction *action : m_customCommandActionList) {
@@ -208,7 +208,6 @@ void ShortcutManager::fillCommandListData(ListView *listview, const QString &str
 {
     listview->clearData();
     QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
-    qInfo() << __FUNCTION__ << strFilter  << " : " << customCommandActionList.size();
     //根据条件进行刷新，strFilter 为空时 全部刷新，根据名称或者命令模糊匹配到strFilter的条件进行刷新
     if (strFilter.isEmpty()) {
         for (int i = 0; i < customCommandActionList.size(); i++) {
@@ -236,7 +235,6 @@ void ShortcutManager::fillCommandListData(ListView *listview, const QString &str
             }
         }
     }
-    qInfo() << "fill list data";
 }
 
 /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
@@ -283,7 +281,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
         if (!Key.contains(regexp)) {
             qInfo() << Key << "is invalid!";
             Reason = tr("The shortcut %1 is invalid, ")
-                     .arg(style);
+                    .arg(style);
             return  false;
         }
     }
@@ -292,27 +290,27 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     if (Key.contains(regexpNum)) {
         qInfo() << Key << "is invalid!";
         Reason = tr("The shortcut %1 is invalid, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
     // 内置快捷键都不允许
     if (m_builtinShortcuts.contains(Key)) {
         qInfo() << Key << "is conflict with builtin shortcut!";
         Reason = tr("The shortcut %1 was already in use, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
 
     // 与设置里的快捷键冲突检测
     if (Settings::instance()->isShortcutConflict(Name, Key)) {
         Reason = tr("The shortcut %1 was already in use, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
     // 与自定义快捷键冲突检测
     if (isShortcutConflictInCustom(Name, Key)) {
         Reason = tr("The shortcut %1 was already in use, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
     return true;
@@ -353,15 +351,12 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     commandsSettings.setValue("Shortcut", action->shortcut().toString());
     commandsSettings.endGroup();
 
-    qInfo() << "saveIndex:" << saveIndex;
     if (saveIndex >= 0) {
         QAction *saveAction = new QAction;
         saveAction->setText(action->text());
         saveAction->setData(action->data());
         saveAction->setShortcut(action->shortcut());
-        qInfo() << "old" << m_customCommandActionList[saveIndex]->shortcut();
         m_customCommandActionList[saveIndex] = saveAction;
-        qInfo() << "new" << m_customCommandActionList[saveIndex]->shortcut();
     }
 }
 
