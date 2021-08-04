@@ -285,7 +285,8 @@ void ServerConfigOptDlg::initUI()
     DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
     connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
         seniorWidget->show();
-//        setTabOrder(m_advancedOptions, m_group);
+        if(m_advancedOptions->hasFocus())
+            m_group->setFocus();
         m_advancedOptions->hide();
         upItem->changeSize(this->width(), 0);
         downItem->changeSize(this->width(), 0);
