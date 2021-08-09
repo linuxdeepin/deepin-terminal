@@ -162,13 +162,14 @@ void MainWindow::initUI()
 
 void MainWindow::initWindow()
 {
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-
+//开启特效后，拉长到17114会有窗口变黑的情况，非终端问题，故注释相关代码
+//    QDesktopWidget *desktopWidget = QApplication::desktop();
+//    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+//
     setAttribute(Qt::WA_TranslucentBackground);
     setMinimumSize(m_MinWidth, m_MinHeight);
-    //设置一个最大的窗口宽度，防止窗口可以被无限拉长
-    setMaximumWidth(screenRect.width());
+//    //设置一个最大的窗口宽度，防止窗口可以被无限拉长
+//    setMaximumWidth(screenRect.width());
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
     setWindowIcon(QIcon::fromTheme("deepin-terminal"));
 
