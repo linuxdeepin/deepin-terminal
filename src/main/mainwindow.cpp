@@ -157,7 +157,7 @@ void MainWindow::initUI()
     initWindowAttribute();
     initFileWatcher();
 
-    this->installEventFilter(this);
+    qApp->installEventFilter(this);
 }
 
 void MainWindow::initWindow()
@@ -3034,7 +3034,8 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
 {
     //fix bug: 64490 勾选“丢失焦点后隐藏雷神窗口”，最小化雷神终端后不能再次调出雷神终端
     // 丢失焦点后隐藏雷神窗口开关打开的情况下
-    if (Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
+    if (watched == this &&
+            Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool()) {
         //此处通过该操作禁止雷神终端窗口最小化
         if (event->type() == QEvent::WindowStateChange) {
             event->ignore();
