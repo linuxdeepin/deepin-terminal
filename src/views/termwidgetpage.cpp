@@ -155,6 +155,13 @@ void TermWidgetPage::split(Qt::Orientation orientation)
 
     /******** Add by ut001000 renfeixiang 2020-08-07:新增分屏时改变大小，bug#41436***************/
     parentMainWindow()->updateMinHeight();
+
+    //分屏时切换到当前选中主题方案
+    QString  expandThemeStr = "";
+    expandThemeStr = Settings::instance()->extendColorScheme();
+    if (!expandThemeStr.isEmpty())
+        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+
     return ;
 }
 

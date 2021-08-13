@@ -425,11 +425,11 @@ private:
      * @return
      */
     QString getTabTitle(QMap<QString, QString> format, QString TabFormat);
+
     /**
-     * @brief 分屏时切换到当前选中主题方案
-     * @author ut000125 sunchengxi
+     * @brief 浏览器打开对应的链接
+     * @param strUrl 相关链接
      */
-    void switchThemeOnSplitScreen();
     void openUrl(QString strUrl);
 
     /**
