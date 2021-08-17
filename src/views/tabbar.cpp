@@ -749,9 +749,20 @@ void TabBar::handleDragActionChanged(Qt::DropAction action)
 
 void TabBar::createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab)
 {
-    MainWindow *window = createNormalWindow();
+    //创建窗口
+    TermProperties properties;
+    properties[DragDropTerminal] = true;
+    WindowsManager::instance()->createNormalWindow(properties, false);
+
+    MainWindow *window = WindowsManager::instance()->getNormalWindowList().last();
+
+    //当关闭最后一个窗口时退出整个应用
+    connect(window, &MainWindow::close, this, &TabBar::handleWindowClose);
+
     window->addTabWithTermPage(tabName, isActiveTab, false, termPage);
     window->move(calculateDragDropWindowPosition(window));
+
+    window->show();
 }
 
 QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
@@ -759,21 +770,6 @@ QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
     QPoint pos(QCursor::pos() - window->topLevelWidget()->pos());
 
     return pos;
-}
-
-MainWindow *TabBar::createNormalWindow()
-{
-    //创建窗口
-    TermProperties properties;
-    properties[DragDropTerminal] = true;
-    WindowsManager::instance()->createNormalWindow(properties);
-
-    MainWindow *window = WindowsManager::instance()->getNormalWindowList().last();
-
-    //当关闭最后一个窗口时退出整个应用
-    connect(window, &MainWindow::close, this, &TabBar::handleWindowClose);
-
-    return window;
 }
 
 inline void TabBar::handleWindowClose()

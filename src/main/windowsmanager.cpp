@@ -91,7 +91,7 @@ void WindowsManager::quakeWindowShowOrHide()
     m_quakeWindow->hideQuakeWindow();
 }
 
-void WindowsManager::createNormalWindow(TermProperties properties)
+void WindowsManager::createNormalWindow(TermProperties properties, bool isShow)
 {
     TermProperties newProperties = properties;
     if (0 == m_normalWindowList.count())
@@ -101,7 +101,8 @@ void WindowsManager::createNormalWindow(TermProperties properties)
     m_normalWindowList << newWindow;
     qInfo() << "create NormalWindow, current count =" << m_normalWindowList.count()
             << ", SingleFlag" << newProperties[SingleFlag].toBool();
-    newWindow->show();
+    if(isShow)
+        newWindow->show();
     qint64 newMainWindowTime = newWindow->createNewMainWindowTime();
     QString strNewMainWindowTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_MAINWINDOE + QString::number(newMainWindowTime);
     qInfo() << qPrintable(strNewMainWindowTime);

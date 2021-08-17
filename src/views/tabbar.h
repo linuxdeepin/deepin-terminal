@@ -370,12 +370,6 @@ protected:
      * @param isActiveTab
      */
     void createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab);
-    /**
-     * @brief 创建一个用于标签页拖拽的新窗口
-     * @author ut000438 王亮
-     * @return
-     */
-    MainWindow *createNormalWindow();
 
     /**
      * @brief 用于计算拖拽窗口结束鼠标释放后的窗口位置
