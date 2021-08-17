@@ -1023,9 +1023,9 @@ QSize MainWindow::halfScreenSize()
     w = w / 2;
 
     //关闭窗管特效时会有1px的border
-    if(!DWindowManagerHelper::instance()->hasComposite()) {
-       w = w - 2;
-       h = h - 2;
+    if (!DWindowManagerHelper::instance()->hasComposite()) {
+        w = w - 2;
+        h = h - 2;
     }
     return QSize(w, h);
 }
@@ -2139,10 +2139,10 @@ void MainWindow::firstTerminalComplete()
 QObjectList MainWindow::getNamedChildren(QObject *obj)
 {
     QObjectList list;
-    if(nullptr == obj)
+    if (nullptr == obj)
         return list;
-    foreach(QObject *o, obj->children()) {
-        if(!o->objectName().isEmpty()) {
+    foreach (QObject *o, obj->children()) {
+        if (!o->objectName().isEmpty()) {
             list << o;
         }
         list << getNamedChildren(o);
@@ -2152,9 +2152,9 @@ QObjectList MainWindow::getNamedChildren(QObject *obj)
 
 void MainWindow::setTitlebarNoFocus(QWidget *titlebar)
 {
-    foreach(QObject *obj, getNamedChildren(titlebar)) {
+    foreach (QObject *obj, getNamedChildren(titlebar)) {
         QWidget *w = qobject_cast<QWidget *>(obj);
-        if(w)
+        if (w)
             w->setFocusPolicy(Qt::NoFocus);
     }
 }
@@ -2289,7 +2289,6 @@ void NormalWindow::initWindowAttribute()
     // init window state.
     QString windowState = getConfigWindowState();
     if (windowState == "window_maximum") {
-        show();
         setDefaultLocation();
         showMaximized();
     } else if (windowState == "fullscreen") {
