@@ -20,6 +20,7 @@
  */
 
 #include "ut_windowsmanager_test.h"
+#include "../stub.h"
 
 #include "service.h"
 #include "mainwindow.h"
@@ -60,6 +61,30 @@ void UI_WindowsManager_Test::TearDown()
 {
 }
 
+static int ut_quakeWindow_getDesktopIndex()
+{
+    return -1;
+}
+
+static bool ut_service_getIsDialogShow()
+{
+    return false;
+}
+static bool ut_service_isSettingDialogVisible()
+{
+    return true;
+}
+
+static MainWindow* ut_service_getSettingOwner()
+{
+    WindowsManager::instance()->getQuakeWindow();
+}
+
+static bool ut_quakeWindow_isActiveWindow()
+{
+    return true;
+}
+
 #ifdef UI_WINDOWSMANAGER_TEST
 
 TEST_F(UI_WindowsManager_Test, runQuakeWindow)
@@ -80,6 +105,10 @@ TEST_F(UI_WindowsManager_Test, createNormalWindow)
 {
     WindowsManager *winManager = WindowsManager::instance();
     winManager->createNormalWindow(m_normalTermProperty);
+
+    if(!WindowsManager::instance()->getNormalWindowList().isEmpty())
+        WindowsManager::instance()->onMainwindowClosed(WindowsManager::instance()->getNormalWindowList().last());
+
     EXPECT_EQ((winManager->m_normalWindowList.size() > 0), true);
 }
 
@@ -168,8 +197,30 @@ TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
     // 雷神显示
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
     WindowsManager::instance()->getQuakeWindow()->setVisible(false);
-     WindowsManager::instance()->m_quakeWindow->hideQuakeWindow();
+    WindowsManager::instance()->m_quakeWindow->hideQuakeWindow();
     WindowsManager::instance()->quakeWindowShowOrHide();
+
+    {
+        Stub stub;
+        stub.set(ADDR(QuakeWindow, getDesktopIndex), ut_quakeWindow_getDesktopIndex);
+        WindowsManager::instance()->quakeWindowShowOrHide();
+    }
+
+    {
+        Stub stub;
+        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
+        stub.set(ADDR(Service, isSettingDialogVisible), ut_service_isSettingDialogVisible);
+        stub.set(ADDR(Service, getSettingOwner), ut_service_getSettingOwner);
+        WindowsManager::instance()->quakeWindowShowOrHide();
+    }
+    {
+
+        Stub stub;
+        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
+        stub.set(ADDR(QuakeWindow, isActiveWindow), ut_quakeWindow_isActiveWindow);
+        WindowsManager::instance()->quakeWindowShowOrHide();
+    }
+
     // 相当于再次Alt+F2
     WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
     // 雷神隐藏 => 又开始了新一轮的动画
@@ -179,4 +230,10 @@ TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
     WindowsManager::instance()->getQuakeWindow()->closeAllTab();
     WindowsManager::instance()->m_quakeWindow = nullptr;
 }
+
+TEST_F(UI_WindowsManager_Test, getNormalWindowList)
+{
+    WindowsManager::instance()->getNormalWindowList();
+}
+
 #endif
