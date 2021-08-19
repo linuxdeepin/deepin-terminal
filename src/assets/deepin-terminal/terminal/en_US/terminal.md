@@ -128,11 +128,8 @@ You can create a new window in the following ways:
 
 ### Display Windows in Fullscreen
 
-1. Open Terminal in the launcher interface.
-2. Press **F11** to display Terminal in fullscreen.
-3. If you want to restore to the normal display, please press **F11**.
-
-> ![notes](../common/notes.svg) Notes: You can also right-click to select **Fullscreen** or **Exit fullscreen** on the Terminal interface.
+1. On the Terminal interface, Press **F11** on the keyboard or right-click to select **Fullscreen** to display Terminal in fullscreen.
+2. If you want to restore to the normal display, please press **F11** or right-click to select **Exit fullscreen**.
 
 
 ### Split Windows 
@@ -222,7 +219,7 @@ You can open remote management panel to add remote servers via the main menu or 
 3. Fill out **Server name**, **Address**, **Username** and **Password**.
 4. Click **Add**.
 
-   >  ![notes](../common/notes.svg)Notes: If you need to set up more parameters, please click **Advanced options**. 
+>  ![notes](../common/notes.svg)Notes: If you need to set up more parameters, please click **Advanced options**. 
 
  ![1|addssh](fig/addsshall.png)
 
