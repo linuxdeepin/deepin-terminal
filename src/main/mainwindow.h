@@ -46,6 +46,7 @@
 #include <QMenu>
 #include <QDebug>
 #include <QShortcut>
+#include <QtX11Extras/QX11Info>
 
 #include <functional>
 
@@ -1163,6 +1164,12 @@ private:
      * @return
      */
     int getQuakeAnimationTime();
+
+    xcb_atom_t internAtom(const char *name, bool only_if_exists = true);
+
+    xcb_atom_t internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists);
+
+    void sendMoveEnable(quint32 WId, bool Enable);
 };
 
 #endif  // MAINWINDOW_H
