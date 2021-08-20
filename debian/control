@@ -16,7 +16,8 @@ Build-Depends:
  libglib2.0-dev,
  libsecret-1-dev,
  libgtest-dev,
- libgmock-dev
+ libgmock-dev,
+ libxcb-ewmh-dev
 Standards-Version: 4.5.1
 Homepage: https://www.deepin.com/
 
