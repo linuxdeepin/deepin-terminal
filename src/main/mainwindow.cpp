@@ -2690,7 +2690,10 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     // 绑定信号槽
     connect(m_resizeTimer, &QTimer::timeout, this, &QuakeWindow::onResizeWindow);
     //设置窗口属性：不可移动
-    sendMoveEnable(this->winId(),false);
+
+    QTimer::singleShot(1000, this, [&](){
+        sendMoveEnable(this->winId(),false)
+    });
 }
 
 QuakeWindow::~QuakeWindow()
