@@ -2692,7 +2692,7 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     //设置窗口属性：不可移动
 
     QTimer::singleShot(1000, this, [&](){
-        sendMoveEnable(this->winId(),false)
+        sendMoveEnable(this->winId(),false);
     });
 }
 
