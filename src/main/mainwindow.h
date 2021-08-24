@@ -1165,11 +1165,12 @@ private:
      */
     int getQuakeAnimationTime();
 
+    //函数的名称和实现都是按照dtk中复制，如实dtk项目生成的窗口可直接调用此函数
     xcb_atom_t internAtom(const char *name, bool only_if_exists = true);
 
     xcb_atom_t internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists);
 
-    void sendMoveEnable(quint32 WId, bool Enable);
+    void sendWindowForhibitMove(bool forhibit);
 };
 
 #endif  // MAINWINDOW_H

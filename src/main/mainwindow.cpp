@@ -2689,11 +2689,9 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     m_resizeTimer->setSingleShot(true);
     // 绑定信号槽
     connect(m_resizeTimer, &QTimer::timeout, this, &QuakeWindow::onResizeWindow);
-    //设置窗口属性：不可移动
 
-    QTimer::singleShot(1000, this, [&](){
-        sendMoveEnable(this->winId(),false);
-    });
+    //设置窗口属性：不可移动
+    sendWindowForhibitMove(false);
 }
 
 QuakeWindow::~QuakeWindow()
@@ -3010,7 +3008,7 @@ xcb_atom_t QuakeWindow::internAtom(const char *name, bool only_if_exists)
 xcb_atom_t QuakeWindow::internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists)
 {
     if (!name || *name == 0)
-        return XCB_NONE;
+        return  XCB_NONE;
 
     xcb_intern_atom_cookie_t cookie = xcb_intern_atom(connection, only_if_exists, strlen(name), name);
     xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, 0);
@@ -3024,27 +3022,14 @@ xcb_atom_t QuakeWindow::internAtom(xcb_connection_t *connection, const char *nam
     return atom;
 }
 
-void QuakeWindow::sendMoveEnable(quint32 WId, bool Enable)
+void QuakeWindow::sendWindowForhibitMove(bool forhibit)
 {
-    xcb_client_message_event_t xev;
-
-    xev.response_type = XCB_CLIENT_MESSAGE;
-    xev.type = internAtom("_DEEPIN_MOVE_ENABLE");
-    xev.window = WId;
-    xev.format = 32;
-    xev.data.data32[0] = Enable;
-    xev.data.data32[1] = 0;
-    xev.data.data32[2] = 0;
-    xev.data.data32[3] = 0;
-    xev.data.data32[4] = 0;
-
-
-    xcb_send_event(QX11Info::connection(), false, QX11Info::appRootWindow(QX11Info::appScreen()),
-                   XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY,
-                   (const char *)&xev);
-
-    xcb_flush(QX11Info::connection());
+    auto reply = internAtom("_DEEPIN_FORHIBIT_MOVE");
+    int32_t ldata = forhibit;
+    xcb_change_property(QX11Info::connection(), XCB_PROP_MODE_REPLACE, this->winId(),
+                        reply, reply, 32, 1, &ldata);
 }
+
 
 void QuakeWindow::changeEvent(QEvent *event)
 {
