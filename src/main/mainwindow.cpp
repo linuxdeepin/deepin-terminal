@@ -2691,7 +2691,7 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     connect(m_resizeTimer, &QTimer::timeout, this, &QuakeWindow::onResizeWindow);
 
     //设置窗口属性：不可移动
-    sendWindowForhibitMove(false);
+    sendWindowForhibitMove(true);
 }
 
 QuakeWindow::~QuakeWindow()
