@@ -2689,6 +2689,9 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     m_resizeTimer->setSingleShot(true);
     // 绑定信号槽
     connect(m_resizeTimer, &QTimer::timeout, this, &QuakeWindow::onResizeWindow);
+
+    //设置窗口属性 不可移动
+    sendWindowForhibitMove(true);
 }
 
 QuakeWindow::~QuakeWindow()
@@ -2995,6 +2998,46 @@ int QuakeWindow::getQuakeAnimationTime()
     //动画时间计算方法：3quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间，为各个高度时动画时间
     int durationTime = quakeAnimationBaseTime + quakeAnimationHighDistributionTotalTime * this->getQuakeHeight() / (screenRect.height() * 2 / 3);
     return durationTime;
+}
+
+xcb_atom_t QuakeWindow::internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists)
+{
+    if (!name || *name == 0)
+        return  XCB_NONE;
+
+    xcb_intern_atom_cookie_t cookie = xcb_intern_atom(connection, only_if_exists, strlen(name), name);
+    xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, 0);
+
+    if (!reply)
+        return XCB_NONE;
+
+    xcb_atom_t atom = reply->atom;
+    free(reply);
+
+    return atom;
+}
+
+xcb_atom_t QuakeWindow::internAtom(const char *name, bool only_if_exists)
+{
+    return internAtom(QX11Info::connection(), name, only_if_exists);
+}
+
+/*
+ * 雷神窗口不允许移动，但是会响应 窗管的 窗口移动功能，彼此冲突
+ * 和 窗管沟通后 定义_DEEPIN_FORHIBIT_MOVE 属性（1：禁止移动,0:可以移动,默认：可以移动）
+ * sendWindowForhibitMove(true)，通过调用xcb相关函数，设置_DEEPIN_FORHIBIT_MOVE属性值为1,禁止窗口移动
+ */
+void QuakeWindow::sendWindowForhibitMove(bool forhibit)
+{
+    if(!QX11Info::connection()){
+        qWarning() << "QX11Info::connection() is " << QX11Info::connection();
+        return ;
+    }
+
+    auto reply = internAtom("_DEEPIN_FORHIBIT_MOVE");
+    int32_t ldata = forhibit;
+    xcb_change_property(QX11Info::connection(), XCB_PROP_MODE_REPLACE, this->winId(),
+                        reply, reply, 32, 1, &ldata);
 }
 
 void QuakeWindow::changeEvent(QEvent *event)

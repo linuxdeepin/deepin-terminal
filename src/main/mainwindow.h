@@ -46,6 +46,7 @@
 #include <QMenu>
 #include <QDebug>
 #include <QShortcut>
+#include <QtX11Extras/QX11Info>
 
 #include <functional>
 
@@ -1163,6 +1164,30 @@ private:
      * @return
      */
     int getQuakeAnimationTime();
+
+    //函数的名称和实现都是按照dtk中复制，dtk项目生成的窗口可直接调用此函数
+    /**
+     * @brief Get atom identifier by name
+     * @param connection The connection
+     * @param name The name of the atom.
+     * @param only_if_exists  Return a valid atom id only if the atom already exists.
+     * @return A cookie
+     */
+    xcb_atom_t internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists);
+
+    /**
+     * @brief internAtom
+     * @param name
+     * @param only_if_exists
+     * @return
+     */
+    xcb_atom_t internAtom(const char *name, bool only_if_exists = true);
+
+    /**
+     * @brief 设置窗口属性 不可移动
+     * @param forhibit
+     */
+    void sendWindowForhibitMove(bool forhibit);
 };
 
 #endif  // MAINWINDOW_H

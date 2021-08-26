@@ -57,6 +57,7 @@ find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5X11Extras REQUIRED)
 #find_package(DtkWidget REQUIRED)
 #find_package(DtkCore REQUIRED)
 #find_package(DtkGui REQUIRED)
@@ -69,6 +70,7 @@ pkg_search_module(DtkCore REQUIRED dtkcore)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
+pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
 
 
 # Compile definitions for TerminalWidget
@@ -105,6 +107,8 @@ set(LINK_LIBS
     ${DFrameworkDBus_LIBRARIES}
     ${GOBJECT_LIBRARIES}
     ${LIBSECRET_LIBRARIES}
+    ${XCB_EWMH_LIBRARIES}
+    ${Qt5X11Extras_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources
@@ -241,7 +245,8 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
                                               ${DFrameworkDBus_INCLUDE_DIRS}
                                               ${ATSPI2_INCLUDE_DIRS}
                                               ${GOBJECT_INCLUDE_DIRS}
-                                              ${LIBSECRET_INCLUDE_DIRS})
+                                              ${LIBSECRET_INCLUDE_DIRS}
+                                              ${XCB_EWMH_INCLUDE_DIRS})
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
