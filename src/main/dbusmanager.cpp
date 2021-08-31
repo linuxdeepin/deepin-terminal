@@ -104,7 +104,7 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
     if (QDBusMessage::ReplyMessage == response.type()) {
         qInfo() << "call List Success!";
         QList<QVariant> list = response.arguments();
-        QString fonts = list.takeFirst().toString();
+        QString fonts = list.value(list.count() - 1).toString();
         // 原本的返回值为QDBusPendingReply<QString> => QString
         fonts.replace("[", "");
         fonts.replace("]", "");

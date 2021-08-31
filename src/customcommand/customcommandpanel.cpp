@@ -82,6 +82,8 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 void CustomCommandPanel::doCustomCommand(const QString &key)
 {
     QAction *item = ShortcutManager::instance()->findActionByKey(key);
+    if(!item)
+        return;
 
     QString strCommand = item->data().toString();
     if (!strCommand.endsWith('\n'))
@@ -111,11 +113,7 @@ void CustomCommandPanel::onAddCommandResponse(int result)
 {
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
-
-        qInfo() << "finished" << result;
-
         if (QDialog::Accepted == result) {
-            qInfo() << "Accepted";
             QAction *newAction = m_pdlg->getCurCustomCmd();
             //m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
             // 新增快捷键 => 显示在列表中使用大写 down2up dzw 20201215

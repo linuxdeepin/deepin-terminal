@@ -84,26 +84,26 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
 
 void CustomCommandOptDlg::initUI()
 {
-    QWidget *contentFrame = new QWidget(this);;
+    QWidget *contentFrame = new QWidget(this);
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
     contentLayout->setSpacing(m_iSpaceSizeTen);
     contentLayout->setContentsMargins(m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero);
 
-    QWidget *nameFrame = new QWidget(this);;
+    QWidget *nameFrame = new QWidget(this);
     nameFrame->setFixedWidth(m_iFixedWidth);
     QHBoxLayout *nameLayout = new QHBoxLayout;
     nameLayout->setSpacing(m_iSpaceSizeZero);
     nameLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
     nameFrame->setLayout(nameLayout);
 
-    QWidget *cmdFrame = new QWidget(this);;
+    QWidget *cmdFrame = new QWidget(this);
     QHBoxLayout *cmdLayout = new QHBoxLayout;
     cmdLayout->setSpacing(m_iSpaceSizeZero);
     cmdLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
     cmdFrame->setLayout(cmdLayout);
 
-    QWidget *scFrame = new QWidget(this);;
+    QWidget *scFrame = new QWidget(this);
     QHBoxLayout *scLayout = new QHBoxLayout;
     scLayout->setSpacing(m_iSpaceSizeZero);
     scLayout->setContentsMargins(m_iLayoutLeftSize, m_iLayoutSizeZero, m_iLayoutRightSize, m_iLayoutSizeZero);
@@ -159,7 +159,7 @@ void CustomCommandOptDlg::initUI()
         setFixedSize(m_iFixedWidth, m_iFixedHeightEditSize);
         setTitle(tr("Edit Command"));
 
-        QWidget *deleteCmdWidget = new QWidget(this);;
+        QWidget *deleteCmdWidget = new QWidget(this);
         deleteCmdWidget->setFixedHeight(m_iFixedHeight);
 
         QHBoxLayout *deleteCmdLayout = new QHBoxLayout();
@@ -484,7 +484,7 @@ bool CustomCommandOptDlg::checkSequence(const QKeySequence &sequence)
     return true;
 }
 
-void CustomCommandOptDlg::setModelIndex(QModelIndex mi)
+void CustomCommandOptDlg::setModelIndex(const QModelIndex &mi)
 {
     modelIndex = mi;
 }
@@ -552,7 +552,6 @@ inline void CustomCommandOptDlg::slotCancelBtnClicked()
 {
     m_confirmResultCode = QDialog::Rejected;
     reject();
-    close();
 }
 
 inline void CustomCommandOptDlg::slotConfirmBtnClicked()
