@@ -56,7 +56,6 @@ TEST_F(UT_ShortcutManager_Test, createBuiltinShortcutsFromConfig)
 TEST_F(UT_ShortcutManager_Test, getCustomCommandActionList)
 {
     QList<QAction *> &commandActionList = m_shortcutManager->getCustomCommandActionList();
-    commandActionList.count();
 }
 
 

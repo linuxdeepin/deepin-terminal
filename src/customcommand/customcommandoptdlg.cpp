@@ -654,9 +654,9 @@ inline void CustomCommandOptDlg::slotSetShortCutLineEditFocus()
 
 void CustomCommandOptDlg::addContent(QWidget *content)
 {
-    Q_ASSERT(nullptr != getContentLayout());
+    Q_ASSERT(nullptr != m_contentLayout);
 
-    getContentLayout()->addWidget(content);
+    m_contentLayout->addWidget(content);
 }
 
 void CustomCommandOptDlg::setIconPixmap(const QPixmap &iconPixmap)
