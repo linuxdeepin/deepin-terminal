@@ -84,10 +84,6 @@ TEST_F(UT_TermWidget_Test, TermWidgetTest)
     EXPECT_NE(termPage, nullptr);
     EXPECT_EQ(QString(termPage->metaObject()->className()), QString("TermWidgetPage"));
 
-    //这两个函数未实现
-    termWidget->skipToPreCommand();
-    termWidget->skipToNextCommand();
-
     termWidget->setEnterSzCommand(false);
     EXPECT_EQ(termWidget->enterSzCommand(), false);
 
@@ -245,7 +241,6 @@ TEST_F(UT_TermWidget_Test, onSetTerminalFont)
 
     QPoint pos(50, 50);
     termWidget->onSetTerminalFont();
-    termWidget->onSig_matchFound();
 }
 
 TEST_F(UT_TermWidget_Test, onSettingValueChanged)

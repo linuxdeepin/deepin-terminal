@@ -200,11 +200,6 @@ public:
      * @author ut000439 王培利
      */
     void pasteClipboard();
-    /**
-     * @brief 切换显示搜索栏
-     * @author ut000439 wangpeili
-     */
-    void toggleShowSearchBar();
 
     /**
      * @brief 放大当前端子
@@ -244,16 +239,6 @@ public:
      * @author ut000439 王培利
      */
     void selectAll();
-    /**
-     * @brief 跳转到下一命令
-     * @author ut000439 王培利
-     */
-    void skipToNextCommand();
-    /**
-     * @brief 跳转到前一命令
-     * @author ut000439 王培利
-     */
-    void skipToPreCommand();
     /**
      * @brief 设置光标形状
      * @author ut000439 王培利
@@ -297,12 +282,6 @@ public:
      * @author ut000610 戴正文
      */
     void showRenameTitleDialog();
-
-    /**
-     * @brief 打印查找花费的时间
-     * @author ut000610 戴正文
-     */
-    void printSearchCostTime();
 
 protected:
     /**

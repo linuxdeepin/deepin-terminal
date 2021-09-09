@@ -455,13 +455,6 @@ void TermWidgetPage::pasteClipboard()
         term->pasteClipboard();
 }
 
-void TermWidgetPage::toggleShowSearchBar()
-{
-    TermWidget *term = currentTerminal();
-    if (term)
-        term->toggleShowSearchBar();
-}
-
 void TermWidgetPage::zoomInCurrentTierminal()
 {
     TermWidget *term = currentTerminal();
@@ -495,20 +488,6 @@ void TermWidgetPage::selectAll()
     TermWidget *term = currentTerminal();
     if (term)
         term->setSelectionAll();
-}
-
-void TermWidgetPage::skipToNextCommand()
-{
-    TermWidget *term = currentTerminal();
-    if (term)
-        term->skipToNextCommand();
-}
-
-void TermWidgetPage::skipToPreCommand()
-{
-    TermWidget *term = currentTerminal();
-    if (term)
-        term->skipToPreCommand();
 }
 
 void TermWidgetPage::setcursorShape(int shape)
@@ -608,15 +587,6 @@ inline void TermWidgetPage::handleTabRenameDlgFinished()
     // 弹窗隐藏或消失
     Service::instance()->setIsDialogShow(window(), false);
     m_renameDlg = nullptr;
-}
-
-void TermWidgetPage::printSearchCostTime()
-{
-    qint64 costTime = m_findBar->searchCostTime();
-    if (costTime != -1) {
-        QString strSearchTime = GRAB_POINT + LOGO_TYPE + SEARCH_TIME + QString::number(costTime);
-        qInfo() << qPrintable(strSearchTime);
-    }
 }
 
 void TermWidgetPage::onTermRequestRenameTab(QString newTabName)

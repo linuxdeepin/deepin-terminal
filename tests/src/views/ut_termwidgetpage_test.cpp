@@ -249,21 +249,6 @@ TEST_F(UT_TermWidgetPage_Test, setColorScheme)
     termWidgetPage.setColorScheme("Dark");
 }
 
-TEST_F(UT_TermWidgetPage_Test, toggleShowSearchBar)
-{
-    m_normalWindow->resize(800, 600);
-    m_normalWindow->show();
-
-    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-
-    Stub s;
-    s.set(ADDR(QTermWidget, toggleShowSearchBar), stub_toggleShowSearchBar);
-
-    currTermPage->toggleShowSearchBar();
-
-    s.reset(ADDR(QTermWidget, toggleShowSearchBar));
-}
-
 bool ut_isQuakeMode()
 {
     return true;
@@ -320,32 +305,6 @@ TEST_F(UT_TermWidgetPage_Test, selectAll)
     termWidgetPage.selectAll();
 }
 
-TEST_F(UT_TermWidgetPage_Test, skipToPreCommand)
-{
-    TermProperties termProperty;
-    termProperty[QuakeMode] = false;
-    termProperty[SingleFlag] = true;
-
-    TermWidgetPage termWidgetPage(termProperty, nullptr);
-    termWidgetPage.resize(800, 600);
-    termWidgetPage.show();
-
-    termWidgetPage.skipToPreCommand();
-}
-
-TEST_F(UT_TermWidgetPage_Test, skipToNextCommand)
-{
-    TermProperties termProperty;
-    termProperty[QuakeMode] = false;
-    termProperty[SingleFlag] = true;
-
-    TermWidgetPage termWidgetPage(termProperty, nullptr);
-    termWidgetPage.resize(800, 600);
-    termWidgetPage.show();
-
-    termWidgetPage.skipToNextCommand();
-}
-
 TEST_F(UT_TermWidgetPage_Test, setBlinkingCursor)
 {
     TermProperties termProperty;
@@ -399,21 +358,6 @@ qint64 ut_searchCostTime()
     return 1;
 }
 
-TEST_F(UT_TermWidgetPage_Test, printSearchCostTime)
-{
-    TermProperties termProperty;
-    termProperty[QuakeMode] = false;
-    termProperty[SingleFlag] = true;
-
-    TermWidgetPage termWidgetPage(termProperty, nullptr);
-    termWidgetPage.resize(800, 600);
-    termWidgetPage.show();
-
-    Stub stub;
-    stub.set(ADDR(PageSearchBar,searchCostTime),ut_searchCostTime);
-
-    termWidgetPage.printSearchCostTime();
-}
 
 TEST_F(UT_TermWidgetPage_Test, onTermRequestRenameTab)
 {

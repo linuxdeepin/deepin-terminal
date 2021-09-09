@@ -106,7 +106,7 @@ TEST_F(UT_ServerConfigOptDlg_Test, resetCurServer)
     ServerConfigOptDlg serverCfgDlg;
 
     ServerConfig serverConfig = serverCfgDlg.getData();
-    serverCfgDlg.resetCurServer(serverConfig);
+    serverCfgDlg.resetCurServer(&serverConfig);
 }
 
 /*******************************************************************************
@@ -170,7 +170,7 @@ TEST_F(UT_ServerConfigOptDlg_Test, resetCurServerTest)
 
     // 函数修改原数据 => 传入的临时数据不是指针,传入后被拷贝构造,所以还原后指针不一定相同
     // 只能对比数据是否还原
-    serverConfigDialog.resetCurServer(config2);
+    serverConfigDialog.resetCurServer(&config2);
     curConfig = serverConfigDialog.getCurServer();
     EXPECT_EQ(curConfig->m_serverName, config2.m_serverName);
 }

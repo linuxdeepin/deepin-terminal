@@ -96,16 +96,6 @@ public:
     bool isInRemoteServer();
 public:
     /**
-     * @brief 跳转到下一个命令（这个功能没找到库的接口，现在是暂时是以虚拟键形式实现）
-     * @author n014361 王培利
-     */
-    void skipToNextCommand();
-    /**
-     * @brief 跳转到前一个命令（这个功能没找到库的接口，现在是暂时是以虚拟键形式实现）
-     * @author n014361 王培利
-     */
-    void skipToPreCommand();
-    /**
      * @brief 设置不透明度
      * @author ut000610 daizhengwen
      * @param opacity 不透明度
@@ -374,7 +364,6 @@ private slots:
     void onWindowEffectEnabled(bool isWinEffectEnabled);
     void onCopyAvailable(bool enable);
     void onSetTerminalFont();
-    void onSig_matchFound();
     void onSig_noMatchFound();
 
     void onCopy();

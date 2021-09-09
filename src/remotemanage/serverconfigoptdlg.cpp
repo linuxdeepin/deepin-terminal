@@ -489,9 +489,9 @@ ServerConfig ServerConfigOptDlg::getData()
     return config;
 }
 
-void ServerConfigOptDlg::resetCurServer(ServerConfig config)
+void ServerConfigOptDlg::resetCurServer(ServerConfig *config)
 {
-    m_curServer = &config;
+    m_curServer = config;
 }
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()

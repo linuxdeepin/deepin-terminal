@@ -195,8 +195,6 @@ void TermWidget::initConnections()
 
     // 未找到搜索的匹配结果
     connect(this, &QTermWidget::sig_noMatchFound, this, &TermWidget::onSig_noMatchFound);
-    // 找到搜索匹配的结果 => 记录查找时间 => 打印日志，方便性能测试
-    connect(this, &QTermWidget::sig_matchFound, this, &TermWidget::onSig_matchFound);
     /********************* Modify by n014361 wangpeili End ************************/
 
     connect(this, &QTermWidget::isTermIdle, this, &TermWidget::onTermIsIdle);
@@ -226,11 +224,6 @@ inline void TermWidget::onSetTerminalFont()
     font.setFamily(Settings::instance()->fontName());
     font.setPointSize(Settings::instance()->fontSize());
     setTerminalFont(font);
-}
-
-inline void TermWidget::onSig_matchFound()
-{
-    parentPage()->printSearchCostTime();
 }
 
 inline void TermWidget::onSig_noMatchFound()
@@ -997,15 +990,6 @@ void TermWidget::setTermFontSize(const int fontSize)
     font.setFixedPitch(true);
     font.setPointSize(fontSize);
     setTerminalFont(font);
-}
-
-
-void TermWidget::skipToNextCommand()
-{
-}
-
-void TermWidget::skipToPreCommand()
-{
 }
 
 void TermWidget::setCursorShape(int shape)
