@@ -85,10 +85,12 @@ TEST_F(UT_SettingIO_Test, escapedStringTest)
 {
     QString strTest = "a;b,c=d#e\\0";
     QString strResut = SettingIO::escapedString(strTest);
+    EXPECT_EQ(strResut, "\"a;b,c=d#e\\\\0\"");
     qDebug() << strResut;
 
     strTest = "!@#$%^&*()-+=\??？bB0\n\r\t\\\0\0";
     strResut = SettingIO::escapedString(strTest);
+    EXPECT_EQ(strResut, "\"!@#$%^&*()-+=??？bB0\\n\\r\\t\\\\\"");
     qDebug() << strResut;
 }
 
@@ -102,6 +104,7 @@ TEST_F(UT_SettingIO_Test, unescapedStringTest)
 {
     QString strTest = "123\1?\\t\\x1Bb\a\t ";
     QString strResut = SettingIO::unescapedString(strTest);
+    EXPECT_EQ(strResut, "123\u0001?\tƻ\u0007\t ");
     qDebug() << strResut;
 }
 

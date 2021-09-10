@@ -129,6 +129,7 @@ TEST_F(UT_CustomCommandOptDlg_Test, slotAddSaveButtonClicked)
     newAction.setData("ls -al");
     newAction.setShortcut(keySeq);
     ShortcutManager::instance()->addCustomCommand(newAction);
+    EXPECT_TRUE(ShortcutManager::instance()->findActionByKey(newAction.text()) != nullptr);
 
     QSharedPointer<CustomCommandOptDlg> cmdDlg(new CustomCommandOptDlg, doDeleteLater);
     cmdDlg->m_currItemData = new CustomCommandData;
@@ -137,33 +138,41 @@ TEST_F(UT_CustomCommandOptDlg_Test, slotAddSaveButtonClicked)
     cmdDlg->m_currItemData->m_cmdShortcut = "";
 
     cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(cmdDlg->m_nameLineEdit->text().isEmpty());
 
     cmdDlg->m_nameLineEdit->setText("cmd");
     cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(cmdDlg->m_nameLineEdit->text().count() > 0);
 
+    //新增一个窗口
     cmdDlg->m_commandLineEdit->setText("ls -al");
+    const int cmdDlg_child_count = cmdDlg->children().count();
     cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(1 == (cmdDlg->children().count() - cmdDlg_child_count));
 
-    cmdDlg->m_shortCutLineEdit->setKeySequence(QKeySequence("Ctrl+Shift+T"));
-    cmdDlg->slotAddSaveButtonClicked();
-
+    //新增一个窗口
     cmdDlg->m_type = CustomCommandOptDlg::CCT_MODIFY;
     cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(2 == (cmdDlg->children().count() - cmdDlg_child_count));
 
-    {
-        cmdDlg->m_bRefreshCheck = true;
-        cmdDlg->slotAddSaveButtonClicked();
+    //没有新增窗口
+    cmdDlg->m_bRefreshCheck = true;
+    cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(2 == (cmdDlg->children().count() - cmdDlg_child_count));
 
-        cmdDlg->m_bRefreshCheck = false;
-        cmdDlg->m_currItemData->m_cmdName = "cmd";
-        cmdDlg->m_currItemData->m_cmdText = "ls -al";
-        cmdDlg->m_currItemData->m_cmdShortcut = "Ctrl+Shift+T";
-        cmdDlg->slotAddSaveButtonClicked();
+    //没有新增窗口
+    cmdDlg->m_bRefreshCheck = false;
+    cmdDlg->m_currItemData->m_cmdName = "cmd";
+    cmdDlg->m_currItemData->m_cmdText = "ls -al";
+    cmdDlg->m_currItemData->m_cmdShortcut = "Ctrl+Shift+T";
+    cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(2 == (cmdDlg->children().count() - cmdDlg_child_count));
 
-        cmdDlg->m_nameLineEdit->setText("cmd_no");
-        cmdDlg->slotAddSaveButtonClicked();
+    //没有新增窗口
+    cmdDlg->m_nameLineEdit->setText("cmd_no");
+    cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(2 == (cmdDlg->children().count() - cmdDlg_child_count));
 
-    }
 }
 
 TEST_F(UT_CustomCommandOptDlg_Test, slotRefreshData)
@@ -179,16 +188,19 @@ TEST_F(UT_CustomCommandOptDlg_Test, slotRefreshData)
 
     cmdDlg->m_commandLineEdit->setText("ls -al");
 
+    //新增一个窗口
+    const int cmdDlg_child_count = cmdDlg->children().count();
     QKeySequence keytmp = cmdDlg->m_shortCutLineEdit->setKeySequence(QKeySequence("Ctrl+Shift+T"));
     cmdDlg->slotAddSaveButtonClicked();
+    EXPECT_TRUE(1 == (cmdDlg->children().count() - cmdDlg_child_count));
 
     cmdDlg->m_type = CustomCommandOptDlg::CCT_ADD;
     cmdDlg->slotRefreshData("cmd", "cmd2");
+    EXPECT_TRUE(CustomCommandOptDlg::CCT_ADD == cmdDlg->m_type);
 
     cmdDlg->m_type = CustomCommandOptDlg::CCT_MODIFY;
     cmdDlg->slotRefreshData("cmd", "cmd2");
+    EXPECT_TRUE(CustomCommandOptDlg::CCT_MODIFY == cmdDlg->m_type);
 }
-
-
 
 #endif

@@ -23,6 +23,7 @@
 #include "ut_defines.h"
 #include "shortcutmanager.h"
 #include "../stub.h"
+#include "ut_stub_defines.h"
 
 #include <QDebug>
 
@@ -97,6 +98,7 @@ TEST_F(UT_CustomCommandPanel_Test, showCurSearchResult)
     CustomCommandPanel panel;
     panel.m_searchEdit->setText("1");
     panel.showCurSearchResult();
+    EXPECT_TRUE(panel.m_searchEdit->text().count() > 0);
 }
 
 TEST_F(UT_CustomCommandPanel_Test, showAddCustomCommandDlg)
@@ -136,9 +138,22 @@ TEST_F(UT_CustomCommandPanel_Test, showAddCustomCommandDlg)
 
 TEST_F(UT_CustomCommandPanel_Test, onFocusOut)
 {
-    CustomCommandPanel panel;
-    panel.onFocusOut(Qt::TabFocusReason);
-    panel.m_searchEdit->setFocus();
-    panel.onFocusOut(Qt::BacktabFocusReason);
+    UT_STUB_QWIDGET_SETFOCUS_CREATE;
+    UT_STUB_QWIDGET_ISVISIBLE_APPEND;
+
+    CustomCommandPanel *panel = new CustomCommandPanel;
+    panel->m_pushButton->setHidden(false);
+    UT_STUB_QWIDGET_SETFOCUS_PREPARE
+    panel->onFocusOut(Qt::TabFocusReason);
+    //会触发setFocus函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
+
+    panel->m_searchEdit->setFocus();
+    UT_STUB_QWIDGET_SETFOCUS_PREPARE
+    panel->onFocusOut(Qt::BacktabFocusReason);
+    //会触发setFocus函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
+
+    panel->deleteLater();
 }
 #endif

@@ -225,6 +225,8 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
         // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
         term->hide();
         term->deleteLater();
+        // 断开相关的连接：(UT_MainWindow_Test, slotShortcutCloseWorkspace)出现的崩溃问题
+        Settings::instance()->disconnect(term);
         upSplit->hide();
         upSplit->setParent(nullptr);
         upSplit->deleteLater();

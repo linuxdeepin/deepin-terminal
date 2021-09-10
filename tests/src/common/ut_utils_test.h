@@ -26,6 +26,7 @@
 
 #include <gtest/gtest.h>
 
+class QWidget;
 class UT_Utils_Test : public ::testing::Test
 {
 public:
@@ -39,6 +40,8 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+
+    QWidget *parentWidget = nullptr;
 };
 
 #endif // UT_UTILS_TEST_H

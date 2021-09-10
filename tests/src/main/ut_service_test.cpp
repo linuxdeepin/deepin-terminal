@@ -28,6 +28,7 @@
 #include "utils.h"
 #include "customthemesettingdialog.h"
 #include "../stub.h"
+#include "ut_stub_defines.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -39,12 +40,6 @@
 
 #include <DSettingsWidgetFactory>
 #include <DWindowManagerHelper>
-
-#define DELETE_PTR(ptr) \
-    if(ptr) {\
-    delete ptr;\
-    ptr = nullptr;\
-    }
 
 
 UT_Service_Test::UT_Service_Test()
@@ -117,6 +112,9 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
 TEST_F(UT_Service_Test, slotCustomThemeSettingDialogFinished)
 {
     m_service->slotCustomThemeSettingDialogFinished(QDialog::Accepted);
+    //更新颜色方案
+    EXPECT_TRUE(Settings::instance()->extendColorScheme() == Settings::instance()->m_configCustomThemePath);
+
 }
 
 int ut_window_widgetCount()
@@ -129,6 +127,8 @@ TEST_F(UT_Service_Test, EntryTerminal)
     Stub stub;
     stub.set(ADDR(WindowsManager,widgetCount),ut_window_widgetCount);
     m_service->EntryTerminal(QStringList() << "1" << "2",true);
+    //启动新的终端
+    EXPECT_TRUE(ut_window_widgetCount() > MAXWIDGETCOUNT);
 }
 
 TEST_F(UT_Service_Test, isCountEnable)
@@ -147,6 +147,8 @@ TEST_F(UT_Service_Test, getsetIsDialogShow)
     }
 
     m_service->setIsDialogShow(WindowsManager::instance()->getQuakeWindow(), true);
+    //运行雷神窗口
+    EXPECT_TRUE(!WindowsManager::instance()->getQuakeWindow()->isEnabled());
 }
 
 TEST_F(UT_Service_Test, getEntryTime)
@@ -167,21 +169,30 @@ TEST_F(UT_Service_Test, showHideOpacityAndBlurOptions)
     m_service->m_settingDialog->setWindowModality(Qt::NonModal);
     m_service->m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
 
-    m_service->m_settingDialog->show();
 
+
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
     m_service->showHideOpacityAndBlurOptions(true);
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
+
+    UT_STUB_QWIDGET_SETVISIBLE_PREPARE;
     m_service->showHideOpacityAndBlurOptions(false);
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 
-    {
-        QWidget *rightFrame = m_service->m_settingDialog->findChild<QWidget *>("RightFrame");
-        if(rightFrame){
-            rightFrame->setObjectName("RightFrame1");
-            m_service->showHideOpacityAndBlurOptions(true);
-            rightFrame->setObjectName("RightFrame");
-        }
-    }
 
-    m_service->m_settingDialog->close();
+
+    QWidget *rightFrame = m_service->m_settingDialog->findChild<QWidget *>("RightFrame");
+    ASSERT_TRUE(rightFrame);
+    rightFrame->setObjectName("RightFrame1");
+    UT_STUB_QWIDGET_SETVISIBLE_PREPARE;
+    m_service->showHideOpacityAndBlurOptions(true);
+    //会调用setvisible函数
+    EXPECT_TRUE(!UT_STUB_QWIDGET_SETVISIBLE_RESULT);
+    rightFrame->setObjectName("RightFrame");
+
+
 }
 
 TEST_F(UT_Service_Test, isSettingDialogVisible)
@@ -386,37 +397,40 @@ TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
 
 TEST_F(UT_Service_Test, slotWMChanged)
 {
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
     m_service->slotWMChanged("deepin wm");
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 }
 
 TEST_F(UT_Service_Test, showShortcutConflictMsgbox)
 {
     Stub sub;
     sub.set(ADDR(DDialog, show), ui_dialog_show);
-
-    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
-    m_service->showShortcutConflictMsgbox(ShortcutManager::instance()->m_mapReplaceText.keys().value(0));
-    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
+    QString txt = ShortcutManager::instance()->m_mapReplaceText.keys().value(0);
+    //设置中心
+    EXPECT_TRUE(m_service->m_settingDialog);
+    m_service->showShortcutConflictMsgbox(txt);
+    //显示快捷键冲突窗口
+    EXPECT_TRUE(m_service->m_settingShortcutConflictDialog->title().count() > 0);
 }
 
 TEST_F(UT_Service_Test, slotSettingShortcutConflictDialogFinished)
 {
-    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
-    m_service->m_settingShortcutConflictDialog = new DDialog;
     m_service->slotSettingShortcutConflictDialogFinished();
-    DELETE_PTR(m_service->m_settingShortcutConflictDialog);
+    //关闭快捷键冲突窗口
+    EXPECT_TRUE(!m_service->m_settingShortcutConflictDialog);
 }
 
 TEST_F(UT_Service_Test, hideSettingDialog)
 {
     if(nullptr == m_service->m_settingDialog)
         m_service->m_settingDialog = new DSettingsDialog();
+
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
     m_service->hideSettingDialog();
-}
-
-TEST_F(UT_Service_Test, showCustomThemeSettingDialog)
-{
-
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 }
 
 #endif

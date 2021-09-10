@@ -4,7 +4,7 @@ project(deepin-terminal-test)
 configure_file(../src/environments.h.in environments.h @ONLY)
 
 # 设置添加gocv相关信息的输出
-set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fprofile-arcs -ftest-coverage -fno-inline")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME_TEST ${PROJECT_NAME})
 
