@@ -5,6 +5,9 @@ configure_file(../src/environments.h.in environments.h @ONLY)
 
 # 设置添加gocv相关信息的输出
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fprofile-arcs -ftest-coverage -fno-inline")
+#安全编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME_TEST ${PROJECT_NAME})
 

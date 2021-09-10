@@ -45,6 +45,8 @@ endif()
 #Use deepin-turbo for Performance optimization
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wl,--as-need -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "-pie")
+#安全编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
 
 configure_file(src/environments.h.in environments.h @ONLY)
 
