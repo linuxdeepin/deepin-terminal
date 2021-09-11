@@ -221,21 +221,21 @@ typedef QString (*ut_QTranslator_translate_ptr)(QTranslator*, const char *, cons
 
 
 /******** Add by ut003135 Begin***************/
-static  bool ut_DDialog_show_hasRuned = false;
-static  void ut_DDialog_show(){
-    ut_DDialog_show_hasRuned = true;
+static  bool ut_QWidget_show_hasRuned = false;
+static  void ut_QWidget_show(){
+    ut_QWidget_show_hasRuned = true;
 }
 
-#define UT_STUB_DDIALOG_SHOW_APPEND\
-    stub.set((void (DDialog::*)())ADDR(DDialog, show), ut_DDialog_show); \
-    ut_DDialog_show_hasRuned = false;\
+#define UT_STUB_QWIDGET_SHOW_APPEND\
+    stub.set((void (QWidget::*)())ADDR(QWidget, show), ut_QWidget_show); \
+    ut_QWidget_show_hasRuned = false;\
 
-#define UT_STUB_DDIALOG_SHOW_CREATE\
+#define UT_STUB_QWIDGET_SHOW_CREATE\
     Stub stub;\
-    UT_STUB_DDIALOG_SHOW_APPEND
+    UT_STUB_QWIDGET_SHOW_APPEND
 
-#define UT_STUB_DDIALOG_SHOW_RESULT ut_DDialog_show_hasRuned
-#define UT_STUB_DDIALOG_SHOW_PREPARE ut_DDialog_show_hasRuned = false;
+#define UT_STUB_QWIDGET_SHOW_RESULT ut_QWidget_show_hasRuned
+#define UT_STUB_QWIDGET_SHOW_PREPARE ut_QWidget_show_hasRuned = false;
 /******** Add by ut003135 End***************/
 
 
@@ -278,6 +278,44 @@ static  bool ut_QApplication_sendEvent(QObject *, QEvent *){
 #define UT_STUB_QAPPLICATION_SENDEVENT_PREPARE ut_QApplication_sendEvent_hasRuned = false;
 /******** Add by ut003135 End***************/
 
+/******** Add by ut003135 Begin***************/
+static  bool ut_DSettingsOption_value_hasRuned = false;
+static  QVariant ut_DSettingsOption_value(){
+    ut_DSettingsOption_value_hasRuned = true;
+    return QVariant();
+}
+
+#define UT_STUB_DSETTINGSOPTION_VALUE_APPEND\
+    stub.set(ADDR(DSettingsOption, value), ut_DSettingsOption_value); \
+    ut_DSettingsOption_value_hasRuned = false;\
+
+#define UT_STUB_DSETTINGSOPTION_VALUE_CREATE\
+    Stub stub;\
+    UT_STUB_DSETTINGSOPTION_VALUE_APPEND
+
+#define UT_STUB_DSETTINGSOPTION_VALUE_RESULT ut_DSettingsOption_value_hasRuned
+#define UT_STUB_DSETTINGSOPTION_VALUE_PREPARE ut_DSettingsOption_value_hasRuned = false;
+/******** Add by ut003135 End***************/
+
+
+/******** Add by ut003135 Begin***************/
+static  bool ut_QDir_exists_hasRuned = false;
+static  bool ut_QDir_exists(){
+    ut_QDir_exists_hasRuned = true;
+    return true;
+}
+
+#define UT_STUB_QDIR_EXISTS_APPEND\
+    stub.set((bool (QDir::*)()const)ADDR(QDir, exists), ut_QDir_exists); \
+    ut_QDir_exists_hasRuned = false;\
+
+#define UT_STUB_QDIR_EXISTS_CREATE\
+    Stub stub;\
+    UT_STUB_QDIR_EXISTS_APPEND
+
+#define UT_STUB_QDIR_EXISTS_RESULT ut_QDir_exists_hasRuned
+#define UT_STUB_QDIR_EXISTS_PREPARE ut_QDir_exists_hasRuned = false;
+/******** Add by ut003135 End***************/
 
 #define DELETE_PTR(ptr) \
     if(ptr) {\

@@ -20,7 +20,6 @@
  */
 
 #include "ut_service_test.h"
-
 #include "service.h"
 #include "mainwindow.h"
 #include "windowsmanager.h"
@@ -30,17 +29,17 @@
 #include "../stub.h"
 #include "ut_stub_defines.h"
 
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
+//DTK
+#include <DSettingsWidgetFactory>
+#include <DWindowManagerHelper>
 
-//Qt单元测试相关头文件
+//Qt
 #include <QTest>
 #include <QSignalSpy>
 #include <QtConcurrent/QtConcurrent>
 
-#include <DSettingsWidgetFactory>
-#include <DWindowManagerHelper>
-
+//Google GTest 相关头文件
+#include <gtest/gtest.h>
 
 UT_Service_Test::UT_Service_Test()
 {
@@ -90,22 +89,6 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
         Stub stub;
         stub.set(ADDR(QDBusMessage,type),ut_dbus_type);
         m_service->isWindowEffectEnabled();
-    }
-    bool isWindowEffectEnabled = m_service->isWindowEffectEnabled();
-    if (isWindowEffectEnabled) {
-#ifdef ENABLE_UI_TEST
-        //        模拟自动关闭窗口特效
-        //        QTest::qWait(UT_WAIT_TIME);
-        //        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
-        //        EXPECT_EQ(spyWinEffectEnable.count(), 1);
-#endif
-    } else {
-#ifdef ENABLE_UI_TEST
-        //        模拟自动开启窗口特效
-        //        QTest::qWait(UT_WAIT_TIME);
-        //        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
-        //        EXPECT_EQ(spyWinEffectEnable.count(), 1);
-#endif
     }
 }
 

@@ -22,10 +22,12 @@
 #include "ut_customthemesettingdialog_test.h"
 #include "customthemesettingdialog.h"
 #include "../stub.h"
+#include "settings.h"
 
 // DTK
 #include <DTitlebar>
 #include <DApplicationHelper>
+#include <DColorDialog>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -37,6 +39,8 @@
 #include <QApplication>
 #include <QKeyEvent>
 #include <QFocusEvent>
+#include <QWidget>
+
 
 DWIDGET_USE_NAMESPACE
 
@@ -57,18 +61,11 @@ void UT_ColorPushButton_Test::TearDown()
 TEST_F(UT_ColorPushButton_Test, paintEvent)
 {
     ColorPushButton colorPushBtn;
-//    colorPushBtn.resize(200, 30);
-    colorPushBtn.grab();
+    //触发paitevent函数
+    EXPECT_TRUE(colorPushBtn.grab().isNull() == false);
+
     colorPushBtn.m_isFocus = true;
-    colorPushBtn.grab();
-//    QPaintEvent *event = new QPaintEvent(colorPushBtn.rect());
-
-//    colorPushBtn.paintEvent(event);
-
-//    colorPushBtn.m_isFocus = true;
-//    colorPushBtn.paintEvent(event);
-
-//    delete event;
+    EXPECT_TRUE(colorPushBtn.grab().isNull() == false);
 }
 
 /*******************************************************************************
@@ -86,14 +83,17 @@ TEST_F(UT_ColorPushButton_Test, focusEvent)
     // 焦点进入
     QFocusEvent focusIn(QEvent::FocusIn, Qt::TabFocusReason);
     colorPushBtn.focusInEvent(&focusIn);
+    EXPECT_TRUE(colorPushBtn.m_isFocus);
 
     QFocusEvent focusIn1(QEvent::FocusIn, Qt::ActiveWindowFocusReason);
     colorPushBtn.m_isFocus = true;
     colorPushBtn.focusInEvent(&focusIn1);
+    EXPECT_TRUE(colorPushBtn.m_isFocus);
 
     // 焦点出
     QFocusEvent focusOut(QEvent::FocusOut, Qt::TabFocusReason);
     colorPushBtn.focusOutEvent(&focusOut);
+    EXPECT_TRUE(colorPushBtn.m_isFocus == false);
 }
 #endif
 
@@ -103,9 +103,29 @@ UT_CustomThemeSettingDialog_Test::UT_CustomThemeSettingDialog_Test()
 
 void UT_CustomThemeSettingDialog_Test::SetUp()
 {
+    dialog = new CustomThemeSettingDialog;
 }
 
 void UT_CustomThemeSettingDialog_Test::TearDown()
+{
+    delete dialog;
+}
+
+static void ut_colorDialog_setOptions(DColorDialog::ColorDialogOptions )
+{
+
+}
+
+static void ut_colorDialog_setCurrentColor(const QColor &)
+{
+}
+
+static QColor ut_colorDialog_selectedColor()
+{
+    return QColor("black");
+}
+
+static void ut_colorDialog_setWindowTitle(const QString &)
 {
 }
 
@@ -118,18 +138,18 @@ void UT_CustomThemeSettingDialog_Test::TearDown()
 *******************************************************************************/
 TEST_F(UT_CustomThemeSettingDialog_Test, CustomThemeSettingDialog)
 {
-    // 初始化界面
-    CustomThemeSettingDialog dialog;
-    dialog.show();
-    // 弹窗显示
-    EXPECT_EQ(dialog.isVisible(), true);
     // 标签有值
-    EXPECT_EQ(dialog.m_titleText->text().isEmpty(), false);
-    qDebug() << "CustomThemeSettingDialog title : " << dialog.m_titleText->text();
+    EXPECT_EQ(dialog->m_titleText->text().isEmpty(), false);
 
     // 主题变化 => 弹窗字体颜色变化
+    QSignalSpy signalpy(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged);
+    EXPECT_TRUE(signalpy.count() == 0);
+
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+    signalpy.wait(1000);
+    EXPECT_TRUE(signalpy.count() == 2);
+
 }
 
 /*******************************************************************************
@@ -140,25 +160,17 @@ TEST_F(UT_CustomThemeSettingDialog_Test, CustomThemeSettingDialog)
 *******************************************************************************/
 TEST_F(UT_CustomThemeSettingDialog_Test, resetFocusState)
 {
-    // 初始化界面
-    CustomThemeSettingDialog dialog;
-    dialog.show();
-
-    // 重置焦点状态
-    dialog.resetFocusState();
-    EXPECT_EQ(dialog.m_darkRadioButton->focusPolicy(), Qt::TabFocus);
-    dialog.onSelectColor();
+    dialog->resetFocusState();
+    EXPECT_EQ(dialog->m_darkRadioButton->focusPolicy(), Qt::TabFocus);
 }
-
 
 TEST_F(UT_CustomThemeSettingDialog_Test, clearFocussSlot)
 {
-    CustomThemeSettingDialog *customThemeSettingDialog = new CustomThemeSettingDialog;
-    EXPECT_NE(customThemeSettingDialog, nullptr);
-
-    customThemeSettingDialog->clearFocussSlot();
-
-    delete customThemeSettingDialog;
+    dialog->clearFocussSlot();
+    EXPECT_TRUE(dialog->m_foregroundButton->m_isFocus == false);
+    EXPECT_TRUE(dialog->m_backgroundButton->m_isFocus == false);
+    EXPECT_TRUE(dialog->m_ps1Button->m_isFocus == false);
+    EXPECT_TRUE(dialog->m_ps2Button->m_isFocus == false);
 }
 
 QStringList ut_toStringList(){
@@ -174,15 +186,20 @@ QStringList ut_toStringList(){
 TEST_F(UT_CustomThemeSettingDialog_Test, loadConfiguration)
 {
     // 自定义主题弹窗
-    CustomThemeSettingDialog dialog;
-    dialog.show();
+    dialog->show();
 
     // 最好能重新设置配置文件然后再加载调用的函数
     // 重新加载配置文件
     Stub stub;
     stub.set(ADDR(QVariant,toStringList),ut_toStringList);
-    dialog.loadConfiguration();
-    dialog.update();
+    dialog->loadConfiguration();
+    EXPECT_TRUE(dialog->m_lightRadioButton->isChecked() ==
+                ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")));
+    EXPECT_TRUE(dialog->m_darkRadioButton->isChecked() ==
+                ("Dark" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")));
+
+    dialog->update();
+    EXPECT_TRUE(dialog->grab().isNull() == false);
 }
 
 /*******************************************************************************
@@ -194,8 +211,7 @@ TEST_F(UT_CustomThemeSettingDialog_Test, loadConfiguration)
 TEST_F(UT_CustomThemeSettingDialog_Test, keyPressEvent)
 {
     // 自定义主题弹窗
-    CustomThemeSettingDialog dialog;
-    dialog.show();
+    EXPECT_TRUE(dialog->grab().isNull() == false);
 }
 
 /*******************************************************************************
@@ -206,14 +222,13 @@ TEST_F(UT_CustomThemeSettingDialog_Test, keyPressEvent)
 *******************************************************************************/
 TEST_F(UT_CustomThemeSettingDialog_Test, showEvent)
 {
-    CustomThemeSettingDialog dialog;
-    dialog.m_foregroundButton->m_isFocus = true;
-
-    // 调用函数
     QShowEvent event;
-    dialog.showEvent(&event);
+    dialog->showEvent(&event);
 
-    EXPECT_EQ(dialog.m_foregroundButton->m_isFocus, false);
+    EXPECT_TRUE(dialog->m_foregroundButton->m_isFocus == false);
+    EXPECT_TRUE(dialog->m_backgroundButton->m_isFocus == false);
+    EXPECT_TRUE(dialog->m_ps1Button->m_isFocus == false);
+    EXPECT_TRUE(dialog->m_ps2Button->m_isFocus == false);
 }
 
 /*******************************************************************************
@@ -224,20 +239,28 @@ TEST_F(UT_CustomThemeSettingDialog_Test, showEvent)
 *******************************************************************************/
 TEST_F(UT_CustomThemeSettingDialog_Test, click)
 {
-    // 初始化弹窗
-    CustomThemeSettingDialog dialog;
-    dialog.show();
-
     // 测试点击事件
-    QTest::mouseClick(dialog.m_darkRadioButton, Qt::LeftButton, Qt::NoModifier);
+    QTest::mouseClick(dialog->m_darkRadioButton, Qt::LeftButton, Qt::NoModifier);
     // 鼠标事件中true,lambda表达式中将true改为false
-    EXPECT_EQ(dialog.m_darkRadioButton->m_mouseClick, false);
-    QTest::mouseClick(dialog.m_lightRadioButton, Qt::LeftButton, Qt::NoModifier);
+    EXPECT_EQ(dialog->m_darkRadioButton->m_mouseClick, false);
+    QTest::mouseClick(dialog->m_lightRadioButton, Qt::LeftButton, Qt::NoModifier);
     // 鼠标事件中true,lambda表达式中将true改为false
-    EXPECT_EQ(dialog.m_darkRadioButton->m_mouseClick, false);
+    EXPECT_EQ(dialog->m_darkRadioButton->m_mouseClick, false);
 
-    QTest::mouseClick(dialog.m_cancelBtn, Qt::LeftButton, Qt::NoModifier);
-    QTest::mouseClick(dialog.m_confirmBtn, Qt::LeftButton, Qt::NoModifier);
+    {
+        QSignalSpy signalpy(dialog->m_cancelBtn, &DPushButton::clicked);
+        EXPECT_TRUE(signalpy.count() == 0);
+        QTest::mouseClick(dialog->m_cancelBtn, Qt::LeftButton, Qt::NoModifier);
+        signalpy.wait(1000);
+        EXPECT_TRUE(signalpy.count() == 1);
+    }
+    {
+        QSignalSpy signalpy(dialog->m_confirmBtn, &DPushButton::clicked);
+        EXPECT_TRUE(signalpy.count() == 0);
+        QTest::mouseClick(dialog->m_confirmBtn, Qt::LeftButton, Qt::NoModifier);
+        signalpy.wait(1000);
+        EXPECT_TRUE(signalpy.count() == 1);
+    }
 }
 
 #endif

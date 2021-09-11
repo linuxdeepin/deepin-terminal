@@ -20,13 +20,14 @@
  */
 
 #include "ut_termwidget_test.h"
-
 #include "service.h"
 #include "termwidget.h"
 #include "termwidgetpage.h"
 #include "qtermwidget.h"
 #include "TerminalDisplay.h"
 #include "../stub.h"
+#include "tabbar.h"
+#include "ut_stub_defines.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -336,13 +337,7 @@ TEST_F(UT_TermWidget_Test, getFormatFileName)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     EXPECT_EQ(currTermPage->isVisible(), true);
 
-//    Stub stub;
-
-//    stub.set((bool (QProcess::*)(const QString))ADDR(QProcess,startDetached), ut_process_startDetached);
-
     TermWidget *termWidget = currTermPage->m_currentTerm;
-//    termWidget->onOpenFileInFileManager();
-//    termWidget->getFormatFileName("\\");
      termWidget->onShellMessage("",true);
      termWidget->onShellMessage("",false);
 }
@@ -831,7 +826,10 @@ TEST_F(UT_TermWidget_Test, onHorizontalSplit)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    int oldCount = currTermPage->getTerminalCount();
     term->onHorizontalSplit();
+    QTest::qWait(1000);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == (oldCount + 1));
 }
 
 TEST_F(UT_TermWidget_Test, onVerticalSplit)
@@ -840,25 +838,10 @@ TEST_F(UT_TermWidget_Test, onVerticalSplit)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    int oldCount = currTermPage->getTerminalCount();
     term->onVerticalSplit();
-}
-
-TEST_F(UT_TermWidget_Test, splitHorizontal)
-{
-    // 获取当前term
-    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-    TermWidget *term = currTermPage->m_currentTerm;
-
-    term->splitHorizontal();
-}
-
-TEST_F(UT_TermWidget_Test, splitVertical)
-{
-    // 获取当前term
-    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-    TermWidget *term = currTermPage->m_currentTerm;
-
-    term->splitVertical();
+    QTest::qWait(1000);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == (oldCount + 1));
 }
 
 TEST_F(UT_TermWidget_Test, onCloseCurrWorkSpace)
@@ -867,7 +850,12 @@ TEST_F(UT_TermWidget_Test, onCloseCurrWorkSpace)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    term->onVerticalSplit();
+    QTest::qWait(1000);
+    int oldCount = currTermPage->getTerminalCount();
     term->onCloseCurrWorkSpace();
+    qDebug() << currTermPage->getTerminalCount() <<oldCount;
+    EXPECT_TRUE(currTermPage->getTerminalCount() < oldCount);
 }
 
 TEST_F(UT_TermWidget_Test, onCloseOtherWorkSpaces)
@@ -877,6 +865,7 @@ TEST_F(UT_TermWidget_Test, onCloseOtherWorkSpaces)
     TermWidget *term = currTermPage->m_currentTerm;
 
     term->onCloseOtherWorkSpaces();
+    EXPECT_TRUE(currTermPage->getTerminalCount() == 1);
 }
 
 TEST_F(UT_TermWidget_Test, onCreateNewTab)
@@ -885,7 +874,12 @@ TEST_F(UT_TermWidget_Test, onCreateNewTab)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
+    int oldCount = term->parentPage()->parentMainWindow()->m_tabbar->count();
     term->onCreateNewTab();
+    int newCount = term->parentPage()->parentMainWindow()->m_tabbar->count();
+    EXPECT_TRUE(newCount == (oldCount + 1));
 }
 
 TEST_F(UT_TermWidget_Test, onSwitchFullScreen)
@@ -894,7 +888,11 @@ TEST_F(UT_TermWidget_Test, onSwitchFullScreen)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
+
     term->onSwitchFullScreen();
+    EXPECT_TRUE(term->parentPage()->parentMainWindow()->windowState().testFlag(Qt::WindowFullScreen));
 }
 
 TEST_F(UT_TermWidget_Test, openBing)
@@ -903,7 +901,9 @@ TEST_F(UT_TermWidget_Test, openBing)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    UT_STUB_QURL_ISVALID_CREATE;
     term->openBing();
+    EXPECT_TRUE(UT_STUB_QURL_ISVALID_RESULT);
 }
 
 TEST_F(UT_TermWidget_Test, openBaidu)
@@ -912,7 +912,9 @@ TEST_F(UT_TermWidget_Test, openBaidu)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    UT_STUB_QURL_ISVALID_CREATE;
     term->openBaidu();
+    EXPECT_TRUE(UT_STUB_QURL_ISVALID_RESULT);
 }
 
 TEST_F(UT_TermWidget_Test, openGithub)
@@ -921,7 +923,9 @@ TEST_F(UT_TermWidget_Test, openGithub)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    UT_STUB_QURL_ISVALID_CREATE;
     term->openGithub();
+    EXPECT_TRUE(UT_STUB_QURL_ISVALID_RESULT);
 }
 
 TEST_F(UT_TermWidget_Test, openStackOverflow)
@@ -930,7 +934,9 @@ TEST_F(UT_TermWidget_Test, openStackOverflow)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    UT_STUB_QURL_ISVALID_CREATE;
     term->openStackOverflow();
+    EXPECT_TRUE(UT_STUB_QURL_ISVALID_RESULT);
 }
 
 
@@ -940,7 +946,10 @@ TEST_F(UT_TermWidget_Test, onShowSearchBar)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
     term->onShowSearchBar();
+    EXPECT_TRUE(term->parentPage()->parentMainWindow()->m_CurrentShowPlugin == MainWindow::PLUGIN_TYPE_SEARCHBAR);
 }
 
 TEST_F(UT_TermWidget_Test, onShowEncoding)
@@ -949,7 +958,10 @@ TEST_F(UT_TermWidget_Test, onShowEncoding)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
     term->onShowEncoding();
+    EXPECT_TRUE(term->parentPage()->parentMainWindow()->m_CurrentShowPlugin == MainWindow::PLUGIN_TYPE_ENCODING);
 }
 
 TEST_F(UT_TermWidget_Test, onShowCustomCommands)
@@ -958,7 +970,10 @@ TEST_F(UT_TermWidget_Test, onShowCustomCommands)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
     term->onShowCustomCommands();
+    EXPECT_TRUE(term->parentPage()->parentMainWindow()->m_CurrentShowPlugin == MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
 }
 
 TEST_F(UT_TermWidget_Test, onShowRemoteManagement)
@@ -967,7 +982,10 @@ TEST_F(UT_TermWidget_Test, onShowRemoteManagement)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
     term->onShowRemoteManagement();
+    EXPECT_TRUE(term->parentPage()->parentMainWindow()->m_CurrentShowPlugin == MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
 }
 
 
@@ -977,7 +995,11 @@ TEST_F(UT_TermWidget_Test, onUploadFile)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
+    UT_STUB_QDIALOG_OPEN_CREATE;
     term->onUploadFile();
+    EXPECT_TRUE(UT_STUB_QDIALOG_OPEN_RESULT);
 }
 
 TEST_F(UT_TermWidget_Test, onDownloadFile)
@@ -986,17 +1008,11 @@ TEST_F(UT_TermWidget_Test, onDownloadFile)
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     TermWidget *term = currTermPage->m_currentTerm;
 
+    ASSERT_TRUE(term->parentPage());
+    ASSERT_TRUE(term->parentPage()->parentMainWindow());
+    UT_STUB_QDIALOG_OPEN_CREATE;
     term->onDownloadFile();
+    EXPECT_TRUE(UT_STUB_QDIALOG_OPEN_RESULT);
 }
-
-// 测试该函数会crash，待查找原因
-//TEST_F(UT_TermWidget_Test, onShowSettings)
-//{
-//    // 获取当前term
-//    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-//    TermWidget *term = currTermPage->m_currentTerm;
-
-//    term->onShowSettings();
-//}
 
 #endif

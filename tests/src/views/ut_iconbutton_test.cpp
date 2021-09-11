@@ -20,8 +20,10 @@
  */
 
 #include "ut_iconbutton_test.h"
-
 #include "iconbutton.h"
+
+//dtk
+#include <DTitlebar>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -29,9 +31,11 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QMainWindow>
-#include <DTitlebar>
 #include <QKeyEvent>
 #include <QFocusEvent>
+#include <QFileSystemWatcher>
+#include "private/qfilesystemwatcher_p.h"
+#include "private/qfilesystemengine_p.h"
 
 DWIDGET_USE_NAMESPACE
 
@@ -66,23 +70,28 @@ TEST_F(UT_IconButton_Test, keyPressEvent)
 {
     // 创建iconbutton
     IconButton *iconButton = new IconButton(nullptr);
-    iconButton->show();
-    // 发送键盘按键
     // 右键
     QKeyEvent keyRigth(QEvent::KeyPress, Qt::Key_Right, Qt::NoModifier);
     iconButton->keyPressEvent(&keyRigth);
+    EXPECT_TRUE(keyRigth.isAccepted() == false);
     // 上键
     QKeyEvent keyUp(QEvent::KeyPress, Qt::Key_Up, Qt::NoModifier);
     iconButton->keyPressEvent(&keyUp);
+    EXPECT_TRUE(keyUp.isAccepted() == false);
     // 下键
     QKeyEvent keyDown(QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier);
     iconButton->keyPressEvent(&keyDown);
-    // 左键
+    EXPECT_TRUE(keyDown.isAccepted() == false);
+    // 左键，会发射信号PreFocus
+    QSignalSpy spy(iconButton, &IconButton::preFocus);
+    EXPECT_TRUE(spy.count() == 0);
     QKeyEvent keyLeft(QEvent::KeyPress, Qt::Key_Left, Qt::NoModifier);
     iconButton->keyPressEvent(&keyLeft);
+    EXPECT_TRUE(spy.count() == 1);
     // 其他按键
     QKeyEvent keyOther(QEvent::KeyPress, Qt::Key_W, Qt::NoModifier);
     iconButton->keyPressEvent(&keyOther);
+    EXPECT_TRUE(keyOther.key() == Qt::Key_W);
 
     delete iconButton;
 }

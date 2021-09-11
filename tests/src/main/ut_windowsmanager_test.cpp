@@ -21,15 +21,11 @@
 
 #include "ut_windowsmanager_test.h"
 #include "../stub.h"
-
 #include "service.h"
 #include "mainwindow.h"
 #include "tabbar.h"
 #include "termwidget.h"
 #include "windowsmanager.h"
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -37,6 +33,9 @@
 #include <QDesktopWidget>
 #include <QtConcurrent/QtConcurrent>
 #include <QDebug>
+
+//Google GTest 相关头文件
+#include <gtest/gtest.h>
 
 UI_WindowsManager_Test::UI_WindowsManager_Test()
 {
@@ -233,7 +232,10 @@ TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
 
 TEST_F(UI_WindowsManager_Test, getNormalWindowList)
 {
-    WindowsManager::instance()->getNormalWindowList();
+    int oldCount = WindowsManager::instance()->getNormalWindowList().size();
+    WindowsManager::instance()->createNormalWindow(TermProperties("/"), false);
+    //增加一个window
+    EXPECT_TRUE(WindowsManager::instance()->getNormalWindowList().size() == (oldCount + 1));
 }
 
 #endif

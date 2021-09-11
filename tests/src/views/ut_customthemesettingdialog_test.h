@@ -26,6 +26,8 @@
 
 #include <gtest/gtest.h>
 
+class CustomThemeSettingDialog;
+class QObject;
 class UT_ColorPushButton_Test : public ::testing::Test
 {
 public:
@@ -45,6 +47,12 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+
+public:
+    QObject *ut_object_sender_foregroundButton();
+
+
+    CustomThemeSettingDialog *dialog = nullptr;
 };
 
 #endif // UT_CUSTOMTHEMESETTINGDIALOG_TEST_H

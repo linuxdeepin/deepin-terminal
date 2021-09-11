@@ -20,7 +20,6 @@
  */
 
 #include "ut_serverconfigoptdlg_test.h"
-
 #include "serverconfigoptdlg.h"
 #include "serverconfigmanager.h"
 #include "utils.h"
@@ -31,6 +30,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+#include <QSignalSpy>
 
 UT_ServerConfigOptDlg_Test::UT_ServerConfigOptDlg_Test()
 {
@@ -81,18 +81,6 @@ TEST_F(UT_ServerConfigOptDlg_Test, getServerName)
     EXPECT_EQ(serverName.isEmpty(), true);
 }
 
-TEST_F(UT_ServerConfigOptDlg_Test, updataData)
-{
-//    ServerConfigOptDlg serverCfgDlg;
-
-//    QString serverName = QString("new_server_%1").arg(Utils::getRandString());
-//    ServerConfig *serverConfig = serverCfgDlg.getCurServer();
-//    serverConfig->m_serverName = serverName;
-//    serverCfgDlg.updataData(serverConfig);
-
-//    EXPECT_EQ(serverCfgDlg.getServerName(), serverName);
-}
-
 TEST_F(UT_ServerConfigOptDlg_Test, getData)
 {
     ServerConfigOptDlg serverCfgDlg;
@@ -107,6 +95,9 @@ TEST_F(UT_ServerConfigOptDlg_Test, resetCurServer)
 
     ServerConfig serverConfig = serverCfgDlg.getData();
     serverCfgDlg.resetCurServer(&serverConfig);
+
+    //替换curServer为serverConfig
+    EXPECT_TRUE(serverCfgDlg.m_curServer->m_serverName == serverConfig.m_serverName);
 }
 
 /*******************************************************************************
@@ -188,10 +179,20 @@ TEST_F(UT_ServerConfigOptDlg_Test, lambda)
     serverConfigDialog.show();
 
     // 切换主题
+    QSignalSpy signalpy1(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged);
+    EXPECT_TRUE(signalpy1.count() == 0);
+
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+    signalpy1.wait(1000);
+    EXPECT_TRUE(signalpy1.count() == 2);
 
     // 扩展弹窗
-    emit serverConfigDialog.m_advancedOptions->click();
+
+    QSignalSpy signalpy2(serverConfigDialog.m_advancedOptions, SIGNAL(clicked()));
+    EXPECT_TRUE(signalpy2.count() == 0);
+    emit serverConfigDialog.m_advancedOptions->clicked();
+    signalpy2.wait(1000);
+    EXPECT_TRUE(signalpy2.count() == 1);
 }
 #endif

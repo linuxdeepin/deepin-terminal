@@ -20,18 +20,18 @@
  */
 
 #include "ut_remotemanagementtoppanel_test.h"
-
 #include "remotemanagementtoppanel.h"
 #include "service.h"
 #include "mainwindow.h"
 #include "../stub.h"
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
+#include "ut_stub_defines.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+
+//Google GTest 相关头文件
+#include <gtest/gtest.h>
 
 void stub_focusCurrentPage_remote()
 {
@@ -146,10 +146,12 @@ TEST_F(UT_RemoteManagementTopPanel_Test, ShowSearchPanelTest)
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Group;
     topPanel.m_group = "group";
     topPanel.showSearchPanel("1988");
+    EXPECT_TRUE(topPanel.m_filterStack.contains("1988"));
 
     // 未知类型
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
     topPanel.showSearchPanel("1995");
+    EXPECT_TRUE(topPanel.m_filterStack.contains("1995"));
 }
 
 /*******************************************************************************
@@ -167,15 +169,32 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showGroupPanelTest)
     // 不用界面显示分组界面
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Manage;
     topPanel.showGroupPanel("1988", false);
+    EXPECT_TRUE("1988" == topPanel.m_group);
+    EXPECT_TRUE("1988" == topPanel.m_serverConfigGroupPanel->m_groupName);
+    //item 1988不获取焦点
+    EXPECT_TRUE(false == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
+
+
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Manage;
     topPanel.showGroupPanel("1988", true);
+    //item 1988获取焦点
+    EXPECT_TRUE(true == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
 
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
     topPanel.showGroupPanel("1995", true);
+    EXPECT_TRUE("1995" == topPanel.m_group);
+    EXPECT_TRUE("1995" == topPanel.m_serverConfigGroupPanel->m_groupName);
+    //Search/item 1995获取焦点
+    EXPECT_TRUE(true == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
 
     // 未知类型
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Group;
     topPanel.showGroupPanel("1995", true);
-    s.reset(ADDR(MainWindow, focusCurrentPage));
+    EXPECT_TRUE("1995" == topPanel.m_group);
+    EXPECT_TRUE("1995" == topPanel.m_serverConfigGroupPanel->m_groupName);
+    //Group/item 1995获取焦点
+    EXPECT_TRUE(true == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
+
 }
 
 /*******************************************************************************

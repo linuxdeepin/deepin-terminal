@@ -20,12 +20,13 @@
  */
 
 #include "ut_termwidgetpage_test.h"
-
 #include "termwidgetpage.h"
 #include "termwidget.h"
 #include "service.h"
 #include "TerminalDisplay.h"
 #include "../stub.h"
+#include "ut_stub_defines.h"
+#include "ColorScheme.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -33,6 +34,7 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QWidget>
 #include <QRect>
 #include <QtConcurrent/QtConcurrent>
 
@@ -54,9 +56,9 @@ UT_TermWidgetPage_Test::~UT_TermWidgetPage_Test()
 
 #ifdef UT_TERMWIDGETPAGE_TEST
 
-void stub_toggleShowSearchBar()
-{
-}
+//void stub_toggleShowSearchBar()
+//{
+//}
 
 void stub_focusCurrentPage_TermWidgetPage()
 {
@@ -156,20 +158,27 @@ bool ut_term_hasRunningProcesses()
 
 TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest3)
 {
-    m_normalWindow->resize(800, 600);
-    m_normalWindow->show();
+    NormalWindow w(TermProperties("/"));
+    TermWidgetPage *currTermPage = w.currentPage();
 
-    TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-
+    ASSERT_TRUE(currTermPage->getTerminalCount() == 1);
     //测试分屏
     currTermPage->split(Qt::Orientation::Vertical);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == 2);
     //测试分屏
     currTermPage->split(Qt::Orientation::Horizontal);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == 3);
     //测试关闭分屏
     currTermPage->closeSplit(currTermPage->currentTerminal(), true);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == 2);
+
+    //关闭执行命令中的分屏，并且点取消
     Stub stub;
     stub.set(ADDR(TermWidget,hasRunningProcess),ut_term_hasRunningProcesses);
+    UT_STUB_QWIDGET_SHOW_APPEND;
     currTermPage->closeSplit(currTermPage->currentTerminal(), false);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == 2);
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 }
 
 TEST_F(UT_TermWidgetPage_Test, showRenameTitleDialog)
@@ -194,6 +203,7 @@ TEST_F(UT_TermWidgetPage_Test, setParentMainWindow)
     termWidgetPage.show();
 
     termWidgetPage.setParentMainWindow(m_normalWindow);
+    EXPECT_TRUE(termWidgetPage.m_MainWindow == m_normalWindow);
 }
 
 bool ut_showExitUninstallConfirmDialog(){
@@ -212,7 +222,7 @@ TEST_F(UT_TermWidgetPage_Test, handleUninstallTerminal)
     Stub stub;
     stub.set(ADDR(MainWindow,hasRunningProcesses),ut_term_hasRunningProcesses);
     stub.set(ADDR(Utils,showExitUninstallConfirmDialog),ut_showExitUninstallConfirmDialog);
-    termWidgetPage.handleUninstallTerminal("");
+    EXPECT_TRUE(!termWidgetPage.handleUninstallTerminal(""));
 }
 
 int ut_runningTerminalCount()
@@ -222,18 +232,25 @@ int ut_runningTerminalCount()
 
 TEST_F(UT_TermWidgetPage_Test, closeOtherTerminal)
 {
-    TermProperties termProperty;
-    termProperty[QuakeMode] = false;
-    termProperty[SingleFlag] = true;
+    NormalWindow w(TermProperties("/"));
+    TermWidgetPage *currTermPage = w.currentPage();
 
-    TermWidgetPage termWidgetPage(termProperty, nullptr);
-    termWidgetPage.resize(800, 600);
-    termWidgetPage.show();
+    ASSERT_TRUE(currTermPage->getTerminalCount() == 1);
+    //测试分屏
+    currTermPage->split(Qt::Orientation::Vertical);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == 2);
+
     Stub stub;
     stub.set(ADDR(TermWidgetPage,runningTerminalCount),ut_runningTerminalCount);
-    termWidgetPage.closeOtherTerminal(true);
+    currTermPage->closeOtherTerminal(true);
+    EXPECT_TRUE(currTermPage->getTerminalCount() == 1);
 }
 
+static bool ut_terminalDisplay_update_hasRunned = false;
+static void ut_terminalDisplay_update()
+{
+    ut_terminalDisplay_update_hasRunned = true;
+}
 TEST_F(UT_TermWidgetPage_Test, setColorScheme)
 {
     TermProperties termProperty;
@@ -241,12 +258,15 @@ TEST_F(UT_TermWidgetPage_Test, setColorScheme)
     termProperty[SingleFlag] = true;
 
     TermWidgetPage termWidgetPage(termProperty, nullptr);
-    termWidgetPage.resize(800, 600);
-    termWidgetPage.show();
-
+    Stub stub;
+    stub.set((void (QWidget::*)())ADDR(QWidget, update), ut_terminalDisplay_update);
+    ut_terminalDisplay_update_hasRunned = false;
     termWidgetPage.setColorScheme("Light");
+    EXPECT_TRUE(ut_terminalDisplay_update_hasRunned);
 
+    ut_terminalDisplay_update_hasRunned = false;
     termWidgetPage.setColorScheme("Dark");
+    EXPECT_TRUE(ut_terminalDisplay_update_hasRunned);
 }
 
 bool ut_isQuakeMode()
@@ -265,13 +285,18 @@ TEST_F(UT_TermWidgetPage_Test, showSearchBar)
     m_normalWindow->show();
 
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
+    ASSERT_TRUE(currTermPage);
 
+    EXPECT_TRUE(currTermPage->m_findBar->isVisible() == false);
     Stub stub;
     stub.set(ADDR(MainWindow,isQuakeMode),ut_isQuakeMode);
-    currTermPage->showSearchBar(0);
+    currTermPage->showSearchBar(SearchBar_Show);
+    EXPECT_TRUE(currTermPage->m_findBar->isVisible());
     stub.set(ADDR(QWidget,height),ut_height);
-    currTermPage->showSearchBar(2);
-    currTermPage->showSearchBar(1);
+    currTermPage->showSearchBar(SearchBar_FocusOut);
+    EXPECT_TRUE(currTermPage->m_findBar->hasFocus() == false);
+    currTermPage->showSearchBar(SearchBar_Hide);
+    EXPECT_TRUE(currTermPage->m_findBar->isVisible() == false);
 }
 
 bool ut_focusNavigation_contains()
@@ -288,8 +313,9 @@ TEST_F(UT_TermWidgetPage_Test, focusNavigation)
 
     Stub stub;
     stub.set((bool(QRect::*)(const QPoint &, bool) const)ADDR(QRect,contains),ut_focusNavigation_contains);
-
+    UT_STUB_QWIDGET_SETFOCUS_APPEND;
     currTermPage->focusNavigation(Qt::TopEdge);
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
 }
 
 TEST_F(UT_TermWidgetPage_Test, selectAll)
@@ -303,6 +329,7 @@ TEST_F(UT_TermWidgetPage_Test, selectAll)
     termWidgetPage.show();
 
     termWidgetPage.selectAll();
+    EXPECT_TRUE(QApplication::clipboard()->text().count() > 0);
 }
 
 TEST_F(UT_TermWidgetPage_Test, setBlinkingCursor)
@@ -315,9 +342,13 @@ TEST_F(UT_TermWidgetPage_Test, setBlinkingCursor)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
+    UT_STUB_QWIDGET_UPDATES_CREATE;
     termWidgetPage.setBlinkingCursor(false);
+    EXPECT_TRUE(UT_STUB_QWIDGET_UPDATES_RESULT);
 
+    UT_STUB_QWIDGET_UPDATES_PREPARE;
     termWidgetPage.setBlinkingCursor(true);
+    EXPECT_TRUE(UT_STUB_QWIDGET_UPDATES_RESULT);
 }
 
 TEST_F(UT_TermWidgetPage_Test, setPressingScroll)
@@ -330,9 +361,13 @@ TEST_F(UT_TermWidgetPage_Test, setPressingScroll)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
+    TerminalDisplay *display = termWidgetPage.findChild<TerminalDisplay *>();
+    ASSERT_TRUE(display);
     termWidgetPage.setPressingScroll(false);
+    EXPECT_TRUE(display->motionAfterPasting() == 0);
 
     termWidgetPage.setPressingScroll(true);
+    EXPECT_TRUE(display->motionAfterPasting() == 2);
 }
 
 TEST_F(UT_TermWidgetPage_Test, handleTabRenameDlgFinished)
@@ -349,15 +384,8 @@ TEST_F(UT_TermWidgetPage_Test, handleTabRenameDlgFinished)
     s.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_TermWidgetPage);
 
     termWidgetPage.handleTabRenameDlgFinished();
-
-    s.reset(ADDR(MainWindow, focusCurrentPage));
+    EXPECT_TRUE(termWidgetPage.m_renameDlg == nullptr);
 }
-
-qint64 ut_searchCostTime()
-{
-    return 1;
-}
-
 
 TEST_F(UT_TermWidgetPage_Test, onTermRequestRenameTab)
 {
@@ -370,8 +398,10 @@ TEST_F(UT_TermWidgetPage_Test, onTermRequestRenameTab)
     termWidgetPage.show();
 
     termWidgetPage.onTermRequestRenameTab(QStringLiteral(""));
+    EXPECT_TRUE(termWidgetPage.property("TAB_CUSTOM_NAME_PROPERTY").toBool() == false);
 
     termWidgetPage.onTermRequestRenameTab(QStringLiteral("tab001"));
+    EXPECT_TRUE(termWidgetPage.property("TAB_CUSTOM_NAME_PROPERTY").toBool() == true);
 }
 
 TEST_F(UT_TermWidgetPage_Test, onTermClosed)
@@ -384,7 +414,10 @@ TEST_F(UT_TermWidgetPage_Test, onTermClosed)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
+    int oldCount = termWidgetPage.getTerminalCount();
+    //closeSplit在其他地方已经调用，此处仅仅实现sender = null的情况
     termWidgetPage.onTermClosed();
+    EXPECT_TRUE(oldCount == termWidgetPage.getTerminalCount());
 }
 
 TermWidgetPage *stub_currentPage()
@@ -392,19 +425,22 @@ TermWidgetPage *stub_currentPage()
     return nullptr;
 }
 
+static const QString ut_termwidgetpage_identifier()
+{
+    return "";
+}
 TEST_F(UT_TermWidgetPage_Test, slotQuakeHidePlugin)
 {
+    Stub stub;
+    stub.set(ADDR(TermWidgetPage, identifier), ut_termwidgetpage_identifier);
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();
+    emit m_normalWindow->quakeHidePlugin();
+    QTest::qWait(1000);
 
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
-
-    Stub s;
-    s.set(ADDR(MainWindow, currentPage), stub_currentPage);
-
-    currTermPage->slotQuakeHidePlugin();
-
-    s.reset(ADDR(MainWindow, currentPage));
+    ASSERT_TRUE(currTermPage);
+    EXPECT_TRUE(currTermPage->m_findBar->isHidden());
 }
 
 TEST_F(UT_TermWidgetPage_Test, handleLeftMouseClick)
@@ -414,6 +450,7 @@ TEST_F(UT_TermWidgetPage_Test, handleLeftMouseClick)
 
     TermWidgetPage *currTermPage = m_normalWindow->currentPage();
     currTermPage->handleLeftMouseClick();
+    EXPECT_TRUE(m_normalWindow->m_CurrentShowPlugin == MainWindow::PLUGIN_TYPE_NONE);
 }
 
 TEST_F(UT_TermWidgetPage_Test, setTextCodec)
@@ -426,7 +463,12 @@ TEST_F(UT_TermWidgetPage_Test, setTextCodec)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
+    Session *session = termWidgetPage.findChild<Session *>();
+    ASSERT_TRUE(session);
+    ASSERT_TRUE(session->emulation());
+
     termWidgetPage.setTextCodec(QTextCodec::codecForName("UTF-8"));
+    EXPECT_TRUE(session->emulation()->_codec->name() == "UTF-8");
 }
 
 #endif
@@ -447,10 +489,10 @@ public:
 
 TEST_F(UT_ThemePreviewArea_Test, ut_paintEvent)
 {
-    QPaintEvent paint(QRect(m_area->rect()));
-    m_area->paintEvent(&paint);
     m_area->setPs1Color(Qt::red);
     m_area->setPs2Color(Qt::red);
     m_area->setBackgroundColor(Qt::red);
     m_area->setForegroundgroundColor(Qt::red);
+
+    EXPECT_TRUE(m_area->grab().isNull() == false);
 }

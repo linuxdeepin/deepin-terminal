@@ -18,25 +18,26 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include "ut_settingio_test.h"
-
 #include "settingio.h"
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
-#include <utility>
-#include <memory>
 #include <QWidget>
 #include <QtConcurrent/QtConcurrent>
 
 //DTK相关头文件
 #include <DFileDialog>
+
+//Google GTest
+#include <gtest/gtest.h>
+
+//system
+#include <utility>
+#include <memory>
+
 DWIDGET_USE_NAMESPACE
 
 UT_SettingIO_Test::UT_SettingIO_Test()

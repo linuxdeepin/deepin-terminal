@@ -20,11 +20,14 @@
  */
 
 #include "ut_tabbar_test.h"
-
 #include "tabbar.h"
 #include "utils.h"
 #include "../stub.h"
 #include "termwidgetpage.h"
+#include "termproperties.h"
+
+//dtk
+#include <DWindowManagerHelper>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -33,7 +36,6 @@
 #include <QDebug>
 #include <QUuid>
 
-#include <DWindowManagerHelper>
 
 UT_Tabbar_Test::UT_Tabbar_Test()
 {
@@ -275,9 +277,11 @@ TEST_F(UT_Tabbar_Test, setChangeTextColor)
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
     }
+    EXPECT_TRUE(tabIdList.count() == tabCount);
 
     QString firstTabId = tabbar.identifier(0);
     tabbar.setChangeTextColor(firstTabId);
+    EXPECT_TRUE(tabbar.m_tabStatusMap.contains(firstTabId));
 }
 
 TEST_F(UT_Tabbar_Test, setNeedChangeTextColor)
@@ -294,11 +298,13 @@ TEST_F(UT_Tabbar_Test, setNeedChangeTextColor)
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
     }
+    EXPECT_TRUE(tabIdList.count() == tabCount);
 
     QColor redColor = QColor(Qt::red);
-
     QString firstTabId = tabbar.identifier(0);
     tabbar.setNeedChangeTextColor(firstTabId, redColor);
+    EXPECT_TRUE(tabbar.isNeedChangeTextColor(firstTabId));
+    EXPECT_TRUE(tabbar.m_tabChangedTextColor == redColor);
 }
 
 TEST_F(UT_Tabbar_Test, removeNeedChangeTextColor)
@@ -315,11 +321,14 @@ TEST_F(UT_Tabbar_Test, removeNeedChangeTextColor)
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
     }
+    EXPECT_TRUE(tabIdList.count() == tabCount);
 
     QString firstTabId = tabbar.identifier(0);
     tabbar.setChangeTextColor(firstTabId);
+    EXPECT_TRUE(tabbar.m_tabStatusMap.contains(firstTabId));
 
     tabbar.removeNeedChangeTextColor(firstTabId);
+    EXPECT_TRUE(tabbar.m_tabStatusMap.contains(firstTabId) == false);
 }
 
 TEST_F(UT_Tabbar_Test, isNeedChangeTextColor)
@@ -336,13 +345,13 @@ TEST_F(UT_Tabbar_Test, isNeedChangeTextColor)
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
     }
+    EXPECT_TRUE(tabIdList.count() == tabCount);
 
     QColor redColor = QColor(Qt::red);
-
     QString firstTabId = tabbar.identifier(0);
     tabbar.setNeedChangeTextColor(firstTabId, redColor);
-
-    EXPECT_EQ(tabbar.isNeedChangeTextColor(firstTabId), true);
+    EXPECT_TRUE(tabbar.isNeedChangeTextColor(firstTabId));
+    EXPECT_TRUE(tabbar.m_tabChangedTextColor == redColor);
 }
 
 TEST_F(UT_Tabbar_Test, setClearTabColor)
@@ -359,13 +368,14 @@ TEST_F(UT_Tabbar_Test, setClearTabColor)
         tabbar.addTab(tabIdentifier, tabName);
         tabIdList.append(tabIdentifier);
     }
-
-    EXPECT_EQ(tabIdList.size(), tabCount);
+    EXPECT_TRUE(tabIdList.count() == tabCount);
 
     QString firstTabId = tabbar.identifier(0);
     tabbar.setChangeTextColor(firstTabId);
+    EXPECT_TRUE(tabbar.m_tabStatusMap.value(firstTabId) == TabTextColorStatus_Changed);
 
     tabbar.setClearTabColor(firstTabId);
+    EXPECT_TRUE(tabbar.m_tabStatusMap.value(firstTabId) == TabTextColorStatus_Default);
 }
 
 //用于createDragPixmapFromTab测试打桩
@@ -396,21 +406,30 @@ TEST_F(UT_Tabbar_Test, createDragPixmapFromTab)
     Stub s;
     s.set(ADDR(MainWindow, getTermPage), stub_getTermPage);
 
-    TabBar tabbar;
+    NormalWindow w(TermProperties("/"));
+    TabBar tabbar(&w);
     QString tabName = QString("tab01");
     QString tabIdentifier = generateUniqueId();
     tabbar.addTab(tabIdentifier, tabName);
+    EXPECT_TRUE(tabbar.m_tabIdentifierList.contains(tabIdentifier));
 
     QStyleOptionTab styleOptionTab;
     QPoint hotSpot = QPoint(1, 1);
-    tabbar.createDragPixmapFromTab(0, styleOptionTab, &hotSpot);
+    EXPECT_TRUE(tabbar.createDragPixmapFromTab(0, styleOptionTab, &hotSpot).isNull() == false);
 
     s.set(ADDR(DWindowManagerHelper, hasComposite), stub_hasComposite);
+    EXPECT_TRUE(tabbar.createDragPixmapFromTab(0, styleOptionTab, &hotSpot).isNull() == false);
+}
 
-    tabbar.createDragPixmapFromTab(0, styleOptionTab, &hotSpot);
+static QWindow *ut_tablbar_dragIconWindow()
+{
+    static QWindow w;
+    return &w;
+}
 
-    s.reset(ADDR(MainWindow, getTermPage));
-    s.reset(ADDR(DWindowManagerHelper, hasComposite));
+static bool ut_window_setProperty(const char *, const QVariant &)
+{
+    return true;
 }
 
 TEST_F(UT_Tabbar_Test, handleDragActionChanged)
@@ -419,9 +438,17 @@ TEST_F(UT_Tabbar_Test, handleDragActionChanged)
     tabbar.resize(800, 50);
     tabbar.show();
 
-    tabbar.handleDragActionChanged(Qt::MoveAction);
+    Stub stub;
+    stub.set(ADDR(DTabBar, dragIconWindow), ut_tablbar_dragIconWindow);
+    stub.set(ADDR(QWindow, setProperty), ut_window_setProperty);
 
+    qApp->setOverrideCursor(Qt::CrossCursor);
     tabbar.handleDragActionChanged(Qt::IgnoreAction);
+    EXPECT_TRUE(qApp->overrideCursor()->shape() == Qt::ArrowCursor);
+
+    tabbar.handleDragActionChanged(Qt::MoveAction);
+    qDebug() << qApp->overrideCursor();
+    EXPECT_TRUE(qApp->overrideCursor());
 }
 
 #endif
