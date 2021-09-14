@@ -76,7 +76,7 @@ static bool ut_service_isSettingDialogVisible()
 
 static MainWindow* ut_service_getSettingOwner()
 {
-    WindowsManager::instance()->getQuakeWindow();
+    return WindowsManager::instance()->getQuakeWindow();
 }
 
 static bool ut_quakeWindow_isActiveWindow()
