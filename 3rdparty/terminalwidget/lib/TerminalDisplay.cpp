@@ -438,7 +438,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_resizing(false)
 ,_terminalSizeHint(false)
 ,_terminalSizeStartup(true)
-,_bidiEnabled(false)
+,_bidiEnabled(true) //默认开启双向文本（Bi-directional text）mode，和konsole保持同步
 ,_mouseMarks(false)
 ,_actSel(0)
 ,_wordSelectionMode(false)
