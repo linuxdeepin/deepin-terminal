@@ -1238,7 +1238,7 @@ TEST_F(UT_MainWindow_Test, slotShortcutPaste)
     mainWindow->slotShortcutPaste();
     //m_terminalDisplay 触发hasFocus函数
     EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
-    delete mainWindow;
+    mainWindow->deleteLater();
 }
 
 /*******************************************************************************

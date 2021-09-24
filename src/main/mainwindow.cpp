@@ -1442,7 +1442,7 @@ void MainWindow::onCreateNewWindow(QString workingDir)
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    if (QEvent::KeyPress == event->type()) {
+    if (QEvent::KeyPress == event->type() && currentPage() && currentPage()->currentTerminal()) {
         // 当前的终端进行操作
         TermWidget *term = currentPage()->currentTerminal();
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);

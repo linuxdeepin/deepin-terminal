@@ -31,7 +31,7 @@ UT_Dbusmanager_Test::UT_Dbusmanager_Test()
 
 UT_Dbusmanager_Test::~UT_Dbusmanager_Test()
 {
-    delete  m_pDbusManager;
+    m_pDbusManager->deleteLater();
 }
 
 #ifdef UT_DBUSMANAGER_TEST
