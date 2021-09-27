@@ -1748,6 +1748,9 @@ void MainWindow::createJsonGroup(const QString &keyCategory, QJsonArray &jsonGro
 QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 {
     QString value = Settings::instance()->settings->option(key)->value().toString();
+    //bug#89372，"显示快捷键"选项，在设置界面隐藏，仅默认值生效
+    if("shortcuts.advanced.display_shortcuts" == key)
+        value = "Ctrl+Shift+?";
     // 初始化设置中的快捷键,使用小写 up2down dzw 20201215
     QShortcut *shortcut = new QShortcut(Utils::converUpToDown(value), this);
     m_builtInShortcut[key] = shortcut;
@@ -1788,7 +1791,8 @@ inline void MainWindow::onUploadFileDialogFinished(int code)
     if (!fileName.isEmpty()) {
         QString strTxt = "sz ";
         for (QString &str : fileName) {
-            strTxt += str + " ";
+            strTxt += str;
+            strTxt += " ";
         }
         remoteUploadFile(strTxt);
     } else {
