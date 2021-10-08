@@ -20,8 +20,11 @@
  */
 #include "termbasedialog.h"
 
-#include <QLabel>
+//dtk
 #include <DApplicationHelper>
+
+//qt
+#include <QLabel>
 #include <QDebug>
 
 /*******************************************************************************

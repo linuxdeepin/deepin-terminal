@@ -20,10 +20,13 @@
  */
 
 #include "tabrenamewidget.h"
+
+//dtk
+#include <DFontSizeManager>
+
+//qt
 #include <QDebug>
 #include <QKeyEvent>
-
-#include <DFontSizeManager>
 
 TabRenameWidget::TabRenameWidget(bool isRemote, bool isSetting, QWidget *parent)
     : QWidget(parent)

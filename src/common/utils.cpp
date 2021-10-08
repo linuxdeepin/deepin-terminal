@@ -197,8 +197,6 @@ void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int 
     if (count < 1)
         return ;
 
-    //QString title;
-    //QString txt;
     if (CloseType_Window == type) {
         title = QObject::tr("Close this window?");
         txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
@@ -297,7 +295,6 @@ void Utils::clearChildrenFocus(QObject *objParent)
     QStringList foucswidgetlist;
     foucswidgetlist << "QLineEdit" << TERM_WIDGET_NAME;
 
-    //qInfo() << "checkChildrenFocus start" << objParent->children().size();
     for (QObject *obj : objParent->children()) {
         if (!obj->isWidgetType())
             continue;
@@ -332,23 +329,18 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     QCommandLineOption optScript({ "C", "run-script" },
                                  QObject::tr("Run script string in the terminal"),
                                  "script");
-    // QCommandLineOption optionExecute2({"x", "Execute" }, "Execute command in the terminal", "command");
     QCommandLineOption optQuakeMode({ "q", "quake-mode" },
                                     QObject::tr("Run in quake mode"),
                                     "");
     QCommandLineOption optKeepOpen("keep-open",
                                    QObject::tr("Keep terminal open when command finishes"),
                                    "");
-    // parser.addPositionalArgument("e",  "Execute command in the terminal", "command");
-
     parser.addOptions({ optWorkDirectory,
                         optExecute, /*optionExecute2,*/
                         optQuakeMode,
                         optWindowState,
                         optKeepOpen,
                         optScript });
-    // parser.addPositionalArgument("-e", QObject::tr("Execute command in the terminal"), "command");
-
     // 解析参数
     if (!parser.parse(arguments))
         qInfo() << "parser error:" << parser.errorText();

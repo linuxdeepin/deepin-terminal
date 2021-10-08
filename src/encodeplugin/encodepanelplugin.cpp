@@ -73,7 +73,7 @@ inline void EncodePanelPlugin::slotShowPluginChanged(const QString name)
         getEncodePanel()->show();
         m_isShow = true;
         // 先初始化列表后，才能设置焦点
-        TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+        TermWidget *term = m_mainWindow->currentActivatedTerminal();
         setCurrentTermEncode(term);
     }
 }
@@ -105,7 +105,7 @@ void EncodePanelPlugin::initEncodePanel()
 {
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
     connect(Service::instance(), &Service::currentTermChange, m_encodePanel, [ = ](QWidget * term) {
-        TermWidget *pterm = m_mainWindow->currentPage()->currentTerminal();
+        TermWidget *pterm = m_mainWindow->currentActivatedTerminal();
         // 列表显示时，切换了当前终端
         // 判断是否是当前页的term
         if (!m_encodePanel->isHidden() && pterm == term) {

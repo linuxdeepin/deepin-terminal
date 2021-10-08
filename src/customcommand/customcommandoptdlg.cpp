@@ -185,10 +185,6 @@ void CustomCommandOptDlg::initUI()
         m_nameLineEdit->setText(strName);
         m_commandLineEdit->setText(strCommad);
         m_shortCutLineEdit->setKeySequence(keyseq);
-
-#ifdef UI_DEBUG
-        deleteCmdWidget->setStyleSheet("background:green");
-#endif
     }
 
     addCancelConfirmButtons();
@@ -234,7 +230,6 @@ inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySeque
         return;
     }
     QString checkName;
-    //QString seq = m_shortCutLineEdit->text();
     if (m_type != CCT_ADD)
         checkName = m_nameLineEdit->text();
 
@@ -252,17 +247,6 @@ inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySeque
         return;
     }
     m_lastCmdShortcut = sequence.toString();
-
-#ifdef UI_DEBUG
-    contentFrame->setStyleSheet("background:cyan");
-    nameLabel->setStyleSheet("background:#0000ff");
-    cmdLabel->setStyleSheet("background:#00ff00");
-    shortCutLabel->setStyleSheet("background:yellow");
-
-    m_nameLineEdit->setStyleSheet("background:#ff00ff");
-    m_commandLineEdit->setStyleSheet("background:#ff00ff");
-    m_shortCutLineEdit->setStyleSheet("background:#ff00ff");
-#endif
 }
 
 void CustomCommandOptDlg::initUITitle()
@@ -563,7 +547,6 @@ inline void CustomCommandOptDlg::slotConfirmBtnClicked()
 inline void CustomCommandOptDlg::slotShortCutLineEditFinished()
 {
     /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 Begin***************/
-    //m_confirmBtn->setFocus();
     m_shortCutLineEdit->setFocus();
     /******** Add by nt001000 renfeixiang 2020-05-14:修改快捷框输入后，添加（m_confirmBtn）按钮高亮问题,将光标从添加按钮取消，设置到快捷框上 End***************/
 }
@@ -694,11 +677,6 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
     qInfo() << "slotRefreshData---" <<  m_nameLineEdit->text();
 
     QAction *currAction = new QAction(ShortcutManager::instance());
-    if (nullptr == currAction) {
-        qInfo() << "slotRefreshData---new QAction error!!!";
-        close();
-        return;
-    }
     currAction->setText(newCmdName);
     QAction *existAction = nullptr;
     existAction = ShortcutManager::instance()->checkActionIsExist(*currAction);

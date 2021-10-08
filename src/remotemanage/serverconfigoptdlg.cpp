@@ -23,6 +23,7 @@
 #include "termcommandlinkbutton.h"
 #include "utils.h"
 
+//dtk
 #include <DFontSizeManager>
 #include <DPushButton>
 #include <DSuggestButton>
@@ -32,14 +33,17 @@
 #include <DFileDialog>
 #include <DPalette>
 
+//qt
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QTextCodec>
 #include <QSpacerItem>
-#include <iterator>//added byq qinyaning
 #include <QTimer>
 #include <QDebug>
+
+//c++
+#include <iterator>//added byq qinyaning
 
 DGUI_USE_NAMESPACE
 

@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "rightpanel.h"
-#include"utils.h"
-#include"mainwindow.h"
+#include "utils.h"
+#include "mainwindow.h"
 
+//dtk
 #include <DAnchors>
-#include <QPropertyAnimation>
 #include <DTitlebar>
+
+//qt
+#include <QPropertyAnimation>
 
 DWIDGET_USE_NAMESPACE
 

@@ -115,7 +115,6 @@ void CustomCommandPanel::onAddCommandResponse(int result)
         Service::instance()->setIsDialogShow(window(), false);
         if (QDialog::Accepted == result) {
             QAction *newAction = m_pdlg->getCurCustomCmd();
-            //m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
             // 新增快捷键 => 显示在列表中使用大写 down2up dzw 20201215
             m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), Utils::converDownToUp(newAction->shortcut().toString()));
             /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/

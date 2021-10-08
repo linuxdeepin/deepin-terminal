@@ -26,7 +26,10 @@
 #include "termwidget.h"
 #include "dbusmanager.h"
 
+//dtk
 #include <DLog>
+
+//qt
 #include <QScrollBar>
 #include <QStandardItemModel>
 #include <QDebug>
@@ -217,7 +220,7 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
     modelItem->setCheckState(Qt::Checked);
 
     /***add by ut001121 zhangmeng 20200727 修改编码配置后使其生效 修复BUG39694***/
-    m_Mainwindow->currentPage()->currentTerminal()->selectEncode(index.data().toString());
+    m_Mainwindow->currentActivatedTerminal()->selectEncode(index.data().toString());
 }
 
 void EncodeListView::checkEncode(QString encode)
@@ -285,7 +288,6 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ObviousBackground);
-            //fillColor.setAlphaF(0.1);
             /*** mod end by ut001121 zhangmeng 20200729***/
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
@@ -336,10 +338,6 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             // 计算区域
             QRect editIconRect = QRect(bgRect.right() - checkIconSize - 6, bgRect.top() + (bgRect.height() - checkIconSize) / 2,
                                        checkIconSize, checkIconSize);
-            //QIcon icon(":/icons/deepin/builtin/ok.svg");
-            //QIcon icon = QIcon::fromTheme("emblem-checked");
-            //painter->drawPixmap(editIconRect, icon.pixmap(QSize(checkIconSize, checkIconSize)));
-
             // 设置模式
             QStyleOptionViewItem opt(option);
             const QWidget *widget = option.widget;

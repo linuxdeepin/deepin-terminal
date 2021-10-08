@@ -241,7 +241,13 @@ public:
      * @return
      */
     TermWidgetPage *currentPage();
+
+    /**
+     * @brief setCurrentPage 基类设置当前页面
+     * @param page
+     */
     void setCurrentPage(TermWidgetPage *page);
+
     /**
      * @brief 基类通过标识符获取页面
      * @author ut000439 wangpeili
@@ -249,6 +255,12 @@ public:
      * @return
      */
     TermWidgetPage *getPageByIdentifier(const QString &identifier);
+
+    /**
+     * @brief currentPageTerminal 获取当前页活动的terminal
+     * @return
+     */
+    TermWidget *currentActivatedTerminal();
 
     /**
      * @brief 基类终端是否闲置响应函数(闲置即没有程序运行)

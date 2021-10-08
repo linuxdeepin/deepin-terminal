@@ -142,7 +142,6 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
         it.next();
         QString key = it.key();
         QString section;
-        // qInfo()<<"key: "<<key;
         int idx = key.lastIndexOf(QChar('/'));
         if (-1 == idx) {
             section = QString("[General]");

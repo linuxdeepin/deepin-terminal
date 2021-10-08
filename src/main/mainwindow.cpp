@@ -371,8 +371,6 @@ void MainWindow::initFileWatcher()
 void MainWindow::initPlugins()
 {
     // Todo: real plugin loader and plugin support.
-    // ThemePanelPlugin *testPlugin = new ThemePanelPlugin(this);
-    // testPlugin->initPlugin(this);
     EncodePanelPlugin *encodePlugin = new EncodePanelPlugin(this);
     encodePlugin->initPlugin(this);
 
@@ -810,6 +808,13 @@ TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)
             return tabPage;
     }
     qInfo() << "getPageByIdentifier nullptr identifier" << identifier;
+    return nullptr;
+}
+
+TermWidget *MainWindow::currentActivatedTerminal()
+{
+    if(currentPage())
+        return currentPage()->currentTerminal();
     return nullptr;
 }
 
@@ -1442,9 +1447,9 @@ void MainWindow::onCreateNewWindow(QString workingDir)
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    if (QEvent::KeyPress == event->type() && currentPage() && currentPage()->currentTerminal()) {
+    if (QEvent::KeyPress == event->type() && currentActivatedTerminal()) {
         // 当前的终端进行操作
-        TermWidget *term = currentPage()->currentTerminal();
+        TermWidget *term = currentActivatedTerminal();
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         // 键盘事件 按下回车
         if (Qt::Key_Return == keyEvent->key()  || Qt::Key_Enter == keyEvent->key()) {
@@ -1584,7 +1589,6 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
         qInfo() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                 << ", auto effective when happen";
         /***mod begin by ut001121 zhangmeng 20200528 修复BUG28920***/
-        //onApplicationStateChanged(QApplication::applicationState());
         onAppFocusChangeForQuake();
         /***mod end by ut001121***/
         return;
@@ -1811,7 +1815,7 @@ void MainWindow::slotDialogSelectFinished(int code)
         downloadFilePath = "";
     }
 
-    TermWidget *term = currentPage()->currentTerminal();
+    TermWidget *term = currentActivatedTerminal();
 
     if (!downloadFilePath.isNull() && !downloadFilePath.isEmpty()) {
         //QString strTxt = "read -e -a files -p \"" + tr("Type path to download file") + ": \"; sz \"${files[@]}\"\n";

@@ -269,7 +269,7 @@ void RemoteManagementTopPanel::showPrevPanel()
             return;
         }
         // 取最上一个
-        const QString &strFilter = m_filterStack.at(0);
+        QString strFilter = m_filterStack.at(0);
         // 清空栈
         m_filterStack.clear();
         // 刷新列表

@@ -122,7 +122,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
         //--added by qinyaning(nyq) to solve the probelm which Connecting to the remote server
         /*does not connect to the remote server directly in the new TAB. time: 2020.4.13 18:15
          * */
-        if (m_mainWindow->currentPage()->currentTerminal()->hasRunningProcess())
+        if (m_mainWindow->currentActivatedTerminal()->hasRunningProcess())
             m_mainWindow->addTab(m_mainWindow->currentPage()->createCurrentTerminalProperties(), true);
 
         //--------------------------------//
@@ -135,7 +135,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
         // 等待连接 100ms等待命令发过去正常立即执行，100ms足够，一下的信号槽只是判断是否开启另一个程序去连接
         // 若有程序去连接，则判断已连接，若连接失败，则判断为断开连接
         QTimer::singleShot(100, this, [ = ]() {
-            TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+            TermWidget *term = m_mainWindow->currentActivatedTerminal();
             if (!term) {
                 // 若term为空
                 qInfo() << "current terminal is null";
@@ -158,7 +158,6 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
             // 删除键
             setDeleteKey(term, curServer->m_deleteKey);
         });
-
     }
     /******** Modify by ut000610 daizhengwen 2020-06-04: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
     m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
@@ -235,7 +234,7 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 
 void RemoteManagementPlugin::setRemoteEncode(QString encode)
 {
-    TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+    TermWidget *term = m_mainWindow->currentActivatedTerminal();
     if (!encode.isNull() && !encode.isEmpty()) {
         // 设置当前窗口的编码
         term->setTextCodec(QTextCodec::codecForName(encode.toLocal8Bit()));

@@ -24,11 +24,13 @@
 
 #include "environments.h"
 
-#include <QList>
-
+//dtk
 #include <DApplication>
 #include <DPushButton>
 #include <DKeySequenceEdit>
+
+//qt
+#include <QList>
 
 DWIDGET_USE_NAMESPACE
 
