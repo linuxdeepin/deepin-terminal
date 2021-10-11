@@ -33,8 +33,6 @@
 
 ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent), m_titleRect(0, 0, 439, 35)
 {
-    this->setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground);
     setFixedSize(439, 113);
 }
 

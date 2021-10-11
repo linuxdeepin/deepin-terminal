@@ -171,8 +171,6 @@ CustomThemeSettingDialog::CustomThemeSettingDialog(QWidget *parent) : DAbstractD
     , m_ps1Button(new ColorPushButton(this))
     , m_ps2Button(new ColorPushButton(this))
 {
-    this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setAttribute(Qt::WA_TranslucentBackground);
     initUITitle();
     initUI();
     initTitleConnections();
