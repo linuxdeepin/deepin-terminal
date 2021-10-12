@@ -105,8 +105,6 @@ void Service::initSetting()
     m_settingDialog->updateSettings(Settings::instance()->settings);
     // 设置窗口模态为没有模态，不阻塞窗口和进程
     m_settingDialog->setWindowModality(Qt::NonModal);
-    // 让设置与窗口等效，隐藏后显示就不会被遮挡
-    m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
     moveToCenter(m_settingDialog);
     QDateTime endTime = QDateTime::currentDateTime();
 
