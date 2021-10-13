@@ -32,6 +32,7 @@
 #include <DSlider>
 #include <DApplicationHelper>
 #include <DKeySequenceEdit>
+#include <DSysInfo>
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -81,7 +82,25 @@ void Settings::init()
     m_backend->setObjectName("SettingsQSettingBackend");//Add by ut001000 renfeixiang 2020-08-13
 
     // 默认配置
-    settings = DSettings::fromJsonFile(":/other/default-config.json");
+    QFile configFile(":/other/default-config.json");
+    if(!configFile.open(QFile::ReadOnly)) {
+        qInfo() << "can not open default-config.json";
+    }
+    QByteArray json = configFile.readAll();
+    configFile.close();
+
+    //龙芯 且 服务器企业版
+    if(Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
+        QJsonDocument doc = QJsonDocument::fromJson(json);
+        QVariant jsonVar = doc.toVariant();
+        //隐藏透明度界面
+        Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "opacity", "hide", true);
+        //隐藏背景模糊界面
+        Utils::insertToDefaultConfigJson(jsonVar, "advanced", "window", "blurred_background", "hide", true);
+        //更新json
+        json = QJsonDocument::fromVariant(jsonVar).toJson();
+    }
+    settings = DSettings::fromJson(json);
 
     // 加载自定义配置
     settings->setBackend(m_backend);

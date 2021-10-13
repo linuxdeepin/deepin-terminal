@@ -48,6 +48,8 @@
 #include <QTime>
 #include <QFontMetrics>
 
+#include <sys/utsname.h>
+
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
 
@@ -599,6 +601,55 @@ QString Utils::converDownToUp(QKeySequence keysequence)
 QString Utils::getCurrentEnvLanguage()
 {
     return QString::fromLocal8Bit(qgetenv("LANGUAGE"));
+}
+
+bool Utils::isLoongarch()
+{
+    static QString m_Arch;
+    if(m_Arch.isEmpty()) {
+        utsname utsbuf;
+        if (uname(&utsbuf) == -1) {
+            qWarning() << "get Arch error";
+            return false;
+        }
+        m_Arch = QString::fromLocal8Bit(utsbuf.machine);
+        qInfo() << "m_Arch:" << m_Arch;
+    }
+    return "mips64" == m_Arch || "loongarch64" == m_Arch;
+}
+
+void Utils::insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key, const QVariant &value)
+{
+    QVariantMap *obj = nullptr;
+    if(jsonVar.type() == QVariant::Map)
+        obj = reinterpret_cast<QVariantMap *>(&jsonVar);
+
+    obj = objArrayFind(obj, "groups", "key", groups_key);
+    obj = objArrayFind(obj, "groups", "key", groups_key2);
+    obj = objArrayFind(obj, "options", "key", options_key);
+    if(!obj) {
+       qWarning() << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
+       return;
+    }
+    obj->insert(key, value);
+}
+
+
+QVariantMap *Utils::objArrayFind(QVariantMap *obj, const QString &objKey, const QString &arrKey, const QString &arrValue)
+{
+    if(!obj)
+        return nullptr;
+    if(!obj->contains(objKey))
+        return nullptr;
+    QVariant *var = &(*obj)[objKey];
+    QVariantList &array = *reinterpret_cast<QVariantList *>(var);
+    for(QVariant &sub : array) {
+        QVariantMap &obj = *reinterpret_cast<QVariantMap *>(&sub);
+        if(arrValue == obj.value(arrKey).toString()) {
+            return &obj;
+        }
+    }
+    return nullptr;
 }
 
 MainWindow *Utils::getMainWindow(QWidget *currWidget)

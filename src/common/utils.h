@@ -305,6 +305,33 @@ public:
      * @return
      */
     static QString getCurrentEnvLanguage();
+
+    /**
+     * @brief isLoongarch 是否是龙芯机器
+     * @return
+     */
+    static bool isLoongarch();
+
+    /**
+     * @brief insertToJson 插入或修改 json，格式为default-config.json
+     * @param jsonVar
+     * @param groups_key
+     * @param groups_key2
+     * @param options_key
+     * @param key
+     * @param value
+     */
+    static void insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key, const QVariant &value);
+
+    /**
+     * @brief objArrayFind 按特定的顺序查找json
+     * @param obj json指针
+     * @param objKey 块名
+     * @param arrKey 数组名
+     * @param arrValue 关键字
+     * @return
+     */
+    static QVariantMap *objArrayFind(QVariantMap *obj, const QString &objKey, const QString &arrKey, const QString &arrValue);
 };
 
 /*******************************************************************************
