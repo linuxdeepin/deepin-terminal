@@ -215,7 +215,7 @@ void ServerConfigOptDlg::initUI()
     /********************* Modify by m000714 daizhengwen End ************************/
 
     //senior layout
-    DWidget *seniorWidget = new DWidget;
+    DWidget *seniorWidget = new DWidget(this);
     seniorWidget->setFixedWidth(459);
     seniorWidget->setContentsMargins(0, 0, 0, 0);
     QGridLayout *seniorLayout = new QGridLayout();
@@ -283,7 +283,7 @@ void ServerConfigOptDlg::initUI()
     DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
     connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
         seniorWidget->show();
-        setTabOrder(m_advancedOptions, m_group);
+//        setTabOrder(m_advancedOptions, m_group);
         m_advancedOptions->hide();
         upItem->changeSize(this->width(), 0);
         downItem->changeSize(this->width(), 0);
