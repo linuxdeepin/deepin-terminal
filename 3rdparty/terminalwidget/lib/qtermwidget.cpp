@@ -641,7 +641,7 @@ void QTermWidget::setColorScheme(const QString &origName, bool needReloadTheme)
             cs = ColorSchemeManager::instance()->defaultColorScheme();
         }
     } else {
-        if (name == "customTheme" && needReloadTheme) {
+        if (name == QLatin1String("customTheme") && needReloadTheme) {
             ColorSchemeManager::instance()->realodColorScheme(origName);
         }
         cs = ColorSchemeManager::instance()->findColorScheme(name);

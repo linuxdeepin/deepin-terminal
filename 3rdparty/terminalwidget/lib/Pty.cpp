@@ -282,7 +282,7 @@ Pty::~Pty()
 
 bool Pty::isTerminalRemoved()
 {
-    QFile terminalExecFile("/usr/bin/deepin-terminal");
+    QFile terminalExecFile(QLatin1String("/usr/bin/deepin-terminal"));
     if (terminalExecFile.exists()) {
         return false;
     }
@@ -307,13 +307,13 @@ bool isPatternAcceptable(QString strCommand, QString strPattern)
 //判断当前命令是否是要删除终端
 bool Pty::bWillRemoveTerminal(QString strCommand)
 {
-    QString packageName = "deepin-terminal";
+    QString packageName = QLatin1String("deepin-terminal");
 
     QStringList strCommandList;
     strCommandList.append(strCommand);
 
-    if (strCommand.contains("&&")) {
-        QStringList cmdList = strCommand.split("&&");
+    if (strCommand.contains(QLatin1String("&&"))) {
+        QStringList cmdList = strCommand.split(QLatin1String("&&"));
         for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
             if (currCmd.length() > 0 && currCmd.contains(packageName)) {
@@ -322,8 +322,8 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
         }
     }
 
-    if (strCommand.contains(";")) {
-        QStringList cmdList = strCommand.split(";");
+    if (strCommand.contains(QLatin1String(";"))) {
+        QStringList cmdList = strCommand.split(QLatin1String(";"));
         for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
             if (currCmd.length() > 0 && currCmd.contains(packageName)) {
@@ -341,23 +341,23 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
         QString strCurrCommand = strCommandList.at(i);
         for (int j = 0; j < packageNameList.size(); j++) {
             QString packageName = packageNameList.at(j);
-            QString removePattern = QString("sudo\\s+apt-get\\s+remove\\s+%1").arg(packageName);
+            QString removePattern = QString::fromUtf8("sudo\\s+apt-get\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt\\s+remove\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
             /******** Modify by nt001000 renfeixiang 2020-05-27:修改 放到bWillPurgeTerminal函数中 Begin***************/
 //            removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
 //            acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
             /******** Modify by nt001000 renfeixiang 2020-05-27:修改 放到bWillPurgeTerminal函数中 End***************/
 
-            removePattern = QString("sudo\\s+dpkg\\s+-r\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+dpkg\\s+-r\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+rm\\s+.+\\s+/usr/bin/deepin-terminal");
+            removePattern = QString::fromUtf8("sudo\\s+rm\\s+.+\\s+/usr/bin/deepin-terminal");
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+rm\\s+/usr/bin/deepin-terminal");
+            removePattern = QString::fromUtf8("sudo\\s+rm\\s+/usr/bin/deepin-terminal");
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
         }
     }
@@ -368,13 +368,13 @@ bool Pty::bWillRemoveTerminal(QString strCommand)
 /******** Add by nt001000 renfeixiang 2020-05-27:增加 Purge卸载命令的判断，显示不同的卸载提示框 Begin***************/
 bool Pty::bWillPurgeTerminal(QString strCommand)
 {
-    QString packageName = "deepin-terminal";
+    QString packageName = QLatin1String("deepin-terminal");
 
     QStringList strCommandList;
     strCommandList.append(strCommand);
 
-    if (strCommand.contains("&&")) {
-        QStringList cmdList = strCommand.split("&&");
+    if (strCommand.contains(QLatin1String("&&"))) {
+        QStringList cmdList = strCommand.split(QLatin1String("&&"));
         for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
             if (currCmd.length() > 0 && currCmd.contains(packageName)) {
@@ -383,8 +383,8 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
         }
     }
 
-    if (strCommand.contains(";")) {
-        QStringList cmdList = strCommand.split(";");
+    if (strCommand.contains(QLatin1String(";"))) {
+        QStringList cmdList = strCommand.split(QLatin1String(";"));
         for (int i = 0; i < cmdList.size(); i++) {
             QString currCmd = cmdList.at(i).trimmed();
             if (currCmd.length() > 0 && currCmd.contains(packageName)) {
@@ -402,31 +402,31 @@ bool Pty::bWillPurgeTerminal(QString strCommand)
         QString strCurrCommand = strCommandList.at(i);
         for (int j = 0; j < packageNameList.size(); j++) {
             QString packageName = packageNameList.at(j);
-            QString removePattern = QString("sudo\\s+apt-get\\s+purge\\s+%1").arg(packageName);
+            QString removePattern = QString::fromUtf8("sudo\\s+apt-get\\s+purge\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt-get\\s+purge\\s+-y\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt-get\\s+purge\\s+-y\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt-get\\s+remove\\s+--purge\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt-get\\s+remove\\s+--purge\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt-get\\s+--purge\\s+remove\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt-get\\s+--purge\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt\\s+purge\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt\\s+purge\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt\\s+purge\\s+-y\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt\\s+purge\\s+-y\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt\\s+remove\\s+--purge\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt\\s+remove\\s+--purge\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+apt\\s+--purge\\s+remove\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+apt\\s+--purge\\s+remove\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
 
-            removePattern = QString("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
+            removePattern = QString::fromUtf8("sudo\\s+dpkg\\s+-P\\s+%1").arg(packageName);
             acceptableList << isPatternAcceptable(strCurrCommand, removePattern);
         }
     }
@@ -446,7 +446,7 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
     //判断是否是点了自定义命令面板列表项触发的命令
     bool isCustomCommand = false;
     QString currCommand = QString::fromLatin1(data);
-    if (currCommand.length() > 0 && currCommand.endsWith('\n')) {
+    if (currCommand.length() > 0 && currCommand.endsWith(QLatin1Char('\n'))) {
         isCustomCommand = true;
     }
 
@@ -462,7 +462,7 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
 
         //检测到当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
         bool isSendByRemoteManage = this->property("isSendByRemoteManage").toBool();
-        if (isSendByRemoteManage && strCurrCommand.startsWith("expect -f")) {
+        if (isSendByRemoteManage && strCurrCommand.startsWith(QLatin1String("expect -f"))) {
             _bNeedBlockCommand = true;
             //立即修改回false，防止误认其他命令
             this->setProperty("isSendByRemoteManage", QVariant(false));
@@ -473,9 +473,9 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
         bool bRemoveTerminal =  bWillRemoveTerminal(strCurrCommand);
 
         if (!isTerminalRemoved() && (bPurgeTerminal || bRemoveTerminal)) {
-            QString strname = "remove";
+            QString strname = QLatin1String("remove");
             if (bPurgeTerminal) {
-                strname = "purge";
+                strname = QLatin1String("purge");
             }
             QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::AutoConnection, Q_RETURN_ARG(bool, _bUninstall), Q_ARG(QString, strname));
             /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 End***************/
@@ -501,7 +501,7 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
     }
 
     //为GBK/GB2312/GB18030编码，且不是输入命令执行的情况（没有按回车）
-    if (QString(codec->name()).toUpper().startsWith("GB") && !_isCommandExec) {
+    if (QString::fromUtf8(codec->name()).toUpper().startsWith(QLatin1String("GB")) && !_isCommandExec) {
         QTextCodec *utf8Codec = QTextCodec::codecForName("UTF-8");
         QString unicodeData = codec->toUnicode(data);
         QByteArray unicode = utf8Codec->fromUnicode(unicodeData);
@@ -524,19 +524,19 @@ void Pty::dataReceived()
 {
     QByteArray data = pty()->readAll();
 
-    QString recvData = QString(data);
+    QString recvData = QString::fromUtf8(data);
 
     if (_bNeedBlockCommand) {
         QString judgeData = recvData;
         if (recvData.length() > 1) {
-            judgeData = recvData.replace("\r", "");
-            judgeData = judgeData.replace("\n", "");
+            judgeData = recvData.replace(QLatin1String("\r"), QLatin1String(""));
+            judgeData = judgeData.replace(QLatin1String("\n"), QLatin1String(""));
         }
 
         //使用zsh的时候，发送过来的字符会残留一个字母"e"，需要特殊处理下
-        if (_program.endsWith("/zsh")
+        if (_program.endsWith(QLatin1String("/zsh"))
                 && 1 == judgeData.length()
-                && judgeData.startsWith("e")
+                && judgeData.startsWith(QLatin1String("e"))
                 && -1 == _receiveDataIndex) {
             _receiveDataIndex = 0;
             return;
@@ -544,27 +544,27 @@ void Pty::dataReceived()
 
         //不显示远程登录时候的敏感信息(主要是expect -f命令跟随的明文密码)
         //同时考虑了zsh的情况
-        if (judgeData.startsWith("expect -f")
-                || judgeData.startsWith("\bexpect")
-                || judgeData.startsWith("\be")
-                || judgeData.startsWith("e\bexpect")
-                || judgeData.startsWith("e\be")) {
+        if (judgeData.startsWith(QLatin1String("expect -f"))
+                || judgeData.startsWith(QString::fromUtf8("\bexpect"))
+                || judgeData.startsWith(QString::fromUtf8("\be"))
+                || judgeData.startsWith(QString::fromUtf8("e\bexpect"))
+                || judgeData.startsWith(QString::fromUtf8("e\be"))) {
             _receiveDataIndex = 1;
             return;
         }
 
         if (_receiveDataIndex >= 1) {
-            if (judgeData.contains("Press")) {
+            if (judgeData.contains(QLatin1String("Press"))) {
                 //这里需要置回false，否则后面其他命令也会被拦截
                 _bNeedBlockCommand = false;
 
                 _receiveDataIndex = -1;
-                int pressStringIndex = recvData.indexOf("Press");
+                int pressStringIndex = recvData.indexOf(QLatin1String("Press"));
                 if (pressStringIndex > 0) {
                     recvData = recvData.mid(pressStringIndex);
                 }
-                QString helpData = recvData.replace("\n", "");
-                recvData = "\r\n" + helpData + "\r\n";
+                QString helpData = recvData.replace(QLatin1String("\n"), QLatin1String(""));
+                recvData = QLatin1String("\r\n") + helpData + QLatin1String("\r\n");
                 data = recvData.toUtf8();
                 emit receivedData(data.constData(), data.count(), _textCodec);
             }
@@ -577,21 +577,21 @@ void Pty::dataReceived()
 
     /******** Modify by m000714 daizhengwen 2020-04-30: 处理上传下载时乱码显示命令不执行****************/
     // 乱码提示信息不显示
-    if (recvData.contains("bash: $'\\212")
-            || recvData.contains("bash: **0800000000022d：")
-            || recvData.contains("**^XB0800000000022d")
-            || recvData.startsWith("**\u0018B0800000000022d\r\u008A")) {
+    if (recvData.contains(QString::fromUtf8("bash: $'\\212"))
+            || recvData.contains(QString::fromUtf8("bash: **0800000000022d："))
+            || recvData.contains(QString::fromUtf8("**^XB0800000000022d"))
+            || recvData.startsWith(QString::fromUtf8("**\u0018B0800000000022d\r\u008A"))) {
         return;
     }
 
     // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
-    if (recvData.contains("\u008A")) {
-        recvData.replace("\u008A", "\b \b #");
+    if (recvData.contains(QString::fromUtf8("\u008A"))) {
+        recvData.replace(QString::fromUtf8("\u008A"), QString::fromUtf8("\b \b #"));
         data = recvData.toUtf8();
     }
 
-    if (recvData == "rz waiting to receive.") {
-        recvData += "\r\n";
+    if (recvData == QLatin1String("rz waiting to receive.")) {
+        recvData += QLatin1String("\r\n");
         data = recvData.toUtf8();
     }
     /********************* Modify by m000714 daizhengwen End ************************/

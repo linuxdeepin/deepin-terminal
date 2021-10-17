@@ -139,7 +139,7 @@ TerminalImageFilterChain::~TerminalImageFilterChain()
 bool isContainOtherPromptEnd(QString promptLine, QString currPromptEnd)
 {
     //四不同类型的提示符结尾字符
-    QString promptEnds = QString("$#%>");
+    QString promptEnds = QString::fromUtf8("$#%>");
     promptEnds.remove(currPromptEnd);
 
     for (int i=0; i<promptEnds.length(); i++)
@@ -178,7 +178,7 @@ void TerminalImageFilterChain::setImage(const Character *const image, int lines,
     QTextStream lineStream(_buffer);
     decoder.begin(&lineStream);
 
-    QString lastLine = "";
+    QString lastLine = QString::fromUtf8("");
     for (int i = 0 ; i < lines ; i++) {
         _linePositions->append(_buffer->length());
         decoder.decodeLine(image + i * columns, columns, LINE_DEFAULT);
@@ -208,7 +208,7 @@ void TerminalImageFilterChain::setImage(const Character *const image, int lines,
     if (lastLine.length() > 0) {
         //优化了截取并保存当前shell提示符的判断，暂时没有考虑PS1被修改的情况（若考虑的话实现起来太复杂）
         //目前针对sh/bash/csh/tcsh/ksh/zsh这几种类型的shell做了处理
-        QString promptEnds = QString("$#%>");
+        QString promptEnds = QString::fromUtf8("$#%>");
         for (int i=0; i<promptEnds.length(); i++) {
             QString promptEnd = promptEnds.at(i);
 
@@ -223,15 +223,15 @@ void TerminalImageFilterChain::setImage(const Character *const image, int lines,
 
     QString strShellPrompt = SessionManager::instance()->getCurrShellPrompt(_sessionId);
 
-    bool isRootUser = strShellPrompt.endsWith("#");
+    bool isRootUser = strShellPrompt.endsWith(QString::fromUtf8("#"));
 
     QString strCurrBuffer = (*_buffer).trimmed();
     if (strCurrBuffer.length() > 0) {
         //获取并保存当前正在输入的命令
         if (isRootUser) {
             QString strCommand = strCurrBuffer.split(strShellPrompt).last();
-            if (!strCommand.contains("sudo ")) {
-                strCommand = QString("sudo %1").arg(strCommand);
+            if (!strCommand.contains(QString::fromUtf8("sudo "))) {
+                strCommand = QString::fromUtf8("sudo %1").arg(strCommand);
             }
             SessionManager::instance()->saveCurrShellCommand(_sessionId, strCommand);
         } else {

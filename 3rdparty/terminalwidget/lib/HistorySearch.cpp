@@ -278,11 +278,11 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
               存在特殊情况:一个完整的物理行显示在终端被分成多个逻辑行
             */
             //中文字符正则表达式
-            QRegExp regEx("[\u4E00-\u9FA5，《。》、？；：【】～！￥（）]+");
+            QRegExp regEx(QString::fromUtf8("[\u4E00-\u9FA5，《。》、？；：【】～！￥（）]+"));
 
             //未匹配的串-物理行开始和结束位置
             int loseEnd = matchStart;
-            int loseStart = string.lastIndexOf('\n', loseEnd) + 1;
+            int loseStart = string.lastIndexOf(QLatin1Char('\n'), loseEnd) + 1;
             //qDebug() << "loseStart" << loseStart << "loseEnd" << loseEnd ;
 
 //            if (loseStart < 0 || loseStart > loseEnd) {

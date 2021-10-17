@@ -493,7 +493,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
   /******** Modify by ut000439 wangpeili 2020-06-24: 适应窗口特效圆角 ****************/
   //qDebug()<<"_scrollBar->width()"<<_scrollBar->width();
   // 设置15px宽度＝6?
-  _scrollBar->setStyleSheet("margin: 0px 0 15px 0;width: 15");
+  _scrollBar->setStyleSheet(QLatin1String("margin: 0px 0 15px 0;width: 15"));
   //qDebug()<<"_scrollBar->width()"<<_scrollBar->width();
   /********************* Modify by n014361 wangpeili End ************************/
 
@@ -3534,8 +3534,8 @@ void TerminalDisplay::dropEvent(QDropEvent* event)
   }
 
   /***add begin by ut001121 zhangmeng 20201030 for SP4.1 拖拽文件到工作区文件路径加引号***/
-  dropText.insert(0, '\'');
-  dropText.append('\'');
+  dropText.insert(0, QLatin1Char('\''));
+  dropText.append(QLatin1Char('\''));
   /***add end ut001121***/
 
     emit sendStringToEmu(dropText.toLocal8Bit().constData());

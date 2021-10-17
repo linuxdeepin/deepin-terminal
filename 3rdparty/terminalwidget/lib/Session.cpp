@@ -396,7 +396,7 @@ void Session::run()
 
     if (result < 0) {
         //qDebug() << "CRASHED! result: " << result<<arguments;
-        QString infoText = QString("There was an error creating the child process for this terminal. \n"
+        QString infoText = QString::fromUtf8("There was an error creating the child process for this terminal. \n"
                  "Failed to execute child process \"%1\"(No such file or directory)!").arg(exec);
         sendText(infoText);
         _userTitle = QString::fromLatin1("Session crashed");
@@ -549,7 +549,7 @@ void Session::monitorTimerDone()
 void Session::activityStateSet(int state)
 {
     if (state==NOTIFYBELL) {
-        emit bellRequest(QString("Bell in session '%1'").arg(_nameTitle));
+        emit bellRequest(QString::fromUtf8("Bell in session '%1'").arg(_nameTitle));
     } else if (state==NOTIFYACTIVITY) {
         if (_monitorSilence) {
             _monitorTimer->start(_silenceSeconds*1000);
@@ -729,7 +729,7 @@ void Session::done(int exitStatus)
         if (exitStatus == -1){
             infoText.sprintf("There was an error creating the child process for this terminal. \n"
                      "Failed to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
-            message = "Session crashed.";
+            message = QLatin1String("Session crashed.");
         }
         else {
             infoText.sprintf("The child process exited normally with status %d.", exitStatus);
