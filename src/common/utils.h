@@ -313,6 +313,12 @@ public:
     static bool isLoongarch();
 
     /**
+     * @brief isWayLand 是否是wayland
+     * @return
+     */
+    static bool isWayLand();
+
+    /**
      * @brief insertToJson 插入或修改 json，格式为default-config.json
      * @param jsonVar
      * @param groups_key

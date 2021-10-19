@@ -618,6 +618,21 @@ bool Utils::isLoongarch()
     return "mips64" == m_Arch || "loongarch64" == m_Arch;
 }
 
+bool Utils::isWayLand()
+{
+    auto env = QProcessEnvironment::systemEnvironment();
+
+    QString XDG_SESSION_TYPE = env.value(QStringLiteral("XDG_SESSION_TYPE"));
+
+    QString WAYLAND_DISPLAY = env.value(QStringLiteral("WAYLAND_DISPLAY"));
+
+    if (XDG_SESSION_TYPE == QLatin1String("wayland") || WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)){
+       return true;
+    }
+
+    return false;
+}
+
 void Utils::insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key, const QVariant &value)
 {
     QVariantMap *obj = nullptr;

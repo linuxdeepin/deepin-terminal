@@ -27,6 +27,10 @@
 #include <QIcon>
 #include <QLabel>
 #include <QDebug>
+#include <QMouseEvent>
+
+static const int VER_RESIZED_ALLOWED_OFF = 3;//允许的垂直偏移量
+static const int VER_RESIZED_MIN_HEIGHT = 30;//resize的最小高度
 
 DWIDGET_USE_NAMESPACE
 
@@ -79,4 +83,48 @@ void TitleBar::setTabBar(QWidget *widget)
 int TitleBar::rightSpace()
 {
     return m_rightSpace;
+}
+
+void TitleBar::setVerResized(bool resized)
+{
+    setMouseTracking(true);
+    m_verResizedEnabled = resized;
+}
+
+
+void TitleBar::mousePressEvent(QMouseEvent *event)
+{
+    QWidget *w = this->window();
+    if(w) {
+        int windowMouseY = this->mapTo(w, event->pos()).y();
+        int windowMouseYOff = w->height() - windowMouseY;
+        m_verResizedCurOff = windowMouseYOff;
+    }
+    QWidget::mousePressEvent(event);
+}
+
+void TitleBar::mouseMoveEvent(QMouseEvent *event)
+{
+    forever {
+        QWidget *w = this->window();
+        if(!w)
+            break;
+        if(!m_verResizedEnabled)
+            break;
+        if(!this->hasMouseTracking())
+            break;
+        int windowMouseY = this->mapTo(w, event->pos()).y();
+        int windowMouseYOff = w->height() - windowMouseY;
+        if(event->buttons() != Qt::LeftButton && windowMouseYOff < VER_RESIZED_ALLOWED_OFF) {
+            this->setCursor(Qt::SizeVerCursor);
+            break;
+        }
+        if(event->buttons() == Qt::LeftButton && m_verResizedCurOff < VER_RESIZED_ALLOWED_OFF) {
+            w->resize(w->width(), qMax(VER_RESIZED_MIN_HEIGHT, windowMouseY + m_verResizedCurOff));
+            break;
+        }
+        this->setCursor(Qt::ArrowCursor);
+        break;
+    }
+    QWidget::mouseMoveEvent(event);
 }
