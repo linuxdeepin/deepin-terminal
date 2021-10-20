@@ -85,36 +85,11 @@ void PageSearchBar::saveOldHoldContent()
     m_originalPlaceHolder = m_searchEdit->placeHolder();
 }
 
-//查找DSearchEdit中的DIconButton
-/*******************************************************************************
- 1. @函数:    findIconBtn
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    查找DSearchEdit中的DIconButton
-*******************************************************************************/
-DIconButton *findIconBtn(DSearchEdit *searchEdit)
-{
-    QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
-    if (iconWidget != nullptr) {
-        DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
-        if (nullptr == iconBtn)
-            qInfo() << "can not found iconBtn in DIconButton";
-
-        return iconBtn;
-    } else {
-        qInfo() << "can not found iconWidget in QWidget";
-        if (searchEdit->findChild<DIconButton *>() == nullptr)
-            qInfo() << "can not found searchEdit in DIconButton";
-
-        return searchEdit->findChild<DIconButton *>();
-    }
-}
-
 void PageSearchBar::clearHoldContent()
 {
     // 置空内容
     m_searchEdit->setPlaceHolder("");
-    DIconButton *iconBtn = findIconBtn(m_searchEdit);
+    DIconButton *iconBtn = m_searchEdit->findChild<DIconButton *>();
     if (iconBtn != nullptr)
         iconBtn->setIcon(QIcon(""));
 }
@@ -123,23 +98,13 @@ void PageSearchBar::recoveryHoldContent()
 {
     // 还原文本
     m_searchEdit->setPlaceHolder(m_originalPlaceHolder);
-    DIconButton *iconBtn = findIconBtn(m_searchEdit);
+    DIconButton *iconBtn = m_searchEdit->findChild<DIconButton *>();
     if (iconBtn != nullptr) {
         // 还原图标
         iconBtn->setIcon(DStyle::SP_IndicatorSearch);
     }
 }
 
-qint64 PageSearchBar::searchCostTime()
-{
-    if (0 == m_searchStartTime) {
-        qInfo() << __FUNCTION__ << "search time error!";
-        return -1;
-    }
-    qint64 costTime = QDateTime::currentMSecsSinceEpoch() - m_searchStartTime;
-    m_searchStartTime = 0;
-    return costTime;
-}
 
 void PageSearchBar::keyPressEvent(QKeyEvent *event)
 {

@@ -28,13 +28,7 @@
 
 class CustomThemeSettingDialog;
 class QObject;
-class UT_ColorPushButton_Test : public ::testing::Test
-{
-public:
-    UT_ColorPushButton_Test();
-    virtual void SetUp();
-    virtual void TearDown();
-};
+
 
 class UT_CustomThemeSettingDialog_Test : public ::testing::Test
 {

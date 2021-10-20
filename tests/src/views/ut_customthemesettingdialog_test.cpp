@@ -23,6 +23,7 @@
 #include "customthemesettingdialog.h"
 #include "../stub.h"
 #include "settings.h"
+#include "ut_stub_defines.h"
 
 // DTK
 #include <DTitlebar>
@@ -40,9 +41,53 @@
 #include <QKeyEvent>
 #include <QFocusEvent>
 #include <QWidget>
+#include <QStringList>
+#include <QColor>
 
 
 DWIDGET_USE_NAMESPACE
+
+class UT_TitleStyleRadioButton_Test : public ::testing::Test
+{
+public:
+    UT_TitleStyleRadioButton_Test();
+    virtual void SetUp();
+    virtual void TearDown();
+};
+
+
+UT_TitleStyleRadioButton_Test::UT_TitleStyleRadioButton_Test()
+{
+
+}
+void UT_TitleStyleRadioButton_Test::SetUp()
+{
+}
+
+void UT_TitleStyleRadioButton_Test::TearDown()
+{
+}
+
+#ifdef UT_TITLE_STYLE_RADIOBUTTON_TEST
+
+TEST_F(UT_TitleStyleRadioButton_Test, keyPressEvent)
+{
+    TitleStyleRadioButton button("button");
+    QTest::keyEvent(QTest::Click, button.window(), Qt::Key_Return);
+    //会选中按钮
+    EXPECT_TRUE(button.isChecked());
+}
+
+#endif
+
+
+class UT_ColorPushButton_Test : public ::testing::Test
+{
+public:
+    UT_ColorPushButton_Test();
+    virtual void SetUp();
+    virtual void TearDown();
+};
 
 UT_ColorPushButton_Test::UT_ColorPushButton_Test()
 {
@@ -56,7 +101,7 @@ void UT_ColorPushButton_Test::TearDown()
 {
 }
 
-#ifdef UT_COLORSCHEME_TEST
+#ifdef UT_COLOR_PUSHBUTTON_TEST
 
 TEST_F(UT_ColorPushButton_Test, paintEvent)
 {
@@ -94,6 +139,24 @@ TEST_F(UT_ColorPushButton_Test, focusEvent)
     QFocusEvent focusOut(QEvent::FocusOut, Qt::TabFocusReason);
     colorPushBtn.focusOutEvent(&focusOut);
     EXPECT_TRUE(colorPushBtn.m_isFocus == false);
+}
+
+TEST_F(UT_ColorPushButton_Test, keyPressEvent)
+{
+    ColorPushButton button;
+    QTest::keyEvent(QTest::Click, button.window(), Qt::Key_Return);
+    //会更新焦点
+    EXPECT_TRUE(button.m_isFocus);
+}
+
+TEST_F(UT_ColorPushButton_Test, mousePressEvent)
+{
+    ColorPushButton button;
+    QSignalSpy signalpy(&button, &ColorPushButton::clearFocussSignal);
+    EXPECT_TRUE(signalpy.count() == 0);
+    QTest::mouseClick(button.window(), Qt::RightButton);
+    //会emit clearFocussSignal
+    EXPECT_TRUE(signalpy.count() == 1);
 }
 #endif
 
@@ -210,8 +273,10 @@ TEST_F(UT_CustomThemeSettingDialog_Test, loadConfiguration)
 *******************************************************************************/
 TEST_F(UT_CustomThemeSettingDialog_Test, keyPressEvent)
 {
-    // 自定义主题弹窗
-    EXPECT_TRUE(dialog->grab().isNull() == false);
+    CustomThemeSettingDialog button;
+    QTest::keyEvent(QTest::Click, button.window(), Qt::Key_Escape);
+    //会退出窗口
+    EXPECT_TRUE(button.result() == QDialog::Rejected);
 }
 
 /*******************************************************************************
@@ -261,6 +326,48 @@ TEST_F(UT_CustomThemeSettingDialog_Test, click)
         signalpy.wait(1000);
         EXPECT_TRUE(signalpy.count() == 1);
     }
+}
+
+static int ut_QEventLoop_exec(QEventLoop::ProcessEventsFlags)
+{
+    return 1;
+}
+
+//static int ut_QDialog_exec(void*)
+//{
+//    return 1;
+//}
+
+static QColor ut_qcolordialog_selectedcolor()
+{
+    return QColor("black");
+}
+
+static QObject *ut_dialog_qobject_sender(void * p)
+{
+    CustomThemeSettingDialog *dialog = static_cast<CustomThemeSettingDialog *>(p);
+    return dialog->m_backgroundButton;
+}
+
+
+TEST_F(UT_CustomThemeSettingDialog_Test, onSelectColor)
+{
+    //QColorDialog的exec打桩失败，改用QEventLoop的exec打桩
+    Stub stub;
+    typedef int (*ut_QEventLoop_exec_ptr)(QEventLoop::ProcessEventsFlags);
+    ut_QEventLoop_exec_ptr ptr = (ut_QEventLoop_exec_ptr)(&QEventLoop::exec);
+    stub.set(ptr, ut_QEventLoop_exec);
+
+    //QDialog的打桩这里无效，暂时注释
+//    typedef int (*ut_QDialog_exec_ptr)(void*);
+//    ut_QDialog_exec_ptr dptr = (ut_QDialog_exec_ptr)(&QDialog::exec);
+//    stub.set(dptr, ut_QDialog_exec);
+
+    stub.set(ADDR(QColorDialog, selectedColor), ut_qcolordialog_selectedcolor);
+    stub.set(ADDR(QObject, sender), ut_dialog_qobject_sender);
+    dialog->onSelectColor();
+    //会更新按钮的 m_color
+    EXPECT_TRUE(dialog->m_backgroundButton->m_color == ut_qcolordialog_selectedcolor());
 }
 
 #endif

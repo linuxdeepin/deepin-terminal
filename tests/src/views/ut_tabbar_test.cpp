@@ -25,6 +25,8 @@
 #include "../stub.h"
 #include "termwidgetpage.h"
 #include "termproperties.h"
+#include "ut_stub_defines.h"
+#include "windowsmanager.h"
 
 //dtk
 #include <DWindowManagerHelper>
@@ -35,6 +37,7 @@
 #include <QSignalSpy>
 #include <QDebug>
 #include <QUuid>
+#include <QSignalSpy>
 
 
 UT_Tabbar_Test::UT_Tabbar_Test()
@@ -411,7 +414,7 @@ TEST_F(UT_Tabbar_Test, createDragPixmapFromTab)
     QString tabName = QString("tab01");
     QString tabIdentifier = generateUniqueId();
     tabbar.addTab(tabIdentifier, tabName);
-    EXPECT_TRUE(tabbar.m_tabIdentifierList.contains(tabIdentifier));
+//    EXPECT_TRUE(tabbar.m_tabIdentifierList.contains(tabIdentifier));
 
     QStyleOptionTab styleOptionTab;
     QPoint hotSpot = QPoint(1, 1);
@@ -432,6 +435,12 @@ static bool ut_window_setProperty(const char *, const QVariant &)
     return true;
 }
 
+static QAction *stub_exec(const QPoint &, QAction *)
+{
+    return nullptr;
+}
+
+
 TEST_F(UT_Tabbar_Test, handleDragActionChanged)
 {
     TabBar tabbar;
@@ -450,5 +459,104 @@ TEST_F(UT_Tabbar_Test, handleDragActionChanged)
     qDebug() << qApp->overrideCursor();
     EXPECT_TRUE(qApp->overrideCursor());
 }
+
+TEST_F(UT_Tabbar_Test, handleMiddleButtonClick)
+{
+    NormalWindow *w = new NormalWindow(TermProperties("/"));
+    TabBar *tabbar = new TabBar(w);
+    tabbar->addTab(generateUniqueId(), "tab01");
+    QSignalSpy spy(tabbar, &DTabBar::tabCloseRequested);
+    QMouseEvent mouseEvent(QEvent::MouseButtonRelease, tabbar->tabRect(0).center(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+    tabbar->handleMiddleButtonClick(&mouseEvent);
+    qDebug() << spy.count();
+    EXPECT_TRUE(1 == spy.count());
+
+    w->deleteLater();
+}
+
+
+TEST_F(UT_Tabbar_Test, handleRightButtonClick)
+{
+    Stub stub;
+    stub.set((QAction * (QMenu::*)(const QPoint &, QAction *)) ADDR(QMenu, exec), stub_exec);
+
+    NormalWindow *w = new NormalWindow(TermProperties("/"));
+    TabBar *tabbar = w->m_tabbar;
+    w->addTab(TermProperties("/"));
+    QMouseEvent mouseEvent(QEvent::MouseButtonRelease, tabbar->tabRect(0).center(), Qt::RightButton, Qt::NoButton, Qt::NoModifier);
+    EXPECT_TRUE(nullptr == tabbar->m_closeTabAction);
+    tabbar->handleRightButtonClick(&mouseEvent);
+    //首次点击时，会初始化m_closeTabAction
+    EXPECT_TRUE(tabbar->m_closeTabAction);
+
+    w->deleteLater();
+}
+
+TEST_F(UT_Tabbar_Test, onCloseOtherTabActionTriggered)
+{
+    NormalWindow *w = new NormalWindow(TermProperties("/"));
+    TabBar *tabbar = w->m_tabbar;
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+
+    tabbar->m_rightClickTab = 0;
+    EXPECT_TRUE(4 == tabbar->count());
+    tabbar->onCloseOtherTabActionTriggered();
+    EXPECT_TRUE(1 == tabbar->count());
+    qDebug() << tabbar->count();
+
+    tabbar->m_rightClickTab = 0;
+    QSignalSpy spy(tabbar, &TabBar::showRenameTabDialog);
+    tabbar->onRenameTabActionTriggered();
+    qDebug() << spy.count();
+    EXPECT_TRUE(1 == spy.count());
+
+
+    w->deleteLater();
+}
+
+TEST_F(UT_Tabbar_Test, handleTabMoved)
+{
+    NormalWindow *w = new NormalWindow(TermProperties("/"));
+    TabBar *tabbar = w->m_tabbar;
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+
+    //只是交换TabBar中的保存的list，非DTabBar
+    QString id1 = tabbar->m_tabIdentifierList.value(1);
+    QString id2 = tabbar->m_tabIdentifierList.value(2);
+    tabbar->handleTabMoved(1, 2);
+    EXPECT_TRUE(tabbar->m_tabIdentifierList.value(1) == id2);
+    EXPECT_TRUE(tabbar->m_tabIdentifierList.value(2) == id1);
+
+    //释放其中一个termwidget
+    EXPECT_TRUE(w->m_termStackWidget->count() == 5);
+    tabbar->handleTabReleased(0);
+    EXPECT_TRUE(w->m_termStackWidget->count() == 4);
+
+    w->deleteLater();
+}
+
+TEST_F(UT_Tabbar_Test, createWindowFromTermPage)
+{
+    NormalWindow *w = new NormalWindow(TermProperties("/"));
+    TabBar *tabbar = w->m_tabbar;
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+    w->addTab(TermProperties("/"));
+
+    int oldcount = WindowsManager::instance()->getNormalWindowList().count();
+    QString tab1 = tabbar->tabText(1);
+    tabbar->createWindowFromTermPage(tab1, w->currentPage(), true);
+    int curcount = WindowsManager::instance()->getNormalWindowList().count();
+    EXPECT_TRUE(curcount == (oldcount + 1));
+
+    w->deleteLater();
+}
+
 
 #endif

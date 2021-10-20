@@ -338,9 +338,55 @@ static  bool ut_QDir_exists(){
 #define UT_STUB_QDIR_EXISTS_PREPARE ut_QDir_exists_hasRuned = false;
 /******** Add by ut003135 End***************/
 
+/******** Add by ut003135 Begin***************/
+static  bool ut_QFile_remove_hasRuned = false;
+static  bool ut_QFile_remove(){
+    ut_QFile_remove_hasRuned = true;
+    return true;
+}
+
+#define UT_STUB_QFILE_REMOVE_APPEND\
+    stub.set((bool (QFile::*)())ADDR(QFile, remove), ut_QFile_remove); \
+    ut_QFile_remove_hasRuned = false;\
+
+#define UT_STUB_QFILE_REMOVE_CREATE\
+    Stub stub;\
+    UT_STUB_QFILE_REMOVE_APPEND
+
+#define UT_STUB_QFILE_REMOVE_RESULT ut_QFile_remove_hasRuned
+#define UT_STUB_QFILE_REMOVE_PREPARE ut_QFile_remove_hasRuned = false;
+/******** Add by ut003135 End***************/
+
+/******** Add by ut003135 Begin***************/
+static  bool ut_QObject_findChild_QWidget_hasRuned = false;
+static QWidget *ut_QObject_findChild_QWidget(void* , const QString &, Qt::FindChildOptions)
+{
+    ut_QObject_findChild_QWidget_hasRuned = true;
+    return nullptr;
+}
+
+
+#define UT_STUB_QOBJECT_FINDCHILD_QWIDGET_APPEND\
+    stub.set((QWidget *(QObject::*)(const QString &, Qt::FindChildOptions) const)ADDR(QObject, findChild), ut_QObject_findChild_QWidget);     \
+    ut_QObject_findChild_QWidget_hasRuned = false;\
+
+#define UT_STUB_QOBJECT_FINDCHILD_QWIDGET_CREATE\
+    Stub stub;\
+    UT_STUB_QOBJECT_FINDCHILD_QWIDGET_APPEND
+
+#define UT_STUB_QOBJECT_FINDCHILD_QWIDGET_RESULT ut_QObject_findChild_QWidget_hasRuned
+#define UT_STUB_QOBJECT_FINDCHILD_QWIDGET_PREPARE ut_QObject_findChild_QWidget_hasRuned = false;
+/******** Add by ut003135 End***************/
+
 #define DELETE_PTR(ptr) \
     if(ptr) {\
     delete ptr;\
+    ptr = nullptr;\
+    }
+
+#define DELETE_PTR_LATER(ptr) \
+    if(ptr) {\
+    ptr->deleteLater();\
     ptr = nullptr;\
     }
 

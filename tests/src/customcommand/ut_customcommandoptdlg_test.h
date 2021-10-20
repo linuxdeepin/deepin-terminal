@@ -24,12 +24,16 @@
 
 #include "ut_defines.h"
 
+#include <QString>
+
 #include <gtest/gtest.h>
 
+class QAction;
 class UT_CustomCommandOptDlg_Test : public ::testing::Test
 {
 public:
     UT_CustomCommandOptDlg_Test();
+    ~UT_CustomCommandOptDlg_Test();
 
 public:
     //这里的几个函数都会自动调用
@@ -39,5 +43,9 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
+
+    const QString m_validCmdName = "cmd";
+    const QString m_validCmdText = "ls -al";
+    const QString m_validCmdShortcut = "Ctrl+Shift+T";
 };
 #endif//UT_CUSTOMCOMMANDOPTDLG_TEST_H

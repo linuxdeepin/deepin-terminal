@@ -170,6 +170,7 @@ TEST_F(UT_Settings_Test, createFontComBoBoxHandle)
 {
     Stub stub;
     stub.set((int (QStringList::*)() const)ADDR(QStringList, size), ut_stringlist_size);
+    UT_STUB_QDBUS_CALL_APPEND;
 
     DSettingsOption option;
     QPair<QWidget *, QWidget *> pair = Settings::instance()->createFontComBoBoxHandle(&option);

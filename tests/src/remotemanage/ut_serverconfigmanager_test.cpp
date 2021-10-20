@@ -25,6 +25,7 @@
 #include "mainwindow.h"
 #include "serverconfigoptdlg.h"
 #include "utils.h"
+#include "ut_stub_defines.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -128,7 +129,7 @@ TEST_F(UT_ServerConfigManager_Test, initManager)
 {
     // 将现在已有的instance删除
     //delete ServerConfigManager::m_instance;
-    ServerConfigManager::m_instance = nullptr;
+//    ServerConfigManager::m_instance = nullptr;
 
     // 初始化数据
     // 先将数据存入配置文件
@@ -215,19 +216,26 @@ TEST_F(UT_ServerConfigManager_Test, closeAllDialog)
     ServerConfigOptDlg *dlg2 = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, &config, nullptr);
     dlg1->show();
     dlg2->show();
+    int oldMapcount = ServerConfigManager::instance()->m_serverConfigDialogMap.count();
 
     // 将弹窗记录
     ServerConfigManager::instance()->setModifyDialog(config.m_serverName, dlg1);
     ServerConfigManager::instance()->setModifyDialog(config.m_serverName, dlg2);
     // 同一类弹窗
-    int typeCount = ServerConfigManager::instance()->m_serverConfigDialogMap.count();
-    EXPECT_EQ(typeCount, 1);
+    int newMapcount = ServerConfigManager::instance()->m_serverConfigDialogMap.count();
+    EXPECT_EQ(oldMapcount + 1, newMapcount);
     // 弹窗数量
     int count = ServerConfigManager::instance()->m_serverConfigDialogMap[config.m_serverName].count();
     EXPECT_EQ(count, 2);
 
     // 将弹窗全部全部拒绝 => 拒绝后信号槽会自动删除弹窗
     ServerConfigManager::instance()->closeAllDialog(config.m_serverName);
+}
+TEST_F(UT_ServerConfigManager_Test, ConvertData)
+{
+    UT_STUB_QFILE_REMOVE_CREATE;
+    ServerConfigManager::instance()->ConvertData();
+    EXPECT_TRUE(UT_STUB_QFILE_REMOVE_RESULT);
 }
 
 #endif

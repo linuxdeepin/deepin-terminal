@@ -1470,11 +1470,22 @@ TEST_F(UT_MainWindow_Test, slotShortcutSelectAll)
     MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
     ASSERT_TRUE(mainWindow->currentPage());
     ASSERT_TRUE(mainWindow->currentPage()->currentTerminal());
+
     TermWidget *w = mainWindow->currentPage()->currentTerminal();
+    ASSERT_TRUE(w);
+
+    TerminalDisplay *display = w->findChild<TerminalDisplay *>();
+    ASSERT_TRUE(display);
+
+    ScreenWindow *screen = display->_screenWindow;
+    ASSERT_TRUE(display);
+
+    screen->_bufferNeedsUpdate = false;
 
     mainWindow->slotShortcutSelectAll();
 
-    EXPECT_TRUE(w->selectedText() == qApp->clipboard()->text());
+    //全选后，需要更新screen，update 为 true
+    EXPECT_TRUE(screen->_bufferNeedsUpdate);
 
     delete mainWindow;
 }

@@ -210,21 +210,27 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showPrePanelTest)
     // 清空堆栈
     QSharedPointer<RemoteManagementTopPanel> topPanel(new RemoteManagementTopPanel, doDeleteLater);
     topPanel->m_prevPanelStack.clear();
-
     // 显示前一个窗口
-    topPanel->m_currentPanelType = ServerConfigManager::PanelType_Manage;
+    UT_STUB_QWIDGET_SHOW_CREATE;
+    topPanel->m_prevPanelStack << PanelState();
+    topPanel->m_prevPanelStack.last().m_type = ServerConfigManager::PanelType_Manage;
     topPanel->showPrevPanel();
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 
     // 搜索返回
-    topPanel->m_currentPanelType = ServerConfigManager::PanelType_Search;
+    UT_STUB_QWIDGET_SHOW_PREPARE;
+    topPanel->m_prevPanelStack << PanelState();
+    topPanel->m_prevPanelStack.last().m_type = ServerConfigManager::PanelType_Search;
+    topPanel->m_filterStack.push_back(QString("hello"));
+    topPanel->m_filterStack.push_back(QString("world"));
     topPanel->showPrevPanel();
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 
     // 分组返回
-    topPanel->m_currentPanelType = ServerConfigManager::PanelType_Search;
+    UT_STUB_QWIDGET_SHOW_PREPARE;
+    topPanel->m_prevPanelStack << PanelState();
+    topPanel->m_prevPanelStack.last().m_type = ServerConfigManager::PanelType_Group;
     topPanel->showPrevPanel();
-
-    // 栈为空,最后返回都是主界面
-    EXPECT_EQ(topPanel->m_currentPanelType, ServerConfigManager::PanelType_Manage);
-    s.reset(ADDR(MainWindow, isFocusOnList));
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 }
 #endif

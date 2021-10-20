@@ -318,20 +318,6 @@ TEST_F(UT_TermWidgetPage_Test, focusNavigation)
     EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
 }
 
-TEST_F(UT_TermWidgetPage_Test, selectAll)
-{
-    TermProperties termProperty;
-    termProperty[QuakeMode] = false;
-    termProperty[SingleFlag] = true;
-
-    TermWidgetPage termWidgetPage(termProperty, nullptr);
-    termWidgetPage.resize(800, 600);
-    termWidgetPage.show();
-
-    termWidgetPage.selectAll();
-    EXPECT_TRUE(QApplication::clipboard()->text().count() > 0);
-}
-
 TEST_F(UT_TermWidgetPage_Test, setBlinkingCursor)
 {
     TermProperties termProperty;
