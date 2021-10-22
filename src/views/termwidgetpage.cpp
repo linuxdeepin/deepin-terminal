@@ -37,7 +37,6 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
     Utils::set_Object_Name(this);
-    //qInfo() << "parentTermWidgetPage" << parentWidget();
     m_MainWindow = qobject_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
@@ -55,7 +54,6 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
     m_layout->setContentsMargins(0, 0, 0, 0);
     m_layout->addWidget(w);
     setLayout(m_layout);
-    //qInfo() << "w->parent()" << w->parent();
 
     // Init find bar.
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
@@ -542,14 +540,10 @@ void TermWidgetPage::showSearchBar(int state)
         if (m_currentTerm != nullptr)
             m_currentTerm->setNoHasSelect();
         m_findBar->move(width() - SEARCHBAR_RIGHT_MARGIN, 0);
-        qInfo() << __FUNCTION__ << "show search bar!";
         QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });
     } else if (SearchBar_Hide == state) {
         m_findBar->hide();
-        qInfo() << __FUNCTION__ << "hide search bar!";
     } else if (SearchBar_FocusOut == state) {
-
-        qInfo() << __FUNCTION__ << "hide search bar! focus in term!";
         /******** Modify by ut001000 renfeixiang 2020-08-28:修改bug 45227,焦点只有在m_findBar上时，才将焦点设置到CurrentPage Begin***************/
         MainWindow *w = Utils::getMainWindow(this);
         if (w && w->isFocusOnList())

@@ -132,7 +132,7 @@ QStringList DBusManager::converToList(const QString &type, const QJsonArray &arr
 
 QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fontType)
 {
-    QStringList List;
+    QStringList retList;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "Show");
 
@@ -140,16 +140,14 @@ QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fo
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qInfo() << "call Show Success!";
-        QList<QVariant> list = response.arguments();
-        QString fonts = list.takeFirst().toString();
+        QString fonts = response.arguments().value(0).toString();
         QJsonArray array = QJsonDocument::fromJson(fonts.toLocal8Bit().data()).array();
-
-        List = converToList(fontType, array);
-        qInfo() << "Show value" << List;
+        retList = converToList(fontType, array);
+        qInfo() << "Show value" << retList;
     } else {
         qInfo() << "call Show Fail!" << response.errorMessage();
     }
-    return List;
+    return retList;
 }
 /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
 void DBusManager::callTerminalEntry(QStringList args)
