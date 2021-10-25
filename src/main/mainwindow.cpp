@@ -2798,11 +2798,6 @@ void QuakeWindow::initWindowAttribute()
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint/* | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
-    //wayland时需要隐藏WindowTitle
-    if(Utils::isWayLand()) {
-        setWindowFlag(Qt::FramelessWindowHint);
-        m_titleBar->setVerResized(true);
-    }
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
 
