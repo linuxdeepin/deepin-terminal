@@ -2814,15 +2814,7 @@ void QuakeWindow::initWindowAttribute()
     setFixedWidth(QApplication::desktop()->availableGeometry().width());
     connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
 
-    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
-    int saveHeight = m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();
-    /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height End***************/
-    qInfo() << "quake_window_Height: " << saveHeight;
-    qInfo() << "quake_window_Height: " << minimumSize();
-    // 如果配置文件没有数据
-    if (saveHeight == 0)
-        saveHeight = screenRect.size().height() / 3;
-
+    int saveHeight = getQuakeHeight();
     int saveWidth = screenRect.size().width();
     resize(QSize(saveWidth, saveHeight));
     // 记录雷神高度
@@ -3155,6 +3147,13 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
 #endif
     return MainWindow::eventFilter(watched, event);
 
+}
+
+int QuakeWindow::getQuakeHeight()
+{
+    int screenHeight = qApp->desktop()->screenGeometry().height();
+    int minHeight = screenHeight * 1 / 3;
+    return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT, minHeight).toInt();
 }
 
 void QuakeWindow::switchEnableResize()

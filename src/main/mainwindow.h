@@ -1163,7 +1163,7 @@ private:
 
     //Add by ut001000 renfeixiang 2020-11-16
     //获取配置文件中保存的雷神窗口高度
-    int getQuakeHeight() {return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();}
+    int getQuakeHeight();
     /**
      * @brief 动画效果使用的设置雷神窗口高度的函数
      * @author ut001000 任飞翔
