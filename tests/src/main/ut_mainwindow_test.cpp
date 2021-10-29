@@ -1392,23 +1392,25 @@ TEST_F(UT_MainWindow_Test, initWindowAttribute)
 {
     // 新建一个mainWindow
     MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
-////    mainWindow->slotDDialogFinished(0);
     Stub stub;
     stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState_window_maximum);
     mainWindow->initWindowAttribute();
     //最大化
     EXPECT_TRUE(mainWindow->windowState() & Qt::WindowMaximized);
 
+    stub.reset(ADDR(MainWindow,getConfigWindowState));
     stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState_fullscreen);
     mainWindow->initWindowAttribute();
     //全屏
     EXPECT_TRUE(mainWindow->windowState() & Qt::WindowFullScreen);
 
+    stub.reset(ADDR(MainWindow,getConfigWindowState));
     stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState_split_screen);
     mainWindow->initWindowAttribute();
     //普通窗口
     EXPECT_TRUE(mainWindow->windowState() == Qt::WindowNoState);
 
+    stub.reset(ADDR(MainWindow,getConfigWindowState));
     stub.set(ADDR(MainWindow,getConfigWindowState),ut_getConfigWindowState_window);
     mainWindow->initWindowAttribute();
     //普通窗口
