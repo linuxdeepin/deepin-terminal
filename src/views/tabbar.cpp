@@ -591,7 +591,8 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
     painter.drawImage(5, 5, scaledImage);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    if (1 == count())
+    //bug#98909, 非wayland下 且 只有一个标签页，拖动标签页时才会隐藏主窗口
+    if(!Utils::isWayLand() && 1 == count())
         this->window()->hide();
 
     //调整偏移量
