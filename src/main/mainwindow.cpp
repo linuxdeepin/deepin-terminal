@@ -71,6 +71,11 @@ using std::ofstream;
 const int MainWindow::m_MinWidth = 450;
 const int MainWindow::m_MinHeight = 250;
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+//qt5.15里，需要补发事件,实现雷神终端的正常隐藏
+static QList<QEvent *> DeActivationChangeEventList;
+#endif
+
 DWIDGET_USE_NAMESPACE
 
 // 定义雷神窗口边缘,接近边缘光标变化图标
@@ -2670,8 +2675,9 @@ QPoint NormalWindow::calculateShortcutsPreviewPoint()
     return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 }
 
-void NormalWindow::onAppFocusChangeForQuake()
+void NormalWindow::onAppFocusChangeForQuake(bool checkIsActiveWindow)
 {
+    Q_UNUSED(checkIsActiveWindow)
     return;
 }
 
@@ -2853,7 +2859,7 @@ QPoint QuakeWindow::calculateShortcutsPreviewPoint()
     return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 }
 
-void QuakeWindow::onAppFocusChangeForQuake()
+void QuakeWindow::onAppFocusChangeForQuake(bool checkIsActiveWindow)
 {
     // 开关关闭，不处理
     if (!Settings::instance()->settings->option("advanced.window.auto_hide_raytheon_window")->value().toBool())
@@ -2872,7 +2878,7 @@ void QuakeWindow::onAppFocusChangeForQuake()
         return;
 
     // 处于激活状态,不处理
-    if (isActiveWindow())
+    if (checkIsActiveWindow && isActiveWindow())
         return;
 
     hideQuakeWindow();
@@ -3050,7 +3056,14 @@ void QuakeWindow::changeEvent(QEvent *event)
 {
     // 不是激活事件,不处理
     if (QEvent::ActivationChange == event->type()) {
-        onAppFocusChangeForQuake();
+        bool checkIsActiveWindow = true;
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+        if(DeActivationChangeEventList.contains(event)) {
+            DeActivationChangeEventList.removeOne(event);
+            checkIsActiveWindow = false;
+        }
+#endif
+        onAppFocusChangeForQuake(checkIsActiveWindow);
     }
 
     return QMainWindow::changeEvent(event);
@@ -3089,6 +3102,14 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
         if (event->type() == QEvent::WindowStateChange) {
             event->ignore();
             this->activateWindow();
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+            //queue的方式发送事件
+            QTimer::singleShot(0, this, [this](){
+                QEvent *event = new QEvent(QEvent::ActivationChange);
+                DeActivationChangeEventList << event;
+                qApp->postEvent(this, event);
+            });
+#endif
             return true;
         }
     }
