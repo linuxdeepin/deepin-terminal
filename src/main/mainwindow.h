@@ -828,7 +828,7 @@ public:
     // 显示快捷键功能
     virtual QPoint calculateShortcutsPreviewPoint() = 0;
     // 处理雷神窗口丢失焦点自动隐藏功能
-    virtual void onAppFocusChangeForQuake() = 0;
+    virtual void onAppFocusChangeForQuake(bool checkIsActiveWindow = true) = 0;
     // 根据字体和字体大小设置最小高度
     virtual void setWindowMinHeightForFont() = 0;
     /******** Add by ut001000 renfeixiang 2020-08-07:基类中定义更新最小高度函数的纯虚函数***************/
@@ -977,7 +977,7 @@ protected:
      * @brief 普通窗口处理雷神窗口丢失焦点自动隐藏功能，普通窗口不用该函数
      * @author ut001121 zhangmeng
      */
-    virtual void onAppFocusChangeForQuake() override;
+    virtual void onAppFocusChangeForQuake(bool checkIsActiveWindow = true) override;
     // 根据字体和字体大小设置最小高度
     virtual void setWindowMinHeightForFont() override {return;}
 
@@ -1115,7 +1115,7 @@ protected:
      * @brief 处理雷神窗口丢失焦点自动隐藏功能
      * @author ut001121 张猛
      */
-    virtual void onAppFocusChangeForQuake() override;
+    virtual void onAppFocusChangeForQuake(bool checkIsActiveWindow = true) override;
     /**
      * @brief 雷神窗口根据字体和字体大小设置最小高度
      * @author ut001000 任飞翔
