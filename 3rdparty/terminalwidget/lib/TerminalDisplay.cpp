@@ -2364,7 +2364,6 @@ void TerminalDisplay::extendSelection( const QPoint& position )
   int offset = 0;
   if ( !_wordSelectionMode && !_lineSelectionMode )
   {
-    int i;
     QChar selClass;
 
     bool left_not_right = ( here.y() < _iPntSelCorr.y() ||
@@ -2380,7 +2379,7 @@ void TerminalDisplay::extendSelection( const QPoint& position )
     QPoint right = left_not_right ? _iPntSelCorr : here;
     if ( right.x() > 0 && !_columnSelectionMode )
     {
-      i = loc(right.x(),right.y());
+      int i = loc(right.x(),right.y());
       if (i>=0 && i<=_imageSize) {
         selClass = charClass(_image[i-1].character);
        /* if (selClass == ' ')
@@ -2670,10 +2669,6 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
         // to get a reasonable scrolling speed, scroll by one line for every 5 degrees
         // of mouse wheel rotation.  Mouse wheels typically move in steps of 15 degrees,
         // giving a scroll of 3 lines
-
-        // commit this to fix bug 17772, Because this code will turn the scrolling operation
-        // into the up and down keys of the keyboard and send the keyboard signal
-        /*
         int key = ev->delta() > 0 ? Qt::Key_Up : Qt::Key_Down;
 
         // QWheelEvent::delta() gives rotation in eighths of a degree
@@ -2684,7 +2679,6 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 
         for (int i=0;i<linesToScroll;i++)
             emit keyPressedSignal(&keyScrollEvent);
-        */
     }
   }
   else
