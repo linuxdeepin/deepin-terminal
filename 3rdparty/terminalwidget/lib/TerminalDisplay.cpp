@@ -2858,7 +2858,7 @@ void TerminalDisplay::bracketText(QString& text)
 void TerminalDisplay::setSelection(const QString& t)
 {
     /******** Modify by n014361 wangpeili 2020-02-12: 自动拷贝功能，需发出可拷贝信号***********×****/
-    if(t != QApplication::clipboard()->text(QClipboard::Selection))
+    if(t != QApplication::clipboard()->text(QClipboard::Clipboard))
     {
         selectionChanged();
     }
