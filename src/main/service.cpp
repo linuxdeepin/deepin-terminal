@@ -28,6 +28,7 @@
 #include <DSettingsWidgetFactory>
 #include <DSysInfo>
 #include <DWindowManagerHelper>
+#include <DTitlebar>
 
 #include <QDebug>
 #include <QDateTime>
@@ -85,8 +86,18 @@ void Service::releaseInstance()
 
 void Service::initSetting()
 {
-    if (nullptr != m_settingDialog)
+    if (nullptr != m_settingDialog) {
+        //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
+        DTitlebar *titleBar = Utils::findWidgetByAccessibleName<DTitlebar *>(m_settingDialog, "DSettingTitleBar");
+        QScrollArea *scrollArea = Utils::findWidgetByAccessibleName<QScrollArea *>(m_settingDialog, "ContentScrollArea");
+        if(titleBar && scrollArea) {
+            QTimer::singleShot(0, this, [titleBar, scrollArea](){
+                titleBar->setFocus();
+                scrollArea->verticalScrollBar()->setValue(0);
+            });
+        }
         return;
+    }
 
     QDateTime startTime = QDateTime::currentDateTime();
     m_settingDialog = new DSettingsDialog();

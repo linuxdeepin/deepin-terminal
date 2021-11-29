@@ -332,6 +332,25 @@ public:
      * @return
      */
     static QVariantMap *objArrayFind(QVariantMap *obj, const QString &objKey, const QString &arrKey, const QString &arrValue);
+
+    /**
+     * @brief findWidgetByAccessibleName 按accessibleName查找widget的child
+     * @param widget
+     * @param accessibleName
+     * @return
+     */
+    template<typename T>
+    static T findWidgetByAccessibleName(QWidget *widget, const QString &accessibleName)
+    {
+        for(auto obj : widget->findChildren<T>()) {
+            QWidget *w = qobject_cast<QWidget *>(obj);
+            qInfo() << w << w->accessibleName();
+            if(w && w->accessibleName() == accessibleName) {
+                return qobject_cast<T>(w);
+            }
+        }
+        return nullptr;
+    }
 };
 
 /*******************************************************************************
