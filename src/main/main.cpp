@@ -64,17 +64,16 @@ int main(int argc, char *argv[])
     // 参数解析
     TermProperties properties;
     Utils::parseCommandLine(app.arguments(), properties, true);
+    QStringList args = app.arguments();
+
+    if(!(args.contains("-w") || args.contains("--work-directory"))) {
+        args += "-w";
+        args += QDir::currentPath();
+    }
 
     DBusManager manager;
     if (!manager.initDBus()) {
         // 非第一次启动
-        QStringList args = app.arguments();
-        if(args.contains("-w") || args.contains("--work-directory")) {
-
-        } else {
-            args += "-w";
-            args += QDir::currentPath();
-        }
         DBusManager::callTerminalEntry(args);
         return 0;
     }
@@ -83,7 +82,7 @@ int main(int argc, char *argv[])
     qputenv("TERM", "xterm-256color");
     // 首次启动
     QObject::connect(&manager, &DBusManager::entryArgs, Service::instance(), &Service::Entry);
-    Service::instance()->EntryTerminal(app.arguments());
+    Service::instance()->EntryTerminal(args);
     // 监听触控板事件
     manager.listenTouchPadSignal();
 

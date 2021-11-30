@@ -366,7 +366,7 @@ void Session::run()
     if (argsTmp.length())
         arguments << _arguments;
 
-    if (QDir(_initialWorkingDir).exists()) {
+    if (!_initialWorkingDir.isEmpty() && QDir(_initialWorkingDir).exists()) {
         _shellProcess->setWorkingDirectory(_initialWorkingDir);
     } else {
         _shellProcess->setWorkingDirectory(QDir::homePath());
