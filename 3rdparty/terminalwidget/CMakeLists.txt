@@ -59,6 +59,7 @@ endif()
 
 set(TERMINALWIDGET_LIBRARY_NAME terminalwidget5)
 
+remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_BYTEARRAY)
 
 # main library
 
