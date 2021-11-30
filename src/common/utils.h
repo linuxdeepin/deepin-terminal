@@ -350,7 +350,6 @@ public:
     {
         for(auto obj : widget->findChildren<T>()) {
             QWidget *w = qobject_cast<QWidget *>(obj);
-            qInfo() << w << w->accessibleName();
             if(w && w->accessibleName() == accessibleName) {
                 return qobject_cast<T>(w);
             }
