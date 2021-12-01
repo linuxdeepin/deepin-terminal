@@ -366,11 +366,10 @@ void Session::run()
     if (argsTmp.length())
         arguments << _arguments;
 
-    QString cwd = QDir::currentPath();
-    if (!_initialWorkingDir.isEmpty()) {
+    if (!_initialWorkingDir.isEmpty() && QDir(_initialWorkingDir).exists()) {
         _shellProcess->setWorkingDirectory(_initialWorkingDir);
     } else {
-        _shellProcess->setWorkingDirectory(cwd);
+        _shellProcess->setWorkingDirectory(QDir::homePath());
     }
 
     _shellProcess->setFlowControlEnabled(_flowControl);
