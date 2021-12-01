@@ -59,6 +59,12 @@ int main(int argc, char *argv[])
     TermProperties Properties;
     Utils::parseCommandLine(app.arguments(), Properties, true);
 
+    QStringList args = app.arguments();
+    if(!(args.contains("-w") || args.contains("--work-directory"))) {
+        args += "-w";
+        args += QDir::currentPath();
+    }
+
     DBusManager manager;
     if (!manager.initDBus()) {
         // 初始化失败，则已经注册过dbus
@@ -72,21 +78,6 @@ int main(int argc, char *argv[])
         }
 
         // 调用entry接口
-        /******** Modify by ut000610 daizhengwen 2020-05-25: 在终端中打开****************/
-        QStringList args = app.arguments();
-        bool isCurrentPaht = false;
-        for (QString &arg : args) {
-            // 若已有-w和--work-directory参数，直接将参数传给主进程执行
-            if (arg == "-w" || arg == "--work-directory") {
-                isCurrentPaht = true;
-                break;
-            }
-        }
-        if (!isCurrentPaht) {
-            args += "-w";
-            args += QDir::currentPath();
-        }
-        /********************* Modify by ut000610 daizhengwen End ************************/
         qDebug() << "[sub app] start to call main terminal entry! app args " << args;
         DBusManager::callTerminalEntry(args);
         qint64 endtime2 = QDateTime::currentMSecsSinceEpoch();
@@ -105,7 +96,7 @@ int main(int argc, char *argv[])
     // 初始化数据
     service->init();
     // 创建窗口
-    service->Entry(app.arguments());
+    service->Entry(args);
     qint64 endtime3 = QDateTime::currentMSecsSinceEpoch();
     qDebug() << "First Terminal Window create complete! time use " << endtime3 - starttime << "ms";
 
