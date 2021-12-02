@@ -71,10 +71,8 @@ using std::ofstream;
 const int MainWindow::m_MinWidth = 450;
 const int MainWindow::m_MinHeight = 250;
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
-//qt5.15里，需要补发事件,实现雷神终端的正常隐藏
+//qt5.15里，需要补发事件,实现雷神终端的正常隐藏。bug#85079
 static QList<QEvent *> DeActivationChangeEventList;
-#endif
 
 DWIDGET_USE_NAMESPACE
 
@@ -3057,12 +3055,12 @@ void QuakeWindow::changeEvent(QEvent *event)
     // 不是激活事件,不处理
     if (QEvent::ActivationChange == event->type()) {
         bool checkIsActiveWindow = true;
-#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+if(qVersion() >= QString("5.15.0")) {
         if(DeActivationChangeEventList.contains(event)) {
             DeActivationChangeEventList.removeOne(event);
             checkIsActiveWindow = false;
         }
-#endif
+}
         onAppFocusChangeForQuake(checkIsActiveWindow);
     }
 
@@ -3102,14 +3100,14 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
         if (event->type() == QEvent::WindowStateChange) {
             event->ignore();
             this->activateWindow();
-#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+if(qVersion() >= QString("5.15.0")) {
             //queue的方式发送事件
             QTimer::singleShot(0, this, [this](){
                 QEvent *event = new QEvent(QEvent::ActivationChange);
                 DeActivationChangeEventList << event;
                 qApp->postEvent(this, event);
             });
-#endif
+}
             return true;
         }
     }
