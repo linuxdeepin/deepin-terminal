@@ -865,7 +865,15 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         return;
 
     // 保存窗口位置
-    saveWindowSize();
+    if(nullptr == resizeFinishedTimer) {
+        resizeFinishedTimer = new QTimer(this);
+        resizeFinishedTimer->setSingleShot(true);
+        connect(resizeFinishedTimer, &QTimer::timeout, this, [this](){
+            saveWindowSize();
+        });
+    }
+    //If the timer is already running, it will be stopped and restarted.
+    resizeFinishedTimer->start(300);
     // 通知隐藏插件
     hidePlugin();
 
