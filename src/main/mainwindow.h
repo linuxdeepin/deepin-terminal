@@ -927,6 +927,10 @@ public:
     bool m_isInitialized = false;
 
     QTimer *m_createTimer = nullptr;
+
+    //当resize停滞一段时间后，会触发resizeFinishedTimer/timeout信号，用于保存窗口位置
+    //仅在resizeEvent里使用
+    QTimer *resizeFinishedTimer = nullptr;
 };
 
 /*******************************************************************************
