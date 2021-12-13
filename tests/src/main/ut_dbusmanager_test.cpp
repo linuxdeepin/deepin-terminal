@@ -85,15 +85,6 @@ TEST_F(UT_Dbusmanager_Test, callTerminal)
     EXPECT_TRUE(UT_STUB_QDBUS_CALL_RESULT);;
 }
 
-
-//Json转为 QStringList
-TEST_F(UT_Dbusmanager_Test, converToList)
-{
-    QJsonArray array = { 1, 2.2, QString() };
-    QStringList results = DBusManager::converToList("type", array);
-    EXPECT_TRUE(results.size() == array.size());
-}
-
 TEST_F(UT_Dbusmanager_Test, listenTouchPadSignal)
 {
     UT_STUB_QDBUS_CONNECT_CREATE

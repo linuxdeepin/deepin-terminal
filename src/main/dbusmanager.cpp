@@ -92,9 +92,9 @@ void DBusManager::callKDESetCurrentDesktop(int index)
         qInfo() << "call setCurrentDesktop Fail!" << response.errorMessage();
 }
 
-QStringList DBusManager::callAppearanceFont(QString fontType)
+FontDataList DBusManager::callAppearanceFont(QString fontType)
 {
-    QStringList fontList;
+    FontDataList rList;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "List");
 
@@ -110,29 +110,19 @@ QStringList DBusManager::callAppearanceFont(QString fontType)
         fonts.replace("]", "");
         fonts.replace("\"", "");
         // 用逗号分隔
-        fontList = fonts.split(",");
-        fontList = callAppearanceShowFont(fontList, fontType);
+        QStringList fontList = fonts.split(",");
+        rList = callAppearanceFont(fontList, fontType);
     } else {
         qInfo() << "call List Fail!" << response.errorMessage();
     }
-    return fontList;
+
+
+    return rList;
 }
 
-/******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList Begin***************/
-QStringList DBusManager::converToList(const QString &type, const QJsonArray &array)
+FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontType)
 {
-    QStringList list;
-    for (int i = 0; i != array.size(); i++) {
-        QJsonObject object = array.at(i).toObject();
-        object.insert("type", QJsonValue(type));
-        list.append(object["Name"].toString());
-    }
-    return list;
-}
-
-QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fontType)
-{
-    QStringList retList;
+    FontDataList retList;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "Show");
 
@@ -140,10 +130,13 @@ QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fo
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qInfo() << "call Show Success!";
-        QString fonts = response.arguments().value(0).toString();
-        QJsonArray array = QJsonDocument::fromJson(fonts.toLocal8Bit().data()).array();
-        retList = converToList(fontType, array);
-        qInfo() << "Show value" << retList;
+        QByteArray fonts = response.arguments().value(0).toByteArray();
+        QJsonArray array = QJsonDocument::fromJson(fonts).array();
+        for (int i = 0; i < array.size(); i++) {
+            QJsonObject object = array.at(i).toObject();
+            retList.append(FontData(object["Id"].toString(), object["Name"].toString()));
+        }
+        qInfo() << "Show value" << retList.values();
     } else {
         qInfo() << "call Show Fail!" << response.errorMessage();
     }
