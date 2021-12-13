@@ -89,17 +89,24 @@ void Settings::init()
     QByteArray json = configFile.readAll();
     configFile.close();
 
+    QJsonDocument doc = QJsonDocument::fromJson(json);
+    QVariant jsonVar = doc.toVariant();
     //龙芯 且 服务器企业版
     if(Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
-        QJsonDocument doc = QJsonDocument::fromJson(json);
-        QVariant jsonVar = doc.toVariant();
         //隐藏透明度界面
         Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "opacity", "hide", true);
         //隐藏背景模糊界面
         Utils::insertToDefaultConfigJson(jsonVar, "advanced", "window", "blurred_background", "hide", true);
-        //更新json
-        json = QJsonDocument::fromVariant(jsonVar).toJson();
     }
+    //终端的默认字体，由固定：Noto Sans Mono，改为读系统的默认字体
+    QString defaultFont = Utils::getValueInDefaultConfigJson(jsonVar, "basic", "interface", "font", "default").toString();
+    QString systemFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
+
+    //无效字体时，exactMatch：Returns true if a window system font exactly matching the settings of this font is available.
+    if(!QFont(defaultFont).exactMatch())
+        Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "font", "default", systemFixedFont);
+    //更新json
+    json = QJsonDocument::fromVariant(jsonVar).toJson();
     settings = DSettings::fromJson(json);
 
     // 加载自定义配置
@@ -530,14 +537,13 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
 void Settings::handleWidthFont()
 {
-    QStringList Whitelist;
-    Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
 
     //将新安装的字体，加载到字体库中
     QFontDatabase base;
     for (int i = 0; i < Whitelist.count(); ++i) {
-        QString name = Whitelist.at(i);
-        if (-1 == comboBox->findText(name)) {
+        QString name = Whitelist[i].value;
+        if (-1 == comboBox->findData(name)) {
             QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/";// + name + ".ttf";
             QDir dir(fontpath);
             if (dir.count() > 2)
@@ -549,18 +555,19 @@ void Settings::handleWidthFont()
 
         }
     }
-    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
+    //按name小到大排序
+    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const FontData & str1, const FontData & str2) {
         QCollator qc;
-        return qc.compare(str1, str2) < 0;
+        return qc.compare(str1.value, str2.value) < 0;
     });
 
-    QString fontname = comboBox->currentText();
+    //更新设置界面的字体信息
+    QVariant fontname = comboBox->currentData();
     comboBox->clear();
-    comboBox->addItems(Whitelist);
-    qInfo() << "handleWidthFont has update";
-    if (Whitelist.contains(fontname)) {
-        comboBox->setCurrentText(fontname);
+    for(int k = 0; k < Whitelist.count(); k ++) {
+        comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
+    comboBox->setCurrentIndex(comboBox->findData(fontname));
 }
 
 
@@ -595,12 +602,11 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
-    QStringList Whitelist;
-    Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
 
-    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
+    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const FontData & str1, const FontData & str2) {
         QCollator qc;
-        return qc.compare(str1, str2) < 0;
+        return qc.compare(str1.value, str2.value) < 0;
     });
 
     qInfo() << "createFontComBoBoxHandle get system monospacefont";
@@ -608,27 +614,31 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
         //一般不会走这个分支，除非DBUS出现问题
         qInfo() << "DBusManager::callAppearanceFont failed, get control font failed.";
         //DBUS获取字体失败后，设置系统默认的等宽字体
-        Whitelist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
-                  << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
-                  << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
-                  << "Noto Sans Mono CJK TC";
+        QStringList fontlist;
+        fontlist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
+                 << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
+                 << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
+                 << "Noto Sans Mono CJK TC";
+        Whitelist.appendValues(fontlist);
     }
-    comboBox->addItems(Whitelist);
+    for(int k = 0; k < Whitelist.count(); k ++) {
+        comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
+    }
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 End***************/
 
     if (option->value().toString().isEmpty())
         option->setValue(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());
 
     // init.
-    comboBox->setCurrentText(option->value().toString());
+    comboBox->setCurrentIndex(comboBox->findData(option->value()));
 
     connect(option, &DSettingsOption::valueChanged, comboBox, [ = ](QVariant var) {
-        comboBox->setCurrentText(var.toString());
+        comboBox->setCurrentIndex(comboBox->findData(var));
     });
 
     option->connect(
-    comboBox, &QComboBox::currentTextChanged, option, [ = ](const QString & text) {
-        option->setValue(text);
+        comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), option, [ = ](int index) {
+        option->setValue(comboBox->itemData(index));
     });
 
     return optionWidget;

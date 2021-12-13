@@ -634,6 +634,22 @@ void Utils::insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_k
     obj->insert(key, value);
 }
 
+QVariant Utils::getValueInDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key)
+{
+    QVariantMap *obj = nullptr;
+    if(jsonVar.type() == QVariant::Map)
+        obj = reinterpret_cast<QVariantMap *>(&jsonVar);
+
+    obj = objArrayFind(obj, "groups", "key", groups_key);
+    obj = objArrayFind(obj, "groups", "key", groups_key2);
+    obj = objArrayFind(obj, "options", "key", options_key);
+    if(!obj) {
+       qWarning() << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
+       return QVariant();
+    }
+    return obj->value(key);
+}
+
 
 QVariantMap *Utils::objArrayFind(QVariantMap *obj, const QString &objKey, const QString &arrKey, const QString &arrValue)
 {
@@ -712,7 +728,7 @@ void FontFilter::setStop(bool stop)
 
 void FontFilter::compareWhiteList()
 {
-    QStringList DBUSWhitelist = DBusManager::callAppearanceFont("monospacefont");
+    QStringList DBUSWhitelist = DBusManager::callAppearanceFont("monospacefont").values();
     std::sort(DBUSWhitelist.begin(), DBUSWhitelist.end(), [ = ](const QString & str1, const QString & str2) {
         QCollator qc;
         return qc.compare(str1, str2) < 0;

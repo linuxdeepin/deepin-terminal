@@ -88,18 +88,6 @@ static void doDeleteLater(DSettingsOption *obj)
 
 #ifdef UT_SETTINGS_TEST
 
-TEST_F(UT_Settings_Test, init)
-{
-    Stub stub;
-    stub.set((QString (QVariant::*)() const)ADDR(QVariant, toString), ut_variant_toString);
-    stub.set((bool (QFile::*)() const)ADDR(QFile, exists), ut_file_exists);
-
-    Settings::releaseInstance();
-    EXPECT_TRUE(Settings::m_settings_instance == nullptr);
-    Settings::instance();
-    EXPECT_TRUE(Settings::m_settings_instance);
-
-}
 TEST_F(UT_Settings_Test, SettingsTest)
 {
     UT_STUB_DSETTINGSOPTION_VALUE_CREATE;
@@ -237,16 +225,18 @@ TEST_F(UT_Settings_Test, loadDefaultsWhenReinstall)
     EXPECT_TRUE(spy.count() == 1);
 }
 
-static QStringList ut_DBusManager_callAppearanceFont(QString )
+static FontDataList ut_DBusManager_callAppearanceFont( QString)
 {
-    return {"Courier 10 Pitch", "DejaVu Sans Mono", "Hack", "Liberation Mono", "Linux Libertine Mono O", "Nimbus Mono L", "Nimbus Mono PS", "Noto Mono", "Noto Sans Mono", "Noto Sans Mono CJK JP", "Noto Sans Mono CJK KR", "Noto Sans Mono CJK SC", "Noto Sans Mono CJK TC", "等距更纱黑体 SC", "文泉驿等宽微米黑"};
+    return FontDataList().appendValues({"Courier 10 Pitch", "DejaVu Sans Mono", "Hack", "Liberation Mono", "Linux Libertine Mono O", "Nimbus Mono L", "Nimbus Mono PS", "Noto Mono", "Noto Sans Mono", "Noto Sans Mono CJK JP", "Noto Sans Mono CJK KR", "Noto Sans Mono CJK SC", "Noto Sans Mono CJK TC", "等距更纱黑体 SC", "文泉驿等宽微米黑"});
 }
 
 TEST_F(UT_Settings_Test, handleWidthFont)
 {
     Stub stub;
     stub.set((int (QComboBox::*)(const QString &, Qt::MatchFlags) const)ADDR(DComboBox, findText), ut_combobox_findText);
-    stub.set(ADDR(DBusManager, callAppearanceFont), ut_DBusManager_callAppearanceFont);
+    //静态重载函数的打桩
+    stub.set((FontDataList (*)(QString))ADDR(DBusManager, callAppearanceFont), ut_DBusManager_callAppearanceFont);
+
     //获取等宽字体
     Settings::instance()->handleWidthFont();
     EXPECT_TRUE(Settings::instance()->comboBox->count() > 0);

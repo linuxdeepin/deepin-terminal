@@ -92,6 +92,52 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 #define ENCODE_ITEM_WIDTH 220
 #define ENCODE_ITEM_HEIGHT 60
 
+//字体信息
+struct FontData{
+    FontData(const QString &_key, const QString &_value)
+        : key(_key)
+        , value(_value){}
+    QString key;//用于保存
+    QString value;//用于显示
+};
+
+//字体列表
+class FontDataList : public QList<FontData> {
+public:
+    /**
+     * @brief keys 返回keys
+     * @return
+     */
+    inline QStringList keys()
+    {
+        QStringList rlist;
+        for(const auto &font : *this)
+            rlist << font.key;
+        return rlist;
+    }
+    /**
+     * @brief values 返回values
+     * @return
+     */
+    inline QStringList values()
+    {
+        QStringList rlist;
+        for(const auto &font : *this)
+            rlist << font.value;
+        return rlist;
+    }
+    /**
+     * @brief appendValues 将list转为FontDataList
+     * @param values
+     */
+    inline FontDataList &appendValues(const QStringList &values)
+    {
+        for(const auto &v : values)
+            append(FontData(v, v));
+        return *this;
+    }
+};
+
 /*******************************************************************************
  1. @类名:    Utils
  2. @作者:    ut000439 wangpeili
@@ -313,7 +359,7 @@ public:
     static bool isLoongarch();
 
     /**
-     * @brief insertToJson 插入或修改 json，格式为default-config.json
+     * @brief insertToDefaultConfigJson 修改json的value， json read from default-config.json
      * @param jsonVar
      * @param groups_key
      * @param groups_key2
@@ -322,6 +368,18 @@ public:
      * @param value
      */
     static void insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key, const QVariant &value);
+
+    /**
+     * @brief getValueInDefaultConfigJson 获取json的value， json read from default-config.json
+     * @param jsonVar
+     * @param groups_key
+     * @param groups_key2
+     * @param options_key
+     * @param key
+     * @return
+     */
+    static QVariant getValueInDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key);
+
 
     /**
      * @brief objArrayFind 按特定的顺序查找json
