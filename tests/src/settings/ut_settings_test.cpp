@@ -90,6 +90,9 @@ static void doDeleteLater(DSettingsOption *obj)
 
 TEST_F(UT_Settings_Test, SettingsTest)
 {
+    //测试场景：读取的settings的值
+    Settings::instance()->bSwitchTheme = true;
+
     UT_STUB_DSETTINGSOPTION_VALUE_CREATE;
     Settings::instance()->opacity();
     EXPECT_TRUE(UT_STUB_DSETTINGSOPTION_VALUE_RESULT);

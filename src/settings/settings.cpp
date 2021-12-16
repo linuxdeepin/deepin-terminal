@@ -370,11 +370,6 @@ qreal Settings::opacity() const
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
 }
 
-QString Settings::colorScheme() const
-{
-    return settings->option("basic.interface.theme")->value().toString();
-}
-
 QString Settings::encoding() const
 {
     return m_EncodeName;
@@ -471,19 +466,43 @@ bool Settings::backgroundBlur() const
     return settings->option("advanced.window.blurred_background")->value().toBool();
 }
 
+
+QString Settings::colorScheme() const
+{
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        return switchThemeMap["basic.interface.theme"];
+    }
+    return settings->option("basic.interface.theme")->value().toString();
+}
+
 void Settings::setColorScheme(const QString &name)
 {
-    return settings->option("basic.interface.theme")->setValue(name);
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        switchThemeMap["basic.interface.theme"] = name;
+        return;
+    }
+    settings->option("basic.interface.theme")->setValue(name);
 }
 
 QString Settings::extendColorScheme() const
 {
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        return switchThemeMap["basic.interface.expand_theme"];
+    }
     return settings->option("basic.interface.expand_theme")->value().toString();
 }
 
 void Settings::setExtendColorScheme(const QString &name)
 {
-    return settings->option("basic.interface.expand_theme")->setValue(name);
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        switchThemeMap["basic.interface.expand_theme"] = name;
+        return;
+    }
+    settings->option("basic.interface.expand_theme")->setValue(name);
 }
 
 /*******************************************************************************

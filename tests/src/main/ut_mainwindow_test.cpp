@@ -724,6 +724,9 @@ TEST_F(UT_MainWindow_Test, switchThemeActionTestOne)
 *******************************************************************************/
 TEST_F(UT_MainWindow_Test, setThemeCheckItemSlotTest)
 {
+    //测试场景，主题列表上下滑动的情况
+    Settings::instance()->bSwitchTheme =  false;
+
     Settings::instance()->themeStr = "Light";
     Settings::instance()->extendThemeStr = "";
     m_normalWindow->setThemeCheckItemSlot();
