@@ -31,7 +31,6 @@ TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication
     Utils::set_Object_Name(this);
     loadTranslator();
     setOrganizationName("deepin");
-    setOrganizationDomain("deepin.org");
     setApplicationVersion(VERSION);
     setApplicationName("deepin-terminal");
     setApplicationDisplayName(QObject::tr("Terminal"));
