@@ -1159,29 +1159,13 @@ void TermWidget::wheelEvent(QWheelEvent *event)
     QTermWidget::wheelEvent(event);
 }
 
-bool TermWidget::eventFilter(QObject *o, QEvent *e)
-{
-    if (m_messageTextMap.contains(o) && QEvent::Resize == e->type()) {
-        QLabel *label = static_cast<QLabel *>(o);
-        QString orgText = m_messageTextMap[o];
-        QString elideText = Utils::getElidedText(label->font(), orgText, label->width(), Qt::ElideRight);
-        if (elideText != label->text())
-            label->setText(elideText);
-    }
-    return QTermWidget::eventFilter(o, e);
-}
-
 void TermWidget::showFlowMessage(bool show)
 {
     if (nullptr == m_flowMessage) {
         m_flowMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
-        QList<QLabel *> lst = m_flowMessage->findChildren<QLabel *>();
-        for (auto label : lst) {
-            label->setWordWrap(false);
-        }
         m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
         QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
-        installEventMessageText(m_flowMessage, strText);
+        m_flowMessage->setMessage(strText);
         DMessageManager::instance()->sendMessage(this, m_flowMessage);
     }
     m_flowMessage->setVisible(show);
@@ -1191,30 +1175,13 @@ void TermWidget::showShellMessage(QString strWarnings)
 {
     // 初始化悬浮框
     DFloatingMessage *shellWarningsMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
-    QList<QLabel *> lst = shellWarningsMessage->findChildren<QLabel *>();
-    for (auto label : lst) {
-        label->setWordWrap(false);
-    }
     // 关闭悬浮框时销毁
     connect(shellWarningsMessage, &DFloatingMessage::closeButtonClicked, shellWarningsMessage, &DFloatingMessage::deleteLater);
     // 设置icon和文字
     shellWarningsMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
-    installEventMessageText(shellWarningsMessage, strWarnings);
+    shellWarningsMessage->setMessage(strWarnings);
     // 调用DTK的方法关闭悬浮框
     DMessageManager::instance()->sendMessage(this, shellWarningsMessage);
-}
-
-void TermWidget::installEventMessageText(DFloatingMessage *widget, const QString &text)
-{
-    widget->setMessage("the sentence for searching MessageLabel of DFloatingMessage");
-    for (auto label : widget->findChildren<QLabel *>()) {
-        if ("the sentence for searching MessageLabel of DFloatingMessage" == label->text()) {
-            label->installEventFilter(this);
-            m_messageTextMap[label] = text;
-            break;
-        }
-    }
-    widget->setMessage(text);
 }
 
 

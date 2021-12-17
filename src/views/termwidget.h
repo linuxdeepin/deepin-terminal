@@ -277,13 +277,7 @@ public:
      * @param strWarnings 提示
      */
     void showShellMessage(QString strWarnings);
-    /**
-     * @brief 弹窗安装事件过滤器，更新DFloatingMessage的text
-     * @author ut003135 changze
-     * @param widget
-     * @param text
-     */
-    void installEventMessageText(DFloatingMessage *widget, const QString &text);
+
 public slots:
     /**
      * @brief Terminal的各项设置生效
@@ -325,14 +319,6 @@ protected:
      * @param event 滚轮事件
      */
     void wheelEvent(QWheelEvent *event) override;
-    /**
-     * @brief 监控事件过滤，终端宽度缩小时，相关弹窗也同步变化
-     * @author  ut003135 changze
-     * @param o
-     * @param e
-     * @return
-     */
-    bool eventFilter(QObject *o, QEvent *e) override;
 
 private slots:
     /**
