@@ -2931,7 +2931,7 @@ void QuakeWindow::hideQuakeWindow()
     // 记录雷神在当前窗口的状态
     m_desktopMap[m_desktopIndex] = false;
     //Add by ut001000 renfeixiang 2020-11-16 添加雷神动画函数, 雷神窗口隐藏已经放在动画效果结束后
-    bottomToTopAnimation();
+    //bottomToTopAnimation();
 }
 
 void QuakeWindow::onResizeWindow()
