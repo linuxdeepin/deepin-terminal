@@ -51,13 +51,15 @@ void TabRenameWidget::initUi()
     // 内容输入框
     m_inputedit = new DLineEdit(this);
     m_inputedit->setText("%n:%d");
-    m_inputedit->setMaximumSize(172, 36);
-    m_inputedit->setMinimumSize(135, 36);
+    m_inputedit->setMinimumHeight(36);
+    m_inputedit->setMaximumWidth(172);
+    m_inputedit->setMinimumWidth(135);
     DFontSizeManager::instance()->bind(m_inputedit, DFontSizeManager::T6);
 
     // 插入按钮
     m_choseButton = new DPushButton(tr("Insert"), this);
-    m_choseButton->setMaximumHeight(36);
+    m_choseButton->setMinimumHeight(36);
+    m_choseButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
     // 添加下拉菜单
     m_choseButton->setMenu(m_choseMenu);
     DFontSizeManager::instance()->bind(m_choseButton, DFontSizeManager::T6);
