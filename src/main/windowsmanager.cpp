@@ -41,7 +41,7 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
         m_quakeWindow->setAnimationFlag(false);
         m_quakeWindow->show();
         //Add by ut001000 renfeixiang 2020-11-16 开始从上到下的动画
-        //m_quakeWindow->topToBottomAnimation();
+        m_quakeWindow->topToBottomAnimation();
         m_quakeWindow->activateWindow();
         // 雷神创建的第一个时候，m_quakeWindow仍为null，需要在这里更正一下．
         Service::instance()->updateShareMemoryCount(m_quakeWindow == nullptr ? m_widgetCount : m_widgetCount - 1);
@@ -57,7 +57,7 @@ void WindowsManager::quakeWindowShowOrHide()
     if (!m_quakeWindow->isVisible()) {
         m_quakeWindow->setAnimationFlag(false);
         m_quakeWindow->show();
-        //m_quakeWindow->topToBottomAnimation();
+        m_quakeWindow->topToBottomAnimation();
         m_quakeWindow->activateWindow();
         return;
     }
@@ -85,11 +85,11 @@ void WindowsManager::quakeWindowShowOrHide()
         return;
     }
     //终端未激活则激活
-//     if(!m_quakeWindow->isActiveWindow()) {
-//         m_quakeWindow->activateWindow();
-//         m_quakeWindow->focusCurrentPage();
-//         return;
-//     }
+    if(!m_quakeWindow->isActiveWindow()) {
+        m_quakeWindow->activateWindow();
+        m_quakeWindow->focusCurrentPage();
+        return;
+    }
     //隐藏终端
     m_quakeWindow->hideQuakeWindow();
 }
