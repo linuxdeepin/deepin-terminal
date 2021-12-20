@@ -112,6 +112,11 @@ public:
      */
     void resetCurServer(ServerConfig *config);
 
+    /**
+     * @brief setAdvanceRegionVisible 隐藏或显示【高级选项】下方的控件
+     * @param isVisible
+     */
+    void setAdvanceRegionVisible(bool isVisible);
 private slots:
     /**
      * @brief 服务器配置选项增加和保存按钮点击响应函数
@@ -137,8 +142,7 @@ private:
     DAlertControl *m_port_tip = nullptr;
     DLineEdit *m_userName = nullptr;
     DPasswordEdit *m_password = nullptr;
-    DLineEdit *m_privateKey = nullptr;
-    DSuggestButton *m_fileDialog = nullptr;
+    DFileChooserEdit *m_privateKey = nullptr;
     DLineEdit *m_group = nullptr;
     DLineEdit *m_path = nullptr;
     DLineEdit *m_command = nullptr;
@@ -148,6 +152,7 @@ private:
     DPushButton *m_advancedOptions = nullptr;
     TermCommandLinkButton *m_delServer = nullptr;
     bool m_bDelOpt = false;
+    QGridLayout *m_pGridLayout = nullptr;
 
     /**
      * @brief 服务器配置选项初始化UI界面
