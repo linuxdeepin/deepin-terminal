@@ -278,6 +278,11 @@ public:
      */
     void showShellMessage(QString strWarnings);
 
+    /**
+     * @brief beginInputRemotePassword 输入远程密码
+     */
+    void inputRemotePassword(const QString &remotePassword);
+
 public slots:
     /**
      * @brief Terminal的各项设置生效
@@ -311,6 +316,7 @@ signals:
     void termRequestRenameTab(QString newTabName);
     void termIsIdle(QString tabIdentifier, bool bIdle);
     void termTitleChanged(QString titleText);
+    void remotePasswordHasInputed();
 
 protected:
     /**
@@ -454,6 +460,13 @@ private:
     DFloatingMessage *m_flowMessage = nullptr;
     //记录弹窗的信息
     QMap<QObject *, QString> m_messageTextMap;
+
+    //当前shell的 pid
+    int m_remoteMainPid = 0;
+    //本次远程的密码
+    QString m_remotePassword;
+    //是否准备远程
+    bool m_remotePasswordIsReady = false;
 };
 
 #endif  // TERMWIDGET_H
