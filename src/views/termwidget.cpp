@@ -253,6 +253,28 @@ inline void TermWidget::onQTermWidgetReceivedData(QString value)
 
 inline void TermWidget::onTermWidgetReceivedData(QString value)
 {
+    //前提：
+    //启动终端ForegroundPid:A
+    //远程开始、输入信息中、远程中：ForegroundPid:B
+    //远程结束ForegroundPid:A
+    //远程开始时，快速ctrl+c，也会有ForegroundPid：A-》B-》A的过程
+
+    //准备输入密码，且 ForegroundPid 不等于A时，为有效准备
+    if(m_remotePasswordIsReady && getForegroundProcessId() != m_remoteMainPid) {
+        //匹配关键字
+        if(value.toLower().contains("password:")
+                || value.toLower().contains("enter passphrase for key")) {
+        //输入密码,密码不为空，则发送
+            if(!m_remotePassword.isEmpty())
+                sendText(m_remotePassword + "\r");
+            emit remotePasswordHasInputed();
+        }
+    }
+    //若ForegroundPid等于A，则代表远程结束，如开始连接时立刻ctrl+c
+    if(m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
+        m_remotePasswordIsReady = false;
+    }
+
     /******** Modify by ut000610 daizhengwen 2020-05-25: quit download****************/
     if (value.contains("Transfer incomplete")) {
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
@@ -673,6 +695,27 @@ inline QString TermWidget::getFilePath(QString fileName)
         return fileName;
 
     return workingDirectory() + "/" + fileName;
+}
+
+void TermWidget::inputRemotePassword(const QString &remotePassword)
+{
+    //每个工作区设置对应的标志位
+    m_remoteMainPid = getForegroundProcessId();
+    m_remotePassword = remotePassword;
+    m_remotePasswordIsReady = true;
+
+    //等待密码输入或超时，超时暂不处理
+    QTimer timer;
+    timer.setSingleShot(true);
+    QEventLoop loop;
+    connect(this, &TermWidget::remotePasswordHasInputed, &loop, &QEventLoop::quit);
+    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+    timer.start(1000);
+    loop.exec();
+
+    //还原
+    m_remotePassword = "";
+    m_remotePasswordIsReady = false;
 }
 
 inline void TermWidget::onOpenFile()

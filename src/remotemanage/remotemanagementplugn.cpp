@@ -134,6 +134,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt, true);
         // 等待连接 100ms等待命令发过去正常立即执行，100ms足够，一下的信号槽只是判断是否开启另一个程序去连接
         // 若有程序去连接，则判断已连接，若连接失败，则判断为断开连接
+        m_mainWindow->currentActivatedTerminal()->inputRemotePassword(curServer->m_password);
         QTimer::singleShot(100, this, [ = ]() {
             TermWidget *term = m_mainWindow->currentActivatedTerminal();
             if (!term) {
@@ -202,7 +203,7 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
         // fix bug#64758 修改服务器密码，点击连接没有密码错误提示语，且可以成功连接
         // 由于密码中可能存在各种特殊符号如!、#、$等，不处理的话shell命令运行会报错，需要转成ASCII编码处理下
         QString asciiPassword = convertStringToAscii(curServer->m_password);
-        strArgs.replace("<<PASSWORD>>", asciiPassword);
+        strArgs.replace("<<PASSWORD>>", "");
     } else {
         fileString.replace("<<AUTHENTICATION>>", "yes");
         strArgs.replace("<<PRIVATE_KEY>>", curServer->m_privateKey);
