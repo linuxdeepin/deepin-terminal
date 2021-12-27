@@ -74,6 +74,7 @@ Session::Session(QObject* parent) :
 //   , _zmodemProc(0)
 //   , _zmodemProgress(0)
         , _hasDarkBackground(false)
+        , _isPrimaryScreen(true)
 {
     //prepare DBus communication
 //    new SessionAdaptor(this);
@@ -99,7 +100,8 @@ Session::Session(QObject* parent) :
              this, SIGNAL( changeTabTextColorRequest( int ) ) );
     connect( _emulation, SIGNAL(profileChangeCommandReceived(const QString &)),
              this, SIGNAL( profileChangeCommandReceived(const QString &)) );
-
+    connect(_emulation, &Konsole::Emulation::primaryScreenInUse,
+            this, &Session::onPrimaryScreenInUse);
     connect(_emulation, SIGNAL(imageResizeRequest(QSize)),
             this, SLOT(onEmulationSizeChange(QSize)));
     connect(_emulation, SIGNAL(imageSizeChanged(int, int)),
@@ -214,6 +216,7 @@ void Session::addView(TerminalDisplay * widget)
         // indicates whether or not it is interested in mouse signals
         connect( _emulation , SIGNAL(programUsesMouseChanged(bool)) , widget ,
                  SLOT(setUsesMouse(bool)) );
+        connect( _emulation , &Konsole::Emulation::enableAlternateScrolling, widget, &Konsole::TerminalDisplay::setAlternateScrolling);
 
         widget->setUsesMouse( _emulation->programUsesMouse() );
 
@@ -288,7 +291,12 @@ void Session::onUpdateTitleArgs()
         _currentDir = dir;
         emit titleArgsChange(QLatin1String("%D"), _currentDir);
     }
+}
 
+void Session::onPrimaryScreenInUse(bool use)
+{
+    _isPrimaryScreen = use;
+    emit primaryScreenInUse(use);
 }
 
 void Session::removeView(TerminalDisplay *widget)
@@ -550,6 +558,11 @@ void Session::monitorTimerDone()
     }
 
     _notifiedActivity=false;
+}
+
+bool Session::isPrimaryScreen()
+{
+    return _isPrimaryScreen;
 }
 
 void Session::activityStateSet(int state)
