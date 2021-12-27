@@ -365,6 +365,8 @@ signals:
      */
     void programUsesMouseChanged(bool usesMouse);
 
+    void enableAlternateScrolling(bool enable);
+
     void programBracketedPasteModeChanged(bool bracketedPasteMode);
 
     /**
@@ -454,6 +456,12 @@ signals:
     void flowControlKeyPressed(bool suspendKeyPressed);
 
     /**
+     * Emitted when the active screen is switched, to indicate whether the primary
+     * screen is in use.
+     */
+    void primaryScreenInUse(bool use);
+
+    /**
      * Emitted when the cursor shape or its blinking state is changed via
      * DECSCUSR sequences.
      *
@@ -515,6 +523,9 @@ protected slots:
      */
     void bufferedUpdate();
 
+    // used to emit the primaryScreenInUse(bool) signal
+    void checkScreenInUse();
+
 private slots:
 
     // triggered by timer, causes the emulation to send an updated screen image to each
@@ -523,10 +534,13 @@ private slots:
 
     void usesMouseChanged(bool usesMouse);
 
+    void setAlternateScrolling(bool enable);
+
     void bracketedPasteModeChanged(bool bracketedPasteMode);
 
 private:
     bool _usesMouse;
+    bool _alternateScrolling;
     bool _bracketedPasteMode;
     QTimer _bulkTimer1;
     QTimer _bulkTimer2;

@@ -440,6 +440,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_terminalSizeStartup(true)
 ,_bidiEnabled(true) //默认开启双向文本（Bi-directional text）mode，和konsole保持同步
 ,_mouseMarks(false)
+, _alternateScrolling(true)
 ,_actSel(0)
 ,_wordSelectionMode(false)
 ,_lineSelectionMode(false)
@@ -2649,20 +2650,18 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
     //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
     initKeyBoardSelection();
 
-  if (ev->orientation() != Qt::Vertical)
-    return;
+    if (ev->orientation() != Qt::Vertical)
+        return;
 
-  // if the terminal program is not interested mouse events
-  // then send the event to the scrollbar if the slider has room to move
-  // or otherwise send simulated up / down key presses to the terminal program
-  // for the benefit of programs such as 'less'
-  if ( _mouseMarks )
-  {
-    bool canScroll = _scrollBar->maximum() > 0;
-      if (canScroll)
-        _scrollBar->event(ev);
-    else
+    // if the terminal program is not interested mouse events
+    // then send the event to the scrollbar if the slider has room to move
+    // or otherwise send simulated up / down key presses to the terminal program
+    // for the benefit of programs such as 'less'
+
+    if ( _mouseMarks && _scrollBar->maximum() > 0)
     {
+        _scrollBar->event(ev);
+    } else if(_mouseMarks && !SessionManager::instance()->idToSession(_sessionId)->isPrimaryScreen() && _alternateScrolling) {
         // assume that each Up / Down key event will cause the terminal application
         // to scroll by one line.
         //
@@ -2679,21 +2678,18 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 
         for (int i=0;i<linesToScroll;i++)
             emit keyPressedSignal(&keyScrollEvent);
+    } else if(!_mouseMarks) {
+        // terminal program wants notification of mouse activity
+
+        int charLine;
+        int charColumn;
+        getCharacterPosition( ev->pos() , charLine , charColumn );
+
+        emit mouseSignal( ev->delta() > 0 ? 4 : 5,
+                          charColumn + 1,
+                          charLine + 1 +_scrollBar->value() -_scrollBar->maximum() ,
+                          0);
     }
-  }
-  else
-  {
-    // terminal program wants notification of mouse activity
-
-    int charLine;
-    int charColumn;
-    getCharacterPosition( ev->pos() , charLine , charColumn );
-
-    emit mouseSignal( ev->delta() > 0 ? 4 : 5,
-                      charColumn + 1,
-                      charLine + 1 +_scrollBar->value() -_scrollBar->maximum() ,
-                      0);
-  }
 }
 
 void TerminalDisplay::tripleClickTimeout()
@@ -2803,6 +2799,12 @@ void TerminalDisplay::setUsesMouse(bool on)
         emit usesMouseChanged();
     }
 }
+
+void TerminalDisplay::setAlternateScrolling(bool enable)
+{
+    _alternateScrolling = enable;
+}
+
 bool TerminalDisplay::usesMouse() const
 {
     return _mouseMarks;
