@@ -126,6 +126,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
         /***add begin by ut001121 zhangmeng 20200801 截获DPushButton控件回车按键事件并模拟空格键点击事件,用以解决回车键不响应的问题***/
         // 回车键
         // 恢复默认 添健按钮
+        qInfo() << __FILE__ << __LINE__ << object->metaObject()->className();
         if ((QStringLiteral("QPushButton") == object->metaObject()->className()
                 // 远程和自定义列表的返回按钮，编辑按钮
                 || QStringLiteral("IconButton") == object->metaObject()->className()
