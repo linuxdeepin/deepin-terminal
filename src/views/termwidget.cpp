@@ -269,6 +269,11 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
                 sendText(m_remotePassword + "\r");
             emit remotePasswordHasInputed();
         }
+        //第一次远程时，需要授权
+        if(value.toLower().contains("yes/no")) {
+            sendText("yes\r");
+        }
+
     }
     //若ForegroundPid等于A，则代表远程结束，如开始连接时立刻ctrl+c
     if(m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
