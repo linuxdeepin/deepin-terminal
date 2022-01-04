@@ -135,12 +135,13 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
                 || QStringLiteral("QCheckBox") == object->metaObject()->className()
                 // 设置字体组合框
                 || QStringLiteral("QComboBox") == object->metaObject()->className()
+                //1050上DComboBox和QComBobox做了区分，相对的DSettingsDialog的ComboBox改用了DComboBox
+                || QStringLiteral("Dtk::Widget::DComboBox") == object->metaObject()->className()
                 // 设置窗口组合框
                 || QStringLiteral("ComboBox") == object->metaObject()->className())
                 && (Qt::Key_Return == keyevent->key() || Qt::Key_Enter == keyevent->key())) {
-            DPushButton *pushButton = static_cast<DPushButton *>(object);
             // 模拟空格键按下事件
-            pressSpace(pushButton);
+            pressSpace(object);
             return true;
         }
         /***add end by ut001121***/
@@ -150,9 +151,8 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
                 || QStringLiteral("RemoteSearchRebackButton") == object->objectName()
                 || QStringLiteral("RemoteGroupRebackButton") == object->objectName())
                 && Qt::Key_Left == keyevent->key()) {
-            DPushButton *pushButton = static_cast<DPushButton *>(object);
             // 模拟空格键按下事件
-            pressSpace(pushButton);
+            pressSpace(object);
             return true;
         }
 
@@ -226,15 +226,15 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
     return QApplication::notify(object, event);
 }
 
-void TerminalApplication::pressSpace(DPushButton *pushButton)
+void TerminalApplication::pressSpace(QObject *obj)
 {
     // 模拟空格键按下事件
     QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
-    QApplication::sendEvent(pushButton, &pressSpace);
+    QApplication::sendEvent(obj, &pressSpace);
     // 设置定时
-    QTimer::singleShot(80, this, [pushButton]() {
+    QTimer::singleShot(80, this, [obj]() {
         // 模拟空格键松开事件
         QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
-        QApplication::sendEvent(pushButton, &releaseSpace);
+        QApplication::sendEvent(obj, &releaseSpace);
     });
 }
