@@ -344,12 +344,13 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
                         optKeepOpen,
                         optScript });
     // 解析参数
+    Properties[KeepOpen] = false;
     if (!parser.parse(arguments))
         qInfo() << "parser error:" << parser.errorText();
 
     if (parser.isSet(optExecute)) {
         /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
-        Properties[KeepOpen] = false;
+        Properties[KeepOpen] = true;
         Properties[Execute] = parseExecutePara(arguments);
         /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 End ************************/
     }

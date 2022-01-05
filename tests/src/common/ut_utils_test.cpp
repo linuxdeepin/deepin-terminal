@@ -352,15 +352,15 @@ TEST_F(UT_Utils_Test, parseCommandLine)
 {
     TermProperties properties;
     Utils::parseCommandLine(QStringList() << "deepin-terminal" << QString("-h"), properties, false);
-    EXPECT_TRUE(3 == properties.m_properties.count());
+    EXPECT_TRUE(4 == properties.m_properties.count());
 
     properties = TermProperties();
     Utils::parseCommandLine(QStringList() << "deepin-terminal" << QString("-v"), properties, false);
-    EXPECT_TRUE(3 == properties.m_properties.count());
+    EXPECT_TRUE(4 == properties.m_properties.count());
 
     properties = TermProperties();
     Utils::parseCommandLine(QStringList() << "deepin-terminal" << QString("-q"), properties, false);
-    EXPECT_TRUE(3 == properties.m_properties.count());
+    EXPECT_TRUE(4 == properties.m_properties.count());
 
     properties = TermProperties();
     Utils::parseCommandLine(QStringList() << "deepin-terminal" << "-e" << "ls" << "-w" << "/home/", properties, false);

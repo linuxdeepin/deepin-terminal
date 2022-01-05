@@ -726,23 +726,26 @@ QString Session::profileKey() const
 
 void Session::done(int exitStatus)
 {
+    /**
+    相关说明如下：
+    1._wantedClose ：session是否正常结束，当session.close 或 session.析构时 为true，默认false
+    2._autoClose   ：是否自动关闭 由传参控制，当传参含--keep-open 或 含-e 时 为false，默认true
+    3.当【运行脚本命令-C】且【_autoClose=false】时，命令最后会补上exit，命令结束会触发process.finished-》session.done
+    */
     qDebug()<<"done exitStatus:"<<exitStatus<< _shellProcess->exitStatus();
-    /********2021-06-22 keep-open 参数不生效问题 Bug#80199********/
-    if (_autoClose && _wantedClose) {
+    if (_autoClose || _wantedClose) {
         emit finished();
         return;
     }
 
     /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
-    /********2021-06-22 keep-open 参数不生效问题 Bug#80199********/
-    if (true == _autoClose && false == _wantedClose && _shellProcess->exitStatus() == QProcess::NormalExit) {
-        qDebug() << "autoClose is true.";
+    if (false == _autoClose && false == _wantedClose && _shellProcess->exitStatus() == QProcess::NormalExit) {
+        qDebug() << "autoClose is false.";
         emit titleChanged();
         emit finished();
         return;
     }
     /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 End ************************/
-
     if(exitStatus != 0)
     {
         QString message;
