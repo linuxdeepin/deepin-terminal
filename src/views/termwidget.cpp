@@ -160,7 +160,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
         QString args = m_properties[Script].toString();
         qInfo() << "run cmd:" << args;
         args.append("\n");
-        if (!m_properties.contains(KeepOpen))
+        if (!m_properties[KeepOpen].toBool())
             args.append("exit\n");
 
         sendText(args);
