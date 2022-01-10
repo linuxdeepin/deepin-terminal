@@ -161,13 +161,13 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             QPoint pos;
             QContextMenuEvent menuEvent(QContextMenuEvent::Keyboard, pos);
             qInfo() << "------------" << menuEvent.type();
-            QApplication::sendEvent(object, &menuEvent);
+            DApplication::sendEvent(object, &menuEvent);
             /***add end by ut001121***/
 
             return true;
         }
 
-        return QApplication::notify(object, event);
+        return DApplication::notify(object, event);
     }
 
 #if 0
@@ -223,18 +223,18 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 
 #endif
 
-    return QApplication::notify(object, event);
+    return DApplication::notify(object, event);
 }
 
 void TerminalApplication::pressSpace(QObject *obj)
 {
     // 模拟空格键按下事件
     QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
-    QApplication::sendEvent(obj, &pressSpace);
+    DApplication::sendEvent(obj, &pressSpace);
     // 设置定时
     QTimer::singleShot(80, this, [obj]() {
         // 模拟空格键松开事件
         QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
-        QApplication::sendEvent(obj, &releaseSpace);
+        DApplication::sendEvent(obj, &releaseSpace);
     });
 }
