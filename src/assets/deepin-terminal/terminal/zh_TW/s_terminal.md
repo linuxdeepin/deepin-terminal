@@ -24,7 +24,7 @@
 
 - 在終端機介面單擊  ![close_icon](../common/close_icon.svg)，關閉終端機。
 - 在Dock中右鍵單擊 ![deepin_terminal](../common/deepin_terminal.svg)，選擇 **全部關閉** 關閉終端機。
-- 在終端機介面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **離開** 關閉終端機。
+- 在終端機介面單擊 ![icon_menu](../common/icon_menu.svg)，選擇 **退出** 關閉終端機。
 
 > ![notes](../common/notes.svg)說明：如果關閉終端機時終端裡面依然有程式在執行，會彈出一個對話框詢問使用者是否退出， 避免強制關閉引起的使用者資料遺失。
 
@@ -324,7 +324,7 @@
 2. 單擊 **關於**。
 3. 查看終端機的版本和介紹。
 
-### 離開
+### 退出
 
 1. 在終端機介面，單擊 ![icon_menu](../common/icon_menu.svg)。
-2. 單擊 **離開**。
+2. 單擊 **退出**。
