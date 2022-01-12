@@ -1,111 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="112"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="111"/>
         <source>Name:</source>
         <translation>Name:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="114"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="113"/>
         <source>Command:</source>
         <translation>Befehl:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="116"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="115"/>
         <source>Shortcuts:</source>
         <translation>Tastenkürzel:</translation>
     </message>
     <message>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="126"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="127"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="128"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="209"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="208"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="215"/>
         <source>Required</source>
         <translation>Erforderlich</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="154"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="153"/>
         <source>Add Command</source>
         <translation>Befehl hinzufügen </translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="160"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="159"/>
         <source>Edit Command</source>
         <translation>Befehl bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="170"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="169"/>
         <source>Delete Command</source>
         <translation>Befehl löschen</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="195"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="194"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="197"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="196"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation type="unfinished">Hinzufügen</translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="199"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="198"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation type="unfinished">Speichern</translation>
+        <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="636"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="645"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="vanished">Hinzufügen</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="vanished">Speichern</translation>
-    </message>
-    <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="388"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="390"/>
         <source>Please enter a name</source>
         <translation>Bitte einen Namen eingeben</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="402"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="404"/>
         <source>Please enter a command</source>
         <translation>Bitte einen Befehl eingeben</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="452"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="455"/>
         <source>The name already exists,</source>
         <translation>Der Name existiert bereits,</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="453"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="456"/>
         <source>please input another one.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
+        <translation>bitte einen anderen eingeben.</translation>
     </message>
 </context>
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandpanel.cpp" line="195"/>
+        <location filename="../src/customcommand/customcommandpanel.cpp" line="200"/>
         <source>Add Command</source>
         <translation>Befehl hinzufügen </translation>
     </message>
@@ -129,83 +111,68 @@
 <context>
     <name>CustomThemeSettingDialog</name>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="238"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="242"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerdefiniertes Thema</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="262"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="267"/>
         <source>Style:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="266"/>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>Stil:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="271"/>
+        <source>Light</source>
+        <translation>Hell</translation>
+    </message>
+    <message>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="277"/>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Dunkel</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="333"/>
         <source>Fore color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vordergrundfarbe:</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="332"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="340"/>
         <source>Back color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundfarbe:</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="350"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="358"/>
         <source>Prompt PS1:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="354"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="362"/>
         <source>Prompt PS2:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="425"/>
-        <source>Cancel</source>
-        <comment>button</comment>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="433"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="441"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Bestätigen</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="obsolete">Bestätigen</translation>
-    </message>
-</context>
-<context>
-    <name>DSettingsDialog</name>
-    <message>
-        <source>This shortcut conflicts with %1</source>
-        <translation type="vanished">Dieses Tastenkürzel kollidiert mit %1</translation>
+        <translation>Bestätigen</translation>
     </message>
 </context>
 <context>
     <name>ListView</name>
     <message>
-        <location filename="../src/views/listview.cpp" line="298"/>
+        <location filename="../src/views/listview.cpp" line="308"/>
         <source>Delete Server</source>
         <translation>Server löschen</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="298"/>
-        <location filename="../src/views/listview.cpp" line="492"/>
+        <location filename="../src/views/listview.cpp" line="308"/>
+        <location filename="../src/views/listview.cpp" line="504"/>
         <source>Are you sure you want to delete %1?</source>
         <translation>Sind Sie sicher, dass Sie %1 löschen möchten?</translation>
     </message>
@@ -213,57 +180,41 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="269"/>
-        <location filename="../src/main/mainwindow.cpp" line="324"/>
+        <location filename="../src/main/mainwindow.cpp" line="275"/>
+        <location filename="../src/main/mainwindow.cpp" line="333"/>
         <source>New window</source>
         <translation>Neues Fenster </translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="339"/>
+        <location filename="../src/main/mainwindow.cpp" line="349"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="755"/>
+        <location filename="../src/main/mainwindow.cpp" line="773"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="757"/>
+        <location filename="../src/main/mainwindow.cpp" line="775"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Schließen</translation>
-    </message>
-    <message>
-        <location filename="../src/main/mainwindow.cpp" line="2090"/>
-        <source>Custom Theme</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select workspace</source>
-        <translation type="vanished">Arbeitsfläche auswählen</translation>
-    </message>
-    <message>
-        <location filename="../src/main/mainwindow.cpp" line="1808"/>
+        <location filename="../src/main/mainwindow.cpp" line="1859"/>
         <source>Type path to download file</source>
         <translation>Geben Sie den Pfad zum Herunterladen der Datei ein</translation>
+    </message>
+    <message>
+        <location filename="../src/main/mainwindow.cpp" line="2150"/>
+        <source>Custom Theme</source>
+        <translation>Benutzerdefiniertes Thema</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Copy on select</source>
@@ -295,8 +246,8 @@
         <translation>Verstecke das Quake-Fenster, nachdem der Fokus verloren wurde</translation>
     </message>
     <message>
+        <location filename="../src/main/service.cpp" line="160"/>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
-        <location filename="../src/main/service.cpp" line="148"/>
         <source>Blur background</source>
         <translation>Hintergrund weichzeichnen</translation>
     </message>
@@ -316,8 +267,8 @@
         <translation>Schriftgröße</translation>
     </message>
     <message>
+        <location filename="../src/main/service.cpp" line="184"/>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
-        <location filename="../src/main/service.cpp" line="171"/>
         <source>Opacity</source>
         <translation>Deckkraft</translation>
     </message>
@@ -357,15 +308,15 @@
         <translation>Tastenkürzel</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="1654"/>
         <source>Others</source>
         <translation>Andere</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/main/terminalapplication.cpp" line="36"/>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
-        <location filename="../src/main/terminalapplication.cpp" line="37"/>
-        <location filename="../src/main/mainwindow.cpp" line="1652"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
@@ -375,163 +326,163 @@
         <translation>Arbeitsfläche</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Custom commands</source>
         <translation>Benutzerdefinierte Befehle</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Display shortcuts</source>
         <translation>Tastenkürzel anzeigen </translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Remote management</source>
         <translation>Fernverwaltung</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Neuer Tab</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Next tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Nächster Tab</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Previous tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorheriger Tab</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Select left workspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Linke Arbeitsfläche auswählen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
         <source>Select lower workspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Untere Arbeitsfläche auswählen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Select right workspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechte Arbeitsfläche auswählen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
         <source>Select upper workspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Obere Arbeitsfläche auswählen</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Tab titles</source>
-        <translation type="unfinished"></translation>
+        <translation>Tab-Titel</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1750"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Go to tab 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 1</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1750"/>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Go to tab 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 2</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1750"/>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Go to tab 3</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 3</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1751"/>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
         <source>Go to tab 4</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 4</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1751"/>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
         <source>Go to tab 5</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 5</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1751"/>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
         <source>Go to tab 6</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 6</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1752"/>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Go to tab 7</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 7</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1752"/>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Go to tab 8</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 8</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1752"/>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Go to tab 9</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Tab 9</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="155"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation>Flusskontrolle mit Strg+S, Strg+Q deaktivieren</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="157"/>
         <source>Shell profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Shell-Profile</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="203"/>
-        <location filename="../src/views/tabbar.cpp" line="504"/>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
+        <location filename="../src/views/tabbar.cpp" line="512"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="203"/>
         <source>Rename title</source>
         <translation>Titel umbenennen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Fullscreen</source>
         <translation>Vollbild</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
         <source>Default size</source>
         <translation>Standardgröße</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
         <source>Paste</source>
         <translation>Einfügen</translation>
     </message>
@@ -541,8 +492,8 @@
         <translation>Suchen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
         <source>Select all</source>
         <translation>Alles auswählen</translation>
     </message>
@@ -557,14 +508,14 @@
         <translation>Zum vorherigen Befehl springen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
         <source>Zoom in</source>
         <translation>Hineinzoomen:</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
         <source>Zoom out</source>
         <translation>Hinauszoomen:</translation>
     </message>
@@ -574,31 +525,31 @@
         <translation>Andere Fenster schließen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="493"/>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
+        <location filename="../src/views/termwidget.cpp" line="503"/>
         <source>Close other workspaces</source>
         <translation>Andere Arbeitsflächen schließen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1153"/>
+        <location filename="../src/views/termwidget.cpp" line="1176"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1159"/>
+        <location filename="../src/views/termwidget.cpp" line="1182"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1161"/>
+        <location filename="../src/views/termwidget.cpp" line="1184"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1207"/>
+        <location filename="../src/views/termwidget.cpp" line="1230"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Ausgabe wurde durch Drücken von Strg+S unterbrochen. Zum Fortsetzen Strg+Q drücken.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
@@ -606,289 +557,233 @@
         <translation>Fenster schließen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="490"/>
+        <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
+        <location filename="../src/views/termwidget.cpp" line="500"/>
         <source>Close workspace</source>
         <translation>Arbeitsfläche schließen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
         <source>Horizontal split</source>
         <translation>Horizontal teilen</translation>
     </message>
     <message>
-        <source>New workspace</source>
-        <translation type="vanished">Neue Arbeitsfläche</translation>
-    </message>
-    <message>
-        <source>Next workspace</source>
-        <translation type="vanished">Nächste Arbeitsfläche</translation>
-    </message>
-    <message>
-        <source>Previous workspace</source>
-        <translation type="vanished">Vorherige Arbeitsfläche</translation>
-    </message>
-    <message>
-        <source>Select left window</source>
-        <translation type="vanished">Linkes Fenster auswählen</translation>
-    </message>
-    <message>
-        <source>Select lower window</source>
-        <translation type="vanished">Unteres Fenster auswählen</translation>
-    </message>
-    <message>
-        <source>Select right window</source>
-        <translation type="vanished">Rechtes Fenster auswählen</translation>
-    </message>
-    <message>
-        <source>Select upper window</source>
-        <translation type="vanished">Oberes Fenster auswählen</translation>
-    </message>
-    <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
         <source>Vertical split</source>
         <translation>Vertikal teilen</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1732"/>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
         <source>Find</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Löschen</translation>
-    </message>
-    <message>
-        <location filename="../src/main/service.cpp" line="392"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="639"/>
-        <location filename="../src/common/utils.cpp" line="254"/>
+        <location filename="../src/common/utils.cpp" line="256"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="648"/>
+        <location filename="../src/main/service.cpp" line="386"/>
         <source>please set another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>bitte einen anderen festlegen.</translation>
     </message>
     <message>
-        <location filename="../src/main/terminalapplication.cpp" line="40"/>
+        <location filename="../src/main/terminalapplication.cpp" line="39"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation>Terminal ist ein fortschrittlicher Terminalemulator mit Arbeitsbereich, mehreren Fenstern, Fernverwaltung, Quake-Modus und anderen Funktionen.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1650"/>
-        <source>Tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabbar.cpp" line="498"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
-        <source>Close tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main/mainwindow.cpp" line="1670"/>
-        <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/main/mainwindow.cpp" line="1699"/>
-        <source>Select tab</source>
-        <translation type="unfinished"></translation>
+        <source>Tabs</source>
+        <translation>Tabs</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1755"/>
-        <location filename="../src/common/utils.cpp" line="146"/>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
+        <location filename="../src/views/tabbar.cpp" line="506"/>
+        <source>Close tab</source>
+        <translation>Tab schließen</translation>
+    </message>
+    <message>
+        <location filename="../src/main/mainwindow.cpp" line="1748"/>
+        <source>Select tab</source>
+        <translation>Tab auswählen</translation>
+    </message>
+    <message>
+        <location filename="../src/main/mainwindow.cpp" line="1719"/>
+        <source>Switch focus to &quot;+&quot; icon</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="148"/>
+        <location filename="../src/main/mainwindow.cpp" line="1804"/>
         <source>Select file to upload</source>
         <translation>Datei zum Hochladen auswählen</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1762"/>
-        <location filename="../src/common/utils.cpp" line="151"/>
+        <location filename="../src/common/utils.cpp" line="153"/>
+        <location filename="../src/main/mainwindow.cpp" line="1811"/>
         <source>Upload</source>
         <translation>Hochladen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="221"/>
+        <location filename="../src/common/utils.cpp" line="223"/>
         <source>Programs are still running in terminal</source>
         <translation>Es werden noch Programme im Terminal ausgeführt</translation>
     </message>
     <message>
-        <source>Are you sure you want to exit?</source>
-        <translation type="vanished">Sie sind sicher, dass Sie beenden möchten?</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation type="vanished">Beenden</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="171"/>
-        <location filename="../src/common/utils.cpp" line="207"/>
+        <location filename="../src/common/utils.cpp" line="173"/>
+        <location filename="../src/common/utils.cpp" line="209"/>
         <source>Close this terminal?</source>
         <translation>Dieses Terminal schließen?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="172"/>
-        <location filename="../src/common/utils.cpp" line="208"/>
+        <location filename="../src/common/utils.cpp" line="174"/>
+        <location filename="../src/common/utils.cpp" line="210"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es läuft immer noch ein Prozess in diesem Terminal. Das Schließen des Terminals wird ihn beenden.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="176"/>
-        <location filename="../src/common/utils.cpp" line="212"/>
+        <location filename="../src/common/utils.cpp" line="178"/>
+        <location filename="../src/common/utils.cpp" line="214"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es laufen noch %1 Prozesse in diesem Terminal. Das Schließen des Terminals wird alle Prozesse beenden.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="181"/>
-        <location filename="../src/common/utils.cpp" line="203"/>
+        <location filename="../src/common/utils.cpp" line="183"/>
+        <location filename="../src/common/utils.cpp" line="205"/>
         <source>Close this window?</source>
         <translation>Dieses Fenster schließen?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="182"/>
-        <location filename="../src/common/utils.cpp" line="204"/>
+        <location filename="../src/common/utils.cpp" line="184"/>
+        <location filename="../src/common/utils.cpp" line="206"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es laufen noch Prozesse in diesem Fenster. Das Schließen des Fensters wird alle Prozesse beenden.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1824"/>
-        <location filename="../src/common/utils.cpp" line="125"/>
+        <location filename="../src/common/utils.cpp" line="127"/>
+        <location filename="../src/main/mainwindow.cpp" line="1875"/>
         <source>Select a directory to save the file</source>
         <translation>Ein Verzeichnis zum Speichern der Datei auswählen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="221"/>
+        <location filename="../src/common/utils.cpp" line="223"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation>Sind Sie sicher, dass Sie es deinstallieren möchten?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="234"/>
-        <location filename="../src/common/utils.cpp" line="238"/>
+        <location filename="../src/common/utils.cpp" line="236"/>
+        <location filename="../src/common/utils.cpp" line="240"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation>Sind Sie sicher, dass Sie diese Anwendung deinstallieren möchten?</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="235"/>
-        <location filename="../src/common/utils.cpp" line="239"/>
+        <location filename="../src/common/utils.cpp" line="237"/>
+        <location filename="../src/common/utils.cpp" line="241"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation>Sie können das Terminal nicht länger verwenden.</translation>
     </message>
     <message>
-        <source>Replace</source>
-        <translation type="vanished">Ersetzen</translation>
+        <location filename="../src/common/utils.cpp" line="246"/>
+        <location filename="../src/views/listview.cpp" line="314"/>
+        <location filename="../src/views/listview.cpp" line="505"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="236"/>
+        <source>Cancel</source>
+        <comment>button</comment>
+        <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="330"/>
+        <location filename="../src/common/utils.cpp" line="247"/>
+        <location filename="../src/common/utils.cpp" line="291"/>
+        <source>OK</source>
+        <comment>button</comment>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="335"/>
         <source>Execute a command in the terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Einen Befehl im Terminal ausführen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="333"/>
+        <location filename="../src/common/utils.cpp" line="338"/>
         <source>Run script string in the terminal</source>
         <translation>Skriptzeichenfolge im Terminal ausführen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="324"/>
+        <location filename="../src/common/utils.cpp" line="329"/>
         <source>Set the work directory</source>
         <translation>Arbeitsverzeichnis festlegen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="245"/>
-        <location filename="../src/common/utils.cpp" line="289"/>
-        <source>OK</source>
-        <comment>button</comment>
-        <translation type="unfinished">OK</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="327"/>
+        <location filename="../src/common/utils.cpp" line="332"/>
         <source>Set the window mode on starting</source>
         <translation>Fenstermodus beim Start festlegen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="337"/>
+        <location filename="../src/common/utils.cpp" line="342"/>
         <source>Run in quake mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Im Quake-Modus ausführen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="340"/>
+        <location filename="../src/common/utils.cpp" line="345"/>
         <source>Keep terminal open when command finishes</source>
         <translation>Terminal offen lassen, wenn der Befehl abgeschlossen ist</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="508"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="395"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="397"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="509"/>
         <source>The name should be no more than 32 characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Name sollte nicht länger als 32 Zeichen sein</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="578"/>
-        <location filename="../src/main/mainwindow.cpp" line="1830"/>
-        <location filename="../src/common/utils.cpp" line="131"/>
+        <location filename="../src/common/utils.cpp" line="133"/>
+        <location filename="../src/main/mainwindow.cpp" line="1881"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="580"/>
         <source>Select</source>
         <translation>Auswählen</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="574"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="576"/>
         <source>Select the private key file</source>
         <translation>Private Schlüsseldatei auswählen</translation>
     </message>
     <message>
-        <source>Confirm</source>
-        <translation type="vanished">Bestätigen</translation>
-    </message>
-    <message>
-        <source>Select workspace</source>
-        <translation type="vanished">Arbeitsfläche auswählen</translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="127"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="128"/>
         <source>Tab title format</source>
-        <translation type="unfinished"></translation>
+        <translation>Tab-Titel-Format</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="129"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="130"/>
         <source>Remote tab title format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="501"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
+        <location filename="../src/main/mainwindow.cpp" line="1747"/>
+        <location filename="../src/views/tabbar.cpp" line="509"/>
         <source>Close other tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Tabs schließen</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="304"/>
-        <location filename="../src/views/listview.cpp" line="493"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="236"/>
-        <location filename="../src/common/utils.cpp" line="244"/>
-        <source>Cancel</source>
-        <comment>button</comment>
-        <translation type="unfinished">Abbrechen</translation>
-    </message>
-    <message>
-        <location filename="../src/views/listview.cpp" line="305"/>
+        <location filename="../src/views/listview.cpp" line="315"/>
         <source>Delete</source>
         <comment>button</comment>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="494"/>
+        <location filename="../src/views/listview.cpp" line="506"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation type="unfinished">Bestätigen</translation>
+        <translation>Bestätigen</translation>
     </message>
 </context>
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="179"/>
+        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="181"/>
         <source>Add Server</source>
         <translation>Server hinzufügen </translation>
     </message>
@@ -896,20 +791,20 @@
 <context>
     <name>RemoteManagementPlugin</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="90"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="88"/>
         <source>Remote management</source>
         <translation>Fernverwaltung</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="216"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="217"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte stellen Sie sicher, dass die Befehle rz und sz auf dem Server installiert sind, bevor Sie mit der rechten Maustaste klicken, um Dateien hoch- oder herunterzuladen.</translation>
     </message>
 </context>
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="223"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="224"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
@@ -1002,21 +897,13 @@
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="295"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="296"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation type="unfinished">Hinzufügen</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="vanished">Hinzufügen</translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="300"/>
@@ -1027,105 +914,97 @@
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation type="unfinished">Speichern</translation>
+        <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="409"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="420"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="410"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="421"/>
         <source>tty</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="502"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="503"/>
         <source>Please enter a server name</source>
         <translation>Bitte einen Servername eingeben</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="515"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="516"/>
         <source>Please enter an IP address</source>
         <translation>Bitte eine IP-Adresse eingeben</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="520"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="521"/>
         <source>Please enter a port</source>
         <translation>Bitte einen Port eingeben</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="526"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="527"/>
         <source>Please enter a username</source>
         <translation>Bitte einen Benutzernamen eingeben</translation>
     </message>
     <message>
-        <source>Save</source>
-        <translation type="vanished">Speichern</translation>
-    </message>
-    <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="405"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="417"/>
-        <source>ascii-del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="406"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="418"/>
-        <source>auto</source>
-        <translation type="unfinished"></translation>
+        <source>ascii-del</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="407"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="419"/>
-        <source>control-h</source>
-        <translation type="unfinished"></translation>
+        <source>auto</source>
+        <translation>automatisch</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="408"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="416"/>
-        <source>escape-sequence</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="420"/>
+        <source>control-h</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="540"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="409"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="417"/>
+        <source>escape-sequence</source>
+        <translation>Escape-Sequenz</translation>
+    </message>
+    <message>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="541"/>
         <source>The server name already exists,</source>
         <translation>Der Servername existiert bereits,</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="541"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="542"/>
         <source>please input another one. </source>
-        <translation type="unfinished"></translation>
+        <translation>bitte einen anderen eingeben.</translation>
     </message>
 </context>
 <context>
     <name>Service</name>
     <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
-    <message>
-        <location filename="../src/main/service.cpp" line="388"/>
+        <location filename="../src/main/service.cpp" line="382"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Split screen</source>
         <translation>Geteilter Bildschirm</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Fullscreen</source>
         <translation>Vollbild</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Normal window</source>
         <translation>Normales Fenster</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Maximum</source>
         <translation>Maximum</translation>
     </message>
@@ -1133,28 +1012,17 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="285"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="294"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="306"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>Das Kürzel %1 ist ungültig, </translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="301"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="308"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="314"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="313"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="320"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="326"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>Das Tastenkürzel %1 ist bereits in Verwendung,</translation>
-    </message>
-</context>
-<context>
-    <name>TabBar</name>
-    <message>
-        <source>Close workspace</source>
-        <translation type="vanished">Arbeitsfläche schließen</translation>
-    </message>
-    <message>
-        <source>Close other workspaces</source>
-        <translation type="vanished">Andere Arbeitsflächen schließen</translation>
     </message>
 </context>
 <context>
@@ -1162,175 +1030,144 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="56"/>
         <source>Insert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="90"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="104"/>
-        <source>username: %u</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="90"/>
-        <source>username@: %U</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="90"/>
-        <source>remote host: %h</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="103"/>
-        <source>session number: %#</source>
-        <translation type="unfinished"></translation>
+        <translation>Einfügen</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="105"/>
+        <source>username: %u</source>
+        <translation>Benutzername: %u</translation>
+    </message>
+    <message>
+        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
+        <source>username@: %U</source>
+        <translation>Benutzername@: %U</translation>
+    </message>
+    <message>
+        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
+        <source>remote host: %h</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="104"/>
+        <source>session number: %#</source>
+        <translation>Sitzungsnummer: %#</translation>
+    </message>
+    <message>
+        <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="106"/>
         <source>title set by shell: %w</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="102"/>
-        <source>program name: %n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="102"/>
-        <source>current directory (short): %d</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel durch Shell festgelegt: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="103"/>
-        <source>current directory (long): %D</source>
-        <translation type="unfinished"></translation>
+        <source>program name: %n</source>
+        <translation>Programmname: %n</translation>
+    </message>
+    <message>
+        <location filename="../src/views/tabrenamewidget.cpp" line="103"/>
+        <source>current directory (short): %d</source>
+        <translation>aktuelles Verzeichnis (kurz): %d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="104"/>
+        <source>current directory (long): %D</source>
+        <translation>aktuelles Verzeichnis (lang): %D</translation>
+    </message>
+    <message>
+        <location filename="../src/views/tabrenamewidget.cpp" line="105"/>
         <source>local host: %h</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TermInputDialog</name>
-    <message>
-        <source>Rename title</source>
-        <translation type="vanished">Titel umbenennen</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Bestätigen</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>TermWidget</name>
     <message>
-        <source>Rename title</source>
-        <translation type="vanished">Titel umbenennen</translation>
-    </message>
-    <message>
-        <location filename="../src/views/termwidget.cpp" line="459"/>
+        <location filename="../src/views/termwidget.cpp" line="467"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="462"/>
+        <location filename="../src/views/termwidget.cpp" line="470"/>
         <source>Paste</source>
         <translation>Einfügen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="471"/>
+        <location filename="../src/views/termwidget.cpp" line="479"/>
         <source>Open</source>
         <translation>Öffnen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="475"/>
+        <location filename="../src/views/termwidget.cpp" line="484"/>
         <source>Open in file manager</source>
         <translation>Im Dateimanager öffnen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="484"/>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="493"/>
+        <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>Horizontal split</source>
         <translation>Horizontal teilen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="487"/>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
+        <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>Vertical split</source>
         <translation>Vertikal teilen</translation>
     </message>
     <message>
-        <source>Close window</source>
-        <translation type="vanished">Fenster schließen</translation>
-    </message>
-    <message>
-        <source>Close other windows</source>
-        <translation type="vanished">Andere Fenster schließen</translation>
-    </message>
-    <message>
-        <source>New workspace</source>
-        <translation type="vanished">Neue Arbeitsfläche</translation>
-    </message>
-    <message>
-        <location filename="../src/views/termwidget.cpp" line="497"/>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="508"/>
+        <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>New tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Neuer Tab</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="504"/>
+        <location filename="../src/views/termwidget.cpp" line="515"/>
         <source>Exit fullscreen</source>
         <translation>Vollbild beenden</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="506"/>
+        <location filename="../src/views/termwidget.cpp" line="517"/>
         <source>Fullscreen</source>
         <translation>Vollbild</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="509"/>
+        <location filename="../src/views/termwidget.cpp" line="521"/>
         <source>Find</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="513"/>
+        <location filename="../src/views/termwidget.cpp" line="525"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="523"/>
+        <location filename="../src/views/termwidget.cpp" line="535"/>
         <source>Encoding</source>
         <translation>Kodierung</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="525"/>
+        <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Custom commands</source>
         <translation>Benutzerdefinierte Befehle</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="527"/>
+        <location filename="../src/views/termwidget.cpp" line="539"/>
         <source>Remote management</source>
         <translation>Fernverwaltung</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="531"/>
+        <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Upload file</source>
         <translation>Datei hochladen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="532"/>
+        <location filename="../src/views/termwidget.cpp" line="544"/>
         <source>Download file</source>
         <translation>Datei herunterladen </translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="537"/>
+        <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -1338,36 +1175,24 @@
 <context>
     <name>Utils</name>
     <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Schließen</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="187"/>
-        <location filename="../src/common/utils.cpp" line="223"/>
-        <source>Cancel</source>
-        <comment>button</comment>
-        <translation type="unfinished">Abbrechen</translation>
-    </message>
-    <message>
         <location filename="../src/common/utils.cpp" line="189"/>
-        <source>Close</source>
+        <location filename="../src/common/utils.cpp" line="225"/>
+        <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="224"/>
-        <location filename="../src/common/utils.cpp" line="256"/>
+        <location filename="../src/common/utils.cpp" line="191"/>
+        <source>Close</source>
+        <comment>button</comment>
+        <translation>Schließen</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="226"/>
+        <location filename="../src/common/utils.cpp" line="258"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 </TS>

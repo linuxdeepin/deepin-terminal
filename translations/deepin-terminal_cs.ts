@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="cs">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -539,7 +539,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1182"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se otevřít „%1“, není možné ho spustit</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1184"/>
@@ -876,7 +876,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="240"/>
         <source>Encoding:</source>
-        <translation>Kódování:</translation>
+        <translation>Kódování znaků:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="246"/>

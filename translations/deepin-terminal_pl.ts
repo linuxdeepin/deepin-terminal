@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="113"/>
         <source>Command:</source>
-        <translation>Polecenie:</translation>
+        <translation>Komenda:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="115"/>
@@ -27,17 +27,17 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="153"/>
         <source>Add Command</source>
-        <translation>Dodaj polecenie</translation>
+        <translation>Dodaj Komendę</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="159"/>
         <source>Edit Command</source>
-        <translation>Edycja polecenia</translation>
+        <translation>Edytuj Komendę</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="169"/>
         <source>Delete Command</source>
-        <translation>Usuń polecenie</translation>
+        <translation>Usuń Komendę</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="194"/>
@@ -71,7 +71,7 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="404"/>
         <source>Please enter a command</source>
-        <translation>Wpisz polecenie</translation>
+        <translation>Wpisz komendę</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="455"/>
@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="456"/>
         <source>please input another one.</source>
-        <translation>proszę wprowadzić inny.</translation>
+        <translation>wprowadź inną.</translation>
     </message>
 </context>
 <context>
@@ -89,7 +89,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="200"/>
         <source>Add Command</source>
-        <translation>Dodaj polecenie</translation>
+        <translation>Dodaj Komendę</translation>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/customcommand/customcommandplugin.cpp" line="76"/>
         <source>Custom commands</source>
-        <translation>Polecenia własne</translation>
+        <translation>Komendy niestandardowe</translation>
     </message>
 </context>
 <context>
@@ -123,7 +123,7 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="271"/>
         <source>Light</source>
-        <translation>Lekka</translation>
+        <translation>Jasny</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="277"/>
@@ -233,17 +233,17 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="39"/>
         <source>Scroll on keystroke</source>
-        <translation>Przewiń przy naciśnięciu klawisza</translation>
+        <translation>Przewiń po naciśnięciu klawisza</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Scroll on output</source>
-        <translation>Przewiń przy wyjściu</translation>
+        <translation>Przewiń przy wyjściu danych</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>Ukryj okno Quake po utracie ostrości</translation>
+        <translation>Ukryj okno Quake po utracie zaznaczenia</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="160"/>
@@ -254,7 +254,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="47"/>
         <source>Use on starting</source>
-        <translation>Użyj na starcie</translation>
+        <translation>Przy uruchomieniu</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="49"/>
@@ -329,7 +329,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <source>Custom commands</source>
-        <translation>Polecenia własne</translation>
+        <translation>Komendy niestandardowe</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1767"/>
@@ -500,12 +500,12 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <source>Jump to next command</source>
-        <translation>Przejdź do następnego polecenia</translation>
+        <translation>Przejdź do następnej komendy</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <source>Jump to previous command</source>
-        <translation>Przejdź do poprzedniego polecenia</translation>
+        <translation>Przejdź do poprzedniej komendy</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1732"/>
@@ -522,29 +522,29 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Close other windows</source>
-        <translation>Zamknij inne okna</translation>
+        <translation>Zamknij pozostałe okna</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1749"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/views/termwidget.cpp" line="503"/>
         <source>Close other workspaces</source>
-        <translation>Zamknij inne obszary robocze</translation>
+        <translation>Zamknij pozostałe obszary robocze</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1176"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>Nie można znaleźć „%1”, zamiast tego rozpoczynam „%2”. Sprawdź swój profil powłoki.</translation>
+        <translation>Nie udało się znaleźć „%1”, włączanie „%2”. Sprawdź swój profil powłoki.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1182"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Nie można otworzyć &quot;%1&quot;, nie można go uruchomić</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1184"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>Nie można znaleźć „%1”, nie można go uruchomić</translation>
+        <translation>Nie udało się znaleźć „%1”, nie można go uruchomić</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1230"/>
@@ -586,7 +586,7 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="648"/>
         <location filename="../src/main/service.cpp" line="386"/>
         <source>please set another one.</source>
-        <translation>proszę ustawić inny.</translation>
+        <translation>ustaw inną.</translation>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="39"/>
@@ -618,48 +618,48 @@
         <location filename="../src/common/utils.cpp" line="148"/>
         <location filename="../src/main/mainwindow.cpp" line="1804"/>
         <source>Select file to upload</source>
-        <translation>Wybierz plik do przesłania</translation>
+        <translation>Wybierz plik do wysłania</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="153"/>
         <location filename="../src/main/mainwindow.cpp" line="1811"/>
         <source>Upload</source>
-        <translation>Prześlij</translation>
+        <translation>Wyślij</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="223"/>
         <source>Programs are still running in terminal</source>
-        <translation>Programy są wciąż uruchomione w terminalu</translation>
+        <translation>Niektóre programy są wciąż uruchomione w terminalu</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="173"/>
         <location filename="../src/common/utils.cpp" line="209"/>
         <source>Close this terminal?</source>
-        <translation>Zamknij ten terminal?</translation>
+        <translation>Zamknąć ten terminal?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="174"/>
         <location filename="../src/common/utils.cpp" line="210"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
-        <translation>W tym terminalu nadal działa proces. Zamknięcie terminalu go zabije.</translation>
+        <translation>W tym oknie nadal jest aktywny proces. Zamknięcie terminala go zabije.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="178"/>
         <location filename="../src/common/utils.cpp" line="214"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
-        <translation>W tym terminalu nadal działa %1 procesów. Zamknięcie terminalu zabije ich wszystkich.</translation>
+        <translation>W tym terminalu nadal jest %1 aktywnych procesów. Zamknięcie zabije je wszystkie.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="205"/>
         <source>Close this window?</source>
-        <translation>Zamknij to okno?</translation>
+        <translation>Zamknąć to okno?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="184"/>
         <location filename="../src/common/utils.cpp" line="206"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
-        <translation>W tym oknie nadal działają procesy. Zamknięcie okna zabije ich wszystkich.</translation>
+        <translation>W tym oknie nadal są aktywne procesy. Zamknięcie zabije je wszystkie.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="127"/>
@@ -670,7 +670,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="223"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation>Czy na pewno chcesz go odinstalować?</translation>
+        <translation>Czy na pewno chcesz odinstalować?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="236"/>
@@ -703,7 +703,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Execute a command in the terminal</source>
-        <translation>Wykonaj polecenie w terminalu</translation>
+        <translation>Wykonaj komendę w terminalu</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="338"/>
@@ -728,7 +728,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="345"/>
         <source>Keep terminal open when command finishes</source>
-        <translation>Pozostaw terminal otwarty po zakończeniu polecenia</translation>
+        <translation>Pozostaw terminal otwarty po zakończeniu komendy</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="397"/>
@@ -764,7 +764,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1747"/>
         <location filename="../src/views/tabbar.cpp" line="509"/>
         <source>Close other tabs</source>
-        <translation>Zamknij inne karty</translation>
+        <translation>Zamknij pozostałe karty</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="315"/>
@@ -798,7 +798,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="217"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation>Upewnij się, że polecenia rz i sz zostały zainstalowane na serwerze, zanim klikniesz prawym przyciskiem, aby przesłać i pobrać pliki.</translation>
+        <translation>Upewnij się, że komendy rz i sz zostały zainstalowane na serwerze, zanim klikniesz prawym przyciskiem, aby wysyłać i pobierać pliki.</translation>
     </message>
 </context>
 <context>
@@ -814,7 +814,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="67"/>
         <source>Advanced options</source>
-        <translation>Zaawansowane opcje</translation>
+        <translation>Opcje zaawansowane</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="107"/>
@@ -871,7 +871,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="234"/>
         <source>Command:</source>
-        <translation>Polecenie:</translation>
+        <translation>Komenda:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="240"/>
@@ -908,7 +908,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="300"/>
         <source>Edit Server</source>
-        <translation>Edycja serwera</translation>
+        <translation>Edytuj Serwer</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
@@ -940,7 +940,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="527"/>
         <source>Please enter a username</source>
-        <translation>Proszę, wpisz nazwę użytkownika</translation>
+        <translation>Wpisz nazwę użytkownika</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="406"/>
@@ -952,7 +952,7 @@
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="407"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="419"/>
         <source>auto</source>
-        <translation>automatyczny</translation>
+        <translation>automatycznie</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="408"/>
@@ -1006,7 +1006,7 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="112"/>
         <source>Maximum</source>
-        <translation>Maksymalny</translation>
+        <translation>Zmaksymalizowany</translation>
     </message>
 </context>
 <context>
@@ -1022,7 +1022,7 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="320"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="326"/>
         <source>The shortcut %1 was already in use, </source>
-        <translation>Skrót %1 był już używany,</translation>
+        <translation>Skrót %1 był już w użyciu,</translation>
     </message>
 </context>
 <context>
@@ -1041,7 +1041,7 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>username@: %U</source>
-        <translation>username@: %U</translation>
+        <translation>nazwa użytkownika@: %U</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
@@ -1149,7 +1149,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Custom commands</source>
-        <translation>Polecenia własne</translation>
+        <translation>Komendy niestandardowe</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="539"/>
@@ -1159,7 +1159,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Upload file</source>
-        <translation>Prześlij plik</translation>
+        <translation>Wyślij plik</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="544"/>
