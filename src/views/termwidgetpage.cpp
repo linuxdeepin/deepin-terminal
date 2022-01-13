@@ -298,9 +298,7 @@ const QString TermWidgetPage::identifier()
 
 void TermWidgetPage::focusCurrentTerm()
 {
-    //DApplication有焦点切换的逻辑，且不同DTK版本，这部分逻辑是否生效又不统一
-    //无法确定 本函数设置焦点后 是否又会触发DApplication的焦点逻辑 下，故用【队列的方式(singleShot)设置焦点】统一处理
-    QTimer::singleShot(0, m_currentTerm, SLOT(setFocus()));
+    m_currentTerm->setFocus();
 }
 
 void TermWidgetPage::closeOtherTerminal(bool hasConfirmed)

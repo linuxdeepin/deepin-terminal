@@ -75,6 +75,12 @@ void TerminalApplication::handleQuitAction()
 
 bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
+    //修复bug#110813,参考https://gerrit.uniontech.com/c/dtkwidget/+/94656
+    if (event->type() == QEvent::ApplicationFontChange) {
+        // ApplicationFontChange 调用 font() 是 ok 的，如果在 fontChanged 中调用在某些版本中会出现 deadlock
+        DFontSizeManager::instance()->setFontGenericPixelSize(static_cast<quint16>(DFontSizeManager::fontPixelSize(font())));
+    }
+
     // 针对DTK做的特殊处理,等DTK自己完成后,需要删除
     if (QStringLiteral("Dtk::Widget::DKeySequenceEdit") == object->metaObject()->className()) {
         // 焦点移除,移除edit
@@ -104,7 +110,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
                     QList<Dtk::Widget::DLabel *> childern = edit->findChildren<Dtk::Widget::DLabel *>();
                     // 发送QMouseEvent
                     QMouseEvent mouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-                    DApplication::sendEvent(childern[0], &mouseEvent);
+                    QApplication::sendEvent(childern[0], &mouseEvent);
                     // 记录当前KeySequence已经进入编辑状态
                     qInfo() << "KeySequence in Editing";
                     m_keySequenceList.append(edit);
@@ -161,13 +167,13 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             QPoint pos;
             QContextMenuEvent menuEvent(QContextMenuEvent::Keyboard, pos);
             qInfo() << "------------" << menuEvent.type();
-            DApplication::sendEvent(object, &menuEvent);
+            QApplication::sendEvent(object, &menuEvent);
             /***add end by ut001121***/
 
             return true;
         }
 
-        return DApplication::notify(object, event);
+        return QApplication::notify(object, event);
     }
 
 #if 0
@@ -223,18 +229,18 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 
 #endif
 
-    return DApplication::notify(object, event);
+    return QApplication::notify(object, event);
 }
 
 void TerminalApplication::pressSpace(QObject *obj)
 {
     // 模拟空格键按下事件
     QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
-    DApplication::sendEvent(obj, &pressSpace);
+    QApplication::sendEvent(obj, &pressSpace);
     // 设置定时
     QTimer::singleShot(80, this, [obj]() {
         // 模拟空格键松开事件
         QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
-        DApplication::sendEvent(obj, &releaseSpace);
+        QApplication::sendEvent(obj, &releaseSpace);
     });
 }
