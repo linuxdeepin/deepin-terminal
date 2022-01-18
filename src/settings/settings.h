@@ -118,6 +118,12 @@ public:
      * @return
      */
     bool OutputtingScroll();
+    /**
+     * @brief 设置界面获取是否允许Ctrl+滚轮扩缩字体
+     * @author chenzhiwei
+     * @return
+     */
+    bool ScrollWheelZoom();
 //    void reload();
     /**
      * @brief 标签标题
