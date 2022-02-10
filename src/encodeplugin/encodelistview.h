@@ -155,7 +155,7 @@ public:
      * @param option
      * @param index
      */
-    void paint(QPainter *painter, const QStyleOptionViewItem &option,
+    void paint(QPainter *painter, const QStyleOptionViewItem &opt,
                const QModelIndex &index) const Q_DECL_OVERRIDE;
 
     /**

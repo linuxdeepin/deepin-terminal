@@ -248,7 +248,7 @@ void EncodeListView::checkEncode(QString encode)
     }
 }
 
-void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
+void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,
                            const QModelIndex &index) const
 {
     if (index.isValid()) {
@@ -256,8 +256,9 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         painter->setRenderHint(QPainter::Antialiasing, true);
 
         //用来在视图中画一个item
-        QStyleOptionViewItem viewOption(option);
-        initStyleOption(&viewOption, index);
+        QStyleOptionViewItem option(opt);
+        option.state = option.state & (~QStyle::State_Selected);
+        initStyleOption(&option, index);
 
         // 背景区域
         QRect bgRect;
@@ -353,7 +354,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         painter->restore();
     } else {
-        DStyledItemDelegate::paint(painter, option, index);
+        DStyledItemDelegate::paint(painter, opt, index);
     }
 }
 
