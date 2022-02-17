@@ -111,23 +111,24 @@ void Settings::init()
 
     // 加载自定义配置
     settings->setBackend(m_backend);
-
-    /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light Begin************************/
-    QFile file(m_configPath);
-    if (!file.exists() || "Light" != m_backend->getOption("basic.interface.theme").toString()) {
-        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 Begin************************/
-        //DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
-        //DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        //setColorScheme("Dark");
-        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 End ************************/
-        if (m_backend->getOption("basic.interface.expand_theme").toString().isEmpty()) {
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-            setColorScheme("Dark");
-        }
-
+    /*
+     * 主题分：标题栏(colorScheme)、终端界面(extendColorScheme) 、gsetting
+     * colorScheme必为Dark或Light，extendColorScheme为空时是系统主题，不为空时是自带主题,gsettings为Dark或Light或unknownType
+     * 例如
+     * 1.为Dark主题时:  colorScheme：Dark             extendColorScheme：""           gsettings：Dark
+     * 2.为Bim主题时:   colorScheme：Dark             extendColorScheme：Theme4       gsettings：Dark
+     * 3.随系统时:      colorScheme：Dark or Light    extendColorScheme：""           gsettings：unknownType
+     * 要求以下三个场景启动时，主题为Dark
+     * 1.首次运行终端，colorScheme=""
+     * 2.删除conf文件，colorScheme=""
+     * 3.人为修改conf，colorScheme=不可预知
+     * 综上即colorScheme非Light且非Dark时，修改主题为Dark
+     */
+    if("Light" != colorScheme() && "Dark" != colorScheme()) {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        setColorScheme("Dark");
+        setExtendColorScheme("");
     }
-    /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light End ************************/
-
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
     QMap<QString, QVariant> windowStateMap;
