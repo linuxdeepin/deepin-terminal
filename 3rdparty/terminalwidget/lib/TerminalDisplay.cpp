@@ -256,45 +256,50 @@ unsigned short Konsole::vt100_graphics[32] =
 
 void TerminalDisplay::fontChange(const QFont&)
 {
-  QFontMetrics fm(font());
-  /******** Modify by ut001000 renfeixiang 2020-06-24:修改字体高度的获取方法，由QFontMetrics的height获取，改成_fontWidth + font().pointSize() bug#34902 Begin***************/
-  //_fontHeight = fm.height() + _lineSpacing; //条幅黑体字体使用QFontMetrics的height获取字体高度是统一的1值，显示字体失败，现在忽略字体原有高度
+    QFontMetrics fm(font());
+    _fontHeight = fm.height() + _lineSpacing;
 
-  // waba TerminalDisplay 1.123:
-  // "Base character width on widest ASCII character. This prevents too wide
-  //  characters in the presence of double wide (e.g. Japanese) characters."
-  // Get the width from representative normal width characters
-  _fontWidth = qRound((static_cast<double>(fm.horizontalAdvance(QStringLiteral(REPCHAR))) / static_cast<double>(qstrlen(REPCHAR))));
+    Q_ASSERT(_fontHeight > 0);
 
-  //修改方法：修改字体高度的获取方法，修改成字体宽度+字体的大小：_fontWidth + font().pointSize()
-  _fontHeight = _fontWidth + font().pointSize() + _lineSpacing;
-  /******** Modify by ut001000 renfeixiang 2020-06-24: bug#34902 End***************/
-  _fixedFont = true;
+    /* TODO: When changing the three deprecated width() below
+     *       consider the info in
+     *       https://phabricator.kde.org/D23144 comments
+     *       horizontalAdvance() was added in Qt 5.11 (which should be the
+     *       minimum for 20.04 or 20.08 KDE Applications release)
+     */
 
-  const int fw = fm.horizontalAdvance(QLatin1Char(REPCHAR[0]));
-  for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
-      if (fw != fm.horizontalAdvance(QLatin1Char(REPCHAR[i]))) {
-          _fixedFont = false;
-          break;
-      }
-  }
+    // waba TerminalDisplay 1.123:
+    // "Base character width on widest ASCII character. This prevents too wide
+    //  characters in the presence of double wide (e.g. Japanese) characters."
+    // Get the width from representative normal width characters
+    _fontWidth = qRound((static_cast<double>(fm.horizontalAdvance(QStringLiteral(REPCHAR))) / static_cast<double>(qstrlen(REPCHAR))));
 
-  if (_fontWidth < 1)
-    _fontWidth=1;
+    _fixedFont = true;
 
-  _fontAscent = fm.ascent();
+    const int fw = fm.horizontalAdvance(QLatin1Char(REPCHAR[0]));
+    for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
+        if (fw != fm.horizontalAdvance(QLatin1Char(REPCHAR[i]))) {
+            _fixedFont = false;
+            break;
+        }
+    }
 
-  emit changedFontMetricSignal( _fontHeight, _fontWidth );
-  propagateSize();
+    if (_fontWidth < 1)
+        _fontWidth=1;
 
-  // We will run paint event testing procedure.
-  // Although this operation will destory the orignal content,
-  // the content will be drawn again after the test.
-  //_drawTextTestFlag = true;//
-  //----------add by nyq to slove the twinkle of the window--
-  _drawTextTestFlag = false;
-  //---------------------------------------------------------
-  update();
+    _fontAscent = fm.ascent();
+
+    emit changedFontMetricSignal( _fontHeight, _fontWidth );
+    propagateSize();
+
+    // We will run paint event testing procedure.
+    // Although this operation will destory the orignal content,
+    // the content will be drawn again after the test.
+    //_drawTextTestFlag = true;//
+    //----------add by nyq to slove the twinkle of the window--
+    _drawTextTestFlag = false;
+    //---------------------------------------------------------
+    update();
 }
 
 void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
