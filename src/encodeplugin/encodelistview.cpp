@@ -206,11 +206,13 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
         qInfo() << __FUNCTION__ << "Error:" << index;
         return;
     }
+    QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
+    if (nullptr == model)
+        return;
 
     qInfo() << __FUNCTION__ << "Old:" << m_modelIndexChecked.data().toString() << "New:" << index.data().toString();
 
     //当前Checked子项改为Unchecked状态
-    QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
     DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(m_modelIndexChecked.row()));
     modelItem->setCheckState(Qt::Unchecked);
 
