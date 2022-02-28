@@ -295,7 +295,7 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
         if (m_configDialog->isDelServer()) {
             // 弹出删除弹窗
             qInfo() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
-            DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), m_configDialog);
+            DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), this);
             deleteDialog->setObjectName("RemoteDeleteDialog");
             deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
             connect(deleteDialog, &DDialog::finished, this, &ListView::onDeleteServerDialogFinished);
