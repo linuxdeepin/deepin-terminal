@@ -48,7 +48,7 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
 
         if (QChar('[') == data[0]) {
             QString iniSection;
-            int inx = data.indexOf(QChar(']'));
+            int inx = data.lastIndexOf(QChar(']'));
             if (-1 == inx)
                 iniSection = data.mid(1);
             else
