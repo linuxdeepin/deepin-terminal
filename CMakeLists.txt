@@ -50,6 +50,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOUR
 
 configure_file(src/environments.h.in environments.h @ONLY)
 
+#代码覆盖率开关
+if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
+endif()
+
 # Find the QtWidgets library
 
 find_package(PkgConfig REQUIRED)
@@ -281,3 +287,5 @@ install(DIRECTORY src/assets/deepin-terminal
 
 # Unit Test
 add_subdirectory(tests)
+
+
