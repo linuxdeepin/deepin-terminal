@@ -2647,7 +2647,11 @@ void NormalWindow::saveWindowSize()
     if ((size() == halfScreenSize()) || size() == (halfScreenSize() + QSize(0, 1)))
         return;
 
-    if (Qt::WindowNoState == windowState()) {
+    //bug#110002：正常窗口，wayland的windowState为WindowActive 而非 WindowNoState，故按下面方法判断窗口的正常状态：非最大、非最小、非全屏
+    if(!windowState().testFlag(Qt::WindowMaximized)
+            && !windowState().testFlag(Qt::WindowFullScreen)
+            && !windowState().testFlag(Qt::WindowMinimized)
+            ) {
         /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
         // 记录最后一个正常窗口的大小
         m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, width());
