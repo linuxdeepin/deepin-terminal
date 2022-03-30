@@ -1,0 +1,318 @@
+{
+	"BUILD_DIR" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget5_autogen",
+	"CMAKE_BINARY_DIR" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget",
+	"CMAKE_EXECUTABLE" : "/home/mapmap/Jetbrains/clion-2020.2.4/bin/cmake/linux/bin/cmake",
+	"CMAKE_SOURCE_DIR" : "/home/maomao/deepin/pr/deepin-terminal",
+	"DEP_FILE" : "",
+	"DEP_FILE_RULE_NAME" : "",
+	"HEADERS" : 
+	[
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/BlockArray.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_BlockArray.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/CharacterFormat.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_CharacterFormat.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ColorScheme.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_ColorScheme.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/KeyboardTranslator.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_KeyboardTranslator.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Screen.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_Screen.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ShellCommand.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_ShellCommand.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalCharacterDecoder.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_TerminalCharacterDecoder.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/konsole_wcwidth.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_konsole_wcwidth.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kpty.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_kpty.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kpty_p.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_kpty_p.cpp"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/tools.h",
+			"Mu",
+			"ZJOKMXDKB7/moc_tools.cpp"
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget5_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget5_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : 
+	[
+		"COLORSCHEMES_DIR=\"/usr/share/terminalwidget5/color-schemes\"",
+		"HAVE_POSIX_OPENPT",
+		"HAVE_SYS_TIME_H",
+		"HAVE_UPDWTMPX",
+		"KB_LAYOUT_DIR=\"/usr/share/terminalwidget5/kb-layouts\"",
+		"QT_CORE_LIB",
+		"QT_GUI_LIB",
+		"QT_MESSAGELOGCONTEXT",
+		"QT_NO_FOREACH",
+		"QT_STRICT_ITERATORS",
+		"QT_USE_QSTRINGBUILDER",
+		"QT_WIDGETS_LIB",
+		"TRANSLATIONS_DIR=\"/usr/share/terminalwidget5/translations\"",
+		"terminalwidget5_EXPORTS"
+	],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib",
+		"/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib",
+		"/usr/include/x86_64-linux-gnu/qt5",
+		"/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
+		"/usr/include/x86_64-linux-gnu/qt5/QtGui",
+		"/usr/include/x86_64-linux-gnu/qt5/QtCore",
+		"/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++",
+		"/usr/include/c++/8",
+		"/usr/include/x86_64-linux-gnu/c++/8",
+		"/usr/include/c++/8/backward",
+		"/usr/lib/gcc/x86_64-linux-gnu/8/include",
+		"/usr/local/include",
+		"/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed",
+		"/usr/include/x86_64-linux-gnu",
+		"/usr/include"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : true,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-dM",
+		"-E",
+		"-c",
+		"/home/mapmap/Jetbrains/clion-2020.2.4/bin/cmake/linux/share/cmake-3.17/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget5_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : 
+	[
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Emulation.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Filter.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/HistorySearch.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ProcessInfo.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Pty.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ScreenWindow.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SearchBar.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Session.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SessionManager.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalDisplay.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Vt102Emulation.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryFile.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScroll.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollFile.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollNone.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryType.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeFile.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeNone.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlock.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlockList.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryLine.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryScroll.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryType.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kprocess.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptydevice.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptyprocess.h",
+		"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/qtermwidget.h"
+	],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 2,
+	"PARSE_CACHE_FILE" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/CMakeFiles/terminalwidget5_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/lib/qt5/bin/moc",
+	"QT_UIC_EXECUTABLE" : "",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/CMakeFiles/terminalwidget5_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/BlockArray.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/CharacterFormat.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ColorScheme.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Emulation.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Filter.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/HistorySearch.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/KeyboardTranslator.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ProcessInfo.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Pty.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Screen.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ScreenWindow.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SearchBar.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Session.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SessionManager.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ShellCommand.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalCharacterDecoder.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalDisplay.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Vt102Emulation.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryFile.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScroll.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollFile.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollNone.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryType.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeFile.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeNone.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlock.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlockList.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryLine.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryScroll.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryType.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/konsole_wcwidth.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kprocess.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kpty.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptydevice.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptyprocess.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/qtermwidget.cpp",
+			"Mu"
+		],
+		[
+			"/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/tools.cpp",
+			"Mu"
+		]
+	],
+	"VERBOSITY" : 0
+}

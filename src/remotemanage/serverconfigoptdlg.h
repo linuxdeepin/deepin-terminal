@@ -110,7 +110,7 @@ public:
      * @author ut000610 daizhengwen
      * @param curServer 当前服务器
      */
-    void resetCurServer(ServerConfig config);
+    void resetCurServer(ServerConfig *config);
 
 private slots:
     /**

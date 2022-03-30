@@ -275,7 +275,7 @@ void BlockArray::decreaseBuffer(size_t newsize)
     }
 
     // The Block constructor could do somthing in future...
-    char * buffer1 = new char[blocksize];
+    char * buffer1 = new char[blocksize]();
 
     FILE * fion = fdopen(dup(ion), "w+b");
     if (!fion) {
@@ -323,8 +323,8 @@ void BlockArray::increaseBuffer()
     }
 
     // The Block constructor could do somthing in future...
-    char * buffer1 = new char[blocksize];
-    char * buffer2 = new char[blocksize];
+    char * buffer1 = new char[blocksize]();
+    char * buffer2 = new char[blocksize]();
 
     int runs = 1;
     int bpr = size; // blocks per run

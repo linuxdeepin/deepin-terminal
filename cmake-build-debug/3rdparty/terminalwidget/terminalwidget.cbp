@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="terminalwidget"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\src\;CMake Files\src\assets\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5DBus\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5LinguistTools\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Test\;CMake Files\..\..\..\..\..\usr\share\;CMake Files\..\..\..\..\..\usr\share\cmake\;CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\;CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\modules\;CMake Files\3rdparty\;CMake Files\3rdparty\terminalwidget\;CMake Files\tests\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="terminalwidget5">
+				<Option output="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/libterminalwidget5.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAVE_UPDWTMPX"/>
+					<Add option="-DKB_LAYOUT_DIR=&quot;/usr/share/terminalwidget5/kb-layouts&quot;"/>
+					<Add option="-DCOLORSCHEMES_DIR=&quot;/usr/share/terminalwidget5/color-schemes&quot;"/>
+					<Add option="-DTRANSLATIONS_DIR=&quot;/usr/share/terminalwidget5/translations&quot;"/>
+					<Add option="-DHAVE_POSIX_OPENPT"/>
+					<Add option="-DHAVE_SYS_TIME_H"/>
+					<Add option="-DQT_MESSAGELOGCONTEXT"/>
+					<Add option="-DQT_USE_QSTRINGBUILDER"/>
+					<Add option="-DQT_NO_FOREACH"/>
+					<Add option="-DQT_STRICT_ITERATORS"/>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget5_autogen/include"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtWidgets"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtGui"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtCore"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 terminalwidget5"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="terminalwidget5/fast">
+				<Option output="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/libterminalwidget5.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAVE_UPDWTMPX"/>
+					<Add option="-DKB_LAYOUT_DIR=&quot;/usr/share/terminalwidget5/kb-layouts&quot;"/>
+					<Add option="-DCOLORSCHEMES_DIR=&quot;/usr/share/terminalwidget5/color-schemes&quot;"/>
+					<Add option="-DTRANSLATIONS_DIR=&quot;/usr/share/terminalwidget5/translations&quot;"/>
+					<Add option="-DHAVE_POSIX_OPENPT"/>
+					<Add option="-DHAVE_SYS_TIME_H"/>
+					<Add option="-DQT_MESSAGELOGCONTEXT"/>
+					<Add option="-DQT_USE_QSTRINGBUILDER"/>
+					<Add option="-DQT_NO_FOREACH"/>
+					<Add option="-DQT_STRICT_ITERATORS"/>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget5_autogen/include"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib"/>
+					<Add directory="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtWidgets"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtGui"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtCore"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 terminalwidget5/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="terminalwidget5_autogen">
+				<Option working_dir="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 terminalwidget5_autogen"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/BlockArray.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/BlockArray.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/CharacterFormat.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/CharacterFormat.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ColorScheme.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ColorScheme.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Emulation.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Emulation.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Filter.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Filter.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/HistorySearch.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/HistorySearch.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/KeyboardTranslator.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/KeyboardTranslator.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ProcessInfo.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ProcessInfo.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Pty.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Pty.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Screen.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Screen.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ScreenWindow.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ScreenWindow.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SearchBar.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SearchBar.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SearchBar.ui">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Session.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Session.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SessionManager.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SessionManager.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ShellCommand.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/ShellCommand.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalCharacterDecoder.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalCharacterDecoder.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalDisplay.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/TerminalDisplay.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Vt102Emulation.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/Vt102Emulation.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryFile.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryFile.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScroll.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScroll.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollFile.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollFile.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollNone.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryScrollNone.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryType.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryType.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeFile.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeFile.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeNone.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/HistoryTypeNone.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlock.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlock.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlockList.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryBlockList.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryLine.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryLine.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryScroll.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryScroll.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryType.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/history/compact/CompactHistoryType.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/konsole_wcwidth.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/konsole_wcwidth.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kprocess.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kprocess.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kpty.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kpty.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptydevice.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptydevice.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptyprocess.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/kptyprocess.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/qtermwidget.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/qtermwidget.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/tools.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/tools.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryBlock.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryBlock.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryBlockList.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryBlockList.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryLine.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryLine.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryScroll.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryScroll.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryType.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/compact/moc_CompactHistoryType.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryFile.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryFile.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryScroll.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryScroll.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryScrollFile.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryScrollFile.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryScrollNone.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryScrollNone.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryType.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryType.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryTypeFile.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryTypeFile.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryTypeNone.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/history/moc_HistoryTypeNone.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Emulation.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Emulation.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Filter.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Filter.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_HistorySearch.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_HistorySearch.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_ProcessInfo.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_ProcessInfo.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Pty.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Pty.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_ScreenWindow.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_ScreenWindow.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_SearchBar.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_SearchBar.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Session.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Session.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_SessionManager.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_SessionManager.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_TerminalDisplay.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_TerminalDisplay.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Vt102Emulation.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_Vt102Emulation.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_kprocess.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_kprocess.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_kptydevice.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_kptydevice.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_kptyprocess.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_kptyprocess.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_qtermwidget.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_qtermwidget.cpp.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget5_autogen/mocs_compilation.cpp">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_arn.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_arn.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ast.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ast.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_az.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_az.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_bo.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_bo.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_br.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_br.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ca.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ca.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_cs.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_cs.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_cy.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_cy.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_da.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_da.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_de.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_de.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_el.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_el.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_en.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_en.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_es.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_es.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_fi.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_fi.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_fr.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_fr.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_gl.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_gl.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_gl_ES.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_gl_ES.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_he.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_he.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_hu.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_hu.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_it.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_it.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ja.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ja.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ko.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ko.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_lt.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_lt.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_nb_NO.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_nb_NO.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_nl.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_nl.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_pl.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_pl.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_pt.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_pt.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_pt_BR.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_pt_BR.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ru.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ru.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_sq.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_sq.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_sr.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_sr.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_tr.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_tr.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ug.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_ug.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_uk.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_uk.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_vi.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_vi.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_zh_CN.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_zh_CN.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_zh_HK.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_zh_HK.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_zh_TW.qm">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/terminalwidget_zh_TW.qm.rule">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/ui_SearchBar.h">
+			<Option target="terminalwidget5"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/src/DtkSettingsToolsMacros.cmake">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/src/environments.h.in">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/src/assets/resources.qrc">
+			<Option virtualFolder="CMake Files\src\assets\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5DBus/Qt5DBusConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5DBus\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5DBus/Qt5DBusConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5DBus\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5DBus/Qt5DBusConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5DBus\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5DBus/Qt5DBusMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5DBus\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5LinguistTools\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5LinguistTools/Qt5LinguistToolsConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5LinguistTools\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5LinguistTools\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5NetworkConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5NetworkConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5Network_QConnmanEnginePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5Network_QGenericEnginePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Network/Qt5Network_QNetworkManagerEnginePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Network\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Test/Qt5TestConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Test\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Test/Qt5TestConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Test\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Test/Qt5TestConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Test\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/share/cmake/lxqt-build-tools/lxqt-build-tools-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/share/cmake/lxqt-build-tools/lxqt-build-tools-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/share/cmake/lxqt-build-tools/modules/LXQtCompilerSettings.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\modules\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/share/cmake/lxqt-build-tools/modules/LXQtCreatePkgConfigFile.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\modules\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/share/cmake/lxqt-build-tools/modules/LXQtTranslateTs.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\modules\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/../../../../../usr/share/cmake/lxqt-build-tools/modules/Qt5PatchedLinguistToolsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\share\cmake\lxqt-build-tools\modules\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\3rdparty\terminalwidget\"/>
+		</Unit>
+		<Unit filename="/home/maomao/deepin/pr/deepin-terminal/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

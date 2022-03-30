@@ -1,0 +1,40 @@
+/home/mapmap/Jetbrains/clion-2020.2.4/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/maomao/deepin/pr/deepin-terminal
+-- The C compiler identification is GNU 8.3.0
+-- The CXX compiler identification is GNU 8.3.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc - works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ - works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29") 
+-- Checking for one of the modules 'dtkwidget'
+-- Checking for one of the modules 'dtkgui'
+-- Checking for one of the modules 'dtkcore'
+-- Checking for one of the modules 'gobject-2.0'
+-- Checking for module 'dframeworkdbus'
+--   Found dframeworkdbus, version 2.0
+-- Checking for module 'libsecret-1'
+--   Found libsecret-1, version 0.18.7
+-- Keyboard layouts will be installed in: /usr/share/terminalwidget5/kb-layouts
+-- Color schemes will be installed in: /usr/share/terminalwidget5/color-schemes
+-- Translations will be installed in: /usr/share/terminalwidget5/translations
+-- Looking for updwtmpx
+-- Looking for updwtmpx - found
+-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY
+-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY - Success
+-- Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY
+-- Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY - Success
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR - Success
+dtk-settings-tools could not be found at /dtk-settings
+-- Found GTest: /usr/lib/x86_64-linux-gnu/libgtest.a  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/maomao/deepin/pr/deepin-terminal/cmake-build-debug

@@ -1,0 +1,9 @@
+-I/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget
+-I/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget
+-DQT_MESSAGELOGCONTEXT
+-DQT_USE_QSTRINGBUILDER
+-DQT_NO_FOREACH
+-DQT_STRICT_ITERATORS
+-o
+/home/maomao/deepin/pr/deepin-terminal/cmake-build-debug/3rdparty/terminalwidget/lib/moc_SearchBar.cpp
+/home/maomao/deepin/pr/deepin-terminal/3rdparty/terminalwidget/lib/SearchBar.h
