@@ -68,9 +68,8 @@ using std::ifstream;
 using std::ofstream;
 
 /******** Add by ut001000 renfeixiang 2020-08-07:将最小宽度和高度设置成全局变量***************/
-const int MainWindow::m_MinWidth = WINDOW_MIN_WIDTH;
-const int MainWindow::m_MinHeight = WINDOW_MIN_HEIGHT;
-
+const int MainWindow::m_MinWidth = 450;
+const int MainWindow::m_MinHeight = 250;
 
 //qt5.15里，需要补发事件,实现雷神终端的正常隐藏。bug#85079
 static QList<QEvent *> DeActivationChangeEventList;

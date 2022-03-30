@@ -181,8 +181,8 @@ int ut_main_runningTerminalCount()
 
 TEST_F(UT_MainWindow_Test, NormalWindowTest)
 {
-    EXPECT_EQ(MainWindow::m_MinWidth, WINDOW_MIN_WIDTH);
-    EXPECT_EQ(MainWindow::m_MinHeight, WINDOW_MIN_HEIGHT);
+    EXPECT_EQ(MainWindow::m_MinWidth, 450);
+    EXPECT_EQ(MainWindow::m_MinHeight, 250);
 
     EXPECT_NE(m_normalWindow, nullptr);
 

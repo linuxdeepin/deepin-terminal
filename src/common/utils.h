@@ -88,10 +88,6 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 #define ICON_EXIT_FULL_SIZE QSize(ICONSIZE_36, ICONSIZE_36)                         //退出全屏按钮尺寸
 #define WIN_TITLE_BAR_HEIGHT 50 //标题栏高度
 
-
-#define WINDOW_MIN_WIDTH 610   //终端窗口最小宽度
-#define WINDOW_MIN_HEIGHT 300   //终端窗口最小高度
-
 //Encode Plugin
 #define ENCODE_ITEM_WIDTH 220
 #define ENCODE_ITEM_HEIGHT 60
