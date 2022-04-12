@@ -44,6 +44,7 @@
 #define CELL_TIME   15
 #define TAP_MOVE_DELAY 300
 
+//#include "konsole_export.h"
 #define KONSOLEPRIVATE_EXPORT
 
 class QDrag;

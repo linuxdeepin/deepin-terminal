@@ -24,6 +24,9 @@
 // Qt
 #include <QVector>
 
+//#include "konsole_export.h"
+#define KONSOLEPRIVATE_EXPORT
+
 namespace Konsole
 {
 //////////////////////////////////////////////////////////////////////
@@ -45,6 +48,7 @@ public:
     virtual int  getLineLen(int lineno) = 0;
     virtual void getCells(int lineno, int colno, int count, Character res[]) = 0;
     virtual bool isWrappedLine(int lineNumber) = 0;
+    virtual LineProperty getLineProperty(int lineno) = 0;
 
     // adding lines.
     virtual void addCells(const Character a[], int count) = 0;
@@ -55,17 +59,11 @@ public:
         addCells(cells.data(), cells.size());
     }
 
-    virtual void addLine(bool previousWrapped = false) = 0;
+    virtual void addLine(LineProperty lineProperty = 0) = 0;
 
     // modify history
-    virtual void insertCellsVector(int position, const QVector<Character> &cells) = 0;
-    virtual void insertCells(int position, const Character a[], int count) = 0;
-    virtual void removeCells(int position) = 0;
-    virtual void setCellsAt(int position, const Character a[], int count) = 0;
-    virtual void setCellsVectorAt(int position, const QVector<Character> &cells) = 0;
-    virtual void setLineAt(int position, bool previousWrapped) = 0;
+    virtual void removeCells() = 0;
     virtual int reflowLines(int columns) = 0;
-
     //
     // FIXME:  Passing around constant references to HistoryType instances
     // is very unsafe, because those references will no longer

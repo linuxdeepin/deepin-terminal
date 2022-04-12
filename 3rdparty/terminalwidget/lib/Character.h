@@ -41,6 +41,9 @@ static const int LINE_WRAPPED          = (1 << 0);
 static const int LINE_DOUBLEWIDTH      = (1 << 1);
 static const int LINE_DOUBLEHEIGHT    = (1 << 2);
 
+static const int LINE_DOUBLEHEIGHT_TOP    = (1 << 2);
+static const int LINE_DOUBLEHEIGHT_BOTTOM = (1 << 3);
+
 #define DEFAULT_RENDITION  0
 #define RE_BOLD            (1 << 0)
 #define RE_BLINK           (1 << 1)

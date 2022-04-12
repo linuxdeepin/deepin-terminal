@@ -49,6 +49,7 @@ class TerminalCharacterDecoder;
 class TerminalDisplay;
 class HistoryType;
 class HistoryScroll;
+class EscapeSequenceUrlExtractor;
 
 /**
     \brief An image of characters with associated attributes.
@@ -409,10 +410,10 @@ public:
 
     /** Return the number of lines. */
     int getLines() const
-    { return lines; }
+    { return _lines; }
     /** Return the number of columns. */
     int getColumns() const
-    { return columns; }
+    { return _columns; }
     /** Return the number of lines in the history buffer. */
     int getHistLines() const;
     /**
@@ -449,10 +450,6 @@ public:
     /******** Modify by n014361 wangpeili 2020-02-13: 新增屏幕全选功能***********×****/
     void setSelectionAll();
     /***************** Modify by n014361 End *************************/
-
-    /******** Add by ut001000 renfeixiang 2020-07-16:新增 一个清理全屏数据，并设置到起点的函数，不影响其它功能 Begin***************/
-//    void clearAllScreen();
-    /******** Add by ut001000 renfeixiang 2020-07-16:新增 End***************/
 
     /**
      * Retrieves the start of the selection or the cursor position if there
@@ -601,8 +598,8 @@ public:
     QSet<uint> usedExtendedChars() const
     {
         QSet<uint> result;
-        for (int i = 0; i < lines; ++i) {
-            const ImageLine &il = screenLines[i];
+        for (int i = 0; i < _lines; ++i) {
+            const ImageLine &il = _screenLines[i];
             for (int j = 0; j < il.length(); ++j) {
                 if (il[j].rendition & RE_EXTENDED_CHAR) {
                     result << il[j].character;
@@ -611,6 +608,8 @@ public:
         }
         return result;
     }
+
+    static const Character DefaultChar;
 
     // Return the total number of lines before resize (fix scroll glitch)
     int getOldTotalLines();
@@ -627,6 +626,8 @@ public:
 private:
     Screen(const Screen &) = delete;
     Screen &operator=(const Screen &) = delete;
+
+    EscapeSequenceUrlExtractor *urlExtractor() const;
 
     //copies a line of text from the screen or history into a stream using a
     //specified character decoder.  Returns the number of lines actually copied,
@@ -649,7 +650,7 @@ private:
     //fills a section of the screen image with the character 'c'
     //the parameters are specified as offsets from the start of the screen image.
     //the loc(x,y) macro can be used to generate these values from a column,line pair.
-    void clearImage(int loca, int loce, char c);
+    void clearImage(int loca, int loce, char c, bool resetLineRendition = true);
 
     //move screen image between 'sourceBegin' and 'sourceEnd' to 'dest'.
     //the parameters are specified as offsets from the start of the screen image.
@@ -695,12 +696,16 @@ private:
 
     int getLineLength(const int line) const;
 
+    // returns the width in columns of the specified screen line,
+    // taking DECDWL/DECDHL (double width/height modes) into account.
+    int getScreenLineColumns(const int line) const;
+
     // screen image ----------------
-    int lines;
-    int columns;
+    int _lines;
+    int _columns;
 
     typedef QVector<Character> ImageLine;      // [0..columns]
-    QVector<ImageLine> screenLines;           // [lines]
+    QVector<ImageLine> _screenLines;           // [lines]
     int _screenLinesSize;                      // _screenLines.size()
 
     int _scrolledLines;
@@ -712,42 +717,42 @@ private:
     bool _isResize;
     bool _enableReflowLines = true;//自动换行功能，默认为true
 
-    QVarLengthArray<LineProperty,64> lineProperties;
+    QVarLengthArray<LineProperty,64> _lineProperties;
 
     // history buffer ---------------
-    HistoryScroll* history;
+    HistoryScroll* _history;
 
     // cursor location
-    int cuX;
-    int cuY;
+    int _cuX;
+    int _cuY;
 
     // cursor color and rendition info
-    CharacterColor currentForeground;
-    CharacterColor currentBackground;
-    quint8 currentRendition;
+    CharacterColor _currentForeground;
+    CharacterColor _currentBackground;
+    quint8 _currentRendition;
 
     // margins ----------------
     int _topMargin;
     int _bottomMargin;
 
     // states ----------------
-    bool currentModes[MODES_SCREEN];
-    bool savedModes[MODES_SCREEN];
+    bool _currentModes[MODES_SCREEN];
+    bool _savedModes[MODES_SCREEN];
 
     // ----------------------------
 
-    QBitArray tabStops;
+    QBitArray _tabStops;
 
     // selection -------------------
-    int selBegin; // The first location selected.
-    int selTopLeft;    // TopLeft Location.
-    int selBottomRight;    // Bottom Right Location.
-    bool blockSelectionMode;  // Column selection mode
+    int _selBegin; // The first location selected.
+    int _selTopLeft;    // TopLeft Location.
+    int _selBottomRight;    // Bottom Right Location.
+    bool _blockSelectionMode;  // Column selection mode
 
     // effective colors and rendition ------------
-    CharacterColor effectiveForeground; // These are derived from
-    CharacterColor effectiveBackground; // the cu_* variables above
-    quint8 effectiveRendition;          // to speed up operation
+    CharacterColor _effectiveForeground; // These are derived from
+    CharacterColor _effectiveBackground; // the cu_* variables above
+    quint8 _effectiveRendition;          // to speed up operation
 
     class SavedState
     {
@@ -761,21 +766,24 @@ private:
         CharacterColor foreground;
         CharacterColor background;
     };
-    SavedState savedState;
+    SavedState _savedState;
 
     // last position where we added a character
-    int lastPos;
+    int _lastPos;
 
     // used in REP (repeating char)
-    quint32 lastDrawnChar;
-
-    static Character defaultChar;
+    quint32 _lastDrawnChar;
+    EscapeSequenceUrlExtractor *_escapeSequenceUrlExtractor;
 
     //when we handle scroll commands, we need to know which screenwindow will scroll
     TerminalDisplay *_currentTerminalDisplay;
 
     //用于标识Session
     int _sessionId;
+
+    // Vt102Emulation defined max argument value that can be passed to a Screen function
+    const int MAX_SCREEN_ARGUMENT = 40960;
+
 };
 
 }

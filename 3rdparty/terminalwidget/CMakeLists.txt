@@ -76,9 +76,6 @@ set(SRCS
     lib/history/HistoryType.cpp
     lib/history/HistoryTypeFile.cpp
     lib/history/HistoryTypeNone.cpp
-    lib/history/compact/CompactHistoryBlock.cpp
-    lib/history/compact/CompactHistoryBlockList.cpp
-    lib/history/compact/CompactHistoryLine.cpp
     lib/history/compact/CompactHistoryScroll.cpp
     lib/history/compact/CompactHistoryType.cpp
     lib/HistorySearch.cpp
@@ -101,6 +98,7 @@ set(SRCS
     lib/TerminalDisplay.cpp
     lib/tools.cpp
     lib/Vt102Emulation.cpp
+    lib/EscapeSequenceUrlExtractor.cpp
 )
 
 # Only the Headers that need to be moc'd go here
@@ -114,9 +112,6 @@ set(HDRS
     lib/history/HistoryType.h
     lib/history/HistoryTypeFile.h
     lib/history/HistoryTypeNone.h
-    lib/history/compact/CompactHistoryBlock.h
-    lib/history/compact/CompactHistoryBlockList.h
-    lib/history/compact/CompactHistoryLine.h
     lib/history/compact/CompactHistoryScroll.h
     lib/history/compact/CompactHistoryType.h
     lib/HistorySearch.h
@@ -132,6 +127,7 @@ set(HDRS
     lib/SessionManager.h
     lib/TerminalDisplay.h
     lib/Vt102Emulation.h
+    lib/EscapeSequenceUrlExtractor.h
 )
 
 set(UI
@@ -152,9 +148,6 @@ set(HDRS_DISTRIB
     lib/history/HistoryType.h
     lib/history/HistoryTypeFile.h
     lib/history/HistoryTypeNone.h
-    lib/history/compact/CompactHistoryBlock.h
-    lib/history/compact/CompactHistoryBlockList.h
-    lib/history/compact/CompactHistoryLine.h
     lib/history/compact/CompactHistoryScroll.h
     lib/history/compact/CompactHistoryType.h
     lib/BlockArray.h

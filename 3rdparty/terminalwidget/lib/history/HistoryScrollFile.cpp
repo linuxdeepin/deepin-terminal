@@ -71,6 +71,17 @@ bool HistoryScrollFile::isWrappedLine(int lineno)
     return false;
 }
 
+LineProperty HistoryScrollFile::getLineProperty(int lineno)
+{
+    if (lineno >= 0 && lineno <= getLines()) {
+        LineProperty flag = 0;
+        _lineflags.get(reinterpret_cast<char *>(&flag), sizeof(unsigned char),
+                       (lineno)*sizeof(unsigned char));
+        return flag;
+    }
+    return 0;
+}
+
 qint64 HistoryScrollFile::startOfLine(int lineno)
 {
     if (lineno <= 0) {
@@ -94,19 +105,14 @@ void HistoryScrollFile::addCells(const Character text[], int count)
     _cells.add(reinterpret_cast<const char*>(text), count * sizeof(Character));
 }
 
-void HistoryScrollFile::addLine(bool previousWrapped)
+void HistoryScrollFile::addLine(LineProperty lineProperty)
 {
     qint64 locn = _cells.len();
     _index.add(reinterpret_cast<char *>(&locn), sizeof(qint64));
-    unsigned char flags = previousWrapped ? 0x01 : 0x00;
-    _lineflags.add(reinterpret_cast<char *>(&flags), sizeof(char));
+    _lineflags.add(reinterpret_cast<char *>(&lineProperty), sizeof(char));
 }
 
-void HistoryScrollFile::insertCells(int, const Character[], int)
-{
-}
-
-void HistoryScrollFile::removeCells(int)
+void HistoryScrollFile::removeCells()
 {
     qint64 res = (getLines() - 2) * sizeof(qint64);
     if (getLines() < 2) {
@@ -118,26 +124,6 @@ void HistoryScrollFile::removeCells(int)
     res = qMax(0, getLines() - 1);
     _index.removeLast(res * sizeof(qint64));
     _lineflags.removeLast(res * sizeof(unsigned char));
-}
-
-void HistoryScrollFile::insertCellsVector(int, const QVector<Character> &)
-{
-}
-
-void HistoryScrollFile::setCellsAt(int, const Character text[], int count)
-{
-    qint64 res = (getLines() - 2) * sizeof(qint64);
-    if (getLines() < 2) {
-        _cells.removeLast(0);
-    } else {
-        _index.get(reinterpret_cast<char *>(&res), sizeof(qint64), res);
-        _cells.removeLast(res);
-    }
-    _cells.add(reinterpret_cast<const char *>(text), count * sizeof(Character));
-}
-
-void HistoryScrollFile::setCellsVectorAt(int, const QVector<Character> &)
-{
 }
 
 int HistoryScrollFile::reflowLines(int columns)
@@ -203,17 +189,4 @@ int HistoryScrollFile::reflowLines(int columns)
 
     delete reflowFile;
     return 0;
-}
-
-void HistoryScrollFile::setLineAt(int, bool previousWrapped)
-{
-    qint64 locn = qMax(0, getLines() - 1);
-    _index.removeLast(locn * sizeof(qint64));
-    _lineflags.removeLast(locn * sizeof(unsigned char));
-
-    locn = _cells.len();
-    _index.add(reinterpret_cast<char *>(&locn), sizeof(qint64));
-
-    unsigned char flags = previousWrapped ? 0x01 : 0x00;
-    _lineflags.add(reinterpret_cast<char *>(&flags), sizeof(char));
 }
