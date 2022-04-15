@@ -64,7 +64,7 @@ TEST_F(UT_TitleBar_Test, TitleBarTest)
 {
     Stub stub;
     stub.set(ADDR(DApplication,isDXcbPlatform),ut_isDXcbPlatform);
-    TitleBar *bar = new TitleBar(nullptr,false);
+    TitleBar *bar = new TitleBar(nullptr);
     delete bar;
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();

@@ -2541,12 +2541,13 @@ NormalWindow::~NormalWindow()
 void NormalWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
-    m_titleBar = new TitleBar(this, false);
+    m_titleBar = new TitleBar(this);
     m_titleBar->setObjectName("NormalWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
     m_titleBar->setTabBar(m_tabbar);
 
     titlebar()->setCustomWidget(m_titleBar);
     titlebar()->setTitle("");
+    titlebar()->setIcon(QIcon::fromTheme("deepin-terminal"));
 
     //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
     titlebar()->setFocusPolicy(Qt::NoFocus);
@@ -2724,7 +2725,7 @@ QuakeWindow::~QuakeWindow()
 void QuakeWindow::initTitleBar()
 {
     // titleba在普通模式和雷神模型不一样的功能
-    m_titleBar = new TitleBar(this, true);
+    m_titleBar = new TitleBar(this);
     m_titleBar->setObjectName("QuakeWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
     m_titleBar->setTabBar(m_tabbar);
 

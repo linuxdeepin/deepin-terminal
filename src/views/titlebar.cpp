@@ -34,7 +34,7 @@ static const int VER_RESIZED_MIN_HEIGHT = 30;//resize的最小高度
 
 DWIDGET_USE_NAMESPACE
 
-TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), m_layout(new QHBoxLayout(this))
+TitleBar::TitleBar(QWidget *parent) : QWidget(parent), m_layout(new QHBoxLayout(this))
 {
     Utils::set_Object_Name(this);
     m_layout->setObjectName("TitleBarLayout");//Add by ut001000 renfeixiang 2020-08-13
@@ -48,25 +48,6 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
     this->setFixedHeight(WIN_TITLE_BAR_HEIGHT);
     /********************* Modify by m000714 daizhengwen End ************************/
     m_layout->setContentsMargins(0, 0, 0, 0);
-
-    if (isQuakeWindowStyle)
-        return;
-
-    if (DApplication::isDXcbPlatform()) {
-
-        DIconButton *iconLabel = new DIconButton(this);
-        iconLabel->setIcon(QIcon::fromTheme("deepin-terminal"));
-        iconLabel->setIconSize(QSize(ICONSIZE_36, ICONSIZE_36));
-        iconLabel->setFocusPolicy(Qt::NoFocus);
-        iconLabel->setFlat(true);
-
-        m_layout->addSpacing(10);
-
-        /******** Modify by n014361 wangpeili 2020-02-12: 修改居中样式***********×****/
-        m_layout->addWidget(iconLabel, 0, Qt::AlignVCenter);
-        /***************** Modify by n014361 End ********************×****/
-        m_layout->addSpacing(10);
-    }
 }
 
 TitleBar::~TitleBar()

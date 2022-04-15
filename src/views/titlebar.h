@@ -35,7 +35,7 @@ class TitleBar : public QWidget
 {
     Q_OBJECT
 public:
-    TitleBar(QWidget *parent = nullptr, bool isQuakeWindowStyle = false);
+    TitleBar(QWidget *parent = nullptr);
     ~TitleBar();
 
     /**
