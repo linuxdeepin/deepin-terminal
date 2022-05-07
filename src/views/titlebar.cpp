@@ -48,22 +48,6 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
     if (isQuakeWindowStyle) {
         return;
     }
-
-    if (DApplication::isDXcbPlatform()) {
-
-        DIconButton *iconLabel = new DIconButton(this);
-        iconLabel->setIcon(QIcon::fromTheme("deepin-terminal"));
-        iconLabel->setIconSize(QSize(ICONSIZE_36, ICONSIZE_36));
-        iconLabel->setFocusPolicy(Qt::NoFocus);
-        iconLabel->setFlat(true);
-
-        m_layout->addSpacing(10);
-
-        /******** Modify by n014361 wangpeili 2020-02-12: 修改居中样式***********×****/
-        m_layout->addWidget(iconLabel, 0, Qt::AlignVCenter);
-        /***************** Modify by n014361 End ********************×****/
-        m_layout->addSpacing(10);
-    }
 }
 
 TitleBar::~TitleBar()

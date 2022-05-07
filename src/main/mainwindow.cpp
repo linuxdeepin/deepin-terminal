@@ -173,7 +173,18 @@ void MainWindow::initWindow()
     //设置一个最大的窗口宽度，防止窗口可以被无限拉长
     setMaximumWidth(screenRect.width());
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
-    setWindowIcon(QIcon::fromTheme("deepin-terminal"));
+    if (DTitlebar *titlebar = DMainWindow::titlebar()) {
+        QIcon icon(QIcon::fromTheme("deepin-terminal"));
+        titlebar->setIcon(icon);
+        auto buttons = titlebar->findChildren<DIconButton*>();
+        for (auto button : buttons) {
+            if (button->accessibleName() == "DTitlebarIconLabel") {
+                button->setIconSize({ICONSIZE_36, ICONSIZE_36});
+                button->setFocusPolicy(Qt::NoFocus);
+                button->setFlat(true);
+            }
+        }
+    }
 
     // Init layout
     m_centralLayout->setMargin(0);
