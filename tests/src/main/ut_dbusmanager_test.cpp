@@ -46,35 +46,35 @@ TEST_F(UT_Dbusmanager_Test, callKDECurrentDesktopIndex)
 }
 
 //获取字体 标准字体
-TEST_F(UT_Dbusmanager_Test, standardfont)
-{
-    UT_STUB_QDBUS_CALL_CREATE
-    m_pDbusManager->callAppearanceFont("standardfont");
-    //dbus call被调用过
-    EXPECT_TRUE(UT_STUB_QDBUS_CALL_RESULT);
+//TEST_F(UT_Dbusmanager_Test, standardfont)
+//{
+//    UT_STUB_QDBUS_CALL_CREATE
+//    m_pDbusManager->callAppearanceFont("standardfont");
+//    //dbus call被调用过
+//    EXPECT_TRUE(UT_STUB_QDBUS_CALL_RESULT);
 
 
-}
+//}
 
 //获取字体 等宽字体
-TEST_F(UT_Dbusmanager_Test, monospacefont)
-{
-    UT_STUB_QDBUS_CALL_CREATE
-    m_pDbusManager->callAppearanceFont("monospacefont");
-    //dbus call被调用过
-    EXPECT_TRUE(UT_STUB_QDBUS_CALL_RESULT);
+//TEST_F(UT_Dbusmanager_Test, monospacefont)
+//{
+//    UT_STUB_QDBUS_CALL_CREATE
+//    m_pDbusManager->callAppearanceFont("monospacefont");
+//    //dbus call被调用过
+//    EXPECT_TRUE(UT_STUB_QDBUS_CALL_RESULT);
 
-}
+//}
 
 //获取字体,其他错误字体
-TEST_F(UT_Dbusmanager_Test, otherfailfont)
-{
-    UT_STUB_QDBUS_CALL_CREATE
-    m_pDbusManager->callAppearanceFont("otherfailfont");
-    //dbus call被调用过
-    EXPECT_TRUE(UT_STUB_QDBUS_CALL_RESULT);
+//TEST_F(UT_Dbusmanager_Test, otherfailfont)
+//{
+//    UT_STUB_QDBUS_CALL_CREATE
+//    m_pDbusManager->callAppearanceFont("otherfailfont");
+//    //dbus call被调用过
+//    EXPECT_TRUE(UT_STUB_QDBUS_CALL_RESULT);
 
-}
+//}
 
 //唤醒终端
 TEST_F(UT_Dbusmanager_Test, callTerminal)

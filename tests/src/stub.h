@@ -10,6 +10,7 @@
 //linux
 #include <unistd.h>
 #include <sys/mman.h>
+#include <cstdint>
 #endif
 //c
 #include <cstddef>

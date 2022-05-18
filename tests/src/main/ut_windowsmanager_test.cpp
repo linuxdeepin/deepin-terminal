@@ -180,55 +180,55 @@ TEST_F(UI_WindowsManager_Test, onMainwindowClosed)
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow(), nullptr);
 }
 
-TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
-{
-    // 若雷神还在就关闭
-    if (WindowsManager::instance()->getQuakeWindow()) {
-        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
-        WindowsManager::instance()->m_quakeWindow = nullptr;
-    }
+//TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
+//{
+//    // 若雷神还在就关闭
+//    if (WindowsManager::instance()->getQuakeWindow()) {
+//        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+//        WindowsManager::instance()->m_quakeWindow = nullptr;
+//    }
 
-    // 启动雷神
-    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
-    WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
-    // 雷神存在
-    EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
-    // 雷神显示
-    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
-    WindowsManager::instance()->getQuakeWindow()->setVisible(false);
-    WindowsManager::instance()->m_quakeWindow->hideQuakeWindow();
-    WindowsManager::instance()->quakeWindowShowOrHide();
+//    // 启动雷神
+//    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+//    WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
+//    // 雷神存在
+//    EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
+//    // 雷神显示
+//    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
+//    WindowsManager::instance()->getQuakeWindow()->setVisible(false);
+//    WindowsManager::instance()->m_quakeWindow->hideQuakeWindow();
+//    WindowsManager::instance()->quakeWindowShowOrHide();
 
-    {
-        Stub stub;
-        stub.set(ADDR(QuakeWindow, getDesktopIndex), ut_quakeWindow_getDesktopIndex);
-        WindowsManager::instance()->quakeWindowShowOrHide();
-    }
+//    {
+//        Stub stub;
+//        stub.set(ADDR(QuakeWindow, getDesktopIndex), ut_quakeWindow_getDesktopIndex);
+//        WindowsManager::instance()->quakeWindowShowOrHide();
+//    }
 
-    {
-        Stub stub;
-        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
-        stub.set(ADDR(Service, isSettingDialogVisible), ut_service_isSettingDialogVisible);
-        stub.set(ADDR(Service, getSettingOwner), ut_service_getSettingOwner);
-        WindowsManager::instance()->quakeWindowShowOrHide();
-    }
-    {
+//    {
+//        Stub stub;
+//        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
+//        stub.set(ADDR(Service, isSettingDialogVisible), ut_service_isSettingDialogVisible);
+//        stub.set(ADDR(Service, getSettingOwner), ut_service_getSettingOwner);
+//        WindowsManager::instance()->quakeWindowShowOrHide();
+//    }
+//    {
 
-        Stub stub;
-        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
-        stub.set(ADDR(QuakeWindow, isActiveWindow), ut_quakeWindow_isActiveWindow);
-        WindowsManager::instance()->quakeWindowShowOrHide();
-    }
+//        Stub stub;
+//        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
+//        stub.set(ADDR(QuakeWindow, isActiveWindow), ut_quakeWindow_isActiveWindow);
+//        WindowsManager::instance()->quakeWindowShowOrHide();
+//    }
 
-    // 相当于再次Alt+F2
-    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
-    // 雷神隐藏 => 又开始了新一轮的动画
-    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isNotAnimation, false);
+//    // 相当于再次Alt+F2
+//    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+//    // 雷神隐藏 => 又开始了新一轮的动画
+//    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isNotAnimation, false);
 
-    // 关闭雷神窗口
-    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
-    WindowsManager::instance()->m_quakeWindow = nullptr;
-}
+//    // 关闭雷神窗口
+//    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+//    WindowsManager::instance()->m_quakeWindow = nullptr;
+//}
 
 TEST_F(UI_WindowsManager_Test, getNormalWindowList)
 {
