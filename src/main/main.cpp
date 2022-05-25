@@ -35,7 +35,7 @@
 #include <QDebug>
 #include <QCommandLineParser>
 #include <QTranslator>
-#include <QTime>
+#include <QElapsedTimer>
 
 DWIDGET_USE_NAMESPACE
 /******** Modify by n014361 wangpeili 2020-01-10:增加日志需要 ***********×****/
@@ -44,7 +44,7 @@ DCORE_USE_NAMESPACE
 int main(int argc, char *argv[])
 {
     // 应用计时
-    QTime useTime;
+    QElapsedTimer useTime;
     useTime.start();
     //为了更精准，起动就度量时间
     qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();

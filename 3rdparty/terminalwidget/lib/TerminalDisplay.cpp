@@ -2650,7 +2650,7 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
     //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
     initKeyBoardSelection();
 
-  if (ev->orientation() != Qt::Vertical)
+  if (ev->angleDelta().y() == 0)
     return;
 
   // if the terminal program is not interested mouse events
@@ -3548,7 +3548,7 @@ void TerminalDisplay::doDrag()
   QMimeData *mimeData = new QMimeData;
   mimeData->setText(QApplication::clipboard()->text(QClipboard::Selection));
   dragInfo.dragObject->setMimeData(mimeData);
-  dragInfo.dragObject->start(Qt::CopyAction);
+  dragInfo.dragObject->exec(Qt::CopyAction);
   // Don't delete the QTextDrag object.  Qt will delete it when it's done with it.
 }
 

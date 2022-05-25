@@ -496,14 +496,14 @@ QStringList Utils::parseNestedQString(QString str)
             return paraList;
         }
 
-        paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+        paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), Qt::SkipEmptyParts));
         return  paraList;
     }
 
-    paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+    paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), Qt::SkipEmptyParts));
     paraList.append(str.mid(iLeft + 1, iRight - iLeft - 1));
     if (str.size() != iRight + 1) {
-        paraList.append(str.right(str.size() - iRight - 1).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+        paraList.append(str.right(str.size() - iRight - 1).split(QRegExp(QStringLiteral("\\s+")), Qt::SkipEmptyParts));
     }
     return paraList;
 }
