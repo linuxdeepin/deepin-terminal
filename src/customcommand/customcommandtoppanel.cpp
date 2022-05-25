@@ -65,7 +65,7 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
 
 void CustomCommandTopPanel::showCustomCommandPanel()
 {
-    qDebug() << "showCustomCommandPanel" << endl;
+    qDebug() << "showCustomCommandPanel" << Qt::endl;
     m_customCommandPanel->resize(size());
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandPanel->show();
@@ -107,7 +107,7 @@ void CustomCommandTopPanel::showCustomCommandPanel()
 
 void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilter)
 {
-    qDebug() << "showCustomCommandSearchPanel" << endl;
+    qDebug() << "showCustomCommandSearchPanel" << Qt::endl;
     m_customCommandSearchPanel->refreshData(strFilter);
     m_customCommandSearchPanel->show();
     m_customCommandSearchPanel->m_backButton->setFocus();//m_customCommandSearchPanel->setFocus();

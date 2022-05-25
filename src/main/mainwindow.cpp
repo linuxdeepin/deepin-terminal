@@ -527,10 +527,10 @@ bool MainWindow::hasRunningProcesses()
         //TermWidget *term = tabPage->currentTerminal();
         if (tabPage->runningTerminalCount() != 0) {
             /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
-            qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << Qt::endl;
             return true;
         } else {
-            qDebug() << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qDebug() << "no processes running in this terminal tab... " << tabPage->identifier() << Qt::endl;
         }
     }
 
@@ -918,7 +918,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if ((!m_hasConfirmedClose) && (runningCount != 0)) {
         // 如果不能马上关闭，并且还在没有最小化．
         if ((runningCount != 0)  && isMinimized()) {
-            qDebug() << "isMinimized........... " << endl;
+            qDebug() << "isMinimized........... " << Qt::endl;
             setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
         }
 
@@ -1125,11 +1125,11 @@ inline void MainWindow::slotShortcutSwitchActivated()
         }
 
         if (i - 1 >= m_tabbar->count()) {
-            qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << endl;
+            qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << Qt::endl;
             return;
         }
 
-        qDebug() << "index" << i - 1 << endl;
+        qDebug() << "index" << i - 1 << Qt::endl;
         m_tabbar->setCurrentIndex(i - 1);
         return;
     }

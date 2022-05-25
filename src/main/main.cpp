@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     TermProperties properties;
     Utils::parseCommandLine(app.arguments(), properties, true);
 
-    qDebug() << endl << endl << endl;
+    qDebug() << Qt::endl << Qt::endl << Qt::endl;
     qDebug() << "new terminal start run";
     DBusManager manager;
     if (!manager.initDBus()) {

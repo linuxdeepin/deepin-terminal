@@ -167,7 +167,7 @@ void QTermWidget::search(QString txt, bool forwards, bool next)
 
     qDebug() << "current selection starts at: " << startColumn << startLine;
     qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
-    qDebug() << "current backwardsPosition" << m_lastBackwardsPosition << endl;
+    qDebug() << "current backwardsPosition" << m_lastBackwardsPosition << Qt::endl;
 
     QString searchText(txt);
     // qDebug() << "regExp??????" << regExp.isEmpty();

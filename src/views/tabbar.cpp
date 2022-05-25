@@ -245,7 +245,7 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 
 int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QString &tabName)
 {
-    qDebug() << "insertTab at index: " << index << " with id::" << tabIdentifier << endl;
+    qDebug() << "insertTab at index: " << index << " with id::" << tabIdentifier << Qt::endl;
     int insertIndex = DTabBar::insertTab(index, tabName);
     setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
 
@@ -491,7 +491,7 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
             break;
         }
     }
-    qDebug() << "currIndex" << m_rightClickTab << endl;
+    qDebug() << "currIndex" << m_rightClickTab << Qt::endl;
 
     // 弹出tab标签的右键菜单
     if (m_rightClickTab >= 0) {
@@ -838,12 +838,12 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 {
     Q_UNUSED(dropAction)
 
-    qDebug() << "handleTabDroped index:" << index << ", target:" << target << endl;
+    qDebug() << "handleTabDroped index:" << index << ", target:" << target << Qt::endl;
     TabBar *tabbar = qobject_cast<TabBar *>(target);
 
     //拖出的标签--需要新建窗口
     if (tabbar == nullptr) {
-        qDebug() << "tabbar == nullptr " << index << endl;
+        qDebug() << "tabbar == nullptr " << index << Qt::endl;
         MainWindow *window = static_cast<MainWindow *>(this->window());
         //窗口不为雷神模式才允许移动
         if (!window->isQuakeMode()) {
@@ -853,7 +853,7 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
         window->activateWindow();
     } else {
         //拖入的标签--需要关闭拖入窗口的标签页
-        qDebug() << "tabbar != nullptr " << index << endl;
+        qDebug() << "tabbar != nullptr " << index << Qt::endl;
         closeTab(index);
     }
 

@@ -2935,7 +2935,7 @@ void TerminalDisplay::checkAndInitSelectionState()
     if (_selStartColumn != _screenWindow->cursorPosition().x()
             || _selStartLine != _screenWindow->cursorPosition().y() )
     {
-        qDebug() << "checkAndInitSelectionState!" << endl;
+        qDebug() << "checkAndInitSelectionState!" << Qt::endl;
         initKeyBoardSelection();
     }
 }
@@ -3043,7 +3043,7 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 _selEndColumn = 0;
                 _selEndLine++;
             }
-            qDebug() << "maxLineIndex: " << maxLineIndex << endl;
+            qDebug() << "maxLineIndex: " << maxLineIndex << Qt::endl;
             qDebug() << "right: _selStartColumn" << _selStartColumn
                         << "_selStartLine" << _selStartLine
                         << "_selEndColumn" << _selEndColumn

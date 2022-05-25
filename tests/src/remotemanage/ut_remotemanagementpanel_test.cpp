@@ -72,7 +72,7 @@ void UT_RemoteManagementPanel_Test::prepareData()
     serverConfigManager->initServerConfig();
 
     int serverConfigCount = getServerConfigCount();
-    qDebug() << serverConfigCount << endl;
+    qDebug() << serverConfigCount << Qt::endl;
 
     QString groupName = QString("group_01");
 
@@ -156,7 +156,7 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusInPanel)
 
     panel.setFocusInPanel();
     int listIndex = panel.getListIndex();
-    qDebug() << "listIndex:" << listIndex << endl;
+    qDebug() << "listIndex:" << listIndex << Qt::endl;
     EXPECT_EQ(listIndex, -1);
 
     // 最后一种情况

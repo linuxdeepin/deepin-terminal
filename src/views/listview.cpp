@@ -719,9 +719,9 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
     } else if (ListFocusEnd == focusType) {
         index = this->count() - 1;
     } else {
-        qDebug() << "index:" << index << endl;
+        qDebug() << "index:" << index << Qt::endl;
     }
-    qDebug() << "focus index:" << index << endl;
+    qDebug() << "focus index:" << index << Qt::endl;
 
     // index >= 0 < 最大数量
     // 最上
@@ -769,7 +769,7 @@ void ListView::setFocusFromeIndex(int currentIndex, ListFocusType focusType)
                     m_scrollPostion += (count - 1) * listItemHeight;
                 } else {
                     m_scrollPostion = verticalScrollBar()->value();
-                    qDebug() << "m_scrollPostion" << m_scrollPostion << endl;
+                    qDebug() << "m_scrollPostion" << m_scrollPostion << Qt::endl;
                 }
             }
         }

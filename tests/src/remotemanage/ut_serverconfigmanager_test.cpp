@@ -68,7 +68,7 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     serverConfigManager->initServerConfig();
 
     int serverConfigCount = getServerConfigCount();
-    qDebug() << serverConfigCount << endl;
+    qDebug() << serverConfigCount << Qt::endl;
 
     QString groupName = QString("group_01");
 

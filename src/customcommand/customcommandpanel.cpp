@@ -150,7 +150,7 @@ void CustomCommandPanel::refreshCmdPanel()
 
 void CustomCommandPanel::refreshCmdSearchState()
 {
-    qDebug() << __FUNCTION__ << m_cmdListWidget->count() << endl;
+    qDebug() << __FUNCTION__ << m_cmdListWidget->count() << Qt::endl;
     if (m_cmdListWidget->count() >= 2) {
         /************************ Add by m000743 sunchengxi 2020-04-22:自定义命令搜索显示异常 Begin************************/
         m_searchEdit->clearEdit();
