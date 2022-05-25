@@ -95,7 +95,7 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElid
     QFontMetrics fontWidth(font);
 
     // 计算字符串宽度
-    int width = fontWidth.width(text);
+    int width = fontWidth.horizontalAdvance(text);
 
     // 当字符串宽度大于最大宽度时进行转换
     if (width >= MaxWith) {
@@ -747,11 +747,11 @@ void FontFilter::CompareWhiteList()
         bool fixedFont = true;
         QFont font(sfont);
         QFontMetrics fm(font);
-        int fw = fm.width(REPCHAR[0]);
+        int fw = fm.horizontalAdvance(REPCHAR[0]);
         //qDebug() << "sfont" << sfont;
 
         for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
-            if (fw != fm.width(QLatin1Char(REPCHAR[i]))) {
+            if (fw != fm.horizontalAdvance(QLatin1Char(REPCHAR[i]))) {
                 fixedFont = false;
                 break;
             }

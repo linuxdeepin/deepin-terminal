@@ -716,7 +716,7 @@ void TabBar::handleTabMoved(int fromIndex, int toIndex)
             && (toIndex < m_tabIdentifierList.count())
             && (fromIndex >= 0)
             && (toIndex >= 0)) {
-        m_tabIdentifierList.swap(fromIndex, toIndex);
+        m_tabIdentifierList.swapItemsAt(fromIndex, toIndex);
     }
 }
 
