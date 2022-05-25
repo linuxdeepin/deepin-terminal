@@ -47,6 +47,7 @@
 #include <QTextLayout>
 #include <QTime>
 #include <QFontMetrics>
+#include <QRandomGenerator>
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -113,9 +114,9 @@ QString Utils::getRandString()
     QString str;
     QTime t;
     t = QTime::currentTime();
-    qsrand(t.msec() + t.second() * 1000);
+    QRandomGenerator(t.msec() + t.second() * 1000);
     for (int i = 0; i < max; i++) {
-        int len = qrand() % tmp.length();
+        int len = QRandomGenerator::global()->generate() % tmp.length();
         str[i] = tmp.at(len);
     }
     return str;

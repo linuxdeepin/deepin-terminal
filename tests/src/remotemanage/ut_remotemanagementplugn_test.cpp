@@ -32,6 +32,7 @@
 #include <QTest>
 #include <QtGui>
 #include <QFile>
+#include <QRandomGenerator>
 
 UT_RemoteManagementPlugin_Test::UT_RemoteManagementPlugin_Test()
 {
@@ -119,11 +120,10 @@ TEST_F(UT_RemoteManagementPlugin_Test, createShellFile)
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
     QString groupName = QString("group_01");
-
-    qsrand(static_cast<uint>(time(nullptr)));
+    QRandomGenerator(static_cast<uint>(time(nullptr)));
     ServerConfig *config = new ServerConfig();
     config->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
-    config->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+    config->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->generate() % 255);
     config->m_userName = QString("zhangsan");
     config->m_password = QString("123");
     config->m_privateKey = QString("");
