@@ -182,7 +182,7 @@ ColorEntry ColorScheme::colorEntry(int index , uint randomSeed) const
     Q_ASSERT( index >= 0 && index < TABLE_COLORS );
 
     if ( randomSeed != 0 )
-        QRandomGenerator(randomSeed);
+        QRandomGenerator generator(randomSeed);
 
     ColorEntry entry = colorTable()[index];
 
