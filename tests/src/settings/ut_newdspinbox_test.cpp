@@ -53,7 +53,9 @@ TEST_F(UT_NewDSpinBox_Test, WheelEvent_Increase)
     int value = 20;
     m_spinBox->setValue(value);
 
-    QWheelEvent *event = new QWheelEvent(QPointF(63, 29), 120, Qt::NoButton, Qt::NoModifier);
+    //QWheelEvent *event = new QWheelEvent(QPointF(63, 29), 120, Qt::NoButton, Qt::NoModifier);
+    QWheelEvent *event = new QWheelEvent(QPointF(63, 29), QPointF(263, 229), QPoint(0,120), QPoint(0,120), Qt::NoButton, Qt::NoModifier, Qt::NoScrollPhase, 0);
+    
     m_spinBox->wheelEvent(event);
     if (event) {
         delete event;
@@ -65,7 +67,8 @@ TEST_F(UT_NewDSpinBox_Test, WheelEvent_Reduce)
     int value = 20;
     m_spinBox->setValue(value);
 
-    QWheelEvent *event = new QWheelEvent(QPointF(63, 29), -120, Qt::NoButton, Qt::NoModifier);
+    //QWheelEvent *event = new QWheelEvent(QPointF(63, 29), -120, Qt::NoButton, Qt::NoModifier);
+    QWheelEvent *event = new QWheelEvent(QPointF(63, 29), QPointF(263, 229), QPoint(0,-120), QPoint(0,-120), Qt::NoButton, Qt::NoModifier, Qt::NoScrollPhase, 0);
     m_spinBox->wheelEvent(event);
     if (event) {
         delete event;
