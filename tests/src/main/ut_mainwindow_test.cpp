@@ -33,10 +33,10 @@
 
 //Qt单元测试相关头文件
 #include <QTest>
-#include <QApplication>
-#include <QDesktopWidget>
 #include <QtConcurrent/QtConcurrent>
 #include <QKeyEvent>
+#include <QGuiApplication>
+#include <QScreen>
 
 
 UT_SwitchThemeMenu_Test::UT_SwitchThemeMenu_Test()
@@ -282,7 +282,7 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
 
     m_quakeWindow->show();
 
-    int desktopWidth = QApplication::desktop()->availableGeometry().width();
+    int desktopWidth = QGuiApplication::primaryScreen()->availableGeometry().width();
     EXPECT_EQ(m_quakeWindow->width(), desktopWidth);
     EXPECT_GE(m_quakeWindow->height(), 0);
 
