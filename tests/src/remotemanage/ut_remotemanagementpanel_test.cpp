@@ -32,6 +32,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+#include <QRandomGenerator>
 
 UT_RemoteManagementPanel_Test::UT_RemoteManagementPanel_Test()
 {
@@ -72,14 +73,13 @@ void UT_RemoteManagementPanel_Test::prepareData()
     serverConfigManager->initServerConfig();
 
     int serverConfigCount = getServerConfigCount();
-    qDebug() << serverConfigCount << endl;
+    qDebug() << serverConfigCount << Qt::endl;
 
     QString groupName = QString("group_01");
-
-    qsrand(static_cast<uint>(time(nullptr)));
+    QRandomGenerator(static_cast<uint>(time(nullptr)));
     ServerConfig *config = new ServerConfig();
     config->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
-    config->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+    config->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->generate() % 255);
     config->m_userName = QString("zhangsan");
     config->m_password = QString("123");
     config->m_privateKey = QString("");
@@ -98,11 +98,10 @@ void UT_RemoteManagementPanel_Test::prepareData()
 
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
     EXPECT_NE(currConfig, nullptr);
-
-    qsrand(static_cast<uint>(time(nullptr)));
+    QRandomGenerator(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
     newConfig->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
-    newConfig->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+    newConfig->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->generate() % 255);
     newConfig->m_userName = QString("uos");
     newConfig->m_password = QString("123456");
     newConfig->m_privateKey = QString("");
@@ -156,7 +155,7 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusInPanel)
 
     panel.setFocusInPanel();
     int listIndex = panel.getListIndex();
-    qDebug() << "listIndex:" << listIndex << endl;
+    qDebug() << "listIndex:" << listIndex << Qt::endl;
     EXPECT_EQ(listIndex, -1);
 
     // 最后一种情况

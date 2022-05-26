@@ -33,6 +33,7 @@
 #include <QtGui>
 #include <QDebug>
 #include <QSignalSpy>
+#include <QRandomGenerator>
 
 UT_EncodeListView_Test::UT_EncodeListView_Test()
 {
@@ -82,11 +83,11 @@ TEST_F(UT_EncodeListView_Test, clickItemTest)
     encodeListView->show();
 
     int itemCount = encodeListView->count();
-    qsrand(static_cast<uint>(time(nullptr)));
-    int randomIndex = qrand() % itemCount;
+    QRandomGenerator(static_cast<uint>(time(nullptr)));
+    int randomIndex = QRandomGenerator::global()->generate() % itemCount;
     EXPECT_EQ((randomIndex > 0) && (randomIndex < itemCount), true);
-    qDebug() << "itemCount" << itemCount << endl;
-    qDebug() << "randomIndex" << randomIndex << endl;
+    qDebug() << "itemCount" << itemCount << Qt::endl;
+    qDebug() << "randomIndex" << randomIndex << Qt::endl;
 
     QAbstractItemModel *model = encodeListView->model();
     EXPECT_NE(model, nullptr);

@@ -48,7 +48,7 @@
 #include <DLog>
 
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QGuiApplication>
 #include <QInputDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -60,6 +60,7 @@
 #include <QtDBus>
 #include <QVBoxLayout>
 #include <QMap>
+#include <QScreen>
 
 #include <fstream>
 
@@ -165,8 +166,8 @@ void MainWindow::initUI()
 
 void MainWindow::initWindow()
 {
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+    QScreen *desktopPrimaryScreen = QGuiApplication::primaryScreen();
+    QRect screenRect = desktopPrimaryScreen->geometry(); //获取设备屏幕大小
 
     setAttribute(Qt::WA_TranslucentBackground);
     setMinimumSize(m_MinWidth, m_MinHeight);
@@ -527,10 +528,10 @@ bool MainWindow::hasRunningProcesses()
         //TermWidget *term = tabPage->currentTerminal();
         if (tabPage->runningTerminalCount() != 0) {
             /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
-            qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qDebug() << "here are processes running in this terminal tab... " << tabPage->identifier() << Qt::endl;
             return true;
         } else {
-            qDebug() << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qDebug() << "no processes running in this terminal tab... " << tabPage->identifier() << Qt::endl;
         }
     }
 
@@ -918,7 +919,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if ((!m_hasConfirmedClose) && (runningCount != 0)) {
         // 如果不能马上关闭，并且还在没有最小化．
         if ((runningCount != 0)  && isMinimized()) {
-            qDebug() << "isMinimized........... " << endl;
+            qDebug() << "isMinimized........... " << Qt::endl;
             setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
         }
 
@@ -988,9 +989,9 @@ QString MainWindow::getConfigWindowState()
 
 QSize MainWindow::halfScreenSize()
 {
-    QDesktopWidget w;
-    int x = w.availableGeometry().width() / 2;
-    int y = w.availableGeometry().height() - 1;
+    QScreen *w = QGuiApplication::primaryScreen();
+    int x = w->availableGeometry().width() / 2;
+    int y = w->availableGeometry().height() - 1;
     QSize size(x, y);
     //qDebug() << "halfScreenSize:" << size;
     return size;
@@ -1125,11 +1126,11 @@ inline void MainWindow::slotShortcutSwitchActivated()
         }
 
         if (i - 1 >= m_tabbar->count()) {
-            qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << endl;
+            qDebug() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << Qt::endl;
             return;
         }
 
-        qDebug() << "index" << i - 1 << endl;
+        qDebug() << "index" << i - 1 << Qt::endl;
         m_tabbar->setCurrentIndex(i - 1);
         return;
     }
@@ -1472,7 +1473,7 @@ void MainWindow::onCreateNewWindow(QString workingDir)
     Q_UNUSED(workingDir);
     // 调用一个新的进程，开启终端
     QProcess process;
-    process.startDetached(QCoreApplication::applicationFilePath());
+    process.startDetached(QCoreApplication::applicationFilePath(),QCoreApplication::arguments());
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
@@ -2802,16 +2803,16 @@ void QuakeWindow::initTitleBar()
 
 void QuakeWindow::slotWorkAreaResized()
 {
-    qDebug() << "workAreaResized" << QApplication::desktop()->availableGeometry();
+    qDebug() << "workAreaResized" << QGuiApplication::primaryScreen()->availableGeometry();
     /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
-    setMinimumWidth(QApplication::desktop()->availableGeometry().width());
+    setMinimumWidth(QGuiApplication::primaryScreen()->availableGeometry().width());
     setWindowMinHeightForFont();
     /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
     updateMinHeight();
     /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
-    move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
+    move(QGuiApplication::primaryScreen()->availableGeometry().x(), QGuiApplication::primaryScreen()->availableGeometry().y());
     qDebug() << "size" << size();
-    setFixedWidth(QApplication::desktop()->availableGeometry().width());
+    setFixedWidth(QGuiApplication::primaryScreen()->availableGeometry().width());
     return ;
 }
 
@@ -2820,8 +2821,8 @@ void QuakeWindow::initWindowAttribute()
     /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 Begin************************/
     setWindowRadius(0);
     //QRect deskRect = QApplication::desktop()->availableGeometry();//获取可用桌面大小
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+    QScreen *desktopPrimaryScreen = QGuiApplication::primaryScreen();
+    QRect screenRect = desktopPrimaryScreen->geometry(); //获取设备屏幕大小
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint /*| Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
 
@@ -2833,8 +2834,8 @@ void QuakeWindow::initWindowAttribute()
     setMaximumHeight(screenRect.size().height() * 2 / 3);
     /********************* Modify by m000714 daizhengwen End ************************/
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    setFixedWidth(QApplication::desktop()->availableGeometry().width());
-    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
+    setFixedWidth(QGuiApplication::primaryScreen()->availableGeometry().width());
+    connect(desktopPrimaryScreen, &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized);
 
     /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height Begin***************/
     int saveHeight = m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();
@@ -2878,7 +2879,7 @@ void QuakeWindow::switchFullscreen(bool forceFullscreen)
 QPoint QuakeWindow::calculateShortcutsPreviewPoint()
 {
     //--added by qinyaning(nyq) to solve the problem of can't show center--//
-    QRect rect = QApplication::desktop()->availableGeometry();
+    QRect rect = QGuiApplication::primaryScreen()->availableGeometry();
     //---------------------------------------------------------------------//
     return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 }
@@ -3033,8 +3034,9 @@ void QuakeWindow::setHeight(int h)
 
 int QuakeWindow::getQuakeAnimationTime()
 {
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+
+    QScreen *desktopPrimaryScreen = QGuiApplication::primaryScreen();
+    QRect screenRect = desktopPrimaryScreen->geometry(); //获取设备屏幕大小
     //quakeAnimationBaseTime+quakeAnimationHighDistributionTotalTime的时间是雷神窗口最大高度时动画效果时间
     //动画时间计算方法：3quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间，为各个高度时动画时间
     int durationTime = quakeAnimationBaseTime + quakeAnimationHighDistributionTotalTime * this->getQuakeHeight() / (screenRect.height() * 2 / 3);
@@ -3154,8 +3156,8 @@ void QuakeWindow::switchEnableResize(bool isEnable)
 {
     if (isEnable) {
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
-        QDesktopWidget *desktopWidget = QApplication::desktop();
-        QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+        QScreen *desktopPrimaryScreen = QGuiApplication::primaryScreen();
+        QRect screenRect = desktopPrimaryScreen->geometry(); //获取设备屏幕大小
         //Add by ut001000 renfeixiang 2020-11-16 修改成使用写好的设置最小值的函数
         updateMinHeight();
         setMaximumHeight(screenRect.height() * 2 / 3);

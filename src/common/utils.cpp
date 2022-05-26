@@ -47,6 +47,7 @@
 #include <QTextLayout>
 #include <QTime>
 #include <QFontMetrics>
+#include <QRandomGenerator>
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -95,7 +96,7 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElid
     QFontMetrics fontWidth(font);
 
     // 计算字符串宽度
-    int width = fontWidth.width(text);
+    int width = fontWidth.horizontalAdvance(text);
 
     // 当字符串宽度大于最大宽度时进行转换
     if (width >= MaxWith) {
@@ -113,9 +114,9 @@ QString Utils::getRandString()
     QString str;
     QTime t;
     t = QTime::currentTime();
-    qsrand(t.msec() + t.second() * 1000);
+    QRandomGenerator(t.msec() + t.second() * 1000);
     for (int i = 0; i < max; i++) {
-        int len = qrand() % tmp.length();
+        int len = QRandomGenerator::global()->generate() % tmp.length();
         str[i] = tmp.at(len);
     }
     return str;
@@ -495,14 +496,14 @@ QStringList Utils::parseNestedQString(QString str)
             return paraList;
         }
 
-        paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+        paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), Qt::SkipEmptyParts));
         return  paraList;
     }
 
-    paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+    paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), Qt::SkipEmptyParts));
     paraList.append(str.mid(iLeft + 1, iRight - iLeft - 1));
     if (str.size() != iRight + 1) {
-        paraList.append(str.right(str.size() - iRight - 1).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+        paraList.append(str.right(str.size() - iRight - 1).split(QRegExp(QStringLiteral("\\s+")), Qt::SkipEmptyParts));
     }
     return paraList;
 }
@@ -747,11 +748,11 @@ void FontFilter::CompareWhiteList()
         bool fixedFont = true;
         QFont font(sfont);
         QFontMetrics fm(font);
-        int fw = fm.width(REPCHAR[0]);
+        int fw = fm.horizontalAdvance(REPCHAR[0]);
         //qDebug() << "sfont" << sfont;
 
         for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
-            if (fw != fm.width(QLatin1Char(REPCHAR[i]))) {
+            if (fw != fm.horizontalAdvance(QLatin1Char(REPCHAR[i]))) {
                 fixedFont = false;
                 break;
             }

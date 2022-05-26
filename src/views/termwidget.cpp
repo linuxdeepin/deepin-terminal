@@ -433,18 +433,18 @@ inline void TermWidget::onOpenFileInFileManager()
     QProcess process;
     //未选择内容
     if (selectedText().isEmpty()) {
-        process.startDetached("dde-file-manager -n " + workingDirectory());
+        process.startDetached(QString("dde-file-manager"),QStringList("-n"),workingDirectory());
         return;
     }
 
     QFileInfo fi(workingDirectory() + "/" + selectedText());
     //选择的内容是文件或者文件夹
     if (fi.isFile() || fi.isDir()) {
-        process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
+        process.startDetached(QString("dde-file-manager"),QStringList("--show-item"),workingDirectory() + "/" + selectedText());
         return;
     }
     //选择的文本不是文件也不是文件夹
-    process.startDetached("dde-file-manager -n " + workingDirectory());
+     process.startDetached(QString("dde-file-manager"),QStringList("-n"),workingDirectory());
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/

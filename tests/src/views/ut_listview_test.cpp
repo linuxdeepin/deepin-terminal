@@ -36,7 +36,7 @@
 #include <QtGui>
 #include <QSignalSpy>
 #include <QDebug>
-
+#include <QRandomGenerator>
 
 UT_ListView_Test::UT_ListView_Test()
 {
@@ -116,9 +116,10 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
     const int remoteCount = 8;
     for (int i = 0; i <= remoteCount; i++) {
 
+        QRandomGenerator(static_cast<uint>(time(nullptr)));
         ServerConfig *config = new ServerConfig();
         config->m_serverName = QString("server_%1").arg(i);
-        config->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+        config->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->generate() % 255);
         config->m_userName = QString("%1").arg(Utils::getRandString());
         config->m_password = QString("123");
         config->m_privateKey = QString("");
@@ -240,10 +241,11 @@ TEST_F(UT_ListView_Test, onCustomCommandOptDlgFinished)
 }
 
 ServerConfig* generateNewServerConfig()
-{
+{   
+    QRandomGenerator(static_cast<uint>(time(nullptr)));
     ServerConfig *config = new ServerConfig();
     config->m_serverName = QStringLiteral("new_server_listview_test");
-    config->m_address = QStringLiteral("192.168.10.%1").arg(qrand() % 255);
+    config->m_address = QStringLiteral("192.168.10.%1").arg(QRandomGenerator::global()->generate() % 255);
     config->m_userName = QStringLiteral("server_user");
     config->m_password = QStringLiteral("123456");
     config->m_privateKey = QStringLiteral("");

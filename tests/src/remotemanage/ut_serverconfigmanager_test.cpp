@@ -33,6 +33,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+#include <QRandomGenerator>
 
 UT_ServerConfigManager_Test::UT_ServerConfigManager_Test()
 {
@@ -68,14 +69,13 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     serverConfigManager->initServerConfig();
 
     int serverConfigCount = getServerConfigCount();
-    qDebug() << serverConfigCount << endl;
+    qDebug() << serverConfigCount << Qt::endl;
 
     QString groupName = QString("group_01");
-
-    qsrand(static_cast<uint>(time(nullptr)));
+    QRandomGenerator(static_cast<uint>(time(nullptr)));
     ServerConfig *config = new ServerConfig();
     config->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
-    config->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+    config->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->generate() % 255);
     config->m_userName = QString("zhangsan");
     config->m_password = QString("123");
     config->m_privateKey = QString("");
@@ -92,11 +92,10 @@ TEST_F(UT_ServerConfigManager_Test, ServerConfigManagerTest)
     serverConfigManager->getServerCount(config->m_group);
 
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
-
-    qsrand(static_cast<uint>(time(nullptr)));
+    QRandomGenerator(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
     newConfig->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
-    newConfig->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+    newConfig->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->generate() % 255);
     newConfig->m_userName = QString("uos");
     newConfig->m_password = QString("123456");
     newConfig->m_privateKey = QString("");

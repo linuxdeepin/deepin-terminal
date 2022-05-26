@@ -62,7 +62,7 @@ TEST_F(UT_Service_Test, ServiceTest)
     EXPECT_EQ(bMemoryEnable, true);
 
     int shareMemoryCount = m_service->getShareMemoryCount();
-    qDebug() << "shareMemoryCount" << shareMemoryCount << endl;
+    qDebug() << "shareMemoryCount" << shareMemoryCount << Qt::endl;
 //    EXPECT_EQ(shareMemoryCount, 0);
 
     const int UPDATE_COUNT = 2;

@@ -727,13 +727,13 @@ void Session::done(int exitStatus)
         QString message;
         QString infoText;
         if (exitStatus == -1){
-            infoText.sprintf("There was an error creating the child process for this terminal. \n"
+            infoText.asprintf("There was an error creating the child process for this terminal. \n"
                      "Failed to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
             message = "Session crashed.";
         }
         else {
-            infoText.sprintf("The child process exited normally with status %d.", exitStatus);
-            message.sprintf("Session '%s' exited with status %d.",
+            infoText.asprintf("The child process exited normally with status %d.", exitStatus);
+            message.asprintf("Session '%s' exited with status %d.",
                       _nameTitle.toUtf8().data(), exitStatus);
         }
         _userTitle = message;

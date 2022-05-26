@@ -480,7 +480,7 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
             QMetaObject::invokeMethod(this, "ptyUninstallTerminal", Qt::AutoConnection, Q_RETURN_ARG(bool, _bUninstall), Q_ARG(QString, strname));
             /******** Modify by nt001000 renfeixiang 2020-05-27:修改 根据remove和purge卸载命令，发送信号不同参数值 End***************/
             if (_bUninstall) {
-                qDebug() << "确认卸载终端！" << _bUninstall << endl;
+                qDebug() << "确认卸载终端！" << _bUninstall << Qt::endl;
                 connect(SessionManager::instance(), &SessionManager::sessionIdle, this, [ = ](bool isIdle) {
                     //卸载完成，关闭所有终端窗口
                     if (isIdle) {
@@ -494,7 +494,7 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
                     }
                 });
             } else {
-                qDebug() << "不卸载终端！" << _bUninstall << endl;
+                qDebug() << "不卸载终端！" << _bUninstall << Qt::endl;
                 return;
             }
         }

@@ -853,7 +853,7 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
     const QColor backgroundColor = style->backgroundColor.color(_colorTable);
 
     // draw background if different from the display's background color
-    if ( backgroundColor != palette().background().color() )
+    if ( backgroundColor != palette().window().color() )
         drawBackground(painter,rect,backgroundColor,
                        false /* do not use transparency */);
 
@@ -1267,7 +1267,7 @@ void TerminalDisplay::showResizeNotification()
      {
          const QString label = tr("Size: XXX x XXX");
         _resizeWidget = new QLabel(label, this);
-        _resizeWidget->setMinimumWidth(_resizeWidget->fontMetrics().width(label));
+        _resizeWidget->setMinimumWidth(_resizeWidget->fontMetrics().horizontalAdvance(label));
         _resizeWidget->setMinimumHeight(_resizeWidget->sizeHint().height());
         _resizeWidget->setAlignment(Qt::AlignCenter);
 
@@ -1386,7 +1386,7 @@ void TerminalDisplay::paintEvent( QPaintEvent* pe )
 
   for (const QRect &rect : region) {
       dirtyImageRegion += widgetToImage(rect);
-      drawBackground(paint, rect, palette().background().color(), true /* use opacity setting */);
+      drawBackground(paint, rect, palette().window().color(), true /* use opacity setting */);
   }
 
   // only turn on text anti-aliasing, never turn on normal antialiasing
@@ -1583,7 +1583,7 @@ int TerminalDisplay::textWidth(const int startColumn, const int length, const in
   QFontMetrics fm(font());
   int result = 0;
   for (int column = 0; column < length; column++) {
-    result += fm.width(_image[loc(startColumn + column, line)].character);
+    result += fm.horizontalAdvance(_image[loc(startColumn + column, line)].character);
   }
   return result;
 }
@@ -2650,7 +2650,7 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
     //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
     initKeyBoardSelection();
 
-  if (ev->orientation() != Qt::Vertical)
+  if (ev->angleDelta().y() == 0)
     return;
 
   // if the terminal program is not interested mouse events
@@ -2693,9 +2693,9 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 
     int charLine;
     int charColumn;
-    getCharacterPosition( ev->pos() , charLine , charColumn );
+    getCharacterPosition( ev->position().toPoint() , charLine , charColumn );
 
-    emit mouseSignal( ev->delta() > 0 ? 4 : 5,
+    emit mouseSignal( ev->angleDelta().y() > 0 ? 4 : 5,
                       charColumn + 1,
                       charLine + 1 +_scrollBar->value() -_scrollBar->maximum() ,
                       0);
@@ -2935,7 +2935,7 @@ void TerminalDisplay::checkAndInitSelectionState()
     if (_selStartColumn != _screenWindow->cursorPosition().x()
             || _selStartLine != _screenWindow->cursorPosition().y() )
     {
-        qDebug() << "checkAndInitSelectionState!" << endl;
+        qDebug() << "checkAndInitSelectionState!" << Qt::endl;
         initKeyBoardSelection();
     }
 }
@@ -3043,7 +3043,7 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 _selEndColumn = 0;
                 _selEndLine++;
             }
-            qDebug() << "maxLineIndex: " << maxLineIndex << endl;
+            qDebug() << "maxLineIndex: " << maxLineIndex << Qt::endl;
             qDebug() << "right: _selStartColumn" << _selStartColumn
                         << "_selStartLine" << _selStartLine
                         << "_selEndColumn" << _selEndColumn
@@ -3548,7 +3548,7 @@ void TerminalDisplay::doDrag()
   QMimeData *mimeData = new QMimeData;
   mimeData->setText(QApplication::clipboard()->text(QClipboard::Selection));
   dragInfo.dragObject->setMimeData(mimeData);
-  dragInfo.dragObject->start(Qt::CopyAction);
+  dragInfo.dragObject->exec(Qt::CopyAction);
   // Don't delete the QTextDrag object.  Qt will delete it when it's done with it.
 }
 
