@@ -245,7 +245,7 @@ qint64 Service::getEntryTime()
 
 QMap<QString, QString> Service::getShells()
 {
-    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
+
     // 清空原有数据
     m_shellsMap.clear();
     // 需要读取/etc/shells
