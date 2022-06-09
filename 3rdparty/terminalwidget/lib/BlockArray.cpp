@@ -154,7 +154,7 @@ const Block * BlockArray::at(size_t i)
 
     if (block == (Block *)-1) {
         perror("mmap");
-        realloc(block,0);
+        block = realloc(block,0);
         block = nullptr;
         return nullptr;
     }
