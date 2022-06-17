@@ -41,8 +41,6 @@ public:
 
     //用于做一些清理操作
     virtual void TearDown();
-
-    NewDspinBox *m_spinBox = nullptr;
 };
 
 #endif // UT_NEWDSPINBOX_TEST_H

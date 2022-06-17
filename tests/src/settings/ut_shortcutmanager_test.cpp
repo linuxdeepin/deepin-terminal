@@ -20,10 +20,12 @@
  */
 
 #include "ut_shortcutmanager_test.h"
-
 #include "service.h"
 #include "shortcutmanager.h"
-#include "stub.h"
+#include "../stub.h"
+
+//dtk
+#include <DSettings>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -32,92 +34,82 @@
 #include <QFile>
 #include <QTimer>
 
-#include <DSettings>
-
 DCORE_USE_NAMESPACE
 
 UT_ShortcutManager_Test::UT_ShortcutManager_Test()
+    : m_shortcutManager(nullptr)
+    , newAction(nullptr)
 {
+}
+
+void UT_ShortcutManager_Test::SetUp()
+{
+
     //Service中默认已经初始化了ShortcutManager
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
     m_shortcutManager = ShortcutManager::instance();
+
+    QString key = QString(QChar('A'));
+    QString shortcutKey = QString("Ctrl+Shift+%1").arg(key);
+    QString cmdName = QString("cmd_001");
+    newAction = new QAction;
+    newAction->setText(cmdName);
+    newAction->setShortcut(QKeySequence(shortcutKey));
+}
+
+void UT_ShortcutManager_Test::TearDown()
+{
+    delete newAction;
 }
 
 #ifdef UT_SHORTCUTMANAGER_TEST
-TEST_F(UT_ShortcutManager_Test, createBuiltinShortcutsFromConfig)
-{
-    m_shortcutManager->createBuiltinShortcutsFromConfig();
-}
-
 
 TEST_F(UT_ShortcutManager_Test, getCustomCommandActionList)
 {
-    QList<QAction *> &commandActionList = m_shortcutManager->getCustomCommandActionList();
-    commandActionList.count();
+    EXPECT_TRUE(m_shortcutManager->m_customCommandActionList ==
+                m_shortcutManager->getCustomCommandActionList());
 }
 
 
 TEST_F(UT_ShortcutManager_Test, addCustomCommand)
 {
-    QString key = QString(QChar('A'));
-    QString shortcutKey = QString("Ctrl+Shift+%1").arg(key);
-    QString cmdName = QString("cmd_001");
-    QAction *newAction = new QAction;
-    newAction->setText(cmdName);
-    newAction->setShortcut(QKeySequence(shortcutKey));
     m_shortcutManager->addCustomCommand(*newAction);
+    EXPECT_TRUE(m_shortcutManager->findActionByKey(newAction->text()));
 }
 
 TEST_F(UT_ShortcutManager_Test, checkActionIsExist)
 {
-    QString key = QString(QChar('A'));
-    QString shortcutKey = QString("Ctrl+Shift+%1").arg(key);
-    QString cmdName = QString("cmd_001");
-    QAction *newAction = new QAction;
-    newAction->setText(cmdName);
-    newAction->setShortcut(QKeySequence(shortcutKey));
-    m_shortcutManager->addCustomCommand(*newAction);
-    m_shortcutManager->checkActionIsExist(*newAction);
+    if(!m_shortcutManager->findActionByKey(newAction->text()))
+        m_shortcutManager->addCustomCommand(*newAction);
+    EXPECT_TRUE(m_shortcutManager->checkActionIsExist(*newAction));
 }
 
 
 TEST_F(UT_ShortcutManager_Test, checkActionIsExistForModify)
 {
-    QString key = QString(QChar('A'));
-    QString shortcutKey = QString("Ctrl+Shift+%1").arg(key);
-    QString cmdName = QString("cmd_001");
-    QAction *newAction = new QAction;
-    newAction->setText(cmdName);
-    newAction->setShortcut(QKeySequence(shortcutKey));
-    m_shortcutManager->checkActionIsExistForModify(*newAction);
+    if(!m_shortcutManager->findActionByKey(newAction->text()))
+        m_shortcutManager->addCustomCommand(*newAction);
+    EXPECT_TRUE(m_shortcutManager->checkActionIsExistForModify(*newAction));
 }
 
 TEST_F(UT_ShortcutManager_Test, findActionByKey)
 {
-    QString key = QString(QChar('A'));
-    QString shortcutKey = QString("Ctrl+Shift+%1").arg(key);
-    QString cmdName = QString("cmd_001");
-    QAction *newAction = new QAction;
-    newAction->setText(cmdName);
-    newAction->setShortcut(QKeySequence(shortcutKey));
-    m_shortcutManager->findActionByKey(cmdName);
+    if(!m_shortcutManager->findActionByKey(newAction->text()))
+        m_shortcutManager->addCustomCommand(*newAction);
+    EXPECT_TRUE(m_shortcutManager->findActionByKey(newAction->text()));
 }
 
 
 TEST_F(UT_ShortcutManager_Test, isShortcutConflictInCustom)
 {
-    QString key = QString(QChar('A'));
-    QString shortcutKey = QString("Ctrl+Shift+%1").arg(key);
-    QString cmdName = QString("cmd_001");
-    QAction *newAction = new QAction;
-    newAction->setText(cmdName);
-    newAction->setShortcut(QKeySequence(shortcutKey));
+    if(!m_shortcutManager->findActionByKey(newAction->text()))
+        m_shortcutManager->addCustomCommand(*newAction);
 
-    m_shortcutManager->isShortcutConflictInCustom(cmdName, shortcutKey);
+    //名字不相同，快捷键相同，会返回true：快捷键冲突
+    EXPECT_TRUE(m_shortcutManager->isShortcutConflictInCustom(newAction->text() + "1", newAction->shortcut().toString()));
 }
 
 bool stub_checkShortcutValid(const QString &Name, const QString &Key, QString &Reason)
@@ -142,23 +134,19 @@ TEST_F(UT_ShortcutManager_Test, isValidShortcut)
 
     QString newCmdName = QString("cmd_new_%1").arg(Utils::getRandString());
     QString forCheckShortcutKey = QString("Ctrl+Alt+Shift+Tab+T");
-    m_shortcutManager->isValidShortcut(newCmdName, forCheckShortcutKey);
-
-    s.reset(ADDR(ShortcutManager, checkShortcutValid));
-    s.reset(ADDR(Utils, showShortcutConflictMsgbox));
+    bool isValid = m_shortcutManager->isValidShortcut(newCmdName, forCheckShortcutKey);
+    //重复快捷键，无效
+    EXPECT_TRUE(isValid == false);
 }
 
 TEST_F(UT_ShortcutManager_Test, checkShortcutValid)
 {
-    QString key = QString(QChar('A'));
-    QString shortcutKey = QString("Ctrl+Shift+%1").arg(key);
-    QString cmdName = QString("cmd_001");
-    QAction *newAction = new QAction;
-    newAction->setText(cmdName);
-    newAction->setShortcut(QKeySequence(shortcutKey));
-
+    if(!m_shortcutManager->findActionByKey(newAction->text()))
+        m_shortcutManager->addCustomCommand(*newAction);
+    //会冲突
     QString reason;
-    m_shortcutManager->checkShortcutValid(cmdName, shortcutKey, reason);
+    bool isValid = m_shortcutManager->checkShortcutValid(newAction->text(), newAction->shortcut().toString(), reason);
+    EXPECT_TRUE(isValid == false);
 }
 
 #endif

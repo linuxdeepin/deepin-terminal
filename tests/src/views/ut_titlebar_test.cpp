@@ -25,6 +25,7 @@
 #include "tabbar.h"
 #include "mainwindow.h"
 #include "service.h"
+#include "../stub.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -39,7 +40,6 @@ DWIDGET_USE_NAMESPACE
 UT_TitleBar_Test::UT_TitleBar_Test()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
@@ -54,8 +54,18 @@ UT_TitleBar_Test::~UT_TitleBar_Test()
 }
 
 #ifdef UT_TITLEBAR_TEST
+
+bool ut_isDXcbPlatform()
+{
+    return true;
+}
+
 TEST_F(UT_TitleBar_Test, TitleBarTest)
 {
+    Stub stub;
+    stub.set(ADDR(DApplication,isDXcbPlatform),ut_isDXcbPlatform);
+    TitleBar *bar = new TitleBar(nullptr);
+    delete bar;
     m_normalWindow->resize(800, 600);
     m_normalWindow->show();
     EXPECT_EQ(m_normalWindow->isVisible(), true);

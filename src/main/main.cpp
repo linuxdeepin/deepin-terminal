@@ -38,11 +38,14 @@
 #include <QTime>
 
 DWIDGET_USE_NAMESPACE
-/******** Modify by n014361 wangpeili 2020-01-10:增加日志需要 ***********×****/
+
 DCORE_USE_NAMESPACE
-/********************* Modify by n014361 wangpeili End ************************/
+
 int main(int argc, char *argv[])
 {
+    if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
+        setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
+    }
     // 应用计时
     QTime useTime;
     useTime.start();
@@ -61,55 +64,25 @@ int main(int argc, char *argv[])
     // 参数解析
     TermProperties properties;
     Utils::parseCommandLine(app.arguments(), properties, true);
+    QStringList args = app.arguments();
 
-    qDebug() << endl << endl << endl;
-    qDebug() << "new terminal start run";
+    if(!(args.contains("-w") || args.contains("--work-directory"))) {
+        args += "-w";
+        args += QDir::currentPath();
+    }
+
     DBusManager manager;
     if (!manager.initDBus()) {
-        // 初始化失败，则已经注册过dbus
-        // 判断是否能创建新的的窗口
-        // 不是雷神且正在创建
-        if (!properties[QuakeMode].toBool() && !Service::instance()->getEnable(startTime)) {
-            qDebug() << "[sub app] Server can't create, drop this create request! time use "
-                     << useTime.elapsed() << "ms";
-            return 0;
-        }
-
-        // 调用entry接口
-        /******** Modify by ut000610 daizhengwen 2020-05-25: 在终端中打开****************/
-        QStringList args = app.arguments();
-        bool isCurrentPaht = false;
-        for (QString &arg : args) {
-            // 若已有-w和--work-directory参数，直接将参数传给主进程执行
-            if (arg == QStringLiteral("-w") || arg == QStringLiteral("--work-directory")) {
-                isCurrentPaht = true;
-                break;
-            }
-        }
-        if (!isCurrentPaht) {
-            args += "-w";
-            args += QDir::currentPath();
-        }
-        /********************* Modify by ut000610 daizhengwen End ************************/
-        qDebug() << "[sub app] start to call main terminal entry! app args " << args;
+        // 非第一次启动
         DBusManager::callTerminalEntry(args);
-        qDebug() << "[sub app] task complete! sub app quit, time use "
-                 << useTime.elapsed() << "ms";
         return 0;
     }
+    // 第一次启动
     // 这行不要删除
     qputenv("TERM", "xterm-256color");
-
-    // 主进程
-    Service *service = Service::instance();
-    service->connect(&manager, &DBusManager::entryArgs, service, &Service::Entry);
-    // 初始化数据
-    service->init();
-    // 创建窗口
-    service->Entry(app.arguments());
-    qDebug() << "First Terminal Window create complete! time use " << useTime.elapsed() << "ms";
-    QString strInitAppTime = GRAB_POINT + LOGO_TYPE + INIT_APP_TIME + QString::number(useTime.elapsed());
-    qDebug() << qPrintable(strInitAppTime);
+    // 首次启动
+    QObject::connect(&manager, &DBusManager::entryArgs, Service::instance(), &Service::Entry);
+    Service::instance()->EntryTerminal(args);
     // 监听触控板事件
     manager.listenTouchPadSignal();
 

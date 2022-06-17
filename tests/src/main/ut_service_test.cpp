@@ -20,21 +20,26 @@
  */
 
 #include "ut_service_test.h"
-
 #include "service.h"
 #include "mainwindow.h"
+#include "windowsmanager.h"
 #include "dbusmanager.h"
 #include "utils.h"
+#include "customthemesettingdialog.h"
+#include "../stub.h"
+#include "ut_stub_defines.h"
 
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
+//DTK
+#include <DSettingsWidgetFactory>
+#include <DWindowManagerHelper>
 
-//Qt单元测试相关头文件
+//Qt
 #include <QTest>
 #include <QSignalSpy>
 #include <QtConcurrent/QtConcurrent>
 
-#include <DSettingsWidgetFactory>
+//Google GTest 相关头文件
+#include <gtest/gtest.h>
 
 UT_Service_Test::UT_Service_Test()
 {
@@ -43,8 +48,10 @@ UT_Service_Test::UT_Service_Test()
 void UT_Service_Test::SetUp()
 {
     m_service = Service::instance();
+    m_service->m_settingOwner = new NormalWindow(TermProperties());
+    m_service->m_settingShortcutConflictDialog = new DDialog;
+    m_service->m_customThemeSettingDialog = new CustomThemeSettingDialog;
     if (!m_service->property("isServiceInit").toBool()) {
-        m_service->init();
         m_service->setProperty("isServiceInit", true);
     }
 }
@@ -53,45 +60,23 @@ void UT_Service_Test::TearDown()
 {
 }
 
+static bool ut_dtk_managerhelper_hasComposite()
+{
+    return false;
+}
+
+static int ut_dbus_type()
+{
+    return QDBusMessage::InvalidMessage;
+}
+
+static void ui_dialog_show()
+{
+
+}
+
 #ifdef UT_SERVICE_TEST
-TEST_F(UT_Service_Test, ServiceTest)
-{
-    m_service->setMemoryEnable(true);
 
-    bool bMemoryEnable = m_service->getMemoryEnable();
-    EXPECT_EQ(bMemoryEnable, true);
-
-    int shareMemoryCount = m_service->getShareMemoryCount();
-    qDebug() << "shareMemoryCount" << shareMemoryCount << endl;
-//    EXPECT_EQ(shareMemoryCount, 0);
-
-    const int UPDATE_COUNT = 2;
-    m_service->updateShareMemoryCount(UPDATE_COUNT);
-    shareMemoryCount = m_service->getShareMemoryCount();
-    EXPECT_EQ(shareMemoryCount, UPDATE_COUNT);
-
-    //暂时不测试释放共享内存操作，因为其他地方已经自动调用了，再次释放会crash
-//    if (!m_service->m_enableShareMemory->lock())
-//    {
-//        m_service->releaseShareMemory();
-//    }
-}
-
-TEST_F(UT_Service_Test, getSubAppStartTime)
-{
-    qint64 startTime = 5;
-    m_service->setSubAppStartTime(startTime);
-
-    m_service->getSubAppStartTime();
-}
-
-TEST_F(UT_Service_Test, setSubAppStartTime)
-{
-    qint64 startTime = 10;
-    m_service->setSubAppStartTime(startTime);
-
-    m_service->getSubAppStartTime();
-}
 
 TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
 {
@@ -100,22 +85,33 @@ TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
     QSignalSpy spyWinEffectEnable(Service::instance(), SIGNAL(Service::onWindowEffectEnabled(bool)));
     EXPECT_EQ(spyWinEffectEnable.count(), 0);
 
-    bool isWindowEffectEnabled = m_service->isWindowEffectEnabled();
-    if (isWindowEffectEnabled) {
-#ifdef ENABLE_UI_TEST
-//        模拟自动关闭窗口特效
-//        QTest::qWait(UT_WAIT_TIME);
-//        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
-//        EXPECT_EQ(spyWinEffectEnable.count(), 1);
-#endif
-    } else {
-#ifdef ENABLE_UI_TEST
-//        模拟自动开启窗口特效
-//        QTest::qWait(UT_WAIT_TIME);
-//        EXPECT_EQ(m_service->isWindowEffectEnabled(), false);
-//        EXPECT_EQ(spyWinEffectEnable.count(), 1);
-#endif
+    {
+        Stub stub;
+        stub.set(ADDR(QDBusMessage,type),ut_dbus_type);
+        m_service->isWindowEffectEnabled();
     }
+}
+
+TEST_F(UT_Service_Test, slotCustomThemeSettingDialogFinished)
+{
+    m_service->slotCustomThemeSettingDialogFinished(QDialog::Accepted);
+    //更新颜色方案
+    EXPECT_TRUE(Settings::instance()->extendColorScheme() == Settings::instance()->m_configCustomThemePath);
+
+}
+
+int ut_window_widgetCount()
+{
+    return 200;
+}
+
+TEST_F(UT_Service_Test, EntryTerminal)
+{
+    Stub stub;
+    stub.set(ADDR(WindowsManager,widgetCount),ut_window_widgetCount);
+    m_service->EntryTerminal(QStringList() << "1" << "2",true);
+    //启动新的终端
+    EXPECT_TRUE(ut_window_widgetCount() > MAXWIDGETCOUNT);
 }
 
 TEST_F(UT_Service_Test, isCountEnable)
@@ -127,16 +123,15 @@ TEST_F(UT_Service_Test, isCountEnable)
 TEST_F(UT_Service_Test, getsetIsDialogShow)
 {
     EXPECT_EQ(m_service->getIsDialogShow(), false);
+    if(nullptr == WindowsManager::instance()->m_quakeWindow) {
+        TermProperties properties;
+        Utils::parseCommandLine({"deepin-terminal", "--quake-mode"}, properties);
+        WindowsManager::instance()->m_quakeWindow = new QuakeWindow(properties);
+    }
 
-//    m_service->setIsDialogShow(nullptr, true);
-//    EXPECT_EQ(m_service->getIsDialogShow(), true);
-}
-
-TEST_F(UT_Service_Test, getEnable)
-{
-    qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    bool isEnable = m_service->getEnable(startTime);
-    EXPECT_EQ(isEnable, false);
+    m_service->setIsDialogShow(WindowsManager::instance()->getQuakeWindow(), true);
+    //运行雷神窗口
+    EXPECT_TRUE(!WindowsManager::instance()->getQuakeWindow()->isEnabled());
 }
 
 TEST_F(UT_Service_Test, getEntryTime)
@@ -157,11 +152,30 @@ TEST_F(UT_Service_Test, showHideOpacityAndBlurOptions)
     m_service->m_settingDialog->setWindowModality(Qt::NonModal);
     m_service->m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
 
-    m_service->m_settingDialog->show();
 
+
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
     m_service->showHideOpacityAndBlurOptions(true);
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 
-    m_service->m_settingDialog->close();
+    UT_STUB_QWIDGET_SETVISIBLE_PREPARE;
+    m_service->showHideOpacityAndBlurOptions(false);
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
+
+
+
+    QWidget *rightFrame = m_service->m_settingDialog->findChild<QWidget *>("RightFrame");
+    ASSERT_TRUE(rightFrame);
+    rightFrame->setObjectName("RightFrame1");
+    UT_STUB_QWIDGET_SETVISIBLE_PREPARE;
+    m_service->showHideOpacityAndBlurOptions(true);
+    //会调用setvisible函数
+    EXPECT_TRUE(!UT_STUB_QWIDGET_SETVISIBLE_RESULT);
+    rightFrame->setObjectName("RightFrame");
+
+
 }
 
 TEST_F(UT_Service_Test, isSettingDialogVisible)
@@ -190,9 +204,16 @@ TEST_F(UT_Service_Test, isSettingDialogVisible)
 *******************************************************************************/
 TEST_F(UT_Service_Test, initSetting)
 {
-    m_service->m_settingDialog = nullptr;
+    DELETE_PTR(m_service->m_settingDialog);
     // 初始化设置框
     m_service->initSetting();
+
+    DELETE_PTR(m_service->m_settingDialog);
+    // 初始化设置框
+    Stub stub;
+    stub.set(ADDR(DWindowManagerHelper,hasComposite),ut_dtk_managerhelper_hasComposite);
+    m_service->initSetting();
+
     // 判断设置框是否被初始化
     EXPECT_NE(m_service->m_settingDialog, nullptr);
     // 获取刚刚生成的dialog
@@ -255,18 +276,6 @@ TEST_F(UT_Service_Test, Entry)
     int widgetCount = WindowsManager::instance()->widgetCount();
     m_service->Entry(QStringList() << "");
     EXPECT_EQ(WindowsManager::instance()->widgetCount(), widgetCount + 1);
-}
-
-/*******************************************************************************
- 1. @函数:    getMemoryEnable
- 2. @作者:    ut000610 戴正文
- 3. @日期:    2020-12-04
- 4. @说明:    获取是否允许继续创建窗口
-*******************************************************************************/
-TEST_F(UT_Service_Test, getMemoryEnable)
-{
-    // 此时没有窗口新建，应该得到true
-    EXPECT_EQ(m_service->getMemoryEnable(), true);
 }
 
 /*******************************************************************************
@@ -367,6 +376,44 @@ TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
     // 关闭雷神
     WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+}
+
+TEST_F(UT_Service_Test, slotWMChanged)
+{
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
+    m_service->slotWMChanged("deepin wm");
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
+}
+
+TEST_F(UT_Service_Test, showShortcutConflictMsgbox)
+{
+    Stub sub;
+    sub.set(ADDR(DDialog, show), ui_dialog_show);
+    QString txt = ShortcutManager::instance()->m_mapReplaceText.keys().value(0);
+    //设置中心
+    EXPECT_TRUE(m_service->m_settingDialog);
+    m_service->showShortcutConflictMsgbox(txt);
+    //显示快捷键冲突窗口
+    EXPECT_TRUE(m_service->m_settingShortcutConflictDialog->title().count() > 0);
+}
+
+TEST_F(UT_Service_Test, slotSettingShortcutConflictDialogFinished)
+{
+    m_service->slotSettingShortcutConflictDialogFinished();
+    //关闭快捷键冲突窗口
+    EXPECT_TRUE(!m_service->m_settingShortcutConflictDialog);
+}
+
+TEST_F(UT_Service_Test, hideSettingDialog)
+{
+    if(nullptr == m_service->m_settingDialog)
+        m_service->m_settingDialog = new DSettingsDialog();
+
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
+    m_service->hideSettingDialog();
+    //会调用setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 }
 
 #endif

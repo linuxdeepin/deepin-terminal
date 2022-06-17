@@ -22,6 +22,7 @@
 #include "ut_terminalapplication_test.h"
 
 #include "terminalapplication.h"
+#include "../stub.h"
 
 //Qt单元测试相关头文件
 #include <QObject>
@@ -45,12 +46,18 @@ void UT_TerminalApplication_Test::TearDown()
 
 #ifdef UT_TERMINALAPPLICATION_TEST
 
+int ut_key()
+{
+    return Qt::Key_Enter;
+}
+
 TEST_F(UT_TerminalApplication_Test, getsetStartTime)
 {
     int argc = 0;
     char **argv = nullptr;
     TerminalApplication *app = new TerminalApplication(argc, argv);
-
+    Stub stub;
+    stub.set(ADDR(QKeyEvent,key),ut_key);
     QtConcurrent::run([ = ]() {
         QTimer timer;
         timer.setSingleShot(true);
@@ -89,6 +96,7 @@ TEST_F(UT_TerminalApplication_Test, notify)
         QTimer timer;
         DKeySequenceEdit* object = new DKeySequenceEdit();
         QEvent *event = new QEvent(QEvent::FocusOut);
+
         app->notify(object, event);
         if (event) {
             delete event;

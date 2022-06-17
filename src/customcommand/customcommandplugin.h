@@ -79,6 +79,13 @@ public slots:
      */
     void doCustomCommand(const QString &strTxt);
 
+    /**
+     * @brief doShowPlugin 显示插件
+     * @param name 插件类型
+     * @param bSetFocus 显示时是否带有焦点
+     */
+    void doShowPlugin(const QString name, bool bSetFocus);
+
 private:
     MainWindow *m_mainWindow = nullptr;
     CustomCommandTopPanel *m_customCommandTopPanel = nullptr;

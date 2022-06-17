@@ -59,7 +59,6 @@ EncodePanel::EncodePanel(QWidget *parent)
 void EncodePanel::show()
 {
     this->showAnim();
-    qDebug() << "EncodePanelEncodePanelshow" << size().height();
 
     //解决Alt+F2显示Encode时，高度变长的问题 每次显示时，设置固定高度 Begin
     m_encodeView->setFixedHeight(size().height());

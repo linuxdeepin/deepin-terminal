@@ -45,9 +45,9 @@ ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent)
 
 ShortcutManager *ShortcutManager::instance()
 {
-    if (nullptr == m_instance) {
+    if (nullptr == m_instance)
         m_instance = new ShortcutManager();
-    }
+
     return m_instance;
 }
 
@@ -99,38 +99,31 @@ void ShortcutManager::initConnect(MainWindow *mainWindow)
 void ShortcutManager::createCustomCommandsFromConfig()
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!customCommandBasePath.exists()) {
+    if (!customCommandBasePath.exists())
         return ;
-    }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
-    qDebug() << "load Custom Commands Config: " << customCommandConfigFilePath;
-    if (!QFile::exists(customCommandConfigFilePath)) {
+    qInfo() << "load Custom Commands Config: " << customCommandConfigFilePath;
+    if (!QFile::exists(customCommandConfigFilePath))
         return ;
-    }
 
     /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
-    /* del
-    QSettings::Format fmt = QSettings::registerFormat("conf", SettingIO::readIniFunc, SettingIO::writeIniFunc);
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
-
-    commandsSettings.setIniCodec(INI_FILE_CODEC);*/
     /* add */
     USettings commandsSettings(customCommandConfigFilePath);
     /***modify end by ut001121***/
     QStringList commandGroups = commandsSettings.childGroups();
     for (const QString &commandName : commandGroups) {
         commandsSettings.beginGroup(commandName);
-        if (!commandsSettings.contains("Command")) {
+        if (!commandsSettings.contains("Command"))
             continue;
-        }
+
         QAction *action = new QAction(commandName, this);
         action->setData(commandsSettings.value("Command").toString());  // make sure it is a QString
         if (commandsSettings.contains("Shortcut")) {
             QVariant shortcutVariant = commandsSettings.value("Shortcut");
-            if (shortcutVariant.type() == QVariant::KeySequence) {
+            if (QVariant::KeySequence == shortcutVariant.type()) {
                 action->setShortcut(shortcutVariant.convert(QMetaType::QKeySequence));
-            } else if (shortcutVariant.type() == QVariant::String) {
+            } else if (QVariant::String == shortcutVariant.type()) {
                 //兼容deepin-terminal 旧的command-config.conf配置文件
                 QString shortcutStr = shortcutVariant.toString().remove(QChar(' '));
                 action->setShortcut(QKeySequence(shortcutStr));
@@ -143,8 +136,8 @@ void ShortcutManager::createCustomCommandsFromConfig()
     if (SettingIO::rewrite) {
         //删除自定义命令文件
         QFile fileTemp(customCommandConfigFilePath);
-        fileTemp.remove();
-        qDebug() << "remove file:" << customCommandConfigFilePath;
+        if(!fileTemp.remove())
+            qWarning() << " remove file error" << customCommandConfigFilePath << fileTemp.errorString();
 
         //将内存数据写入配置文件
         for (QAction *action : m_customCommandActionList) {
@@ -161,13 +154,11 @@ QList<QAction *> ShortcutManager::createBuiltinShortcutsFromConfig()
 
 QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 {
-    qDebug() << __FUNCTION__ << m_customCommandActionList;
     return m_customCommandActionList;
 }
 
-QAction *ShortcutManager::addCustomCommand(QAction &action)
+QAction *ShortcutManager::addCustomCommand(const QAction &action)
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     QAction *addAction = new QAction(action.text(), this);
     addAction->setData(action.data());
     addAction->setShortcut(action.shortcut());
@@ -183,9 +174,8 @@ QAction *ShortcutManager::checkActionIsExist(QAction &action)
     QString strNewActionName = action.text();
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList[i];
-        if (strNewActionName == currAction->text()) {
+        if (currAction->text() == strNewActionName)
             return currAction;
-        }
     }
     return nullptr;
 }
@@ -195,9 +185,8 @@ QAction *ShortcutManager::checkActionIsExistForModify(QAction &action)
     QString strNewActionName = action.text();
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList[i];
-        if (strNewActionName == currAction->text() && action.data() == currAction->data() && action.shortcut() == currAction->shortcut()) {
+        if (currAction->text() == strNewActionName && action.data() == currAction->data() && action.shortcut() == currAction->shortcut())
             return currAction;
-        }
     }
     return nullptr;
 }
@@ -206,12 +195,12 @@ QAction *ShortcutManager::findActionByKey(const QString &strKey)
 {
     for (QAction *action : m_customCommandActionList) {
         if (action->text() == strKey) {
-            qDebug() << "find action " << action;
+            qInfo() << "find action " << action;
             return action;
         }
     }
 
-    qDebug() << "not find action name " << strKey;
+    qInfo() << "not find action name " << strKey;
     return nullptr;
 }
 
@@ -219,7 +208,6 @@ void ShortcutManager::fillCommandListData(ListView *listview, const QString &str
 {
     listview->clearData();
     QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
-    qDebug() << __FUNCTION__ << strFilter  << " : " << customCommandActionList.size();
     //根据条件进行刷新，strFilter 为空时 全部刷新，根据名称或者命令模糊匹配到strFilter的条件进行刷新
     if (strFilter.isEmpty()) {
         for (int i = 0; i < customCommandActionList.size(); i++) {
@@ -247,16 +235,15 @@ void ShortcutManager::fillCommandListData(ListView *listview, const QString &str
             }
         }
     }
-    qDebug() << "fill list data";
 }
 
 /************************ Mod by m000743 sunchengxi 2020-04-21:自定义命令修改的异常问题 End  ************************/
 bool ShortcutManager::isShortcutConflictInCustom(const QString &Name, const QString &Key)
 {
     for (auto &currAction : m_customCommandActionList) {
-        if (Key == currAction->shortcut().toString()) {
+        if (currAction->shortcut().toString() == Key) {
             if (Name != currAction->text()) {
-                qDebug() << Name << Key << "is conflict with custom shortcut!";
+                qInfo() << Name << Key << "is conflict with custom shortcut!";
                 return true;
             }
         }
@@ -268,9 +255,8 @@ bool ShortcutManager::isValidShortcut(const QString &Name, const QString &Key)
 {
     QString reason;
     if (!checkShortcutValid(Name, Key, reason)) {
-        if (Key != "Esc") {
+        if (Key != "Esc")
             Utils::showShortcutConflictMsgbox(reason);
-        }
         return false;
     }
     return true;
@@ -286,45 +272,45 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     }
     /********************* Modify by ut000610 daizhengwen End ************************/
     QString style = QString("<span style=\"color: rgba(255, 87, 54, 1);\">%1</span>").arg(key);
-    qDebug() << style;
+    qInfo() << style;
 
     // 单键
-    if (Key.count("+") == 0) {
+    if (0 == Key.count("+")) {
         //F1-F12是允许的，这个正则不够精确，但是没关系。
         QRegExp regexp("^F[0-9]{1,2}$");
         if (!Key.contains(regexp)) {
-            qDebug() << Key << "is invalid!";
+            qInfo() << Key << "is invalid!";
             Reason = tr("The shortcut %1 is invalid, ")
-                     .arg(style);
+                    .arg(style);
             return  false;
         }
     }
     // 小键盘单键都不允许
     QRegExp regexpNum("^Num+.*");
     if (Key.contains(regexpNum)) {
-        qDebug() << Key << "is invalid!";
+        qInfo() << Key << "is invalid!";
         Reason = tr("The shortcut %1 is invalid, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
     // 内置快捷键都不允许
     if (m_builtinShortcuts.contains(Key)) {
-        qDebug() << Key << "is conflict with builtin shortcut!";
+        qInfo() << Key << "is conflict with builtin shortcut!";
         Reason = tr("The shortcut %1 was already in use, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
 
     // 与设置里的快捷键冲突检测
     if (Settings::instance()->isShortcutConflict(Name, Key)) {
         Reason = tr("The shortcut %1 was already in use, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
     // 与自定义快捷键冲突检测
     if (isShortcutConflictInCustom(Name, Key)) {
         Reason = tr("The shortcut %1 was already in use, ")
-                 .arg(style);
+                .arg(style);
         return  false;
     }
     return true;
@@ -332,7 +318,6 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
 
 void ShortcutManager::delCustomCommand(CustomCommandData itemData)
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     delCustomCommandToConfig(itemData);
 
     QString actionCmdName = itemData.m_cmdName;
@@ -352,18 +337,12 @@ void ShortcutManager::delCustomCommand(CustomCommandData itemData)
 
 void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!customCommandBasePath.exists()) {
+    if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
-    /* del
-    //QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
-    commandsSettings.setIniCodec(INI_FILE_CODEC);**/
     /* add */
     USettings commandsSettings(customCommandConfigFilePath);
     /***modify end by ut001121***/
@@ -372,32 +351,23 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
     commandsSettings.setValue("Shortcut", action->shortcut().toString());
     commandsSettings.endGroup();
 
-    qDebug() << "saveIndex:" << saveIndex;
     if (saveIndex >= 0) {
         QAction *saveAction = new QAction;
         saveAction->setText(action->text());
         saveAction->setData(action->data());
         saveAction->setShortcut(action->shortcut());
-        qDebug() << "old" << m_customCommandActionList[saveIndex]->shortcut();
         m_customCommandActionList[saveIndex] = saveAction;
-        qDebug() << "new" << m_customCommandActionList[saveIndex]->shortcut();
     }
 }
 
 int ShortcutManager::delCustomCommandToConfig(CustomCommandData itemData)
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!customCommandBasePath.exists()) {
+    if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
     /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
-    /* del
-    //QSettings commandsSettings(customCommandConfigFilePath, QSettings::IniFormat);
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);
-    commandsSettings.setIniCodec(INI_FILE_CODEC);*/
     /* add */
     USettings commandsSettings(customCommandConfigFilePath);
     /***modify end by ut001121***/
@@ -406,7 +376,7 @@ int ShortcutManager::delCustomCommandToConfig(CustomCommandData itemData)
     int removeIndex = -1;
     for (int i = 0; i < m_customCommandActionList.size(); i++) {
         QAction *currAction = m_customCommandActionList[i];
-        if (itemData.m_cmdName == currAction->text()) {
+        if (currAction->text() == itemData.m_cmdName) {
             removeIndex = i;
             break;
         }

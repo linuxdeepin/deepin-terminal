@@ -370,12 +370,6 @@ protected:
      * @param isActiveTab
      */
     void createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab);
-    /**
-     * @brief 创建一个用于标签页拖拽的新窗口
-     * @author ut000438 王亮
-     * @return
-     */
-    MainWindow *createNormalWindow();
 
     /**
      * @brief 用于计算拖拽窗口结束鼠标释放后的窗口位置
@@ -487,8 +481,8 @@ private:
     QMap<QString, TabTextColorStatus> m_tabStatusMap;
     QColor m_tabChangedTextColor;
 
-    bool m_isEnableCloseTabAnimation;
-    bool m_isQuakeWindowTab;
+    bool m_isEnableCloseTabAnimation = true;//是否关闭tab动画,默认关闭动画
+    bool m_isQuakeWindowTab = false;//是否是雷神窗口的tab，默认不是雷神窗口
 
     TermTabStyle *m_termTabStyle = nullptr;
 };

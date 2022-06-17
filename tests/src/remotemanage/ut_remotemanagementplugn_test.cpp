@@ -33,6 +33,23 @@
 #include <QtGui>
 #include <QFile>
 
+class ServerConfigClass : public QObject{
+public:
+    explicit ServerConfigClass(QObject *parent);
+    virtual ~ServerConfigClass();
+    ServerConfig config;
+};
+
+ServerConfigClass::ServerConfigClass(QObject *parent) : QObject(parent)
+{
+
+}
+
+ServerConfigClass::~ServerConfigClass()
+{
+
+}
+
 UT_RemoteManagementPlugin_Test::UT_RemoteManagementPlugin_Test()
 {
 }
@@ -40,7 +57,6 @@ UT_RemoteManagementPlugin_Test::UT_RemoteManagementPlugin_Test()
 void UT_RemoteManagementPlugin_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
@@ -82,7 +98,7 @@ TEST_F(UT_RemoteManagementPlugin_Test, setBackspaceKey)
     EXPECT_NE(remoteTopPanel, nullptr);
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
-    TermWidget *termWidget = m_normalWindow->currentPage()->currentTerminal();
+    TermWidget *termWidget = m_normalWindow->currentActivatedTerminal();
     remotePlugin->setBackspaceKey(termWidget, QString("control-h"));
     remotePlugin->setBackspaceKey(termWidget, QString("auto"));
     remotePlugin->setBackspaceKey(termWidget, QString("escape-sequence"));
@@ -101,7 +117,7 @@ TEST_F(UT_RemoteManagementPlugin_Test, setDeleteKey)
     EXPECT_NE(remoteTopPanel, nullptr);
     EXPECT_EQ(remoteTopPanel->isVisible(), true);
 
-    TermWidget *termWidget = m_normalWindow->currentPage()->currentTerminal();
+    TermWidget *termWidget = m_normalWindow->currentActivatedTerminal();
     remotePlugin->setDeleteKey(termWidget, QString("control-h"));
     remotePlugin->setDeleteKey(termWidget, QString("auto"));
     remotePlugin->setDeleteKey(termWidget, QString("escape-sequence"));
@@ -178,4 +194,28 @@ TEST_F(UT_RemoteManagementPlugin_Test, createShellFile2)
 
     delete pRemotePlugin;
 }
+
+TEST_F(UT_RemoteManagementPlugin_Test, doCennectServer)
+{
+    NormalWindow *normalWindow = new NormalWindow(TermProperties({{WorkingDir, "/"},{QuakeMode, false},{SingleFlag, true}}), nullptr);
+    ServerConfigClass *config = new ServerConfigClass(normalWindow);
+    RemoteManagementPlugin *pRemotePlugin = new RemoteManagementPlugin(normalWindow);
+
+    config->config.m_userName = "root";
+    config->config.m_address = "127.0.0.1";
+    config->config.m_port = "22";
+    // 密钥为空
+    config->config.m_privateKey = "";
+    config->config.m_password = "1";
+    config->config.m_path = "/";
+    config->config.m_command = "ls";
+    pRemotePlugin->initPlugin(normalWindow);
+    pRemotePlugin->doCennectServer(&config->config);
+    //代码中有singleShot(100)的调用
+    QTest::qWait(1000);
+    //连接请求发出后，会showPlugin
+    EXPECT_TRUE(normalWindow->m_CurrentShowPlugin == MainWindow::PLUGIN_TYPE_NONE);
+    normalWindow->deleteLater();
+}
+
 #endif

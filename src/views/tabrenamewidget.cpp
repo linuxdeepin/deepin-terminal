@@ -20,10 +20,13 @@
  */
 
 #include "tabrenamewidget.h"
+
+//dtk
+#include <DFontSizeManager>
+
+//qt
 #include <QDebug>
 #include <QKeyEvent>
-
-#include <DFontSizeManager>
 
 TabRenameWidget::TabRenameWidget(bool isRemote, bool isSetting, QWidget *parent)
     : QWidget(parent)
@@ -48,13 +51,15 @@ void TabRenameWidget::initUi()
     // 内容输入框
     m_inputedit = new DLineEdit(this);
     m_inputedit->setText("%n:%d");
-    m_inputedit->setMaximumSize(172, 36);
-    m_inputedit->setMinimumSize(135, 36);
+    m_inputedit->setMinimumHeight(36);
+    m_inputedit->setMaximumWidth(172);
+    m_inputedit->setMinimumWidth(135);
     DFontSizeManager::instance()->bind(m_inputedit, DFontSizeManager::T6);
 
     // 插入按钮
     m_choseButton = new DPushButton(tr("Insert"), this);
-    m_choseButton->setMaximumHeight(36);
+    m_choseButton->setMinimumHeight(36);
+    m_choseButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
     // 添加下拉菜单
     m_choseButton->setMenu(m_choseMenu);
     DFontSizeManager::instance()->bind(m_choseButton, DFontSizeManager::T6);
@@ -62,11 +67,10 @@ void TabRenameWidget::initUi()
     m_choseButton->setDefault(false);
 
     //  设置界面隐藏clearbutton并且不需要初始化标题 重命名窗口不用隐藏clearbutton需要初始化标题
-    if (!m_isSetting) {
+    if (!m_isSetting)
         initLabel();
-    } else {
+    else
         m_inputedit->lineEdit()->setClearButtonEnabled(false);
-    }
 
     m_layout->addWidget(m_inputedit);
     m_layout->addWidget(m_choseButton);
@@ -124,11 +128,10 @@ void TabRenameWidget::initConnections()
 void TabRenameWidget::initLabel()
 {
     m_Label = new QLabel;
-    if (!m_isRemote) {
+    if (!m_isRemote)
         m_Label->setText(QObject::tr("Tab title format"));
-    } else {
+    else
         m_Label->setText(QObject::tr("Remote tab title format"));
-    }
 
     DFontSizeManager::instance()->bind(m_Label, DFontSizeManager::T6);
 

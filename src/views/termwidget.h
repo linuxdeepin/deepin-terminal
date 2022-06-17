@@ -96,16 +96,6 @@ public:
     bool isInRemoteServer();
 public:
     /**
-     * @brief 跳转到下一个命令（这个功能没找到库的接口，现在是暂时是以虚拟键形式实现）
-     * @author n014361 王培利
-     */
-    void skipToNextCommand();
-    /**
-     * @brief 跳转到前一个命令（这个功能没找到库的接口，现在是暂时是以虚拟键形式实现）
-     * @author n014361 王培利
-     */
-    void skipToPreCommand();
-    /**
      * @brief 设置不透明度
      * @author ut000610 daizhengwen
      * @param opacity 不透明度
@@ -287,13 +277,12 @@ public:
      * @param strWarnings 提示
      */
     void showShellMessage(QString strWarnings);
+
     /**
-     * @brief 弹窗安装事件过滤器，更新DFloatingMessage的text
-     * @author ut003135 changze
-     * @param widget
-     * @param text
+     * @brief beginInputRemotePassword 输入远程密码
      */
-    void installEventMessageText(DFloatingMessage *widget, const QString &text);
+    void inputRemotePassword(const QString &remotePassword);
+
 public slots:
     /**
      * @brief Terminal的各项设置生效
@@ -327,6 +316,7 @@ signals:
     void termRequestRenameTab(QString newTabName);
     void termIsIdle(QString tabIdentifier, bool bIdle);
     void termTitleChanged(QString titleText);
+    void remotePasswordHasInputed();
 
 protected:
     /**
@@ -335,14 +325,6 @@ protected:
      * @param event 滚轮事件
      */
     void wheelEvent(QWheelEvent *event) override;
-    /**
-     * @brief 监控事件过滤，终端宽度缩小时，相关弹窗也同步变化
-     * @author  ut003135 changze
-     * @param o
-     * @param e
-     * @return
-     */
-    bool eventFilter(QObject *o, QEvent *e) override;
 
 private slots:
     /**
@@ -374,7 +356,6 @@ private slots:
     void onWindowEffectEnabled(bool isWinEffectEnabled);
     void onCopyAvailable(bool enable);
     void onSetTerminalFont();
-    void onSig_matchFound();
     void onSig_noMatchFound();
 
     void onCopy();
@@ -425,11 +406,11 @@ private:
      * @return
      */
     QString getTabTitle(QMap<QString, QString> format, QString TabFormat);
+
     /**
-     * @brief 分屏时切换到当前选中主题方案
-     * @author ut000125 sunchengxi
+     * @brief 浏览器打开对应的链接
+     * @param strUrl 相关链接
      */
-    void switchThemeOnSplitScreen();
     void openUrl(QString strUrl);
 
     /**
@@ -479,6 +460,13 @@ private:
     DFloatingMessage *m_flowMessage = nullptr;
     //记录弹窗的信息
     QMap<QObject *, QString> m_messageTextMap;
+
+    //当前shell的 pid
+    int m_remoteMainPid = 0;
+    //本次远程的密码
+    QString m_remotePassword;
+    //是否准备远程
+    bool m_remotePasswordIsReady = false;
 };
 
 #endif  // TERMWIDGET_H

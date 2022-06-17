@@ -35,7 +35,7 @@ RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPlug
 
 void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
 {
-    qDebug() << "RemoteManagementPlugin init Plugin.";
+    qInfo() << "RemoteManagementPlugin init Plugin.";
     m_mainWindow = mainWindow;
     //initRemoteManagementTopPanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
@@ -43,7 +43,9 @@ void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
             // 判断窗口是否已经显示
             if (m_isShow) {
                 // 若显示，则隐藏
-                getRemoteManagementTopPanel()->hideAnim();
+                RemoteManagementTopPanel * panel = getRemoteManagementTopPanel();
+                if(panel)
+                    panel->hideAnim();
                 m_isShow = false;
             }
 
@@ -77,7 +79,7 @@ void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
         // 焦点在列表上，隐藏时，焦点现在当前窗口上
         if (m_mainWindow->isFocusOnList()) {
             m_mainWindow->focusCurrentPage();
-            qDebug() << "focus on remote list, hide remote list and set foucs on terminal";
+            qInfo() << "focus on remote list, hide remote list and set foucs on terminal";
         }
         getRemoteManagementTopPanel()->hide();
     });
@@ -95,15 +97,13 @@ QAction *RemoteManagementPlugin::titlebarMenu(MainWindow *mainWindow)
 
 RemoteManagementTopPanel *RemoteManagementPlugin::getRemoteManagementTopPanel()
 {
-    if (nullptr == m_remoteManagementTopPanel) {
+    if (nullptr == m_remoteManagementTopPanel)
         initRemoteManagementTopPanel();
-    }
     return m_remoteManagementTopPanel;
 }
 
 void RemoteManagementPlugin::initRemoteManagementTopPanel()
 {
-    qDebug() << __FUNCTION__;
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
     m_remoteManagementTopPanel->setObjectName("RemoteManagementTopPanel");
     connect(m_remoteManagementTopPanel,
@@ -114,7 +114,7 @@ void RemoteManagementPlugin::initRemoteManagementTopPanel()
 
 void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
 {
-    qDebug() << "RemoteManagementPlugin do connect server.";
+    qInfo() << "RemoteManagementPlugin do connect server.";
     if (nullptr != curServer) {
 
         QString shellFile = createShellFile(curServer);
@@ -122,9 +122,9 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
         //--added by qinyaning(nyq) to solve the probelm which Connecting to the remote server
         /*does not connect to the remote server directly in the new TAB. time: 2020.4.13 18:15
          * */
-        if (m_mainWindow->currentPage()->currentTerminal()->hasRunningProcess()) {
+        if (m_mainWindow->currentActivatedTerminal()->hasRunningProcess())
             m_mainWindow->addTab(m_mainWindow->currentPage()->createCurrentTerminalProperties(), true);
-        }
+
         //--------------------------------//
         /******** Modify by m000714 daizhengwen 2020-04-30: 将当前还没执行的命令清空****************/
         m_mainWindow->focusCurrentPage();
@@ -134,23 +134,24 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
         m_mainWindow->currentPage()->sendTextToCurrentTerm(strTxt, true);
         // 等待连接 100ms等待命令发过去正常立即执行，100ms足够，一下的信号槽只是判断是否开启另一个程序去连接
         // 若有程序去连接，则判断已连接，若连接失败，则判断为断开连接
+        m_mainWindow->currentActivatedTerminal()->inputRemotePassword(curServer->m_password);
         QTimer::singleShot(100, this, [ = ]() {
-            TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+            TermWidget *term = m_mainWindow->currentActivatedTerminal();
             if (!term) {
                 // 若term为空
-                qDebug() << "current terminal is null";
+                qInfo() << "current terminal is null";
             }
             // 判断是否连接服务器
             if (!term->isInRemoteServer()) {
                 // 没有连接上
-                qDebug() << "disconnect to server";
+                qInfo() << "disconnect to server";
                 return;
             }
             // 标记此term连接远程
             term->setIsConnectRemote(true);
             // 设置远程主机
             term->modifyRemoteTabTitle(*curServer);
-            qDebug() << "connect to server";
+            qInfo() << "connect to server";
             // 编码
             setRemoteEncode(curServer->m_encoding);
             // 退格键
@@ -158,15 +159,13 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
             // 删除键
             setDeleteKey(term, curServer->m_deleteKey);
         });
-
     }
     /******** Modify by ut000610 daizhengwen 2020-06-04: 点击连接服务器后，隐藏列表，焦点回到主窗口****************/
     m_mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     // 隐藏列表后，将焦点设置到主窗口 100ms足够
     QTimer::singleShot(100, this, [&]() {
-        if (m_mainWindow->isActiveWindow()) {
+        if (m_mainWindow->isActiveWindow())
             m_mainWindow->focusCurrentPage();
-        }
     });
     /********************* Modify by ut000610 daizhengwen End ************************/
 }
@@ -180,7 +179,7 @@ inline QString RemoteManagementPlugin::convertStringToAscii(const QString &strSr
 
 QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 {
-    qDebug() << "RemoteManagementPlugin create temporary shell file.";
+    qInfo() << "RemoteManagementPlugin create temporary shell file.";
     // 首先读取通用模板
     QFile sourceFile(":/other/ssh_login.sh");
     QString fileString;
@@ -204,7 +203,7 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
         // fix bug#64758 修改服务器密码，点击连接没有密码错误提示语，且可以成功连接
         // 由于密码中可能存在各种特殊符号如!、#、$等，不处理的话shell命令运行会报错，需要转成ASCII编码处理下
         QString asciiPassword = convertStringToAscii(curServer->m_password);
-        strArgs.replace("<<PASSWORD>>", asciiPassword);
+        strArgs.replace("<<PASSWORD>>", "");
     } else {
         fileString.replace("<<AUTHENTICATION>>", "yes");
         strArgs.replace("<<PRIVATE_KEY>>", curServer->m_privateKey);
@@ -215,12 +214,12 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
     QString command = curServer->m_command;
     // 添加远程提示
     QString remote_command = "echo " + tr("Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.") + " && ";
-    if (!path.isNull() && !path.isEmpty()) {
+    if (!path.isNull() && !path.isEmpty())
         remote_command = remote_command + "cd " + path + " && ";
-    }
-    if (!command.isNull() && !command.isEmpty()) {
+
+    if (!command.isNull() && !command.isEmpty())
         remote_command = remote_command + command + " && ";
-    }
+
     fileString.replace("<<REMOTE_COMMAND>>", remote_command);
 
     // 创建临时文件和执行脚本所需要的参数
@@ -236,11 +235,11 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 
 void RemoteManagementPlugin::setRemoteEncode(QString encode)
 {
-    TermWidget *term = m_mainWindow->currentPage()->currentTerminal();
+    TermWidget *term = m_mainWindow->currentActivatedTerminal();
     if (!encode.isNull() && !encode.isEmpty()) {
         // 设置当前窗口的编码
         term->setTextCodec(QTextCodec::codecForName(encode.toLocal8Bit()));
-        qDebug() << "Remote encode " << encode;
+        qInfo() << "Remote encode " << encode;
     }
     // 记录远程编码
     term->setRemoteEncode(encode);
@@ -250,32 +249,32 @@ void RemoteManagementPlugin::setRemoteEncode(QString encode)
 
 void RemoteManagementPlugin::setBackspaceKey(TermWidget *term, QString backspaceKey)
 {
-    if (backspaceKey == "control-h") {
+    if ("control-h" == backspaceKey)
         term->setBackspaceMode(EraseMode_Control_H);
-    } else if (backspaceKey == "auto") {
+    else if ("auto" == backspaceKey)
         term->setBackspaceMode(EraseMode_Auto);
-    } else if (backspaceKey == "escape-sequence") {
+    else if ("escape-sequence" == backspaceKey)
         term->setBackspaceMode(EraseMode_Escape_Sequeue);
-    } else if (backspaceKey == "ascii-del") {
+    else if ("ascii-del" == backspaceKey)
         term->setBackspaceMode(EraseMode_Ascii_Delete);
-    } else if (backspaceKey == "tty") {
+    else if ("tty" == backspaceKey)
         term->setBackspaceMode(EraseMode_TTY);
-    }
-    qDebug() << "backspace mode " << backspaceKey;
+
+    qInfo() << "backspace mode " << backspaceKey;
 }
 
 void RemoteManagementPlugin::setDeleteKey(TermWidget *term, QString deleteKey)
 {
-    if (deleteKey == "control-h") {
+    if ("control-h" == deleteKey)
         term->setDeleteMode(EraseMode_Control_H);
-    } else if (deleteKey == "auto") {
+    else if ("auto" == deleteKey)
         term->setDeleteMode(EraseMode_Auto);
-    } else if (deleteKey == "escape-sequence") {
+    else if ("escape-sequence" == deleteKey)
         term->setDeleteMode(EraseMode_Escape_Sequeue);
-    } else if (deleteKey == "ascii-del") {
+    else if ("ascii-del" == deleteKey)
         term->setDeleteMode(EraseMode_Ascii_Delete);
-    } else if (deleteKey == "tty") {
+    else if ("tty" == deleteKey)
         term->setDeleteMode(EraseMode_TTY);
-    }
-    qDebug() << "delete mode " << deleteKey;
+
+    qInfo() << "delete mode " << deleteKey;
 }

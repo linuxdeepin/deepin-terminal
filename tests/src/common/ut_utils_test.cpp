@@ -21,23 +21,27 @@
 
 #include "ut_utils_test.h"
 #include "termproperties.h"
-
+#include "ut_stub_defines.h"
 #include "utils.h"
 
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
+//DTK相关头文件
+#include <DFileDialog>
+#include <DDialog>
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
-#include <utility>
-#include <memory>
 #include <QWidget>
 #include <QtConcurrent/QtConcurrent>
 
-//DTK相关头文件
-#include <DFileDialog>
+//Google GTest 相关头文件
+#include <gtest/gtest.h>
+
+//system
+#include <utility>
+#include <memory>
+
 DWIDGET_USE_NAMESPACE
 
 UT_Utils_Test::UT_Utils_Test()
@@ -124,11 +128,6 @@ TEST_F(UT_Utils_Test, showDirDialog)
 #endif
 }
 
-//static void setSpaceInWord(DPushButton *button);
-
-//static void showRenameTitleDialog(QString oldTitle, QWidget *parentWidget);
-
-//static void showSameNameDialog(QWidget *parent, const QString &firstLine, const QString &secondLine);
 TEST_F(UT_Utils_Test, showFilesSelectDialog)
 {
 #ifdef ENABLE_UI_TEST
@@ -278,7 +277,7 @@ TEST_F(UT_Utils_Test, showExitUninstallConfirmDialog)
 }
 
 
-TEST_F(UT_Utils_Test, showUnistallConfirmDialog)
+TEST_F(UT_Utils_Test, showUninstallConfirmDialog)
 {
 #ifdef ENABLE_UI_TEST
     //要自己退出，否则对话框窗口会一直阻塞
@@ -300,7 +299,7 @@ TEST_F(UT_Utils_Test, showUnistallConfirmDialog)
     });
 
     QString commandName = "python";
-    bool isAccepted = Utils::showUnistallConfirmDialog(commandName);
+    bool isAccepted = Utils::showUninstallConfirmDialog(commandName);
     EXPECT_EQ(isAccepted, false);
 
     
@@ -340,28 +339,10 @@ TEST_F(UT_Utils_Test, showShortcutConflictMsgbox)
 TEST_F(UT_Utils_Test, showSameNameDialog)
 {
 #ifdef ENABLE_UI_TEST
-    QWidget *parentWidget = new QWidget;
-    //要自己退出，否则对话框窗口会一直阻塞
-    QtConcurrent::run([ = ]() {
-        QTimer timer;
-        timer.setSingleShot(true);
-
-        QEventLoop *loop = new QEventLoop;
-
-        QObject::connect(&timer, &QTimer::timeout, [ = ]() {
-            parentWidget->deleteLater();
-            loop->quit();
-            qApp->exit();
-        });
-
-        timer.start(1000);
-        loop->exec();
-
-        delete loop;
-    });
-
+    UT_STUB_QWIDGET_SHOW_CREATE;
     Utils::showSameNameDialog(parentWidget, "servername1", "servername1");
-
+    //会触发dialog的show函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
     
 #endif
 }
@@ -369,23 +350,21 @@ TEST_F(UT_Utils_Test, showSameNameDialog)
 // 参数解析
 TEST_F(UT_Utils_Test, parseCommandLine)
 {
-    QStringList appArguments;
-    appArguments << "deepin-terminal" << QString("-h");
-
     TermProperties properties;
-    Utils::parseCommandLine(appArguments, properties, false);
+    Utils::parseCommandLine(QStringList() << "deepin-terminal" << QString("-h"), properties, false);
+    EXPECT_TRUE(4 == properties.m_properties.count());
 
-    appArguments.clear();
-    appArguments << "deepin-terminal" << QString("-v");
-    Utils::parseCommandLine(appArguments, properties, false);
+    properties = TermProperties();
+    Utils::parseCommandLine(QStringList() << "deepin-terminal" << QString("-v"), properties, false);
+    EXPECT_TRUE(4 == properties.m_properties.count());
 
-    appArguments.clear();
-    appArguments << "deepin-terminal" << QString("-q");
-    Utils::parseCommandLine(appArguments, properties, false);
+    properties = TermProperties();
+    Utils::parseCommandLine(QStringList() << "deepin-terminal" << QString("-q"), properties, false);
+    EXPECT_TRUE(4 == properties.m_properties.count());
 
-    appArguments.clear();
-    appArguments << "deepin-terminal" << "-e" << "ls" << "-w" << "/home/";
-    Utils::parseCommandLine(appArguments, properties, false);
+    properties = TermProperties();
+    Utils::parseCommandLine(QStringList() << "deepin-terminal" << "-e" << "ls" << "-w" << "/home/", properties, false);
+    EXPECT_TRUE(5 == properties.m_properties.count());
 }
 
 TEST_F(UT_Utils_Test, parseExecutePara)
@@ -420,12 +399,12 @@ TEST_F(UT_Utils_Test, parseNestedQString)
 TEST_F(UT_Utils_Test, FontFilterTest)
 {
     FontFilter *ff = FontFilter::instance();
-    ff->HandleWidthFont();
+    ff->handleWidthFont();
 
     ff->setStop(true);
     EXPECT_EQ(ff->m_bstop, true);
 
-    ff->CompareWhiteList();
+    ff->compareWhiteList();
 }
 
 #endif

@@ -94,7 +94,11 @@ public slots:
      * @param type
      */
     void onFocusOut(Qt::FocusReason type);
-
+    /**
+     * @brief 添加自定义命令的响应
+     * @param result:accept or reject
+     */
+    void onAddCommandResponse(int result);
 private:
     /**
      * @brief 自定义命令面板界面初始化

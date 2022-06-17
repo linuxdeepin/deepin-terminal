@@ -74,6 +74,7 @@ Session::Session(QObject* parent) :
 //   , _zmodemProc(0)
 //   , _zmodemProgress(0)
         , _hasDarkBackground(false)
+        , _isPrimaryScreen(true)
 {
     //prepare DBus communication
 //    new SessionAdaptor(this);
@@ -99,7 +100,8 @@ Session::Session(QObject* parent) :
              this, SIGNAL( changeTabTextColorRequest( int ) ) );
     connect( _emulation, SIGNAL(profileChangeCommandReceived(const QString &)),
              this, SIGNAL( profileChangeCommandReceived(const QString &)) );
-
+    connect(_emulation, &Konsole::Emulation::primaryScreenInUse,
+            this, &Session::onPrimaryScreenInUse);
     connect(_emulation, SIGNAL(imageResizeRequest(QSize)),
             this, SLOT(onEmulationSizeChange(QSize)));
     connect(_emulation, SIGNAL(imageSizeChanged(int, int)),
@@ -214,6 +216,7 @@ void Session::addView(TerminalDisplay * widget)
         // indicates whether or not it is interested in mouse signals
         connect( _emulation , SIGNAL(programUsesMouseChanged(bool)) , widget ,
                  SLOT(setUsesMouse(bool)) );
+        connect( _emulation , &Konsole::Emulation::enableAlternateScrolling, widget, &Konsole::TerminalDisplay::setAlternateScrolling);
 
         widget->setUsesMouse( _emulation->programUsesMouse() );
 
@@ -288,7 +291,12 @@ void Session::onUpdateTitleArgs()
         _currentDir = dir;
         emit titleArgsChange(QLatin1String("%D"), _currentDir);
     }
+}
 
+void Session::onPrimaryScreenInUse(bool use)
+{
+    _isPrimaryScreen = use;
+    emit primaryScreenInUse(use);
 }
 
 void Session::removeView(TerminalDisplay *widget)
@@ -366,11 +374,10 @@ void Session::run()
     if (argsTmp.length())
         arguments << _arguments;
 
-    QString cwd = QDir::currentPath();
-    if (!_initialWorkingDir.isEmpty()) {
+    if (!_initialWorkingDir.isEmpty() && QDir(_initialWorkingDir).exists()) {
         _shellProcess->setWorkingDirectory(_initialWorkingDir);
     } else {
-        _shellProcess->setWorkingDirectory(cwd);
+        _shellProcess->setWorkingDirectory(QDir::homePath());
     }
 
     _shellProcess->setFlowControlEnabled(_flowControl);
@@ -396,8 +403,15 @@ void Session::run()
 
     if (result < 0) {
         //qDebug() << "CRASHED! result: " << result<<arguments;
+        QString processError = _shellProcess->errorString();
+        processError = processError.mid(processError.indexOf(":") + 1).trimmed();
+        if(!processError.isEmpty())
+            processError = "(" +processError + ")";
+
         QString infoText = QString("There was an error creating the child process for this terminal. \n"
-                 "Failed to execute child process \"%1\"(No such file or directory)!").arg(exec);
+                 "Failed to execute child process \"%1\"%2!")
+                .arg(exec)
+                .arg(processError);
         sendText(infoText);
         _userTitle = QString::fromLatin1("Session crashed");
         emit titleChanged();
@@ -544,6 +558,11 @@ void Session::monitorTimerDone()
     }
 
     _notifiedActivity=false;
+}
+
+bool Session::isPrimaryScreen()
+{
+    return _isPrimaryScreen;
 }
 
 void Session::activityStateSet(int state)
@@ -707,6 +726,12 @@ QString Session::profileKey() const
 
 void Session::done(int exitStatus)
 {
+    /**
+    相关说明如下：
+    1._wantedClose ：session是否正常结束，当session.close 或 session.析构时 为true，默认false
+    2._autoClose   ：是否自动关闭 由传参控制，当传参含--keep-open 或 含-e 时 为false，默认true
+    3.当【运行脚本命令-C】且【_autoClose=false】时，命令最后会补上exit，命令结束会触发process.finished-》session.done
+    */
     qDebug()<<"done exitStatus:"<<exitStatus<< _shellProcess->exitStatus();
     if (_autoClose || _wantedClose) {
         emit finished();
@@ -721,7 +746,6 @@ void Session::done(int exitStatus)
         return;
     }
     /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 End ************************/
-
     if(exitStatus != 0)
     {
         QString message;

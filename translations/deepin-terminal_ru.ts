@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -539,7 +539,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1182"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>не смог открыть &quot;%1&quot;, невозможно запустить</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1184"/>
@@ -647,7 +647,7 @@
         <location filename="../src/common/utils.cpp" line="178"/>
         <location filename="../src/common/utils.cpp" line="214"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
-        <translation>В этом терминале все еще выполняется %1 процесса(ов). Закрытие терминала убьет их всех.</translation>
+        <translation>В этом терминале все еще выполняется %1 процесса/ов/. Закрытие терминала убьет их всех.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>

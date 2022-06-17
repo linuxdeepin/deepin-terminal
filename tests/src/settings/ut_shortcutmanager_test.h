@@ -26,14 +26,23 @@
 
 #include <gtest/gtest.h>
 
+class QAction;
 class ShortcutManager;
 class UT_ShortcutManager_Test : public ::testing::Test
 {
 public:
     UT_ShortcutManager_Test();
 
+public:
+    //用于做一些初始化操作
+    virtual void SetUp();
+
+    //用于做一些清理操作
+    virtual void TearDown();
+
 private:
     ShortcutManager *m_shortcutManager;
+    QAction *newAction;
 };
 
 #endif // UT_SHORTCUTMANAGER_TEST_H

@@ -27,10 +27,14 @@
 #include <QIcon>
 #include <QLabel>
 #include <QDebug>
+#include <QMouseEvent>
+
+static const int VER_RESIZED_ALLOWED_OFF = 3;//允许的垂直偏移量
+static const int VER_RESIZED_MIN_HEIGHT = 30;//resize的最小高度
 
 DWIDGET_USE_NAMESPACE
 
-TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), m_layout(new QHBoxLayout(this))
+TitleBar::TitleBar(QWidget *parent) : QWidget(parent), m_layout(new QHBoxLayout(this))
 {
     Utils::set_Object_Name(this);
     m_layout->setObjectName("TitleBarLayout");//Add by ut001000 renfeixiang 2020-08-13
@@ -44,26 +48,6 @@ TitleBar::TitleBar(QWidget *parent, bool isQuakeWindowStyle) : QWidget(parent), 
     this->setFixedHeight(WIN_TITLE_BAR_HEIGHT);
     /********************* Modify by m000714 daizhengwen End ************************/
     m_layout->setContentsMargins(0, 0, 0, 0);
-
-    if (isQuakeWindowStyle) {
-        return;
-    }
-
-    if (DApplication::isDXcbPlatform()) {
-
-        DIconButton *iconLabel = new DIconButton(this);
-        iconLabel->setIcon(QIcon::fromTheme("deepin-terminal"));
-        iconLabel->setIconSize(QSize(ICONSIZE_36, ICONSIZE_36));
-        iconLabel->setFocusPolicy(Qt::NoFocus);
-        iconLabel->setFlat(true);
-
-        m_layout->addSpacing(10);
-
-        /******** Modify by n014361 wangpeili 2020-02-12: 修改居中样式***********×****/
-        m_layout->addWidget(iconLabel, 0, Qt::AlignVCenter);
-        /***************** Modify by n014361 End ********************×****/
-        m_layout->addSpacing(10);
-    }
 }
 
 TitleBar::~TitleBar()
@@ -80,4 +64,48 @@ void TitleBar::setTabBar(QWidget *widget)
 int TitleBar::rightSpace()
 {
     return m_rightSpace;
+}
+
+void TitleBar::setVerResized(bool resized)
+{
+    setMouseTracking(true);
+    m_verResizedEnabled = resized;
+}
+
+
+void TitleBar::mousePressEvent(QMouseEvent *event)
+{
+    QWidget *w = this->window();
+    if(w) {
+        int windowMouseY = this->mapTo(w, event->pos()).y();
+        int windowMouseYOff = w->height() - windowMouseY;
+        m_verResizedCurOff = windowMouseYOff;
+    }
+    QWidget::mousePressEvent(event);
+}
+
+void TitleBar::mouseMoveEvent(QMouseEvent *event)
+{
+    forever {
+        QWidget *w = this->window();
+        if(!w)
+            break;
+        if(!m_verResizedEnabled)
+            break;
+        if(!this->hasMouseTracking())
+            break;
+        int windowMouseY = this->mapTo(w, event->pos()).y();
+        int windowMouseYOff = w->height() - windowMouseY;
+        if(event->buttons() != Qt::LeftButton && windowMouseYOff < VER_RESIZED_ALLOWED_OFF) {
+            this->setCursor(Qt::SizeVerCursor);
+            break;
+        }
+        if(event->buttons() == Qt::LeftButton && m_verResizedCurOff < VER_RESIZED_ALLOWED_OFF) {
+            w->resize(w->width(), qMax(VER_RESIZED_MIN_HEIGHT, windowMouseY + m_verResizedCurOff));
+            break;
+        }
+        this->setCursor(Qt::ArrowCursor);
+        break;
+    }
+    QWidget::mouseMoveEvent(event);
 }

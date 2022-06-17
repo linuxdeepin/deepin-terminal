@@ -20,18 +20,18 @@
  */
 
 #include "ut_remotemanagementtoppanel_test.h"
-
 #include "remotemanagementtoppanel.h"
 #include "service.h"
 #include "mainwindow.h"
-#include "stub.h"
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
+#include "../stub.h"
+#include "ut_stub_defines.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+
+//Google GTest 相关头文件
+#include <gtest/gtest.h>
 
 void stub_focusCurrentPage_remote()
 {
@@ -50,13 +50,17 @@ UT_RemoteManagementTopPanel_Test::UT_RemoteManagementTopPanel_Test()
 void UT_RemoteManagementTopPanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 }
 
 void UT_RemoteManagementTopPanel_Test::TearDown()
 {
+}
+
+static void doDeleteLater(RemoteManagementTopPanel *obj)
+{
+    obj->deleteLater();
 }
 
 #ifdef UT_REMOTEMANAGEMENTTOPPANEL_TEST
@@ -142,10 +146,12 @@ TEST_F(UT_RemoteManagementTopPanel_Test, ShowSearchPanelTest)
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Group;
     topPanel.m_group = "group";
     topPanel.showSearchPanel("1988");
+    EXPECT_TRUE(topPanel.m_filterStack.contains("1988"));
 
     // 未知类型
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
     topPanel.showSearchPanel("1995");
+    EXPECT_TRUE(topPanel.m_filterStack.contains("1995"));
 }
 
 /*******************************************************************************
@@ -163,15 +169,32 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showGroupPanelTest)
     // 不用界面显示分组界面
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Manage;
     topPanel.showGroupPanel("1988", false);
+    EXPECT_TRUE("1988" == topPanel.m_group);
+    EXPECT_TRUE("1988" == topPanel.m_serverConfigGroupPanel->m_groupName);
+    //item 1988不获取焦点
+    EXPECT_TRUE(false == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
+
+
+    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Manage;
     topPanel.showGroupPanel("1988", true);
+    //item 1988获取焦点
+    EXPECT_TRUE(true == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
 
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
     topPanel.showGroupPanel("1995", true);
+    EXPECT_TRUE("1995" == topPanel.m_group);
+    EXPECT_TRUE("1995" == topPanel.m_serverConfigGroupPanel->m_groupName);
+    //Search/item 1995获取焦点
+    EXPECT_TRUE(true == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
 
     // 未知类型
     topPanel.m_currentPanelType = ServerConfigManager::PanelType_Group;
     topPanel.showGroupPanel("1995", true);
-    s.reset(ADDR(MainWindow, focusCurrentPage));
+    EXPECT_TRUE("1995" == topPanel.m_group);
+    EXPECT_TRUE("1995" == topPanel.m_serverConfigGroupPanel->m_groupName);
+    //Group/item 1995获取焦点
+    EXPECT_TRUE(true == topPanel.m_prevPanelStack.value(topPanel.m_prevPanelStack.size() - 1).m_isFocusOn);
+
 }
 
 /*******************************************************************************
@@ -185,22 +208,29 @@ TEST_F(UT_RemoteManagementTopPanel_Test, showPrePanelTest)
     Stub s;
     s.set(ADDR(MainWindow, isFocusOnList), stub_isFocusOnList);
     // 清空堆栈
-    RemoteManagementTopPanel topPanel;
-    topPanel.m_prevPanelStack.clear();
-
+    QSharedPointer<RemoteManagementTopPanel> topPanel(new RemoteManagementTopPanel, doDeleteLater);
+    topPanel->m_prevPanelStack.clear();
     // 显示前一个窗口
-    topPanel.showPrevPanel();
+    UT_STUB_QWIDGET_SHOW_CREATE;
+    topPanel->m_prevPanelStack << PanelState();
+    topPanel->m_prevPanelStack.last().m_type = ServerConfigManager::PanelType_Manage;
+    topPanel->showPrevPanel();
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 
     // 搜索返回
-    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
-    topPanel.showPrevPanel();
+    UT_STUB_QWIDGET_SHOW_PREPARE;
+    topPanel->m_prevPanelStack << PanelState();
+    topPanel->m_prevPanelStack.last().m_type = ServerConfigManager::PanelType_Search;
+    topPanel->m_filterStack.push_back(QString("hello"));
+    topPanel->m_filterStack.push_back(QString("world"));
+    topPanel->showPrevPanel();
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 
     // 分组返回
-    topPanel.m_currentPanelType = ServerConfigManager::PanelType_Search;
-    topPanel.showPrevPanel();
-
-    // 栈为空,最后返回都是主界面
-    EXPECT_EQ(topPanel.m_currentPanelType, ServerConfigManager::PanelType_Manage);
-    s.reset(ADDR(MainWindow, isFocusOnList));
+    UT_STUB_QWIDGET_SHOW_PREPARE;
+    topPanel->m_prevPanelStack << PanelState();
+    topPanel->m_prevPanelStack.last().m_type = ServerConfigManager::PanelType_Group;
+    topPanel->showPrevPanel();
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 }
 #endif

@@ -43,23 +43,22 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
     rewrite = false;
     while (!stream.atEnd()) {
         data = stream.readLine();
-        if (data.trimmed().isEmpty()) {
+        if (data.trimmed().isEmpty())
             continue;
-        }
+
         if (QChar('[') == data[0]) {
             QString iniSection;
-            int inx = data.indexOf(QChar(']'));
-            if (inx == -1) {
+            int inx = data.lastIndexOf(QChar(']'));
+            if (-1 == inx)
                 iniSection = data.mid(1);
-            } else {
+            else
                 iniSection = data.mid(1, inx - 1);
-            }
 
             iniSection = iniSection.trimmed();
-            if (iniSection.compare(QString("general"), Qt::CaseInsensitive) == 0) {
+            if (0 == iniSection.compare(QString("general"), Qt::CaseInsensitive)) {
                 currentSection.clear();
             } else {
-                if (iniSection.compare(QString("%general"), Qt::CaseInsensitive) == 0) {
+                if (0 == iniSection.compare(QString("%general"), Qt::CaseInsensitive)) {
                     currentSection = QString("general");
                 } else {
                     iniSection = canTransfer(iniSection);
@@ -75,38 +74,36 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
             int charPos = 0;
             while (charPos < data.size()) {
                 QChar ch = data.at(charPos);
-                if (ch == QChar('=')) {
-                    if (!inQuotes && equalsPos == -1) {
+                if (QChar('=') == ch) {
+                    if (!inQuotes && equalsPos == -1)
                         equalsPos = charPos;
-                    }
-                } else if (ch == QChar('"')) {
+                } else if (QChar('"') == ch) {
                     inQuotes = !inQuotes;
                 }
                 charPos++;
             }
-            if (equalsPos == -1) {
+            if (-1 == equalsPos) {
                 break;
             } else {
                 QString key = data.mid(0, equalsPos).trimmed();
-                if (key.isEmpty()) {
+                if (key.isEmpty())
                     break;
-                } else {
+                else
                     key = currentSection + key;
-                }
+
                 if (commaPos.isEmpty()) { //value
                     QString v = data.mid(equalsPos + 1).trimmed();
-                    if (v.startsWith("\"") && v.endsWith("\"") && v.length() > 1) {
+                    if (v.startsWith("\"") && v.endsWith("\"") && v.length() > 1)
                         v = v.mid(1, v.length() - 2);
-                    }
+
                     QString str = unescapedString(v);
                     //如果是3字节的Latin1中文，转换中文编码
-                    if (v.count("\\x") > 0 && v.count("\\x") % 3 == 0) {
+                    if (v.count("\\x") > 0 && 0 == v.count("\\x") % 3) {
                         int first = v.indexOf("\\x");
                         int next = v.indexOf("\\x", first + 1);
                         int len = next - first;
-                        if (len == 4) {
+                        if (4 == len)
                             str = QString::fromLocal8Bit(str.toLatin1());
-                        }
                     }
 
                     settingsMap[key] = stringToVariant(str);
@@ -117,9 +114,9 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
                     for (int pos = 1; pos < commaPos.size(); ++pos) {
                         QString d = data.mid(commaPos.at(pos - 1) + 1, commaPos.at(pos) - commaPos.at(pos - 1) - 1);
                         QString v = d.trimmed();
-                        if (v.startsWith("\"") && v.endsWith("\"") && v.length() > 1) {
+                        if (v.startsWith("\"") && v.endsWith("\"") && v.length() > 1)
                             v = v.mid(1, v.length() - 2);
-                        }
+
                         vals.append(stringToVariant(unescapedString(v)));
                     }
                     settingsMap[key] = vals;
@@ -145,14 +142,13 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
         it.next();
         QString key = it.key();
         QString section;
-        // qDebug()<<"key: "<<key;
         int idx = key.lastIndexOf(QChar('/'));
-        if (idx == -1) {
+        if (-1 == idx) {
             section = QString("[General]");
         } else {
             section = key.left(idx);
             key = key.mid(idx + 1);
-            if (section.compare(QString("General"), Qt::CaseInsensitive) == 0) {
+            if (0 == section.compare(QString("General"), Qt::CaseInsensitive)) {
                 section = QString("[%General]");
             } else {
                 section.prepend(QChar('['));
@@ -162,39 +158,38 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
             section.replace(SLASH_REPLACE_CHAR, '/');
         }
         if (section.compare(lastSection, Qt::CaseInsensitive)) {
-            if (!lastSection.isEmpty()) {
+            if (!lastSection.isEmpty())
                 device.write(eol);
-            }
+
             lastSection = section;
-            if (device.write(section.toUtf8() + eol) == -1) {
+            if (-1 == device.write(section.toUtf8() + eol))
                 writeError = true;
-            }
         }
+        const QByteArray dot = ", ";
         QByteArray block = key.toUtf8();
         block += " = ";
-        if (it.value().type() == QVariant::StringList) {
+        if (QVariant::StringList == it.value().type()) {
             foreach (QString s, it.value().toStringList()) {
                 block += escapedString(s);
-                block += ", ";
+                block += dot;
             }
-            if (block.endsWith(", ")) {
+            if (block.endsWith(dot))
                 block.chop(2);
-            }
-        } else if (it.value().type() == QVariant::List) {
+
+        } else if (QVariant::List == it.value().type()) {
             foreach (QVariant v, it.value().toList()) {
                 block += escapedString(variantToString(v));
-                block += ", ";
+                block += dot;
             }
-            if (block.endsWith(", ")) {
+            if (block.endsWith(dot))
                 block.chop(2);
-            }
+
         } else {
             block += escapedString(variantToString(it.value()));
         }
         block += eol;
-        if (device.write(block) == -1) {
+        if (device.write(block) == -1)
             writeError = true;
-        }
     }
     return true;
 }
@@ -257,14 +252,13 @@ QByteArray SettingIO::escapedString(const QString &src)
 {
     bool needsQuotes = false;
     bool escapeNextIfDigit = false;
-    int i;
     QByteArray result;
     result.reserve(src.size() * 3 / 2);
-    for (i = 0; i < src.size(); ++i) {
+    for (int i = 0; i < src.size(); ++i) {
         uint ch = src.at(i).unicode();
-        if (';' == ch || ',' == ch || '=' == ch || '#' == ch) {
+        if (';' == ch || ',' == ch || '=' == ch || '#' == ch)
             needsQuotes = true;
-        }
+
         if (escapeNextIfDigit && ((ch >= '0' && ch <= '9')
                                   || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F'))) {
             result += "\\x";
@@ -304,9 +298,9 @@ QByteArray SettingIO::escapedString(const QString &src)
             break;
         }
     }
-    if (result.size() > 0 && (result.at(0) == ' ' || result.at(result.size() - 1) == ' ')) {
+    if (result.size() > 0 && (' ' == result.at(0) || ' ' == result.at(result.size() - 1)))
         needsQuotes = true;
-    }
+
     if (needsQuotes) {
         result.prepend('"');
         result.append('"');
@@ -343,11 +337,11 @@ QString SettingIO::unescapedString(const QString &src)
 normal:
     while (i < src.size()) {
         ch = src.at(i);
-        if (ch == QChar('\\')) {
+        if (QChar('\\') == ch) {
             ++i;
-            if (i >= src.size()) {
+            if (i >= src.size())
                 break;
-            }
+
             ch = src.at(i++);
             for (int j = 0; j < numEscapeCodes; ++j) {
                 if (ch == escapeCodes[j][0]) {
@@ -355,7 +349,7 @@ normal:
                     goto normal;
                 }
             }
-            if (ch == 'x') {
+            if ('x' == ch) {
                 escapeVal = 0;
                 if (i >= src.size())
                     break;
@@ -442,10 +436,10 @@ bool SettingIO::iniUnescapedKey(const QByteArray &key, int from, int to, QString
     bool lowercaseOnly = true;
     int i = from;
     result.reserve(result.length() + (to - from));
-    while (i < to) {
+    while (i < to && i < key.count()) {
         int ch = (uchar)key.at(i);
 
-        if (ch == '\\') {
+        if ('\\' == ch) {
             result += QLatin1Char('/');
             ++i;
             continue;
@@ -463,7 +457,7 @@ bool SettingIO::iniUnescapedKey(const QByteArray &key, int from, int to, QString
         int firstDigitPos = i + 1;
 
         ch = key.at(i + 1);
-        if (ch == 'U') {
+        if ('U' == ch) {
             ++firstDigitPos;
             numDigits = 4;
         }

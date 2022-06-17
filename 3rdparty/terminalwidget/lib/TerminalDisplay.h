@@ -44,6 +44,7 @@
 #define CELL_TIME   15
 #define TAP_MOVE_DELAY 300
 
+//#include "konsole_export.h"
 #define KONSOLEPRIVATE_EXPORT
 
 class QDrag;
@@ -515,6 +516,15 @@ public slots:
      */
     void setUsesMouse(bool usesMouse);
 
+    /**
+     * Sets the AlternateScrolling profile property which controls whether
+     * to emulate up/down key presses for mouse scroll wheel events.
+     * For more details, check the documentation of that property in the
+     * Profile header.
+     * Enabled by default.
+     */
+    void setAlternateScrolling(bool enable);
+
     /** See setUsesMouse() */
     bool usesMouse() const;
 
@@ -796,6 +806,7 @@ private:
     bool _terminalSizeStartup;
     bool _bidiEnabled;
     bool _mouseMarks;
+    bool _alternateScrolling;
     bool _bracketedPasteMode;
 
     QPoint  _iPntSel; // initial selection point

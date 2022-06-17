@@ -61,11 +61,11 @@ void CustomCommandSearchRstPanel::initUI()
     // 字体颜色随主题变化变化
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 102);
-    } else {
+    else
         color = QColor::fromRgb(85, 85, 85, 102);
-    }
+
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
 
@@ -102,11 +102,11 @@ inline void CustomCommandSearchRstPanel::handleThemeTypeChanged(DGuiApplicationH
 {
     DPalette palette = m_label->palette();
     QColor color;
-    if (themeType == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 102);
-    } else {
+    else
         color = QColor::fromRgb(85, 85, 85, 102);
-    }
+
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
 }
@@ -114,11 +114,11 @@ inline void CustomCommandSearchRstPanel::handleThemeTypeChanged(DGuiApplicationH
 inline void CustomCommandSearchRstPanel::handleIconButtonFocusOut(Qt::FocusReason type)
 {
     // 焦点切出，没值的时候
-    if (type == Qt::TabFocusReason && m_cmdListWidget->count() == 0) {
+    if (Qt::TabFocusReason == type && 0 == m_cmdListWidget->count()) {
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qDebug() << "search panel focus to '+'";
+        qInfo() << "search panel focus to '+'";
     }
 }
 
@@ -129,13 +129,13 @@ inline void CustomCommandSearchRstPanel::handleListViewFocusOut(Qt::FocusReason 
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qDebug() << "search panel focus on '+'";
+        qInfo() << "search panel focus on '+'";
         m_cmdListWidget->clearIndex();
-    } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
+    } else if (Qt::BacktabFocusReason == type || Qt::NoFocusReason == type) {
         // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
         m_rebackButton->setFocus();
         m_cmdListWidget->clearIndex();
-        qDebug() << "search panel type" << type;
+        qInfo() << "search panel type" << type;
     }
 }
 
@@ -148,25 +148,23 @@ void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
 
 void CustomCommandSearchRstPanel::refreshData()
 {
-    qDebug() <<  __FUNCTION__ ;
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, m_strFilter);
 }
 
 void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 {
-    qDebug() <<  __FUNCTION__ << " filter=" << strFilter;
     setSearchFilter(strFilter);
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, strFilter);
 }
 
 void CustomCommandSearchRstPanel::doCustomCommand(const QString &strKey)
 {
-    qDebug() << "doCustomCommand,key=" << strKey;
+    qInfo() << "doCustomCommand,key=" << strKey;
     QAction *item = ShortcutManager::instance()->findActionByKey(strKey);
     QString strCommand = item ? item->data().toString() : "";
-    if (!strCommand.endsWith('\n')) {
+    if (!strCommand.endsWith('\n'))
         strCommand.append('\n');
-    }
+
     emit handleCustomCurCommand(strCommand);
     emit focusOut();
 }

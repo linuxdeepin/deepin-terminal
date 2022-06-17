@@ -88,12 +88,6 @@ public:
      */
     void recoveryHoldContent();
 
-    /**
-     * @brief 获取查找消耗的时间 => 用于性能测试
-     * @author ut000610 戴正文
-     * @return
-     */
-    qint64 searchCostTime();
 
 signals:
     void findNext();

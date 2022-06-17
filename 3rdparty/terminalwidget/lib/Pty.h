@@ -221,7 +221,7 @@ Q_OBJECT
 
     int _sessionId;
     bool _bUninstall;
-    bool _bNeedBlockCommand;
+    bool _bNeedBlockCommand = false;//是否为终端内部发送的命令（不是用户手动输入的命令），默认用户手动输入
     int _receiveDataIndex = -1;
     const QTextCodec *_textCodec = nullptr;
     bool _isCommandExec = false;

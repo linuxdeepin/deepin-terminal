@@ -28,22 +28,26 @@
 #include <DSettingsWidgetFactory>
 #include <DSysInfo>
 #include <DWindowManagerHelper>
+#include <DTitlebar>
 
 #include <QDebug>
 #include <QDateTime>
 #include <QCheckBox>
 #include <QLabel>
+#include <QScroller>
 
-Service *Service::g_pService = new Service();
+Service *Service::g_pService = nullptr;
 
 Service *Service::instance()
 {
+    if(nullptr == g_pService) {
+        g_pService = new Service();
+    }
     return g_pService;
 }
 
 Service::~Service()
 {
-    releaseShareMemory();
     if (nullptr != m_settingDialog) {
         delete m_settingDialog;
         m_settingDialog = nullptr;
@@ -64,32 +68,17 @@ Service::~Service()
 
 void Service::init()
 {
-    // 初始化配置
-    Settings::instance()->init();
     // 初始化自定义快捷键
     ShortcutManager::instance()->initShortcuts();
     // 初始化远程管理数据
     ServerConfigManager::instance()->initServerConfig();
-
-    // 主进程：共享内存如果不存在即创建
-    if (!m_enableShareMemory->attach()) {
-        m_enableShareMemory->create(sizeof(ShareMemoryInfo));
-    }
-    // 创建好以后，保持共享内存连接，防止释放。
-    m_enableShareMemory->attach();
     // 主进程：首次赋值m_pShareMemoryInfo
-    m_pShareMemoryInfo = static_cast<ShareMemoryInfo *>(m_enableShareMemory->data());
-    // 主进程：首次连接设置默认值为false
-    setMemoryEnable(false);
-    // 清理共享内存
-    setSubAppStartTime(0);
-    //监听窗口特效变化
     listenWindowEffectSwitcher();
 }
 
 void Service::releaseInstance()
 {
-    if(nullptr == g_pService) {
+    if (nullptr != g_pService) {
         delete g_pService;
         g_pService = nullptr;
     }
@@ -98,8 +87,18 @@ void Service::releaseInstance()
 void Service::initSetting()
 {
     if (nullptr != m_settingDialog) {
+        //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
+        DTitlebar *titleBar = Utils::findWidgetByAccessibleName<DTitlebar *>(m_settingDialog, "DSettingTitleBar");
+        QScrollArea *scrollArea = Utils::findWidgetByAccessibleName<QScrollArea *>(m_settingDialog, "ContentScrollArea");
+        if(titleBar && scrollArea) {
+            QTimer::singleShot(0, this, [titleBar, scrollArea](){
+                titleBar->setFocus();
+                scrollArea->verticalScrollBar()->setValue(0);
+            });
+        }
         return;
     }
+
     QDateTime startTime = QDateTime::currentDateTime();
     m_settingDialog = new DSettingsDialog();
     m_settingDialog->setObjectName("SettingDialog");
@@ -117,8 +116,6 @@ void Service::initSetting()
     m_settingDialog->updateSettings(Settings::instance()->settings);
     // 设置窗口模态为没有模态，不阻塞窗口和进程
     m_settingDialog->setWindowModality(Qt::NonModal);
-    // 让设置与窗口等效，隐藏后显示就不会被遮挡
-    m_settingDialog->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
     moveToCenter(m_settingDialog);
     QDateTime endTime = QDateTime::currentDateTime();
 
@@ -145,36 +142,35 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 {
     QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
     if (nullptr == rightFrame) {
-        qDebug() << "can not found RightFrame in QWidget";
+        qInfo() << "can not found RightFrame in QWidget";
         return;
     }
 
     QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
     for (int i = 0; i < rightWidgetList.size(); i++) {
         QWidget *widget = rightWidgetList.at(i);
-        if (widget == nullptr) {
+        if (nullptr == widget)
             continue;
-        }
+
         if (strcmp(widget->metaObject()->className(), "QCheckBox") == 0) {
             QString checkText = (qobject_cast<QCheckBox *>(widget))->text();
-            if (checkText == QObject::tr("Blur background")) {
+            if (QObject::tr("Blur background") == checkText) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
-                if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0) {
+                if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                     optionWidget = parentWidget;
-                }
-                if (isShow) {
+
+                if (isShow)
                     optionWidget->show();
-                } else {
+                else
                     optionWidget->hide();
-                }
             }
         } else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
             QWidget *optionWidget = widget;
             QWidget *parentWidget = widget->parentWidget();
-            if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0) {
+            if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                 optionWidget = parentWidget;
-            }
+
             if (isShow)
                 optionWidget->show();
             else
@@ -184,9 +180,9 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             if (lblText == QObject::tr("Opacity")) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
-                if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0) {
+                if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                     optionWidget = parentWidget;
-                }
+
                 if (isShow)
                     optionWidget->show();
                 else
@@ -210,9 +206,8 @@ void Service::listenWindowEffectSwitcher()
 void Service::slotWMChanged(const QString &wmName)
 {
     bool isWinEffectEnabled = false;
-    if (wmName == "deepin wm") {
+    if (wmName == "deepin wm")
         isWinEffectEnabled = true;
-    }
 
     showHideOpacityAndBlurOptions(isWinEffectEnabled);
     emit onWindowEffectEnabled(isWinEffectEnabled);
@@ -227,14 +222,14 @@ bool Service::isWindowEffectEnabled()
         QList<QVariant> list = response.arguments();
         QString wmName = list.first().toString();
         if (wmName == "deepin wm") {
-            qDebug() << "The window effects is on";
+            qInfo() << "The window effects is on";
             return true;
         }
     } else {
-        qDebug() << "call CurrentWM Fail!" << response.errorMessage();
+        qInfo() << "call CurrentWM Fail!" << response.errorMessage();
     }
 
-    qDebug() << "The window effects is off";
+    qInfo() << "The window effects is off";
     return false;
 }
 
@@ -243,9 +238,21 @@ qint64 Service::getEntryTime()
     return m_entryTime;
 }
 
+void Service::setScrollerTouchGesture(QAbstractScrollArea *widget)
+{
+    QScroller::grabGesture(widget->viewport(), QScroller::TouchGesture);
+
+    connect(QScroller::scroller(widget->viewport()), &QScroller::stateChanged, widget, [widget](QScroller::State newstate) {
+        // fix bug#66335 触摸屏上滑动远程管理/自定义命令滚动条，列表滑动动画显示异常
+        // 防止滑动时的鼠标事件导致viewport位置发生偏移。
+        bool isDragging = (newstate == QScroller::Dragging);
+        widget->viewport()->setAttribute(Qt::WA_TransparentForMouseEvents, isDragging);
+    });
+}
+
+
 QMap<QString, QString> Service::getShells()
 {
-
     // 清空原有数据
     m_shellsMap.clear();
     // 需要读取/etc/shells
@@ -270,7 +277,7 @@ QMap<QString, QString> Service::getShells()
             }
         } while (!shellLine.isNull());
     } else {
-        qDebug() << "read /etc/shells fail! error : " << shellsInfo.error();
+        qInfo() << "read /etc/shells fail! error : " << shellsInfo.error();
     }
     // 关闭文件
     shellsInfo.close();
@@ -282,9 +289,18 @@ QMap<QString, QString> Service::shellsMap()
     return m_shellsMap;
 }
 
+void Service::setMainTerminalIsStarted(bool started)
+{
+    m_mainTerminalIsStarted = started;
+}
+
+bool Service::mainTerminalIsStarted()
+{
+    return m_mainTerminalIsStarted;
+}
+
 void Service::showSettingDialog(MainWindow *pOwner)
 {
-    QDateTime startTime = QDateTime::currentDateTime();
     // 第一次初始化dialog
     initSetting();
     //保存设置框的有拥者
@@ -295,20 +311,20 @@ void Service::showSettingDialog(MainWindow *pOwner)
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
         } else {
             // 雷神窗口失去焦点自动隐藏
-            if (WindowsManager::instance()->getQuakeWindow()) {
+            if (WindowsManager::instance()->getQuakeWindow())
                 WindowsManager::instance()->getQuakeWindow()->onAppFocusChangeForQuake();
-            }
+
             m_settingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
         }
         //更新设置的等宽字体
-        Settings::instance()->HandleWidthFont();
-        FontFilter::instance()->HandleWidthFont();
+        Settings::instance()->handleWidthFont();
+        FontFilter::instance()->handleWidthFont();
 
         // 重新加载shell配置数据
         Settings::instance()->reloadShellOptions();
         m_settingDialog->show();
     } else {
-        qDebug() << "No setting dialog.";
+        qInfo() << "No setting dialog.";
         return;
     }
     // 激活窗口
@@ -317,7 +333,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
 
 void Service::hideSettingDialog()
 {
-    if(m_settingDialog)
+    if (m_settingDialog)
         m_settingDialog->hide();
 }
 
@@ -331,9 +347,9 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
             m_customThemeSettingDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
         } else {
             // 雷神窗口失去焦点自动隐藏
-            if (WindowsManager::instance()->getQuakeWindow()) {
+            if (WindowsManager::instance()->getQuakeWindow())
                 WindowsManager::instance()->getQuakeWindow()->onAppFocusChangeForQuake();
-            }
+
             m_customThemeSettingDialog->setWindowFlag(Qt::WindowStaysOnTopHint, false);
         }
     } else {
@@ -365,9 +381,8 @@ void Service::showShortcutConflictMsgbox(QString txt)
 {
     // 同步提示和快捷键
     for (QString key : ShortcutManager::instance()->m_mapReplaceText.keys()) {
-        if (txt.contains(key)) {
+        if (txt.contains(key))
             txt.replace(key, ShortcutManager::instance()->m_mapReplaceText[key]);
-        }
     }
     // 若没有设置弹框则退出，谈不上显示设置的快捷键冲突
     if (nullptr == m_settingDialog)
@@ -402,17 +417,31 @@ bool Service::isCountEnable()
 
 void Service::Entry(QStringList arguments)
 {
+    EntryTerminal(arguments, false);
+}
+
+void Service::EntryTerminal(QStringList arguments, bool isMain)
+{
     m_entryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     TermProperties properties;
     Utils::parseCommandLine(arguments, properties);
-
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {
         WindowsManager::instance()->runQuakeWindow(properties);
         return;
     }
 
-    // 普通窗口处理入口
+    //首次启动的终端未启动
+    if(!isMain && !mainTerminalIsStarted())
+        return;
+    // 超出最大窗口数量
+    if(WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
+        qInfo() << QString("terminal cannot be created: %1/%2 ")
+                   .arg(WindowsManager::instance()->widgetCount())
+                   .arg(MAXWIDGETCOUNT)
+                   ;
+        return;
+    }
     WindowsManager::instance()->createNormalWindow(properties);
 }
 
@@ -449,112 +478,7 @@ void Service::onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop)
 Service::Service(QObject *parent) : QObject(parent)
 {
     Utils::set_Object_Name(this);
-    // 不同用户不能交叉使用共享内存，以及dbus, 所以共享内存的名字和登陆使用的用户有关。
-    // 如sudo 用户名为root, 使用的配置也是root的配置。
-    QString ShareMemoryName = QString(getenv("LOGNAME")) + "_enableCreateTerminal";
-    m_enableShareMemory = new QSharedMemory(ShareMemoryName);
-    m_enableShareMemory->setObjectName("EnableShareMemory");// Add by ut001000 renfeixiang 2020-08-13
-}
-
-bool Service::getEnable(qint64 time)
-{
-    if (!isCountEnable())
-        return false;
-
-    // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
-    if (!m_enableShareMemory->attach()) {
-        qDebug() << "[sub app] m_enableShareMemory  can't attach";
-        return  false;
-    }
-    // sub app首次赋值m_pShareMemoryInfo
-    m_pShareMemoryInfo = static_cast<ShareMemoryInfo *>(m_enableShareMemory->data());
-    if (getShareMemoryCount() >= MAXWIDGETCOUNT) {
-        qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->terminalsCount
-                 << ", can't create terminal any more.";
-        return false;
-    }
-    qDebug() << "[sub app] current Terminals count = " << m_pShareMemoryInfo->terminalsCount;
-    // 如果标志位为false，则表示正在创建窗口，不可以再创建
-    if (!getMemoryEnable()) {
-        releaseShareMemory();
-        qDebug() << "[sub app] server m_enableShareMemory  is busy create!";
-        return false;
-    }
-    // 可以创建了，立马将标识位置为false.
-    setMemoryEnable(false);
-    setSubAppStartTime(time);
-    releaseShareMemory();
-    return true;
-}
-
-void Service::setSubAppStartTime(qint64 time)
-{
-    // 如果共享内存无法访问？这是极为异常的情况。正常共享内存的建立由主进程创建，并保持attach不释放。
-    if (!m_enableShareMemory->isAttached()) {
-        qDebug() << "m_enableShareMemory  isAttached failed?????";
-        return ;
-    }
-
-    m_pShareMemoryInfo->appStartTime = time;
-    qDebug() << "[sub app] app Start Time = " << m_pShareMemoryInfo->appStartTime;
-
-    return ;
-}
-
-qint64 Service::getSubAppStartTime()
-{
-    if (nullptr == m_pShareMemoryInfo) {
-        return 0;
-    }
-    return m_pShareMemoryInfo->appStartTime;
-}
-
-void Service::updateShareMemoryCount(int count)
-{
-    if (!m_enableShareMemory->isAttached()) {
-        qDebug() << "m_enableShareMemory  isAttached failed?????" << m_enableShareMemory->key();
-        return ;
-    }
-
-    m_pShareMemoryInfo->terminalsCount = count;
-    qDebug() << "[main app] terminalsCount  set " << count;
-}
-
-int Service::getShareMemoryCount()
-{
-    return m_pShareMemoryInfo->terminalsCount;
-}
-
-bool Service::setMemoryEnable(bool enable)
-{
-    if (!m_enableShareMemory->isAttached()) {
-        qDebug() << "m_enableShareMemory  isAttached failed?????" << m_enableShareMemory->key();
-        return false;
-    }
-    if (enable) {
-        m_pShareMemoryInfo->enableCreateTerminal = 1;
-    } else {
-        m_pShareMemoryInfo->enableCreateTerminal = 0;
-    }
-    qDebug() << "m_enableShareMemory set" << enable << m_pShareMemoryInfo->enableCreateTerminal;
-    return  true;
-}
-
-void Service::releaseShareMemory()
-{
-    qDebug() << "[sub app] m_enableShareMemory released" << m_enableShareMemory->key();
-    m_enableShareMemory->detach();
-    m_enableShareMemory->deleteLater();
-}
-
-bool Service::getMemoryEnable()
-{
-    if (m_pShareMemoryInfo->enableCreateTerminal == 0) {
-        qDebug() << "[sub app] current m_enableShareMemory is false" << m_pShareMemoryInfo->enableCreateTerminal;
-        return false;
-    }
-    qDebug() << "[sub app] current m_enableShareMemory is true" << m_pShareMemoryInfo->enableCreateTerminal;
-    return  true;
+    init();
 }
 
 bool Service::getIsDialogShow() const
@@ -564,9 +488,11 @@ bool Service::getIsDialogShow() const
 
 void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 {
-    MainWindow *window = static_cast<MainWindow *>(parent);
+    MainWindow *window = qobject_cast<MainWindow *>(parent);
+    if(nullptr == window)
+        return;
     if (window == WindowsManager::instance()->getQuakeWindow()) {
-        qDebug() << "QuakeWindow show or hide dialog " << isDialogShow;
+        qInfo() << "QuakeWindow show or hide dialog " << isDialogShow;
         m_isDialogShow = isDialogShow;
     }
 

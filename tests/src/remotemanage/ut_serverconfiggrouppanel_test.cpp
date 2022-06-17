@@ -20,17 +20,17 @@
  */
 
 #include "ut_serverconfiggrouppanel_test.h"
-
 #include "serverconfiggrouppanel.h"
 #include "service.h"
 #include "mainwindow.h"
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
+#include "ut_stub_defines.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+
+//Google GTest 相关头文件
+#include <gtest/gtest.h>
 
 UT_ServerConfigGroupPanel_Test::UT_ServerConfigGroupPanel_Test()
 {
@@ -39,7 +39,6 @@ UT_ServerConfigGroupPanel_Test::UT_ServerConfigGroupPanel_Test()
 void UT_ServerConfigGroupPanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
@@ -179,16 +178,28 @@ TEST_F(UT_ServerConfigGroupPanel_Test, setFocusBackTest)
     ServerConfigManager::instance()->m_serverConfigs.clear();
     // 装填数据
     ServerConfigManager::instance()->m_serverConfigs.insert("group2020", list);
+    //添加group2020
+    EXPECT_TRUE(ServerConfigManager::instance()->m_serverConfigs.contains("group2020"));
 
     // 新建界面
     ServerConfigGroupPanel groupPanel;
     // 刷新界面
     groupPanel.refreshData("group2020");
+    //当前group为group2020
+    EXPECT_TRUE("group2020" == groupPanel.m_groupName);
     // 刷新搜索框状态
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
     groupPanel.refreshSearchState();
+    //会触发setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 
     // 两个数据 => 有搜索框
+    UT_STUB_QWIDGET_ISVISIBLE_APPEND;
+    UT_STUB_QWIDGET_SETFOCUS_APPEND;
     groupPanel.setFocusBack();
+    //会触发isvisible喊setFocus函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_ISVISIBLE_RESULT);
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
 
     // 影藏搜索框
     groupPanel.m_searchEdit->hide();
@@ -232,10 +243,18 @@ TEST_F(UT_ServerConfigGroupPanel_Test, lambda)
     groupPanel.refreshData("group2020");
     groupPanel.m_isShow = true;
 
-    // 焦点信号
-    emit groupPanel.m_listWidget->focusOut(Qt::BacktabFocusReason);
-    emit groupPanel.m_listWidget->focusOut(Qt::OtherFocusReason);
-    emit groupPanel.m_listWidget->focusOut(Qt::NoFocusReason);
+    groupPanel.onListViewFocusOut(Qt::OtherFocusReason);
+    //会选择第一行
+    EXPECT_TRUE(groupPanel.m_listWidget->currentIndex() == -1);
+
+    UT_STUB_QWIDGET_ISVISIBLE_CREATE;
+    groupPanel.onListViewFocusOut(Qt::BacktabFocusReason);
+    //会执行isVisible()函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_ISVISIBLE_RESULT);
+
+    //没有焦点
+    groupPanel.onListViewFocusOut(Qt::NoFocusReason);
+    EXPECT_TRUE(groupPanel.m_listWidget->currentIndex() == -1);
 
 
     emit ServerConfigManager::instance()->refreshList();

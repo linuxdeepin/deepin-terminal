@@ -88,9 +88,59 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 #define ICON_EXIT_FULL_SIZE QSize(ICONSIZE_36, ICONSIZE_36)                         //退出全屏按钮尺寸
 #define WIN_TITLE_BAR_HEIGHT 50 //标题栏高度
 
+
+#define WINDOW_MIN_WIDTH 610   //终端窗口最小宽度
+#define WINDOW_MIN_HEIGHT 300   //终端窗口最小高度
+
 //Encode Plugin
 #define ENCODE_ITEM_WIDTH 220
 #define ENCODE_ITEM_HEIGHT 60
+
+//字体信息
+struct FontData{
+    FontData(const QString &_key, const QString &_value)
+        : key(_key)
+        , value(_value){}
+    QString key;//用于保存
+    QString value;//用于显示
+};
+
+//字体列表
+class FontDataList : public QList<FontData> {
+public:
+    /**
+     * @brief keys 返回keys
+     * @return
+     */
+    inline QStringList keys()
+    {
+        QStringList rlist;
+        for(const auto &font : *this)
+            rlist << font.key;
+        return rlist;
+    }
+    /**
+     * @brief values 返回values
+     * @return
+     */
+    inline QStringList values()
+    {
+        QStringList rlist;
+        for(const auto &font : *this)
+            rlist << font.value;
+        return rlist;
+    }
+    /**
+     * @brief appendValues 将list转为FontDataList
+     * @param values
+     */
+    inline FontDataList &appendValues(const QStringList &values)
+    {
+        for(const auto &v : values)
+            append(FontData(v, v));
+        return *this;
+    }
+};
 
 /*******************************************************************************
  1. @类名:    Utils
@@ -198,7 +248,7 @@ public:
      * @param commandname
      * @return
      */
-    static bool showUnistallConfirmDialog(QString commandname);
+    static bool showUninstallConfirmDialog(QString commandname);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
     /**
      * @brief 显示快捷方式冲突消息框
@@ -305,6 +355,69 @@ public:
      * @return
      */
     static QString getCurrentEnvLanguage();
+
+    /**
+     * @brief isLoongarch 是否是龙芯机器
+     * @return
+     */
+    static bool isLoongarch();
+
+    /**
+     * @brief isWayLand 是否是wayland
+     * @return
+     */
+    static bool isWayLand();
+
+    /**
+     * @brief insertToDefaultConfigJson 修改json的value， json read from default-config.json
+     * @param jsonVar
+     * @param groups_key
+     * @param groups_key2
+     * @param options_key
+     * @param key
+     * @param value
+     */
+    static void insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key, const QVariant &value);
+
+    /**
+     * @brief getValueInDefaultConfigJson 获取json的value， json read from default-config.json
+     * @param jsonVar
+     * @param groups_key
+     * @param groups_key2
+     * @param options_key
+     * @param key
+     * @return
+     */
+    static QVariant getValueInDefaultConfigJson(QVariant &jsonVar, const QString &groups_key, const QString &groups_key2, const QString &options_key, const QString &key);
+
+
+    /**
+     * @brief objArrayFind 按特定的顺序查找json
+     * @param obj json指针
+     * @param objKey 块名
+     * @param arrKey 数组名
+     * @param arrValue 关键字
+     * @return
+     */
+    static QVariantMap *objArrayFind(QVariantMap *obj, const QString &objKey, const QString &arrKey, const QString &arrValue);
+
+    /**
+     * @brief findWidgetByAccessibleName 按accessibleName查找widget的child
+     * @param widget
+     * @param accessibleName
+     * @return
+     */
+    template<typename T>
+    static T findWidgetByAccessibleName(QWidget *widget, const QString &accessibleName)
+    {
+        for(auto obj : widget->findChildren<T>()) {
+            QWidget *w = qobject_cast<QWidget *>(obj);
+            if(w && w->accessibleName() == accessibleName) {
+                return qobject_cast<T>(w);
+            }
+        }
+        return nullptr;
+    }
 };
 
 /*******************************************************************************
@@ -326,7 +439,7 @@ public:
      * @brief 启动thread，打印等宽字体函数
      * @author ut001000 任飞翔
      */
-    void HandleWidthFont();
+    void handleWidthFont();
     /**
      * @brief 设置线程结束标志
      * @param stop true = 结束 false = 正常
@@ -338,7 +451,7 @@ private:
      * @brief 打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
      * @author ut001000 任飞翔
      */
-    void CompareWhiteList();
+    void compareWhiteList();
     //线程成员变量
     QThread *m_thread = nullptr;
     //线程结束标志位

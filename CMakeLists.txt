@@ -45,8 +45,16 @@ endif()
 #Use deepin-turbo for Performance optimization
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wl,--as-need -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "-pie")
+#安全编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
 
 configure_file(src/environments.h.in environments.h @ONLY)
+
+#代码覆盖率开关
+if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
+endif()
 
 # Find the QtWidgets library
 
@@ -57,6 +65,7 @@ find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
+find_package(Qt5X11Extras REQUIRED)
 #find_package(DtkWidget REQUIRED)
 #find_package(DtkCore REQUIRED)
 #find_package(DtkGui REQUIRED)
@@ -69,6 +78,7 @@ pkg_search_module(DtkCore REQUIRED dtkcore)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
+pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
 
 
 # Compile definitions for TerminalWidget
@@ -105,6 +115,8 @@ set(LINK_LIBS
     ${DFrameworkDBus_LIBRARIES}
     ${GOBJECT_LIBRARIES}
     ${LIBSECRET_LIBRARIES}
+    ${XCB_EWMH_LIBRARIES}
+    ${Qt5X11Extras_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources
@@ -241,7 +253,8 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
                                               ${DFrameworkDBus_INCLUDE_DIRS}
                                               ${ATSPI2_INCLUDE_DIRS}
                                               ${GOBJECT_INCLUDE_DIRS}
-                                              ${LIBSECRET_INCLUDE_DIRS})
+                                              ${LIBSECRET_INCLUDE_DIRS}
+                                              ${XCB_EWMH_INCLUDE_DIRS})
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
@@ -274,3 +287,5 @@ install(DIRECTORY src/assets/deepin-terminal
 
 # Unit Test
 add_subdirectory(tests)
+
+

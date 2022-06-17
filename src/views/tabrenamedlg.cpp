@@ -97,9 +97,9 @@ void TabRenameDlg::initUi()
 
 void TabRenameDlg::addContent(QWidget *content)
 {
-    Q_ASSERT(nullptr != getContentLayout());
+    Q_ASSERT(nullptr != m_contentLayout);
 
-    getContentLayout()->addWidget(content);
+    m_contentLayout->addWidget(content);
 }
 
 QLayout *TabRenameDlg::getContentLayout()
@@ -186,7 +186,7 @@ void TabRenameDlg::initConnections()
     });
 
     connect(m_confirmButton, &DSuggestButton::clicked, this, [ = ] {
-        qDebug() << "confirm rename title";
+        qInfo() << "confirm rename title";
         QString tabTitleFormat = getTabTitleEdit()->text();
         QString remoteTabTitleFormat = getRemoteTabTitleEdit()->text();
         emit tabTitleFormatRename(tabTitleFormat, remoteTabTitleFormat);

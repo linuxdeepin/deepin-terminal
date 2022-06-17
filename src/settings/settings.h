@@ -46,17 +46,17 @@ class Settings : public QObject
 public:
     static Settings *instance();
     ~Settings();
-    /**
-     * @brief 设置界面初始化
-     * @author ut001121 zhangmeng
-     */
-    void init();
 
     /**
      * @brief 设置界面初始化连接
      * @author ut001121 zhangmeng
      */
     void initConnection();
+
+    /**
+     * @brief 释放settings实例
+     */
+    static void releaseInstance();
 
     /**
      * @brief 设置界面获取透明度的值
@@ -204,7 +204,7 @@ public:
      * @brief 每次显示设置界面时，更新设置的等宽字体
      * @author ut001000 任飞翔
      */
-    void HandleWidthFont();
+    void handleWidthFont();
     /**
      * @brief 是否禁用Ctrl+S和Ctrl+Q流控制
      * @author 朱科伟
@@ -212,8 +212,11 @@ public:
      */
     bool enableControlFlow(void);
 
-    //是否选择了主题
-    bool bSwitchTheme           = false;
+    //选择主题，false:选择主题未确定，读写缓存； true:选择主题已确定，读写settings
+    //这里默认true是为了：启动时读取settings的值
+    bool bSwitchTheme           = true;
+    //选择主题未确定的缓存
+    QMap<QString, QString> switchThemeMap;
     //主题名称
     QString themeStr            = "";
     //内置主题名称
@@ -298,6 +301,13 @@ signals:
     void tabFormatChanged(const QString &tabFormat);
     // 设置中的远程标签标题格式变化
     void remoteTabFormatChanged(const QString &remoteTabFormat);
+
+private:
+    /**
+     * @brief 设置界面初始化
+     * @author ut001121 zhangmeng
+     */
+    void init();
 
 private:
     Settings();

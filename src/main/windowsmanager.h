@@ -58,8 +58,9 @@ public:
      * @brief 创建普通窗口
      * @author ut000439 wangpeili
      * @param properties 属性
+     * @param isShow 是否显示
      */
-    void createNormalWindow(TermProperties properties);
+    void createNormalWindow(TermProperties properties, bool isShow = true);
 
     /**
      * @brief 终端界面计数增加

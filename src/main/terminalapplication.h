@@ -24,11 +24,13 @@
 
 #include "environments.h"
 
-#include <QList>
-
+//dtk
 #include <DApplication>
 #include <DPushButton>
 #include <DKeySequenceEdit>
+
+//qt
+#include <QList>
 
 DWIDGET_USE_NAMESPACE
 
@@ -78,7 +80,7 @@ private:
      * @author ut000610 戴正文
      * @param pushButton
      */
-    void pressSpace(DPushButton *pushButton);
+    void pressSpace(QObject *obj);
 
     // APP启动时间
     // 子进程该数据时间会通过共享内存传给对应的maindow

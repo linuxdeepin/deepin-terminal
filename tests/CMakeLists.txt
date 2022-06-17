@@ -4,7 +4,10 @@ project(deepin-terminal-test)
 configure_file(../src/environments.h.in environments.h @ONLY)
 
 # 设置添加gocv相关信息的输出
-set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fprofile-arcs -ftest-coverage -fno-inline")
+#安全编译参数
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_NAME_TEST ${PROJECT_NAME})
 
@@ -23,7 +26,6 @@ include_directories("src/encodeplugin")
 include_directories("src/remotemanage")
 include_directories("src/views")
 include_directories("src/main")
-include_directories("src/stub")
 include_directories("src/3rdparty/terminalwidget/lib/")
 include_directories("src/3rdparty/terminalwidget/lib/history")
 include_directories("src/3rdparty/terminalwidget/lib/history/compact")
@@ -148,7 +150,7 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D${CMAKE_SAFETYTEST}")
 if(CMAKE_SAFETYTEST STREQUAL "CMAKE_SAFETYTEST_ARG_ON")
   #安全测试选项
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fsanitize=address -O2")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fsanitize=address -O2")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fsanitize=undefined,address -O2")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fsanitize=undefined,address -O2")
 endif()
 

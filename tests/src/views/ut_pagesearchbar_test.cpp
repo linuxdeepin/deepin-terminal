@@ -25,6 +25,7 @@
 #include "termwidgetpage.h"
 #include "service.h"
 #include "utils.h"
+#include "ut_stub_defines.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -40,7 +41,6 @@ UT_PageSearchBar_Test::UT_PageSearchBar_Test()
 void UT_PageSearchBar_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
@@ -105,5 +105,43 @@ TEST_F(UT_PageSearchBar_Test, PageSearchBarTest)
         QTest::mouseClick(findPrevButton, Qt::LeftButton, Qt::NoModifier, clickPoint);
         EXPECT_EQ(spyPrev.count(), 1);
     }
+}
+
+TEST_F(UT_PageSearchBar_Test, isFocus)
+{
+    TermWidgetPage *termPage = m_normalWindow->currentPage();
+    ASSERT_TRUE(termPage);
+    PageSearchBar *searchBar = termPage->m_findBar;
+    ASSERT_TRUE(searchBar);
+
+    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+    searchBar->isFocus();
+    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
+
+    //keyPress
+    UT_STUB_QWIDGET_HASFOCUS_PREPARE;
+    QTest::keyPress(searchBar->window(), Qt::Key_Enter, Qt::NoModifier, 100);
+    //lineEdit会判断hasFocus
+    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
+
+    QTest::keyPress(searchBar->window(), Qt::Key_A);
+}
+
+TEST_F(UT_PageSearchBar_Test, keyPressEvent)
+{
+    TermWidgetPage *termPage = m_normalWindow->currentPage();
+    ASSERT_TRUE(termPage);
+    PageSearchBar *searchBar = termPage->m_findBar;
+    ASSERT_TRUE(searchBar);
+
+    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+    //查找前一个
+    QTest::keyRelease(searchBar->window(), Qt::Key_Enter, Qt::NoModifier, 100);
+    //查找下一个
+    QTest::keyRelease(searchBar->window(), Qt::Key_Enter, Qt::ShiftModifier, 100);
+    //default
+    QTest::keyRelease(searchBar->window(), Qt::Key_A, Qt::NoModifier, 100);
+
+    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
 }
 #endif

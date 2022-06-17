@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -539,7 +539,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1182"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostoa &quot;%1&quot; ei voitu avata, eikä suorittaa</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1184"/>

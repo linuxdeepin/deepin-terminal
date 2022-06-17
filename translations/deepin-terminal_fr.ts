@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -539,7 +539,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1182"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;ouverture de &quot;%1&quot; a échouée, impossible de l&apos;exécuter</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1184"/>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1230"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation>La sortie a été suspendue en appuyant sur Ctrl+S. Appuyer sur Ctrl+Q pour reprendre.</translation>
+        <translation>La sortie a été suspendue en appuyant sur Ctrl+S. Appuyez sur Ctrl+Q pour reprendre.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
@@ -612,7 +612,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>Basculer le focus avec l&apos;icône &quot;+&quot;</translation>
+        <translation>Basculez le focus avec l&apos;icône &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="148"/>

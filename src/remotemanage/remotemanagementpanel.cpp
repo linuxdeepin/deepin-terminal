@@ -42,7 +42,7 @@ void RemoteManagementPanel::refreshPanel()
 
 void RemoteManagementPanel::setFocusInPanel()
 {
-    qDebug() << "RemoteManagementPanel focus in Panel.";
+    qInfo() << "RemoteManagementPanel focus in Panel.";
     if (m_searchEdit->isVisible()) {
         // 搜索框显示
         // 设置焦点
@@ -61,7 +61,7 @@ void RemoteManagementPanel::setFocusInPanel()
 
 void RemoteManagementPanel::setFocusBack(const QString &strGroup)
 {
-    qDebug() << "RemoteManagementPanel return from RemoteManageGroup";
+    qInfo() << "RemoteManagementPanel return from RemoteManageGroup";
     // 返回前判断之前是否要有焦点
     if (m_listWidget->getFocusState()) {
         // 要有焦点
@@ -82,7 +82,9 @@ void RemoteManagementPanel::setFocusBack(const QString &strGroup)
     }
     // 不要焦点
     else {
-        Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if(w)
+            w->focusCurrentPage();
     }
 }
 
@@ -96,7 +98,6 @@ void RemoteManagementPanel::clearListFocus()
 
 int RemoteManagementPanel::getListIndex()
 {
-    qDebug() << __FUNCTION__ << "current index : " << m_listWidget->currentIndex();
     return m_listWidget->currentIndex();
 }
 
@@ -116,25 +117,24 @@ void RemoteManagementPanel::onItemClicked(const QString &key)
 {
     // 获取远程信息
     ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
-    if (nullptr != remote) {
+    if (nullptr != remote)
         emit doConnectServer(remote);
-    } else {
-        qDebug() << "can't connect to remote" << key;
-    }
+    else
+        qInfo() << "can't connect to remote" << key;
 }
 
 void RemoteManagementPanel::showCurSearchResult()
 {
     QString strTxt = m_searchEdit->text();
-    if (strTxt.isEmpty()) {
+    if (strTxt.isEmpty())
         return;
-    }
+
     emit showSearchPanel(strTxt);
 }
 
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
-    qDebug() << "RemoteManagementPanel show add server config dialog.";
+    qInfo() << "RemoteManagementPanel show add server config dialog.";
     // 判断控件是否有焦点
     bool focusState = m_pushButton->hasFocus();
     // 弹窗显示
@@ -151,7 +151,7 @@ void RemoteManagementPanel::showAddServerConfigDlg()
             // 添加完，将焦点设置在添加按钮上
             m_pushButton->setFocus();
         }
-        if (result == QDialog::Accepted) {
+        if (QDialog::Accepted == result) {
             int index = m_listWidget->indexFromString(dlg->getServerName());
             m_listWidget->setScroll(index);
         }
@@ -213,22 +213,21 @@ void RemoteManagementPanel::initUI()
     connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementPanel::showGroupPanel);
     connect(m_listWidget, &ListView::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
-        if (m_isShow) {
+        if (m_isShow)
             refreshPanel();
-        }
     });
     connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
-        if (type == Qt::TabFocusReason || type == Qt::NoFocusReason) {
+        if (Qt::TabFocusReason == type || Qt::NoFocusReason == type) {
             // 下一个 或 列表为空， 焦点定位到添加按钮上
             m_pushButton->setFocus();
             m_listWidget->clearIndex();
-            qDebug() << "set focus on add pushButton";
-        } else if (type == Qt::BacktabFocusReason) {
+            qInfo() << "set focus on add pushButton";
+        } else if (Qt::BacktabFocusReason == type) {
             // 判断是否可见，可见设置焦点
             if (m_searchEdit->isVisible()) {
                 m_searchEdit->lineEdit()->setFocus();
                 m_listWidget->clearIndex();
-                qDebug() << "set focus on add search edit";
+                qInfo() << "set focus on add search edit";
             }
         }
 

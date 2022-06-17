@@ -49,6 +49,9 @@ ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
 void ServerConfigManager::settServerConfig(USettings &commandsSettings, const QString &strGroupName, ServerConfig *config)
 {
     commandsSettings.beginGroup(strGroupName);
+    commandsSettings.setValue("userName", config->m_userName);
+    commandsSettings.setValue("address", config->m_address);
+    commandsSettings.setValue("port", config->m_port);
     commandsSettings.setValue("Name", config->m_serverName);
     // 不将密码写入配置文件中
     //commandsSettings.setValue("Password", config->m_password);
@@ -64,7 +67,7 @@ void ServerConfigManager::settServerConfig(USettings &commandsSettings, const QS
 
 void ServerConfigManager::fillManagePanel(ListView *listview)
 {
-    qDebug() << "ServerConfigManager fill data to manage panel.";
+    qInfo() << "ServerConfigManager fill data to manage panel.";
     listview->clearData();
     for (QString key : m_serverConfigs.keys()) {
         // key有效
@@ -84,7 +87,7 @@ void ServerConfigManager::fillManagePanel(ListView *listview)
 
 void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &filter, const QString &group)
 {
-    qDebug() << "ServerConfigManager fill data to search panel.";
+    qInfo() << "ServerConfigManager fill data to search panel.";
     listview->clearData();
     // 判断是否是组内搜索
     if (group.isEmpty() || group.isNull()) {
@@ -111,9 +114,8 @@ void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &fil
         // 组内搜索
         for (QString key : m_serverConfigs.keys()) {
             // 找到分组
-            if (key != group) {
+            if (key != group)
                 continue;
-            }
             // 组内匹配
             for (ServerConfig *item : m_serverConfigs[key]) {
                 if (item->m_serverName.contains(filter, Qt::CaseSensitivity::CaseInsensitive)
@@ -129,14 +131,12 @@ void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &fil
 
 void ServerConfigManager::fillGroupPanel(ListView *listview, const QString &group)
 {
-    qDebug() << __FUNCTION__;
     listview->clearData();
     // 遍历
     for (QString key : m_serverConfigs.keys()) {
         // 找到分组
-        if (key != group) {
+        if (key != group)
             continue;
-        }
         // 组内匹配
         for (ServerConfig *item : m_serverConfigs[key]) {
             // 添加项
@@ -147,9 +147,8 @@ void ServerConfigManager::fillGroupPanel(ListView *listview, const QString &grou
 
 ServerConfigManager *ServerConfigManager::instance()
 {
-    if (nullptr == m_instance) {
+    if (nullptr == m_instance)
         m_instance = new ServerConfigManager();
-    }
     return m_instance;
 }
 
@@ -159,15 +158,13 @@ void ServerConfigManager::initServerConfig()
     m_serverConfigs.clear();
     //---------------------------------------------------------------------------//
     QDir serverConfigBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!serverConfigBasePath.exists()) {
+    if (!serverConfigBasePath.exists())
         return;
-    }
 
     QString serverConfigFilePath(serverConfigBasePath.filePath("server-config.conf"));
-    qDebug() << "load Server Config: " << serverConfigFilePath;
-    if (!QFile::exists(serverConfigFilePath)) {
+    qInfo() << "load Server Config: " << serverConfigFilePath;
+    if (!QFile::exists(serverConfigFilePath))
         return;
-    }
 
     /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
     /* del
@@ -183,13 +180,22 @@ void ServerConfigManager::initServerConfig()
         QStringList strList = serverName.split("@");
         ServerConfig *pServerConfig = new ServerConfig();
         if (strList.count() < 3) {
-            qDebug() << __FUNCTION__ << serverName << strList.count() << "error";
+            qInfo() << __FUNCTION__ << serverName << strList.count() << "error";
             continue;
         }
         // 新版数据的读取方式
-        pServerConfig->m_userName = strList.at(0);
-        pServerConfig->m_address = strList.at(1);
-        pServerConfig->m_port = strList.at(2);
+        // 读取方式优化，原本保存到groupName的值，改为保存到value里
+        // 若配置文件没有包含userName、address、port，则读取groupName的，反之读取key-value
+        if(!serversSettings.contains("userName"))
+            serversSettings.setValue("userName", strList.at(0));
+        if(!serversSettings.contains("address"))
+            serversSettings.setValue("address", strList.at(1));
+        if(!serversSettings.contains("port"))
+            serversSettings.setValue("port", strList.at(2));
+
+        pServerConfig->m_userName = serversSettings.value("userName").toString();
+        pServerConfig->m_address = serversSettings.value("address").toString();
+        pServerConfig->m_port = serversSettings.value("port").toString();
         pServerConfig->m_serverName = serversSettings.value("Name").toString();
         pServerConfig->m_password = serversSettings.value("Password").toString();
         pServerConfig->m_group = serversSettings.value("GroupName").toString();
@@ -202,15 +208,14 @@ void ServerConfigManager::initServerConfig()
         serversSettings.endGroup();
 
         // 兼容旧版本的操作 1) 旧版配置文件需要重写 2) 密码明文需要重写
-        if (strList.count() == OLD_VERTIONCOUNT || !pServerConfig->m_password.isEmpty()) {
+        if (OLD_VERTIONCOUNT == strList.count() || !pServerConfig->m_password.isEmpty())
             isConvertData = true;
-        }
 
         // 旧终端的唯一值
         QString strKey =
             QString("%1@%2@%3@%4").arg(strList.at(0)).arg(strList.at(1)).arg(strList.at(2)).arg(pServerConfig->m_serverName);
         if (m_remoteConfigs.contains(strKey)) {
-            if (strList.count() == OLD_VERTIONCOUNT) {
+            if (OLD_VERTIONCOUNT == strList.count()) {
                 // 现在是旧的
                 delete pServerConfig;
                 break;
@@ -254,9 +259,8 @@ void ServerConfigManager::initServerConfig()
     // 若rewrite为true删除原数据,将内存的数据写入原文件
     m_rewriteConfig = (SettingIO::rewrite || isConvertData);
     // 没有需要查找的数据,直接判断是否重写配置文件
-    if (m_rewriteConfig && m_lookupCount == 0) {
+    if (m_rewriteConfig && 0 == m_lookupCount)
         ConvertData();
-    }
 
     return;
 }
@@ -264,14 +268,11 @@ void ServerConfigManager::initServerConfig()
 void ServerConfigManager::saveServerConfig(ServerConfig *config)
 {
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!customCommandBasePath.exists()) {
+    if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
     /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
-    /* del
-    QSettings commandsSettings(customCommandConfigFilePath, QSettings::CustomFormat1);*/
     /* add */
     USettings commandsSettings(customCommandConfigFilePath);
     /***modify end by ut001121***/
@@ -285,7 +286,7 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     // 添加密码
     remoteStoreSecreats(config);
 
-    qDebug() << "append success!" << config->m_group << config->m_serverName;
+    qInfo() << "append success!" << config->m_group << config->m_serverName;
 
 }
 
@@ -297,9 +298,8 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     }
     // 读写配置文件
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!customCommandBasePath.exists()) {
+    if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
     /***modify begin by ut001121 zhangmeng 20201221 修复BUG58747 远程管理和自定义命令名称中带/重启后会出现命令丢失***/
@@ -323,7 +323,7 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
     // 删除数据
     m_serverConfigs[config->m_group].removeOne(config);
     // 判断组成员
-    if (m_serverConfigs[config->m_group].count() == 0) {
+    if (0 == m_serverConfigs[config->m_group].count()) {
         // 若组内无成员
         m_serverConfigs.remove(config->m_group);
     }
@@ -363,7 +363,7 @@ void ServerConfigManager::setModifyDialog(QString key, ServerConfigOptDlg *dlg)
 {
     // 添加编辑弹窗
     m_serverConfigDialogMap[key].append(dlg);
-    qDebug() << "show edit dialog" << key << m_serverConfigDialogMap[key].count() << dlg;
+    qInfo() << "show edit dialog" << key << m_serverConfigDialogMap[key].count() << dlg;
 }
 
 void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
@@ -383,17 +383,17 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     }
     // 2.删除数据
     if (nullptr != removeOne) {
-        qDebug() << "delete dialog from remote name : " << key;
+        qInfo() << "delete dialog from remote name : " << key;
         m_serverConfigDialogMap[key].removeOne(removeOne);
     }
 
-    if (m_serverConfigDialogMap[key].count() == 0) {
-        qDebug() << "remote dialog is 0, remove remote name : " << key;
+    if (0 == m_serverConfigDialogMap[key].count()) {
+        qInfo() << "remote dialog is 0, remove remote name : " << key;
         m_serverConfigDialogMap.remove(key);
     }
 
     if (nullptr != removeOne) {
-        qDebug() << "delete remote dialog" << removeOne;
+        qInfo() << "delete remote dialog" << removeOne;
         removeOne->deleteLater();
     }
     removeOne = nullptr;
@@ -401,7 +401,7 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
 
 void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 {
-    qDebug() << key << newConfig->m_serverName;
+    qInfo() << key << newConfig->m_serverName;
     //前提是key唯一
     // serverName被修改
     if (key != newConfig->m_serverName) {
@@ -422,17 +422,17 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 
 void ServerConfigManager::closeAllDialog(QString key)
 {
-    qDebug() << __FUNCTION__ << "remote name : " <<  key << m_serverConfigDialogMap.count();
+    qInfo() << __FUNCTION__ << "remote name : " <<  key << m_serverConfigDialogMap.count();
     // 判读此时这个key是否存在
     if (!m_serverConfigDialogMap.contains(key)) {
         // 不存在退出
-        qDebug() << __FUNCTION__ << "not contains " <<  key;
+        qInfo() << __FUNCTION__ << "not contains " <<  key;
         return;
     }
 
     for (auto &item : m_serverConfigDialogMap[key]) {
         if (item != nullptr) {
-            qDebug() << __FUNCTION__ << "reject : " <<  item;
+            qInfo() << __FUNCTION__ << "reject : " <<  item;
             // reject就会把当前的窗口删除
             item->reject();
         }
@@ -442,7 +442,7 @@ void ServerConfigManager::closeAllDialog(QString key)
 int ServerConfigManager::getServerCount(const QString &strGroupName)
 {
     if (strGroupName.isEmpty() || strGroupName.isNull()) {
-        qDebug() << "enter error group name:" << strGroupName << "! please confirm again!";
+        qInfo() << "enter error group name:" << strGroupName << "! please confirm again!";
         return -1;
     }
     if (m_serverConfigs.contains(strGroupName)) {
@@ -458,14 +458,14 @@ ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
     // 遍历查找
     for (const QString &groupName : m_serverConfigs.keys()) {
         for (ServerConfig *item : m_serverConfigs[groupName]) {
-            if (item->m_serverName == key) {
+            if (key == item->m_serverName) {
                 // 找到返回值
                 return item;
             }
         }
     }
     // 没找到返回空
-    qDebug() << "can't find remote key : " << key;
+    qInfo() << "can't find remote key : " << key;
     return nullptr;
 }
 
@@ -477,7 +477,6 @@ ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
 *******************************************************************************/
 static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer unused)
 {
-    // qDebug() << __FUNCTION__;
     Q_UNUSED(source);
     GError *error = NULL;
 
@@ -492,13 +491,13 @@ static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer u
 
     if (error != NULL) {
         /* ... handle the failure here */
-        qDebug() << error->message;
+        qInfo() << error->message;
         g_error_free(error);
         emit reback->manager->lookupSerceats(reback->key, "");
     } else if (password == NULL) {
         /* password will be null, if no matching password found */
         // 密码回调
-        qDebug() << "password is Null server name : " << reback->key;
+        qInfo() << "password is Null server name : " << reback->key;
         emit reback->manager->lookupSerceats(reback->key, "");
 
     } else {
@@ -513,7 +512,6 @@ static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer u
 
 void ServerConfigManager::remoteGetSecreats(const QString &userName, const QString &address, const QString &port, const QString &key)
 {
-    qDebug() << __FUNCTION__;
     QString strSchemaName = QString("com.deepin.terminal.password.%1.%2.%3").arg(userName).arg(address).arg(port);
     const SecretSchema *scheme =
         secret_schema_new(strSchemaName.toUtf8().data(), SECRET_SCHEMA_NONE, "number", SECRET_SCHEMA_ATTRIBUTE_INTEGER, "string", SECRET_SCHEMA_ATTRIBUTE_STRING, "even", SECRET_SCHEMA_ATTRIBUTE_BOOLEAN, NULL);
@@ -545,7 +543,7 @@ static void on_password_stored(GObject *source, GAsyncResult *result, gpointer u
     secret_password_store_finish(result, &error);
     if (error != NULL) {
         /* ... handle the failure here */
-        qDebug() << error->message;
+        qInfo() << error->message;
         g_error_free(error);
     } else {
         /* ... do something now that the password has been stored */
@@ -554,7 +552,6 @@ static void on_password_stored(GObject *source, GAsyncResult *result, gpointer u
 
 void ServerConfigManager::remoteStoreSecreats(ServerConfig *config)
 {
-    qDebug() << __FUNCTION__;
     QString strLabel = QString("com.deepin.terminal.password.%1.%2").arg(config->m_userName).arg(config->m_address);
     QString strSchemaName = QString("com.deepin.terminal.password.%1.%2.%3").arg(config->m_userName).arg(config->m_address).arg(config->m_port);
     const SecretSchema *scheme =
@@ -584,18 +581,17 @@ static void on_password_cleared(GObject *source, GAsyncResult *result, gpointer 
 
     if (error != NULL) {
         /* ... handle the failure here */
-        qDebug() << __FUNCTION__ << error->message;
+        qInfo() << __FUNCTION__ << error->message;
         g_error_free(error);
 
     } else {
         /* removed will be TRUE if a password was removed */
-        qDebug() << "remove result " << removed;
+        qInfo() << "remove result " << removed;
     }
 }
 
 void ServerConfigManager::remoteClearSecreats(const QString &userName, const QString &address, const QString &port)
 {
-    qDebug() << __FUNCTION__;
     QString strSchemaName = QString("com.deepin.terminal.password.%1.%2.%3").arg(userName).arg(address).arg(port);
     const SecretSchema *scheme =
         secret_schema_new(strSchemaName.toUtf8().data(), SECRET_SCHEMA_NONE, "number", SECRET_SCHEMA_ATTRIBUTE_INTEGER, "string", SECRET_SCHEMA_ATTRIBUTE_STRING, "even", SECRET_SCHEMA_ATTRIBUTE_BOOLEAN, NULL);
@@ -606,12 +602,10 @@ void ServerConfigManager::remoteClearSecreats(const QString &userName, const QSt
 
 void ServerConfigManager::ConvertData()
 {
-    qDebug() << __FUNCTION__;
     // 读写配置文件
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!customCommandBasePath.exists()) {
+    if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("server-config.conf"));
     // 旧数据删除
@@ -639,12 +633,11 @@ void ServerConfigManager::ConvertData()
 
 void ServerConfigManager::onLookupFinish(const QString &key, const QString &password)
 {
-    // qDebug() << __FUNCTION__;
     --m_lookupCount;
     // 遍历
     for (QList<ServerConfig *> &list : m_serverConfigs) {
         for (ServerConfig *config : list) {
-            if (config->m_serverName == key) {
+            if (key == config->m_serverName) {
                 // 将密码存入map
                 config->m_password = password;
                 break;
@@ -662,29 +655,4 @@ void ServerConfigManager::onLookupFinish(const QString &key, const QString &pass
 
 ServerConfigManager::~ServerConfigManager()
 {
-    /*
-        if (m_remoteConfigs.size() > 0) {
-            QList<QString> keys = m_remoteConfigs.keys();
-
-            for(int i=0; i<keys.length(); i++) {
-                ServerConfig *config = m_remoteConfigs.value(keys[i]);
-                if (config) {
-                    delete config;
-                    config = nullptr;
-                }
-            }
-            m_remoteConfigs.clear();
-        }
-
-        if (m_serverConfigs.size() > 0) {
-            QList<QString> keys = m_serverConfigs.keys();
-
-            for(int i=0; i<keys.length(); i++) {
-                QList<ServerConfig *> configList = m_serverConfigs.value(keys[i]);
-                qDeleteAll(configList);
-                configList.clear();
-            }
-            m_serverConfigs.clear();
-        }
-    */
 }

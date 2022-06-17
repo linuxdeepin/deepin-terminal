@@ -56,7 +56,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
     initTabTitle();
-    //qDebug() << " TermWidgetparent " << parentWidget();
+    //qInfo() << " TermWidgetparent " << parentWidget();
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -64,7 +64,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
 
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
-    qDebug() << "set shell program : " << strShellPath;
+    qInfo() << "set shell program : " << strShellPath;
     setShellProgram(strShellPath);
     /******** Modify by ut000610 daizhengwen 2020-07-08:初始化透明度 Begin***************/
     // 若没有窗口特效，则不生效
@@ -97,25 +97,24 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setTextCodec(QTextCodec::codecForName("UTF-8"));
 
     /******** Modify by n014361 wangpeili 2020-03-04: 增加保持打开参数控制，默认自动关闭**/
-    setAutoClose(!m_properties.contains(KeepOpen));
+    /******* 2021-06-22  通过保持打开参数控制的值控制************/
+    setAutoClose(!m_properties[KeepOpen].toBool());
     /********************* Modify by n014361 wangpeili End ************************/
 
     // WorkingDir
-    if (m_properties.contains(WorkingDir)) {
+    if (m_properties.contains(WorkingDir))
         setWorkingDirectory(m_properties[WorkingDir].toString());
-    }
 
     if (m_properties.contains(Execute)) {
         //QString args = m_properties[Execute].toString();
         //QStringList argList = args.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
         QStringList argList = m_properties[Execute].toStringList();
-        qDebug() << "Execute args:" << argList;
+        qInfo() << "Execute args:" << argList;
         if (argList.count() > 0) {
             setShellProgram(argList.at(0));
             argList.removeAt(0);
-            if (argList.count()) {
+            if (argList.count())
                 setArgs(argList);
-            }
         }
     }
 
@@ -159,18 +158,18 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 增加可以自动运行脚本的命令，不需要的话，可以删除
     if (m_properties.contains(Script)) {
         QString args = m_properties[Script].toString();
-        qDebug() << "run cmd:" << args;
+        qInfo() << "run cmd:" << args;
         args.append("\n");
-        if (!m_properties.contains(KeepOpen)) {
+        if (!m_properties[KeepOpen].toBool())
             args.append("exit\n");
-        }
+
         sendText(args);
     }
 
     setFocusPolicy(Qt::NoFocus);
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
-    //qDebug() << parentPage << endl;
+    //qInfo() << parentPage << endl;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
 }
 
@@ -196,8 +195,6 @@ void TermWidget::initConnections()
 
     // 未找到搜索的匹配结果
     connect(this, &QTermWidget::sig_noMatchFound, this, &TermWidget::onSig_noMatchFound);
-    // 找到搜索匹配的结果 => 记录查找时间 => 打印日志，方便性能测试
-    connect(this, &QTermWidget::sig_matchFound, this, &TermWidget::onSig_matchFound);
     /********************* Modify by n014361 wangpeili End ************************/
 
     connect(this, &QTermWidget::isTermIdle, this, &TermWidget::onTermIsIdle);
@@ -229,11 +226,6 @@ inline void TermWidget::onSetTerminalFont()
     setTerminalFont(font);
 }
 
-inline void TermWidget::onSig_matchFound()
-{
-    parentPage()->printSearchCostTime();
-}
-
 inline void TermWidget::onSig_noMatchFound()
 {
     parentPage()->setMismatchAlert(true);
@@ -261,6 +253,33 @@ inline void TermWidget::onQTermWidgetReceivedData(QString value)
 
 inline void TermWidget::onTermWidgetReceivedData(QString value)
 {
+    //前提：
+    //启动终端ForegroundPid:A
+    //远程开始、输入信息中、远程中：ForegroundPid:B
+    //远程结束ForegroundPid:A
+    //远程开始时，快速ctrl+c，也会有ForegroundPid：A-》B-》A的过程
+
+    //准备输入密码，且 ForegroundPid 不等于A时，为有效准备
+    if(m_remotePasswordIsReady && getForegroundProcessId() != m_remoteMainPid) {
+        //匹配关键字
+        if(value.toLower().contains("password:")
+                || value.toLower().contains("enter passphrase for key")) {
+        //输入密码,密码不为空，则发送
+            if(!m_remotePassword.isEmpty())
+                sendText(m_remotePassword + "\r");
+            emit remotePasswordHasInputed();
+        }
+        //第一次远程时，需要授权
+        if(value.toLower().contains("yes/no")) {
+            sendText("yes\r");
+        }
+
+    }
+    //若ForegroundPid等于A，则代表远程结束，如开始连接时立刻ctrl+c
+    if(m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
+        m_remotePasswordIsReady = false;
+    }
+
     /******** Modify by ut000610 daizhengwen 2020-05-25: quit download****************/
     if (value.contains("Transfer incomplete")) {
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
@@ -272,20 +291,19 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
     }
     /********************* Modify by ut000610 daizhengwen End ************************/
     // 退出远程后，设置成false
-    if ((value.contains("Connection to") && value.contains(" closed.")) || value.contains("Permission denied")) {
+    if ((value.contains("Connection to") && value.contains(" closed.")) || value.contains("Permission denied"))
         QTimer::singleShot(100, this, &TermWidget::onExitRemoteServer);
-    }
 }
 
 inline void TermWidget::onExitRemoteServer()
 {
     // 判断是否此时退出远程
     if (!isInRemoteServer()) {
-        qDebug() << "exit remote";
+        qInfo() << "exit remote";
         setIsConnectRemote(false);
         // 还原编码
         setTextCodec(QTextCodec::codecForName(encode().toLocal8Bit()));
-        qDebug() << "current encode " << encode();
+        qInfo() << "current encode " << encode();
         setBackspaceMode(m_backspaceMode);
         setDeleteMode(m_deleteMode);
         emit Service::instance()->checkEncode(encode());
@@ -294,30 +312,29 @@ inline void TermWidget::onExitRemoteServer()
 
 inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 {
-    if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu) {
+    if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu)
         QDesktopServices::openUrl(url);
-    }
 }
 
 inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
 {
-    qDebug() << "themeChanged" << builtInTheme;
+    qInfo() << "themeChanged" << builtInTheme;
     // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
     //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
-    if (builtInTheme == DGuiApplicationHelper::LightType) {
+    if (builtInTheme == DGuiApplicationHelper::LightType)
         theme = "Light";
-    }
+
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
     //setColorScheme(theme);
     //Settings::instance()->setColorScheme(theme);
     QString  expandThemeStr = "";
     expandThemeStr = Settings::instance()->extendColorScheme();
     if (expandThemeStr.isEmpty()) {
-        if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType) {
+        if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType)
             theme = "Light";
-        }
+
         setColorScheme(theme);
         Settings::instance()->setColorScheme(theme);
     } else {
@@ -345,7 +362,7 @@ inline void TermWidget::onTitleChanged()
 inline void TermWidget::onCopyAvailable(bool enable)
 {
     if (Settings::instance()->IsPasteSelection() && enable) {
-        qDebug() << "hasCopySelection";
+        qInfo() << "hasCopySelection";
         QString strSelected = selectedText();
         QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
     }
@@ -353,11 +370,10 @@ inline void TermWidget::onCopyAvailable(bool enable)
 
 inline void TermWidget::onWindowEffectEnabled(bool isWinEffectEnabled)
 {
-    if (isWinEffectEnabled) {
+    if (isWinEffectEnabled)
         this->setTermOpacity(Settings::instance()->opacity());
-    } else {
+    else
         this->setTermOpacity(1.0);
-    }
 }
 
 TermWidget::~TermWidget()
@@ -368,7 +384,6 @@ TermWidget::~TermWidget()
 
 TermWidgetPage *TermWidget::parentPage()
 {
-    //qDebug() << "parentPage" << parentWidget();
     return  m_page;
 }
 
@@ -380,16 +395,20 @@ void TermWidget::onTitleArgsChange(QString key, QString value)
     if (DIR_L == key) {
         QString dir = value;
         // 当前目录短（若有优化方法请及时告知）
-        if (dir == "~" || dir.startsWith(QDir::homePath())) {
+        if ("~" == dir || dir.startsWith(QDir::homePath())) {
             // 出现家目录~的情况
             QString homePath = QDir::homePath();
-            QStringList pathList = homePath.split("/");
-            // 当前目录短
-            m_tabArgs[DIR_S] = pathList.last();
+            QStringList pathList;
+            if("~" == dir)
+                pathList = homePath.split("/");
+            else
+                pathList = dir.split("/");
+            // 当前目录短，返回当前文件夹名
+            m_tabArgs[DIR_S] = pathList.value(pathList.count() - 1);
             // 当前目录长对于~的处理 => 传过来的不是~但要填进去~和提示符保持一致
             dir.replace(homePath, "~");
             m_tabArgs[DIR_L] = dir;
-        } else if (dir == "/") {
+        } else if ("/" == dir) {
             // 出现根目录/的情况
             m_tabArgs[DIR_S] = "/";
         } else {
@@ -433,18 +452,18 @@ inline void TermWidget::onOpenFileInFileManager()
     QProcess process;
     //未选择内容
     if (selectedText().isEmpty()) {
-        process.startDetached("dde-file-manager -n " + workingDirectory());
+        process.startDetached("dde-file-manager", {"-n", workingDirectory()});
         return;
     }
 
     QFileInfo fi(workingDirectory() + "/" + selectedText());
     //选择的内容是文件或者文件夹
     if (fi.isFile() || fi.isDir()) {
-        process.startDetached("dde-file-manager --show-item " + workingDirectory() + "/" + selectedText());
+        process.startDetached("dde-file-manager", {"--show-item", workingDirectory() + "/" + selectedText()});
         return;
     }
     //选择的文本不是文件也不是文件夹
-    process.startDetached("dde-file-manager -n " + workingDirectory());
+    process.startDetached("dde-file-manager", {"-n", workingDirectory()});
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
@@ -453,31 +472,27 @@ void TermWidget::addMenuActions(const QPoint &pos)
     bool isRemoting = isConnectRemote();
 
     QList<QAction *> termActions = filterActions(pos);
-    for (QAction *&action : termActions) {
+    for (QAction *&action : termActions)
         m_menu->addAction(action);
-    }
 
-    if (!m_menu->isEmpty()) {
+    if (!m_menu->isEmpty())
         m_menu->addSeparator();
-    }
 
     // add other actions here.
-    if (!selectedText().isEmpty()) {
-
+    if (!selectedText().isEmpty())
         m_menu->addAction(tr("Copy"), this, &TermWidget::onCopy);
-    }
-    if (!QApplication::clipboard()->text(QClipboard::Clipboard).isEmpty()) {
+
+    if (!QApplication::clipboard()->text(QClipboard::Clipboard).isEmpty())
         m_menu->addAction(tr("Paste"), this, &TermWidget::onPaste);
-    }
+
     /******** Modify by n014361 wangpeili 2020-02-26: 添加打开(文件)菜单功能 **********/
     if (!isRemoting && !selectedText().isEmpty()) {
         QString fileName = getFormatFileName(selectedText());
         QString filePath = getFilePath(fileName);
         QUrl fileUrl = QUrl::fromLocalFile(filePath);
         QFileInfo tempfile(fileUrl.path());
-        if (fileName.length() > 0 && tempfile.exists()) {
+        if (fileName.length() > 0 && tempfile.exists())
             m_menu->addAction(tr("Open"), this, &TermWidget::onOpenFile);
-        }
     }
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -486,22 +501,20 @@ void TermWidget::addMenuActions(const QPoint &pos)
     m_menu->addSeparator();
 
 
-    Qt::Orientation orientation = static_cast<DSplitter *>(parentWidget())->orientation();
+    DSplitter *splitter = qobject_cast<DSplitter *>(parentWidget());
     int layer = getTermLayer();
 
-    if (layer == 1 || (layer == 2 && orientation == Qt::Horizontal)) {
+    if (1 == layer || (2 == layer && splitter && Qt::Horizontal == splitter->orientation()))
         m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
-    }
-    if (layer == 1 || (layer == 2 && orientation == Qt::Vertical)) {
+
+    if (1 == layer || (2 == layer && splitter && Qt::Vertical == splitter->orientation()))
         m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
-    }
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     m_menu->addAction(QObject::tr("Close workspace"), this, &TermWidget::onCloseCurrWorkSpace);
     //m_menu->addAction(tr("Close Window"), this, [this] { ((TermWidgetPage *)m_Page)->close();});
-    if (parentPage()->getTerminalCount() > 1) {
+    if (parentPage()->getTerminalCount() > 1)
         m_menu->addAction(QObject::tr("Close other workspaces"), this, &TermWidget::onCloseOtherWorkSpaces);
-    };
 
     /********************* Modify by n014361 wangpeili End ************************/
     m_menu->addSeparator();
@@ -511,11 +524,10 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     if (!parentPage()->parentMainWindow()->isQuakeMode()) {
         bool isFullScreen = this->window()->windowState().testFlag(Qt::WindowFullScreen);
-        if (isFullScreen) {
+        if (isFullScreen)
             m_menu->addAction(tr("Exit fullscreen"), this, &TermWidget::onSwitchFullScreen);
-        } else {
+        else
             m_menu->addAction(tr("Fullscreen"), this, &TermWidget::onSwitchFullScreen);
-        }
     }
 
     m_menu->addAction(tr("Find"), this, &TermWidget::onShowSearchBar);
@@ -577,15 +589,11 @@ inline void TermWidget::onVerticalSplit()
 inline void TermWidget::splitHorizontal()
 {
     parentPage()->split(Qt::Horizontal);
-    //分屏时切换到当前选中主题方案
-    switchThemeOnSplitScreen();
 }
 
 inline void TermWidget::splitVertical()
 {
     parentPage()->split(Qt::Vertical);
-    //分屏时切换到当前选中主题方案
-    switchThemeOnSplitScreen();
 }
 
 inline void TermWidget::onCloseCurrWorkSpace()
@@ -679,7 +687,7 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
             || (fileName.startsWith("\"") && fileName.endsWith("\""))) {
         fileName = fileName.remove(0, 1);
         fileName = fileName.remove(fileName.length() - 1, 1);
-        qDebug() << "fileName is :" << fileName;
+        qInfo() << "fileName is :" << fileName;
     }
 
     return fileName;
@@ -688,11 +696,31 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
 inline QString TermWidget::getFilePath(QString fileName)
 {
     //如果fileName本身已经是一个文件路径
-    if (fileName.startsWith("/")) {
+    if (fileName.startsWith("/"))
         return fileName;
-    }
 
     return workingDirectory() + "/" + fileName;
+}
+
+void TermWidget::inputRemotePassword(const QString &remotePassword)
+{
+    //每个工作区设置对应的标志位
+    m_remoteMainPid = getForegroundProcessId();
+    m_remotePassword = remotePassword;
+    m_remotePasswordIsReady = true;
+
+    //等待密码输入或超时，超时暂不处理
+    QTimer timer;
+    timer.setSingleShot(true);
+    QEventLoop loop;
+    connect(this, &TermWidget::remotePasswordHasInputed, &loop, &QEventLoop::quit);
+    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+    timer.start(1000);
+    loop.exec();
+
+    //还原
+    m_remotePassword = "";
+    m_remotePasswordIsReady = false;
 }
 
 inline void TermWidget::onOpenFile()
@@ -720,9 +748,8 @@ void TermWidget::setBackspaceMode(const EraseMode &backspaceMode)
     switch (backspaceMode) {
     case EraseMode_Auto:
         ch = getErase();
-        if (ch == 0) {
+        if (ch == 0)
             ch = '\010';
-        }
         length = 1;
         break;
     case EraseMode_Control_H:
@@ -736,7 +763,7 @@ void TermWidget::setBackspaceMode(const EraseMode &backspaceMode)
     case EraseMode_TTY:
         ch = getErase();
         length = 1;
-        qDebug() << "tty erase : " << QByteArray(&ch, length).toHex();
+        qInfo() << "tty erase : " << QByteArray(&ch, length).toHex();
         break;
     case EraseMode_Escape_Sequeue:
         length = 4;
@@ -763,7 +790,7 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
     case EraseMode_TTY:
         ch = getErase();
         length = 1;
-        qDebug() << "tty erase : " << QByteArray(&ch, length).toHex();
+        qInfo() << "tty erase : " << QByteArray(&ch, length).toHex();
         break;
     case EraseMode_Auto:
     case EraseMode_Escape_Sequeue:
@@ -783,7 +810,7 @@ int TermWidget::getTermLayer()
         layer++;
         currentW = currentW->parentWidget();
     }
-    qDebug() << "getTermLayer = " << layer;
+    qInfo() << "getTermLayer = " << layer;
     return  layer;
 }
 
@@ -829,9 +856,9 @@ QString TermWidget::getTabTitle()
     }
 
     // 没有内容则给Terminal作为默认标题
-    if (strTabName.trimmed().isEmpty()) {
+    if (strTabName.trimmed().isEmpty())
         strTabName = DEFAULT_TAB_TITLE;
-    }
+
     return strTabName;
 }
 
@@ -846,15 +873,6 @@ QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat
         }
     }
     return TabFormat;
-}
-
-void TermWidget::switchThemeOnSplitScreen()
-{
-    QString  expandThemeStr = "";
-    expandThemeStr = Settings::instance()->extendColorScheme();
-    if (!expandThemeStr.isEmpty()) {
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
-    }
 }
 
 void TermWidget::initTabTitle()
@@ -880,15 +898,15 @@ void TermWidget::initTabTitleArgs()
 {
     QStringList strTabArgs = TAB_ARGS.split(" ");
     // 填充标签标题参数
-    for (QString arg : strTabArgs) {
+    for (QString arg : strTabArgs)
         m_tabArgs.insert(arg, " ");
-    }
+
     // 填充远程标题标签参数
     QStringList strRemoteTabArgs = REMOTE_ARGS.split(" ");
-    for (QString arg : strRemoteTabArgs) {
+    for (QString arg : strRemoteTabArgs)
         m_remoteTabArgs.insert(arg, " ");
-    }
-    qDebug() << "Tab args init! tab title count : " << m_tabArgs.count() << " remote title count : " << m_remoteTabArgs.count();
+
+    qInfo() << "Tab args init! tab title count : " << m_tabArgs.count() << " remote title count : " << m_remoteTabArgs.count();
 }
 
 QString TermWidget::getTabTitleFormat()
@@ -904,9 +922,8 @@ QString TermWidget::getRemoteTabTitleFormat()
 QString TermWidget::getCurrentTabTitleFormat()
 {
     // 连接远程
-    if (isConnectRemote()) {
+    if (isConnectRemote())
         return m_tabFormat.remoteTabFormat;
-    }
 
     // 未连接远程
     return m_tabFormat.currentTabFormat;
@@ -979,18 +996,17 @@ inline void TermWidget::customContextMenuCall(const QPoint &pos)
 bool TermWidget::isInRemoteServer()
 {
     int pid = getForegroundProcessId();
-    if (pid <= 0) {
+    if (pid <= 0)
         return false;
-    }
+
     QString pidFilepath = "/proc/" + QString::number(pid) + "/comm";
     QFile pidFile(pidFilepath);
     if (pidFile.exists()) {
         pidFile.open(QIODevice::ReadOnly | QIODevice::Text);
         QString commString(pidFile.readLine());
         pidFile.close();
-        if ("expect" == commString.trimmed()) {
+        if ("expect" == commString.trimmed())
             return true;
-        }
     }
     return false;
 }
@@ -999,9 +1015,8 @@ void TermWidget::setTermOpacity(qreal opacity)
 {
     //这里再次判断一遍，因为刚启动时，还是需要判断一次当前是否开启了窗口特效
     qreal termOpacity = opacity;
-    if (!Service::instance()->isWindowEffectEnabled()) {
+    if (!Service::instance()->isWindowEffectEnabled())
         termOpacity = 1.0;
-    }
 
     setTerminalOpacity(termOpacity);
     /******* Modify by n014361 wangpeili 2020-01-04: 修正实时设置透明度问题************/
@@ -1025,17 +1040,6 @@ void TermWidget::setTermFontSize(const int fontSize)
     setTerminalFont(font);
 }
 
-
-void TermWidget::skipToNextCommand()
-{
-    qDebug() << "skipToNextCommand";
-}
-
-void TermWidget::skipToPreCommand()
-{
-    qDebug() << "skipToPreCommand";
-}
-
 void TermWidget::setCursorShape(int shape)
 {
     Konsole::Emulation::KeyboardCursorShape cursorShape = Konsole::Emulation::KeyboardCursorShape(shape);
@@ -1044,11 +1048,10 @@ void TermWidget::setCursorShape(int shape)
 
 void TermWidget::setPressingScroll(bool enable)
 {
-    if (enable) {
+    if (enable)
         setMotionAfterPasting(2);
-    } else {
+    else
         setMotionAfterPasting(0);
-    }
 }
 
 void TermWidget::selectEncode(QString encode)
@@ -1059,23 +1062,23 @@ void TermWidget::selectEncode(QString encode)
     if (!isConnectRemote()) {
         // 记录当前的encode
         setEncode(encode);
-        qDebug() << "current encode " << encode;
+        qInfo() << "current encode " << encode;
     } else {
         // 记录远程的encode
         setRemoteEncode(encode);
-        qDebug() << "Remote encode " << encode;
+        qInfo() << "Remote encode " << encode;
     }
 }
 
 void TermWidget::onSettingValueChanged(const QString &keyName)
 {
-    qDebug() << "onSettingValueChanged:" << keyName;
-    if (keyName == "basic.interface.opacity") {
+    qInfo() << "onSettingValueChanged:" << keyName;
+    if ("basic.interface.opacity" == keyName) {
         setTermOpacity(Settings::instance()->opacity());
         return;
     }
 
-    if (keyName == "basic.interface.font") {
+    if ("basic.interface.font" == keyName) {
         setTermFont(Settings::instance()->fontName());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 Begin***************/
         m_page->parentMainWindow()->setWindowMinHeightForFont();
@@ -1085,7 +1088,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
         return;
     }
 
-    if (keyName == "basic.interface.font_size") {
+    if ("basic.interface.font_size" == keyName) {
         setTermFontSize(Settings::instance()->fontSize());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 Begin***************/
         m_page->parentMainWindow()->setWindowMinHeightForFont();
@@ -1095,48 +1098,47 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
         return;
     }
 
-    if (keyName == "advanced.cursor.cursor_shape") {
+    if ("advanced.cursor.cursor_shape" == keyName) {
         setCursorShape(Settings::instance()->cursorShape());
         return;
     }
 
-    if (keyName == "advanced.cursor.cursor_blink") {
+    if ("advanced.cursor.cursor_blink" == keyName) {
         setBlinkingCursor(Settings::instance()->cursorBlink());
         return;
     }
 
-    if (keyName == "advanced.scroll.scroll_on_key") {
+    if ("advanced.scroll.scroll_on_key" == keyName) {
         setPressingScroll(Settings::instance()->PressingScroll());
         return;
     }
 
-    if (keyName == "basic.interface.theme") {
+    if ("basic.interface.theme" == keyName) {
         return;
     }
     // 这里只是立即生效一次，真正生效起作用的地方在初始的connect中
-    if (keyName == "advanced.cursor.auto_copy_selection") {
-        if (Settings::instance()->IsPasteSelection()) {
+    if ("advanced.cursor.auto_copy_selection" == keyName) {
+        if (Settings::instance()->IsPasteSelection())
             copyClipboard();
-        } else {
+        else
             QApplication::clipboard()->clear(QClipboard::Clipboard);
-        }
 
         return;
     }
 
-    if (keyName == "advanced.scroll.scroll_on_output") {
-        qDebug() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
-                 << ", auto effective when happen";
+    if ("advanced.scroll.scroll_on_output" == keyName) {
+        qInfo() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
+                << ", auto effective when happen";
         return;
     }
 
-    qDebug() << "settingValue[" << keyName << "] changed is not effective";
+    qInfo() << "settingValue[" << keyName << "] changed is not effective";
 }
 
 void TermWidget::onDropInUrls(const char *urls)
 {
     QString strUrls = QString::fromLocal8Bit(urls);
-    qDebug() << "recv urls:" << strUrls;
+    qInfo() << "recv urls:" << strUrls;
     if (isConnectRemote()) {
         // 远程管理连接中
         QString strTxt = "sz ";
@@ -1152,8 +1154,7 @@ void TermWidget::onDropInUrls(const char *urls)
 
 inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 {
-    qDebug() << __FUNCTION__;
-    qDebug() << name << direction << fingers;
+    qInfo() << name << direction << fingers;
     // 当前窗口被激活,且有焦点
     if (isActiveWindow() && hasFocus()) {
         if (name == "pinch" && fingers == 2) {
@@ -1206,29 +1207,13 @@ void TermWidget::wheelEvent(QWheelEvent *event)
     QTermWidget::wheelEvent(event);
 }
 
-bool TermWidget::eventFilter(QObject *o, QEvent *e)
-{
-    if (m_messageTextMap.contains(o) && e->type() == QEvent::Resize) {
-        QLabel *label = static_cast<QLabel *>(o);
-        QString orgText = m_messageTextMap[o];
-        QString elideText = Utils::getElidedText(label->font(), orgText, label->width(), Qt::ElideRight);
-        if (elideText != label->text())
-            label->setText(elideText);
-    }
-    return QTermWidget::eventFilter(o, e);
-}
-
 void TermWidget::showFlowMessage(bool show)
 {
     if (nullptr == m_flowMessage) {
         m_flowMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
-        QList<QLabel *> lst = m_flowMessage->findChildren<QLabel *>();
-        for (auto label : lst) {
-            label->setWordWrap(false);
-        }
         m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
         QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
-        installEventMessageText(m_flowMessage, strText);
+        m_flowMessage->setMessage(strText);
         DMessageManager::instance()->sendMessage(this, m_flowMessage);
     }
     m_flowMessage->setVisible(show);
@@ -1238,30 +1223,13 @@ void TermWidget::showShellMessage(QString strWarnings)
 {
     // 初始化悬浮框
     DFloatingMessage *shellWarningsMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
-    QList<QLabel *> lst = shellWarningsMessage->findChildren<QLabel *>();
-    for (auto label : lst) {
-        label->setWordWrap(false);
-    }
     // 关闭悬浮框时销毁
     connect(shellWarningsMessage, &DFloatingMessage::closeButtonClicked, shellWarningsMessage, &DFloatingMessage::deleteLater);
     // 设置icon和文字
     shellWarningsMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
-    installEventMessageText(shellWarningsMessage, strWarnings);
+    shellWarningsMessage->setMessage(strWarnings);
     // 调用DTK的方法关闭悬浮框
     DMessageManager::instance()->sendMessage(this, shellWarningsMessage);
-}
-
-void TermWidget::installEventMessageText(DFloatingMessage *widget, const QString &text)
-{
-    widget->setMessage("the sentence for searching MessageLabel of DFloatingMessage");
-    for (auto label : widget->findChildren<QLabel *>()) {
-        if (label->text() == "the sentence for searching MessageLabel of DFloatingMessage") {
-            label->installEventFilter(this);
-            m_messageTextMap[label] = text;
-            break;
-        }
-    }
-    widget->setMessage(text);
 }
 
 

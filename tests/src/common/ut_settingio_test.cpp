@@ -18,25 +18,26 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #include "ut_settingio_test.h"
-
 #include "settingio.h"
-
-//Google GTest 相关头文件
-#include <gtest/gtest.h>
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
-#include <utility>
-#include <memory>
 #include <QWidget>
 #include <QtConcurrent/QtConcurrent>
 
 //DTK相关头文件
 #include <DFileDialog>
+
+//Google GTest
+#include <gtest/gtest.h>
+
+//system
+#include <utility>
+#include <memory>
+
 DWIDGET_USE_NAMESPACE
 
 UT_SettingIO_Test::UT_SettingIO_Test()
@@ -85,10 +86,12 @@ TEST_F(UT_SettingIO_Test, escapedStringTest)
 {
     QString strTest = "a;b,c=d#e\\0";
     QString strResut = SettingIO::escapedString(strTest);
+    EXPECT_EQ(strResut, "\"a;b,c=d#e\\\\0\"");
     qDebug() << strResut;
 
     strTest = "!@#$%^&*()-+=\??？bB0\n\r\t\\\0\0";
     strResut = SettingIO::escapedString(strTest);
+    EXPECT_EQ(strResut, "\"!@#$%^&*()-+=??？bB0\\n\\r\\t\\\\\"");
     qDebug() << strResut;
 }
 
@@ -102,6 +105,7 @@ TEST_F(UT_SettingIO_Test, unescapedStringTest)
 {
     QString strTest = "123\1?\\t\\x1Bb\a\t ";
     QString strResut = SettingIO::unescapedString(strTest);
+    EXPECT_EQ(strResut, "123\u0001?\tƻ\u0007\t ");
     qDebug() << strResut;
 }
 

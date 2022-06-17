@@ -32,6 +32,7 @@
 #include <DSlider>
 #include <DApplicationHelper>
 #include <DKeySequenceEdit>
+#include <DSysInfo>
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -39,7 +40,7 @@
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
-Settings *Settings::m_settings_instance = new Settings();
+Settings *Settings::m_settings_instance = nullptr;
 DComboBox *Settings::comboBox = nullptr;
 DComboBox *Settings::g_shellConfigCombox = nullptr;
 
@@ -53,20 +54,23 @@ Settings::Settings() : QObject(qApp)
 
 Settings *Settings::instance()
 {
+    if(nullptr == m_settings_instance) {
+        m_settings_instance = new Settings();
+        m_settings_instance->init();
+    }
     return m_settings_instance;
 }
 
 Settings::~Settings()
 {
-    if (nullptr != m_Watcher) {
+    if (nullptr != m_Watcher)
         m_Watcher->deleteLater();
-    }
-    if (nullptr != m_backend) {
+
+    if (nullptr != m_backend)
         m_backend->deleteLater();
-    }
-    if (nullptr != settings) {
+
+    if (nullptr != settings)
         settings->deleteLater();
-    }
 }
 
 // 统一初始化以后方可使用。
@@ -78,27 +82,53 @@ void Settings::init()
     m_backend->setObjectName("SettingsQSettingBackend");//Add by ut001000 renfeixiang 2020-08-13
 
     // 默认配置
-    settings = DSettings::fromJsonFile(":/other/default-config.json");
+    QFile configFile(":/other/default-config.json");
+    if(!configFile.open(QFile::ReadOnly)) {
+        qInfo() << "can not open default-config.json";
+    }
+    QByteArray json = configFile.readAll();
+    configFile.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(json);
+    QVariant jsonVar = doc.toVariant();
+    //龙芯 且 服务器企业版
+    if(Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
+        //隐藏透明度界面
+        Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "opacity", "hide", true);
+        //隐藏背景模糊界面
+        Utils::insertToDefaultConfigJson(jsonVar, "advanced", "window", "blurred_background", "hide", true);
+    }
+    //终端的默认字体，由固定：Noto Sans Mono，改为读系统的默认字体
+    QString defaultFont = Utils::getValueInDefaultConfigJson(jsonVar, "basic", "interface", "font", "default").toString();
+    QString systemFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
+
+    //无效字体时，exactMatch：Returns true if a window system font exactly matching the settings of this font is available.
+    if(!QFont(defaultFont).exactMatch())
+        Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "font", "default", systemFixedFont);
+    //更新json
+    json = QJsonDocument::fromVariant(jsonVar).toJson();
+    settings = DSettings::fromJson(json);
 
     // 加载自定义配置
     settings->setBackend(m_backend);
-
-    /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light Begin************************/
-    QFile file(m_configPath);
-    if (!file.exists() || "Light" != m_backend->getOption("basic.interface.theme").toString()) {
-        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 Begin************************/
-        //DGuiApplicationHelper::instance()->setThemeType(DGuiApplicationHelper::DarkType);
-        //DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        //setColorScheme("Dark");
-        /************************ Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常 End ************************/
-        if (m_backend->getOption("basic.interface.expand_theme").toString().isEmpty()) {
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-            setColorScheme("Dark");
-        }
-
+    /*
+     * 主题分：标题栏(colorScheme)、终端界面(extendColorScheme) 、gsetting
+     * colorScheme必为Dark或Light，extendColorScheme为空时是系统主题，不为空时是自带主题,gsettings为Dark或Light或unknownType
+     * 例如
+     * 1.为Dark主题时:  colorScheme：Dark             extendColorScheme：""           gsettings：Dark
+     * 2.为Bim主题时:   colorScheme：Dark             extendColorScheme：Theme4       gsettings：Dark
+     * 3.随系统时:      colorScheme：Dark or Light    extendColorScheme：""           gsettings：unknownType
+     * 要求以下三个场景启动时，主题为Dark
+     * 1.首次运行终端，colorScheme=""
+     * 2.删除conf文件，colorScheme=""
+     * 3.人为修改conf，colorScheme=不可预知
+     * 综上即colorScheme非Light且非Dark时，修改主题为Dark
+     */
+    if("Light" != colorScheme() && "Dark" != colorScheme()) {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+        setColorScheme("Dark");
+        setExtendColorScheme("");
     }
-    /************************ Add by sunchengxi 2020-09-15:Bug#47880 终端默认主题色应改为深色,当配置文件不存在或者配置项不是Light End ************************/
-
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
     QMap<QString, QVariant> windowStateMap;
@@ -112,9 +142,8 @@ void Settings::init()
                           QStringList() << tr("Normal window") << tr("Split screen") << tr("Maximum") << tr("Fullscreen"));
     windowState->setData("items", windowStateMap);
 
-    for (QString &key : settings->keys()) {
-        qDebug() << key << settings->value(key);
-    }
+    for (QString &key : settings->keys())
+        qInfo() << key << settings->value(key);
     /********************* Modify by n014361 wangpeili End ************************/
 
     initConnection();
@@ -125,7 +154,7 @@ void Settings::init()
     m_Watcher = new QFileSystemWatcher();
     m_Watcher->addPath(m_configPath);
     connect(m_Watcher, &QFileSystemWatcher::fileChanged, this, [this](QString file) {
-        qDebug() << "fileChanged" << file;
+        qInfo() << "fileChanged" << file;
         reload();
         //监控完一次就不再监控了，所以要再添加
         m_Watcher->addPath(m_configPath);
@@ -138,9 +167,9 @@ void Settings::init()
     Konsole::__maxFontSize = option->data("max").isValid() ? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
 
     // 校验正确
-    if (Konsole::__minFontSize > Konsole::__maxFontSize) {
+    if (Konsole::__minFontSize > Konsole::__maxFontSize)
         qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
-    }
+
     /***add end by ut001121***/
 
     //自定义主题配置初始化处理
@@ -221,9 +250,8 @@ QStringList Settings::color2str(QColor color)
 void Settings::loadDefaultsWhenReinstall()
 {
     QDir installFlagPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!installFlagPath.exists()) {
+    if (!installFlagPath.exists())
         installFlagPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
 }
 
 void Settings::addShellOption()
@@ -236,9 +264,8 @@ void Settings::addShellOption()
     // 初始值
     keysList << DEFAULT_SHELL;
     // 数据转换
-    for (const QString key : shellsMap.keys()) {
+    for (const QString key : shellsMap.keys())
         keysList << key;
-    }
     g_shellConfigCombox->addItems(keysList);
 }
 
@@ -266,8 +293,6 @@ QPair<QWidget *, QWidget *>  Settings::createTabTitleFormatWidget(QObject *opt, 
         option->setValue(tabTitleFormat->getInputedit()->text());
     });
 
-
-
     return optionWidget;
 }
 
@@ -275,13 +300,12 @@ void Settings::initConnection()
 {
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
         Q_UNUSED(value)
-        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.")) {
+        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll."))
             emit terminalSettingChanged(key);
-        } else if (key.contains("shortcuts.")) {
+        else if (key.contains("shortcuts."))
             emit shortcutSettingChanged(key);
-        } else {
+        else
             emit windowSettingChanged(key);
-        }
     });
 
     QPointer<DSettingsOption> opacity = settings->option("basic.interface.opacity");
@@ -334,14 +358,17 @@ void Settings::initConnection()
     });
 }
 
+void Settings::releaseInstance()
+{
+    if(nullptr != m_settings_instance) {
+        delete m_settings_instance;
+        m_settings_instance = nullptr;
+    }
+}
+
 qreal Settings::opacity() const
 {
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
-}
-
-QString Settings::colorScheme() const
-{
-    return settings->option("basic.interface.theme")->value().toString();
 }
 
 QString Settings::encoding() const
@@ -381,12 +408,12 @@ bool Settings::OutputtingScroll()
 //    for (QString &key : newSettings.childGroups()) {
 //        //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
 //        if (!settings->keys().contains(key)) {
-//            qDebug() << "reload failed: system not found " << key << "now remove it";
+//            qInfo() << "reload failed: system not found " << key << "now remove it";
 //            newSettings.remove(key);
 //            continue;
 //        }
 //        if (settings->value(key) != newSettings.value(key + "/value")) {
-//            qDebug() << "reload update:" << key << settings->value(key);
+//            qInfo() << "reload update:" << key << settings->value(key);
 //            settings->option(key)->setValue(newSettings.value(key + "/value"));
 //        }
 //    }
@@ -440,19 +467,43 @@ bool Settings::backgroundBlur() const
     return settings->option("advanced.window.blurred_background")->value().toBool();
 }
 
+
+QString Settings::colorScheme() const
+{
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        return switchThemeMap["basic.interface.theme"];
+    }
+    return settings->option("basic.interface.theme")->value().toString();
+}
+
 void Settings::setColorScheme(const QString &name)
 {
-    return settings->option("basic.interface.theme")->setValue(name);
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        switchThemeMap["basic.interface.theme"] = name;
+        return;
+    }
+    settings->option("basic.interface.theme")->setValue(name);
 }
 
 QString Settings::extendColorScheme() const
 {
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        return switchThemeMap["basic.interface.expand_theme"];
+    }
     return settings->option("basic.interface.expand_theme")->value().toString();
 }
 
 void Settings::setExtendColorScheme(const QString &name)
 {
-    return settings->option("basic.interface.expand_theme")->setValue(name);
+    //选择主题未确定
+    if(!bSwitchTheme) {
+        switchThemeMap["basic.interface.expand_theme"] = name;
+        return;
+    }
+    settings->option("basic.interface.expand_theme")->setValue(name);
 }
 
 /*******************************************************************************
@@ -466,7 +517,7 @@ void Settings::setExtendColorScheme(const QString &name)
 //    if (name != m_EncodeName) {
 //        m_EncodeName = name;
 //        emit encodeSettingChanged(name);
-//        qDebug() << "encode changed to" << name;
+//        qInfo() << "encode changed to" << name;
 //    }
 //}
 
@@ -495,7 +546,7 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
         // 例ctlr+shift+? => ctrl+shift+/
         if (Utils::converUpToDown(strKey) == Utils::converUpToDown(Key)) {
             if (Name != tmpKey) {
-                qDebug() << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
+                qInfo() << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
                 return  true;
             }
         }
@@ -504,39 +555,39 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
-void Settings::HandleWidthFont()
+void Settings::handleWidthFont()
 {
-    QStringList Whitelist;
-    Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
 
     //将新安装的字体，加载到字体库中
     QFontDatabase base;
     for (int i = 0; i < Whitelist.count(); ++i) {
-        QString name = Whitelist.at(i);
-        if (-1 == comboBox->findText(name)) {
+        QString name = Whitelist[i].value;
+        if (-1 == comboBox->findData(name)) {
             QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/";// + name + ".ttf";
             QDir dir(fontpath);
-            if (dir.count() > 2) {
+            if (dir.count() > 2)
                 fontpath = fontpath + dir[2];
-            }
+
             int ret = base.addApplicationFont(fontpath);
-            if (-1 == ret) {
-                qDebug() << "load " << name << " font faild";
-            }
+            if (-1 == ret)
+                qInfo() << "load " << name << " font faild";
+
         }
     }
-    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
+    //按name小到大排序
+    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const FontData & str1, const FontData & str2) {
         QCollator qc;
-        return qc.compare(str1, str2) < 0;
+        return qc.compare(str1.value, str2.value) < 0;
     });
 
-    QString fontname = comboBox->currentText();
+    //更新设置界面的字体信息
+    QVariant fontname = comboBox->currentData();
     comboBox->clear();
-    comboBox->addItems(Whitelist);
-    qDebug() << "HandleWidthFont has update";
-    if (Whitelist.contains(fontname)) {
-        comboBox->setCurrentText(fontname);
+    for(int k = 0; k < Whitelist.count(); k ++) {
+        comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
+    comboBox->setCurrentIndex(comboBox->findData(fontname));
 }
 
 
@@ -571,41 +622,43 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
-    QStringList Whitelist;
-    Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
 
-    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const QString & str1, const QString & str2) {
+    std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const FontData & str1, const FontData & str2) {
         QCollator qc;
-        return qc.compare(str1, str2) < 0;
+        return qc.compare(str1.value, str2.value) < 0;
     });
 
-    qDebug() << "createFontComBoBoxHandle get system monospacefont";
+    qInfo() << "createFontComBoBoxHandle get system monospacefont";
     if (Whitelist.size() <= 0) {
         //一般不会走这个分支，除非DBUS出现问题
-        qDebug() << "DBusManager::callAppearanceFont failed, get control font failed.";
+        qInfo() << "DBusManager::callAppearanceFont failed, get control font failed.";
         //DBUS获取字体失败后，设置系统默认的等宽字体
-        Whitelist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
-                  << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
-                  << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
-                  << "Noto Sans Mono CJK TC";
+        QStringList fontlist;
+        fontlist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
+                 << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
+                 << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK SC"
+                 << "Noto Sans Mono CJK TC";
+        Whitelist.appendValues(fontlist);
     }
-    comboBox->addItems(Whitelist);
+    for(int k = 0; k < Whitelist.count(); k ++) {
+        comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
+    }
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 End***************/
 
-    if (option->value().toString().isEmpty()) {
+    if (option->value().toString().isEmpty())
         option->setValue(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());
-    }
 
     // init.
-    comboBox->setCurrentText(option->value().toString());
+    comboBox->setCurrentIndex(comboBox->findData(option->value()));
 
     connect(option, &DSettingsOption::valueChanged, comboBox, [ = ](QVariant var) {
-        comboBox->setCurrentText(var.toString());
+        comboBox->setCurrentIndex(comboBox->findData(var));
     });
 
     option->connect(
-    comboBox, &QComboBox::currentTextChanged, option, [ = ](const QString & text) {
-        option->setValue(text);
+        comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), option, [ = ](int index) {
+        option->setValue(comboBox->itemData(index));
     });
 
     return optionWidget;
@@ -676,9 +729,9 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
         Q_UNUSED(opt)
         QKeySequence sequence(optionValue.toString());
         QString keyseq = sequence.toString();
-        if (keyseq == SHORTCUT_VALUE) {
+        if (keyseq == SHORTCUT_VALUE)
             return;
-        }
+
         rightWidget->setKeySequence(sequence);
     };
     updateWidgetValue(optionValue, option);
@@ -686,13 +739,13 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 控件输入
     option->connect(rightWidget, &KeySequenceEdit::editingFinished, rightWidget, [ = ](const QKeySequence & sequence) {
         // 删除
-        if (sequence.toString() == "Backspace") {
+        if ("Backspace" == sequence.toString()) {
             rightWidget->clear();
             option->setValue(SHORTCUT_VALUE);
             return ;
         }
         // 取消
-        if (sequence.toString() == "Esc") {
+        if ("Esc" == sequence.toString()) {
             rightWidget->clear();
             rightWidget->setKeySequence(QKeySequence(rightWidget->option()->value().toString()));
             return ;
@@ -701,9 +754,9 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
         QString reason;
         // 有效查询
         if (!ShortcutManager::instance()->checkShortcutValid(rightWidget->option()->key(), sequence.toString(), reason)) {
-            if (sequence.toString() != "Esc") {
+            if (sequence.toString() != "Esc")
                 Service::instance()->showShortcutConflictMsgbox(reason);
-            }
+
             // 界面数据还原
             rightWidget->clear();
             rightWidget->setKeySequence(QKeySequence(rightWidget->option()->value().toString()));
@@ -715,8 +768,8 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 配置修改
     option->connect(option, &DTK_CORE_NAMESPACE::DSettingsOption::valueChanged, rightWidget, [ = ](const QVariant & value) {
         QString keyseq = value.toString();
-        qDebug() << "valueChanged" << rightWidget->option()->key() << keyseq;
-        if (keyseq == SHORTCUT_VALUE || keyseq.isEmpty()) {
+        qInfo() << "valueChanged" << rightWidget->option()->key() << keyseq;
+        if (SHORTCUT_VALUE == keyseq || keyseq.isEmpty()) {
             rightWidget->clear();
             return;
         }
@@ -760,6 +813,15 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     option->connect(g_shellConfigCombox, &DComboBox::currentTextChanged, option, [ = ](const QString & strShell) {
         QMap<QString, QString> shellMap = Service::instance()->shellsMap();
         option->setValue(shellMap[strShell]);
+        //fix: bug#68644 shell切换为zsh，再次连接远程管理，跳转到新标签页时远程管理未连接
+        if (strShell == "zsh") {
+            QString path = QProcessEnvironment::systemEnvironment().value("HOME");
+            QFile fi(path + "/" + ".zshrc");
+            if (!fi.exists()) {
+                fi.open(QIODevice::ReadWrite | QIODevice::Text); //不存在的情况下，打开包含了新建文件的操作
+                fi.close();
+            }
+        }
     });
 
     QMap<QString, QString> shellMap = Service::instance()->shellsMap();

@@ -116,7 +116,7 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
         // 第二行 组内服务器个数
         int serverCount = ServerConfigManager::instance()->getServerCount(firstline);
         if (serverCount <= 0) {
-            qDebug() << "get error count " << serverCount;
+            qInfo() << "get error count " << serverCount;
             serverCount = 0;
         }
         m_secondText = QString("%1 server").arg(serverCount);
@@ -134,17 +134,17 @@ const QString ItemWidget::getFirstText()
 bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
 {
     // fistText是唯一值
-    return ((m_functType == type) && (key == m_firstText));
+    return ((type == m_functType) && (key == m_firstText));
 }
 
 void ItemWidget::getFocus()
 {
     m_isFocus = true;
     // 项显示功能键
-    if (m_functType == ItemFuncType_Item) {
+    if (ItemFuncType_Item == m_functType) {
         m_funcButton->show();
         m_funcButton->setFocus();
-        qDebug() << "edit button show";
+        qInfo() << "edit button show";
     }
 }
 
@@ -152,9 +152,8 @@ void ItemWidget::lostFocus()
 {
     m_isFocus = false;
     // 项影藏功能键
-    if ((ItemFuncType_Item == m_functType) && (!m_isHover)) {
+    if ((ItemFuncType_Item == m_functType) && (!m_isHover))
         m_funcButton->hide();
-    }
 }
 
 bool operator >(const ItemWidget &item1, const ItemWidget &item2)
@@ -196,13 +195,13 @@ void ItemWidget::onFuncButtonClicked()
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
-        qDebug() << "group show" << m_firstText;
+        qInfo() << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
         emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item: {
         // 修改项
-        qDebug() << "modify item" << m_firstText;
+        qInfo() << "modify item" << m_firstText;
         bool isFocusOn = false;
         if (m_funcButton->hasFocus() || m_isFocus) {
             // 焦点在大框或者编辑按钮上
@@ -230,13 +229,13 @@ void ItemWidget::onIconButtonClicked()
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
-        qDebug() << "group show" << m_firstText;
+        qInfo() << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
         emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item:
         // 项被点击
-        qDebug() << "item clicked" << m_firstText;
+        qInfo() << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
     }
@@ -244,28 +243,25 @@ void ItemWidget::onIconButtonClicked()
 
 void ItemWidget::onFocusReback()
 {
-    qDebug() << __FUNCTION__;
     setFocus();
 }
 
 void ItemWidget::onFocusOut(Qt::FocusReason type)
 {
     // Tab切出
-    if ((type == Qt::TabFocusReason) || (type == Qt::BacktabFocusReason)) {
+    if ((Qt::TabFocusReason == type) || (Qt::BacktabFocusReason == type))
         emit focusOut(type);
-    }
-    if (type == Qt::ActiveWindowFocusReason) {
+
+    if (Qt::ActiveWindowFocusReason == type) {
         // 例如:super后返回都需要将焦点返回项
         setFocus();
-        qDebug() << "set focus back itemwidget";
+        qInfo() << "set focus back itemwidget";
     }
     // 项
-    if (m_functType == ItemFuncType_Item) {
-        if (type != Qt::OtherFocusReason && !m_isHover) {
+    if (ItemFuncType_Item == m_functType) {
+        if (type != Qt::OtherFocusReason && !m_isHover)
             m_funcButton->hide();
-        }
     }
-
 }
 
 void ItemWidget::initUI()
@@ -354,11 +350,9 @@ void ItemWidget::paintEvent(QPaintEvent *event)
 
 void ItemWidget::enterEvent(QEvent *event)
 {
-    qDebug() << __FUNCTION__;
     // 编辑按钮现
-    if (m_functType == ItemFuncType_Item) {
+    if (ItemFuncType_Item == m_functType)
         m_funcButton->show();
-    }
 
     FocusFrame::enterEvent(event);
 }
@@ -368,9 +362,8 @@ void ItemWidget::leaveEvent(QEvent *event)
     // 判断焦点是否是选中状态，不是的话，清除选中效果
     if (!m_isFocus && !m_funcButton->hasFocus()) {
         // 编辑按钮出
-        if (m_functType == ItemFuncType_Item) {
+        if (ItemFuncType_Item == m_functType)
             m_funcButton->hide();
-        }
     }
 
     FocusFrame::leaveEvent(event);
@@ -394,9 +387,10 @@ void ItemWidget::mouseReleaseEvent(QMouseEvent *event)
 bool ItemWidget::eventFilter(QObject *watched, QEvent *event)
 {
     /***add begin by ut001121 zhangmeng 20200924 过滤并处理鼠标事件 修复BUG48618***/
-    QMouseEvent *mouse = static_cast<QMouseEvent *>(event);
-    if (event->type() == QEvent::MouseButtonPress
-            && mouse->source() == Qt::MouseEventSynthesizedByQt) {
+
+    if (QEvent::MouseButtonPress == event->type()
+            && Qt::MouseEventSynthesizedByQt == static_cast<QMouseEvent *>(event)->source()) {
+        QMouseEvent *mouse = static_cast<QMouseEvent *>(event);
         //记录移动事件来源
         m_moveSource = watched;
         //记录移动事件起点
@@ -404,16 +398,17 @@ bool ItemWidget::eventFilter(QObject *watched, QEvent *event)
         //重置滑动最大距离
         m_touchSlideMaxY = 0;
     }
-    if (event->type() == QEvent::MouseButtonRelease
-            && mouse->source() == Qt::MouseEventSynthesizedByQt) {
+    if (QEvent::MouseButtonRelease == event->type()
+            && Qt::MouseEventSynthesizedByQt == static_cast<QMouseEvent *>(event)->source()) {
         //判断最大移动距离
         if (m_touchSlideMaxY <= COORDINATE_ERROR_Y) {
             //移动事件源为空,表示未曾移动过
             m_moveSource = nullptr;
         }
     }
-    if (event->type() == QEvent::MouseMove /*&& m_moveSource == watched*/
-            && mouse->source() == Qt::MouseEventSynthesizedByQt) {
+    if (QEvent::MouseMove == event->type()
+            && Qt::MouseEventSynthesizedByQt == static_cast<QMouseEvent *>(event)->source()) {
+        QMouseEvent *mouse = static_cast<QMouseEvent *>(event);
         //记录滑动最大距离
         m_touchSlideMaxY = qMax(m_touchSlideMaxY, qAbs(m_touchPressPosY - mouse->globalPos().y()));
     }
@@ -426,7 +421,7 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_Right:
         // 点击键盘右键
-        qDebug() << "right key press";
+        qInfo() << "right key press";
         rightKeyPress();
         break;
     case Qt::Key_Enter:
@@ -445,28 +440,24 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
 void ItemWidget::focusInEvent(QFocusEvent *event)
 {
     m_isFocus = true;
-    if (ItemFuncType_Item == m_functType) {
+    if (ItemFuncType_Item == m_functType)
         m_funcButton->show();
-    }
+
     FocusFrame::focusInEvent(event);
 }
 
 void ItemWidget::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << "ItemWidget" << __FUNCTION__ << event->reason();
-
     m_isFocus = false;
     // Tab切出
     Qt::FocusReason type = event->reason();
-    if (Qt::TabFocusReason == type || Qt::BacktabFocusReason == type) {
+    if (Qt::TabFocusReason == type || Qt::BacktabFocusReason == type)
         emit focusOut(type);
-    }
 
     if (ItemFuncType_Item == m_functType) {
         // 编辑按钮也没焦点，则隐藏编辑按钮
-        if (!m_funcButton->hasFocus() && !m_isHover) {
+        if (!m_funcButton->hasFocus() && !m_isHover)
             m_funcButton->hide();
-        }
     }
     FocusFrame::focusOutEvent(event);
 }
@@ -487,13 +478,11 @@ void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
 {
     DPalette fontPalette = DApplicationHelper::instance()->palette(label);
     QColor color = getColor(colorType);
-    //    qDebug() << color;
     if (color.isValid()) {
         fontPalette.setBrush(DPalette::Text, color);
         label->setPalette(fontPalette);
-        //        qDebug() << label->palette();
     } else {
-        qDebug() << __FUNCTION__ << "can't get text color";
+        qInfo() << __FUNCTION__ << "can't get text color";
     }
 }
 
@@ -514,7 +503,7 @@ QColor ItemWidget::getColor(ItemTextColor colorType)
     }
     break;
     default:
-        qDebug() << "item widget text unknow color type!" << colorType;
+        qInfo() << "item widget text unknow color type!" << colorType;
         break;
     }
     return color;
@@ -525,13 +514,13 @@ void ItemWidget::rightKeyPress()
     switch (m_functType) {
     case ItemFuncType_Group: {
         // 显示分组
-        qDebug() << "group show" << m_firstText;
+        qInfo() << "group show" << m_firstText;
         emit groupClicked(m_firstText, true);
     }
     break;
     case ItemFuncType_Item:
         // 编辑按钮获得焦点
-        qDebug() << "item get focus" << m_firstText;
+        qInfo() << "item get focus" << m_firstText;
         m_funcButton->show();
         m_funcButton->setFocus();
         break;
@@ -552,13 +541,13 @@ void ItemWidget::onItemClicked()
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
-        qDebug() << "group show" << m_firstText;
+        qInfo() << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
         emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item:
         // 项被点击
-        qDebug() << "item clicked" << m_firstText;
+        qInfo() << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
     }

@@ -21,14 +21,17 @@
 
 #include "ut_customcommandplugin_test.h"
 #include "customcommandplugin.h"
-
+#include "ut_stub_defines.h"
 #include "mainwindow.h"
 #include "termproperties.h"
 #include "service.h"
+
+//qt
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
 #include <QSignalSpy>
+
 UT_Customcommandplugin_Test::UT_Customcommandplugin_Test()
 {
 
@@ -38,7 +41,6 @@ void UT_Customcommandplugin_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool())
     {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
     m_cmdPlugin = new CustomCommandPlugin;
@@ -46,7 +48,8 @@ void UT_Customcommandplugin_Test::SetUp()
 
 void UT_Customcommandplugin_Test::TearDown()
 {
-    delete m_cmdPlugin;
+    DELETE_PTR_LATER(m_cmdPlugin->m_mainWindow);
+    DELETE_PTR_LATER(m_cmdPlugin);
 }
 
 #ifdef UT_CUSTOMCOMMANDPLUGIN_TEST
@@ -55,13 +58,40 @@ TEST_F(UT_Customcommandplugin_Test,initPlugin)
 {
     EXPECT_NE(m_cmdPlugin, nullptr);
 
-    NormalWindow* pNewNorm = new NormalWindow(TermProperties(), nullptr);
+    NormalWindow* normal = new NormalWindow(TermProperties("/"), nullptr);
 
-    m_cmdPlugin->initPlugin(pNewNorm);
-    EXPECT_NE(m_cmdPlugin->titlebarMenu(pNewNorm), nullptr);
+    m_cmdPlugin->initPlugin(normal);
+    EXPECT_NE(m_cmdPlugin->titlebarMenu(normal), nullptr);
     EXPECT_NE(m_cmdPlugin->getCustomCommandTopPanel(), nullptr);
+}
 
-    delete  pNewNorm;
+TEST_F(UT_Customcommandplugin_Test,initPlugin001)
+{
+    EXPECT_NE(m_cmdPlugin, nullptr);
+
+    QuakeWindow *quake = new QuakeWindow(TermProperties({{WorkingDir, "/"},{QuakeMode, true}}));
+    m_cmdPlugin->initPlugin(quake);
+    EXPECT_NE(m_cmdPlugin->titlebarMenu(quake), nullptr);
+    EXPECT_NE(m_cmdPlugin->getCustomCommandTopPanel(), nullptr);
+}
+
+TEST_F(UT_Customcommandplugin_Test,doCustomCommand)
+{
+    CustomCommandPlugin *m_cmdPlugin = new CustomCommandPlugin;
+    NormalWindow* normal = new NormalWindow(TermProperties("/"), nullptr);
+    m_cmdPlugin->initPlugin(normal);
+
+    m_cmdPlugin->m_isShow = true;
+    m_cmdPlugin->doShowPlugin(MainWindow::PLUGIN_TYPE_NONE, false);
+    //会更新m_cmdPlugin的m_isShow
+    EXPECT_TRUE(!m_cmdPlugin->m_isShow);
+
+    m_cmdPlugin->doCustomCommand("ls");
+    //重置m_CurrentShowPlugin为PLUGIN_TYPE_NONE
+    EXPECT_TRUE(m_cmdPlugin->m_mainWindow->m_CurrentShowPlugin == MainWindow::PLUGIN_TYPE_NONE);
+
+    DELETE_PTR_LATER(m_cmdPlugin->m_mainWindow);
+    DELETE_PTR_LATER(m_cmdPlugin);
 }
 
 #endif

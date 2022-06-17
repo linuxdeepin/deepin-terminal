@@ -20,14 +20,16 @@
  */
 
 #include "ut_newdspinbox_test.h"
+#include "ut_stub_defines.h"
+
+//dtk
+#include <DSettings>
 
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
 #include <QDebug>
 #include <QFile>
-
-#include <DSettings>
 
 DCORE_USE_NAMESPACE
 
@@ -37,61 +39,59 @@ UT_NewDSpinBox_Test::UT_NewDSpinBox_Test()
 
 void UT_NewDSpinBox_Test::SetUp()
 {
-    m_spinBox = new NewDspinBox(nullptr);
-    m_spinBox->show();
 }
 
 void UT_NewDSpinBox_Test::TearDown()
 {
-    delete m_spinBox;
 }
 
 #ifdef UT_NEWDSPINBOX_TEST
 
 TEST_F(UT_NewDSpinBox_Test, WheelEvent_Increase)
 {
-    int value = 20;
-    m_spinBox->setValue(value);
+    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+    NewDspinBox *spinBox = new NewDspinBox;
+    spinBox->setValue(20);
 
-    QWheelEvent *event = new QWheelEvent(QPointF(63, 29), 120, Qt::NoButton, Qt::NoModifier);
-    m_spinBox->wheelEvent(event);
-    if (event) {
-        delete event;
-    }
+    QWheelEvent event(QPointF(63, 29), 120, Qt::NoButton, Qt::NoModifier);
+    QApplication::sendEvent(spinBox, &event);
+
+    EXPECT_TRUE(spinBox->value() == 21);
+    spinBox->deleteLater();
 }
 
 TEST_F(UT_NewDSpinBox_Test, WheelEvent_Reduce)
 {
-    int value = 20;
-    m_spinBox->setValue(value);
+    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+    NewDspinBox *spinBox = new NewDspinBox;
+    spinBox->setValue(20);
 
-    QWheelEvent *event = new QWheelEvent(QPointF(63, 29), -120, Qt::NoButton, Qt::NoModifier);
-    m_spinBox->wheelEvent(event);
-    if (event) {
-        delete event;
-    }
+    QWheelEvent event(QPointF(63, 29), -120, Qt::NoButton, Qt::NoModifier);
+    QApplication::sendEvent(spinBox, &event);
+    EXPECT_TRUE(spinBox->value() == 19);
+    spinBox->deleteLater();
 }
 
 TEST_F(UT_NewDSpinBox_Test, eventFilter_Key_Up)
 {
-    int value = 20;
-    m_spinBox->setValue(value);
-    QKeyEvent *key_event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Up, Qt::NoModifier, QString(""));
-    m_spinBox->eventFilter(m_spinBox->lineEdit(), key_event);
-    if (key_event) {
-        delete key_event;
-    }
+    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+    NewDspinBox *spinBox = new NewDspinBox;
+    spinBox->setValue(20);
+    QKeyEvent event(QEvent::KeyPress, Qt::Key_Up, Qt::NoModifier, QString(""));
+    QApplication::sendEvent(spinBox, &event);
+    EXPECT_TRUE(spinBox->value() == 21);
+    spinBox->deleteLater();
 }
 
 TEST_F(UT_NewDSpinBox_Test, eventFilter_Key_Down)
 {
-    int value = 20;
-    m_spinBox->setValue(value);
-    QKeyEvent *key_event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier, QString(""));
-    m_spinBox->eventFilter(m_spinBox->lineEdit(), key_event);
-    if (key_event) {
-        delete key_event;
-    }
+    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+    NewDspinBox *spinBox = new NewDspinBox;
+    spinBox->setValue(20);
+    QKeyEvent event(QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier, QString(""));
+    QApplication::sendEvent(spinBox, &event);
+    EXPECT_TRUE(spinBox->value() == 19);
+    spinBox->deleteLater();
 }
 
 #endif

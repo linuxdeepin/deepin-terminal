@@ -38,8 +38,7 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DSpinBox(parent)
 
 void NewDspinBox::wheelEvent(QWheelEvent *event)
 {
-    if (lineEdit()->hasFocus()) {
+    if (lineEdit()->hasFocus())
         DSpinBox::wheelEvent(event);
-    }
 }
 

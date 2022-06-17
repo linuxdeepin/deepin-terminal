@@ -20,11 +20,11 @@
  */
 
 #include "ut_remotemanagementsearchpanel_test.h"
-
 #include "remotemanagementsearchpanel.h"
 #include "service.h"
 #include "mainwindow.h"
-#include "stub.h"
+#include "../stub.h"
+#include "ut_stub_defines.h"
 
 // DTK
 #include <DApplicationHelper>
@@ -32,6 +32,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QtGui>
+#include <QSignalSpy>
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -48,7 +49,6 @@ UT_RemoteManagementSearchPanel_Test::UT_RemoteManagementSearchPanel_Test()
 void UT_RemoteManagementSearchPanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
@@ -209,14 +209,19 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, setFocusBack)
     ServerConfigManager::instance()->m_serverConfigs.insert("group2020", list);
     // 填充数据
     searchPanel.refreshDataByFilter("item");
-    // 返回分组
+    //当前检索对象为item
+    EXPECT_TRUE("item" == searchPanel.m_strFilter);
+
+    // 返回分组，isFocusOn：false，无焦点不做操作
     searchPanel.setFocusBack("group2020", false, 0);
-    // 返回分组2
+    EXPECT_TRUE(searchPanel.m_listWidget->count() > 0);
+
+    // 返回分组2，isFocusOn：false，更新列表，默认选择第一行
     searchPanel.setFocusBack("group2020", true, 0);
+    EXPECT_TRUE(searchPanel.m_listWidget->currentIndex() == 0);
 
     // 还原
     ServerConfigManager::instance()->m_serverConfigs.clear();
-    s.reset(ADDR(MainWindow, focusCurrentPage));
 }
 
 TEST_F(UT_RemoteManagementSearchPanel_Test, getListIndex)
@@ -257,12 +262,14 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, onItemClicked)
     list.append(&config);
     // 数据存储结构
     ServerConfigManager::instance()->m_serverConfigs.insert("", list);
-    // 刷新列表,填充数据
+    // 刷新列表,填充数据,更新filter = item
     searchPanel.refreshDataByFilter("item");
+    EXPECT_TRUE("item" == searchPanel.m_strFilter);
 
-    // 模拟数据被点击
-    // 传来被点击的key值
+    // 传来被点击的key值，触发emit
+    QSignalSpy spy(&searchPanel, &RemoteManagementSearchPanel::doConnectServer);
     searchPanel.onItemClicked("test_item");
+    EXPECT_TRUE(1 == spy.count());
     // 清空测试数据
     ServerConfigManager::instance()->m_serverConfigs.clear();
 }
@@ -279,12 +286,20 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, lambda)
     RemoteManagementSearchPanel searchPanel;
     searchPanel.show();
 
-    // 发送焦点切出信号
-//    emit searchPanel.m_listWidget->focusOut(Qt::TabFocusReason);
-//    searchPanel.show();
-    emit searchPanel.m_listWidget->focusOut(Qt::BacktabFocusReason);
+    //
+    UT_STUB_QAPPLICATION_SENDEVENT_CREATE;
+    searchPanel.handleListViewFocusOut(Qt::TabFocusReason);
+    EXPECT_TRUE(UT_STUB_QAPPLICATION_SENDEVENT_RESULT);
+
+    searchPanel.handleListViewFocusOut(Qt::BacktabFocusReason);
+    EXPECT_TRUE(-1 == searchPanel.m_listWidget->currentIndex());
+
     // 切换主题
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+    searchPanel.handleThemeTypeChanged(DApplicationHelper::DarkType);
+    DPalette p1 = searchPanel.m_label->palette();
+    searchPanel.handleThemeTypeChanged(DApplicationHelper::LightType);
+    DPalette p2 = searchPanel.m_label->palette();
+    //一黑一白两个主题
+    EXPECT_TRUE(p1.brush(QPalette::Text).color() != p2.brush(QPalette::Text).color());
 }
 #endif

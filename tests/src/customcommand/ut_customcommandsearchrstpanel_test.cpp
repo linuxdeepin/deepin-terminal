@@ -24,6 +24,8 @@
 #include "service.h"
 #include "shortcutmanager.h"
 #include "listview.h"
+#include "../stub.h"
+#include "ut_stub_defines.h"
 
 #include <QTest>
 #include <QtGui>
@@ -39,7 +41,6 @@ UT_CustomCommandSearchRstPanel_Test::UT_CustomCommandSearchRstPanel_Test()
 void UT_CustomCommandSearchRstPanel_Test::SetUp()
 {
     if (!Service::instance()->property("isServiceInit").toBool()) {
-        Service::instance()->init();
         Service::instance()->setProperty("isServiceInit", true);
     }
 
@@ -56,17 +57,26 @@ void UT_CustomCommandSearchRstPanel_Test::TearDown()
     delete m_normalWindow;
 
 }
+
 #ifdef UT_CUSTOMCOMMANDSEARCHRSTPANEL_TEST
 
 TEST_F(UT_CustomCommandSearchRstPanel_Test, CustomCommandSearchRstPanelTest)
 {
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+    m_cmdSearchPanel->handleIconButtonFocusOut(Qt::FocusReason::TabFocusReason);
+    EXPECT_TRUE(m_cmdSearchPanel->m_cmdListWidget->count() == 0);
 
-    emit m_cmdSearchPanel->m_rebackButton->focusOut(Qt::FocusReason::TabFocusReason);
+    m_cmdSearchPanel->handleListViewFocusOut(Qt::FocusReason::TabFocusReason);
+    EXPECT_TRUE(m_cmdSearchPanel->m_cmdListWidget->currentIndex() == -1);
 
-    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::FocusReason::TabFocusReason);
-    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::NoFocusReason);
+    UT_STUB_QWIDGET_SETFOCUS_CREATE;
+    m_cmdSearchPanel->handleListViewFocusOut(Qt::NoFocusReason);
+    //setFocus被调用过
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
+//    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
+//    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+//    emit m_cmdSearchPanel->m_rebackButton->focusOut(Qt::FocusReason::TabFocusReason);
+//    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::FocusReason::TabFocusReason);
+//    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::NoFocusReason);
 }
 
 TEST_F(UT_CustomCommandSearchRstPanel_Test, refreshDataTest)

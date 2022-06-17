@@ -40,7 +40,7 @@ DBusManager::~DBusManager()
     QDBusConnection conn = QDBusConnection::sessionBus();
     if (conn.registerService(TERMINALSERVER)) {
         conn.unregisterService(TERMINALSERVER);
-        qDebug() << "Terminal DBus disconnected!";
+        qInfo() << "Terminal DBus disconnected!";
     }
 }
 
@@ -50,12 +50,12 @@ bool DBusManager::initDBus()
     QDBusConnection conn = QDBusConnection::sessionBus();
 
     if (!conn.registerService(TERMINALSERVER)) {
-        qDebug() << "Terminal DBus has connected!";
+        qInfo() << "Terminal DBus has connected!";
         return false;
     }
 
     if (!conn.registerObject(TERMINALINTERFACE, this, QDBusConnection::ExportAllSlots)) {
-        qDebug() << "Terminal DBus creates Object failed!";
+        qInfo() << "Terminal DBus creates Object failed!";
         return false;
     }
 
@@ -69,12 +69,12 @@ int DBusManager::callKDECurrentDesktop()
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call currentDesktop Success!";
+        qInfo() << "call currentDesktop Success!";
         QList<QVariant> list = response.arguments();
         return list.value(0).toInt();
     }
 
-    qDebug() << "call currentDesktop Fail!" << response.errorMessage();
+    qInfo() << "call currentDesktop Fail!" << response.errorMessage();
     return -1;
 }
 
@@ -86,74 +86,61 @@ void DBusManager::callKDESetCurrentDesktop(int index)
     msg << index;
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call setCurrentDesktop Success!";
-    } else {
-        qDebug() << "call setCurrentDesktop Fail!" << response.errorMessage();
-    }
+    if (response.type() == QDBusMessage::ReplyMessage)
+        qInfo() << "call setCurrentDesktop Success!";
+    else
+        qInfo() << "call setCurrentDesktop Fail!" << response.errorMessage();
 }
 
-QStringList DBusManager::callAppearanceFont(QString fontType)
+FontDataList DBusManager::callAppearanceFont(QString fontType)
 {
-    QStringList fontList;
+    FontDataList rList;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "List");
 
     msg << fontType;
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call List Success!";
+    if (QDBusMessage::ReplyMessage == response.type()) {
+        qInfo() << "call List Success!";
         QList<QVariant> list = response.arguments();
-        QString fonts = list.takeFirst().toString();
+        QString fonts = list.value(list.count() - 1).toString();
         // 原本的返回值为QDBusPendingReply<QString> => QString
         fonts.replace("[", "");
         fonts.replace("]", "");
         fonts.replace("\"", "");
         // 用逗号分隔
-        fontList = fonts.split(",");
-//        for (QString font : fontList) {
-//            qDebug() << fontType << " : " << font;
-//        }
-        fontList = callAppearanceShowFont(fontList, fontType);
+        QStringList fontList = fonts.split(",");
+        rList = callAppearanceFont(fontList, fontType);
     } else {
-        qDebug() << "call List Fail!" << response.errorMessage();
+        qInfo() << "call List Fail!" << response.errorMessage();
     }
-    return fontList;
+
+
+    return rList;
 }
 
-/******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList Begin***************/
-QStringList DBusManager::converToList(const QString &type, const QJsonArray &array)
+FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontType)
 {
-    QStringList list;
-    for (int i = 0; i != array.size(); i++) {
-        QJsonObject object = array.at(i).toObject();
-        object.insert("type", QJsonValue(type));
-        list.append(object["Name"].toString());
-    }
-    return list;
-}
-
-QStringList DBusManager::callAppearanceShowFont(QStringList fontList, QString fontType)
-{
-    QStringList List;
+    FontDataList retList;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "Show");
 
     msg << fontType << fontList;
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call Show Success!";
-        QList<QVariant> list = response.arguments();
-        QString fonts = list.takeFirst().toString();
-        QJsonArray array = QJsonDocument::fromJson(fonts.toLocal8Bit().data()).array();
-
-        List = converToList(fontType, array);
-        qDebug() << "Show value" << List;
+        qInfo() << "call Show Success!";
+        QByteArray fonts = response.arguments().value(0).toByteArray();
+        QJsonArray array = QJsonDocument::fromJson(fonts).array();
+        for (int i = 0; i < array.size(); i++) {
+            QJsonObject object = array.at(i).toObject();
+            retList.append(FontData(object["Id"].toString(), object["Name"].toString()));
+        }
+        qInfo() << "Show value" << retList.values();
     } else {
-        qDebug() << "call Show Fail!" << response.errorMessage();
+        qInfo() << "call Show Fail!" << response.errorMessage();
     }
-    return List;
+    return retList;
 }
 /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
 void DBusManager::callTerminalEntry(QStringList args)
@@ -164,49 +151,42 @@ void DBusManager::callTerminalEntry(QStringList args)
     msg << args;
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::NoBlock);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call callTerminalEntry Success!";
-    } else {
-        qDebug() << "call callTerminalEntry!" << response.errorMessage();
-    }
+    if (response.type() == QDBusMessage::ReplyMessage)
+        qInfo() << "call callTerminalEntry Success!";
+    else
+        qInfo() << "call callTerminalEntry!" << response.errorMessage();
 }
 
 void DBusManager::entry(QStringList args)
 {
-    qDebug() << "recv args" << args;
     emit entryArgs(args);
 }
 
 void DBusManager::callSystemSound(const QString &sound)
 {
     QDBusMessage response = dbusPlaySound(sound);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        qDebug() << "call dbusPlaySound Success!";
-    } else {
-        qDebug() << "call dbusPlaySound!" << response.errorMessage();
-    }
+    if (response.type() == QDBusMessage::ReplyMessage)
+        qInfo() << "call dbusPlaySound Success!";
+    else
+        qInfo() << "call dbusPlaySound!" << response.errorMessage();
 }
 
 void DBusManager::listenTouchPadSignal()
 {
-    qDebug() << __FUNCTION__;
     // 注册监听触控板事件
     bool isConnect = QDBusConnection::systemBus().connect(GESTURE_SERVICE, GESTURE_PATH, GESTURE_INTERFACE, GESTURE_SIGNAL, Service::instance(), SIGNAL(touchPadEventSignal(QString, QString, int)));
-    if (isConnect) {
-        qDebug() << "connect to Guest, listen touchPad!";
-    } else {
-        qDebug() << "disconnect to Guest, cannot listen touchPad!";
-    }
+    if (isConnect)
+        qInfo() << "connect to Guest, listen touchPad!";
+    else
+        qInfo() << "disconnect to Guest, cannot listen touchPad!";
 }
 
 void DBusManager::listenDesktopSwitched()
 {
-    qDebug() << __FUNCTION__;
     // 注册监听桌面工作区切换
     bool isConnect = QDBusConnection::sessionBus().connect(WM_SERVICE, WM_PATH, WM_INTERFACE, WM_WORKSPACESWITCHED, Service::instance(), SLOT(onDesktopWorkspaceSwitched(int, int)));
-    if (isConnect) {
-        qDebug() << "connect to wm, listen workspaceswitched";
-    } else {
-        qDebug() << "disconnect to wm,cannot listen workspaceswitched";
-    }
+    if (isConnect)
+        qInfo() << "connect to wm, listen workspaceswitched";
+    else
+        qInfo() << "disconnect to wm,cannot listen workspaceswitched";
 }

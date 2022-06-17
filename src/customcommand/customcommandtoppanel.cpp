@@ -65,7 +65,6 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
 
 void CustomCommandTopPanel::showCustomCommandPanel()
 {
-    qDebug() << "showCustomCommandPanel" << endl;
     m_customCommandPanel->resize(size());
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandPanel->show();
@@ -77,7 +76,7 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     if (main != nullptr) {
         if (main->isFocusOnList()) {
             m_customCommandPanel->setFocusInPanel();
-            qDebug() << "custom command panel has focus";
+            qInfo() << "custom command panel has focus";
         }
     }
 
@@ -107,7 +106,6 @@ void CustomCommandTopPanel::showCustomCommandPanel()
 
 void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilter)
 {
-    qDebug() << "showCustomCommandSearchPanel" << endl;
     m_customCommandSearchPanel->refreshData(strFilter);
     m_customCommandSearchPanel->show();
     m_customCommandSearchPanel->m_backButton->setFocus();//m_customCommandSearchPanel->setFocus();
@@ -147,20 +145,21 @@ void CustomCommandTopPanel::show(bool bSetFocus)
     m_customCommandSearchPanel->hide();
     m_bSetFocus = bSetFocus;
     if (m_bSetFocus) {
-        qDebug() << "Focus is in Custom panel";
+        qInfo() << "Focus is in Custom panel";
         // 将焦点设置在平面上
         m_customCommandPanel->setFocusInPanel();
     } else {
-        qDebug() << "Focus is in Current page";
+        qInfo() << "Focus is in Current page";
         // 将焦点落回终端
-        Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if(w)
+            w->focusCurrentPage();
     }
 
 }
 
 void CustomCommandTopPanel::slotsRefreshCommandPanel()
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     m_customCommandPanel->resize(size());
     //m_customCommandPanel->show();
     m_customCommandPanel->refreshCmdPanel();

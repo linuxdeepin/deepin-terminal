@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "rightpanel.h"
-#include"utils.h"
-#include"mainwindow.h"
+#include "utils.h"
+#include "mainwindow.h"
 
+//dtk
 #include <DAnchors>
-#include <QPropertyAnimation>
 #include <DTitlebar>
+
+//qt
+#include <QPropertyAnimation>
 
 DWIDGET_USE_NAMESPACE
 
@@ -49,14 +52,15 @@ void RightPanel::showAnim()
 
     QRect rect = geometry();
     QRect windowRect = window()->geometry();
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry",this);
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/
     int panelHeight = windowRect.height();
-    if (Utils::getMainWindow(this)->titlebar()->isVisible()) {
+    MainWindow *w = Utils::getMainWindow(this);
+    if (w && w->titlebar()->isVisible())
         panelHeight -= WIN_TITLE_BAR_HEIGHT;
-    }
+
     animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), panelHeight));
     animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), panelHeight));
     /***mod end by ut001121***/
@@ -66,20 +70,20 @@ void RightPanel::showAnim()
 void RightPanel::hideAnim()
 {
     // 隐藏状态不处理
-    if (!isVisible()) {
+    if (!isVisible())
         return;
-    }
 
     QRect rect = geometry();
     QRect windowRect = window()->geometry();
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry", this);
     animation->setDuration(250);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     /***mod begin by ut001121 zhangmeng 20200918 修复BUG48374 全屏下插件被截断的问题***/
     int panelHeight = windowRect.height();
-    if (Utils::getMainWindow(this)->titlebar()->isVisible()) {
+    MainWindow *w = Utils::getMainWindow(this);
+    if (w && w->titlebar()->isVisible())
         panelHeight -= WIN_TITLE_BAR_HEIGHT;
-    }
+
     animation->setStartValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), panelHeight));
     animation->setEndValue(QRect(windowRect.width(), rect.y(), rect.width(), panelHeight));
     /***mod end by ut001121***/
@@ -112,7 +116,9 @@ void RightPanel::hideEvent(QHideEvent *event)
 
         // 判断是否包含坐标
         if (rect().contains(focusPoint)) {
-            Utils::getMainWindow(this)->focusCurrentPage();
+            MainWindow *w = Utils::getMainWindow(this);
+            if(w)
+                w->focusCurrentPage();
         }
     }
     /***add end by ut001121***/

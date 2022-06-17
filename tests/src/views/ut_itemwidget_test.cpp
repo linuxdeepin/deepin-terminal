@@ -20,8 +20,8 @@
  */
 
 #include "ut_itemwidget_test.h"
-
 #include "itemwidget.h"
+#include "ut_stub_defines.h"
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
@@ -193,6 +193,16 @@ TEST_F(UT_ItemWidget_Test, onFuncButtonClicked)
     delete itemWidget;
 }
 
+TEST_F(UT_ItemWidget_Test, slotThemeChange)
+{
+    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+    EXPECT_NE(itemWidget, nullptr);
+
+    itemWidget->slotThemeChange(DApplicationHelper::LightType);
+
+    delete itemWidget;
+}
+
 TEST_F(UT_ItemWidget_Test, onIconButtonClicked)
 {
     ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
@@ -221,10 +231,14 @@ TEST_F(UT_ItemWidget_Test, onItemClicked)
 
     QObject *moveSource = new QObject();
     itemWidget->m_moveSource = moveSource;
+
+    itemWidget->m_functType = ItemFuncType_Group;
     itemWidget->onItemClicked();
 
     itemWidget->m_functType = ItemFuncType_Item;
     itemWidget->onItemClicked();
+
+    itemWidget->onFocusReback();
 
     delete moveSource;
     itemWidget->m_moveSource = nullptr;
@@ -328,4 +342,40 @@ TEST_F(UT_ItemWidget_Test, keyPressEvent)
 
     delete itemWidget;
 }
+
+TEST_F(UT_ItemWidget_Test, onFocusOut)
+{
+    ItemWidget w(ItemFuncType::ItemFuncType_Item, nullptr);
+
+    QSignalSpy signalpy(&w, &ItemWidget::focusOut);
+    EXPECT_TRUE(signalpy.count() == 0);
+    w.onFocusOut(Qt::TabFocusReason);
+    EXPECT_TRUE(signalpy.count() == 1);
+
+    UT_STUB_QWIDGET_SETFOCUS_CREATE;
+    w.onFocusOut(Qt::ActiveWindowFocusReason);
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
+}
+
+
+TEST_F(UT_ItemWidget_Test, enterEvent)
+{
+    QEvent e(QEvent::None);
+    ItemWidget w(ItemFuncType::ItemFuncType_Item, nullptr);
+
+    UT_STUB_QWIDGET_SHOW_CREATE;
+    w.enterEvent(&e);
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
+
+    w.leaveEvent(&e);
+    EXPECT_TRUE(ItemFuncType::ItemFuncType_Item == w.m_functType);
+
+    QSignalSpy signalpy(&w, &ItemWidget::focusOut);
+    EXPECT_TRUE(signalpy.count() == 0);
+    QFocusEvent event(QEvent::FocusOut, Qt::TabFocusReason);
+    w.focusOutEvent(&event);
+    EXPECT_TRUE(signalpy.count() == 1);
+
+}
+
 #endif

@@ -98,33 +98,13 @@ public:
 
     // Appearance
     /**
-     * @brief 获取字体列表，输入参数后获取得到的参数列表
-     * @author ut000610 戴正文
-     * @param fontType 字体类型
+     * @brief callAppearanceFont 获取有效的字体列表
+     * @param fontList 字体id-list
+     * @param fontType 字体类型如：monospacefont、otherfailfont
      * @return
      */
-    static QStringList callAppearanceFont(QString fontType);
-
-    /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList Begin***************/
-    //将QJsonArray文件转换成QStringList
-    /**
-     * @brief 将QJsonArray文件转换成QStringList
-     * @author ut001000 任飞翔
-     * @param type
-     * @param array
-     * @return
-     */\
-    static QStringList converToList(const QString &type, const QJsonArray &array);
-    //调用DBUS的SHow方法
-    /**
-     * @brief 调用DBUS的SHow方法
-     * @author ut001000 任飞翔
-     * @param fontList 字体列表
-     * @param fontType 字体类型
-     * @return
-     */
-    static QStringList callAppearanceShowFont(QStringList fontList, QString fontType);
-    /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
+    static FontDataList callAppearanceFont(QStringList fontList, QString fontType);
+    static FontDataList callAppearanceFont(QString fontType);
 
     // deepin terminal
     // 创建窗口

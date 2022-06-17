@@ -20,8 +20,11 @@
  */
 #include "termbasedialog.h"
 
-#include <QLabel>
+//dtk
 #include <DApplicationHelper>
+
+//qt
+#include <QLabel>
 #include <QDebug>
 
 /*******************************************************************************
@@ -49,25 +52,17 @@ void QWidget::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)
 
+
     if (strcmp(this->metaObject()->className(), "Dtk::Widget::DDialog") != 0)
-    {
         return;
-    }
 
     QLabel *titleLabel = this->findChild<QLabel *>("TitleLabel");
     QLabel *messageLabel = this->findChild<QLabel *>("MessageLabel");
 
     if (titleLabel != nullptr)
-    {
         palrtteTransparency(titleLabel, -10);
-    } else {
-        qDebug() << "can not found TitleLabel in QLabel";
-    }
 
     if (messageLabel != nullptr)
-    {
         palrtteTransparency(messageLabel, -30);
-    } else {
-        qDebug() << "can not found MessageLabel in QLabel";
-    }
+
 }

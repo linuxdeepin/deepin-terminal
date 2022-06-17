@@ -20,18 +20,19 @@
  */
 
 #include "ut_remotemanagementpanel_test.h"
-
 #include "remotemanagementpanel.h"
 #include "utils.h"
-#include "stub.h"
+#include "../stub.h"
 #include "service.h"
+#include "ut_stub_defines.h"
+
+//Qt
+#include <QTest>
+#include <QtGui>
+#include <QSignalSpy>
 
 //Google GTest 相关头文件
 #include <gtest/gtest.h>
-
-//Qt单元测试相关头文件
-#include <QTest>
-#include <QtGui>
 
 UT_RemoteManagementPanel_Test::UT_RemoteManagementPanel_Test()
 {
@@ -191,9 +192,6 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusBack)
     ServerConfigManager::instance()->m_serverConfigs.insert("group2020", list);
     // 刷新列表,填充数据
     panel.refreshPanel();
-    // 不要焦点 => 没有主界面会崩
-    // panel.setFocusBack("group2020");
-
 
     // 要焦点
     panel.m_listWidget->setFocusState(true);
@@ -290,14 +288,27 @@ TEST_F(UT_RemoteManagementPanel_Test, onItemClicked)
     // 数据存储结构
     ServerConfigManager::instance()->m_serverConfigs.insert("", list);
     // 刷新列表,填充数据
+
+    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
     remotePanel.refreshPanel();
+    EXPECT_TRUE(remotePanel.m_searchEdit->text().isEmpty());
+    EXPECT_TRUE(remotePanel.m_listWidget->count() > 0);
+    //刷新远程控制列表时，会触发setvisible函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 
     // 模拟数据被点击
     // 传来被点击的key值
+    QSignalSpy spy(&remotePanel, &RemoteManagementPanel::doConnectServer);
     remotePanel.onItemClicked("test_item");
+    ASSERT_TRUE(ServerConfigManager::instance()->getServerConfig("test_item") != nullptr);
+    //会emit doConnectServer
+    EXPECT_TRUE(spy.count() == 1);
 
     // 传来错误的值
     remotePanel.onItemClicked("test_item2");
+    ASSERT_TRUE(ServerConfigManager::instance()->getServerConfig("test_item2") == nullptr);
+    //不会 emit doConnectServer
+    EXPECT_TRUE(spy.count() == 1);
     ServerConfigManager::instance()->m_serverConfigs.clear();
 }
 
@@ -312,10 +323,13 @@ TEST_F(UT_RemoteManagementPanel_Test, showCurSearchResult)
     // 没有搜索内容
     RemoteManagementPanel remotePanel;
     remotePanel.show();
+    remotePanel.m_searchEdit->setText("");
     remotePanel.showCurSearchResult();
+    EXPECT_TRUE(remotePanel.m_searchEdit->text().isEmpty());
     // 有搜索内容
     remotePanel.m_searchEdit->setText("aaa");
     remotePanel.showCurSearchResult();
+    EXPECT_TRUE(remotePanel.m_searchEdit->text() == "aaa");
 }
 
 /*******************************************************************************
@@ -327,30 +341,27 @@ TEST_F(UT_RemoteManagementPanel_Test, showCurSearchResult)
 TEST_F(UT_RemoteManagementPanel_Test, showAddServerConfigDlg)
 {
     // 没有搜索内容
-    RemoteManagementPanel remotePanel;
-    remotePanel.show();
+    RemoteManagementPanel *remotePanel = new RemoteManagementPanel;
+    remotePanel->show();
     // 打桩
     Stub s;
     s.set(ADDR(Service, setIsDialogShow), stub_return);
 
     // 显示弹窗
-    remotePanel.showAddServerConfigDlg();
-    ServerConfigOptDlg *dialog = remotePanel.findChild<ServerConfigOptDlg *>();
-    // 发送弹窗添加失败
-    if (dialog) {
-        emit dialog->reject();
-    }
+    remotePanel->showAddServerConfigDlg();
+    ServerConfigOptDlg *dialog = remotePanel->findChild<ServerConfigOptDlg *>();
+    ASSERT_TRUE(dialog);
+    emit dialog->reject();
 
     // 设置添加按钮有焦点
-    remotePanel.m_pushButton->setFocus();
-    remotePanel.showAddServerConfigDlg();
-    dialog = remotePanel.findChild<ServerConfigOptDlg *>();
-    // 发送弹窗添加失败
-    if (dialog) {
-        emit dialog->accept();
-    }
-    // 打桩还原
-    s.reset(ADDR(Service, setIsDialogShow));
+    UT_STUB_QWIDGET_SHOW_CREATE;
+    remotePanel->showAddServerConfigDlg();
+    dialog = remotePanel->findChild<ServerConfigOptDlg *>();
+    //会触发dialog show函数
+    EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
+    emit dialog->accept();
+
+    remotePanel->deleteLater();
 }
 
 /*******************************************************************************

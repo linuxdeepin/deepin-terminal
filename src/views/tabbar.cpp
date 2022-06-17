@@ -105,13 +105,13 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
                 }
             } else {
                 DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                if (tab->state & QStyle::State_Selected) {
+                if (tab->state & QStyle::State_Selected)
                     painter->setPen(pa.color(DPalette::HighlightedText));
-                } else if (tab->state & QStyle::State_MouseOver) {
+                else if (tab->state & QStyle::State_MouseOver)
                     painter->setPen(pa.color(DPalette::TextTitle));
-                } else {
+                else
                     painter->setPen(pa.color(DPalette::TextTitle));
-                }
+
             }
 
             QFontMetrics fontMetric(textFont);
@@ -184,11 +184,8 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     updateTabDragMoveStatus();
 
     DIconButton *addButton = findChild<DIconButton *>("AddButton");
-    if (nullptr != addButton) {
+    if (nullptr != addButton)
         addButton->setFocusPolicy(Qt::TabFocus);
-    } else {
-        qDebug() << "can not found AddButton in DIconButton";
-    }
 
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::handleTabBarClicked);
 
@@ -202,12 +199,11 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 
 TabBar::~TabBar()
 {
-    if (m_rightMenu != nullptr) {
+    if (m_rightMenu != nullptr)
         m_rightMenu->deleteLater();
-    }
-    if (m_termTabStyle != nullptr) {
-        m_termTabStyle->deleteLater();
-    }
+
+    if (m_termTabStyle != nullptr)
+        delete m_termTabStyle;
 }
 
 void TabBar::setTabHeight(int tabHeight)
@@ -245,7 +241,7 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 
 int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QString &tabName)
 {
-    qDebug() << "insertTab at index: " << index << " with id::" << tabIdentifier << endl;
+    qInfo() << "insertTab at index: " << index << " with id::" << tabIdentifier << endl;
     int insertIndex = DTabBar::insertTab(index, tabName);
     setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
 
@@ -273,9 +269,8 @@ QMap<int, int> TabBar::getSessionIdTabIndexMap()
 
 int TabBar::queryIndexBySessionId(int sessionId)
 {
-    if (m_sessionIdTabIndexMap.isEmpty()) {
+    if (m_sessionIdTabIndexMap.isEmpty())
         return -1;
-    }
 
     QString tabIdentifier = m_sessionIdTabIdMap.value(sessionId);
 
@@ -291,9 +286,8 @@ int TabBar::queryIndexBySessionId(int sessionId)
 int TabBar::getIndexByIdentifier(QString id)
 {
     for (int i = 0; i < count(); i++) {
-        if (identifier(i) == id) {
+        if (identifier(i) == id)
             return i;
-        }
     }
     return  -1;
 }
@@ -442,21 +436,20 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
 {
     Q_UNUSED(watched)
 
-    if (event->type() == QEvent::MouseButtonPress) {
+    if (QEvent::MouseButtonPress == event->type()) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 
-        if (mouseEvent->button() == Qt::RightButton) {
+        if (Qt::RightButton == mouseEvent->button()) {
             bool isHandle = handleRightButtonClick(mouseEvent);
-            if (isHandle) {
+            if (isHandle)
                 return isHandle;
-            }
-        } else if (mouseEvent->button() ==  Qt::MiddleButton) {
+        } else if (Qt::MiddleButton == mouseEvent->button()) {
             handleMiddleButtonClick(mouseEvent);
         }
-    } else if (event->type() == QEvent::DragEnter) {
-    } else if (event->type() == QEvent::DragLeave) {
-    } else if (event->type() == QEvent::Drop) {
-    } else if (event->type() == QEvent::DragMove) {
+    } else if (QEvent::DragEnter == event->type()) {
+    } else if (QEvent::DragLeave == event->type()) {
+    } else if (QEvent::Drop == event->type()) {
+    } else if (QEvent::DragMove == event->type()) {
         event->accept();
     }
 
@@ -475,9 +468,8 @@ inline void TabBar::handleMiddleButtonClick(QMouseEvent *mouseEvent)
             break;
         }
     }
-    if (index >= 0) {
+    if (index >= 0)
         emit tabCloseRequested(index);
-    }
 }
 
 inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
@@ -491,7 +483,7 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
             break;
         }
     }
-    qDebug() << "currIndex" << m_rightClickTab << endl;
+    qInfo() << "currIndex" << m_rightClickTab << endl;
 
     // 弹出tab标签的右键菜单
     if (m_rightClickTab >= 0) {
@@ -523,9 +515,8 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
         m_rightMenu->addAction(m_renameTabAction);
 
         m_closeOtherTabAction->setEnabled(true);
-        if (this->count() < 2) {
+        if (this->count() < 2)
             m_closeOtherTabAction->setEnabled(false);
-        }
 
         m_rightMenu->exec(mapToGlobal(position));
 
@@ -576,7 +567,10 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
     const qreal ratio = qApp->devicePixelRatio();
 
     QString termIdentifer = identifier(index);
-    TermWidgetPage *termPage = static_cast<MainWindow *>(this->window())->getTermPage(termIdentifer);
+    MainWindow *w = qobject_cast<MainWindow *>(this->window());
+    if(!w)
+        return QPixmap();
+    TermWidgetPage *termPage = w->getTermPage(termIdentifer);
     /******** fix bug 70389:连接高分屏，合并/分开窗口动画显示异常 ***************/
     int width = termPage->width();
     int height =  termPage->height();
@@ -597,9 +591,9 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
     painter.drawImage(5, 5, scaledImage);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    if (1 == count()) {
+    //bug#98909, 非wayland下 且 只有一个标签页，拖动标签页时才会隐藏主窗口
+    if(!Utils::isWayLand() && 1 == count())
         this->window()->hide();
-    }
 
     //调整偏移量
     hotspot->setX(scaledWidth / 2);
@@ -646,9 +640,8 @@ QMimeData *TabBar::createMimeDataFromTab(int index, const QStyleOptionTab &optio
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
     TermWidgetPage *termPage = window->currentPage();
-    if (!termPage) {
+    if (!termPage)
         return nullptr;
-    }
 
     QMimeData *mimeData = new QMimeData;
 
@@ -661,18 +654,16 @@ QMimeData *TabBar::createMimeDataFromTab(int index, const QStyleOptionTab &optio
 
 void TabBar::insertFromMimeDataOnDragEnter(int index, const QMimeData *source)
 {
-    if (nullptr == source) {
+    if (nullptr == source)
         return;
-    }
 
     const QString tabName = QString::fromUtf8(source->data("deepin-terminal/tabbar"));
 
     QVariant pVar = source->property("termpage");
     TermWidgetPage *termPage = static_cast<TermWidgetPage *>(pVar.value<void *>());
 
-    if (nullptr == termPage) {
+    if (nullptr == termPage)
         return;
-    }
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
     window->addTabWithTermPage(tabName, true, true, termPage, index);
@@ -683,18 +674,16 @@ void TabBar::insertFromMimeDataOnDragEnter(int index, const QMimeData *source)
 
 void TabBar::insertFromMimeData(int index, const QMimeData *source)
 {
-    if (nullptr == source) {
+    if (nullptr == source)
         return;
-    }
 
     const QString tabName = QString::fromUtf8(source->data("deepin-terminal/tabbar"));
 
     QVariant pVar = source->property("termpage");
     TermWidgetPage *termPage = static_cast<TermWidgetPage *>(pVar.value<void *>());
 
-    if (nullptr == termPage) {
+    if (nullptr == termPage)
         return;
-    }
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
     window->addTabWithTermPage(tabName, true, false, termPage, index);
@@ -722,11 +711,10 @@ void TabBar::handleTabMoved(int fromIndex, int toIndex)
 
 void TabBar::handleTabReleased(int index)
 {
-    if (index < 0) {
+    if (index < 0)
         index = 0;
-    }
 
-    qDebug() << "handleTabReleased: index: " << index;
+    qInfo() << "handleTabReleased: index: " << index;
     const QString tabName = tabText(index);
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
@@ -742,14 +730,14 @@ void TabBar::handleTabReleased(int index)
 
     //从原窗口中移除TermWidgetPage。
     window->removeTermWidgetPage(termIdentifer, false);
-    qDebug() << "removeTermWidgetPage: termIdentifer: " << termIdentifer;
+    qInfo() << "removeTermWidgetPage: termIdentifer: " << termIdentifer;
 
     updateTabDragMoveStatus();
 }
 
 void TabBar::handleDragActionChanged(Qt::DropAction action)
 {
-    if (action == Qt::IgnoreAction) {
+    if (Qt::IgnoreAction == action) {
         // 如果拖动标签页未成功，则将光标重置为Qt::ArrowCursor。
         if (dragIconWindow()) {
             QGuiApplication::changeOverrideCursor(Qt::ArrowCursor);
@@ -765,9 +753,20 @@ void TabBar::handleDragActionChanged(Qt::DropAction action)
 
 void TabBar::createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab)
 {
-    MainWindow *window = createNormalWindow();
+    //创建窗口
+    TermProperties properties;
+    properties[DragDropTerminal] = true;
+    WindowsManager::instance()->createNormalWindow(properties, false);
+
+    MainWindow *window = WindowsManager::instance()->getNormalWindowList().last();
+
+    //当关闭最后一个窗口时退出整个应用
+    connect(window, &MainWindow::close, this, &TabBar::handleWindowClose);
+
     window->addTabWithTermPage(tabName, isActiveTab, false, termPage);
     window->move(calculateDragDropWindowPosition(window));
+
+    window->show();
 }
 
 QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
@@ -777,52 +776,33 @@ QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
     return pos;
 }
 
-MainWindow *TabBar::createNormalWindow()
-{
-    //创建窗口
-    TermProperties properties;
-    properties[DragDropTerminal] = true;
-    WindowsManager::instance()->createNormalWindow(properties);
-
-    MainWindow *window = WindowsManager::instance()->getNormalWindowList().last();
-
-    //当关闭最后一个窗口时退出整个应用
-    connect(window, &MainWindow::close, this, &TabBar::handleWindowClose);
-
-    return window;
-}
-
 inline void TabBar::handleWindowClose()
 {
     MainWindow *window = qobject_cast<MainWindow *>(sender());
-    if (nullptr == window) {
+    if (nullptr == window)
         return;
-    }
 
     int windowIndex = WindowsManager::instance()->getNormalWindowList().indexOf(window);
-    qDebug() << "Close window at index: " << windowIndex;
+    qInfo() << "Close window at index: " << windowIndex;
 
-    if (windowIndex >= 0) {
+    if (windowIndex >= 0)
         WindowsManager::instance()->getNormalWindowList().takeAt(windowIndex);
-    }
 
-    if (WindowsManager::instance()->getNormalWindowList().isEmpty()) {
+    if (WindowsManager::instance()->getNormalWindowList().isEmpty())
         QApplication::quit();
-    }
 }
 
 void TabBar::handleTabIsRemoved(int index)
 {
-    if ((index < 0) || (index >= m_tabIdentifierList.size())) {
+    if ((index < 0) || (index >= m_tabIdentifierList.size()))
         return;
-    }
 
     QString removeId = m_tabIdentifierList.at(index);
     m_tabIdentifierList.removeAt(index);
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
     window->removeTermWidgetPage(removeId, false);
-    qDebug() << "handleTabIsRemoved: identifier: " << removeId;
+    qInfo() << "handleTabIsRemoved: identifier: " << removeId;
 
     updateTabDragMoveStatus();
 }
@@ -838,22 +818,22 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 {
     Q_UNUSED(dropAction)
 
-    qDebug() << "handleTabDroped index:" << index << ", target:" << target << endl;
+    qInfo() << "handleTabDroped index:" << index << ", target:" << target << endl;
     TabBar *tabbar = qobject_cast<TabBar *>(target);
 
     //拖出的标签--需要新建窗口
-    if (tabbar == nullptr) {
-        qDebug() << "tabbar == nullptr " << index << endl;
+    if (nullptr == tabbar) {
+        qInfo() << "tabbar == nullptr " << index << endl;
         MainWindow *window = static_cast<MainWindow *>(this->window());
         //窗口不为雷神模式才允许移动
-        if (!window->isQuakeMode()) {
+        if (!window->isQuakeMode())
             window->move(calculateDragDropWindowPosition(window));
-        }
+
         window->show();
         window->activateWindow();
     } else {
         //拖入的标签--需要关闭拖入窗口的标签页
-        qDebug() << "tabbar != nullptr " << index << endl;
+        qInfo() << "tabbar != nullptr " << index << endl;
         closeTab(index);
     }
 

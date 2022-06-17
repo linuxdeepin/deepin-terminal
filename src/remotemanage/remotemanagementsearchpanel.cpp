@@ -56,11 +56,11 @@ void RemoteManagementSearchPanel::initUI()
     // 字体颜色随主题变化而变化
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 102);
-    } else {
+    else
         color = QColor::fromRgb(85, 85, 85, 102);
-    }
+
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
 
@@ -97,13 +97,13 @@ inline void RemoteManagementSearchPanel::handleListViewFocusOut(Qt::FocusReason 
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qDebug() << "search panel focus on '+'";
+        qInfo() << "search panel focus on '+'";
         m_listWidget->clearIndex();
-    } else if (Qt::BacktabFocusReason == type || type == Qt::NoFocusReason) {
+    } else if (Qt::BacktabFocusReason == type || Qt::NoFocusReason == type) {
         // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
         m_rebackButton->setFocus();
         m_listWidget->clearIndex();
-        qDebug() << "search panel type" << type;
+        qInfo() << "search panel type" << type;
     }
 }
 
@@ -111,11 +111,11 @@ inline void RemoteManagementSearchPanel::handleThemeTypeChanged(DGuiApplicationH
 {
     DPalette palette = m_label->palette();
     QColor color;
-    if (themeType == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 102);
-    } else {
+    else
         color = QColor::fromRgb(85, 85, 85, 102);
-    }
+
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
 }
@@ -143,21 +143,21 @@ void RemoteManagementSearchPanel::onItemClicked(const QString &key)
 {
     // 获取远程信息
     ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
-    if (nullptr != remote) {
+    if (nullptr != remote)
         emit doConnectServer(remote);
-    } else {
-        qDebug() << "can't connect to remote" << key;
-    }
+    else
+        qInfo() << "can't connect to remote" << key;
+
 }
 
 void RemoteManagementSearchPanel::onFocusOutList(Qt::FocusReason type)
 {
     // 焦点切出，没值的时候
-    if (type == Qt::TabFocusReason && m_listWidget->count() == 0) {
+    if (Qt::TabFocusReason == type && 0 == m_listWidget->count()) {
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qDebug() << "search panel focus to '+'";
+        qInfo() << "search panel focus to '+'";
     }
 }
 
@@ -185,7 +185,7 @@ void RemoteManagementSearchPanel::clearAllFocus()
 
 void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup, bool isFocusOn, int prevIndex)
 {
-    qDebug() << "RemoteManagementSearchPanel return from RemoteManagementGroup.";
+    qInfo() << "RemoteManagementSearchPanel return from RemoteManagementGroup.";
     // 返回前判断之前是否要有焦点
     if (isFocusOn) {
         // 要有焦点
@@ -206,13 +206,14 @@ void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup, bool isF
     }
     // 不要焦点
     else {
-        Utils::getMainWindow(this)->focusCurrentPage();
+        MainWindow *w = Utils::getMainWindow(this);
+        if(w)
+            w->focusCurrentPage();
     }
 }
 
 int RemoteManagementSearchPanel::getListIndex()
 {
-    qDebug() << __FUNCTION__ << "current index : " << m_listWidget->currentIndex();
     return m_listWidget->currentIndex();
 }
 

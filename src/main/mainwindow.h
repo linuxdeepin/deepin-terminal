@@ -46,6 +46,7 @@
 #include <QMenu>
 #include <QDebug>
 #include <QShortcut>
+#include <QtX11Extras/QX11Info>
 
 #include <functional>
 
@@ -240,7 +241,13 @@ public:
      * @return
      */
     TermWidgetPage *currentPage();
+
+    /**
+     * @brief setCurrentPage 基类设置当前页面
+     * @param page
+     */
     void setCurrentPage(TermWidgetPage *page);
+
     /**
      * @brief 基类通过标识符获取页面
      * @author ut000439 wangpeili
@@ -248,6 +255,12 @@ public:
      * @return
      */
     TermWidgetPage *getPageByIdentifier(const QString &identifier);
+
+    /**
+     * @brief currentPageTerminal 获取当前页活动的terminal
+     * @return
+     */
+    TermWidget *currentActivatedTerminal();
 
     /**
      * @brief 基类终端是否闲置响应函数(闲置即没有程序运行)
@@ -788,6 +801,18 @@ protected:
      */
     void firstTerminalComplete();
 
+    /**
+     * @brief 递归遍历，获取obj下ObjectName不为空的children
+     * @param obj
+     * @return
+     */
+    QObjectList getNamedChildren(QObject *obj);
+
+    /**
+     * @brief 设置titlebar的子控件为NoFocus
+     * @param titlebar
+     */
+    void setTitlebarNoFocus(QWidget * titlebar);
 
 protected:
     // 初始化标题栏
@@ -803,7 +828,7 @@ public:
     // 显示快捷键功能
     virtual QPoint calculateShortcutsPreviewPoint() = 0;
     // 处理雷神窗口丢失焦点自动隐藏功能
-    virtual void onAppFocusChangeForQuake() = 0;
+    virtual void onAppFocusChangeForQuake(bool checkIsActiveWindow = true) = 0;
     // 根据字体和字体大小设置最小高度
     virtual void setWindowMinHeightForFont() = 0;
     /******** Add by ut001000 renfeixiang 2020-08-07:基类中定义更新最小高度函数的纯虚函数***************/
@@ -902,6 +927,10 @@ public:
     bool m_isInitialized = false;
 
     QTimer *m_createTimer = nullptr;
+
+    //当resize停滞一段时间后，会触发resizeFinishedTimer/timeout信号，用于保存窗口位置
+    //仅在resizeEvent里使用
+    QTimer *resizeFinishedTimer = nullptr;
 };
 
 /*******************************************************************************
@@ -952,7 +981,7 @@ protected:
      * @brief 普通窗口处理雷神窗口丢失焦点自动隐藏功能，普通窗口不用该函数
      * @author ut001121 zhangmeng
      */
-    virtual void onAppFocusChangeForQuake() override;
+    virtual void onAppFocusChangeForQuake(bool checkIsActiveWindow = true) override;
     // 根据字体和字体大小设置最小高度
     virtual void setWindowMinHeightForFont() override {return;}
 
@@ -1090,7 +1119,7 @@ protected:
      * @brief 处理雷神窗口丢失焦点自动隐藏功能
      * @author ut001121 张猛
      */
-    virtual void onAppFocusChangeForQuake() override;
+    virtual void onAppFocusChangeForQuake(bool checkIsActiveWindow = true) override;
     /**
      * @brief 雷神窗口根据字体和字体大小设置最小高度
      * @author ut001000 任飞翔
@@ -1138,7 +1167,7 @@ private:
 
     //Add by ut001000 renfeixiang 2020-11-16
     //获取配置文件中保存的雷神窗口高度
-    int getQuakeHeight() {return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT).toInt();}
+    int getQuakeHeight();
     /**
      * @brief 动画效果使用的设置雷神窗口高度的函数
      * @author ut001000 任飞翔
@@ -1151,6 +1180,30 @@ private:
      * @return
      */
     int getQuakeAnimationTime();
+
+    //函数的名称和实现都是按照dtk中复制，dtk项目生成的窗口可直接调用此函数
+    /**
+     * @brief Get atom identifier by name
+     * @param connection The connection
+     * @param name The name of the atom.
+     * @param only_if_exists  Return a valid atom id only if the atom already exists.
+     * @return A cookie
+     */
+    xcb_atom_t internAtom(xcb_connection_t *connection, const char *name, bool only_if_exists);
+
+    /**
+     * @brief internAtom
+     * @param name
+     * @param only_if_exists
+     * @return
+     */
+    xcb_atom_t internAtom(const char *name, bool only_if_exists = true);
+
+    /**
+     * @brief 设置窗口属性 不可移动
+     * @param forhibit
+     */
+    void sendWindowForhibitMove(bool forhibit);
 };
 
 #endif  // MAINWINDOW_H

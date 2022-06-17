@@ -117,7 +117,7 @@ public:
      * @author sunchengxi
      * @param mi
      */
-    void setModelIndex(QModelIndex mi);
+    void setModelIndex(const QModelIndex &mi);
 
     /**
      * @brief 获取返回结果

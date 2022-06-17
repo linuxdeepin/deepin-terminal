@@ -60,6 +60,7 @@ Emulation::Emulation() :
     _decoder(nullptr),
     _keyTranslator(nullptr),
     _usesMouse(false),
+    _alternateScrolling(true),
     _bracketedPasteMode(false)
 {
     // create screens with a default size
@@ -96,6 +97,11 @@ void Emulation::usesMouseChanged(bool usesMouse)
     _usesMouse = usesMouse;
 }
 
+void Emulation::setAlternateScrolling(bool enable)
+{
+    _alternateScrolling = enable;
+}
+
 bool Emulation::programBracketedPasteMode() const
 {
     return _bracketedPasteMode;
@@ -118,6 +124,11 @@ ScreenWindow *Emulation::createWindow()
     connect(this, SIGNAL(outputChanged()),
             window, SLOT(notifyOutputChanged()));
     return window;
+}
+
+void Emulation::checkScreenInUse()
+{
+    emit primaryScreenInUse(_currentScreen == _screen[0]);
 }
 
 Emulation::~Emulation()
@@ -146,6 +157,7 @@ void Emulation::setScreen(int n)
         // tell all windows onto this emulation to switch to the newly active screen
         for (ScreenWindow *window : qAsConst(_windows))
             window->setScreen(_currentScreen);
+        checkScreenInUse();
     }
 }
 

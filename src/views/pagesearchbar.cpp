@@ -61,12 +61,8 @@ bool PageSearchBar::isFocus()
 {
     MainWindow *minwindow = Utils::getMainWindow(this);
     DIconButton *addButton = minwindow->findChild<DIconButton *>("AddButton");
-    if (addButton != nullptr) {
+    if (addButton != nullptr)
         QWidget::setTabOrder(m_findNextButton, addButton);
-    } else {
-        qDebug() << "can not found AddButton in DIconButton";
-    }
-    //QWidget::setTabOrder(m_findPrevButton, m_findNextButton);
 
     return m_searchEdit->lineEdit()->hasFocus();
 }
@@ -89,62 +85,26 @@ void PageSearchBar::saveOldHoldContent()
     m_originalPlaceHolder = m_searchEdit->placeHolder();
 }
 
-//查找DSearchEdit中的DIconButton
-/*******************************************************************************
- 1. @函数:    findIconBtn
- 2. @作者:    ut000439 wangpeili
- 3. @日期:    2020-08-11
- 4. @说明:    查找DSearchEdit中的DIconButton
-*******************************************************************************/
-DIconButton *findIconBtn(DSearchEdit *searchEdit)
-{
-    QWidget *iconWidget = searchEdit->findChild<QWidget *>("iconWidget");
-    if (iconWidget != nullptr) {
-        DIconButton *iconBtn = iconWidget->findChild<DIconButton *>();
-        if (nullptr == iconBtn) {
-            qDebug() << "can not found iconBtn in DIconButton";
-        }
-        return iconBtn;
-    } else {
-        qDebug() << "can not found iconWidget in QWidget";
-        if (searchEdit->findChild<DIconButton *>() == nullptr) {
-            qDebug() << "can not found searchEdit in DIconButton";
-        }
-        return searchEdit->findChild<DIconButton *>();
-    }
-}
-
 void PageSearchBar::clearHoldContent()
 {
     // 置空内容
     m_searchEdit->setPlaceHolder("");
-    DIconButton *iconBtn = findIconBtn(m_searchEdit);
-    if (iconBtn != nullptr) {
+    DIconButton *iconBtn = m_searchEdit->findChild<DIconButton *>();
+    if (iconBtn != nullptr)
         iconBtn->setIcon(QIcon(""));
-    }
 }
 
 void PageSearchBar::recoveryHoldContent()
 {
     // 还原文本
     m_searchEdit->setPlaceHolder(m_originalPlaceHolder);
-    DIconButton *iconBtn = findIconBtn(m_searchEdit);
+    DIconButton *iconBtn = m_searchEdit->findChild<DIconButton *>();
     if (iconBtn != nullptr) {
         // 还原图标
         iconBtn->setIcon(DStyle::SP_IndicatorSearch);
     }
 }
 
-qint64 PageSearchBar::searchCostTime()
-{
-    if (0 == m_searchStartTime) {
-        qDebug() << __FUNCTION__ << "search time error!";
-        return -1;
-    }
-    qint64 costTime = QDateTime::currentMSecsSinceEpoch() - m_searchStartTime;
-    m_searchStartTime = 0;
-    return costTime;
-}
 
 void PageSearchBar::keyPressEvent(QKeyEvent *event)
 {
@@ -155,15 +115,16 @@ void PageSearchBar::keyPressEvent(QKeyEvent *event)
         if (m_searchEdit->lineEdit()->hasFocus()) {
             Qt::KeyboardModifiers modify = event->modifiers();
             // 有shift修饰， Qt::KeypadModifier 修饰是否是小键盘
-            if (modify == Qt::ShiftModifier
-                    || modify  == (Qt::ShiftModifier | Qt::KeypadModifier)) {
+            if (Qt::ShiftModifier == modify
+                    || (Qt::ShiftModifier | Qt::KeypadModifier) == modify) {
                 // shift + enter 查找前一个
                 m_findPrevButton->animateClick(80);
             }
             // 没有shift修饰
-            else if (modify == Qt::NoModifier || modify == Qt::KeypadModifier)
+            else if (Qt::NoModifier == modify || Qt::KeypadModifier == modify) {
                 // 查找下一个
                 m_findNextButton->animateClick(80);
+            }
         }
     }
     break;
@@ -234,7 +195,7 @@ void PageSearchBar::initSearchEdit()
             }
         }
     } else {
-        qDebug() << "can not found _q_qlineeditclearaction in QAction";
+        qInfo() << "can not found _q_qlineeditclearaction in QAction";
     }
 
     // 需求不让自动查找，这个接口预留

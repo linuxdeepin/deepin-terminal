@@ -276,7 +276,8 @@
                             "key": "display_shortcuts",
                             "name": "Display shortcuts",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+?"
+                            "default":  "Ctrl+Shift+?",
+                            "hide": true
                         },
                         {
                             "key": "custom_command",

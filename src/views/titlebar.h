@@ -35,7 +35,7 @@ class TitleBar : public QWidget
 {
     Q_OBJECT
 public:
-    TitleBar(QWidget *parent = nullptr, bool isQuakeWindowStyle = false);
+    TitleBar(QWidget *parent = nullptr);
     ~TitleBar();
 
     /**
@@ -51,9 +51,22 @@ public:
      */
     int rightSpace();
 
+    /**
+     * @brief setVerResized 设置是否手动resize当前界面
+     * @param resized
+     */
+    void setVerResized(bool resized);
 private:
     QHBoxLayout *m_layout = nullptr;
     int m_rightSpace;
+
+    //自定义窗口resize bug#98888
+private:
+    int m_verResizedCurOff = 0;//当前垂直偏移量
+    bool m_verResizedEnabled = false;//是否手动resize当前界面
+protected:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif  // TITLEBAR_H

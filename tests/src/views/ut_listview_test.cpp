@@ -20,7 +20,6 @@
  */
 
 #include "ut_listview_test.h"
-
 #include "itemwidget.h"
 #include "listview.h"
 #include "customcommandpanel.h"
@@ -28,8 +27,12 @@
 #include "utils.h"
 #include "shortcutmanager.h"
 #include "customcommandoptdlg.h"
+#include "serverconfigmanager.h"
 #include "service.h"
-#include "stub.h"
+#include "../stub.h"
+#include "ut_stub_defines.h"
+#include "serverconfigoptdlg.h"
+
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -114,6 +117,7 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
     ServerConfigManager *serverConfigManager = ServerConfigManager::instance();
     QList<ServerConfig *> remoteServerList;
     const int remoteCount = 8;
+    const QString groupName = "001";
     for (int i = 0; i <= remoteCount; i++) {
 
         ServerConfig *config = new ServerConfig();
@@ -123,7 +127,7 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
         config->m_password = QString("123");
         config->m_privateKey = QString("");
         config->m_port = QString("");
-        config->m_group = QString("");
+        config->m_group = groupName;
         config->m_path = QString("");
         config->m_command = QString("");
         config->m_encoding = QString("");
@@ -132,21 +136,22 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
 
         serverConfigManager->saveServerConfig(config);
 
+        //append item
+        int oldCount = remoteListWidget.count();
         remoteListWidget.addItem(ItemFuncType_Item, config->m_serverName, config->m_address);
+        EXPECT_TRUE(remoteListWidget.count() == (oldCount + 1));
 
         remoteServerList.append(config);
     }
 
+    //
     remoteListWidget.onRemoteItemModify("server_0", false);
+    EXPECT_TRUE(ServerConfigManager::instance()->m_serverConfigDialogMap.contains("server_0"));
 
     // 清理不用的数据
     for (ServerConfig *item : remoteServerList) {
-        if (item->m_serverName.contains("server_")) {
-            remoteServerList.removeOne(item);
-            qDebug() << "####### delete " << item->m_serverName;
-            // 删除测试数据
-            ServerConfigManager::instance()->delServerConfig(item);
-        }
+        ServerConfigManager::instance()->delServerConfig(item);
+        EXPECT_TRUE(ServerConfigManager::instance()->m_serverConfigs[groupName].contains(item) == false);
     }
 }
 
@@ -156,8 +161,8 @@ TEST_F(UT_ListView_Test, setFocusFromeIndex)
     listWidget.resize(242, 600);
     listWidget.show();
 
-    const int count = 10;
-    for (int i = 0; i <= count; i++) {
+    const int count = 11;
+    for (int i = 0; i < count; i++) {
         QString key = QString(QChar('A' + i));
         QAction *newAction = new QAction;
         newAction->setText(QString("cmd_%1").arg(i));
@@ -166,14 +171,22 @@ TEST_F(UT_ListView_Test, setFocusFromeIndex)
 
         ShortcutManager::instance()->addCustomCommand(*newAction);
     }
+    EXPECT_TRUE(listWidget.count() == count);
+
+    EXPECT_TRUE(ShortcutManager::instance()->m_customCommandActionList.count() >= count);
 
     listWidget.setFocusFromeIndex(0, ListFocusUp);
+    EXPECT_TRUE(listWidget.m_currentIndex == 0);
 
     listWidget.setFocusFromeIndex(0, ListFocusDown);
+    EXPECT_TRUE(listWidget.m_currentIndex == 1);
 
     listWidget.setFocusFromeIndex(0, ListFocusHome);
+    EXPECT_TRUE(listWidget.m_currentIndex == 0);
 
     listWidget.setFocusFromeIndex(0, ListFocusEnd);
+    qDebug() << __LINE__<< listWidget.count() << count;
+    EXPECT_TRUE(listWidget.m_currentIndex == (count - 1));
 }
 
 //为测试onCustomCommandOptDlgFinished打桩
@@ -204,8 +217,8 @@ TEST_F(UT_ListView_Test, onCustomCommandOptDlgFinished)
 {
     ListView listWidget(ListType_Custom, nullptr);
 
-    const int count = 3;
-    for (int i = 0; i <= count; i++) {
+    const int count = 4;
+    for (int i = 0; i < count; i++) {
         QString key = QString(QChar('A' + i));
         QAction *newAction = new QAction;
         newAction->setText(QString("cmd_%1").arg(i));
@@ -214,6 +227,7 @@ TEST_F(UT_ListView_Test, onCustomCommandOptDlgFinished)
 
         ShortcutManager::instance()->addCustomCommand(*newAction);
     }
+    EXPECT_TRUE(listWidget.count() == count);
 
     QAction *firstAction = ShortcutManager::instance()->getCustomCommandActionList().first();
     CustomCommandData itemData;
@@ -225,18 +239,22 @@ TEST_F(UT_ListView_Test, onCustomCommandOptDlgFinished)
     s.set(ADDR(CustomCommandOptDlg, getCurCustomCmd), stub_getCurCustomCmd);
     s.set(ADDR(Service, setIsDialogShow), stub_setIsDialogShow);
 
+    //选中itemData所在行
+    listWidget.m_focusState = true;
     listWidget.m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_MODIFY, &itemData, nullptr);
     listWidget.onCustomCommandOptDlgFinished(QDialog::Accepted);
+    EXPECT_TRUE(listWidget.currentIndex() == listWidget.indexFromString(itemData.m_cmdName));
 
     s.set(ADDR(CustomCommandOptDlg, isDelCurCommand), stub_isDelCurCommand);
 
+    int old_index = listWidget.currentIndex();
     listWidget.onCustomCommandOptDlgFinished(QDialog::Rejected);
+    EXPECT_TRUE(listWidget.currentIndex() == old_index);
 
-    // 打桩还原
-    s.reset(ADDR(CustomCommandOptDlg, isDelCurCommand));
 
-    s.reset(ADDR(CustomCommandOptDlg, getCurCustomCmd));
-    s.reset(ADDR(Service, setIsDialogShow));
+    listWidget.onGroupClicked("/", false);
+    EXPECT_TRUE(listWidget.m_focusState == false);
+    EXPECT_TRUE(listWidget.currentIndex() == -1);
 }
 
 ServerConfig* generateNewServerConfig()
@@ -283,22 +301,45 @@ TEST_F(UT_ListView_Test, onServerConfigOptDlgFinished)
 {
     ListView listWidget(ListType_Custom, nullptr);
     ServerConfig *curItemServer = generateNewServerConfig();
+    QString itemServerName = curItemServer->m_serverName;
+    ASSERT_TRUE(curItemServer);
     listWidget.m_configDialog = new ServerConfigOptDlg(ServerConfigOptDlg::SCT_MODIFY, curItemServer, &listWidget);
 
-    Stub s;
-    s.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_listview);
+    {
+        //m_configDialog不在m_serverConfigDialogMap里，故不会删除
+        Stub stub;
+        stub.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_listview);
+        listWidget.m_focusState == true;
+        listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Rejected);
+        EXPECT_TRUE(listWidget.currentIndex() == listWidget.indexFromString(curItemServer->m_serverName));
+    }
 
-    listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Rejected);
+    {
+        //m_configDialog不在m_serverConfigDialogMap里，故不会删除
+        Stub stub;
+        stub.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_listview);
+        stub.set(ADDR(ServerConfigOptDlg, isDelServer), stub_isDelServer_false);
+        listWidget.m_focusState == true;
+        listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Accepted);
+        EXPECT_TRUE(listWidget.currentIndex() == listWidget.indexFromString(curItemServer->m_serverName));
+        //随后listwidget会置空
+    }
+    {
+        Stub stub;
+        stub.set(ADDR(MainWindow, focusCurrentPage), stub_focusCurrentPage_listview);
+        UT_STUB_QWIDGET_SHOW_APPEND;
+        listWidget.m_focusState = true;
+        listWidget.m_configDialog->m_bDelOpt = true;
+        listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Accepted);
+        EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
+    }
 
-    s.set(ADDR(ServerConfigOptDlg, isDelServer), stub_isDelServer_false);
-    listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Accepted);
-    s.reset(ADDR(ServerConfigOptDlg, isDelServer));
+    listWidget.onDeleteServerDialogFinished(DDialog::Accepted);
+    EXPECT_TRUE(!ServerConfigManager::instance()->m_serverConfigDialogMap.contains(itemServerName));
 
-    s.set(ADDR(ServerConfigOptDlg, isDelServer), stub_isDelServer_true);
-    listWidget.onServerConfigOptDlgFinished(ServerConfigOptDlg::Accepted);
-    s.reset(ADDR(ServerConfigOptDlg, isDelServer));
 
-    s.reset(ADDR(MainWindow, focusCurrentPage));
+    listWidget.onDeleteServerDialogFinished(DDialog::Rejected);
+    EXPECT_TRUE(listWidget.count() == 0);
 }
 
 #endif

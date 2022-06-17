@@ -37,6 +37,8 @@ BuildRequires: lxqt-build-tools >= 0.6.0~
 BuildRequires: utf8proc-devel
 BuildRequires: gtest-devel
 BuildRequires: gmock-devel
+BuildRequires: qt5-qtx11extras-devel
+BuildRequires: xcb-util-wm-devel
 
 Requires: libqtermwidget5
 Requires: libqtermwidget5-data

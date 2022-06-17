@@ -49,21 +49,19 @@ CustomCommandPanel::~CustomCommandPanel()
 void CustomCommandPanel::showCurSearchResult()
 {
     QString strTxt = m_searchEdit->text();
-    if (strTxt.isEmpty()) {
+    if (strTxt.isEmpty())
         return;
-    }
+
     emit showSearchResult(strTxt);
 }
 
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
-
     if (m_pushButton->hasFocus()) {
-        qDebug() << "------------------------hasFocus";
+        qInfo() << "------------------------hasFocus";
         m_bpushButtonHaveFocus = true;
     } else {
-        qDebug() << "------------------------ not         hasFocus";
+        qInfo() << "------------------------ not         hasFocus";
         m_bpushButtonHaveFocus = false;
     }
 
@@ -77,16 +75,46 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
     m_pdlg = new CustomCommandOptDlg(CustomCommandOptDlg::CCT_ADD, nullptr, this);
     m_pdlg->setObjectName("CustomAddCommandDialog");//Add by ut001000 renfeixiang 2020-08-14
-    connect(m_pdlg, &CustomCommandOptDlg::finished, this, [ &](int result) {
+    connect(m_pdlg, &CustomCommandOptDlg::finished, this, &CustomCommandPanel::onAddCommandResponse);
+    m_pdlg->show();
+}
+
+void CustomCommandPanel::doCustomCommand(const QString &key)
+{
+    QAction *item = ShortcutManager::instance()->findActionByKey(key);
+    if(!item)
+        return;
+
+    QString strCommand = item->data().toString();
+    if (!strCommand.endsWith('\n'))
+        strCommand.append('\n');
+
+    emit handleCustomCurCommand(strCommand);
+}
+
+void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
+{
+    if ((Qt::TabFocusReason == type) || (Qt::NoFocusReason == type)) {
+        // 下一个 或 列表为空， 焦点定位到添加按钮上
+        m_pushButton->setFocus();
+        m_cmdListWidget->clearIndex();
+        qInfo() << "set focus on add pushButton";
+    } else if (Qt::BacktabFocusReason == type) {
+        // 判断是否可见，可见设置焦点
+        if (m_searchEdit->isVisible()) {
+            m_searchEdit->lineEdit()->setFocus();
+            m_cmdListWidget->clearIndex();
+            qInfo() << "set focus on add search edit";
+        }
+    }
+}
+
+void CustomCommandPanel::onAddCommandResponse(int result)
+{
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
-
-        qDebug() << "finished" << result;
-
         if (QDialog::Accepted == result) {
-            qDebug() << "Accepted";
             QAction *newAction = m_pdlg->getCurCustomCmd();
-            //m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), newAction->shortcut().toString());
             // 新增快捷键 => 显示在列表中使用大写 down2up dzw 20201215
             m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), Utils::converDownToUp(newAction->shortcut().toString()));
             /************************ Add by m000743 sunchengxi 2020-04-20:解决自定义命令无法添加 Begin************************/
@@ -103,46 +131,12 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
         }
 
-        if (m_bpushButtonHaveFocus) {
+        if (m_bpushButtonHaveFocus)
             m_pushButton->setFocus(Qt::TabFocusReason);
-        }
-
-    });
-    m_pdlg->show();
-}
-
-void CustomCommandPanel::doCustomCommand(const QString &key)
-{
-    qDebug() <<  __FUNCTION__ << __LINE__;
-    QAction *item = ShortcutManager::instance()->findActionByKey(key);
-
-    QString strCommand = item->data().toString();
-    if (!strCommand.endsWith('\n')) {
-        strCommand.append('\n');
-    }
-    emit handleCustomCurCommand(strCommand);
-}
-
-void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
-{
-    if ((Qt::TabFocusReason == type) || (Qt::NoFocusReason == type)) {
-        // 下一个 或 列表为空， 焦点定位到添加按钮上
-        m_pushButton->setFocus();
-        m_cmdListWidget->clearIndex();
-        qDebug() << "set focus on add pushButton";
-    } else if (Qt::BacktabFocusReason == type) {
-        // 判断是否可见，可见设置焦点
-        if (m_searchEdit->isVisible()) {
-            m_searchEdit->lineEdit()->setFocus();
-            m_cmdListWidget->clearIndex();
-            qDebug() << "set focus on add search edit";
-        }
-    }
 }
 
 void CustomCommandPanel::refreshCmdPanel()
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     clearSearchInfo();
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget);
     refreshCmdSearchState();
@@ -150,7 +144,6 @@ void CustomCommandPanel::refreshCmdPanel()
 
 void CustomCommandPanel::refreshCmdSearchState()
 {
-    qDebug() << __FUNCTION__ << m_cmdListWidget->count() << endl;
     if (m_cmdListWidget->count() >= 2) {
         /************************ Add by m000743 sunchengxi 2020-04-22:自定义命令搜索显示异常 Begin************************/
         m_searchEdit->clearEdit();
@@ -163,7 +156,6 @@ void CustomCommandPanel::refreshCmdSearchState()
 
 void CustomCommandPanel::setFocusInPanel()
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
     if (m_searchEdit->isVisible()) {
         // 搜索框在
         m_searchEdit->lineEdit()->setFocus();
@@ -174,7 +166,7 @@ void CustomCommandPanel::setFocusInPanel()
         // 添加按钮下
         m_pushButton->setFocus();
     } else {
-        qDebug() << "focus error unkown reason";
+        qInfo() << "focus error unkown reason";
     }
 }
 

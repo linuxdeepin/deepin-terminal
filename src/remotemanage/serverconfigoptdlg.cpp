@@ -23,6 +23,7 @@
 #include "termcommandlinkbutton.h"
 #include "utils.h"
 
+//dtk
 #include <DFontSizeManager>
 #include <DPushButton>
 #include <DSuggestButton>
@@ -32,14 +33,17 @@
 #include <DFileDialog>
 #include <DPalette>
 
+//qt
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QTextCodec>
 #include <QSpacerItem>
-#include <iterator>//added byq qinyaning
 #include <QTimer>
 #include <QDebug>
+
+//c++
+#include <iterator>//added byq qinyaning
 
 DGUI_USE_NAMESPACE
 
@@ -49,23 +53,23 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_curServer(curServer),
       m_titleLabel(new DLabel),
       m_iconLabel(new DLabel),
+      m_serverName(new DLineEdit(this)),
       m_closeButton(new DWindowCloseButton(this)),
-      m_serverName(new DLineEdit),
-      m_address(new DLineEdit),
-      m_port(new DSpinBox),
-      m_port_tip(new DAlertControl(m_port)),
-      m_userName(new DLineEdit),
-      m_password(new DPasswordEdit),
-      m_privateKey(new DLineEdit),
-      m_fileDialog(new DSuggestButton),
-      m_group(new DLineEdit),
-      m_path(new DLineEdit),
-      m_command(new DLineEdit),
-      m_coding(new DComboBox),
-      m_backSapceKey(new DComboBox),
-      m_deleteKey(new DComboBox),
-      m_advancedOptions(new DPushButton(tr("Advanced options"))),
-      m_delServer(new TermCommandLinkButton())
+      m_address(new DLineEdit(this)),
+      m_port(new DSpinBox(this)),
+      m_port_tip(new DAlertControl(m_port, this)),
+      m_userName(new DLineEdit(this)),
+      m_password(new DPasswordEdit(this)),
+      m_privateKey(new DFileChooserEdit(this)),
+      m_group(new DLineEdit(this)),
+      m_path(new DLineEdit(this)),
+      m_command(new DLineEdit(this)),
+      m_coding(new DComboBox(this)),
+      m_backSapceKey(new DComboBox(this)),
+      m_deleteKey(new DComboBox(this)),
+      m_advancedOptions(new DPushButton(tr("Advanced options"), this)),
+      m_delServer(new TermCommandLinkButton(this)),
+      m_pGridLayout(new QGridLayout)
 
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
@@ -79,7 +83,6 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     m_userName->setObjectName("RemoteUserNameLineEdit");
     m_password->setObjectName("RemoteDPasswordEdit");
     m_privateKey->setObjectName("RemotePrivateKeyLineEdit");
-    m_fileDialog->setObjectName("RemoteFileDialogDSuggestButton");
     m_group->setObjectName("RemoteGroupLineEdit");
     m_path->setObjectName("RemotePathLineEdit");
     m_command->setObjectName("RemoteCommandLineEdit");
@@ -89,7 +92,6 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     m_advancedOptions->setObjectName("RemoteAdvancedOptionsQPushButton");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     setWindowModality(Qt::WindowModal);
-    setFixedWidth(459);
     setAutoFillBackground(true);
     initUI();
     initData();
@@ -101,7 +103,6 @@ void ServerConfigOptDlg::initUI()
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
     m_VBoxLayout->setSpacing(SPACEHEIGHT);
     m_VBoxLayout->setContentsMargins(0, 0, 0, SPACEHEIGHT);
-    this->setFixedHeight(392);
     //head layout
     m_iconLabel->setFixedSize(ICONSIZE_50, ICONSIZE_50);
     m_titleLabel->setText(tr("Add Server"));
@@ -116,11 +117,11 @@ void ServerConfigOptDlg::initUI()
     // 字色
     DPalette palette = m_titleLabel->palette();
     QColor color;
-    if (DApplicationHelper::instance()->themeType() == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
-    } else {
+    else
         color = QColor::fromRgb(0, 26, 46, 255);
-    }
+
     palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
 
@@ -134,35 +135,33 @@ void ServerConfigOptDlg::initUI()
     connect(m_closeButton, &DDialogCloseButton::clicked, this, [ = ]() {
         reject();
     });
-    m_VBoxLayout->addLayout(headLayout, Qt::AlignTop);
-    m_VBoxLayout->addStretch(SPACEHEIGHT);
+    m_VBoxLayout->addLayout(headLayout);
     //main layout
-    QGridLayout *pGridLayout = new QGridLayout();
-    pGridLayout->setColumnStretch(1, 1);
-    pGridLayout->setContentsMargins(28, 0, 30, 0);
-    pGridLayout->setSpacing(SPACEHEIGHT);
+    m_pGridLayout->setContentsMargins(28, 0, 30, 0);
+    m_pGridLayout->setSpacing(SPACEHEIGHT);
+
+    //m_serverName
     DLabel *pServerNameLabel = new DLabel(tr("Server name:"));
     setLabelStyle(pServerNameLabel);
-
     m_serverName->lineEdit()->setPlaceholderText(tr("Required"));
     QTimer::singleShot(30, this, [&]() {
         m_serverName->lineEdit()->selectAll();
     });
-    pGridLayout->addWidget(pServerNameLabel);
-    pGridLayout->addWidget(m_serverName);
+    m_pGridLayout->addWidget(pServerNameLabel, 0, 0);
+    m_pGridLayout->addWidget(m_serverName, 0, 1, 1, 3);
 
+    //pAddressLabel
     DLabel *pAddressLabel = new DLabel(tr("Address:"));
     setLabelStyle(pAddressLabel);
     m_address->lineEdit()->setPlaceholderText(tr("Required"));
-    m_address->setFixedWidth(150);
-    pGridLayout->addWidget(pAddressLabel);
-    pGridLayout->addWidget(m_address);
+    m_pGridLayout->addWidget(pAddressLabel, 1, 0);
+    m_pGridLayout->addWidget(m_address, 1, 1);
 
-    QHBoxLayout *portLayout = new QHBoxLayout();
+    //pPortLabel
     DLabel *pPortLabel = new DLabel(tr("Port:"));
     pPortLabel->setAlignment(Qt::AlignLeft);
     pPortLabel->setAlignment(Qt::AlignVCenter);
-    pPortLabel->setFixedWidth(40);
+    pPortLabel->setMinimumWidth(40);
     DFontSizeManager::instance()->bind(pPortLabel, DFontSizeManager::T6);
     m_port->setRange(0, 65535);
     m_port->setValue(DEFAULTPORT);
@@ -176,127 +175,94 @@ void ServerConfigOptDlg::initUI()
     m_port->setButtonSymbols(DSpinBox::NoButtons);
     // 禁用输入法
     m_port->setAttribute(Qt::WA_InputMethodEnabled, false);
-    portLayout->addWidget(pPortLabel);
-    portLayout->addWidget(m_port);
-    pGridLayout->addLayout(portLayout, 1, 1, Qt::AlignRight);
+    m_pGridLayout->addWidget(pPortLabel, 1, 2);
+    m_pGridLayout->addWidget(m_port, 1, 3);
 
+    //pUsernameLabel
     DLabel *pUsernameLabel = new DLabel(tr("Username:"));
     setLabelStyle(pUsernameLabel);
     m_userName->lineEdit()->setPlaceholderText(tr("Required"));
-    pGridLayout->addWidget(pUsernameLabel);
-    pGridLayout->addWidget(m_userName);
+    m_pGridLayout->addWidget(pUsernameLabel, 2, 0);
+    m_pGridLayout->addWidget(m_userName, 2, 1, 1, 3);
 
+    //pPasswordLabel
     DLabel *pPasswordLabel = new DLabel(tr("Password:"));
     setLabelStyle(pPasswordLabel);
-
     m_password->lineEdit()->setAttribute(Qt::WA_InputMethodEnabled, false);
-    pGridLayout->addWidget(pPasswordLabel);
-    pGridLayout->addWidget(m_password);
+    m_pGridLayout->addWidget(pPasswordLabel, 3, 0);
+    m_pGridLayout->addWidget(m_password, 3, 1, 1, 3);
 
     DLabel *pPrivateKeyLabel = new DLabel(tr("Certificate:"));
     setLabelStyle(pPrivateKeyLabel);
 
+    //pPrivateKeyLabel
+    m_pGridLayout->addWidget(pPrivateKeyLabel, 4, 0);
+    m_pGridLayout->addWidget(m_privateKey, 4, 1, 1, 3);
 
-    /******** Modify by m000714 daizhengwen 2020-04-20: 添加DFileChooseEditDialog****************/
-    pGridLayout->addWidget(pPrivateKeyLabel);
-    QHBoxLayout *privateKeyLayout = new QHBoxLayout();
-    privateKeyLayout->setSpacing(5);
-    privateKeyLayout->setContentsMargins(0, 0, 0, 0);
-    privateKeyLayout->addWidget(m_privateKey);
-    privateKeyLayout->addWidget(m_fileDialog);
-    m_fileDialog->setIcon(DStyleHelper(m_fileDialog->style()).standardIcon(DStyle::SP_SelectElement, nullptr));
-    m_fileDialog->setIconSize(QSize(24, 24));
-    connect(m_fileDialog, &DSuggestButton::clicked, this, &ServerConfigOptDlg::slotFileChooseDialog);
-    pGridLayout->addLayout(privateKeyLayout, 4, 1);
-    /********************* Modify by m000714 daizhengwen End ************************/
-
-    //senior layout
-    DWidget *seniorWidget = new DWidget;
-    seniorWidget->setFixedWidth(459);
-    seniorWidget->setContentsMargins(0, 0, 0, 0);
-    QGridLayout *seniorLayout = new QGridLayout();
-    seniorLayout->setAlignment(Qt::AlignTop);
-    seniorLayout->setSpacing(10);
-    seniorLayout->setContentsMargins(28, 0, 30, 0);
-    seniorLayout->setColumnStretch(1, 1);
-    DLabel *pGroupLabel = new DLabel(tr("Group:"));
-    setLabelStyle(pGroupLabel);
-    seniorLayout->addWidget(pGroupLabel);
-    seniorLayout->addWidget(m_group);
-    m_group->setFixedWidth(DEFAULTHEIGHT);
-
-    DLabel *pPathLabel = new DLabel(tr("Path:"));
-    setLabelStyle(pPathLabel);
-    seniorLayout->addWidget(pPathLabel);
-    seniorLayout->addWidget(m_path);
-    m_path->setFixedWidth(DEFAULTHEIGHT);
-
-    DLabel *pCommandLabel = new DLabel(tr("Command:"));
-    setLabelStyle(pCommandLabel);
-    seniorLayout->addWidget(pCommandLabel);
-    seniorLayout->addWidget(m_command);
-    m_command->setFixedWidth(DEFAULTHEIGHT);
-
-    DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
-    setLabelStyle(pCodingLabel);
-    seniorLayout->addWidget(pCodingLabel);
-    seniorLayout->addWidget(m_coding);
-    m_coding->setFixedWidth(DEFAULTHEIGHT);
-
-    DLabel *pBackspaceKeyLabel = new DLabel(tr("Backspace key:"));
-    setLabelStyle(pBackspaceKeyLabel);
-    seniorLayout->addWidget(pBackspaceKeyLabel);
-    seniorLayout->addWidget(m_backSapceKey);
-    m_backSapceKey->setFixedWidth(DEFAULTHEIGHT);
-
-    DLabel *pDeleteKeyLabel = new DLabel(tr("Delete key:"));
-    setLabelStyle(pDeleteKeyLabel);
-    seniorLayout->addWidget(pDeleteKeyLabel);
-    seniorLayout->addWidget(m_deleteKey);
-    m_deleteKey->setFixedWidth(DEFAULTHEIGHT);
-    seniorWidget->setLayout(seniorLayout);
-
-    m_VBoxLayout->addLayout(pGridLayout, Qt::AlignHCenter);
-    QSpacerItem *upItem = new QSpacerItem(this->width(), 10);
-    m_VBoxLayout->addSpacerItem(upItem);
-
+    //m_advancedOptions
     palette = DApplicationHelper::instance()->palette(m_advancedOptions);
     palette.setColor(DPalette::ButtonText, palette.color(DPalette::Highlight));
     m_advancedOptions->setPalette(palette);
-
     m_advancedOptions->setFlat(true);
     m_advancedOptions->setFocusPolicy(Qt::TabFocus);
+    m_pGridLayout->addWidget(m_advancedOptions, 5, 0, 1, 4, Qt::AlignCenter);
 
-    m_VBoxLayout->addWidget(m_advancedOptions, 0, Qt::AlignHCenter);
-    QSpacerItem *downItem = new QSpacerItem(this->width(), 10);
-    m_VBoxLayout->addSpacerItem(downItem);
-    m_VBoxLayout->addWidget(seniorWidget, 0, Qt::AlignHCenter);
+    //senior layout
+    DLabel *pGroupLabel = new DLabel(tr("Group:"));
+    setLabelStyle(pGroupLabel);
+    m_pGridLayout->addWidget(pGroupLabel, 6, 0);
+    m_pGridLayout->addWidget(m_group, 6, 1, 1, 3);
+
+    //pPathLabel
+    DLabel *pPathLabel = new DLabel(tr("Path:"));
+    setLabelStyle(pPathLabel);
+    m_pGridLayout->addWidget(pPathLabel, 7, 0);
+    m_pGridLayout->addWidget(m_path, 7, 1, 1, 3);
+
+    //pCommandLabel
+    DLabel *pCommandLabel = new DLabel(tr("Command:"));
+    setLabelStyle(pCommandLabel);
+    m_pGridLayout->addWidget(pCommandLabel, 8, 0);
+    m_pGridLayout->addWidget(m_command, 8, 1, 1, 3);
+
+    //pCodingLabel
+    DLabel *pCodingLabel = new DLabel(tr("Encoding:"));
+    setLabelStyle(pCodingLabel);
+    m_pGridLayout->addWidget(pCodingLabel, 9, 0);
+    m_pGridLayout->addWidget(m_coding, 9, 1, 1, 3);
+
+    //pBackspaceKeyLabel
+    DLabel *pBackspaceKeyLabel = new DLabel(tr("Backspace key:"));
+    setLabelStyle(pBackspaceKeyLabel);
+    m_pGridLayout->addWidget(pBackspaceKeyLabel, 10, 0);
+    m_pGridLayout->addWidget(m_backSapceKey, 10, 1, 1, 3);
+
+    //pDeleteKeyLabel
+    DLabel *pDeleteKeyLabel = new DLabel(tr("Delete key:"));
+    setLabelStyle(pDeleteKeyLabel);
+    m_pGridLayout->addWidget(pDeleteKeyLabel, 11, 0);
+    m_pGridLayout->addWidget(m_deleteKey, 11, 1, 1, 3);
+
+    //m_delServer
     m_delServer->setText(tr("Delete server"));
-    m_VBoxLayout->addWidget(m_delServer, 0, Qt::AlignHCenter);
-    m_delServer->hide();
-    seniorWidget->hide();
+    m_pGridLayout->addWidget(m_delServer, 12, 0, 1, 4, Qt::AlignCenter);
+
+    m_VBoxLayout->addLayout(m_pGridLayout, 1);
+
+    //hide after m_advancedOptions
+    setAdvanceRegionVisible(false);
 
     DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
     connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
-        seniorWidget->show();
-        setTabOrder(m_advancedOptions, m_group);
-        m_advancedOptions->hide();
-        upItem->changeSize(this->width(), 0);
-        downItem->changeSize(this->width(), 0);
-        if (m_type == SCT_MODIFY) {
-            m_delServer->show();
-            this->setFixedHeight(670);
-            qDebug() << "remote dialog show advance options";
-        } else {
-            this->setFixedHeight(630);
-        }
+        setAdvanceRegionVisible(true);
+
     });
 
     DPushButton *pCancelButton = new DPushButton(tr("Cancel", "button"));
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add", "button"));
     //Add a line by m000750 zhangmeng 2020-04-22设置回车触发默认按钮
     pAddSaveButton->setDefault(true);
-    if (m_type == SCT_MODIFY) {
+    if (SCT_MODIFY == m_type) {
         m_titleLabel->setText(tr("Edit Server"));
         pAddSaveButton->setText(tr("Save", "button"));
     }
@@ -313,8 +279,7 @@ void ServerConfigOptDlg::initUI()
     pBtHbLayout->addWidget(pCancelButton);
     pBtHbLayout->addWidget(line);
     pBtHbLayout->addWidget(pAddSaveButton);
-    m_VBoxLayout->addStretch(10);
-    m_VBoxLayout->addLayout(pBtHbLayout, Qt::AlignBottom);
+    m_VBoxLayout->addLayout(pBtHbLayout);
     setLayout(m_VBoxLayout);
 
     connect(pCancelButton, &DPushButton::clicked, this, [ = ]() {
@@ -337,11 +302,11 @@ inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::Co
     DPalette palette = m_titleLabel->palette();
     //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
     QColor color;
-    if (themeType == DApplicationHelper::DarkType) {
+    if (DApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 255);
-    } else {
+    else
         color = QColor::fromRgb(0, 26, 46, 255);
-    }
+
     palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
 
@@ -358,7 +323,7 @@ void ServerConfigOptDlg::initData()
     m_backSapceKey->addItems(backSpaceKeyList);
     QList<QString> deleteKeyList = getDeleteKey();
     m_deleteKey->addItems(deleteKeyList);
-    if (m_type == SCT_MODIFY && m_curServer != nullptr) {
+    if (SCT_MODIFY == m_type && m_curServer != nullptr) {
         m_serverName->setText(m_curServer->m_serverName);
         m_currentServerName = m_serverName->text();
         m_address->setText(m_curServer->m_address);
@@ -393,9 +358,8 @@ QList<QString> ServerConfigOptDlg::getTextCodec()
     QList<QString> textCodecList;
     for (QByteArray &byteArr : list) {
         QString str = QString(byteArr);
-        if (!textCodecList.contains(str)) {
+        if (!textCodecList.contains(str))
             textCodecList.append(str);
-        }
     }
     return textCodecList;
 }
@@ -403,22 +367,22 @@ QList<QString> ServerConfigOptDlg::getTextCodec()
 QList<QString> ServerConfigOptDlg::getBackSpaceKey()
 {
     QList<QString> eraseKeyList;
-    eraseKeyList.append(tr("ascii-del"));
-    eraseKeyList.append(tr("auto"));
-    eraseKeyList.append(tr("control-h"));
-    eraseKeyList.append(tr("escape-sequence"));
-    eraseKeyList.append(tr("tty"));
+    eraseKeyList.append(("ascii-del"));
+    eraseKeyList.append(("auto"));
+    eraseKeyList.append(("control-h"));
+    eraseKeyList.append(("escape-sequence"));
+    eraseKeyList.append(("tty"));
     return eraseKeyList;
 }
 
 QList<QString> ServerConfigOptDlg::getDeleteKey()
 {
     QList<QString> eraseKeyList;
-    eraseKeyList.append(tr("escape-sequence"));
-    eraseKeyList.append(tr("ascii-del"));
-    eraseKeyList.append(tr("auto"));
-    eraseKeyList.append(tr("control-h"));
-    eraseKeyList.append(tr("tty"));
+    eraseKeyList.append(("escape-sequence"));
+    eraseKeyList.append(("ascii-del"));
+    eraseKeyList.append(("auto"));
+    eraseKeyList.append(("control-h"));
+    eraseKeyList.append(("tty"));
     return eraseKeyList;
 }
 
@@ -426,7 +390,6 @@ void ServerConfigOptDlg::setLabelStyle(DLabel *label)
 {
     label->setAlignment(Qt::AlignLeft);
     label->setAlignment(Qt::AlignVCenter);
-    label->setFixedWidth(100);
     label->setMinimumHeight(36);
 
     DFontSizeManager::instance()->bind(label, DFontSizeManager::T6);
@@ -438,7 +401,7 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 
 void ServerConfigOptDlg::updataData(ServerConfig *curServer)
 {
-    qDebug() << "ServerConfigOptDlg server configuration options updata data.";
+    qInfo() << "ServerConfigOptDlg server configuration options updata data.";
     // 读取配置
     QList<QString> textCodeList = getTextCodec();
     QList<QString> backSpaceKeyList = getBackSpaceKey();
@@ -490,14 +453,58 @@ ServerConfig ServerConfigOptDlg::getData()
     return config;
 }
 
-void ServerConfigOptDlg::resetCurServer(ServerConfig config)
+void ServerConfigOptDlg::resetCurServer(ServerConfig *config)
 {
-    m_curServer = &config;
+    m_curServer = config;
+}
+
+void ServerConfigOptDlg::setAdvanceRegionVisible(bool isVisible)
+{
+    //隐藏或显示【高级选项】下方的控件
+    int hideRow = m_pGridLayout->rowCount();
+    for(int row = 0; row < m_pGridLayout->rowCount(); row ++) {
+        for(int column = 0; column < m_pGridLayout->columnCount(); column ++) {
+            QLayoutItem *item = m_pGridLayout->itemAtPosition(row, column);
+            QWidget *cell = item ? item->widget() : nullptr;
+            if(nullptr == cell)
+                continue;
+            //获取【高级选项】对应的行
+            if(cell == m_advancedOptions)
+                hideRow = row;
+            //【高级选项】、【删除服务器】另外处理
+            if(cell == m_advancedOptions
+                    || cell == m_delServer)
+                continue;
+            //隐藏或显示【高级选项】下方的控件
+            if(row > hideRow)
+                cell->setVisible(isVisible);
+        }
+    }
+    //点击【高级选项】展开
+    if(isVisible) {
+        //切换【高级选项】的焦点
+        m_advancedOptions->hide();
+        if(m_advancedOptions->hasFocus())
+            m_group->setFocus();
+        //修改界面
+        if (SCT_MODIFY == m_type) {
+            m_delServer->show();
+            //singleShot是为了避免size和resize的不一样
+            QTimer::singleShot(0, this, [=](){resize(459, 670);});
+        } else {
+            m_delServer->hide();
+            QTimer::singleShot(0, this, [=](){resize(459, 630);});
+        }
+    } else {
+        m_advancedOptions->show();
+        m_delServer->hide();
+        resize(459, 392);
+    }
 }
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
-    qDebug() << "ServerConfigOptDlg add and save button clicled slot function.";
+    qInfo() << "ServerConfigOptDlg add and save button clicled slot function.";
     // 服务器名为空
     if (m_serverName->text().trimmed().isEmpty()) {
         m_serverName->showAlertMessage(tr("Please enter a server name"), m_serverName);
@@ -530,8 +537,8 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     m_currentServerName = m_serverName->text();
     //------------------------------------------------------------------//
     //--added by qinyaning(nyq) to solve the bug 19116: You can create a new remote server with the same name--//
-    if ((m_type == SCT_ADD)
-            || ((m_type == SCT_MODIFY && m_curServer != nullptr)
+    if ((SCT_ADD == m_type)
+            || ((SCT_MODIFY == m_type  && m_curServer != nullptr)
                 && (m_curServer->m_serverName.trimmed() != m_serverName->text().trimmed()))) { /*此时用户已经在修改模式下修改了服务器名称*/
         QMap<QString, QList<ServerConfig *>> severConfigs = ServerConfigManager::instance()->getServerConfigs();
         for (QMap<QString, QList<ServerConfig *>>::iterator iter = severConfigs.begin(); iter != severConfigs.end(); ++iter) {
@@ -560,15 +567,14 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     config->m_encoding = m_coding->currentText();
     config->m_backspaceKey = m_backSapceKey->currentText();
     config->m_deleteKey = m_deleteKey->currentText();
-    if (m_type == SCT_ADD) {
+    if (SCT_ADD == m_type) {
         ServerConfigManager::instance()->saveServerConfig(config);
         ServerConfigManager::instance()->refreshList();
-    } else if (m_type == SCT_MODIFY && m_curServer != nullptr) {
+    } else if (SCT_MODIFY == m_type && m_curServer != nullptr) {
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
-    qDebug() << __FUNCTION__ << "add or save remote config";
     accept();
-    qDebug() << __FUNCTION__ << "add or save remote config finish";
+    qInfo() << __FUNCTION__ << "add or save remote config finish";
 }
 
 void ServerConfigOptDlg::slotFileChooseDialog()
@@ -581,7 +587,7 @@ void ServerConfigOptDlg::slotFileChooseDialog()
 
     int code = dialog.exec();
 
-    if (code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
+    if (QDialog::Accepted == code && !dialog.selectedFiles().isEmpty()) {
         QStringList list = dialog.selectedFiles();
         const QString fileName = list.first();
 

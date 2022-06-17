@@ -256,45 +256,50 @@ unsigned short Konsole::vt100_graphics[32] =
 
 void TerminalDisplay::fontChange(const QFont&)
 {
-  QFontMetrics fm(font());
-  /******** Modify by ut001000 renfeixiang 2020-06-24:修改字体高度的获取方法，由QFontMetrics的height获取，改成_fontWidth + font().pointSize() bug#34902 Begin***************/
-  //_fontHeight = fm.height() + _lineSpacing; //条幅黑体字体使用QFontMetrics的height获取字体高度是统一的1值，显示字体失败，现在忽略字体原有高度
+    QFontMetrics fm(font());
+    _fontHeight = fm.height() + _lineSpacing;
 
-  // waba TerminalDisplay 1.123:
-  // "Base character width on widest ASCII character. This prevents too wide
-  //  characters in the presence of double wide (e.g. Japanese) characters."
-  // Get the width from representative normal width characters
-  _fontWidth = qRound((static_cast<double>(fm.horizontalAdvance(QStringLiteral(REPCHAR))) / static_cast<double>(qstrlen(REPCHAR))));
+    Q_ASSERT(_fontHeight > 0);
 
-  //修改方法：修改字体高度的获取方法，修改成字体宽度+字体的大小：_fontWidth + font().pointSize()
-  _fontHeight = _fontWidth + font().pointSize() + _lineSpacing;
-  /******** Modify by ut001000 renfeixiang 2020-06-24: bug#34902 End***************/
-  _fixedFont = true;
+    /* TODO: When changing the three deprecated width() below
+     *       consider the info in
+     *       https://phabricator.kde.org/D23144 comments
+     *       horizontalAdvance() was added in Qt 5.11 (which should be the
+     *       minimum for 20.04 or 20.08 KDE Applications release)
+     */
 
-  const int fw = fm.horizontalAdvance(QLatin1Char(REPCHAR[0]));
-  for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
-      if (fw != fm.horizontalAdvance(QLatin1Char(REPCHAR[i]))) {
-          _fixedFont = false;
-          break;
-      }
-  }
+    // waba TerminalDisplay 1.123:
+    // "Base character width on widest ASCII character. This prevents too wide
+    //  characters in the presence of double wide (e.g. Japanese) characters."
+    // Get the width from representative normal width characters
+    _fontWidth = qRound((static_cast<double>(fm.horizontalAdvance(QStringLiteral(REPCHAR))) / static_cast<double>(qstrlen(REPCHAR))));
 
-  if (_fontWidth < 1)
-    _fontWidth=1;
+    _fixedFont = true;
 
-  _fontAscent = fm.ascent();
+    const int fw = fm.horizontalAdvance(QLatin1Char(REPCHAR[0]));
+    for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
+        if (fw != fm.horizontalAdvance(QLatin1Char(REPCHAR[i]))) {
+            _fixedFont = false;
+            break;
+        }
+    }
 
-  emit changedFontMetricSignal( _fontHeight, _fontWidth );
-  propagateSize();
+    if (_fontWidth < 1)
+        _fontWidth=1;
 
-  // We will run paint event testing procedure.
-  // Although this operation will destory the orignal content,
-  // the content will be drawn again after the test.
-  //_drawTextTestFlag = true;//
-  //----------add by nyq to slove the twinkle of the window--
-  _drawTextTestFlag = false;
-  //---------------------------------------------------------
-  update();
+    _fontAscent = fm.ascent();
+
+    emit changedFontMetricSignal( _fontHeight, _fontWidth );
+    propagateSize();
+
+    // We will run paint event testing procedure.
+    // Although this operation will destory the orignal content,
+    // the content will be drawn again after the test.
+    //_drawTextTestFlag = true;//
+    //----------add by nyq to slove the twinkle of the window--
+    _drawTextTestFlag = false;
+    //---------------------------------------------------------
+    update();
 }
 
 void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
@@ -438,8 +443,9 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_resizing(false)
 ,_terminalSizeHint(false)
 ,_terminalSizeStartup(true)
-,_bidiEnabled(false)
+,_bidiEnabled(true) //默认开启双向文本（Bi-directional text）mode，和konsole保持同步
 ,_mouseMarks(false)
+, _alternateScrolling(true)
 ,_actSel(0)
 ,_wordSelectionMode(false)
 ,_lineSelectionMode(false)
@@ -2364,7 +2370,6 @@ void TerminalDisplay::extendSelection( const QPoint& position )
   int offset = 0;
   if ( !_wordSelectionMode && !_lineSelectionMode )
   {
-    int i;
     QChar selClass;
 
     bool left_not_right = ( here.y() < _iPntSelCorr.y() ||
@@ -2380,7 +2385,7 @@ void TerminalDisplay::extendSelection( const QPoint& position )
     QPoint right = left_not_right ? _iPntSelCorr : here;
     if ( right.x() > 0 && !_columnSelectionMode )
     {
-      i = loc(right.x(),right.y());
+      int i = loc(right.x(),right.y());
       if (i>=0 && i<=_imageSize) {
         selClass = charClass(_image[i-1].character);
        /* if (selClass == ' ')
@@ -2650,30 +2655,24 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
     //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
     initKeyBoardSelection();
 
-  if (ev->orientation() != Qt::Vertical)
-    return;
+    if (ev->orientation() != Qt::Vertical)
+        return;
 
-  // if the terminal program is not interested mouse events
-  // then send the event to the scrollbar if the slider has room to move
-  // or otherwise send simulated up / down key presses to the terminal program
-  // for the benefit of programs such as 'less'
-  if ( _mouseMarks )
-  {
-    bool canScroll = _scrollBar->maximum() > 0;
-      if (canScroll)
-        _scrollBar->event(ev);
-    else
+    // if the terminal program is not interested mouse events
+    // then send the event to the scrollbar if the slider has room to move
+    // or otherwise send simulated up / down key presses to the terminal program
+    // for the benefit of programs such as 'less'
+
+    if ( _mouseMarks && _scrollBar->maximum() > 0)
     {
+        _scrollBar->event(ev);
+    } else if(_mouseMarks && !SessionManager::instance()->idToSession(_sessionId)->isPrimaryScreen() && _alternateScrolling) {
         // assume that each Up / Down key event will cause the terminal application
         // to scroll by one line.
         //
         // to get a reasonable scrolling speed, scroll by one line for every 5 degrees
         // of mouse wheel rotation.  Mouse wheels typically move in steps of 15 degrees,
         // giving a scroll of 3 lines
-
-        // commit this to fix bug 17772, Because this code will turn the scrolling operation
-        // into the up and down keys of the keyboard and send the keyboard signal
-        /*
         int key = ev->delta() > 0 ? Qt::Key_Up : Qt::Key_Down;
 
         // QWheelEvent::delta() gives rotation in eighths of a degree
@@ -2684,22 +2683,18 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 
         for (int i=0;i<linesToScroll;i++)
             emit keyPressedSignal(&keyScrollEvent);
-        */
+    } else if(!_mouseMarks) {
+        // terminal program wants notification of mouse activity
+
+        int charLine;
+        int charColumn;
+        getCharacterPosition( ev->pos() , charLine , charColumn );
+
+        emit mouseSignal( ev->delta() > 0 ? 4 : 5,
+                          charColumn + 1,
+                          charLine + 1 +_scrollBar->value() -_scrollBar->maximum() ,
+                          0);
     }
-  }
-  else
-  {
-    // terminal program wants notification of mouse activity
-
-    int charLine;
-    int charColumn;
-    getCharacterPosition( ev->pos() , charLine , charColumn );
-
-    emit mouseSignal( ev->delta() > 0 ? 4 : 5,
-                      charColumn + 1,
-                      charLine + 1 +_scrollBar->value() -_scrollBar->maximum() ,
-                      0);
-  }
 }
 
 void TerminalDisplay::tripleClickTimeout()
@@ -2809,6 +2804,12 @@ void TerminalDisplay::setUsesMouse(bool on)
         emit usesMouseChanged();
     }
 }
+
+void TerminalDisplay::setAlternateScrolling(bool enable)
+{
+    _alternateScrolling = enable;
+}
+
 bool TerminalDisplay::usesMouse() const
 {
     return _mouseMarks;
@@ -2864,7 +2865,7 @@ void TerminalDisplay::bracketText(QString& text)
 void TerminalDisplay::setSelection(const QString& t)
 {
     /******** Modify by n014361 wangpeili 2020-02-12: 自动拷贝功能，需发出可拷贝信号***********×****/
-    if(t != QApplication::clipboard()->text(QClipboard::Selection))
+    if(t != QApplication::clipboard()->text(QClipboard::Clipboard))
     {
         selectionChanged();
     }
@@ -3638,11 +3639,11 @@ bool AutoScrollHandler::eventFilter(QObject* watched,QEvent* event)
     Q_ASSERT( watched == parent() );
     Q_UNUSED( watched );
 
-    QMouseEvent* mouseEvent = (QMouseEvent*)event;
     switch (event->type())
     {
         case QEvent::MouseMove:
         {
+            QMouseEvent* mouseEvent = static_cast<QMouseEvent *>(event);
             bool mouseInWidget = widget()->rect().contains(mouseEvent->pos());
 
             if (mouseInWidget)
@@ -3659,7 +3660,7 @@ bool AutoScrollHandler::eventFilter(QObject* watched,QEvent* event)
                 break;
         }
         case QEvent::MouseButtonRelease:
-            if (_timerId && (mouseEvent->buttons() & ~Qt::LeftButton))
+            if (_timerId && (static_cast<QMouseEvent *>(event)->buttons() & ~Qt::LeftButton))
             {
                 killTimer(_timerId);
                 _timerId = 0;
@@ -3931,8 +3932,7 @@ bool TerminalScreen::event(QEvent* event)
     if (event->type() == QEvent::Gesture)
         return gestureEvent(static_cast<QGestureEvent*>(event));
 
-    QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-    if (event->type() == QEvent::MouseButtonRelease && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    if (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent*>(event)->source() == Qt::MouseEventSynthesizedByQt)
     {
         qDebug()<< "action is over" << m_gestureAction;
 
@@ -3942,8 +3942,9 @@ bool TerminalScreen::event(QEvent* event)
 
         m_gestureAction = GA_null;
     }
-    if (event->type() == QEvent::MouseButtonPress && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    if (event->type() == QEvent::MouseButtonPress && static_cast<QMouseEvent *>(event)->source() == Qt::MouseEventSynthesizedByQt)
     {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
         m_lastMouseTime = mouseEvent->timestamp();
         m_lastMouseYpos = mouseEvent->pos().y();
 
@@ -3953,8 +3954,9 @@ bool TerminalScreen::event(QEvent* event)
             tween.stop();
         }
     }
-    if (event->type() == QEvent::MouseMove && mouseEvent->source() == Qt::MouseEventSynthesizedByQt)
+    if (event->type() == QEvent::MouseMove && static_cast<QMouseEvent *>(event)->source() == Qt::MouseEventSynthesizedByQt)
     {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
         const ulong diffTime = mouseEvent->timestamp() - m_lastMouseTime;
         const int diffYpos = mouseEvent->pos().y() - m_lastMouseYpos;
         m_lastMouseTime = mouseEvent->timestamp();
@@ -3987,7 +3989,7 @@ bool TerminalScreen::event(QEvent* event)
 
     /***add by ut001121 zhangmeng 20200915 修复BUG46979***/
     if (event->type() == QEvent::MouseMove
-            && mouseEvent->source() != Qt::MouseEventSynthesizedByQt
+            && static_cast<QMouseEvent *>(event)->source() != Qt::MouseEventSynthesizedByQt
             && m_gestureAction == GA_slide){
         return true;
     }

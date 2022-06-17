@@ -50,7 +50,7 @@ void IconButton::keyPressEvent(QKeyEvent *event)
 
 void IconButton::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << event->reason() << "IconButton" << this;
+    qInfo() << event->reason() << "IconButton" << this;
     emit focusOut(event->reason());
     DIconButton::focusOutEvent(event);
 }
