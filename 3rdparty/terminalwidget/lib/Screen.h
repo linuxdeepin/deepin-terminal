@@ -40,7 +40,7 @@
 #define MODE_Cursor    4
 #define MODE_NewLine   5
 #define MODES_SCREEN   6
-#define MODE_AppScreen       (MODES_SCREEN+0)   // Mode #1
+#define MODE_AppScreen 7
 
 namespace Konsole
 {
