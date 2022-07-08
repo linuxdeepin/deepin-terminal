@@ -111,6 +111,8 @@ public://private:
     CustomCommandOptDlg *m_pdlg = nullptr;
     QVBoxLayout *m_vlayout = nullptr;
     bool m_bpushButtonHaveFocus = false;
+    DLabel *m_imageLabel = nullptr;
+    DLabel *m_textLabel = nullptr;
 };
 
 #endif  // CUSTOMCOMMANDPANEL_H

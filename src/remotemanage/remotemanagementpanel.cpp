@@ -23,6 +23,7 @@
 #include "utils.h"
 
 #include <DLog>
+#include <DHiDPIHelper>
 
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -111,6 +112,14 @@ void RemoteManagementPanel::refreshSearchState()
     } else {
         m_searchEdit->hide();
     }
+
+    if (m_listWidget->count() <= 0) {
+        m_textLabel->show();
+        m_imageLabel->show();
+    } else {
+        m_textLabel->hide();
+        m_imageLabel->hide();
+    }
 }
 
 void RemoteManagementPanel::onItemClicked(const QString &key)
@@ -180,6 +189,15 @@ void RemoteManagementPanel::initUI()
     m_pushButton->setFixedHeight(COMMONHEIGHT);
     m_pushButton->setText(tr("Add Server"));
 
+    m_textLabel = new DLabel(this);
+    m_textLabel->setFixedSize(96, 18);
+    m_textLabel->setText(tr("No servers yet"));
+
+    m_imageLabel = new DLabel(this);
+    m_imageLabel->setFixedSize(QSize(88, 88));
+    m_imageLabel->setPixmap(DHiDPIHelper::loadNxPixmap(":/other/server_group.svg"));
+
+
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setContentsMargins(0, 0, 0, 0);
     hlayout->addSpacing(SPACEWIDTH);
@@ -187,6 +205,32 @@ void RemoteManagementPanel::initUI()
     hlayout->addSpacing(SPACEWIDTH);
     hlayout->setSpacing(0);
     hlayout->setMargin(0);
+
+    QHBoxLayout *textLayout = new QHBoxLayout();
+    textLayout->setContentsMargins(0, 0, 0, 0);
+    textLayout->addStretch();
+    textLayout->addWidget(m_textLabel);
+    textLayout->addStretch();
+    textLayout->setSpacing(0);
+    textLayout->setMargin(0);
+
+    QHBoxLayout *imageLayout = new QHBoxLayout();
+    imageLayout->setContentsMargins(0, 0, 0, 0);
+    imageLayout->addStretch();
+    imageLayout->addWidget(m_imageLabel);
+    imageLayout->addStretch();
+    imageLayout->setSpacing(0);
+    imageLayout->setMargin(0);
+
+    QVBoxLayout *backLayout = new QVBoxLayout();
+    backLayout->setContentsMargins(0, 0, 0, 0);
+    backLayout->addStretch();
+    backLayout->addLayout(imageLayout);
+    backLayout->setSpacing(SPACEWIDTH);
+    backLayout->addLayout(textLayout);
+    backLayout->addStretch();
+    backLayout->setSpacing(0);
+    backLayout->setMargin(0);
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
     btnLayout->setContentsMargins(0, 0, 0, 0);
@@ -201,6 +245,8 @@ void RemoteManagementPanel::initUI()
     vlayout->addSpacing(SPACEHEIGHT);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
+    vlayout->addLayout(backLayout);
+    vlayout->addStretch();
     vlayout->addLayout(btnLayout);
     vlayout->addSpacing(SPACEHEIGHT);
     vlayout->setMargin(0);
