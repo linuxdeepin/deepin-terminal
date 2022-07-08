@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>other/default-config.json</file>
         <file>other/ssh_login.sh</file>
+        <file>other/server_group.svg</file>
+        <file>other/command.svg</file>
         <file>logo/deepin-terminal.svg</file>
         <file>icons/deepin/builtin/light/icons/dt_server_44px.svg</file>
         <file>icons/deepin/builtin/light/icons/dt_server_group_44px.svg</file>

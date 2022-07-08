@@ -27,6 +27,7 @@
 #include <DVerticalLine>
 #include <DLog>
 #include <DDialog>
+#include <DHiDPIHelper>
 
 #include <QPixmap>
 #include <QEvent>
@@ -152,6 +153,14 @@ void CustomCommandPanel::refreshCmdSearchState()
     } else {
         m_searchEdit->hide();
     }
+
+    if (m_cmdListWidget->count() <= 0) {
+        m_textLabel->show();
+        m_imageLabel->show();
+    } else {
+        m_textLabel->hide();
+        m_imageLabel->hide();
+    }
 }
 
 void CustomCommandPanel::setFocusInPanel()
@@ -191,6 +200,40 @@ void CustomCommandPanel::initUI()
     m_pushButton->setFixedHeight(36);
     m_pushButton->setText(tr("Add Command"));
 
+    m_textLabel = new DLabel(this);
+    m_textLabel->setFixedSize(96, 18);
+    m_textLabel->setText(tr("No commands yet"));
+
+    m_imageLabel = new DLabel(this);
+    m_imageLabel->setFixedSize(QSize(88, 88));
+    m_imageLabel->setPixmap(DHiDPIHelper::loadNxPixmap(":/other/command.svg"));
+
+    QHBoxLayout *textLayout = new QHBoxLayout();
+    textLayout->setContentsMargins(0, 0, 0, 0);
+    textLayout->addStretch();
+    textLayout->addWidget(m_textLabel);
+    textLayout->addStretch();
+    textLayout->setSpacing(0);
+    textLayout->setMargin(0);
+
+    QHBoxLayout *imageLayout = new QHBoxLayout();
+    imageLayout->setContentsMargins(0, 0, 0, 0);
+    imageLayout->addStretch();
+    imageLayout->addWidget(m_imageLabel);
+    imageLayout->addStretch();
+    imageLayout->setSpacing(0);
+    imageLayout->setMargin(0);
+
+    QVBoxLayout *backLayout = new QVBoxLayout();
+    backLayout->setContentsMargins(0, 0, 0, 0);
+    backLayout->addStretch();
+    backLayout->addLayout(imageLayout);
+    backLayout->setSpacing(SPACEWIDTH);
+    backLayout->addLayout(textLayout);
+    backLayout->addStretch();
+    backLayout->setSpacing(0);
+    backLayout->setMargin(0);
+
     QHBoxLayout *btnLayout = new QHBoxLayout();
     btnLayout->addSpacing(10);
     btnLayout->addWidget(m_pushButton);
@@ -211,6 +254,8 @@ void CustomCommandPanel::initUI()
     vLayout->addSpacing(10);
     vLayout->addLayout(hLayout);
     vLayout->addWidget(m_cmdListWidget);
+    vLayout->addLayout(backLayout);
+    vLayout->addStretch();
     vLayout->addLayout(btnLayout);
     vLayout->addSpacing(10);
     setLayout(vLayout);

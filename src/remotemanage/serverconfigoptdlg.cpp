@@ -274,6 +274,7 @@ void ServerConfigOptDlg::initUI()
     pAddSaveButton->setPalette(pa);
     QHBoxLayout *pBtHbLayout = new QHBoxLayout();
     DVerticalLine *line = new DVerticalLine();
+    line->setFixedSize(3, 28);
     pBtHbLayout->setContentsMargins(10, 0, 10, 0);
     pBtHbLayout->setSpacing(9);
     pBtHbLayout->addWidget(pCancelButton);

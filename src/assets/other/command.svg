@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>command_dark</title>
+    <g id="dark" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.3">
+        <g id="终端窗口-自定义命令空" transform="translate(-893.000000, -293.000000)" fill="#C5CFE0">
+            <g id="Group-35" transform="translate(893.000000, 293.000000)">
+                <g id="cmd_light" transform="translate(19.333333, 10.666667)">
+                    <rect id="Rectangle-6" fill-rule="nonzero" x="0.666666667" y="53.3333333" width="11" height="11"></rect>
+                    <rect id="Rectangle-6" fill-rule="nonzero" x="19.6666667" y="53.3333333" width="11" height="11"></rect>
+                    <rect id="Rectangle-6" fill-rule="nonzero" x="37.6666667" y="53.3333333" width="11" height="11"></rect>
+                    <text id="&gt;_" font-family="SourceHanSansSC-Regular, Source Han Sans SC" font-size="22" font-weight="normal">
+                        <tspan x="9.66266667" y="26.3333333">&gt;_</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
