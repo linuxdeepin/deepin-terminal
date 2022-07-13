@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<TS version="2.1" language="hi_IN">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="112"/>
         <source>Name:</source>
-        <translation>Nome:</translation>
+        <translation>नाम :</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="114"/>
         <source>Command:</source>
-        <translation>Comando:</translation>
+        <translation>कमांड :</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="116"/>
         <source>Shortcuts:</source>
-        <translation>Atalhos:</translation>
+        <translation>शॉर्टकट :</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="127"/>
@@ -24,66 +24,66 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="205"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="211"/>
         <source>Required</source>
-        <translation>Obrigatório</translation>
+        <translation>आवश्यक</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="154"/>
         <source>Add Command</source>
-        <translation>Adicionar Comando</translation>
+        <translation>कमांड जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="160"/>
         <source>Edit Command</source>
-        <translation>Editar Comando</translation>
+        <translation>कमांड संपादन</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="170"/>
         <source>Delete Command</source>
-        <translation>Comando Excluir</translation>
+        <translation>कमांड हटाएँ</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="191"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="193"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>Adicionar</translation>
+        <translation>जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="195"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>Salvar</translation>
+        <translation>संचित करें</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="618"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>ठीक है</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="372"/>
         <source>Please enter a name</source>
-        <translation>Digite um nome</translation>
+        <translation>कृपया नाम दर्ज करें</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="386"/>
         <source>Please enter a command</source>
-        <translation>Digite um comando</translation>
+        <translation>कृपया कमांड दर्ज करें</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="436"/>
         <source>The name already exists,</source>
-        <translation>O nome já existe,</translation>
+        <translation>नाम पहले से प्रयुक्त है,</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="437"/>
         <source>please input another one.</source>
-        <translation>insira outro.</translation>
+        <translation>कृपया अन्य दर्ज करें।</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="201"/>
         <source>Add Command</source>
-        <translation>Adicionar Comando</translation>
+        <translation>कमांड जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="205"/>
@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/customcommand/customcommandplugin.cpp" line="50"/>
         <source>Custom commands</source>
-        <translation>Comandos personalizados</translation>
+        <translation>अनुकूलित कमांड</translation>
     </message>
 </context>
 <context>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="146"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>खोजें</translation>
     </message>
 </context>
 <context>
@@ -120,54 +120,54 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="236"/>
         <source>Custom Theme</source>
-        <translation>Tema Personalizado</translation>
+        <translation>अनुकूलित थीम</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="260"/>
         <source>Style:</source>
-        <translation>Estilo:</translation>
+        <translation>शैली :</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="264"/>
         <source>Light</source>
-        <translation>Claro</translation>
+        <translation>हल्का </translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="269"/>
         <source>Dark</source>
-        <translation>Escuro</translation>
+        <translation>गहरा</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="323"/>
         <source>Fore color:</source>
-        <translation>Cor de frente:</translation>
+        <translation>फोरग्राउंड रंग :</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="330"/>
         <source>Back color:</source>
-        <translation>Cor de fundo:</translation>
+        <translation>बैकग्राउंड रंग :</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="348"/>
         <source>Prompt PS1:</source>
-        <translation>Prompt PS1:</translation>
+        <translation>सूचक PS1:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="352"/>
         <source>Prompt PS2:</source>
-        <translation>Prompt PS2:</translation>
+        <translation>सूचक PS2:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="423"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="431"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Confirmar</translation>
+        <translation>पुष्टि करें</translation>
     </message>
 </context>
 <context>
@@ -175,13 +175,13 @@
     <message>
         <location filename="../src/views/listview.cpp" line="298"/>
         <source>Delete Server</source>
-        <translation>Excluir Servidor</translation>
+        <translation>सर्वर हटाएँ</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="298"/>
         <location filename="../src/views/listview.cpp" line="492"/>
         <source>Are you sure you want to delete %1?</source>
-        <translation>Excluir %1?</translation>
+        <translation>क्या आप स्पष्ट होकर %1 को हटाना चाहते हैं ?</translation>
     </message>
 </context>
 <context>
@@ -190,34 +190,34 @@
         <location filename="../src/main/mainwindow.cpp" line="269"/>
         <location filename="../src/main/mainwindow.cpp" line="324"/>
         <source>New window</source>
-        <translation>Nova janela</translation>
+        <translation>नवीन विंडो</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="339"/>
         <source>Settings</source>
-        <translation>Configurações</translation>
+        <translation>सेटिंग्स</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="755"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="757"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>Fechar</translation>
+        <translation>बंद करें</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1830"/>
         <source>Type path to download file</source>
-        <translation>Digite o caminho para baixar o arquivo</translation>
+        <translation>फाइल डाउनलोड हेतु पथ दर्ज करें</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2136"/>
         <source>Custom Theme</source>
-        <translation>Tema Personalizado</translation>
+        <translation>अनुकूलित थीम</translation>
     </message>
 </context>
 <context>
@@ -225,241 +225,241 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Copy on select</source>
-        <translation>Copiar ao selecionar</translation>
+        <translation>चयन होने पर कॉपी करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Cursor blink</source>
-        <translation>Intermitência do cursor</translation>
+        <translation>निमिष कर्सर</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
         <source>Cursor style</source>
-        <translation>Estilo do cursor</translation>
+        <translation>कर्सर शैली</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="39"/>
         <source>Scroll on keystroke</source>
-        <translation>Rolar ao teclar</translation>
+        <translation>कुंजीपटल द्वारा स्क्रॉल</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Scroll on output</source>
-        <translation>Rolar na saída</translation>
+        <translation>आउटपुट स्क्रॉल करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>Ocultar a janela Quake após perder o foco</translation>
+        <translation>उपयोक्ता द्वारा विंडो उपयोग न होने पर Quake विंडो अदृश्य करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
         <location filename="../src/main/service.cpp" line="157"/>
         <source>Blur background</source>
-        <translation>Desfocar o fundo</translation>
+        <translation>बैकग्राउंड हेतु धुंध प्रभाव</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="47"/>
         <source>Use on starting</source>
-        <translation>Utilizar na inicialização</translation>
+        <translation>आरंभ होने पर उपयोग करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="49"/>
         <source>Font</source>
-        <translation>Fonte</translation>
+        <translation>मुद्रलिपि</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="51"/>
         <source>Font size</source>
-        <translation>Tamanho da fonte</translation>
+        <translation>मुद्रलिपि आकार</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
         <location filename="../src/main/service.cpp" line="180"/>
         <source>Opacity</source>
-        <translation>Opacidade</translation>
+        <translation>अपारदर्शिता</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="55"/>
         <source>Advanced</source>
-        <translation>Avançado</translation>
+        <translation>विस्तृत</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Cursor</source>
-        <translation>Cursor</translation>
+        <translation>कर्सर </translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Scroll</source>
-        <translation>Rolagem</translation>
+        <translation>स्क्रॉल</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="61"/>
         <source>Window</source>
-        <translation>Janela</translation>
+        <translation>विंडो</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Basic</source>
-        <translation>Básico</translation>
+        <translation>सामान्य</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Interface</source>
-        <translation>Interface</translation>
+        <translation>अंतरफलक</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Shortcuts</source>
-        <translation>Atalhos</translation>
+        <translation>शॉर्टकट</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1672"/>
         <source>Others</source>
-        <translation>Outros</translation>
+        <translation>अन्य</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/terminalapplication.cpp" line="36"/>
         <location filename="../src/main/mainwindow.cpp" line="1670"/>
         <source>Terminal</source>
-        <translation>Terminal</translation>
+        <translation>टर्मिनल</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Workspace</source>
-        <translation>Área de Trabalho</translation>
+        <translation>कार्यस्थल</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Custom commands</source>
-        <translation>Comandos personalizados</translation>
+        <translation>अनुकूलित कमांड</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Display shortcuts</source>
-        <translation>Exibir atalhos</translation>
+        <translation>शॉर्टकट दिखाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Remote management</source>
-        <translation>Gerenciamento remoto</translation>
+        <translation>दूरस्थ प्रबंधन</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>New tab</source>
-        <translation>Nova aba</translation>
+        <translation>नवीन टैब</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Next tab</source>
-        <translation>Próxima aba</translation>
+        <translation>अगला टैब</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Previous tab</source>
-        <translation>Aba anterior</translation>
+        <translation>पिछला टैब</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Select left workspace</source>
-        <translation>Selecionar o espaço de trabalho esquerdo</translation>
+        <translation>बायां कार्यस्थल चुनें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select lower workspace</source>
-        <translation>Selecionar o espaço de trabalho inferior</translation>
+        <translation>निचला कार्यस्थल चुनें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Select right workspace</source>
-        <translation>Selecionar o espaço de trabalho direito</translation>
+        <translation>दायां कार्यस्थल चुनें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select upper workspace</source>
-        <translation>Selecionar o espaço de trabalho superior</translation>
+        <translation>ऊपरी कार्यस्थल चुनें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Tab titles</source>
-        <translation>Títulos das abas</translation>
+        <translation>टैब शीर्षक</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 1</source>
-        <translation>Ir para a aba 1</translation>
+        <translation>टैब 1 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 2</source>
-        <translation>Ir para a aba 2</translation>
+        <translation>टैब 2 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 3</source>
-        <translation>Ir para a aba 3</translation>
+        <translation>टैब 3 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 4</source>
-        <translation>Ir para a aba 4</translation>
+        <translation>टैब 4 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 5</source>
-        <translation>Ir para a aba 5</translation>
+        <translation>टैब 5 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 6</source>
-        <translation>Ir para a aba 6</translation>
+        <translation>टैब 6 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 7</source>
-        <translation>Ir para a aba 7</translation>
+        <translation>टैब 7 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 8</source>
-        <translation>Ir para a aba 8</translation>
+        <translation>टैब 8 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 9</source>
-        <translation>Ir para a aba 9</translation>
+        <translation>टैब 9 पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="155"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>Desative o controle de fluxo usando Ctrl+S, Ctrl+Q</translation>
+        <translation>Ctrl+S, Ctrl+Q का उपयोग कर आउटपुट प्रवाह निष्क्रिय करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="157"/>
         <source>Shell profile</source>
-        <translation>Perfil do shell</translation>
+        <translation>शैल प्रोफाइल</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="203"/>
@@ -467,229 +467,229 @@
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Rename title</source>
-        <translation>Renomear título</translation>
+        <translation>शीर्षक बदलें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Fullscreen</source>
-        <translation>Tela Cheia</translation>
+        <translation>पूर्ण स्क्रीन</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation>कॉपी करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Default size</source>
-        <translation>Tamanho padrão</translation>
+        <translation>डिफ़ॉल्ट आकार</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Paste</source>
-        <translation>Colar</translation>
+        <translation>पेस्ट करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="91"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>खोजें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Select all</source>
-        <translation>Selecionar tudo</translation>
+        <translation>सभी चयनित करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <source>Jump to next command</source>
-        <translation>Ir para o próximo comando</translation>
+        <translation>अगली कमांड पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <source>Jump to previous command</source>
-        <translation>Ir para o comando anterior</translation>
+        <translation>पिछली कमांड पर जाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Zoom in</source>
-        <translation>Aumentar zoom</translation>
+        <translation>आकार बढ़ाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Zoom out</source>
-        <translation>Reduzir zoom</translation>
+        <translation>आकार घटाएँ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Close other windows</source>
-        <translation>Fechar outras janelas</translation>
+        <translation>अन्य विंडो बंद करें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="517"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Close other workspaces</source>
-        <translation>Fechar outros espaços de trabalho</translation>
+        <translation>अन्य कार्यस्थल बंद करें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1177"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>Impossível encontrar &quot;%1&quot;, iniciando com &quot;%2&quot; em vez disso. Verifique o perfil do shell.</translation>
+        <translation>&quot;%1&quot; की प्राप्ति विफल होने के कारण उसके स्थान पर &quot;%2&quot; आरंभ होगा। कृपया अपना शैल प्रोफाइल देखें।</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1183"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>Impossível abrir &quot;% 1&quot;, impossível executá-lo</translation>
+        <translation>&quot;%1&quot; को खोलना विफल होने के कारण उसे निष्पादित करना संभव नहीं है</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1185"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>Impossível localizar &quot;% 1&quot;, não foi possível executá-lo</translation>
+        <translation>&quot;%1&quot; की प्राप्ति विफल होने के कारण उसे निष्पादित करना संभव नहीं है</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1215"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation>A saída foi suspensa ao pressionar Ctrl+S. Pressionando Ctrl+Q irá retomar.</translation>
+        <translation>Ctrl+S कुंजी संयोजन दबाने के कारण आउटपुट स्थगित किया गया। पुनः जारी रखने हेतु Ctrl+Q दबाएँ।</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Close window</source>
-        <translation>Fechar janela</translation>
+        <translation>विंडो बंद करें </translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="514"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Close workspace</source>
-        <translation>Fechar espaço de trabalho</translation>
+        <translation>कार्यस्थल बंद करें</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Horizontal split</source>
-        <translation>Dividir horizontalmente</translation>
+        <translation>क्षैतिज विभाजन</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Vertical split</source>
-        <translation>Dividir verticalmente</translation>
+        <translation>लंबवत विभाजन</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Find</source>
-        <translation>Localizar</translation>
+        <translation>खोज</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="401"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="621"/>
         <location filename="../src/common/utils.cpp" line="254"/>
         <source>please set another one.</source>
-        <translation>Defina outro.</translation>
+        <translation>कृपया अन्य सेट करें।</translation>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="39"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>O Terminal é um emulador de terminal avançado com espaço de trabalho, múltiplas janelas, gerenciamento remoto, modo quake e outros recursos.</translation>
+        <translation>टर्मिनल - कार्यस्थल, एकाधिक विंडो, दूरस्थ प्रबंधन, मोड व अन्य सुविधाओं युक्त एक सशक्त टर्मिनल अनुकरण प्रोग्राम है।</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1668"/>
         <source>Tabs</source>
-        <translation>Abas</translation>
+        <translation>टैब</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="498"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Close tab</source>
-        <translation>Fechar aba</translation>
+        <translation>टैब बंद करें</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select tab</source>
-        <translation>Selecionar aba</translation>
+        <translation>टैब चुनें</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1688"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>Alterar o foco para o ícone &quot;+&quot;</translation>
+        <translation>&quot;+&quot; आइकन पर केंद्रित करें</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1776"/>
         <location filename="../src/common/utils.cpp" line="148"/>
         <source>Select file to upload</source>
-        <translation>Selecionar arquivo para enviar</translation>
+        <translation>अपलोड हेतु फाइल चुनें</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1783"/>
         <location filename="../src/common/utils.cpp" line="153"/>
         <source>Upload</source>
-        <translation>Upload</translation>
+        <translation>अपलोड करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>Programs are still running in terminal</source>
-        <translation>Alguns programas estão sendo executados no terminal</translation>
+        <translation>टर्मिनल में अभी भी प्रोग्राम कार्यरत हैं</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="173"/>
         <location filename="../src/common/utils.cpp" line="207"/>
         <source>Close this terminal?</source>
-        <translation>Fechar este terminal?</translation>
+        <translation>यह टर्मिनल बंद करें?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="174"/>
         <location filename="../src/common/utils.cpp" line="208"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
-        <translation>Há um processo em execução neste terminal. Ao fechar o terminal, irá matá-lo.</translation>
+        <translation>इस टर्मिनल पर अभी एक प्रक्रिया कार्यरत है। टर्मिनल बंद करने से वह प्रक्रिया समाप्त हो जाएगी।</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="178"/>
         <location filename="../src/common/utils.cpp" line="212"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
-        <translation>Existem %1 processos em execução neste terminal. Fechá-lo irá matar todos eles.</translation>
+        <translation>इस टर्मिनल पर अभी %1 प्रक्रियाएँ कार्यरत हैं। टर्मिनल बंद करने से वे सभी प्रक्रियाएँ समाप्त हो जाएँगी।</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="203"/>
         <source>Close this window?</source>
-        <translation>Fechar esta janela?</translation>
+        <translation>यह विंडो बंद करें?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="184"/>
         <location filename="../src/common/utils.cpp" line="204"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
-        <translation>Existem processos em execução nesta janela. Ao fechá-la, irá matar todos eles.</translation>
+        <translation>इस विंडो पर अभी प्रक्रियाएँ कार्यरत हैं। विंडो बंद करने से वे सभी प्रक्रियाएँ समाप्त हो जाएँगी।</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1846"/>
         <location filename="../src/common/utils.cpp" line="127"/>
         <source>Select a directory to save the file</source>
-        <translation>Selecione um diretório para salvar o arquivo</translation>
+        <translation>फाइल संचय हेतु डायरेक्टरी चुनें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation>Desinstalá-lo?</translation>
+        <translation>क्या आप निश्चित ही इसे हटाना चाहते हैं?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="234"/>
         <location filename="../src/common/utils.cpp" line="238"/>
         <source>Are you sure you want to uninstall this application?</source>
-        <translation>Desinstalar este aplicativo?</translation>
+        <translation>क्या आप निश्चित यह अनुप्रयोग हटाना चाहते हैं?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="235"/>
         <location filename="../src/common/utils.cpp" line="239"/>
         <source>You will not be able to use Terminal any longer.</source>
-        <translation>Você não poderá mais usar o Terminal.</translation>
+        <translation>अब आप टर्मिनल उपयोग नहीं कर सकेंगें।</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="304"/>
@@ -698,93 +698,93 @@
         <location filename="../src/common/utils.cpp" line="244"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="245"/>
         <location filename="../src/common/utils.cpp" line="289"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>ठीक है</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="329"/>
         <source>Execute a command in the terminal</source>
-        <translation>Executar um comando no terminal</translation>
+        <translation>टर्मिनल में कमांड निष्पादित करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="332"/>
         <source>Run script string in the terminal</source>
-        <translation>Executar o conjunto de scripts no terminal</translation>
+        <translation>स्क्रिप्ट वाक्यांश टर्मिनल में निष्पादित करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="323"/>
         <source>Set the work directory</source>
-        <translation>Definir o diretório de trabalho</translation>
+        <translation>कार्य डायरेक्टरी सेट करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="326"/>
         <source>Set the window mode on starting</source>
-        <translation>Definir o modo de janela ao iniciar</translation>
+        <translation>आरंभ होने पर विंडो मोड सेट करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Run in quake mode</source>
-        <translation>Executar no modo quake</translation>
+        <translation>Quake मोड में निष्पादित करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="338"/>
         <source>Keep terminal open when command finishes</source>
-        <translation>Manter o terminal aberto quando o comando finalizar</translation>
+        <translation>कमांड पूर्ण होने तक टर्मिनल खुला रखें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="517"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="379"/>
         <source>The name should be no more than 32 characters</source>
-        <translation>O nome não deve ter mais do que 32 caracteres</translation>
+        <translation>नाम में 32 से अधिक अक्षर नहीं होने चाहिए</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="587"/>
         <location filename="../src/main/mainwindow.cpp" line="1852"/>
         <location filename="../src/common/utils.cpp" line="133"/>
         <source>Select</source>
-        <translation>Selecionar</translation>
+        <translation>चुनें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="583"/>
         <source>Select the private key file</source>
-        <translation>Selecionar o arquivo da chave privada</translation>
+        <translation>निजी कुंजी की फाइल चुनें</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="132"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Tab title format</source>
-        <translation>Formato do título da aba</translation>
+        <translation>टैब शीर्षक प्रारूप</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="134"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Remote tab title format</source>
-        <translation>Formato do título da aba remota</translation>
+        <translation>दूरस्थ टैब शीर्षक प्रारूप</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="501"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Close other tabs</source>
-        <translation>Fechar as outras abas</translation>
+        <translation>अन्य टैब बंद करें</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="305"/>
         <source>Delete</source>
         <comment>button</comment>
-        <translation>Excluir</translation>
+        <translation>हटाएँ</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="494"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Confirmar</translation>
+        <translation>पुष्टि करें</translation>
     </message>
 </context>
 <context>
@@ -792,7 +792,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="190"/>
         <source>Add Server</source>
-        <translation>Adicionar Servidor</translation>
+        <translation>सर्वर जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="194"/>
@@ -805,12 +805,12 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="90"/>
         <source>Remote management</source>
-        <translation>Gerenciamento remoto</translation>
+        <translation>दूरस्थ प्रबंधन</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="216"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation>Antes de clicar com o botão direito para enviar e baixar os arquivos; verifique se os comandos rz e sz estão instalados no servidor.</translation>
+        <translation>दाएँ क्लिक द्वारा फाइलें अपलोड व डाउनलोड करने से पहले सुनिश्चित करें कि rz एवं sz कमांड सर्वर पर इंस्टॉल हैं।</translation>
     </message>
 </context>
 <context>
@@ -818,7 +818,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="225"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>खोजें</translation>
     </message>
 </context>
 <context>
@@ -826,107 +826,107 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="70"/>
         <source>Advanced options</source>
-        <translation>Opções avançadas</translation>
+        <translation>विस्तृत विकल्प</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="108"/>
         <source>Add Server</source>
-        <translation>Adicionar Servidor</translation>
+        <translation>सर्वर जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="144"/>
         <source>Server name:</source>
-        <translation>Nome do servidor:</translation>
+        <translation>सर्वर नाम :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="146"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="156"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="184"/>
         <source>Required</source>
-        <translation>Obrigatório</translation>
+        <translation>आवश्यक</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="154"/>
         <source>Address:</source>
-        <translation>Endereço:</translation>
+        <translation>पता :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="161"/>
         <source>Port:</source>
-        <translation>Porta:</translation>
+        <translation>पोर्ट :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="182"/>
         <source>Username:</source>
-        <translation>Nome de Usuário:</translation>
+        <translation>उपयोक्ता नाम :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>Password:</source>
-        <translation>Senha:</translation>
+        <translation>कूटशब्द :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="195"/>
         <source>Certificate:</source>
-        <translation>Certificado:</translation>
+        <translation>प्रमाणपत्र :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="211"/>
         <source>Group:</source>
-        <translation>Grupo:</translation>
+        <translation>समूह :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="217"/>
         <source>Path:</source>
-        <translation>Caminho:</translation>
+        <translation>पथ :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="223"/>
         <source>Command:</source>
-        <translation>Comando:</translation>
+        <translation>कमांड :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="229"/>
         <source>Encoding:</source>
-        <translation>Codificação:</translation>
+        <translation>एन्कोडिंग :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="235"/>
         <source>Backspace key:</source>
-        <translation>Tecla backspace:</translation>
+        <translation>बैकस्पेस कुंजी :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="241"/>
         <source>Delete key:</source>
-        <translation>Excluir chave:</translation>
+        <translation>कुंजी हटाएँ :</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="247"/>
         <source>Delete server</source>
-        <translation>Excluir servidor</translation>
+        <translation>सर्वर डिलीट करें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="261"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="262"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>Adicionar</translation>
+        <translation>जोड़ें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="266"/>
         <source>Edit Server</source>
-        <translation>Editar Servidor</translation>
+        <translation>सर्वर संपादन</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="267"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>Salvar</translation>
+        <translation>संचित करें</translation>
     </message>
     <message>
         <source>tty</source>
@@ -935,22 +935,22 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="511"/>
         <source>Please enter a server name</source>
-        <translation>Digite o nome do servidor</translation>
+        <translation>कृपया सर्वर नाम दर्ज करें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="524"/>
         <source>Please enter an IP address</source>
-        <translation>Digite um endereço de IP</translation>
+        <translation>कृपया आईपी पता दर्ज करें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="529"/>
         <source>Please enter a port</source>
-        <translation>Digite uma porta</translation>
+        <translation>कृपया पोर्ट दर्ज करें</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="535"/>
         <source>Please enter a username</source>
-        <translation>Digite um nome de usuário</translation>
+        <translation>कृपया उपयोक्ता नाम दर्ज करें</translation>
     </message>
     <message>
         <source>ascii-del</source>
@@ -958,7 +958,7 @@
     </message>
     <message>
         <source>auto</source>
-        <translation type="vanished">auto</translation>
+        <translation type="vanished">स्वतः</translation>
     </message>
     <message>
         <source>control-h</source>
@@ -971,12 +971,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="549"/>
         <source>The server name already exists,</source>
-        <translation>O nome do servidor já existe,</translation>
+        <translation>सर्वर नाम पहले से प्रयुक्त है,</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="550"/>
         <source>please input another one. </source>
-        <translation>insira outro.</translation>
+        <translation>कृपया अन्य दर्ज करें।</translation>
     </message>
 </context>
 <context>
@@ -985,7 +985,7 @@
         <location filename="../src/main/service.cpp" line="397"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>ठीक है</translation>
     </message>
 </context>
 <context>
@@ -993,22 +993,22 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Split screen</source>
-        <translation>Tela dividida</translation>
+        <translation>स्क्रीन विभाजन</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Fullscreen</source>
-        <translation>Tela Cheia</translation>
+        <translation>पूर्ण स्क्रीन</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Normal window</source>
-        <translation>Janela normal</translation>
+        <translation>सामान्य विंडो</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Maximum</source>
-        <translation>Maximizado</translation>
+        <translation>अधिकतम</translation>
     </message>
 </context>
 <context>
@@ -1017,14 +1017,14 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="283"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="292"/>
         <source>The shortcut %1 is invalid, </source>
-        <translation>O atalho %1 é inválido, </translation>
+        <translation>शॉर्टकट %1 अमान्य है,</translation>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="299"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="306"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="312"/>
         <source>The shortcut %1 was already in use, </source>
-        <translation>O atalho %1 já está em uso, </translation>
+        <translation>शॉर्टकट %1 पहले से प्रयुक्त है,</translation>
     </message>
 </context>
 <context>
@@ -1032,55 +1032,55 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="60"/>
         <source>Insert</source>
-        <translation>Inserir</translation>
+        <translation>प्रविष्ट करें</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>username: %u</source>
-        <translation>nome de usuário: %u</translation>
+        <translation>उपयोक्ता नाम : %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <source>username@: %U</source>
-        <translation>nome de usuário@: %U</translation>
+        <translation>उपयोक्ता नाम @: %U</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <source>remote host: %h</source>
-        <translation>host remoto: %h</translation>
+        <translation>दूरस्थ होस्ट : %h</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>session number: %#</source>
-        <translation>número da sessão: %#</translation>
+        <translation>सत्र संख्या : %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="110"/>
         <source>title set by shell: %w</source>
-        <translation>título definido pelo shell: %w</translation>
+        <translation>शैल द्वारा सेट शीर्षक : %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>program name: %n</source>
-        <translation>nome do programa: %n</translation>
+        <translation>प्रोग्राम नाम : %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>current directory (short): %d</source>
-        <translation>diretório atual (abreviado): %d</translation>
+        <translation>वर्तमान डायरेक्टरी (लघु): &amp;d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>current directory (long): %D</source>
-        <translation>diretório atual (longo): %D</translation>
+        <translation>वर्तमान डायरेक्टरी (दीर्घ): &amp;d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>local host: %h</source>
-        <translation>host local: %h</translation>
+        <translation>लोकल होस्ट : %h</translation>
     </message>
 </context>
 <context>
@@ -1088,90 +1088,90 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="483"/>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation>कॉपी करें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="486"/>
         <source>Paste</source>
-        <translation>Colar</translation>
+        <translation>पेस्ट करें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="495"/>
         <source>Open</source>
-        <translation>Abrir</translation>
+        <translation>खोलें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Open in file manager</source>
-        <translation>Abrir no Gerenciador de Arquivos</translation>
+        <translation>फाइल प्रबंधक में खोलें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="508"/>
         <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Horizontal split</source>
-        <translation>Dividir horizontalmente</translation>
+        <translation>क्षैतिज विभाजन</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="511"/>
         <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Vertical split</source>
-        <translation>Dividir verticalmente</translation>
+        <translation>लंबवत विभाजन</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="521"/>
         <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>New tab</source>
-        <translation>Nova aba</translation>
+        <translation>नवीन टैब</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="528"/>
         <source>Exit fullscreen</source>
-        <translation>Sair da tela cheia</translation>
+        <translation>पूर्ण स्क्रीन बंद करें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="530"/>
         <source>Fullscreen</source>
-        <translation>Tela cheia</translation>
+        <translation>पूर्ण स्क्रीन</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="533"/>
         <source>Find</source>
-        <translation>Localizar</translation>
+        <translation>खोज</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>खोजें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="547"/>
         <source>Encoding</source>
-        <translation>Codificação</translation>
+        <translation>एन्कोडिंग</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Custom commands</source>
-        <translation>Comandos personalizados</translation>
+        <translation>अनुकूलित कमांड</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="551"/>
         <source>Remote management</source>
-        <translation>Gerenciamento remoto</translation>
+        <translation>दूरस्थ प्रबंधन</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>Upload file</source>
-        <translation>Enviar arquivo</translation>
+        <translation>फाइल अपलोड करें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="556"/>
         <source>Download file</source>
-        <translation>Baixar arquivo</translation>
+        <translation>फाइल डाउनलोड करें</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="561"/>
         <source>Settings</source>
-        <translation>Configurações</translation>
+        <translation>सेटिंग्स</translation>
     </message>
 </context>
 <context>
@@ -1181,20 +1181,20 @@
         <location filename="../src/common/utils.cpp" line="223"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>रद्द करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="191"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>Fechar</translation>
+        <translation>बंद करें</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="224"/>
         <location filename="../src/common/utils.cpp" line="256"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>ठीक है</translation>
     </message>
 </context>
 </TS>

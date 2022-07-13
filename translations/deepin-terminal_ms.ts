@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<TS version="2.1" language="ms">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="112"/>
         <source>Name:</source>
-        <translation>Nome:</translation>
+        <translation>Nama:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="114"/>
         <source>Command:</source>
-        <translation>Comando:</translation>
+        <translation>Perintah:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="116"/>
         <source>Shortcuts:</source>
-        <translation>Atalhos:</translation>
+        <translation>Pintasan:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="127"/>
@@ -24,66 +24,66 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="205"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="211"/>
         <source>Required</source>
-        <translation>Obrigatório</translation>
+        <translation>Diperlukan</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="154"/>
         <source>Add Command</source>
-        <translation>Adicionar Comando</translation>
+        <translation>Tambah Perintah</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="160"/>
         <source>Edit Command</source>
-        <translation>Editar Comando</translation>
+        <translation>Sunting Perintah</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="170"/>
         <source>Delete Command</source>
-        <translation>Comando Excluir</translation>
+        <translation>Padam Perintah</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="191"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="193"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>Adicionar</translation>
+        <translation>Tambah</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="195"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>Salvar</translation>
+        <translation>Simpan</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="618"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="372"/>
         <source>Please enter a name</source>
-        <translation>Digite um nome</translation>
+        <translation>Sila masukkan satu nama</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="386"/>
         <source>Please enter a command</source>
-        <translation>Digite um comando</translation>
+        <translation>Sila masukkan satu perintah</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="436"/>
         <source>The name already exists,</source>
-        <translation>O nome já existe,</translation>
+        <translation>Nama sudah wujud,</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="437"/>
         <source>please input another one.</source>
-        <translation>insira outro.</translation>
+        <translation>sila masukkan yang lain.</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="201"/>
         <source>Add Command</source>
-        <translation>Adicionar Comando</translation>
+        <translation>Tambah Perintah</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="205"/>
@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/customcommand/customcommandplugin.cpp" line="50"/>
         <source>Custom commands</source>
-        <translation>Comandos personalizados</translation>
+        <translation>Perintah suai</translation>
     </message>
 </context>
 <context>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="146"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>Gelintar</translation>
     </message>
 </context>
 <context>
@@ -120,54 +120,54 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="236"/>
         <source>Custom Theme</source>
-        <translation>Tema Personalizado</translation>
+        <translation>Tema Suai</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="260"/>
         <source>Style:</source>
-        <translation>Estilo:</translation>
+        <translation>Gaya:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="264"/>
         <source>Light</source>
-        <translation>Claro</translation>
+        <translation>Ringan</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="269"/>
         <source>Dark</source>
-        <translation>Escuro</translation>
+        <translation>Gelap</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="323"/>
         <source>Fore color:</source>
-        <translation>Cor de frente:</translation>
+        <translation>Warna hadapan:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="330"/>
         <source>Back color:</source>
-        <translation>Cor de fundo:</translation>
+        <translation>Warna belakang:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="348"/>
         <source>Prompt PS1:</source>
-        <translation>Prompt PS1:</translation>
+        <translation>Prom PS1:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="352"/>
         <source>Prompt PS2:</source>
-        <translation>Prompt PS2:</translation>
+        <translation>Prom PS2:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="423"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="431"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Confirmar</translation>
+        <translation>Sahkan</translation>
     </message>
 </context>
 <context>
@@ -175,13 +175,13 @@
     <message>
         <location filename="../src/views/listview.cpp" line="298"/>
         <source>Delete Server</source>
-        <translation>Excluir Servidor</translation>
+        <translation>Padam Pelayan</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="298"/>
         <location filename="../src/views/listview.cpp" line="492"/>
         <source>Are you sure you want to delete %1?</source>
-        <translation>Excluir %1?</translation>
+        <translation>Anda pasti mahu memadam %1?</translation>
     </message>
 </context>
 <context>
@@ -190,34 +190,34 @@
         <location filename="../src/main/mainwindow.cpp" line="269"/>
         <location filename="../src/main/mainwindow.cpp" line="324"/>
         <source>New window</source>
-        <translation>Nova janela</translation>
+        <translation>Tetingkap baharu</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="339"/>
         <source>Settings</source>
-        <translation>Configurações</translation>
+        <translation>Tetapan</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="755"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="757"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>Fechar</translation>
+        <translation>Tutup</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1830"/>
         <source>Type path to download file</source>
-        <translation>Digite o caminho para baixar o arquivo</translation>
+        <translation>Taip laluan untuk muat turun fail</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2136"/>
         <source>Custom Theme</source>
-        <translation>Tema Personalizado</translation>
+        <translation>Tema Suai</translation>
     </message>
 </context>
 <context>
@@ -225,100 +225,100 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Copy on select</source>
-        <translation>Copiar ao selecionar</translation>
+        <translation>Salin ketika memilih</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Cursor blink</source>
-        <translation>Intermitência do cursor</translation>
+        <translation>Kerlipan kursor</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
         <source>Cursor style</source>
-        <translation>Estilo do cursor</translation>
+        <translation>Gaya kursor</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="39"/>
         <source>Scroll on keystroke</source>
-        <translation>Rolar ao teclar</translation>
+        <translation>Tatal ketika ketukan kekunci</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Scroll on output</source>
-        <translation>Rolar na saída</translation>
+        <translation>Tatal ketika output</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>Ocultar a janela Quake após perder o foco</translation>
+        <translation>Sembunyi tetingkap Quake setelah hilang fokus</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
         <location filename="../src/main/service.cpp" line="157"/>
         <source>Blur background</source>
-        <translation>Desfocar o fundo</translation>
+        <translation>Latar belakang kabur</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="47"/>
         <source>Use on starting</source>
-        <translation>Utilizar na inicialização</translation>
+        <translation>Guna ketika permulaan</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="49"/>
         <source>Font</source>
-        <translation>Fonte</translation>
+        <translation>Fon</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="51"/>
         <source>Font size</source>
-        <translation>Tamanho da fonte</translation>
+        <translation>Saiz fon</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
         <location filename="../src/main/service.cpp" line="180"/>
         <source>Opacity</source>
-        <translation>Opacidade</translation>
+        <translation>Kelegapan</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="55"/>
         <source>Advanced</source>
-        <translation>Avançado</translation>
+        <translation>Lanjutan</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Cursor</source>
-        <translation>Cursor</translation>
+        <translation>Kursor</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Scroll</source>
-        <translation>Rolagem</translation>
+        <translation>Tatal</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="61"/>
         <source>Window</source>
-        <translation>Janela</translation>
+        <translation>Tetingkap</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Basic</source>
-        <translation>Básico</translation>
+        <translation>Asas</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Interface</source>
-        <translation>Interface</translation>
+        <translation>Antaramuka</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Shortcuts</source>
-        <translation>Atalhos</translation>
+        <translation>Pintasan</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1672"/>
         <source>Others</source>
-        <translation>Outros</translation>
+        <translation>Lain-lain</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
@@ -330,136 +330,136 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Workspace</source>
-        <translation>Área de Trabalho</translation>
+        <translation>Ruang Kerja</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Custom commands</source>
-        <translation>Comandos personalizados</translation>
+        <translation>Perintah suai</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Display shortcuts</source>
-        <translation>Exibir atalhos</translation>
+        <translation>Papar pintasan</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Remote management</source>
-        <translation>Gerenciamento remoto</translation>
+        <translation>Pengurusan jauh</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>New tab</source>
-        <translation>Nova aba</translation>
+        <translation>Tab baharu</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Next tab</source>
-        <translation>Próxima aba</translation>
+        <translation>Tab berikutnya</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Previous tab</source>
-        <translation>Aba anterior</translation>
+        <translation>Tab terdahulu</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Select left workspace</source>
-        <translation>Selecionar o espaço de trabalho esquerdo</translation>
+        <translation>Pilih ruang kerja kiri</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select lower workspace</source>
-        <translation>Selecionar o espaço de trabalho inferior</translation>
+        <translation>Pilih ruang kerja di bawah</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Select right workspace</source>
-        <translation>Selecionar o espaço de trabalho direito</translation>
+        <translation>Pilih ruang kerja kanan</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select upper workspace</source>
-        <translation>Selecionar o espaço de trabalho superior</translation>
+        <translation>Pilih ruang kerja di atas</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Tab titles</source>
-        <translation>Títulos das abas</translation>
+        <translation>Tajuk tab</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 1</source>
-        <translation>Ir para a aba 1</translation>
+        <translation>Pergi ke tab 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 2</source>
-        <translation>Ir para a aba 2</translation>
+        <translation>Pergi ke tab 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 3</source>
-        <translation>Ir para a aba 3</translation>
+        <translation>Pergi ke tab 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 4</source>
-        <translation>Ir para a aba 4</translation>
+        <translation>Pergi ke tab 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 5</source>
-        <translation>Ir para a aba 5</translation>
+        <translation>Pergi ke tab 5</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 6</source>
-        <translation>Ir para a aba 6</translation>
+        <translation>Pergi ke tab 6</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 7</source>
-        <translation>Ir para a aba 7</translation>
+        <translation>Pergi ke tab 7</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 8</source>
-        <translation>Ir para a aba 8</translation>
+        <translation>Pergi ke tab 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 9</source>
-        <translation>Ir para a aba 9</translation>
+        <translation>Pergi ke tab 9</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="155"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>Desative o controle de fluxo usando Ctrl+S, Ctrl+Q</translation>
+        <translation>Lumpuhkan kawalan aliran menggunakan Ctrl+S, Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="157"/>
         <source>Shell profile</source>
-        <translation>Perfil do shell</translation>
+        <translation>Profil Shell</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="203"/>
@@ -467,229 +467,229 @@
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Rename title</source>
-        <translation>Renomear título</translation>
+        <translation>Nama semula tajuk</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
         <location filename="../src/main/mainwindow.cpp" line="1736"/>
         <source>Fullscreen</source>
-        <translation>Tela Cheia</translation>
+        <translation>Skrin Penuh</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation>Salin</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Default size</source>
-        <translation>Tamanho padrão</translation>
+        <translation>Saiz lalai</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Paste</source>
-        <translation>Colar</translation>
+        <translation>Tampal</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="91"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>Gelintar</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Select all</source>
-        <translation>Selecionar tudo</translation>
+        <translation>Pilih semua</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <source>Jump to next command</source>
-        <translation>Ir para o próximo comando</translation>
+        <translation>Lompat ke perintah berikutnya</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <source>Jump to previous command</source>
-        <translation>Ir para o comando anterior</translation>
+        <translation>Lompat ke perintah terdahulu</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Zoom in</source>
-        <translation>Aumentar zoom</translation>
+        <translation>Zum masuk</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Zoom out</source>
-        <translation>Reduzir zoom</translation>
+        <translation>Zum keluar</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Close other windows</source>
-        <translation>Fechar outras janelas</translation>
+        <translation>Tutup tetingkap lain</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="517"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Close other workspaces</source>
-        <translation>Fechar outros espaços de trabalho</translation>
+        <translation>Tutup ruang kerja lain</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1177"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>Impossível encontrar &quot;%1&quot;, iniciando com &quot;%2&quot; em vez disso. Verifique o perfil do shell.</translation>
+        <translation>Tidak dapat mencari &quot;%1&quot;, memulakan &quot;%2&quot; sebagai ganti. Sila periksa profil shell anda.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1183"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>Impossível abrir &quot;% 1&quot;, impossível executá-lo</translation>
+        <translation>Tidak dapat membuka &quot;%1&quot;, gagal dijalankan</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1185"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>Impossível localizar &quot;% 1&quot;, não foi possível executá-lo</translation>
+        <translation>Tidak dapat mencari &quot;%1&quot;, gagal dijalankan</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1215"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation>A saída foi suspensa ao pressionar Ctrl+S. Pressionando Ctrl+Q irá retomar.</translation>
+        <translation>Output telah ditangguh dengan menekan Ctrl+S. Tekan Ctrl+Q untuk menyambung semula.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Close window</source>
-        <translation>Fechar janela</translation>
+        <translation>Tutup tetingkap</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="514"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Close workspace</source>
-        <translation>Fechar espaço de trabalho</translation>
+        <translation>Tutup ruang kerja</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Horizontal split</source>
-        <translation>Dividir horizontalmente</translation>
+        <translation>Pisah mengufuk</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Vertical split</source>
-        <translation>Dividir verticalmente</translation>
+        <translation>Pisah menegak</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1701"/>
         <source>Find</source>
-        <translation>Localizar</translation>
+        <translation>Cari</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="401"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="621"/>
         <location filename="../src/common/utils.cpp" line="254"/>
         <source>please set another one.</source>
-        <translation>Defina outro.</translation>
+        <translation>sila tetapkan yang lain.</translation>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="39"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>O Terminal é um emulador de terminal avançado com espaço de trabalho, múltiplas janelas, gerenciamento remoto, modo quake e outros recursos.</translation>
+        <translation>Terminal ialah sebuah emulator terminal lanjutan dengan ruang kerja, tetingkap berbilang, pengurusan jauh, mod Quake dan lain-lain fitur.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1668"/>
         <source>Tabs</source>
-        <translation>Abas</translation>
+        <translation>Tab</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="498"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Close tab</source>
-        <translation>Fechar aba</translation>
+        <translation>Tutup tab</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select tab</source>
-        <translation>Selecionar aba</translation>
+        <translation>Pilih tab</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1688"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>Alterar o foco para o ícone &quot;+&quot;</translation>
+        <translation>Tukar fokus ke ikon &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1776"/>
         <location filename="../src/common/utils.cpp" line="148"/>
         <source>Select file to upload</source>
-        <translation>Selecionar arquivo para enviar</translation>
+        <translation>Pilih fail untuk dimuat naik</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1783"/>
         <location filename="../src/common/utils.cpp" line="153"/>
         <source>Upload</source>
-        <translation>Upload</translation>
+        <translation>Muat naik</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>Programs are still running in terminal</source>
-        <translation>Alguns programas estão sendo executados no terminal</translation>
+        <translation>Program masih lagu berjalan di dalam terminal</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="173"/>
         <location filename="../src/common/utils.cpp" line="207"/>
         <source>Close this terminal?</source>
-        <translation>Fechar este terminal?</translation>
+        <translation>Tutup terminal ini?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="174"/>
         <location filename="../src/common/utils.cpp" line="208"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
-        <translation>Há um processo em execução neste terminal. Ao fechar o terminal, irá matá-lo.</translation>
+        <translation>Masih terdapat satu proses berjalan dalam terminal ini. Penutupan terminal akan mematikannya.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="178"/>
         <location filename="../src/common/utils.cpp" line="212"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
-        <translation>Existem %1 processos em execução neste terminal. Fechá-lo irá matar todos eles.</translation>
+        <translation>Masih terdapat %1 proses berjalan dalam terminal ini. Penutupan terminal akan mematikan semuanya.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="203"/>
         <source>Close this window?</source>
-        <translation>Fechar esta janela?</translation>
+        <translation>Tutup tetingkap ini?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="184"/>
         <location filename="../src/common/utils.cpp" line="204"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
-        <translation>Existem processos em execução nesta janela. Ao fechá-la, irá matar todos eles.</translation>
+        <translation>Masih terdapat proses berjalan dalam terminal ini. Penutupan terminal akan mematikan semuanya.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1846"/>
         <location filename="../src/common/utils.cpp" line="127"/>
         <source>Select a directory to save the file</source>
-        <translation>Selecione um diretório para salvar o arquivo</translation>
+        <translation>Pilih satu direktori untuk menyimpan fail</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation>Desinstalá-lo?</translation>
+        <translation>Anda pasti mahu menyahpasangkannya?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="234"/>
         <location filename="../src/common/utils.cpp" line="238"/>
         <source>Are you sure you want to uninstall this application?</source>
-        <translation>Desinstalar este aplicativo?</translation>
+        <translation>Anda pasti mahu menyahpasang aplikasi ini?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="235"/>
         <location filename="../src/common/utils.cpp" line="239"/>
         <source>You will not be able to use Terminal any longer.</source>
-        <translation>Você não poderá mais usar o Terminal.</translation>
+        <translation>Anda tidak dapat menggunakan Terminal lagi.</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="304"/>
@@ -698,93 +698,93 @@
         <location filename="../src/common/utils.cpp" line="244"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="245"/>
         <location filename="../src/common/utils.cpp" line="289"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="329"/>
         <source>Execute a command in the terminal</source>
-        <translation>Executar um comando no terminal</translation>
+        <translation>Lakukan satu perintah di dalam terminal</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="332"/>
         <source>Run script string in the terminal</source>
-        <translation>Executar o conjunto de scripts no terminal</translation>
+        <translation>Jalankan rentetan skrip di dalam terminal</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="323"/>
         <source>Set the work directory</source>
-        <translation>Definir o diretório de trabalho</translation>
+        <translation>Tetapkan direktori kerja</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="326"/>
         <source>Set the window mode on starting</source>
-        <translation>Definir o modo de janela ao iniciar</translation>
+        <translation>Tetapkan mod tetingkap ketika permulaan</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Run in quake mode</source>
-        <translation>Executar no modo quake</translation>
+        <translation>Jalankan dalam mod quake</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="338"/>
         <source>Keep terminal open when command finishes</source>
-        <translation>Manter o terminal aberto quando o comando finalizar</translation>
+        <translation>Biarkan terminal terbuka walaupun perintah selesai</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="517"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="379"/>
         <source>The name should be no more than 32 characters</source>
-        <translation>O nome não deve ter mais do que 32 caracteres</translation>
+        <translation>Nama tidak lebih dari 32 aksara</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="587"/>
         <location filename="../src/main/mainwindow.cpp" line="1852"/>
         <location filename="../src/common/utils.cpp" line="133"/>
         <source>Select</source>
-        <translation>Selecionar</translation>
+        <translation>Pilih</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="583"/>
         <source>Select the private key file</source>
-        <translation>Selecionar o arquivo da chave privada</translation>
+        <translation>Pilih fail kunci persendirian</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="132"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Tab title format</source>
-        <translation>Formato do título da aba</translation>
+        <translation>Format tajuk tab</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="134"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Remote tab title format</source>
-        <translation>Formato do título da aba remota</translation>
+        <translation>Format tajuk tab jauh</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="501"/>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Close other tabs</source>
-        <translation>Fechar as outras abas</translation>
+        <translation>Tutup tab lain</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="305"/>
         <source>Delete</source>
         <comment>button</comment>
-        <translation>Excluir</translation>
+        <translation>Padam</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="494"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Confirmar</translation>
+        <translation>Sahkan</translation>
     </message>
 </context>
 <context>
@@ -792,7 +792,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="190"/>
         <source>Add Server</source>
-        <translation>Adicionar Servidor</translation>
+        <translation>Tambah Pelayan</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="194"/>
@@ -805,12 +805,12 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="90"/>
         <source>Remote management</source>
-        <translation>Gerenciamento remoto</translation>
+        <translation>Pengurusan jauh</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="216"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation>Antes de clicar com o botão direito para enviar e baixar os arquivos; verifique se os comandos rz e sz estão instalados no servidor.</translation>
+        <translation>Pastikan perintah rz dan sz telah dipasang dalam pelayan sebelum mengklik kanan untuk muat naik dan muat turun fail.</translation>
     </message>
 </context>
 <context>
@@ -818,7 +818,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="225"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>Gelintar</translation>
     </message>
 </context>
 <context>
@@ -826,107 +826,107 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="70"/>
         <source>Advanced options</source>
-        <translation>Opções avançadas</translation>
+        <translation>Pilihan lanjutan</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="108"/>
         <source>Add Server</source>
-        <translation>Adicionar Servidor</translation>
+        <translation>Tambah Pelayan</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="144"/>
         <source>Server name:</source>
-        <translation>Nome do servidor:</translation>
+        <translation>Nama pelayan:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="146"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="156"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="184"/>
         <source>Required</source>
-        <translation>Obrigatório</translation>
+        <translation>Diperlukan</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="154"/>
         <source>Address:</source>
-        <translation>Endereço:</translation>
+        <translation>Alamat:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="161"/>
         <source>Port:</source>
-        <translation>Porta:</translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="182"/>
         <source>Username:</source>
-        <translation>Nome de Usuário:</translation>
+        <translation>Nama Pengguna:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>Password:</source>
-        <translation>Senha:</translation>
+        <translation>Kata Laluan:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="195"/>
         <source>Certificate:</source>
-        <translation>Certificado:</translation>
+        <translation>Sijil:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="211"/>
         <source>Group:</source>
-        <translation>Grupo:</translation>
+        <translation>Kumpulan:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="217"/>
         <source>Path:</source>
-        <translation>Caminho:</translation>
+        <translation>Laluan:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="223"/>
         <source>Command:</source>
-        <translation>Comando:</translation>
+        <translation>Perintah:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="229"/>
         <source>Encoding:</source>
-        <translation>Codificação:</translation>
+        <translation>Pengekodan:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="235"/>
         <source>Backspace key:</source>
-        <translation>Tecla backspace:</translation>
+        <translation>Kekunci Backspace:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="241"/>
         <source>Delete key:</source>
-        <translation>Excluir chave:</translation>
+        <translation>Kekunci delete:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="247"/>
         <source>Delete server</source>
-        <translation>Excluir servidor</translation>
+        <translation>Padam pelayan</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="261"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="262"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>Adicionar</translation>
+        <translation>Tambah</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="266"/>
         <source>Edit Server</source>
-        <translation>Editar Servidor</translation>
+        <translation>Sunting Pelayan</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="267"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>Salvar</translation>
+        <translation>Simpan</translation>
     </message>
     <message>
         <source>tty</source>
@@ -935,22 +935,22 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="511"/>
         <source>Please enter a server name</source>
-        <translation>Digite o nome do servidor</translation>
+        <translation>Sila masukkan nama pelayan</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="524"/>
         <source>Please enter an IP address</source>
-        <translation>Digite um endereço de IP</translation>
+        <translation>Sila masukkan alamat IP</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="529"/>
         <source>Please enter a port</source>
-        <translation>Digite uma porta</translation>
+        <translation>Sila masukkan port</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="535"/>
         <source>Please enter a username</source>
-        <translation>Digite um nome de usuário</translation>
+        <translation>Sila masukkan nama pengguna</translation>
     </message>
     <message>
         <source>ascii-del</source>
@@ -971,12 +971,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="549"/>
         <source>The server name already exists,</source>
-        <translation>O nome do servidor já existe,</translation>
+        <translation>Nama pelayan sudah wujud,</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="550"/>
         <source>please input another one. </source>
-        <translation>insira outro.</translation>
+        <translation>sila masukkan yang lain.</translation>
     </message>
 </context>
 <context>
@@ -985,7 +985,7 @@
         <location filename="../src/main/service.cpp" line="397"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -993,22 +993,22 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Split screen</source>
-        <translation>Tela dividida</translation>
+        <translation>Pisah skrin</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Fullscreen</source>
-        <translation>Tela Cheia</translation>
+        <translation>Skrin Penuh</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Normal window</source>
-        <translation>Janela normal</translation>
+        <translation>Tetingkap biasa</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="142"/>
         <source>Maximum</source>
-        <translation>Maximizado</translation>
+        <translation>Maksimum</translation>
     </message>
 </context>
 <context>
@@ -1017,14 +1017,14 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="283"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="292"/>
         <source>The shortcut %1 is invalid, </source>
-        <translation>O atalho %1 é inválido, </translation>
+        <translation>Pintasan %1 tidak sah,</translation>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="299"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="306"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="312"/>
         <source>The shortcut %1 was already in use, </source>
-        <translation>O atalho %1 já está em uso, </translation>
+        <translation>Pintasan %1 sudah digunakan,</translation>
     </message>
 </context>
 <context>
@@ -1032,55 +1032,55 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="60"/>
         <source>Insert</source>
-        <translation>Inserir</translation>
+        <translation>Sisip</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>username: %u</source>
-        <translation>nome de usuário: %u</translation>
+        <translation>nama pengguna: %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <source>username@: %U</source>
-        <translation>nome de usuário@: %U</translation>
+        <translation>nama pengguna@: %U</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
         <source>remote host: %h</source>
-        <translation>host remoto: %h</translation>
+        <translation>hos jauh: %h</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>session number: %#</source>
-        <translation>número da sessão: %#</translation>
+        <translation>nombor sesi: %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="110"/>
         <source>title set by shell: %w</source>
-        <translation>título definido pelo shell: %w</translation>
+        <translation>Set tajuk oleh shell: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>program name: %n</source>
-        <translation>nome do programa: %n</translation>
+        <translation>nama program: %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="107"/>
         <source>current directory (short): %d</source>
-        <translation>diretório atual (abreviado): %d</translation>
+        <translation>direktori semasa (singkatan): %d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>current directory (long): %D</source>
-        <translation>diretório atual (longo): %D</translation>
+        <translation>direktori semasa (panjang): %D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>local host: %h</source>
-        <translation>host local: %h</translation>
+        <translation>hos setempat: %h</translation>
     </message>
 </context>
 <context>
@@ -1088,90 +1088,90 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="483"/>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation>Salin</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="486"/>
         <source>Paste</source>
-        <translation>Colar</translation>
+        <translation>Tampal</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="495"/>
         <source>Open</source>
-        <translation>Abrir</translation>
+        <translation>Buka</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Open in file manager</source>
-        <translation>Abrir no Gerenciador de Arquivos</translation>
+        <translation>Buka dalam pengurus fail</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="508"/>
         <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Horizontal split</source>
-        <translation>Dividir horizontalmente</translation>
+        <translation>Pisah mengufuk</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="511"/>
         <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Vertical split</source>
-        <translation>Dividir verticalmente</translation>
+        <translation>Pisah menegak</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="521"/>
         <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>New tab</source>
-        <translation>Nova aba</translation>
+        <translation>Tab baharu</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="528"/>
         <source>Exit fullscreen</source>
-        <translation>Sair da tela cheia</translation>
+        <translation>Keluar dari skrin penuh</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="530"/>
         <source>Fullscreen</source>
-        <translation>Tela cheia</translation>
+        <translation>Skrin Penuh</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="533"/>
         <source>Find</source>
-        <translation>Localizar</translation>
+        <translation>Cari</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Search</source>
-        <translation>Pesquisar</translation>
+        <translation>Gelintar</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="547"/>
         <source>Encoding</source>
-        <translation>Codificação</translation>
+        <translation>Pengekodan</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Custom commands</source>
-        <translation>Comandos personalizados</translation>
+        <translation>Perintah suai</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="551"/>
         <source>Remote management</source>
-        <translation>Gerenciamento remoto</translation>
+        <translation>Pengurusan jauh</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="555"/>
         <source>Upload file</source>
-        <translation>Enviar arquivo</translation>
+        <translation>Muat naik fail</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="556"/>
         <source>Download file</source>
-        <translation>Baixar arquivo</translation>
+        <translation>Muat turun fail</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="561"/>
         <source>Settings</source>
-        <translation>Configurações</translation>
+        <translation>Tetapan</translation>
     </message>
 </context>
 <context>
@@ -1181,20 +1181,20 @@
         <location filename="../src/common/utils.cpp" line="223"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Cancelar</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="191"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>Fechar</translation>
+        <translation>Tutup</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="224"/>
         <location filename="../src/common/utils.cpp" line="256"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Ok</translation>
+        <translation>OK</translation>
     </message>
 </context>
 </TS>
