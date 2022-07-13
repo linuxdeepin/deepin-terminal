@@ -836,7 +836,6 @@ void MainWindow::onTermIsIdle(QString tabIdentifier, bool bIdle)
 
         //如果当前标签是活动标签，移除变色请求
         int activeTabIndex = m_tabbar->currentIndex();
-        qInfo() << "activeTabIndex: " << activeTabIndex;
         QString activeTabIdentifier = m_tabbar->tabData(activeTabIndex).toString();
         if (activeTabIdentifier == tabIdentifier) {
             m_tabVisitMap.insert(activeTabIdentifier, false);
