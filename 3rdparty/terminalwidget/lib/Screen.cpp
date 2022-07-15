@@ -1644,7 +1644,6 @@ void Screen::setCursorLine(int newLine)
 {
     if (_currentModes[MODE_AppScreen] == 1) {
         _savedState.cursorLine = newLine;
-        _cuY = qBound(0, _cuY, _lines - 1);
     } else {
         _cuY = newLine;
     }
