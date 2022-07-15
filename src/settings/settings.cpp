@@ -124,7 +124,8 @@ void Settings::init()
      * 3.人为修改conf，colorScheme=不可预知
      * 综上即colorScheme非Light且非Dark时，修改主题为Dark
      */
-    if("Light" != colorScheme() && "Dark" != colorScheme()) {
+    if(("Light" != colorScheme() && "Dark" != colorScheme())
+            || ("Dark" == colorScheme() && m_backend->getOption("basic.interface.expand_theme").toString().isEmpty())) {
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         setColorScheme("Dark");
         setExtendColorScheme("");
