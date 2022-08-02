@@ -21,6 +21,7 @@
 #include "service.h"
 #include "utils.h"
 #include "define.h"
+#include "eventlogutils.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -35,6 +36,7 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QScroller>
+#include <QJsonObject>
 
 Service *Service::g_pService = nullptr;
 
@@ -428,6 +430,14 @@ void Service::EntryTerminal(QStringList arguments, bool isMain)
     // 雷神处理入口
     if (properties[QuakeMode].toBool()) {
         WindowsManager::instance()->runQuakeWindow(properties);
+
+        QJsonObject obj{
+            {"tid", EventLogUtils::Start},
+            {"version", QCoreApplication::applicationVersion()},
+            {"mode", 1}
+        };
+        EventLogUtils::get().writeLogs(obj);
+
         return;
     }
 
@@ -443,6 +453,13 @@ void Service::EntryTerminal(QStringList arguments, bool isMain)
         return;
     }
     WindowsManager::instance()->createNormalWindow(properties);
+
+    QJsonObject obj{
+        {"tid", EventLogUtils::Start},
+        {"version", QCoreApplication::applicationVersion()},
+        {"mode", 1}
+    };
+    EventLogUtils::get().writeLogs(obj);
 }
 
 void Service::onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop)
