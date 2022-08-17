@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.9.5)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
+include(GNUInstallDirs)
 include (src/DtkSettingsToolsMacros)
 option(TERM_RPATH "Do you want to use compiled libraries" ON)
 
@@ -271,21 +272,21 @@ endif ()
 #install(TARGETS deepin-terminal DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal)
 
 install(FILES src/deepin-terminal.desktop
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/applications/)
 
 install(FILES src/assets/logo/deepin-terminal.svg
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps/)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        DESTINATION ${CMAKE_INSTALL_BINDIR}
         PERMISSIONS OWNER_READ OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE)
 
-install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)
+install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-terminal/translations)
 
 install(DIRECTORY src/assets/deepin-terminal
-        DESTINATION /usr/share/deepin-manual/manual-assets/application/)
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-manual/manual-assets/application/)
 
 # Unit Test
 if (CMAKE_BUILD_TYPE MATCHES Debug)
