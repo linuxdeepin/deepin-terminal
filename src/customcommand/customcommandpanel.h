@@ -113,6 +113,7 @@ public://private:
     bool m_bpushButtonHaveFocus = false;
     DLabel *m_imageLabel = nullptr;
     DLabel *m_textLabel = nullptr;
+    QVBoxLayout *m_backLayout = nullptr;
 };
 
 #endif  // CUSTOMCOMMANDPANEL_H

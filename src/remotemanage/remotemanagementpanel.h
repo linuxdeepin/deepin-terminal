@@ -113,6 +113,7 @@ private:
     ListView *m_listWidget = nullptr;
     DLabel *m_textLabel = nullptr;
     DLabel *m_imageLabel = nullptr;
+    QVBoxLayout *m_backLayout = nullptr;
 };
 
 #endif  // REMOTEMANAGEMENTPANEL_H
