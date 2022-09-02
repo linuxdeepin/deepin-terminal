@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="el">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hi_IN">
 <context>
     <name>Konsole::TerminalDisplay</name>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1279"/>
         <source>Size: XXX x XXX</source>
-        <translation>Μέγεθος: XXX x XXX</translation>
+        <translation>आकार : XXX x XXX</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="1291"/>
         <source>Size: %1 x %2</source>
-        <translation>Μέγεθος: %1 x %2</translation>
+        <translation>आकार : %1 x %2</translation>
     </message>
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
         <source>&lt;qt&gt;Output has been &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspended&lt;/a&gt; by pressing Ctrl+S.  Press &lt;b&gt;Ctrl+Q&lt;/b&gt; to resume.&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Η έξοδος έχει &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;ανασταλεί&lt;/a&gt; με τον συνδυασμό πλήκτρων Ctrl+S. Πιέστε &lt;b&gt;Ctrl+Q&lt;/b&gt; για επαναφορά.&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Ctrl+S कुंजी संयोजन दबाने के कारण आउटपुट &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;स्थगित&lt;/a&gt; किया गया। पुनः जारी रखने हेतु &lt;b&gt;Ctrl+Q&lt;/qt&gt; दबाएँ।</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>Δεν υπάρχει κάποιος μεταφραστής πληκτρολογίου διαθέσιμος. Η απαιτούμενη πληροφορία για την μετατροπή των πατημάτων πλήκτρων σε χαρακτήρες στο τερματικό λείπει.</translation>
+        <translation>कोई कुंजीपटल अनुवादक उपलब्ध नहीं है। टर्मिनल को भेजने हेतु दर्ज की गई कुंजी को अक्षरों में परिवर्तित करने वाली आवश्यक सूचना अनुपलब्ध है।</translation>
     </message>
 </context>
 <context>
@@ -31,32 +31,32 @@
         <location filename="../ColorScheme.cpp" line="278"/>
         <location filename="../ColorScheme.cpp" line="293"/>
         <source>Un-named Color Scheme</source>
-        <translation>Ανώνυμος χρωματικός συνδυασμός</translation>
+        <translation>नाम रहित रंग शैली</translation>
     </message>
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
         <source>Accessible Color Scheme</source>
-        <translation>Προσπελάσιμος χρωματικός σχηματισμός</translation>
+        <translation>अभिगम्य रंग शैली</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
         <source>Open link</source>
-        <translation>Άνοιγμα συνδέσμου</translation>
+        <translation>लिंक खोलें</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
         <source>Copy link</source>
-        <translation>Αντιγραφή συνδέσμου</translation>
+        <translation>लिंक कॉपी करें</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation>Αποστολή email ...</translation>
+        <translation>इन्हें ईमेल भेजें...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation>Αντιγραφή διεύθυνσης email</translation>
+        <translation>ईमेल पता कॉपी करें</translation>
     </message>
 </context>
 <context>
@@ -64,12 +64,12 @@
     <message>
         <location filename="../qtermwidget.cpp" line="451"/>
         <source>Color Scheme Error</source>
-        <translation>Σφάλμα του χρωματικού συνδυασμού</translation>
+        <translation>रंग शैली हेतु त्रुटि</translation>
     </message>
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation>Αδύνατη η φόρτωση του χρωματικού συνδυασμού: %1</translation>
+        <translation>रंग शैली लोड करना विफल : %1</translation>
     </message>
 </context>
 <context>
@@ -77,22 +77,22 @@
     <message>
         <location filename="../SearchBar.cpp" line="40"/>
         <source>Match case</source>
-        <translation>Ταίριασμα πεζών/κεφαλαίων</translation>
+        <translation>केस मिलान करें</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="46"/>
         <source>Regular expression</source>
-        <translation>Κανονική έκφραση</translation>
+        <translation>सामान्य वाक्यांश</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="50"/>
         <source>Highlight all matches</source>
-        <translation>Τονισμός όλων των ταιριαστών</translation>
+        <translation>सभी मिलान को चिन्हित करें</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="14"/>
         <source>SearchBar</source>
-        <translation>Γραμμή αναζήτησης</translation>
+        <translation>खोज पट्टी</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="20"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../SearchBar.ui" line="32"/>
         <source>Find:</source>
-        <translation>Εύρεση:</translation>
+        <translation>खोज :</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="42"/>

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>Konsole::TerminalDisplay</name>
     <message>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>Brak sterownika klawiatury. Nie wiadomo jak przełożyć wciśniecia przycisków na znaki wysyłane do terminalu.</translation>
+        <translation>Brak sterownika klawiatury. Nie wiadomo jak przełożyć wciśnięcia przycisków na znaki wysyłane do terminala.</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../Filter.cpp" line="538"/>
         <source>Open link</source>
-        <translation>Otwórz link</translation>
+        <translation>Otwórz odnośnik</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
@@ -56,7 +56,7 @@
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation>Skopiuj adres e-mail</translation>
+        <translation>Kopiuj adres e-mail</translation>
     </message>
 </context>
 <context>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation>Nie można wczytać palety: %1</translation>
+        <translation>Nie można wczytać schematu kolorów: %1</translation>
     </message>
 </context>
 <context>

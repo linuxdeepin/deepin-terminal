@@ -288,6 +288,6 @@ install(DIRECTORY src/assets/deepin-terminal
         DESTINATION /usr/share/deepin-manual/manual-assets/application/)
 
 # Unit Test
+if (CMAKE_BUILD_TYPE MATCHES Debug)
 add_subdirectory(tests)
-
-
+endif()
