@@ -94,7 +94,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="216"/>
         <source>No commands yet</source>
-        <translation type="unfinished"/>
+        <translation>Belum ada perintah</translation>
     </message>
 </context>
 <context>
@@ -795,7 +795,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="205"/>
         <source>No servers yet</source>
-        <translation type="unfinished"/>
+        <translation>Belum ada pelayan</translation>
     </message>
 </context>
 <context>

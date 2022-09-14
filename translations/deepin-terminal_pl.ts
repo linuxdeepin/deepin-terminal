@@ -264,12 +264,12 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1183"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>Nie można otworzyć &quot;%1&quot;, nie można go uruchomić</translation>
+        <translation>Nie udało się otworzyć &quot;%1&quot;, nie można uruchomić</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1185"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>Nie udało się znaleźć „%1”, nie można go uruchomić</translation>
+        <translation>Nie udało się znaleźć „%1”, nie można uruchomić</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1215"/>
