@@ -46,6 +46,7 @@
 #include <QtDBus>
 #include <QVBoxLayout>
 #include <QMap>
+#include <QScreen>
 
 #include <fstream>
 
@@ -2806,7 +2807,17 @@ void QuakeWindow::initWindowAttribute()
     setMaximumHeight(screenRect.size().height() * 2 / 3);
     /********************* Modify by m000714 daizhengwen End ************************/
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    setFixedWidth(QApplication::desktop()->availableGeometry().width());
+    // 计算屏幕宽度，设置雷神终端宽度
+    QList<QScreen *> screenList = qApp->screens();
+    int w = screenList[0]->geometry().width();
+    for (auto it = screenList.constBegin(); it != screenList.constEnd(); ++it) {
+        QRect rect = (*it)->geometry();
+        if (rect.x() == 0 && rect.y() == 0) {
+            w = rect.width();
+            break;
+        }
+    }
+    setFixedWidth(w);
     connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
 
     int saveHeight = getQuakeHeight();
