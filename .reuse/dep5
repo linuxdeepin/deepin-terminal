@@ -60,7 +60,9 @@ License: GPL-3.0-or-later
 
 # 3rdparty/terminalwidget
 Files: 3rdparty/terminalwidget/*
-Copyright: UnionTech Software Technology Co., Ltd.
+Copyright: 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+           2000 by Stephan Kulow <coolo@kde.org>
+           2006-2008 by Robert Knight <robertknight@gmail.com>           
 License: GPL-3.0-or-later
 
 # FuzzyTest/src
