@@ -85,4 +85,4 @@ We encourage you to report issues and contribute changes
 
 ## 协议
 
-Deepin Terminal is licensed under [GPLv3](LICENSE).
+Deepin Terminal 根据 [GPL-3.0-only]（许可证）获得许可.
