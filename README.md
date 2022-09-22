@@ -85,4 +85,4 @@ We encourage you to report issues and contribute changes
 
 ## License
 
-Deepin Terminal is licensed under [GPLv3](LICENSE).
+Deepin Terminal is licensed under [GPL-3.0-only](LICENSE).
