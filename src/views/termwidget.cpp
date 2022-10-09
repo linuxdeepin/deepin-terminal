@@ -70,10 +70,10 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // theme
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    theme = Settings::instance()->colorScheme();
-    //if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-    //    theme = "Light";
-    //}
+    //theme = Settings::instance()->colorScheme();
+    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+        theme = "Light";
+    }
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
     setColorScheme(theme);
     Settings::instance()->setColorScheme(theme);
