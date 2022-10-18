@@ -705,8 +705,13 @@ void Screen::tab(int n)
     while((n > 0) && (_cuX < _columns-1))
     {
         cursorRight(1);
-        while((_cuX < _columns - 1) && !_tabStops[_cuX])
+        while((_cuX < _columns - 1) && !_tabStops[_cuX]) {
+            int oldXValue = _cuX;
             cursorRight(1);
+            if (oldXValue == _cuX) {
+                break;
+            }
+        }
         n--;
     }
 }
