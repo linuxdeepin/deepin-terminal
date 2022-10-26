@@ -787,6 +787,8 @@ void Screen::displayCharacter(uint c)
     }
 
     // ensure current line vector has enough elements
+    if (_cuY >= _screenLines.size())
+        return;
     int size = _screenLines[_cuY].size();
     if (size < _cuX+w)
     {
@@ -981,6 +983,8 @@ void Screen::clearImage(int loca, int loce, char c, bool resetLineRendition)
 
     for (int y=topLine;y<=bottomLine;y++)
     {
+        if(y >= _lineProperties.size())
+            break;
         _lineProperties[y] = 0;
 
         int endCol = ( y == bottomLine) ? loce % _columns : _columns - 1;
