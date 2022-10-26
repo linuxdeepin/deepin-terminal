@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>command_dark</title>
-    <g id="dark" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.3">
-        <g id="终端窗口-自定义命令空" transform="translate(-893.000000, -293.000000)" fill="#C5CFE0">
-            <g id="Group-35" transform="translate(893.000000, 293.000000)">
-                <g id="cmd_light" transform="translate(19.333333, 10.666667)">
-                    <rect id="Rectangle-6" fill-rule="nonzero" x="0.666666667" y="53.3333333" width="11" height="11"></rect>
-                    <rect id="Rectangle-6" fill-rule="nonzero" x="19.6666667" y="53.3333333" width="11" height="11"></rect>
-                    <rect id="Rectangle-6" fill-rule="nonzero" x="37.6666667" y="53.3333333" width="11" height="11"></rect>
-                    <text id="&gt;_" font-family="SourceHanSansSC-Regular, Source Han Sans SC" font-size="22" font-weight="normal">
-                        <tspan x="9.66266667" y="26.3333333">&gt;_</tspan>
-                    </text>
+    <title>command_light</title>
+    <g id="light" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="终端窗口-自定义命令空" transform="translate(-893.000000, -293.000000)">
+            <g id="command_light" transform="translate(893.000000, 293.000000)">
+                <g id="cmd_light" transform="translate(20.000000, 23.910000)">
+                    <rect id="Rectangle-6" fill="#D6D6D6" x="0" y="40.09" width="11" height="11"></rect>
+                    <rect id="Rectangle-6" fill="#D6D6D6" x="19" y="40.09" width="11" height="11"></rect>
+                    <rect id="Rectangle-6" fill="#D6D6D6" x="37" y="40.09" width="11" height="11"></rect>
+                    <g id="&gt;_" transform="translate(9.832000, 0.000000)" fill="#E6E6E6" fill-rule="nonzero">
+                        <polygon id="路径" points="0 9.878 10.538 5.742 10.538 4.136 0 0 0 1.738 5.192 3.652 8.492 4.884 8.492 4.972 5.192 6.204 0 8.118"></polygon>
+                        <polygon id="路径" points="11.66 16.17 23.364 16.17 23.364 14.828 11.66 14.828"></polygon>
+                    </g>
                 </g>
             </g>
         </g>
