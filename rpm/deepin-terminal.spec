@@ -39,6 +39,7 @@ BuildRequires: gtest-devel
 BuildRequires: gmock-devel
 BuildRequires: qt5-qtx11extras-devel
 BuildRequires: xcb-util-wm-devel
+BuildRequires: qtbase5-private-dev
 
 Requires: libqtermwidget5
 Requires: libqtermwidget5-data
