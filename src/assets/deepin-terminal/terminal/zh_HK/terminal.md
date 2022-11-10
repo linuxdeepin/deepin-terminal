@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-
-SPDX-License-Identifier: GPL-3.0-or-later
--->
-
 # 終端|deepin-terminal|
 
 ## 概述
@@ -96,7 +90,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 ![1|openfile](fig/openfile.png)
 
 
-### 調整編碼方式 
+### 調整編碼方式
 當某些文件訊息顯示亂碼或者錯誤時，可以通過調整編碼方式來解決問題。
 
 1. 在終端界面，單擊鼠標右鍵。
