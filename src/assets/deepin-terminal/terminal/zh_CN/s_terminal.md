@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-
-SPDX-License-Identifier: GPL-3.0-or-later
--->
-
 # 终端|deepin-terminal|
 
 ## 概述
