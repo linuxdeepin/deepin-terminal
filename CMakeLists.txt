@@ -7,6 +7,9 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 include (src/DtkSettingsToolsMacros)
 option(TERM_RPATH "Do you want to use compiled libraries" ON)
 
+set(CMAKE_C_FLAGS "-fPIC")
+set(CMAKE_CXX_FLAGS "-fPIC")
+
 if(TERM_RPATH)
 set(CMAKE_SKIP_INSTALL_RPATH YES)
 set(CMAKE_SKIP_RPATH YES)
