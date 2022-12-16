@@ -197,6 +197,14 @@ public:
      */
     bool enableControlFlow(void);
 
+    void setFontSize(const int size);
+    void setFontName(const QString font);
+    void setOpacity(const int opacity);
+    void setConsoleColorScheme(const QString scheme);
+    void setCursorShape(const int shape);
+    void setCursorBlink(const bool blink);
+    void setConsoleShell(const QString shellName);
+
     //选择主题，false:选择主题未确定，读写缓存； true:选择主题已确定，读写settings
     //这里默认true是为了：启动时读取settings的值
     bool bSwitchTheme           = true;
