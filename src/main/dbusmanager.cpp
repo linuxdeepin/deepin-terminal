@@ -147,6 +147,76 @@ void DBusManager::entry(QStringList args)
     emit entryArgs(args);
 }
 
+int DBusManager::consoleFontSize() const
+{
+    return Settings::instance()->fontSize();
+}
+
+void DBusManager::setConsoleFontSize(const int size)
+{
+    Settings::instance()->setFontSize(size);
+}
+
+QString DBusManager::consoleFontFamily() const
+{
+    return Settings::instance()->fontName();
+}
+
+void DBusManager::setConsoleFontFamily(const QString family)
+{
+    Settings::instance()->setFontName(family);
+}
+
+qreal DBusManager::consoleOpacity() const
+{
+    return Settings::instance()->opacity();
+}
+
+void DBusManager::setConsoleOpacity(const int value)
+{
+    Settings::instance()->setOpacity(value);
+}
+
+int DBusManager::consoleCursorShape() const
+{
+    return Settings::instance()->cursorShape();
+}
+
+void DBusManager::setConsoleCursorShape(const int shape)
+{
+    Settings::instance()->setCursorShape(shape);
+}
+
+bool DBusManager::consoleCursorBlink() const
+{
+    return Settings::instance()->cursorBlink();
+}
+
+void DBusManager::setConsoleCursorBlink(const bool blink)
+{
+    Settings::instance()->setCursorBlink(blink);
+}
+
+QString DBusManager::consoleColorScheme() const
+{
+    return Settings::instance()->colorScheme();
+}
+
+void DBusManager::setConsoleColorScheme(const QString scheme)
+{
+    Settings::instance()->setConsoleColorScheme(scheme);
+}
+
+QString DBusManager::consoleShell() const
+{
+    return Settings::instance()->shellPath();
+}
+
+void DBusManager::setConsoleShell(const QString shellName)
+{
+    Settings::instance()->setConsoleShell(shellName);
+}
+
 void DBusManager::callSystemSound(const QString &sound)
 {
     QDBusMessage response = dbusPlaySound(sound);

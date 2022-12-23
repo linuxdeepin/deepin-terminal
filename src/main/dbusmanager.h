@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+﻿// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -132,6 +132,27 @@ public slots:
      * @param args
      */
     void entry(QStringList args);
+
+    int consoleFontSize() const;   // 字体大小
+    void setConsoleFontSize(const int size);
+
+    QString consoleFontFamily() const;   // 字体名称
+    void setConsoleFontFamily(const QString family);
+
+    qreal consoleOpacity() const;   // 控制台透明度值
+    void setConsoleOpacity(const int value);
+
+    int consoleCursorShape() const;   // 光标样式值
+    void setConsoleCursorShape(const int shape);
+
+    bool consoleCursorBlink() const;   // 光标是否闪烁
+    void setConsoleCursorBlink(const bool blink);
+
+    QString consoleColorScheme() const;   // 颜色主题
+    void setConsoleColorScheme(const QString scheme);
+
+    QString consoleShell() const; // shell 类型
+    void setConsoleShell(const QString shellName);
 
 signals:
     // 该信号由Service在main入口中使用
