@@ -51,7 +51,7 @@ public:
     /**
      * @brief 初始化设置框，在窗口现实后初始化，使第一次出现设置框不至于卡顿
      */
-    void initSetting();
+    void initSetting(MainWindow *pOwner);
 
     /**
      * @brief 显示设置框

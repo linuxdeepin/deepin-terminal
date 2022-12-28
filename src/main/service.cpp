@@ -71,7 +71,7 @@ void Service::releaseInstance()
     }
 }
 
-void Service::initSetting()
+void Service::initSetting(MainWindow *pOwner)
 {
     if (nullptr != m_settingDialog) {
         //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
@@ -87,7 +87,7 @@ void Service::initSetting()
     }
 
     QDateTime startTime = QDateTime::currentDateTime();
-    m_settingDialog = new DSettingsDialog();
+    m_settingDialog = new DSettingsDialog(pOwner);
     m_settingDialog->setObjectName("SettingDialog");
     // 关闭后将指针置空，下次重新new
     connect(m_settingDialog, &DSettingsDialog::finished, this, &Service::slotSettingsDialogFinished);
@@ -289,7 +289,7 @@ bool Service::mainTerminalIsStarted()
 void Service::showSettingDialog(MainWindow *pOwner)
 {
     // 第一次初始化dialog
-    initSetting();
+    initSetting(pOwner);
     //保存设置框的有拥者
     m_settingOwner = pOwner;
     if (nullptr != m_settingDialog) {
