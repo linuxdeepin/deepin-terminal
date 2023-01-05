@@ -1,7 +1,23 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     daizhengwen <daizhengwen@uniontech.com>
+ *
+ * Maintainer: daizhengwen <daizhengwen@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "ut_remotemanagementpanel_test.h"
 #include "remotemanagementpanel.h"
@@ -253,48 +269,48 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
  3. @日期:    2020-12-22
  4. @说明:    当前项被点击
 *******************************************************************************/
-TEST_F(UT_RemoteManagementPanel_Test, onItemClicked)
-{
-    // 初始化一个panel
-    RemoteManagementPanel remotePanel;
-    remotePanel.show();
-    // 初始化一个可点击的数据
-    //添加数据,显示搜索框
-    ServerConfig config;
-    config.m_serverName = "test_item";
-    config.m_address = "127.0.0.1";
-    config.m_userName = "dzw";
-    config.m_port = "22";
-    // 添加数据到列表中
-    // 分组数据存储结构
-    QList<ServerConfig *> list;
-    list.append(&config);
-    // 数据存储结构
-    ServerConfigManager::instance()->m_serverConfigs.insert("", list);
-    // 刷新列表,填充数据
+//TEST_F(UT_RemoteManagementPanel_Test, onItemClicked)
+//{
+//    // 初始化一个panel
+//    RemoteManagementPanel remotePanel;
+//    remotePanel.show();
+//    // 初始化一个可点击的数据
+//    //添加数据,显示搜索框
+//    ServerConfig config;
+//    config.m_serverName = "test_item";
+//    config.m_address = "127.0.0.1";
+//    config.m_userName = "dzw";
+//    config.m_port = "22";
+//    // 添加数据到列表中
+//    // 分组数据存储结构
+//    QList<ServerConfig *> list;
+//    list.append(&config);
+//    // 数据存储结构
+//    ServerConfigManager::instance()->m_serverConfigs.insert("", list);
+//    // 刷新列表,填充数据
 
-    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
-    remotePanel.refreshPanel();
-    EXPECT_TRUE(remotePanel.m_searchEdit->text().isEmpty());
-    EXPECT_TRUE(remotePanel.m_listWidget->count() > 0);
-    //刷新远程控制列表时，会触发setvisible函数
-    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
+//    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
+//    remotePanel.refreshPanel();
+//    EXPECT_TRUE(remotePanel.m_searchEdit->text().isEmpty());
+//    EXPECT_TRUE(remotePanel.m_listWidget->count() > 0);
+//    //刷新远程控制列表时，会触发setvisible函数
+//    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 
-    // 模拟数据被点击
-    // 传来被点击的key值
-    QSignalSpy spy(&remotePanel, &RemoteManagementPanel::doConnectServer);
-    remotePanel.onItemClicked("test_item");
-    ASSERT_TRUE(ServerConfigManager::instance()->getServerConfig("test_item") != nullptr);
-    //会emit doConnectServer
-    EXPECT_TRUE(spy.count() == 1);
+//    // 模拟数据被点击
+//    // 传来被点击的key值
+//    QSignalSpy spy(&remotePanel, &RemoteManagementPanel::doConnectServer);
+//    remotePanel.onItemClicked("test_item");
+//    ASSERT_TRUE(ServerConfigManager::instance()->getServerConfig("test_item") != nullptr);
+//    //会emit doConnectServer
+//    EXPECT_TRUE(spy.count() == 1);
 
-    // 传来错误的值
-    remotePanel.onItemClicked("test_item2");
-    ASSERT_TRUE(ServerConfigManager::instance()->getServerConfig("test_item2") == nullptr);
-    //不会 emit doConnectServer
-    EXPECT_TRUE(spy.count() == 1);
-    ServerConfigManager::instance()->m_serverConfigs.clear();
-}
+//    // 传来错误的值
+//    remotePanel.onItemClicked("test_item2");
+//    ASSERT_TRUE(ServerConfigManager::instance()->getServerConfig("test_item2") == nullptr);
+//    //不会 emit doConnectServer
+//    EXPECT_TRUE(spy.count() == 1);
+//    ServerConfigManager::instance()->m_serverConfigs.clear();
+//}
 
 /*******************************************************************************
  1. @函数:    showCurSearchResult

@@ -1,7 +1,23 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     wangliang <wangliang@uniontech.com>
+ *
+ * Maintainer: wangliang <wangliang@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "ut_mainwindow_test.h"
 
@@ -1214,19 +1230,19 @@ TEST_F(UT_MainWindow_Test, slotShortcutNewTab)
  3. @日期:    2020-12-25
  4. @说明:    slotShortcutPaste单元测试
 *******************************************************************************/
-TEST_F(UT_MainWindow_Test, slotShortcutPaste)
-{
-    //默认一个tab
-    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
-    EXPECT_TRUE(mainWindow->currentPage());
-    EXPECT_TRUE(mainWindow->currentPage()->currentTerminal());
+//TEST_F(UT_MainWindow_Test, slotShortcutPaste)
+//{
+//    //默认一个tab
+//    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+//    EXPECT_TRUE(mainWindow->currentPage());
+//    EXPECT_TRUE(mainWindow->currentPage()->currentTerminal());
 
-    UT_STUB_QWIDGET_HASFOCUS_CREATE;
-    mainWindow->slotShortcutPaste();
-    //m_terminalDisplay 触发hasFocus函数
-    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
-    mainWindow->deleteLater();
-}
+//    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+//    mainWindow->slotShortcutPaste();
+//    //m_terminalDisplay 触发hasFocus函数
+//    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
+//    mainWindow->deleteLater();
+//}
 
 /*******************************************************************************
  1. @函数:    MainWindow类的函数

@@ -1,8 +1,23 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:  daizhengwen<daizhengwen@uniontech.com>
+ *
+ * Maintainer:daizhengwen<daizhengwen@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "dbusmanager.h"
 #include "utils.h"
 
@@ -145,76 +160,6 @@ void DBusManager::callTerminalEntry(QStringList args)
 void DBusManager::entry(QStringList args)
 {
     emit entryArgs(args);
-}
-
-int DBusManager::consoleFontSize() const
-{
-    return Settings::instance()->fontSize();
-}
-
-void DBusManager::setConsoleFontSize(const int size)
-{
-    Settings::instance()->setFontSize(size);
-}
-
-QString DBusManager::consoleFontFamily() const
-{
-    return Settings::instance()->fontName();
-}
-
-void DBusManager::setConsoleFontFamily(const QString family)
-{
-    Settings::instance()->setFontName(family);
-}
-
-qreal DBusManager::consoleOpacity() const
-{
-    return Settings::instance()->opacity();
-}
-
-void DBusManager::setConsoleOpacity(const int value)
-{
-    Settings::instance()->setOpacity(value);
-}
-
-int DBusManager::consoleCursorShape() const
-{
-    return Settings::instance()->cursorShape();
-}
-
-void DBusManager::setConsoleCursorShape(const int shape)
-{
-    Settings::instance()->setCursorShape(shape);
-}
-
-bool DBusManager::consoleCursorBlink() const
-{
-    return Settings::instance()->cursorBlink();
-}
-
-void DBusManager::setConsoleCursorBlink(const bool blink)
-{
-    Settings::instance()->setCursorBlink(blink);
-}
-
-QString DBusManager::consoleColorScheme() const
-{
-    return Settings::instance()->colorScheme();
-}
-
-void DBusManager::setConsoleColorScheme(const QString scheme)
-{
-    Settings::instance()->setConsoleColorScheme(scheme);
-}
-
-QString DBusManager::consoleShell() const
-{
-    return Settings::instance()->shellPath();
-}
-
-void DBusManager::setConsoleShell(const QString shellName)
-{
-    Settings::instance()->setConsoleShell(shellName);
 }
 
 void DBusManager::callSystemSound(const QString &sound)

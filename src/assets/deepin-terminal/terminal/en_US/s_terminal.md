@@ -11,7 +11,7 @@ Terminal is a terminal emulator with simple interface providing diversified powe
 
 You can run, exit or create shortcuts for Terminal.
 
-### Run Terminal
+### Run Terminal 
 
 1. Click the Launcher icon ![deepin_launcher](../common/deepin_launcher.svg) in the Dock to enter launcher interface.
 2. Locate Terminal ![deepin_terminal](../common/deepin_terminal.svg) by scrolling the mouse wheel or searching "terminal" in the Launcher interface and click it to run.
@@ -23,7 +23,7 @@ You can run, exit or create shortcuts for Terminal.
 > ![notes](../common/notes.svg) Notes: You can also press **Ctrl** + **Alt** + **T** to open Terminal.
 
 
-### Exit Terminal
+### Exit Terminal 
 
 1. On the Terminal interface, click  ![close_icon](../common/close_icon.svg) to exit.
 2. Right-click ![deepin_terminal](../common/deepin_terminal.svg) in the Dock and select **Close All** to exit.
@@ -46,7 +46,7 @@ You can right-click on the Terminal interface for daily operations.
  ![1|rightclick](fig/rightclick.png)
 
 
-### Find
+### Find 
 
 You can use **Find** function to quickly search contents in terminal.
 
@@ -88,7 +88,7 @@ Quake Mode is a unique function of Terminal. Press **Alt** + **F2** to open a qu
 
 > ![tips](../common/tips.svg) Tips: You can also right-click ![deepin_terminal](../common/deepin_terminal.svg) in the Dock to select **Quake Terminal** to open a quake window.
 
-### Open Files and Applications
+### Open Files and Applications 
 
 On the Terminal interface, select the file in the current directory and right-click to **Open** it by system application.
 
@@ -100,7 +100,7 @@ On the Terminal interface, select the file in the current directory and right-cl
  ![1|openfile](fig/openfile.png)
 
 
-### Adjust Encoding Methods
+### Adjust Encoding Methods 
 
 When there is a messy code or display error, you may switch the encoding to solve it.
 
@@ -116,7 +116,7 @@ When there is a messy code or display error, you may switch the encoding to solv
 Window serves as the foundation for your operations in Terminal. A window is created when you launch the terminal. You can create many tabs in one window and split one tab or window into multiple workspaces.
 
 
-### Create Windows
+### Create Windows 
 
 You can create a new window in the following ways:
 
@@ -135,7 +135,7 @@ You can create a new window in the following ways:
 > ![notes](../common/notes.svg)Notes: You can also right-click to select **Fullscreen** or **Exit fullscreen** on the Terminal interface.
 
 
-### Split Windows
+### Split Windows 
 
 1. On the Terminal interface, right-click to:
 
@@ -150,7 +150,7 @@ You can create a new window in the following ways:
 
 
 
-### Close Workspaces
+### Close Workspaces 
 
 You can close multiple split workspaces in the following steps:
 
@@ -165,7 +165,7 @@ You can close multiple split workspaces in the following steps:
 
 ## Tab Operations
 
-### Create Tabs
+### Create Tabs 
 
 You can create new tabs as follows:
 
@@ -174,7 +174,7 @@ You can create new tabs as follows:
 - Press **Ctrl** + **Shift** + **T** on the keyboard to create a new tab.
 
 
-### Switch/Adjust Tabs
+### Switch/Adjust Tabs 
 
 You can freely switch among multiple tabs via following methods:
 
@@ -185,7 +185,7 @@ You can freely switch among multiple tabs via following methods:
 - Drag one tab out of the current window to another window.
 
 
-### Rename Tabs
+### Rename Tabs 
 
 
 1. On the Terminal interface, right-click a tab and select **Rename title**.
@@ -200,7 +200,7 @@ You can freely switch among multiple tabs via following methods:
 
  ![1|rename](fig/rename.png)
 
-### Close Tabs
+### Close Tabs 
 
 You can close tab as follows:
 
@@ -215,7 +215,7 @@ You can close tab as follows:
 
 You can open remote management panel to add remote servers via the main menu or right-click menu. Once a remote server is added into the management list, you can automatically login just by one click. 
 
-### Add Servers
+### Add Servers 
 
 1. On the Terminal interface, click ![icon_menu](../common/icon_menu.svg)> **Remote management**.
 2. Click **Add Server** and a pop-up box will display.
@@ -226,7 +226,7 @@ You can open remote management panel to add remote servers via the main menu or 
 
  ![1|addssh](fig/addsshall.png)
 
-### Edit Servers
+### Edit Servers 
 
 1. On the Remote Management interface, click ![edit_icon](../common/edit_icon.svg) on the server.
 2. Edit server information as needed.
@@ -235,7 +235,7 @@ You can open remote management panel to add remote servers via the main menu or 
  ![0|editssh](fig/editssh.png)
 
 
-### Group Servers
+### Group Servers 
 
 When you set a group for a server, it will be added in the corresponding group and displayed in the remote management panel on the right side.
 
@@ -247,7 +247,7 @@ When you set a group for a server, it will be added in the corresponding group a
  ![0|groupssh](fig/groupssh.png)
 
 
-### Search Servers
+### Search Servers 
 
 When there are multiple servers or groups, the search box will be displayed on the top, so you can quickly search all servers.
 
@@ -258,11 +258,11 @@ When there are multiple servers or groups, the search box will be displayed on t
 ![0|searchssh](fig/searchssh.png)
 
 
-### Upload/Download Files
+### Upload/Download Files 
 
 You can upload and download files after logging into a remote server.
 
-#### Upload Files
+#### Upload Files 
 
 1. On the Remote Management panel, select one server to log in.
 2. On the Terminal interface, right-click to select **Upload file**.
@@ -274,7 +274,7 @@ You can upload and download files after logging into a remote server.
 ![1|upload](fig/upload.png)
 
 
-#### Download Files
+#### Download Files 
 
 1. On the Remote Management panel, select one server to log in.
 2. On the Terminal interface, right-click to select **Download file**.
@@ -284,7 +284,7 @@ You can upload and download files after logging into a remote server.
 ![1|download](fig/download.png)
 
 
-### Delete Servers
+### Delete Servers 
 
 1. Enter **Edit Server** interface.
 2. Click **Advanced options**.
@@ -297,7 +297,7 @@ You can upload and download files after logging into a remote server.
 
 In the Main Menu, you can create [New Window](#Create Window), customize commands,  perform [Remote Management](#Remote Management), switch themes, view help manual and get more information about Album.
 
-### Theme
+### Theme 
 
 The window theme provides multiple themes.
 
@@ -307,7 +307,7 @@ The window theme provides multiple themes.
    - choose one theme that comes with Terminal.
    - customize the theme in the **Custom Theme** window according to your need.
 
-### Custom Commands
+### Custom Commands 
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg).
 2. Select **Custom commands**.
@@ -327,7 +327,7 @@ The window theme provides multiple themes.
 
 3. In the **Tab titles** options, you can set the name for all the tabs and remote tabs in terminal.
 
-#### Shortcuts Settings
+#### Shortcuts Settings 
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg)> **Settings**.
 2. In the **Shortcuts** options, you can:
@@ -336,7 +336,7 @@ The window theme provides multiple themes.
   - Disable shortcuts: Click the shortcuts to be modified and the input box will be editable.  Press **Backspace** on the keyboard to disable the shortcut.
 
 
-#### Advanced Settings
+#### Advanced Settings 
 
 1. On the Terminal interface, click ![main_menu](../common/icon_menu.svg)> **Settings**.
 2. In the **Advanced** options, you can:

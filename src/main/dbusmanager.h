@@ -1,7 +1,23 @@
-﻿// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:  daizhengwen<daizhengwen@uniontech.com>
+ *
+ * Maintainer:daizhengwen<daizhengwen@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef DBUSMANAGER_H
 #define DBUSMANAGER_H
@@ -20,8 +36,8 @@
 #define KWINDBUSPATH "/KWin"
 
 // deepin Appearance
-#define APPEARANCESERVICE "com.deepin.daemon.Appearance"
-#define APPEARANCEPATH "/com/deepin/daemon/Appearance"
+#define APPEARANCESERVICE "org.deepin.dde.Appearance1"
+#define APPEARANCEPATH "/org/deepin/dde/Appearance1"
 
 // sound effect 音效服务
 #define SOUND_EFFECT_SERVICE    "com.deepin.daemon.SoundEffect"
@@ -132,27 +148,6 @@ public slots:
      * @param args
      */
     void entry(QStringList args);
-
-    int consoleFontSize() const;   // 字体大小
-    void setConsoleFontSize(const int size);
-
-    QString consoleFontFamily() const;   // 字体名称
-    void setConsoleFontFamily(const QString family);
-
-    qreal consoleOpacity() const;   // 控制台透明度值
-    void setConsoleOpacity(const int value);
-
-    int consoleCursorShape() const;   // 光标样式值
-    void setConsoleCursorShape(const int shape);
-
-    bool consoleCursorBlink() const;   // 光标是否闪烁
-    void setConsoleCursorBlink(const bool blink);
-
-    QString consoleColorScheme() const;   // 颜色主题
-    void setConsoleColorScheme(const QString scheme);
-
-    QString consoleShell() const; // shell 类型
-    void setConsoleShell(const QString shellName);
 
 signals:
     // 该信号由Service在main入口中使用

@@ -1,8 +1,23 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:  wangpeili<wangpeili@uniontech.com>
+ *
+ * Maintainer:wangpeili<wangpeili@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "service.h"
 #include "utils.h"
 #include "define.h"
@@ -22,6 +37,8 @@
 #include <QLabel>
 #include <QScroller>
 #include <QJsonObject>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
 
 Service *Service::g_pService = nullptr;
 
@@ -71,7 +88,7 @@ void Service::releaseInstance()
     }
 }
 
-void Service::initSetting(MainWindow *pOwner)
+void Service::initSetting()
 {
     if (nullptr != m_settingDialog) {
         //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
@@ -87,7 +104,7 @@ void Service::initSetting(MainWindow *pOwner)
     }
 
     QDateTime startTime = QDateTime::currentDateTime();
-    m_settingDialog = new DSettingsDialog(pOwner);
+    m_settingDialog = new DSettingsDialog();
     m_settingDialog->setObjectName("SettingDialog");
     // 关闭后将指针置空，下次重新new
     connect(m_settingDialog, &DSettingsDialog::finished, this, &Service::slotSettingsDialogFinished);
@@ -183,11 +200,17 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 
 void Service::listenWindowEffectSwitcher()
 {
-    if (nullptr == m_wmSwitcher) {
-        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
-        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
+//    if (nullptr == m_wmSwitcher) {
+//        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
+//        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
+//        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
+//    }
+    QDBusConnection session = QDBusConnection::sessionBus();
+    if (!session.interface()->isServiceRegistered(WMSwitcherService)) {
+        qInfo() << WMSwitcherService << "Not Registered!!!!!!!";
+        return;
     }
+    session.connect(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "WMChanged", this, SLOT(slotWMChanged(QString)));
 }
 
 void Service::slotWMChanged(const QString &wmName)
@@ -289,7 +312,7 @@ bool Service::mainTerminalIsStarted()
 void Service::showSettingDialog(MainWindow *pOwner)
 {
     // 第一次初始化dialog
-    initSetting(pOwner);
+    initSetting();
     //保存设置框的有拥者
     m_settingOwner = pOwner;
     if (nullptr != m_settingDialog) {
