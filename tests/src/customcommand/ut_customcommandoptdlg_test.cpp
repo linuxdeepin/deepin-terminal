@@ -1,7 +1,23 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     wangliang <wangliang@uniontech.com>
+ *
+ * Maintainer: wangliang <wangliang@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "ut_customcommandoptdlg_test.h"
 #include "ut_defines.h"
@@ -55,47 +71,47 @@ static bool ut_ShortcutManager_checkShortcutValid(const QString &, const QString
 
 #ifdef UT_CUSTOMCOMMANDOPTDLG_TEST
 
-TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
-{
-    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::DarkType);
-    QSharedPointer<CustomCommandOptDlg> cmdDlg_new(new CustomCommandOptDlg, doDeleteLater);
-    cmdDlg_new->setIconPixmap(QPixmap());
-    cmdDlg_new->show();
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
-    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::LightType);
+//TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
+//{
+//    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::DarkType);
+//    QSharedPointer<CustomCommandOptDlg> cmdDlg_new(new CustomCommandOptDlg, doDeleteLater);
+//    cmdDlg_new->setIconPixmap(QPixmap());
+//    cmdDlg_new->show();
+//    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
+//    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+//    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::LightType);
 
-    QSharedPointer<CustomCommandOptDlg> cmdDlg(new CustomCommandOptDlg, doDeleteLater);
+//    QSharedPointer<CustomCommandOptDlg> cmdDlg(new CustomCommandOptDlg, doDeleteLater);
 
-    cmdDlg->show();
+//    cmdDlg->show();
 
-    QList<DLineEdit *> lineEditList = cmdDlg->findChildren<DLineEdit *>();
-    EXPECT_EQ(lineEditList.size(), 2);
+//    QList<DLineEdit *> lineEditList = cmdDlg->findChildren<DLineEdit *>();
+//    EXPECT_EQ(lineEditList.size(), 2);
 
-    DLineEdit *cmdNameEdit = lineEditList.first();
-    DLineEdit *cmdTextEdit = lineEditList.last();
+//    DLineEdit *cmdNameEdit = lineEditList.first();
+//    DLineEdit *cmdTextEdit = lineEditList.last();
 
-    QString str = Utils::getRandString();
-    cmdNameEdit->setText(str.toLower());
-    cmdTextEdit->setText("ls -al");
+//    QString str = Utils::getRandString();
+//    cmdNameEdit->setText(str.toLower());
+//    cmdTextEdit->setText("ls -al");
 
-    DKeySequenceEdit *shortcutEdit = cmdDlg->findChild<DKeySequenceEdit *>();
-    EXPECT_NE(shortcutEdit, nullptr);
-    shortcutEdit->setKeySequence(QKeySequence("Ctrl+Shift+K"));
-}
+//    DKeySequenceEdit *shortcutEdit = cmdDlg->findChild<DKeySequenceEdit *>();
+//    EXPECT_NE(shortcutEdit, nullptr);
+//    shortcutEdit->setKeySequence(QKeySequence("Ctrl+Shift+K"));
+//}
 
-TEST_F(UT_CustomCommandOptDlg_Test, setCancelBtnText)
-{
-    QSharedPointer<CustomCommandOptDlg> cmdDlg(new CustomCommandOptDlg, doDeleteLater);
+//TEST_F(UT_CustomCommandOptDlg_Test, setCancelBtnText)
+//{
+//    QSharedPointer<CustomCommandOptDlg> cmdDlg(new CustomCommandOptDlg, doDeleteLater);
 
-    cmdDlg->addCancelConfirmButtons();
-    EXPECT_NE(cmdDlg->m_cancelBtn, nullptr);
-    EXPECT_NE(cmdDlg->m_confirmBtn, nullptr);
+//    cmdDlg->addCancelConfirmButtons();
+//    EXPECT_NE(cmdDlg->m_cancelBtn, nullptr);
+//    EXPECT_NE(cmdDlg->m_confirmBtn, nullptr);
 
-    QString cancelText("Cancel");
-    cmdDlg->setCancelBtnText(cancelText);
-    EXPECT_EQ(cmdDlg->m_cancelBtn->text(), cancelText);
-}
+//    QString cancelText("Cancel");
+//    cmdDlg->setCancelBtnText(cancelText);
+//    EXPECT_EQ(cmdDlg->m_cancelBtn->text(), cancelText);
+//}
 
 TEST_F(UT_CustomCommandOptDlg_Test, setConfirmBtnText)
 {

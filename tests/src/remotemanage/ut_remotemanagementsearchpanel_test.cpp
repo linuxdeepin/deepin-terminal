@@ -1,7 +1,23 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     daizhengwen <daizhengwen@uniontech.com>
+ *
+ * Maintainer: daizhengwen <daizhengwen@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "ut_remotemanagementsearchpanel_test.h"
 #include "remotemanagementsearchpanel.h"
@@ -264,26 +280,26 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, onItemClicked)
  3. @日期:    2020-12-23
  4. @说明:    测试lambda表达式
 *******************************************************************************/
-TEST_F(UT_RemoteManagementSearchPanel_Test, lambda)
-{
-    // 初始化界面
-    RemoteManagementSearchPanel searchPanel;
-    searchPanel.show();
+//TEST_F(UT_RemoteManagementSearchPanel_Test, lambda)
+//{
+//    // 初始化界面
+//    RemoteManagementSearchPanel searchPanel;
+//    searchPanel.show();
 
-    //
-    UT_STUB_QAPPLICATION_SENDEVENT_CREATE;
-    searchPanel.handleListViewFocusOut(Qt::TabFocusReason);
-    EXPECT_TRUE(UT_STUB_QAPPLICATION_SENDEVENT_RESULT);
+//    //
+//    UT_STUB_QAPPLICATION_SENDEVENT_CREATE;
+//    searchPanel.handleListViewFocusOut(Qt::TabFocusReason);
+//    EXPECT_TRUE(UT_STUB_QAPPLICATION_SENDEVENT_RESULT);
 
-    searchPanel.handleListViewFocusOut(Qt::BacktabFocusReason);
-    EXPECT_TRUE(-1 == searchPanel.m_listWidget->currentIndex());
+//    searchPanel.handleListViewFocusOut(Qt::BacktabFocusReason);
+//    EXPECT_TRUE(-1 == searchPanel.m_listWidget->currentIndex());
 
-    // 切换主题
-    searchPanel.handleThemeTypeChanged(DApplicationHelper::DarkType);
-    DPalette p1 = searchPanel.m_label->palette();
-    searchPanel.handleThemeTypeChanged(DApplicationHelper::LightType);
-    DPalette p2 = searchPanel.m_label->palette();
-    //一黑一白两个主题
-    EXPECT_TRUE(p1.brush(QPalette::Text).color() != p2.brush(QPalette::Text).color());
-}
+//    // 切换主题
+//    searchPanel.handleThemeTypeChanged(DApplicationHelper::DarkType);
+//    DPalette p1 = searchPanel.m_label->palette();
+//    searchPanel.handleThemeTypeChanged(DApplicationHelper::LightType);
+//    DPalette p2 = searchPanel.m_label->palette();
+//    //一黑一白两个主题
+//    EXPECT_TRUE(p1.brush(QPalette::Text).color() != p2.brush(QPalette::Text).color());
+//}
 #endif

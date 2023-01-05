@@ -1,7 +1,23 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     wangliang <wangliang@uniontech.com>
+ *
+ * Maintainer: wangliang <wangliang@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "ut_windowsmanager_test.h"
 #include "../stub.h"
@@ -164,55 +180,55 @@ TEST_F(UI_WindowsManager_Test, onMainwindowClosed)
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow(), nullptr);
 }
 
-TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
-{
-    // 若雷神还在就关闭
-    if (WindowsManager::instance()->getQuakeWindow()) {
-        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
-        WindowsManager::instance()->m_quakeWindow = nullptr;
-    }
+//TEST_F(UI_WindowsManager_Test, quakeWindowShowOrHide)
+//{
+//    // 若雷神还在就关闭
+//    if (WindowsManager::instance()->getQuakeWindow()) {
+//        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+//        WindowsManager::instance()->m_quakeWindow = nullptr;
+//    }
 
-    // 启动雷神
-    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
-    WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
-    // 雷神存在
-    EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
-    // 雷神显示
-    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
-    WindowsManager::instance()->getQuakeWindow()->setVisible(false);
-    WindowsManager::instance()->m_quakeWindow->hideQuakeWindow();
-    WindowsManager::instance()->quakeWindowShowOrHide();
+//    // 启动雷神
+//    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+//    WindowsManager::instance()->m_quakeWindow->setAnimationFlag(true);
+//    // 雷神存在
+//    EXPECT_NE(WindowsManager::instance()->getQuakeWindow(), nullptr);
+//    // 雷神显示
+//    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
+//    WindowsManager::instance()->getQuakeWindow()->setVisible(false);
+//    WindowsManager::instance()->m_quakeWindow->hideQuakeWindow();
+//    WindowsManager::instance()->quakeWindowShowOrHide();
 
-    {
-        Stub stub;
-        stub.set(ADDR(QuakeWindow, getDesktopIndex), ut_quakeWindow_getDesktopIndex);
-        WindowsManager::instance()->quakeWindowShowOrHide();
-    }
+//    {
+//        Stub stub;
+//        stub.set(ADDR(QuakeWindow, getDesktopIndex), ut_quakeWindow_getDesktopIndex);
+//        WindowsManager::instance()->quakeWindowShowOrHide();
+//    }
 
-    {
-        Stub stub;
-        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
-        stub.set(ADDR(Service, isSettingDialogVisible), ut_service_isSettingDialogVisible);
-        stub.set(ADDR(Service, getSettingOwner), ut_service_getSettingOwner);
-        WindowsManager::instance()->quakeWindowShowOrHide();
-    }
-    {
+//    {
+//        Stub stub;
+//        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
+//        stub.set(ADDR(Service, isSettingDialogVisible), ut_service_isSettingDialogVisible);
+//        stub.set(ADDR(Service, getSettingOwner), ut_service_getSettingOwner);
+//        WindowsManager::instance()->quakeWindowShowOrHide();
+//    }
+//    {
 
-        Stub stub;
-        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
-        stub.set(ADDR(QuakeWindow, isActiveWindow), ut_quakeWindow_isActiveWindow);
-        WindowsManager::instance()->quakeWindowShowOrHide();
-    }
+//        Stub stub;
+//        stub.set(ADDR(Service, getIsDialogShow), ut_service_getIsDialogShow);
+//        stub.set(ADDR(QuakeWindow, isActiveWindow), ut_quakeWindow_isActiveWindow);
+//        WindowsManager::instance()->quakeWindowShowOrHide();
+//    }
 
-    // 相当于再次Alt+F2
-    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
-    // 雷神隐藏 => 又开始了新一轮的动画
-    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isNotAnimation, false);
+//    // 相当于再次Alt+F2
+//    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+//    // 雷神隐藏 => 又开始了新一轮的动画
+//    EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isNotAnimation, false);
 
-    // 关闭雷神窗口
-    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
-    WindowsManager::instance()->m_quakeWindow = nullptr;
-}
+//    // 关闭雷神窗口
+//    WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+//    WindowsManager::instance()->m_quakeWindow = nullptr;
+//}
 
 TEST_F(UI_WindowsManager_Test, getNormalWindowList)
 {

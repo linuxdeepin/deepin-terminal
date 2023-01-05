@@ -1,8 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/bash 
 
-# SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-#
-# SPDX-License-Identifier: GPL-3.0-or-later
 
 #检查有没有deepin-terminal终端被安装
 dt=`which deepin-terminal`

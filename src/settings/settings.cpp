@@ -1,8 +1,23 @@
-﻿// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
+/*
+ *  Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+ *
+ * Author:     zhangmeng <zhangmeng@uniontech.com>
+ *
+ * Maintainer: zhangmeng <zhangmeng@uniontech.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "settings.h"
 #include "newdspinbox.h"
 //#include "utils.h"
@@ -816,58 +831,4 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     return optionWidget;
 }
 
-void Settings::setFontSize(const int size)
-{
-    if (size < 5 || size > 50) return;
-    settings->option("basic.interface.font_size")->setValue(size);
-}
-
-void Settings::setFontName(const QString font)
-{
-    FontDataList fontList = DBusManager::callAppearanceFont("monospacefont");
-    qDebug() << font << fontList.size();
-    for (int k = 0; k < fontList.count(); k++) {
-        if (font == fontList[k].key || font == fontList[k].value) {
-            settings->option("basic.interface.font")->setValue(font);
-            break;
-        }
-    }
-}
-
-void Settings::setOpacity(const int opacity)
-{
-    if (opacity < 0 || opacity > 100) return;
-    settings->option("basic.interface.opacity")->setValue(opacity);
-}
-
-void Settings::setConsoleColorScheme(const QString scheme)
-{
-    if (scheme == "Dark" || scheme == "Light") {
-        settings->option("basic.interface.theme")->setValue(scheme);
-        settings->option("basic.interface.expand_theme")->setValue("");
-    }
-}
-
-void Settings::setCursorShape(const int shape)
-{
-    if (shape < 0 || shape > 2) return;
-    settings->option("advanced.cursor.cursor_shape")->setValue(shape);
-}
-
-void Settings::setCursorBlink(const bool blink)
-{
-    settings->option("advanced.cursor.cursor_blink")->setValue(blink);
-}
-
-void Settings::setConsoleShell(const QString shellName)
-{
-    QMap<QString, QString> shellMap = Service::instance()->getShells();
-    for (auto itr = shellMap.begin(); itr != shellMap.end(); ++itr) {
-        qDebug() << itr.key() << itr.value() << shellName;
-        if (shellName == itr.key() || shellName == itr.value()) {
-            settings->option("advanced.shell.default_shell")->setValue(itr.value());
-            break;
-        }
-    }
-}
 
