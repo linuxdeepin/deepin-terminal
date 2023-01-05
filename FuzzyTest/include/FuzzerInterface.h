@@ -1,12 +1,6 @@
-//===- FuzzerInterface.h - Interface header for the Fuzzer ------*- C++ -* ===//
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
-// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
-// See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-//
-//===----------------------------------------------------------------------===//
-// Define the interface between libFuzzer and the library being tested.
-//===----------------------------------------------------------------------===//
 
 // NOTE: the libFuzzer interface is thin and in the majority of cases
 // you should not include this file into your target. In 95% of cases

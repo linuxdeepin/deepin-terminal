@@ -1,12 +1,6 @@
-//===- FuzzerExtFunctions.h - Interface to external functions ---*- C++ -* ===//
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
-// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
-// See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-//
-//===----------------------------------------------------------------------===//
-// Defines an interface to (possibly optional) functions.
-//===----------------------------------------------------------------------===//
 
 #ifndef LLVM_FUZZER_EXT_FUNCTIONS_H
 #define LLVM_FUZZER_EXT_FUNCTIONS_H
