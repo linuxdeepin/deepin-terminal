@@ -24,15 +24,21 @@
 #define APPEARANCEPATH "/org/deepin/dde/Appearance1"
 
 // sound effect 音效服务
-#define SOUND_EFFECT_SERVICE    "com.deepin.daemon.SoundEffect"
-#define SOUND_EFFECT_PATH       "/com/deepin/daemon/SoundEffect"
-#define SOUND_EFFECT_INTERFACE  "com.deepin.daemon.SoundEffect"
+//#define SOUND_EFFECT_SERVICE    "com.deepin.daemon.SoundEffect"
+//#define SOUND_EFFECT_PATH       "/com/deepin/daemon/SoundEffect"
+//#define SOUND_EFFECT_INTERFACE  "com.deepin.daemon.SoundEffect"
+#define SOUND_EFFECT_SERVICE    "org.deepin.dde.SoundEffect1"
+#define SOUND_EFFECT_PATH       "/org/deepin/dde/SoundEffect1"
+#define SOUND_EFFECT_INTERFACE  "org.deepin.dde.SoundEffect1"
 #define SOUND_EFFECT_METHOD(method) QDBusMessage::createMethodCall(SOUND_EFFECT_SERVICE, SOUND_EFFECT_PATH, SOUND_EFFECT_INTERFACE, (method))
 
 // gesture 触控板手势
-#define GESTURE_SERVICE          "com.deepin.daemon.Gesture"
-#define GESTURE_PATH             "/com/deepin/daemon/Gesture"
-#define GESTURE_INTERFACE        "com.deepin.daemon.Gesture"
+//#define GESTURE_SERVICE          "com.deepin.daemon.Gesture"
+//#define GESTURE_PATH             "/com/deepin/daemon/Gesture"
+//#define GESTURE_INTERFACE        "com.deepin.daemon.Gesture"
+#define GESTURE_SERVICE          "org.deepin.dde.Gesture1"
+#define GESTURE_PATH             "/org/deepin/dde/Gesture1"
+#define GESTURE_INTERFACE        "org.deepin.dde.Gesture1"
 #define GESTURE_SIGNAL           "Event"
 
 // deepin wm 窗管
