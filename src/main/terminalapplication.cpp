@@ -11,6 +11,10 @@
 // qt
 #include <QDebug>
 
+#ifdef QT_DEBUG
+#include <QTranslator>
+#endif
+
 TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication(argc, argv)
 {
     Utils::set_Object_Name(this);
