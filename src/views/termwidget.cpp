@@ -1326,8 +1326,9 @@ void TermWidget::wheelEvent(QWheelEvent *event)
 {
     int directionY = event->angleDelta().y();
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus()) {
-        if (Qt::ControlModifier == event->modifiers() && Settings::instance()->ScrollWheelZoom()) {
+    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
+        if (Qt::ControlModifier == event->modifiers()) {
+            int directionY = event->angleDelta().y();
             if (directionY < 0) {
                 qCDebug(views) << "Branch: directionY is less than 0, zooming out";
                 // 向下缩小
