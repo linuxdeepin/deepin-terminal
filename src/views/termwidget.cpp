@@ -1276,8 +1276,7 @@ inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fi
 {
     qCDebug(views) << "Enter TermWidget::onTouchPadSignal";
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus()) {
-        qCDebug(views) << "Branch: isActiveWindow and hasFocus";
+    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
         if (name == "pinch" && fingers == 2) {
             if (direction == "in") {
                 // 捏合 in是手指捏合的方向 向内缩小
@@ -1319,8 +1318,7 @@ void TermWidget::wheelEvent(QWheelEvent *event)
 {
     // qCDebug(views) << "Enter TermWidget::wheelEvent";
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus()) {
-        // qCDebug(views) << "Branch: isActiveWindow and hasFocus";
+    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
         if (Qt::ControlModifier == event->modifiers()) {
             int directionY = event->angleDelta().y();
             if (directionY < 0) {
