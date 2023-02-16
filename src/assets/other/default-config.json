@@ -341,6 +341,12 @@
                             "type": "checkbox",
                             "text": "Scroll on output",
                             "default": true
+                        },
+                        {
+                            "key": "zoom_on_ctrl_scrollwheel",
+                            "type": "checkbox",
+                            "text": "Allow Ctrl+scrollwheel to zoom text size",
+                            "default": true
                         }
                     ]
                 },

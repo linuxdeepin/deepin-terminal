@@ -381,6 +381,11 @@ bool Settings::OutputtingScroll()
     return settings->option("advanced.scroll.scroll_on_output")->value().toBool();
 }
 
+bool Settings::ScrollWheelZoom()
+{
+    return settings->option("advanced.scroll.zoom_on_ctrl_scrollwheel")->value().toBool();
+}
+
 /*******************************************************************************
  1. @函数:    reload
  2. @作者:    ut001121 zhangmeng
