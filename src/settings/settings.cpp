@@ -21,7 +21,9 @@
 
 #include <QApplication>
 #include <QStandardPaths>
+#include <QStringList>
 #include <QFontDatabase>
+#include <QHBoxLayout>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
@@ -356,6 +358,12 @@ qreal Settings::opacity() const
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
 }
 
+int Settings::QuakeDuration() const
+{
+    const int step = settings->option("advanced.window.quake_window_animation_duration")->data("step").toInt();
+    return settings->option("advanced.window.quake_window_animation_duration")->value().toInt() * step;
+}
+
 QString Settings::encoding() const
 {
     return m_EncodeName;
@@ -668,6 +676,40 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     //fix bug 65140 焦点在透明度，点击Page up/ down，点击8次即可调节到最前/后，和控制中心不一致
     slider->setPageStep(1);
     slider->slider()->setTickInterval(1);
+    QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
+
+    connect(option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) {
+        slider->setValue(var.toInt());
+    });
+
+    option->connect(slider, &DSlider::valueChanged, option, [ = ](QVariant var) {
+        option->setValue(var.toInt());
+    });
+
+    return optionWidget;
+}
+
+QPair<QWidget *, QWidget *> Settings::createValSliderHandle(QObject *obj)
+{
+    auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
+    DSlider *slider = new DSlider;
+    QStringList valTicksList;
+    const int maxVal = option->data("max").toInt();
+    const int minVal = option->data("min").toInt();
+    const int step = option->data("step").toInt();
+
+    valTicksList << tr("Fast");
+    for (int i = 0; i < ((maxVal - minVal) / step - 1); i++)
+    {
+        valTicksList << "";
+    }
+    valTicksList << tr("Slow");
+    slider->setMaximum(maxVal / step);
+    slider->setMinimum(minVal / step);
+    slider->setValue(instance()->QuakeDuration() / step);
+    slider->slider()->setTickInterval(1);
+    slider->setRightTicks(valTicksList);
+    slider->setProperty("handleType", "Vernier");
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
 
     connect(option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) {

@@ -3008,7 +3008,9 @@ int QuakeWindow::getQuakeAnimationTime()
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
     //quakeAnimationBaseTime+quakeAnimationHighDistributionTotalTime的时间是雷神窗口最大高度时动画效果时间
     //动画时间计算方法：3quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间，为各个高度时动画时间
-    int durationTime = quakeAnimationBaseTime + quakeAnimationHighDistributionTotalTime * this->getQuakeHeight() / (screenRect.height() * 2 / 3);
+    int quakeAnimationBaseTime = Settings::instance()->QuakeDuration() * 2 / 3;
+    int quakeAnimationHighDistributionTotalTime = Settings::instance()->QuakeDuration() / 3;
+    int durationTime = quakeAnimationBaseTime + 1.5 * quakeAnimationHighDistributionTotalTime * this->getQuakeHeight() / screenRect.height();
     return durationTime;
 }
 
