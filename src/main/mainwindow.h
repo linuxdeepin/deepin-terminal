@@ -409,11 +409,6 @@ public:
 
     //Add by ut001000 renfeixiang 2020-11-16 标记是否动画效果，true : 不动画 false : 动画
     bool isNotAnimation = true;
-    //雷神窗口动画时间计算公式：quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间
-    //雷神窗口动画的基础时间
-    static constexpr const int quakeAnimationBaseTime = 300;
-    //雷神窗口动画按高度分配的总时间
-    static constexpr const int quakeAnimationHighDistributionTotalTime = 150;
     //雷神窗口的tabbar高度,用于计算page的最小高度值
     static constexpr const int tabbarHeight = 60;
 

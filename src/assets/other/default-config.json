@@ -371,6 +371,15 @@
                             "text": "Hide Quake window after losing focus",
                             "type": "checkbox",
                             "default": "false"
+                        },
+                        {
+                            "key": "quake_window_animation_duration",
+                            "name": "Quake window animation speed",
+                            "type": "valslider",
+                            "step": 50,
+                            "max": 450,
+                            "min": 100,
+                            "default": 450
                         }
                     ]
                 },

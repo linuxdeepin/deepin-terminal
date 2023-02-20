@@ -50,6 +50,12 @@ public:
      */
     qreal opacity() const;
     /**
+     * @brief 设置界面雷神模式的显示/隐藏动画时间
+     * @author Archie Meng
+     * @return
+     */
+    int QuakeDuration() const;
+    /**
      * @brief 设置界面获取光标形状
      * @author ut001121 zhangmeng
      * @return
@@ -237,6 +243,13 @@ public:
      * @return
      */
     static QPair<QWidget *, QWidget *> createCustomSliderHandle(QObject *obj);
+    /**
+     * @brief 自定义valSlider控件样式
+     * @author Archie Meng
+     * @param obj 对象
+     * @return
+     */
+    static QPair<QWidget *, QWidget *> createValSliderHandle(QObject *obj);
     /**
      * @brief 自定义SpinButton控件样式
      * @author ut000439 wangpeili
