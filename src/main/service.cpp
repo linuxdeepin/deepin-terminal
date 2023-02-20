@@ -125,6 +125,7 @@ void Service::initSetting(MainWindow *pOwner)
     qCDebug(mainprocess)<< "Registering widget factory handlers";
     m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
+    m_settingDialog->widgetFactory()->registerWidget("valslider", Settings::createValSliderHandle);
     m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
     m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
     m_settingDialog->widgetFactory()->registerWidget("tabformatedit", Settings::createTabTitleFormatOptionHandle);
