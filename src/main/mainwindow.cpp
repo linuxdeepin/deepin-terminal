@@ -2534,6 +2534,7 @@ void NormalWindow::initTitleBar()
     titlebar()->setCustomWidget(m_titleBar);
     titlebar()->setTitle("");
     titlebar()->setIcon(QIcon::fromTheme("deepin-terminal"));
+    titlebar()->setAutoHideOnFullscreen(true);
 
     //设置titlebar焦点策略为不抢占焦点策略，防止点击titlebar后终端失去输入焦点
     titlebar()->setFocusPolicy(Qt::NoFocus);
