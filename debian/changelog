@@ -1,3 +1,10 @@
+deepin-terminal (6.0.4) unstable; urgency=medium
+
+  * Add option to control the length of Quake window animation (#252)
+    Autohide titlebar on fullscreen mode (#253)
+
+ -- mengyutao <mengyutao@uniontech.com>  Wed, 22 Feb 2023 15:48:20 +0800
+
 deepin-terminal (6.0.3) unstable; urgency=medium
 
   * update version
