@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -321,6 +320,12 @@ void Settings::initConnection()
         emit fontSizeChanged(value.toInt());
     });
 
+    QPointer<DSettingsOption> historySize = settings->option("advanced.scroll.history_size");
+    connect(historySize, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qInfo() << "History size changed to" << value.toInt();
+        emit historySizeChanged(value.toInt());
+    });
+
     QPointer<DSettingsOption> family = settings->option("basic.interface.font");
     connect(family, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit fontChanged(value.toString());
@@ -463,6 +468,11 @@ bool Settings::cursorBlink() const
 bool Settings::backgroundBlur() const
 {
     return settings->option("advanced.window.blurred_background")->value().toBool();
+}
+
+int Settings::historySize() const
+{
+    return settings->option("advanced.scroll.history_size")->value().toInt();
 }
 
 
@@ -725,6 +735,9 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     auto rightWidget = new NewDspinBox();
 
+    rightWidget->setMinimum(option->data("min").toInt());
+    rightWidget->setMaximum(option->data("max").toInt());
+    rightWidget->setSingleStep(option->data("step").toInt());
     rightWidget->setValue(option->value().toInt());
 
     QPair<QWidget *, QWidget *> optionWidget =

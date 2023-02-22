@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -208,6 +207,12 @@ public:
      * @return
      */
     bool enableControlFlow(void);
+    /**
+     * @brief 历史记录行数
+     * @author Archie Meng
+     * @return
+     */
+    int historySize() const;
 
     //选择主题，false:选择主题未确定，读写缓存； true:选择主题已确定，读写settings
     //这里默认true是为了：启动时读取settings的值
@@ -300,6 +305,7 @@ signals:
     void OutputScrollChanged(bool enabled);
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
+    void historySizeChanged(int historySize);
 
     // 设置中的标签标题格式变化
     void tabFormatChanged(const QString &tabFormat);

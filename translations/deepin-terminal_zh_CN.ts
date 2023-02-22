@@ -245,36 +245,36 @@
         <translation>确 定</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
+        <location filename="../src/views/termwidget.cpp" line="504"/>
         <location filename="../src/settings/settings_translation.cpp" line="96"/>
         <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Close workspace</source>
         <translation>关闭工作区</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="502"/>
+        <location filename="../src/views/termwidget.cpp" line="507"/>
         <location filename="../src/settings/settings_translation.cpp" line="92"/>
         <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Close other workspaces</source>
         <translation>关闭其他工作区</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1162"/>
+        <location filename="../src/views/termwidget.cpp" line="1167"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>找不到 “%1”，已启动“%2”代替。请检查Shell配置。</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1168"/>
+        <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>打不开“%1”，无法正常使用</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1170"/>
+        <location filename="../src/views/termwidget.cpp" line="1175"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>找不到“%1”，无法正常使用</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <location filename="../src/views/termwidget.cpp" line="1205"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>已经按下Ctrl+S，输出被挂起。可以按下Ctrl+Q继续。</translation>
     </message>
@@ -645,6 +645,11 @@
         <translation>Shell配置</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="146"/>
+        <source>History size</source>
+        <translation>历史记录行数</translation>
+    </message>
+    <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="502"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="364"/>
         <source>The name should be no more than 32 characters</source>
@@ -1001,12 +1006,12 @@
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="701"/>
+        <location filename="../src/settings/settings.cpp" line="712"/>
         <source>Fast</source>
         <translation>快</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="706"/>
+        <location filename="../src/settings/settings.cpp" line="717"/>
         <source>Slow</source>
         <translation>慢</translation>
     </message>
@@ -1086,90 +1091,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="468"/>
+        <location filename="../src/views/termwidget.cpp" line="473"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="471"/>
+        <location filename="../src/views/termwidget.cpp" line="476"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="480"/>
+        <location filename="../src/views/termwidget.cpp" line="485"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="484"/>
+        <location filename="../src/views/termwidget.cpp" line="489"/>
         <source>Open in file manager</source>
         <translation>在文件管理器中打开</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="493"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="498"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>Horizontal split</source>
         <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="501"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>Vertical split</source>
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="506"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="511"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>New tab</source>
         <translation>新建标签页</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="513"/>
+        <location filename="../src/views/termwidget.cpp" line="518"/>
         <source>Exit fullscreen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="515"/>
+        <location filename="../src/views/termwidget.cpp" line="520"/>
         <source>Fullscreen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="518"/>
+        <location filename="../src/views/termwidget.cpp" line="523"/>
         <source>Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="522"/>
+        <location filename="../src/views/termwidget.cpp" line="527"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="532"/>
+        <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Encoding</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="534"/>
+        <location filename="../src/views/termwidget.cpp" line="539"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="536"/>
+        <location filename="../src/views/termwidget.cpp" line="541"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="540"/>
+        <location filename="../src/views/termwidget.cpp" line="545"/>
         <source>Upload file</source>
         <translation>上传文件</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="541"/>
+        <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>Download file</source>
         <translation>下载文件</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="546"/>
+        <location filename="../src/views/termwidget.cpp" line="551"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

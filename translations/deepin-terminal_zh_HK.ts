@@ -638,6 +638,12 @@
         <translation>Shell配置</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="146"/>
+        <source>History size</source>
+        <translation>歷史記錄行數</translation>
+    </message>
+
+    <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="517"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="379"/>
         <source>The name should be no more than 32 characters</source>

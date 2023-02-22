@@ -245,36 +245,36 @@
         <translation>Confirm</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
+        <location filename="../src/views/termwidget.cpp" line="504"/>
         <location filename="../src/settings/settings_translation.cpp" line="96"/>
         <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Close workspace</source>
         <translation>Close workspace</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="502"/>
+        <location filename="../src/views/termwidget.cpp" line="507"/>
         <location filename="../src/settings/settings_translation.cpp" line="92"/>
         <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Close other workspaces</source>
         <translation>Close other workspaces</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1162"/>
+        <location filename="../src/views/termwidget.cpp" line="1167"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1168"/>
+        <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>Could not open &quot;%1&quot;, unable to run it</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1170"/>
+        <location filename="../src/views/termwidget.cpp" line="1175"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>Could not find &quot;%1&quot;, unable to run it</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <location filename="../src/views/termwidget.cpp" line="1205"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</translation>
     </message>
@@ -640,6 +640,11 @@
         <translation>Shell profile</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="146"/>
+        <source>History size</source>
+        <translation>History line size</translation>
+    </message>
+    <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="502"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="364"/>
         <source>The name should be no more than 32 characters</source>
@@ -996,12 +1001,12 @@
         <translation>Fullscreen</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="701"/>
+        <location filename="../src/settings/settings.cpp" line="712"/>
         <source>Fast</source>
         <translation>Fast</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="706"/>
+        <location filename="../src/settings/settings.cpp" line="717"/>
         <source>Slow</source>
         <translation>Slow</translation>
     </message>
@@ -1081,90 +1086,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="468"/>
+        <location filename="../src/views/termwidget.cpp" line="473"/>
         <source>Copy</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="471"/>
+        <location filename="../src/views/termwidget.cpp" line="476"/>
         <source>Paste</source>
         <translation>Paste</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="480"/>
+        <location filename="../src/views/termwidget.cpp" line="485"/>
         <source>Open</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="484"/>
+        <location filename="../src/views/termwidget.cpp" line="489"/>
         <source>Open in file manager</source>
         <translation>Open in file manager</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="493"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="498"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>Horizontal split</source>
         <translation>Horizontal split</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="501"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>Vertical split</source>
         <translation>Vertical split</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="506"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="511"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>New tab</source>
         <translation>New tab</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="513"/>
+        <location filename="../src/views/termwidget.cpp" line="518"/>
         <source>Exit fullscreen</source>
         <translation>Exit fullscreen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="515"/>
+        <location filename="../src/views/termwidget.cpp" line="520"/>
         <source>Fullscreen</source>
         <translation>Fullscreen</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="518"/>
+        <location filename="../src/views/termwidget.cpp" line="523"/>
         <source>Find</source>
         <translation>Find</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="522"/>
+        <location filename="../src/views/termwidget.cpp" line="527"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="532"/>
+        <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Encoding</source>
         <translation>Encoding</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="534"/>
+        <location filename="../src/views/termwidget.cpp" line="539"/>
         <source>Custom commands</source>
         <translation>Custom commands</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="536"/>
+        <location filename="../src/views/termwidget.cpp" line="541"/>
         <source>Remote management</source>
         <translation>Remote management</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="540"/>
+        <location filename="../src/views/termwidget.cpp" line="545"/>
         <source>Upload file</source>
         <translation>Upload file</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="541"/>
+        <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>Download file</source>
         <translation>Download file</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="546"/>
+        <location filename="../src/views/termwidget.cpp" line="551"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
