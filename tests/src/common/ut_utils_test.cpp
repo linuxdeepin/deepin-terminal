@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -378,17 +378,6 @@ TEST_F(UT_Utils_Test, parseNestedQString)
     str = QString("bash -c ping 127.0.0.1");
     QStringList paraList2 = Utils::parseNestedQString(str);
     EXPECT_EQ(paraList.size(), 3);
-}
-
-TEST_F(UT_Utils_Test, FontFilterTest)
-{
-    FontFilter *ff = FontFilter::instance();
-    ff->handleWidthFont();
-
-    ff->setStop(true);
-    EXPECT_EQ(ff->m_bstop, true);
-
-    ff->compareWhiteList();
 }
 
 #endif

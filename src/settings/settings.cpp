@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -555,7 +555,7 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
 void Settings::handleWidthFont()
 {
-    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = Utils::getFonts();
 
     //将新安装的字体，加载到字体库中
     QFontDatabase base;
@@ -613,14 +613,13 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
-    /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 Begin***************/
     comboBox = new DComboBox;
     comboBox->setObjectName("SettingsFontFamilyComboBox");//Add by ut001000 renfeixiang 2020-08-14
 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
-    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = Utils::getFonts();
 
     std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const FontData & str1, const FontData & str2) {
         QCollator qc;
@@ -629,9 +628,8 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 
     qInfo() << "createFontComBoBoxHandle get system monospacefont";
     if (Whitelist.size() <= 0) {
-        //一般不会走这个分支，除非DBUS出现问题
-        qInfo() << "DBusManager::callAppearanceFont failed, get control font failed.";
-        //DBUS获取字体失败后，设置系统默认的等宽字体
+        qInfo() << "Failed to get monospacefonts from FontConfig";
+        //获取字体失败后，设置系统默认的等宽字体
         QStringList fontlist;
         fontlist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
                  << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
@@ -642,7 +640,6 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     for(int k = 0; k < Whitelist.count(); k ++) {
         comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
-    /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 End***************/
 
     if (option->value().toString().isEmpty())
         option->setValue(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());

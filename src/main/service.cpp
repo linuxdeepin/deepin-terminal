@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -314,7 +314,6 @@ void Service::showSettingDialog(MainWindow *pOwner)
         }
         //更新设置的等宽字体
         Settings::instance()->handleWidthFont();
-        FontFilter::instance()->handleWidthFont();
 
         // 重新加载shell配置数据
         Settings::instance()->reloadShellOptions();

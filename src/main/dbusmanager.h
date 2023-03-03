@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -18,10 +18,6 @@
 // kwin dbus
 #define KWINDBUSSERVICE "org.kde.KWin"
 #define KWINDBUSPATH "/KWin"
-
-// deepin Appearance
-#define APPEARANCESERVICE "org.deepin.dde.Appearance1"
-#define APPEARANCEPATH "/org/deepin/dde/Appearance1"
 
 // sound effect 音效服务
 //#define SOUND_EFFECT_SERVICE    "com.deepin.daemon.SoundEffect"
@@ -85,16 +81,6 @@ public:
      * @param index
      */
     static void callKDESetCurrentDesktop(int index);
-
-    // Appearance
-    /**
-     * @brief callAppearanceFont 获取有效的字体列表
-     * @param fontList 字体id-list
-     * @param fontType 字体类型如：monospacefont、otherfailfont
-     * @return
-     */
-    static FontDataList callAppearanceFont(QStringList fontList, QString fontType);
-    static FontDataList callAppearanceFont(QString fontType);
 
     // deepin terminal
     // 创建窗口

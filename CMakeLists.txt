@@ -68,6 +68,7 @@ find_package(Qt5Network REQUIRED)
 find_package(Qt5X11Extras REQUIRED)
 
 include(FindPkgConfig)
+include(FindFontconfig)
 
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
@@ -114,6 +115,7 @@ set(LINK_LIBS
     ${LIBSECRET_LIBRARIES}
     ${XCB_EWMH_LIBRARIES}
     ${Qt5X11Extras_LIBRARIES}
+    ${Fontconfig_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources

@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -18,7 +18,6 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QFontInfo>
 #include <QMimeType>
 #include <QApplication>
 #include <QMimeDatabase>
@@ -26,13 +25,38 @@
 #include <QImageReader>
 #include <QPixmap>
 #include <QFile>
-#include <QFontDatabase>
-#include <QFontMetrics>
-#include <QTextLayout>
 #include <QTime>
-#include <QFontMetrics>
+#include <QMap>
+#include <QLocale>
+#include <QString>
+#include <QScopedPointer>
 
 #include <sys/utsname.h>
+#include <fontconfig/fontconfig.h>
+
+struct FcPatternDeleter
+{
+    static inline void cleanup(FcPattern *p)
+    {
+        FcPatternDestroy(p);
+    }
+};
+
+struct FcObjectSetDeleter
+{
+    static inline void cleanup(FcObjectSet *p)
+    {
+        FcObjectSetDestroy(p);
+    }
+};
+
+struct FcFontSetDeleter
+{
+    static inline void cleanup(FcFontSet *p)
+    {
+        FcFontSetDestroy(p);
+    }
+};
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
 QHash<QString, QString> Utils::m_fontNameCache;
@@ -675,7 +699,7 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     while (pWidget != nullptr) {
         qInfo() << pWidget->metaObject()->className();
         if (("NormalWindow" == pWidget->objectName()) || ("QuakeWindow" == pWidget->objectName())) {
-            qInfo() << "has find MainWindow";
+            qInfo() << "Has found MainWindow";
             main = static_cast<MainWindow *>(pWidget);
             break;
         }
@@ -684,128 +708,66 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     return  main;
 }
 
-/******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 Begin***************/
-Q_GLOBAL_STATIC(FontFilter, FontFilters)
-FontFilter *FontFilter::instance()
+FontDataList Utils::getFonts()
 {
-    return FontFilters;
-}
+    QMap<QString, QString> fontMap;
+    FontDataList fontDatalist;
+    QScopedPointer<FcPattern, FcPatternDeleter> pat(FcPatternCreate());
 
-FontFilter::FontFilter()
-{
-    m_thread = new QThread();
-    this->moveToThread(m_thread);
-    QObject::connect(m_thread, &QThread::started, this, [ = ]() {
-        compareWhiteList();
-        m_thread->quit();
-    });
-}
-
-FontFilter::~FontFilter()
-{
-    if (m_thread != nullptr) {
-        setStop(true);
-        m_thread->quit();
-        m_thread->wait();
-        delete m_thread;
-        m_thread = nullptr;
+    if (!pat) {
+         qWarning() << "Create FcPattern Failed\n";
+         return fontDatalist;
     }
-}
 
-void FontFilter::handleWidthFont()
-{
-    if (!m_thread->isRunning()) {
-        m_thread->start();
-        return;
+    const QString localeName = QLocale::system().name();
+    // locale中的英语：en_*的形式，比如：en_US, en_GB．和FontConfig的FamilyLang的值(en)不一样．
+    const QString curLang = localeName.startsWith("en") ? "en" : localeName.toLower().replace("_", "-");
+
+    QScopedPointer<FcObjectSet, FcObjectSetDeleter> os(FcObjectSetBuild(
+         FC_FAMILY,
+         FC_FAMILYLANG,
+         FC_SPACING,
+         FC_CHARSET,
+         NULL));
+    if (!os) {
+         qWarning() << "Build FcObjectSet Failed";
+         return FontDataList();
     }
-    qInfo() << "m_thread is Running";
-}
 
-void FontFilter::setStop(bool stop)
-{
-    m_bstop = stop;
-}
-
-void FontFilter::compareWhiteList()
-{
-    QStringList DBUSWhitelist = DBusManager::callAppearanceFont("monospacefont").values();
-    std::sort(DBUSWhitelist.begin(), DBUSWhitelist.end(), [ = ](const QString & str1, const QString & str2) {
-        QCollator qc;
-        return qc.compare(str1, str2) < 0;
-    });
-
-    //在REPCHAR中增加了一个空格，空格在非等宽字体中长度和字符长度不同
-    char REPCHAR[]  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                      "abcdefgjijklmnopqrstuvwxyz"
-                      "0123456789 ./+@";
-    QFontDatabase fontDatabase;
-    QStringList fontLst = fontDatabase.families();
-    QStringList Whitelist;
-    Whitelist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono" << "Monospace"
-              << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP" << "Noto Sans Mono CJK JP Bold"
-              << "Noto Sans Mono CJK KR" << "Noto Sans Mono CJK KR Bold" << "Noto Sans Mono CJK SC"
-              << "Noto Sans Mono CJK SC Bold" << "Noto Sans Mono CJK TC" << "Noto Sans Mono CJK TC Bold" << "Unifont";
-    QStringList Blacklist;
-    Blacklist << "webdings" << "Symbol" << "MT Extra [unknown]" << "Bitstream Charter" << "CESI仿宋-GB13000" << "CESI仿宋-GB18030"
-              << "CESI仿宋-GB2312" << "CESI宋体-GB13000" << "CESI宋体-GB18030" << "CESI宋体-GB2312" << "CESI小标宋-GB13000"
-              << "CESI小标宋-GB18030" << "CESI小标宋-GB2312" << "CESI楷体-GB13000" << "CESI楷体-GB18030" << "CESI楷体-GB2312" << "CESI黑体-GB13000"
-              << "CESI黑体-GB18030" << "CESI黑体-GB2312" << "DejaVu Math TeX Gyre" << "DejaVu Sans" << "DejaVu Serif" << "Liberation Sans"
-              << "Liberation Sans Narrow" << "Liberation Serif" << "Lohit Devanagari" << "MT Extra [PfEd]" << "Noto Kufi Arabic" << "Noto Music"
-              << "Noto Naskh Arabic" << "Noto Nastaliq Urdu" << "Noto Sans" << "Noto Sans Adlam" << "Noto Sans Adlam Unjoined"
-              << "Noto Sans Anatolian Hieroglyphs" << "Noto Sans Arabic" << "Noto Sans Armenian" << "Noto Sans Avestan" << "Noto Sans Bamum"
-              << "Noto Sans Bassa Vah" << "Noto Sans Batak" << "Noto Sans Bengali" << "Noto Sans Bhaiksuki" << "Noto Sans Brahmi"
-              << "Noto Sans Buginese" << "Noto Sans Buhid" << "Noto Sans Canadian Aboriginal" << "Noto Sans Carian" << "Noto Sans Caucasian Albanian"
-              << "Noto Sans Chakma" << "Noto Sans Cham" << "Noto Sans Cherokee" << "Noto Sans CJK JP" << "Noto Sans CJK JP Bold" << "Noto Sans CJK KR"
-              << "Noto Sans CJK KR Bold" << "Noto Sans CJK SC" << "Noto Sans CJK SC Bold" << "Noto Sans CJK TC" << "Noto Sans CJK TC Bold"
-              << "Noto Sans Coptic" << "Noto Sans Cuneiform" << "Noto Sans Cypriot" << "Noto Sans Deseret" << "Noto Sans Devanagari" << "Noto Sans Display"
-              << "Noto Sans Duployan" << "Noto Sans Egyptian Hieroglyphs" << "Noto Sans Elbasan" << "Noto Sans Ethiopic" << "Noto Sans Georgian"
-              << "Noto Sans Glagolitic" << "Noto Sans Gothic" << "Noto Sans Grantha" << "Noto Sans Gujarati" << "Noto Sans Gurmukhi" << "Noto Sans Hanunoo"
-              << "Noto Sans Hatran" << "Noto Sans Hebrew" << "Noto Sans Imperial Aramaic" << "Noto Sans Inscriptional Pahlavi" << "Noto Sans Inscriptional Parthian"
-              << "Noto Sans Javanese" << "Noto Sans Kaithi" << "Noto Sans Kannada" << "Noto Sans Kayah Li" << "Noto Sans Kharoshthi" << "Noto Sans Khmer"
-              << "Noto Sans Khojki" << "Noto Sans Khudawadi" << "Noto Sans Lao" << "Noto Sans Lepcha" << "Noto Sans Limbu" << "Noto Sans Linear A"
-              << "Noto Sans Linear B" << "Noto Sans Lisu" << "Noto Sans Lycian" << "Noto Sans Lydian" << "Noto Sans Mahajani" << "Noto Sans Malayalam"
-              << "Noto Sans Mandaic" << "Noto Sans Manichaean" << "Noto Sans Marchen" << "Noto Sans Math" << "Noto Sans Meetei Mayek" << "Noto Sans Mende Kikakui"
-              << "Noto Sans Meroitic" << "Noto Sans Miao" << "Noto Sans Modi" << "Noto Sans Mongolian" << "Noto Sans Mro" << "Noto Sans Multani" << "Noto Sans Myanmar"
-              << "Noto Sans Nabataean" << "Noto Sans New Tai Lue" << "Noto Sans Newa" << "Noto Sans NKo" << "Noto Sans Ogham" << "Noto Sans Ol Chiki"
-              << "Noto Sans Old Hungarian" << "Noto Sans Old Italic" << "Noto Sans Old North Arabian" << "Noto Sans Old Permic" << "Noto Sans Old Persian"
-              << "Noto Sans Old South Arabian" << "Noto Sans Old Turkic" << "Noto Sans Oriya" << "Noto Sans Osage" << "Noto Sans Osmanya" << "Noto Sans Pahawh Hmong"
-              << "Noto Sans Palmyrene" << "Noto Sans Pau Cin Hau" << "Noto Sans PhagsPa" << "Noto Sans Phoenician" << "Noto Sans Psalter Pahlavi" << "Noto Sans Rejang"
-              << "Noto Sans Runic" << "Noto Sans Samaritan" << "Noto Sans Saurashtra" << "Noto Sans Sharada" << "Noto Sans Shavian" << "Noto Sans Sinhala"
-              << "Noto Sans Sora Sompeng" << "Noto Sans Sundanese" << "Noto Sans Syloti Nagri" << "Noto Sans Symbols" << "Noto Sans Symbols2" << "Noto Sans Syriac"
-              << "Noto Sans Syriac Eastern" << "Noto Sans Syriac Estrangela" << "Noto Sans Syriac Western" << "Noto Sans Tagalog" << "Noto Sans Tagbanwa"
-              << "Noto Sans Tai Le" << "Noto Sans Tai Tham" << "Noto Sans Tai Viet" << "Noto Sans Takri" << "Noto Sans Tamil" << "Noto Sans Telugu" << "Noto Sans Thaana"
-              << "Noto Sans Thai" << "Noto Sans Tibetan" << "Noto Sans Tifinagh" << "Noto Sans Tirhuta" << "Noto Sans Ugaritic" << "Noto Sans Vai"
-              << "Noto Sans Warang Citi" << "Noto Sans Yi" << "Noto Serif" << "Noto Serif Ahom" << "Noto Serif Armenian" << "Noto Serif Balinese"
-              << "Noto Serif Bengali" << "Noto Serif CJK JP" << "Noto Serif CJK KR" << "Noto Serif CJK SC" << "Noto Serif CJK TC" << "Noto Serif Devanagari"
-              << "Noto Serif Display" << "Noto Serif Ethiopic" << "Noto Serif Georgian" << "Noto Serif Gujarati" << "Noto Serif Gurmukhi" << "Noto Serif Hebrew"
-              << "Noto Serif Kannada" << "Noto Serif Khmer" << "Noto Serif Lao" << "Noto Serif Malayalam" << "Noto Serif Myanmar" << "Noto Serif Sinhala"
-              << "Noto Serif Tamil" << "Noto Serif Tamil Slanted" << "Noto Serif Telugu" << "Noto Serif Thai" << "Noto Serif Tibetan" << "Sans Serif" << "Serif"
-              << "Symbola" << "Unifont CSUR" << "Unifont Upper" << "Wingdings" << "Wingdings 2" << "Wingdings 3";
-
-    for (const QString &sfont : fontLst) {
-        if (m_bstop)
-            break;
-
-        if (Whitelist.contains(sfont) | Blacklist.contains(sfont))
-            continue;
-
-        bool fixedFont = true;
-        QFont font(sfont);
-        QFontMetrics fm(font);
-        int fw = fm.width(REPCHAR[0]);
-
-        for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
-            if (fw != fm.width(QLatin1Char(REPCHAR[i]))) {
-                fixedFont = false;
-                break;
-            }
-        }
-        if (fixedFont)
-            Whitelist.append(sfont);
-        else
-            Blacklist.append(sfont);
+    QScopedPointer<FcFontSet, FcFontSetDeleter> fcList(FcFontList(0, pat.data(), os.data()));
+    if (!fcList) {
+         qWarning() << "List Font Failed\n";
+         return FontDataList();
     }
-    qInfo() << "DBUS get font:" << DBUSWhitelist;
-    qInfo() << "Compare font get font:" << Whitelist;
+    qDebug() << "Current lang:" << curLang;
+    qDebug() << "Found text font candidates:";
+    for (int i = 0; i < fcList->nfont; i++) {
+         QScopedPointer<char, QScopedPointerPodDeleter> charset((char*)FcPatternFormat(fcList->fonts[i], (FcChar8*)"%{charset}"));
+         if (charset == NULL || strlen(charset.data()) == 0) {
+             continue;
+         }
+         FcPattern *fc = fcList->fonts[i];
+         QScopedPointer<char, QScopedPointerPodDeleter> rawFamilyStr((char*)FcPatternFormat(fc, (FcChar8*)"%{family}"));
+         const QString rawFamily = QString::fromUtf8(rawFamilyStr.data());
+         QScopedPointer<char, QScopedPointerPodDeleter> rawFamilyLangStr((char*)FcPatternFormat(fc, (FcChar8*)"%{familylang}"));
+         const QString rawFamilyLang = QString::fromUtf8(rawFamilyLangStr.data());
+         QScopedPointer<char, QScopedPointerPodDeleter> rawSpacingStr((char*)FcPatternFormat(fc, (FcChar8*)"%{spacing}"));
+         const QString spacing = QString::fromUtf8(rawSpacingStr.data());
+         const QStringList families = rawFamily.split(',');
+         const QStringList familyLangs = rawFamilyLang.split(',');
+         const int defaultLangIdx = qMax(familyLangs.indexOf("en"), 0);
+         int curLangIdx = familyLangs.indexOf(curLang);
+         curLangIdx = curLangIdx >= 0 ? curLangIdx : defaultLangIdx;
+         const QString family = families[defaultLangIdx];
+         const QString familyName = families[curLangIdx];
+
+         qDebug() << "Font names:" << families << "| Font name langs:" << familyLangs << "| Font spacing (FC_SPACING):" << spacing;
+         if (!FONT_BLACKLIST.contains(family) && (spacing == QString::number(FC_MONO) || family.toLower().contains(QLatin1String("mono")))) {
+             fontMap.insert(family, familyName);
+         }
+    }
+    for (auto font = fontMap.begin(); font != fontMap.end(); font++) {
+        fontDatalist.append(FontData(font.key(), font.value()));
+    }
+    return fontDatalist;
 }
-/******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/
