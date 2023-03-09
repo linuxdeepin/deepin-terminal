@@ -379,7 +379,7 @@
                             "step": 50,
                             "max": 450,
                             "min": 100,
-                            "default": 450
+                            "default": 9
                         }
                     ]
                 },
