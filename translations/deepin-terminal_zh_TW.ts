@@ -334,6 +334,11 @@
         <translation>輸出時捲動</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings.cpp" line="394"/>
+        <source>Allow Ctrl+scrollwheel to zoom text size</source>
+        <translation>允許Ctrl+滑動滾輪縮放文字大小</translation>
+    </message>
+    <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Hide Quake window after losing focus</source>
         <translation>失去焦點時隱藏雷神視窗</translation>
