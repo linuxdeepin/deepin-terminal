@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -402,45 +402,7 @@ public:
         }
         return nullptr;
     }
+    static FontDataList getFonts();
 };
-
-/*******************************************************************************
- 1. @类名:    FontFilter
- 2. @作者:    ut000610 daizhengwen
- 3. @日期:    2020-08-11
- 4. @说明:    打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
-*******************************************************************************/
-/******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 Begin***************/
-class FontFilter : public QObject
-{
-    Q_OBJECT
-public:
-    static FontFilter *instance();
-    FontFilter();
-    ~FontFilter();
-    //启动thread，打印等宽字体函数
-    /**
-     * @brief 启动thread，打印等宽字体函数
-     * @author ut001000 任飞翔
-     */
-    void handleWidthFont();
-    /**
-     * @brief 设置线程结束标志
-     * @param stop true = 结束 false = 正常
-     */
-    void setStop(bool stop);
-
-private:
-    /**
-     * @brief 打印DBUS获取等宽字体和比较字体字符方法获取等宽字体，用来定位DBUS获取字体失败后的问题
-     * @author ut001000 任飞翔
-     */
-    void compareWhiteList();
-    //线程成员变量
-    QThread *m_thread = nullptr;
-    //线程结束标志位
-    bool m_bstop = false;
-};
-/******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/
 
 #endif
