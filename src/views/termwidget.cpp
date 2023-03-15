@@ -54,7 +54,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-    setHistorySize(5000);
+    qInfo() << "Setting initial history size:" << Settings::instance()->historySize();
+    setHistorySize(Settings::instance()->historySize());
 
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
@@ -206,6 +207,10 @@ void TermWidget::initConnections()
     connect(this, &TermWidget::copyAvailable, this, &TermWidget::onCopyAvailable);
 
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
+    connect(Settings::instance(), &Settings::historySizeChanged, this, [this] (int newHistorySize) {
+        qInfo() << "Setting new history size:" << newHistorySize;
+        setHistorySize(newHistorySize);
+    });
 
     //窗口特效开启则使用设置的透明度，窗口特效关闭时直接把窗口置为不透明
     connect(Service::instance(), &Service::onWindowEffectEnabled, this, &TermWidget::onWindowEffectEnabled);

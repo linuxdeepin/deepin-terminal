@@ -147,4 +147,6 @@ void GenerateSettingTranslate()
     Q_UNUSED(shell_profile);
 
     qDebug() << "GenerateSettingTranslate end";
+    auto history_size = QObject::tr("History size");
+    Q_UNUSED(history_size);
 }

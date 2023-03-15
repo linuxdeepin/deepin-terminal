@@ -202,6 +202,12 @@ public:
      * @return
      */
     bool enableControlFlow(void);
+    /**
+     * @brief 历史记录行数
+     * @author Archie Meng
+     * @return
+     */
+    int historySize() const;
 
     void setFontSize(const int size);
     void setFontName(const QString font);
@@ -302,6 +308,7 @@ signals:
     void OutputScrollChanged(bool enabled);
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
+    void historySizeChanged(int historySize);
 
     // 设置中的标签标题格式变化
     void tabFormatChanged(const QString &tabFormat);

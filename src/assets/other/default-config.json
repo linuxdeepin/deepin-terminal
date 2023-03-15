@@ -28,7 +28,8 @@
                             "type": "spinbutton",
                             "default": 11,
                             "max": 50,
-                            "min": 5
+                            "min": 5,
+                            "step": 1
                         },
                         {
                             "key": "theme",
@@ -330,6 +331,15 @@
                     "key": "scroll",
                     "name": "Scroll",
                     "options": [
+                        {
+                            "key": "history_size",
+                            "name": "History size",
+                            "type": "spinbutton",
+                            "default": 5000,
+                            "max": 10000,
+                            "min": 1000,
+                            "step": 100
+                        },
                         {
                             "key": "scroll_on_key",
                             "type": "checkbox",
