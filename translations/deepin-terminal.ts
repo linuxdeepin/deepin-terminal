@@ -467,6 +467,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="146"/>
+        <source>History size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="187"/>
         <location filename="../src/views/tabbar.cpp" line="489"/>
         <location filename="../src/settings/settings_translation.cpp" line="68"/>
@@ -537,29 +542,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="502"/>
+        <location filename="../src/views/termwidget.cpp" line="507"/>
         <location filename="../src/settings/settings_translation.cpp" line="92"/>
         <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Close other workspaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1162"/>
+        <location filename="../src/views/termwidget.cpp" line="1167"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1168"/>
+        <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1170"/>
+        <location filename="../src/views/termwidget.cpp" line="1175"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <location filename="../src/views/termwidget.cpp" line="1205"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -569,7 +574,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
+        <location filename="../src/views/termwidget.cpp" line="504"/>
         <location filename="../src/settings/settings_translation.cpp" line="96"/>
         <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Close workspace</source>
@@ -594,9 +599,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="397"/>
+        <location filename="../src/main/service.cpp" line="396"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="606"/>
-        <location filename="../src/common/utils.cpp" line="238"/>
+        <location filename="../src/common/utils.cpp" line="262"/>
         <source>please set another one.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -628,71 +633,71 @@
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1761"/>
-        <location filename="../src/common/utils.cpp" line="132"/>
+        <location filename="../src/common/utils.cpp" line="156"/>
         <source>Select file to upload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1768"/>
-        <location filename="../src/common/utils.cpp" line="137"/>
+        <location filename="../src/common/utils.cpp" line="161"/>
         <source>Upload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="205"/>
+        <location filename="../src/common/utils.cpp" line="229"/>
         <source>Programs are still running in terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="157"/>
-        <location filename="../src/common/utils.cpp" line="191"/>
+        <location filename="../src/common/utils.cpp" line="181"/>
+        <location filename="../src/common/utils.cpp" line="215"/>
         <source>Close this terminal?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="158"/>
-        <location filename="../src/common/utils.cpp" line="192"/>
+        <location filename="../src/common/utils.cpp" line="182"/>
+        <location filename="../src/common/utils.cpp" line="216"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="162"/>
-        <location filename="../src/common/utils.cpp" line="196"/>
+        <location filename="../src/common/utils.cpp" line="186"/>
+        <location filename="../src/common/utils.cpp" line="220"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="167"/>
-        <location filename="../src/common/utils.cpp" line="187"/>
+        <location filename="../src/common/utils.cpp" line="191"/>
+        <location filename="../src/common/utils.cpp" line="211"/>
         <source>Close this window?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="168"/>
-        <location filename="../src/common/utils.cpp" line="188"/>
+        <location filename="../src/common/utils.cpp" line="192"/>
+        <location filename="../src/common/utils.cpp" line="212"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1831"/>
-        <location filename="../src/common/utils.cpp" line="111"/>
+        <location filename="../src/common/utils.cpp" line="135"/>
         <source>Select a directory to save the file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="205"/>
+        <location filename="../src/common/utils.cpp" line="229"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="218"/>
-        <location filename="../src/common/utils.cpp" line="222"/>
+        <location filename="../src/common/utils.cpp" line="242"/>
+        <location filename="../src/common/utils.cpp" line="246"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="219"/>
-        <location filename="../src/common/utils.cpp" line="223"/>
+        <location filename="../src/common/utils.cpp" line="243"/>
+        <location filename="../src/common/utils.cpp" line="247"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -700,45 +705,45 @@
         <location filename="../src/views/listview.cpp" line="289"/>
         <location filename="../src/views/listview.cpp" line="478"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="220"/>
-        <location filename="../src/common/utils.cpp" line="228"/>
+        <location filename="../src/common/utils.cpp" line="252"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="229"/>
-        <location filename="../src/common/utils.cpp" line="273"/>
+        <location filename="../src/common/utils.cpp" line="253"/>
+        <location filename="../src/common/utils.cpp" line="297"/>
         <source>OK</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="313"/>
+        <location filename="../src/common/utils.cpp" line="337"/>
         <source>Execute a command in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="316"/>
+        <location filename="../src/common/utils.cpp" line="340"/>
         <source>Run script string in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="307"/>
+        <location filename="../src/common/utils.cpp" line="331"/>
         <source>Set the work directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="310"/>
+        <location filename="../src/common/utils.cpp" line="334"/>
         <source>Set the window mode on starting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="319"/>
+        <location filename="../src/common/utils.cpp" line="343"/>
         <source>Run in quake mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="322"/>
+        <location filename="../src/common/utils.cpp" line="346"/>
         <source>Keep terminal open when command finishes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -751,7 +756,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="572"/>
         <location filename="../src/main/mainwindow.cpp" line="1837"/>
-        <location filename="../src/common/utils.cpp" line="117"/>
+        <location filename="../src/common/utils.cpp" line="141"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
@@ -967,7 +972,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="393"/>
+        <location filename="../src/main/service.cpp" line="392"/>
         <source>OK</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>
@@ -996,12 +1001,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="701"/>
+        <location filename="../src/settings/settings.cpp" line="709"/>
         <source>Fast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="706"/>
+        <location filename="../src/settings/settings.cpp" line="714"/>
         <source>Slow</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1081,90 +1086,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="468"/>
+        <location filename="../src/views/termwidget.cpp" line="473"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="471"/>
+        <location filename="../src/views/termwidget.cpp" line="476"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="480"/>
+        <location filename="../src/views/termwidget.cpp" line="485"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="484"/>
+        <location filename="../src/views/termwidget.cpp" line="489"/>
         <source>Open in file manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="493"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="498"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>Horizontal split</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="501"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>Vertical split</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="506"/>
-        <location filename="../src/views/termwidget.cpp" line="552"/>
+        <location filename="../src/views/termwidget.cpp" line="511"/>
+        <location filename="../src/views/termwidget.cpp" line="557"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="513"/>
+        <location filename="../src/views/termwidget.cpp" line="518"/>
         <source>Exit fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="515"/>
+        <location filename="../src/views/termwidget.cpp" line="520"/>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="518"/>
+        <location filename="../src/views/termwidget.cpp" line="523"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="522"/>
+        <location filename="../src/views/termwidget.cpp" line="527"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="532"/>
+        <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Encoding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="534"/>
+        <location filename="../src/views/termwidget.cpp" line="539"/>
         <source>Custom commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="536"/>
+        <location filename="../src/views/termwidget.cpp" line="541"/>
         <source>Remote management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="540"/>
+        <location filename="../src/views/termwidget.cpp" line="545"/>
         <source>Upload file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="541"/>
+        <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>Download file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="546"/>
+        <location filename="../src/views/termwidget.cpp" line="551"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1172,21 +1177,21 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="173"/>
-        <location filename="../src/common/utils.cpp" line="207"/>
+        <location filename="../src/common/utils.cpp" line="197"/>
+        <location filename="../src/common/utils.cpp" line="231"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="175"/>
+        <location filename="../src/common/utils.cpp" line="199"/>
         <source>Close</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="208"/>
-        <location filename="../src/common/utils.cpp" line="240"/>
+        <location filename="../src/common/utils.cpp" line="232"/>
+        <location filename="../src/common/utils.cpp" line="264"/>
         <source>OK</source>
         <comment>button</comment>
         <translation type="unfinished"></translation>

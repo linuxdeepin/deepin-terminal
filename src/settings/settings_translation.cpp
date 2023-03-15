@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -143,4 +142,6 @@ void GenerateSettingTranslate()
     Q_UNUSED(disable_flow_control_using_ctrl_s_ctrl_q);
     auto shell_profile = QObject::tr("Shell profile");
     Q_UNUSED(shell_profile);
+    auto history_size = QObject::tr("History size");
+    Q_UNUSED(history_size);
 }
