@@ -1,3 +1,15 @@
+deepin-terminal (6.0.5) unstable; urgency=medium
+
+  * Feature:
+	New setting for customizing history line size
+
+    Fix Bugs:
+	Quake window animation is extremely slow by default.
+	The translations of "Ctrl+Mouse Scroll" setting entry is missing.
+	Font list in settings is empty on other distributions.
+
+ -- mengyutao <mengyutao@uniontech.com>  Thu, 16 Mar 2023 09:32:20 +0800
+
 deepin-terminal (6.0.4) unstable; urgency=medium
 
   * Add option to control the length of Quake window animation (#252)
