@@ -642,7 +642,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="146"/>
         <source>History size</source>
-        <translation>History line size</translation>
+        <translation>History scrollback size</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="502"/>
