@@ -647,7 +647,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="146"/>
         <source>History size</source>
-        <translation>历史记录行数</translation>
+        <translation>历史回滚行数</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="502"/>

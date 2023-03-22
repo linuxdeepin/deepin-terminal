@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_TW">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_TW">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -640,9 +642,8 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="146"/>
         <source>History size</source>
-        <translation>歷史記錄行數</translation>
+        <translation>歷史回滾行數</translation>
     </message>
-
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="517"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="379"/>
