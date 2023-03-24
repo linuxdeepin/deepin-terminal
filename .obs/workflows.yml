@@ -38,7 +38,7 @@ tag_build:
 commit_build:
   steps:
     - trigger_services:
-        project: ddeepin:Develop:dde
+        project: deepin:Develop:dde
         package: %{SCM_REPOSITORY_NAME}
   filters:
     event: push
