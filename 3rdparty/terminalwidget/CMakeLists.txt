@@ -11,6 +11,12 @@ include(GenerateExportHeader)
 include(CMakePackageConfigHelpers)
 include(CheckFunctionExists)
 include(CheckIncludeFile)
+link_libraries(uchardet)
+link_libraries(chardet)
+
+pkg_check_modules(chardet REQUIRED chardet)
+include_directories(${chardet_INCLUDE_DIRS})
+link_directories(${chardet_LIBRARY_DIRS})
 
 option(UPDATE_TRANSLATIONS "Update source translation translations/*.ts files" OFF)
 option(BUILD_EXAMPLE "Build example application. Default OFF." OFF)
@@ -39,6 +45,7 @@ set(LXQTBT_MINIMUM_VERSION "0.6.0")
 find_package(Qt5Widgets "${QT_MINIMUM_VERSION}" REQUIRED)
 find_package(Qt5LinguistTools "${QT_MINIMUM_VERSION}" REQUIRED)
 find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+find_package(ICU COMPONENTS i18n uc REQUIRED)
 
 if(USE_UTF8PROC)
     find_package(Utf8Proc REQUIRED)
@@ -99,6 +106,7 @@ set(SRCS
     lib/tools.cpp
     lib/Vt102Emulation.cpp
     lib/EscapeSequenceUrlExtractor.cpp
+    lib/encodes/detectcode.cpp
 )
 
 # Only the Headers that need to be moc'd go here
@@ -128,6 +136,7 @@ set(HDRS
     lib/TerminalDisplay.h
     lib/Vt102Emulation.h
     lib/EscapeSequenceUrlExtractor.h
+    lib/encodes/detectcode.h
 )
 
 set(UI
@@ -187,7 +196,14 @@ lxqt_translate_ts(TERMINALWIDGET_QM
 )
 
 add_library(${TERMINALWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS} ${TERMINALWIDGET_QM})
-target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME} Qt5::Widgets)
+target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME}
+    Qt5::Widgets
+    ICU::i18n
+    ICU::uc
+    -lm
+    uchardet
+    chardet
+    )
 if (USE_TEST)
     #仅在单元测试模式下设置fvisibility为default
     target_compile_options(${TERMINALWIDGET_LIBRARY_NAME} PUBLIC "-fvisibility=default")

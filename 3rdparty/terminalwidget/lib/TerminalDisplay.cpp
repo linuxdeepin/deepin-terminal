@@ -825,7 +825,7 @@ void TerminalDisplay::drawCharacters(QPainter& painter,
     }
 
     // draw text
-    if ( isLineCharString(text) )
+    if ( !IsCodecGB18030() && isLineCharString(text) )
         drawLineCharString(painter,rect.x(),rect.y(),text,style);
     else
     {
@@ -1625,6 +1625,9 @@ void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
         if ((_image[loc(rect.x(), y)].character == 0u) && (x != 0)) {
             x--; // Search for start of multi-column character
         }
+
+        int xOffset = 0;
+
         for (; x <= rect.right(); x++) {
             int len = 1;
             int p = 0;
@@ -1769,10 +1772,24 @@ void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
             paint.setWorldTransform(QTransform(textScale), true);
 
             //calculate the area in which the text will be drawn
-            QRect textArea = QRect(contentsRect().left() + contentsRect().left() + _fontWidth * x,
-                                   contentsRect().top() + contentsRect().top() + _fontHeight * y,
-                                   _fontWidth * len,
-                                   _fontHeight);
+
+            QString unistr = QString::fromUcs4(univec.data(), univec.length());
+            QRect textArea ;
+            if(IsCodecGB18030()){
+                QFontMetrics fm(paint.font());
+                int textWidth = fm.size(Qt::TextSingleLine | Qt::TextExpandTabs,unistr).width();
+                 textArea =QRect(contentsRect().left() + contentsRect().left() +xOffset,
+                                       contentsRect().top() + contentsRect().top() + _fontHeight * y,
+                                       textWidth,
+                                       _fontHeight);
+                 xOffset += textWidth;
+            }else{
+                 textArea = QRect(contentsRect().left() + contentsRect().left() + _fontWidth * x,
+                                       contentsRect().top() + contentsRect().top() + _fontHeight * y,
+                                       _fontWidth * len,
+                                       _fontHeight);
+            }
+
 
             //move the calculated area to take account of scaling applied to the painter.
             //the position of the area from the origin (0,0) is scaled
@@ -1782,7 +1799,6 @@ void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
             //(instead of textArea.topLeft() * painter-scale)
             textArea.moveTopLeft(textScale.inverted().map(textArea.topLeft()));
 
-            QString unistr = QString::fromUcs4(univec.data(), univec.length());
 
             //paint text fragment
             drawTextFragment(paint,

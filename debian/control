@@ -17,7 +17,10 @@ Build-Depends:
  libsecret-1-dev,
  libgtest-dev,
  libgmock-dev,
- libxcb-ewmh-dev
+ libxcb-ewmh-dev,
+ libchardet-dev,
+ libuchardet-dev (>= 0.0.6),
+ libicu-dev
 Standards-Version: 4.5.1
 Homepage: https://www.deepin.com/
 
@@ -27,7 +30,9 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  expect,
- zssh
+ zssh,
+ libuchardet0 (>= 0.0.6),
+ libchardet1
 Recommends: uos-reporter, deepin-event-log
 Description: Terminal is an advanced terminal emulator with workspace, multiple
  windows, remote management, quake mode and other features.

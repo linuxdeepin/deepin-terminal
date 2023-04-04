@@ -51,6 +51,7 @@
 #include "Session.h"
 #include "SessionManager.h"
 #include "TerminalDisplay.h"
+#include "encodes/detectcode.h"
 
 using namespace Konsole;
 
@@ -318,6 +319,7 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec)
     if (QString(_codec->name()).toUpper().startsWith("GB") && !isCommandExec) {
         if (_decoder != nullptr) {
             delete _decoder;
+            _decoder = nullptr;
         }
         QTextCodec *textCodec = QTextCodec::codecForName("UTF-8");
         _decoder = textCodec->makeDecoder();
@@ -327,14 +329,25 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec)
         QByteArray gbkarr = gbk->fromUnicode(utf16Text);
 
         if (_decoder != nullptr) {
-            delete _decoder;
+          delete _decoder;
+          _decoder = nullptr;
         }
         textCodec = QTextCodec::codecForName(_codec->name());
         _decoder = textCodec->makeDecoder();
         utf16Text = _decoder->toUnicode(gbkarr);
+        //setIsCodecGB18030(false);
     }
     else {
-        utf16Text = _decoder->toUnicode(text, length);
+        if(_codec->name().toUpper().contains("GB18030")) {
+            //setIsCodecGB18030(true);
+            QByteArray gbkarr(text, length);
+            QByteArray Outdata;
+            DetectCode::ChangeFileEncodingFormat(gbkarr, Outdata, QString("GB18030"), QString("UTF-8"));
+            utf16Text = QString(Outdata);
+        } else {
+            utf16Text = _decoder->toUnicode(text, length);
+            //setIsCodecGB18030(false);
+        }
     }
 
     //fix bug 67102 打开超长名称的文件夹，终端界面光标位置不在最后一位
