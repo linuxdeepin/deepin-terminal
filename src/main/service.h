@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -19,13 +19,13 @@
 #include <QSharedMemory>
 #include <QMap>
 
-#include <com_deepin_wmswitcher.h>
+//#include <com_deepin_wmswitcher.h>
 
 DWIDGET_USE_NAMESPACE
 
-using WMSwitcher = com::deepin::WMSwitcher;
-#define WMSwitcherService "com.deepin.WMSwitcher"
-#define WMSwitcherPath "/com/deepin/WMSwitcher"
+//using WMSwitcher = com::deepin::WMSwitcher;
+#define WMSwitcherService "org.deepin.dde.WMSwitcher1"
+#define WMSwitcherPath "/org/deepin/dde/WMSwitcher1"
 
 /**
  * @brief 全局的后台服务类
@@ -51,7 +51,7 @@ public:
     /**
      * @brief 初始化设置框，在窗口现实后初始化，使第一次出现设置框不至于卡顿
      */
-    void initSetting(MainWindow *pOwner);
+    void initSetting();
 
     /**
      * @brief 显示设置框
@@ -267,7 +267,7 @@ private:
     static Service             *g_pService;
     DSettingsDialog            *m_settingDialog                     = nullptr;// 设置框 全局唯一显示
     CustomThemeSettingDialog   *m_customThemeSettingDialog          = nullptr;// 自定义主题设置对话框 全局唯一
-    WMSwitcher                 *m_wmSwitcher                        = nullptr;
+    //WMSwitcher                 *m_wmSwitcher                        = nullptr;
     MainWindow                 *m_settingOwner                      = nullptr;// 设置框的所有者
     DDialog                    *m_settingShortcutConflictDialog     = nullptr;// 设置框，快捷键冲突弹窗
     bool                        m_isDialogShow                      = false;  // 雷神用来判断是否有弹窗显示

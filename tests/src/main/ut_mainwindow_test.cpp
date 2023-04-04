@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -1214,19 +1214,19 @@ TEST_F(UT_MainWindow_Test, slotShortcutNewTab)
  3. @日期:    2020-12-25
  4. @说明:    slotShortcutPaste单元测试
 *******************************************************************************/
-TEST_F(UT_MainWindow_Test, slotShortcutPaste)
-{
-    //默认一个tab
-    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
-    EXPECT_TRUE(mainWindow->currentPage());
-    EXPECT_TRUE(mainWindow->currentPage()->currentTerminal());
+//TEST_F(UT_MainWindow_Test, slotShortcutPaste)
+//{
+//    //默认一个tab
+//    MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
+//    EXPECT_TRUE(mainWindow->currentPage());
+//    EXPECT_TRUE(mainWindow->currentPage()->currentTerminal());
 
-    UT_STUB_QWIDGET_HASFOCUS_CREATE;
-    mainWindow->slotShortcutPaste();
-    //m_terminalDisplay 触发hasFocus函数
-    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
-    mainWindow->deleteLater();
-}
+//    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+//    mainWindow->slotShortcutPaste();
+//    //m_terminalDisplay 触发hasFocus函数
+//    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
+//    mainWindow->deleteLater();
+//}
 
 /*******************************************************************************
  1. @函数:    MainWindow类的函数

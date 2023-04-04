@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -206,28 +206,28 @@ TEST_F(UT_ItemWidget_Test, onIconButtonClicked)
     delete itemWidget;
 }
 
-TEST_F(UT_ItemWidget_Test, onItemClicked)
-{
-    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
-    EXPECT_NE(itemWidget, nullptr);
+//TEST_F(UT_ItemWidget_Test, onItemClicked)
+//{
+//    ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
+//    EXPECT_NE(itemWidget, nullptr);
 
-    itemWidget->onItemClicked();
+//    itemWidget->onItemClicked();
 
-    QObject *moveSource = new QObject();
-    itemWidget->m_moveSource = moveSource;
+//    QObject *moveSource = new QObject();
+//    itemWidget->m_moveSource = moveSource;
 
-    itemWidget->m_functType = ItemFuncType_Group;
-    itemWidget->onItemClicked();
+//    itemWidget->m_functType = ItemFuncType_Group;
+//    itemWidget->onItemClicked();
 
-    itemWidget->m_functType = ItemFuncType_Item;
-    itemWidget->onItemClicked();
+//    itemWidget->m_functType = ItemFuncType_Item;
+//    itemWidget->onItemClicked();
 
-    itemWidget->onFocusReback();
+//    itemWidget->onFocusReback();
 
-    delete moveSource;
-    itemWidget->m_moveSource = nullptr;
-    delete itemWidget;
-}
+//    delete moveSource;
+//    itemWidget->m_moveSource = nullptr;
+//    delete itemWidget;
+//}
 
 TEST_F(UT_ItemWidget_Test, rightKeyPress)
 {

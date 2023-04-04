@@ -1,5 +1,4 @@
-﻿// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -21,7 +20,9 @@
 
 #include <QApplication>
 #include <QStandardPaths>
+#include <QStringList>
 #include <QFontDatabase>
+#include <QHBoxLayout>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
@@ -319,6 +320,12 @@ void Settings::initConnection()
         emit fontSizeChanged(value.toInt());
     });
 
+    QPointer<DSettingsOption> historySize = settings->option("advanced.scroll.history_size");
+    connect(historySize, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qInfo() << "History size changed to" << value.toInt();
+        emit historySizeChanged(value.toInt());
+    });
+
     QPointer<DSettingsOption> family = settings->option("basic.interface.font");
     connect(family, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit fontChanged(value.toString());
@@ -356,6 +363,12 @@ qreal Settings::opacity() const
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
 }
 
+int Settings::QuakeDuration() const
+{
+    const int step = settings->option("advanced.window.quake_window_animation_duration")->data("step").toInt();
+    return settings->option("advanced.window.quake_window_animation_duration")->value().toInt() * step;
+}
+
 QString Settings::encoding() const
 {
     return m_EncodeName;
@@ -379,6 +392,11 @@ bool Settings::PressingScroll()
 bool Settings::OutputtingScroll()
 {
     return settings->option("advanced.scroll.scroll_on_output")->value().toBool();
+}
+
+bool Settings::ScrollWheelZoom()
+{
+    return settings->option("advanced.scroll.zoom_on_ctrl_scrollwheel")->value().toBool();
 }
 
 /*******************************************************************************
@@ -450,6 +468,11 @@ bool Settings::cursorBlink() const
 bool Settings::backgroundBlur() const
 {
     return settings->option("advanced.window.blurred_background")->value().toBool();
+}
+
+int Settings::historySize() const
+{
+    return settings->option("advanced.scroll.history_size")->value().toInt();
 }
 
 
@@ -542,7 +565,7 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
 void Settings::handleWidthFont()
 {
-    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = Utils::getFonts();
 
     //将新安装的字体，加载到字体库中
     QFontDatabase base;
@@ -600,14 +623,13 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
-    /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 Begin***************/
     comboBox = new DComboBox;
     comboBox->setObjectName("SettingsFontFamilyComboBox");//Add by ut001000 renfeixiang 2020-08-14
 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
 
-    FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
+    FontDataList Whitelist = Utils::getFonts();
 
     std::sort(Whitelist.begin(), Whitelist.end(), [ = ](const FontData & str1, const FontData & str2) {
         QCollator qc;
@@ -616,9 +638,8 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
 
     qInfo() << "createFontComBoBoxHandle get system monospacefont";
     if (Whitelist.size() <= 0) {
-        //一般不会走这个分支，除非DBUS出现问题
-        qInfo() << "DBusManager::callAppearanceFont failed, get control font failed.";
-        //DBUS获取字体失败后，设置系统默认的等宽字体
+        qInfo() << "Failed to get monospacefonts from FontConfig";
+        //获取字体失败后，设置系统默认的等宽字体
         QStringList fontlist;
         fontlist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
                  << "Noto Mono" << "Noto Sans Mono" << "Noto Sans Mono CJK JP"
@@ -629,7 +650,6 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     for(int k = 0; k < Whitelist.count(); k ++) {
         comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
-    /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 End***************/
 
     if (option->value().toString().isEmpty())
         option->setValue(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());
@@ -676,11 +696,48 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     return optionWidget;
 }
 
+QPair<QWidget *, QWidget *> Settings::createValSliderHandle(QObject *obj)
+{
+    auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
+    DSlider *slider = new DSlider;
+    QStringList valTicksList;
+    const int maxVal = option->data("max").toInt();
+    const int minVal = option->data("min").toInt();
+    const int step = option->data("step").toInt();
+
+    valTicksList << tr("Fast");
+    for (int i = 0; i < ((maxVal - minVal) / step - 1); i++)
+    {
+        valTicksList << "";
+    }
+    valTicksList << tr("Slow");
+    slider->setMaximum(maxVal / step);
+    slider->setMinimum(minVal / step);
+    slider->setValue(instance()->QuakeDuration() / step);
+    slider->slider()->setTickInterval(1);
+    slider->setRightTicks(valTicksList);
+    slider->setProperty("handleType", "Vernier");
+    QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, slider);
+
+    connect(option, &DSettingsOption::valueChanged, slider, [ = ](QVariant var) {
+        slider->setValue(var.toInt());
+    });
+
+    option->connect(slider, &DSlider::valueChanged, option, [ = ](QVariant var) {
+        option->setValue(var.toInt());
+    });
+
+    return optionWidget;
+}
+
 QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     auto rightWidget = new NewDspinBox();
 
+    rightWidget->setMinimum(option->data("min").toInt());
+    rightWidget->setMaximum(option->data("max").toInt());
+    rightWidget->setSingleStep(option->data("step").toInt());
     rightWidget->setValue(option->value().toInt());
 
     QPair<QWidget *, QWidget *> optionWidget =
@@ -816,58 +873,4 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     return optionWidget;
 }
 
-void Settings::setFontSize(const int size)
-{
-    if (size < 5 || size > 50) return;
-    settings->option("basic.interface.font_size")->setValue(size);
-}
-
-void Settings::setFontName(const QString font)
-{
-    FontDataList fontList = DBusManager::callAppearanceFont("monospacefont");
-    qDebug() << font << fontList.size();
-    for (int k = 0; k < fontList.count(); k++) {
-        if (font == fontList[k].key || font == fontList[k].value) {
-            settings->option("basic.interface.font")->setValue(font);
-            break;
-        }
-    }
-}
-
-void Settings::setOpacity(const int opacity)
-{
-    if (opacity < 0 || opacity > 100) return;
-    settings->option("basic.interface.opacity")->setValue(opacity);
-}
-
-void Settings::setConsoleColorScheme(const QString scheme)
-{
-    if (scheme == "Dark" || scheme == "Light") {
-        settings->option("basic.interface.theme")->setValue(scheme);
-        settings->option("basic.interface.expand_theme")->setValue("");
-    }
-}
-
-void Settings::setCursorShape(const int shape)
-{
-    if (shape < 0 || shape > 2) return;
-    settings->option("advanced.cursor.cursor_shape")->setValue(shape);
-}
-
-void Settings::setCursorBlink(const bool blink)
-{
-    settings->option("advanced.cursor.cursor_blink")->setValue(blink);
-}
-
-void Settings::setConsoleShell(const QString shellName)
-{
-    QMap<QString, QString> shellMap = Service::instance()->getShells();
-    for (auto itr = shellMap.begin(); itr != shellMap.end(); ++itr) {
-        qDebug() << itr.key() << itr.value() << shellName;
-        if (shellName == itr.key() || shellName == itr.value()) {
-            settings->option("advanced.shell.default_shell")->setValue(itr.value());
-            break;
-        }
-    }
-}
 

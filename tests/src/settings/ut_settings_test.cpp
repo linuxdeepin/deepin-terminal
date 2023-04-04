@@ -1,5 +1,5 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -220,8 +220,6 @@ TEST_F(UT_Settings_Test, handleWidthFont)
 {
     Stub stub;
     stub.set((int (QComboBox::*)(const QString &, Qt::MatchFlags) const)ADDR(DComboBox, findText), ut_combobox_findText);
-    //静态重载函数的打桩
-    stub.set((FontDataList (*)(QString))ADDR(DBusManager, callAppearanceFont), ut_DBusManager_callAppearanceFont);
 
     //获取等宽字体
     Settings::instance()->handleWidthFont();

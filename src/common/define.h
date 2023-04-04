@@ -1,5 +1,5 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -8,6 +8,7 @@
 
 #include <QtGlobal>
 #include <QString>
+#include <QStringList>
 /*
    TERMINALWIDGET_VERSION is (major << 16) + (minor << 8) + patch.
    can be used like #if (TERMINALWIDGET_VERSION >= QT_VERSION_CHECK(0, 7, 1))
@@ -52,5 +53,15 @@ enum SearchBar_State {
 // 快捷键转换
 const QString SHORTCUT_CONVERSION_UP = "~!@#$%^&*()_+{}:\"|<>?";
 const QString SHORTCUT_CONVERSION_DOWN = "`1234567890-=[];'\\,./";
+
+// Fonts blacklist
+const QStringList FONT_BLACKLIST = {
+    QStringLiteral("Symbol"),
+    QStringLiteral("webdings"),
+    QStringLiteral("MT Extra"),
+    QStringLiteral("Wingdings"),
+    QStringLiteral("Wingdings 2"),
+    QStringLiteral("Wingdings 3")
+};
 
 #endif // DTNG_DEFINE_H

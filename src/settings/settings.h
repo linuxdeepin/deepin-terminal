@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -49,6 +48,12 @@ public:
      * @return
      */
     qreal opacity() const;
+    /**
+     * @brief 设置界面雷神模式的显示/隐藏动画时间
+     * @author Archie Meng
+     * @return
+     */
+    int QuakeDuration() const;
     /**
      * @brief 设置界面获取光标形状
      * @author ut001121 zhangmeng
@@ -103,6 +108,12 @@ public:
      * @return
      */
     bool OutputtingScroll();
+    /**
+     * @brief 设置界面获取是否允许Ctrl+滚轮扩缩字体
+     * @author chenzhiwei
+     * @return
+     */
+    bool ScrollWheelZoom();
 //    void reload();
     /**
      * @brief 标签标题
@@ -196,14 +207,12 @@ public:
      * @return
      */
     bool enableControlFlow(void);
-
-    void setFontSize(const int size);
-    void setFontName(const QString font);
-    void setOpacity(const int opacity);
-    void setConsoleColorScheme(const QString scheme);
-    void setCursorShape(const int shape);
-    void setCursorBlink(const bool blink);
-    void setConsoleShell(const QString shellName);
+    /**
+     * @brief 历史记录行数
+     * @author Archie Meng
+     * @return
+     */
+    int historySize() const;
 
     //选择主题，false:选择主题未确定，读写缓存； true:选择主题已确定，读写settings
     //这里默认true是为了：启动时读取settings的值
@@ -239,6 +248,13 @@ public:
      * @return
      */
     static QPair<QWidget *, QWidget *> createCustomSliderHandle(QObject *obj);
+    /**
+     * @brief 自定义valSlider控件样式
+     * @author Archie Meng
+     * @param obj 对象
+     * @return
+     */
+    static QPair<QWidget *, QWidget *> createValSliderHandle(QObject *obj);
     /**
      * @brief 自定义SpinButton控件样式
      * @author ut000439 wangpeili
@@ -289,6 +305,7 @@ signals:
     void OutputScrollChanged(bool enabled);
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
+    void historySizeChanged(int historySize);
 
     // 设置中的标签标题格式变化
     void tabFormatChanged(const QString &tabFormat);

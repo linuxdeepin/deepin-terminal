@@ -1,5 +1,5 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -77,57 +77,6 @@ void DBusManager::callKDESetCurrentDesktop(int index)
         qInfo() << "call setCurrentDesktop Fail!" << response.errorMessage();
 }
 
-FontDataList DBusManager::callAppearanceFont(QString fontType)
-{
-    FontDataList rList;
-    QDBusMessage msg =
-        QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "List");
-
-    msg << fontType;
-
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (QDBusMessage::ReplyMessage == response.type()) {
-        qInfo() << "call List Success!";
-        QList<QVariant> list = response.arguments();
-        QString fonts = list.value(list.count() - 1).toString();
-        // 原本的返回值为QDBusPendingReply<QString> => QString
-        fonts.replace("[", "");
-        fonts.replace("]", "");
-        fonts.replace("\"", "");
-        // 用逗号分隔
-        QStringList fontList = fonts.split(",");
-        rList = callAppearanceFont(fontList, fontType);
-    } else {
-        qInfo() << "call List Fail!" << response.errorMessage();
-    }
-
-
-    return rList;
-}
-
-FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontType)
-{
-    FontDataList retList;
-    QDBusMessage msg =
-        QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "Show");
-
-    msg << fontType << fontList;
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        qInfo() << "call Show Success!";
-        QByteArray fonts = response.arguments().value(0).toByteArray();
-        QJsonArray array = QJsonDocument::fromJson(fonts).array();
-        for (int i = 0; i < array.size(); i++) {
-            QJsonObject object = array.at(i).toObject();
-            retList.append(FontData(object["Id"].toString(), object["Name"].toString()));
-        }
-        qInfo() << "Show value" << retList.values();
-    } else {
-        qInfo() << "call Show Fail!" << response.errorMessage();
-    }
-    return retList;
-}
-/******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
 void DBusManager::callTerminalEntry(QStringList args)
 {
     QDBusMessage msg =
@@ -145,76 +94,6 @@ void DBusManager::callTerminalEntry(QStringList args)
 void DBusManager::entry(QStringList args)
 {
     emit entryArgs(args);
-}
-
-int DBusManager::consoleFontSize() const
-{
-    return Settings::instance()->fontSize();
-}
-
-void DBusManager::setConsoleFontSize(const int size)
-{
-    Settings::instance()->setFontSize(size);
-}
-
-QString DBusManager::consoleFontFamily() const
-{
-    return Settings::instance()->fontName();
-}
-
-void DBusManager::setConsoleFontFamily(const QString family)
-{
-    Settings::instance()->setFontName(family);
-}
-
-qreal DBusManager::consoleOpacity() const
-{
-    return Settings::instance()->opacity();
-}
-
-void DBusManager::setConsoleOpacity(const int value)
-{
-    Settings::instance()->setOpacity(value);
-}
-
-int DBusManager::consoleCursorShape() const
-{
-    return Settings::instance()->cursorShape();
-}
-
-void DBusManager::setConsoleCursorShape(const int shape)
-{
-    Settings::instance()->setCursorShape(shape);
-}
-
-bool DBusManager::consoleCursorBlink() const
-{
-    return Settings::instance()->cursorBlink();
-}
-
-void DBusManager::setConsoleCursorBlink(const bool blink)
-{
-    Settings::instance()->setCursorBlink(blink);
-}
-
-QString DBusManager::consoleColorScheme() const
-{
-    return Settings::instance()->colorScheme();
-}
-
-void DBusManager::setConsoleColorScheme(const QString scheme)
-{
-    Settings::instance()->setConsoleColorScheme(scheme);
-}
-
-QString DBusManager::consoleShell() const
-{
-    return Settings::instance()->shellPath();
-}
-
-void DBusManager::setConsoleShell(const QString shellName)
-{
-    Settings::instance()->setConsoleShell(shellName);
 }
 
 void DBusManager::callSystemSound(const QString &sound)

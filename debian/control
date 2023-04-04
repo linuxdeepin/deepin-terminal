@@ -20,7 +20,9 @@ Build-Depends:
  libxcb-ewmh-dev,
  libchardet-dev,
  libuchardet-dev (>= 0.0.6),
- libicu-dev
+ libicu-dev,
+ fontconfig
+ 
 Standards-Version: 4.5.1
 Homepage: https://www.deepin.com/
 

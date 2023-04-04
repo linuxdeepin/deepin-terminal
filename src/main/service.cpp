@@ -1,5 +1,5 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
+// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -22,6 +22,8 @@
 #include <QLabel>
 #include <QScroller>
 #include <QJsonObject>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
 
 Service *Service::g_pService = nullptr;
 
@@ -71,7 +73,7 @@ void Service::releaseInstance()
     }
 }
 
-void Service::initSetting(MainWindow *pOwner)
+void Service::initSetting()
 {
     if (nullptr != m_settingDialog) {
         //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
@@ -87,13 +89,14 @@ void Service::initSetting(MainWindow *pOwner)
     }
 
     QDateTime startTime = QDateTime::currentDateTime();
-    m_settingDialog = new DSettingsDialog(pOwner);
+    m_settingDialog = new DSettingsDialog();
     m_settingDialog->setObjectName("SettingDialog");
     // 关闭后将指针置空，下次重新new
     connect(m_settingDialog, &DSettingsDialog::finished, this, &Service::slotSettingsDialogFinished);
     // 关闭时delete
     m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
     m_settingDialog->widgetFactory()->registerWidget("slider", Settings::createCustomSliderHandle);
+    m_settingDialog->widgetFactory()->registerWidget("valslider", Settings::createValSliderHandle);
     m_settingDialog->widgetFactory()->registerWidget("spinbutton", Settings::createSpinButtonHandle);
     m_settingDialog->widgetFactory()->registerWidget("shortcut", Settings::createShortcutEditOptionHandle);
     m_settingDialog->widgetFactory()->registerWidget("tabformatedit", Settings::createTabTitleFormatOptionHandle);
@@ -183,11 +186,17 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 
 void Service::listenWindowEffectSwitcher()
 {
-    if (nullptr == m_wmSwitcher) {
-        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
-        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
+//    if (nullptr == m_wmSwitcher) {
+//        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
+//        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
+//        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
+//    }
+    QDBusConnection session = QDBusConnection::sessionBus();
+    if (!session.interface()->isServiceRegistered(WMSwitcherService)) {
+        qInfo() << WMSwitcherService << "Not Registered!!!!!!!";
+        return;
     }
+    session.connect(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "WMChanged", this, SLOT(slotWMChanged(QString)));
 }
 
 void Service::slotWMChanged(const QString &wmName)
@@ -289,7 +298,7 @@ bool Service::mainTerminalIsStarted()
 void Service::showSettingDialog(MainWindow *pOwner)
 {
     // 第一次初始化dialog
-    initSetting(pOwner);
+    initSetting();
     //保存设置框的有拥者
     m_settingOwner = pOwner;
     if (nullptr != m_settingDialog) {
@@ -305,7 +314,6 @@ void Service::showSettingDialog(MainWindow *pOwner)
         }
         //更新设置的等宽字体
         Settings::instance()->handleWidthFont();
-        FontFilter::instance()->handleWidthFont();
 
         // 重新加载shell配置数据
         Settings::instance()->reloadShellOptions();

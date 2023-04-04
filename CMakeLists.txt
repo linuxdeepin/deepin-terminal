@@ -4,17 +4,17 @@ cmake_minimum_required(VERSION 3.9.5)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
+include (GNUInstallDirs)
 include (src/DtkSettingsToolsMacros)
 option(TERM_RPATH "Do you want to use compiled libraries" ON)
 
 if(TERM_RPATH)
-set(CMAKE_SKIP_INSTALL_RPATH YES)
-set(CMAKE_SKIP_RPATH YES)
+  set(CMAKE_SKIP_INSTALL_RPATH YES)
+  set(CMAKE_SKIP_RPATH YES)
 endif()
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -43,7 +43,7 @@ else()
 endif()
 
 #Use deepin-turbo for Performance optimization
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wl,--as-needed -fPIE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-needed -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
 #安全编译参数
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-strong -D_FORTITY_SOURCE=1 -z noexecstack -pie -fPIC -z lazy")
@@ -66,11 +66,9 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5X11Extras REQUIRED)
-#find_package(DtkWidget REQUIRED)
-#find_package(DtkCore REQUIRED)
-#find_package(DtkGui REQUIRED)
 
 include(FindPkgConfig)
+include(FindFontconfig)
 
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
@@ -117,6 +115,7 @@ set(LINK_LIBS
     ${LIBSECRET_LIBRARIES}
     ${XCB_EWMH_LIBRARIES}
     ${Qt5X11Extras_LIBRARIES}
+    ${Fontconfig_LIBRARIES}
 )
 
 # Populate a CMake variable with the sources
@@ -260,34 +259,28 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
 
-# Install settings
-
-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX /usr)
-endif ()
-
 # Installation
 
-#install(TARGETS deepin-terminal DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal)
+#install(TARGETS deepin-terminal DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-terminal)
 
 install(FILES src/deepin-terminal.desktop
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/)
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/applications/)
 
 install(FILES src/assets/logo/deepin-terminal.svg
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps/)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        DESTINATION ${CMAKE_INSTALL_BINDIR}
         PERMISSIONS OWNER_READ OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE)
 
-install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)
+install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-terminal/translations)
 
 install(DIRECTORY src/assets/deepin-terminal
-        DESTINATION /usr/share/deepin-manual/manual-assets/application/)
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-manual/manual-assets/application/)
 
 # Unit Test
 if (CMAKE_BUILD_TYPE MATCHES Debug)
-add_subdirectory(tests)
+  add_subdirectory(tests)
 endif()

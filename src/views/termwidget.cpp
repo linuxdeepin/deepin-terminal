@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -45,7 +44,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-    setHistorySize(5000);
+    qInfo() << "Setting initial history size:" << Settings::instance()->historySize();
+    setHistorySize(Settings::instance()->historySize());
 
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
@@ -193,6 +193,10 @@ void TermWidget::initConnections()
     connect(this, &TermWidget::copyAvailable, this, &TermWidget::onCopyAvailable);
 
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
+    connect(Settings::instance(), &Settings::historySizeChanged, this, [this] (int newHistorySize) {
+        qInfo() << "Setting new history size:" << newHistorySize;
+        setHistorySize(newHistorySize);
+    });
 
     //窗口特效开启则使用设置的透明度，窗口特效关闭时直接把窗口置为不透明
     connect(Service::instance(), &Service::onWindowEffectEnabled, this, &TermWidget::onWindowEffectEnabled);
@@ -1141,7 +1145,7 @@ inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fi
 {
     qInfo() << name << direction << fingers;
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus()) {
+    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
         if (name == "pinch" && fingers == 2) {
             if (direction == "in") {
                 // 捏合 in是手指捏合的方向 向内缩小
@@ -1176,7 +1180,7 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 void TermWidget::wheelEvent(QWheelEvent *event)
 {
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus()) {
+    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
         if (Qt::ControlModifier == event->modifiers()) {
             int directionY = event->angleDelta().y();
             if (directionY < 0) {

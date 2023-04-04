@@ -28,7 +28,8 @@
                             "type": "spinbutton",
                             "default": 11,
                             "max": 50,
-                            "min": 5
+                            "min": 5,
+                            "step": 1
                         },
                         {
                             "key": "theme",
@@ -331,6 +332,15 @@
                     "name": "Scroll",
                     "options": [
                         {
+                            "key": "history_size",
+                            "name": "History size",
+                            "type": "spinbutton",
+                            "default": 5000,
+                            "max": 10000,
+                            "min": 1000,
+                            "step": 100
+                        },
+                        {
                             "key": "scroll_on_key",
                             "type": "checkbox",
                             "text": "Scroll on keystroke",
@@ -340,6 +350,12 @@
                             "key": "scroll_on_output",
                             "type": "checkbox",
                             "text": "Scroll on output",
+                            "default": true
+                        },
+                        {
+                            "key": "zoom_on_ctrl_scrollwheel",
+                            "type": "checkbox",
+                            "text": "Allow Ctrl+scrollwheel to zoom text size",
                             "default": true
                         }
                     ]
@@ -365,6 +381,15 @@
                             "text": "Hide Quake window after losing focus",
                             "type": "checkbox",
                             "default": "false"
+                        },
+                        {
+                            "key": "quake_window_animation_duration",
+                            "name": "Quake window animation speed",
+                            "type": "valslider",
+                            "step": 50,
+                            "max": 450,
+                            "min": 100,
+                            "default": 9
                         }
                     ]
                 },

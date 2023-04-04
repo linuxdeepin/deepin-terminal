@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_HK">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_HK">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -334,6 +336,11 @@
         <translation>輸出時滾動</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings.cpp" line="394"/>
+        <source>Allow Ctrl+scrollwheel to zoom text size</source>
+        <translation>允許Ctrl+滑動滾輪縮放文字大小</translation>
+    </message>
+    <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Hide Quake window after losing focus</source>
         <translation>丟失焦點後隱藏雷神視窗</translation>
@@ -631,6 +638,11 @@
         <location filename="../src/settings/settings_translation.cpp" line="157"/>
         <source>Shell profile</source>
         <translation>Shell配置</translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings_translation.cpp" line="146"/>
+        <source>History size</source>
+        <translation>歷史回滾行數</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="517"/>
