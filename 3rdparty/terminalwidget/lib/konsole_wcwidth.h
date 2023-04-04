@@ -87,5 +87,7 @@ namespace LineBlockCharacters {
 } // namespace Konsole
 
 int characterWidth(uint ucs4);
+void setIsCodecGB18030(bool isCodecGB18030);
+bool IsCodecGB18030();
 
 #endif

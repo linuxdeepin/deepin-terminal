@@ -227,6 +227,8 @@ Q_OBJECT
     bool _isCommandExec = false;
 
     QString _program;
+
+    QByteArray _waitLFBuffer;   // 等待换行缓冲
 };
 
 }

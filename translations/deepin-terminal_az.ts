@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="az">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="az">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -266,12 +268,12 @@
         <translation>Bağla</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1752"/>
+        <location filename="../src/main/mainwindow.cpp" line="1757"/>
         <source>Type path to download file</source>
         <translation>Fayl yüklənəcək yolu yazın</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2049"/>
+        <location filename="../src/main/mainwindow.cpp" line="2054"/>
         <source>Custom Theme</source>
         <translation>Fərdi mövzu</translation>
     </message>
@@ -319,8 +321,8 @@
         <translation>Titrəyişli pəncərə animasiya sürəti</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="145"/>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
+        <location filename="../src/main/service.cpp" line="145"/>
         <source>Blur background</source>
         <translation>Bulanıq arxa fon</translation>
     </message>
@@ -345,8 +347,8 @@
         <translation>Şrift ölçüsü</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="176"/>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
+        <location filename="../src/main/service.cpp" line="176"/>
         <source>Opacity</source>
         <translation>Qeyri-şəffaflıq</translation>
     </message>
@@ -386,16 +388,16 @@
         <translation>Qısayollar</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1594"/>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
+        <location filename="../src/main/mainwindow.cpp" line="1599"/>
         <source>Others</source>
         <translation>Digəriləri</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1592"/>
-        <location filename="../src/main/mainwindow.cpp" line="2183"/>
-        <location filename="../src/main/terminalapplication.cpp" line="25"/>
         <location filename="../src/settings/settings_translation.cpp" line="59"/>
+        <location filename="../src/main/terminalapplication.cpp" line="25"/>
+        <location filename="../src/main/mainwindow.cpp" line="1597"/>
+        <location filename="../src/main/mainwindow.cpp" line="2188"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
@@ -405,62 +407,62 @@
         <translation>İş sahəsi</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
+        <location filename="../src/main/mainwindow.cpp" line="1663"/>
         <source>Custom commands</source>
         <translation>Fərdi əmrlər</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
+        <location filename="../src/main/mainwindow.cpp" line="1663"/>
         <source>Display shortcuts</source>
         <translation>Qısayolları göstərmək</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
+        <location filename="../src/main/mainwindow.cpp" line="1663"/>
         <source>Remote management</source>
         <translation>Uzaqdan idarəetmə</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
+        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <source>New tab</source>
         <translation>Yeni vərəq</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
+        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <source>Next tab</source>
         <translation>Növbəti vərəq</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
+        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <source>Previous tab</source>
         <translation>Əvvəlki vərəq</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
+        <location filename="../src/main/mainwindow.cpp" line="1645"/>
         <source>Select left workspace</source>
         <translation>Sol iş sahəsini seçmək</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
+        <location filename="../src/main/mainwindow.cpp" line="1644"/>
         <source>Select lower workspace</source>
         <translation>Aşağı iş sahəsini seçmək</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
+        <location filename="../src/main/mainwindow.cpp" line="1645"/>
         <source>Select right workspace</source>
         <translation>Sağ iş sahəsini seçmək</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
+        <location filename="../src/main/mainwindow.cpp" line="1644"/>
         <source>Select upper workspace</source>
         <translation>Yuxarı iş sahəsini seçmək</translation>
     </message>
@@ -470,56 +472,56 @@
         <translation>Vərəq başlıqları</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
+        <location filename="../src/main/mainwindow.cpp" line="1646"/>
         <source>Go to tab 1</source>
         <translation>1 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
+        <location filename="../src/main/mainwindow.cpp" line="1646"/>
         <source>Go to tab 2</source>
         <translation>2 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
+        <location filename="../src/main/mainwindow.cpp" line="1646"/>
         <source>Go to tab 3</source>
         <translation>3 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
+        <location filename="../src/main/mainwindow.cpp" line="1647"/>
         <source>Go to tab 4</source>
         <translation>4 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
+        <location filename="../src/main/mainwindow.cpp" line="1647"/>
         <source>Go to tab 5</source>
         <translation>5 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
+        <location filename="../src/main/mainwindow.cpp" line="1647"/>
         <source>Go to tab 6</source>
         <translation>6 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
+        <location filename="../src/main/mainwindow.cpp" line="1648"/>
         <source>Go to tab 7</source>
         <translation>7 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
+        <location filename="../src/main/mainwindow.cpp" line="1648"/>
         <source>Go to tab 8</source>
         <translation>8 vərəqə keçid</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
+        <location filename="../src/main/mainwindow.cpp" line="1648"/>
         <source>Go to tab 9</source>
         <translation>9 vərəqə keçid</translation>
     </message>
@@ -554,34 +556,34 @@
         <translation>Hata ayıklama məlumatları ərazi məsajlaşdırmağ üçün istifadə edilən HTTP fayl serveri</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1658"/>
-        <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/views/tabbar.cpp" line="486"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
+        <location filename="../src/views/tabbar.cpp" line="486"/>
+        <location filename="../src/settings/settings_translation.cpp" line="69"/>
+        <location filename="../src/main/mainwindow.cpp" line="1663"/>
         <source>Rename title</source>
         <translation>Başlığın adını dəyişmək</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
+        <location filename="../src/main/mainwindow.cpp" line="1663"/>
         <source>Fullscreen</source>
         <translation>Tam ekran</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
+        <location filename="../src/main/mainwindow.cpp" line="1628"/>
         <source>Copy</source>
         <translation>Kopyala</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
+        <location filename="../src/main/mainwindow.cpp" line="1628"/>
         <source>Default size</source>
         <translation>Standart ölçü</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
+        <location filename="../src/main/mainwindow.cpp" line="1628"/>
         <source>Paste</source>
         <translation>Əlavə et</translation>
     </message>
@@ -591,8 +593,8 @@
         <translation>Axtar</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
+        <location filename="../src/main/mainwindow.cpp" line="1628"/>
         <source>Select all</source>
         <translation>Hamısını seçmək</translation>
     </message>
@@ -607,14 +609,14 @@
         <translation>Əvvəlki əmrə keçmək</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
+        <location filename="../src/main/mainwindow.cpp" line="1628"/>
         <source>Zoom in</source>
         <translation>Yaxınlaşdır</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
+        <location filename="../src/main/mainwindow.cpp" line="1628"/>
         <source>Zoom out</source>
         <translation>Uzaqlaşdır</translation>
     </message>
@@ -624,9 +626,9 @@
         <translation>Digər pəncərələri bağla</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1640"/>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/views/termwidget.cpp" line="499"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/main/mainwindow.cpp" line="1645"/>
         <source>Close other workspaces</source>
         <translation>Başqa iş sahələrini bağlamaq</translation>
     </message>
@@ -656,34 +658,34 @@
         <translation>Pəncərəni bağlamaq</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1640"/>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <location filename="../src/views/termwidget.cpp" line="496"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/main/mainwindow.cpp" line="1645"/>
         <source>Close workspace</source>
         <translation>İş sahəsini bağla</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
+        <location filename="../src/main/mainwindow.cpp" line="1644"/>
         <source>Horizontal split</source>
         <translation>Üfüqi bölünmə</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
+        <location filename="../src/main/mainwindow.cpp" line="1644"/>
         <source>Vertical split</source>
         <translation>Şaquli bölünmə</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
+        <location filename="../src/main/mainwindow.cpp" line="1628"/>
         <source>Find</source>
         <translation>Tapmaq</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="263"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/main/service.cpp" line="416"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
+        <location filename="../src/common/utils.cpp" line="263"/>
         <source>please set another one.</source>
         <translation>lütfən başqasını təyin edin.</translation>
     </message>
@@ -693,35 +695,35 @@
         <translation>Terminal, iş sahələri, çoxsaylı pəncərələr, uzaqdan idarəetmə, sürüşüb açılma rejimi və digər xüsusiyyətləri ilə birlikdə təkmilləşdirilmiş terminaldır.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1590"/>
+        <location filename="../src/main/mainwindow.cpp" line="1595"/>
         <source>Tabs</source>
         <translation>Vərəqlər</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="480"/>
+        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <source>Close tab</source>
         <translation>Vərəqi bağlamaq</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/main/mainwindow.cpp" line="1644"/>
         <source>Select tab</source>
         <translation>Vərəqi seçmək</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1610"/>
+        <location filename="../src/main/mainwindow.cpp" line="1615"/>
         <source>Switch focus to &quot;+&quot; icon</source>
         <translation>Fokusu &quot;+&quot; nişanına dəyişmək</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <location filename="../src/common/utils.cpp" line="157"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Select file to upload</source>
         <translation>Yükləmək üçün faylı seçin</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1710"/>
         <location filename="../src/common/utils.cpp" line="162"/>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Upload</source>
         <translation>Yükləmək</translation>
     </message>
@@ -761,8 +763,8 @@
         <translation>Bu qeydə hələ də proses işləyir. Qeydi kapanırsa, onları növbədən işlərdən dayandıracaq.</translation>
     </message>
     <message>
+        <location filename="../src/main/mainwindow.cpp" line="1773"/>
         <location filename="../src/common/utils.cpp" line="136"/>
-        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
         <translation>Fayl saxlanılacaq qovluğu seçin</translation>
     </message>
@@ -784,10 +786,10 @@
         <translation>Terminaldan artıq istifadə edə bilməyəcəksiniz.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="253"/>
         <location filename="../src/views/listview.cpp" line="499"/>
         <location filename="../src/views/listview.cpp" line="893"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
+        <location filename="../src/common/utils.cpp" line="253"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>İmtina</translation>
@@ -830,15 +832,15 @@
         <translation>Əmr başa çatdıqda terminalı açıq saxlamaq</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
         <source>The name should be no more than 32 characters</source>
         <translation>Ad 32 işarədən böyük olmamalıdır</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="142"/>
-        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
+        <location filename="../src/main/mainwindow.cpp" line="1779"/>
+        <location filename="../src/common/utils.cpp" line="142"/>
         <source>Select</source>
         <translation>Seçmək</translation>
     </message>
@@ -848,20 +850,20 @@
         <translation>Məxfi açar faylını seçmək</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
+        <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <source>Tab title format</source>
         <translation>Vərəq başlığı formatı</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
+        <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <source>Remote tab title format</source>
         <translation>Uzaq vərəq başlığı formatı</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="483"/>
+        <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <source>Close other tabs</source>
         <translation>Başqa vərəqləri bağlamaq</translation>
     </message>

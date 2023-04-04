@@ -614,6 +614,12 @@ void QTermWidget::setTextCodec(QTextCodec *codec)
     if (!m_impl->m_session)
         return;
     m_impl->m_session->setCodec(codec);
+    QString str(codec->name());
+    if(str == "GB18030"){
+        setIsCodecGB18030(true);
+    }else{
+        setIsCodecGB18030(false);
+    }
 }
 
 void QTermWidget::setTerminalWordCharacters(const QString &wc)
