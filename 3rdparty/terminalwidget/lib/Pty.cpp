@@ -49,6 +49,7 @@
 
 #include "kpty.h"
 #include "kptydevice.h"
+#include "encodes/detectcode.h"
 
 using namespace Konsole;
 
@@ -502,13 +503,14 @@ void Pty::sendData(const char *data, int length, const QTextCodec *codec)
 
     //为GBK/GB2312/GB18030编码，且不是输入命令执行的情况（没有按回车）
     if (QString(codec->name()).toUpper().startsWith("GB") && !_isCommandExec) {
+        
         QTextCodec *utf8Codec = QTextCodec::codecForName("UTF-8");
         QString unicodeData = codec->toUnicode(data);
         QByteArray unicode = utf8Codec->fromUnicode(unicodeData);
 
         if (!pty()->write(unicode.constData(), unicode.length())) {
-            qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
-            return;
+          qWarning() << "Pty::doSendJobs - Could not send input data to terminal process.";
+          return;
         }
     }
     else {
@@ -585,7 +587,7 @@ void Pty::dataReceived()
     }
 
     // "\u008A"这个乱码不替换调会导致显示时有\b的效果导致命令错乱bug#23741
-    if (recvData.contains("\u008A")) {
+    if (_utf8 && recvData.contains("\u008A")) {
         recvData.replace("\u008A", "\b \b #");
         data = recvData.toUtf8();
     }
@@ -594,6 +596,56 @@ void Pty::dataReceived()
         recvData += "\r\n";
         data = recvData.toUtf8();
     }
+
+    // NOTE: 为处理编码截断的情况，需要缓存数据等待换行符 '\n' 或终端结束符 "\x1B[00m"
+    // 此处理仅在非UTF8编码, 且命令输出时生效
+    if (!_utf8) {
+        if (_isCommandExec) {
+            // 命令输出数据
+            int index = data.lastIndexOf('\n');
+            if (-1 == index) {
+                _waitLFBuffer.append(data);
+
+                // 判断是否包含结束符
+                if (_waitLFBuffer.contains("\x1B[00m")) {
+                    emit receivedData(_waitLFBuffer.constData(), _waitLFBuffer.size(), true);
+                    _waitLFBuffer.clear();
+                }
+
+            }
+            else if (index != data.count() - 1) {
+                int remainingCount = data.size() - index - 1;
+
+                // 判断是否包含结束符
+                if (QByteArray::fromRawData(data.constData() + index + 1, remainingCount).contains("\x1B[00m")) {
+                    _waitLFBuffer.append(data);
+                    emit receivedData(_waitLFBuffer.constData(), _waitLFBuffer.count(), true);
+
+                    _waitLFBuffer.clear();
+                } else {
+                    data.prepend(_waitLFBuffer);
+                    emit receivedData(data.constData(), _waitLFBuffer.count() + index + 1, true);
+
+                    _waitLFBuffer = data.right(remainingCount);
+                }
+
+            } else {
+                data.prepend(_waitLFBuffer);
+                emit receivedData(data.constData(), data.count(), true);
+
+                _waitLFBuffer.clear();
+            }
+
+            // 缓存数据并跳出
+            return;
+        } else {
+            if (!_waitLFBuffer.isEmpty()) {
+                emit receivedData(_waitLFBuffer.constData(), _waitLFBuffer.count(), _isCommandExec);
+                _waitLFBuffer.clear();
+            }
+        }
+    }
+
     /********************* Modify by m000714 daizhengwen End ************************/
     emit receivedData(data.constData(), data.count(), _isCommandExec);
 }
