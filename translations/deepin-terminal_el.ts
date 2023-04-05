@@ -4,63 +4,63 @@
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="112"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="97"/>
         <source>Name:</source>
         <translation>Όνομα:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="114"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="99"/>
         <source>Command:</source>
         <translation>Εντολή:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="116"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="101"/>
         <source>Shortcuts:</source>
         <translation>Συντομεύσεις:</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="127"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="128"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="209"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="215"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="112"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="113"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="190"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="196"/>
         <source>Required</source>
         <translation>Απαιτείται</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="154"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="139"/>
         <source>Add Command</source>
         <translation>Προσθήκη Εντολής</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="160"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="145"/>
         <source>Edit Command</source>
         <translation>Επεξεργασία Εντολής</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="170"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="155"/>
         <source>Delete Command</source>
         <translation>Διαγραφή Εντολής</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="195"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="176"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished">Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="197"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="178"/>
         <source>Add</source>
         <comment>button</comment>
         <translation type="unfinished">Προσθήκη</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="199"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="180"/>
         <source>Save</source>
         <comment>button</comment>
         <translation type="unfinished">Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="636"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="603"/>
         <source>OK</source>
         <comment>button</comment>
         <translation type="unfinished">OK</translation>
@@ -78,22 +78,22 @@
         <translation type="vanished">Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="388"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="357"/>
         <source>Please enter a name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="402"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="371"/>
         <source>Please enter a command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="452"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="421"/>
         <source>The name already exists,</source>
         <translation>Το όνομα υπάρχει ήδη,</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="453"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="422"/>
         <source>please input another one.</source>
         <translation>παρακαλώ εισάγετε άλλο κείμενο.</translation>
     </message>
@@ -105,15 +105,20 @@
 <context>
     <name>CustomCommandPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandpanel.cpp" line="195"/>
+        <location filename="../src/customcommand/customcommandpanel.cpp" line="197"/>
         <source>Add Command</source>
         <translation>Προσθήκη Εντολής</translation>
+    </message>
+    <message>
+        <location filename="../src/customcommand/customcommandpanel.cpp" line="201"/>
+        <source>No commands yet</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CustomCommandPlugin</name>
     <message>
-        <location filename="../src/customcommand/customcommandplugin.cpp" line="76"/>
+        <location filename="../src/customcommand/customcommandplugin.cpp" line="35"/>
         <source>Custom commands</source>
         <translation>Προσαρμοσμένες εντολές</translation>
     </message>
@@ -121,7 +126,7 @@
 <context>
     <name>CustomCommandSearchRstPanel</name>
     <message>
-        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="146"/>
+        <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="131"/>
         <source>Search</source>
         <translation>Αναζήτηση</translation>
     </message>
@@ -129,53 +134,53 @@
 <context>
     <name>CustomThemeSettingDialog</name>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="238"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="221"/>
         <source>Custom Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="262"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="245"/>
         <source>Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="266"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="249"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="271"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="254"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="308"/>
         <source>Fore color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="332"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="315"/>
         <source>Back color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="350"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="333"/>
         <source>Prompt PS1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="354"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="337"/>
         <source>Prompt PS2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="425"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="408"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished">Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="433"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="416"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation type="unfinished">Επιβεβαίωση</translation>
@@ -192,13 +197,13 @@
 <context>
     <name>ListView</name>
     <message>
-        <location filename="../src/views/listview.cpp" line="298"/>
+        <location filename="../src/views/listview.cpp" line="283"/>
         <source>Delete Server</source>
         <translation>Διαγραφή διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="298"/>
-        <location filename="../src/views/listview.cpp" line="492"/>
+        <location filename="../src/views/listview.cpp" line="283"/>
+        <location filename="../src/views/listview.cpp" line="477"/>
         <source>Are you sure you want to delete %1?</source>
         <translation>Είστε βέβαιος ότι θέλετε να διαγράψετε %1;</translation>
     </message>
@@ -206,24 +211,24 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="269"/>
-        <location filename="../src/main/mainwindow.cpp" line="324"/>
+        <location filename="../src/main/mainwindow.cpp" line="255"/>
+        <location filename="../src/main/mainwindow.cpp" line="310"/>
         <source>New window</source>
         <translation>Νέο παράθυρο</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="339"/>
+        <location filename="../src/main/mainwindow.cpp" line="325"/>
         <source>Settings</source>
         <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="755"/>
+        <location filename="../src/main/mainwindow.cpp" line="741"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished">Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="757"/>
+        <location filename="../src/main/mainwindow.cpp" line="743"/>
         <source>Close</source>
         <comment>button</comment>
         <translation type="unfinished">Κλείσιμο</translation>
@@ -237,7 +242,7 @@
         <translation type="vanished">Κλείσιμο</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2090"/>
+        <location filename="../src/main/mainwindow.cpp" line="2138"/>
         <source>Custom Theme</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,7 +251,7 @@
         <translation type="vanished">Επιλογή χώρου εργασίας</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1808"/>
+        <location filename="../src/main/mainwindow.cpp" line="1832"/>
         <source>Type path to download file</source>
         <translation>Πληκτρολογήστε διαδρομή για το αρχείο λήψης</translation>
     </message>
@@ -258,356 +263,371 @@
         <translation type="vanished">OK</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="33"/>
+        <location filename="../src/settings/settings_translation.cpp" line="17"/>
         <source>Copy on select</source>
         <translation>Αντιγραφή κατά την επιλογή:</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="35"/>
+        <location filename="../src/settings/settings_translation.cpp" line="19"/>
         <source>Cursor blink</source>
         <translation>Αναβόσβημα δρομέα</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="37"/>
+        <location filename="../src/settings/settings_translation.cpp" line="21"/>
         <source>Cursor style</source>
         <translation>Στυλ δρομέα</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="39"/>
+        <location filename="../src/settings/settings_translation.cpp" line="23"/>
         <source>Scroll on keystroke</source>
         <translation>Κύλιση με πληκτρολόγηση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="41"/>
+        <location filename="../src/settings/settings_translation.cpp" line="25"/>
         <source>Scroll on output</source>
         <translation>Κύλιση στην εκροή</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="43"/>
+        <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Hide Quake window after losing focus</source>
         <translation>Απόκρυψη παραθύρου &quot;Quake&quot; μετά από την απώλεια εστίασης</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="45"/>
-        <location filename="../src/main/service.cpp" line="148"/>
+        <location filename="../src/settings/settings_translation.cpp" line="29"/>
+        <source>Quake window animation speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings_translation.cpp" line="31"/>
+        <location filename="../src/main/service.cpp" line="147"/>
         <source>Blur background</source>
         <translation>Θωλό παρασκήνιο</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="47"/>
+        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Use on starting</source>
         <translation>Χρήση κατά την εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="49"/>
+        <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Font</source>
         <translation>Γραμματοσειρά</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="51"/>
+        <location filename="../src/settings/settings_translation.cpp" line="37"/>
         <source>Font size</source>
         <translation>Μέγεθος γραμματοσειράς</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="53"/>
-        <location filename="../src/main/service.cpp" line="171"/>
+        <location filename="../src/settings/settings_translation.cpp" line="39"/>
+        <location filename="../src/main/service.cpp" line="170"/>
         <source>Opacity</source>
         <translation>Αδιαφάνεια</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="55"/>
+        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Advanced</source>
         <translation>Προηγμένες</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="57"/>
+        <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Cursor</source>
         <translation>Δρομέας</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="59"/>
+        <location filename="../src/settings/settings_translation.cpp" line="45"/>
         <source>Scroll</source>
         <translation>Κύλιση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="61"/>
+        <location filename="../src/settings/settings_translation.cpp" line="47"/>
         <source>Window</source>
         <translation>Παράθυρο</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="63"/>
+        <location filename="../src/settings/settings_translation.cpp" line="49"/>
         <source>Basic</source>
         <translation>Βασικές</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="65"/>
+        <location filename="../src/settings/settings_translation.cpp" line="51"/>
         <source>Interface</source>
         <translation>Διεπαφή</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="67"/>
+        <location filename="../src/settings/settings_translation.cpp" line="53"/>
         <source>Shortcuts</source>
         <translation>Συντομεύσεις</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="1654"/>
+        <location filename="../src/settings/settings_translation.cpp" line="55"/>
+        <location filename="../src/main/mainwindow.cpp" line="1674"/>
         <source>Others</source>
         <translation>Άλλα</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="71"/>
-        <location filename="../src/main/terminalapplication.cpp" line="37"/>
-        <location filename="../src/main/mainwindow.cpp" line="1652"/>
+        <location filename="../src/settings/settings_translation.cpp" line="57"/>
+        <location filename="../src/main/terminalapplication.cpp" line="25"/>
+        <location filename="../src/main/mainwindow.cpp" line="1672"/>
         <source>Terminal</source>
         <translation>Τερματικό</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="73"/>
+        <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Workspace</source>
         <translation>Χώρος εργασίας</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
+        <location filename="../src/settings/settings_translation.cpp" line="61"/>
+        <location filename="../src/main/mainwindow.cpp" line="1738"/>
         <source>Custom commands</source>
         <translation>Προσαρμοσμένες εντολές</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="77"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
+        <location filename="../src/settings/settings_translation.cpp" line="63"/>
+        <location filename="../src/main/mainwindow.cpp" line="1738"/>
         <source>Display shortcuts</source>
         <translation>Προβολή συντομεύσεων</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="79"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
+        <location filename="../src/settings/settings_translation.cpp" line="65"/>
+        <location filename="../src/main/mainwindow.cpp" line="1738"/>
         <source>Remote management</source>
         <translation>Απομακρυσμένη διαχείριση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
+        <location filename="../src/settings/settings_translation.cpp" line="99"/>
+        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
+        <location filename="../src/settings/settings_translation.cpp" line="101"/>
+        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Next tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="117"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
+        <location filename="../src/settings/settings_translation.cpp" line="103"/>
+        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Previous tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="119"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
+        <location filename="../src/settings/settings_translation.cpp" line="105"/>
+        <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Select left workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="121"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
+        <location filename="../src/settings/settings_translation.cpp" line="107"/>
+        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Select lower workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
+        <location filename="../src/settings/settings_translation.cpp" line="109"/>
+        <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Select right workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
+        <location filename="../src/settings/settings_translation.cpp" line="111"/>
+        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Select upper workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="131"/>
+        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Tab titles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/settings/settings_translation.cpp" line="123"/>
+        <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/settings/settings_translation.cpp" line="125"/>
+        <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="141"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/settings/settings_translation.cpp" line="127"/>
+        <location filename="../src/main/mainwindow.cpp" line="1721"/>
         <source>Go to tab 3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="143"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/settings/settings_translation.cpp" line="129"/>
+        <location filename="../src/main/mainwindow.cpp" line="1722"/>
         <source>Go to tab 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="145"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/settings/settings_translation.cpp" line="131"/>
+        <location filename="../src/main/mainwindow.cpp" line="1722"/>
         <source>Go to tab 5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="147"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/settings/settings_translation.cpp" line="133"/>
+        <location filename="../src/main/mainwindow.cpp" line="1722"/>
         <source>Go to tab 6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="149"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
+        <location filename="../src/settings/settings_translation.cpp" line="135"/>
+        <location filename="../src/main/mainwindow.cpp" line="1723"/>
         <source>Go to tab 7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="151"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
+        <location filename="../src/settings/settings_translation.cpp" line="137"/>
+        <location filename="../src/main/mainwindow.cpp" line="1723"/>
         <source>Go to tab 8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="153"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
+        <location filename="../src/settings/settings_translation.cpp" line="139"/>
+        <location filename="../src/main/mainwindow.cpp" line="1723"/>
         <source>Go to tab 9</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="155"/>
+        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="157"/>
+        <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Shell profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="203"/>
-        <location filename="../src/views/tabbar.cpp" line="504"/>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
+        <location filename="../src/settings/settings_translation.cpp" line="145"/>
+        <source>History size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings_translation.cpp" line="147"/>
+        <source>Transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/views/tabrenamedlg.cpp" line="187"/>
+        <location filename="../src/views/tabbar.cpp" line="489"/>
+        <location filename="../src/settings/settings_translation.cpp" line="67"/>
+        <location filename="../src/main/mainwindow.cpp" line="1738"/>
         <source>Rename title</source>
         <translation>Μετονομασία τίτλου</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="83"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
+        <location filename="../src/settings/settings_translation.cpp" line="69"/>
+        <location filename="../src/main/mainwindow.cpp" line="1738"/>
         <source>Fullscreen</source>
         <translation>Πλήρης οθόνη</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="85"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
+        <location filename="../src/settings/settings_translation.cpp" line="71"/>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Copy</source>
         <translation>Αντιγραφή</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
+        <location filename="../src/settings/settings_translation.cpp" line="73"/>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Default size</source>
         <translation>Προεπιλεγμένο μέγεθος</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="89"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
+        <location filename="../src/settings/settings_translation.cpp" line="75"/>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Paste</source>
         <translation>Επικόλληση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="91"/>
+        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <source>Search</source>
         <translation>Αναζήτηση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
+        <location filename="../src/settings/settings_translation.cpp" line="79"/>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Select all</source>
         <translation>Επιλογή όλων</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="95"/>
+        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <source>Jump to next command</source>
         <translation>Μετάβαση στην επόμενη εντολή</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/settings/settings_translation.cpp" line="83"/>
         <source>Jump to previous command</source>
         <translation>Μετάβαση στην προηγούμενη εντολή</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="99"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
+        <location filename="../src/settings/settings_translation.cpp" line="85"/>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Zoom in</source>
         <translation>Μεγέθυνση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
+        <location filename="../src/settings/settings_translation.cpp" line="87"/>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Zoom out</source>
         <translation>Σμίκρυνση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="103"/>
+        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Close other windows</source>
         <translation>Κλείσιμο άλλων παραθύρων</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="493"/>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
+        <location filename="../src/views/termwidget.cpp" line="506"/>
+        <location filename="../src/settings/settings_translation.cpp" line="91"/>
+        <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Close other workspaces</source>
         <translation>Κλείσιμο άλλων χώρων εργασίας</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1153"/>
+        <location filename="../src/views/termwidget.cpp" line="1166"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1159"/>
+        <location filename="../src/views/termwidget.cpp" line="1172"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1161"/>
+        <location filename="../src/views/termwidget.cpp" line="1174"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1207"/>
+        <location filename="../src/views/termwidget.cpp" line="1204"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="107"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <source>Close window</source>
         <translation>Κλείσιμο παράθυρου</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="490"/>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
+        <location filename="../src/views/termwidget.cpp" line="503"/>
+        <location filename="../src/settings/settings_translation.cpp" line="95"/>
+        <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Close workspace</source>
         <translation>Κλείσιμο χώρου εργασίας</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Horizontal split</source>
         <translation>Οριζόντια διαίρεση</translation>
     </message>
@@ -640,14 +660,14 @@
         <translation type="vanished">Επιλογή ανώτερου παράθυρου</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
+        <location filename="../src/settings/settings_translation.cpp" line="113"/>
+        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Vertical split</source>
         <translation>Κάθετη διαίρεση</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="1683"/>
+        <location filename="../src/settings/settings_translation.cpp" line="115"/>
+        <location filename="../src/main/mainwindow.cpp" line="1703"/>
         <source>Find</source>
         <translation>Εύρεση</translation>
     </message>
@@ -660,52 +680,52 @@
         <translation type="vanished">Διαγραφή</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="392"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="639"/>
-        <location filename="../src/common/utils.cpp" line="254"/>
+        <location filename="../src/main/service.cpp" line="396"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="606"/>
+        <location filename="../src/common/utils.cpp" line="262"/>
         <source>please set another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/terminalapplication.cpp" line="40"/>
+        <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1650"/>
+        <location filename="../src/main/mainwindow.cpp" line="1670"/>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="498"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
+        <location filename="../src/views/tabbar.cpp" line="483"/>
+        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Close tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1670"/>
+        <location filename="../src/main/mainwindow.cpp" line="1690"/>
         <source>Switch focus to &quot;+&quot; icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1699"/>
+        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Select tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1755"/>
-        <location filename="../src/common/utils.cpp" line="146"/>
+        <location filename="../src/main/mainwindow.cpp" line="1778"/>
+        <location filename="../src/common/utils.cpp" line="156"/>
         <source>Select file to upload</source>
         <translation>Επιλογή αρχείου προς μεταφόρτωση</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1762"/>
-        <location filename="../src/common/utils.cpp" line="151"/>
+        <location filename="../src/main/mainwindow.cpp" line="1785"/>
+        <location filename="../src/common/utils.cpp" line="161"/>
         <source>Upload</source>
         <translation>Μεταφόρτωση</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="221"/>
+        <location filename="../src/common/utils.cpp" line="229"/>
         <source>Programs are still running in terminal</source>
         <translation>Εξακολουθούν να τρέχουν προγράμματα στο τερματικό</translation>
     </message>
@@ -718,55 +738,55 @@
         <translation type="vanished">Έξοδος</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="171"/>
-        <location filename="../src/common/utils.cpp" line="207"/>
+        <location filename="../src/common/utils.cpp" line="181"/>
+        <location filename="../src/common/utils.cpp" line="215"/>
         <source>Close this terminal?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="172"/>
-        <location filename="../src/common/utils.cpp" line="208"/>
+        <location filename="../src/common/utils.cpp" line="182"/>
+        <location filename="../src/common/utils.cpp" line="216"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="176"/>
-        <location filename="../src/common/utils.cpp" line="212"/>
+        <location filename="../src/common/utils.cpp" line="186"/>
+        <location filename="../src/common/utils.cpp" line="220"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="181"/>
-        <location filename="../src/common/utils.cpp" line="203"/>
+        <location filename="../src/common/utils.cpp" line="191"/>
+        <location filename="../src/common/utils.cpp" line="211"/>
         <source>Close this window?</source>
         <translation>Κλείσιμο τρέχοντος παραθύρου;</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="182"/>
-        <location filename="../src/common/utils.cpp" line="204"/>
+        <location filename="../src/common/utils.cpp" line="192"/>
+        <location filename="../src/common/utils.cpp" line="212"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1824"/>
-        <location filename="../src/common/utils.cpp" line="125"/>
+        <location filename="../src/main/mainwindow.cpp" line="1848"/>
+        <location filename="../src/common/utils.cpp" line="135"/>
         <source>Select a directory to save the file</source>
         <translation>Επιλέξτε φάκελο για αποθήκευση του αρχείου</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="221"/>
+        <location filename="../src/common/utils.cpp" line="229"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation>Είστε σίγουροι ότι θέλετε να το απεγκαταστήσετε;</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="234"/>
-        <location filename="../src/common/utils.cpp" line="238"/>
+        <location filename="../src/common/utils.cpp" line="242"/>
+        <location filename="../src/common/utils.cpp" line="246"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation>Είστε σίγουροι ότι θέλετε να απεγκαταστήσετε αυτή την εφαρμογή;</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="235"/>
-        <location filename="../src/common/utils.cpp" line="239"/>
+        <location filename="../src/common/utils.cpp" line="243"/>
+        <location filename="../src/common/utils.cpp" line="247"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -775,57 +795,57 @@
         <translation type="vanished">Αντικατάσταση</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="330"/>
+        <location filename="../src/common/utils.cpp" line="337"/>
         <source>Execute a command in the terminal</source>
         <translation>Τρέξτε μια εντολή στο τερματικό</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="333"/>
+        <location filename="../src/common/utils.cpp" line="340"/>
         <source>Run script string in the terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="324"/>
+        <location filename="../src/common/utils.cpp" line="331"/>
         <source>Set the work directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="245"/>
-        <location filename="../src/common/utils.cpp" line="289"/>
+        <location filename="../src/common/utils.cpp" line="253"/>
+        <location filename="../src/common/utils.cpp" line="297"/>
         <source>OK</source>
         <comment>button</comment>
         <translation type="unfinished">OK</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="327"/>
+        <location filename="../src/common/utils.cpp" line="334"/>
         <source>Set the window mode on starting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="337"/>
+        <location filename="../src/common/utils.cpp" line="343"/>
         <source>Run in quake mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="340"/>
+        <location filename="../src/common/utils.cpp" line="346"/>
         <source>Keep terminal open when command finishes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="508"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="395"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="502"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="364"/>
         <source>The name should be no more than 32 characters</source>
         <translation>To όνομα δεν πρέπει να είναι περισσότερο από 32 χαρακτήρες</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="578"/>
-        <location filename="../src/main/mainwindow.cpp" line="1830"/>
-        <location filename="../src/common/utils.cpp" line="131"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="572"/>
+        <location filename="../src/main/mainwindow.cpp" line="1854"/>
+        <location filename="../src/common/utils.cpp" line="141"/>
         <source>Select</source>
         <translation>Επιλογή</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="574"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="568"/>
         <source>Select the private key file</source>
         <translation>Επιλογή αρχείου ιδιωτικού κλειδιού</translation>
     </message>
@@ -838,41 +858,41 @@
         <translation type="vanished">Επιλογή χώρου εργασίας</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="127"/>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
+        <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <source>Tab title format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="129"/>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="118"/>
+        <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <source>Remote tab title format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="501"/>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
+        <location filename="../src/views/tabbar.cpp" line="486"/>
+        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Close other tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="304"/>
-        <location filename="../src/views/listview.cpp" line="493"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="236"/>
-        <location filename="../src/common/utils.cpp" line="244"/>
+        <location filename="../src/views/listview.cpp" line="289"/>
+        <location filename="../src/views/listview.cpp" line="478"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="220"/>
+        <location filename="../src/common/utils.cpp" line="252"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished">Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="305"/>
+        <location filename="../src/views/listview.cpp" line="290"/>
         <source>Delete</source>
         <comment>button</comment>
         <translation type="unfinished">Διαγραφή</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="494"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
+        <location filename="../src/views/listview.cpp" line="479"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="225"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation type="unfinished">Επιβεβαίωση</translation>
@@ -881,20 +901,25 @@
 <context>
     <name>RemoteManagementPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="179"/>
+        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="186"/>
         <source>Add Server</source>
         <translation>Προσθήκη Διακομιστή</translation>
+    </message>
+    <message>
+        <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="190"/>
+        <source>No servers yet</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>RemoteManagementPlugin</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="90"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="75"/>
         <source>Remote management</source>
         <translation>Απομακρυσμένη διαχείριση</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="216"/>
+        <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="201"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -902,7 +927,7 @@
 <context>
     <name>RemoteManagementSearchPanel</name>
     <message>
-        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="223"/>
+        <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="210"/>
         <source>Search</source>
         <translation>Αναζήτηση</translation>
     </message>
@@ -910,95 +935,95 @@
 <context>
     <name>ServerConfigOptDlg</name>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="67"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="55"/>
         <source>Advanced options</source>
         <translation>Προηγμένες επιλογές</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="107"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="93"/>
         <source>Add Server</source>
         <translation>Προσθήκη Διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="144"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="129"/>
         <source>Server name:</source>
         <translation>Όνομα διακομιστή:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="147"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="156"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="185"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="131"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="141"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="169"/>
         <source>Required</source>
         <translation>Απαιτείται</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="154"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="139"/>
         <source>Address:</source>
         <translation>Διεύθυνση:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="162"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="146"/>
         <source>Port:</source>
         <translation>Θύρα:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="183"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="167"/>
         <source>Username:</source>
         <translation>Όνομα χρήστη:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="174"/>
         <source>Password:</source>
         <translation>Κωδικός πρόσβασης:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="196"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="180"/>
         <source>Certificate:</source>
         <translation>Πιστοποιητικό:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="222"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="196"/>
         <source>Group:</source>
         <translation>Ομάδα:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="228"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="202"/>
         <source>Path:</source>
         <translation>Διαδρομή:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="234"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="208"/>
         <source>Command:</source>
         <translation>Εντολή:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="240"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="214"/>
         <source>Encoding:</source>
         <translation>Κωδικοποίηση:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="246"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="220"/>
         <source>Backspace key:</source>
         <translation>Πλήκτρο Backspace:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="252"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="226"/>
         <source>Delete key:</source>
         <translation>Πλήκτρο Delete:</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="274"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="232"/>
         <source>Delete server</source>
         <translation>Διαγραφή διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="295"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="246"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished">Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="296"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="247"/>
         <source>Add</source>
         <comment>button</comment>
         <translation type="unfinished">Προσθήκη</translation>
@@ -1012,39 +1037,33 @@
         <translation type="vanished">Προσθήκη</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="300"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="251"/>
         <source>Edit Server</source>
         <translation>Επεξεργασία Διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="301"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="252"/>
         <source>Save</source>
         <comment>button</comment>
         <translation type="unfinished">Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="409"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="420"/>
-        <source>tty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="502"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="496"/>
         <source>Please enter a server name</source>
         <translation>Παρακαλούμε εισάγετε όνομα διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="515"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="509"/>
         <source>Please enter an IP address</source>
         <translation>Παρακαλώ εισάγετε IP διεύθυνση </translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="520"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="514"/>
         <source>Please enter a port</source>
         <translation>Παρακαλούμε εισάγετε θύρα</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="526"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="520"/>
         <source>Please enter a username</source>
         <translation>Παρακαλούμε εισάγετε όνομα χρήστη</translation>
     </message>
@@ -1053,36 +1072,12 @@
         <translation type="vanished">Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="405"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="417"/>
-        <source>ascii-del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="406"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="418"/>
-        <source>auto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="407"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="419"/>
-        <source>control-h</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="408"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="416"/>
-        <source>escape-sequence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="540"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="534"/>
         <source>The server name already exists,</source>
         <translation>Το όνομα του διακομιστή υπάρχει ήδη,</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="541"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="535"/>
         <source>please input another one. </source>
         <translation>παρακαλώ εισάγετε άλλο.</translation>
     </message>
@@ -1094,7 +1089,7 @@
         <translation type="vanished">OK</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="388"/>
+        <location filename="../src/main/service.cpp" line="392"/>
         <source>OK</source>
         <comment>button</comment>
         <translation type="unfinished">OK</translation>
@@ -1103,38 +1098,48 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Split screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Fullscreen</source>
         <translation>Πλήρης οθόνη</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Normal window</source>
         <translation>Κανονικό παράθυρο</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="115"/>
+        <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Maximum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings.cpp" line="708"/>
+        <source>Fast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings.cpp" line="713"/>
+        <source>Slow</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="285"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="294"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="268"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="277"/>
         <source>The shortcut %1 is invalid, </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="301"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="308"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="314"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="284"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="291"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
         <source>The shortcut %1 was already in use, </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1153,55 +1158,55 @@
 <context>
     <name>TabRenameWidget</name>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="56"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="44"/>
         <source>Insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="90"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="104"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>username: %u</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="90"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>username@: %U</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="90"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>remote host: %h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="103"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>session number: %#</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="105"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="94"/>
         <source>title set by shell: %w</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="102"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>program name: %n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="102"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>current directory (short): %d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="103"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>current directory (long): %D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="104"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>local host: %h</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1228,34 +1233,34 @@
         <translation type="vanished">Μετονομασία τίτλου</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="459"/>
+        <location filename="../src/views/termwidget.cpp" line="472"/>
         <source>Copy</source>
         <translation>Αντιγραφή</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="462"/>
+        <location filename="../src/views/termwidget.cpp" line="475"/>
         <source>Paste</source>
         <translation>Επικόλληση</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="471"/>
+        <location filename="../src/views/termwidget.cpp" line="484"/>
         <source>Open</source>
         <translation>Άνοιγμα</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="475"/>
+        <location filename="../src/views/termwidget.cpp" line="488"/>
         <source>Open in file manager</source>
         <translation>Άνοιγμα στη διαχείριση αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="484"/>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="497"/>
+        <location filename="../src/views/termwidget.cpp" line="556"/>
         <source>Horizontal split</source>
         <translation>Οριζόντια διαίρεση</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="487"/>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="500"/>
+        <location filename="../src/views/termwidget.cpp" line="556"/>
         <source>Vertical split</source>
         <translation>Κάθετη διαίρεση</translation>
     </message>
@@ -1272,58 +1277,58 @@
         <translation type="vanished">Νέος χώρος εργασίας</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="497"/>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="510"/>
+        <location filename="../src/views/termwidget.cpp" line="556"/>
         <source>New tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="504"/>
+        <location filename="../src/views/termwidget.cpp" line="517"/>
         <source>Exit fullscreen</source>
         <translation>Έξοδος από πλήρη οθόνη</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="506"/>
+        <location filename="../src/views/termwidget.cpp" line="519"/>
         <source>Fullscreen</source>
         <translation>Πλήρης οθόνη</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="509"/>
+        <location filename="../src/views/termwidget.cpp" line="522"/>
         <source>Find</source>
         <translation>Εύρεση</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="513"/>
+        <location filename="../src/views/termwidget.cpp" line="526"/>
         <source>Search</source>
         <translation>Αναζήτηση</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="523"/>
+        <location filename="../src/views/termwidget.cpp" line="536"/>
         <source>Encoding</source>
         <translation>Κωδικοποίηση</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="525"/>
+        <location filename="../src/views/termwidget.cpp" line="538"/>
         <source>Custom commands</source>
         <translation>Προσαρμοσμένες εντολές</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="527"/>
+        <location filename="../src/views/termwidget.cpp" line="540"/>
         <source>Remote management</source>
         <translation>Απομακρυσμένη διαχείριση</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="531"/>
+        <location filename="../src/views/termwidget.cpp" line="544"/>
         <source>Upload file</source>
         <translation>Μεταφόρτωση αρχείου</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="532"/>
+        <location filename="../src/views/termwidget.cpp" line="545"/>
         <source>Download file</source>
         <translation>Λήψη αρχείου</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="537"/>
+        <location filename="../src/views/termwidget.cpp" line="550"/>
         <source>Settings</source>
         <translation>Ρυθμίσεις</translation>
     </message>
@@ -1343,21 +1348,21 @@
         <translation type="vanished">OK</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="187"/>
-        <location filename="../src/common/utils.cpp" line="223"/>
+        <location filename="../src/common/utils.cpp" line="197"/>
+        <location filename="../src/common/utils.cpp" line="231"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation type="unfinished">Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="189"/>
+        <location filename="../src/common/utils.cpp" line="199"/>
         <source>Close</source>
         <comment>button</comment>
         <translation type="unfinished">Κλείσιμο</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="224"/>
-        <location filename="../src/common/utils.cpp" line="256"/>
+        <location filename="../src/common/utils.cpp" line="232"/>
+        <location filename="../src/common/utils.cpp" line="264"/>
         <source>OK</source>
         <comment>button</comment>
         <translation type="unfinished">OK</translation>

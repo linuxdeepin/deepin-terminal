@@ -1070,6 +1070,8 @@ void MainWindow::initShortcuts()
 
     // remote_management
     connect(createNewShotcut("shortcuts.advanced.remote_management"), &QShortcut::activated, this, &MainWindow::slotShortcutRemoteManage);
+    // terminal_transparency
+    connect(createNewShotcut("shortcuts.terminal.transparency"), &QShortcut::activated, this, &MainWindow::slotShortcutTerminalTransparency);
     /********************* Modify by n014361 wangpeili End ************************/
 
     /******** Modify by ut000439 wangpeili 2020-07-17: Super+Tab快捷键   ****************/
@@ -1371,6 +1373,21 @@ inline void MainWindow::slotShortcutBuiltinCopy()
     TermWidgetPage *page = currentPage();
     if (page)
         page->copyClipboard();
+}
+
+inline void MainWindow::slotShortcutTerminalTransparency()
+{
+    TermWidgetPage *page = currentPage();
+    if (page) {
+        if (Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() == 100) {
+            page->setTerminalOpacity(0.8);
+            Settings::instance()->settings->option("basic.interface.opacity")->setValue(80);
+        }else{
+            page->setTerminalOpacity(1.0);
+            Settings::instance()->settings->option("basic.interface.opacity")->setValue(100);
+        }
+        page->focusCurrentTerm();
+    }
 }
 
 void MainWindow::initConnections()

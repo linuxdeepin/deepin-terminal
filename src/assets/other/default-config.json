@@ -116,6 +116,12 @@
                             "name": "Select all",
                             "type": "shortcut",
                             "default":  "Ctrl+Shift+A"
+                        },
+                        {
+                            "key": "transparency",
+                            "name": "Transparency",
+                            "type": "shortcut",
+                            "default": "Alt+R"
                         }
                     ]
                 },

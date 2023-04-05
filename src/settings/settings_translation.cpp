@@ -144,4 +144,6 @@ void GenerateSettingTranslate()
     Q_UNUSED(shell_profile);
     auto history_size = QObject::tr("History size");
     Q_UNUSED(history_size);
+    auto terminal_transparency = QObject::tr("Transparency");
+    Q_UNUSED(terminal_transparency);
 }

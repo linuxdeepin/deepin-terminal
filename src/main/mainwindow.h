@@ -633,6 +633,8 @@ protected slots:
     void slotDialogSelectFinished(int code);
     void slotCustomCommandActionTriggered();
 
+    void slotShortcutTerminalTransparency();
+
 protected:
     /**
      * @brief 基类初始化UI界面
