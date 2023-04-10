@@ -186,17 +186,15 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 
 void Service::listenWindowEffectSwitcher()
 {
-//    if (nullptr == m_wmSwitcher) {
-//        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
-//        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-//        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
-//    }
     QDBusConnection session = QDBusConnection::sessionBus();
     if (!session.interface()->isServiceRegistered(WMSwitcherService)) {
         qInfo() << WMSwitcherService << "Not Registered!!!!!!!";
-        return;
+        if (!session.interface()->isServiceRegistered(WMSwitcherService))
+            qInfo() << V20WMSwitcherService << "Not Registered!!!!!!!";
+        session.connect(V20WMSwitcherService, V20WMSwitcherPath, V20WMSwitcherService, "WMChanged", this, SLOT(slotWMChanged(QString)));
+    } else {
+        session.connect(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "WMChanged", this, SLOT(slotWMChanged(QString)));
     }
-    session.connect(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "WMChanged", this, SLOT(slotWMChanged(QString)));
 }
 
 void Service::slotWMChanged(const QString &wmName)
@@ -211,7 +209,12 @@ void Service::slotWMChanged(const QString &wmName)
 
 bool Service::isWindowEffectEnabled()
 {
-    QDBusMessage msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
+    QDBusConnection session = QDBusConnection::sessionBus();
+    QDBusMessage msg;
+    if (session.interface()->isServiceRegistered(WMSwitcherService))
+        msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
+    else
+        msg = QDBusMessage::createMethodCall(V20WMSwitcherService, V20WMSwitcherPath, V20WMSwitcherService, "CurrentWM");
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
