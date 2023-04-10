@@ -776,6 +776,23 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                              		cursorRect.top()),
                                 QPointF(cursorRect.left(),
                              		cursorRect.bottom())));
+       else if ( _cursorShape == Emulation::KeyboardCursorShape::BoldUnderlineCursor )
+        { 
+            if ( hasFocus() )
+            {
+                cursorRect.translate(0,cursorRect.height());
+                cursorRect.setHeight(4);
+                painter.fillRect(cursorRect, _cursorColor.isValid() ? _cursorColor : foregroundColor);
+            }
+            else
+            {
+                painter.drawRect(
+                                cursorRect.left(),
+                                cursorRect.bottom(),
+                                cursorRect.width(),
+                                4);
+            }
+        }
     }
 }
 
