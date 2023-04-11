@@ -103,7 +103,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
     if (nullptr != curServer) {
 
         QString shellFile = createShellFile(curServer);
-        QString strTxt = "expect -f " + shellFile + "\n";
+        QString strTxt = "expect -f " + shellFile + " ; history -d $(history 1) \n";
         //--added by qinyaning(nyq) to solve the probelm which Connecting to the remote server
         /*does not connect to the remote server directly in the new TAB. time: 2020.4.13 18:15
          * */
