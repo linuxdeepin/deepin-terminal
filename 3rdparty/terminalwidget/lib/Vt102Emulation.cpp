@@ -659,6 +659,8 @@ void Vt102Emulation::processToken(int token, wchar_t p, int q)
     case TY_CSI_PS_SP('q',   4) : emit cursorChanged(KeyboardCursorShape::UnderlineCursor, false); break;
     case TY_CSI_PS_SP('q',   5) : emit cursorChanged(KeyboardCursorShape::IBeamCursor,     true ); break;
     case TY_CSI_PS_SP('q',   6) : emit cursorChanged(KeyboardCursorShape::IBeamCursor,     false); break;
+    case TY_CSI_PS_SP('q',   7) : emit cursorChanged(KeyboardCursorShape::BoldUnderlineCursor, true ); break;
+    case TY_CSI_PS_SP('q',   8) : emit cursorChanged(KeyboardCursorShape::BoldUnderlineCursor, false); break;
 
     case TY_CSI_PN('@'      ) : _currentScreen->insertChars          (p         ); break;
     case TY_CSI_PN('A'      ) : _currentScreen->cursorUp             (p         ); break; //VT100

@@ -138,7 +138,12 @@ public:
          * An cursor shaped like the capital letter 'I', similar to the IBeam
          * cursor used in Qt/KDE text editors.
          */
-        IBeamCursor = 2
+        IBeamCursor = 2,
+        /**
+         * A rectangular block which covers the bottom area of the cursor character. 
+         * Easier to discover under underlined strings.
+         */
+        BoldUnderlineCursor = 3
     };
 
 
