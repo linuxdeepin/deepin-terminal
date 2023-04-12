@@ -308,7 +308,7 @@
                             "key": "cursor_shape",
                             "name": "Cursor style",
                             "type": "buttongroup",
-                            "items": ["▐","_","|"],
+                            "items": ["▐","_","|","▂"],
                             "default": 0,
                             "i18n_skip_keys": ["items"]
                         },
