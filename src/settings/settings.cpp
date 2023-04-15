@@ -309,6 +309,11 @@ void Settings::initConnection()
         emit cursorBlinkChanged(value.toBool());
     });
 
+    QPointer<DSettingsOption> wordCharacters = settings->option("advanced.cursor.include_special_characters_in_double_click_selections");
+    connect(wordCharacters, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit wordCharactersChanged(value.toString());
+    });
+
     QPointer<DSettingsOption> backgroundBlur = settings->option("advanced.window.blurred_background");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit backgroundBlurChanged(value.toBool());
@@ -512,6 +517,11 @@ void Settings::setExtendColorScheme(const QString &name)
         return;
     }
     settings->option("basic.interface.expand_theme")->setValue(name);
+}
+
+QString Settings::wordCharacters() const
+{
+    return settings->option("advanced.cursor.include_special_characters_in_double_click_selections")->value().toString();
 }
 
 /*******************************************************************************
