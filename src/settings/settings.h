@@ -102,6 +102,7 @@ public:
      * @author ut001121 zhangmeng
      * @return
      */
+    QString wordCharacters() const;
     bool PressingScroll();
     /**
      * @brief 设置界面获取输出时是否是滚动
@@ -314,6 +315,7 @@ signals:
     void OutputScrollChanged(bool enabled);
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
+    void wordCharactersChanged(QString wordCharacters);
     void historySizeChanged(int historySize);
 
     // 设置中的标签标题格式变化

@@ -313,12 +313,17 @@
                             "i18n_skip_keys": ["items"]
                         },
                         {
+                            "key": "include_special_characters_in_double_click_selections",
+                            "name": "Include special character(s) in double click selections",
+                            "type": "lineedit",
+                            "default": ":@-./_~"
+                        },
+                        {
                             "key": "cursor_blink",
                             "type": "checkbox",
                             "text": "Cursor blink",
                             "default": true
                         },
-                          
                         {
                             "key": "auto_copy_selection",
                             "type": "checkbox",

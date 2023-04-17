@@ -621,6 +621,11 @@ void QTermWidget::setTextCodec(QTextCodec *codec)
     }
 }
 
+void QTermWidget::setTerminalWordCharacters(const QString &wc)
+{
+    m_impl->m_terminalDisplay->setWordCharacters(wc);
+}
+
 /*******************************************************************************
  1. @函数:    setColorScheme
  2. @作者:    ut000125 sunchengxi
