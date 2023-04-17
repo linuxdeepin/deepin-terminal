@@ -46,6 +46,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
 
     qInfo() << "Setting initial history size:" << Settings::instance()->historySize();
     setHistorySize(Settings::instance()->historySize());
+    setTerminalWordCharacters(Settings::instance()->wordCharacters());
 
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
@@ -1118,6 +1119,11 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     if ("advanced.scroll.scroll_on_output" == keyName) {
         qInfo() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                 << ", auto effective when happen";
+        return;
+    }
+    
+    if ("advanced.cursor.include_special_characters_in_double_click_selections" == keyName) {
+        setTerminalWordCharacters(Settings::instance()->wordCharacters());
         return;
     }
 
