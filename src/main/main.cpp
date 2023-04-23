@@ -28,9 +28,6 @@ DCORE_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
-        setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
-    }
     // 应用计时
     QTime useTime;
     useTime.start();
