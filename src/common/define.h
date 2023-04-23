@@ -18,6 +18,8 @@
 
 #define SEARCHBAR_RIGHT_MARGIN 382
 
+#define STEP_OPACITY 5
+
 // qterminal
 const QString TERM_WIDGET_NAME = "Konsole::TerminalScreen";
 
