@@ -19,13 +19,8 @@
 #include <QSharedMemory>
 #include <QMap>
 
-//#include <com_deepin_wmswitcher.h>
 
 DWIDGET_USE_NAMESPACE
-
-//using WMSwitcher = com::deepin::WMSwitcher;
-#define WMSwitcherService "org.deepin.dde.WMSwitcher1"
-#define WMSwitcherPath "/org/deepin/dde/WMSwitcher1"
 
 /**
  * @brief 全局的后台服务类
@@ -115,12 +110,6 @@ public:
      * @param isDialogShow
      */
     void setIsDialogShow(QWidget *parent, bool isDialogShow);
-
-    /**
-     * @brief 判断当前是否开启窗口特效,  开启-true 关闭-false
-     * @return
-     */
-    bool isWindowEffectEnabled();
 
     /**
      * @brief 获取主程序初始进入的时间
@@ -226,12 +215,6 @@ public slots:
     void slotSettingsDialogFinished(int result);
 
     /**
-     * @brief 处理窗口特效打开/关闭时，相关设置项目的显示/隐藏
-     * @param wmName
-     */
-    void slotWMChanged(const QString &wmName);
-
-    /**
      * @brief 自定义主题对话框关闭后的处理
      * @param result:DialogCode { Rejected, Accepted }
      */
@@ -267,7 +250,6 @@ private:
     static Service             *g_pService;
     DSettingsDialog            *m_settingDialog                     = nullptr;// 设置框 全局唯一显示
     CustomThemeSettingDialog   *m_customThemeSettingDialog          = nullptr;// 自定义主题设置对话框 全局唯一
-    //WMSwitcher                 *m_wmSwitcher                        = nullptr;
     MainWindow                 *m_settingOwner                      = nullptr;// 设置框的所有者
     DDialog                    *m_settingShortcutConflictDialog     = nullptr;// 设置框，快捷键冲突弹窗
     bool                        m_isDialogShow                      = false;  // 雷神用来判断是否有弹窗显示

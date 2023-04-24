@@ -110,12 +110,7 @@ void Service::initSetting()
     QDateTime endTime = QDateTime::currentDateTime();
 
     //判断未开启窗口特效时，隐藏透明度/背景模糊选项
-    if (!DWindowManagerHelper::instance()->hasComposite()) {
-        showHideOpacityAndBlurOptions(false);
-        return;
-    }
-
-    showHideOpacityAndBlurOptions(isWindowEffectEnabled());
+    showHideOpacityAndBlurOptions(DWindowManagerHelper::instance()->hasComposite());
 }
 
 void Service::slotSettingsDialogFinished(int result)
@@ -186,47 +181,11 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 
 void Service::listenWindowEffectSwitcher()
 {
-//    if (nullptr == m_wmSwitcher) {
-//        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
-//        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-//        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
-//    }
-    QDBusConnection session = QDBusConnection::sessionBus();
-    if (!session.interface()->isServiceRegistered(WMSwitcherService)) {
-        qInfo() << WMSwitcherService << "Not Registered!!!!!!!";
-        return;
-    }
-    session.connect(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "WMChanged", this, SLOT(slotWMChanged(QString)));
-}
-
-void Service::slotWMChanged(const QString &wmName)
-{
-    bool isWinEffectEnabled = false;
-    if (wmName == "deepin wm")
-        isWinEffectEnabled = true;
-
-    showHideOpacityAndBlurOptions(isWinEffectEnabled);
-    emit onWindowEffectEnabled(isWinEffectEnabled);
-}
-
-bool Service::isWindowEffectEnabled()
-{
-    QDBusMessage msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
-
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        QList<QVariant> list = response.arguments();
-        QString wmName = list.first().toString();
-        if (wmName == "deepin wm") {
-            qInfo() << "The window effects is on";
-            return true;
-        }
-    } else {
-        qInfo() << "call CurrentWM Fail!" << response.errorMessage();
-    }
-
-    qInfo() << "The window effects is off";
-    return false;
+    connect(DWindowManagerHelper::instance(), &DWindowManagerHelper::hasCompositeChanged, this, [this]() {
+        bool isWinEffectEnabled = DWindowManagerHelper::instance()->hasComposite();
+        showHideOpacityAndBlurOptions(isWinEffectEnabled);
+        emit onWindowEffectEnabled(isWinEffectEnabled);
+    });
 }
 
 qint64 Service::getEntryTime()
