@@ -2545,51 +2545,6 @@ void NormalWindow::initTitleBar()
     // 清理titlebar、titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
     Utils::clearChildrenFocus(m_tabbar);
-    // 重新设置可见控件焦点
-    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-    if (addButton != nullptr)
-        addButton->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found AddButton in DIconButton";
-
-    DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
-    if (optionBtn != nullptr)
-        optionBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
-
-    QWidget *quitFullscreenBtn = titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton");
-    if (quitFullscreenBtn != nullptr)
-        quitFullscreenBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
-
-    DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
-    if (minBtn != nullptr)
-        minBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowMinButton in DTitlebar";
-
-    DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
-    if (maxBtn != nullptr)
-        maxBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowMaxButton in DTitlebar";
-
-    DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-    if (closeBtn != nullptr)
-        closeBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
-
-    if (addButton != nullptr && optionBtn != nullptr && quitFullscreenBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
-        QWidget::setTabOrder(addButton, optionBtn);
-        QWidget::setTabOrder(optionBtn, quitFullscreenBtn);
-        QWidget::setTabOrder(quitFullscreenBtn, minBtn);
-        QWidget::setTabOrder(minBtn, maxBtn);
-        QWidget::setTabOrder(maxBtn, closeBtn);
-    }
-
     /********************* Modify by n014361 wangpeili End ************************/
 }
 
@@ -3105,17 +3060,18 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
         if (event->type() == QEvent::WindowStateChange) {
             event->ignore();
             this->activateWindow();
-if(qVersion() >= QString("5.15.0")) {
-            //queue的方式发送事件
-            QTimer::singleShot(0, this, [this](){
-                QEvent *event = new QEvent(QEvent::ActivationChange);
-                DeActivationChangeEventList << event;
-                qApp->postEvent(this, event);
-            });
-}
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+                        //queue的方式发送事件
+                        QTimer::singleShot(0, this, [this](){
+                            QEvent *event = new QEvent(QEvent::ActivationChange);
+                            DeActivationChangeEventList << event;
+                            qApp->postEvent(this, event);
+                        });
+#endif
             return true;
         }
     }
+
 #if 0
     // 由于MainWindow是qApp注册的时间过滤器,所以这里需要判断
     // 只处理雷神的事件 QuakeWindowWindow是Qt内置用来管理QuakeWindow的Mouse事件的object
