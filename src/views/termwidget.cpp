@@ -21,6 +21,8 @@
 #include <DDialog>
 #include <DFloatingMessage>
 #include <DMessageManager>
+#include <DWindowManagerHelper>
+#include <DSettingsOption>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -1322,11 +1324,10 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 
 void TermWidget::wheelEvent(QWheelEvent *event)
 {
-    // qCDebug(views) << "Enter TermWidget::wheelEvent";
+    int directionY = event->angleDelta().y();
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
-        if (Qt::ControlModifier == event->modifiers()) {
-            int directionY = event->angleDelta().y();
+    if (isActiveWindow() && hasFocus()) {
+        if (Qt::ControlModifier == event->modifiers() && Settings::instance()->ScrollWheelZoom()) {
             if (directionY < 0) {
                 qCDebug(views) << "Branch: directionY is less than 0, zooming out";
                 // 向下缩小
@@ -1336,10 +1337,23 @@ void TermWidget::wheelEvent(QWheelEvent *event)
                 // 向上放大
                 zoomIn();   // zoom in 放大
             }
-            return;
+        } else if ((Qt::ControlModifier | Qt::ShiftModifier) == event->modifiers()){
+            int newOpacity;
+            if (directionY < 0) {
+                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() - STEP_OPACITY;
+            } else {
+                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() + STEP_OPACITY;
+            }
+            newOpacity = qBound(0, newOpacity, 100);
+            qInfo() << Q_FUNC_INFO << "new opacity:" << newOpacity;
+            setTerminalOpacity(newOpacity / 100.f);
+            Settings::instance()->settings->option("basic.interface.opacity")->setValue((int)(newOpacity));
+        } else {
+            QTermWidget::wheelEvent(event);
         }
+    } else {
+        QTermWidget::wheelEvent(event);
     }
-    QTermWidget::wheelEvent(event);
 }
 
 void TermWidget::showFlowMessage(bool show)
