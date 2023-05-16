@@ -422,6 +422,7 @@ signals:
     void changeEncodeSig(const QString &name);
 
 public slots:
+    void onTerminalSettingChanged(const QString &keyName);
     /**
      * @brief 参数修改统一接口
      * @author n014361 王培利

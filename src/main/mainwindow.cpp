@@ -1376,6 +1376,7 @@ inline void MainWindow::slotShortcutBuiltinCopy()
 void MainWindow::initConnections()
 {
     connect(this, &MainWindow::mainwindowClosed, WindowsManager::instance(), &WindowsManager::onMainwindowClosed);
+    connect(Settings::instance(), &Settings::terminalSettingChanged, this, &MainWindow::onTerminalSettingChanged);
     connect(Settings::instance(), &Settings::windowSettingChanged, this, &MainWindow::onWindowSettingChanged);
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
@@ -1550,14 +1551,16 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     return DMainWindow::eventFilter(watched, event);
 }
 
-
-void MainWindow::onWindowSettingChanged(const QString &keyName)
+void MainWindow::onTerminalSettingChanged(const QString &keyName)
 {
-    if (QStringLiteral("advanced.window.blurred_background") == keyName) {
+    if (QStringLiteral("basic.interface.blurred_background") == keyName) {
         setEnableBlurWindow(Settings::instance()->backgroundBlur());
         return;
     }
+}
 
+void MainWindow::onWindowSettingChanged(const QString &keyName)
+{
     // use_on_starting重启生效
     if (keyName == QStringLiteral("advanced.window.use_on_starting")) {
         QString state = Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();

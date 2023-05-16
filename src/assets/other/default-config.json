@@ -17,6 +17,12 @@
                             "default": 100
                         },
                         {
+                            "key": "blurred_background",
+                            "text": "Blur background",
+                            "type": "checkbox",
+                            "default": "false"
+                        },
+                        {
                             "key": "font",
                             "name": "Font",
                             "type": "fontcombobox",
@@ -42,7 +48,7 @@
                             "hide": true,
                             "reset": false,
                             "default": ""
-                        }  
+                        }
                     ]
                 },
                 {
@@ -374,12 +380,6 @@
                             "name": "Use on starting",
                             "type": "combobox",
                             "default": "window_normal"
-                        },
-                        {
-                            "key": "blurred_background",
-                            "text": "Blur background",
-                            "type": "checkbox",
-                            "default": "false"
                         },
                         {
                             "key": "auto_hide_raytheon_window",

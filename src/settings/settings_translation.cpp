@@ -28,8 +28,8 @@ void GenerateSettingTranslate()
     Q_UNUSED(advanced_window_auto_hide_raytheon_windowText);
     auto advanced_window_quake_window_durationText = QObject::tr("Quake window animation speed");
     Q_UNUSED(advanced_window_quake_window_durationText);
-    auto advanced_window_blurred_backgroundText = QObject::tr("Blur background");
-    Q_UNUSED(advanced_window_blurred_backgroundText);
+    auto basic_interface_blurred_backgroundText = QObject::tr("Blur background");
+    Q_UNUSED(basic_interface_blurred_backgroundText);
     auto advanced_window_use_on_startingName = QObject::tr("Use on starting");
     Q_UNUSED(advanced_window_use_on_startingName);
     auto basic_interface_fontName = QObject::tr("Font");
