@@ -61,21 +61,6 @@ static void ui_dialog_show()
 
 #ifdef UT_SERVICE_TEST
 
-
-TEST_F(UT_Service_Test, listenWindowEffectSwitcher)
-{
-    m_service->listenWindowEffectSwitcher();
-
-    QSignalSpy spyWinEffectEnable(Service::instance(), SIGNAL(Service::onWindowEffectEnabled(bool)));
-    EXPECT_EQ(spyWinEffectEnable.count(), 0);
-
-    {
-        Stub stub;
-        stub.set(ADDR(QDBusMessage,type),ut_dbus_type);
-        m_service->isWindowEffectEnabled();
-    }
-}
-
 TEST_F(UT_Service_Test, slotCustomThemeSettingDialogFinished)
 {
     m_service->slotCustomThemeSettingDialogFinished(QDialog::Accepted);
@@ -360,14 +345,6 @@ TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
     EXPECT_EQ(WindowsManager::instance()->getQuakeWindow()->isVisible(), true);
     // 关闭雷神
     WindowsManager::instance()->getQuakeWindow()->closeAllTab();
-}
-
-TEST_F(UT_Service_Test, slotWMChanged)
-{
-    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
-    m_service->slotWMChanged("deepin wm");
-    //会调用setvisible函数
-    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 }
 
 TEST_F(UT_Service_Test, showShortcutConflictMsgbox)

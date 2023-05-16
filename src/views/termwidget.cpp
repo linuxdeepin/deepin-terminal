@@ -20,6 +20,7 @@
 #include <DDialog>
 #include <DFloatingMessage>
 #include <DMessageManager>
+#include <DWindowManagerHelper>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -60,7 +61,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // setTermOpacity(Settings::instance()->opacity());
 
     // 底层方法，设置当前窗口的透明度
-    if (Service::instance()->isWindowEffectEnabled()) {
+    if (DWindowManagerHelper::instance()->hasComposite()) {
         // 判断当前是否有窗口特效
         setTerminalOpacity(Settings::instance()->opacity());
     }
@@ -204,7 +205,6 @@ void TermWidget::initConnections()
 
     // 接收触控板事件
     connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
-
     connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
 }
 
@@ -1005,7 +1005,7 @@ void TermWidget::setTermOpacity(qreal opacity)
 {
     //这里再次判断一遍，因为刚启动时，还是需要判断一次当前是否开启了窗口特效
     qreal termOpacity = opacity;
-    if (!Service::instance()->isWindowEffectEnabled())
+    if (!DWindowManagerHelper::instance()->hasComposite())
         termOpacity = 1.0;
 
     setTerminalOpacity(termOpacity);
