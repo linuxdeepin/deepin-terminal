@@ -2138,6 +2138,18 @@ void MainWindow::addThemeMenuItems()
         themeTenAction->setCheckable(true);
         themeCustomAction->setCheckable(true);
 
+        //初始化时读取配置改变主题颜色
+        QString  expandThemeStr = Settings::instance()->extendColorScheme();
+        if (!expandThemeStr.isEmpty()) {
+            if (THEME_NINE == expandThemeStr  || THEME_TEN == expandThemeStr) {
+                //选中了内置主题在9-10项之间 // 浅色方案系列
+                DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+                emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+            }else{
+                DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+                emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+            }
+        }
 
         //创建主题项快捷键组
         group = new QActionGroup(switchThemeMenu);
