@@ -359,7 +359,7 @@ void Settings::initConnection()
         emit wordCharactersChanged(value.toString());
     });
 
-    QPointer<DSettingsOption> backgroundBlur = settings->option("advanced.window.blurred_background");
+    QPointer<DSettingsOption> backgroundBlur = settings->option("basic.interface.blurred_background");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         qCDebug(tsettings) << "Background blur changed:" << value.toBool();
         emit backgroundBlurChanged(value.toBool());
@@ -550,10 +550,7 @@ bool Settings::cursorBlink() const
 
 bool Settings::backgroundBlur() const
 {
-    // qCDebug(tsettings) << "Getting background blur setting";
-    bool blur = settings->option("advanced.window.blurred_background")->value().toBool();
-    // qCDebug(tsettings) << "Background blur:" << blur;
-    return blur;
+    return settings->option("basic.interface.blurred_background")->value().toBool();
 }
 
 int Settings::historySize() const
