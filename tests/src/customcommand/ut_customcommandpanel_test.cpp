@@ -104,7 +104,6 @@ TEST_F(UT_CustomCommandPanel_Test, showAddCustomCommandDlg)
     EXPECT_EQ(cmdActionlist.size(), cmdListWidget->count());
 
     panel.refreshCmdSearchState();
-    panel.m_pushButton->setFocus();
     panel.showAddCustomCommandDlg();
     panel.showAddCustomCommandDlg();
     panel.m_bpushButtonHaveFocus = true;
@@ -127,7 +126,6 @@ TEST_F(UT_CustomCommandPanel_Test, onFocusOut)
     UT_STUB_QWIDGET_ISVISIBLE_APPEND;
 
     CustomCommandPanel *panel = new CustomCommandPanel;
-    panel->m_pushButton->setHidden(false);
     UT_STUB_QWIDGET_SETFOCUS_PREPARE
     panel->onFocusOut(Qt::TabFocusReason);
     //会触发setFocus函数

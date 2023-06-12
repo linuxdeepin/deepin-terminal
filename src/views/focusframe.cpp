@@ -15,8 +15,9 @@
 #include <QPen>
 #include <QPainterPath>
 
-FocusFrame::FocusFrame(QWidget *parent)
-    : DFrame(parent)
+FocusFrame::FocusFrame(QWidget *parent, bool isWideFrame)
+    : DFrame(parent),
+      m_isWideFrame(isWideFrame)
 {
     // 先用Tab做上下键的替代，走流程
     setFocusPolicy(Qt::TabFocus);
@@ -25,6 +26,9 @@ FocusFrame::FocusFrame(QWidget *parent)
 
 void FocusFrame::paintEvent(QPaintEvent *event)
 {
+    if (!showBackground)
+        return;
+
     QPainter painter(this);
     DPalette pa = DApplicationHelper::instance()->palette(this);
     DPalette::ColorType backgroundType = static_cast<DPalette::ColorType>(getBackgroudColorRole());
@@ -35,7 +39,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     if (m_isFocus) {
         // 边框
         QPainterPath FramePath;
-        paintRoundedRect(FramePath, QRect(2, 2, 218, 58));
+        paintRoundedRect(FramePath, QRect(2, 2, m_isWideFrame ? 358 : 218, 58));
         // 获取活动色
         QPen pen(pa.color(DPalette::Highlight), 2);
         painter.setPen(pen);
@@ -44,7 +48,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
 
         // 绘制背景
         QPainterPath itemBackgroudPath;
-        paintRoundedRect(itemBackgroudPath, QRect(4, 4, 214, 54));
+        paintRoundedRect(itemBackgroudPath, QRect(4, 4, m_isWideFrame ? 354 : 214, 54));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变
@@ -53,7 +57,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         // 焦点不在，不绘制
         // 绘制背景
         QPainterPath itemBackgroudPath;
-        paintRoundedRect(itemBackgroudPath, QRect(0, 0, 220, 60));
+        paintRoundedRect(itemBackgroudPath, QRect(0, 0, m_isWideFrame ? 360 : 220, 60));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变

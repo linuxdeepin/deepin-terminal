@@ -18,6 +18,7 @@
 
 #include "commonpanel.h"
 #include "serverconfigoptdlg.h"
+#include "groupconfigoptdlg.h"
 #include "listview.h"
 
 #include <QWidget>
@@ -74,6 +75,11 @@ public slots:
      * @author ut000610 daizhengwen
      */
     void showAddServerConfigDlg();
+    /**
+     * @brief 显示远程管理添加分组配置界面
+     * @author Archie Meng
+     */
+    void showAddGroupConfigDlg(const QString &groupName = QStringLiteral(""));
     /**
      * @brief 刷新远程管理搜索状态
      * @author ut000610 daizhengwen

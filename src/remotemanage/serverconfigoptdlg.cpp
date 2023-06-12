@@ -17,6 +17,7 @@
 #include <DGuiApplicationHelper>
 #include <DFileDialog>
 #include <DPalette>
+#include <DDialog>
 
 //qt
 #include <QGridLayout>
@@ -33,7 +34,7 @@
 DGUI_USE_NAMESPACE
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
-    : DAbstractDialog(parent),
+    : DAbstractDialog(true, parent),
       m_type(type),
       m_curServer(curServer),
       m_titleLabel(new DLabel),
@@ -46,16 +47,13 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
       m_userName(new DLineEdit(this)),
       m_password(new DPasswordEdit(this)),
       m_privateKey(new DFileChooserEdit(this)),
-      m_group(new DLineEdit(this)),
+      m_group(new DComboBox(this)),
       m_path(new DLineEdit(this)),
       m_command(new DLineEdit(this)),
       m_coding(new DComboBox(this)),
       m_backSapceKey(new DComboBox(this)),
       m_deleteKey(new DComboBox(this)),
-      m_advancedOptions(new DPushButton(tr("Advanced options"), this)),
-      m_delServer(new TermCommandLinkButton(this)),
       m_pGridLayout(new QGridLayout)
-
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
@@ -68,13 +66,12 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     m_userName->setObjectName("RemoteUserNameLineEdit");
     m_password->setObjectName("RemoteDPasswordEdit");
     m_privateKey->setObjectName("RemotePrivateKeyLineEdit");
-    m_group->setObjectName("RemoteGroupLineEdit");
+    m_group->setObjectName("RemoteGroupComboBox");
     m_path->setObjectName("RemotePathLineEdit");
     m_command->setObjectName("RemoteCommandLineEdit");
     m_coding->setObjectName("RemoteEncodeComboBox");
     m_backSapceKey->setObjectName("RemoteBackSapceKeyComboBox");
     m_deleteKey->setObjectName("RemoteDeleteKeyComboBox");
-    m_advancedOptions->setObjectName("RemoteAdvancedOptionsQPushButton");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     setWindowModality(Qt::WindowModal);
     setAutoFillBackground(true);
@@ -90,6 +87,7 @@ void ServerConfigOptDlg::initUI()
     m_VBoxLayout->setContentsMargins(0, 0, 0, SPACEHEIGHT);
     //head layout
     m_iconLabel->setFixedSize(ICONSIZE_50, ICONSIZE_50);
+    m_iconLabel->setPixmap(QIcon(QStringLiteral(":/logo/deepin-terminal.svg")).pixmap(ICONSIZE_36, ICONSIZE_36));
     m_titleLabel->setText(tr("Add Server"));
     m_titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
@@ -112,7 +110,7 @@ void ServerConfigOptDlg::initUI()
 
     QHBoxLayout *headLayout = new QHBoxLayout();
     headLayout->setSpacing(0);
-    headLayout->setContentsMargins(0, 0, 0, 0);
+    headLayout->setContentsMargins(12, 0, 0, 0);
     // 为了和closebutton对应是标题居中
     headLayout->addWidget(m_iconLabel, 0, Qt::AlignLeft | Qt::AlignVCenter);
     headLayout->addWidget(m_titleLabel, 0, Qt::AlignHCenter);
@@ -184,18 +182,10 @@ void ServerConfigOptDlg::initUI()
     m_pGridLayout->addWidget(pPrivateKeyLabel, 4, 0);
     m_pGridLayout->addWidget(m_privateKey, 4, 1, 1, 3);
 
-    //m_advancedOptions
-    palette = DApplicationHelper::instance()->palette(m_advancedOptions);
-    palette.setColor(DPalette::ButtonText, palette.color(DPalette::Highlight));
-    m_advancedOptions->setPalette(palette);
-    m_advancedOptions->setFlat(true);
-    m_advancedOptions->setFocusPolicy(Qt::TabFocus);
-    m_pGridLayout->addWidget(m_advancedOptions, 5, 0, 1, 4, Qt::AlignCenter);
-
-    //senior layout
     DLabel *pGroupLabel = new DLabel(tr("Group:"));
     setLabelStyle(pGroupLabel);
     m_pGridLayout->addWidget(pGroupLabel, 6, 0);
+    m_group->setEditable(true);
     m_pGridLayout->addWidget(m_group, 6, 1, 1, 3);
 
     //pPathLabel
@@ -227,21 +217,7 @@ void ServerConfigOptDlg::initUI()
     setLabelStyle(pDeleteKeyLabel);
     m_pGridLayout->addWidget(pDeleteKeyLabel, 11, 0);
     m_pGridLayout->addWidget(m_deleteKey, 11, 1, 1, 3);
-
-    //m_delServer
-    m_delServer->setText(tr("Delete server"));
-    m_pGridLayout->addWidget(m_delServer, 12, 0, 1, 4, Qt::AlignCenter);
-
-    m_VBoxLayout->addLayout(m_pGridLayout, 1);
-
-    //hide after m_advancedOptions
-    setAdvanceRegionVisible(false);
-
-    DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
-    connect(m_advancedOptions, &DCommandLinkButton::clicked, this, [ = ]() {
-        setAdvanceRegionVisible(true);
-
-    });
+    m_VBoxLayout->addLayout(m_pGridLayout);
 
     DPushButton *pCancelButton = new DPushButton(tr("Cancel", "button"));
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add", "button"));
@@ -272,10 +248,6 @@ void ServerConfigOptDlg::initUI()
         reject();
     });
     connect(pAddSaveButton, &DPushButton::clicked, this, &ServerConfigOptDlg::slotAddSaveButtonClicked);
-    connect(m_delServer, &TermCommandLinkButton::clicked, this, [ = ]() {
-        setDelServer(true);
-        accept();
-    });
     // 字体颜色随主题变化变化
     connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ServerConfigOptDlg::handleThemeTypeChanged);
 
@@ -295,14 +267,13 @@ inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::Co
 
     palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
-
-    palette = DApplicationHelper::instance()->palette(m_delServer);
-    palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
-    m_delServer->setPalette(palette);
 }
 
 void ServerConfigOptDlg::initData()
 {
+    QList<QString> groupList = ServerConfigManager::instance()->getServerConfigs().keys();
+    m_group->addItems(groupList);
+    m_group->setCurrentIndex(-1);
     QList<QString> textCodeList = getTextCodec();
     m_coding->addItems(textCodeList);
     QList<QString> backSpaceKeyList = getBackSpaceKey();
@@ -317,9 +288,9 @@ void ServerConfigOptDlg::initData()
         m_userName->setText(m_curServer->m_userName);
         m_password->setText(m_curServer->m_password);
         m_privateKey->setText(m_curServer->m_privateKey);
-        m_group->setText(m_curServer->m_group);
         m_path->setText(m_curServer->m_path);
         m_command->setText(m_curServer->m_command);
+        m_group->setCurrentText(m_curServer->m_group);
         if (!m_curServer->m_encoding.isEmpty()) {
             int textCodeIndex = textCodeList.indexOf(m_curServer->m_encoding);
             m_coding->setCurrentIndex(textCodeIndex);
@@ -402,9 +373,9 @@ void ServerConfigOptDlg::updataData(ServerConfig *curServer)
     m_userName->setText(curServer->m_userName);
     m_password->setText(curServer->m_password);
     m_privateKey->setText(curServer->m_privateKey);
-    m_group->setText(curServer->m_group);
     m_path->setText(curServer->m_path);
     m_command->setText(curServer->m_command);
+    m_group->setCurrentText(m_curServer->m_group);
     if (!curServer->m_encoding.isEmpty()) {
         int textCodeIndex = textCodeList.indexOf(curServer->m_encoding);
         m_coding->setCurrentIndex(textCodeIndex);
@@ -430,7 +401,7 @@ ServerConfig ServerConfigOptDlg::getData()
     config.m_password = m_password->text();
     config.m_privateKey = m_privateKey->text();
     config.m_port = m_port->text();
-    config.m_group = m_group->text();
+    config.m_group = m_group->currentText();
     config.m_path = m_path->text();
     config.m_command = m_command->text();
     config.m_encoding = m_coding->currentText();
@@ -442,50 +413,6 @@ ServerConfig ServerConfigOptDlg::getData()
 void ServerConfigOptDlg::resetCurServer(ServerConfig *config)
 {
     m_curServer = config;
-}
-
-void ServerConfigOptDlg::setAdvanceRegionVisible(bool isVisible)
-{
-    //隐藏或显示【高级选项】下方的控件
-    int hideRow = m_pGridLayout->rowCount();
-    for(int row = 0; row < m_pGridLayout->rowCount(); row ++) {
-        for(int column = 0; column < m_pGridLayout->columnCount(); column ++) {
-            QLayoutItem *item = m_pGridLayout->itemAtPosition(row, column);
-            QWidget *cell = item ? item->widget() : nullptr;
-            if(nullptr == cell)
-                continue;
-            //获取【高级选项】对应的行
-            if(cell == m_advancedOptions)
-                hideRow = row;
-            //【高级选项】、【删除服务器】另外处理
-            if(cell == m_advancedOptions
-                    || cell == m_delServer)
-                continue;
-            //隐藏或显示【高级选项】下方的控件
-            if(row > hideRow)
-                cell->setVisible(isVisible);
-        }
-    }
-    //点击【高级选项】展开
-    if(isVisible) {
-        //切换【高级选项】的焦点
-        m_advancedOptions->hide();
-        if(m_advancedOptions->hasFocus())
-            m_group->setFocus();
-        //修改界面
-        if (SCT_MODIFY == m_type) {
-            m_delServer->show();
-            //singleShot是为了避免size和resize的不一样
-            QTimer::singleShot(0, this, [=](){resize(459, 670);});
-        } else {
-            m_delServer->hide();
-            QTimer::singleShot(0, this, [=](){resize(459, 630);});
-        }
-    } else {
-        m_advancedOptions->show();
-        m_delServer->hide();
-        resize(459, 392);
-    }
 }
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
@@ -547,7 +474,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
     config->m_password = m_password->text();
     config->m_privateKey = m_privateKey->text();
     config->m_port = m_port->text();
-    config->m_group = m_group->text().trimmed();
+    config->m_group = m_group->currentText().trimmed();
     config->m_path = m_path->text();
     config->m_command = m_command->text();
     config->m_encoding = m_coding->currentText();
