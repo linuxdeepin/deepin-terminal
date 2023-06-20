@@ -63,7 +63,8 @@ const QStringList FONT_BLACKLIST = {
     QStringLiteral("MT Extra"),
     QStringLiteral("Wingdings"),
     QStringLiteral("Wingdings 2"),
-    QStringLiteral("Wingdings 3")
+    QStringLiteral("Wingdings 3"),
+    QStringLiteral("Noto Sans SignWriting"),
 };
 
 #endif // DTNG_DEFINE_H
