@@ -7,6 +7,7 @@
 
 //dtk
 #include <DApplicationHelper>
+DGUI_USE_NAMESPACE
 
 //qt
 #include <QLabel>
