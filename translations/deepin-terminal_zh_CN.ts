@@ -187,35 +187,35 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="255"/>
-        <location filename="../src/main/mainwindow.cpp" line="310"/>
+        <location filename="../src/main/mainwindow.cpp" line="257"/>
+        <location filename="../src/main/mainwindow.cpp" line="312"/>
         <source>New window</source>
         <translation>新建窗口</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="325"/>
+        <location filename="../src/main/mainwindow.cpp" line="327"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="741"/>
+        <location filename="../src/main/mainwindow.cpp" line="743"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>取 消</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="743"/>
+        <location filename="../src/main/mainwindow.cpp" line="745"/>
         <source>Close</source>
         <comment>button</comment>
         <translation>关 闭</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1815"/>
+        <location filename="../src/main/mainwindow.cpp" line="1821"/>
         <source>Type path to download file</source>
         <translation>请输入下载文件的路径</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2121"/>
+        <location filename="../src/main/mainwindow.cpp" line="2127"/>
         <source>Custom Theme</source>
         <translation>自定义主题</translation>
     </message>
@@ -245,36 +245,36 @@
         <translation>确 定</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="504"/>
+        <location filename="../src/views/termwidget.cpp" line="505"/>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
+        <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Close workspace</source>
         <translation>关闭工作区</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="507"/>
+        <location filename="../src/views/termwidget.cpp" line="508"/>
         <location filename="../src/settings/settings_translation.cpp" line="91"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
+        <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Close other workspaces</source>
         <translation>关闭其他工作区</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1172"/>
+        <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>找不到 “%1”，已启动“%2”代替。请检查Shell配置。</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1178"/>
+        <location filename="../src/views/termwidget.cpp" line="1179"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>打不开“%1”，无法正常使用</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1180"/>
+        <location filename="../src/views/termwidget.cpp" line="1181"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>找不到“%1”，无法正常使用</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1210"/>
+        <location filename="../src/views/termwidget.cpp" line="1224"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>已经按下Ctrl+S，输出被挂起。可以按下Ctrl+Q继续。</translation>
     </message>
@@ -294,19 +294,19 @@
         <location filename="../src/views/tabrenamedlg.cpp" line="187"/>
         <location filename="../src/views/tabbar.cpp" line="489"/>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
-        <location filename="../src/main/mainwindow.cpp" line="1721"/>
+        <location filename="../src/main/mainwindow.cpp" line="1727"/>
         <source>Rename title</source>
         <translation>重命名标题</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="483"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Close tab</source>
         <translation>关闭标签页</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="486"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Close other tabs</source>
         <translation>关闭其他标签页</translation>
     </message>
@@ -351,7 +351,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
-        <location filename="../src/main/service.cpp" line="147"/>
+        <location filename="../src/main/service.cpp" line="142"/>
         <source>Blur background</source>
         <translation>背景模糊</translation>
     </message>
@@ -372,7 +372,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="39"/>
-        <location filename="../src/main/service.cpp" line="170"/>
+        <location filename="../src/main/service.cpp" line="165"/>
         <source>Opacity</source>
         <translation>透明度</translation>
     </message>
@@ -413,14 +413,15 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="55"/>
-        <location filename="../src/main/mainwindow.cpp" line="1657"/>
+        <location filename="../src/main/mainwindow.cpp" line="1663"/>
         <source>Others</source>
         <translation>其他</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <location filename="../src/main/terminalapplication.cpp" line="25"/>
-        <location filename="../src/main/mainwindow.cpp" line="1655"/>
+        <location filename="../src/main/mainwindow.cpp" line="1661"/>
+        <location filename="../src/main/mainwindow.cpp" line="2515"/>
         <source>Terminal</source>
         <translation>终端</translation>
     </message>
@@ -431,43 +432,43 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="61"/>
-        <location filename="../src/main/mainwindow.cpp" line="1721"/>
+        <location filename="../src/main/mainwindow.cpp" line="1727"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
-        <location filename="../src/main/mainwindow.cpp" line="1721"/>
+        <location filename="../src/main/mainwindow.cpp" line="1727"/>
         <source>Display shortcuts</source>
         <translation>显示快捷键</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
-        <location filename="../src/main/mainwindow.cpp" line="1721"/>
+        <location filename="../src/main/mainwindow.cpp" line="1727"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="1721"/>
+        <location filename="../src/main/mainwindow.cpp" line="1727"/>
         <source>Fullscreen</source>
         <translation>全屏</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
-        <location filename="../src/main/mainwindow.cpp" line="1686"/>
+        <location filename="../src/main/mainwindow.cpp" line="1692"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
-        <location filename="../src/main/mainwindow.cpp" line="1686"/>
+        <location filename="../src/main/mainwindow.cpp" line="1692"/>
         <source>Default size</source>
         <translation>默认大小</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="1686"/>
+        <location filename="../src/main/mainwindow.cpp" line="1692"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
@@ -478,7 +479,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
-        <location filename="../src/main/mainwindow.cpp" line="1686"/>
+        <location filename="../src/main/mainwindow.cpp" line="1692"/>
         <source>Select all</source>
         <translation>全选</translation>
     </message>
@@ -494,13 +495,13 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
-        <location filename="../src/main/mainwindow.cpp" line="1686"/>
+        <location filename="../src/main/mainwindow.cpp" line="1692"/>
         <source>Zoom in</source>
         <translation>放大</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="1686"/>
+        <location filename="../src/main/mainwindow.cpp" line="1692"/>
         <source>Zoom out</source>
         <translation>缩小</translation>
     </message>
@@ -516,61 +517,61 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Horizontal split</source>
         <translation>横向分屏</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>New tab</source>
         <translation>新建标签页</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Next tab</source>
         <translation>下一个标签页</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
-        <location filename="../src/main/mainwindow.cpp" line="1701"/>
+        <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Previous tab</source>
         <translation>上一个标签页</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
+        <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Select left workspace</source>
         <translation>选择左边的工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Select lower workspace</source>
         <translation>选择下面的工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
+        <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Select right workspace</source>
         <translation>选择右边的工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Select upper workspace</source>
         <translation>选择上面的工作区</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Vertical split</source>
         <translation>纵向分屏</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="1686"/>
+        <location filename="../src/main/mainwindow.cpp" line="1692"/>
         <source>Find</source>
         <translation>查找</translation>
     </message>
@@ -581,55 +582,55 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="1704"/>
+        <location filename="../src/main/mainwindow.cpp" line="1710"/>
         <source>Go to tab 1</source>
         <translation>切换到标签 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="1704"/>
+        <location filename="../src/main/mainwindow.cpp" line="1710"/>
         <source>Go to tab 2</source>
         <translation>切换到标签 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="1704"/>
+        <location filename="../src/main/mainwindow.cpp" line="1710"/>
         <source>Go to tab 3</source>
         <translation>切换到标签 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
+        <location filename="../src/main/mainwindow.cpp" line="1711"/>
         <source>Go to tab 4</source>
         <translation>切换到标签 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
+        <location filename="../src/main/mainwindow.cpp" line="1711"/>
         <source>Go to tab 5</source>
         <translation>切换到标签 5</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
+        <location filename="../src/main/mainwindow.cpp" line="1711"/>
         <source>Go to tab 6</source>
         <translation>切换到标签 6</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
-        <location filename="../src/main/mainwindow.cpp" line="1706"/>
+        <location filename="../src/main/mainwindow.cpp" line="1712"/>
         <source>Go to tab 7</source>
         <translation>切换到标签 7</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="1706"/>
+        <location filename="../src/main/mainwindow.cpp" line="1712"/>
         <source>Go to tab 8</source>
         <translation>切换到标签 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="1706"/>
+        <location filename="../src/main/mainwindow.cpp" line="1712"/>
         <source>Go to tab 9</source>
         <translation>切换到标签 9</translation>
     </message>
@@ -666,7 +667,7 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="572"/>
-        <location filename="../src/main/mainwindow.cpp" line="1837"/>
+        <location filename="../src/main/mainwindow.cpp" line="1843"/>
         <location filename="../src/common/utils.cpp" line="141"/>
         <source>Select</source>
         <translation>选择</translation>
@@ -677,40 +678,40 @@
         <translation>终端是一款集工作区、多窗口、远程管理、雷神模式等功能的高级终端模拟器。</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1653"/>
+        <location filename="../src/main/mainwindow.cpp" line="1659"/>
         <source>Tabs</source>
         <translation>标签页</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1673"/>
+        <location filename="../src/main/mainwindow.cpp" line="1679"/>
         <source>Switch focus to &quot;+&quot; icon</source>
         <translation>光标焦点切换至“+”图标</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1702"/>
+        <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Select tab</source>
         <translation>选择标签页</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1761"/>
+        <location filename="../src/main/mainwindow.cpp" line="1767"/>
         <location filename="../src/common/utils.cpp" line="156"/>
         <source>Select file to upload</source>
         <translation>选择要上传的文件</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1768"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <location filename="../src/common/utils.cpp" line="161"/>
         <source>Upload</source>
         <translation>上传</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1831"/>
+        <location filename="../src/main/mainwindow.cpp" line="1837"/>
         <location filename="../src/common/utils.cpp" line="135"/>
         <source>Select a directory to save the file</source>
         <translation>选择下载文件的保存目录</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="396"/>
+        <location filename="../src/main/service.cpp" line="355"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="606"/>
         <location filename="../src/common/utils.cpp" line="262"/>
         <source>please set another one.</source>
@@ -981,7 +982,7 @@
 <context>
     <name>Service</name>
     <message>
-        <location filename="../src/main/service.cpp" line="392"/>
+        <location filename="../src/main/service.cpp" line="351"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>确 定</translation>
@@ -1095,90 +1096,90 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="473"/>
+        <location filename="../src/views/termwidget.cpp" line="474"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="476"/>
+        <location filename="../src/views/termwidget.cpp" line="477"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="485"/>
+        <location filename="../src/views/termwidget.cpp" line="486"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="489"/>
+        <location filename="../src/views/termwidget.cpp" line="490"/>
         <source>Open in file manager</source>
         <translation>在文件管理器中打开</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="498"/>
-        <location filename="../src/views/termwidget.cpp" line="557"/>
+        <location filename="../src/views/termwidget.cpp" line="499"/>
+        <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>Horizontal split</source>
         <translation>横向分屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="501"/>
-        <location filename="../src/views/termwidget.cpp" line="557"/>
+        <location filename="../src/views/termwidget.cpp" line="502"/>
+        <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>Vertical split</source>
         <translation>纵向分屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="511"/>
-        <location filename="../src/views/termwidget.cpp" line="557"/>
+        <location filename="../src/views/termwidget.cpp" line="512"/>
+        <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>New tab</source>
         <translation>新建标签页</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="518"/>
+        <location filename="../src/views/termwidget.cpp" line="519"/>
         <source>Exit fullscreen</source>
         <translation>退出全屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="520"/>
+        <location filename="../src/views/termwidget.cpp" line="521"/>
         <source>Fullscreen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="523"/>
+        <location filename="../src/views/termwidget.cpp" line="524"/>
         <source>Find</source>
         <translation>查找</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="527"/>
+        <location filename="../src/views/termwidget.cpp" line="528"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="537"/>
+        <location filename="../src/views/termwidget.cpp" line="538"/>
         <source>Encoding</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="539"/>
+        <location filename="../src/views/termwidget.cpp" line="540"/>
         <source>Custom commands</source>
         <translation>自定义命令</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="541"/>
+        <location filename="../src/views/termwidget.cpp" line="542"/>
         <source>Remote management</source>
         <translation>远程管理</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="545"/>
+        <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>Upload file</source>
         <translation>上传文件</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="546"/>
+        <location filename="../src/views/termwidget.cpp" line="547"/>
         <source>Download file</source>
         <translation>下载文件</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="551"/>
+        <location filename="../src/views/termwidget.cpp" line="552"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
