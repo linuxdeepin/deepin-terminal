@@ -207,7 +207,7 @@ public:
      * @author 朱科伟
      * @return
      */
-    bool enableControlFlow(void);
+    bool disableControlFlow(void);
     /**
      * @brief 历史记录行数
      * @author Archie Meng

@@ -1474,17 +1474,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
         if ((Qt::ControlModifier == keyEvent->modifiers()) && (Qt::Key_S == keyEvent->key())) {
-            if (!Settings::instance()->enableControlFlow())
-                return true;
 
             assert(term);
-            if (term->isActiveWindow())
+            if (term->isActiveWindow() && term->flowControlEnabled())
                 term->showFlowMessage(true);
         }
 
         if ((Qt::ControlModifier == keyEvent->modifiers()) && (Qt::Key_Q == keyEvent->key())) {
             assert(term);
-            if (term->isActiveWindow())
+            if (term->isActiveWindow() && term->flowControlEnabled())
                 term->showFlowMessage(false);
         }
     }
