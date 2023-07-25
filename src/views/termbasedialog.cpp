@@ -13,6 +13,8 @@ DGUI_USE_NAMESPACE
 #include <QLabel>
 #include <QDebug>
 
+DWIDGET_USE_NAMESPACE
+
 /*******************************************************************************
  1. @函数:    palrtteTransparency
  2. @作者:    ut000610 daizhengwen
