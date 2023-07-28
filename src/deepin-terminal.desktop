@@ -10,6 +10,7 @@ StartupNotify=false
 TryExec=deepin-terminal
 Type=Application
 X-Deepin-Vendor=deepin
+Actions=new-window;quake-mode;
 
 # Translations:
 # Do not manually modify!
@@ -216,7 +217,7 @@ Name[zh_CN]=深度终端
 Name[zh_HK]=Deepin 終端
 Name[zh_TW]=Deepin 終端機
 
-[NewWindow Shortcut Group]
+[Desktop Action new-window]
 Exec=deepin-terminal
 Name=New Window
 
@@ -266,7 +267,7 @@ Name[zh_CN]=新建窗口
 Name[zh_HK]=新建視窗
 Name[zh_TW]=新增視窗
 
-[Quake Shortcut Group]
+[Desktop Action quake-mode]
 Exec=deepin-terminal --quake-mode
 Name=Quake Terminal
 
