@@ -1,3 +1,4 @@
+
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
@@ -18,7 +19,7 @@
 Q_DECLARE_LOGGING_CATEGORY(views)
 
 ListView::ListView(ListType type, QWidget *parent)
-    : QScrollArea(parent),
+    : DScrollArea(parent),
       m_type(type),
       m_mainWidget(new DWidget(this)),
       m_mainLayout(new QVBoxLayout(m_mainWidget))
@@ -63,19 +64,20 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     // 列表数量变化
     qCDebug(views) << "Item added successfully, new count:" << m_itemList.count();
     emit listItemCountChange();
-
+    // 删除列表项
+    connect(itemWidget, &ItemWidget::itemDelete, this, &ListView::deleteItem);
     // 分组项被点击
     connect(itemWidget, &ItemWidget::groupClicked, this, &ListView::onGroupClicked);
     // 列表项被点击
     connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::itemClicked);
     // 修改列表
-    // connect(itemWidget, &ItemWidget::itemModify, this, &ListView::itemModify);
     connect(itemWidget, &ItemWidget::itemModify, this, &ListView::onItemModify);
+    // 修改分组
+    connect(itemWidget, &ItemWidget::groupModify, this, &ListView::onGroupModify);
     // 焦点切出 Tab切出不返回
     connect(itemWidget, &ItemWidget::focusOut, this, &ListView::onFocusOut);
     // 列表被点击，编辑按钮隐藏
     connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::onItemClicked);
-
 }
 
 inline void ListView::onItemClicked()
@@ -280,6 +282,18 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
     }
 }
 
+void ListView::onGroupModify(const QString &key, bool isFocusOn)
+{
+    emit groupModify(key);
+    // 若焦点不在项上
+    if (!isFocusOn) {
+        // 清空index记录
+        clearIndex();
+        // 焦点状态为false
+        m_focusState = false;
+    }
+}
+
 void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
 {
     qCDebug(views) << "Enter ListView::onRemoteItemModify";
@@ -406,24 +420,46 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
     qCDebug(views) << "ListView::onServerConfigOptDlgFinished finished";
 }
 
-inline void ListView::onDeleteServerDialogFinished(int result)
+void ListView::onDeleteServerDialogFinished(int result)
+{
+    qCDebug(views) << "Enter ListView::onDeleteServerDialogFinished, result:" << result;
+    if (result == DDialog::Accepted && m_configDialog) {
+        // 用户确认删除，调用删除处理函数
+        QString serverName = m_configDialog->getServerName();
+        onDeleteDialogFinished(serverName, ItemFuncType_Item);
+    }
+    // 释放窗口
+    Service::instance()->setIsDialogShow(window(), false);
+    qCDebug(views) << "Exit ListView::onDeleteServerDialogFinished";
+}
+
+void ListView::onDeleteDialogFinished(const QString &key, ItemFuncType type)
 {
     qCDebug(views) << "Enter ListView::onDeleteServerDialogFinished";
     // 获取index
-    int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-    // 删除
-    if (DDialog::Accepted == result) {
-        qCDebug(views) << "Branch: DDialog::Accepted";
-        // 关闭所有相关弹窗
-        ServerConfigManager::instance()->closeAllDialog(m_configDialog->getCurServer()->m_serverName);
-        ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
-        emit ServerConfigManager::instance()->refreshList();
-        emit listItemCountChange();
-    } else {
-        qCDebug(views) << "Branch: DDialog::Rejected";
-        // 关闭后及时将弹窗删除
-        ServerConfigManager::instance()->removeDialog(m_configDialog);
+    int index = indexFromString(key);
+    // 关闭所有相关弹窗
+    ServerConfigManager::instance()->closeAllDialog(key);
+    if (ItemFuncType_Item == type) {
+        if (ListType_Remote == m_type) {
+            ServerConfigManager::instance()->delServerConfig(key);
+        }
+        else {
+            QAction *itemAction = ShortcutManager::instance()->findActionByKey(key);
+            CustomCommandData itemData;
+            itemData.m_cmdName = itemAction->text();
+            itemData.m_cmdText = itemAction->data().toString();
+            itemData.m_cmdShortcut = itemAction->shortcut().toString();
+
+            ShortcutManager::instance()->delCustomCommand(itemData);
+            emit Service::instance()->refreshCommandPanel(itemData.m_cmdName, itemData.m_cmdName);
+        }
+    } else if (ItemFuncType_Group == type) {
+        ServerConfigManager::instance()->delServerGroupConfig(key);
     }
+    emit ServerConfigManager::instance()->refreshList();
+    emit listItemCountChange();
+
     // Todo : 焦点返回下一个
     index = getNextIndex(index);
     if (m_focusState) {
@@ -647,7 +683,7 @@ void ListView::keyPressEvent(QKeyEvent *event)
         setFocusFromeIndex(m_currentIndex, ListFocusEnd);
         break;
     default:
-        QScrollArea::keyPressEvent(event);
+        DScrollArea::keyPressEvent(event);
         break;
     }
 }
@@ -670,8 +706,7 @@ void ListView::focusInEvent(QFocusEvent *event)
 
     qCInfo(views) << "ListView current index : " << m_currentIndex << event->reason();
     m_focusState = true;
-    QScrollArea::focusInEvent(event);
-    // qCDebug(views) << "ListView::focusInEvent finished";
+    DScrollArea::focusInEvent(event);
 }
 
 void ListView::setFocusState(bool focusState)
@@ -738,8 +773,8 @@ void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
         qCDebug(views) << "Branch: ItemFuncType_Group";
         item->setIcon("dt_server_group");
         break;
-    default:
-        // qCDebug(views) << "Branch: default";
+    case ItemFuncType_UngroupedItem:
+        item->setIcon("dt_server");
         break;
     }
     qCDebug(views) << "ListView::setItemIcon finished";
@@ -975,4 +1010,39 @@ void ListView::mouseMoveEvent(QMouseEvent *event)
     //return QScrollArea::mouseMoveEvent(event);
 }
 
-
+void ListView::deleteItem(const QString &key, ItemFuncType type)
+{
+    // 弹出删除弹窗
+    QString title;
+    switch(type) {
+    case ItemFuncType_Item:
+        if (ListType_Remote == m_type)
+            title = tr("Delete Server");
+        else
+            title = tr("Delete Custom Command");
+        break;
+    case ItemFuncType_Group:
+        title = tr("Cancel Server Group");
+        break;
+    }
+    QString alertText;
+    if (type == ItemFuncType_Item) {
+        alertText = tr("Are you sure you want to delete %1?").arg(key);
+    } else {
+        alertText = tr("Ungrouped servers will go back to server list!");
+    }
+    DDialog *deleteDialog = new DDialog(title, alertText, this);
+    deleteDialog->setObjectName("RemoteDeleteDialog");
+    deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(deleteDialog, &DDialog::finished, this, [this, key, type] (int result) {
+        if (result == DDialog::Accepted)
+            onDeleteDialogFinished(key, type);
+    });
+    deleteDialog->setWindowModality(Qt::WindowModal);
+    deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+    deleteDialog->addButton(QObject::tr("Cancel", "button"), false, DDialog::ButtonNormal);
+    deleteDialog->addButton(QObject::tr("Delete", "button"), true, DDialog::ButtonWarning);
+    deleteDialog->show();
+    // 释放窗口
+    Service::instance()->setIsDialogShow(window(), false);
+}

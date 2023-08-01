@@ -27,14 +27,14 @@
 #include <DSpinBox>
 #include <DLineEdit>
 #include <DPasswordEdit>
-#include <DSuggestButton>
 #include <DPushButton>
 #include <DAlertControl>
 #include <dfilechooseredit.h>
 #include <DVerticalLine>
+#include <DWidget>
+#include <DScrollArea>
 
 #include <QAction>
-#include <QWidget>
 
 DWIDGET_USE_NAMESPACE
 
@@ -97,11 +97,6 @@ public:
      */
     void resetCurServer(ServerConfig *config);
 
-    /**
-     * @brief setAdvanceRegionVisible 隐藏或显示【高级选项】下方的控件
-     * @param isVisible
-     */
-    void setAdvanceRegionVisible(bool isVisible);
 private slots:
     /**
      * @brief 服务器配置选项增加和保存按钮点击响应函数
@@ -133,17 +128,17 @@ private:
     DLineEdit *m_userName = nullptr;
     DPasswordEdit *m_password = nullptr;
     DFileChooserEdit *m_privateKey = nullptr;
-    DLineEdit *m_group = nullptr;
+    DComboBox *m_group = nullptr;
     DLineEdit *m_path = nullptr;
     DLineEdit *m_command = nullptr;
     DComboBox *m_coding = nullptr;
     DComboBox *m_backSapceKey = nullptr;
     DComboBox *m_deleteKey = nullptr;
-    DPushButton *m_advancedOptions = nullptr;
-    TermCommandLinkButton *m_delServer = nullptr;
     bool m_bDelOpt = false;
     QGridLayout *m_pGridLayout = nullptr;
     DVerticalLine *m_bottomVLine = nullptr;
+    DCommandLinkButton *m_advancedOptions = nullptr;
+    TermCommandLinkButton *m_delServer = nullptr;
 
     /**
      * @brief 服务器配置选项初始化UI界面
@@ -181,6 +176,12 @@ private:
      * @author m000714 戴正文
      */
     inline void setLabelStyle(DLabel *);
+    
+    /**
+     * @brief 设置高级选项区域可见性
+     * @param isVisible 是否可见
+     */
+    void setAdvanceRegionVisible(bool isVisible);
 };
 
 #endif  // SERVERCONFIGOPTDLG_H

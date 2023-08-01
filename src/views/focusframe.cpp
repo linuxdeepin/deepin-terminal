@@ -20,8 +20,9 @@ Q_DECLARE_LOGGING_CATEGORY(views)
 
 DGUI_USE_NAMESPACE
 
-FocusFrame::FocusFrame(QWidget *parent)
-    : DFrame(parent)
+FocusFrame::FocusFrame(QWidget *parent, bool isWideFrame)
+    : DFrame(parent),
+      m_isWideFrame(isWideFrame)
 {
     qCDebug(views) << "FocusFrame constructor entered";
 
@@ -33,7 +34,8 @@ FocusFrame::FocusFrame(QWidget *parent)
 
 void FocusFrame::paintEvent(QPaintEvent *event)
 {
-    // qCDebug(views) << "FocusFrame::paintEvent() entered";
+    if (!showBackground)
+        return;
 
     QPainter painter(this);
     DPalette pa = DPaletteHelper::instance()->palette(this);
@@ -49,7 +51,9 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         QPainterPath FramePath;
         // 效果和以下代码类似，兼容紧凑模式
         // 类似: paintRoundedRect(FramePath, QRect(2, 2, 218, 58));
-        paintRoundedRect(FramePath, rect().adjusted(2, 2, 0, 0));
+        // TODO  master 
+        // paintRoundedRect(FramePath, rect().adjusted(2, 2, 0, 0));
+        paintRoundedRect(FramePath, QRect(2, 2, m_isWideFrame ? 358 : 218, 58));
         // 获取活动色
         QPen pen(pa.color(DPalette::Highlight), 2);
         painter.setPen(pen);
@@ -59,7 +63,9 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         // 绘制背景
         QPainterPath itemBackgroudPath;
         // 类似: paintRoundedRect(itemBackgroudPath, QRect(4, 4, 214, 54));
-        paintRoundedRect(FramePath, rect().adjusted(4, 4, -2, -2));
+        // TODO  master 
+        // paintRoundedRect(FramePath, rect().adjusted(4, 4, -2, -2));
+        paintRoundedRect(itemBackgroudPath, QRect(4, 4, m_isWideFrame ? 354 : 214, 54));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变
@@ -70,7 +76,9 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         // 绘制背景
         QPainterPath itemBackgroudPath;
         // 类似: paintRoundedRect(itemBackgroudPath, QRect(0, 0, 220, 60));
-        paintRoundedRect(itemBackgroudPath, rect().adjusted(0, 0, 1, 1));
+        // TODO  master 
+        // paintRoundedRect(itemBackgroudPath, rect().adjusted(0, 0, 1, 1));
+        paintRoundedRect(itemBackgroudPath, QRect(0, 0, m_isWideFrame ? 360 : 220, 60));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变

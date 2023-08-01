@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+﻿// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -459,11 +459,6 @@ bool Settings::OutputtingScroll()
     bool scroll = settings->option("advanced.scroll.scroll_on_output")->value().toBool();
     // qCDebug(tsettings) << "Outputting scroll:" << scroll;
     return scroll;
-}
-
-bool Settings::ScrollWheelZoom()
-{
-    return settings->option("advanced.scroll.zoom_on_ctrl_scrollwheel")->value().toBool();
 }
 
 /*******************************************************************************
@@ -1038,5 +1033,10 @@ void Settings::setConsoleShell(const QString shellName)
             break;
         }
     }
+}
+
+bool Settings::ScrollWheelZoom()
+{
+    return settings->option("advanced.scroll.zoom_on_ctrl_scrollwheel")->value().toBool();
 }
 

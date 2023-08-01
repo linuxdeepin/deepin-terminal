@@ -24,18 +24,22 @@ const QMargins s_ItemIconContentMarginsCompact = {4, 4, 4, 4};
 
 // 需要选择Item类型
 ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
-    : FocusFrame(parent)
+    : FocusFrame(parent, ItemFuncType_UngroupedItem == itemType)
     , m_mainLayout(new QHBoxLayout(this))
     , m_iconLayout(new QVBoxLayout)
     , m_textLayout(new QVBoxLayout)
-    , m_funcLayout(new QVBoxLayout)
+    , m_funcLayout(new QHBoxLayout)
+    , m_checkBox(new DCheckBox(this))
     , m_iconButton(new DIconButton(this))
     , m_firstline(new DLabel(this))
     , m_secondline(new DLabel(this))
+    , m_deleteButton(new IconButton(this))
     , m_funcButton(new IconButton(this))
     , m_functType(itemType)
 {
     qCDebug(views) << "Enter ItemWidget::ItemWidget";
+    showBackground = (itemType != ItemFuncType_GroupLabel && itemType != ItemFuncType_ItemLabel);
+
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_mainLayout->setObjectName("ItemWidgetMainLayout");
@@ -53,6 +57,7 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
 
     /***add begin by ut001121 zhangmeng 20200924 安装过滤器 修复BUG48618***/
     m_iconButton->installEventFilter(this);
+    m_deleteButton->installEventFilter(this);
     m_funcButton->installEventFilter(this);
     installEventFilter(this);
     /***add end by ut001121***/
@@ -80,18 +85,18 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
 {
     qCDebug(views) << "Enter ItemWidget::setFuncIcon";
     // 统一设置大小
-    m_funcButton->setIconSize(QSize(12, 12));
+    m_funcButton->setIconSize(QSize(20, 20));
+    m_deleteButton->setIconSize(QSize(20, 20));
+    m_deleteButton->hide();
     switch (iconType) {
     case ItemFuncType_Item:
-        qCDebug(views) << "Branch: ItemFuncType_Item";
+    case ItemFuncType_Group:
         m_funcButton->setIcon(QIcon::fromTheme("dt_edit"));
         m_funcButton->hide();
         break;
-    case ItemFuncType_Group:
-        qCDebug(views) << "Branch: ItemFuncType_Group";
-        m_funcButton->setIcon(QIcon::fromTheme("dt_arrow_right"));
-        m_funcButton->show();
-        break;
+    case ItemFuncType_UngroupedItem:
+        m_funcButton->hide();
+        m_deleteButton->hide();
     }
 
 }
@@ -113,6 +118,7 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
     switch (m_functType) {
     case ItemFuncType_Item:
         qCDebug(views) << "Branch: ItemFuncType_Item";
+    case ItemFuncType_UngroupedItem:
         // 输入的第二行信息
         m_secondText = secondline;
         break;
@@ -132,10 +138,20 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
     qCDebug(views) << "ItemWidget::setText finished";
 }
 
-const QString ItemWidget::getFirstText()
+const QString ItemWidget::getFirstText() const
 {
     // qCDebug(views) << "Enter ItemWidget::getFirstText";
     return m_firstText;
+}
+
+void ItemWidget::setChecked(bool checked)
+{
+    m_checkBox->setChecked(checked);
+}
+
+bool ItemWidget::isChecked() const
+{
+    return m_checkBox->isChecked();
 }
 
 bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
@@ -150,11 +166,10 @@ void ItemWidget::getFocus()
     // qCDebug(views) << "Enter ItemWidget::getFocus";
     m_isFocus = true;
     // 项显示功能键
-    if (ItemFuncType_Item == m_functType) {
-        qCDebug(views) << "Branch: ItemFuncType_Item, showing edit button";
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         m_funcButton->show();
-        m_funcButton->setFocus();
-        qCInfo(views) << "edit button show";
+        m_deleteButton->show();
+        qInfo() << "edit button show";
     }
     // qCDebug(views) << "ItemWidget::getFocus finished";
 }
@@ -164,11 +179,10 @@ void ItemWidget::lostFocus()
     // qCDebug(views) << "Enter ItemWidget::lostFocus";
     m_isFocus = false;
     // 项影藏功能键
-    if ((ItemFuncType_Item == m_functType) && (!m_isHover)) {
-        qCDebug(views) << "Branch: ItemFuncType_Item and not hovering, hiding button";
+    if ((ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) && (!m_isHover)) {
         m_funcButton->hide();
+        m_deleteButton->hide();
     }
-    // qCDebug(views) << "ItemWidget::lostFocus finished";
 }
 
 bool operator >(const ItemWidget &item1, const ItemWidget &item2)
@@ -223,7 +237,7 @@ void ItemWidget::onFuncButtonClicked()
         // 显示分组
         qCInfo(views) << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
-        emit groupClicked(m_firstText, m_isFocus);
+        emit groupModify(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item: {
         qCDebug(views) << "Branch: ItemFuncType_Item";
@@ -303,11 +317,10 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
         qCInfo(views) << "set focus back itemwidget";
     }
     // 项
-    if (ItemFuncType_Item == m_functType) {
-        qCDebug(views) << "Branch: ItemFuncType_Item";
-        if (type != Qt::OtherFocusReason && !m_isHover) {
-            qCDebug(views) << "Branch: not OtherFocusReason and not hovering, hiding button";
-            m_funcButton->hide();
+    if (type != Qt::OtherFocusReason && !m_isHover) {
+        if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
+                m_funcButton->hide();
+                m_deleteButton->hide();
         }
     }
     qCDebug(views) << "ItemWidget::onFocusOut finished";
@@ -340,11 +353,22 @@ void ItemWidget::updateSizeMode()
 
 void ItemWidget::initUI()
 {
-    qCDebug(views) << "ItemWidget::initUI() entered";
+    if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel)
+    {
+        // 初始化控件大小
+        if (m_functType == ItemFuncType_UngroupedItem) {
+            setGeometry(0, 0, 360, 60);
+            setFixedSize(360, 60);
+        } else {
+            setGeometry(0, 0, 220, 60);
+            setFixedSize(220, 60);
+        }
+    }
+    else
+    {
+        setFixedSize(220, 40);
+    }
 
-    // 初始化控件大小
-    setGeometry(0, 0, 220, 60);
-    setFixedSize(220, 60);
     setContentsMargins(0, 0, 0, 0);
     // 圆角
     setFrameRounded(true);
@@ -372,24 +396,45 @@ void ItemWidget::initUI()
     m_textLayout->addStretch(13);
     m_textLayout->addWidget(m_firstline, 13);
     m_textLayout->addStretch(9);
-    m_textLayout->addWidget(m_secondline, 13);
-    m_textLayout->addStretch(13);
+    if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel)
+    {
+        m_textLayout->addWidget(m_secondline, 13);
+        m_textLayout->addStretch(13);
+    }
 
     // 功能键布局
+    // Todo (Yutao Meng): 建议删除键采用自定义图标，以免某些主题中没有合适的明暗色图标
+    m_deleteButton->setIcon(QIcon::fromTheme("edit-delete"));
+    m_deleteButton->setFlat(true);
+    m_deleteButton->setFocusPolicy(Qt::NoFocus);
     setFuncIcon(ItemFuncType(m_functType));
     m_funcButton->setFlat(true);
     m_funcButton->setFocusPolicy(Qt::NoFocus);
     m_funcLayout->addStretch();
     m_funcLayout->setContentsMargins(5, 0, 5, 0);
+    m_funcLayout->addWidget(m_deleteButton);
     m_funcLayout->addWidget(m_funcButton);
     m_funcLayout->addStretch();
 
     // 整体布局
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->setSpacing(0);
-    m_mainLayout->addLayout(m_iconLayout);
-    m_mainLayout->addLayout(m_textLayout);
-    m_mainLayout->addLayout(m_funcLayout);
+    if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel) {
+        if (m_functType == ItemFuncType_UngroupedItem) {
+            m_mainLayout->addWidget(m_checkBox);
+        } else {
+            m_checkBox->hide();
+        }
+        m_mainLayout->addLayout(m_iconLayout);
+        m_mainLayout->addLayout(m_textLayout);
+        m_mainLayout->addLayout(m_funcLayout);
+    } else {
+        m_checkBox->hide();
+        m_iconButton->hide();
+        m_mainLayout->addLayout(m_textLayout);
+        m_deleteButton->hide();
+        m_funcButton->hide();
+    }
     m_mainLayout->addStretch();
     setLayout(m_mainLayout);
 
@@ -438,9 +483,9 @@ void ItemWidget::enterEvent(EnterEvent *event)
 {
     // qCDebug(views) << "Enter ItemWidget::enterEvent";
     // 编辑按钮现
-    if (ItemFuncType_Item == m_functType) {
-        // qCDebug(views) << "Branch: ItemFuncType_Item, showing button";
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         m_funcButton->show();
+        m_deleteButton->show();
     }
 
     FocusFrame::enterEvent(event);
@@ -454,9 +499,9 @@ void ItemWidget::leaveEvent(QEvent *event)
     if (!m_isFocus && !m_funcButton->hasFocus()) {
         // qCDebug(views) << "Branch: no focus and button has no focus";
         // 编辑按钮出
-        if (ItemFuncType_Item == m_functType) {
-            // qCDebug(views) << "Branch: ItemFuncType_Item, hiding button";
+        if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
             m_funcButton->hide();
+            m_deleteButton->hide();
         }
     }
 
@@ -548,9 +593,9 @@ void ItemWidget::focusInEvent(QFocusEvent *event)
 {
     // qCDebug(views) << "Enter ItemWidget::focusInEvent";
     m_isFocus = true;
-    if (ItemFuncType_Item == m_functType) {
-        // qCDebug(views) << "Branch: ItemFuncType_Item, showing button";
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         m_funcButton->show();
+        m_deleteButton->show();
     }
 
     FocusFrame::focusInEvent(event);
@@ -568,12 +613,11 @@ void ItemWidget::focusOutEvent(QFocusEvent *event)
         emit focusOut(type);
     }
 
-    if (ItemFuncType_Item == m_functType) {
-        // qCDebug(views) << "Branch: ItemFuncType_Item";
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         // 编辑按钮也没焦点，则隐藏编辑按钮
         if (!m_funcButton->hasFocus() && !m_isHover) {
-            // qCDebug(views) << "Branch: button has no focus and not hovering, hiding button";
             m_funcButton->hide();
+            m_deleteButton->hide();
         }
     }
     FocusFrame::focusOutEvent(event);
@@ -686,8 +730,8 @@ void ItemWidget::onItemClicked()
         qCInfo(views) << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
-    default:
-        // qCDebug(views) << "Branch: default";
+    case ItemFuncType_UngroupedItem:
+        m_checkBox->setChecked(!m_checkBox->isChecked());
         break;
     }
     qCDebug(views) << "ItemWidget::onItemClicked finished";

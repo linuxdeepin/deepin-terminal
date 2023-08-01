@@ -202,7 +202,7 @@ TEST_F(UT_RemoteManagementPanel_Test, clearListFocus)
     EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
     panel.clearListFocus();
-    EXPECT_EQ(panel.m_pushButton->hasFocus(), false);
+    EXPECT_EQ(panel.m_backButton->hasFocus(), false);
     EXPECT_EQ(panel.m_listWidget->hasFocus(), false);
     EXPECT_EQ(panel.m_searchEdit->hasFocus(), false);
     EXPECT_EQ(panel.m_listWidget->currentIndex(), -1);

@@ -318,11 +318,8 @@ TEST_F(UT_ListView_Test, onServerConfigOptDlgFinished)
         EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
     }
 
-    listWidget.onDeleteServerDialogFinished(DDialog::Accepted);
     EXPECT_TRUE(!ServerConfigManager::instance()->m_serverConfigDialogMap.contains(itemServerName));
 
-
-    listWidget.onDeleteServerDialogFinished(DDialog::Rejected);
     EXPECT_TRUE(listWidget.count() == 0);
 }
 
