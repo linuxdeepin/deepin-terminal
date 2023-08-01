@@ -794,6 +794,11 @@ protected:
      */
     void setTitlebarNoFocus(QWidget * titlebar);
 
+    /**
+     * @brief 根据当前标签页标题更新窗口名
+     */
+    inline void updateWindowTitle();
+
 protected:
     // 初始化标题栏
     virtual void initTitleBar() = 0;

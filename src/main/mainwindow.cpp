@@ -183,7 +183,9 @@ inline void MainWindow::slotTabBarClicked(int index, QString tabIdentifier)
 
 inline void MainWindow::slotTabCurrentChanged(int index)
 {
-    focusPage(m_tabbar->identifier(index));
+    const QString identifier = m_tabbar->identifier(index);
+    focusPage(identifier);
+    updateWindowTitle();
 }
 
 inline void MainWindow::slotTabAddRequested()
@@ -932,6 +934,7 @@ void MainWindow::onTermTitleChanged(QString title)
     const bool customName = tabPage->property("TAB_CUSTOM_NAME_PROPERTY").toBool();
     if (!customName)
         m_tabbar->setTabText(tabPage->identifier(), title);
+    updateWindowTitle();
 
     // 判定第一次修改标题的时候，认为终端已经创建成功
     // 以此认为第一次打开终端窗口结束，记录时间
@@ -2505,6 +2508,11 @@ void MainWindow::onCommandActionTriggered()
         command.append('\n');
 
     this->currentPage()->sendTextToCurrentTerm(command);
+}
+
+inline void MainWindow::updateWindowTitle()
+{
+    setWindowTitle(QString("%1 - %2").arg(m_tabbar->tabText(m_tabbar->currentIndex())).arg(QObject::tr("Terminal")));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
