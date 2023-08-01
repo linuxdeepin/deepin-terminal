@@ -954,7 +954,7 @@ void Session::setFlowControlEnabled(bool enabled)
 }
 bool Session::flowControlEnabled() const
 {
-    return _flowControl;
+    return _shellProcess->flowControlEnabled();
 }
 //void Session::fireZModemDetected()
 //{

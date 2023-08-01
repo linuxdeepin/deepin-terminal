@@ -286,7 +286,7 @@ void Settings::initConnection()
 {
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
         Q_UNUSED(value)
-        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll."))
+        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.") || key.contains("advanced.shell."))
             emit terminalSettingChanged(key);
         else if (key.contains("shortcuts."))
             emit shortcutSettingChanged(key);
@@ -609,9 +609,9 @@ void Settings::handleWidthFont()
 }
 
 
-bool Settings::enableControlFlow(void)
+bool Settings::disableControlFlow(void)
 {
-    return !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool();
+    return settings->option("advanced.shell.disable_ctrl_flow")->value().toBool();
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/

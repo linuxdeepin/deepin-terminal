@@ -156,6 +156,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
 
     setFocusPolicy(Qt::NoFocus);
 
+    setFlowControlEnabled(!Settings::instance()->disableControlFlow());
+
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
     //qInfo() << parentPage << endl;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
@@ -1125,6 +1127,11 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     
     if ("advanced.cursor.include_special_characters_in_double_click_selections" == keyName) {
         setTerminalWordCharacters(Settings::instance()->wordCharacters());
+        return;
+    }
+
+    if ("advanced.shell.disable_ctrl_flow" == keyName) {
+        setFlowControlEnabled(!Settings::instance()->disableControlFlow());
         return;
     }
 
