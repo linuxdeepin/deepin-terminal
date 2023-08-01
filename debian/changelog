@@ -1,3 +1,24 @@
+deepin-terminal (6.0.6) unstable; urgency=medium
+
+  * Feature:
+      Optimized remote server functions
+      Update window title according to current tab name
+      New cursor type of bold underline
+      New option to choose which special characters to be included in double
+click selections
+      Change opacity with "Shift+Ctrl+Mouse Wheel"
+    Fix Bugs:
+      Better implementation of enable/disable flow control feature
+      Fix "Desktop Action" sections of desktop entry file to freedesktop standards
+      Blacklist Noto Sans SignWriting fonts
+      Fix compilation error
+      Fix Shift+Tab shortcut is unusable in terminal shells
+      Remove dependencies on dde-daemon WMSwitcher
+      Remove useless desktop environment variable
+
+
+ -- Yutao Meng <mengyutao@deepin.org>  Tue, 01 Aug 2023 16:37:36 +0800
+
 deepin-terminal (6.0.5) unstable; urgency=medium
 
   * Feature:
