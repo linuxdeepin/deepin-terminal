@@ -60,7 +60,9 @@ public:
         // 分组界面
         PanelType_Group,
         // 搜索界面
-        PanelType_Search
+        PanelType_Search,
+        // 添加分组服务器界面
+        PanelType_Serverlist
     };
 
     static ServerConfigManager *instance();
@@ -76,6 +78,8 @@ public:
      * @param config 服务器配置
      */
     void saveServerConfig(ServerConfig *config);
+    void delServerConfig(const QString &key) { delServerConfig(getServerConfig(key)); }
+    void delServerGroupConfig(const QString &key);
     /**
      * @brief 删除服务器配置
      * @author ut000610 daizhengwen
@@ -214,6 +218,11 @@ private:
      * @param config 服务器配置
      */
     inline void settServerConfig(USettings &commandsSettings, const QString &strGroupName, ServerConfig *config);
+    /**
+     * @brief 初始化服务器列表
+     * @param listview 需要填充的列表
+     */
+    void fillServerList(ListView *listview, const QString &groupName);
     /**
      * @brief 初始化主界面，将数据填充进去
      * @author ut000610 戴正文

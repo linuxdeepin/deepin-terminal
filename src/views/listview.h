@@ -17,6 +17,7 @@
 
 // dtk
 #include <DWidget>
+#include <DScrollArea>
 
 // qt
 #include <QVBoxLayout>
@@ -47,7 +48,7 @@ enum ListFocusType {
 
 class ServerConfigOptDlg;
 class CustomCommandOptDlg;
-class ListView : public QScrollArea
+class ListView : public DScrollArea
 {
     Q_OBJECT
 public:
@@ -165,6 +166,7 @@ public:
      * @return
      */
     int getWidgetIndex(ItemWidget *itemWidget);
+    const QList<ItemWidget*> itemList() { return m_itemList; }
 
 public slots:
     /**
@@ -173,6 +175,7 @@ public slots:
      * @param isFocusOn 是否有焦点
      */
     void onItemModify(const QString &key, bool isFocusOn);
+    void onGroupModify(const QString &key, bool isFocusOn);
 
 private slots:
     /**
@@ -218,7 +221,7 @@ private slots:
      * @author ut000438 王亮
      * @param result
      */
-    void onDeleteServerDialogFinished(int result);
+    void onDeleteDialogFinished(const QString &key, ItemFuncType type);
 
 signals:
     // 列表数量变化
@@ -228,7 +231,9 @@ signals:
     // 分组项被点击
     void groupClicked(const QString &key, bool isFocus);
     // 列表项要被修改
-    // void itemModify(const QString &key);
+    void itemModify(const QString &key);
+    // 分组要被编辑
+    void groupModify(const QString &key);
     // 焦点Tab出
     void focusOut(Qt::FocusReason type);
 
@@ -316,6 +321,8 @@ private:
      * @param isFocusOn 是否有焦点
      */
     void onCustomItemModify(const QString &key, bool isFocusOn);
+
+    void deleteItem(const QString &key, ItemFuncType type);
 };
 
 #endif // LISTVIEW_H

@@ -19,6 +19,7 @@
 
 // dtk
 //#include <DFrame>
+#include <DCheckBox>
 #include <DIconButton>
 #include <DLabel>
 #include <DGuiApplicationHelper>
@@ -41,8 +42,14 @@ DWIDGET_USE_NAMESPACE
 enum ItemFuncType {
     // 项按钮（编辑按钮）
     ItemFuncType_Item = 0,
+    // 项标签
+    ItemFuncType_ItemLabel = 1,
     // 分组按钮（用于远程管理显示分组）
-    ItemFuncType_Group = 1
+    ItemFuncType_Group = 2,
+    // 分组标签
+    ItemFuncType_GroupLabel = 3,
+    // 未分组可勾选项
+    ItemFuncType_UngroupedItem = 4
 };
 
 // 文字颜色
@@ -93,7 +100,10 @@ public:
      * @author ut000438 王亮
      * @return
      */
-    const QString getFirstText();
+    const QString getFirstText() const;
+
+    void setChecked(bool checked);
+    bool isChecked() const;
 
     /**
      * @brief 是否匹配,判断是否是此widget
@@ -163,6 +173,10 @@ signals:
     void groupClicked(const QString &strName, bool isFocus = false);
     // 修改项
     void itemModify(const QString &strName, bool isFocus = false);
+    // 修改分组
+    void groupModify(const QString &strName, bool isFocus = false);
+    // 删除项
+    void itemDelete(const QString &name, ItemFuncType type);
     // 焦点从控件中出
     void focusOut(Qt::FocusReason type);
 
@@ -242,13 +256,17 @@ private:
     // 文字布局
     QVBoxLayout *m_textLayout = nullptr;
     // 功能键布局
-    QVBoxLayout *m_funcLayout = nullptr;
+    QHBoxLayout *m_funcLayout = nullptr;
 
-    // 图表
+    // 勾选框
+    DCheckBox   *m_checkBox = nullptr;
+    // 图标
     DIconButton *m_iconButton = nullptr;
     // 文字
     DLabel *m_firstline = nullptr;
     DLabel *m_secondline = nullptr;
+    // 删除键
+    IconButton *m_deleteButton = nullptr;
     // 功能键
     IconButton *m_funcButton = nullptr;
 

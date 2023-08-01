@@ -51,6 +51,7 @@ public:
     DIconButton *m_backButton = nullptr;
     IconButton *m_rebackButton = nullptr;
     DSearchEdit *m_searchEdit = nullptr;
+    DPushButton *m_addGroupButton = nullptr;
     DPushButton *m_pushButton = nullptr;
     DLabel *m_label = nullptr;
     bool m_isShow = false;

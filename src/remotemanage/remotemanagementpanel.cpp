@@ -139,7 +139,6 @@ void RemoteManagementPanel::showCurSearchResult()
 
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
-    qInfo() << "RemoteManagementPanel show add server config dialog.";
     // 判断控件是否有焦点
     bool focusState = m_pushButton->hasFocus();
     // 弹窗显示
@@ -164,6 +163,31 @@ void RemoteManagementPanel::showAddServerConfigDlg()
     dlg->show();
 }
 
+void RemoteManagementPanel::showAddGroupConfigDlg(const QString &groupName)
+{
+    // 判断控件是否有焦点55
+    bool focusState = m_pushButton->hasFocus();
+    // 弹窗显示
+    Service::instance()->setIsDialogShow(window(), true);
+
+    GroupConfigOptDlg *dlg = new GroupConfigOptDlg(groupName);
+    connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
+        // 弹窗隐藏或消失
+        Service::instance()->setIsDialogShow(window(), false);
+        // 先判断是否要焦点
+        if (focusState) {
+            // 让焦点在平面上
+            setFocus();
+            // 添加完，将焦点设置在添加按钮上
+            m_addGroupButton->setFocus();
+        }
+        if (QDialog::Accepted == result) {
+            refreshPanel();
+        }
+    });
+    dlg->show();
+}
+
 void RemoteManagementPanel::initUI()
 {
     this->setBackgroundRole(QPalette::Base);
@@ -176,12 +200,16 @@ void RemoteManagementPanel::initUI()
     m_searchEdit->setObjectName("RemoteSearchEdit");
     m_listWidget = new ListView(ListType_Remote, this);
     m_listWidget->setObjectName("RemoteManageListWidget");
+    m_addGroupButton = new DPushButton(this);
+    m_addGroupButton->setObjectName("AddServerGroupButton");
     m_pushButton = new DPushButton(this);
     m_pushButton->setObjectName("RemoteAddPushButton");
 
     m_searchEdit->setFixedHeight(COMMONHEIGHT);
     m_searchEdit->setClearButtonEnabled(true);
 
+    m_addGroupButton->setFixedHeight(COMMONHEIGHT);
+    m_addGroupButton->setText(tr("Add Group"));
     m_pushButton->setFixedHeight(COMMONHEIGHT);
     m_pushButton->setText(tr("Add Server"));
 
@@ -193,7 +221,6 @@ void RemoteManagementPanel::initUI()
     m_imageLabel = new DLabel(this);
     m_imageLabel->setFixedSize(QSize(88, 88));
     m_imageLabel->setPixmap(DHiDPIHelper::loadNxPixmap(":/other/server_group.svg"));
-
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setContentsMargins(0, 0, 0, 0);
@@ -228,6 +255,8 @@ void RemoteManagementPanel::initUI()
     btnLayout->addSpacing(SPACEWIDTH);
     btnLayout->addWidget(m_pushButton);
     btnLayout->addSpacing(SPACEWIDTH);
+    btnLayout->addWidget(m_addGroupButton);
+    btnLayout->addSpacing(SPACEWIDTH);
     btnLayout->setSpacing(0);
     btnLayout->setMargin(0);
 
@@ -244,8 +273,10 @@ void RemoteManagementPanel::initUI()
 
     connect(m_searchEdit, &DSearchEdit::returnPressed, this, &RemoteManagementPanel::showCurSearchResult);
     connect(m_pushButton, &DPushButton::clicked, this, &RemoteManagementPanel::showAddServerConfigDlg);
+    connect(m_addGroupButton, &DPushButton::clicked, this, [this] { showAddGroupConfigDlg(); });
     connect(m_listWidget, &ListView::itemClicked, this, &RemoteManagementPanel::onItemClicked);
     connect(m_listWidget, &ListView::groupClicked, this, &RemoteManagementPanel::showGroupPanel);
+    connect(m_listWidget, &ListView::groupModify, this, &RemoteManagementPanel::showAddGroupConfigDlg);
     connect(m_listWidget, &ListView::listItemCountChange, this, &RemoteManagementPanel::refreshSearchState);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, [ = ]() {
         if (m_isShow)

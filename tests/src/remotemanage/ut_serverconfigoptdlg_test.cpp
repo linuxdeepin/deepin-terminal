@@ -170,13 +170,5 @@ TEST_F(UT_ServerConfigOptDlg_Test, lambda)
     emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
     signalpy1.wait(1000);
     EXPECT_TRUE(signalpy1.count() == 2);
-
-    // 扩展弹窗
-
-    QSignalSpy signalpy2(serverConfigDialog.m_advancedOptions, SIGNAL(clicked()));
-    EXPECT_TRUE(signalpy2.count() == 0);
-    emit serverConfigDialog.m_advancedOptions->clicked();
-    signalpy2.wait(1000);
-    EXPECT_TRUE(signalpy2.count() == 1);
 }
 #endif

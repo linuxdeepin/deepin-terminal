@@ -140,6 +140,7 @@ set (DTNG_CPP_FILES
     src/main/terminalapplication.cpp
     src/main/termproperties.cpp    
     src/main/dbusmanager.cpp
+    src/remotemanage/groupconfigoptdlg.cpp
     src/remotemanage/remotemanagementpanel.cpp
     src/remotemanage/remotemanagementplugn.cpp
     src/remotemanage/remotemanagementsearchpanel.cpp

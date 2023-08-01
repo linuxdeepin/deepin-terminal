@@ -1,3 +1,4 @@
+
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
@@ -15,7 +16,7 @@
 #include <QScroller>
 
 ListView::ListView(ListType type, QWidget *parent)
-    : QScrollArea(parent),
+    : DScrollArea(parent),
       m_type(type),
       m_mainWidget(new DWidget(this)),
       m_mainLayout(new QVBoxLayout(m_mainWidget))
@@ -54,19 +55,20 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     m_mainLayout->insertWidget(index, itemWidget);
     // 列表数量变化
     emit listItemCountChange();
-
+    // 删除列表项
+    connect(itemWidget, &ItemWidget::itemDelete, this, &ListView::deleteItem);
     // 分组项被点击
     connect(itemWidget, &ItemWidget::groupClicked, this, &ListView::onGroupClicked);
     // 列表项被点击
     connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::itemClicked);
     // 修改列表
-    // connect(itemWidget, &ItemWidget::itemModify, this, &ListView::itemModify);
     connect(itemWidget, &ItemWidget::itemModify, this, &ListView::onItemModify);
+    // 修改分组
+    connect(itemWidget, &ItemWidget::groupModify, this, &ListView::onGroupModify);
     // 焦点切出 Tab切出不返回
     connect(itemWidget, &ItemWidget::focusOut, this, &ListView::onFocusOut);
     // 列表被点击，编辑按钮隐藏
     connect(itemWidget, &ItemWidget::itemClicked, this, &ListView::onItemClicked);
-
 }
 
 inline void ListView::onItemClicked()
@@ -238,6 +240,18 @@ void ListView::onItemModify(const QString &key, bool isFocusOn)
     }
 }
 
+void ListView::onGroupModify(const QString &key, bool isFocusOn)
+{
+    emit groupModify(key);
+    // 若焦点不在项上
+    if (!isFocusOn) {
+        // 清空index记录
+        clearIndex();
+        // 焦点状态为false
+        m_focusState = false;
+    }
+}
+
 void ListView::onRemoteItemModify(const QString &key, bool isFocusOn)
 {
     int curIndex = m_currentIndex;
@@ -276,60 +290,42 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
     // 3. 对弹窗操作进行分析
     // 判断是否删除
     if (ServerConfigOptDlg::Accepted == result) {
-        // 判断是否需要删除
-        if (m_configDialog->isDelServer()) {
-            // 弹出删除弹窗
-            qInfo() << "delete " << m_configDialog->getCurServer()->m_serverName << m_configDialog;
-            DDialog *deleteDialog = new DDialog(tr("Delete Server"), tr("Are you sure you want to delete %1?").arg(m_configDialog->getServerName()), this);
-            deleteDialog->setObjectName("RemoteDeleteDialog");
-            deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
-            connect(deleteDialog, &DDialog::finished, this, &ListView::onDeleteServerDialogFinished);
-            deleteDialog->setWindowModality(Qt::WindowModal);
-            deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
-            deleteDialog->addButton(QObject::tr("Cancel", "button"), false, DDialog::ButtonNormal);
-            deleteDialog->addButton(QObject::tr("Delete", "button"), true, DDialog::ButtonWarning);
-            deleteDialog->show();
-            // 释放窗口
-            Service::instance()->setIsDialogShow(window(), false);
-        } else {
-            // 不删除，修改
-            // 释放窗口
-            Service::instance()->setIsDialogShow(window(), false);
-            // 修改后会有信号刷新列表
-            // 不需要删除，修改了转到这条修改的记录
-            // 设置滚轮
-            // 关闭后及时将弹窗删除
-            // 记住修改前的位置 m_currentIndex
-            qInfo() << "index before modify " << m_currentIndex;
-            ServerConfigManager::instance()->removeDialog(m_configDialog);
-            // 刷新列表
-            emit ServerConfigManager::instance()->refreshList();
-            // 获取index
-            int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-            // 若找不到
-            if (index  < 0) {
-                // 旧位置的下一个
-                index = getNextIndex(m_currentIndex);
+        // 释放窗口
+        Service::instance()->setIsDialogShow(window(), false);
+        // 修改后会有信号刷新列表
+        // 不需要删除，修改了转到这条修改的记录
+        // 设置滚轮
+        // 关闭后及时将弹窗删除
+        // 记住修改前的位置 m_currentIndex
+        qInfo() << "index before modify " << m_currentIndex;
+        ServerConfigManager::instance()->removeDialog(m_configDialog);
+        // 刷新列表
+        emit ServerConfigManager::instance()->refreshList();
+        // 获取index
+        int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
+        // 若找不到
+        if (index  < 0) {
+            // 旧位置的下一个
+            index = getNextIndex(m_currentIndex);
+        }
+        // 依旧没有找到啦
+        if (index < 0) {
+            qInfo() << "no next item";
+            if (m_focusState) {
+                // 有焦点，焦点出
+                emit focusOut(Qt::NoFocusReason);
             }
-            // 依旧没有找到啦
-            if (index < 0) {
-                qInfo() << "no next item";
-                if (m_focusState) {
-                    // 有焦点，焦点出
-                    emit focusOut(Qt::NoFocusReason);
-                }
-            }
-            // 找的到
-            else {
-                if (m_focusState) {
-                    // 设置焦点
-                    setFocus();
-                    // 有焦点，设置焦点
-                    setCurrentIndex(index);
-                } else {
-                    // 没焦点,设置滚轮
-                    setScroll(index);
-                }
+        }
+        // 找的到
+        else {
+            if (m_focusState) {
+                // 设置焦点
+                setFocus();
+                // 有焦点，设置焦点
+                setCurrentIndex(index);
+            } else {
+                // 没焦点,设置滚轮
+                setScroll(index);
             }
         }
     }
@@ -350,21 +346,32 @@ inline void ListView::onServerConfigOptDlgFinished(int result)
     }
 }
 
-inline void ListView::onDeleteServerDialogFinished(int result)
+void ListView::onDeleteDialogFinished(const QString &key, ItemFuncType type)
 {
     // 获取index
-    int index = indexFromString(m_configDialog->getCurServer()->m_serverName);
-    // 删除
-    if (DDialog::Accepted == result) {
-        // 关闭所有相关弹窗
-        ServerConfigManager::instance()->closeAllDialog(m_configDialog->getCurServer()->m_serverName);
-        ServerConfigManager::instance()->delServerConfig(m_configDialog->getCurServer());
-        emit ServerConfigManager::instance()->refreshList();
-        emit listItemCountChange();
-    } else {
-        // 关闭后及时将弹窗删除
-        ServerConfigManager::instance()->removeDialog(m_configDialog);
+    int index = indexFromString(key);
+    // 关闭所有相关弹窗
+    ServerConfigManager::instance()->closeAllDialog(key);
+    if (ItemFuncType_Item == type) {
+        if (ListType_Remote == m_type) {
+            ServerConfigManager::instance()->delServerConfig(key);
+        }
+        else {
+            QAction *itemAction = ShortcutManager::instance()->findActionByKey(key);
+            CustomCommandData itemData;
+            itemData.m_cmdName = itemAction->text();
+            itemData.m_cmdText = itemAction->data().toString();
+            itemData.m_cmdShortcut = itemAction->shortcut().toString();
+
+            ShortcutManager::instance()->delCustomCommand(itemData);
+            emit Service::instance()->refreshCommandPanel(itemData.m_cmdName, itemData.m_cmdName);
+        }
+    } else if (ItemFuncType_Group == type) {
+        ServerConfigManager::instance()->delServerGroupConfig(key);
     }
+    emit ServerConfigManager::instance()->refreshList();
+    emit listItemCountChange();
+
     // Todo : 焦点返回下一个
     index = getNextIndex(index);
     if (m_focusState) {
@@ -559,7 +566,7 @@ void ListView::keyPressEvent(QKeyEvent *event)
         setFocusFromeIndex(m_currentIndex, ListFocusEnd);
         break;
     default:
-        QScrollArea::keyPressEvent(event);
+        DScrollArea::keyPressEvent(event);
         break;
     }
 }
@@ -577,7 +584,7 @@ void ListView::focusInEvent(QFocusEvent *event)
 
     qInfo() << "ListView current index : " << m_currentIndex << event->reason();
     m_focusState = true;
-    QScrollArea::focusInEvent(event);
+    DScrollArea::focusInEvent(event);
 }
 
 void ListView::setFocusState(bool focusState)
@@ -610,7 +617,6 @@ void ListView::initUI()
 
     m_mainWidget->setLayout(m_mainLayout);
     setWidget(m_mainWidget);
-
 }
 
 void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
@@ -629,6 +635,9 @@ void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
     // 远程图标
     case ItemFuncType_Group:
         item->setIcon("dt_server_group");
+        break;
+    case ItemFuncType_UngroupedItem:
+        item->setIcon("dt_server");
         break;
     }
 }
@@ -828,4 +837,39 @@ void ListView::mouseMoveEvent(QMouseEvent *event)
     //return QScrollArea::mouseMoveEvent(event);
 }
 
-
+void ListView::deleteItem(const QString &key, ItemFuncType type)
+{
+    // 弹出删除弹窗
+    QString title;
+    switch(type) {
+    case ItemFuncType_Item:
+        if (ListType_Remote == m_type)
+            title = tr("Delete Server");
+        else
+            title = tr("Delete Custom Command");
+        break;
+    case ItemFuncType_Group:
+        title = tr("Cancel Server Group");
+        break;
+    }
+    QString alertText;
+    if (type == ItemFuncType_Item) {
+        alertText = tr("Are you sure you want to delete %1?").arg(key);
+    } else {
+        alertText = tr("Ungrouped servers will go back to server list!");
+    }
+    DDialog *deleteDialog = new DDialog(title, alertText, this);
+    deleteDialog->setObjectName("RemoteDeleteDialog");
+    deleteDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(deleteDialog, &DDialog::finished, this, [this, key, type] (int result) {
+        if (result == DDialog::Accepted)
+            onDeleteDialogFinished(key, type);
+    });
+    deleteDialog->setWindowModality(Qt::WindowModal);
+    deleteDialog->setIcon(QIcon::fromTheme("deepin-terminal"));
+    deleteDialog->addButton(QObject::tr("Cancel", "button"), false, DDialog::ButtonNormal);
+    deleteDialog->addButton(QObject::tr("Delete", "button"), true, DDialog::ButtonWarning);
+    deleteDialog->show();
+    // 释放窗口
+    Service::instance()->setIsDialogShow(window(), false);
+}

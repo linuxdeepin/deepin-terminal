@@ -50,6 +50,21 @@ void ServerConfigManager::settServerConfig(USettings &commandsSettings, const QS
     commandsSettings.endGroup();
 }
 
+void ServerConfigManager::fillServerList(ListView *listview, const QString &groupName)
+{
+    listview->clearData();
+    if (m_serverConfigs[groupName].length() > 0) {
+        for (ServerConfig *item : m_serverConfigs[groupName]) {
+            listview->addItem(ItemFuncType_UngroupedItem, item->m_serverName, QString("%1@%2").arg(item->m_userName).arg(item->m_address));
+        }
+        if (!groupName.isEmpty()) {
+            for (ItemWidget *item: listview->itemList()) {
+                item->setChecked(true);
+            }
+        }
+    }
+}
+
 void ServerConfigManager::fillManagePanel(ListView *listview)
 {
     qInfo() << "ServerConfigManager fill data to manage panel.";
@@ -68,6 +83,9 @@ void ServerConfigManager::fillManagePanel(ListView *listview)
             }
         }
     }
+    // 添加分组和服务器的分割标题
+    listview->addItem(ItemFuncType_GroupLabel, tr("Groups"));
+    listview->addItem(ItemFuncType_ItemLabel, tr("Servers"));
 }
 
 void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &filter, const QString &group)
@@ -275,6 +293,22 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
 
 }
 
+void ServerConfigManager::delServerGroupConfig(const QString &key)
+{
+    if (m_serverConfigs.contains(key)) {
+        for (ServerConfig *config : m_serverConfigs[key]) {
+            ServerConfig *newConfig = new ServerConfig;
+            *newConfig = *config;
+            newConfig->m_group = QStringLiteral("");
+            delServerConfig(config);
+            saveServerConfig(newConfig);
+        }
+    }
+    else {
+        qInfo() << Q_FUNC_INFO << "Cannot find group " << key;
+    }
+}
+
 void ServerConfigManager::delServerConfig(ServerConfig *config)
 {
     // 防止重复删除
@@ -340,6 +374,9 @@ void ServerConfigManager::refreshServerList(PanelType type, ListView *listview, 
         break;
     case PanelType_Search:
         fillSearchPanel(listview, filter, group);
+        break;
+    case PanelType_Serverlist:
+        fillServerList(listview, group);
         break;
     }
 }
