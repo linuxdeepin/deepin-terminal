@@ -24,6 +24,8 @@ void GenerateSettingTranslate()
     Q_UNUSED(advanced_scroll_scroll_on_keyText);
     auto advanced_scroll_scroll_on_outputText = QObject::tr("Scroll on output");
     Q_UNUSED(advanced_scroll_scroll_on_outputText);
+    auto advanced_scroll_zoom_on_ctrl_scrollwheel = QObject::tr("Allow Ctrl+scrollwheel to zoom text size");
+    Q_UNUSED(advanced_scroll_zoom_on_ctrl_scrollwheel);
     auto advanced_window_auto_hide_raytheon_windowText = QObject::tr("Hide Quake window after losing focus");
     Q_UNUSED(advanced_window_auto_hide_raytheon_windowText);
     auto advanced_window_quake_window_durationText = QObject::tr("Quake window animation speed");
