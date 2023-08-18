@@ -30,6 +30,7 @@
 #include <QLocale>
 #include <QString>
 #include <QScopedPointer>
+#include <QProcessEnvironment>
 
 #include <sys/utsname.h>
 #include <fontconfig/fontconfig.h>

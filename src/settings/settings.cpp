@@ -23,6 +23,9 @@
 #include <QStringList>
 #include <QFontDatabase>
 #include <QHBoxLayout>
+#include <QCollator>
+#include <QProcessEnvironment>
+#include <QJsonDocument>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
