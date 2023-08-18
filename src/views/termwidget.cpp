@@ -33,6 +33,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QFileInfo>
+#include <QProcess>
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;

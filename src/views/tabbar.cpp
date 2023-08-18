@@ -25,6 +25,7 @@
 #include <QMouseEvent>
 #include <QDesktopWidget>
 #include <QPainterPath>
+#include <QMimeData>
 
 //TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
