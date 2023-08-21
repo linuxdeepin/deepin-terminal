@@ -186,6 +186,7 @@ void ServerConfigOptDlg::initUI()
     setLabelStyle(pGroupLabel);
     m_pGridLayout->addWidget(pGroupLabel, 6, 0);
     m_group->setEditable(true);
+    m_group->lineEdit()->setPlaceholderText(tr("No Group"));
     m_pGridLayout->addWidget(m_group, 6, 1, 1, 3);
 
     //pPathLabel
