@@ -10,6 +10,7 @@
 #include "define.h"
 
 #include <QDebug>
+#include <QScreen>
 
 WindowsManager *WindowsManager::pManager = new WindowsManager();
 WindowsManager *WindowsManager::instance()
@@ -30,6 +31,9 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
         m_quakeWindow->activateWindow();
         return;
     }
+    // 雷神窗口移动到光标所在的屏幕
+    QPoint cursorPoint = QCursor::pos();
+    m_quakeWindow->move(QGuiApplication::screenAt(cursorPoint)->geometry().topLeft());
     // Alt+F2的显隐功能实现点
     quakeWindowShowOrHide();
 }
