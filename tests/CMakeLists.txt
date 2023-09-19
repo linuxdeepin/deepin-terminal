@@ -46,7 +46,6 @@ FILE(GLOB allSource
     ../src/main/terminalapplication.cpp
     ../src/main/termproperties.cpp
     ../src/main/dbusmanager.cpp
-    ../src/main/atspidesktop.cpp
 )
 
 FILE(GLOB allHeaders
@@ -123,7 +122,6 @@ target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
                                                         ${DtkWidget_INCLUDE_DIRS}
                                                         ${DtkCore_LIBRARIES}
                                                         ${DtkGUI_INCLUDE_DIRS}
-                                                        ${DFrameworkDBus_INCLUDE_DIRS}
                                                         ${GOBJECT_INCLUDE_DIRS}
                                                         ${LIBSECRET_INCLUDE_DIRS})
 

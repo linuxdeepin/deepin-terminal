@@ -23,9 +23,7 @@ BuildRequires: qt5-linguist
 BuildRequires: pkgconfig(dtkcore)
 BuildRequires: pkgconfig(dtkwidget)
 BuildRequires: pkgconfig(dtkgui)
-BuildRequires: pkgconfig(dframeworkdbus)
 BuildRequires: pkgconfig(gobject-2.0)
-BuildRequires: pkgconfig(atspi-2)
 BuildRequires: pkgconfig(libsecret-1)
 
 BuildRequires: pkgconfig(Qt5Widgets)
@@ -34,7 +32,6 @@ BuildRequires: pkgconfig(Qt5Gui)
 BuildRequires: pkgconfig(Qt5DBus)
 BuildRequires: pkgconfig(Qt5Network)
 BuildRequires: lxqt-build-tools >= 0.6.0~
-BuildRequires: utf8proc-devel
 BuildRequires: gtest-devel
 BuildRequires: gmock-devel
 BuildRequires: qt5-qtx11extras-devel
