@@ -20,7 +20,7 @@
 #include <QDebug>
 #include <QCommandLineParser>
 #include <QTranslator>
-#include <QTime>
+#include <QElapsedTimer>
 
 DWIDGET_USE_NAMESPACE
 
@@ -29,7 +29,7 @@ DCORE_USE_NAMESPACE
 int main(int argc, char *argv[])
 {
     // 应用计时
-    QTime useTime;
+    QElapsedTimer useTime;
     useTime.start();
     //为了更精准，起动就度量时间
     qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
