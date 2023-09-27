@@ -77,7 +77,6 @@ pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
 pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
 
-
 # Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
 set(TERMINALWIDGET_VERSION_MAJOR "0")
@@ -167,6 +166,7 @@ set (DTNG_CPP_FILES
     src/views/listview.cpp
     src/views/customthemesettingdialog.cpp
     src/views/themepreviewarea.cpp
+    src/views/switchthememenu.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -217,6 +217,7 @@ set (DTNG_HEADER_FILES
     src/views/listview.h
     src/views/customthemesettingdialog.h
     src/views/themepreviewarea.h
+    src/views/switchthememenu.h
 )
 
 set (DTNG_QRC_FILES

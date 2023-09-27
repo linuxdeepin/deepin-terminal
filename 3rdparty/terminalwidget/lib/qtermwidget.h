@@ -127,7 +127,7 @@ public:
      * availableColorSchemes() or a full path to a color scheme.
      */
     //设置主题的配色方案
-    void setColorScheme(const QString &name, bool needReloadTheme = false);
+    int setColorScheme(const QString &name);
     static QStringList availableColorSchemes();
     static void addCustomColorSchemeDir(const QString &custom_dir);
 
@@ -198,7 +198,7 @@ public:
      * @param preserveLineBreaks Specifies whether new line characters should
      * be inserted into the returned text at the end of each terminal line.
      */
-    QString selectedText(const Screen::DecodingOptions options=Screen::PreserveLineBreaks);
+    QString selectedText(const Screen::DecodingOptions options = Screen::PreserveLineBreaks);
 
     void setMonitorActivity(bool);
     void setMonitorSilence(bool);

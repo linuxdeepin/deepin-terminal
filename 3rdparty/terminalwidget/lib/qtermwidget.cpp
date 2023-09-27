@@ -356,7 +356,7 @@ void QTermWidget::setIsAllowScroll(bool isAllowScroll)
 *******************************************************************************/
 void QTermWidget::setNoHasSelect()
 {
-    if(m_bHasSelect) {
+    if (m_bHasSelect) {
         //清除搜索状态
         m_lastBackwardsPosition = -1;
         m_isLastForwards = false;
@@ -455,13 +455,6 @@ void QTermWidget::init(int startnow)
     m_impl->m_terminalDisplay->filterChain()->addFilter(urlFilter);
     m_impl->m_terminalDisplay->filterChain()->setSessionId(m_impl->m_session->sessionId());
 
-//    m_searchBar = new SearchBar(this);
-//    m_searchBar->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
-//    connect(m_searchBar, SIGNAL(searchCriteriaChanged()), this, SLOT(find()));
-//    connect(m_searchBar, SIGNAL(findNext()), this, SLOT(findNext()));
-//    connect(m_searchBar, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
-//    m_layout->addWidget(m_searchBar);
-//    m_searchBar->hide();
 
     if (startnow && m_impl->m_session) {
         m_impl->m_session->run();
@@ -626,7 +619,7 @@ void QTermWidget::setTerminalWordCharacters(const QString &wc)
  3. @日期:    2020-12-01
  4. @说明:    设置主题的配色方案,根据参数 needReloadTheme 判断是否需要重新加载
 *******************************************************************************/
-void QTermWidget::setColorScheme(const QString &origName, bool needReloadTheme)
+int QTermWidget::setColorScheme(const QString &origName)
 {
     const ColorScheme *cs = nullptr;
 
@@ -646,19 +639,21 @@ void QTermWidget::setColorScheme(const QString &origName, bool needReloadTheme)
             cs = ColorSchemeManager::instance()->defaultColorScheme();
         }
     } else {
-        if (name == "customTheme" && needReloadTheme) {
-            ColorSchemeManager::instance()->realodColorScheme(origName);
+        if (name == "customTheme") {
+            ColorSchemeManager::instance()->reloadColorScheme(origName);
         }
         cs = ColorSchemeManager::instance()->findColorScheme(name);
     }
 
     if (!cs) {
         QMessageBox::information(this, tr("Color Scheme Error"), tr("Cannot load color scheme: %1").arg(name));
-        return;
+        return -1;
     }
     ColorEntry table[TABLE_COLORS];
     cs->getColorTable(table);
     m_impl->m_terminalDisplay->setColorTable(table);
+    const QColor &background_color = table[DEFAULT_BACK_COLOR].color;
+    return background_color.lightness();
 }
 
 QStringList QTermWidget::availableColorSchemes()

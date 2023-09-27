@@ -74,7 +74,7 @@ static void doDeleteLater(DSettingsOption *obj)
 TEST_F(UT_Settings_Test, SettingsTest)
 {
     //测试场景：读取的settings的值
-    Settings::instance()->bSwitchTheme = true;
+//    Settings::instance()->bSwitchTheme = true;
 
     UT_STUB_DSETTINGSOPTION_VALUE_CREATE;
     Settings::instance()->opacity();
@@ -169,7 +169,7 @@ TEST_F(UT_Settings_Test, createShortcutEditOptionHandle)
     emit w->editingFinished(QKeySequence(""));
 
     spy.wait(1000);
-    EXPECT_TRUE(spy.count() ==4);
+    EXPECT_TRUE(spy.count() == 4);
 }
 
 TEST_F(UT_Settings_Test, createShellConfigComboxOptionHandle)
@@ -211,7 +211,7 @@ TEST_F(UT_Settings_Test, loadDefaultsWhenReinstall)
     EXPECT_TRUE(spy.count() == 1);
 }
 
-static FontDataList ut_DBusManager_callAppearanceFont( QString)
+static FontDataList ut_DBusManager_callAppearanceFont(QString)
 {
     return FontDataList().appendValues({"Courier 10 Pitch", "DejaVu Sans Mono", "Hack", "Liberation Mono", "Linux Libertine Mono O", "Nimbus Mono L", "Nimbus Mono PS", "Noto Mono", "Noto Sans Mono", "Noto Sans Mono CJK JP", "Noto Sans Mono CJK KR", "Noto Sans Mono CJK SC", "Noto Sans Mono CJK TC", "等距更纱黑体 SC", "文泉驿等宽微米黑"});
 }
