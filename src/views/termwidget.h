@@ -274,6 +274,12 @@ public:
      */
     void changeTitleColor(int lightness);
 
+    /**
+     * @brief 设置系统主题和主题
+     * @param colorTheme
+     */
+    void setTheme(const QString &colorTheme);
+
 public slots:
     /**
      * @brief Terminal的各项设置生效

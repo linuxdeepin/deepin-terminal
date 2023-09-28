@@ -487,13 +487,12 @@ public:
 
 
     void showTheme(const QString &themeName);
+
     /**
-     * @brief 选择内置主题项
-     * @author ut000125 sunchengxi
-     * @param action
-     * @param themeNameStr 主题项
+     * @brief 自定义主题
+     * @param themeNameStr
      */
-    void switchThemeAction(QAction *&action, const QString &themeNameStr);
+    void customTheme(const QString &themeNameStr);
 
 
 protected slots:
@@ -521,15 +520,9 @@ protected slots:
      */
     void themeActionHoveredSlot(QAction *);
     /**
-     * @brief 设置选中的主题项的槽函数
-     * @author ut000125 sunchengxi
+     * @brief 主题还原
      */
-    void setThemeCheckItemSlot();
-    /**
-     * @brief 主题菜单隐藏时设置主题槽函数
-     * @author ut000125 sunchengxi
-     */
-    void menuHideSetThemeSlot();
+    void themeRecovery();
 
     void slotShowRenameTabDialog(QString Identifier);
     void slotMenuCloseOtherTab(QString Identifier);

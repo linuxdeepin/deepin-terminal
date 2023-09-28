@@ -183,16 +183,10 @@ signals:
     void hostnameChanged();
 
     /**
-     * @brief 主题预览
+     * @brief 主题变化
      * @param colorTheme
      */
-    void tryColorTheme(const QString &colorTheme);
-
-    /**
-     * @brief 还原选中主题
-     * @param colorTheme
-     */
-    void reColorTheme(const QString &colorTheme);
+    void changeColorTheme(const QString &colorTheme);
 
 public slots:
     /**

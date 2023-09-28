@@ -326,7 +326,7 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
 void Service::slotCustomThemeSettingDialogFinished(int result)
 {
     if (CustomThemeSettingDialog::Accepted == result) {
-        m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
+        m_settingOwner->customTheme(Settings::instance()->m_configCustomThemePath);
         return;
     }
 }

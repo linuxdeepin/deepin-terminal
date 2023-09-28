@@ -1458,21 +1458,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     if (QEvent::KeyPress == event->type()) {
         //将事件转化为键盘事件
         QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
-        //按下Tab键执行焦点切换事件，如果个别控件需要特殊处理TAB的话，在这里加代码
-#if 0
-        if (key_event->key() == Qt::Key_Tab) {
-            bool realm_edit_focus = false;  //= realm_line_edit->hasFocus();
-            bool user_edit_focus = false;   // user_line_edit->hasFocus();
-            focusNextChild();
-            if (realm_edit_focus) {
-                // user_line_edit->setFocus();
-            } else {
-                // password_line_edit->setFocus();
-            }
-
-            return true;
-        }
-#endif
         // 全局按下ESC键返回终端，过滤掉个别情况
         if (Qt::Key_Escape == key_event->key()) {
             QString filterReason; // 过滤原因
@@ -2089,8 +2074,8 @@ void MainWindow::addThemeMenuItems()
 
         checkThemeItem();
 
-        connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(setThemeCheckItemSlot()));
-        connect(switchThemeMenu, SIGNAL(menuHideSetThemeSignal()), this, SLOT(menuHideSetThemeSlot()));
+        connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(themeRecovery()));
+        connect(switchThemeMenu, SIGNAL(menuHideSetThemeSignal()), this, SLOT(themeRecovery()));
     }
 }
 
@@ -2101,8 +2086,9 @@ void MainWindow::addThemeFromConfig()
     int themeCount = themeList.count();
     for (int i = 0; i < themeCount; ++i) {
         QString strTheme = themeList[i];
-        if (strTheme == THEME_DARK || strTheme == THEME_LIGHT) {
-            // 将深和浅色主题抛弃
+        if (strTheme == THEME_DARK || strTheme == THEME_LIGHT
+                || strTheme == "customTheme") {
+            // 将深、浅色和自定义主题主题抛弃
             continue;
         }
         QAction *themeItem = switchThemeMenu->addAction(strTheme);
@@ -2110,16 +2096,6 @@ void MainWindow::addThemeFromConfig()
         group->addAction(themeItem);
         themeBuiltinActionMap.insert(strTheme, themeItem);
     }
-}
-
-void MainWindow::setThemeCheckItemSlot()
-{
-    emit Service::instance()->reColorTheme(Settings::instance()->colorScheme());
-}
-
-void MainWindow::menuHideSetThemeSlot()
-{
-    emit Service::instance()->reColorTheme(Settings::instance()->colorScheme());
 }
 
 void MainWindow::switchThemeAction(QAction *action)
@@ -2154,18 +2130,16 @@ void MainWindow::setTheme(bool isCustom, const QString &themeName)
     Settings::instance()->setColorScheme(strColorTheme);
 }
 
-void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr)
+void MainWindow::customTheme(const QString &themeNameStr)
 {
-    if (action == themeCustomAction) {
-        DGuiApplicationHelper::ColorType systemTheme = DGuiApplicationHelper::DarkType;
-        if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
-            systemTheme = DGuiApplicationHelper::LightType;
-        }
-        setTheme(false, themeNameStr);
-        DApplicationHelper::instance()->setPaletteType(systemTheme);
+    if (themeNameStr != Settings::instance()->colorScheme()) {
+        // 写配置文件
+        Settings::instance()->setColorScheme(themeNameStr);
     } else {
-        switchThemeAction(action);
+        // 修改了自定义配置
+        emit Service::instance()->changeColorTheme(themeNameStr);
     }
+
 }
 
 void MainWindow::themeActionTriggeredSlot(QAction *action)
@@ -2188,8 +2162,13 @@ void MainWindow::themeActionHoveredSlot(QAction *action)
     }
     if (switchThemeMenu->hoveredThemeStr != strColorTheme) {
         switchThemeMenu->hoveredThemeStr = strColorTheme;
-        emit Service::instance()->tryColorTheme(strColorTheme);
+        emit Service::instance()->changeColorTheme(strColorTheme);
     }
+}
+
+void MainWindow::themeRecovery()
+{
+    emit Service::instance()->changeColorTheme(Settings::instance()->colorScheme());
 }
 
 void MainWindow::onCommandActionTriggered()

@@ -73,10 +73,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     if (!Settings::instance()->colorScheme().isEmpty()) {
         colorTheme = Settings::instance()->colorScheme();
     }
-    int lightness = setColorScheme(colorTheme);
-    if (colorTheme != Settings::instance()->m_configCustomThemePath) {
-        changeTitleColor(lightness);
-    }
+    setTheme(colorTheme);
 
     // 这个参数启动为默认值UTF-8
     setTextCodec(QTextCodec::codecForName("UTF-8"));
@@ -176,8 +173,7 @@ void TermWidget::initConnections()
     connect(this, &QWidget::customContextMenuRequested, this, &TermWidget::customContextMenuCall);
 
     // 主题变化只能从公共方法发出信号通知全局
-    connect(Service::instance(), &Service::tryColorTheme, this, &TermWidget::onColorThemeChanged);
-    connect(Service::instance(), &Service::reColorTheme, this, &TermWidget::onColorThemeChanged);
+    connect(Service::instance(), &Service::changeColorTheme, this, &TermWidget::onColorThemeChanged);
     connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &TermWidget::onThemeChanged);
 
     // 未找到搜索的匹配结果
@@ -308,8 +304,7 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 
 inline void TermWidget::onColorThemeChanged(const QString &colorTheme)
 {
-    int lightness = setColorScheme(colorTheme);
-    changeTitleColor(lightness);
+    setTheme(colorTheme);
 }
 
 void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
@@ -713,6 +708,22 @@ void TermWidget::changeTitleColor(int lightness)
     }
 }
 
+void TermWidget::setTheme(const QString &colorTheme)
+{
+    // 设置主题
+    int lightness = setColorScheme(colorTheme);
+    // 设置系统主题
+    if (colorTheme != Settings::instance()->m_configCustomThemePath) {
+        changeTitleColor(lightness);
+    } else {
+        DGuiApplicationHelper::ColorType systemTheme = DGuiApplicationHelper::DarkType;
+        if ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+            systemTheme = DGuiApplicationHelper::LightType;
+        }
+        DApplicationHelper::instance()->setPaletteType(systemTheme);
+    }
+}
+
 inline void TermWidget::onOpenFile()
 {
     QString fileName = getFormatFileName(selectedText());
@@ -1104,8 +1115,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     }
 
     if ("basic.interface.theme" == keyName) {
-        int lightness = setColorScheme(Settings::instance()->colorScheme());
-        changeTitleColor(lightness);
+        setTheme(Settings::instance()->colorScheme());
         return;
     }
     // 这里只是立即生效一次，真正生效起作用的地方在初始的connect中
