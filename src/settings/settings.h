@@ -215,11 +215,6 @@ public:
      */
     int historySize() const;
 
-    //选择主题，false:选择主题未确定，读写缓存； true:选择主题已确定，读写settings
-    //这里默认true是为了：启动时读取settings的值
-    bool bSwitchTheme           = true;
-    //选择主题未确定的缓存
-    QMap<QString, QString> switchThemeMap;
     //主题名称
     QString themeStr            = "";
     //内置主题名称

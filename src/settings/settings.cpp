@@ -43,7 +43,7 @@ Settings::Settings() : QObject(qApp)
 
 Settings *Settings::instance()
 {
-    if(nullptr == m_settings_instance) {
+    if (nullptr == m_settings_instance) {
         m_settings_instance = new Settings();
         m_settings_instance->init();
     }
@@ -72,7 +72,7 @@ void Settings::init()
 
     // 默认配置
     QFile configFile(":/other/default-config.json");
-    if(!configFile.open(QFile::ReadOnly)) {
+    if (!configFile.open(QFile::ReadOnly)) {
         qInfo() << "can not open default-config.json";
     }
     QByteArray json = configFile.readAll();
@@ -81,7 +81,7 @@ void Settings::init()
     QJsonDocument doc = QJsonDocument::fromJson(json);
     QVariant jsonVar = doc.toVariant();
     //龙芯 且 服务器企业版
-    if(Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
+    if (Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
         //隐藏透明度界面
         Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "opacity", "hide", true);
         //隐藏背景模糊界面
@@ -92,7 +92,7 @@ void Settings::init()
     QString systemFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
 
     //无效字体时，exactMatch：Returns true if a window system font exactly matching the settings of this font is available.
-    if(!QFont(defaultFont).exactMatch())
+    if (!QFont(defaultFont).exactMatch())
         Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "font", "default", systemFixedFont);
     //更新json
     json = QJsonDocument::fromVariant(jsonVar).toJson();
@@ -110,13 +110,12 @@ void Settings::init()
      * 要求以下三个场景启动时，主题为Dark
      * 1.首次运行终端，colorScheme=""
      * 2.删除conf文件，colorScheme=""
-     * 3.人为修改conf，colorScheme=不可预知
+     * 3.人为修改conf，colorScheme=为空
      * 综上即colorScheme非Light且非Dark时，修改主题为Dark
      */
-    if("Light" != colorScheme() && "Dark" != colorScheme()) {
+    if (colorScheme().isEmpty()) {
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         setColorScheme("Dark");
-        setExtendColorScheme("");
     }
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
@@ -360,7 +359,7 @@ void Settings::initConnection()
 
 void Settings::releaseInstance()
 {
-    if(nullptr != m_settings_instance) {
+    if (nullptr != m_settings_instance) {
         delete m_settings_instance;
         m_settings_instance = nullptr;
     }
@@ -486,39 +485,21 @@ int Settings::historySize() const
 
 QString Settings::colorScheme() const
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        return switchThemeMap["basic.interface.theme"];
-    }
     return settings->option("basic.interface.theme")->value().toString();
 }
 
 void Settings::setColorScheme(const QString &name)
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        switchThemeMap["basic.interface.theme"] = name;
-        return;
-    }
     settings->option("basic.interface.theme")->setValue(name);
 }
 
 QString Settings::extendColorScheme() const
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        return switchThemeMap["basic.interface.expand_theme"];
-    }
     return settings->option("basic.interface.expand_theme")->value().toString();
 }
 
 void Settings::setExtendColorScheme(const QString &name)
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        switchThemeMap["basic.interface.expand_theme"] = name;
-        return;
-    }
     settings->option("basic.interface.expand_theme")->setValue(name);
 }
 
@@ -605,7 +586,7 @@ void Settings::handleWidthFont()
     //更新设置界面的字体信息
     QVariant fontname = comboBox->currentData();
     comboBox->clear();
-    for(int k = 0; k < Whitelist.count(); k ++) {
+    for (int k = 0; k < Whitelist.count(); k ++) {
         comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
     comboBox->setCurrentIndex(comboBox->findData(fontname));
@@ -660,7 +641,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
                  << "Noto Sans Mono CJK TC";
         Whitelist.appendValues(fontlist);
     }
-    for(int k = 0; k < Whitelist.count(); k ++) {
+    for (int k = 0; k < Whitelist.count(); k ++) {
         comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
 
@@ -675,7 +656,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     });
 
     option->connect(
-        comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), option, [ = ](int index) {
+    comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), option, [ = ](int index) {
         option->setValue(comboBox->itemData(index));
     });
 
@@ -719,8 +700,7 @@ QPair<QWidget *, QWidget *> Settings::createValSliderHandle(QObject *obj)
     const int step = option->data("step").toInt();
 
     valTicksList << tr("Fast");
-    for (int i = 0; i < ((maxVal - minVal) / step - 1); i++)
-    {
+    for (int i = 0; i < ((maxVal - minVal) / step - 1); i++) {
         valTicksList << "";
     }
     valTicksList << tr("Slow");
