@@ -214,7 +214,7 @@ void DetectCode::icuDetectTextEncoding(const QString &filePath, QByteArrayList &
     FILE *file;
     file = fopen(filePath.toLocal8Bit().data(), "rb");
     if (file == nullptr) {
-        qInfo() << "fopen file failed.";
+        qWarning() << "fopen file failed.";
         return;
     }
 
@@ -425,7 +425,7 @@ int DetectCode::ChartDet_DetectingTextCoding(const char *str, QString &encoding,
     DetectObj *obj = detect_obj_init();
 
     if (obj == nullptr) {
-        // qInfo() << "Memory Allocation failed\n";
+        qWarning() << "Code identification libarary memory allocation failed\n";
         return CHARDET_MEM_ALLOCATED_FAIL;
     }
 
@@ -441,7 +441,6 @@ int DetectCode::ChartDet_DetectingTextCoding(const char *str, QString &encoding,
             size_t len = fread(buff, 1, buffer_size, fp);
             detect(buff, &obj);
             QString encoding = obj->encoding;
-            qInfo() << "==== encoding: " << encoding;
             if (encoding == "") {
                 continue;
             } else if (!encoding.isEmpty()) {

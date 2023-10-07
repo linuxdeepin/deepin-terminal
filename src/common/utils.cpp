@@ -1,23 +1,22 @@
-// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 #include "utils.h"
 #include "termwidget.h"
 #include "dbusmanager.h"
-
+#include "qtcompat.h"
 #include <DLog>
 #include <DMessageBox>
 #include <DLineEdit>
 #include <DFileDialog>
-
 #include <QDBusMessage>
 #include <QDBusConnection>
 #include <QUrl>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QFontInfo>
 #include <QMimeType>
 #include <QApplication>
 #include <QMimeDatabase>
@@ -25,13 +24,15 @@
 #include <QImageReader>
 #include <QPixmap>
 #include <QFile>
+#include <QFontDatabase>
+#include <QFontMetrics>
+#include <QTextLayout>
 #include <QTime>
-#include <QMap>
-#include <QLocale>
-#include <QString>
-#include <QScopedPointer>
+#include <QFontMetrics>
+#include <QLoggingCategory>
+#include <QCollator>
 #include <QProcessEnvironment>
-
+#include <QThread>
 #include <sys/utsname.h>
 #include <fontconfig/fontconfig.h>
 
@@ -396,11 +397,11 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
         // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
         parser.process(arguments);
     } else {
-        qInfo() << "input args:" << qPrintable(arguments.join(" "));
-        qInfo() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
-        qInfo() << "arg: optionExecute" << Properties[Execute].toStringList().join(" ");
-        qInfo() << "arg: optionQuakeMode" << parser.isSet(optQuakeMode);
-        qInfo() << "arg: optionWindowState" << parser.isSet(optWindowState);
+        qInfo() << "Command line input args:" << qPrintable(arguments.join(" "));
+        qInfo() << "The work directory :" << parser.value(optWorkDirectory);
+        qInfo() << QString("Execute %1 command in the terminal").arg(Properties[Execute].toStringList().join(" "));
+        qInfo() << "Run in quake mode :" << parser.isSet(optQuakeMode);
+        qInfo() << "Set the window mode on starting :" << parser.isSet(optWindowState);
         // 这个位置参数解析出来是无法匹配的，可是不带前面标识符，无法准确使用。
     }
     return;
@@ -453,11 +454,10 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
     if (paraList.size() != 0) {
         for (int i = 0; i < index - startIndex; i++) {
             arguments.removeAt(startIndex);
-            qInfo() << arguments.size();
         }
         arguments.removeOne("-e");
         arguments.removeOne("--execute");
-        qInfo() <<  opt << paraList << "arguments" << arguments;
+        qInfo() << "Remove the arguments after '-e',the arguments :" << arguments;
     }
 
     return paraList;
@@ -481,7 +481,7 @@ QStringList Utils::parseNestedQString(QString str)
         //对路径带空格的脚本，右键执行时不进行拆分处理， //./deepin-terminal "-e"  "/home/lx777/Desktop/a b/PerfTools_1.9.sh"
         QFileInfo fi(str);
         if (fi.isFile()) {
-            qInfo() << "this is file,not split.";
+            qWarning() << "this is file,not split.";
             paraList.append(str);
             return paraList;
         }
@@ -548,7 +548,7 @@ QList<QByteArray> Utils::encodeList()
             }
         }
         if (!bFind)
-            qInfo() << "encode name :" << name << "not find!";
+            qWarning() << "encode (name :" << name << ") not find!";
         else
             encodeList << encodename;
 
@@ -623,8 +623,8 @@ bool Utils::isLoongarch()
             return false;
         }
         m_Arch = QString::fromLocal8Bit(utsbuf.machine);
-        qInfo() << "m_Arch:" << m_Arch;
     }
+    qInfo() << "Current system architecture:" << m_Arch;
     return "mips64" == m_Arch || "loongarch64" == m_Arch;
 }
 
@@ -698,7 +698,7 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     MainWindow *main = nullptr;
     QWidget *pWidget = currWidget->parentWidget();
     while (pWidget != nullptr) {
-        qInfo() << pWidget->metaObject()->className();
+        qInfo() << "Current Window Class Name :" << pWidget->metaObject()->className();
         if (("NormalWindow" == pWidget->objectName()) || ("QuakeWindow" == pWidget->objectName())) {
             qInfo() << "Has found MainWindow";
             main = static_cast<MainWindow *>(pWidget);
@@ -721,7 +721,6 @@ FontDataList Utils::getFonts()
     }
 
     const QString localeName = QLocale::system().name();
-    // locale中的英语：en_*的形式，比如：en_US, en_GB．和FontConfig的FamilyLang的值(en)不一样．
     const QString curLang = localeName.startsWith("en") ? "en" : localeName.toLower().replace("_", "-");
 
     QScopedPointer<FcObjectSet, FcObjectSetDeleter> os(FcObjectSetBuild(

@@ -1,7 +1,7 @@
-// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
+// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 #include "settings.h"
 #include "newdspinbox.h"
 //#include "utils.h"
@@ -9,20 +9,17 @@
 #include "service.h"
 #include "dbusmanager.h"
 #include "tabrenamewidget.h"
-
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
 #include <DLog>
 #include <DSlider>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DKeySequenceEdit>
 #include <DSysInfo>
-
 #include <QApplication>
 #include <QStandardPaths>
-#include <QStringList>
 #include <QFontDatabase>
-#include <QHBoxLayout>
+#include <QLoggingCategory>
 #include <QCollator>
 #include <QProcessEnvironment>
 #include <QJsonDocument>
@@ -131,7 +128,7 @@ void Settings::init()
     windowState->setData("items", windowStateMap);
 
     for (QString &key : settings->keys())
-        qInfo() << key << settings->value(key);
+        qDebug() <<"Config' Key: " <<  key << " Config' Value: " << settings->value(key);
     /********************* Modify by n014361 wangpeili End ************************/
 
     initConnection();
@@ -142,7 +139,6 @@ void Settings::init()
     m_Watcher = new QFileSystemWatcher();
     m_Watcher->addPath(m_configPath);
     connect(m_Watcher, &QFileSystemWatcher::fileChanged, this, [this](QString file) {
-        qInfo() << "fileChanged" << file;
         reload();
         //监控完一次就不再监控了，所以要再添加
         m_Watcher->addPath(m_configPath);
@@ -423,12 +419,10 @@ bool Settings::ScrollWheelZoom()
 //    for (QString &key : newSettings.childGroups()) {
 //        //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
 //        if (!settings->keys().contains(key)) {
-//            qInfo() << "reload failed: system not found " << key << "now remove it";
 //            newSettings.remove(key);
 //            continue;
 //        }
 //        if (settings->value(key) != newSettings.value(key + "/value")) {
-//            qInfo() << "reload update:" << key << settings->value(key);
 //            settings->option(key)->setValue(newSettings.value(key + "/value"));
 //        }
 //    }
@@ -529,7 +523,6 @@ QString Settings::wordCharacters() const
 //    if (name != m_EncodeName) {
 //        m_EncodeName = name;
 //        emit encodeSettingChanged(name);
-//        qInfo() << "encode changed to" << name;
 //    }
 //}
 
@@ -583,7 +576,7 @@ void Settings::handleWidthFont()
 
             int ret = base.addApplicationFont(fontpath);
             if (-1 == ret)
-                qInfo() << "load " << name << " font faild";
+                qWarning() << "load " << name << " font faild";
 
         }
     }
@@ -823,7 +816,8 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 配置修改
     option->connect(option, &DTK_CORE_NAMESPACE::DSettingsOption::valueChanged, rightWidget, [ = ](const QVariant & value) {
         QString keyseq = value.toString();
-        qInfo() << "valueChanged" << rightWidget->option()->key() << keyseq;
+        qInfo() << "Current configuration modification! Config's Key: " << rightWidget->option()->key()
+                << "Config's Value: " << keyseq;
         if (SHORTCUT_VALUE == keyseq || keyseq.isEmpty()) {
             rightWidget->clear();
             return;
@@ -886,4 +880,58 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     return optionWidget;
 }
 
+void Settings::setFontSize(const int size)
+{
+    if (size < 5 || size > 50) return;
+    settings->option("basic.interface.font_size")->setValue(size);
+}
+
+void Settings::setFontName(const QString font)
+{
+    FontDataList fontList = DBusManager::callAppearanceFont("monospacefont");
+    qDebug() << font << fontList.size();
+    for (int k = 0; k < fontList.count(); k++) {
+        if (font == fontList[k].key || font == fontList[k].value) {
+            settings->option("basic.interface.font")->setValue(font);
+            break;
+        }
+    }
+}
+
+void Settings::setOpacity(const int opacity)
+{
+    if (opacity < 0 || opacity > 100) return;
+    settings->option("basic.interface.opacity")->setValue(opacity);
+}
+
+void Settings::setConsoleColorScheme(const QString scheme)
+{
+    if (scheme == "Dark" || scheme == "Light") {
+        settings->option("basic.interface.theme")->setValue(scheme);
+        settings->option("basic.interface.expand_theme")->setValue("");
+    }
+}
+
+void Settings::setCursorShape(const int shape)
+{
+    if (shape < 0 || shape > 2) return;
+    settings->option("advanced.cursor.cursor_shape")->setValue(shape);
+}
+
+void Settings::setCursorBlink(const bool blink)
+{
+    settings->option("advanced.cursor.cursor_blink")->setValue(blink);
+}
+
+void Settings::setConsoleShell(const QString shellName)
+{
+    QMap<QString, QString> shellMap = Service::instance()->getShells();
+    for (auto itr = shellMap.begin(); itr != shellMap.end(); ++itr) {
+        qDebug() <<"Console Shell("<< shellName << ")! key:" <<  itr.key() << "value: " << itr.value();
+        if (shellName == itr.key() || shellName == itr.value()) {
+            settings->option("advanced.shell.default_shell")->setValue(itr.value());
+            break;
+        }
+    }
+}
 

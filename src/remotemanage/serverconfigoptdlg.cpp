@@ -534,7 +534,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
     accept();
-    qInfo() << __FUNCTION__ << "add or save remote config finish";
+    qInfo() << "Add or save remote config finish";
 }
 
 void ServerConfigOptDlg::slotFileChooseDialog()

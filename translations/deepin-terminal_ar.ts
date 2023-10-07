@@ -60,7 +60,7 @@
         <translation>حفظ</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="624"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="625"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>حسنا</translation>
@@ -76,12 +76,12 @@
         <translation>الرجاء إدخال أمر</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="444"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="445"/>
         <source>The name already exists,</source>
         <translation>الاسم موجود بالفعل،</translation>
     </message>
     <message>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="445"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="446"/>
         <source>please input another one.</source>
         <translation>الرجاء إدخال اسم آخر</translation>
     </message>
@@ -118,53 +118,53 @@
 <context>
     <name>CustomThemeSettingDialog</name>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="238"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="237"/>
         <source>Custom Theme</source>
         <translation>سمة مخصصة</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="262"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="261"/>
         <source>Style:</source>
         <translation>النمط:</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="266"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="265"/>
         <source>Light</source>
         <translation>إضاءة</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="271"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="270"/>
         <source>Dark</source>
         <translation>مظلم</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="324"/>
         <source>Fore color:</source>
         <translation>اللون الامامي</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="332"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="331"/>
         <source>Back color:</source>
         <translation>اللون الخلفي</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="350"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="349"/>
         <source>Prompt PS1:</source>
         <translation>موجه PS1</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="354"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="353"/>
         <source>Prompt PS2:</source>
         <translation>موجه PS2</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="424"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="423"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location filename="../src/views/customthemesettingdialog.cpp" line="431"/>
+        <location filename="../src/views/customthemesettingdialog.cpp" line="430"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation>تأكيد</translation>
@@ -216,28 +216,30 @@
 <context>
     <name>ListView</name>
     <message>
-        <location filename="../src/views/listview.cpp" line="868"/>
+        <location filename="../src/views/listview.cpp" line="294"/>
+        <location filename="../src/views/listview.cpp" line="863"/>
         <source>Delete Server</source>
         <translation>حذف الخادم</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="870"/>
+        <location filename="../src/views/listview.cpp" line="865"/>
         <source>Delete Custom Command</source>
         <translation>مسح الأمر المخصص</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="873"/>
+        <location filename="../src/views/listview.cpp" line="868"/>
         <source>Cancel Server Group</source>
         <translation>إلغاء مجموعة الخوادم</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="882"/>
+        <location filename="../src/views/listview.cpp" line="877"/>
         <source>Ungrouped servers will go back to server list!</source>
         <translation>الخوادم غير المجمعة ستعود إلى قائمة الخوادم!</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="498"/>
-        <location filename="../src/views/listview.cpp" line="880"/>
+        <location filename="../src/views/listview.cpp" line="294"/>
+        <location filename="../src/views/listview.cpp" line="503"/>
+        <location filename="../src/views/listview.cpp" line="875"/>
         <source>Are you sure you want to delete %1?</source>
         <translation>هل أنت متأكد من حذف %1؟</translation>
     </message>
@@ -245,35 +247,35 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="224"/>
-        <location filename="../src/main/mainwindow.cpp" line="276"/>
+        <location filename="../src/main/mainwindow.cpp" line="225"/>
+        <location filename="../src/main/mainwindow.cpp" line="277"/>
         <source>New window</source>
         <translation>نافذة جديدة</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="291"/>
+        <location filename="../src/main/mainwindow.cpp" line="292"/>
         <source>Settings</source>
         <translation>الإعدادات</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="702"/>
+        <location filename="../src/main/mainwindow.cpp" line="709"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="704"/>
+        <location filename="../src/main/mainwindow.cpp" line="711"/>
         <source>Close</source>
         <comment>button</comment>
         <translation>إغلاق</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1757"/>
+        <location filename="../src/main/mainwindow.cpp" line="1763"/>
         <source>Type path to download file</source>
         <translation>اكتب المسار لتنزيل الملف</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2054"/>
+        <location filename="../src/main/mainwindow.cpp" line="2060"/>
         <source>Custom Theme</source>
         <translation>سمة مخصصة</translation>
     </message>
@@ -389,15 +391,15 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
-        <location filename="../src/main/mainwindow.cpp" line="1599"/>
+        <location filename="../src/main/mainwindow.cpp" line="1605"/>
         <source>Others</source>
         <translation>غير ذلك</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <location filename="../src/main/terminalapplication.cpp" line="25"/>
-        <location filename="../src/main/mainwindow.cpp" line="1597"/>
-        <location filename="../src/main/mainwindow.cpp" line="2188"/>
+        <location filename="../src/main/mainwindow.cpp" line="1603"/>
+        <location filename="../src/main/mainwindow.cpp" line="2194"/>
         <source>Terminal</source>
         <translation>الطرفية</translation>
     </message>
@@ -408,61 +410,61 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
-        <location filename="../src/main/mainwindow.cpp" line="1663"/>
+        <location filename="../src/main/mainwindow.cpp" line="1669"/>
         <source>Custom commands</source>
         <translation>أوامر مخصصة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
-        <location filename="../src/main/mainwindow.cpp" line="1663"/>
+        <location filename="../src/main/mainwindow.cpp" line="1669"/>
         <source>Display shortcuts</source>
         <translation>عرض الإختصارات</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
-        <location filename="../src/main/mainwindow.cpp" line="1663"/>
+        <location filename="../src/main/mainwindow.cpp" line="1669"/>
         <source>Remote management</source>
         <translation>الإدارة عن بعد</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/main/mainwindow.cpp" line="1649"/>
         <source>New tab</source>
         <translation>نافذة جديدة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/main/mainwindow.cpp" line="1649"/>
         <source>Next tab</source>
         <translation>النافذة التالية</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/main/mainwindow.cpp" line="1649"/>
         <source>Previous tab</source>
         <translation>النافذة السابقة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
-        <location filename="../src/main/mainwindow.cpp" line="1645"/>
+        <location filename="../src/main/mainwindow.cpp" line="1651"/>
         <source>Select left workspace</source>
         <translation>حدد مساحة العمل اليسرى</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
-        <location filename="../src/main/mainwindow.cpp" line="1644"/>
+        <location filename="../src/main/mainwindow.cpp" line="1650"/>
         <source>Select lower workspace</source>
         <translation>حدد مساحة العمل السفلى</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="1645"/>
+        <location filename="../src/main/mainwindow.cpp" line="1651"/>
         <source>Select right workspace</source>
         <translation>حدد مساحة العمل اليمنى</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="1644"/>
+        <location filename="../src/main/mainwindow.cpp" line="1650"/>
         <source>Select upper workspace</source>
         <translation>حدد مساحة العمل العليا</translation>
     </message>
@@ -473,55 +475,55 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="1646"/>
+        <location filename="../src/main/mainwindow.cpp" line="1652"/>
         <source>Go to tab 1</source>
         <translation>الذهاب إلى النافذة رقم 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="1646"/>
+        <location filename="../src/main/mainwindow.cpp" line="1652"/>
         <source>Go to tab 2</source>
         <translation>الذهاب إلى النافذة رقم 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="1646"/>
+        <location filename="../src/main/mainwindow.cpp" line="1652"/>
         <source>Go to tab 3</source>
         <translation>الذهاب إلى النافذة رقم 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
-        <location filename="../src/main/mainwindow.cpp" line="1647"/>
+        <location filename="../src/main/mainwindow.cpp" line="1653"/>
         <source>Go to tab 4</source>
         <translation>الذهاب إلى النافذة رقم 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
-        <location filename="../src/main/mainwindow.cpp" line="1647"/>
+        <location filename="../src/main/mainwindow.cpp" line="1653"/>
         <source>Go to tab 5</source>
         <translation>الذهاب إلى النافذة رقم 5</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
-        <location filename="../src/main/mainwindow.cpp" line="1647"/>
+        <location filename="../src/main/mainwindow.cpp" line="1653"/>
         <source>Go to tab 6</source>
         <translation>الذهاب إلى النافذة رقم 6</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="1648"/>
+        <location filename="../src/main/mainwindow.cpp" line="1654"/>
         <source>Go to tab 7</source>
         <translation>الذهاب إلى النافذة رقم 7</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="1648"/>
+        <location filename="../src/main/mainwindow.cpp" line="1654"/>
         <source>Go to tab 8</source>
         <translation>الذهاب إلى النافذة رقم 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
-        <location filename="../src/main/mainwindow.cpp" line="1648"/>
+        <location filename="../src/main/mainwindow.cpp" line="1654"/>
         <source>Go to tab 9</source>
         <translation>الذهاب إلى النافذة رقم 9</translation>
     </message>
@@ -557,33 +559,33 @@
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
-        <location filename="../src/views/tabbar.cpp" line="486"/>
+        <location filename="../src/views/tabbar.cpp" line="485"/>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="1663"/>
+        <location filename="../src/main/mainwindow.cpp" line="1669"/>
         <source>Rename title</source>
         <translation>إعادة تسمية العنوان</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
-        <location filename="../src/main/mainwindow.cpp" line="1663"/>
+        <location filename="../src/main/mainwindow.cpp" line="1669"/>
         <source>Fullscreen</source>
         <translation>ملء الشاشة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
-        <location filename="../src/main/mainwindow.cpp" line="1628"/>
+        <location filename="../src/main/mainwindow.cpp" line="1634"/>
         <source>Copy</source>
         <translation>نسخ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="1628"/>
+        <location filename="../src/main/mainwindow.cpp" line="1634"/>
         <source>Default size</source>
         <translation>الحجم الافتراضي</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
-        <location filename="../src/main/mainwindow.cpp" line="1628"/>
+        <location filename="../src/main/mainwindow.cpp" line="1634"/>
         <source>Paste</source>
         <translation>لصق</translation>
     </message>
@@ -594,7 +596,7 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
-        <location filename="../src/main/mainwindow.cpp" line="1628"/>
+        <location filename="../src/main/mainwindow.cpp" line="1634"/>
         <source>Select all</source>
         <translation>تحديد الكل</translation>
     </message>
@@ -610,13 +612,13 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="1628"/>
+        <location filename="../src/main/mainwindow.cpp" line="1634"/>
         <source>Zoom in</source>
         <translation>تكبير</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
-        <location filename="../src/main/mainwindow.cpp" line="1628"/>
+        <location filename="../src/main/mainwindow.cpp" line="1634"/>
         <source>Zoom out</source>
         <translation>تصغير</translation>
     </message>
@@ -626,29 +628,29 @@
         <translation>إغلاق النوافذ الأخرى</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
-        <location filename="../src/main/mainwindow.cpp" line="1645"/>
+        <location filename="../src/main/mainwindow.cpp" line="1651"/>
         <source>Close other workspaces</source>
         <translation>إغلاق مساحة العمل الأخرى</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1247"/>
+        <location filename="../src/views/termwidget.cpp" line="1254"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>لم يتم العثور على &quot;%1&quot;, بدءًا من &quot;%2&quot; بدلاً من ذلك. يرجى التحقق من ملف تهيئة سطح المكتب الخاص بك.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1253"/>
+        <location filename="../src/views/termwidget.cpp" line="1260"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>لم يتم فتح &quot;%1&quot;, غير قادر على تشغيله</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1255"/>
+        <location filename="../src/views/termwidget.cpp" line="1262"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>لم يتم العثور على &quot;%1&quot;, غير قادر على تشغيله</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1298"/>
+        <location filename="../src/views/termwidget.cpp" line="1305"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>تم تعليق الإخراج عن طريق الضغط على Ctrl+S. اضغط على Ctrl+Q للمتابعة.</translation>
     </message>
@@ -658,34 +660,34 @@
         <translation>إغلاق النافذة</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
+        <location filename="../src/views/termwidget.cpp" line="493"/>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
-        <location filename="../src/main/mainwindow.cpp" line="1645"/>
+        <location filename="../src/main/mainwindow.cpp" line="1651"/>
         <source>Close workspace</source>
         <translation>إغلاق مساحة العمل</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
-        <location filename="../src/main/mainwindow.cpp" line="1644"/>
+        <location filename="../src/main/mainwindow.cpp" line="1650"/>
         <source>Horizontal split</source>
         <translation>تقسيم أفقي</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="1644"/>
+        <location filename="../src/main/mainwindow.cpp" line="1650"/>
         <source>Vertical split</source>
         <translation>تقسيم عمودي</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
-        <location filename="../src/main/mainwindow.cpp" line="1628"/>
+        <location filename="../src/main/mainwindow.cpp" line="1634"/>
         <source>Find</source>
         <translation>بحث</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="416"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
-        <location filename="../src/common/utils.cpp" line="263"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="628"/>
+        <location filename="../src/common/utils.cpp" line="264"/>
         <source>please set another one.</source>
         <translation>يرجى تعيين واحد آخر.</translation>
     </message>
@@ -695,139 +697,140 @@
         <translation>الطرفية هي محاكي طرفية متقدم يدعم مساحات العمل والنوافذ المتعددة والإدارة عن بُعد ووضع كويك وميزات أخرى.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1595"/>
+        <location filename="../src/main/mainwindow.cpp" line="1601"/>
         <source>Tabs</source>
         <translation>النوافذ</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="480"/>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/views/tabbar.cpp" line="479"/>
+        <location filename="../src/main/mainwindow.cpp" line="1649"/>
         <source>Close tab</source>
         <translation>إغلاق النافذة</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1644"/>
+        <location filename="../src/main/mainwindow.cpp" line="1650"/>
         <source>Select tab</source>
         <translation>اختيار النافذة</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1615"/>
+        <location filename="../src/main/mainwindow.cpp" line="1621"/>
         <source>Switch focus to &quot;+&quot; icon</source>
         <translation>تبديل التركيز على أيقونة &quot;+&quot;</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1703"/>
-        <location filename="../src/common/utils.cpp" line="157"/>
+        <location filename="../src/main/mainwindow.cpp" line="1709"/>
+        <location filename="../src/common/utils.cpp" line="158"/>
         <source>Select file to upload</source>
         <translation>تحديد ملف للرفع</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1710"/>
-        <location filename="../src/common/utils.cpp" line="162"/>
+        <location filename="../src/main/mainwindow.cpp" line="1716"/>
+        <location filename="../src/common/utils.cpp" line="163"/>
         <source>Upload</source>
         <translation>رفع</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="230"/>
+        <location filename="../src/common/utils.cpp" line="231"/>
         <source>Programs are still running in terminal</source>
         <translation>لا تزال البرامج تعمل في الطرفية</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="182"/>
-        <location filename="../src/common/utils.cpp" line="216"/>
+        <location filename="../src/common/utils.cpp" line="183"/>
+        <location filename="../src/common/utils.cpp" line="217"/>
         <source>Close this terminal?</source>
         <translation>هل تريد إغلاق الطرفية؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="183"/>
-        <location filename="../src/common/utils.cpp" line="217"/>
+        <location filename="../src/common/utils.cpp" line="184"/>
+        <location filename="../src/common/utils.cpp" line="218"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
         <translation>لا تزال هناك عملية قيد التشغيل في هذه الطرفية. سيؤدي إغلاق الطرفية إلى إنهائها.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="187"/>
-        <location filename="../src/common/utils.cpp" line="221"/>
+        <location filename="../src/common/utils.cpp" line="188"/>
+        <location filename="../src/common/utils.cpp" line="222"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
         <translation>لا تزال هناك %1 عملية قيد التشغيل في هذه الطرفية. سيؤدي إغلاق الطرفية إلى إنهاء جميعها.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="192"/>
-        <location filename="../src/common/utils.cpp" line="212"/>
+        <location filename="../src/common/utils.cpp" line="193"/>
+        <location filename="../src/common/utils.cpp" line="213"/>
         <source>Close this window?</source>
         <translation>إغلاق هذه النافذة؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="193"/>
-        <location filename="../src/common/utils.cpp" line="213"/>
+        <location filename="../src/common/utils.cpp" line="194"/>
+        <location filename="../src/common/utils.cpp" line="214"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
         <translation>لا تزال هناك عمليات قيد التشغيل في هذه النافذة. سيؤدي إغلاق النافذة إلى إنهاء جميعها.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1773"/>
-        <location filename="../src/common/utils.cpp" line="136"/>
+        <location filename="../src/main/mainwindow.cpp" line="1779"/>
+        <location filename="../src/common/utils.cpp" line="137"/>
         <source>Select a directory to save the file</source>
         <translation>اختيار المجلد لحفظ هذا الملف</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="230"/>
+        <location filename="../src/common/utils.cpp" line="231"/>
         <source>Are you sure you want to uninstall it?</source>
         <translation>هل أنت متأكد من أنك تريد إلغاء تثبيته؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="243"/>
-        <location filename="../src/common/utils.cpp" line="247"/>
+        <location filename="../src/common/utils.cpp" line="244"/>
+        <location filename="../src/common/utils.cpp" line="248"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation>هل أنت متأكد من أنك تريد إلغاء تثبيت هذا التطبيق؟</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="244"/>
-        <location filename="../src/common/utils.cpp" line="248"/>
+        <location filename="../src/common/utils.cpp" line="245"/>
+        <location filename="../src/common/utils.cpp" line="249"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation>لن تتمكن من استخدام الطرفية بعد الآن.</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="499"/>
-        <location filename="../src/views/listview.cpp" line="893"/>
+        <location filename="../src/views/listview.cpp" line="300"/>
+        <location filename="../src/views/listview.cpp" line="504"/>
+        <location filename="../src/views/listview.cpp" line="888"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
-        <location filename="../src/common/utils.cpp" line="253"/>
+        <location filename="../src/common/utils.cpp" line="254"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="254"/>
-        <location filename="../src/common/utils.cpp" line="298"/>
+        <location filename="../src/common/utils.cpp" line="255"/>
+        <location filename="../src/common/utils.cpp" line="299"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>موافق</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="338"/>
+        <location filename="../src/common/utils.cpp" line="339"/>
         <source>Execute a command in the terminal</source>
         <translation>تنفيذ أمر في الطرفية</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="341"/>
+        <location filename="../src/common/utils.cpp" line="342"/>
         <source>Run script string in the terminal</source>
         <translation>تشغيل النصي البرمجي في الطرفية</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="332"/>
+        <location filename="../src/common/utils.cpp" line="333"/>
         <source>Set the work directory</source>
         <translation>تحديد مجلد العمل</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="335"/>
+        <location filename="../src/common/utils.cpp" line="336"/>
         <source>Set the window mode on starting</source>
         <translation>تعيين وضع النافذة عند بدء التشغيل</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="344"/>
+        <location filename="../src/common/utils.cpp" line="345"/>
         <source>Run in quake mode</source>
         <translation>التشغيل في وضع كويك</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="347"/>
+        <location filename="../src/common/utils.cpp" line="348"/>
         <source>Keep terminal open when command finishes</source>
         <translation>إبقاء الطرفية مفتوحة عند الانتهاء من تنفيذ الأمر</translation>
     </message>
@@ -839,8 +842,8 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
-        <location filename="../src/main/mainwindow.cpp" line="1779"/>
-        <location filename="../src/common/utils.cpp" line="142"/>
+        <location filename="../src/main/mainwindow.cpp" line="1785"/>
+        <location filename="../src/common/utils.cpp" line="143"/>
         <source>Select</source>
         <translation>اختيار</translation>
     </message>
@@ -862,19 +865,20 @@
         <translation>تنسيق عنوان النافذة عن بعد</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="483"/>
-        <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/views/tabbar.cpp" line="482"/>
+        <location filename="../src/main/mainwindow.cpp" line="1649"/>
         <source>Close other tabs</source>
         <translation>إغلاق النوافذ الأخرى</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="894"/>
+        <location filename="../src/views/listview.cpp" line="301"/>
+        <location filename="../src/views/listview.cpp" line="889"/>
         <source>Delete</source>
         <comment>button</comment>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../src/views/listview.cpp" line="500"/>
+        <location filename="../src/views/listview.cpp" line="505"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="245"/>
         <source>Confirm</source>
         <comment>button</comment>
@@ -1078,32 +1082,32 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../src/settings/settings.cpp" line="130"/>
+        <location filename="../src/settings/settings.cpp" line="127"/>
         <source>Split screen</source>
         <translation>تقسيم الشاشة</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="130"/>
+        <location filename="../src/settings/settings.cpp" line="127"/>
         <source>Fullscreen</source>
         <translation>ملء الشاشة</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="130"/>
+        <location filename="../src/settings/settings.cpp" line="127"/>
         <source>Normal window</source>
         <translation>نافذة عادية</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="130"/>
+        <location filename="../src/settings/settings.cpp" line="127"/>
         <source>Maximum</source>
         <translation>تكبير</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="722"/>
+        <location filename="../src/settings/settings.cpp" line="715"/>
         <source>Fast</source>
         <translation>سريع</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="726"/>
+        <location filename="../src/settings/settings.cpp" line="719"/>
         <source>Slow</source>
         <translation>بطيء</translation>
     </message>
@@ -1111,15 +1115,15 @@
 <context>
     <name>ShortcutManager</name>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="268"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="277"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="267"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="276"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>الاختصار %1 غير صالح, </translation>
     </message>
     <message>
-        <location filename="../src/settings/shortcutmanager.cpp" line="284"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="291"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="283"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="290"/>
+        <location filename="../src/settings/shortcutmanager.cpp" line="296"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>تم استخدام الاختصار %1 بالفعل, </translation>
     </message>
@@ -1183,95 +1187,95 @@
 <context>
     <name>TermWidget</name>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="469"/>
+        <location filename="../src/views/termwidget.cpp" line="466"/>
         <source>Copy</source>
         <translation>نسخ</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="472"/>
+        <location filename="../src/views/termwidget.cpp" line="469"/>
         <source>Paste</source>
         <translation>لصق</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="481"/>
+        <location filename="../src/views/termwidget.cpp" line="478"/>
         <source>Open</source>
         <translation>فتح</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="485"/>
+        <location filename="../src/views/termwidget.cpp" line="482"/>
         <source>Open in file manager</source>
         <translation>فتح في مدير الملفات</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="490"/>
-        <location filename="../src/views/termwidget.cpp" line="549"/>
+        <location filename="../src/views/termwidget.cpp" line="487"/>
+        <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>Horizontal split</source>
         <translation>تقسيم أفقي</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="492"/>
-        <location filename="../src/views/termwidget.cpp" line="549"/>
+        <location filename="../src/views/termwidget.cpp" line="489"/>
+        <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>Vertical split</source>
         <translation>تقسيم عمودي</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="503"/>
-        <location filename="../src/views/termwidget.cpp" line="549"/>
+        <location filename="../src/views/termwidget.cpp" line="500"/>
+        <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>New tab</source>
         <translation>نافذة جديد</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="510"/>
+        <location filename="../src/views/termwidget.cpp" line="507"/>
         <source>Exit fullscreen</source>
         <translation>خروج من ملء الشاشة</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="512"/>
+        <location filename="../src/views/termwidget.cpp" line="509"/>
         <source>Fullscreen</source>
         <translation>ملء الشاشة</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="515"/>
+        <location filename="../src/views/termwidget.cpp" line="512"/>
         <source>Find</source>
         <translation>بحث</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="519"/>
+        <location filename="../src/views/termwidget.cpp" line="516"/>
         <source>Search</source>
         <translation>بحث </translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="529"/>
+        <location filename="../src/views/termwidget.cpp" line="526"/>
         <source>Encoding</source>
         <translation>الترميز</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="531"/>
+        <location filename="../src/views/termwidget.cpp" line="528"/>
         <source>Custom commands</source>
         <translation>أوامر مخصصة</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="533"/>
+        <location filename="../src/views/termwidget.cpp" line="530"/>
         <source>Remote management</source>
         <translation>الإدارة عن بعد</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="537"/>
+        <location filename="../src/views/termwidget.cpp" line="534"/>
         <source>Upload file</source>
         <translation>رفع الملف</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="538"/>
+        <location filename="../src/views/termwidget.cpp" line="535"/>
         <source>Download file</source>
         <translation>تحميل الملف</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="543"/>
+        <location filename="../src/views/termwidget.cpp" line="540"/>
         <source>Settings</source>
         <translation>الإعدادات</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <location filename="../src/views/termwidget.cpp" line="1208"/>
         <source>The debuginfod settings will be effective after restart</source>
         <translation>سيصبح إعداد debuginfod ساري المفعول بعد إعادة التشغيل</translation>
     </message>
@@ -1279,21 +1283,21 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="198"/>
-        <location filename="../src/common/utils.cpp" line="232"/>
+        <location filename="../src/common/utils.cpp" line="199"/>
+        <location filename="../src/common/utils.cpp" line="233"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="200"/>
+        <location filename="../src/common/utils.cpp" line="201"/>
         <source>Close</source>
         <comment>button</comment>
         <translation>إغلاق</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="233"/>
-        <location filename="../src/common/utils.cpp" line="265"/>
+        <location filename="../src/common/utils.cpp" line="234"/>
+        <location filename="../src/common/utils.cpp" line="266"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>موافق</translation>

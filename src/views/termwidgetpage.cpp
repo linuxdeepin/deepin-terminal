@@ -1,8 +1,7 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 #include "termwidgetpage.h"
 #include "termwidget.h"
 #include "settings.h"
@@ -11,13 +10,11 @@
 #include "windowsmanager.h"
 #include "mainwindow.h"
 #include "define.h"
-
 #include <DLog>
 #include <DDialog>
-#include <DPaletteHelper>
-
 #include <QVBoxLayout>
 #include <QApplication>
+#include <QLoggingCategory>
 
 // Find the previous term widget in the widget tree.
 static TermWidget* WidgetTreeReverseFindTerm(QWidget *widget)
@@ -233,7 +230,28 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
             return;
         }
 
-        QWidget *parentWidget = term->parentWidget();
+        // 另一个兄弟也可能是终端，也可能是split,
+        QWidget *brother = upSplit->widget(0);
+        TermWidget *nextTerm =  upSplit->findChild<TermWidget *>();
+        // 如果上级是分屏
+        if ("QSplitter" == QString(upSplit->parent()->metaObject()->className())) {
+            QSplitter *upupSplit = qobject_cast<QSplitter *>(upSplit->parent());
+            //兄弟替换parent split
+            upupSplit->replaceWidget(upupSplit->indexOf(upSplit), brother);
+        }
+        // 上级不是分屏控件，就是布局在控制了
+        else {
+            qWarning() << "TermWidgetPage only one term exist!";
+            m_layout->addWidget(brother);
+        }
+
+        // 子控件的变化会引起焦点的变化，控制焦点要放在最后
+        if (nextTerm != nullptr) {
+            qInfo() << "nextTerm change" << m_currentTerm->getSessionId();
+            nextTerm->setFocus();
+        } else {
+            qWarning() << "can not found nextTerm in TermWidget";
+        }
 
         // step1, delete the term
         // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
@@ -366,7 +384,6 @@ void TermWidgetPage::focusNavigation(Qt::Edge dir)
     //QMap<TermWidget *, QRect> mapTermRect;
     for (TermWidget *term : qAsConst(termList)) {
         if (GetRect(term).contains(comparPoint)) {
-            qInfo() << "yes!" << comparPoint.x() << comparPoint.y();
             dst = term;
             break;
         }
@@ -642,7 +659,6 @@ void TermWidgetPage::onTermGetFocus()
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
     emit Service::instance()->currentTermChange(m_currentTerm);
-    qInfo() << "onTermGetFocus" << m_currentTerm->getSessionId();
     emit termGetFocus();
 }
 
@@ -650,7 +666,7 @@ void TermWidgetPage::onTermClosed()
 {
     TermWidget *w = qobject_cast<TermWidget *>(sender());
     if (!w) {
-        qInfo() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
+        qWarning() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
         return;
     }
     closeSplit(w);
@@ -658,7 +674,6 @@ void TermWidgetPage::onTermClosed()
 
 void TermWidgetPage::handleFindNext()
 {
-    qInfo() << m_findBar->searchKeytxt();
     setMismatchAlert(false);
     m_currentTerm->search(m_findBar->searchKeytxt(), true, true);
 }
@@ -754,7 +769,7 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     if (oldTerm != m_currentTerm) {
         m_currentTerm->setFocus();
         // 当前界面切换
-        qInfo() << "m_currentTerm change" << m_currentTerm->getSessionId();
+        qInfo() << "Current terminal change" << m_currentTerm->getSessionId();
         QString tabTitle = term->getTabTitle();
         // 当前标签为空，标签格式不为空 => 未得到term参数，暂不上传数据
         if ((tabTitle == DEFAULT_TAB_TITLE) && !term->getCurrentTabTitleFormat().trimmed().isEmpty())

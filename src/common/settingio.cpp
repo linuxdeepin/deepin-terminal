@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -15,14 +15,19 @@
 bool SettingIO::rewrite = false;
 SettingIO::SettingIO(QObject *parent) : QObject(parent)
 {
-
+    qDebug() << "SettingIO constructor";
 }
 
 bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsMap)
 {
+    qDebug() << "Enter SettingIO::readIniFunc";
     QString currentSection;
     QTextStream stream(&device);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     stream.setCodec("UTF-8");
+#else
+    stream.setEncoding(QStringConverter::Utf8);
+#endif
     QString data;
     rewrite = false;
     while (!stream.atEnd()) {
@@ -108,11 +113,13 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
             }
         }
     }
+    qDebug() << "Exit SettingIO::readIniFunc";
     return true;
 }
 
 bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &settingsMap)
 {
+    qDebug() << "Enter SettingIO::writeIniFunc";
 #ifdef Q_OS_WIN
     const char *const eol = "\r\n";
 #else
@@ -175,6 +182,7 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
         if (device.write(block) == -1)
             writeError = true;
     }
+    qDebug() << "Exit SettingIO::writeIniFunc";
     return true;
 }
 
@@ -361,7 +369,7 @@ hexEscape:
 
     ch = src.at(i);
     if (ch >= 'a')
-        ch = ch.unicode() - ('a' - 'A');
+        ch = QChar(ch.unicode() - ('a' - 'A'));
     if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F')) {
         escapeVal <<= 4;
         escapeVal += strchr(hexDigits, ch.toLatin1()) - hexDigits;
@@ -478,11 +486,18 @@ QSettings::Format USettings::g_customFormat = QSettings::registerFormat("conf", 
 USettings::USettings(const QString &fileName, QObject *parent)
     : QSettings(fileName, g_customFormat, parent)
 {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QSettings::setIniCodec(QTextCodec::codecForName("UTF-8"));
+#else
+    QSettings::setDefaultFormat(IniFormat);
+#endif
 }
 
 //析构函数
-USettings::~USettings() {}
+USettings::~USettings()
+{
+    qDebug() << "USettings destructor";
+}
 
 void USettings::beginGroup(const QString &prefix)
 {

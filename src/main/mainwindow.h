@@ -13,6 +13,7 @@
 #include "utils.h"
 #include "define.h"
 #include "customthemesettingdialog.h"
+#include "views/switchthememenu.h"
 
 // dtk
 #include <DMainWindow>
@@ -45,7 +46,6 @@ class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
-class SwitchThemeMenu;
 
 
 

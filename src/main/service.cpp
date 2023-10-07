@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019-2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -24,6 +23,7 @@
 #include <QJsonObject>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
+#include <QLoggingCategory>
 
 Service *Service::g_pService = nullptr;
 
@@ -130,7 +130,7 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 {
     QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
     if (nullptr == rightFrame) {
-        qInfo() << "can not found RightFrame in QWidget";
+        qWarning() << "can not found RightFrame in QWidget";
         return;
     }
 
@@ -293,7 +293,7 @@ QMap<QString, QString> Service::getShells()
             }
         } while (!shellLine.isNull());
     } else {
-        qInfo() << "read /etc/shells fail! error : " << shellsInfo.error();
+        qWarning() << "read /etc/shells fail! error : " << shellsInfo.error();
     }
     // 关闭文件
     shellsInfo.close();
@@ -339,7 +339,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
         Settings::instance()->reloadShellOptions();
         m_settingDialog->show();
     } else {
-        qInfo() << "No setting dialog.";
+        qWarning() << "No setting dialog.";
         return;
     }
     // 激活窗口
@@ -458,11 +458,11 @@ void Service::EntryTerminal(QStringList arguments, bool isMain)
     if (!isMain && !mainTerminalIsStarted())
         return;
     // 超出最大窗口数量
-    if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
-        qInfo() << QString("terminal cannot be created: %1/%2 ")
-                .arg(WindowsManager::instance()->widgetCount())
-                .arg(MAXWIDGETCOUNT)
-                ;
+    if(WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
+        qWarning() << QString("terminal cannot be created: %1/%2 ")
+                   .arg(WindowsManager::instance()->widgetCount())
+                   .arg(MAXWIDGETCOUNT)
+                   ;
         return;
     }
     WindowsManager::instance()->createNormalWindow(properties);

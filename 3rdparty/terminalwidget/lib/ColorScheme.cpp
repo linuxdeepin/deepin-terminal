@@ -1,28 +1,23 @@
 /*
     This source file is part of Konsole, a terminal emulator.
-
     Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
     02110-1301  USA.
 */
-
 // Own
 #include "ColorScheme.h"
 #include "tools.h"
-
+//#include "qtcompat.h"
 // Qt
 #include <QBrush>
 #include <QFile>
@@ -31,8 +26,12 @@
 #include <QSettings>
 #include <QDir>
 #include <QRegularExpression>
-
-
+#include <QColor>
+#include <QHash>
+#include <QString>
+#include <QWidget>
+#include <QList>
+#include <QVariant>
 // KDE
 //#include <KColorScheme>
 //#include <KConfig>
@@ -40,7 +39,6 @@
 //#include <KDebug>
 //#include <KConfigGroup>
 //#include <KStandardDirs>
-
 using namespace Konsole;
 
 const ColorEntry ColorScheme::defaultTable[TABLE_COLORS] =
@@ -489,15 +487,20 @@ ColorScheme *KDE3ColorSchemeReader::read()
         if (line.isEmpty())
             continue;
 
-        if (line.startsWith(QLatin1String("color"))) {
-            if (!readColorLine(line, scheme))
-                qDebug() << "Failed to read KDE 3 color scheme line" << line;
-        } else if (line.startsWith(QLatin1String("title"))) {
-            if (!readTitleLine(line, scheme))
-                qDebug() << "Failed to read KDE 3 color scheme title line" << line;
-        } else {
-            qDebug() << "KDE 3 color scheme contains an unsupported feature, '" <<
-                     line << "'";
+        if ( line.startsWith(QLatin1String("color")) )
+        {
+            if (!readColorLine(line,scheme))
+                qWarning() << "Failed to read KDE 3 color scheme line" << line;
+        }
+        else if ( line.startsWith(QLatin1String("title")) )
+        {
+            if (!readTitleLine(line,scheme))
+                qWarning() << "Failed to read KDE 3 color scheme title line" << line;
+        }
+        else
+        {
+            qWarning() << "KDE 3 color scheme contains an unsupported feature, '" <<
+                line << "'";
         }
     }
 
@@ -581,11 +584,11 @@ void ColorSchemeManager::loadAllColorSchemes()
             failed++;
     }
 
-    if (failed > 0) {
-        qDebug() << "failed to load " << failed << " color schemes.";
+    if ( failed > 0 ){
+        qWarning() << "failed to load " << failed << " color schemes.";
     }
 
-    qDebug() << "load all color schemes";
+    qInfo() << "load all color schemes";
     //qDebug() << "nativeColorSchemes" << nativeColorSchemes ;
     //qDebug() << "kde3ColorSchemes" << kde3ColorSchemes;
     _haveLoadedAll = true;
@@ -609,19 +612,21 @@ bool ColorSchemeManager::loadKDE3ColorScheme(const QString &filePath)
     scheme->setName(QFileInfo(file).baseName());
     file.close();
 
-    if (scheme->name().isEmpty()) {
-        qDebug() << "color scheme name is not valid.";
+    if (scheme->name().isEmpty())
+    {
+        qWarning() << "color scheme name is not valid.";
         delete scheme;
         return false;
     }
 
     QFileInfo info(filePath);
 
-    if (!_colorSchemes.contains(info.baseName()))
-        _colorSchemes.insert(scheme->name(), scheme);
-    else {
-        qDebug() << "color scheme with name" << scheme->name() << "has already been" <<
-                 "found, ignoring.";
+    if ( !_colorSchemes.contains(info.baseName()) )
+        _colorSchemes.insert(scheme->name(),scheme);
+    else
+    {
+        qWarning() << "color scheme with name" << scheme->name() << "has already been" <<
+            "found, ignoring.";
         delete scheme;
     }
 
@@ -668,17 +673,21 @@ bool ColorSchemeManager::loadColorScheme(const QString &filePath)
     scheme->setName(schemeName);
     scheme->read(filePath);
 
-    if (scheme->name().isEmpty()) {
-        qDebug() << "Color scheme in" << filePath << "does not have a valid name and was not loaded.";
+    if (scheme->name().isEmpty())
+    {
+        qWarning() << "Color scheme in" << filePath << "does not have a valid name and was not loaded.";
         delete scheme;
         return false;
     }
 
-    if (!_colorSchemes.contains(schemeName)) {
-        _colorSchemes.insert(schemeName, scheme);
-    } else {
-        qDebug() << "color scheme with name" << schemeName << "has already been" <<
-                 "found, ignoring.";
+    if ( !_colorSchemes.contains(schemeName) )
+    {
+        _colorSchemes.insert(schemeName,scheme);
+    }
+    else
+    {
+        qWarning() << "color scheme with name" << schemeName << "has already been" <<
+            "found, ignoring.";
 
         delete scheme;
     }
@@ -736,8 +745,10 @@ bool ColorSchemeManager::deleteColorScheme(const QString &name)
     if (QFile::remove(path)) {
         _colorSchemes.remove(name);
         return true;
-    } else {
-        qDebug() << "Failed to remove color scheme -" << path;
+    }
+    else
+    {
+        qWarning() << "Failed to remove color scheme -" << path;
         return false;
     }
 }
@@ -750,7 +761,6 @@ bool ColorSchemeManager::deleteColorScheme(const QString &name)
 *******************************************************************************/
 void ColorSchemeManager::reloadColorScheme(const QString &origName)
 {
-    qDebug() << "reloadColorScheme:" << origName;
     if (!origName.endsWith(QLatin1String(".colorscheme")) || !QFile::exists(origName)) {
         return;
     }
@@ -762,7 +772,7 @@ void ColorSchemeManager::reloadColorScheme(const QString &origName)
     scheme->read(origName);
 
     if (scheme->name().isEmpty()) {
-        qDebug() << "Color scheme in" << origName << "does not have a valid name and was not loaded.";
+        qWarning() << "Color scheme in" << origName << "does not have a valid name and was not loaded.";
         delete scheme;
         return;
     }

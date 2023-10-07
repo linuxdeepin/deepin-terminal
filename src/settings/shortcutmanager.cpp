@@ -257,7 +257,6 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     }
     /********************* Modify by ut000610 daizhengwen End ************************/
     QString style = QString("<span style=\"color: rgba(255, 87, 54, 1);\">%1</span>").arg(key);
-    qInfo() << style;
 
     // 单键
     if (0 == Key.count("+")) {

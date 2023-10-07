@@ -465,7 +465,6 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
             break;
         }
     }
-    qInfo() << "currIndex" << m_rightClickTab;
 
     // 弹出tab标签的右键菜单
     if (m_rightClickTab >= 0) {
@@ -696,7 +695,7 @@ void TabBar::handleTabReleased(int index)
     if (index < 0)
         index = 0;
 
-    qInfo() << "handleTabReleased: index: " << index;
+    qInfo() << "Indicates the index(" << index << ") of the released label!";
     const QString tabName = tabText(index);
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
@@ -712,7 +711,7 @@ void TabBar::handleTabReleased(int index)
 
     //从原窗口中移除TermWidgetPage。
     window->removeTermWidgetPage(termIdentifer, false);
-    qInfo() << "removeTermWidgetPage: termIdentifer: " << termIdentifer;
+    qInfo() << "Remove Term Widget Page termIdentifer: " << termIdentifer;
 
     updateTabDragMoveStatus();
 }
@@ -784,7 +783,6 @@ void TabBar::handleTabIsRemoved(int index)
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
     window->removeTermWidgetPage(removeId, false);
-    qInfo() << "handleTabIsRemoved: identifier: " << removeId;
 
     updateTabDragMoveStatus();
 }
@@ -800,12 +798,11 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 {
     Q_UNUSED(dropAction)
 
-    qInfo() << "handleTabDroped index:" << index << ", target:" << target;
+    qInfo() << "Handle Tab Droped!  index:" << index << ", target:" << target << endl;
     TabBar *tabbar = qobject_cast<TabBar *>(target);
 
     //拖出的标签--需要新建窗口
     if (nullptr == tabbar) {
-        qInfo() << "tabbar == nullptr " << index;
         MainWindow *window = static_cast<MainWindow *>(this->window());
         //窗口不为雷神模式才允许移动
         if (!window->isQuakeMode())
@@ -815,7 +812,6 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
         window->activateWindow();
     } else {
         //拖入的标签--需要关闭拖入窗口的标签页
-        qInfo() << "tabbar != nullptr " << index;
         closeTab(index);
     }
 

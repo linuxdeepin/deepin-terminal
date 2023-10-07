@@ -1,7 +1,7 @@
-// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
+// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 #include "termwidget.h"
 #include "define.h"
 #include "settings.h"
@@ -12,18 +12,13 @@
 #include "service.h"
 #include "windowsmanager.h"
 #include "serverconfigmanager.h"
-
 #include <DDesktopServices>
 #include <DInputDialog>
-#include <DApplicationHelper>
-#include <DPaletteHelper>
+#include <DGuiApplicationHelper>
 #include <DLog>
 #include <DDialog>
 #include <DFloatingMessage>
 #include <DMessageManager>
-#include <DWindowManagerHelper>
-#include <DSettingsOption>
-
 #include <QApplication>
 #include <QKeyEvent>
 #include <QDesktopServices>
@@ -44,7 +39,6 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
     initTabTitle();
-    //qInfo() << " TermWidgetparent " << parentWidget();
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -161,7 +155,6 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setFlowControlEnabled(!Settings::instance()->disableControlFlow());
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
-    //qInfo() << parentPage;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
 }
 
@@ -312,8 +305,13 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 
 inline void TermWidget::onColorThemeChanged(const QString &colorTheme)
 {
-    setTheme(colorTheme);
-}
+    qInfo() << "Theme Type Changed! Current Theme Type: " << builtInTheme;
+    // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
+    QString theme = "Dark";
+    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
+    //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
+    if (builtInTheme == DGuiApplicationHelper::LightType)
+        theme = "Light";
 
 inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
 {
@@ -348,7 +346,6 @@ inline void TermWidget::onTitleChanged()
 inline void TermWidget::onCopyAvailable(bool enable)
 {
     if (Settings::instance()->IsPasteSelection() && enable) {
-        qInfo() << "hasCopySelection";
         QString strSelected = selectedText();
         QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
     }
@@ -667,7 +664,7 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
             || (fileName.startsWith("\"") && fileName.endsWith("\""))) {
         fileName = fileName.remove(0, 1);
         fileName = fileName.remove(fileName.length() - 1, 1);
-        qInfo() << "fileName is :" << fileName;
+        qInfo() << "Format fileName is " << fileName;
     }
 
     return fileName;
@@ -821,6 +818,17 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
         return;
     }
     QTermWidget::setDeleteMode(&ch, length);
+}
+
+int TermWidget::getTermLayer()
+{
+    int layer = 1;
+    QWidget *currentW = this;
+    while (currentW->parentWidget() != parentPage()) {
+        layer++;
+        currentW = currentW->parentWidget();
+    }
+    return  layer;
 }
 
 void TermWidget::setTabFormat(const QString &tabFormat)
@@ -1113,7 +1121,7 @@ void TermWidget::selectEncode(QString encode)
 
 void TermWidget::onSettingValueChanged(const QString &keyName)
 {
-    qInfo() << "onSettingValueChanged:" << keyName;
+    qInfo() << "Setting Value Changed! Current Config's key:" << keyName;
     if ("basic.interface.opacity" == keyName) {
         setTermOpacity(Settings::instance()->opacity());
         return;
@@ -1224,7 +1232,6 @@ void TermWidget::onDropInUrls(const char *urls)
 
 inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 {
-    qInfo() << name << direction << fingers;
     // 当前窗口被激活,且有焦点
     if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
         if (name == "pinch" && fingers == 2) {

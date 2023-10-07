@@ -136,7 +136,6 @@ const Block * BlockArray::at(size_t i)
     }
 
     if (i > index) {
-        qDebug() << "BlockArray::at() i > index\n";
         return nullptr;
     }
 

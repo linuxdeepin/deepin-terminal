@@ -85,8 +85,6 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
     int linesRead = 0;
     int linesToRead = endLine - startLine + 1;
 
-    qDebug() << "linesToRead:" << linesToRead;
-
     QString stringBackwardsAfterForwards;
     QTextStream backwardsAfterForwardsStream(&stringBackwardsAfterForwards);
 
@@ -179,7 +177,6 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
                     m_lastBackwardsPosition = endPosition;
                     qDebug() << "backwards save m_lastBackwardsPosition2:" << m_lastBackwardsPosition;
                 }
-                qDebug() << "endPosition 5!!!!!!!!!!!! == endColumn:" << endPosition;
             }
         }
 
@@ -192,11 +189,8 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             qDebug() << "forwards matchStart:" << matchStart << ", startColumn:" << startColumn;
             if (matchStart >= endPosition) {
                 matchStart = -1;
-                qDebug() << "forwards matchStart == -1:" << matchStart;
             }
         } else {
-            qDebug() << "string:" << string;
-            qDebug() << "m_lastBackwardsPosition:" << m_lastBackwardsPosition;
             qDebug() << "string length:" << string.length() << ", endPosition:" << endPosition;
             //考虑了查找结果在第一行的情况
             if (0 == startLine && startLine == endLine && endPosition > endColumn) {
@@ -233,10 +227,10 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
                 //考虑了查找结果在第一行的情况
                 if (0 == m_foundStartLine && m_foundStartLine == m_foundEndLine) {
                     m_lastBackwardsPosition = m_foundStartColumn;
-                    qDebug() << "!!! ready to change m_foundStartColumn: " << m_foundStartColumn;
-                    qDebug() << "!!! ready to change m_foundEndColumn: " << m_foundEndColumn;
-                    qDebug() << "!!! ready to change m_foundStartLine: " << m_foundStartLine;
-                    qDebug() << "!!! ready to change m_foundEndLine: " << m_foundEndLine;
+                    qDebug() << "ready to change m_foundStartColumn: " << m_foundStartColumn;
+                    qDebug() << "ready to change m_foundEndColumn: " << m_foundEndColumn;
+                    qDebug() << "ready to change m_foundStartLine: " << m_foundStartLine;
+                    qDebug() << "ready to change m_foundEndLine: " << m_foundEndLine;
                 }
                 else if (-1 == endPosition || -1 == endColumn) {
                     QString stringAfterSearch;
@@ -254,7 +248,7 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
                     decoder.end();
 
                     m_lastBackwardsPosition = stringAfterSearch.length() + m_foundStartColumn;
-                    qDebug() << "!!! ready to change m_lastBackwardsPosition: " << m_lastBackwardsPosition;
+                    qDebug() << "ready to change m_lastBackwardsPosition: " << m_lastBackwardsPosition;
                 }
             }
 
@@ -262,10 +256,10 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             //在正向查找的时候，保存当前indexOf(search, totalString) 到 m_lastBackwardsPosition
             // 总共读了多少行，记录下字符串总长度，加上当前偏移量
 
-            qDebug() << "m_foundStartColumn" << m_foundStartColumn
-                     << "m_foundStartLine" << m_foundStartLine
-                     << "m_foundEndColumn" << m_foundEndColumn
-                     << "m_foundEndLine" << m_foundEndLine;
+            qDebug() << "changed m_foundStartColumn" << m_foundStartColumn
+                     << "changed m_foundStartLine" << m_foundStartLine
+                     << "changed m_foundEndColumn" << m_foundEndColumn
+                     << "changed m_foundEndLine" << m_foundEndLine;
 
             /***add begin by ut001121 zhangmeng 20200515 修复BUG22626***/
             /**
@@ -286,7 +280,6 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
             //qDebug() << "loseStart" << loseStart << "loseEnd" << loseEnd ;
 
 //            if (loseStart < 0 || loseStart > loseEnd) {
-//                qDebug() << "========loseStart and loseEnd is not expected" << loseStart << loseEnd;
 //                exit(-1);
 //            }
 
@@ -333,7 +326,7 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
         linesRead += blockSize;
     }
 
-    qDebug() << "Not found";
+    qInfo() << "History Search Not found";
     return false;
 }
 

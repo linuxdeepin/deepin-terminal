@@ -44,10 +44,10 @@ void CustomCommandPanel::showCurSearchResult()
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
     if (m_pushButton->hasFocus()) {
-        qInfo() << "------------------------hasFocus";
+        qInfo() << "The Add command button has focus to click on!";
         m_bpushButtonHaveFocus = true;
     } else {
-        qInfo() << "------------------------ not         hasFocus";
+        qInfo() << "The Add command button has no focus to prohibit clicking!";
         m_bpushButtonHaveFocus = false;
     }
 
@@ -84,13 +84,13 @@ void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
         // 下一个 或 列表为空， 焦点定位到添加按钮上
         m_pushButton->setFocus();
         m_cmdListWidget->clearIndex();
-        qInfo() << "set focus on add pushButton";
+        qInfo() << "Set the focus to the Add command button";
     } else if (Qt::BacktabFocusReason == type) {
         // 判断是否可见，可见设置焦点
         if (m_searchEdit->isVisible()) {
             m_searchEdit->lineEdit()->setFocus();
             m_cmdListWidget->clearIndex();
-            qInfo() << "set focus on add search edit";
+            qInfo() << "Set the focus to the Search edit";
         }
     }
 }
@@ -171,7 +171,7 @@ void CustomCommandPanel::setFocusInPanel()
         // 添加按钮下
         m_pushButton->setFocus();
     } else {
-        qInfo() << "focus error unkown reason";
+        qWarning() << "focus error unkown reason";
     }
 }
 

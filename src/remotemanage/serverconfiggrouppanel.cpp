@@ -102,7 +102,6 @@ inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
         int count  = ServerConfigManager::instance()->getServerCount(m_groupName);
         if (0 == count) {
             emit rebackPrevPanel();
-            qInfo() << "showRemoteManagementPanel" << isFocus << count;
             m_isShow = false;
             return;
         }
@@ -126,7 +125,7 @@ inline void ServerConfigGroupPanel::onRefreshList()
 
 void ServerConfigGroupPanel::refreshData(const QString &groupName)
 {
-    qInfo() << __FUNCTION__;
+    qInfo() << "Refresh Data!";
     m_groupName = groupName;
     m_listWidget->clearData();
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Group, m_listWidget, "", groupName);
@@ -135,7 +134,6 @@ void ServerConfigGroupPanel::refreshData(const QString &groupName)
 
 void ServerConfigGroupPanel::setFocusBack()
 {
-    qInfo() << __FUNCTION__;
     // 设置焦点到搜索框
     if (m_searchEdit->isVisible()) {
         // 显示搜索框
@@ -187,5 +185,5 @@ void ServerConfigGroupPanel::onItemClicked(const QString &key)
     if (nullptr != remote)
         emit doConnectServer(remote);
     else
-        qInfo() << "can't connect to remote" << key;
+        qWarning() << "can't connect to remote" << key;
 }
