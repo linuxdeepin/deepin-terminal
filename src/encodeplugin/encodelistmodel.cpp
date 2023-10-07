@@ -87,10 +87,10 @@ void EncodeListModel::initEncodeData()
             }
         }
         if (!bFind)
-            qInfo() << "encode name :" << name << "not find!";
+            qWarning() << "The encoding(" << name << ") in the terminal encoding list is not found in the list of supported encodeings!";
         else
             m_encodeData << encodename;
     }
 
-    qInfo() << "QTextCodec::availableCodecs" << m_encodeData.count();
+    qInfo() << "The number("<<  m_encodeData.count() << ") of system encoding formats supported by the terminal.";
 }

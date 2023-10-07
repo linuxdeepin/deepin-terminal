@@ -276,6 +276,9 @@ install(FILES src/deepin-terminal.desktop
 install(FILES src/assets/logo/deepin-terminal.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
+install(FILES src/assets/logconfig/deepin-terminal.json
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-log-viewer/deepin-log.conf.d/)
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
         PERMISSIONS OWNER_READ OWNER_EXECUTE

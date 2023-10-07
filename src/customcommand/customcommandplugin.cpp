@@ -76,7 +76,7 @@ void CustomCommandPlugin::doShowPlugin(const QString name, bool bSetFocus)
     if (MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name) {
         // 若插件已经显示，则隐藏
         if (m_isShow) {
-            qInfo() << "Command top panel hide";
+            qWarning() << "Command top panel hide";
             getCustomCommandTopPanel()->hideAnim();
             m_isShow = false;
         }

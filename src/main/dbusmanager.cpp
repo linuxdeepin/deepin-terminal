@@ -25,7 +25,7 @@ DBusManager::~DBusManager()
     QDBusConnection conn = QDBusConnection::sessionBus();
     if (conn.registerService(TERMINALSERVER)) {
         conn.unregisterService(TERMINALSERVER);
-        qInfo() << "Terminal DBus disconnected!";
+        qInfo() << "Deregister the dbus service of the terminal!";
     }
 }
 
@@ -35,12 +35,12 @@ bool DBusManager::initDBus()
     QDBusConnection conn = QDBusConnection::sessionBus();
 
     if (!conn.registerService(TERMINALSERVER)) {
-        qInfo() << "Terminal DBus has connected!";
+        qWarning() << "The dbus service of the terminal has been registered or failed to be registered!";
         return false;
     }
 
     if (!conn.registerObject(TERMINALINTERFACE, this, QDBusConnection::ExportAllSlots)) {
-        qInfo() << "Terminal DBus creates Object failed!";
+        qWarning() << "The dbus service on the terminal fails to create an object!";
         return false;
     }
 
@@ -54,12 +54,12 @@ int DBusManager::callKDECurrentDesktop()
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
-        qInfo() << "call currentDesktop Success!";
+        qInfo() << "Calling the 'currentDesktop' interface successded!";
         QList<QVariant> list = response.arguments();
         return list.value(0).toInt();
     }
 
-    qInfo() << "call currentDesktop Fail!" << response.errorMessage();
+    qWarning() << "Failed to call the 'currentDesktop' interface'. msg: " << response.errorMessage();
     return -1;
 }
 
@@ -72,9 +72,9 @@ void DBusManager::callKDESetCurrentDesktop(int index)
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage)
-        qInfo() << "call setCurrentDesktop Success!";
+        qInfo() << "Calling the 'setCurrentDesktop' interface successded!";
     else
-        qInfo() << "call setCurrentDesktop Fail!" << response.errorMessage();
+        qWarning() << "Failed to call the 'setCurrentDesktop' interface'. msg: " << response.errorMessage();
 }
 
 FontDataList DBusManager::callAppearanceFont(QString fontType)
@@ -87,7 +87,7 @@ FontDataList DBusManager::callAppearanceFont(QString fontType)
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (QDBusMessage::ReplyMessage == response.type()) {
-        qInfo() << "call List Success!";
+        qInfo() << "Calling the 'List' interface successded!";
         QList<QVariant> list = response.arguments();
         QString fonts = list.value(list.count() - 1).toString();
         // 原本的返回值为QDBusPendingReply<QString> => QString
@@ -98,7 +98,7 @@ FontDataList DBusManager::callAppearanceFont(QString fontType)
         QStringList fontList = fonts.split(",");
         rList = callAppearanceFont(fontList, fontType);
     } else {
-        qInfo() << "call List Fail!" << response.errorMessage();
+        qWarning() << "Failed to call the 'List' interface'. msg: " << response.errorMessage();
     }
 
 
@@ -114,7 +114,7 @@ FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontT
     msg << fontType << fontList;
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
     if (response.type() == QDBusMessage::ReplyMessage) {
-        qInfo() << "call Show Success!";
+        qInfo() << "Calling the 'Show' interface successded!";
         QByteArray fonts = response.arguments().value(0).toByteArray();
         QJsonArray array = QJsonDocument::fromJson(fonts).array();
         for (int i = 0; i < array.size(); i++) {
@@ -123,7 +123,7 @@ FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontT
         }
         qInfo() << "Show value" << retList.values();
     } else {
-        qInfo() << "call Show Fail!" << response.errorMessage();
+        qWarning() << "Failed to call the 'Show' interface'. msg: " << response.errorMessage();
     }
     return retList;
 }
@@ -137,9 +137,9 @@ void DBusManager::callTerminalEntry(QStringList args)
 
     QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::NoBlock);
     if (response.type() == QDBusMessage::ReplyMessage)
-        qInfo() << "call callTerminalEntry Success!";
+        qInfo() << "Calling the 'callTerminalEntry' interface successded!";
     else
-        qInfo() << "call callTerminalEntry!" << response.errorMessage();
+        qWarning() << "Failed to call the 'callTerminalEntry' interface'. msg: " << response.errorMessage();
 }
 
 void DBusManager::entry(QStringList args)
@@ -221,9 +221,9 @@ void DBusManager::callSystemSound(const QString &sound)
 {
     QDBusMessage response = dbusPlaySound(sound);
     if (response.type() == QDBusMessage::ReplyMessage)
-        qInfo() << "call dbusPlaySound Success!";
+        qInfo() << "Calling the 'dbusPlaySound' interface successded!";
     else
-        qInfo() << "call dbusPlaySound!" << response.errorMessage();
+        qWarning() << "Failed to call the 'dbusPlaySound' interface'. msg: " << response.errorMessage();
 }
 
 void DBusManager::listenTouchPadSignal()
@@ -233,7 +233,7 @@ void DBusManager::listenTouchPadSignal()
     if (isConnect)
         qInfo() << "connect to Guest, listen touchPad!";
     else
-        qInfo() << "disconnect to Guest, cannot listen touchPad!";
+        qWarning() << "disconnect to Guest, cannot listen touchPad!";
 }
 
 void DBusManager::listenDesktopSwitched()
@@ -243,5 +243,5 @@ void DBusManager::listenDesktopSwitched()
     if (isConnect)
         qInfo() << "connect to wm, listen workspaceswitched";
     else
-        qInfo() << "disconnect to wm,cannot listen workspaceswitched";
+        qWarning() << "disconnect to wm,cannot listen workspaceswitched";
 }

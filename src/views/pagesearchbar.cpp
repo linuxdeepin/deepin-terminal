@@ -179,7 +179,7 @@ void PageSearchBar::initSearchEdit()
             }
         }
     } else {
-        qInfo() << "can not found _q_qlineeditclearaction in QAction";
+        qWarning() << "can not found _q_qlineeditclearaction in QAction";
     }
 
     // 需求不让自动查找，这个接口预留

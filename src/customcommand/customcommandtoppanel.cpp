@@ -61,7 +61,7 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     if (main != nullptr) {
         if (main->isFocusOnList()) {
             m_customCommandPanel->setFocusInPanel();
-            qInfo() << "custom command panel has focus";
+            qWarning() << "custom command panel has focus";
         }
     }
 
