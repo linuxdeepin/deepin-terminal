@@ -53,7 +53,7 @@ qint64 TerminalApplication::getStartTime()
 
 void TerminalApplication::handleQuitAction()
 {
-    qInfo() << "handleQuitAction";
+    qInfo() << "Handle quit action";
     activeWindow()->close();
 }
 
@@ -151,7 +151,6 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             /***add begin by ut001121 zhangmeng 20200825 模拟发送ContextMenu事件 修复BUG44282***/
             QPoint pos;
             QContextMenuEvent menuEvent(QContextMenuEvent::Keyboard, pos);
-            qInfo() << "------------" << menuEvent.type();
             QApplication::sendEvent(object, &menuEvent);
             /***add end by ut001121***/
 
@@ -164,7 +163,6 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 #if 0
     // 快捷键检测
     bool spont = event->spontaneous();
-    //qInfo() <<event->type()<< spont<<classname;
     QString classname = object->metaObject()->className();
     if ((event->type() == QEvent::KeyPress || event->type() == QEvent::Shortcut)
             /*&& QString(object->metaObject()->className()) == "MainWindow"*/) {
@@ -177,7 +175,6 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             if (event->type() == QEvent::Shortcut) {
                 QShortcutEvent *sevent = static_cast<QShortcutEvent *>(event);
                 keyString = QKeySequence(sevent->key()).toString(QKeySequence::PortableText);
-                // qInfo()<<"Shortcut"<<sevent->key();
             }
 
         int uKey = keyevent->key();
@@ -200,8 +197,6 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             uKey += Qt::ALT;
 
         QString keyString2 = QKeySequence(uKey).toString(QKeySequence::PortableText);
-        qInfo() << keyevent->type() << keyString2 << keyString << object << keyevent->spontaneous() << classname << keyevent->key()
-                << keyevent->nativeScanCode() << keyevent->nativeVirtualKey() << keyevent->nativeModifiers();
 
     }
 #endif

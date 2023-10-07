@@ -102,6 +102,7 @@ void EncodePanelPlugin::initEncodePanel()
 void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
 {
     QString encode;
+    qInfo() <<"Whether to link remote?" << term->isConnectRemote();
     // 是否连接远程
     if (term->isConnectRemote()) {
         // 远程编码
@@ -112,7 +113,7 @@ void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
     }
 
     //更新编码
-    qInfo() << __FUNCTION__ << term->isConnectRemote() << encode;
+    qInfo() << "Update the encoding(" << encode << ") of the current terminal!";
     m_encodePanel->updateEncode(encode);
 }
 

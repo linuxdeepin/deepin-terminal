@@ -120,7 +120,7 @@ inline void CustomCommandSearchRstPanel::handleListViewFocusOut(Qt::FocusReason 
         // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
         m_rebackButton->setFocus();
         m_cmdListWidget->clearIndex();
-        qInfo() << "search panel type" << type;
+        qInfo() << "search panel type (" << type << ")";
     }
 }
 
@@ -144,7 +144,7 @@ void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 
 void CustomCommandSearchRstPanel::doCustomCommand(const QString &strKey)
 {
-    qInfo() << "doCustomCommand,key=" << strKey;
+    qInfo() << "Search for the current custom commonds based on the key (" << strKey << ")";
     QAction *item = ShortcutManager::instance()->findActionByKey(strKey);
     QString strCommand = item ? item->data().toString() : "";
     if (!strCommand.endsWith('\n'))

@@ -128,7 +128,7 @@ void Settings::init()
     windowState->setData("items", windowStateMap);
 
     for (QString &key : settings->keys())
-        qInfo() << key << settings->value(key);
+        qDebug() <<"Config' Key: " <<  key << " Config' Value: " << settings->value(key);
     /********************* Modify by n014361 wangpeili End ************************/
 
     initConnection();
@@ -139,7 +139,6 @@ void Settings::init()
     m_Watcher = new QFileSystemWatcher();
     m_Watcher->addPath(m_configPath);
     connect(m_Watcher, &QFileSystemWatcher::fileChanged, this, [this](QString file) {
-        qInfo() << "fileChanged" << file;
         reload();
         //监控完一次就不再监控了，所以要再添加
         m_Watcher->addPath(m_configPath);
@@ -393,12 +392,10 @@ bool Settings::OutputtingScroll()
 //    for (QString &key : newSettings.childGroups()) {
 //        //　当系统变更键值的时候，配置文件中会有一些＂垃圾＂配置，删除他
 //        if (!settings->keys().contains(key)) {
-//            qInfo() << "reload failed: system not found " << key << "now remove it";
 //            newSettings.remove(key);
 //            continue;
 //        }
 //        if (settings->value(key) != newSettings.value(key + "/value")) {
-//            qInfo() << "reload update:" << key << settings->value(key);
 //            settings->option(key)->setValue(newSettings.value(key + "/value"));
 //        }
 //    }
@@ -502,7 +499,6 @@ void Settings::setExtendColorScheme(const QString &name)
 //    if (name != m_EncodeName) {
 //        m_EncodeName = name;
 //        emit encodeSettingChanged(name);
-//        qInfo() << "encode changed to" << name;
 //    }
 //}
 
@@ -556,7 +552,7 @@ void Settings::handleWidthFont()
 
             int ret = base.addApplicationFont(fontpath);
             if (-1 == ret)
-                qInfo() << "load " << name << " font faild";
+                qWarning() << "load " << name << " font faild";
 
         }
     }
@@ -753,7 +749,8 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 配置修改
     option->connect(option, &DTK_CORE_NAMESPACE::DSettingsOption::valueChanged, rightWidget, [ = ](const QVariant & value) {
         QString keyseq = value.toString();
-        qInfo() << "valueChanged" << rightWidget->option()->key() << keyseq;
+        qInfo() << "Current configuration modification! Config's Key: " << rightWidget->option()->key()
+                << "Config's Value: " << keyseq;
         if (SHORTCUT_VALUE == keyseq || keyseq.isEmpty()) {
             rightWidget->clear();
             return;
@@ -863,7 +860,7 @@ void Settings::setConsoleShell(const QString shellName)
 {
     QMap<QString, QString> shellMap = Service::instance()->getShells();
     for (auto itr = shellMap.begin(); itr != shellMap.end(); ++itr) {
-        qDebug() << itr.key() << itr.value() << shellName;
+        qDebug() <<"Console Shell("<< shellName << ")! key:" <<  itr.key() << "value: " << itr.value();
         if (shellName == itr.key() || shellName == itr.value()) {
             settings->option("advanced.shell.default_shell")->setValue(itr.value());
             break;

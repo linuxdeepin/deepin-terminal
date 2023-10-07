@@ -221,10 +221,10 @@ inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySeque
     QString reason;
     // 判断快捷键是否冲突
     if (!ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
-        qInfo() << "checkShortcutValid";
+        qWarning() << "Shortcut key conflict";
         // 冲突
         if (sequence.toString() != "Esc") {
-            qInfo() << "sequence != Esc";
+            qWarning() << "The current shortcut key is not Esc! ("<< sequence <<")";
             showShortcutConflictMsgbox(reason);
         }
         m_shortCutLineEdit->clear();
@@ -353,21 +353,21 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
 
     strName = strName.trimmed();//空格的名称是无效的，剔除名称前后的空格
     if (strName.isEmpty()) {
-        qInfo() << "Name is empty";
+        qWarning() << "The name of the user-defined command is empty!";
         m_nameLineEdit->showAlertMessage(tr("Please enter a name"), m_nameLineEdit->parentWidget());
         return;
     }
 
     /***add begin by ut001121 zhangmeng 20200615 限制名称字符长度 修复BUG31286***/
     if (strName.length() > MAX_NAME_LEN) {
-        qInfo() << "The name should be no more than 32 characters";
+        qWarning() << "The name should be no more than 32 characters";
         m_nameLineEdit->showAlertMessage(QObject::tr("The name should be no more than 32 characters"), m_nameLineEdit->parentWidget());
         return;
     }
     /***add end by ut001121***/
     QString strCommandtemp = strCommand.trimmed();//空格的命令是无效的
     if (strCommandtemp.isEmpty()) {
-        qInfo() << "Command is empty";
+        qWarning() << "The custom command is empty";
         m_commandLineEdit->showAlertMessage(tr("Please enter a command"), m_commandLineEdit->parentWidget());
         return;
     }
@@ -388,14 +388,14 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
             QAction *refreshExitAction = nullptr;
             refreshExitAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
             if (refreshExitAction) {
-                qInfo() << "CustomCommand already exists";
+                qWarning() << "The custom command already exists";
                 accept();
                 return;
             }
         }
 
         if (strName == m_currItemData->m_cmdName && strCommand == m_currItemData->m_cmdText && keytmp == QKeySequence(m_currItemData->m_cmdShortcut)) {
-            qInfo() << "CustomCommand don't need to save again";
+            qInfo() << "The custom command don't need to save again.";
             accept();
             return;
         }
@@ -403,7 +403,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         existAction = ShortcutManager::instance()->checkActionIsExistForModify(*m_newAction);
 
         if (strName != m_currItemData->m_cmdName) {
-            qInfo() << "CustomCommand is changed";
+            qInfo() << "Custom commands have been changed.";
             QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
             for (int i = 0; i < customCommandActionList.size(); i++) {
                 QAction *curAction = customCommandActionList[i];
@@ -413,6 +413,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
             }
         }
     } else {
+        qInfo() << "It is the add type of custom command operation";
         existAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
     }
 
@@ -647,7 +648,7 @@ void CustomCommandOptDlg::closeEvent(QCloseEvent *event)
 void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName)
 {
     if (CCT_ADD == m_type) {
-        qInfo() << "Currently is the add operation interface";
+        qWarning() << "Currently is the add operation interface";
         return;
     }
     //不进行刷新操作
@@ -659,7 +660,7 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
         return;
     }
     m_bRefreshCheck = true;
-    qInfo() << "slotRefreshData---" <<  m_nameLineEdit->text();
+    qInfo() << "Refresh custom command data.Curren command name is " <<  m_nameLineEdit->text();
 
     QAction *currAction = new QAction(ShortcutManager::instance());
     currAction->setText(newCmdName);

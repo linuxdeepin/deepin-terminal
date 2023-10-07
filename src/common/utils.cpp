@@ -371,11 +371,11 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
         // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
         parser.process(arguments);
     } else {
-        qInfo() << "input args:" << qPrintable(arguments.join(" "));
-        qInfo() << "arg: optionWorkDirectory" << parser.value(optWorkDirectory);
-        qInfo() << "arg: optionExecute" << Properties[Execute].toStringList().join(" ");
-        qInfo() << "arg: optionQuakeMode" << parser.isSet(optQuakeMode);
-        qInfo() << "arg: optionWindowState" << parser.isSet(optWindowState);
+        qInfo() << "Command line input args:" << qPrintable(arguments.join(" "));
+        qInfo() << "The work directory :" << parser.value(optWorkDirectory);
+        qInfo() << QString("Execute %1 command in the terminal").arg(Properties[Execute].toStringList().join(" "));
+        qInfo() << "Run in quake mode :" << parser.isSet(optQuakeMode);
+        qInfo() << "Set the window mode on starting :" << parser.isSet(optWindowState);
         // 这个位置参数解析出来是无法匹配的，可是不带前面标识符，无法准确使用。
     }
     return;
@@ -428,11 +428,10 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
     if (paraList.size() != 0) {
         for (int i = 0; i < index - startIndex; i++) {
             arguments.removeAt(startIndex);
-            qInfo() << arguments.size();
         }
         arguments.removeOne("-e");
         arguments.removeOne("--execute");
-        qInfo() <<  opt << paraList << "arguments" << arguments;
+        qInfo() << "Remove the arguments after '-e',the arguments :" << arguments;
     }
 
     return paraList;
@@ -456,7 +455,7 @@ QStringList Utils::parseNestedQString(QString str)
         //对路径带空格的脚本，右键执行时不进行拆分处理， //./deepin-terminal "-e"  "/home/lx777/Desktop/a b/PerfTools_1.9.sh"
         QFileInfo fi(str);
         if (fi.isFile()) {
-            qInfo() << "this is file,not split.";
+            qWarning() << "this is file,not split.";
             paraList.append(str);
             return paraList;
         }
@@ -523,7 +522,7 @@ QList<QByteArray> Utils::encodeList()
             }
         }
         if (!bFind)
-            qInfo() << "encode name :" << name << "not find!";
+            qWarning() << "encode (name :" << name << ") not find!";
         else
             encodeList << encodename;
 
@@ -598,8 +597,8 @@ bool Utils::isLoongarch()
             return false;
         }
         m_Arch = QString::fromLocal8Bit(utsbuf.machine);
-        qInfo() << "m_Arch:" << m_Arch;
     }
+    qInfo() << "Current system architecture:" << m_Arch;
     return "mips64" == m_Arch || "loongarch64" == m_Arch;
 }
 
@@ -673,7 +672,7 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     MainWindow *main = nullptr;
     QWidget *pWidget = currWidget->parentWidget();
     while (pWidget != nullptr) {
-        qInfo() << pWidget->metaObject()->className();
+        qInfo() << "Current Window Class Name :" << pWidget->metaObject()->className();
         if (("NormalWindow" == pWidget->objectName()) || ("QuakeWindow" == pWidget->objectName())) {
             qInfo() << "has find MainWindow";
             main = static_cast<MainWindow *>(pWidget);
@@ -718,7 +717,7 @@ void FontFilter::handleWidthFont()
         m_thread->start();
         return;
     }
-    qInfo() << "m_thread is Running";
+    //qInfo() << "m_thread is Running";
 }
 
 void FontFilter::setStop(bool stop)
@@ -805,7 +804,7 @@ void FontFilter::compareWhiteList()
         else
             Blacklist.append(sfont);
     }
-    qInfo() << "DBUS get font:" << DBUSWhitelist;
-    qInfo() << "Compare font get font:" << Whitelist;
+    qInfo() << "Font whitelist obtained through the dbus interface :" << DBUSWhitelist;
+    qInfo() << "Whitelist of real available fonts :" << Whitelist;
 }
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/

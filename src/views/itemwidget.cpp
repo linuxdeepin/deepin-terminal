@@ -101,7 +101,7 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
         // 第二行 组内服务器个数
         int serverCount = ServerConfigManager::instance()->getServerCount(firstline);
         if (serverCount <= 0) {
-            qInfo() << "get error count " << serverCount;
+            qWarning() << "get error count " << serverCount;
             serverCount = 0;
         }
         m_secondText = QString("%1 server").arg(serverCount);
@@ -467,7 +467,7 @@ void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
         fontPalette.setBrush(DPalette::Text, color);
         label->setPalette(fontPalette);
     } else {
-        qInfo() << __FUNCTION__ << "can't get text color";
+        qWarning()  << "Can't get text color";
     }
 }
 

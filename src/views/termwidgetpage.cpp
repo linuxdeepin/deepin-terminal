@@ -193,7 +193,7 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
         }
         // 上级不是分屏控件，就是布局在控制了
         else {
-            qInfo() << "TermWidgetPage only one term exist!";
+            qWarning() << "TermWidgetPage only one term exist!";
             m_layout->addWidget(brother);
         }
 
@@ -202,7 +202,7 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
             qInfo() << "nextTerm change" << m_currentTerm->getSessionId();
             nextTerm->setFocus();
         } else {
-            qInfo() << "can not found nextTerm in TermWidget";
+            qWarning() << "can not found nextTerm in TermWidget";
         }
 
         // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
@@ -322,7 +322,6 @@ void TermWidgetPage::focusNavigation(Qt::Edge dir)
     //QMap<TermWidget *, QRect> mapTermRect;
     for (TermWidget *term : qAsConst(termList)) {
         if (GetRect(term).contains(comparPoint)) {
-            qInfo() << "yes!" << comparPoint.x() << comparPoint.y();
             dst = term;
             break;
         }
@@ -598,7 +597,6 @@ void TermWidgetPage::onTermGetFocus()
     TermWidget *term = qobject_cast<TermWidget *>(sender());
     setCurrentTerminal(term);
     emit Service::instance()->currentTermChange(m_currentTerm);
-    qInfo() << "onTermGetFocus" << m_currentTerm->getSessionId();
     emit termGetFocus();
 }
 
@@ -606,7 +604,7 @@ void TermWidgetPage::onTermClosed()
 {
     TermWidget *w = qobject_cast<TermWidget *>(sender());
     if (!w) {
-        qInfo() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
+        qWarning() << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
         return;
     }
     closeSplit(w);
@@ -614,7 +612,6 @@ void TermWidgetPage::onTermClosed()
 
 void TermWidgetPage::handleFindNext()
 {
-    qInfo() << m_findBar->searchKeytxt();
     setMismatchAlert(false);
     m_currentTerm->search(m_findBar->searchKeytxt(), true, true);
 }
@@ -709,7 +706,7 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
         // 当前界面切换
-        qInfo() << "m_currentTerm change" << m_currentTerm->getSessionId();
+        qInfo() << "Current terminal change" << m_currentTerm->getSessionId();
         QString tabTitle = term->getTabTitle();
         // 当前标签为空，标签格式不为空 => 未得到term参数，暂不上传数据
         if ((tabTitle == DEFAULT_TAB_TITLE) && !term->getCurrentTabTitleFormat().trimmed().isEmpty())

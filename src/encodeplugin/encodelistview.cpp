@@ -92,7 +92,8 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
 
     // 判断焦点
     if (Qt::TabFocusReason == m_foucusReason || Qt::BacktabFocusReason == m_foucusReason) {
-        qInfo() << __FUNCTION__ << m_foucusReason << "Current Encode:" << m_modelIndexChecked.data().toString();
+        qInfo() << "The reason(" << m_foucusReason << ") for the current focus."
+                << "The encoding format(" << m_modelIndexChecked.data().toString() <<") in which focus is currently obtained.";
         setCurrentIndex(m_modelIndexChecked);
     }
     /** add end by ut001121 zhangmeng 20200718 */
@@ -187,14 +188,15 @@ void EncodeListView::mouseMoveEvent(QMouseEvent *event)
 void EncodeListView::onListViewClicked(const QModelIndex &index)
 {
     if (!index.isValid()) {
-        qInfo() << __FUNCTION__ << "Error:" << index;
+        qWarning() << "The current encoding format("<< index << ") is incorrect.";
         return;
     }
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
     if (nullptr == model)
         return;
 
-    qInfo() << __FUNCTION__ << "Old:" << m_modelIndexChecked.data().toString() << "New:" << index.data().toString();
+    qInfo() << "The encoding format(" <<  m_modelIndexChecked.data().toString() << ") selected last time."
+            << "The encoding format(" <<  index.data().toString()<< ") selected this time.";
 
     //当前Checked子项改为Unchecked状态
     DStandardItem *modelItem = dynamic_cast<DStandardItem *>(model->item(m_modelIndexChecked.row()));

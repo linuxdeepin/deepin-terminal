@@ -129,7 +129,7 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
             // 判断是否连接服务器
             if (!term->isInRemoteServer()) {
                 // 没有连接上
-                qInfo() << "disconnect to server";
+                qWarning() << "disconnect to server";
                 return;
             }
             // 标记此term连接远程

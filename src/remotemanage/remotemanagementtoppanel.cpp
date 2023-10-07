@@ -104,7 +104,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
         animation1->deleteLater();
-        qInfo() << "unknow current panel!";
+        qWarning() << "unknow current panel!";
         return;
     }
     // 执行动画
@@ -149,7 +149,7 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
         connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
-        qInfo() << "unknow current panel!";
+        qWarning() << "unknow current panel!";
         animation1->deleteLater();
         return;
     }
@@ -203,7 +203,7 @@ void RemoteManagementTopPanel::showPrevPanel()
         // 获取前一个界面的类型，此界面为现在要显示的界面
         state = m_prevPanelStack.pop();
         prevType = state.m_type;
-        qInfo() << "prevType" << prevType;
+        qInfo() << "Gets the reality type of the previous interface: " << prevType;
     }
 
     // 动画效果 要隐藏的界面
@@ -219,7 +219,7 @@ void RemoteManagementTopPanel::showPrevPanel()
         connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
-        qInfo() << "unknow panel to hide!" << m_currentPanelType;
+        qWarning() << "unknow panel to hide!" << m_currentPanelType;
     }
 
     // 动画效果 要显示的界面
@@ -250,7 +250,7 @@ void RemoteManagementTopPanel::showPrevPanel()
     case ServerConfigManager::PanelType_Search: {
         // 刷新列表 => 搜索框能被返回，只能是全局搜索
         if (m_filterStack.isEmpty()) {
-            qInfo() << "error: filter stack is empty!";
+            qWarning() << "error: filter stack is empty!";
             return;
         }
         // 取最上一个
@@ -268,7 +268,7 @@ void RemoteManagementTopPanel::showPrevPanel()
     break;
     }
     if (nullptr == animation || nullptr == animation1) {
-        qInfo() << "do not has animation";
+        qWarning() << "do not has animation";
         if (nullptr != animation1)
             animation1->deleteLater();
 
@@ -301,7 +301,7 @@ void RemoteManagementTopPanel::showPrevPanel()
                 m_remoteManagementSearchPanel->setFocusBack(m_group, state.m_isFocusOn, state.m_currentListIndex);
             }
         } else {
-            qInfo() << "unknow panel";
+            qWarning() << "unknow panel";
         }
     }
 

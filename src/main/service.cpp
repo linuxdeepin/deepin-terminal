@@ -129,7 +129,7 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 {
     QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
     if (nullptr == rightFrame) {
-        qInfo() << "can not found RightFrame in QWidget";
+        qWarning() << "can not found RightFrame in QWidget";
         return;
     }
 
@@ -213,10 +213,10 @@ bool Service::isWindowEffectEnabled()
             return true;
         }
     } else {
-        qInfo() << "call CurrentWM Fail!" << response.errorMessage();
+        qWarning() << "call CurrentWM Fail!" << response.errorMessage();
     }
 
-    qInfo() << "The window effects is off";
+    qWarning() << "The window effects is off";
     return false;
 }
 
@@ -264,7 +264,7 @@ QMap<QString, QString> Service::getShells()
             }
         } while (!shellLine.isNull());
     } else {
-        qInfo() << "read /etc/shells fail! error : " << shellsInfo.error();
+        qWarning() << "read /etc/shells fail! error : " << shellsInfo.error();
     }
     // 关闭文件
     shellsInfo.close();
@@ -311,7 +311,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
         Settings::instance()->reloadShellOptions();
         m_settingDialog->show();
     } else {
-        qInfo() << "No setting dialog.";
+        qWarning() << "No setting dialog.";
         return;
     }
     // 激活窗口
@@ -431,7 +431,7 @@ void Service::EntryTerminal(QStringList arguments, bool isMain)
         return;
     // 超出最大窗口数量
     if(WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
-        qInfo() << QString("terminal cannot be created: %1/%2 ")
+        qWarning() << QString("terminal cannot be created: %1/%2 ")
                    .arg(WindowsManager::instance()->widgetCount())
                    .arg(MAXWIDGETCOUNT)
                    ;

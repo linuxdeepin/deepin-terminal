@@ -165,7 +165,7 @@ void ServerConfigManager::initServerConfig()
         QStringList strList = serverName.split("@");
         ServerConfig *pServerConfig = new ServerConfig();
         if (strList.count() < 3) {
-            qInfo() << __FUNCTION__ << serverName << strList.count() << "error";
+            qWarning()  << "An unknoew error exists on the current server(" << serverName <<  ")";
             continue;
         }
         // 新版数据的读取方式
@@ -271,7 +271,7 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     // 添加密码
     remoteStoreSecreats(config);
 
-    qInfo() << "append success!" << config->m_group << config->m_serverName;
+    qInfo() << "The server configuration is added successfully.The Config group: " << config->m_group  << ".The Server name:"<< config->m_serverName;
 
 }
 
@@ -386,7 +386,7 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
 
 void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 {
-    qInfo() << key << newConfig->m_serverName;
+    qInfo() <<"Sync Data! Key: " << key << ";Server Name:" << newConfig->m_serverName;
     //前提是key唯一
     // serverName被修改
     if (key != newConfig->m_serverName) {
@@ -407,17 +407,17 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 
 void ServerConfigManager::closeAllDialog(QString key)
 {
-    qInfo() << __FUNCTION__ << "remote name : " <<  key << m_serverConfigDialogMap.count();
+    qInfo() << "Close ALL Dialogs for the remote server! Remote name : " <<  key ;
     // 判读此时这个key是否存在
     if (!m_serverConfigDialogMap.contains(key)) {
         // 不存在退出
-        qInfo() << __FUNCTION__ << "not contains " <<  key;
+        qWarning() << "The current remote(" << key <<") server does not exist!";
         return;
     }
 
     for (auto &item : m_serverConfigDialogMap[key]) {
         if (item != nullptr) {
-            qInfo() << __FUNCTION__ << "reject : " <<  item;
+            qInfo() << "Reject the current remote window(" <<  item << ")!";
             // reject就会把当前的窗口删除
             item->reject();
         }
@@ -427,7 +427,7 @@ void ServerConfigManager::closeAllDialog(QString key)
 int ServerConfigManager::getServerCount(const QString &strGroupName)
 {
     if (strGroupName.isEmpty() || strGroupName.isNull()) {
-        qInfo() << "enter error group name:" << strGroupName << "! please confirm again!";
+        qWarning() << "enter error group name:" << strGroupName << "! please confirm again!";
         return -1;
     }
     if (m_serverConfigs.contains(strGroupName)) {
@@ -450,7 +450,7 @@ ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
         }
     }
     // 没找到返回空
-    qInfo() << "can't find remote key : " << key;
+    qWarning() << "can't find remote key : " << key;
     return nullptr;
 }
 
@@ -476,7 +476,7 @@ static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer u
 
     if (error != NULL) {
         /* ... handle the failure here */
-        qInfo() << error->message;
+        qWarning() << "Failed to get password! error msg:" << error->message;
         g_error_free(error);
         emit reback->manager->lookupSerceats(reback->key, "");
     } else if (password == NULL) {
@@ -528,7 +528,7 @@ static void on_password_stored(GObject *source, GAsyncResult *result, gpointer u
     secret_password_store_finish(result, &error);
     if (error != NULL) {
         /* ... handle the failure here */
-        qInfo() << error->message;
+        qWarning() << "Failed to store password! error msg:" << error->message;
         g_error_free(error);
     } else {
         /* ... do something now that the password has been stored */
@@ -566,7 +566,7 @@ static void on_password_cleared(GObject *source, GAsyncResult *result, gpointer 
 
     if (error != NULL) {
         /* ... handle the failure here */
-        qInfo() << __FUNCTION__ << error->message;
+        qWarning() << "Failed to clear password! error msg:" << error->message;
         g_error_free(error);
 
     } else {

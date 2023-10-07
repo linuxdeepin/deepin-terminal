@@ -41,7 +41,6 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 窗口数量加1
     WindowsManager::instance()->terminalCountIncrease();
     initTabTitle();
-    //qInfo() << " TermWidgetparent " << parentWidget();
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -154,7 +153,6 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setFocusPolicy(Qt::NoFocus);
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
-    //qInfo() << parentPage << endl;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
 }
 
@@ -303,7 +301,7 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 
 inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
 {
-    qInfo() << "themeChanged" << builtInTheme;
+    qInfo() << "Theme Type Changed! Current Theme Type: " << builtInTheme;
     // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
@@ -347,7 +345,6 @@ inline void TermWidget::onTitleChanged()
 inline void TermWidget::onCopyAvailable(bool enable)
 {
     if (Settings::instance()->IsPasteSelection() && enable) {
-        qInfo() << "hasCopySelection";
         QString strSelected = selectedText();
         QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
     }
@@ -672,7 +669,7 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
             || (fileName.startsWith("\"") && fileName.endsWith("\""))) {
         fileName = fileName.remove(0, 1);
         fileName = fileName.remove(fileName.length() - 1, 1);
-        qInfo() << "fileName is :" << fileName;
+        qInfo() << "Format fileName is " << fileName;
     }
 
     return fileName;
@@ -795,7 +792,6 @@ int TermWidget::getTermLayer()
         layer++;
         currentW = currentW->parentWidget();
     }
-    qInfo() << "getTermLayer = " << layer;
     return  layer;
 }
 
@@ -1057,7 +1053,7 @@ void TermWidget::selectEncode(QString encode)
 
 void TermWidget::onSettingValueChanged(const QString &keyName)
 {
-    qInfo() << "onSettingValueChanged:" << keyName;
+    qInfo() << "Setting Value Changed! Current Config's key:" << keyName;
     if ("basic.interface.opacity" == keyName) {
         setTermOpacity(Settings::instance()->opacity());
         return;
@@ -1139,7 +1135,6 @@ void TermWidget::onDropInUrls(const char *urls)
 
 inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 {
-    qInfo() << name << direction << fingers;
     // 当前窗口被激活,且有焦点
     if (isActiveWindow() && hasFocus()) {
         if (name == "pinch" && fingers == 2) {

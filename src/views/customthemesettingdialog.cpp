@@ -128,7 +128,6 @@ void ColorPushButton::focusOutEvent(QFocusEvent *event)
 {
     // 焦点Tab出
     if ((Qt::TabFocusReason == event->reason()) || (Qt::BacktabFocusReason == event->reason())) {
-        qInfo() << "ColorPushButton::focusOutEvent-------163" ;
         m_isFocus = false;
     }
     DPushButton::focusOutEvent(event);
@@ -442,7 +441,6 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
 
     connect(m_cancelBtn, &DPushButton::clicked, this, [ = ]() {
         m_confirmBtn->setFocus();
-        qInfo() << "------------reject()-------------";
         loadConfiguration();
         reject();
     });
@@ -528,13 +526,12 @@ void CustomThemeSettingDialog::loadConfiguration()
     QPalette palette;
     QStringList strList = Settings::instance()->themeSetting->value("Foreground/Color").toStringList();
 
+    qInfo() << "Foreground color list number: " << strList.size();
     if (strList.size() != 3) {
-        qInfo() << "strList.size()!=3";
         palette.setColor(QPalette::Background, QColor(0, 255, 0));
         foregroundColorParameter = QColor(0, 255, 0);
     } else {
         palette.setColor(QPalette::Background, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
-        qInfo() << strList[0] << strList[1] << strList[2];
         foregroundColorParameter = QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt());
     }
     m_foregroundButton->setBackGroundColor(foregroundColorParameter);
@@ -542,8 +539,8 @@ void CustomThemeSettingDialog::loadConfiguration()
     QColor backgroundColorParameter;
     strList.clear();
     strList = Settings::instance()->themeSetting->value("Background/Color").toStringList();
+    qInfo() << "Background color list number: " << strList.size();
     if (strList.size() != 3) {
-        qInfo() << "strList.size()!=3";
         palette.setColor(QPalette::Background, QColor(37, 37, 37));
         backgroundColorParameter = QColor(37, 37, 37);
     } else {
@@ -555,8 +552,8 @@ void CustomThemeSettingDialog::loadConfiguration()
     QColor ps1ColorParameter;
     strList.clear();
     strList = Settings::instance()->themeSetting->value("Color2Intense/Color").toStringList();
+    qInfo() << "Color2Intense color list number: " << strList.size();
     if (strList.size() != 3) {
-        qInfo() << "strList.size()!=3";
         palette.setColor(QPalette::Background, QColor(133, 153, 0));
         ps1ColorParameter = QColor(133, 153, 0);
     } else {
@@ -568,8 +565,8 @@ void CustomThemeSettingDialog::loadConfiguration()
     QColor ps2ColorParameter;
     strList.clear();
     strList = Settings::instance()->themeSetting->value("Color4Intense/Color").toStringList();
+    qInfo() << "Color4Intense color list number: " << strList.size();
     if (strList.size() != 3) {
-        qInfo() << "strList.size()!=3";
         palette.setColor(QPalette::Background, QColor(52, 101, 164));
         ps2ColorParameter = QColor(52, 101, 164);
     } else {
