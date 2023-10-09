@@ -51,9 +51,15 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
     m_currentTerm = w;
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
+        m_findBar->move(width() - m_findBar->width(), 0);
+    }, Qt::QueuedConnection);
+#endif
 }
 
-inline void TermWidgetPage::handleKeywordChanged(QString keyword)
+inline void TermWidgetPage::handleKeywordChanged(const QString &keyword)
 {
     handleUpdateSearchKeyword(keyword);
 }
@@ -523,7 +529,7 @@ void TermWidgetPage::showSearchBar(int state)
         //Add by ut001000 renfeixiang 2020-12-02 在搜索框弹出时，添加设置Term的m_bHasSelect为false函数
         if (m_currentTerm != nullptr)
             m_currentTerm->setNoHasSelect();
-        m_findBar->move(width() - SEARCHBAR_RIGHT_MARGIN, 0);
+        m_findBar->move(width() - m_findBar->width(), 0);
         QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });
     } else if (SearchBar_Hide == state) {
         m_findBar->hide();

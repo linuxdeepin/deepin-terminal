@@ -26,6 +26,10 @@
 #include <QDesktopWidget>
 #include <QPainterPath>
 
+#ifdef DTKWIDGET_CLASS_DSizeMode
+#include <DSizeMode>
+#endif
+
 //TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
 {
@@ -161,7 +165,6 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setFocusPolicy(Qt::TabFocus);
     setStartDragDistance(40);
 
-    setTabHeight(36);
     setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
 
@@ -180,6 +183,13 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     connect(this, &DTabBar::tabIsRemoved, this, &TabBar::handleTabIsRemoved);
     connect(this, &DTabBar::tabReleaseRequested, this, &TabBar::handleTabReleased);
     connect(this, &DTabBar::dragActionChanged, this, &TabBar::handleDragActionChanged);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    setTabHeight(DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
+        setTabHeight(DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+    });
+#endif
 }
 
 TabBar::~TabBar()

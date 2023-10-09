@@ -416,10 +416,22 @@ void ListView::onCustomItemModify(const QString &key, bool isFocusOn)
     m_pdlg->show();
 }
 
+/**
+ * @brief 接收 DGuiApplicationHelper::sizeModeChanged() 信号, 根据不同的布局模式调整
+ *      当前界面的布局. 只能在界面创建完成后调用.
+ */
+void ListView::updateSizeMode()
+{
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    // 遍历子项进行更新
+    for (ItemWidget *item : m_itemList) {
+        item->updateSizeMode();
+    }
+#endif
+}
+
 inline void ListView::onCustomCommandOptDlgFinished(int result)
 {
-    int tempResult = result;
-
     // 弹窗隐藏或消失
     //Service::instance()->setIsDialogShow(window(), false);//暂时保留
 
@@ -603,6 +615,10 @@ void ListView::initUI()
     m_mainWidget->setLayout(m_mainLayout);
     setWidget(m_mainWidget);
 
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    updateSizeMode();
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, &ListView::updateSizeMode);
+#endif
 }
 
 void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
