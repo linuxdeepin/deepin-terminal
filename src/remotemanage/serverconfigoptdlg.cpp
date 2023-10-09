@@ -316,6 +316,43 @@ void ServerConfigOptDlg::updateSizeMode()
 #endif
 }
 
+/**
+ * @brief 接收 DGuiApplicationHelper::sizeModeChanged() 信号, 根据不同的布局模式调整
+ *      当前界面的布局. 只能在界面创建完成后调用.
+ *      在此界面中调整标题栏组件、文本Label的属性，调整后修改设置框界面大小。
+ */
+void ServerConfigOptDlg::updateSizeMode()
+{
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    QList<DLabel *> labelList = findChildren<DLabel *>();
+
+    if (DGuiApplicationHelper::isCompactMode()) {
+        for (DLabel *label : labelList) {
+            label->setFixedHeight(COMMONHEIGHT_COMPACT);
+        }
+
+        m_iconLabel->setFixedSize(ICONSIZE_40_COMPACT, ICONSIZE_40_COMPACT);
+        m_closeButton->setFixedWidth(ICONSIZE_40_COMPACT);
+        m_closeButton->setIconSize(QSize(ICONSIZE_40_COMPACT, ICONSIZE_40_COMPACT));
+        DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T6, QFont::Normal);
+        m_bottomVLine->setFixedSize(VERTICAL_WIDTH_COMPACT, VERTICAL_HEIGHT_COMPACT);
+    } else {
+        for (DLabel *label : labelList) {
+            label->setMinimumHeight(COMMONHEIGHT);
+        }
+
+        m_iconLabel->setFixedSize(ICONSIZE_50, ICONSIZE_50);
+        m_closeButton->setFixedWidth(ICONSIZE_50);
+        m_closeButton->setIconSize(QSize(ICONSIZE_50, ICONSIZE_50));
+        DFontSizeManager::instance()->bind(m_advancedOptions, DFontSizeManager::T8, QFont::Normal);
+        m_bottomVLine->setFixedSize(VERTICAL_WIDTH, VERTICAL_HEIGHT);
+    }
+
+    // 根据新界面布局，刷新界面大小
+    QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, sizeHint().height()); });
+#endif
+}
+
 void ServerConfigOptDlg::initData()
 {
     QList<QString> groupList = ServerConfigManager::instance()->getServerConfigs().keys();
@@ -460,6 +497,77 @@ ServerConfig ServerConfigOptDlg::getData()
 void ServerConfigOptDlg::resetCurServer(ServerConfig *config)
 {
     m_curServer = config;
+}
+
+void ServerConfigOptDlg::setAdvanceRegionVisible(bool isVisible)
+{
+    // 点击【高级选项】展开，优先隐藏选项，防止因布局变更导致的闪烁问题。
+    bool focustOnAdvanced = m_advancedOptions->hasFocus();
+    if (isVisible) {
+        //切换【高级选项】的焦点
+        m_advancedOptions->hide();
+    } else {
+        m_advancedOptions->show();
+    }
+
+    //隐藏或显示【高级选项】下方的控件
+    int hideRow = m_pGridLayout->rowCount();
+    for(int row = 0; row < m_pGridLayout->rowCount(); row ++) {
+        for(int column = 0; column < m_pGridLayout->columnCount(); column ++) {
+            QLayoutItem *item = m_pGridLayout->itemAtPosition(row, column);
+            QWidget *cell = item ? item->widget() : nullptr;
+            if(nullptr == cell)
+                continue;
+
+            //获取【高级选项】对应的行
+            if(cell == m_advancedOptions)
+                hideRow = row;
+            //【高级选项】、【删除服务器】另外处理
+            if(cell == m_advancedOptions
+                    || cell == m_delServer)
+                continue;
+            //隐藏或显示【高级选项】下方的控件
+            if(row > hideRow)
+                cell->setVisible(isVisible);
+        }
+    }
+
+    // 继续展开删除选项，重设界面大小
+    if (isVisible) {
+        if (focustOnAdvanced) {
+            m_group->setFocus();
+        }
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+        //修改界面
+        if (SCT_MODIFY == m_type) {
+            m_delServer->show();
+        } else {
+            m_delServer->hide();
+        }
+        //singleShot是为了避免size和resize的不一样
+        QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, sizeHint().height()); });
+
+#else
+        //修改界面
+        if (SCT_MODIFY == m_type) {
+            m_delServer->show();
+            //singleShot是为了避免size和resize的不一样
+            QTimer::singleShot(0, this, [=](){resize(459, 670);});
+        } else {
+            m_delServer->hide();
+            QTimer::singleShot(0, this, [=](){resize(459, 630);});
+        }
+#endif
+    } else {
+        m_delServer->hide();
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+        resize(SETTING_DIALOG_WIDTH, sizeHint().height());
+#else
+        resize(459, 392);    
+#endif
+    }
 }
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()

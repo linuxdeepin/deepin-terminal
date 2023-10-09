@@ -207,7 +207,6 @@ void RemoteManagementPanel::initUI()
 
     m_searchEdit->setClearButtonEnabled(true);
 
-    m_addGroupButton->setText(tr("Add Group"));
     m_pushButton->setText(tr("Add Server"));
 
     m_textLabel = new DLabel(this);

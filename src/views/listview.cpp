@@ -449,8 +449,6 @@ void ListView::updateSizeMode()
 
 inline void ListView::onCustomCommandOptDlgFinished(int result)
 {
-    int tempResult = result;
-
     // 弹窗隐藏或消失
     //Service::instance()->setIsDialogShow(window(), false);//暂时保留
 
