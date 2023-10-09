@@ -208,6 +208,12 @@ public slots:
     void clearFocussSlot();
 
 private:
+    /**
+     * @brief 根据布局模式(紧凑)切换更新界面布局
+     */
+    Q_SLOT void updateSizeMode();
+
+private:
     //标题栏
     QWidget *m_titleBar = nullptr;
     //用于标题布局占位的label
@@ -226,6 +232,8 @@ private:
     DPushButton *m_cancelBtn = nullptr;
     //确认按钮
     DSuggestButton *m_confirmBtn = nullptr;
+    //竖向分割线
+    DVerticalLine *m_verticalLine = nullptr;
     //预览区域
     ThemePreviewArea *m_themePreviewArea = nullptr;
     //深色主题风格单选按钮
