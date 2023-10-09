@@ -1997,9 +1997,8 @@ void MainWindow::checkThemeItem()
         return;
 
     QAction *action;
-    QString  expandThemeStr = THEME_NO;
     // 从配置取值
-    expandThemeStr = Settings::instance()->extendColorScheme();
+    QString  expandThemeStr = Settings::instance()->extendColorScheme();
     // 兼容处理
     if (expandThemeStr.isEmpty()) {
         expandThemeStr = Settings::instance()->colorScheme();
