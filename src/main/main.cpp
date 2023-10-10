@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     DApplicationSettings set(&app);
 
     // 系统日志
-#if !(DTK_VERSION >= DTK_VERSION_CHECK(5,6,5,0))
+#if (DTK_VERSION >= DTK_VERSION_CHECK(5,6,5,0))
     DLogManager::registerJournalAppender();
 #ifdef QT_DEBUG
     DLogManager::registerConsoleAppender();
