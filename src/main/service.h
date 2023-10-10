@@ -182,6 +182,12 @@ signals:
      */
     void hostnameChanged();
 
+    /**
+     * @brief 主题变化
+     * @param colorTheme
+     */
+    void changeColorTheme(const QString &colorTheme);
+
 public slots:
     /**
      * @brief 创建窗口的入口,Service进入接口

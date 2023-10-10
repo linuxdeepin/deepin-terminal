@@ -30,6 +30,8 @@
 #include <QMenu>
 #include <QDebug>
 #include <QShortcut>
+#include <QMap>
+#include <QActionGroup>
 #include <QtX11Extras/QX11Info>
 
 #include <functional>
@@ -43,51 +45,9 @@ class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
+class SwitchThemeMenu;
 
 
-/*******************************************************************************
- 1. @类名:    SwitchThemeMenu
- 2. @作者:    ut000125 sunchengxi
- 3. @日期:    2020-10-28
- 4. @说明:    主题菜单的快捷键项在鼠标离开悬浮时，触发主题还原
-*******************************************************************************/
-class SwitchThemeMenu : public QMenu
-{
-    Q_OBJECT
-public:
-    SwitchThemeMenu(const QString &title, QWidget *parent = nullptr);
-    /**
-     * @brief 捕获鼠标离开主题项事件
-     * @author ut000125 sunchengxi
-     */
-    void leaveEvent(QEvent *) override;
-    /**
-     * @brief 主题菜单栏隐藏时触发
-     * @author ut000125 sunchengxi
-     */
-    void hideEvent(QHideEvent *) override;
-    /**
-     * @brief 捕获鼠标进入主题项事件
-     * @author ut000125 sunchengxi
-     * @param event 鼠标进入主题项事件
-     */
-    void enterEvent(QEvent *event) override;
-    /**
-     * @brief 处理键盘主题项左键按下离开事件
-     * @author ut000125 sunchengxi
-     * @param event 键盘主题项左键按下离开事件
-     */
-    void keyPressEvent(QKeyEvent *event) override;
-
-signals:
-    //主题项在鼠标停靠离开时触发的信号
-    void mainWindowCheckThemeItemSignal();
-    //主题菜单隐藏时设置主题信号
-    void menuHideSetThemeSignal();
-public:
-    //鼠标悬殊主题记录，防止频繁刷新，鼠标再次进入主题列表负责刷新预览
-    QString hoveredThemeStr = "";
-};
 
 
 /*******************************************************************************
@@ -363,36 +323,6 @@ public:
     static constexpr const char *THEME_DARK                     = "Dark";
     //无内置主题
     static constexpr const char *THEME_NO                       = "";
-    //内置主题1
-    static constexpr const char *THEME_ONE                      = "Theme1";
-    static constexpr const char *THEME_ONE_NAME                 = "Elementary";
-    //内置主题2
-    static constexpr const char *THEME_TWO                      = "Theme2";
-    static constexpr const char *THEME_TWO_NAME                 = "Empathy";
-    //内置主题3
-    static constexpr const char *THEME_THREE                    = "Theme3";
-    static constexpr const char *THEME_THREE_NAME               = "Tomorrow night blue";
-    //内置主题4
-    static constexpr const char *THEME_FOUR                     = "Theme4";
-    static constexpr const char *THEME_FOUR_NAME                = "Bim";
-    //内置主题5
-    static constexpr const char *THEME_FIVE                     = "Theme5";
-    static constexpr const char *THEME_FIVE_NAME                = "Freya";
-    //内置主题6
-    static constexpr const char *THEME_SIX                      = "Theme6";
-    static constexpr const char *THEME_SIX_NAME                 = "Hybrid";
-    //内置主题7
-    static constexpr const char *THEME_SEVEN                    = "Theme7";
-    static constexpr const char *THEME_SEVEN_NAME               = "Ocean dark";
-    //内置主题8
-    static constexpr const char *THEME_EIGHT                    = "Theme8";
-    static constexpr const char *THEME_EIGHT_NAME               = "Deepin";
-    //内置主题9
-    static constexpr const char *THEME_NINE                     = "Theme9";
-    static constexpr const char *THEME_NINE_NAME                = "Ura";
-    //内置主题10
-    static constexpr const char *THEME_TEN                      = "Theme10";
-    static constexpr const char *THEME_TEN_NAME                 = "One light";
     //自定义主题
     static constexpr const char *THEME_CUSTOM                   = "Custom Theme";
 
@@ -535,19 +465,34 @@ protected:
      * @author ut000125 sunchengxi
      */
     void addThemeMenuItems();
+
+    /**
+     * @brief 根据配置添加选项
+     * @author ut000610 daizhengwen
+     */
+    void addThemeFromConfig();
 public:
     /**
      * @brief 选择主题项
      * @author ut000125 sunchengxi
      */
     void switchThemeAction(QAction *);
+
     /**
-     * @brief 选择内置主题项
-     * @author ut000125 sunchengxi
-     * @param action
-     * @param themeNameStr 主题项
+     * @brief 设置主题
+     * @param 是否自定义
+     * @param 主题名称
      */
-    void switchThemeAction(QAction *&action, const QString &themeNameStr);
+    void setTheme(bool isCustom, const QString &themeName);
+
+
+    void showTheme(const QString &themeName);
+
+    /**
+     * @brief 自定义主题
+     * @param themeNameStr
+     */
+    void customTheme(const QString &themeNameStr);
 
 
 protected slots:
@@ -575,15 +520,9 @@ protected slots:
      */
     void themeActionHoveredSlot(QAction *);
     /**
-     * @brief 设置选中的主题项的槽函数
-     * @author ut000125 sunchengxi
+     * @brief 主题还原
      */
-    void setThemeCheckItemSlot();
-    /**
-     * @brief 主题菜单隐藏时设置主题槽函数
-     * @author ut000125 sunchengxi
-     */
-    void menuHideSetThemeSlot();
+    void themeRecovery();
 
     void slotShowRenameTabDialog(QString Identifier);
     void slotMenuCloseOtherTab(QString Identifier);
@@ -792,7 +731,7 @@ protected:
      * @brief 设置titlebar的子控件为NoFocus
      * @param titlebar
      */
-    void setTitlebarNoFocus(QWidget * titlebar);
+    void setTitlebarNoFocus(QWidget *titlebar);
 
     /**
      * @brief 根据当前标签页标题更新窗口名
@@ -877,26 +816,8 @@ public:
     //跟随系统主题快捷键
     QAction         *autoThemeAction        = nullptr;
 
-    //内置主题1快捷键
-    QAction         *themeOneAction         = nullptr;
-    //内置主题2快捷键
-    QAction         *themeTwoAction         = nullptr;
-    //内置主题3快捷键
-    QAction         *themeThreeAction       = nullptr;
-    //内置主题4快捷键
-    QAction         *themeFourAction        = nullptr;
-    //内置主题5快捷键
-    QAction         *themeFiveAction        = nullptr;
-    //内置主题6快捷键
-    QAction         *themeSixAction         = nullptr;
-    //内置主题7快捷键
-    QAction         *themeSevenAction       = nullptr;
-    //内置主题8快捷键
-    QAction         *themeEightAction       = nullptr;
-    //内置主题9快捷键
-    QAction         *themeNineAction        = nullptr;
-    //内置主题10快捷键
-    QAction         *themeTenAction         = nullptr;
+    //内置主题快捷键
+    QMap<QString, QAction *> themeBuiltinActionMap;
     //自定义主题快捷键
     QAction        *themeCustomAction      = nullptr;
 

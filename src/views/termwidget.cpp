@@ -68,19 +68,12 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
         setTerminalOpacity(Settings::instance()->opacity());
     }
     /********************* Modify by ut000610 daizhengwen End ************************/
-    //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
-
-    /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
-    // theme
-    QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    //theme = Settings::instance()->colorScheme();
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        theme = "Light";
+    QString colorTheme = "Dark";
+    // 没有主题配置
+    if (!Settings::instance()->colorScheme().isEmpty()) {
+        colorTheme = Settings::instance()->colorScheme();
     }
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-    setColorScheme(theme);
-    Settings::instance()->setColorScheme(theme);
+    setTheme(colorTheme);
 
     // 这个参数启动为默认值UTF-8
     setTextCodec(QTextCodec::codecForName("UTF-8"));
@@ -179,10 +172,9 @@ void TermWidget::initConnections()
 
     connect(this, &QWidget::customContextMenuRequested, this, &TermWidget::customContextMenuCall);
 
-    connect(DApplicationHelper::instance(),
-            &DApplicationHelper::themeTypeChanged,
-            this,
-            &TermWidget::onThemeTypeChanged);
+    // 主题变化只能从公共方法发出信号通知全局
+    connect(Service::instance(), &Service::changeColorTheme, this, &TermWidget::onColorThemeChanged);
+    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &TermWidget::onThemeChanged);
 
     // 未找到搜索的匹配结果
     connect(this, &QTermWidget::sig_noMatchFound, this, &TermWidget::onSig_noMatchFound);
@@ -199,7 +191,7 @@ void TermWidget::initConnections()
     connect(this, &TermWidget::copyAvailable, this, &TermWidget::onCopyAvailable);
 
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
-    connect(Settings::instance(), &Settings::historySizeChanged, this, [this] (int newHistorySize) {
+    connect(Settings::instance(), &Settings::historySizeChanged, this, [this](int newHistorySize) {
         qInfo() << "Setting new history size:" << newHistorySize;
         setHistorySize(newHistorySize);
     });
@@ -254,23 +246,23 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
     //远程开始时，快速ctrl+c，也会有ForegroundPid：A-》B-》A的过程
 
     //准备输入密码，且 ForegroundPid 不等于A时，为有效准备
-    if(m_remotePasswordIsReady && getForegroundProcessId() != m_remoteMainPid) {
+    if (m_remotePasswordIsReady && getForegroundProcessId() != m_remoteMainPid) {
         //匹配关键字
-        if(value.toLower().contains("password:")
+        if (value.toLower().contains("password:")
                 || value.toLower().contains("enter passphrase for key")) {
-        //输入密码,密码不为空，则发送
-            if(!m_remotePassword.isEmpty())
+            //输入密码,密码不为空，则发送
+            if (!m_remotePassword.isEmpty())
                 sendText(m_remotePassword + "\r");
             emit remotePasswordHasInputed();
         }
         //第一次远程时，需要授权
-        if(value.toLower().contains("yes/no")) {
+        if (value.toLower().contains("yes/no")) {
             sendText("yes\r");
         }
 
     }
     //若ForegroundPid等于A，则代表远程结束，如开始连接时立刻ctrl+c
-    if(m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
+    if (m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
         m_remotePasswordIsReady = false;
     }
 
@@ -310,30 +302,15 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
         QDesktopServices::openUrl(url);
 }
 
-inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
+inline void TermWidget::onColorThemeChanged(const QString &colorTheme)
 {
-    qInfo() << "themeChanged" << builtInTheme;
-    // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
-    QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
-    if (builtInTheme == DGuiApplicationHelper::LightType)
-        theme = "Light";
+    setTheme(colorTheme);
+}
 
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-    //setColorScheme(theme);
-    //Settings::instance()->setColorScheme(theme);
-    QString  expandThemeStr = "";
-    expandThemeStr = Settings::instance()->extendColorScheme();
-    if (expandThemeStr.isEmpty()) {
-        if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType)
-            theme = "Light";
-
-        setColorScheme(theme);
-        Settings::instance()->setColorScheme(theme);
-    } else {
-        setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
-        Settings::instance()->m_customThemeModify = false;
+inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
+{
+    if ("System Theme" == Settings::instance()->colorScheme()) {
+        setTheme("System Theme");
     }
 }
 
@@ -393,7 +370,7 @@ void TermWidget::onTitleArgsChange(QString key, QString value)
             // 出现家目录~的情况
             QString homePath = QDir::homePath();
             QStringList pathList;
-            if("~" == dir)
+            if ("~" == dir)
                 pathList = homePath.split("/");
             else
                 pathList = dir.split("/");
@@ -715,6 +692,51 @@ void TermWidget::inputRemotePassword(const QString &remotePassword)
     //还原
     m_remotePassword = "";
     m_remotePasswordIsReady = false;
+}
+
+void TermWidget::changeTitleColor(int lightness)
+{
+    QString colorTheme = Settings::instance()->colorScheme();
+    // 自定义主题
+    if (colorTheme == Settings::instance()->m_configCustomThemePath) {
+        DGuiApplicationHelper::ColorType systemTheme = DGuiApplicationHelper::DarkType;
+        if ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+            systemTheme = DGuiApplicationHelper::LightType;
+        }
+        DApplicationHelper::instance()->setPaletteType(systemTheme);
+        return;
+    }
+
+    // 跟随系统
+    if ("System Theme" == colorTheme) {
+        DApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
+        return;
+    }
+
+    // 其他
+    if (lightness >= 192) {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+    } else {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+    }
+}
+
+void TermWidget::setTheme(const QString &colorTheme)
+{
+    QString theme = colorTheme;
+    // 跟随系统
+    if ("System Theme" == colorTheme) {
+        if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
+            theme = "Dark";
+        } else {
+            theme = "Light";
+        }
+    }
+
+    // 设置主题
+    int lightness = setColorScheme(theme);
+    // 设置系统主题
+    changeTitleColor(lightness);
 }
 
 inline void TermWidget::onOpenFile()
@@ -1108,6 +1130,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     }
 
     if ("basic.interface.theme" == keyName) {
+        setTheme(Settings::instance()->colorScheme());
         return;
     }
     // 这里只是立即生效一次，真正生效起作用的地方在初始的connect中
@@ -1125,7 +1148,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
                 << ", auto effective when happen";
         return;
     }
-    
+
     if ("advanced.cursor.include_special_characters_in_double_click_selections" == keyName) {
         setTerminalWordCharacters(Settings::instance()->wordCharacters());
         return;
@@ -1183,7 +1206,7 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
     } else {
         // 启动shell失败
         QString strShellNoFound;
-        if(QFile::exists(currentShell))
+        if (QFile::exists(currentShell))
             strShellNoFound = QObject::tr("Could not open \"%1\", unable to run it").arg(currentShell);
         else
             strShellNoFound = QObject::tr("Could not find \"%1\", unable to run it").arg(currentShell);
@@ -1205,7 +1228,7 @@ void TermWidget::wheelEvent(QWheelEvent *event)
                 // 向上放大
                 zoomIn();   // zoom in 放大
             }
-        } else if ((Qt::ControlModifier | Qt::ShiftModifier) == event->modifiers()){
+        } else if ((Qt::ControlModifier | Qt::ShiftModifier) == event->modifiers()) {
             int newOpacity;
             if (directionY < 0) {
                 newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() - STEP_OPACITY;

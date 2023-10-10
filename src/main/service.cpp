@@ -29,7 +29,7 @@ Service *Service::g_pService = nullptr;
 
 Service *Service::instance()
 {
-    if(nullptr == g_pService) {
+    if (nullptr == g_pService) {
         g_pService = new Service();
     }
     return g_pService;
@@ -79,8 +79,8 @@ void Service::initSetting()
         //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
         DTitlebar *titleBar = Utils::findWidgetByAccessibleName<DTitlebar *>(m_settingDialog, "DSettingTitleBar");
         QScrollArea *scrollArea = Utils::findWidgetByAccessibleName<QScrollArea *>(m_settingDialog, "ContentScrollArea");
-        if(titleBar && scrollArea) {
-            QTimer::singleShot(0, this, [titleBar, scrollArea](){
+        if (titleBar && scrollArea) {
+            QTimer::singleShot(0, this, [titleBar, scrollArea]() {
                 titleBar->setFocus();
                 scrollArea->verticalScrollBar()->setValue(0);
             });
@@ -326,7 +326,7 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
 void Service::slotCustomThemeSettingDialogFinished(int result)
 {
     if (CustomThemeSettingDialog::Accepted == result) {
-        m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
+        m_settingOwner->customTheme(Settings::instance()->m_configCustomThemePath);
         return;
     }
 }
@@ -394,14 +394,14 @@ void Service::EntryTerminal(QStringList arguments, bool isMain)
     }
 
     //首次启动的终端未启动
-    if(!isMain && !mainTerminalIsStarted())
+    if (!isMain && !mainTerminalIsStarted())
         return;
     // 超出最大窗口数量
-    if(WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
+    if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
         qInfo() << QString("terminal cannot be created: %1/%2 ")
-                   .arg(WindowsManager::instance()->widgetCount())
-                   .arg(MAXWIDGETCOUNT)
-                   ;
+                .arg(WindowsManager::instance()->widgetCount())
+                .arg(MAXWIDGETCOUNT)
+                ;
         return;
     }
     WindowsManager::instance()->createNormalWindow(properties);
@@ -458,7 +458,7 @@ bool Service::getIsDialogShow() const
 void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 {
     MainWindow *window = qobject_cast<MainWindow *>(parent);
-    if(nullptr == window)
+    if (nullptr == window)
         return;
     if (window == WindowsManager::instance()->getQuakeWindow()) {
         qInfo() << "QuakeWindow show or hide dialog " << isDialogShow;

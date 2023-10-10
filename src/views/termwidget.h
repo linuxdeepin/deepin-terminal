@@ -268,6 +268,18 @@ public:
      */
     void inputRemotePassword(const QString &remotePassword);
 
+    /**
+     * @brief 根据背景的亮度值改变标题的颜色
+     * @param lightness 亮度
+     */
+    void changeTitleColor(int lightness);
+
+    /**
+     * @brief 设置系统主题和主题
+     * @param colorTheme
+     */
+    void setTheme(const QString &colorTheme);
+
 public slots:
     /**
      * @brief Terminal的各项设置生效
@@ -335,7 +347,8 @@ private slots:
     void onTermWidgetReceivedData(QString value);
     void onExitRemoteServer();
     void onUrlActivated(const QUrl &url, bool fromContextMenu);
-    void onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme);
+    void onColorThemeChanged(const QString &colorTheme);
+    void onThemeChanged(DApplicationHelper::ColorType themeType);
     void onTermIsIdle(bool bIdle);
     void onTitleChanged();
     void onWindowEffectEnabled(bool isWinEffectEnabled);
