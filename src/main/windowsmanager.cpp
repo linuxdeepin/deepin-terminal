@@ -33,7 +33,9 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
     }
     // 雷神窗口移动到光标所在的屏幕
     QPoint cursorPoint = QCursor::pos();
+    int windowWidth = QGuiApplication::screenAt(cursorPoint)->geometry().width();
     m_quakeWindow->move(QGuiApplication::screenAt(cursorPoint)->geometry().topLeft());
+    m_quakeWindow->setFixedWidth(windowWidth);
     // Alt+F2的显隐功能实现点
     quakeWindowShowOrHide();
 }
