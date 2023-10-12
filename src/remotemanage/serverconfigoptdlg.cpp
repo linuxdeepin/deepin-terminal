@@ -25,11 +25,12 @@
 #include <QSpacerItem>
 #include <QTimer>
 #include <QDebug>
-
+#include <QLoggingCategory>
 //c++
 #include <iterator>//added byq qinyaning
 
 DGUI_USE_NAMESPACE
+Q_DECLARE_LOGGING_CATEGORY(LogRemoteManage)
 
 ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *curServer, QWidget *parent)
     : DAbstractDialog(parent),
@@ -434,7 +435,7 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 
 void ServerConfigOptDlg::updataData(ServerConfig *curServer)
 {
-    qInfo() << "ServerConfigOptDlg server configuration options updata data.";
+    qCInfo(LogRemoteManage) << "ServerConfigOptDlg server configuration options updata data.";
     // 读取配置
     QList<QString> textCodeList = getTextCodec();
     QList<QString> backSpaceKeyList = getBackSpaceKey();
@@ -564,7 +565,7 @@ void ServerConfigOptDlg::setAdvanceRegionVisible(bool isVisible)
 
 void ServerConfigOptDlg::slotAddSaveButtonClicked()
 {
-    qInfo() << "ServerConfigOptDlg add and save button clicled slot function.";
+    qCInfo(LogRemoteManage) << "ServerConfigOptDlg add and save button clicled slot function.";
     // 服务器名为空
     if (m_serverName->text().trimmed().isEmpty()) {
         m_serverName->showAlertMessage(tr("Please enter a server name"), m_serverName);
@@ -634,7 +635,7 @@ void ServerConfigOptDlg::slotAddSaveButtonClicked()
         ServerConfigManager::instance()->modifyServerConfig(config, m_curServer);
     }
     accept();
-    qInfo() << "Add or save remote config finish";
+    qCInfo(LogRemoteManage) << "Add or save remote config finish";
 }
 
 void ServerConfigOptDlg::slotFileChooseDialog()

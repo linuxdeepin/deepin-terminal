@@ -15,6 +15,9 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LogRemoteManage)
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -82,13 +85,13 @@ inline void RemoteManagementSearchPanel::handleListViewFocusOut(Qt::FocusReason 
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qInfo() << "search panel focus on '+'";
+        qCInfo(LogRemoteManage) << "search panel focus on '+'";
         m_listWidget->clearIndex();
     } else if (Qt::BacktabFocusReason == type || Qt::NoFocusReason == type) {
         // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
         m_rebackButton->setFocus();
         m_listWidget->clearIndex();
-        qInfo() << "search panel type" << type;
+        qCInfo(LogRemoteManage) << "search panel type" << type;
     }
 }
 
@@ -131,7 +134,7 @@ void RemoteManagementSearchPanel::onItemClicked(const QString &key)
     if (nullptr != remote)
         emit doConnectServer(remote);
     else
-        qInfo() << "can't connect to remote" << key;
+        qCInfo(LogRemoteManage) << "can't connect to remote" << key;
 
 }
 
@@ -142,7 +145,7 @@ void RemoteManagementSearchPanel::onFocusOutList(Qt::FocusReason type)
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qInfo() << "search panel focus to '+'";
+        qCInfo(LogRemoteManage) << "search panel focus to '+'";
     }
 }
 
@@ -170,7 +173,7 @@ void RemoteManagementSearchPanel::clearAllFocus()
 
 void RemoteManagementSearchPanel::setFocusBack(const QString &strGroup, bool isFocusOn, int prevIndex)
 {
-    qInfo() << "RemoteManagementSearchPanel return from RemoteManagementGroup.";
+    qCInfo(LogRemoteManage) << "RemoteManagementSearchPanel return from RemoteManagementGroup.";
     // 返回前判断之前是否要有焦点
     if (isFocusOn) {
         // 要有焦点

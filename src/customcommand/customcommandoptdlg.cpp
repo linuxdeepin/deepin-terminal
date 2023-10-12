@@ -27,6 +27,12 @@
 #include <QApplication>
 #include <QClipboard>
 
+#ifdef QT_DEBUG
+Q_LOGGING_CATEGORY(LogCustomCommand,"log.terminal.customcommand.work")
+#else
+Q_LOGGING_CATEGORY(LogCustomCommand,"log.terminal.customcommand.work",QtInfoMsg)
+#endif
+
 CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandData *currItemData, QWidget *parent)
     : DAbstractDialog(parent)
     , m_type(type)
@@ -222,14 +228,14 @@ inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySeque
 {
     //删除
     if ("Backspace" == sequence.toString()) {
-        qInfo() << "The KeySequenceE is Backspace";
+        qCInfo(LogCustomCommand) << "The KeySequenceE is Backspace";
         m_shortCutLineEdit->clear();
         m_lastCmdShortcut = "";
         return;
     }
     // 取消
     if ("Esc" == sequence.toString()) {
-        qInfo() << "The KeySequenceE is Esc";
+        qCInfo(LogCustomCommand) << "The KeySequenceE is Esc";
         m_shortCutLineEdit->clear();
         m_shortCutLineEdit->setKeySequence(QKeySequence(m_lastCmdShortcut));
         /***add by ut001121 zhangmeng 20200521 在快捷键编辑框中按下ESC键时退出窗口 修复BUG27554***/
@@ -243,10 +249,10 @@ inline void CustomCommandOptDlg::slotShortCutLineEditingFinished(const QKeySeque
     QString reason;
     // 判断快捷键是否冲突
     if (!ShortcutManager::instance()->checkShortcutValid(checkName, sequence.toString(), reason)) {
-        qWarning() << "Shortcut key conflict";
+        qCWarning(LogCustomCommand) << "Shortcut key conflict";
         // 冲突
         if (sequence.toString() != "Esc") {
-            qWarning() << "The current shortcut key is not Esc! ("<< sequence <<")";
+            qCWarning(LogCustomCommand) << "The current shortcut key is not Esc! ("<< sequence <<")";
             showShortcutConflictMsgbox(reason);
         }
         m_shortCutLineEdit->clear();
@@ -375,21 +381,21 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
 
     strName = strName.trimmed();//空格的名称是无效的，剔除名称前后的空格
     if (strName.isEmpty()) {
-        qWarning() << "The name of the user-defined command is empty!";
+        qCWarning(LogCustomCommand) << "The name of the user-defined command is empty!";
         m_nameLineEdit->showAlertMessage(tr("Please enter a name"), m_nameLineEdit->parentWidget());
         return;
     }
 
     /***add begin by ut001121 zhangmeng 20200615 限制名称字符长度 修复BUG31286***/
     if (strName.length() > MAX_NAME_LEN) {
-        qWarning() << "The name should be no more than 32 characters";
+        qCWarning(LogCustomCommand) << "The name should be no more than 32 characters";
         m_nameLineEdit->showAlertMessage(QObject::tr("The name should be no more than 32 characters"), m_nameLineEdit->parentWidget());
         return;
     }
     /***add end by ut001121***/
     QString strCommandtemp = strCommand.trimmed();//空格的命令是无效的
     if (strCommandtemp.isEmpty()) {
-        qWarning() << "The custom command is empty";
+        qCWarning(LogCustomCommand) << "The custom command is empty";
         m_commandLineEdit->showAlertMessage(tr("Please enter a command"), m_commandLineEdit->parentWidget());
         return;
     }
@@ -404,20 +410,20 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
     QAction *existAction = nullptr;
     int icount = 0;
     if (CCT_MODIFY == m_type) {
-        qInfo() << "It is the modify type of custom command operation";
+        qCInfo(LogCustomCommand) << "It is the modify type of custom command operation";
         if (m_bRefreshCheck) {
-            qInfo() << "CustomCommand was refreshed";
+            qCInfo(LogCustomCommand) << "CustomCommand was refreshed";
             QAction *refreshExitAction = nullptr;
             refreshExitAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
             if (refreshExitAction) {
-                qWarning() << "The custom command already exists";
+                qCWarning(LogCustomCommand) << "The custom command already exists";
                 accept();
                 return;
             }
         }
 
         if (strName == m_currItemData->m_cmdName && strCommand == m_currItemData->m_cmdText && keytmp == QKeySequence(m_currItemData->m_cmdShortcut)) {
-            qInfo() << "The custom command don't need to save again.";
+            qCInfo(LogCustomCommand) << "The custom command don't need to save again.";
             accept();
             return;
         }
@@ -425,7 +431,7 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
         existAction = ShortcutManager::instance()->checkActionIsExistForModify(*m_newAction);
 
         if (strName != m_currItemData->m_cmdName) {
-            qInfo() << "Custom commands have been changed.";
+            qCInfo(LogCustomCommand) << "Custom commands have been changed.";
             QList<QAction *> &customCommandActionList = ShortcutManager::instance()->getCustomCommandActionList();
             for (int i = 0; i < customCommandActionList.size(); i++) {
                 QAction *curAction = customCommandActionList[i];
@@ -435,12 +441,12 @@ void CustomCommandOptDlg::slotAddSaveButtonClicked()
             }
         }
     } else {
-        qInfo() << "It is the add type of custom command operation";
+        qCInfo(LogCustomCommand) << "It is the add type of custom command operation";
         existAction = ShortcutManager::instance()->checkActionIsExist(*m_newAction);
     }
 
     if (nullptr != existAction || icount) {
-        qInfo() << "The name already exists";
+        qCInfo(LogCustomCommand) << "The name already exists";
         QString strFistLine = tr("The name already exists,");
         QString strSecondeLine = tr("please input another one.");
         Utils::showSameNameDialog(this, strFistLine, strSecondeLine);
@@ -704,7 +710,7 @@ void CustomCommandOptDlg::closeEvent(QCloseEvent *event)
 void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName)
 {
     if (CCT_ADD == m_type) {
-        qWarning() << "Currently is the add operation interface";
+        qCWarning(LogCustomCommand) << "Currently is the add operation interface";
         return;
     }
     //不进行刷新操作
@@ -716,7 +722,7 @@ void CustomCommandOptDlg::slotRefreshData(QString oldCmdName, QString newCmdName
         return;
     }
     m_bRefreshCheck = true;
-    qInfo() << "Refresh custom command data.Curren command name is " <<  m_nameLineEdit->text();
+    qCInfo(LogCustomCommand) << "Refresh custom command data.Curren command name is " <<  m_nameLineEdit->text();
 
     QAction *currAction = new QAction(ShortcutManager::instance());
     currAction->setText(newCmdName);

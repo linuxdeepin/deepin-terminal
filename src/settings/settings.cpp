@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QStandardPaths>
 #include <QFontDatabase>
+#include <QLoggingCategory>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
@@ -31,6 +32,8 @@ DComboBox *Settings::g_shellConfigCombox = nullptr;
 
 // 全局变量  变量定义的位置可以变，目前只有这边用，所以定义到这儿
 const QString DEFAULT_SHELL = "$SHELL";
+
+Q_DECLARE_LOGGING_CATEGORY(LogCommon)
 
 Settings::Settings() : QObject(qApp)
 {
@@ -69,7 +72,7 @@ void Settings::init()
     // 默认配置
     QFile configFile(":/other/default-config.json");
     if(!configFile.open(QFile::ReadOnly)) {
-        qInfo() << "can not open default-config.json";
+        qCInfo(LogCommon) << "can not open default-config.json";
     }
     QByteArray json = configFile.readAll();
     configFile.close();
@@ -128,7 +131,7 @@ void Settings::init()
     windowState->setData("items", windowStateMap);
 
     for (QString &key : settings->keys())
-        qDebug() <<"Config' Key: " <<  key << " Config' Value: " << settings->value(key);
+        qCDebug(LogCommon) <<"Config' Key: " <<  key << " Config' Value: " << settings->value(key);
     /********************* Modify by n014361 wangpeili End ************************/
 
     initConnection();
@@ -527,7 +530,7 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
         // 例ctlr+shift+? => ctrl+shift+/
         if (Utils::converUpToDown(strKey) == Utils::converUpToDown(Key)) {
             if (Name != tmpKey) {
-                qInfo() << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
+                qCInfo(LogCommon) << Name << Key << "is conflict with Settings!" << tmpKey << settings->value(tmpKey);
                 return  true;
             }
         }
@@ -552,7 +555,7 @@ void Settings::handleWidthFont()
 
             int ret = base.addApplicationFont(fontpath);
             if (-1 == ret)
-                qWarning() << "load " << name << " font faild";
+                qCWarning(LogCommon) << "load " << name << " font faild";
 
         }
     }
@@ -610,10 +613,10 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
         return qc.compare(str1.value, str2.value) < 0;
     });
 
-    qInfo() << "createFontComBoBoxHandle get system monospacefont";
+    qCInfo(LogCommon) << "createFontComBoBoxHandle get system monospacefont";
     if (Whitelist.size() <= 0) {
         //一般不会走这个分支，除非DBUS出现问题
-        qInfo() << "DBusManager::callAppearanceFont failed, get control font failed.";
+        qCInfo(LogCommon) << "DBusManager::callAppearanceFont failed, get control font failed.";
         //DBUS获取字体失败后，设置系统默认的等宽字体
         QStringList fontlist;
         fontlist << "Courier 10 Pitch" << "DejaVu Sans Mono" << "Liberation Mono"
@@ -749,7 +752,7 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     // 配置修改
     option->connect(option, &DTK_CORE_NAMESPACE::DSettingsOption::valueChanged, rightWidget, [ = ](const QVariant & value) {
         QString keyseq = value.toString();
-        qInfo() << "Current configuration modification! Config's Key: " << rightWidget->option()->key()
+        qCInfo(LogCommon) << "Current configuration modification! Config's Key: " << rightWidget->option()->key()
                 << "Config's Value: " << keyseq;
         if (SHORTCUT_VALUE == keyseq || keyseq.isEmpty()) {
             rightWidget->clear();
@@ -822,7 +825,7 @@ void Settings::setFontSize(const int size)
 void Settings::setFontName(const QString font)
 {
     FontDataList fontList = DBusManager::callAppearanceFont("monospacefont");
-    qDebug() << font << fontList.size();
+   qCDebug(LogCommon) << "current font name:" << font << "font size:" << fontList.size();
     for (int k = 0; k < fontList.count(); k++) {
         if (font == fontList[k].key || font == fontList[k].value) {
             settings->option("basic.interface.font")->setValue(font);
@@ -860,7 +863,7 @@ void Settings::setConsoleShell(const QString shellName)
 {
     QMap<QString, QString> shellMap = Service::instance()->getShells();
     for (auto itr = shellMap.begin(); itr != shellMap.end(); ++itr) {
-        qDebug() <<"Console Shell("<< shellName << ")! key:" <<  itr.key() << "value: " << itr.value();
+        qCDebug(LogCommon) <<"Console Shell("<< shellName << ")! key:" <<  itr.key() << "value: " << itr.value();
         if (shellName == itr.key() || shellName == itr.value()) {
             settings->option("advanced.shell.default_shell")->setValue(itr.value());
             break;

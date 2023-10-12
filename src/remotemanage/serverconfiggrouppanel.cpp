@@ -14,8 +14,10 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDebug>
-
+#include <QLoggingCategory>
 #define GROUPSEARCHWIDTH 172
+
+Q_DECLARE_LOGGING_CATEGORY(LogRemoteManage)
 
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
@@ -80,7 +82,7 @@ inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
         return;
     }
     if (Qt::TabFocusReason == type) {
-        qInfo() << "group focus out!";
+        qCInfo(LogRemoteManage) << "group focus out!";
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
         m_listWidget->clearIndex();
@@ -93,7 +95,7 @@ inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
 
         m_listWidget->clearIndex();
     } else if (Qt::NoFocusReason == type) {
-        qInfo() << "group NoFocusReason";
+        qCInfo(LogRemoteManage) << "group NoFocusReason";
         int isFocus = false;
         // 列表没有内容，焦点返回到返回键上
         if (m_listWidget->hasFocus() || m_rebackButton->hasFocus())
@@ -111,7 +113,7 @@ inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
 
 inline void ServerConfigGroupPanel::onRefreshList()
 {
-    qInfo() << "group refresh list";
+    qCInfo(LogRemoteManage) << "group refresh list";
     if (m_isShow) {
         refreshData(m_groupName);
         QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
@@ -125,7 +127,7 @@ inline void ServerConfigGroupPanel::onRefreshList()
 
 void ServerConfigGroupPanel::refreshData(const QString &groupName)
 {
-    qInfo() << "Refresh Data!";
+    qCInfo(LogRemoteManage) << "Refresh Data!";
     m_groupName = groupName;
     m_listWidget->clearData();
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Group, m_listWidget, "", groupName);
@@ -185,5 +187,5 @@ void ServerConfigGroupPanel::onItemClicked(const QString &key)
     if (nullptr != remote)
         emit doConnectServer(remote);
     else
-        qWarning() << "can't connect to remote" << key;
+        qCWarning(LogRemoteManage) << "can't connect to remote" << key;
 }

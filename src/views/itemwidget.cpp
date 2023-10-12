@@ -13,7 +13,9 @@
 // qt
 #include <QDebug>
 #include <QApplication>
+#include <QLoggingCategory>
 
+Q_DECLARE_LOGGING_CATEGORY(LogViews)
 // 不同布局模式配置
 const int s_ItemHeight = 60;
 const QMargins s_ItemIconContentMargins = {8, 8, 8, 8};
@@ -107,7 +109,7 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
         // 第二行 组内服务器个数
         int serverCount = ServerConfigManager::instance()->getServerCount(firstline);
         if (serverCount <= 0) {
-            qWarning() << "get error count " << serverCount;
+            qCWarning(LogViews) << "get error count " << serverCount;
             serverCount = 0;
         }
         m_secondText = QString("%1 server").arg(serverCount);
@@ -135,7 +137,7 @@ void ItemWidget::getFocus()
     if (ItemFuncType_Item == m_functType) {
         m_funcButton->show();
         m_funcButton->setFocus();
-        qInfo() << "edit button show";
+        qCInfo(LogViews) << "edit button show";
     }
 }
 
@@ -186,13 +188,13 @@ void ItemWidget::onFuncButtonClicked()
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
-        qInfo() << "group show" << m_firstText;
+        qCInfo(LogViews) << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
         emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item: {
         // 修改项
-        qInfo() << "modify item" << m_firstText;
+        qCInfo(LogViews) << "modify item" << m_firstText;
         bool isFocusOn = false;
         if (m_funcButton->hasFocus() || m_isFocus) {
             // 焦点在大框或者编辑按钮上
@@ -220,13 +222,13 @@ void ItemWidget::onIconButtonClicked()
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
-        qInfo() << "group show" << m_firstText;
+        qCInfo(LogViews) << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
         emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item:
         // 项被点击
-        qInfo() << "item clicked" << m_firstText;
+        qCInfo(LogViews) << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
     }
@@ -246,7 +248,7 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
     if (Qt::ActiveWindowFocusReason == type) {
         // 例如:super后返回都需要将焦点返回项
         setFocus();
-        qInfo() << "set focus back itemwidget";
+        qCInfo(LogViews) << "set focus back itemwidget";
     }
     // 项
     if (ItemFuncType_Item == m_functType) {
@@ -436,7 +438,7 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_Right:
         // 点击键盘右键
-        qInfo() << "right key press";
+        qCInfo(LogViews) << "right key press";
         rightKeyPress();
         break;
     case Qt::Key_Enter:
@@ -497,7 +499,7 @@ void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
         fontPalette.setBrush(DPalette::Text, color);
         label->setPalette(fontPalette);
     } else {
-        qWarning()  << "Can't get text color";
+        qCWarning(LogViews)  << "Can't get text color";
     }
 }
 
@@ -518,7 +520,7 @@ QColor ItemWidget::getColor(ItemTextColor colorType)
     }
     break;
     default:
-        qInfo() << "item widget text unknow color type!" << colorType;
+        qCInfo(LogViews) << "item widget text unknow color type!" << colorType;
         break;
     }
     return color;
@@ -529,13 +531,13 @@ void ItemWidget::rightKeyPress()
     switch (m_functType) {
     case ItemFuncType_Group: {
         // 显示分组
-        qInfo() << "group show" << m_firstText;
+        qCInfo(LogViews) << "group show" << m_firstText;
         emit groupClicked(m_firstText, true);
     }
     break;
     case ItemFuncType_Item:
         // 编辑按钮获得焦点
-        qInfo() << "item get focus" << m_firstText;
+        qCInfo(LogViews) << "item get focus" << m_firstText;
         m_funcButton->show();
         m_funcButton->setFocus();
         break;
@@ -556,13 +558,13 @@ void ItemWidget::onItemClicked()
     switch (m_functType) {
     case ItemFuncType_Group:
         // 显示分组
-        qInfo() << "group show" << m_firstText;
+        qCInfo(LogViews) << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
         emit groupClicked(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item:
         // 项被点击
-        qInfo() << "item clicked" << m_firstText;
+        qCInfo(LogViews) << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
     }
