@@ -19,6 +19,8 @@
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
 
+Q_DECLARE_LOGGING_CATEGORY(LogCustomCommand)
+
 CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
     Utils::set_Object_Name(this);
@@ -44,10 +46,10 @@ void CustomCommandPanel::showCurSearchResult()
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
     if (m_pushButton->hasFocus()) {
-        qInfo() << "The Add command button has focus to click on!";
+        qCInfo(LogCustomCommand) << "The Add command button has focus to click on!";
         m_bpushButtonHaveFocus = true;
     } else {
-        qInfo() << "The Add command button has no focus to prohibit clicking!";
+        qCInfo(LogCustomCommand) << "The Add command button has no focus to prohibit clicking!";
         m_bpushButtonHaveFocus = false;
     }
 
@@ -84,13 +86,13 @@ void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
         // 下一个 或 列表为空， 焦点定位到添加按钮上
         m_pushButton->setFocus();
         m_cmdListWidget->clearIndex();
-        qInfo() << "Set the focus to the Add command button";
+        qCInfo(LogCustomCommand) << "Set the focus to the Add command button";
     } else if (Qt::BacktabFocusReason == type) {
         // 判断是否可见，可见设置焦点
         if (m_searchEdit->isVisible()) {
             m_searchEdit->lineEdit()->setFocus();
             m_cmdListWidget->clearIndex();
-            qInfo() << "Set the focus to the Search edit";
+            qCInfo(LogCustomCommand) << "Set the focus to the Search edit";
         }
     }
 }
@@ -171,7 +173,7 @@ void CustomCommandPanel::setFocusInPanel()
         // 添加按钮下
         m_pushButton->setFocus();
     } else {
-        qWarning() << "focus error unkown reason";
+        qCWarning(LogCustomCommand) << "focus error unkown reason";
     }
 }
 

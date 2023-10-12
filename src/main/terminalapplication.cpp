@@ -10,6 +10,7 @@
 
 // qt
 #include <QDebug>
+Q_DECLARE_LOGGING_CATEGORY(LogMain)
 
 #ifdef QT_DEBUG
 #include <QTranslator>
@@ -57,7 +58,7 @@ qint64 TerminalApplication::getStartTime()
 
 void TerminalApplication::handleQuitAction()
 {
-    qInfo() << "Handle quit action";
+    qCInfo(LogMain) << "Handle quit action";
     activeWindow()->close();
 }
 
@@ -78,7 +79,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             // 包含edit
             if (m_keySequenceList.contains(edit)) {
                 m_keySequenceList.removeOne(edit);
-                qInfo() << "remove editing when foucs out";
+                qCInfo(LogMain)  << "remove editing when foucs out";
             }
         }
         if (QEvent::KeyPress == event->type()) {
@@ -101,7 +102,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
                     QMouseEvent mouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
                     QApplication::sendEvent(childern[0], &mouseEvent);
                     // 记录当前KeySequence已经进入编辑状态
-                    qInfo() << "KeySequence in Editing";
+                    qCInfo(LogMain)  << "KeySequence in Editing";
                     m_keySequenceList.append(edit);
                     return true;
                 }
@@ -110,7 +111,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
             if (m_keySequenceList.contains(edit)) {
                 // 其他情况的按键，移除edit
                 m_keySequenceList.removeOne(edit);
-                qInfo() << "remove editing when others";
+                qCInfo(LogMain)  << "remove editing when others";
             }
         }
     }
@@ -209,7 +210,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 #if 0
     // 焦点检测
     if (event->type() == QEvent::FocusIn)
-        qInfo() << "FocusIn:" << object;
+        qCInfo(LogMain)  << "FocusIn:" << object;
 
 #endif
 

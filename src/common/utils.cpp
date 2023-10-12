@@ -30,9 +30,6 @@
 #include <QTime>
 #include <QFontMetrics>
 #include <QLoggingCategory>
-#include <QCollator>
-#include <QProcessEnvironment>
-#include <QThread>
 #include <sys/utsname.h>
 #include <fontconfig/fontconfig.h>
 
@@ -70,6 +67,12 @@ Utils::Utils(QObject *parent) : QObject(parent)
 Utils::~Utils()
 {
 }
+
+#ifdef QT_DEBUG
+Q_LOGGING_CATEGORY(LogCommon,"log.terminal.common.work")
+#else
+Q_LOGGING_CATEGORY(LogCommon,"log.terminal.common.work",QtInfoMsg)
+#endif
 
 QString Utils::getQssContent(const QString &filePath)
 {
@@ -356,7 +359,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     // 解析参数
     Properties[KeepOpen] = false;
     if (!parser.parse(arguments))
-        qInfo() << "parser error:" << parser.errorText();
+        qCInfo(LogCommon) << "parser error:" << parser.errorText();
 
     if (parser.isSet(optExecute)) {
         /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
@@ -397,11 +400,11 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
         // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
         parser.process(arguments);
     } else {
-        qInfo() << "Command line input args:" << qPrintable(arguments.join(" "));
-        qInfo() << "The work directory :" << parser.value(optWorkDirectory);
-        qInfo() << QString("Execute %1 command in the terminal").arg(Properties[Execute].toStringList().join(" "));
-        qInfo() << "Run in quake mode :" << parser.isSet(optQuakeMode);
-        qInfo() << "Set the window mode on starting :" << parser.isSet(optWindowState);
+        qCInfo(LogCommon) << "Command line input args:" << qPrintable(arguments.join(" "));
+        qCInfo(LogCommon) << "The work directory :" << parser.value(optWorkDirectory);
+        qCInfo(LogCommon) << QString("Execute %1 command in the terminal").arg(Properties[Execute].toStringList().join(" "));
+        qCInfo(LogCommon) << "Run in quake mode :" << parser.isSet(optQuakeMode);
+        qCInfo(LogCommon) << "Set the window mode on starting :" << parser.isSet(optWindowState);
         // 这个位置参数解析出来是无法匹配的，可是不带前面标识符，无法准确使用。
     }
     return;
@@ -457,7 +460,7 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
         }
         arguments.removeOne("-e");
         arguments.removeOne("--execute");
-        qInfo() << "Remove the arguments after '-e',the arguments :" << arguments;
+        qCInfo(LogCommon) << "Remove the arguments after '-e',the arguments :" << arguments;
     }
 
     return paraList;
@@ -481,7 +484,7 @@ QStringList Utils::parseNestedQString(QString str)
         //对路径带空格的脚本，右键执行时不进行拆分处理， //./deepin-terminal "-e"  "/home/lx777/Desktop/a b/PerfTools_1.9.sh"
         QFileInfo fi(str);
         if (fi.isFile()) {
-            qWarning() << "this is file,not split.";
+            qCWarning(LogCommon) << "this is file,not split.";
             paraList.append(str);
             return paraList;
         }
@@ -548,7 +551,7 @@ QList<QByteArray> Utils::encodeList()
             }
         }
         if (!bFind)
-            qWarning() << "encode (name :" << name << ") not find!";
+            qCWarning(LogCommon) << "encode (name :" << name << ") not find!";
         else
             encodeList << encodename;
 
@@ -619,12 +622,12 @@ bool Utils::isLoongarch()
     if(m_Arch.isEmpty()) {
         utsname utsbuf;
         if (uname(&utsbuf) == -1) {
-            qWarning() << "get Arch error";
+            qCWarning(LogCommon) << "get Arch error";
             return false;
         }
         m_Arch = QString::fromLocal8Bit(utsbuf.machine);
     }
-    qInfo() << "Current system architecture:" << m_Arch;
+    qCInfo(LogCommon) << "Current system architecture:" << m_Arch;
     return "mips64" == m_Arch || "loongarch64" == m_Arch;
 }
 
@@ -653,7 +656,7 @@ void Utils::insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_k
     obj = objArrayFind(obj, "groups", "key", groups_key2);
     obj = objArrayFind(obj, "options", "key", options_key);
     if(!obj) {
-       qWarning() << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
+       qCWarning(LogCommon) << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
        return;
     }
     obj->insert(key, value);
@@ -669,7 +672,7 @@ QVariant Utils::getValueInDefaultConfigJson(QVariant &jsonVar, const QString &gr
     obj = objArrayFind(obj, "groups", "key", groups_key2);
     obj = objArrayFind(obj, "options", "key", options_key);
     if(!obj) {
-       qWarning() << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
+       qCWarning(LogCommon) << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
        return QVariant();
     }
     return obj->value(key);
@@ -698,9 +701,9 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     MainWindow *main = nullptr;
     QWidget *pWidget = currWidget->parentWidget();
     while (pWidget != nullptr) {
-        qInfo() << "Current Window Class Name :" << pWidget->metaObject()->className();
+        qCInfo(LogCommon) << "Current Window Class Name :" << pWidget->metaObject()->className();
         if (("NormalWindow" == pWidget->objectName()) || ("QuakeWindow" == pWidget->objectName())) {
-            qInfo() << "Has found MainWindow";
+            qCInfo(LogCommon) << "has find MainWindow";
             main = static_cast<MainWindow *>(pWidget);
             break;
         }
@@ -733,41 +736,14 @@ FontDataList Utils::getFonts()
          qWarning() << "Build FcObjectSet Failed";
          return FontDataList();
     }
+    //qCInfo(LogCommon) << "m_thread is Running";
+}
 
     QScopedPointer<FcFontSet, FcFontSetDeleter> fcList(FcFontList(0, pat.data(), os.data()));
     if (!fcList) {
          qWarning() << "List Font Failed\n";
          return FontDataList();
     }
-    qDebug() << "Current lang:" << curLang;
-    qDebug() << "Found text font candidates:";
-    for (int i = 0; i < fcList->nfont; i++) {
-         QScopedPointer<char, QScopedPointerPodDeleter> charset((char*)FcPatternFormat(fcList->fonts[i], (FcChar8*)"%{charset}"));
-         if (charset == NULL || strlen(charset.data()) == 0) {
-             continue;
-         }
-         FcPattern *fc = fcList->fonts[i];
-         QScopedPointer<char, QScopedPointerPodDeleter> rawFamilyStr((char*)FcPatternFormat(fc, (FcChar8*)"%{family}"));
-         const QString rawFamily = QString::fromUtf8(rawFamilyStr.data());
-         QScopedPointer<char, QScopedPointerPodDeleter> rawFamilyLangStr((char*)FcPatternFormat(fc, (FcChar8*)"%{familylang}"));
-         const QString rawFamilyLang = QString::fromUtf8(rawFamilyLangStr.data());
-         QScopedPointer<char, QScopedPointerPodDeleter> rawSpacingStr((char*)FcPatternFormat(fc, (FcChar8*)"%{spacing}"));
-         const QString spacing = QString::fromUtf8(rawSpacingStr.data());
-         const QStringList families = rawFamily.split(',');
-         const QStringList familyLangs = rawFamilyLang.split(',');
-         const int defaultLangIdx = qMax(familyLangs.indexOf("en"), 0);
-         int curLangIdx = familyLangs.indexOf(curLang);
-         curLangIdx = curLangIdx >= 0 ? curLangIdx : defaultLangIdx;
-         const QString family = families[defaultLangIdx];
-         const QString familyName = families[curLangIdx];
-
-         qDebug() << "Font names:" << families << "| Font name langs:" << familyLangs << "| Font spacing (FC_SPACING):" << spacing;
-         if (!FONT_BLACKLIST.contains(family) && (spacing == QString::number(FC_MONO) || family.toLower().contains(QLatin1String("mono")))) {
-             fontMap.insert(family, familyName);
-         }
-    }
-    for (auto font = fontMap.begin(); font != fontMap.end(); font++) {
-        fontDatalist.append(FontData(font.key(), font.value()));
-    }
-    return fontDatalist;
+    // qCInfo(LogCommon) << "Font whitelist obtained through the dbus interface :" << DBUSWhitelist;
+    // qCInfo(LogCommon) << "Whitelist of real available fonts :" << Whitelist;
 }

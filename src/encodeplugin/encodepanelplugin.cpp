@@ -15,6 +15,7 @@
 #include <DLog>
 
 #include <QDebug>
+Q_DECLARE_LOGGING_CATEGORY(LogEncodePlugin)
 
 EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
@@ -102,7 +103,7 @@ void EncodePanelPlugin::initEncodePanel()
 void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
 {
     QString encode;
-    qInfo() <<"Whether to link remote?" << term->isConnectRemote();
+    qCInfo(LogEncodePlugin) <<"Whether to link remote?" << term->isConnectRemote();
     // 是否连接远程
     if (term->isConnectRemote()) {
         // 远程编码
@@ -113,7 +114,7 @@ void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
     }
 
     //更新编码
-    qInfo() << "Update the encoding(" << encode << ") of the current terminal!";
+    qCInfo(LogEncodePlugin) << "Update the encoding(" << encode << ") of the current terminal!";
     m_encodePanel->updateEncode(encode);
 }
 

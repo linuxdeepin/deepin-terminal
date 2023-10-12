@@ -33,7 +33,9 @@
 #ifdef DTKWIDGET_CLASS_DSizeMode
 #include <DSizeMode>
 #endif
+#include <QLoggingCategory>
 
+Q_DECLARE_LOGGING_CATEGORY(LogViews)
 //TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
 {
@@ -234,7 +236,7 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 
 int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QString &tabName)
 {
-    qInfo() << "insertTab at index: " << index << " with id::" << tabIdentifier;
+    qCInfo(LogViews) << "insertTab at index: " << index << " with id::" << tabIdentifier << endl;
     int insertIndex = DTabBar::insertTab(index, tabName);
     setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
 
@@ -706,7 +708,7 @@ void TabBar::handleTabReleased(int index)
     if (index < 0)
         index = 0;
 
-    qInfo() << "Indicates the index(" << index << ") of the released label!";
+    qCInfo(LogViews) << "Indicates the index(" << index << ") of the released label!";
     const QString tabName = tabText(index);
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
@@ -722,7 +724,7 @@ void TabBar::handleTabReleased(int index)
 
     //从原窗口中移除TermWidgetPage。
     window->removeTermWidgetPage(termIdentifer, false);
-    qInfo() << "Remove Term Widget Page termIdentifer: " << termIdentifer;
+    qCInfo(LogViews) << "Remove Term Widget Page termIdentifer: " << termIdentifer;
 
     updateTabDragMoveStatus();
 }
@@ -775,7 +777,7 @@ inline void TabBar::handleWindowClose()
         return;
 
     int windowIndex = WindowsManager::instance()->getNormalWindowList().indexOf(window);
-    qInfo() << "Close window at index: " << windowIndex;
+    qCInfo(LogViews) << "Close window at index: " << windowIndex;
 
     if (windowIndex >= 0)
         WindowsManager::instance()->getNormalWindowList().takeAt(windowIndex);
@@ -809,7 +811,7 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 {
     Q_UNUSED(dropAction)
 
-    qInfo() << "Handle Tab Droped!  index:" << index << ", target:" << target << endl;
+    qCInfo(LogViews) << "Handle Tab Droped!  index:" << index << ", target:" << target << endl;
     TabBar *tabbar = qobject_cast<TabBar *>(target);
 
     //拖出的标签--需要新建窗口

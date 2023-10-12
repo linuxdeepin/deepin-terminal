@@ -14,6 +14,12 @@
 
 DWIDGET_USE_NAMESPACE
 
+#ifdef QT_DEBUG
+Q_LOGGING_CATEGORY(LogEncodePlugin,"log.terminal.encodeplugin.work")
+#else
+Q_LOGGING_CATEGORY(LogEncodePlugin,"log.terminal.encodeplugin.work",QtInfoMsg)
+#endif
+
 EncodeListModel::EncodeListModel(QObject *parent) : QStandardItemModel(parent)
 {
     Utils::set_Object_Name(this);
@@ -87,10 +93,10 @@ void EncodeListModel::initEncodeData()
             }
         }
         if (!bFind)
-            qWarning() << "The encoding(" << name << ") in the terminal encoding list is not found in the list of supported encodeings!";
+            qCWarning(LogEncodePlugin) << "The encoding(" << name << ") in the terminal encoding list is not found in the list of supported encodeings!";
         else
             m_encodeData << encodename;
     }
 
-    qInfo() << "The number("<<  m_encodeData.count() << ") of system encoding formats supported by the terminal.";
+    qCInfo(LogEncodePlugin) << "The number("<<  m_encodeData.count() << ") of system encoding formats supported by the terminal.";
 }

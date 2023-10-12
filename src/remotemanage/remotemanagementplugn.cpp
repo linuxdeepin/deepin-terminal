@@ -12,6 +12,8 @@
 #include <QTextCodec>
 #include <QDebug>
 
+Q_DECLARE_LOGGING_CATEGORY(LogRemoteManage)
+
 RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
     Utils::set_Object_Name(this);
@@ -20,7 +22,7 @@ RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPlug
 
 void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
 {
-    qInfo() << "RemoteManagementPlugin init Plugin.";
+    qCInfo(LogRemoteManage) << "RemoteManagementPlugin init Plugin.";
     m_mainWindow = mainWindow;
     //initRemoteManagementTopPanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, [ = ](const QString name, bool bSetFocus) {
@@ -64,7 +66,7 @@ void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
         // 焦点在列表上，隐藏时，焦点现在当前窗口上
         if (m_mainWindow->isFocusOnList()) {
             m_mainWindow->focusCurrentPage();
-            qInfo() << "focus on remote list, hide remote list and set foucs on terminal";
+            qCInfo(LogRemoteManage) << "focus on remote list, hide remote list and set foucs on terminal";
         }
         getRemoteManagementTopPanel()->hide();
     });
@@ -99,7 +101,7 @@ void RemoteManagementPlugin::initRemoteManagementTopPanel()
 
 void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
 {
-    qInfo() << "RemoteManagementPlugin do connect server.";
+    qCInfo(LogRemoteManage) << "RemoteManagementPlugin do connect server.";
     if (nullptr != curServer) {
 
         QString shellFile = createShellFile(curServer);
@@ -124,19 +126,19 @@ void RemoteManagementPlugin::doCennectServer(ServerConfig *curServer)
             TermWidget *term = m_mainWindow->currentActivatedTerminal();
             if (!term) {
                 // 若term为空
-                qInfo() << "current terminal is null";
+                qCInfo(LogRemoteManage) << "current terminal is null";
             }
             // 判断是否连接服务器
             if (!term->isInRemoteServer()) {
                 // 没有连接上
-                qWarning() << "disconnect to server";
+                qCWarning(LogRemoteManage) << "disconnect to server";
                 return;
             }
             // 标记此term连接远程
             term->setIsConnectRemote(true);
             // 设置远程主机
             term->modifyRemoteTabTitle(*curServer);
-            qInfo() << "connect to server";
+            qCInfo(LogRemoteManage) << "connect to server";
             // 编码
             setRemoteEncode(curServer->m_encoding);
             // 退格键
@@ -164,7 +166,7 @@ inline QString RemoteManagementPlugin::convertStringToAscii(const QString &strSr
 
 QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 {
-    qInfo() << "RemoteManagementPlugin create temporary shell file.";
+    qCInfo(LogRemoteManage) << "RemoteManagementPlugin create temporary shell file.";
     // 首先读取通用模板
     QFile sourceFile(":/other/ssh_login.sh");
     QString fileString;
@@ -224,7 +226,7 @@ void RemoteManagementPlugin::setRemoteEncode(QString encode)
     if (!encode.isNull() && !encode.isEmpty()) {
         // 设置当前窗口的编码
         term->setTextCodec(QTextCodec::codecForName(encode.toLocal8Bit()));
-        qInfo() << "Remote encode " << encode;
+        qCInfo(LogRemoteManage) << "Remote encode " << encode;
     }
     // 记录远程编码
     term->setRemoteEncode(encode);
@@ -245,7 +247,7 @@ void RemoteManagementPlugin::setBackspaceKey(TermWidget *term, QString backspace
     else if ("tty" == backspaceKey)
         term->setBackspaceMode(EraseMode_TTY);
 
-    qInfo() << "backspace mode " << backspaceKey;
+    qCInfo(LogRemoteManage) << "backspace mode " << backspaceKey;
 }
 
 void RemoteManagementPlugin::setDeleteKey(TermWidget *term, QString deleteKey)
@@ -261,5 +263,5 @@ void RemoteManagementPlugin::setDeleteKey(TermWidget *term, QString deleteKey)
     else if ("tty" == deleteKey)
         term->setDeleteMode(EraseMode_TTY);
 
-    qInfo() << "delete mode " << deleteKey;
+    qCInfo(LogRemoteManage) << "delete mode " << deleteKey;
 }

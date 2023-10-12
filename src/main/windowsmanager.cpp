@@ -12,6 +12,8 @@
 #include <QDebug>
 #include <QScreen>
 
+Q_DECLARE_LOGGING_CATEGORY(LogMain)
+
 WindowsManager *WindowsManager::pManager = new WindowsManager();
 WindowsManager *WindowsManager::instance()
 {
@@ -21,7 +23,7 @@ WindowsManager *WindowsManager::instance()
 void WindowsManager::runQuakeWindow(TermProperties properties)
 {
     if (nullptr == m_quakeWindow) {
-        qInfo() << "Create QuakeWindow!";
+        qCInfo(LogMain)  << "Create QuakeWindow!";
         m_quakeWindow = new QuakeWindow(properties);
     }
     // Alt+F2的显隐功能实现点
@@ -89,13 +91,13 @@ void WindowsManager::createNormalWindow(TermProperties properties, bool isShow)
 
     MainWindow *newWindow = new NormalWindow(newProperties);
     m_normalWindowList << newWindow;
-    qInfo() << "create NormalWindow, current count =" << m_normalWindowList.count()
+    qCInfo(LogMain)  << "create NormalWindow, current count =" << m_normalWindowList.count()
             << ", SingleFlag" << newProperties[SingleFlag].toBool();
     if(isShow)
         newWindow->show();
     qint64 newMainWindowTime = newWindow->createNewMainWindowTime();
     QString strNewMainWindowTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_MAINWINDOE + QString::number(newMainWindowTime);
-    qInfo() << "Create NormalWindow Time:" << qPrintable(strNewMainWindowTime);
+    qCInfo(LogMain)  << "Create NormalWindow Time:" << qPrintable(strNewMainWindowTime);
 }
 
 void WindowsManager::onMainwindowClosed(MainWindow *window)
@@ -115,7 +117,7 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
         m_normalWindowList.removeOne(window);
     } else {
         //Q_ASSERT(false);
-        qWarning() << "unkown windows closed " << window;
+        qCWarning(LogMain) << "unkown windows closed " << window;
     }
 
     window->deleteLater();

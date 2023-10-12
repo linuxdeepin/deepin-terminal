@@ -19,6 +19,7 @@
 #include <QShortcut>
 #include <QApplication>
 #include <QAction>
+Q_DECLARE_LOGGING_CATEGORY(LogViews)
 
 PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
 {
@@ -188,7 +189,7 @@ void PageSearchBar::initSearchEdit()
             }
         }
     } else {
-        qWarning() << "can not found _q_qlineeditclearaction in QAction";
+        qCWarning(LogViews) << "can not found _q_qlineeditclearaction in QAction";
     }
 
     // 需求不让自动查找，这个接口预留
