@@ -3,6 +3,6 @@
     "exec": "/usr/bin/deepin-termnial",
     "logType": "journal",
     "logPath": "~/.cache/deepin/deepin-termnial/deepin-termnial.log",
-    "visible": true,
+    "visible": "1",
     "version": "V1.0"
 }
