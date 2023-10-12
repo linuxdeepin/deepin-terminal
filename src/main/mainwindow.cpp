@@ -47,6 +47,7 @@
 #include <QVBoxLayout>
 #include <QMap>
 #include <QScreen>
+#include <QLoggingCategory>
 
 #include <fstream>
 
@@ -65,6 +66,12 @@ DWIDGET_USE_NAMESPACE
 
 // 定义雷神窗口边缘,接近边缘光标变化图标
 #define QUAKE_EDGE 5
+
+#ifdef QT_DEBUG
+Q_LOGGING_CATEGORY(LogMain,"log.terminal.main.work")
+#else
+Q_LOGGING_CATEGORY(LogMain,"log.terminal.main.work",QtInfoMsg)
+#endif
 
 SwitchThemeMenu::SwitchThemeMenu(const QString &title, QWidget *parent): QMenu(title, parent)
 {
@@ -124,14 +131,14 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
         // 主进程的启动时间存在APP中
         TerminalApplication *app = static_cast<TerminalApplication *>(qApp);
         m_ReferedAppStartTime = app->getStartTime();
-        qInfo() << "The time when the main program starts.[Start Time:"
+        qCInfo(LogMain) << "The time when the main program starts.[Start Time:"
                 << QDateTime::fromMSecsSinceEpoch(m_ReferedAppStartTime).toString("yyyy-MM-dd hh:mm:ss:zzz") << "]";
     } else {
-        qInfo() << "The time when the subroutine starts.[Start Time:"
+        qCInfo(LogMain)  << "The time when the subroutine starts.[Start Time:"
                 << QDateTime::fromMSecsSinceEpoch(m_ReferedAppStartTime).toString("yyyy-MM-dd hh:mm:ss:zzz") << "]";
     }
     m_CreateWindowTime = Service::instance()->getEntryTime();
-    qInfo() << "Time when the main window was created. [ Create Time:"
+    qCInfo(LogMain)  << "Time when the main window was created. [ Create Time:"
             << QDateTime::fromMSecsSinceEpoch(m_CreateWindowTime).toString("yyyy-MM-dd hh:mm:ss:zzz") << "]";;
 }
 
@@ -265,7 +272,7 @@ inline void MainWindow::slotOptionButtonPressed()
 inline void MainWindow::slotClickNewWindowTimeout()
 {
     // 创建新的窗口
-    qInfo() << "Create a new window using the New Window button in the title bar menu.";
+    qCInfo(LogMain)  << "Create a new window using the New Window button in the title bar menu.";
 
     TermWidgetPage *tabPage = currentPage();
     TermWidget *term = tabPage->currentTerminal();
@@ -287,7 +294,7 @@ void MainWindow::initOptionButton()
     if (dtkbutton != nullptr)
         dtkbutton->hide();
     else
-        qWarning() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
+        qCWarning(LogMain) << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
 
     // option button
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
@@ -295,7 +302,7 @@ void MainWindow::initOptionButton()
         // mainwindow的设置按钮触发
         connect(titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"), &DIconButton::pressed, this, &MainWindow::slotOptionButtonPressed);
     } else {
-        qWarning() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
+        qCWarning(LogMain) << "can not found DTitlebarDWindowOptionButton in DTitlebar";
     }
 }
 
@@ -383,7 +390,7 @@ void MainWindow::singleFlagMove()
 {
     if (m_properties[SingleFlag].toBool()) {
         Dtk::Widget::moveToCenter(this);
-        qInfo() << "The window moves to the center of the screen" ;
+        qCInfo(LogMain)  << "The window moves to the center of the screen" ;
     }
 }
 
@@ -402,14 +409,14 @@ void MainWindow::addTab(TermProperties properties, bool activeTab)
     qint64 startTime = QDateTime::currentMSecsSinceEpoch();
     //如果不允许新建标签，则返回
     if (!beginAddTab()){
-        qWarning() << "Cannot create new labels";
+        qCWarning(LogMain) << "Cannot create new labels";
         return;
     }
     TermWidgetPage *termPage = new TermWidgetPage(properties, this);
 
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
     int index = m_tabbar->addTab(termPage->identifier(), termPage->getCurrentTerminalTitle());
-    qInfo() << "The associated index(" << index <<") of the newly added label.";
+    qCInfo(LogMain)  << "The associated index(" << index <<") of the newly added label.";
     endAddTab(termPage, activeTab, index, startTime);
 }
 
@@ -428,7 +435,7 @@ void MainWindow::addTabWithTermPage(const QString &tabName, bool activeTab, bool
     // pageID存在 tab中，所以page增删改操作都要由tab发起。
     int index = m_tabbar->insertTab(insertIndex, page->identifier(), tabName);
     m_tabbar->setTabText(termPage->identifier(), tabName);
-    qInfo() << "Insert the associated index("<< index << ") of the label";
+    qCInfo(LogMain)  << "Insert the associated index("<< index << ") of the label";
 
     //拖拽过程中存在一种标签预览模式，此时不需要真实添加
     if (!isVirtualAdd) {
@@ -446,7 +453,7 @@ bool MainWindow::beginAddTab()
         // 没有雷神，且是雷神让通过，不然不让通过
         if (!(nullptr == WindowsManager::instance()->getQuakeWindow() && m_isQuakeWindow)) {
             // 非雷神窗口不得超过MAXWIDGETCOUNT
-            qInfo() << "addTab failed, can't create number more than " << MAXWIDGETCOUNT;
+            qCInfo(LogMain)  << "addTab failed, can't create number more than " << MAXWIDGETCOUNT;
             return false;
         }
     }
@@ -480,7 +487,7 @@ void MainWindow::endAddTab(TermWidgetPage *termPage, bool activeTab, int index, 
     connect(termPage->currentTerminal(), &TermWidget::termIsIdle, this, &MainWindow::onTermIsIdle);
     qint64 endTime = QDateTime::currentMSecsSinceEpoch();
     QString strNewTabTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_TAB_TIME + QString::number(endTime - startTime);
-    qInfo() << "Add label end.Takes Time: " << qPrintable(strNewTabTime);
+    qCInfo(LogMain)  << "Add label end.Takes Time: " << qPrintable(strNewTabTime);
 
     QString  expandThemeStr = "";
     expandThemeStr = Settings::instance()->extendColorScheme();
@@ -498,10 +505,10 @@ bool MainWindow::hasRunningProcesses()
         //没有校验当前tab中是否有其它正在执行的分屏
         if (tabPage->runningTerminalCount() != 0) {
             /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
-            qInfo() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qCInfo(LogMain)  << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
             return true;
         } else {
-            qInfo() << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qCInfo(LogMain)  << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
         }
     }
 
@@ -526,7 +533,7 @@ void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
         showExitConfirmDialog(Utils::CloseType_Tab, tabPage->runningTerminalCount(), this);
         return;
     }
-    qInfo() << "Close tab(" << identifier << ")";
+    qCInfo(LogMain)  << "Close tab(" << identifier << ")";
     m_tabVisitMap.remove(identifier);
     m_tabChangeColorMap.remove(identifier);
     m_tabbar->removeTab(identifier);
@@ -541,7 +548,7 @@ void MainWindow::closeTab(const QString &identifier, bool hasConfirmed)
         focusCurrentPage();
         return;
     }
-    qInfo() << "Main window closed!";
+    qCInfo(LogMain)  << "Main window closed!";
     close();
 }
 
@@ -562,7 +569,7 @@ void MainWindow::removeTermWidgetPage(const QString &identifier, bool isDelete)
 
     // 当所有tab标签页都关闭时，关闭整个MainWindow窗口
     if (m_termWidgetPageMap.isEmpty()) {
-        qWarning() << "No other tabs exist and the main window is closed!";
+        qCWarning(LogMain) << "No other tabs exist and the main window is closed!";
         /******** Modify by ut000438 王亮 2020-11-23:fix bug 55552:拖动标签页移动窗口过程中异常最大化 ***************/
         //当拖动标签过程中销毁窗口时，不保存销毁的窗口大小
         m_IfUseLastSize = false;
@@ -616,10 +623,10 @@ bool MainWindow::isFocusOnList()
         // 判断按钮是否有焦点
         if (addButton->hasFocus()) {
             isFocus = false;
-            qInfo() << "focus on AddButton";
+            qCInfo(LogMain)  << "focus on AddButton";
         }
     } else {
-        qInfo() << "can not found AddButton in DIconButton";
+        qCInfo(LogMain)  << "can not found AddButton in DIconButton";
     }
 
     QList<QString> buttonList = {"DTitlebarDWindowOptionButton", "DTitlebarDWindowMinButton", "DTitlebarDWindowMaxButton", "DTitlebarDWindowCloseButton"};
@@ -630,13 +637,13 @@ bool MainWindow::isFocusOnList()
             // 判断按钮是否有焦点
             if (button->hasFocus()) {
                 isFocus = false;
-                qInfo() << "focus on " << objectName;
+                qCInfo(LogMain)  << "focus on " << objectName;
             }
         } else {
-            qWarning() << "can not found objectName in DIconButton";
+            qCWarning(LogMain) << "can not found objectName in DIconButton";
         }
     }
-    qInfo() << "Is focus on list? " << isFocus;
+    qCInfo(LogMain)  << "Is focus on list? " << isFocus;
     return isFocus;
 
 }
@@ -662,7 +669,7 @@ void MainWindow::closeOtherTab(const QString &identifier, bool hasConfirmed)
     // 关闭其它窗口，需要检测
     for (QString &id : closeTabIdList) {
         closeTab(id, true);
-        qDebug() << "Id(" << id << ") of the close tab? ";
+        qCDebug(LogMain) << "Id(" << id << ") of the close tab? ";
     }
 
     //如果是不关闭当前页的，最后回到当前页来．
@@ -682,7 +689,7 @@ void MainWindow::closeAllTab()
     // 全部关闭时，不再检测了，
     for (QString &id : closeTabIdList) {
         closeTab(id, true);
-        qDebug() << "Id(" << id << ") of the close tab? ";
+        qCDebug(LogMain)  << "Id(" << id << ") of the close tab? ";
     }
 
     return;
@@ -696,9 +703,9 @@ inline void MainWindow::slotDDialogFinished(int result)
         DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
         if (closeBtn != nullptr) {
             closeBtn->setFocus();
-            qInfo() << "Close button to get focus!";
+            qCInfo(LogMain)  << "Close button to get focus!";
         } else {
-            qWarning() << "Can not found DTitlebarDWindowCloseButton in DTitlebar";
+            qCWarning(LogMain) << "Can not found DTitlebarDWindowCloseButton in DTitlebar";
         }
     }
     /********************* Modify by n014361 wangpeili End ************************/
@@ -725,11 +732,11 @@ void MainWindow::showExitConfirmDialog(Utils::CloseType type, int count, QWidget
     DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
     if ((closeBtn != nullptr) && closeBtn->hasFocus() && (Utils::CloseType_Window == type)) {
         closeBtnHasfocus = true;
-        qInfo() << "Before close window, focus widget is close button. ";
+        qCInfo(LogMain)  << "Before close window, focus widget is close button. ";
     }
 
     if (nullptr == closeBtn)
-        qInfo() << "Can not found DTitlebarDWindowCloseButton in DTitlebar";
+        qCInfo(LogMain)  << "Can not found DTitlebarDWindowCloseButton in DTitlebar";
 
     /********************* Modify by n014361 wangpeili End ************************/
 
@@ -772,7 +779,7 @@ void MainWindow::focusPage(const QString &identifier)
         tabPage->focusCurrentTerm();
         return;
     }
-    qInfo() << "focusTab nullptr identifier" << identifier;
+    qCInfo(LogMain)  << "focusTab nullptr identifier" << identifier;
 }
 
 void MainWindow::focusCurrentPage()
@@ -792,7 +799,7 @@ TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)
         if (tabPage && tabPage->identifier() == identifier)
             return tabPage;
     }
-    qInfo() << "getPageByIdentifier nullptr identifier" << identifier;
+    qCInfo(LogMain)  << "getPageByIdentifier nullptr identifier" << identifier;
     return nullptr;
 }
 
@@ -899,7 +906,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
     if ((!m_hasConfirmedClose) && (runningCount != 0)) {
         // 如果不能马上关闭，并且还在没有最小化．
-        qInfo() << "Minimal mode or not?" << isMinimized();
+        qCInfo(LogMain)  << "Minimal mode or not?" << isMinimized();
         if ((runningCount != 0)  && isMinimized()) {
             setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
         }
@@ -951,7 +958,7 @@ QString MainWindow::getConfigWindowState()
     // 启动参数配置的状态值优先于 内部配置的状态值
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
-        qInfo() << "State(" << state << ") of the start window.";
+        qCInfo(LogMain)  << "State(" << state << ") of the start window.";
         if ("maximum" == state)
             windowState = "window_maximum";
         else if (state == "splitscreen")
@@ -961,7 +968,7 @@ QString MainWindow::getConfigWindowState()
         else if (state == "fullscreen")
             windowState = state;
         else
-            qWarning() << "Error line state set:" << state << "ignore it!";
+            qCWarning(LogMain) << "Error line state set:" << state << "ignore it!";
     }
     return  windowState;
 }
@@ -1099,8 +1106,8 @@ inline void MainWindow::slotShortcutSwitchActivated()
 {
     QShortcut *switchShortcut = qobject_cast<QShortcut *>(sender());
     int i = switchShortcut->property("index").toInt();
-    qDebug() << "Shortcut key selected label index(" << i - 1 << ")";
-    qDebug() << "How many tabs exist in the current window?" << m_tabbar->count();
+    qCDebug(LogMain)  << "Shortcut key selected label index(" << i - 1 << ")";
+    qCDebug(LogMain)  << "How many tabs exist in the current window?" << m_tabbar->count();
     TermWidgetPage *page = currentPage();
     if (page) {
         assert(m_tabbar);
@@ -1110,14 +1117,14 @@ inline void MainWindow::slotShortcutSwitchActivated()
         }
 
         if (i - 1 >= m_tabbar->count()) {
-            qWarning() <<"The index(" << i -1 << ") of the current tab exceeds the total number of the current windows tabs(" << m_tabbar->count() << ")";
+            qCWarning(LogMain) <<"The index(" << i -1 << ") of the current tab exceeds the total number of the current windows tabs(" << m_tabbar->count() << ")";
             return;
         }
 
         m_tabbar->setCurrentIndex(i - 1);
         return;
     }
-    qWarning() << "Current Page is Nullptr!";
+    qCWarning(LogMain) << "Current Page is Nullptr!";
 }
 
 inline void MainWindow::slotShortcutNewTab()
@@ -1181,7 +1188,7 @@ inline void MainWindow::slotShortcutHorizonzalSplit()
             }
         }
     }
-    qInfo() << "Can't split horizonzal again";
+    qCInfo(LogMain)  << "Can't split horizonzal again";
 }
 
 inline void MainWindow::slotShortcutVerticalSplit()
@@ -1200,7 +1207,7 @@ inline void MainWindow::slotShortcutVerticalSplit()
             }
         }
     }
-    qInfo() << "Can't split vertical again";
+    qCInfo(LogMain)  << "Can't split vertical again";
 }
 
 inline void MainWindow::slotShortcutSelectUpperWorkspace()
@@ -1235,7 +1242,7 @@ inline void MainWindow::slotShortcutCloseWorkspace()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
-        qInfo() << "Close Works pace";
+        qCInfo(LogMain)  << "Close Works pace";
         page->closeSplit(page->currentTerminal());
     }
 }
@@ -1309,7 +1316,7 @@ inline void MainWindow::slotShortcutSelectAll()
 {
     TermWidgetPage *page = currentPage();
     if (page) {
-        qInfo() << "Select all pages using the shortcut keys";
+        qCInfo(LogMain)  << "Select all pages using the shortcut keys";
         page->selectAll();
     }
 }
@@ -1350,17 +1357,17 @@ inline void MainWindow::slotShortcutRemoteManage()
 
 inline void MainWindow::slotShortcutFocusOut()
 {
-    qInfo() << "focusout timinal is activated!" << QKEYSEQUENCE_FOCUSOUT_TIMINAL;
+    qCInfo(LogMain)  << "focusout timinal is activated!" << QKEYSEQUENCE_FOCUSOUT_TIMINAL;
     DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
     if (addButton != nullptr)
         addButton->setFocus();
     else
-        qInfo() << "can not found AddButton in DIconButton";
+        qCInfo(LogMain)  << "can not found AddButton in DIconButton";
 }
 
 inline void MainWindow::slotShortcutBuiltinPaste()
 {
-    qInfo() << "built in paste shortcut is activated!" << QKEYSEQUENCE_PASTE_BUILTIN;
+    qCInfo(LogMain)  << "built in paste shortcut is activated!" << QKEYSEQUENCE_PASTE_BUILTIN;
     TermWidgetPage *page = currentPage();
     if (page)
         page->pasteClipboard();
@@ -1368,7 +1375,7 @@ inline void MainWindow::slotShortcutBuiltinPaste()
 
 inline void MainWindow::slotShortcutBuiltinCopy()
 {
-    qInfo() << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
+    qCInfo(LogMain)  << "built in copy shortcut is activated!" << QKEYSEQUENCE_COPY_BUILTIN;
     TermWidgetPage *page = currentPage();
     if (page)
         page->copyClipboard();
@@ -1397,13 +1404,13 @@ void MainWindow::showPlugin(const QString &name)
 
     if ((name == m_CurrentShowPlugin) && (PLUGIN_TYPE_NONE == m_CurrentShowPlugin)) {
         // 目前没有列表显示，直接返回
-        qInfo() << "no plugin show!";
+        qCInfo(LogMain)  << "no plugin show!";
         return;
     }
 
     m_CurrentShowPlugin = name;
     if (name != PLUGIN_TYPE_NONE)
-        qInfo() << "show Plugin" << name << bSetFocus;
+        qCInfo(LogMain)  << "show Plugin" << name << bSetFocus;
 
     emit showPluginChanged(name, bSetFocus);
 }
@@ -1413,7 +1420,7 @@ void MainWindow::hidePlugin()
     if (PLUGIN_TYPE_NONE == m_CurrentShowPlugin)
         return;
 
-    qInfo() << "hide Plugin" << m_CurrentShowPlugin;
+    qCInfo(LogMain)  << "hide Plugin" << m_CurrentShowPlugin;
     m_CurrentShowPlugin = PLUGIN_TYPE_NONE;
     emit quakeHidePlugin();
 }
@@ -1425,7 +1432,7 @@ QString MainWindow::selectedText()
         if (page->currentTerminal())
             return page->currentTerminal()->selectedText();
     }
-    qInfo() << "not point terminal??";
+    qCInfo(LogMain)  << "not point terminal??";
     return  "";
 }
 
@@ -1539,7 +1546,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             } while (false);
 
             if (!filterReason.isEmpty()) {
-                qInfo() << "Esc is not effect, reason:" << filterReason;
+                qCInfo(LogMain)  << "Esc is not effect, reason:" << filterReason;
             } else {
                 focusCurrentPage();
                 showPlugin(PLUGIN_TYPE_NONE);
@@ -1568,17 +1575,17 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
             m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, WINDOW_DEFAULT_WIDTH);
             m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, WINDOW_DEFAULT_HEIGHT);
             /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
-            qInfo() << "change value change value change value";
+            qCInfo(LogMain)  << "change value change value change value";
         } else {
             m_IfUseLastSize = false;
         }
-        qInfo() << "settingValue[" << keyName << "] changed to " << state
+        qCInfo(LogMain)  << "settingValue[" << keyName << "] changed to " << state
                 << ", auto effective when next start!";
         return;
     }
     // auto_hide_raytheon_window在使用中自动读取生效
     if ((QStringLiteral("advanced.window.auto_hide_raytheon_window") == keyName) || (QStringLiteral("advanced.window.use_on_starting") == keyName)) {
-        qInfo() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
+        qCInfo(LogMain)  << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                 << ", auto effective when happen";
         /***mod begin by ut001121 zhangmeng 20200528 修复BUG28920***/
         onAppFocusChangeForQuake();
@@ -1586,12 +1593,12 @@ void MainWindow::onWindowSettingChanged(const QString &keyName)
         return;
     }
 
-    qInfo() << "settingValue[" << keyName << "] changed is not effective";
+    qCInfo(LogMain)  << "settingValue[" << keyName << "] changed is not effective";
 }
 
 void MainWindow::onShortcutSettingChanged(const QString &keyName)
 {
-    qInfo() << "Shortcut[" << keyName << "] changed";
+    qCInfo(LogMain)  << "Shortcut[" << keyName << "] changed";
     if (m_builtInShortcut.contains(keyName)) {
         QString value = Settings::instance()->settings->option(keyName)->value().toString();
         //m_builtInShortcut[keyName]->setKey(QKeySequence(value));
@@ -1600,13 +1607,13 @@ void MainWindow::onShortcutSettingChanged(const QString &keyName)
         return;
     }
 
-    qInfo() << "Shortcut[" << keyName << "] changed is unknown!";
+    qCInfo(LogMain)  << "Shortcut[" << keyName << "] changed is unknown!";
 }
 
 void MainWindow::setNewTermPage(TermWidgetPage *termPage, bool activePage)
 {
     if (nullptr == termPage) {
-        qInfo() << "termPage is nullptr!";
+        qCInfo(LogMain)  << "termPage is nullptr!";
         return;
     }
 
@@ -1791,7 +1798,7 @@ inline void MainWindow::onUploadFileDialogFinished(int code)
         }
         remoteUploadFile(strTxt);
     } else {
-        qWarning() << "remoteUploadFile file name is Null";
+        qCWarning(LogMain) << "remoteUploadFile file name is Null";
     }
 }
 
@@ -1879,13 +1886,13 @@ void MainWindow::OnHandleCloseType(int result, Utils::CloseType type)
     // 弹窗隐藏或消失
     Service::instance()->setIsDialogShow(this, false);
     if (result != 1) {
-        qInfo() << "user cancle close";
+        qCInfo(LogMain)  << "user cancle close";
         return;
     }
 
     TermWidgetPage *page = currentPage();
     if (nullptr == page) {
-        qWarning() << "null pointer of currentPage ???";
+        qCWarning(LogMain) << "null pointer of currentPage ???";
         return;
     }
 
@@ -1978,10 +1985,10 @@ void MainWindow::createWindowComplete()
 void MainWindow::firstTerminalComplete()
 {
     m_FirstTerminalCompleteTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    qInfo() << "app create all complete," << "MainWindowID = " << m_MainWindowID << ",all time use" << m_FirstTerminalCompleteTime - m_ReferedAppStartTime << "ms";
-    qInfo() << "before entry use" << m_CreateWindowTime - m_ReferedAppStartTime << "ms";
+    qCInfo(LogMain)  << "app create all complete," << "MainWindowID = " << m_MainWindowID << ",all time use" << m_FirstTerminalCompleteTime - m_ReferedAppStartTime << "ms";
+    qCInfo(LogMain)  << "before entry use" << m_CreateWindowTime - m_ReferedAppStartTime << "ms";
     // 创建mainwidow时间，这个时候terminal并没有创建好，不能代表什么。
-    qInfo() << "cretae first Terminal use" << m_FirstTerminalCompleteTime - m_CreateWindowTime << "ms";
+    qCInfo(LogMain)  << "cretae first Terminal use" << m_FirstTerminalCompleteTime - m_CreateWindowTime << "ms";
 }
 
 QObjectList MainWindow::getNamedChildren(QObject *obj)
@@ -2505,7 +2512,7 @@ void MainWindow::onCommandActionTriggered()
 {
     QAction *commandAction = qobject_cast<QAction *>(sender());
 
-    qInfo() << "commandAction->data().toString() is triggered" << this;
+    qCInfo(LogMain)  << "commandAction->data().toString() is triggered" << this;
     if (!this->isActiveWindow())
         return ;
 
@@ -2561,37 +2568,37 @@ void NormalWindow::initTitleBar()
     if (addButton != nullptr)
         addButton->setFocusPolicy(Qt::TabFocus);
     else
-        qWarning() << "can not found AddButton in DIconButton";
+        qCWarning(LogMain) << "can not found AddButton in DIconButton";
 
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
     if (optionBtn != nullptr)
         optionBtn->setFocusPolicy(Qt::TabFocus);
     else
-        qWarning() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
+        qCWarning(LogMain) << "can not found DTitlebarDWindowOptionButton in DTitlebar";
 
     QWidget *quitFullscreenBtn = titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton");
     if (quitFullscreenBtn != nullptr)
         quitFullscreenBtn->setFocusPolicy(Qt::TabFocus);
     else
-        qWarning() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
+        qCWarning(LogMain) << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
 
     DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
     if (minBtn != nullptr)
         minBtn->setFocusPolicy(Qt::TabFocus);
     else
-        qWarning() << "can not found DTitlebarDWindowMinButton in DTitlebar";
+        qCWarning(LogMain) << "can not found DTitlebarDWindowMinButton in DTitlebar";
 
     DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
     if (maxBtn != nullptr)
         maxBtn->setFocusPolicy(Qt::TabFocus);
     else
-        qWarning() << "can not found DTitlebarDWindowMaxButton in DTitlebar";
+        qCWarning(LogMain) << "can not found DTitlebarDWindowMaxButton in DTitlebar";
 
     DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
     if (closeBtn != nullptr)
         closeBtn->setFocusPolicy(Qt::TabFocus);
     else
-        qWarning() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
+        qCWarning(LogMain) << "can not found DTitlebarDWindowCloseButton in DTitlebar";
 
     if (addButton != nullptr && optionBtn != nullptr && quitFullscreenBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
         QWidget::setTabOrder(addButton, optionBtn);
@@ -2621,8 +2628,8 @@ void NormalWindow::initWindowAttribute()
         m_IfUseLastSize = true;
         int saveWidth = m_winInfoConfig->value(CONFIG_WINDOW_WIDTH).toInt();
         int saveHeight = m_winInfoConfig->value(CONFIG_WINDOW_HEIGHT).toInt();
-        qInfo() << "load window_width: " << saveWidth;
-        qInfo() << "load window_height: " << saveHeight;
+        qCInfo(LogMain)  << "load window_width: " << saveWidth;
+        qCInfo(LogMain)  << "load window_height: " << saveHeight;
         // 如果配置文件没有数据
         if (0 == saveWidth || 0 == saveHeight) {
             saveWidth = WINDOW_DEFAULT_WIDTH;
@@ -2655,7 +2662,7 @@ void NormalWindow::saveWindowSize()
         // 记录最后一个正常窗口的大小
         m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, width());
         m_winInfoConfig->setValue(CONFIG_WINDOW_HEIGHT, height());
-        qInfo() << "save windows size:" << width() << height();
+        qCInfo(LogMain)  << "save windows size:" << width() << height();
         /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height End***************/
     }
 }
@@ -2747,32 +2754,32 @@ void QuakeWindow::initTitleBar()
     if (addButton != nullptr)
         addButton->setFocusPolicy(Qt::TabFocus);
     else
-        qInfo() << "can not found AddButton in DIconButton";
+        qCInfo(LogMain)  << "can not found AddButton in DIconButton";
 
     // 雷神下其它控件一律没有焦点
     DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
     if (optionBtn != nullptr)
         optionBtn->setFocusPolicy(Qt::NoFocus);
     else
-        qInfo() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
+        qCInfo(LogMain)  << "can not found DTitlebarDWindowOptionButton in DTitlebar";
 
     DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
     if (minBtn != nullptr)
         minBtn->setFocusPolicy(Qt::NoFocus);
     else
-        qInfo() << "can not found DTitlebarDWindowMinButton in DTitlebar";
+        qCInfo(LogMain)  << "can not found DTitlebarDWindowMinButton in DTitlebar";
 
     DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
     if (maxBtn != nullptr)
         maxBtn->setFocusPolicy(Qt::NoFocus);
     else
-        qInfo() << "can not found DTitlebarDWindowMaxButton in DTitlebar";
+        qCInfo(LogMain)  << "can not found DTitlebarDWindowMaxButton in DTitlebar";
 
     DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
     if (closeBtn != nullptr)
         closeBtn->setFocusPolicy(Qt::NoFocus);
     else
-        qInfo() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
+        qCInfo(LogMain)  << "can not found DTitlebarDWindowCloseButton in DTitlebar";
 
     /*QWidget::setTabOrder(addButton, optionBtn);
     QWidget::setTabOrder(optionBtn, minBtn);
@@ -2784,7 +2791,7 @@ void QuakeWindow::initTitleBar()
 
 void QuakeWindow::slotWorkAreaResized()
 {
-    qInfo() << "Workspace size change!";
+    qCInfo(LogMain)  << "Workspace size change!";
     /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
     setMinimumWidth(QApplication::desktop()->availableGeometry().width());
     setWindowMinHeightForFont();
@@ -2851,7 +2858,7 @@ void QuakeWindow::saveWindowSize()
     //Modify by ut001000 renfeixiang 2020-11-16 非雷神动画时，在保存雷神窗口的高度到配置文件
     if (isNotAnimation) {
         m_winInfoConfig->setValue(CONFIG_QUAKE_WINDOW_HEIGHT, height());
-        qInfo() << "save quake_window_Height:" << height() << m_desktopMap[m_desktopIndex] << m_desktopIndex;
+        qCInfo(LogMain)  << "save quake_window_Height:" << height() << m_desktopMap[m_desktopIndex] << m_desktopIndex;
     }
     /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换quake_window_Height End***************/
 }
@@ -2908,7 +2915,7 @@ void QuakeWindow::setWindowMinHeightForFont()
 /******** Add by nt001000 renfeixiang 2020-05-20:增加雷神窗口根据字体和字体大小设置最小高度函数 End***************/
 void QuakeWindow::updateMinHeight()
 {
-    qInfo() << "Start update min height";
+    qCInfo(LogMain)  << "Start update min height";
     bool hasHorizontalSplit = false;
     int count = m_termStackWidget->count();
     for (int i = 0; i < count; i++) {
@@ -2982,7 +2989,7 @@ inline void QuakeWindow::onTopToBottomAnimationFinished()
 void QuakeWindow::bottomToTopAnimation()
 {
     if (!isNotAnimation || nullptr == currentPage()) {
-        qInfo() << "bottomToTopAnimation no need to execute.";
+        qCInfo(LogMain)  << "bottomToTopAnimation no need to execute.";
         return;
     }
 
@@ -3053,7 +3060,7 @@ xcb_atom_t QuakeWindow::internAtom(const char *name, bool only_if_exists)
 void QuakeWindow::sendWindowForhibitMove(bool forhibit)
 {
     if(!QX11Info::connection()){
-        qWarning() << "QX11Info::connection() is " << QX11Info::connection();
+        qCWarning(LogMain) << "QX11Info::connection() is " << QX11Info::connection();
         return ;
     }
 

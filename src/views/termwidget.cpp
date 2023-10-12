@@ -35,6 +35,13 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
+
+#ifdef QT_DEBUG
+Q_LOGGING_CATEGORY(LogViews,"log.terminal.views.work")
+#else
+Q_LOGGING_CATEGORY(LogViews,"log.terminal.views.work",QtInfoMsg)
+#endif
+
 TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
     Utils::set_Object_Name(this);
@@ -48,7 +55,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
 
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
-    qInfo() << "set shell program : " << strShellPath;
+    qCInfo(LogViews) << "set shell program : " << strShellPath;
     setShellProgram(strShellPath);
     /******** Modify by ut000610 daizhengwen 2020-07-08:初始化透明度 Begin***************/
     // 若没有窗口特效，则不生效
@@ -93,7 +100,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
         //QString args = m_properties[Execute].toString();
         //QStringList argList = args.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
         QStringList argList = m_properties[Execute].toStringList();
-        qInfo() << "Execute args:" << argList;
+        qCInfo(LogViews) << "Execute args:" << argList;
         if (argList.count() > 0) {
             setShellProgram(argList.at(0));
             argList.removeAt(0);
@@ -142,7 +149,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 增加可以自动运行脚本的命令，不需要的话，可以删除
     if (m_properties.contains(Script)) {
         QString args = m_properties[Script].toString();
-        qInfo() << "run cmd:" << args;
+        qCInfo(LogViews) << "run cmd:" << args;
         args.append("\n");
         if (!m_properties[KeepOpen].toBool())
             args.append("exit\n");
@@ -282,11 +289,11 @@ inline void TermWidget::onExitRemoteServer()
 {
     // 判断是否此时退出远程
     if (!isInRemoteServer()) {
-        qInfo() << "exit remote";
+        qCInfo(LogViews) << "exit remote";
         setIsConnectRemote(false);
         // 还原编码
         setTextCodec(QTextCodec::codecForName(encode().toLocal8Bit()));
-        qInfo() << "current encode " << encode();
+        qCInfo(LogViews) << "current encode " << encode();
         setBackspaceMode(m_backspaceMode);
         setDeleteMode(m_deleteMode);
         emit Service::instance()->checkEncode(encode());
@@ -301,7 +308,7 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 
 inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
 {
-    qInfo() << "Theme Type Changed! Current Theme Type: " << builtInTheme;
+    qCInfo(LogViews) << "Theme Type Changed! Current Theme Type: " << builtInTheme;
     // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
@@ -669,7 +676,7 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
             || (fileName.startsWith("\"") && fileName.endsWith("\""))) {
         fileName = fileName.remove(0, 1);
         fileName = fileName.remove(fileName.length() - 1, 1);
-        qInfo() << "Format fileName is " << fileName;
+        qCInfo(LogViews) << "Format fileName is " << fileName;
     }
 
     return fileName;
@@ -745,7 +752,7 @@ void TermWidget::setBackspaceMode(const EraseMode &backspaceMode)
     case EraseMode_TTY:
         ch = getErase();
         length = 1;
-        qInfo() << "tty erase : " << QByteArray(&ch, length).toHex();
+        qCInfo(LogViews) << "tty erase : " << QByteArray(&ch, length).toHex();
         break;
     case EraseMode_Escape_Sequeue:
         length = 4;
@@ -772,7 +779,7 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
     case EraseMode_TTY:
         ch = getErase();
         length = 1;
-        qInfo() << "tty erase : " << QByteArray(&ch, length).toHex();
+        qCInfo(LogViews) << "tty erase : " << QByteArray(&ch, length).toHex();
         break;
     case EraseMode_Auto:
     case EraseMode_Escape_Sequeue:
@@ -887,7 +894,7 @@ void TermWidget::initTabTitleArgs()
     for (QString arg : strRemoteTabArgs)
         m_remoteTabArgs.insert(arg, " ");
 
-    qInfo() << "Tab args init! tab title count : " << m_tabArgs.count() << " remote title count : " << m_remoteTabArgs.count();
+    qCInfo(LogViews) << "Tab args init! tab title count : " << m_tabArgs.count() << " remote title count : " << m_remoteTabArgs.count();
 }
 
 QString TermWidget::getTabTitleFormat()
@@ -1043,17 +1050,17 @@ void TermWidget::selectEncode(QString encode)
     if (!isConnectRemote()) {
         // 记录当前的encode
         setEncode(encode);
-        qInfo() << "current encode " << encode;
+        qCInfo(LogViews) << "current encode " << encode;
     } else {
         // 记录远程的encode
         setRemoteEncode(encode);
-        qInfo() << "Remote encode " << encode;
+        qCInfo(LogViews) << "Remote encode " << encode;
     }
 }
 
 void TermWidget::onSettingValueChanged(const QString &keyName)
 {
-    qInfo() << "Setting Value Changed! Current Config's key:" << keyName;
+    qCInfo(LogViews) << "Setting Value Changed! Current Config's key:" << keyName;
     if ("basic.interface.opacity" == keyName) {
         setTermOpacity(Settings::instance()->opacity());
         return;
@@ -1108,18 +1115,18 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     }
 
     if ("advanced.scroll.scroll_on_output" == keyName) {
-        qInfo() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
+        qCInfo(LogViews) << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                 << ", auto effective when happen";
         return;
     }
 
-    qInfo() << "settingValue[" << keyName << "] changed is not effective";
+    qCInfo(LogViews) << "settingValue[" << keyName << "] changed is not effective";
 }
 
 void TermWidget::onDropInUrls(const char *urls)
 {
     QString strUrls = QString::fromLocal8Bit(urls);
-    qInfo() << "recv urls:" << strUrls;
+    qCInfo(LogViews) << "recv urls:" << strUrls;
     if (isConnectRemote()) {
         // 远程管理连接中
         QString strTxt = "sz ";

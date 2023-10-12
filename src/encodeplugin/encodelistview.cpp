@@ -20,6 +20,8 @@
 #include <QScroller>
 #include <QPainterPath>
 
+Q_DECLARE_LOGGING_CATEGORY(LogEncodePlugin)
+
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
@@ -99,7 +101,7 @@ void EncodeListView::focusInEvent(QFocusEvent *event)
 
     // 判断焦点
     if (Qt::TabFocusReason == m_foucusReason || Qt::BacktabFocusReason == m_foucusReason) {
-        qInfo() << "The reason(" << m_foucusReason << ") for the current focus."
+        qCInfo(LogEncodePlugin) << "The reason(" << m_foucusReason << ") for the current focus."
                 << "The encoding format(" << m_modelIndexChecked.data().toString() <<") in which focus is currently obtained.";
         setCurrentIndex(m_modelIndexChecked);
     }
@@ -195,14 +197,14 @@ void EncodeListView::mouseMoveEvent(QMouseEvent *event)
 void EncodeListView::onListViewClicked(const QModelIndex &index)
 {
     if (!index.isValid()) {
-        qWarning() << "The current encoding format("<< index << ") is incorrect.";
+        qCWarning(LogEncodePlugin) << "The current encoding format("<< index << ") is incorrect.";
         return;
     }
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
     if (nullptr == model)
         return;
 
-    qInfo() << "The encoding format(" <<  m_modelIndexChecked.data().toString() << ") selected last time."
+    qCInfo(LogEncodePlugin) << "The encoding format(" <<  m_modelIndexChecked.data().toString() << ") selected last time."
             << "The encoding format(" <<  index.data().toString()<< ") selected this time.";
 
     //当前Checked子项改为Unchecked状态
