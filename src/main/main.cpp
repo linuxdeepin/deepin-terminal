@@ -26,6 +26,8 @@ DWIDGET_USE_NAMESPACE
 
 DCORE_USE_NAMESPACE
 
+Q_DECLARE_LOGGING_CATEGORY(LogMain)
+
 int main(int argc, char *argv[])
 {
     if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
@@ -44,14 +46,19 @@ int main(int argc, char *argv[])
 
     // 系统日志
 #if (DTK_VERSION >= DTK_VERSION_CHECK(5,6,8,0))
+    qCDebug(LogMain) << "current libdtkcore5 > 5.6.8.0";
     DLogManager::registerJournalAppender();
+    qCInfo(LogMain) << "Current log register journal!";
 #ifdef QT_DEBUG
     DLogManager::registerConsoleAppender();
+    qCInfo(LogMain) << "Current log register console!";
 #endif
 #else
+    qCDebug(LogMain) << "current libdtkcore5 < 5.6.8.0";
 //    DLogManager::registerJournalAppender();
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
+    qCInfo(LogMain) << "Current log register console and file!";
 #endif
 
     // 参数解析
