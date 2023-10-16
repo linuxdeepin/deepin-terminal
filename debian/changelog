@@ -1,3 +1,11 @@
+deepin-terminal (5.9.44) unstable; urgency=medium
+
+  * fix: Add 2 character width charset.
+  * feat: Improve debug log and add log category. 
+  * feat: [UI] Adapt compact mode.(Task: 292067)(Influence: UI)
+
+ -- renbin <renbin@uniontech.com>  Mon, 16 Oct 2023 15:54:30 +0800
+
 deepin-terminal (5.9.43) unstable; urgency=medium
 
   * New version 5.9.43.
