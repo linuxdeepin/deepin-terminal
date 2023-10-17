@@ -1,3 +1,11 @@
+deepin-terminal (6.0.8) unstable; urgency=medium
+
+  * Allow extending terminal themes
+    Fix wrong width of Quake window if opened in a secondary screen with
+    different resolution with main screen
+
+ -- Yutao Meng <mengyutao@deepin.org>  Tue, 17 Oct 2023 10:39:37 +0800
+
 deepin-terminal (6.0.7) unstable; urgency=medium
 
   * Fix compilation errors on deepin V23.
