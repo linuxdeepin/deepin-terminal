@@ -21,8 +21,11 @@ WindowsManager *WindowsManager::instance()
 void WindowsManager::runQuakeWindow(TermProperties properties)
 {
     if (nullptr == m_quakeWindow) {
+        QPoint cursorPoint = QCursor::pos();
+        const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
         qInfo() << "runQuakeWindow :create";
         m_quakeWindow = new QuakeWindow(properties);
+        m_quakeWindow->move(cursorScreen->geometry().topLeft());
         //Add by ut001000 renfeixiang 2020-11-16 设置开始雷神动画效果标志
         m_quakeWindow->setAnimationFlag(false);
         m_quakeWindow->show();
@@ -31,17 +34,21 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
         m_quakeWindow->activateWindow();
         return;
     }
-    // 雷神窗口移动到光标所在的屏幕
-    QPoint cursorPoint = QCursor::pos();
-    int windowWidth = QGuiApplication::screenAt(cursorPoint)->geometry().width();
-    m_quakeWindow->move(QGuiApplication::screenAt(cursorPoint)->geometry().topLeft());
-    m_quakeWindow->setFixedWidth(windowWidth);
     // Alt+F2的显隐功能实现点
     quakeWindowShowOrHide();
 }
 
 void WindowsManager::quakeWindowShowOrHide()
 {
+    QPoint cursorPoint = QCursor::pos();
+    const QScreen *quakeScreen = QGuiApplication::screenAt(m_quakeWindow->pos());
+    const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
+    if (!m_quakeWindow->isVisible() && quakeScreen->serialNumber() != cursorScreen->serialNumber()) {
+        int windowWidth = cursorScreen->geometry().width();
+        m_quakeWindow->move(cursorScreen->geometry().topLeft());
+        m_quakeWindow->setFixedWidth(windowWidth);
+    }
+
     //隐藏 则 显示终端
     if (!m_quakeWindow->isVisible()) {
         m_quakeWindow->setAnimationFlag(false);
