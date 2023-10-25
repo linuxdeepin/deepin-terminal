@@ -1,3 +1,9 @@
+deepin-terminal (5.9.45) unstable; urgency=medium
+
+  * fix: Tab height error under low version dtk.
+
+ -- renbin <renbin@uniontech.com>  Wed, 25 Oct 2023 13:31:59 +0800
+
 deepin-terminal (5.9.44) unstable; urgency=medium
 
   * fix: Add 2 character width charset.
