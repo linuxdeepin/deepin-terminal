@@ -309,10 +309,15 @@ inline void TermWidget::onColorThemeChanged(const QString &colorTheme)
 
 inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
 {
+    Q_UNUSED(themeType);
     if ("System Theme" == Settings::instance()->colorScheme()) {
-        if (DApplicationHelper::instance()->themeType() != themeType) {
-            setTheme("System Theme");
+        QString theme;
+        if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
+            theme = "Dark";
+        } else {
+            theme = "Light";
         }
+        setColorScheme(theme);
     }
 }
 
@@ -707,7 +712,6 @@ void TermWidget::changeTitleColor(int lightness)
 
 void TermWidget::setTheme(const QString &colorTheme)
 {
-    qInfo() << "dzw ==== " << colorTheme;
     QString theme = colorTheme;
     // 跟随系统
     if ("System Theme" == colorTheme) {
