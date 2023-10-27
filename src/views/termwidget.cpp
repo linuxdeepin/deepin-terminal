@@ -310,7 +310,9 @@ inline void TermWidget::onColorThemeChanged(const QString &colorTheme)
 inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
 {
     if ("System Theme" == Settings::instance()->colorScheme()) {
-        setTheme("System Theme");
+        if (DApplicationHelper::instance()->themeType() != themeType) {
+            setTheme("System Theme");
+        }
     }
 }
 
@@ -696,24 +698,6 @@ void TermWidget::inputRemotePassword(const QString &remotePassword)
 
 void TermWidget::changeTitleColor(int lightness)
 {
-    QString colorTheme = Settings::instance()->colorScheme();
-    // 自定义主题
-    if (colorTheme == Settings::instance()->m_configCustomThemePath) {
-        DGuiApplicationHelper::ColorType systemTheme = DGuiApplicationHelper::DarkType;
-        if ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
-            systemTheme = DGuiApplicationHelper::LightType;
-        }
-        DApplicationHelper::instance()->setPaletteType(systemTheme);
-        return;
-    }
-
-    // 跟随系统
-    if ("System Theme" == colorTheme) {
-        DApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
-        return;
-    }
-
-    // 其他
     if (lightness >= 192) {
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
     } else {
@@ -723,14 +707,29 @@ void TermWidget::changeTitleColor(int lightness)
 
 void TermWidget::setTheme(const QString &colorTheme)
 {
+    qInfo() << "dzw ==== " << colorTheme;
     QString theme = colorTheme;
     // 跟随系统
     if ("System Theme" == colorTheme) {
+        DApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
         if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
             theme = "Dark";
         } else {
             theme = "Light";
         }
+        setColorScheme(theme);
+        return;
+    }
+
+    // 自定义主题
+    if (colorTheme == Settings::instance()->m_configCustomThemePath) {
+        DGuiApplicationHelper::ColorType systemTheme = DGuiApplicationHelper::DarkType;
+        if ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+            systemTheme = DGuiApplicationHelper::LightType;
+        }
+        DApplicationHelper::instance()->setPaletteType(systemTheme);
+        setColorScheme(theme);
+        return;
     }
 
     // 设置主题
