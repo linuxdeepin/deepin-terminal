@@ -515,6 +515,14 @@ protected:
     /*const */KeyboardTranslator *_keyTranslator; // the keyboard layout
     /********************* Modify by ut000610 daizhengwen End ************************/
 
+    /**
+       @brief 检测当前iconv使用的GB18030编码是否为2005标准，2005标准强制使用上层补丁版本
+            通过检测2005和2022编码转的差异，以附录D中的编码为例验证
+            2005标准 0xFE51 --> \u20087
+            2022标准 0xFE51 --> \uE816
+       @return iconv使用GB18030编码是否为2005标准，默认返回true
+     */
+    bool detectIconvUse2005Standard();
 protected slots:
     /**
      * Schedules an update of attached views.

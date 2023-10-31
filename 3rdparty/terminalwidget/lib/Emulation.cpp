@@ -298,6 +298,44 @@ void Emulation::sendMouseEvent(int /*buttons*/, int /*column*/, int /*row*/, int
     // default implementation does nothing
 }
 
+static int isUse2005Standard = -1;
+/**
+   @brief 检测当前iconv使用的GB18030编码是否为2005标准，2005标准强制使用上层补丁版本
+        通过检测2005和2022编码转的差异，以附录D中的编码为例验证
+        2005标准 0xFE51 --> \u20087
+        2022标准 0xFE51 --> \uE816
+   @return iconv使用GB18030编码是否为2005标准，默认返回true
+ */
+bool Emulation::detectIconvUse2005Standard()
+{
+    iconv_t handle = iconv_open("UTF-8", "GB18030");
+    if (handle == reinterpret_cast<iconv_t>(-1)) {
+        return true;
+    }
+
+    QByteArray input("\xFE\x51");
+    QByteArray output(input.size() * 2, 0);
+    char *inputData = input.data();
+    char *outputData = output.data();
+    size_t inputLen = static_cast<size_t>(input.count());
+    size_t outputLen = static_cast<size_t>(output.count());
+
+    const size_t ret = iconv(handle, &inputData, &inputLen, &outputData, &outputLen);
+    iconv_close(handle);
+
+    if (ret == static_cast<size_t>(-1)) {
+        return true;
+    }
+
+    if (!output.contains("\uE816")) {
+        qInfo() << "Current iconv gb18030 standard is 2005.";
+        return true;
+    }
+
+    qInfo() << "Current iconv gb18030 standard is 2022.";
+    return false;
+}
+
 /*
    We are doing code conversion from locale to unicode first.
 TODO: Character composition from the old code.  See #96536
@@ -338,7 +376,11 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec)
         //setIsCodecGB18030(false);
     }
     else {
-        if(_codec->name().toUpper().contains("GB18030")) {
+        if(isUse2005Standard == -1){
+            isUse2005Standard = detectIconvUse2005Standard();
+            qInfo() << "Is Used 2005 standard's gb18030 iconv?" << isUse2005Standard;
+        }
+        if(_codec->name().toUpper().contains("GB18030") && isUse2005Standard == 1) {
             //setIsCodecGB18030(true);
             QByteArray gbkarr(text, length);
             QByteArray Outdata;
