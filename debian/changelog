@@ -1,3 +1,10 @@
+deepin-terminal (6.0.9) unstable; urgency=medium
+
+  * Fix abnormal animations of quake window under multi-monitor scenario.
+    Fix wrong title bar previews of dark/light themes in system themes.
+
+ -- Yutao Meng <mengyutao@deepin.org>  Fri, 03 Nov 2023 10:38:56 +0800
+
 deepin-terminal (6.0.8) unstable; urgency=medium
 
   * Allow extending terminal themes
