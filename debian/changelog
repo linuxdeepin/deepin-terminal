@@ -1,3 +1,9 @@
+deepin-terminal (5.9.46) unstable; urgency=medium
+
+  * fix: Roll back gb18030 midification.
+
+ -- renbin <renbin@uniontech.com>  Fri, 03 Nov 2023 10:55:01 +0800
+
 deepin-terminal (5.9.45) unstable; urgency=medium
 
   * fix: Tab height error under low version dtk.
