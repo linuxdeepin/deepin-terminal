@@ -1862,8 +1862,8 @@ QRect TerminalDisplay::widgetToImage(const QRect &widgetArea) const
 
 void TerminalDisplay::updateCursor()
 {
-//  QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
-  update();
+    QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
+    update(cursorRect);
 }
 
 void TerminalDisplay::blinkCursorEvent()
