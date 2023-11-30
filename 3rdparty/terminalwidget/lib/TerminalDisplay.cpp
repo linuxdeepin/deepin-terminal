@@ -1855,7 +1855,7 @@ QRect TerminalDisplay::widgetToImage(const QRect &widgetArea) const
 {
     QRect result;
     result.setLeft(qMin(_usedColumns - 1, qMax(0, (widgetArea.left()) / _fontWidth )));
-    result.setTop(qMin(_usedLines   - 1, qMax(0, (widgetArea.top()) / _fontHeight)));
+    result.setTop(qMin(_usedLines   - 1, qMax(0, (widgetArea.top()) / _fontHeight )));
     result.setRight(qMin(_usedColumns - 1, qMax(0, (widgetArea.right()) / _fontWidth )));
     result.setBottom(qMin(_usedLines   - 1, qMax(0, (widgetArea.bottom()) / _fontHeight)));
     return result;
@@ -1863,8 +1863,8 @@ QRect TerminalDisplay::widgetToImage(const QRect &widgetArea) const
 
 void TerminalDisplay::updateCursor()
 {
-//  QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
-  update();
+  QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
+  update(cursorRect);
 }
 
 void TerminalDisplay::blinkCursorEvent()
