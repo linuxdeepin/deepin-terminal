@@ -647,7 +647,7 @@ void TerminalDisplay::setKeyboardCursorShape(QTermWidget::KeyboardCursorShape sh
 {
     _cursorShape = shape;
 
-    updateCursor();
+    update();
 }
 QTermWidget::KeyboardCursorShape TerminalDisplay::keyboardCursorShape() const
 {
@@ -738,11 +738,13 @@ void TerminalDisplay::drawCursor(QPainter& painter,
            painter.setPen(_cursorColor);
        else
            painter.setPen(foregroundColor);
-
+       // Todo (Archie Meng): 绘制偏移量用于很脏地修复光标显示问题，如果找到刷新问题的根因，应该改成不使用偏移量的形式。
        if ( _cursorShape == Emulation::KeyboardCursorShape::BlockCursor )
        {
+
             if ( hasFocus() )
             {
+                cursorRect.translate(1, 1);
                 painter.fillRect(cursorRect, _cursorColor.isValid() ? _cursorColor : foregroundColor);
 
                 if ( !_cursorColor.isValid() )
@@ -766,21 +768,21 @@ void TerminalDisplay::drawCursor(QPainter& painter,
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
             painter.drawLine(QLineF(
-                                 QPointF(cursorRect.left(),
+                                 QPointF(cursorRect.left() + 2,
                                          cursorRect.bottom()),
                                  QPointF(cursorRect.right(),
                                          cursorRect.bottom())));
        else if ( _cursorShape == Emulation::KeyboardCursorShape::IBeamCursor )
             painter.drawLine(QLineF(
-                                QPointF(cursorRect.left(),
-                             		cursorRect.top()),
-                                QPointF(cursorRect.left(),
+                                QPointF(cursorRect.left() + 2,
+                                    cursorRect.top() + 2),
+                                QPointF(cursorRect.left() + 2,
                              		cursorRect.bottom())));
        else if ( _cursorShape == Emulation::KeyboardCursorShape::BoldUnderlineCursor )
         { 
             if ( hasFocus() )
             {
-                cursorRect.translate(0,cursorRect.height());
+                cursorRect.translate(1,cursorRect.height() - 4);
                 cursorRect.setHeight(4);
                 painter.fillRect(cursorRect, _cursorColor.isValid() ? _cursorColor : foregroundColor);
             }
@@ -788,7 +790,7 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             {
                 painter.drawRect(
                                 cursorRect.left(),
-                                cursorRect.bottom(),
+                                cursorRect.bottom() - 4,
                                 cursorRect.width(),
                                 4);
             }
