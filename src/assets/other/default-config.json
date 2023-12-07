@@ -151,13 +151,13 @@
                             "key": "previous_tab",
                             "name": "Previous tab",
                             "type": "shortcut",
-                            "default":  "Ctrl+Tab"
+                            "default":  "Ctrl+Shift+Tab"
                         },
                         {
                             "key": "next_tab",
                             "name": "Next tab",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+Tab"
+                            "default":  "Ctrl+Tab"
                         },
                         {
                             "key": "vertical_split",
