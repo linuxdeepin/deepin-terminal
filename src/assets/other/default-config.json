@@ -139,7 +139,7 @@
                             "key": "close_tab",
                             "name": "Close tab",
                             "type": "shortcut",
-                            "default":  "Alt+W"
+                            "default":  "Ctrl+W"
                         },
                         {
                             "key": "close_other_tabs",
