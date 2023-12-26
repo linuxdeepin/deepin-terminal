@@ -11,7 +11,7 @@
 
 #include <QDebug>
 
-Q_DECLARE_LOGGING_CATEGORY(LogMain)
+Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
 WindowsManager *WindowsManager::pManager = new WindowsManager();
 WindowsManager *WindowsManager::instance()
@@ -22,7 +22,7 @@ WindowsManager *WindowsManager::instance()
 void WindowsManager::runQuakeWindow(TermProperties properties)
 {
     if (nullptr == m_quakeWindow) {
-        qCInfo(LogMain)  << "Create QuakeWindow!";
+        qCInfo(mainprocess)  << "Create QuakeWindow!";
         m_quakeWindow = new QuakeWindow(properties);
         //Add by ut001000 renfeixiang 2020-11-16 设置开始雷神动画效果标志
         m_quakeWindow->setAnimationFlag(false);
@@ -86,13 +86,13 @@ void WindowsManager::createNormalWindow(TermProperties properties, bool isShow)
 
     MainWindow *newWindow = new NormalWindow(newProperties);
     m_normalWindowList << newWindow;
-    qCInfo(LogMain)  << "create NormalWindow, current count =" << m_normalWindowList.count()
+    qCInfo(mainprocess)  << "create NormalWindow, current count =" << m_normalWindowList.count()
             << ", SingleFlag" << newProperties[SingleFlag].toBool();
     if(isShow)
         newWindow->show();
     qint64 newMainWindowTime = newWindow->createNewMainWindowTime();
     QString strNewMainWindowTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_MAINWINDOE + QString::number(newMainWindowTime);
-    qCInfo(LogMain)  << "Create NormalWindow Time:" << qPrintable(strNewMainWindowTime);
+    qCInfo(mainprocess)  << "Create NormalWindow Time:" << qPrintable(strNewMainWindowTime);
 }
 
 void WindowsManager::onMainwindowClosed(MainWindow *window)
@@ -112,7 +112,7 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
         m_normalWindowList.removeOne(window);
     } else {
         //Q_ASSERT(false);
-        qCWarning(LogMain) << "unkown windows closed " << window;
+        qCWarning(mainprocess) << "unkown windows closed " << window;
     }
 
     window->deleteLater();

@@ -10,7 +10,7 @@
 #include <QParallelAnimationGroup>
 #include <QDebug>
 #include <QLoggingCategory>
-Q_DECLARE_LOGGING_CATEGORY(LogRemoteManage)
+Q_DECLARE_LOGGING_CATEGORY(remotemanage)
 
 const int animationDuration = 300;
 
@@ -64,7 +64,7 @@ void RemoteManagementTopPanel::show()
     // 清空栈
     m_filterStack.clear();
     m_prevPanelStack.clear();
-    qCInfo(LogRemoteManage) << "show remote panel! stack clear";
+    qCInfo(remotemanage) << "show remote panel! stack clear";
 }
 
 void RemoteManagementTopPanel::setFocusInPanel()
@@ -74,7 +74,7 @@ void RemoteManagementTopPanel::setFocusInPanel()
 
 void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 {
-    qCInfo(LogRemoteManage) << "RemoteManagementTopPanel show search panel.";
+    qCInfo(remotemanage) << "RemoteManagementTopPanel show search panel.";
     // 记录搜索界面的搜索条件
     m_filterStack.push_back(strFilter);
     // 设置搜索界面大小
@@ -106,7 +106,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
         animation1->deleteLater();
-        qCWarning(LogRemoteManage) << "unknow current panel!";
+        qCWarning(remotemanage) << "unknow current panel!";
         return;
     }
     // 执行动画
@@ -126,7 +126,7 @@ void RemoteManagementTopPanel::showSearchPanel(const QString &strFilter)
 
 void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool isFocusOn)
 {
-    qCInfo(LogRemoteManage) << "RemoteManagementTopPanel show group panel.";
+    qCInfo(remotemanage) << "RemoteManagementTopPanel show group panel.";
     // 记录当前分组
     m_group = strGroupName;
     // 设置分组界面大小
@@ -151,7 +151,7 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
         connect(animation, &QPropertyAnimation::finished, m_remoteManagementPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
-        qCWarning(LogRemoteManage) << "unknow current panel!";
+        qCWarning(remotemanage) << "unknow current panel!";
         animation1->deleteLater();
         return;
     }
@@ -169,7 +169,7 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
         MainWindow *w = Utils::getMainWindow(this);
         if(w)
             w->focusCurrentPage();
-        qCInfo(LogRemoteManage) << "show group but not focus in group";
+        qCInfo(remotemanage) << "show group but not focus in group";
     }
 
     // 记录当前窗口为前一个窗口
@@ -192,20 +192,20 @@ void RemoteManagementTopPanel::showGroupPanel(const QString &strGroupName, bool 
 
 void RemoteManagementTopPanel::showPrevPanel()
 {
-    qCInfo(LogRemoteManage) << "RemoteManagementTopPanel show previous panel.";
+    qCInfo(remotemanage) << "RemoteManagementTopPanel show previous panel.";
     PanelState state;
     ServerConfigManager::PanelType prevType;
     // 栈为空
     if (m_prevPanelStack.isEmpty()) {
         // 返回
-        qCInfo(LogRemoteManage) << "stack is empty! return to remote first panel";
+        qCInfo(remotemanage) << "stack is empty! return to remote first panel";
         // 栈为空，返回主界面
         prevType = ServerConfigManager::PanelType_Manage;
     } else {
         // 获取前一个界面的类型，此界面为现在要显示的界面
         state = m_prevPanelStack.pop();
         prevType = state.m_type;
-        qCInfo(LogRemoteManage) << "Gets the reality type of the previous interface: " << prevType;
+        qCInfo(remotemanage) << "Gets the reality type of the previous interface: " << prevType;
     }
 
     // 动画效果 要隐藏的界面
@@ -221,7 +221,7 @@ void RemoteManagementTopPanel::showPrevPanel()
         connect(animation, &QPropertyAnimation::finished, m_serverConfigGroupPanel, &QWidget::hide);
         connect(animation, &QPropertyAnimation::finished, animation, &QPropertyAnimation::deleteLater);
     } else {
-        qCWarning(LogRemoteManage) << "unknow panel to hide!" << m_currentPanelType;
+        qCWarning(remotemanage) << "unknow panel to hide!" << m_currentPanelType;
     }
 
     // 动画效果 要显示的界面
@@ -235,7 +235,7 @@ void RemoteManagementTopPanel::showPrevPanel()
         // 清空栈
         m_prevPanelStack.clear();
         m_filterStack.clear();
-        qCInfo(LogRemoteManage) << "remote clear stack";
+        qCInfo(remotemanage) << "remote clear stack";
         // 动画效果的设置
         animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
         connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
@@ -252,7 +252,7 @@ void RemoteManagementTopPanel::showPrevPanel()
     case ServerConfigManager::PanelType_Search: {
         // 刷新列表 => 搜索框能被返回，只能是全局搜索
         if (m_filterStack.isEmpty()) {
-            qCWarning(LogRemoteManage) << "error: filter stack is empty!";
+            qCWarning(remotemanage) << "error: filter stack is empty!";
             return;
         }
         // 取最上一个
@@ -270,7 +270,7 @@ void RemoteManagementTopPanel::showPrevPanel()
     break;
     }
     if (nullptr == animation || nullptr == animation1) {
-        qCWarning(LogRemoteManage) << "do not has animation";
+        qCWarning(remotemanage) << "do not has animation";
         if (nullptr != animation1)
             animation1->deleteLater();
 
@@ -303,7 +303,7 @@ void RemoteManagementTopPanel::showPrevPanel()
                 m_remoteManagementSearchPanel->setFocusBack(m_group, state.m_isFocusOn, state.m_currentListIndex);
             }
         } else {
-            qCWarning(LogRemoteManage) << "unknow panel";
+            qCWarning(remotemanage) << "unknow panel";
         }
     }
 

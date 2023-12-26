@@ -1,0 +1,57 @@
+{
+  "name": "deepin-terminal",
+  "group": "",
+  "submodules": [
+    {
+      "name": "main",
+      "filter": "org.deepin.terminal",
+      "exec": "/usr/bin/deepin-terminal",
+      "logType": "journal",
+      "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log"
+    },
+    {
+      "name": "common",
+      "filter": "org.deepin.terminal.common",
+      "exec": "/usr/bin/deepin-terminal",
+      "logType": "journal",
+      "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log"
+    },
+    {
+      "name": "customcom",
+      "filter": "org.deepin.terminal.customcommand",
+      "exec": "/usr/bin/deepin-terminal",
+      "logType": "journal",
+      "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log"
+    },
+    {
+      "name": "remotemanage",
+      "filter": "org.deepin.terminal.remotemanage",
+      "exec": "/usr/bin/deepin-terminal",
+      "logType": "journal",
+      "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log"
+    },
+    {
+      "name": "tsettings",
+      "filter": "org.deepin.terminal.tsettings",
+      "exec": "/usr/bin/deepin-terminal",
+      "logType": "journal",
+      "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log"
+    },
+    {
+      "name": "views",
+      "filter": "org.deepin.terminal.views",
+      "exec": "/usr/bin/deepin-terminal",
+      "logType": "journal",
+      "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log"
+    },
+    {
+      "name": "encodeplugin",
+      "filter": "org.deepin.terminal.encodeplugin",
+      "exec": "/usr/bin/deepin-terminal",
+      "logType": "journal",
+      "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log"
+    }
+  ],
+  "visible": 1,
+  "version": "V1.0"
+}

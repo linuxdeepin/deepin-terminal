@@ -11,6 +11,9 @@
 
 #include <DPushButton>
 #include <DApplication>
+#ifdef DTKCORE_CLASS_DConfig
+#include <DConfig>
+#endif
 
 #include <QObject>
 #include <QHash>
@@ -455,5 +458,25 @@ private:
     bool m_bstop = false;
 };
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/
+
+#ifdef DTKCORE_CLASS_DConfigFile
+class LoggerRules : public QObject {
+  Q_OBJECT
+public:
+  explicit LoggerRules(QObject *parent = nullptr);
+  ~LoggerRules();
+
+  void initLoggerRules();
+  inline QString rules() const { return m_rules; }
+  void setRules(const QString &rules);
+
+private:
+  void appendRules(const QString &rules);
+
+private:
+  QString m_rules;
+  Dtk::Core::DConfig *m_config;
+};
+#endif
 
 #endif

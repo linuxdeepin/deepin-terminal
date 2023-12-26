@@ -21,7 +21,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QLoggingCategory>
-Q_DECLARE_LOGGING_CATEGORY(LogCustomCommand)
+Q_DECLARE_LOGGING_CATEGORY(customcommand)
 
 CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
     : CommonPanel(parent)
@@ -105,7 +105,7 @@ inline void CustomCommandSearchRstPanel::handleIconButtonFocusOut(Qt::FocusReaso
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qCInfo(LogCustomCommand) << "search panel focus to '+'";
+        qCInfo(customcommand) << "search panel focus to '+'";
     }
 }
 
@@ -116,13 +116,13 @@ inline void CustomCommandSearchRstPanel::handleListViewFocusOut(Qt::FocusReason 
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
-        qCInfo(LogCustomCommand) << "search panel focus on '+'";
+        qCInfo(customcommand) << "search panel focus on '+'";
         m_cmdListWidget->clearIndex();
     } else if (Qt::BacktabFocusReason == type || Qt::NoFocusReason == type) {
         // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
         m_rebackButton->setFocus();
         m_cmdListWidget->clearIndex();
-        qCInfo(LogCustomCommand) << "search panel type (" << type << ")";
+        qCInfo(customcommand) << "search panel type (" << type << ")";
     }
 }
 
@@ -146,7 +146,7 @@ void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 
 void CustomCommandSearchRstPanel::doCustomCommand(const QString &strKey)
 {
-    qCInfo(LogCustomCommand) << "Search for the current custom commonds based on the key (" << strKey << ")";
+    qCInfo(customcommand) << "Search for the current custom commonds based on the key (" << strKey << ")";
     QAction *item = ShortcutManager::instance()->findActionByKey(strKey);
     QString strCommand = item ? item->data().toString() : "";
     if (!strCommand.endsWith('\n'))

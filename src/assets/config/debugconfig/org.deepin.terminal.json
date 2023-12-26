@@ -1,0 +1,12 @@
+{
+  "name": "deepin-terminal",
+  "group": "",
+  "submodules": [
+    {
+      "name": "deepin-terminal",
+      "exec": "/usr/share/deepin-debug-config/shell/deepin-terminal_debug.sh"
+    }
+  ],
+  "reboot": 1,
+  "version": "V1.0"
+}

@@ -18,9 +18,9 @@
 #include <QLoggingCategory>
 
 #ifdef QT_DEBUG
-Q_LOGGING_CATEGORY(LogSettings,"log.terminal.settings.work")
+Q_LOGGING_CATEGORY(tsettings,"org.deepin.terminal.tsettings")
 #else
-Q_LOGGING_CATEGORY(LogSettings,"log.terminal.main.settings",QtInfoMsg)
+Q_LOGGING_CATEGORY(tsettings,"org.deepin.terminal.tsettings",QtInfoMsg)
 #endif
 
 /* del by ut001121 zhangmeng 20201221 修复BUG58747
@@ -95,7 +95,7 @@ void ShortcutManager::createCustomCommandsFromConfig()
         return ;
 
     QString customCommandConfigFilePath(customCommandBasePath.filePath("command-config.conf"));
-    qCInfo(LogSettings) << "load Custom Commands Config: " << customCommandConfigFilePath;
+    qCInfo(tsettings) << "load Custom Commands Config: " << customCommandConfigFilePath;
     if (!QFile::exists(customCommandConfigFilePath))
         return ;
 
@@ -129,7 +129,7 @@ void ShortcutManager::createCustomCommandsFromConfig()
         //删除自定义命令文件
         QFile fileTemp(customCommandConfigFilePath);
         if(!fileTemp.remove())
-            qWarning(LogSettings) << " remove file error" << customCommandConfigFilePath << fileTemp.errorString();
+            qWarning(tsettings) << " remove file error" << customCommandConfigFilePath << fileTemp.errorString();
 
         //将内存数据写入配置文件
         for (QAction *action : m_customCommandActionList) {
@@ -187,12 +187,12 @@ QAction *ShortcutManager::findActionByKey(const QString &strKey)
 {
     for (QAction *action : m_customCommandActionList) {
         if (action->text() == strKey) {
-            qCInfo(LogSettings) << "find action " << action;
+            qCInfo(tsettings) << "find action " << action;
             return action;
         }
     }
 
-    qCInfo(LogSettings) << "not find action name " << strKey;
+    qCInfo(tsettings) << "not find action name " << strKey;
     return nullptr;
 }
 
@@ -235,7 +235,7 @@ bool ShortcutManager::isShortcutConflictInCustom(const QString &Name, const QStr
     for (auto &currAction : m_customCommandActionList) {
         if (currAction->shortcut().toString() == Key) {
             if (Name != currAction->text()) {
-                qCInfo(LogSettings) << Name << Key << "is conflict with custom shortcut!";
+                qCInfo(tsettings) << Name << Key << "is conflict with custom shortcut!";
                 return true;
             }
         }
@@ -270,7 +270,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
         //F1-F12是允许的，这个正则不够精确，但是没关系。
         QRegExp regexp("^F[0-9]{1,2}$");
         if (!Key.contains(regexp)) {
-            qCInfo(LogSettings) << Key << "is invalid!";
+            qCInfo(tsettings) << Key << "is invalid!";
             Reason = tr("The shortcut %1 is invalid, ")
                     .arg(style);
             return  false;
@@ -279,14 +279,14 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     // 小键盘单键都不允许
     QRegExp regexpNum("^Num+.*");
     if (Key.contains(regexpNum)) {
-        qCInfo(LogSettings) << Key << "is invalid!";
+        qCInfo(tsettings) << Key << "is invalid!";
         Reason = tr("The shortcut %1 is invalid, ")
                 .arg(style);
         return  false;
     }
     // 内置快捷键都不允许
     if (m_builtinShortcuts.contains(Key)) {
-        qCInfo(LogSettings) << Key << "is conflict with builtin shortcut!";
+        qCInfo(tsettings) << Key << "is conflict with builtin shortcut!";
         Reason = tr("The shortcut %1 was already in use, ")
                 .arg(style);
         return  false;

@@ -14,7 +14,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 
-Q_DECLARE_LOGGING_CATEGORY(LogCustomCommand)
+Q_DECLARE_LOGGING_CATEGORY(customcommand)
 
 const int iAnimationDuration = 300;
 
@@ -63,7 +63,7 @@ void CustomCommandTopPanel::showCustomCommandPanel()
     if (main != nullptr) {
         if (main->isFocusOnList()) {
             m_customCommandPanel->setFocusInPanel();
-            qCWarning(LogCustomCommand) << "custom command panel has focus";
+            qCWarning(customcommand) << "custom command panel has focus";
         }
     }
 
@@ -132,11 +132,11 @@ void CustomCommandTopPanel::show(bool bSetFocus)
     m_customCommandSearchPanel->hide();
     m_bSetFocus = bSetFocus;
     if (m_bSetFocus) {
-        qCInfo(LogCustomCommand) << "Focus is in Custom panel";
+        qCInfo(customcommand) << "Focus is in Custom panel";
         // 将焦点设置在平面上
         m_customCommandPanel->setFocusInPanel();
     } else {
-        qCInfo(LogCustomCommand) << "Focus is in Current page";
+        qCInfo(customcommand) << "Focus is in Current page";
         // 将焦点落回终端
         MainWindow *w = Utils::getMainWindow(this);
         if(w)

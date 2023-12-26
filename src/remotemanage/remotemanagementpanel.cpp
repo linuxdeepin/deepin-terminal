@@ -11,9 +11,9 @@
 #include <DHiDPIHelper>
 
 #ifdef QT_DEBUG
-Q_LOGGING_CATEGORY(LogRemoteManage,"log.terminal.RemoteManage.work")
+Q_LOGGING_CATEGORY(remotemanage,"org.deepin.terminal.remotemanage")
 #else
-Q_LOGGING_CATEGORY(LogRemoteManage,"log.terminal.RemoteManage.work",QtInfoMsg)
+Q_LOGGING_CATEGORY(remotemanage,"org.deepin.terminal.remotemanage",QtInfoMsg)
 #endif
 
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
@@ -34,7 +34,7 @@ void RemoteManagementPanel::refreshPanel()
 
 void RemoteManagementPanel::setFocusInPanel()
 {
-    qCInfo(LogRemoteManage) << "RemoteManagementPanel focus in Panel.";
+    qCInfo(remotemanage) << "RemoteManagementPanel focus in Panel.";
     if (m_searchEdit->isVisible()) {
         // 搜索框显示
         // 设置焦点
@@ -53,7 +53,7 @@ void RemoteManagementPanel::setFocusInPanel()
 
 void RemoteManagementPanel::setFocusBack(const QString &strGroup)
 {
-    qCInfo(LogRemoteManage) << "RemoteManagementPanel return from RemoteManageGroup";
+    qCInfo(remotemanage) << "RemoteManagementPanel return from RemoteManageGroup";
     // 返回前判断之前是否要有焦点
     if (m_listWidget->getFocusState()) {
         // 要有焦点
@@ -131,7 +131,7 @@ void RemoteManagementPanel::onItemClicked(const QString &key)
     if (nullptr != remote)
         emit doConnectServer(remote);
     else
-        qCInfo(LogRemoteManage) << "can't connect to remote" << key;
+        qCInfo(remotemanage) << "can't connect to remote" << key;
 }
 
 void RemoteManagementPanel::showCurSearchResult()
@@ -145,7 +145,7 @@ void RemoteManagementPanel::showCurSearchResult()
 
 void RemoteManagementPanel::showAddServerConfigDlg()
 {
-    qCInfo(LogRemoteManage) << "RemoteManagementPanel show add server config dialog.";
+    qCInfo(remotemanage) << "RemoteManagementPanel show add server config dialog.";
     // 判断控件是否有焦点
     bool focusState = m_pushButton->hasFocus();
     // 弹窗显示
@@ -260,13 +260,13 @@ void RemoteManagementPanel::initUI()
             // 下一个 或 列表为空， 焦点定位到添加按钮上
             m_pushButton->setFocus();
             m_listWidget->clearIndex();
-            qCInfo(LogRemoteManage) << "set focus on add pushButton";
+            qCInfo(remotemanage) << "set focus on add pushButton";
         } else if (Qt::BacktabFocusReason == type) {
             // 判断是否可见，可见设置焦点
             if (m_searchEdit->isVisible()) {
                 m_searchEdit->lineEdit()->setFocus();
                 m_listWidget->clearIndex();
-                qCInfo(LogRemoteManage) << "set focus on add search edit";
+                qCInfo(remotemanage) << "set focus on add search edit";
             }
         }
     });

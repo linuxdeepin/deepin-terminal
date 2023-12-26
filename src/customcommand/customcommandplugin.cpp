@@ -15,7 +15,7 @@
 //qt
 #include <QDebug>
 #include <QLoggingCategory>
-Q_DECLARE_LOGGING_CATEGORY(LogCustomCommand)
+Q_DECLARE_LOGGING_CATEGORY(customcommand)
 
 CustomCommandPlugin::CustomCommandPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
@@ -78,7 +78,7 @@ void CustomCommandPlugin::doShowPlugin(const QString name, bool bSetFocus)
     if (MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name) {
         // 若插件已经显示，则隐藏
         if (m_isShow) {
-            qCWarning(LogCustomCommand) << "Command top panel hide";
+            qCWarning(customcommand) << "Command top panel hide";
             getCustomCommandTopPanel()->hideAnim();
             m_isShow = false;
         }

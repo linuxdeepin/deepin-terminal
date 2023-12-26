@@ -26,7 +26,7 @@ DWIDGET_USE_NAMESPACE
 
 DCORE_USE_NAMESPACE
 
-Q_DECLARE_LOGGING_CATEGORY(LogMain)
+Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
 int main(int argc, char *argv[])
 {
@@ -46,19 +46,26 @@ int main(int argc, char *argv[])
 
     // 系统日志
 #if (DTK_VERSION >= DTK_VERSION_CHECK(5,6,8,0))
-    qCDebug(LogMain) << "current libdtkcore5 > 5.6.8.0";
+    qCDebug(mainprocess) << "current libdtkcore5 > 5.6.8.0";
     DLogManager::registerJournalAppender();
-    qCInfo(LogMain) << "Current log register journal!";
+    qCInfo(mainprocess) << "Current log register journal!";
 #ifdef QT_DEBUG
     DLogManager::registerConsoleAppender();
-    qCInfo(LogMain) << "Current log register console!";
+    qCInfo(mainprocess) << "Current log register console!";
 #endif
 #else
-    qCDebug(LogMain) << "current libdtkcore5 < 5.6.8.0";
+    qCDebug(mainprocess) << "current libdtkcore5 < 5.6.8.0";
 //    DLogManager::registerJournalAppender();
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
-    qCInfo(LogMain) << "Current log register console and file!";
+    qCInfo(mainprocess) << "Current log register console and file!";
+#endif
+
+#ifdef DTKCORE_CLASS_DConfigFile
+    qCInfo(mainprocess) << "DConfig is supported by DTK";
+    //日志规则
+    LoggerRules logRules;
+    logRules.initLoggerRules();
 #endif
 
     // 参数解析

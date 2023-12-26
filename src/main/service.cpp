@@ -25,7 +25,7 @@
 
 Service *Service::g_pService = nullptr;
 
-Q_DECLARE_LOGGING_CATEGORY(LogMain)
+Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
 Service *Service::instance()
 {
@@ -131,7 +131,7 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 {
     QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
     if (nullptr == rightFrame) {
-        qCWarning(LogMain)  << "can not found RightFrame in QWidget";
+        qCWarning(mainprocess)  << "can not found RightFrame in QWidget";
         return;
     }
 
@@ -211,14 +211,14 @@ bool Service::isWindowEffectEnabled()
         QList<QVariant> list = response.arguments();
         QString wmName = list.first().toString();
         if (wmName == "deepin wm") {
-            qCInfo(LogMain)  << "The window effects is on";
+            qCInfo(mainprocess)  << "The window effects is on";
             return true;
         }
     } else {
-        qCWarning(LogMain)  << "call CurrentWM Fail!" << response.errorMessage();
+        qCWarning(mainprocess)  << "call CurrentWM Fail!" << response.errorMessage();
     }
 
-    qCWarning(LogMain)  << "The window effects is off";
+    qCWarning(mainprocess)  << "The window effects is off";
     return false;
 }
 
@@ -266,7 +266,7 @@ QMap<QString, QString> Service::getShells()
             }
         } while (!shellLine.isNull());
     } else {
-        qCWarning(LogMain)  << "read /etc/shells fail! error : " << shellsInfo.error();
+        qCWarning(mainprocess)  << "read /etc/shells fail! error : " << shellsInfo.error();
     }
     // 关闭文件
     shellsInfo.close();
@@ -313,7 +313,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
         Settings::instance()->reloadShellOptions();
         m_settingDialog->show();
     } else {
-        qCWarning(LogMain)  << "No setting dialog.";
+        qCWarning(mainprocess)  << "No setting dialog.";
         return;
     }
     // 激活窗口
@@ -433,7 +433,7 @@ void Service::EntryTerminal(QStringList arguments, bool isMain)
         return;
     // 超出最大窗口数量
     if(WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
-        qCWarning(LogMain)  << QString("terminal cannot be created: %1/%2 ")
+        qCWarning(mainprocess)  << QString("terminal cannot be created: %1/%2 ")
                    .arg(WindowsManager::instance()->widgetCount())
                    .arg(MAXWIDGETCOUNT)
                    ;
@@ -496,7 +496,7 @@ void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
     if(nullptr == window)
         return;
     if (window == WindowsManager::instance()->getQuakeWindow()) {
-        qCInfo(LogMain)  << "QuakeWindow show or hide dialog " << isDialogShow;
+        qCInfo(mainprocess)  << "QuakeWindow show or hide dialog " << isDialogShow;
         m_isDialogShow = isDialogShow;
     }
 
