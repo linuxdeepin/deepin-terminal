@@ -66,7 +66,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5X11Extras REQUIRED)
-#find_package(DtkWidget REQUIRED)
+find_package(DtkWidget REQUIRED)
 #find_package(DtkCore REQUIRED)
 #find_package(DtkGui REQUIRED)
 
@@ -276,9 +276,6 @@ install(FILES src/deepin-terminal.desktop
 install(FILES src/assets/logo/deepin-terminal.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
-install(FILES src/assets/logconfig/deepin-terminal.json
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-log-viewer/deepin-log.conf.d/)
-
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
         PERMISSIONS OWNER_READ OWNER_EXECUTE
@@ -289,6 +286,25 @@ install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-
 
 install(DIRECTORY src/assets/deepin-terminal
         DESTINATION /usr/share/deepin-manual/manual-assets/application/)
+message("CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
+#安装日志调试模式配置文件
+install(FILES src/assets/config/debugconfig/org.deepin.terminal.json
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-debug-config/deepin-debug-config.d/)
+#install(FILES src/assets/config/debugconfig/deepin-terminal_debug.sh
+#        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-debug-config/shell/)
+#安装DConfig配置
+set(APPID org.deepin.terminal)
+set(configFile ${PROJECT_SOURCE_DIR}/src/assets/config/dconfig/org.deepin.terminal.json)
+if (DEFINED DSG_DATA_DIR)
+    message("-- DConfig is supported by DTK")
+    dconfig_meta_files(APPID ${APPID} FILES ${configFile})
+else()
+    message("-- DConfig is not supported by DTK")
+    install(FILES ${configFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/config/org.deepin.terminal/)
+endif()
+#安装日志收集工具配置文件
+install(FILES src/assets/config/logconfig/org.deepin.terminal.json
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-log-viewer/deepin-log.conf.d/)
 
 # Unit Test
 if (CMAKE_BUILD_TYPE MATCHES Debug)

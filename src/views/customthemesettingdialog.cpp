@@ -27,7 +27,7 @@
 #include <QPainterPath>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(LogViews)
+Q_DECLARE_LOGGING_CATEGORY(views)
 
 TitleStyleRadioButton::TitleStyleRadioButton(const QString &text, QWidget *parent): DRadioButton(text, parent)
 {
@@ -572,7 +572,7 @@ void CustomThemeSettingDialog::loadConfiguration()
     QPalette palette;
     QStringList strList = Settings::instance()->themeSetting->value("Foreground/Color").toStringList();
 
-    qCInfo(LogViews) << "Foreground color list number: " << strList.size();
+    qCInfo(views) << "Foreground color list number: " << strList.size();
     if (strList.size() != 3) {
         palette.setColor(QPalette::Background, QColor(0, 255, 0));
         foregroundColorParameter = QColor(0, 255, 0);
@@ -585,7 +585,7 @@ void CustomThemeSettingDialog::loadConfiguration()
     QColor backgroundColorParameter;
     strList.clear();
     strList = Settings::instance()->themeSetting->value("Background/Color").toStringList();
-    qCInfo(LogViews) << "Background color list number: " << strList.size();
+    qCInfo(views) << "Background color list number: " << strList.size();
     if (strList.size() != 3) {
         palette.setColor(QPalette::Background, QColor(37, 37, 37));
         backgroundColorParameter = QColor(37, 37, 37);
@@ -598,7 +598,7 @@ void CustomThemeSettingDialog::loadConfiguration()
     QColor ps1ColorParameter;
     strList.clear();
     strList = Settings::instance()->themeSetting->value("Color2Intense/Color").toStringList();
-    qCInfo(LogViews) << "Color2Intense color list number: " << strList.size();
+    qCInfo(views) << "Color2Intense color list number: " << strList.size();
     if (strList.size() != 3) {
         palette.setColor(QPalette::Background, QColor(133, 153, 0));
         ps1ColorParameter = QColor(133, 153, 0);
@@ -611,7 +611,7 @@ void CustomThemeSettingDialog::loadConfiguration()
     QColor ps2ColorParameter;
     strList.clear();
     strList = Settings::instance()->themeSetting->value("Color4Intense/Color").toStringList();
-    qCInfo(LogViews) << "Color4Intense color list number: " << strList.size();
+    qCInfo(views) << "Color4Intense color list number: " << strList.size();
     if (strList.size() != 3) {
         palette.setColor(QPalette::Background, QColor(52, 101, 164));
         ps2ColorParameter = QColor(52, 101, 164);

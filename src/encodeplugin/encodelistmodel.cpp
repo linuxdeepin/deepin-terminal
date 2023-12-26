@@ -15,9 +15,9 @@
 DWIDGET_USE_NAMESPACE
 
 #ifdef QT_DEBUG
-Q_LOGGING_CATEGORY(LogEncodePlugin,"log.terminal.encodeplugin.work")
+Q_LOGGING_CATEGORY(encodeplugin,"org.deepin.terminal.encodeplugin")
 #else
-Q_LOGGING_CATEGORY(LogEncodePlugin,"log.terminal.encodeplugin.work",QtInfoMsg)
+Q_LOGGING_CATEGORY(encodeplugin,"org.deepin.terminal.encodeplugin",QtInfoMsg)
 #endif
 
 EncodeListModel::EncodeListModel(QObject *parent) : QStandardItemModel(parent)
@@ -93,10 +93,10 @@ void EncodeListModel::initEncodeData()
             }
         }
         if (!bFind)
-            qCWarning(LogEncodePlugin) << "The encoding(" << name << ") in the terminal encoding list is not found in the list of supported encodeings!";
+            qCWarning(encodeplugin) << "The encoding(" << name << ") in the terminal encoding list is not found in the list of supported encodeings!";
         else
             m_encodeData << encodename;
     }
 
-    qCInfo(LogEncodePlugin) << "The number("<<  m_encodeData.count() << ") of system encoding formats supported by the terminal.";
+    qCInfo(encodeplugin) << "The number("<<  m_encodeData.count() << ") of system encoding formats supported by the terminal.";
 }

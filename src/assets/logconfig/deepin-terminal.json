@@ -1,8 +1,0 @@
-{
-    "name": "deepin-terminal",
-    "exec": "/usr/bin/deepin-terminal",
-    "logType": "journal",
-    "logPath": "~/.cache/deepin/deepin-terminal/deepin-terminal.log",
-    "visible": "1",
-    "version": "V1.0"
-}

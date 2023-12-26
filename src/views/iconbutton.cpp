@@ -10,7 +10,7 @@
 #include <QDebug>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(LogViews)
+Q_DECLARE_LOGGING_CATEGORY(views)
 IconButton::IconButton(QWidget *parent)
     : DIconButton(parent)
 {
@@ -37,7 +37,7 @@ void IconButton::keyPressEvent(QKeyEvent *event)
 
 void IconButton::focusOutEvent(QFocusEvent *event)
 {
-    qCInfo(LogViews) << event->reason() << "IconButton" << this;
+    qCInfo(views) << event->reason() << "IconButton" << this;
     emit focusOut(event->reason());
     DIconButton::focusOutEvent(event);
 }

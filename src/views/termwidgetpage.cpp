@@ -19,7 +19,7 @@
 #include <QApplication>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(LogViews)
+Q_DECLARE_LOGGING_CATEGORY(views)
 TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
@@ -127,12 +127,12 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     TermWidget *term = m_currentTerm;
     if (1 == getTerminalCount()) {
-        qCInfo(LogViews) << "first split";
+        qCInfo(views) << "first split";
         QSplitter *firstSplit = createSubSplit(term, orientation);
         m_layout->addWidget(firstSplit);
         //return ;
     } else {
-        qCInfo(LogViews) << "not first split";
+        qCInfo(views) << "not first split";
         QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
         int index = upSplit->indexOf(term);
         QList<int> parentSizes = upSplit->sizes();
@@ -181,7 +181,7 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
 
 void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
 {
-    qCInfo(LogViews) << "TermWidgetPage::closeSplit:" << term->getSessionId();
+    qCInfo(views) << "TermWidgetPage::closeSplit:" << term->getSessionId();
     if (getTerminalCount() > 1) {
         if (!hasConfirmed && term->hasRunningProcess()) {
             showExitConfirmDialog(Utils::CloseType_Terminal, 1, parentMainWindow());
@@ -201,16 +201,16 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
         }
         // 上级不是分屏控件，就是布局在控制了
         else {
-            qCWarning(LogViews) << "TermWidgetPage only one term exist!";
+            qCWarning(views) << "TermWidgetPage only one term exist!";
             m_layout->addWidget(brother);
         }
 
         // 子控件的变化会引起焦点的变化，控制焦点要放在最后
         if (nextTerm != nullptr) {
-            qCInfo(LogViews) << "nextTerm change" << m_currentTerm->getSessionId();
+            qCInfo(views) << "nextTerm change" << m_currentTerm->getSessionId();
             nextTerm->setFocus();
         } else {
-            qCWarning(LogViews) << "can not found nextTerm in TermWidget";
+            qCWarning(views) << "can not found nextTerm in TermWidget";
         }
 
         // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
@@ -221,7 +221,7 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
         upSplit->hide();
         upSplit->setParent(nullptr);
         upSplit->deleteLater();
-        qCInfo(LogViews) << "page terminal count =" << getTerminalCount();
+        qCInfo(views) << "page terminal count =" << getTerminalCount();
         /******** Add by ut001000 renfeixiang 2020-08-07:关闭分屏时改变大小，bug#41436***************/
         parentMainWindow()->updateMinHeight();
         return;
@@ -259,7 +259,7 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
 
 //    if (type == Utils::CloseType_Terminal) {
 //        connect(dlg, &DDialog::finished, this, [this](int result) {
-//            qCInfo(LogViews) << result;
+//            qCInfo(views) << result;
 //            // 有弹窗消失
 //            Service::instance()->setIsDialogShow(window(), false);
 //            if (result == 1) {
@@ -271,7 +271,7 @@ void TermWidgetPage::showExitConfirmDialog(Utils::CloseType type, int count, QWi
 
 //    if (type == Utils::CloseType_OtherTerminals) {
 //        connect(dlg, &DDialog::finished, this, [this](int result) {
-//            qCInfo(LogViews) << result;
+//            qCInfo(views) << result;
 //            // 有弹窗消失
 //            Service::instance()->setIsDialogShow(window(), false);
 //            if (result == 1) {
@@ -305,7 +305,7 @@ void TermWidgetPage::closeOtherTerminal(bool hasConfirmed)
     QList<TermWidget *> termList = findChildren<TermWidget *>();
     // 终端数量小于2,执行关闭其他窗口操作
     if (termList.count() < 2) {
-        qCInfo(LogViews) << "current window doesn't have other terminal, can't close other terminals.";
+        qCInfo(views) << "current window doesn't have other terminal, can't close other terminals.";
         return;
     }
 
@@ -345,7 +345,7 @@ int TermWidgetPage::getTerminalCount()
 
 bool TermWidgetPage::hasHasHorizontalSplit()
 {
-    qCInfo(LogViews) << "start hasHasHorizontalSplit";
+    qCInfo(views) << "start hasHasHorizontalSplit";
     QList<QSplitter *> splitList = findChildren<QSplitter *>();
     for (QSplitter *split : splitList) {
         if (Qt::Vertical == split->orientation()) {
@@ -360,7 +360,7 @@ QRect TermWidgetPage::GetRect(TermWidget *term)
     QPoint leftTop = term->mapTo(term->window(), QPoint(0, 0));
     QPoint rightBottom = term->mapTo(term->window(), QPoint(term->width(), term->height()));
     QRect rec(leftTop, rightBottom);
-    qCInfo(LogViews) << "leftTop: " << leftTop.x() << leftTop.y() << "rightBottom: " << rightBottom.x() << rightBottom.y();
+    qCInfo(views) << "leftTop: " << leftTop.x() << leftTop.y() << "rightBottom: " << rightBottom.x() << rightBottom.y();
     return rec;
 }
 
@@ -612,7 +612,7 @@ void TermWidgetPage::onTermClosed()
 {
     TermWidget *w = qobject_cast<TermWidget *>(sender());
     if (!w) {
-        qCWarning(LogViews) << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
+        qCWarning(views) << "TermWidgetPage::onTermClosed: Unknown object to handle" << w;
         return;
     }
     closeSplit(w);
@@ -714,7 +714,7 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
         // 当前界面切换
-        qCInfo(LogViews) << "Current terminal change" << m_currentTerm->getSessionId();
+        qCInfo(views) << "Current terminal change" << m_currentTerm->getSessionId();
         QString tabTitle = term->getTabTitle();
         // 当前标签为空，标签格式不为空 => 未得到term参数，暂不上传数据
         if ((tabTitle == DEFAULT_TAB_TITLE) && !term->getCurrentTabTitleFormat().trimmed().isEmpty())
@@ -734,7 +734,7 @@ TermWidget *TermWidgetPage::createTerm(TermProperties properties)
     connect(term, &TermWidget::leftMouseClick, this, &TermWidgetPage::handleLeftMouseClick);
 
     connect(term, &TermWidget::finished, this, &TermWidgetPage::onTermClosed);
-    qCInfo(LogViews) << "create Terminal, sessionId = " << term->getSessionId();
+    qCInfo(views) << "create Terminal, sessionId = " << term->getSessionId();
     // 对标签页重命名设置
     connect(this, &TermWidgetPage::tabTitleFormatChanged, term, &TermWidget::renameTabFormat);
     return term;

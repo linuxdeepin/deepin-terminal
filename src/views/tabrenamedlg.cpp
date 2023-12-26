@@ -15,7 +15,7 @@
 #include <QDebug>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(LogViews)
+Q_DECLARE_LOGGING_CATEGORY(views)
 TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
 {
     initUi();
@@ -179,7 +179,7 @@ void TabRenameDlg::initConnections()
     });
 
     connect(m_confirmButton, &DSuggestButton::clicked, this, [ = ] {
-        qCInfo(LogViews) << "confirm rename title";
+        qCInfo(views) << "confirm rename title";
         QString tabTitleFormat = getTabTitleEdit()->text();
         QString remoteTabTitleFormat = getRemoteTabTitleEdit()->text();
         emit tabTitleFormatRename(tabTitleFormat, remoteTabTitleFormat);

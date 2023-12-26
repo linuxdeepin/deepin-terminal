@@ -46,9 +46,9 @@ Utils::~Utils()
 }
 
 #ifdef QT_DEBUG
-Q_LOGGING_CATEGORY(LogCommon,"log.terminal.common.work")
+Q_LOGGING_CATEGORY(common,"org.deepin.terminal.common")
 #else
-Q_LOGGING_CATEGORY(LogCommon,"log.terminal.common.work",QtInfoMsg)
+Q_LOGGING_CATEGORY(common,"org.deepin.terminal.common",QtInfoMsg)
 #endif
 
 QString Utils::getQssContent(const QString &filePath)
@@ -336,7 +336,7 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
     // 解析参数
     Properties[KeepOpen] = false;
     if (!parser.parse(arguments))
-        qCInfo(LogCommon) << "parser error:" << parser.errorText();
+        qCInfo(common) << "parser error:" << parser.errorText();
 
     if (parser.isSet(optExecute)) {
         /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
@@ -377,11 +377,11 @@ void Utils::parseCommandLine(QStringList arguments, TermProperties &Properties, 
         // 处理相应参数，当遇到-v -h参数的时候，这里进程会退出。
         parser.process(arguments);
     } else {
-        qCInfo(LogCommon) << "Command line input args:" << qPrintable(arguments.join(" "));
-        qCInfo(LogCommon) << "The work directory :" << parser.value(optWorkDirectory);
-        qCInfo(LogCommon) << QString("Execute %1 command in the terminal").arg(Properties[Execute].toStringList().join(" "));
-        qCInfo(LogCommon) << "Run in quake mode :" << parser.isSet(optQuakeMode);
-        qCInfo(LogCommon) << "Set the window mode on starting :" << parser.isSet(optWindowState);
+        qCInfo(common) << "Command line input args:" << qPrintable(arguments.join(" "));
+        qCInfo(common) << "The work directory :" << parser.value(optWorkDirectory);
+        qCInfo(common) << QString("Execute %1 command in the terminal").arg(Properties[Execute].toStringList().join(" "));
+        qCInfo(common) << "Run in quake mode :" << parser.isSet(optQuakeMode);
+        qCInfo(common) << "Set the window mode on starting :" << parser.isSet(optWindowState);
         // 这个位置参数解析出来是无法匹配的，可是不带前面标识符，无法准确使用。
     }
     return;
@@ -437,7 +437,7 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
         }
         arguments.removeOne("-e");
         arguments.removeOne("--execute");
-        qCInfo(LogCommon) << "Remove the arguments after '-e',the arguments :" << arguments;
+        qCInfo(common) << "Remove the arguments after '-e',the arguments :" << arguments;
     }
 
     return paraList;
@@ -461,7 +461,7 @@ QStringList Utils::parseNestedQString(QString str)
         //对路径带空格的脚本，右键执行时不进行拆分处理， //./deepin-terminal "-e"  "/home/lx777/Desktop/a b/PerfTools_1.9.sh"
         QFileInfo fi(str);
         if (fi.isFile()) {
-            qCWarning(LogCommon) << "this is file,not split.";
+            qCWarning(common) << "this is file,not split.";
             paraList.append(str);
             return paraList;
         }
@@ -528,7 +528,7 @@ QList<QByteArray> Utils::encodeList()
             }
         }
         if (!bFind)
-            qCWarning(LogCommon) << "encode (name :" << name << ") not find!";
+            qCWarning(common) << "encode (name :" << name << ") not find!";
         else
             encodeList << encodename;
 
@@ -599,12 +599,12 @@ bool Utils::isLoongarch()
     if(m_Arch.isEmpty()) {
         utsname utsbuf;
         if (uname(&utsbuf) == -1) {
-            qCWarning(LogCommon) << "get Arch error";
+            qCWarning(common) << "get Arch error";
             return false;
         }
         m_Arch = QString::fromLocal8Bit(utsbuf.machine);
     }
-    qCInfo(LogCommon) << "Current system architecture:" << m_Arch;
+    qCInfo(common) << "Current system architecture:" << m_Arch;
     return "mips64" == m_Arch || "loongarch64" == m_Arch;
 }
 
@@ -633,7 +633,7 @@ void Utils::insertToDefaultConfigJson(QVariant &jsonVar, const QString &groups_k
     obj = objArrayFind(obj, "groups", "key", groups_key2);
     obj = objArrayFind(obj, "options", "key", options_key);
     if(!obj) {
-       qCWarning(LogCommon) << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
+       qCWarning(common) << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
        return;
     }
     obj->insert(key, value);
@@ -649,7 +649,7 @@ QVariant Utils::getValueInDefaultConfigJson(QVariant &jsonVar, const QString &gr
     obj = objArrayFind(obj, "groups", "key", groups_key2);
     obj = objArrayFind(obj, "options", "key", options_key);
     if(!obj) {
-       qCWarning(LogCommon) << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
+       qCWarning(common) << QString("cannot find path %1/%2/%3").arg(groups_key).arg(groups_key2).arg(options_key);
        return QVariant();
     }
     return obj->value(key);
@@ -678,9 +678,9 @@ MainWindow *Utils::getMainWindow(QWidget *currWidget)
     MainWindow *main = nullptr;
     QWidget *pWidget = currWidget->parentWidget();
     while (pWidget != nullptr) {
-        qCInfo(LogCommon) << "Current Window Class Name :" << pWidget->metaObject()->className();
+        qCInfo(common) << "Current Window Class Name :" << pWidget->metaObject()->className();
         if (("NormalWindow" == pWidget->objectName()) || ("QuakeWindow" == pWidget->objectName())) {
-            qCInfo(LogCommon) << "has find MainWindow";
+            qCInfo(common) << "has find MainWindow";
             main = static_cast<MainWindow *>(pWidget);
             break;
         }
@@ -723,7 +723,7 @@ void FontFilter::handleWidthFont()
         m_thread->start();
         return;
     }
-    //qCInfo(LogCommon) << "m_thread is Running";
+    //qCInfo(common) << "m_thread is Running";
 }
 
 void FontFilter::setStop(bool stop)
@@ -810,7 +810,62 @@ void FontFilter::compareWhiteList()
         else
             Blacklist.append(sfont);
     }
-    qCInfo(LogCommon) << "Font whitelist obtained through the dbus interface :" << DBUSWhitelist;
-    qCInfo(LogCommon) << "Whitelist of real available fonts :" << Whitelist;
+    qCInfo(common) << "Font whitelist obtained through the dbus interface :" << DBUSWhitelist;
+    qCInfo(common) << "Whitelist of real available fonts :" << Whitelist;
 }
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 处理等宽字体的类 End***************/
+
+#ifdef DTKCORE_CLASS_DConfigFile
+LoggerRules::LoggerRules(QObject *parent)
+    : QObject(parent), m_rules(""), m_config(nullptr) {
+}
+
+LoggerRules::~LoggerRules() { m_config->deleteLater(); }
+
+void LoggerRules::initLoggerRules()
+{
+    QByteArray logRules = qgetenv("QT_LOGGING_RULES");
+    qunsetenv("QT_LOGGING_RULES");
+
+    // set env
+    m_rules = logRules;
+    qCDebug(common) << "Current system env log rules:" << logRules;
+
+    // set dconfig
+    m_config = DConfig::create("org.deepin.terminal", "org.deepin.terminal");
+    qCDebug(common) << "Current DConfig file is :" <<  m_config->name();
+    logRules = m_config->value("log_rules").toByteArray();
+    qCDebug(common) << "Current app log rules :" << logRules;
+    appendRules(logRules);
+    setRules(m_rules);
+
+    // watch dconfig
+    connect(m_config, &DConfig::valueChanged, this, [this](const QString &key) {
+      if (key == "log_rules") {
+          qCDebug(common) << "value changed:" << key;
+          setRules(m_config->value(key).toByteArray());
+      }
+    });
+}
+
+void LoggerRules::setRules(const QString &rules) {
+  auto tmpRules = rules;
+  m_rules = tmpRules.replace(";", "\n");
+  QLoggingCategory::setFilterRules(m_rules);
+}
+
+void LoggerRules::appendRules(const QString &rules) {
+  QString tmpRules = rules;
+  tmpRules = tmpRules.replace(";", "\n");
+  auto tmplist = tmpRules.split('\n');
+  for (int i = 0; i < tmplist.count(); i++)
+    if (m_rules.contains(tmplist.at(i))) {
+      tmplist.removeAt(i);
+      i--;
+    }
+  if (tmplist.isEmpty())
+    return;
+  m_rules.isEmpty() ? m_rules = tmplist.join("\n")
+                    : m_rules += "\n" + tmplist.join("\n");
+}
+#endif

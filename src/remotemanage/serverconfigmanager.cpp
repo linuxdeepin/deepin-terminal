@@ -15,7 +15,7 @@
 #undef signals
 #include <libsecret/secret.h>
 
-Q_DECLARE_LOGGING_CATEGORY(LogRemoteManage)
+Q_DECLARE_LOGGING_CATEGORY(remotemanage)
 
 // 密码回调
 struct PasswordReBack {
@@ -55,7 +55,7 @@ void ServerConfigManager::settServerConfig(USettings &commandsSettings, const QS
 
 void ServerConfigManager::fillManagePanel(ListView *listview)
 {
-    qCInfo(LogRemoteManage) << "ServerConfigManager fill data to manage panel.";
+    qCInfo(remotemanage) << "ServerConfigManager fill data to manage panel.";
     listview->clearData();
     for (QString key : m_serverConfigs.keys()) {
         // key有效
@@ -75,7 +75,7 @@ void ServerConfigManager::fillManagePanel(ListView *listview)
 
 void ServerConfigManager::fillSearchPanel(ListView *listview, const QString &filter, const QString &group)
 {
-    qCInfo(LogRemoteManage) << "ServerConfigManager fill data to search panel.";
+    qCInfo(remotemanage) << "ServerConfigManager fill data to search panel.";
     listview->clearData();
     // 判断是否是组内搜索
     if (group.isEmpty() || group.isNull()) {
@@ -150,7 +150,7 @@ void ServerConfigManager::initServerConfig()
         return;
 
     QString serverConfigFilePath(serverConfigBasePath.filePath("server-config.conf"));
-    qCInfo(LogRemoteManage) << "load Server Config: " << serverConfigFilePath;
+    qCInfo(remotemanage) << "load Server Config: " << serverConfigFilePath;
     if (!QFile::exists(serverConfigFilePath))
         return;
 
@@ -168,7 +168,7 @@ void ServerConfigManager::initServerConfig()
         QStringList strList = serverName.split("@");
         ServerConfig *pServerConfig = new ServerConfig();
         if (strList.count() < 3) {
-            qCWarning(LogRemoteManage)  << "An unknoew error exists on the current server(" << serverName <<  ")";
+            qCWarning(remotemanage)  << "An unknoew error exists on the current server(" << serverName <<  ")";
             continue;
         }
         // 新版数据的读取方式
@@ -274,7 +274,7 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
     // 添加密码
     remoteStoreSecreats(config);
 
-    qCInfo(LogRemoteManage) << "The server configuration is added successfully.The Config group: " << config->m_group  << ".The Server name:"<< config->m_serverName;
+    qCInfo(remotemanage) << "The server configuration is added successfully.The Config group: " << config->m_group  << ".The Server name:"<< config->m_serverName;
 
 }
 
@@ -351,7 +351,7 @@ void ServerConfigManager::setModifyDialog(QString key, ServerConfigOptDlg *dlg)
 {
     // 添加编辑弹窗
     m_serverConfigDialogMap[key].append(dlg);
-    qCInfo(LogRemoteManage) << "show edit dialog" << key << m_serverConfigDialogMap[key].count() << dlg;
+    qCInfo(remotemanage) << "show edit dialog" << key << m_serverConfigDialogMap[key].count() << dlg;
 }
 
 void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
@@ -371,17 +371,17 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
     }
     // 2.删除数据
     if (nullptr != removeOne) {
-        qCInfo(LogRemoteManage) << "delete dialog from remote name : " << key;
+        qCInfo(remotemanage) << "delete dialog from remote name : " << key;
         m_serverConfigDialogMap[key].removeOne(removeOne);
     }
 
     if (0 == m_serverConfigDialogMap[key].count()) {
-        qCInfo(LogRemoteManage) << "remote dialog is 0, remove remote name : " << key;
+        qCInfo(remotemanage) << "remote dialog is 0, remove remote name : " << key;
         m_serverConfigDialogMap.remove(key);
     }
 
     if (nullptr != removeOne) {
-        qCInfo(LogRemoteManage) << "delete remote dialog" << removeOne;
+        qCInfo(remotemanage) << "delete remote dialog" << removeOne;
         removeOne->deleteLater();
     }
     removeOne = nullptr;
@@ -389,7 +389,7 @@ void ServerConfigManager::removeDialog(ServerConfigOptDlg *dlg)
 
 void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 {
-    qCInfo(LogRemoteManage) <<"Sync Data! Key: " << key << ";Server Name:" << newConfig->m_serverName;
+    qCInfo(remotemanage) <<"Sync Data! Key: " << key << ";Server Name:" << newConfig->m_serverName;
     //前提是key唯一
     // serverName被修改
     if (key != newConfig->m_serverName) {
@@ -410,17 +410,17 @@ void ServerConfigManager::SyncData(QString key, ServerConfig *newConfig)
 
 void ServerConfigManager::closeAllDialog(QString key)
 {
-    qCInfo(LogRemoteManage) << "Close ALL Dialogs for the remote server! Remote name : " <<  key ;
+    qCInfo(remotemanage) << "Close ALL Dialogs for the remote server! Remote name : " <<  key ;
     // 判读此时这个key是否存在
     if (!m_serverConfigDialogMap.contains(key)) {
         // 不存在退出
-        qCWarning(LogRemoteManage) << "The current remote(" << key <<") server does not exist!";
+        qCWarning(remotemanage) << "The current remote(" << key <<") server does not exist!";
         return;
     }
 
     for (auto &item : m_serverConfigDialogMap[key]) {
         if (item != nullptr) {
-            qCInfo(LogRemoteManage) << "Reject the current remote window(" <<  item << ")!";
+            qCInfo(remotemanage) << "Reject the current remote window(" <<  item << ")!";
             // reject就会把当前的窗口删除
             item->reject();
         }
@@ -430,7 +430,7 @@ void ServerConfigManager::closeAllDialog(QString key)
 int ServerConfigManager::getServerCount(const QString &strGroupName)
 {
     if (strGroupName.isEmpty() || strGroupName.isNull()) {
-        qCWarning(LogRemoteManage) << "enter error group name:" << strGroupName << "! please confirm again!";
+        qCWarning(remotemanage) << "enter error group name:" << strGroupName << "! please confirm again!";
         return -1;
     }
     if (m_serverConfigs.contains(strGroupName)) {
@@ -453,7 +453,7 @@ ServerConfig *ServerConfigManager::getServerConfig(const QString &key)
         }
     }
     // 没找到返回空
-    qCWarning(LogRemoteManage) << "can't find remote key : " << key;
+    qCWarning(remotemanage) << "can't find remote key : " << key;
     return nullptr;
 }
 
@@ -479,13 +479,13 @@ static void on_password_lookup(GObject *source, GAsyncResult *result, gpointer u
 
     if (error != NULL) {
         /* ... handle the failure here */
-        qCWarning(LogRemoteManage) << "Failed to get password! error msg:" << error->message;
+        qCWarning(remotemanage) << "Failed to get password! error msg:" << error->message;
         g_error_free(error);
         emit reback->manager->lookupSerceats(reback->key, "");
     } else if (password == NULL) {
         /* password will be null, if no matching password found */
         // 密码回调
-        qCInfo(LogRemoteManage) << "password is Null server name : " << reback->key;
+        qCInfo(remotemanage) << "password is Null server name : " << reback->key;
         emit reback->manager->lookupSerceats(reback->key, "");
 
     } else {
@@ -531,7 +531,7 @@ static void on_password_stored(GObject *source, GAsyncResult *result, gpointer u
     secret_password_store_finish(result, &error);
     if (error != NULL) {
         /* ... handle the failure here */
-        qCWarning(LogRemoteManage) << "Failed to store password! error msg:" << error->message;
+        qCWarning(remotemanage) << "Failed to store password! error msg:" << error->message;
         g_error_free(error);
     } else {
         /* ... do something now that the password has been stored */
@@ -569,12 +569,12 @@ static void on_password_cleared(GObject *source, GAsyncResult *result, gpointer 
 
     if (error != NULL) {
         /* ... handle the failure here */
-        qCWarning(LogRemoteManage) << "Failed to clear password! error msg:" << error->message;
+        qCWarning(remotemanage) << "Failed to clear password! error msg:" << error->message;
         g_error_free(error);
 
     } else {
         /* removed will be TRUE if a password was removed */
-        qCInfo(LogRemoteManage) << "remove result " << removed;
+        qCInfo(remotemanage) << "remove result " << removed;
     }
 }
 
