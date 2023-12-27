@@ -1,3 +1,12 @@
+deepin-terminal (5.9.47) unstable; urgency=medium
+
+  * fix: Fixed the issue of high CPU usage due to cursor flickering. 
+    (#317) (Bug: 231445)
+  * Revert "fix: Supplementary 2 character width character set (#284)". 
+    (#321) (Bug: 272385)
+
+ -- renbin <renbin@uniontech.com>  Mon, 25 Dec 2023 15:54:39 +0800
+
 deepin-terminal (5.9.46) unstable; urgency=medium
 
   * fix: Roll back gb18030 midification.
