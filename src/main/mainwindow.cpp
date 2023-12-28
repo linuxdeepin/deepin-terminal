@@ -2586,7 +2586,7 @@ void QuakeWindow::topToBottomAnimation()
         return;
 
     isNotAnimation = false;
-    this->setMinimumHeight(0);//设置最小高度为0,让动画效果流畅
+    this->setMinimumHeight(2); // 避免窗管强制取消模糊。
     currentPage()->setMinimumHeight(currentPage()->height());//设置page的最小高度，让动画效果时，page上信息不因为外框的变小而变小
 
     //动画代码
@@ -2594,7 +2594,7 @@ void QuakeWindow::topToBottomAnimation()
     m_heightAni->setEasingCurve(QEasingCurve::Linear);
     int durationTime = getQuakeAnimationTime();
     m_heightAni->setDuration(durationTime);
-    m_heightAni->setStartValue(1);
+    m_heightAni->setStartValue(2);
     m_heightAni->setEndValue(getQuakeHeight());
     m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
