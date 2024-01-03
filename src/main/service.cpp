@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019-2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -76,6 +75,11 @@ void Service::releaseInstance()
 void Service::initSetting(MainWindow *pOwner)
 {
     if (nullptr != m_settingDialog) {
+        // 当前处于弹出状态，不调整焦点位置
+        if (m_settingDialog->isVisible()) {
+            return;
+        }
+
         //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
         DTitlebar *titleBar = Utils::findWidgetByAccessibleName<DTitlebar *>(m_settingDialog, "DSettingTitleBar");
         QScrollArea *scrollArea = Utils::findWidgetByAccessibleName<QScrollArea *>(m_settingDialog, "ContentScrollArea");
@@ -89,9 +93,12 @@ void Service::initSetting(MainWindow *pOwner)
     }
 
     QDateTime startTime = QDateTime::currentDateTime();
+    // Warning: 此处虽然设置父控件，但是生命周期并不交由 pOwner 维护，因为终端存在多个同一层级的主窗体，
+    //  每次调用 showSettingDialog() 时都会重新设置父窗口 setParent(pOwner, Flags)
+    //  当前 pOwner 指向的主窗口销毁时，会优先调用 resetSettingOwner() 重设弹窗所有者，不会销毁 m_settingDialog 。
+    //  m_settingDialog 弹窗在 Service::~Service() 析构时判断销毁。
     m_settingDialog = new DSettingsDialog(pOwner);
     m_settingDialog->setObjectName("SettingDialog");
-    // 关闭后将指针置空，下次重新new
     connect(m_settingDialog, &DSettingsDialog::finished, this, &Service::slotSettingsDialogFinished);
     // 关闭时delete
     m_settingDialog->widgetFactory()->registerWidget("fontcombobox", Settings::createFontComBoBoxHandle);
@@ -294,6 +301,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
     initSetting(pOwner);
     //保存设置框的有拥者
     m_settingOwner = pOwner;
+
     if (nullptr != m_settingDialog) {
         //雷神需要让窗口置顶，可是普通窗口不要
         if (m_settingOwner == WindowsManager::instance()->getQuakeWindow()) {
@@ -311,6 +319,12 @@ void Service::showSettingDialog(MainWindow *pOwner)
 
         // 重新加载shell配置数据
         Settings::instance()->reloadShellOptions();
+
+        // 重设当前弹窗的父窗口，在 DAbstractDialog / QDialog 的 show() / showEvent() 处理中，
+        // 均含有关联父窗口的坐标计算，若不设置父控件，需单独计算显示坐标。setParent() 会重置Dialog标志，单独设置。
+        if (pOwner != m_settingDialog->parentWidget()) {
+            m_settingDialog->setParent(pOwner, m_settingDialog->windowFlags() | Qt::Dialog);
+        }
         m_settingDialog->show();
     } else {
         qCWarning(mainprocess)  << "No setting dialog.";
@@ -397,6 +411,16 @@ void Service::slotSettingShortcutConflictDialogFinished()
 {
     delete m_settingShortcutConflictDialog;
     m_settingShortcutConflictDialog = nullptr;
+}
+
+void Service::resetSettingOwner()
+{
+    m_settingOwner = nullptr;
+
+    // m_settingDialog 生命周期不由父控件维护，在 Service 析构时销毁
+    if (m_settingDialog) {
+        m_settingDialog->setParent(nullptr);
+    }
 }
 
 bool Service::isCountEnable()
