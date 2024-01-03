@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019-2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -90,12 +89,10 @@ public:
     }
 
     /**
-     * @brief 重置设置框的所有者
+     * @brief 重置设置框的所有者，setParent(nullptr)
+     * @warning 父控件(终端窗口)关闭销毁前必须调用
      */
-    inline void resetSettingOwner()
-    {
-        m_settingOwner = nullptr;
-    }
+    void resetSettingOwner();
 
     /**
      * @brief i从term数量的角度判断是否允许继续创建
