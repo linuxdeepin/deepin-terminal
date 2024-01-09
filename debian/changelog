@@ -1,3 +1,12 @@
+deepin-terminal (5.9.48) unstable; urgency=medium
+
+  * fix: Changes the default value of the debug mode configuration file.
+  * fix: Crash when show/close setting dialog.
+    (#325) (Bug: 28636)
+  * feat: Debug mode log adaptation
+
+ -- wangcong <wangcong@uniontech.com>  Tue, 9 Jan 2024 21:18:00 +0800
+
 deepin-terminal (5.9.47) unstable; urgency=medium
 
   * fix: Fixed the issue of high CPU usage due to cursor flickering. 

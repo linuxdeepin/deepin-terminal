@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
 
     // 系统日志
 #if (DTK_VERSION >= DTK_VERSION_CHECK(5,6,8,0))
-    qCDebug(mainprocess) << "current libdtkcore5 > 5.6.8.0";
+    //qCDebug(mainprocess) << "current libdtkcore5 > 5.6.8.0";
     DLogManager::registerJournalAppender();
-    qCInfo(mainprocess) << "Current log register journal!";
+    //qCInfo(mainprocess) << "Current log register journal!";
 #ifdef QT_DEBUG
     DLogManager::registerConsoleAppender();
-    qCInfo(mainprocess) << "Current log register console!";
+    //qCInfo(mainprocess) << "Current log register console!";
 #endif
 #else
     qCDebug(mainprocess) << "current libdtkcore5 < 5.6.8.0";
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef DTKCORE_CLASS_DConfigFile
-    qCInfo(mainprocess) << "DConfig is supported by DTK";
+    //qCInfo(mainprocess) << "DConfig is supported by DTK";
     //日志规则
     LoggerRules logRules;
     logRules.initLoggerRules();
