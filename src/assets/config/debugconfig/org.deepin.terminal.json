@@ -7,6 +7,6 @@
       "exec": "/usr/share/deepin-debug-config/shell/deepin-terminal_debug.sh"
     }
   ],
-  "reboot": 1,
+  "reboot": 0,
   "version": "V1.0"
 }
