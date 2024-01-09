@@ -1404,7 +1404,7 @@ void MainWindow::showPlugin(const QString &name)
 
     if ((name == m_CurrentShowPlugin) && (PLUGIN_TYPE_NONE == m_CurrentShowPlugin)) {
         // 目前没有列表显示，直接返回
-        qCInfo(mainprocess)  << "no plugin show!";
+        //qCInfo(mainprocess)  << "no plugin show!";
         return;
     }
 
