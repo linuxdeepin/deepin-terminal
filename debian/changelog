@@ -1,3 +1,9 @@
+deepin-terminal (5.9.49) unstable; urgency=medium
+
+  * New version 5.9.49.
+
+ -- wangcong <wangcong@uniontech.com>  Mon, 15 Jan 2024 21:18:00 +0800
+
 deepin-terminal (5.9.48) unstable; urgency=medium
 
   * fix: Changes the default value of the debug mode configuration file.
