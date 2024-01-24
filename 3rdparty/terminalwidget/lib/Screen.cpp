@@ -98,6 +98,7 @@ Screen::Screen(int l, int c)
     , _lastPos(-1)
     , _lastDrawnChar(0)
     , _escapeSequenceUrlExtractor(new EscapeSequenceUrlExtractor)
+    , _sessionId(0)
 
 {
     _escapeSequenceUrlExtractor->setScreen(this);
@@ -380,7 +381,7 @@ void Screen::resizeImage(int new_lines, int new_columns)
         if (_currentTerminalDisplay) {
             // The 'zsh' works different from other shells when writting the command line.
             // It needs to identify the 'zsh' and calculate the new command line.
-            auto currSession = SessionManager::instance()->idToSession(_sessionId);
+            auto currSession = _sessionId > 0 ? SessionManager::instance()->idToSession(_sessionId) : nullptr;
             if (currSession
                     && (QLatin1String("zsh") == currSession->foregroundProcessName())
                     && (cursorLine > 0)
