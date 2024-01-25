@@ -1,3 +1,13 @@
+deepin-terminal (6.0.10) unstable; urgency=medium
+
+  * 调换切换前后标签页快捷键为正确顺序
+    修复雷神窗口无法设置模糊的问题
+    Dirty Fix改为部分刷新光标后的显示问题
+    无法打开未以'/'结尾的带端口号的链接
+    Fix debug logs spaming problem while resizing
+
+ -- Yutao Meng <mengyutao@deepin.org>  Thu, 25 Jan 2024 11:35:43 +0800
+
 deepin-terminal (6.0.9) unstable; urgency=medium
 
   * Fix abnormal animations of quake window under multi-monitor scenario.
