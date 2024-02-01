@@ -1,3 +1,9 @@
+deepin-terminal (6.0.11) unstable; urgency=medium
+
+  * 改用DTK方式启动文管，避免AM给文管套终端的appid,影响主题。
+
+ -- Yutao Meng <mengyutao@deepin.org>  Thu, 01 Feb 2024 10:28:53 +0800
+
 deepin-terminal (6.0.10) unstable; urgency=medium
 
   * 调换切换前后标签页快捷键为正确顺序
