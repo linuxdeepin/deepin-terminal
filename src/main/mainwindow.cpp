@@ -2470,7 +2470,7 @@ void QuakeWindow::initWindowAttribute()
     resize(QSize(saveWidth, saveHeight));
     // 记录雷神高度
     m_quakeWindowHeight = saveHeight;
-    move(0, 0);
+    move(QApplication::primaryScreen()->availableGeometry().x(), QApplication::primaryScreen()->availableGeometry().y());
     /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 End  ************************/
 
     /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 Begin***************/
