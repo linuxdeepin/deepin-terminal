@@ -22,41 +22,32 @@
 #include <QDir>
 #include <QtDebug>
 #include <QToolButton>
+#include <QLoggingCategory>
 
 
 /*! Helper function to get possible location of layout files.
 By default the KB_LAYOUT_DIR is used (linux/BSD/macports).
 But in some cases (apple bundle) there can be more locations).
 */
+Q_LOGGING_CATEGORY(qLcTools, "terminalwidget.tools", QtInfoMsg)
 QString get_kb_layout_dir()
 {
-//    qDebug() << __FILE__ << __FUNCTION__;
-
-    QString rval = QString();
-    QString k(QLatin1String(KB_LAYOUT_DIR));
-    QDir d(k);
-
-    //qDebug() << "default KB_LAYOUT_DIR: " << k;
-
-    if (d.exists())
-    {
-        rval = k.append(QLatin1Char('/'));
-        return rval;
+    QDir d(QCoreApplication::applicationDirPath());
+    QString ret;
+#if defined(RUNDIR_KEYBOARD_LAYOUT_FIRST) || defined(Q_OS_MAC)
+    if (d.exists("kb-layouts")) {
+        ret = d.absoluteFilePath("kb-layouts");
+    } else if (d.exists("../Resources/kb-layouts")) {
+        ret = d.absoluteFilePath("../Resources/kb-layouts");
     }
-
-#ifdef Q_OS_MAC
-    // subdir in the app location
-    d.setPath(QCoreApplication::applicationDirPath() + QLatin1String("/kb-layouts/"));
-    //qDebug() << d.path();
-    if (d.exists())
-        return QCoreApplication::applicationDirPath() + QLatin1String("/kb-layouts/");
-
-    d.setPath(QCoreApplication::applicationDirPath() + QLatin1String("/../Resources/kb-layouts/"));
-    if (d.exists())
-        return QCoreApplication::applicationDirPath() + QLatin1String("/../Resources/kb-layouts/");
+#else
+    d.setPath(QLatin1String(KB_LAYOUT_DIR));
+    if (d.exists()) {
+        ret = d.absolutePath();
+    }
 #endif
-    //qDebug() << "Cannot find KB_LAYOUT_DIR. Default:" << k;
-    return QString();
+    qCInfo(qLcTools) << "Found keyboard layout directory:" << ret;
+    return ret.append(QDir::separator());
 }
 
 /*! Helper function to add custom location of color schemes.
