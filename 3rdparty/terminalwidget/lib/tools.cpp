@@ -40,14 +40,20 @@ QString get_kb_layout_dir()
     } else if (d.exists("../Resources/kb-layouts")) {
         ret = d.absoluteFilePath("../Resources/kb-layouts");
     }
-#else
+    if (!ret.isEmpty()) {
+        qCInfo(qLcTools) << "Found local keyboard layout directory:" << ret;
+        return ret.append(QDir::separator());
+    }
+#endif
     d.setPath(QLatin1String(KB_LAYOUT_DIR));
     if (d.exists()) {
         ret = d.absolutePath();
+        qCInfo(qLcTools) << "Found global keyboard layout directory:" << ret;
+        return ret.append(QDir::separator());
+    } else {
+        qCWarning(qLcTools) << "Keyboard layout directory not found!";
+        return "";
     }
-#endif
-    qCInfo(qLcTools) << "Found keyboard layout directory:" << ret;
-    return ret.append(QDir::separator());
 }
 
 /*! Helper function to add custom location of color schemes.

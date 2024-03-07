@@ -156,10 +156,10 @@ set(HDRS_DISTRIB
 )
 
 option(RUNDIR_KEYBOARD_LAYOUT_FIRST "Load keyboard layouts from application runtime directory" OFF)
-message(STATUS "Use runtime directory keyboard layouts first: ${RUNDIR_KEYBOARD_LAYOUT_FIRST}")
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(RUNDIR_KEYBOARD_LAYOUT_FIRST ON) # enable runtime layouts loading for debug
 endif()
+message(STATUS "Use runtime directory keyboard layouts first: ${RUNDIR_KEYBOARD_LAYOUT_FIRST}")
 
 # dirs
 set(KB_LAYOUT_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/kb-layouts")
@@ -256,7 +256,7 @@ target_compile_definitions(${TERMINALWIDGET_LIBRARY_NAME}
         "TRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\""
         "HAVE_POSIX_OPENPT"
         "HAVE_SYS_TIME_H"
-        $<$<BOOL:RUNDIR_KEYBOARD_LAYOUT_FIRST>:RUNDIR_KEYBOARD_LAYOUT_FIRST>
+        $<$<BOOL:${RUNDIR_KEYBOARD_LAYOUT_FIRST}>:RUNDIR_KEYBOARD_LAYOUT_FIRST>
 )
 
 
