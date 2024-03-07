@@ -337,15 +337,6 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec)
         utf16Text = _decoder->toUnicode(text, length);
     }
 
-    //fix bug 67102 打开超长名称的文件夹，终端界面光标位置不在最后一位
-    //bash 提示符很长的情况下，会有较大概率以五个\b字符结尾，导致光标错位
-    if (utf16Text.startsWith("\u001B]0;") && utf16Text.endsWith("\b\b\b\b\b")) {
-        Session *currSession = SessionManager::instance()->idToSession(_sessionId);
-        if (currSession && (QStringLiteral("bash") == currSession->foregroundProcessName())) {
-            utf16Text.replace("\b\b\b\b\b", "");
-        }
-    }
-
     std::wstring unicodeText = utf16Text.toStdWString();
 
     //send characters to terminal emulator
