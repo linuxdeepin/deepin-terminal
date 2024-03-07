@@ -321,6 +321,9 @@ void QTermWidget::addSnapShotTimer()
     m_termDisplay = m_impl->m_terminalDisplay;
     connect(m_interactionTimer, &QTimer::timeout, this, &QTermWidget::snapshot);
     connect(m_termDisplay.data(), &Konsole::TerminalDisplay::keyPressedSignal, this, &QTermWidget::interactionHandler);
+    connect(currSession, &Session::almostFinished, m_termDisplay, [=] {
+        connect(m_termDisplay, &TerminalDisplay::keyPressedSignal, currSession, &Session::finished);
+    });
 
     // take a snapshot of the session state periodically in the background
     auto backgroundTimer = new QTimer(currSession);

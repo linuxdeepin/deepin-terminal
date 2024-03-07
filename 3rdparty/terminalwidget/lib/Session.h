@@ -448,6 +448,12 @@ signals:
     void started();
 
     /**
+     * @brief Emitted when terminal process exits and session
+     * is still waiting for any key pressed to close.
+     */
+    void almostFinished();
+
+    /**
      * Emitted when the terminal process exits.
      */
     void finished();
