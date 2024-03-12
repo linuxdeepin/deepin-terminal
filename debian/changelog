@@ -1,3 +1,13 @@
+deepin-terminal (6.0.12) unstable; urgency=medium
+
+  * fix: the quake window overlaps with the dock (Issue: #6557)
+  * feat: load keyboard layouts from runtime dir first
+  * fix: cursor position error when display completion (Issue: #5208)
+  * fix: local keytab logic error
+  * feat: Supports dsg-terminal-exec scheme (Issue: #7439)
+
+ -- Wang Yixue <wangyixue@deepin.org>  Tue, 12 Mar 2024 10:06:23 +0800
+
 deepin-terminal (6.0.11) unstable; urgency=medium
 
   * 改用DTK方式启动文管，避免AM给文管套终端的appid,影响主题。
