@@ -1,7 +1,7 @@
 [Desktop Entry]
 Categories=DDE;Utility;System;TerminalEmulator;
 Comment=Use the command line
-Exec=deepin-terminal
+Exec=deepin-terminal %u
 GenericName=Terminal
 Icon=deepin-terminal
 Keywords=shell;prompt;command;commandline;
@@ -11,6 +11,7 @@ TryExec=deepin-terminal
 Type=Application
 X-Deepin-Vendor=deepin
 Actions=new-window;quake-mode;
+MimeType=x-scheme-handler/dsg-terminal-exec
 
 # Translations:
 # Do not manually modify!
