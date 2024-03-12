@@ -24,6 +24,8 @@
 #include <QCommandLineParser>
 #include <QTranslator>
 #include <QTime>
+#include <QElapsedTimer>
+#include <QUrl>
 
 DWIDGET_USE_NAMESPACE
 
@@ -112,8 +114,19 @@ int main(int argc, char *argv[])
     // 参数解析
     qCDebug(mainprocess) << "Parsing command line arguments";
     TermProperties properties;
-    Utils::parseCommandLine(app.arguments(), properties, true);
     QStringList args = app.arguments();
+
+    for (int i = 0; i < args.size(); i++) {
+        if (args[i].startsWith("dsg-terminal-exec://")) {
+            QString execCMD = args[i];
+            execCMD.remove("dsg-terminal-exec://");
+            args += "-e";
+            args += QUrl::fromPercentEncoding(execCMD.toUtf8());
+            break;
+        }
+    }
+
+    Utils::parseCommandLine(app.arguments(), properties, true);
 
     if(!(args.contains("-w") || args.contains("--work-directory"))) {
         args += "-w";
