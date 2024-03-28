@@ -209,6 +209,8 @@ void Session::addView(TerminalDisplay * widget)
                  SLOT(sendKeyEvent(QKeyEvent *)) );
         connect( widget , SIGNAL(mouseSignal(int,int,int,int)) , _emulation ,
                  SLOT(sendMouseEvent(int,int,int,int)) );
+        connect(widget, SIGNAL(changedCursonPosition(int)), _emulation,
+                SLOT(sendCursor(int)));
         // 先判断是否有远程连接,若有,则连接远程
         // connect(widget, SIGNAL(sendStringToEmu(const char *)), _emulation, SLOT(sendString(const char *)));
 
