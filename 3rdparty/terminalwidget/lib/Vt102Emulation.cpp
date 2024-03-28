@@ -985,6 +985,16 @@ void Vt102Emulation::sendMouseEvent( int cb, int cx, int cy , int eventType )
   sendString(command);
 }
 
+void Vt102Emulation::sendCursor(int count)
+{
+    char command[32];
+    command[0] = '\0';
+    snprintf(command, sizeof(command), "\033[%c", count < 0 ? 'D' : 'C');
+    for (int i = 0; i < qAbs(count); ++i) {
+        sendString(command);
+    }
+}
+
 /**
  * The focus lost event can be used by Vim (or other terminal applications)
  * to recognize that the konsole window has lost focus.
