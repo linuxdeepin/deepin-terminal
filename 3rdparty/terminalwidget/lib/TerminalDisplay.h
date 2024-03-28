@@ -437,6 +437,7 @@ public:
     // maps a point on the widget to the position ( ie. line and column )
     // of the character at that point.
     void getCharacterPosition(const QPoint& widgetPoint,int& line,int& column) const;
+    void getExactCharacterPosition(const QPoint& widgetPoint,int& line,int& column) const;
 
     void setHideCursor(bool hideCursor);
 
@@ -573,6 +574,7 @@ signals:
     void mouseSignal(int button, int column, int line, int eventType);
     void changedFontMetricSignal(int height, int width);
     void changedContentSizeSignal(int height, int width);
+    void changedCursonPosition(int count);
 
     /**
      * Emitted when the user right clicks on the display, or right-clicks with the Shift

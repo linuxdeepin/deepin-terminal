@@ -2083,6 +2083,17 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
 
     selected =  _screenWindow->isSelected(pos.x(),pos.y());
 
+    if (ev->modifiers() & Qt::ControlModifier) {
+        int line;
+        int column;
+        getExactCharacterPosition(ev->pos(), line, column);
+        line -= cursorPosition().y();
+        column -= cursorPosition().x();
+        int count = 0;
+        count += line * _columns + column;
+        emit changedCursonPosition(count);
+    }
+
     if ((!_ctrlDrag || ev->modifiers() & Qt::ControlModifier) && selected ) {
       // The user clicked inside selected text
       dragInfo.state = diPending;
@@ -2541,6 +2552,35 @@ void TerminalDisplay::getCharacterPosition(const QPoint& widgetPoint,int& line,i
     // this is required so that the user can select characters in the right-most
     // column (or left-most for right-to-left input)
     if ( column > _usedColumns )
+        column = _usedColumns;
+}
+
+void TerminalDisplay::getExactCharacterPosition(const QPoint &widgetPoint, int &line, int &column) const
+{
+    line = (widgetPoint.y() - contentsRect().top() - _topMargin) / _fontHeight;
+    if (line < 0)
+        line = 0;
+    if (line >= _usedLines)
+        line = _usedLines - 1;
+
+    int x = widgetPoint.x() - contentsRect().left() - _leftMargin;
+    if (_fixedFont)
+        column = x / _fontWidth;
+    else {
+        column = 0;
+        while (column + 1 < _usedColumns && x > textWidth(0, column + 1, line))
+            column++;
+    }
+
+    if (column < 0)
+        column = 0;
+
+    // the column value returned can be equal to _usedColumns, which
+    // is the position just after the last character displayed in a line.
+    //
+    // this is required so that the user can select characters in the right-most
+    // column (or left-most for right-to-left input)
+    if (column > _usedColumns)
         column = _usedColumns;
 }
 
