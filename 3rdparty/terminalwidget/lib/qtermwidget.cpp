@@ -321,7 +321,7 @@ void QTermWidget::addSnapShotTimer()
     m_termDisplay = m_impl->m_terminalDisplay;
     connect(m_interactionTimer, &QTimer::timeout, this, &QTermWidget::snapshot);
     connect(m_termDisplay.data(), &Konsole::TerminalDisplay::keyPressedSignal, this, &QTermWidget::interactionHandler);
-    connect(currSession, &Session::almostFinished, m_termDisplay, [=] {
+    connect(currSession, &Session::almostFinished, m_termDisplay, [ = ] {
         connect(m_termDisplay, &TerminalDisplay::keyPressedSignal, currSession, &Session::finished);
     });
 
@@ -370,6 +370,11 @@ void QTermWidget::setNoHasSelect()
     }
 
     m_bHasSelect = false;
+}
+
+void QTermWidget::enableSetCursorPosition(bool enable)
+{
+    m_impl->m_terminalDisplay->setCursorPositionEnable(enable);
 }
 
 /*******************************************************************************

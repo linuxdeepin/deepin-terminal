@@ -335,6 +335,12 @@
                             "type": "checkbox",
                             "text": "Copy on select",
                             "default": true
+                        },
+			    {
+                            "key": "set_cursor_position",
+                            "type": "checkbox",
+                            "text": "Allow Ctrl + left mouse click to set cursor position",
+                            "default": false
                         }
                     ]
                 },

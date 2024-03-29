@@ -148,4 +148,6 @@ void GenerateSettingTranslate()
     Q_UNUSED(history_size);
     auto include_special_characters_in_double_click_selectionisText = QObject::tr("Include special character(s) in double click selections");
     Q_UNUSED(include_special_characters_in_double_click_selectionisText);
+    auto set_cursor_position = QObject::tr("Allow Ctrl + left mouse click to set cursor position");
+    Q_UNUSED(set_cursor_position);
 }

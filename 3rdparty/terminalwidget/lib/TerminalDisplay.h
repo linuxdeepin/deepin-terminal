@@ -829,6 +829,7 @@ private:
     bool _blinking;   // hide text in paintEvent
     bool _hasBlinker; // has characters to blink
     bool _cursorBlinking;     // hide cursor in paintEvent
+    bool _cursorPositionSetEnable; // set cursor position enable
     bool _hasBlinkingCursor;  // has blinking cursor enabled
     bool _allowBlinkingText;  // allow text to blink
     bool _ctrlDrag;           // require Ctrl key for drag
@@ -926,6 +927,7 @@ public:
     }
 
     QScrollBar* getScrollBar() {return _scrollBar;}
+    void setCursorPositionEnable(bool enable);
 };
 
 class AutoScrollHandler : public QObject

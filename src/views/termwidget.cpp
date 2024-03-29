@@ -114,6 +114,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setKeyboardCursorShape(static_cast<QTermWidget::KeyboardCursorShape>(Settings::instance()->cursorShape()));
     // 光标闪烁
     setBlinkingCursor(Settings::instance()->cursorBlink());
+    // 是否允许移动光标
+    enableSetCursorPosition(Settings::instance()->enableSetCursorPosition());
 
     // 按键滚动
     setPressingScroll(Settings::instance()->PressingScroll());
@@ -1125,6 +1127,10 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     if ("advanced.cursor.cursor_blink" == keyName) {
         setBlinkingCursor(Settings::instance()->cursorBlink());
         return;
+    }
+
+    if ("advanced.cursor.set_cursor_position" == keyName) {
+        enableSetCursorPosition(Settings::instance()->enableSetCursorPosition());
     }
 
     if ("advanced.scroll.scroll_on_key" == keyName) {
