@@ -284,6 +284,8 @@ public:
     //避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
     void setNoHasSelect();
 
+    // 是否允许ctrl + 鼠标左键移动光标
+    void enableSetCursorPosition(bool enable);
 signals:
     void finished();
     void copyAvailable(bool);
