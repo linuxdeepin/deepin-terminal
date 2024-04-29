@@ -375,7 +375,6 @@ void ItemWidget::initConnections()
     connect(m_funcButton, &IconButton::focusOut, this, &ItemWidget::onFocusOut);
     // 图标被点击
     connect(m_iconButton, &DIconButton::clicked, this, &ItemWidget::onIconButtonClicked);
-
 }
 
 void ItemWidget::paintEvent(QPaintEvent *event)
@@ -384,8 +383,15 @@ void ItemWidget::paintEvent(QPaintEvent *event)
     QFont firstFont = m_firstline->font();
     QFont secondFont = m_secondline->font();
     // 限制文字长度,防止超出
-    QString firstText = Utils::getElidedText(firstFont, m_firstText, ITEMMAXWIDTH);
-    QString secondText = Utils::getElidedText(secondFont, m_secondText, ITEMMAXWIDTH);
+    QString firstText;
+    QString secondText;
+    if (!m_funcButton->isVisible()) {
+        firstText = Utils::getElidedText(firstFont, m_firstText, ITEMMAXWIDTH);
+        secondText = Utils::getElidedText(secondFont, m_secondText, ITEMMAXWIDTH);
+    } else {
+        firstText = Utils::getElidedText(firstFont, m_firstText, ITEMMAXWIDTH - m_funcButton->width());
+        secondText = Utils::getElidedText(secondFont, m_secondText, ITEMMAXWIDTH - m_funcButton->width());
+    }
     // 设置显示的文字
     m_firstline->setText(firstText);
     m_secondline->setText(secondText);
