@@ -714,6 +714,11 @@
         <translation>在双击选中区域包含特殊符号</translation>
     </message>
     <message>
+        <location filename="../src/settings/settings_translation.cpp" line="151"/>
+        <source>Allow Ctrl + left mouse click to set cursor position</source>
+        <translation>允许Ctrl+鼠标左键点击设置光标位置</translation>
+    </message>
+    <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="430"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="364"/>
         <source>The name should be no more than 32 characters</source>
