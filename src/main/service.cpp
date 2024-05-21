@@ -142,6 +142,10 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             if (QObject::tr("Blur background") == checkText) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
+                QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+                if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                    wrapWidget->setVisible(isShow);
+                }
                 if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                     optionWidget = parentWidget;
 
@@ -153,6 +157,10 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
         } else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
             QWidget *optionWidget = widget;
             QWidget *parentWidget = widget->parentWidget();
+            QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+            if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                wrapWidget->setVisible(isShow);
+            }
             if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                 optionWidget = parentWidget;
 
@@ -165,6 +173,11 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             if (lblText == QObject::tr("Opacity")) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
+                QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+                if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                    wrapWidget->setVisible(isShow);
+                }
+
                 if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                     optionWidget = parentWidget;
 
