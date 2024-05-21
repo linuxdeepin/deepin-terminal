@@ -2078,6 +2078,7 @@ void MainWindow::addThemeMenuItems()
 
         connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(themeRecovery()));
         connect(switchThemeMenu, SIGNAL(menuHideSetThemeSignal()), this, SLOT(themeRecovery()));
+        connect(switchThemeMenu, &SwitchThemeMenu::aboutToShow, this, &MainWindow::checkThemeItem);
     }
 }
 
