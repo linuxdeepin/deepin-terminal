@@ -1,3 +1,14 @@
+deepin-terminal (6.0.13) unstable; urgency=medium
+
+  * fix: Remote server item text overlaps with buttons
+    新增Ctrl + 鼠标点击移动光标功能
+    为Ctrl+鼠标左键点击移动光标功能新增配置
+    fix: item is hidden partially in settingsdialog
+    fix: Bug# 点击自定义主题后未确认，菜单勾选状态错误
+    更新退出终端的警告弹窗提示语
+
+ -- Yutao Meng <mengyutao@deepin.org>  Fri, 21 Jun 2024 13:41:33 +0800
+
 deepin-terminal (6.0.12) unstable; urgency=medium
 
   * fix: the quake window overlaps with the dock (Issue: #6557)
