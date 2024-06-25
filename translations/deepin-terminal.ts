@@ -718,15 +718,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="182"/>
-        <location filename="../src/common/utils.cpp" line="216"/>
-        <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
+        <location filename="../src/common/utils.cpp" line="183"/>
+        <location filename="../src/common/utils.cpp" line="217"/>
+        <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="186"/>
-        <location filename="../src/common/utils.cpp" line="220"/>
-        <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
+        <location filename="../src/common/utils.cpp" line="187"/>
+        <location filename="../src/common/utils.cpp" line="221"/>
+        <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -736,9 +736,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="192"/>
-        <location filename="../src/common/utils.cpp" line="212"/>
-        <source>There are still processes running in this window. Closing the window will kill all of them.</source>
+        <location filename="../src/common/utils.cpp" line="193"/>
+        <location filename="../src/common/utils.cpp" line="213"/>
+        <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
