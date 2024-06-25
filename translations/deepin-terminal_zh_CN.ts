@@ -790,14 +790,14 @@
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
-        <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
-        <translation>该终端中仍然有1个进程在运行，关闭终端将杀死进程。</translation>
+        <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
+        <translation>该终端中仍然有1个进程在运行，关闭终端将终止进程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
-        <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
-        <translation>该终端中仍然有%1个进程在运行，关闭终端将杀死进程。</translation>
+        <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
+        <translation>该终端中仍然有%1个进程在运行，关闭终端将终止进程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
@@ -808,8 +808,8 @@
     <message>
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
-        <source>There are still processes running in this window. Closing the window will kill all of them.</source>
-        <translation>窗口内一些终端仍然有进程在运行，关闭窗口会杀死所有进程。</translation>
+        <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
+        <translation>窗口内一些终端仍然有进程在运行，关闭窗口会终止所有进程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>

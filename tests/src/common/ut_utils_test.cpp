@@ -208,7 +208,7 @@ TEST_F(UT_Utils_Test, getExitDialogText)
     Utils::getExitDialogText(temtype, title, txt, 0);
 
     QString titleWindow = QObject::tr("Close this window?");
-    QString txtWindow = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
+    QString txtWindow = QObject::tr("There are still processes running in this window. Closing the window will terminate all of them.");
 
     EXPECT_NE(title, titleWindow);
     EXPECT_NE(txt, txtWindow);
@@ -220,7 +220,7 @@ TEST_F(UT_Utils_Test, getExitDialogText)
 
     QString titleDefault = QObject::tr("Close this terminal?");
     QString txtDefault = QObject::tr("There is still a process running in this terminal. "
-                                     "Closing the terminal will kill it.");
+                                     "Closing the terminal will terminate it.");
     temtype = Utils::CloseType::CloseType_Terminal;
     Utils::getExitDialogText(temtype, title, txt, 1);
     EXPECT_EQ(title, titleDefault);

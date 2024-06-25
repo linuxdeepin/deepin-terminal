@@ -181,16 +181,16 @@ bool Utils::showExitConfirmDialog(CloseType type, int count)
         // 默认的count = 1的提示
         title = QObject::tr("Close this terminal?");
         txt = QObject::tr("There is still a process running in this terminal. "
-                          "Closing the terminal will kill it.");
+                          "Closing the terminal will terminate it.");
         // count > 1 提示
         if (count > 1) {
             txt = QObject::tr("There are still %1 processes running in this terminal. "
-                              "Closing the terminal will kill all of them.")
+                              "Closing the terminal will terminate all of them.")
                   .arg(count);
         }
     } else {
         title = QObject::tr("Close this window?");
-        txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
+        txt = QObject::tr("There are still processes running in this window. Closing the window will terminate all of them.");
     }
 
     DDialog dlg(title, txt);
@@ -210,16 +210,16 @@ void Utils::getExitDialogText(CloseType type, QString &title, QString &txt, int 
 
     if (CloseType_Window == type) {
         title = QObject::tr("Close this window?");
-        txt = QObject::tr("There are still processes running in this window. Closing the window will kill all of them.");
+        txt = QObject::tr("There are still processes running in this window. Closing the window will terminate all of them.");
     } else {
         // 默认的count = 1的提示
         title = QObject::tr("Close this terminal?");
         txt = QObject::tr("There is still a process running in this terminal. "
-                          "Closing the terminal will kill it.");
+                          "Closing the terminal will terminate it.");
         // count > 1 提示
         if (count > 1) {
             txt = QObject::tr("There are still %1 processes running in this terminal. "
-                              "Closing the terminal will kill all of them.")
+                              "Closing the terminal will terminate all of them.")
                   .arg(count);
         }
     }
