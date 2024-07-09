@@ -25,6 +25,7 @@
 #include <QMouseEvent>
 #include <QDesktopWidget>
 #include <QPainterPath>
+#include <QMimeData>
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
 #include <DSizeMode>
