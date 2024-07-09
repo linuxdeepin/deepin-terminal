@@ -7,10 +7,13 @@
 
 //dtk
 #include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 
 //qt
 #include <QLabel>
 #include <QDebug>
+
+DWIDGET_USE_NAMESPACE
 
 /*******************************************************************************
  1. @函数:    palrtteTransparency
