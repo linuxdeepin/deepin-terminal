@@ -1,3 +1,9 @@
+deepin-terminal (6.0.14) unstable; urgency=medium
+
+  * chore: Update translation (#346)
+
+ -- Zhang Kun <zhangkun2@uniontech.com>  Thu, 01 Aug 2024 09:31:00 +0800
+
 deepin-terminal (6.0.13) unstable; urgency=medium
 
   * fix: Remote server item text overlaps with buttons
