@@ -481,15 +481,8 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     m_menu->addSeparator();
 
-
-    DSplitter *splitter = qobject_cast<DSplitter *>(parentWidget());
-    int layer = getTermLayer();
-
-    if (1 == layer || (2 == layer && splitter && Qt::Horizontal == splitter->orientation()))
-        m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
-
-    if (1 == layer || (2 == layer && splitter && Qt::Vertical == splitter->orientation()))
-        m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
+    m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
+    m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     m_menu->addAction(QObject::tr("Close workspace"), this, &TermWidget::onCloseCurrWorkSpace);
@@ -555,14 +548,12 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
 inline void TermWidget::onHorizontalSplit()
 {
-    getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitHorizontal);
 }
 
 inline void TermWidget::onVerticalSplit()
 {
-    getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitVertical);
 }
@@ -822,18 +813,6 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
         return;
     }
     QTermWidget::setDeleteMode(&ch, length);
-}
-
-int TermWidget::getTermLayer()
-{
-    int layer = 1;
-    QWidget *currentW = this;
-    while (currentW->parentWidget() != parentPage()) {
-        layer++;
-        currentW = currentW->parentWidget();
-    }
-    qInfo() << "getTermLayer = " << layer;
-    return  layer;
 }
 
 void TermWidget::setTabFormat(const QString &tabFormat)

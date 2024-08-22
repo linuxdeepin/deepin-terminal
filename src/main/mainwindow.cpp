@@ -1132,14 +1132,8 @@ inline void MainWindow::slotShortcutHorizonzalSplit()
     if (Service::instance()->isCountEnable()) {
         TermWidgetPage *page = currentPage();
         if (page) {
-            if (page->currentTerminal()) {
-                int layer = page->currentTerminal()->getTermLayer();
-                DSplitter *splitter = qobject_cast<DSplitter *>(page->currentTerminal()->parentWidget());
-                if (1 == layer  || (2 == layer  &&  splitter && Qt::Horizontal == splitter->orientation())) {
-                    page->split(Qt::Horizontal);
-                    return ;
-                }
-            }
+            page->split(Qt::Horizontal);
+            return ;
         }
     }
     qInfo() << "can't split vertical  again";
@@ -1151,14 +1145,8 @@ inline void MainWindow::slotShortcutVerticalSplit()
     if (Service::instance()->isCountEnable()) {
         TermWidgetPage *page = currentPage();
         if (page) {
-            if (page->currentTerminal()) {
-                int layer = page->currentTerminal()->getTermLayer();
-                DSplitter *splitter = qobject_cast<DSplitter *>(page->currentTerminal()->parentWidget());
-                if (1 == layer  || (2 == layer  &&  splitter && Qt::Vertical == splitter->orientation())) {
-                    page->split(Qt::Vertical);
-                    return ;
-                }
-            }
+            page->split(Qt::Vertical);
+            return ;
         }
     }
     qInfo() << "can't split vertical  again";

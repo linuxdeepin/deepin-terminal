@@ -190,13 +190,6 @@ public:
     void setDeleteMode(const EraseMode &deleteMode);
 
     /**
-     * @brief 获取当前terminal距离page的层次．用于限定分屏
-     * @author ut000439 王培利
-     * @return
-     */
-    int getTermLayer();
-
-    /**
      * @brief 设置标签标题格式（全局设置）
      * @author ut000610 戴正文
      * @param tabFormat

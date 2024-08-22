@@ -19,6 +19,23 @@
 #include <QVBoxLayout>
 #include <QApplication>
 
+static void setEqualSizes(QSplitter *splitter)
+{
+    QList<int> sizes = splitter->sizes();
+    int totalSize = 0;
+    for (int size : sizes) {
+        totalSize += size;
+    }
+
+    int equalSize = totalSize / sizes.size();
+    for (int i = 0; i < sizes.size(); ++i) {
+        sizes[i] = equalSize;
+    }
+
+    splitter->setSizes(sizes);
+}
+
+
 TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
@@ -85,21 +102,26 @@ void TermWidgetPage::setParentMainWindow(MainWindow *mainWin)
     m_MainWindow = mainWin;
 }
 
+// TODO(hualet): maybe implement a subclass of DSplitter and
+// override the createHandle method, all setSplitStyle should
+// be removed.
 void TermWidgetPage::setSplitStyle(DSplitter *splitter)
 {
     splitter->setHandleWidth(1);
-    QSplitterHandle *handle = splitter->handle(1);
 
-    if (handle) {
-        //分割线颜色暂时设置为Highlight颜色，需要和UI确认下
-        //此处代码暂时保留  //DPalette pa = DPaletteHelper::instance()->palette(handle);
-        //bug#57044 中的分割线颜色，保留的代码对默认主题，和十个内置主题的颜色是正确获取，但是在自定义的颜色获取存在异常，采取如下方式获取
-        DPalette pa = DGuiApplicationHelper::instance()->applicationPalette();
-        QColor splitBrush = pa.color(DPalette::Highlight);
-        pa.setBrush(DPalette::Background, splitBrush);
-        handle->setPalette(pa);
-        handle->setBackgroundRole(QPalette::Background);
-        handle->setAutoFillBackground(true);
+    for (int i = 1; i < splitter->count(); ++i) {
+        QSplitterHandle *handle = splitter->handle(i);
+        if (handle) {
+            //分割线颜色暂时设置为Highlight颜色，需要和UI确认下
+            //此处代码暂时保留  //DPalette pa = DPaletteHelper::instance()->palette(handle);
+            //bug#57044 中的分割线颜色，保留的代码对默认主题，和十个内置主题的颜色是正确获取，但是在自定义的颜色获取存在异常，采取如下方式获取
+            DPalette pa = DGuiApplicationHelper::instance()->applicationPalette();
+            QColor splitBrush = pa.color(DPalette::Highlight);
+            pa.setBrush(DPalette::Background, splitBrush);
+            handle->setPalette(pa);
+            handle->setBackgroundRole(QPalette::Background);
+            handle->setAutoFillBackground(true);
+        }
     }
 }
 
@@ -119,22 +141,35 @@ void TermWidgetPage::split(Qt::Orientation orientation)
 {
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     TermWidget *term = m_currentTerm;
-    if (1 == getTerminalCount()) {
-        qInfo() << "first split";
-        QSplitter *firstSplit = createSubSplit(term, orientation);
-        m_layout->addWidget(firstSplit);
-        //return ;
-    } else {
-        qInfo() << "not first split";
-        QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
-        int index = upSplit->indexOf(term);
-        QList<int> parentSizes = upSplit->sizes();
 
-        // 用新的Split分割布局替换原来的位置
-        QSplitter *subSplit = createSubSplit(term, orientation);
-        upSplit->insertWidget(index, subSplit);
-        upSplit->setSizes(parentSizes);
-        setSplitStyle(upSplit);
+    QSplitter *splitter = qobject_cast<QSplitter *>(term->parent());
+    // if there's already a splitter, and the orientation is correct,
+    // just add a new term to the splitter.
+    if (splitter && splitter->orientation() != orientation) {
+        TermProperties properties(term->workingDirectory());
+        TermWidget *newTerm  = createTerm(properties);
+        splitter->addWidget(newTerm);
+        setSplitStyle(splitter);
+        setCurrentTerminal(newTerm);
+    } else {
+    // if there's no splitter, or the orientation is not correct,
+    // create a new splitter, put the 2 terms into the splitter,
+    // and put the splitter the right postion.
+        int index = 0;
+        if (splitter) {
+            index = splitter->indexOf(term);
+        } else {
+            index = m_layout->indexOf(term);
+        }
+
+        QSplitter *newSplitter = createSubSplit(term, orientation);
+
+        if (splitter) {
+            splitter->insertWidget(index, newSplitter);
+            setEqualSizes(splitter);
+        } else {
+            m_layout->insertWidget(index, newSplitter);
+        }
     }
 
     /******** Add by ut001000 renfeixiang 2020-08-07:新增分屏时改变大小，bug#41436***************/
@@ -180,40 +215,32 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
             showExitConfirmDialog(Utils::CloseType_Terminal, 1, parentMainWindow());
             return;
         }
+
+
         QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
-        term->setParent(nullptr);
-
-        // 另一个兄弟也可能是终端，也可能是split,
-        QWidget *brother = upSplit->widget(0);
-        TermWidget *nextTerm =  upSplit->findChild<TermWidget *>();
-        // 如果上级是分屏
-        if ("QSplitter" == QString(upSplit->parent()->metaObject()->className())) {
-            QSplitter *upupSplit = qobject_cast<QSplitter *>(upSplit->parent());
-            //兄弟替换parent split
-            upupSplit->replaceWidget(upupSplit->indexOf(upSplit), brother);
-        }
-        // 上级不是分屏控件，就是布局在控制了
-        else {
-            qInfo() << "TermWidgetPage only one term exist!";
-            m_layout->addWidget(brother);
+        if (upSplit && upSplit->count() == 1) {
+            upSplit->setParent(nullptr);
+            upSplit->deleteLater();
+            upSplit = nullptr;
         }
 
-        // 子控件的变化会引起焦点的变化，控制焦点要放在最后
-        if (nextTerm != nullptr) {
-            qInfo() << "nextTerm change" << m_currentTerm->getSessionId();
-            nextTerm->setFocus();
-        } else {
-            qInfo() << "can not found nextTerm in TermWidget";
-        }
+        // TODO(hualet): set focus to another TermWidget.
 
         // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
+        term->setParent(nullptr);
         term->hide();
         term->deleteLater();
         // 断开相关的连接：(UT_MainWindow_Test, slotShortcutCloseWorkspace)出现的崩溃问题
         Settings::instance()->disconnect(term);
-        upSplit->hide();
-        upSplit->setParent(nullptr);
-        upSplit->deleteLater();
+
+        if (upSplit) {
+            upSplit->setFocus();
+        }
+
+        // upSplit->hide();
+        // upSplit->setParent(nullptr);
+        // upSplit->deleteLater();
+
         qInfo() << "page terminal count =" << getTerminalCount();
         /******** Add by ut001000 renfeixiang 2020-08-07:关闭分屏时改变大小，bug#41436***************/
         parentMainWindow()->updateMinHeight();
