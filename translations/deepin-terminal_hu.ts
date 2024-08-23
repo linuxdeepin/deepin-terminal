@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="43"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>Csoport szerkesztése</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="59"/>
