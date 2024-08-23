@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="859"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>A csoportosítatlan szerverek visszakerülnek a szerverlistába!</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="484"/>
