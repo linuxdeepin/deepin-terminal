@@ -66,10 +66,12 @@ int main(int argc, char *argv[])
     }
 
     DBusManager manager;
+
     if (!manager.initDBus()) {
-        // 非第一次启动
+#ifndef QT_DEBUG // 非第一次启动则退出，调试编译情况不执行这个逻辑
         DBusManager::callTerminalEntry(args);
         return 0;
+#endif
     }
     // 第一次启动
     // 这行不要删除
