@@ -178,12 +178,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="40"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Gruppe hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="43"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>Gruppe bearbeiten</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="59"/>
@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="212"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Gruppe hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
@@ -902,12 +902,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>Gruppen</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation>Server</translation>
     </message>
 </context>
 <context>
