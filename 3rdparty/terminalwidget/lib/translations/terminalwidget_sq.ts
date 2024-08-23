@@ -14,7 +14,7 @@
     <message>
         <location filename="../TerminalDisplay.cpp" line="3178"/>
         <source>&lt;qt&gt;Output has been &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;suspended&lt;/a&gt; by pressing Ctrl+S.  Press &lt;b&gt;Ctrl+Q&lt;/b&gt; to resume.&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Shfaqja e përfundimit është &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;pezulluar&lt;/a&gt; duke shtypur Ctrl+S.  Që të vazhdohet sërish, shtypni &lt;b&gt;Ctrl+Q&lt;/b&gt;.&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Shfaqja e përfundimit është &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_control&quot;&gt;pezulluar&lt;/a&gt; nga shtypja e Ctrl+S.  Që të vazhdohet sërish, shtypni &lt;b&gt;Ctrl+Q&lt;/b&gt;.&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
