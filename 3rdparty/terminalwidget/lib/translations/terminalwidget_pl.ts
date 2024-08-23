@@ -51,7 +51,7 @@
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation>Wyślij email do...</translation>
+        <translation>Wyślij e-mail do...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../SearchBar.cpp" line="50"/>
         <source>Highlight all matches</source>
-        <translation>Podświetl wszystkie dopasowania</translation>
+        <translation>Wyróżnij wszystkie dopasowania</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="14"/>
