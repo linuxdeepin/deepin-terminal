@@ -725,7 +725,7 @@
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>Még mindig fut a %1 folyamat ebben a terminálban. A terminál bezárása mindegyiket megszünteti.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="191"/>
@@ -737,7 +737,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>Ebben az ablakban még fut egy folyamat. Az ablak bezárása megszüntetivalamennyit.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1834"/>
