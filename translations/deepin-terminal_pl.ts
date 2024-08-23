@@ -173,12 +173,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="38"/>
         <source>Group Name(Required)</source>
-        <translation type="unfinished"/>
+        <translation>Nazwa grupy (Wymagane)</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="40"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="43"/>
@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="212"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
