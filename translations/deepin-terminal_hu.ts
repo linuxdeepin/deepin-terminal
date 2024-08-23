@@ -737,7 +737,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation>Ebben az ablakban még fut egy folyamat. Az ablak bezárása megszüntetivalamennyit.</translation>
+        <translation>Ebben az ablakban még fut egy folyamat. Az ablak bezárása megszünteti valamennyit.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1834"/>
