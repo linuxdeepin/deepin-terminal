@@ -612,17 +612,17 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>S’u gjet dot &quot;%1&quot;, në vend të tij po niset &quot;%2&quot;. Ju lutemi, kontrolloni profilin tuaj për shellin.</translation>
+        <translation>S’u gjet dot “%1”, në vend të tij po niset “%2”. Ju lutemi, kontrolloni profilin tuaj për shellin.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1179"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>S’u hap dot &quot;%1&quot;, s’arrihet të xhirohet</translation>
+        <translation>S’u hap dot “%1”, s’arrihet të xhirohet</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1181"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>S’u gjet dot &quot;%1&quot;, s’arrihet të xhirohet</translation>
+        <translation>S’u gjet dot “%1”, s’arrihet të xhirohet</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1224"/>
