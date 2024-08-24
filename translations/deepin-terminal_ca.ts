@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="68"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>El nom no ha de superar els 30 caràcters.</translation>
     </message>
 </context>
 <context>
