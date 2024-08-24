@@ -173,7 +173,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="38"/>
         <source>Group Name(Required)</source>
-        <translation type="unfinished"/>
+        <translation>Nom del grup (obligatori)</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="40"/>
