@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="859"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>Nicht-gruppierte Server erscheinen wieder in der Server-Liste</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="484"/>
