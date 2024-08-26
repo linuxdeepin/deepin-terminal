@@ -121,11 +121,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 按键滚动
     setPressingScroll(Settings::instance()->PressingScroll());
 
-    /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
-    // 以最小mainwindow分4屏为标准的最小大小
-    /******** Modify by ut001000 renfeixiang 2020-08-07:修改成根据全局变量m_MinWidth，m_MinHeight计算出term的最小高度和宽度***************/
-    setMinimumSize(MainWindow::m_MinWidth / 2, (MainWindow::m_MinHeight - WIN_TITLE_BAR_HEIGHT) / 2);
-    /********************* Modify by n014361 wangpeili End ************************/
+    setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
 
     QString currentEnvLanguage = Utils::getCurrentEnvLanguage();
     // 判断是维吾尔语或者藏语时
@@ -481,6 +477,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     m_menu->addSeparator();
 
+    // TODO(hualet): check container size before split
     m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
     m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
 

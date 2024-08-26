@@ -65,6 +65,9 @@ class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
+    static const int MIN_WIDTH = 160;
+    static const int MIN_HEIGHT = 80;
+
     TermWidget(const TermProperties &properties, QWidget *parent = nullptr);
     ~TermWidget();
     /**
