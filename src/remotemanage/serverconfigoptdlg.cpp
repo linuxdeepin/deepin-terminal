@@ -15,6 +15,7 @@
 #include <DVerticalLine>
 #include <DApplicationHelper>
 #include <DGuiApplicationHelper>
+#include <DPaletteHelper>
 #include <DFileDialog>
 #include <DPalette>
 #include <DDialog>
@@ -100,7 +101,7 @@ void ServerConfigOptDlg::initUI()
     // 字色
     DPalette palette = m_titleLabel->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);
@@ -230,7 +231,7 @@ void ServerConfigOptDlg::initUI()
     }
     Utils::setSpaceInWord(pCancelButton);
     Utils::setSpaceInWord(pAddSaveButton);
-    DPalette pa = DApplicationHelper::instance()->palette(pAddSaveButton);
+    DPalette pa = DPaletteHelper::instance()->palette(pAddSaveButton);
     QBrush brush = pa.textLively().color();
     pa.setBrush(DPalette::ButtonText, brush);
     pAddSaveButton->setPalette(pa);
@@ -250,7 +251,7 @@ void ServerConfigOptDlg::initUI()
     });
     connect(pAddSaveButton, &DPushButton::clicked, this, &ServerConfigOptDlg::slotAddSaveButtonClicked);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ServerConfigOptDlg::handleThemeTypeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ServerConfigOptDlg::handleThemeTypeChanged);
 
     // 设置焦点顺序
     setTabOrder(pAddSaveButton, m_closeButton);
@@ -261,7 +262,7 @@ inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::Co
     DPalette palette = m_titleLabel->palette();
     //palette.setBrush(QPalette::WindowText, palette.color(DPalette::TextTitle));
     QColor color;
-    if (DApplicationHelper::DarkType == themeType)
+    if (DGuiApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);

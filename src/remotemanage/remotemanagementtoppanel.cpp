@@ -225,7 +225,7 @@ void RemoteManagementTopPanel::showPrevPanel()
     // 动画效果 要显示的界面
     QPropertyAnimation *animation1 = nullptr;
     switch (prevType) {
-    case ServerConfigManager::PanelType_Manage:
+    case ServerConfigManager::PanelType_Manage: {
         // 刷新主界面
         m_remoteManagementPanel->refreshPanel();
         // 显示主界面
@@ -238,7 +238,8 @@ void RemoteManagementTopPanel::showPrevPanel()
         animation1 = new QPropertyAnimation(m_remoteManagementPanel, "geometry");
         connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
         break;
-    case ServerConfigManager::PanelType_Group:
+    }
+    case ServerConfigManager::PanelType_Group: {
         // 刷新分组列表
         m_serverConfigGroupPanel->refreshData(m_group);
         // 显示分组
@@ -247,6 +248,7 @@ void RemoteManagementTopPanel::showPrevPanel()
         animation1 = new QPropertyAnimation(m_serverConfigGroupPanel, "geometry");
         connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
         break;
+    }
     case ServerConfigManager::PanelType_Search: {
         // 刷新列表 => 搜索框能被返回，只能是全局搜索
         if (m_filterStack.isEmpty()) {
@@ -264,8 +266,9 @@ void RemoteManagementTopPanel::showPrevPanel()
         // 动画效果的设置
         animation1 = new QPropertyAnimation(m_remoteManagementSearchPanel, "geometry");
         connect(animation1, &QPropertyAnimation::finished, animation1, &QPropertyAnimation::deleteLater);
+        break;
     }
-    break;
+    case ServerConfigManager::PanelType_Serverlist: { break; }
     }
     if (nullptr == animation || nullptr == animation1) {
         qInfo() << "do not has animation";
@@ -327,6 +330,8 @@ void RemoteManagementTopPanel::setPanelShowState(ServerConfigManager::PanelType 
         break;
     case ServerConfigManager::PanelType_Search:
         m_remoteManagementSearchPanel->m_isShow = true;
+        break;
+    case ServerConfigManager::PanelType_Serverlist:
         break;
     }
 }

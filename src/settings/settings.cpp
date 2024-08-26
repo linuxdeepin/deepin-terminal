@@ -252,7 +252,7 @@ void Settings::addShellOption()
     // 初始值
     keysList << DEFAULT_SHELL;
     // 数据转换
-    for (const QString key : shellsMap.keys())
+    for (const QString &key : shellsMap.keys())
         keysList << key;
     g_shellConfigCombox->addItems(keysList);
 }

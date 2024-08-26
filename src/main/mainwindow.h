@@ -1110,6 +1110,8 @@ private:
      * @param forhibit
      */
     void sendWindowForhibitMove(bool forhibit);
+
+    void resizeByCurrentScreen(bool force);
 };
 
 #endif  // MAINWINDOW_H

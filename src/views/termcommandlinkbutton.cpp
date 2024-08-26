@@ -7,6 +7,7 @@
 #include "utils.h"
 
 #include <DApplicationHelper>
+#include <DPaletteHelper>
 
 #include <QDebug>
 
@@ -15,7 +16,7 @@ TermCommandLinkButton::TermCommandLinkButton(QWidget *parent)
     : DPushButton(parent)
 {
     Utils::set_Object_Name(this);
-    DPalette palette = DApplicationHelper::instance()->palette(this);
+    DPalette palette = DPaletteHelper::instance()->palette(this);
     palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
     this->setPalette(palette);
 

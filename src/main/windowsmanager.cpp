@@ -37,6 +37,8 @@ void WindowsManager::quakeWindowShowOrHide()
         int windowWidth = cursorScreen->geometry().width();
         m_quakeWindow->move(cursorScreen->geometry().topLeft());
         m_quakeWindow->setFixedWidth(windowWidth);
+        m_quakeWindow->setMinimumHeight(60);
+        m_quakeWindow->setMaximumHeight(cursorScreen->geometry().height() * 2 / 3);
     }
 
     //隐藏 则 显示终端

@@ -14,6 +14,7 @@
 
 #include <DLog>
 #include <DDialog>
+#include <DPaletteHelper>
 
 #include <QVBoxLayout>
 #include <QApplication>
@@ -44,7 +45,7 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
     connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
     connect(m_findBar, &PageSearchBar::keywordChanged, this, &TermWidgetPage::handleKeywordChanged);
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &TermWidgetPage::handleThemeTypeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &TermWidgetPage::handleThemeTypeChanged);
 
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 2020-05-28 优化代码 Begin***************/
     connect(this, &TermWidgetPage::uninstallTerminal, this, &TermWidgetPage::handleUninstallTerminal);
@@ -91,9 +92,9 @@ void TermWidgetPage::setSplitStyle(DSplitter *splitter)
 
     if (handle) {
         //分割线颜色暂时设置为Highlight颜色，需要和UI确认下
-        //此处代码暂时保留  //DPalette pa = DApplicationHelper::instance()->palette(handle);
+        //此处代码暂时保留  //DPalette pa = DPaletteHelper::instance()->palette(handle);
         //bug#57044 中的分割线颜色，保留的代码对默认主题，和十个内置主题的颜色是正确获取，但是在自定义的颜色获取存在异常，采取如下方式获取
-        DPalette pa = DApplicationHelper::instance()->applicationPalette();
+        DPalette pa = DGuiApplicationHelper::instance()->applicationPalette();
         QColor splitBrush = pa.color(DPalette::Highlight);
         pa.setBrush(DPalette::Background, splitBrush);
         handle->setPalette(pa);
@@ -143,7 +144,7 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     QString  expandThemeStr = "";
     expandThemeStr = Settings::instance()->extendColorScheme();
     if (!expandThemeStr.isEmpty())
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
 
     return ;
 }

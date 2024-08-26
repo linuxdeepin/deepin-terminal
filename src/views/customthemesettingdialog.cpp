@@ -16,6 +16,7 @@
 #include <DSuggestButton>
 #include <DFontSizeManager>
 #include <DApplicationHelper>
+#include <DPaletteHelper>
 #include <DVerticalLine>
 
 #include <QVBoxLayout>
@@ -75,7 +76,7 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
     painter.setOpacity(1);
 
     QColor borderColor;
-    if (DApplicationHelper::LightType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType())
         borderColor = QColor::fromRgb(0, 0, 0, static_cast<int>(255 * 0.05));
     else
         borderColor = QColor::fromRgb(255, 255, 255, static_cast<int>(255 * 0.2));
@@ -101,7 +102,7 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
 
         //绘画边框
         QPen framePen;
-        DPalette pax = DApplicationHelper::instance()->palette(this);
+        DPalette pax = DPaletteHelper::instance()->palette(this);
         //获取活动色
         framePen = QPen(pax.color(DPalette::Highlight), 2);
         painter.setPen(framePen);
@@ -193,7 +194,7 @@ void CustomThemeSettingDialog::initUITitle()
     // 字色
     DPalette palette = m_titleText->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);
@@ -380,10 +381,10 @@ void CustomThemeSettingDialog::initTitleConnections()
         reject();
     });
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
         DPalette palette = m_titleText->palette();
         QColor color;
-        if (DApplicationHelper::DarkType == themeType)
+        if (DGuiApplicationHelper::DarkType == themeType)
             color = QColor::fromRgb(192, 198, 212, 255);
         else
             color = QColor::fromRgb(0, 26, 46, 255);
@@ -425,7 +426,7 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
     setTabOrder(m_confirmBtn, m_closeButton);//设置右上角关闭按钮的tab键控制顺序
 
     DVerticalLine *verticalLine = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(verticalLine);
+    DPalette pa = DPaletteHelper::instance()->palette(verticalLine);
     QColor splitColor = pa.color(DPalette::ItemBackground);
     pa.setBrush(DPalette::Background, splitColor);
     verticalLine->setPalette(pa);

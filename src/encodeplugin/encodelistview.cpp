@@ -12,6 +12,7 @@
 
 //dtk
 #include <DLog>
+#include <DPaletteHelper>
 
 //qt
 #include <QScrollBar>
@@ -272,14 +273,14 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,
         // 悬浮状态
         if (option.state & QStyle::State_MouseOver) {
             /*** mod begin by ut001121 zhangmeng 20200729 鼠标悬浮在编码插件时使用突出背景处理 修复BUG40078***/
-            DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+            DPalette pa = DPaletteHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ObviousBackground);
             /*** mod end by ut001121 zhangmeng 20200729***/
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
         } else {
-            DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+            DPalette pa = DPaletteHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
             painter->setBrush(QBrush(fillColor));
@@ -308,7 +309,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,
         // mod by ut001121 zhangmeng 20200731 有效效焦点原因下绘制边框 修复BUG40390
         if ((option.state & QStyle::State_Selected) && (focusReason != INVALID_FOCUS_REASON)) {
             QPen framePen;
-            DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
+            DPalette pax = DPaletteHelper::instance()->palette(m_parentView);
             if (option.state & QStyle::State_Selected) {
                 painter->setOpacity(1);
                 framePen = QPen(pax.color(DPalette::Highlight), 2);
