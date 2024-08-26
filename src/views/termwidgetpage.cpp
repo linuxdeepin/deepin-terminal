@@ -35,6 +35,26 @@ static void setEqualSizes(QSplitter *splitter)
     splitter->setSizes(sizes);
 }
 
+// Find the previous term widget in the widget tree.
+static TermWidget* WidgetTreeReverseFindTerm(QWidget *widget)
+{
+    QList<TermWidget*> termList = widget->findChildren<TermWidget *>();
+    for (TermWidget *t : termList) {
+        if (t) {
+            qInfo() << "TermWidget found in current widget:" << t;
+            return t;
+        }
+    }
+
+    QWidget *parent = widget->parentWidget();
+    if (parent) {
+        qInfo() << "Searching in parent widget:" << parent;
+        return WidgetTreeReverseFindTerm(parent);
+    }
+    qInfo() << "No TermWidget found in the widget tree.";
+    return nullptr;
+}
+
 
 TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
@@ -216,16 +236,9 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
             return;
         }
 
+        QWidget *parentWidget = term->parentWidget();
 
-        QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
-        if (upSplit && upSplit->count() == 1) {
-            upSplit->setParent(nullptr);
-            upSplit->deleteLater();
-            upSplit = nullptr;
-        }
-
-        // TODO(hualet): set focus to another TermWidget.
-
+        // step1, delete the term
         // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
         term->setParent(nullptr);
         term->hide();
@@ -233,13 +246,19 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
         // 断开相关的连接：(UT_MainWindow_Test, slotShortcutCloseWorkspace)出现的崩溃问题
         Settings::instance()->disconnect(term);
 
-        if (upSplit) {
-            upSplit->setFocus();
+        // step2, find the next term to get focus
+        TermWidget *nextTerm = WidgetTreeReverseFindTerm(parentWidget);
+        if (nextTerm) {
+            setCurrentTerminal(nextTerm);
         }
 
-        // upSplit->hide();
-        // upSplit->setParent(nullptr);
-        // upSplit->deleteLater();
+        // step3, futurer clean the parent splitter if it's empty
+        QSplitter *upSplit = qobject_cast<QSplitter *>(parentWidget);
+        if (upSplit && upSplit->count() == 0) {
+            upSplit->setParent(nullptr);
+            upSplit->deleteLater();
+            upSplit = nullptr;
+        }
 
         qInfo() << "page terminal count =" << getTerminalCount();
         /******** Add by ut001000 renfeixiang 2020-08-07:关闭分屏时改变大小，bug#41436***************/
@@ -736,6 +755,7 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     TermWidget *oldTerm = m_currentTerm;
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
+        m_currentTerm->setFocus();
         // 当前界面切换
         qInfo() << "m_currentTerm change" << m_currentTerm->getSessionId();
         QString tabTitle = term->getTabTitle();
