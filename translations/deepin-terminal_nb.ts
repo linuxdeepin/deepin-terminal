@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_HK">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="nb">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="97"/>
         <source>Name:</source>
-        <translation>名稱：</translation>
+        <translation>Navn:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="99"/>
         <source>Command:</source>
-        <translation>命令：</translation>
+        <translation>Kommando:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="101"/>
         <source>Shortcuts:</source>
-        <translation>捷徑：</translation>
+        <translation>Hurtigtaster:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="112"/>
@@ -22,66 +22,66 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="190"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="196"/>
         <source>Required</source>
-        <translation>必填</translation>
+        <translation>Påkrevd</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="139"/>
         <source>Add Command</source>
-        <translation>添加命令</translation>
+        <translation>Legg til kommando</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="145"/>
         <source>Edit Command</source>
-        <translation>編輯命令</translation>
+        <translation>Rediger Kommando</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="155"/>
         <source>Delete Command</source>
-        <translation>刪除命令</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="176"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>取 消</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="178"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>添 加</translation>
+        <translation>Legg til </translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="180"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>保 存</translation>
+        <translation>Lagre</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="603"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>確 定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="357"/>
         <source>Please enter a name</source>
-        <translation>請輸入名稱</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="371"/>
         <source>Please enter a command</source>
-        <translation>請輸入命令</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="421"/>
         <source>The name already exists,</source>
-        <translation>該名稱已存在，</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="422"/>
         <source>please input another one.</source>
-        <translation>請重新輸入</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -89,12 +89,12 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="197"/>
         <source>Add Command</source>
-        <translation>添加命令</translation>
+        <translation>Legg til kommando</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="201"/>
         <source>No commands yet</source>
-        <translation>未添加自定義命令</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/customcommand/customcommandplugin.cpp" line="35"/>
         <source>Custom commands</source>
-        <translation>自定義命令</translation>
+        <translation>Egendefinterte kommandoer</translation>
     </message>
 </context>
 <context>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="131"/>
         <source>Search</source>
-        <translation>搜尋</translation>
+        <translation>Søk</translation>
     </message>
 </context>
 <context>
@@ -118,54 +118,54 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="221"/>
         <source>Custom Theme</source>
-        <translation>自定義主題</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="245"/>
         <source>Style:</source>
-        <translation>主題風格：</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="249"/>
         <source>Light</source>
-        <translation>淺色</translation>
+        <translation>Lys</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="254"/>
         <source>Dark</source>
-        <translation>深色</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="308"/>
         <source>Fore color:</source>
-        <translation>前景色：</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="315"/>
         <source>Back color:</source>
-        <translation>背景色：</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="333"/>
         <source>Prompt PS1:</source>
-        <translation>提示符PS1：</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="337"/>
         <source>Prompt PS2:</source>
-        <translation>提示符PS2：</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="408"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>取 消</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="416"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>確 定</translation>
+        <translation>Bekreft</translation>
     </message>
 </context>
 <context>
@@ -188,22 +188,22 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="59"/>
         <source>Cancel</source>
-        <translation>取 消</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
         <source>Add</source>
-        <translation>添 加</translation>
+        <translation>Legg til </translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
         <source>Save</source>
-        <translation>保 存</translation>
+        <translation>Lagre</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="64"/>
         <source>Please enter a group name</source>
-        <translation>請輸入用戶組名稱</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="68"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="847"/>
         <source>Delete Server</source>
-        <translation>刪除伺服器</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="849"/>
@@ -237,7 +237,7 @@
         <location filename="../src/views/listview.cpp" line="484"/>
         <location filename="../src/views/listview.cpp" line="857"/>
         <source>Are you sure you want to delete %1?</source>
-        <translation>您確定要刪除 %1 嗎？</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -246,34 +246,34 @@
         <location filename="../src/main/mainwindow.cpp" line="257"/>
         <location filename="../src/main/mainwindow.cpp" line="312"/>
         <source>New window</source>
-        <translation>新建視窗</translation>
+        <translation>Nytt vindu</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="327"/>
         <source>Settings</source>
-        <translation>設置</translation>
+        <translation>Instillinger</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="743"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>取 消</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="745"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>關 閉</translation>
+        <translation>Lukk</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1818"/>
         <source>Type path to download file</source>
-        <translation>請輸入下載文件的路徑</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2124"/>
         <source>Custom Theme</source>
-        <translation>自定義主題</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -281,32 +281,32 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="17"/>
         <source>Copy on select</source>
-        <translation>選中文字時自動複製到剪切板</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="19"/>
         <source>Cursor blink</source>
-        <translation>光標閃爍</translation>
+        <translation>Blinkende markør</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="21"/>
         <source>Cursor style</source>
-        <translation>光標風格</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="23"/>
         <source>Scroll on keystroke</source>
-        <translation>按鍵時滾動</translation>
+        <translation>Ruller ved tastetryk</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="25"/>
         <source>Scroll on output</source>
-        <translation>輸出時滾動</translation>
+        <translation>Ruller på output</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>丟失焦點後隱藏雷神視窗</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
@@ -317,210 +317,210 @@
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
         <location filename="../src/main/service.cpp" line="142"/>
         <source>Blur background</source>
-        <translation>背景模糊</translation>
+        <translation>Uklar bakgrunn</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Use on starting</source>
-        <translation>啟動時使用</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Font</source>
-        <translation>字體</translation>
+        <translation>Skrifttype</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
         <source>Font size</source>
-        <translation>字體大小</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="39"/>
         <location filename="../src/main/service.cpp" line="165"/>
         <source>Opacity</source>
-        <translation>透明度</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Advanced</source>
-        <translation>高級設置</translation>
+        <translation>Avansert</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Cursor</source>
-        <translation>鼠標</translation>
+        <translation>Markør</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
         <source>Scroll</source>
-        <translation>滑鼠滾輪</translation>
+        <translation>Rull</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="47"/>
         <source>Window</source>
-        <translation>視窗</translation>
+        <translation>Vindu</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="49"/>
         <source>Basic</source>
-        <translation>基本</translation>
+        <translation>Grunnleggende</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="51"/>
         <source>Interface</source>
-        <translation>接口</translation>
+        <translation>Grensesnitt</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
         <source>Shortcuts</source>
-        <translation>快捷鍵</translation>
+        <translation>Hurtigtaster</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="55"/>
         <location filename="../src/main/mainwindow.cpp" line="1660"/>
         <source>Others</source>
-        <translation>其他</translation>
+        <translation>Annet</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <location filename="../src/main/terminalapplication.cpp" line="25"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <source>Terminal</source>
-        <translation>終端</translation>
+        <translation>Terminal</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Workspace</source>
-        <translation>工作區</translation>
+        <translation>Arbeidsområde</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="61"/>
         <location filename="../src/main/mainwindow.cpp" line="1724"/>
         <source>Custom commands</source>
-        <translation>自定義命令</translation>
+        <translation>Egendefinterte kommandoer</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <location filename="../src/main/mainwindow.cpp" line="1724"/>
         <source>Display shortcuts</source>
-        <translation>顯示快捷鍵</translation>
+        <translation>Vis hurtigtaster</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <location filename="../src/main/mainwindow.cpp" line="1724"/>
         <source>Remote management</source>
-        <translation>遠程管理</translation>
+        <translation>Fjernstyring</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>New tab</source>
-        <translation>新建標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Next tab</source>
-        <translation>下一個標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Previous tab</source>
-        <translation>上一個標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Select left workspace</source>
-        <translation>選擇左邊的工作區</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select lower workspace</source>
-        <translation>選擇下面的工作區</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Select right workspace</source>
-        <translation>選擇右邊的工作區</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select upper workspace</source>
-        <translation>選擇上面的工作區</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Tab titles</source>
-        <translation>標籤標題</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 1</source>
-        <translation>切換到標籤 1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 2</source>
-        <translation>切換到標籤 2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 3</source>
-        <translation>切換到標籤 3</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Go to tab 4</source>
-        <translation>切換到標籤 4</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Go to tab 5</source>
-        <translation>切換到標籤 5</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Go to tab 6</source>
-        <translation>切換到標籤 6</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Go to tab 7</source>
-        <translation>切換到標籤 7</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Go to tab 8</source>
-        <translation>切換到標籤 8</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Go to tab 9</source>
-        <translation>切換到標籤 9</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>禁用Ctrl+S和Ctrl+Q控制</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Shell profile</source>
-        <translation>Shell配置</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
@@ -538,182 +538,182 @@
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <location filename="../src/main/mainwindow.cpp" line="1724"/>
         <source>Rename title</source>
-        <translation>重命名標題</translation>
+        <translation>Endre tittel</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1724"/>
         <source>Fullscreen</source>
-        <translation>全螢幕</translation>
+        <translation>Fullskjerm</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/mainwindow.cpp" line="1689"/>
         <source>Copy</source>
-        <translation>複製</translation>
+        <translation>Kopier</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <location filename="../src/main/mainwindow.cpp" line="1689"/>
         <source>Default size</source>
-        <translation>默認大小</translation>
+        <translation>Standard størrelse</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="1689"/>
         <source>Paste</source>
-        <translation>貼上</translation>
+        <translation>Lim inn</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <source>Search</source>
-        <translation>搜尋</translation>
+        <translation>Søk</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
         <location filename="../src/main/mainwindow.cpp" line="1689"/>
         <source>Select all</source>
-        <translation>選擇全部</translation>
+        <translation>Velg alle</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <source>Jump to next command</source>
-        <translation>跳轉到下一個命令</translation>
+        <translation>Hopp til neste kommando</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
         <source>Jump to previous command</source>
-        <translation>跳轉到上一個命令</translation>
+        <translation>Hopp til forrige kommando</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
         <location filename="../src/main/mainwindow.cpp" line="1689"/>
         <source>Zoom in</source>
-        <translation>拉近</translation>
+        <translation>Zoom inn</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="1689"/>
         <source>Zoom out</source>
-        <translation>拉遠</translation>
+        <translation>Zoom ut</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Close other windows</source>
-        <translation>關閉其他視窗</translation>
+        <translation>Lukk andre vinduer</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="508"/>
         <location filename="../src/settings/settings_translation.cpp" line="91"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Close other workspaces</source>
-        <translation>關閉其他工作區</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>找不到 「%1」，已啟動「%2」代替。請檢查Shell配置。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1179"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>打不開“%1”，無法正常使用</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1181"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>找不到「%1」，無法正常使用</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1224"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation>已經按下Ctrl+S，輸出被掛起。可以按下Ctrl+Q繼續。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <source>Close window</source>
-        <translation>關閉視窗</translation>
+        <translation>Lukk vindu</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="505"/>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Close workspace</source>
-        <translation>關閉工作區</translation>
+        <translation>Lukk arbeidsområde</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Horizontal split</source>
-        <translation>橫向分屏</translation>
+        <translation>Horisontal splitt</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Vertical split</source>
-        <translation>縱向分屏</translation>
+        <translation>Vertikal splitt</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="1689"/>
         <source>Find</source>
-        <translation>查找</translation>
+        <translation>Finn</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="355"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="606"/>
         <location filename="../src/common/utils.cpp" line="262"/>
         <source>please set another one.</source>
-        <translation>請重新設置</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>終端是⼀款集⼯作區、多視窗、遠程管理、雷神模式等功能的⾼級終端模擬器。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1656"/>
         <source>Tabs</source>
-        <translation>標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="483"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Close tab</source>
-        <translation>關閉標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select tab</source>
-        <translation>選擇標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1676"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>光標焦點切換至「+」圖標</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1764"/>
         <location filename="../src/common/utils.cpp" line="156"/>
         <source>Select file to upload</source>
-        <translation>選擇要上傳的文件</translation>
+        <translation>Velg en fil å laste op</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1771"/>
         <location filename="../src/common/utils.cpp" line="161"/>
         <source>Upload</source>
-        <translation>上傳</translation>
+        <translation>Last opp</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="229"/>
         <source>Programs are still running in terminal</source>
-        <translation>終端仍然有程序在運行</translation>
+        <translation>Programmer kjører forsatt i terminalen</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="181"/>
         <location filename="../src/common/utils.cpp" line="215"/>
         <source>Close this terminal?</source>
-        <translation>關閉此終端？</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
@@ -731,7 +731,7 @@
         <location filename="../src/common/utils.cpp" line="191"/>
         <location filename="../src/common/utils.cpp" line="211"/>
         <source>Close this window?</source>
-        <translation>關閉這個視窗？</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="193"/>
@@ -743,24 +743,24 @@
         <location filename="../src/main/mainwindow.cpp" line="1834"/>
         <location filename="../src/common/utils.cpp" line="135"/>
         <source>Select a directory to save the file</source>
-        <translation>選擇下載文件的保存目錄</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="229"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation>你確定要解除安裝嗎？</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="242"/>
         <location filename="../src/common/utils.cpp" line="246"/>
         <source>Are you sure you want to uninstall this application?</source>
-        <translation>您確定要卸載終端嗎？</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="243"/>
         <location filename="../src/common/utils.cpp" line="247"/>
         <source>You will not be able to use Terminal any longer.</source>
-        <translation>卸載後將無法再使用該應用。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="485"/>
@@ -769,93 +769,93 @@
         <location filename="../src/common/utils.cpp" line="252"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>取 消</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="253"/>
         <location filename="../src/common/utils.cpp" line="297"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>確 定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="337"/>
         <source>Execute a command in the terminal</source>
-        <translation>在終端運行一個程序</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="340"/>
         <source>Run script string in the terminal</source>
-        <translation>在終端中允許腳本字符串</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="331"/>
         <source>Set the work directory</source>
-        <translation>設置終端的啟動目錄</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="334"/>
         <source>Set the window mode on starting</source>
-        <translation>設置終端開啟的模式</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="343"/>
         <source>Run in quake mode</source>
-        <translation>雷神模式</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="346"/>
         <source>Keep terminal open when command finishes</source>
-        <translation>設置終端顯示命令或腳本執行後的結果</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="429"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="364"/>
         <source>The name should be no more than 32 characters</source>
-        <translation>名稱長度不得超過32個字符</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="499"/>
         <location filename="../src/main/mainwindow.cpp" line="1840"/>
         <location filename="../src/common/utils.cpp" line="141"/>
         <source>Select</source>
-        <translation>選擇</translation>
+        <translation>Velg</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="495"/>
         <source>Select the private key file</source>
-        <translation>選擇私鑰文件</translation>
+        <translation>Velg den private nøkkelfila</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <source>Tab title format</source>
-        <translation>標籤標題格式</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="118"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <source>Remote tab title format</source>
-        <translation>遠程標籤標題格式</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="486"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Close other tabs</source>
-        <translation>關閉其他標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="871"/>
         <source>Delete</source>
         <comment>button</comment>
-        <translation>刪 除</translation>
+        <translation>Slett</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="486"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="225"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>確 定</translation>
+        <translation>Bekreft</translation>
     </message>
 </context>
 <context>
@@ -868,12 +868,12 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
         <source>Add Server</source>
-        <translation>添加伺服器</translation>
+        <translation>Legg til server</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="218"/>
         <source>No servers yet</source>
-        <translation>未添加伺服器</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -881,12 +881,12 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="75"/>
         <source>Remote management</source>
-        <translation>遠程管理</translation>
+        <translation>Fjernstyring</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="201"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation> 在您使用右鍵菜單進行上傳和下載文件之前， 請先確保伺服器已經安裝了rz和sz命令。</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -894,7 +894,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="210"/>
         <source>Search</source>
-        <translation>搜尋</translation>
+        <translation>Søk</translation>
     </message>
 </context>
 <context>
@@ -915,127 +915,127 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="91"/>
         <source>Add Server</source>
-        <translation>添加伺服器</translation>
+        <translation>Legg til server</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="127"/>
         <source>Server name:</source>
-        <translation>伺服器名：</translation>
+        <translation>Tjenernavn:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="129"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="139"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="167"/>
         <source>Required</source>
-        <translation>必填</translation>
+        <translation>Påkrevd</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="137"/>
         <source>Address:</source>
-        <translation>地址：</translation>
+        <translation>Adresse:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="144"/>
         <source>Port:</source>
-        <translation>端口：</translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="165"/>
         <source>Username:</source>
-        <translation>用戶名稱：</translation>
+        <translation>Brukernavn:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="172"/>
         <source>Password:</source>
-        <translation>密碼：</translation>
+        <translation>Passord:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="178"/>
         <source>Certificate:</source>
-        <translation>證書：</translation>
+        <translation>Sertifikat:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="185"/>
         <source>Group:</source>
-        <translation>分組：</translation>
+        <translation>Gruppe:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="192"/>
         <source>Path:</source>
-        <translation>路徑：</translation>
+        <translation>Sti:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="198"/>
         <source>Command:</source>
-        <translation>命令：</translation>
+        <translation>Kommando:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="204"/>
         <source>Encoding:</source>
-        <translation>編碼：</translation>
+        <translation>Enkoding:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="210"/>
         <source>Backspace key:</source>
-        <translation>退格鍵：</translation>
+        <translation>Backspace knappen:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="216"/>
         <source>Delete key:</source>
-        <translation>刪除鍵：</translation>
+        <translation>Sletteknapp:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="222"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>取 消</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="223"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>添 加</translation>
+        <translation>Legg til </translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="227"/>
         <source>Edit Server</source>
-        <translation>編輯伺服器</translation>
+        <translation>Rediger Tjener</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="228"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>保 存</translation>
+        <translation>Lagre</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="423"/>
         <source>Please enter a server name</source>
-        <translation>請輸入伺服器名稱</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="436"/>
         <source>Please enter an IP address</source>
-        <translation>請輸入IP位址</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="441"/>
         <source>Please enter a port</source>
-        <translation>請輸入端口</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="447"/>
         <source>Please enter a username</source>
-        <translation>請輸入用戶名</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="461"/>
         <source>The server name already exists,</source>
-        <translation>該伺服器名已存在，</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="462"/>
         <source>please input another one. </source>
-        <translation>請重新輸入</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1044,7 +1044,7 @@
         <location filename="../src/main/service.cpp" line="351"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>確 定</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -1052,32 +1052,32 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Split screen</source>
-        <translation>分屏</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Fullscreen</source>
-        <translation>全螢幕</translation>
+        <translation>Fullskjerm</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Normal window</source>
-        <translation>正常視窗</translation>
+        <translation>Normalt vindu</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Maximum</source>
-        <translation>最⼤化</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="718"/>
         <source>Fast</source>
-        <translation>快</translation>
+        <translation>Fort</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="723"/>
         <source>Slow</source>
-        <translation>慢</translation>
+        <translation>Sakte</translation>
     </message>
 </context>
 <context>
@@ -1086,14 +1086,14 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="268"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="277"/>
         <source>The shortcut %1 is invalid, </source>
-        <translation>%1為無效快捷鍵，</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="284"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="291"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
         <source>The shortcut %1 was already in use, </source>
-        <translation>快捷鍵%1已被佔用，</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1101,55 +1101,55 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="44"/>
         <source>Insert</source>
-        <translation>插入</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>username: %u</source>
-        <translation>用戶名：%u</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>username@: %U</source>
-        <translation>用戶名@：%U</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>remote host: %h</source>
-        <translation>遠程主機：%h</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>session number: %#</source>
-        <translation>會話編號：%#</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="94"/>
         <source>title set by shell: %w</source>
-        <translation>shell設定的窗口標題：%w</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>program name: %n</source>
-        <translation>程序名：%n</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>current directory (short): %d</source>
-        <translation>當前目錄（短）：%d</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>current directory (long): %D</source>
-        <translation>當前目錄（長）：%D</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>local host: %h</source>
-        <translation>本地主機：%h</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1157,90 +1157,90 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="474"/>
         <source>Copy</source>
-        <translation>複製</translation>
+        <translation>Kopier</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="477"/>
         <source>Paste</source>
-        <translation>貼上</translation>
+        <translation>Lim inn</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="486"/>
         <source>Open</source>
-        <translation>開啟</translation>
+        <translation>Åpne</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="490"/>
         <source>Open in file manager</source>
-        <translation>在文件管理器中打開</translation>
+        <translation>Åpne i filbehandleren</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="499"/>
         <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>Horizontal split</source>
-        <translation>橫向分屏</translation>
+        <translation>Horisontal splitt</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="502"/>
         <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>Vertical split</source>
-        <translation>縱向分屏</translation>
+        <translation>Vertikal splitt</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="512"/>
         <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>New tab</source>
-        <translation>新建標籤頁</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="519"/>
         <source>Exit fullscreen</source>
-        <translation>退出全螢幕</translation>
+        <translation>Lukk fullskjerm</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="521"/>
         <source>Fullscreen</source>
-        <translation>全螢幕</translation>
+        <translation>Fullskjerm</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="524"/>
         <source>Find</source>
-        <translation>查找</translation>
+        <translation>Finn</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="528"/>
         <source>Search</source>
-        <translation>搜尋</translation>
+        <translation>Søk</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="538"/>
         <source>Encoding</source>
-        <translation>編碼</translation>
+        <translation>Enkoding</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="540"/>
         <source>Custom commands</source>
-        <translation>自定義命令</translation>
+        <translation>Egendefinterte kommandoer</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="542"/>
         <source>Remote management</source>
-        <translation>遠程管理</translation>
+        <translation>Fjernstyring</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="546"/>
         <source>Upload file</source>
-        <translation>上傳文件</translation>
+        <translation>Last opp fila</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="547"/>
         <source>Download file</source>
-        <translation>下載文件</translation>
+        <translation>Last ned fil</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="552"/>
         <source>Settings</source>
-        <translation>設置</translation>
+        <translation>Instillinger</translation>
     </message>
 </context>
 <context>
@@ -1250,20 +1250,20 @@
         <location filename="../src/common/utils.cpp" line="231"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>取 消</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="199"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>關 閉</translation>
+        <translation>Lukk</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="232"/>
         <location filename="../src/common/utils.cpp" line="264"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>確 定</translation>
+        <translation>OK</translation>
     </message>
 </context>
 </TS>
