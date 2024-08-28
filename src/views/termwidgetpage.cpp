@@ -163,25 +163,20 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     TermWidget *term = m_currentTerm;
 
     QSplitter *splitter = qobject_cast<QSplitter *>(term->parent());
+    int index = splitter ? splitter->indexOf(term) : m_layout->indexOf(term);
+
     // if there's already a splitter, and the orientation is correct,
     // just add a new term to the splitter.
     if (splitter && splitter->orientation() != orientation) {
         TermProperties properties(term->workingDirectory());
         TermWidget *newTerm  = createTerm(properties);
-        splitter->addWidget(newTerm);
+        splitter->insertWidget(index+1, newTerm);  // insert after the current term
         setSplitStyle(splitter);
         setCurrentTerminal(newTerm);
     } else {
     // if there's no splitter, or the orientation is not correct,
     // create a new splitter, put the 2 terms into the splitter,
-    // and put the splitter the right postion.
-        int index = 0;
-        if (splitter) {
-            index = splitter->indexOf(term);
-        } else {
-            index = m_layout->indexOf(term);
-        }
-
+    // and replace the old term with the splitter.
         QSplitter *newSplitter = createSubSplit(term, orientation);
 
         if (splitter) {
