@@ -6,7 +6,7 @@
 #ifndef TERMWIDGET_H
 #define TERMWIDGET_H
 
-#include "qtermwidget.h"
+#include  "qtermwidget.h"
 #include "termwidgetpage.h"
 
 /*******************************************************************************

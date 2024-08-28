@@ -7,7 +7,7 @@
 
 //dtk
 #include <DApplicationHelper>
-#include <DPalette>
+#include <DPaletteHelper>
 
 // qt
 #include <QDebug>
@@ -30,7 +30,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         return;
 
     QPainter painter(this);
-    DPalette pa = DApplicationHelper::instance()->palette(this);
+    DPalette pa = DPaletteHelper::instance()->palette(this);
     DPalette::ColorType backgroundType = static_cast<DPalette::ColorType>(getBackgroudColorRole());
     // 去锯齿
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);

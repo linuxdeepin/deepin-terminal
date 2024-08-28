@@ -16,6 +16,7 @@
 #include <DDesktopServices>
 #include <DInputDialog>
 #include <DApplicationHelper>
+#include <DPaletteHelper>
 #include <DLog>
 #include <DDialog>
 #include <DFloatingMessage>
@@ -155,7 +156,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setFlowControlEnabled(!Settings::instance()->disableControlFlow());
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
-    //qInfo() << parentPage << endl;
+    //qInfo() << parentPage;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
 }
 
@@ -176,7 +177,7 @@ void TermWidget::initConnections()
 
     // 主题变化只能从公共方法发出信号通知全局
     connect(Service::instance(), &Service::changeColorTheme, this, &TermWidget::onColorThemeChanged);
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &TermWidget::onThemeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &TermWidget::onThemeChanged);
 
     // 未找到搜索的匹配结果
     connect(this, &QTermWidget::sig_noMatchFound, this, &TermWidget::onSig_noMatchFound);
@@ -314,7 +315,7 @@ inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeTyp
     Q_UNUSED(themeType);
     if ("System Theme" == Settings::instance()->colorScheme()) {
         QString theme;
-        if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
+        if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
             theme = "Dark";
         } else {
             theme = "Light";
@@ -717,8 +718,8 @@ void TermWidget::setTheme(const QString &colorTheme)
     QString theme = colorTheme;
     // 跟随系统
     if ("System Theme" == colorTheme) {
-        DApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
-        if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType()) {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
+        if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
             theme = "Dark";
         } else {
             theme = "Light";
@@ -733,7 +734,7 @@ void TermWidget::setTheme(const QString &colorTheme)
         if ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
             systemTheme = DGuiApplicationHelper::LightType;
         }
-        DApplicationHelper::instance()->setPaletteType(systemTheme);
+        DGuiApplicationHelper::instance()->setPaletteType(systemTheme);
         setColorScheme(theme);
         return;
     }

@@ -24,6 +24,7 @@
 
 #include <DSuggestButton>
 #include <DVerticalLine>
+#include <DPaletteHelper>
 
 GroupConfigOptDlg::GroupConfigOptDlg(const QString &groupName, QWidget *parent)
     : DAbstractDialog(false, parent),
@@ -48,7 +49,7 @@ GroupConfigOptDlg::GroupConfigOptDlg(const QString &groupName, QWidget *parent)
     // 字色
     DPalette palette = m_titleLabel->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);
@@ -91,7 +92,7 @@ GroupConfigOptDlg::GroupConfigOptDlg(const QString &groupName, QWidget *parent)
     });
     Utils::setSpaceInWord(pCancelButton);
     Utils::setSpaceInWord(pAddSaveButton);
-    DPalette pa = DApplicationHelper::instance()->palette(pAddSaveButton);
+    DPalette pa = DPaletteHelper::instance()->palette(pAddSaveButton);
     QBrush brush = pa.textLively().color();
     pa.setBrush(DPalette::ButtonText, brush);
     pAddSaveButton->setPalette(pa);

@@ -9,6 +9,7 @@
 #include "iconbutton.h"
 
 // dtk
+#include <DPaletteHelper>
 
 // qt
 #include <QDebug>
@@ -83,6 +84,9 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
     case ItemFuncType_UngroupedItem:
         m_funcButton->hide();
         m_deleteButton->hide();
+        break;
+    default:
+        break;
     }
 
 }
@@ -105,7 +109,7 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
         // 输入的第二行信息
         m_secondText = secondline;
         break;
-    case ItemFuncType_Group:
+    case ItemFuncType_Group:{
         // 第二行 组内服务器个数
         int serverCount = ServerConfigManager::instance()->getServerCount(firstline);
         if (serverCount <= 0) {
@@ -113,6 +117,9 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
             serverCount = 0;
         }
         m_secondText = QString("%1 server").arg(serverCount);
+        break;
+    }
+    default:
         break;
     }
     // 设置第二行信息
@@ -243,6 +250,8 @@ void ItemWidget::onIconButtonClicked()
         qInfo() << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
+    default:
+        break;
     }
 }
 
@@ -362,7 +371,7 @@ void ItemWidget::initUI()
 void ItemWidget::initConnections()
 {
     // 颜色随主题变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ItemWidget::slotThemeChange);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ItemWidget::slotThemeChange);
     // 删除键被点击
     connect(m_deleteButton, &DIconButton::clicked, this, [this] {
         emit itemDelete(m_firstText, m_functType);
@@ -535,7 +544,7 @@ void ItemWidget::setFontSize(DLabel *label, DFontSizeManager::SizeType fontSize)
 
 void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
 {
-    DPalette fontPalette = DApplicationHelper::instance()->palette(label);
+    DPalette fontPalette = DPaletteHelper::instance()->palette(label);
     QColor color = getColor(colorType);
     if (color.isValid()) {
         fontPalette.setBrush(DPalette::Text, color);
@@ -611,6 +620,8 @@ void ItemWidget::onItemClicked()
         break;
     case ItemFuncType_UngroupedItem:
         m_checkBox->setChecked(!m_checkBox->isChecked());
+        break;
+    default:
         break;
     }
 }
