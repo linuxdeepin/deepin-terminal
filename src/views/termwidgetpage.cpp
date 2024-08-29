@@ -19,22 +19,6 @@
 #include <QVBoxLayout>
 #include <QApplication>
 
-static void setEqualSizes(QSplitter *splitter)
-{
-    QList<int> sizes = splitter->sizes();
-    int totalSize = 0;
-    for (int size : sizes) {
-        totalSize += size;
-    }
-
-    int equalSize = totalSize / sizes.size();
-    for (int i = 0; i < sizes.size(); ++i) {
-        sizes[i] = equalSize;
-    }
-
-    splitter->setSizes(sizes);
-}
-
 // Find the previous term widget in the widget tree.
 static TermWidget* WidgetTreeReverseFindTerm(QWidget *widget)
 {
@@ -170,7 +154,15 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     if (splitter && splitter->orientation() != orientation) {
         TermProperties properties(term->workingDirectory());
         TermWidget *newTerm  = createTerm(properties);
+
+        // copy the size of the current term to the new term, so the new term will
+        // keep the same size portion as the current term after the splitter relayout.
+        // this behavior is copied form iTerm2.
+        QList<int> sizes = splitter->sizes();
+        sizes.insert(index+1, sizes.at(index));
         splitter->insertWidget(index+1, newTerm);  // insert after the current term
+        splitter->setSizes(sizes);
+
         setSplitStyle(splitter);
         setCurrentTerminal(newTerm);
     } else {
@@ -180,8 +172,12 @@ void TermWidgetPage::split(Qt::Orientation orientation)
         QSplitter *newSplitter = createSubSplit(term, orientation);
 
         if (splitter) {
+            // see above splitter->insertWidget part to know why.
+            QList<int> sizes = splitter->sizes();
+            sizes.insert(index, sizes.at(index));
             splitter->insertWidget(index, newSplitter);
-            setEqualSizes(splitter);
+            splitter->setSizes(sizes);
+            setSplitStyle(splitter);
         } else {
             m_layout->insertWidget(index, newSplitter);
         }
@@ -204,6 +200,7 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     TermProperties properties(term->workingDirectory());
     term->setParent(nullptr);
     TermWidget *newTerm  = createTerm(properties);
+    newTerm->resize(term->size());
 
     // 意义与名称是相反的
     DSplitter *subSplit = new DSplitter(orientation == Qt::Horizontal ? Qt::Vertical : Qt::Horizontal,
@@ -212,7 +209,6 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     subSplit->setFocusPolicy(Qt::NoFocus);
     subSplit->insertWidget(0, term);
     subSplit->insertWidget(1, newTerm);
-    subSplit->setSizes({ 1, 1 });
     setSplitStyle(subSplit);
     setCurrentTerminal(newTerm);
     /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
