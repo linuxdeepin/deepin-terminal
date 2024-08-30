@@ -169,16 +169,16 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     // if there's no splitter, or the orientation is not correct,
     // create a new splitter, put the 2 terms into the splitter,
     // and replace the old term with the splitter.
-        QSplitter *newSplitter = createSubSplit(term, orientation);
-
         if (splitter) {
             // see above splitter->insertWidget part to know why.
             QList<int> sizes = splitter->sizes();
             sizes.insert(index, sizes.at(index));
+            QSplitter *newSplitter = createSubSplit(term, orientation);
             splitter->insertWidget(index, newSplitter);
             splitter->setSizes(sizes);
             setSplitStyle(splitter);
         } else {
+            QSplitter *newSplitter = createSubSplit(term, orientation);
             m_layout->insertWidget(index, newSplitter);
         }
     }
