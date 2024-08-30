@@ -1131,7 +1131,7 @@ inline void MainWindow::slotShortcutHorizonzalSplit()
     // 判读数量是否允许分屏
     if (Service::instance()->isCountEnable()) {
         TermWidgetPage *page = currentPage();
-        if (page) {
+        if (page && CanSplit(page->currentTerminal(), Qt::Vertical)) {
             page->split(Qt::Horizontal);
             return ;
         }
@@ -1144,7 +1144,7 @@ inline void MainWindow::slotShortcutVerticalSplit()
     // 判读数量是否允许分屏
     if (Service::instance()->isCountEnable()) {
         TermWidgetPage *page = currentPage();
-        if (page) {
+        if (page && CanSplit(page->currentTerminal(), Qt::Horizontal)) {
             page->split(Qt::Vertical);
             return ;
         }

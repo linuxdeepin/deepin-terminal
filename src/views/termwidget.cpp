@@ -38,37 +38,6 @@
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
-
-static bool CanSplit(TermWidget *term, Qt::Orientation ori) {
-    QSplitter *splitter = qobject_cast<QSplitter *>(term->parentWidget());
-    int minimumSize = ori == Qt::Horizontal ? TermWidget::MIN_WIDTH : TermWidget::MIN_HEIGHT;
-    if (splitter) {
-        if (splitter->orientation() == ori) {
-            QList<int> sizes = splitter->sizes();
-            // new term has same size portion as the current one.
-            sizes.append(sizes.at(splitter->indexOf(term)));
-
-            double sum = 0;
-            for (int i = 0; i < sizes.count(); i++) {
-                sum += sizes.at(i);
-            }
-
-            for(int i = 0; i < sizes.count(); i++) {
-                int totalSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
-                int actualSize = (totalSize) * (sizes.at(i) / sum);
-                if (actualSize < minimumSize)
-                    return false;
-            }
-        } else {
-            int splitterSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
-            if (splitterSize / 2.0 < minimumSize)
-                return false;
-        }
-    }
-
-    return true;
-}
-
 TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
     Utils::set_Object_Name(this);
