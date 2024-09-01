@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="68"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>Nama seharusnya tidak lebih daripada 30 aksara</translation>
     </message>
 </context>
 <context>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="849"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation>Padam Perintah Suai</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="852"/>
