@@ -737,7 +737,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>Masih ada proses berjalan dalam tetingkap ini. Menutup tetingkap akan mematikan kesemuanya.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1834"/>
