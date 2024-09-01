@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="859"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>Pelayan tanpa kumpulan akan kembali ke senarai pelayan!</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="484"/>
