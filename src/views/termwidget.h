@@ -65,9 +65,7 @@ class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
-    // 9:6
-    static const int MIN_WIDTH = 180;
-    static const int MIN_HEIGHT = 120;
+    bool canSplit(Qt::Orientation ori);
 
     TermWidget(const TermProperties &properties, QWidget *parent = nullptr);
     ~TermWidget();
@@ -83,6 +81,7 @@ public:
      * @return
      */
     bool isInRemoteServer();
+
 public:
     /**
      * @brief 设置不透明度
@@ -462,37 +461,10 @@ private:
     QString m_remotePassword;
     //是否准备远程
     bool m_remotePasswordIsReady = false;
+
+    // 9:6
+    static const int MIN_WIDTH = 180;
+    static const int MIN_HEIGHT = 120;
 };
-
-static bool CanSplit(TermWidget *term, Qt::Orientation ori) {
-    qDebug() << "CanSplit:" << term << ori;
-    QSplitter *splitter = qobject_cast<QSplitter *>(term->parentWidget());
-    int minimumSize = ori == Qt::Horizontal ? TermWidget::MIN_WIDTH : TermWidget::MIN_HEIGHT;
-    if (splitter) {
-        if (splitter->orientation() == ori) {
-            QList<int> sizes = splitter->sizes();
-            // new term has same size portion as the current one.
-            sizes.append(sizes.at(splitter->indexOf(term)));
-
-            double sum = 0;
-            for (int i = 0; i < sizes.count(); i++) {
-                sum += sizes.at(i);
-            }
-
-            for(int i = 0; i < sizes.count(); i++) {
-                int totalSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
-                int actualSize = (totalSize) * (sizes.at(i) / sum);
-                if (actualSize < minimumSize)
-                    return false;
-            }
-        } else {
-            int splitterSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
-            if (splitterSize / 2.0 < minimumSize)
-                return false;
-        }
-    }
-
-    return true;
-}
 
 #endif  // TERMWIDGET_H
