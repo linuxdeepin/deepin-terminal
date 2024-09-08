@@ -65,6 +65,8 @@ class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
+    bool canSplit(Qt::Orientation ori);
+
     TermWidget(const TermProperties &properties, QWidget *parent = nullptr);
     ~TermWidget();
     /**
@@ -79,6 +81,7 @@ public:
      * @return
      */
     bool isInRemoteServer();
+
 public:
     /**
      * @brief 设置不透明度
@@ -188,13 +191,6 @@ public:
      * @param deleteMode
      */
     void setDeleteMode(const EraseMode &deleteMode);
-
-    /**
-     * @brief 获取当前terminal距离page的层次．用于限定分屏
-     * @author ut000439 王培利
-     * @return
-     */
-    int getTermLayer();
 
     /**
      * @brief 设置标签标题格式（全局设置）
@@ -465,6 +461,10 @@ private:
     QString m_remotePassword;
     //是否准备远程
     bool m_remotePasswordIsReady = false;
+
+    // 9:6
+    static const int MIN_WIDTH = 180;
+    static const int MIN_HEIGHT = 120;
 };
 
 #endif  // TERMWIDGET_H
