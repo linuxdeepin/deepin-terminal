@@ -92,7 +92,7 @@
     <message>
         <location filename="../SearchBar.ui" line="14"/>
         <source>SearchBar</source>
-        <translation>Etsi-palkki</translation>
+        <translation>Hakupalkki</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="20"/>
