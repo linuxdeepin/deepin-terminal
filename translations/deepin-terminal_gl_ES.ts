@@ -415,7 +415,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>New tab</source>
-        <translation type="unfinished"/>
+        <translation>Nova lapela</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
@@ -1190,7 +1190,7 @@
         <location filename="../src/views/termwidget.cpp" line="512"/>
         <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>New tab</source>
-        <translation type="unfinished"/>
+        <translation>Nova lapela</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="519"/>
