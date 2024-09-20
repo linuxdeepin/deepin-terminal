@@ -1129,7 +1129,7 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="94"/>
         <source>title set by shell: %w</source>
-        <translation type="unfinished"/>
+        <translation>título definido por shell: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
