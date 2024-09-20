@@ -690,7 +690,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1676"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Cambia o foco á icona &quot;+&quot;.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1764"/>
