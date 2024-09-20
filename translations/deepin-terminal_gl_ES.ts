@@ -836,7 +836,7 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="118"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <source>Remote tab title format</source>
-        <translation type="unfinished"/>
+        <translation>Formato de título da lapela remota</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="486"/>
