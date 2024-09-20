@@ -612,7 +612,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel atopar &quot;% 1&quot;, comezando &quot;% 2&quot; no seu lugar. Comproba o teu perfil de shell.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1179"/>
