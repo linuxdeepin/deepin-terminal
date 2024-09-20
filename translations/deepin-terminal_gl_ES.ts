@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Shell profile</source>
-        <translation type="unfinished"/>
+        <translation>Perfil de Shell</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>Inclúe caracteres especiais nas seleccións de dobre clic</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="187"/>
