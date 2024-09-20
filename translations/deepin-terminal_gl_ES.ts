@@ -680,12 +680,12 @@
         <location filename="../src/views/tabbar.cpp" line="483"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Close tab</source>
-        <translation type="unfinished"/>
+        <translation>Pechar lapela</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select tab</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar lapela</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1676"/>
