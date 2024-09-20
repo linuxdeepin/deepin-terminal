@@ -830,7 +830,7 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <source>Tab title format</source>
-        <translation type="unfinished"/>
+        <translation>Fomato do título da lapela</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="118"/>
