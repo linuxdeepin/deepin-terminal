@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="64"/>
         <source>Please enter a group name</source>
-        <translation type="unfinished"/>
+        <translation>Insira un nome de grupo</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="68"/>
