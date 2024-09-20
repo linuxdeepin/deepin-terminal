@@ -1101,7 +1101,7 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="44"/>
         <source>Insert</source>
-        <translation type="unfinished"/>
+        <translation>Insirir</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
