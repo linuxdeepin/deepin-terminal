@@ -515,7 +515,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>Desactive o control de fluxo usando Ctrl+S, Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
@@ -674,7 +674,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1656"/>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Lapelas</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="483"/>
