@@ -311,7 +311,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
         <source>Quake window animation speed</source>
-        <translation type="unfinished"/>
+        <translation>Velocidade de animación da xanela Quake</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
