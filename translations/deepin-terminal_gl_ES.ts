@@ -1117,7 +1117,7 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>remote host: %h</source>
-        <translation type="unfinished"/>
+        <translation>host remoto: %h</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
@@ -1134,7 +1134,7 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>program name: %n</source>
-        <translation type="unfinished"/>
+        <translation>nome de programa: %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
