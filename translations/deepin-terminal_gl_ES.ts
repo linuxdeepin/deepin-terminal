@@ -842,7 +842,7 @@
         <location filename="../src/views/tabbar.cpp" line="486"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Close other tabs</source>
-        <translation type="unfinished"/>
+        <translation>Pechar outras lapelas</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="871"/>
