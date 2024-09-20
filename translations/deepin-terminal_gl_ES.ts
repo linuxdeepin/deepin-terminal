@@ -1149,7 +1149,7 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>local host: %h</source>
-        <translation type="unfinished"/>
+        <translation>host local: %h</translation>
     </message>
 </context>
 <context>
