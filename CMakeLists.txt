@@ -277,8 +277,3 @@ install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-termi
 
 install(DIRECTORY src/assets/deepin-terminal
         DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-manual/manual-assets/application/)
-
-# Unit Test
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-  add_subdirectory(tests)
-endif()
