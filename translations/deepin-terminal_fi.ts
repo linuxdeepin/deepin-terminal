@@ -669,7 +669,7 @@
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>Pääte on edistynyt terminal-emulaattori, joka sisältää välilehdet, useita ikkunoita, etähallinan, Quake-tilan ja muita ominaisuuksia.</translation>
+        <translation>Pääte on terminal-emulaattori, joka sisältää välilehdet, useita ikkunoita, etäyhteyden, quake-tilan ja useita muita ominaisuuksia.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1656"/>
