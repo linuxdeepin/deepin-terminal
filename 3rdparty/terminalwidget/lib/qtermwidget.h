@@ -100,6 +100,7 @@ public:
     // Beware of a performance penalty and display/alignment issues when using a proportional font.
     void setTerminalFont(const QFont &font);
     QFont getTerminalFont();
+
     void setTerminalOpacity(qreal level);
     void setTerminalBackgroundImage(QString backgroundImage);
 
@@ -120,6 +121,8 @@ public:
     void setTextCodec(QTextCodec *codec);
 
     void setTerminalWordCharacters(const QString &wc);
+
+    const QColor backgroundColor() const;
 
     /** @brief Sets the color scheme, default is white on black
      *
