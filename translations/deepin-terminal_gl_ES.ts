@@ -462,13 +462,13 @@
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 1</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 2</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
