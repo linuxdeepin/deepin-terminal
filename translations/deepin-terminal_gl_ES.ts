@@ -1123,7 +1123,7 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>session number: %#</source>
-        <translation type="unfinished"/>
+        <translation>número de sesión: %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
