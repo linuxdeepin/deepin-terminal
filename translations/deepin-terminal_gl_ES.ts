@@ -433,7 +433,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Select left workspace</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona o espazo de traballo esquerdo</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
