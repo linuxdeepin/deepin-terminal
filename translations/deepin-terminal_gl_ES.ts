@@ -627,7 +627,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1224"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation type="unfinished"/>
+        <translation>A saída suspendeuse premendo Ctrl+S. Prema Ctrl+Q para retomar.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
