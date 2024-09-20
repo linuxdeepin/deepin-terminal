@@ -474,13 +474,13 @@
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 3</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Go to tab 4</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
