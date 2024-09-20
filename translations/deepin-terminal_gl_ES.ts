@@ -94,7 +94,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="201"/>
         <source>No commands yet</source>
-        <translation type="unfinished"/>
+        <translation>Aínda non hai comandos</translation>
     </message>
 </context>
 <context>
