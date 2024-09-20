@@ -622,7 +622,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1181"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel atopar &quot;% 1&quot;, non foi posíbel executalo</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1224"/>
