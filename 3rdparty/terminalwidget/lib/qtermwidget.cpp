@@ -621,6 +621,17 @@ void QTermWidget::setTerminalWordCharacters(const QString &wc)
     m_impl->m_terminalDisplay->setWordCharacters(wc);
 }
 
+const QColor QTermWidget::backgroundColor() const
+{
+    const ColorEntry *table = m_impl->m_terminalDisplay->colorTable();
+    if (!table) {
+        qWarning() << "get terminal widget background color failed";
+        return QColor(); // Return a default color if the table is null
+    }
+    const QColor &background_color = table[DEFAULT_BACK_COLOR].color;
+    return background_color.isValid() ? background_color : QColor(); // Return a default color if the background color is invalid
+}
+
 /*******************************************************************************
  1. @函数:    setColorScheme
  2. @作者:    ut000125 sunchengxi
