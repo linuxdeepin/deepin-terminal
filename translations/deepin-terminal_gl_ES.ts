@@ -439,7 +439,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select lower workspace</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona o espazo de traballo inferior</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
