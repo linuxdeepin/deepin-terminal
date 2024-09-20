@@ -445,13 +445,13 @@
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Select right workspace</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona o espazo de traballo dereito</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select upper workspace</source>
-        <translation type="unfinished"/>
+        <translation>Seleccione o espazo de traballo superior</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
