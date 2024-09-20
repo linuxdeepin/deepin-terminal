@@ -1144,7 +1144,7 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>current directory (long): %D</source>
-        <translation type="unfinished"/>
+        <translation>directorio actual (longo): %D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
