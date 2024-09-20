@@ -118,12 +118,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="221"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema personalizado</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="245"/>
         <source>Style:</source>
-        <translation type="unfinished"/>
+        <translation>Estilo:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="249"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2124"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema personalizado</translation>
     </message>
 </context>
 <context>
