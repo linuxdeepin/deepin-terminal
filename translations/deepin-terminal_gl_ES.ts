@@ -1107,12 +1107,12 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>username: %u</source>
-        <translation type="unfinished"/>
+        <translation>nome de usuario: %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>username@: %U</source>
-        <translation type="unfinished"/>
+        <translation>nome de usuario/a: %U</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
