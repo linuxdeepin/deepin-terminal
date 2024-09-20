@@ -456,7 +456,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Tab titles</source>
-        <translation type="unfinished"/>
+        <translation>Títulos das lapelas</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
