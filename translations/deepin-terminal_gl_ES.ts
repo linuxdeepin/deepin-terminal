@@ -1139,7 +1139,7 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>current directory (short): %d</source>
-        <translation type="unfinished"/>
+        <translation>directorio actual (curto): %d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
