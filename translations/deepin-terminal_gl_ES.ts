@@ -873,7 +873,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="218"/>
         <source>No servers yet</source>
-        <translation type="unfinished"/>
+        <translation>Ainda non hai servidores</translation>
     </message>
 </context>
 <context>
