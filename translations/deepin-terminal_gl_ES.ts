@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="337"/>
         <source>Prompt PS2:</source>
-        <translation type="unfinished"/>
+        <translation>Pregunta PS2:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="408"/>
