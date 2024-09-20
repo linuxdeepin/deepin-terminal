@@ -138,12 +138,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="308"/>
         <source>Fore color:</source>
-        <translation type="unfinished"/>
+        <translation>Cor dianteira:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="315"/>
         <source>Back color:</source>
-        <translation type="unfinished"/>
+        <translation>Cor traseira:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="333"/>
