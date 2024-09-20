@@ -421,7 +421,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Next tab</source>
-        <translation type="unfinished"/>
+        <translation>Seguinte lapela</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
