@@ -504,7 +504,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Go to tab 8</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
