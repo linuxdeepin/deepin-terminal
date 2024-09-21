@@ -94,7 +94,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="201"/>
         <source>No commands yet</source>
-        <translation type="unfinished"/>
+        <translation>Aínda non hai comandos</translation>
     </message>
 </context>
 <context>
@@ -118,12 +118,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="221"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema personalizado</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="245"/>
         <source>Style:</source>
-        <translation type="unfinished"/>
+        <translation>Estilo:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="249"/>
@@ -138,22 +138,22 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="308"/>
         <source>Fore color:</source>
-        <translation type="unfinished"/>
+        <translation>Cor dianteira:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="315"/>
         <source>Back color:</source>
-        <translation type="unfinished"/>
+        <translation>Cor traseira:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="333"/>
         <source>Prompt PS1:</source>
-        <translation type="unfinished"/>
+        <translation>Pregunta PS1:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="337"/>
         <source>Prompt PS2:</source>
-        <translation type="unfinished"/>
+        <translation>Pregunta PS2:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="408"/>
@@ -173,17 +173,17 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="38"/>
         <source>Group Name(Required)</source>
-        <translation type="unfinished"/>
+        <translation>Nome do grupo (requerido)</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="40"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Engadir grupo</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="43"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>Editar grupo</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="59"/>
@@ -203,12 +203,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="64"/>
         <source>Please enter a group name</source>
-        <translation type="unfinished"/>
+        <translation>Insira un nome de grupo</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="68"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>O nome non debe ter máis de 30 caracteres</translation>
     </message>
 </context>
 <context>
@@ -221,17 +221,17 @@
     <message>
         <location filename="../src/views/listview.cpp" line="849"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar comando personalizado</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="852"/>
         <source>Cancel Server Group</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar grupo de servidores</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="859"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>Os servidores desagrupados volverán á lista de servidores.</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="484"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2124"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema personalizado</translation>
     </message>
 </context>
 <context>
@@ -311,7 +311,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
         <source>Quake window animation speed</source>
-        <translation type="unfinished"/>
+        <translation>Velocidade de animación da xanela Quake</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
@@ -415,122 +415,122 @@
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>New tab</source>
-        <translation type="unfinished"/>
+        <translation>Nova lapela</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Next tab</source>
-        <translation type="unfinished"/>
+        <translation>Seguinte lapela</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Previous tab</source>
-        <translation type="unfinished"/>
+        <translation>Lapela anterior</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Select left workspace</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona o espazo de traballo esquerdo</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select lower workspace</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona o espazo de traballo inferior</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1706"/>
         <source>Select right workspace</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona o espazo de traballo dereito</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select upper workspace</source>
-        <translation type="unfinished"/>
+        <translation>Seleccione o espazo de traballo superior</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Tab titles</source>
-        <translation type="unfinished"/>
+        <translation>Títulos das lapelas</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 1</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 2</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1707"/>
         <source>Go to tab 3</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Go to tab 4</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Go to tab 5</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 5</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <location filename="../src/main/mainwindow.cpp" line="1708"/>
         <source>Go to tab 6</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 6</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Go to tab 7</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 7</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Go to tab 8</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1709"/>
         <source>Go to tab 9</source>
-        <translation type="unfinished"/>
+        <translation>Ir á lapela 9</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>Desactive o control de fluxo usando Ctrl+S, Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Shell profile</source>
-        <translation type="unfinished"/>
+        <translation>Perfil de Shell</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>Tamaño da historia</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>Inclúe caractere(s) especiais nas seleccións de dobre clic</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="187"/>
@@ -612,22 +612,22 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1173"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel atopar &quot;% 1&quot;, comezando &quot;% 2&quot; no seu lugar. Comproba o teu perfil de shell.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1179"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel abrir &quot;% 1&quot;, non foi posíbel executalo</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1181"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel atopar &quot;% 1&quot;, non foi posíbel executalo</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1224"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation type="unfinished"/>
+        <translation>A saída suspendeuse premendo Ctrl+S. Prema Ctrl+Q para retomar.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
@@ -674,23 +674,23 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1656"/>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Lapelas</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="483"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Close tab</source>
-        <translation type="unfinished"/>
+        <translation>Pechar lapela</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Select tab</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar lapela</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1676"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Cambia o foco á icona &quot;+&quot;.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1764"/>
@@ -719,13 +719,13 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>Aínda hai un proceso en execución neste terminal. Ao pechar o terminal finalizarase.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>Aínda hai %1 procesos en execución neste terminal. Pechar o terminal dará todos por finalizados.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="191"/>
@@ -737,7 +737,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>Aínda hai procesos en execución nesta xanela. Ao pechar a xanela rematará con todos.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1834"/>
@@ -830,19 +830,19 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="116"/>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <source>Tab title format</source>
-        <translation type="unfinished"/>
+        <translation>Fomato do título da lapela</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="118"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <source>Remote tab title format</source>
-        <translation type="unfinished"/>
+        <translation>Formato de título da lapela remota</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="486"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Close other tabs</source>
-        <translation type="unfinished"/>
+        <translation>Pechar outras lapelas</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="871"/>
@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="212"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Engadir grupo</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
@@ -873,7 +873,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="218"/>
         <source>No servers yet</source>
-        <translation type="unfinished"/>
+        <translation>Ainda non hai servidores</translation>
     </message>
 </context>
 <context>
@@ -902,12 +902,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>Grupos</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation>Servidores</translation>
     </message>
 </context>
 <context>
@@ -1101,55 +1101,55 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="44"/>
         <source>Insert</source>
-        <translation type="unfinished"/>
+        <translation>Insirir</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>username: %u</source>
-        <translation type="unfinished"/>
+        <translation>nome de usuario: %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>username@: %U</source>
-        <translation type="unfinished"/>
+        <translation>nome de usuario/a: %U</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="79"/>
         <source>remote host: %h</source>
-        <translation type="unfinished"/>
+        <translation>host remoto: %h</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>session number: %#</source>
-        <translation type="unfinished"/>
+        <translation>número de sesión: %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="80"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="94"/>
         <source>title set by shell: %w</source>
-        <translation type="unfinished"/>
+        <translation>título definido por shell: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>program name: %n</source>
-        <translation type="unfinished"/>
+        <translation>nome de programa: %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="91"/>
         <source>current directory (short): %d</source>
-        <translation type="unfinished"/>
+        <translation>directorio actual (curto): %d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="92"/>
         <source>current directory (long): %D</source>
-        <translation type="unfinished"/>
+        <translation>directorio actual (longo): %D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="93"/>
         <source>local host: %h</source>
-        <translation type="unfinished"/>
+        <translation>host local: %h</translation>
     </message>
 </context>
 <context>
@@ -1190,7 +1190,7 @@
         <location filename="../src/views/termwidget.cpp" line="512"/>
         <location filename="../src/views/termwidget.cpp" line="558"/>
         <source>New tab</source>
-        <translation type="unfinished"/>
+        <translation>Nova lapela</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="519"/>
