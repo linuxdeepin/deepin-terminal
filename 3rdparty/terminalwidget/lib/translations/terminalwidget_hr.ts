@@ -69,7 +69,7 @@
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ne mogu učitati shemu boja: %1</translation>
     </message>
 </context>
 <context>
