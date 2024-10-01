@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>Veličina povijesti</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
