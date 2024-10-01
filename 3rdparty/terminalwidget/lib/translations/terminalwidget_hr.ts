@@ -64,7 +64,7 @@
     <message>
         <location filename="../qtermwidget.cpp" line="451"/>
         <source>Color Scheme Error</source>
-        <translation type="unfinished"/>
+        <translation>Greška sheme boja</translation>
     </message>
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
