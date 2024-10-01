@@ -64,12 +64,12 @@
     <message>
         <location filename="../qtermwidget.cpp" line="451"/>
         <source>Color Scheme Error</source>
-        <translation type="unfinished"/>
+        <translation>Greška sheme boja</translation>
     </message>
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ne mogu učitati shemu boja: %1</translation>
     </message>
 </context>
 <context>
