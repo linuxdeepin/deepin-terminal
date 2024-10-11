@@ -178,12 +178,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="40"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj grupu</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="43"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>Uredi grupu</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="59"/>
@@ -203,12 +203,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="64"/>
         <source>Please enter a group name</source>
-        <translation type="unfinished"/>
+        <translation>Molim unesite ime grupe</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="68"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>Ime ne bi trebalo biti veće od 30 znakova</translation>
     </message>
 </context>
 <context>
@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>Veličina povijesti</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
@@ -842,7 +842,7 @@
         <location filename="../src/views/tabbar.cpp" line="486"/>
         <location filename="../src/main/mainwindow.cpp" line="1704"/>
         <source>Close other tabs</source>
-        <translation type="unfinished"/>
+        <translation>Zatvori ostale kartice</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="871"/>
@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="212"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj grupu</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
@@ -902,12 +902,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>Grupe</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation>Poslužitelji</translation>
     </message>
 </context>
 <context>
