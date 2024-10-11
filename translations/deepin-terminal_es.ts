@@ -617,7 +617,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1179"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>No se pudo abrir &quot;% 1&quot;, no se pudo ejecutar</translation>
+        <translation>No se pudo abrir &quot;%1&quot;, no se puede ejecutar</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1181"/>
