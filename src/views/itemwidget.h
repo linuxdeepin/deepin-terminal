@@ -164,6 +164,11 @@ public slots:
      */
     void onFocusOut(Qt::FocusReason type);
 
+    /**
+     * @brief 根据布局模式(紧凑)切换更新界面布局, 将被外部 ListView 统一调用，为公共接口
+     */
+    void updateSizeMode();
+ 
 signals:
     // 功能按钮被点击
     // 参数: item的名称 (数据的唯一值)

@@ -9,7 +9,6 @@
 #include "define.h"
 #include "termproperties.h"
 #include "pagesearchbar.h"
-#include "mainwindow.h"
 #include "utils.h"
 #include "tabrenamedlg.h"
 
@@ -361,7 +360,7 @@ private slots:
      * @author ut000438 王亮
      * @param keyword 搜索关键词
      */
-    void handleKeywordChanged(QString keyword);
+    void handleKeywordChanged(const QString &keyword);
     /**
      * @brief 处理主题变化的槽
      * @author ut000438 王亮

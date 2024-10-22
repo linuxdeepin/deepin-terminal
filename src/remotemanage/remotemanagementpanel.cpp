@@ -205,12 +205,9 @@ void RemoteManagementPanel::initUI()
     m_pushButton = new DPushButton(this);
     m_pushButton->setObjectName("RemoteAddPushButton");
 
-    m_searchEdit->setFixedHeight(COMMONHEIGHT);
     m_searchEdit->setClearButtonEnabled(true);
 
-    m_addGroupButton->setFixedHeight(COMMONHEIGHT);
     m_addGroupButton->setText(tr("Add Group"));
-    m_pushButton->setFixedHeight(COMMONHEIGHT);
     m_pushButton->setText(tr("Add Server"));
 
     m_textLabel = new DLabel(this);
@@ -296,6 +293,5 @@ void RemoteManagementPanel::initUI()
                 qInfo() << "set focus on add search edit";
             }
         }
-
     });
 }

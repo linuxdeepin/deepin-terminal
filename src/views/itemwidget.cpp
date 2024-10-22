@@ -15,6 +15,12 @@
 #include <QDebug>
 #include <QApplication>
 
+// 不同布局模式配置
+const int s_ItemHeight = 60;
+const QMargins s_ItemIconContentMargins = {8, 8, 8, 8};
+const int s_ItemHeightCompact = 52;
+const QMargins s_ItemIconContentMarginsCompact = {4, 4, 4, 4};
+
 // 需要选择Item类型
 ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
     : FocusFrame(parent, ItemFuncType_UngroupedItem == itemType)
@@ -280,6 +286,27 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
     }
 }
 
+/**
+ * @brief 根据布局模式(紧凑)变更更新界面布局，ItemWidget 不绑定变更信号，
+ *      而是通过外部 ListView 处理。
+ */
+void ItemWidget::updateSizeMode()
+{
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::isCompactMode()) {
+        m_iconLayout->setContentsMargins(s_ItemIconContentMarginsCompact);
+        setFixedSize(220, s_ItemHeightCompact);
+        setFont(m_firstline, DFontSizeManager::T6, ItemTextColor_Text);
+        setFont(m_secondline, DFontSizeManager::T7, ItemTextColor_TextTips);
+    } else {
+        m_iconLayout->setContentsMargins(s_ItemIconContentMargins);
+        setFixedSize(220, s_ItemHeight);
+        setFont(m_firstline, DFontSizeManager::T7, ItemTextColor_Text);
+        setFont(m_secondline, DFontSizeManager::T8, ItemTextColor_TextTips);
+    }
+#endif
+}
+
 void ItemWidget::initUI()
 {
     if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel)
@@ -366,6 +393,9 @@ void ItemWidget::initUI()
     }
     m_mainLayout->addStretch();
     setLayout(m_mainLayout);
+
+    // 根据不同布局初始化界面
+    updateSizeMode();
 }
 
 void ItemWidget::initConnections()

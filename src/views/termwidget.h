@@ -6,6 +6,8 @@
 #ifndef TERMWIDGET_H
 #define TERMWIDGET_H
 
+#include <DFloatingMessage>
+
 #include  "qtermwidget.h"
 #include "termwidgetpage.h"
 

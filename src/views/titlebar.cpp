@@ -14,6 +14,10 @@
 #include <QDebug>
 #include <QMouseEvent>
 
+#ifdef DTKWIDGET_CLASS_DSizeMode
+#include <DSizeMode>
+#endif
+
 static const int VER_RESIZED_ALLOWED_OFF = 3;//允许的垂直偏移量
 static const int VER_RESIZED_MIN_HEIGHT = 30;//resize的最小高度
 
@@ -29,10 +33,18 @@ TitleBar::TitleBar(QWidget *parent) : QWidget(parent), m_layout(new QHBoxLayout(
 //    this->setPalette(palette);
     this->setBackgroundRole(DPalette::Base);
     this->setAutoFillBackground(true);
-    // daizhengwen fix bug#22927 动画出的矩形框会 -50 设置标题栏为50
-    this->setFixedHeight(WIN_TITLE_BAR_HEIGHT);
     /********************* Modify by m000714 daizhengwen End ************************/
     m_layout->setContentsMargins(0, 0, 0, 0);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    setFixedHeight(DSizeModeHelper::element(WIN_TITLE_BAR_HEIGHT_COMPACT, WIN_TITLE_BAR_HEIGHT));
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
+        setFixedHeight(DSizeModeHelper::element(WIN_TITLE_BAR_HEIGHT_COMPACT, WIN_TITLE_BAR_HEIGHT));
+    });
+#else
+    // daizhengwen fix bug#22927 动画出的矩形框会 -50 设置标题栏为50
+    this->setFixedHeight(WIN_TITLE_BAR_HEIGHT);
+#endif
 }
 
 TitleBar::~TitleBar()

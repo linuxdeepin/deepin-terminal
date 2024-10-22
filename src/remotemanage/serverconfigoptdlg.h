@@ -30,8 +30,7 @@
 #include <DPushButton>
 #include <DAlertControl>
 #include <dfilechooseredit.h>
-#include <DWidget>
-#include <DScrollArea>
+#include <DVerticalLine>
 
 #include <QAction>
 
@@ -109,6 +108,11 @@ private slots:
     void slotFileChooseDialog();
     void handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType);
 
+    /**
+     * @brief 根据布局模式(紧凑)变更更新界面布局
+     */
+    void updateSizeMode();
+
 private:
     ServerConfigOptType m_type;
     ServerConfig *m_curServer = nullptr;
@@ -130,6 +134,7 @@ private:
     DComboBox *m_deleteKey = nullptr;
     bool m_bDelOpt = false;
     QGridLayout *m_pGridLayout = nullptr;
+    DVerticalLine *m_bottomVLine = nullptr;
 
     /**
      * @brief 服务器配置选项初始化UI界面
@@ -167,7 +172,6 @@ private:
      * @author m000714 戴正文
      */
     inline void setLabelStyle(DLabel *);
-
 };
 
 #endif  // SERVERCONFIGOPTDLG_H

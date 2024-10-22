@@ -8,7 +8,6 @@
 #include "termwidget.h"
 #include "termwidgetpage.h"
 #include "windowsmanager.h"
-#include "terminalapplication.h"
 #include "private/qtabbar_p.h"
 
 #include <DApplication>
@@ -26,6 +25,10 @@
 #include <QDesktopWidget>
 #include <QPainterPath>
 #include <QMimeData>
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+#include <DSizeMode>
+#endif
 
 //TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
@@ -162,7 +165,6 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setFocusPolicy(Qt::TabFocus);
     setStartDragDistance(40);
 
-    setTabHeight(36);
     setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
 
@@ -190,12 +192,6 @@ TabBar::~TabBar()
 
     if (m_termTabStyle != nullptr)
         delete m_termTabStyle;
-}
-
-void TabBar::setTabHeight(int tabHeight)
-{
-    m_tabHeight = tabHeight;
-    setFixedHeight(tabHeight);
 }
 
 void TabBar::setTabItemMinWidth(int tabItemMinWidth)
@@ -829,13 +825,21 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 QSize TabBar::minimumTabSizeHint(int index) const
 {
     Q_UNUSED(index)
-    return QSize(m_tabItemMinWidth, m_tabHeight);
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    return QSize(m_tabItemMinWidth, DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+#else
+    return QSize(m_tabItemMinWidth, COMMONHEIGHT);
+#endif
 }
 
 QSize TabBar::maximumTabSizeHint(int index) const
 {
     Q_UNUSED(index)
-    return QSize(m_tabItemMaxWidth, m_tabHeight);
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    return QSize(m_tabItemMaxWidth, DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+#else
+    return QSize(m_tabItemMinWidth, COMMONHEIGHT);
+#endif
 }
 
 void TabBar::setNeedChangeTextColor(const QString &tabIdentifier, const QColor &color)
