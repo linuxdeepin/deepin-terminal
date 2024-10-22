@@ -6,11 +6,12 @@
 #include "tabrenamedlg.h"
 #include "utils.h"
 
-#include <DVerticalLine>
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 
 #include <QEvent>
 #include <QKeyEvent>
+#include <QTimer>
 #include <QDebug>
 
 TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
@@ -24,7 +25,7 @@ void TabRenameDlg::initUi()
 {
     setWindowModality(Qt::ApplicationModal);
     // 设置最小值 => 以免一开始挤在一起
-    setMinimumSize(456, 226);
+    setMinimumWidth(SETTING_DIALOG_WIDTH);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -151,8 +152,14 @@ void TabRenameDlg::initContentWidget()
     // 添加控件
     m_mainLayout->setSpacing(10);
     m_mainLayout->addWidget(m_titlelabel);
-    m_mainLayout->addWidget(m_normalWidget);
-    m_mainLayout->addWidget(m_remoteWidget);
+
+    QVBoxLayout *contentLayout = new QVBoxLayout();
+    contentLayout->setSpacing(10);
+    contentLayout->setContentsMargins(20, 0, 20, 10);
+    contentLayout->addWidget(m_normalWidget);
+    contentLayout->addWidget(m_remoteWidget);
+    m_mainLayout->addLayout(contentLayout);
+
     m_mainLayout->addWidget(m_buttonWidget);
 
     contentwidget->setLayout(m_mainLayout);
@@ -180,6 +187,20 @@ void TabRenameDlg::initConnections()
     connect(m_closeButton, &DPushButton::clicked, this, [ = ] {
         close();
     });
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    updateSizeMode();
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, &TabRenameDlg::updateSizeMode);
+    // 字体变更时进行重新布局
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::fontChanged, this, [this](){
+        if (isVisible() && layout()) {
+            layout()->invalidate();
+            // 根据新界面布局，刷新界面大小
+            updateGeometry();
+            QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, minimumSizeHint().height()); });
+        }
+    });
+#endif
 }
 
 void TabRenameDlg::initTitleLabel()
@@ -219,20 +240,47 @@ void TabRenameDlg::initButtonWidget()
 
     m_cancelButton = new DPushButton(QObject::tr("Cancel", "button"));
     Utils::setSpaceInWord(m_cancelButton);
-    m_cancelButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_cancelButton, DFontSizeManager::T6);
 
     m_confirmButton = new DSuggestButton(QObject::tr("Confirm", "button"));
     Utils::setSpaceInWord(m_confirmButton);
-    m_confirmButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     DFontSizeManager::instance()->bind(m_confirmButton, DFontSizeManager::T6);
 
-    DVerticalLine *verticalLine = new DVerticalLine;
-    verticalLine->setFixedSize(1, 28);
+    m_verticalLine = new DVerticalLine;
+    m_verticalLine->setFixedSize(1, 28);
 
     buttonTAbLayout->addWidget(m_cancelButton);
-    buttonTAbLayout->addWidget(verticalLine);
+    buttonTAbLayout->addWidget(m_verticalLine);
     buttonTAbLayout->addWidget(m_confirmButton);
 
     m_buttonWidget->setLayout(buttonTAbLayout);
+}
+
+/**
+ * @brief 接收 DGuiApplicationHelper::sizeModeChanged() 信号, 根据不同的布局模式调整
+ *      当前界面的布局. 只能在界面创建完成后调用.
+ */
+void TabRenameDlg::updateSizeMode()
+{
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::isCompactMode()) {
+        m_titleBar->setFixedHeight(WIN_TITLE_BAR_HEIGHT_COMPACT);
+        m_logoIcon->setPixmap(QIcon::fromTheme("deepin-terminal").pixmap(QSize(ICON_CTX_SIZE_24, ICON_CTX_SIZE_24)));
+        m_closeButton->setIconSize(QSize(ICONSIZE_40_COMPACT, ICONSIZE_40_COMPACT));
+        m_verticalLine->setFixedSize(1, VERTICAL_HEIGHT_COMPACT);
+
+    } else {
+        m_titleBar->setFixedHeight(WIN_TITLE_BAR_HEIGHT);
+        m_logoIcon->setPixmap(QIcon::fromTheme("deepin-terminal").pixmap(QSize(ICON_CTX_SIZE_32, ICON_CTX_SIZE_32)));
+        m_closeButton->setIconSize(QSize(ICONSIZE_50, ICONSIZE_50));
+        m_verticalLine->setFixedSize(1, VERTICAL_HEIGHT);
+    }
+
+    if (layout()) {
+        layout()->invalidate();
+    }
+    // 根据新界面布局，刷新界面大小
+    updateGeometry();
+    QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, minimumSizeHint().height()); });
+#endif
 }

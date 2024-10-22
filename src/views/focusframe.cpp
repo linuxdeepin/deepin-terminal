@@ -35,11 +35,14 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     // 去锯齿
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
     painter.setRenderHint(QPainter::Antialiasing);
+
     // 焦点若在，则画边框
     if (m_isFocus) {
         // 边框
         QPainterPath FramePath;
-        paintRoundedRect(FramePath, QRect(2, 2, m_isWideFrame ? 358 : 218, 58));
+        // 效果和以下代码类似，兼容紧凑模式
+        // 类似: paintRoundedRect(FramePath, QRect(2, 2, 218, 58));
+        paintRoundedRect(FramePath, rect().adjusted(2, 2, 0, 0));
         // 获取活动色
         QPen pen(pa.color(DPalette::Highlight), 2);
         painter.setPen(pen);
@@ -48,7 +51,8 @@ void FocusFrame::paintEvent(QPaintEvent *event)
 
         // 绘制背景
         QPainterPath itemBackgroudPath;
-        paintRoundedRect(itemBackgroudPath, QRect(4, 4, m_isWideFrame ? 354 : 214, 54));
+        // 类似: paintRoundedRect(itemBackgroudPath, QRect(4, 4, 214, 54));
+        paintRoundedRect(FramePath, rect().adjusted(4, 4, -2, -2));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变
@@ -57,7 +61,8 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         // 焦点不在，不绘制
         // 绘制背景
         QPainterPath itemBackgroudPath;
-        paintRoundedRect(itemBackgroudPath, QRect(0, 0, m_isWideFrame ? 360 : 220, 60));
+        // 类似: paintRoundedRect(itemBackgroudPath, QRect(0, 0, 220, 60));
+        paintRoundedRect(itemBackgroudPath, rect().adjusted(0, 0, 1, 1));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变

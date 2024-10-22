@@ -323,6 +323,11 @@ private:
     void onCustomItemModify(const QString &key, bool isFocusOn);
 
     void deleteItem(const QString &key, ItemFuncType type);
+
+    /**
+     * @brief 根据布局模式(紧凑)变更更新界面布局
+     */
+    Q_SLOT void updateSizeMode();
 };
 
 #endif // LISTVIEW_H

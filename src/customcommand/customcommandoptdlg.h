@@ -24,6 +24,7 @@
 #include <DWindowCloseButton>
 #include <DPushButton>
 #include <DSuggestButton>
+#include <DVerticalLine>
 #include <DGuiApplicationHelper>
 
 #include <QVBoxLayout>
@@ -203,6 +204,11 @@ private slots:
 
     void slotSetShortCutLineEditFocus();
 
+    /**
+     * @brief 根据布局模式(紧凑)变更更新界面布局
+     */
+    void updateSizeMode();
+
 private:
     /**
      * @brief 初始化自定义命令操作窗口界面布局
@@ -232,8 +238,11 @@ private:
     QVBoxLayout *m_contentLayout = nullptr;
     QVBoxLayout *m_mainLayout = nullptr;
 
+    QWidget *m_deleteCmdWidget = nullptr;
+
     DPushButton *m_cancelBtn = nullptr;
     DSuggestButton *m_confirmBtn = nullptr;
+    DVerticalLine *m_verticalLine = nullptr;
 
     QDialog::DialogCode m_confirmResultCode;
     // 快捷键冲突弹窗
@@ -247,7 +256,14 @@ private:
     const int m_iLayoutRightSize = 30;
 
     const int m_iFixedWidth = 459;
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    const int m_iFixedHeight = 34;
+    const int m_iFixedHeightCompact = 24;
+    const int m_iSpaceSizeSeven = 7;
+#else
     const int m_iFixedHeight = 54;
+    const int m_iSpaceSizeEighteen = 18;
+#endif
 
     const int m_iFixedHeightAddSize = 262;
     const int m_iFixedHeightEditSize = 296;
@@ -256,7 +272,6 @@ private:
 
     const int m_iSpaceSizeZero = 0;
     const int m_iSpaceSizeTen = 10;
-    const int m_iSpaceSizeEighteen = 18;
 
     const int m_iSingleShotTime = 30;
 

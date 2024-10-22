@@ -15,6 +15,7 @@
 #include <DWindowCloseButton>
 #include <DPushButton>
 #include <DToolButton>
+#include <DVerticalLine>
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -123,6 +124,12 @@ Q_SIGNALS:
     void tabTitleFormatRename(const QString &tabTitleFormat, const QString &remoteTabTitleFormat);
 
 private:
+    /**
+     * @brief 根据布局模式(紧凑)切换更新界面布局
+     */
+    Q_SLOT void updateSizeMode();
+
+private:
     QWidget *m_titleBar = nullptr;
     QWidget *m_content = nullptr;
     QWidget *m_normalWidget = nullptr;
@@ -143,9 +150,9 @@ private:
     DLabel *m_titlelabel = nullptr;
     DPushButton *m_cancelButton = nullptr;
     DSuggestButton *m_confirmButton = nullptr;
+    DVerticalLine *m_verticalLine = nullptr;
 
     DWindowCloseButton *m_closeButton = nullptr;
-
 };
 
 #endif // TABRENAMEDLG_H
