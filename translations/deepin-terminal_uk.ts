@@ -173,17 +173,17 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="38"/>
         <source>Group Name(Required)</source>
-        <translation type="unfinished"/>
+        <translation>Назва групи (обов&apos;язкова)</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="40"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Додати групу</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="43"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>Змінити групу</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="59"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="68"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>Кількість символів у назві не повинна перевищувати 30</translation>
     </message>
 </context>
 <context>
@@ -221,17 +221,17 @@
     <message>
         <location filename="../src/views/listview.cpp" line="849"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити нетипову команду</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="852"/>
         <source>Cancel Server Group</source>
-        <translation type="unfinished"/>
+        <translation>Скасувати групування серверів</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="859"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>Незгруповані сервери буде повернуто до списку серверів!</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="484"/>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>Включити спеціальні символи у позначене подвійним клацанням</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="187"/>
@@ -719,13 +719,13 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>У цьому терміналі не завершено роботу одного з процесів. Закриття термінала призведе до примусового завершення роботи процесу.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>У цьому терміналі не завершено роботу %1 процесів. Закриття термінала призведе до примусового завершення роботи усіх цих процесів.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="191"/>
@@ -737,7 +737,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>У цьому терміналі не завершено роботу процесів. Закриття термінала призведе до примусового завершення роботи усіх цих процесів.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1834"/>
@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="212"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Додати групу</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
@@ -902,12 +902,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>Групи</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation>Сервери</translation>
     </message>
 </context>
 <context>
