@@ -719,7 +719,7 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>У цьому терміналі не завершено роботу одного з процесів. Закриття термінала призведе до примусового завершення роботи процесу.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
