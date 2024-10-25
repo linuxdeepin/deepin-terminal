@@ -1,3 +1,10 @@
+deepin-terminal (6.0.15) unstable; urgency=medium
+
+  * Release 6.0.15
+  * feat: [UI] Adapt compact mode.(https://pms.uniontech.com/bug-view-279709.html)
+
+ -- Zhang Kun <zhangkun2@uniontech.com>  Fri, 25 Oct 2024 18:09:30 +0800
+
 deepin-terminal (6.0.14) unstable; urgency=medium
 
   * chore: Update translation (#346)
