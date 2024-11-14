@@ -725,7 +725,7 @@
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>Bu uçbirimde hala %1 işlem çalışıyor. Uçbirimi kapatmak hepsini sonlandıracaktır.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="191"/>
