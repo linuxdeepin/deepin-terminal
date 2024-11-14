@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="849"/>
         <source>Delete Custom Command</source>
-        <translation>Özel komutları sil</translation>
+        <translation>Özel komutu sil</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="852"/>
