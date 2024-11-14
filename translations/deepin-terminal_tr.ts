@@ -902,7 +902,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>Gruplar</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
