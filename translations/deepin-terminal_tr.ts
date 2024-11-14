@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>Include special character(s) in double click selections</source>
-        <translation>Çift tıklatma seçimlerine özel karakterler ekleyin</translation>
+        <translation>Çift tıklatma seçimlerine özel karakter(ler) ekleyin</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="187"/>
