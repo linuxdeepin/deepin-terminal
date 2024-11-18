@@ -419,6 +419,18 @@
                             "text": "Disable flow control using Ctrl+S, Ctrl+Q",
                             "type": "checkbox",
                             "default": "false"
+                        },
+                        {
+                            "key": "enable_debuginfod",
+                            "text": "debuginfod",
+                            "type": "checkbox",
+                            "default": "true"
+                        },
+                        {
+                            "key": "debuginfod_urls",
+                            "name": "debuginfod urls",
+                            "type": "lineedit",
+                            "default": "https://debuginfod.deepin.com"
                         }
                     ]
                 }
