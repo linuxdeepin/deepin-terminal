@@ -209,6 +209,12 @@ public:
      * @return
      */
     bool enableControlFlow(void);
+    bool disableControlFlow(void);
+    // 是否启用debuginfod：设置或取消DEBUGINFOD_URLS环境变量
+    bool enableDebuginfod();
+    // deepin-terminal设置的DEBUGINFOD_URLS环境变量值
+    QString debuginfodUrls();
+
     /**
      * @brief 历史记录行数
      * @author Archie Meng
