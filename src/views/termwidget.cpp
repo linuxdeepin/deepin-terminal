@@ -52,6 +52,15 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setHistorySize(Settings::instance()->historySize());
     setTerminalWordCharacters(Settings::instance()->wordCharacters());
 
+    // 设置debuginfod
+    if (Settings::instance()->enableDebuginfod()) {
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        if (!env.contains("DEBUGINFOD_URLS")) {
+            env.insert("DEBUGINFOD_URLS", Settings::instance()->debuginfodUrls());
+            setEnvironment(env.toStringList());
+        }
+    }
+
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
     qInfo() << "set shell program : " << strShellPath;
@@ -1176,6 +1185,19 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
 
     if ("advanced.shell.disable_ctrl_flow" == keyName) {
         setFlowControlEnabled(!Settings::instance()->disableControlFlow());
+        return;
+    }
+
+    if ("advanced.shell.enable_debuginfod" == keyName) {
+        if (!hasRunningProcess()) {
+            if (Settings::instance()->enableDebuginfod()) {
+                sendText(QString("test -z $DEBUGINFOD_URLS && export DEBUGINFOD_URLS=$1\n").arg(Settings::instance()->debuginfodUrls()));
+            } else {
+                sendText("test -z $DEBUGINFOD_URLS || unset DEBUGINFOD_URLS\n");
+            }
+        } else {
+            // Todo(ArchieMeng): Should handle the situation when there is a running process. It should wait until all running processes being exited.
+        }
         return;
     }
 
