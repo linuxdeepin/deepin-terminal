@@ -1,3 +1,9 @@
+deepin-terminal (6.0.16) unstable; urgency=medium
+
+  * feat: Add debuginfod settings (#366)
+
+ -- Yutao Meng <mengyutao@deepin.org>  Tue, 19 Nov 2024 10:05:41 +0800
+
 deepin-terminal (6.0.15) unstable; urgency=medium
 
   * Release 6.0.15
