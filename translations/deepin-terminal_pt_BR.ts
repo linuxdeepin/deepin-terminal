@@ -915,7 +915,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="91"/>
         <source>Add Server</source>
-        <translation>Adicionar Servidor</translation>
+        <translation>Adicionar servidor</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="127"/>
