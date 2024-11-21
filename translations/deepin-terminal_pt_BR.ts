@@ -999,7 +999,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="227"/>
         <source>Edit Server</source>
-        <translation>Editar Servidor</translation>
+        <translation>Editar servidor</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="228"/>
