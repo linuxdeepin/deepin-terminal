@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation>Uwzględniaj znaki specjalne przy zaznaczeniu podwójnym kliknięciem</translation>
+        <translation>Uwzględnij znaki specjalne zaznaczając podwójnym kliknięciem</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
