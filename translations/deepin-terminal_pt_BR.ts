@@ -868,7 +868,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
         <source>Add Server</source>
-        <translation>Adicionar Servidor</translation>
+        <translation>Adicionar servidor</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="218"/>
