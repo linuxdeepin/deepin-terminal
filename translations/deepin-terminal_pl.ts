@@ -678,7 +678,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod urls</source>
-        <translation type="unfinished"/>
+        <translation>debuginfod urls</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="416"/>
