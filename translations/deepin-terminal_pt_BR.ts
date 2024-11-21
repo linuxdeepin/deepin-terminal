@@ -544,7 +544,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1724"/>
         <source>Fullscreen</source>
-        <translation>Tela Cheia</translation>
+        <translation>Tela cheia</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
