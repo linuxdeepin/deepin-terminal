@@ -678,7 +678,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod urls</source>
-        <translation type="unfinished"/>
+        <translation>debuginfod-url&apos;s</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="416"/>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>No Group</source>
-        <translation type="unfinished"/>
+        <translation>Ongegroepeerd</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="193"/>
