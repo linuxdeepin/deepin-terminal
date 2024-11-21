@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
         <source>The name should be no more than 30 characters</source>
-        <translation>Nazwa nie powinna zawierać więcej niż 30 znaków</translation>
+        <translation>Nazwa nie powinna przekraczać 30 znaków</translation>
     </message>
 </context>
 <context>
@@ -833,7 +833,7 @@
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
         <source>The name should be no more than 32 characters</source>
-        <translation>Nazwa nie powinna przekraczać 32 znaków.</translation>
+        <translation>Nazwa nie powinna przekraczać 32 znaków</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
