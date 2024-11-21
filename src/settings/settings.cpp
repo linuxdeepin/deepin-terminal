@@ -720,12 +720,12 @@ bool Settings::enableControlFlow(void)
 
 bool Settings::enableDebuginfod()
 {
-    return settings->option("advanced.shell.enable_debuginfod")->value().toBool();
+    return settings->option("advanced.debuginfod.enable_debuginfod")->value().toBool();
 }
 
 QString Settings::debuginfodUrls()
 {
-    return settings->option("advanced.shell.debuginfod_urls")->value().toString();
+    return settings->option("advanced.debuginfod.debuginfod_urls")->value().toString();
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/

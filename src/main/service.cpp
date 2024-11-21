@@ -73,7 +73,7 @@ void Service::init()
     qCInfo(mainprocess) << "Server config initialized";
     // 主进程：首次赋值m_pShareMemoryInfo
     listenWindowEffectSwitcher();
-    qCDebug(mainprocess) << "Service initialization completed";
+    listenDebuginfodOption();
 }
 
 void Service::releaseInstance()
@@ -141,15 +141,9 @@ void Service::initSetting(MainWindow *pOwner)
     QDateTime endTime = QDateTime::currentDateTime();
 
     //判断未开启窗口特效时，隐藏透明度/背景模糊选项
-    qCDebug(mainprocess)<< "Checking window composite support";
-    if (!DWindowManagerHelper::instance()->hasComposite()) {
-        qCDebug(mainprocess)<< "Branch: no composite support, hiding opacity/blur options";
-        showHideOpacityAndBlurOptions(false);
-        return;
-    }
-
-    qCDebug(mainprocess)<< "Showing/hiding opacity and blur options based on window effect";
-    showHideOpacityAndBlurOptions(isWindowEffectEnabled());
+    showHideOpacityAndBlurOptions(DWindowManagerHelper::instance()->hasComposite());
+    // 根据是否开启debuginfod选项初始化debuginfod urls选项的显示与否
+    showHideDebuginfodUrlsOptions(Settings::instance()->enableDebuginfod());
 }
 
 void Service::slotSettingsDialogFinished(int result)
@@ -251,6 +245,42 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
     }
 }
 
+void Service::showHideDebuginfodUrlsOptions(bool isShow)
+{
+    QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
+    if (nullptr == rightFrame) {
+        qInfo() << "can not found RightFrame in QWidget";
+        return;
+    }
+
+    QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
+    for (int i = 0; i < rightWidgetList.size(); i++) {
+        QWidget *widget = rightWidgetList.at(i);
+        if (nullptr == widget)
+            continue;
+
+        if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
+            QString text = (qobject_cast<QLabel *>(widget))->text();
+            if (QObject::tr("debuginfod urls") == text) {
+                QWidget *optionWidget = widget;
+                QWidget *parentWidget = widget->parentWidget();
+                QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+                if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                    wrapWidget->setVisible(isShow);
+                }
+
+                if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
+                    optionWidget = parentWidget;
+
+                if (isShow)
+                    optionWidget->show();
+                else
+                    optionWidget->hide();
+            }
+        }
+    }
+}
+
 void Service::listenWindowEffectSwitcher()
 {
     qCDebug(mainprocess)<< "Enter Service::listenWindowEffectSwitcher";
@@ -277,6 +307,15 @@ bool Service::isWindowEffectEnabled()
     bool enabled = DWindowManagerHelper::instance()->hasBlurWindow();
     // qCDebug(mainprocess)<< "Window effect enabled:" << enabled;
     return enabled;
+}
+
+void Service::listenDebuginfodOption()
+{
+    connect(Settings::instance(), &Settings::terminalSettingChanged, this, [this] (const QString &keyName) {
+        if ("advanced.debuginfod.enable_debuginfod" == keyName) {
+            showHideDebuginfodUrlsOptions(Settings::instance()->enableDebuginfod());
+        }
+    });
 }
 
 qint64 Service::getEntryTime()
