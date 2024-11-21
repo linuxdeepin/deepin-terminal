@@ -942,7 +942,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="165"/>
         <source>Username:</source>
-        <translation>Nome de Usuário:</translation>
+        <translation>Nome de usuário:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="172"/>
