@@ -1188,10 +1188,10 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
         return;
     }
 
-    if ("advanced.shell.enable_debuginfod" == keyName) {
+    if ("advanced.debuginfod.enable_debuginfod" == keyName) {
         if (!hasRunningProcess()) {
             if (Settings::instance()->enableDebuginfod()) {
-                sendText(QString("test -z $DEBUGINFOD_URLS && export DEBUGINFOD_URLS=$1\n").arg(Settings::instance()->debuginfodUrls()));
+                sendText(QString("test -z $DEBUGINFOD_URLS && export DEBUGINFOD_URLS=\"%1\"\n").arg(Settings::instance()->debuginfodUrls()));
             } else {
                 sendText("test -z $DEBUGINFOD_URLS || unset DEBUGINFOD_URLS\n");
             }

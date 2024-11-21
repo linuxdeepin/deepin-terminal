@@ -241,11 +241,15 @@ private:
      * @param isShow:显示
      */
     void showHideOpacityAndBlurOptions(bool isShow);
+    // 显示/隐藏debuginfod urls选项
+    void showHideDebuginfodUrlsOptions(bool isShow);
 
     /**
      * @brief 监听窗口特效开关对应DBus信号，并实时显示/隐藏设置的透明度和背景模糊选项
      */
     void listenWindowEffectSwitcher();
+    // 监听debuginfod勾选状态变化
+    void listenDebuginfodOption();
 
     /**
      * @brief 初始化

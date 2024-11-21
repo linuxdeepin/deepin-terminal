@@ -419,10 +419,16 @@
                             "text": "Disable flow control using Ctrl+S, Ctrl+Q",
                             "type": "checkbox",
                             "default": "false"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "key": "debuginfod",
+                    "name": "debuginfod",
+                    "options": [
                         {
                             "key": "enable_debuginfod",
-                            "text": "debuginfod",
+                            "text": "The HTTP file server used for transmitting debugging information resources",
                             "type": "checkbox",
                             "default": "true"
                         },
