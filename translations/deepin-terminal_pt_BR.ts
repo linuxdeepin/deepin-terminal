@@ -89,7 +89,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="197"/>
         <source>Add Command</source>
-        <translation>Adicionar Comando</translation>
+        <translation>Adicionar comando</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="201"/>
