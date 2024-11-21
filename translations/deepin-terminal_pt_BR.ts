@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="155"/>
         <source>Delete Command</source>
-        <translation>Comando Excluir</translation>
+        <translation>Excluir comando</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="176"/>
