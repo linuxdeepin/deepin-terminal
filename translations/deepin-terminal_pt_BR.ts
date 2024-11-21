@@ -1057,7 +1057,7 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="128"/>
         <source>Fullscreen</source>
-        <translation>Tela Cheia</translation>
+        <translation>Tela cheia</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="128"/>
