@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="212"/>
         <source>Add Group</source>
-        <translation>Criar Grupo</translation>
+        <translation>Adicionar grupo</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="214"/>
