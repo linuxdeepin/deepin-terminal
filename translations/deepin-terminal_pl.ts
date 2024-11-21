@@ -833,7 +833,7 @@
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
         <source>The name should be no more than 32 characters</source>
-        <translation>Nazwa nie powinna mieć więcej niż 32 znaki</translation>
+        <translation>Nazwa nie powinna przekraczać 32 znaków.</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
