@@ -27,12 +27,12 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="139"/>
         <source>Add Command</source>
-        <translation>Adicionar Comando</translation>
+        <translation>Adicionar comando</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="145"/>
         <source>Edit Command</source>
-        <translation>Editar Comando</translation>
+        <translation>Editar comando</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="155"/>
