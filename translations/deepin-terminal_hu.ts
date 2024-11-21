@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation>Engedélyezze a Ctrl + bal egérkattintást a kurzor pozíciójának beállításához</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
