@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="847"/>
         <source>Delete Server</source>
-        <translation>Excluir Servidor</translation>
+        <translation>Excluir servidor</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="849"/>
