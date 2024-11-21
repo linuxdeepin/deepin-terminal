@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>De http-bestandsserver voor het versturen van foutopsporingsinformatie</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
