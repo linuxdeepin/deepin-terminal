@@ -424,7 +424,7 @@
                 },
                 {
                     "key": "debuginfod",
-                    "name": "debuginfod",
+                    "name": "Debuginfod",
                     "options": [
                         {
                             "key": "enable_debuginfod",
@@ -434,7 +434,7 @@
                         },
                         {
                             "key": "debuginfod_urls",
-                            "name": "debuginfod urls",
+                            "name": "debuginfod URLs",
                             "type": "lineedit",
                             "default": "https://debuginfod.deepin.com"
                         }
