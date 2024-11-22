@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"/>
+        <translation>Rregullimet për debuginfo do të jenë efektive pas rinisjes</translation>
     </message>
 </context>
 <context>
