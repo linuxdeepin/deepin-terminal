@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation>A hibakeresési információs beállítások újraindítás után lépnek életbe</translation>
+        <translation>A hibakeresési információs beállítások az újraindítás után lépnek életbe</translation>
     </message>
 </context>
 <context>
