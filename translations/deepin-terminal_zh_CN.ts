@@ -1061,7 +1061,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="509"/>
         <source>please input another one. </source>
-        <translation type="unfinished"/>
+        <translation>请重新输入</translation>
     </message>
 </context>
 <context>
@@ -1112,7 +1112,7 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="268"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="277"/>
         <source>The shortcut %1 is invalid, </source>
-        <translation type="unfinished"/>
+        <translation>%1为无效快捷键，</translation>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="284"/>
@@ -1160,17 +1160,17 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
         <source>program name: %n</source>
-        <translation type="unfinished"/>
+        <translation>程序名：%n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
         <source>current directory (short): %d</source>
-        <translation type="unfinished"/>
+        <translation>当前目录（短）：%d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="87"/>
         <source>current directory (long): %D</source>
-        <translation type="unfinished"/>
+        <translation>当前目录（长）：%D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
@@ -1188,29 +1188,29 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="472"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>粘贴</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="481"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>打开</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="485"/>
         <source>Open in file manager</source>
-        <translation type="unfinished"/>
+        <translation>在文件管理器中打开</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="490"/>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Horizontal split</source>
-        <translation type="unfinished"/>
+        <translation>横向分屏</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="492"/>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Vertical split</source>
-        <translation type="unfinished"/>
+        <translation>纵向分屏</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="503"/>
@@ -1226,47 +1226,47 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="512"/>
         <source>Fullscreen</source>
-        <translation type="unfinished"/>
+        <translation>全屏</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="515"/>
         <source>Find</source>
-        <translation type="unfinished"/>
+        <translation>查找</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="519"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>搜索</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="529"/>
         <source>Encoding</source>
-        <translation type="unfinished"/>
+        <translation>编码</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="531"/>
         <source>Custom commands</source>
-        <translation type="unfinished"/>
+        <translation>自定义命令</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="533"/>
         <source>Remote management</source>
-        <translation type="unfinished"/>
+        <translation>远程管理</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Upload file</source>
-        <translation type="unfinished"/>
+        <translation>上传文件</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="538"/>
         <source>Download file</source>
-        <translation type="unfinished"/>
+        <translation>下载文件</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
@@ -1281,20 +1281,20 @@
         <location filename="../src/common/utils.cpp" line="232"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>取 消</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="200"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>关 闭</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="233"/>
         <location filename="../src/common/utils.cpp" line="265"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation type="unfinished"/>
+        <translation>确 定</translation>
     </message>
 </context>
 </TS>
