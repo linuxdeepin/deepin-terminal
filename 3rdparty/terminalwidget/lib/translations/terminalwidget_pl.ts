@@ -36,7 +36,7 @@
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
         <source>Accessible Color Scheme</source>
-        <translation>Paleta o zwiększonej przystępności</translation>
+        <translation>Przystępny schemat kolorów</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
