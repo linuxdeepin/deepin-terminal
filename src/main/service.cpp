@@ -211,7 +211,7 @@ void Service::showHideDebuginfodUrlsOptions(bool isShow)
 
         if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
             QString text = (qobject_cast<QLabel *>(widget))->text();
-            if (QObject::tr("debuginfod urls") == text) {
+            if (QObject::tr("debuginfod URLs") == text) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
                 QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
