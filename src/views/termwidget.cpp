@@ -1197,6 +1197,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
             }
         } else {
             // Todo(ArchieMeng): Should handle the situation when there is a running process. It should wait until all running processes being exited.
+            showShellMessage(tr("The debuginfod settings will be effective after restart"));
         }
         return;
     }
