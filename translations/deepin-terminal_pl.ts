@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -329,7 +327,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -681,10 +679,6 @@
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Find</source>
         <translation>Znajdź</translation>
-    </message>
-    <message>
-        <source>debuginfod urls</source>
-        <translation type="vanished">debuginfod urls</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="263"/>
@@ -1277,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
