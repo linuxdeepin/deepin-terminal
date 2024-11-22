@@ -173,17 +173,17 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="39"/>
         <source>Group Name(Required)</source>
-        <translation type="unfinished"/>
+        <translation>分组名称（必填）</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="41"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>添加分组</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="44"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>编辑分组</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
@@ -198,17 +198,17 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="61"/>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation>保 存</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="65"/>
         <source>Please enter a group name</source>
-        <translation>请输入用户组名称</translation>
+        <translation>请输入服务器组名称</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>名称长度不得超过30个字符</translation>
     </message>
 </context>
 <context>
@@ -221,17 +221,17 @@
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation>删除自定义命令</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
         <source>Cancel Server Group</source>
-        <translation type="unfinished"/>
+        <translation>取消服务器组</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>取消分组后服务器将还原至服务器列表！</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="498"/>
@@ -306,7 +306,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation>允许Ctrl+滑动滚轮缩放文本大小</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
         <source>Quake window animation speed</source>
-        <translation type="unfinished"/>
+        <translation>雷神窗口动画速度</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="145"/>
@@ -536,22 +536,22 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>历史回滚行数</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>在双击选中区域包含特殊符号</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation>允许Ctrl+鼠标左键点击设置光标位置</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>提供调试信息资源的http文件服务器</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -723,7 +723,7 @@
         <location filename="../src/common/utils.cpp" line="162"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Upload</source>
-        <translation>上传应用</translation>
+        <translation>上传</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
@@ -740,13 +740,13 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>该终端中仍然有1个进程在运行，关闭终端将终止进程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>该终端中仍然有%1个进程在运行，关闭终端将终止进程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
@@ -758,7 +758,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>窗口内一些终端仍然有进程在运行，关闭窗口会终止所有进程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="136"/>
@@ -769,7 +769,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation>您确定要卸载吗？</translation>
+        <translation>您确定要卸载它吗？</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="243"/>
@@ -884,7 +884,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="210"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>添加分组</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
@@ -923,12 +923,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>服务器组</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation>服务器</translation>
     </message>
 </context>
 <context>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>No Group</source>
-        <translation type="unfinished"/>
+        <translation>无分组</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="193"/>
