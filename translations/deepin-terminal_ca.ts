@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"/>
+        <translation>La configuració de la informació de depuració serà efectiva després del reinici.</translation>
     </message>
 </context>
 <context>
