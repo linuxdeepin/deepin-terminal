@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ca">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ca">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -319,10 +321,15 @@
         <translation>Velocitat de l&apos;animació de la finestra del Quake</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <location filename="../src/main/service.cpp" line="145"/>
+        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Blur background</source>
         <translation>Fons difuminat</translation>
+    </message>
+    <message>
+        <location filename="../src/main/service.cpp" line="214"/>
+        <source>debuginfod URLs</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -340,8 +347,8 @@
         <translation>Mida de la lletra</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <location filename="../src/main/service.cpp" line="176"/>
+        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Opacity</source>
         <translation>Opacitat</translation>
     </message>
@@ -381,16 +388,16 @@
         <translation>Dreceres</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <location filename="../src/main/mainwindow.cpp" line="1594"/>
+        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Others</source>
         <translation>Altres</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="59"/>
-        <location filename="../src/main/terminalapplication.cpp" line="25"/>
         <location filename="../src/main/mainwindow.cpp" line="1592"/>
         <location filename="../src/main/mainwindow.cpp" line="2183"/>
+        <location filename="../src/main/terminalapplication.cpp" line="25"/>
+        <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
@@ -400,62 +407,62 @@
         <translation>Espai de treball</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Custom commands</source>
         <translation>Ordres personalitzades</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Display shortcuts</source>
         <translation>Mostra les dreceres</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Remote management</source>
         <translation>Gestió remota</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <source>New tab</source>
         <translation>Pestanya nova</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Next tab</source>
         <translation>Pestanya següent</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Previous tab</source>
         <translation>Pestanya anterior</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Select left workspace</source>
         <translation>Selecciona l&apos;espai de treball de l&apos;esquerra</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
         <translation>Selecciona l&apos;espai de treball de baix</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
         <translation>Selecciona l&apos;espai de treball de la dreta</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
         <translation>Selecciona l&apos;espai de treball de dalt</translation>
     </message>
@@ -465,56 +472,56 @@
         <translation>Títols de les pestanyes</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <source>Go to tab 1</source>
         <translation>Ves a la pestanya 1</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <source>Go to tab 2</source>
         <translation>Ves a la pestanya 2</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <source>Go to tab 3</source>
         <translation>Ves a la pestanya 3</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Go to tab 4</source>
         <translation>Ves a la pestanya 4</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Go to tab 5</source>
         <translation>Ves a la pestanya 5</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Go to tab 6</source>
         <translation>Ves a la pestanya 6</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Go to tab 7</source>
         <translation>Ves a la pestanya 7</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <source>Go to tab 8</source>
         <translation>Ves a la pestanya 8</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Go to tab 9</source>
         <translation>Ves a la pestanya 9</translation>
     </message>
@@ -549,34 +556,34 @@
         <translation>El servidor de fitxers HTTP usat per transmetre recursos d&apos;informació de depuració</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
-        <location filename="../src/views/tabbar.cpp" line="486"/>
-        <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="69"/>
+        <location filename="../src/views/tabbar.cpp" line="486"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
         <source>Rename title</source>
         <translation>Canvia&apos;n el títol</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <source>Fullscreen</source>
         <translation>Pantalla completa</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Copy</source>
         <translation>Copia</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <source>Default size</source>
         <translation>Mida per defecte</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <source>Paste</source>
         <translation>Enganxa</translation>
     </message>
@@ -586,8 +593,8 @@
         <translation>Cerca</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <source>Select all</source>
         <translation>Selecciona-ho tot</translation>
     </message>
@@ -602,14 +609,14 @@
         <translation>Salta a l&apos;ordre anterior</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <source>Zoom in</source>
         <translation>Ampliació</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Zoom out</source>
         <translation>Reducció</translation>
     </message>
@@ -619,29 +626,29 @@
         <translation>Tanca les altres finestres</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Close other workspaces</source>
         <translation>Tanca altres espais de treball</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1246"/>
+        <location filename="../src/views/termwidget.cpp" line="1247"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>No s&apos;ha pogut trobar &quot;%1&quot;, s&apos;inicia &quot;%2&quot;. Si us plau, comproveu el perfil de l&apos;intèrpret d&apos;ordres.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1252"/>
+        <location filename="../src/views/termwidget.cpp" line="1253"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>No s&apos;ha pogut obrir &quot;%1&quot;. No es pot executar.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1254"/>
+        <location filename="../src/views/termwidget.cpp" line="1255"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>No s&apos;ha pogut trobar &quot;%1&quot;, no es pot executar.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1297"/>
+        <location filename="../src/views/termwidget.cpp" line="1298"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>La sortida s&apos;ha suspès prement Ctrl+S. Premeu Ctrl+Q per reprendre-la.</translation>
     </message>
@@ -651,39 +658,38 @@
         <translation>Tanca la finestra</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
         <source>Close workspace</source>
         <translation>Tanca l&apos;espai de treball</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <source>Horizontal split</source>
         <translation>Divisió horitzontal</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <source>Vertical split</source>
         <translation>Divisió vertical</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Find</source>
         <translation>Troba</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod urls</source>
-        <translation>URL de la informació de depuració</translation>
+        <translation type="vanished">URL de la informació de depuració</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="416"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/common/utils.cpp" line="263"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
+        <location filename="../src/main/service.cpp" line="416"/>
         <source>please set another one.</source>
         <translation>si us plau, establiu-ne un/a altre/a.</translation>
     </message>
@@ -698,8 +704,8 @@
         <translation>Pestanyes</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="480"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
         <translation>Tanca la pestanya</translation>
     </message>
@@ -714,14 +720,14 @@
         <translation>Canvia el focus a la icona &quot;+&quot;</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <location filename="../src/common/utils.cpp" line="157"/>
+        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Select file to upload</source>
         <translation>Seleccioneu el fitxer per carregar</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <location filename="../src/common/utils.cpp" line="162"/>
+        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Upload</source>
         <translation>Carrega</translation>
     </message>
@@ -761,8 +767,8 @@
         <translation>Encara hi ha processos que s&apos;executen en aquesta finestra. Tancar-la els matarà tots.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <location filename="../src/common/utils.cpp" line="136"/>
+        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
         <translation>Seleccioneu un directori per desar-hi el fitxer.</translation>
     </message>
@@ -784,10 +790,10 @@
         <translation>Ja no podreu usar més el Terminal.</translation>
     </message>
     <message>
+        <location filename="../src/common/utils.cpp" line="253"/>
         <location filename="../src/views/listview.cpp" line="499"/>
         <location filename="../src/views/listview.cpp" line="893"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
-        <location filename="../src/common/utils.cpp" line="253"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Cancel·la</translation>
@@ -830,15 +836,15 @@
         <translation>Mantén el terminal obert quan l&apos;odre acabi.</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <source>The name should be no more than 32 characters</source>
         <translation>El nom no hauria de superar els 32 caràcters.</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
-        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <location filename="../src/common/utils.cpp" line="142"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
         <source>Select</source>
         <translation>Selecciona</translation>
     </message>
@@ -848,20 +854,20 @@
         <translation>Selecciona el fitxer de clau privada</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
         <translation>Format del títol de les pestanyes</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
         <translation>Format remot del títol de les pestanyes</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="483"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="483"/>
         <source>Close other tabs</source>
         <translation>Tanca les altres pestanyes</translation>
     </message>
@@ -1096,12 +1102,12 @@
         <translation>Màxim</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="730"/>
+        <location filename="../src/settings/settings.cpp" line="722"/>
         <source>Fast</source>
         <translation>Ràpid</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="734"/>
+        <location filename="../src/settings/settings.cpp" line="726"/>
         <source>Slow</source>
         <translation>Lent</translation>
     </message>
@@ -1267,6 +1273,11 @@
         <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Settings</source>
         <translation>Configuració</translation>
+    </message>
+    <message>
+        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <source>The debuginfod settings will be effective after restart</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

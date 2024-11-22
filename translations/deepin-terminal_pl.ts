@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pl">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -319,10 +321,15 @@
         <translation>Szybkość animacji okna Quake</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <location filename="../src/main/service.cpp" line="145"/>
+        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Blur background</source>
         <translation>Rozmycie tła</translation>
+    </message>
+    <message>
+        <location filename="../src/main/service.cpp" line="214"/>
+        <source>debuginfod URLs</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -340,8 +347,8 @@
         <translation>Rozmiar czcionki</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <location filename="../src/main/service.cpp" line="176"/>
+        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Opacity</source>
         <translation>Nieprzezroczystość</translation>
     </message>
@@ -381,16 +388,16 @@
         <translation>Skróty</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <location filename="../src/main/mainwindow.cpp" line="1594"/>
+        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Others</source>
         <translation>Inne</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="59"/>
-        <location filename="../src/main/terminalapplication.cpp" line="25"/>
         <location filename="../src/main/mainwindow.cpp" line="1592"/>
         <location filename="../src/main/mainwindow.cpp" line="2183"/>
+        <location filename="../src/main/terminalapplication.cpp" line="25"/>
+        <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
@@ -400,62 +407,62 @@
         <translation>Obszar roboczy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Custom commands</source>
         <translation>Komendy niestandardowe</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Display shortcuts</source>
         <translation>Wyświetl skróty</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Remote management</source>
         <translation>Zarządzanie zdalne</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <source>New tab</source>
         <translation>Nowa karta</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Next tab</source>
         <translation>Następna karta</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Previous tab</source>
         <translation>Poprzednia karta</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Select left workspace</source>
         <translation>Zaznacz lewy obszar roboczy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
         <translation>Zaznacz dolny obszar roboczy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
         <translation>Zaznacz prawy obszar roboczy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
         <translation>Zaznacz górny obszar roboczy</translation>
     </message>
@@ -465,56 +472,56 @@
         <translation>Nazwy kart</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <source>Go to tab 1</source>
         <translation>Idź do karty 1</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <source>Go to tab 2</source>
         <translation>Idź do karty 2</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <source>Go to tab 3</source>
         <translation>Idź do karty 3</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Go to tab 4</source>
         <translation>Idź do karty 4</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Go to tab 5</source>
         <translation>Idź do karty 5</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Go to tab 6</source>
         <translation>Idź do karty 6</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Go to tab 7</source>
         <translation>Idź do karty 7</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <source>Go to tab 8</source>
         <translation>Idź do karty 8</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Go to tab 9</source>
         <translation>Idź do karty 9</translation>
     </message>
@@ -549,34 +556,34 @@
         <translation>Serwer plików HTTP jest wykorzystywany do przenoszenia informacji debug</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
-        <location filename="../src/views/tabbar.cpp" line="486"/>
-        <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="69"/>
+        <location filename="../src/views/tabbar.cpp" line="486"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
         <source>Rename title</source>
         <translation>Zmień nazwę tytułu</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <source>Fullscreen</source>
         <translation>Pełny ekran</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Copy</source>
         <translation>Kopiuj</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <source>Default size</source>
         <translation>Domyślny rozmiar</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <source>Paste</source>
         <translation>Wklej</translation>
     </message>
@@ -586,8 +593,8 @@
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <source>Select all</source>
         <translation>Zaznacz wszystko</translation>
     </message>
@@ -602,14 +609,14 @@
         <translation>Przejdź do poprzedniej komendy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <source>Zoom in</source>
         <translation>Powiększ</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Zoom out</source>
         <translation>Pomniejsz</translation>
     </message>
@@ -619,29 +626,29 @@
         <translation>Zamknij pozostałe okna</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Close other workspaces</source>
         <translation>Zamknij pozostałe obszary robocze</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1246"/>
+        <location filename="../src/views/termwidget.cpp" line="1247"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>Nie udało się znaleźć „%1”, włączanie „%2”. Sprawdź swój profil powłoki.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1252"/>
+        <location filename="../src/views/termwidget.cpp" line="1253"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>Nie udało się otworzyć &quot;%1&quot;, nie można uruchomić</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1254"/>
+        <location filename="../src/views/termwidget.cpp" line="1255"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>Nie udało się znaleźć „%1”, nie można uruchomić</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1297"/>
+        <location filename="../src/views/termwidget.cpp" line="1298"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>Wyjście danych zostało zawieszone przez naciśnięcie Ctrl+S. Naciśnij Ctrl+Q, aby wznowić. </translation>
     </message>
@@ -651,39 +658,38 @@
         <translation>Zamknij okno</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
         <source>Close workspace</source>
         <translation>Zamknij obszar roboczy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <source>Horizontal split</source>
         <translation>Podział poziomy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <source>Vertical split</source>
         <translation>Podział pionowy</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Find</source>
         <translation>Znajdź</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod urls</source>
-        <translation>debuginfod urls</translation>
+        <translation type="vanished">debuginfod urls</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="416"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/common/utils.cpp" line="263"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
+        <location filename="../src/main/service.cpp" line="416"/>
         <source>please set another one.</source>
         <translation>ustaw inną.</translation>
     </message>
@@ -698,8 +704,8 @@
         <translation>Karty</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="480"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
         <translation>Zamknij kartę</translation>
     </message>
@@ -714,14 +720,14 @@
         <translation>Przełącz zaznaczenie na ikonę „+” </translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <location filename="../src/common/utils.cpp" line="157"/>
+        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Select file to upload</source>
         <translation>Wybierz plik do wysłania</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <location filename="../src/common/utils.cpp" line="162"/>
+        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Upload</source>
         <translation>Wyślij</translation>
     </message>
@@ -761,8 +767,8 @@
         <translation>W tym oknie nadal są aktywne procesy. Zamknięcie zakończy je wszystkie.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <location filename="../src/common/utils.cpp" line="136"/>
+        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
         <translation>Wybierz katalog, w którym chcesz zapisać plik</translation>
     </message>
@@ -784,10 +790,10 @@
         <translation>Nie będziesz już mógł korzystać z terminala.</translation>
     </message>
     <message>
+        <location filename="../src/common/utils.cpp" line="253"/>
         <location filename="../src/views/listview.cpp" line="499"/>
         <location filename="../src/views/listview.cpp" line="893"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
-        <location filename="../src/common/utils.cpp" line="253"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Anuluj</translation>
@@ -830,15 +836,15 @@
         <translation>Pozostaw terminal otwarty po zakończeniu komendy</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <source>The name should be no more than 32 characters</source>
         <translation>Nazwa nie powinna przekraczać 32 znaków</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
-        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <location filename="../src/common/utils.cpp" line="142"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
         <source>Select</source>
         <translation>Wybierz</translation>
     </message>
@@ -848,20 +854,20 @@
         <translation>Wybierz plik klucza prywatnego</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
         <translation>Format tytułu karty</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
         <translation>Format tytułu zdalnej karty</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="483"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="483"/>
         <source>Close other tabs</source>
         <translation>Zamknij pozostałe karty</translation>
     </message>
@@ -1096,12 +1102,12 @@
         <translation>Zmaksymalizowany</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="730"/>
+        <location filename="../src/settings/settings.cpp" line="722"/>
         <source>Fast</source>
         <translation>Szybka</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="734"/>
+        <location filename="../src/settings/settings.cpp" line="726"/>
         <source>Slow</source>
         <translation>Powolna</translation>
     </message>
@@ -1267,6 +1273,11 @@
         <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
+    </message>
+    <message>
+        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <source>The debuginfod settings will be effective after restart</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

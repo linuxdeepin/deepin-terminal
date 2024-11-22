@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hu">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="hu">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -319,10 +321,15 @@
         <translation>Lebegő ablak animációjának sebessége</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <location filename="../src/main/service.cpp" line="145"/>
+        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Blur background</source>
         <translation>Háttér elhomályosítása</translation>
+    </message>
+    <message>
+        <location filename="../src/main/service.cpp" line="214"/>
+        <source>debuginfod URLs</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -340,8 +347,8 @@
         <translation>Betűméret</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <location filename="../src/main/service.cpp" line="176"/>
+        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Opacity</source>
         <translation>Áttetszőség</translation>
     </message>
@@ -381,16 +388,16 @@
         <translation>Gyorsbillentyűk</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <location filename="../src/main/mainwindow.cpp" line="1594"/>
+        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Others</source>
         <translation>Egyebek</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="59"/>
-        <location filename="../src/main/terminalapplication.cpp" line="25"/>
         <location filename="../src/main/mainwindow.cpp" line="1592"/>
         <location filename="../src/main/mainwindow.cpp" line="2183"/>
+        <location filename="../src/main/terminalapplication.cpp" line="25"/>
+        <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Terminal</source>
         <translation>Terminál</translation>
     </message>
@@ -400,62 +407,62 @@
         <translation>Munkaterület</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Custom commands</source>
         <translation>Egyéni parancsok</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Display shortcuts</source>
         <translation>Gyorsbillentyűk megjelenítése</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Remote management</source>
         <translation>Távoli elérés</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <source>New tab</source>
         <translation>Új fül</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Next tab</source>
         <translation>Következő fül</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Previous tab</source>
         <translation>Előző fül</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Select left workspace</source>
         <translation>Baloldali munkaterület kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
         <translation>Alsó munkaterület kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
         <translation>Jobboldali munkaterület kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
         <translation>Felső munkaterület kiválasztása</translation>
     </message>
@@ -465,56 +472,56 @@
         <translation>Fülek címei</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <source>Go to tab 1</source>
         <translation>Ugrás az 1. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <source>Go to tab 2</source>
         <translation>Ugrás az 2. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <source>Go to tab 3</source>
         <translation>Ugrás az 3. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Go to tab 4</source>
         <translation>Ugrás az 4. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Go to tab 5</source>
         <translation>Ugrás az 5. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Go to tab 6</source>
         <translation>Ugrás az 6. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Go to tab 7</source>
         <translation>Ugrás az 7. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <source>Go to tab 8</source>
         <translation>Ugrás az 8. fülre</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Go to tab 9</source>
         <translation>Ugrás az 9. fülre</translation>
     </message>
@@ -549,34 +556,34 @@
         <translation>A hibakeresési információs erőforrások továbbítására használt HTTP fájlszerver</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
-        <location filename="../src/views/tabbar.cpp" line="486"/>
-        <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="69"/>
+        <location filename="../src/views/tabbar.cpp" line="486"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
         <source>Rename title</source>
         <translation>Cím átnevezése</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <source>Fullscreen</source>
         <translation>Teljes képernyő</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Copy</source>
         <translation>Másolás</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <source>Default size</source>
         <translation>Alapértelmezett méret</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <source>Paste</source>
         <translation>Beillesztés</translation>
     </message>
@@ -586,8 +593,8 @@
         <translation>Keresés</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <source>Select all</source>
         <translation>Összes kijelölése</translation>
     </message>
@@ -602,14 +609,14 @@
         <translation>Visszaugrás az előző parancsra</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <source>Zoom in</source>
         <translation>Nagyítás</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Zoom out</source>
         <translation>Kicsinyítés</translation>
     </message>
@@ -619,29 +626,29 @@
         <translation>Egyéb ablakok bezárása</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Close other workspaces</source>
         <translation>Egyéb munkaterületek bezárása</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1246"/>
+        <location filename="../src/views/termwidget.cpp" line="1247"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>Nem található a  &quot;%1&quot;, helyette a &quot;%2&quot; indul. Kérjük ellenőrizze a shell profilját.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1252"/>
+        <location filename="../src/views/termwidget.cpp" line="1253"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>Nem nyitható meg a &quot;%1&quot;, nem tudja futtatni azt</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1254"/>
+        <location filename="../src/views/termwidget.cpp" line="1255"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>Nem található a &quot;%1&quot;, nem tudja futtatni azt</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1297"/>
+        <location filename="../src/views/termwidget.cpp" line="1298"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>A kimenet a Ctrl+S billentyűkombináció megnyomásával felfüggesztésre kerül. A folytatáshoz nyomja meg a Ctrl+Q billentyűkombinációt.</translation>
     </message>
@@ -651,39 +658,38 @@
         <translation>Ablak bezárása</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
         <source>Close workspace</source>
         <translation>Munkaterület bezárása </translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <source>Horizontal split</source>
         <translation>Kettéosztás vízszintesen</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <source>Vertical split</source>
         <translation>Függőleges elválasztás</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Find</source>
         <translation>Találat</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod urls</source>
-        <translation>hibakeresési információs url-ek</translation>
+        <translation type="vanished">hibakeresési információs url-ek</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="416"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/common/utils.cpp" line="263"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
+        <location filename="../src/main/service.cpp" line="416"/>
         <source>please set another one.</source>
         <translation>Kérjük állítson be egy másikat.</translation>
     </message>
@@ -698,8 +704,8 @@
         <translation>Fülek</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="480"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
         <translation>Fül bezárása</translation>
     </message>
@@ -714,14 +720,14 @@
         <translation>Váltson fókuszt a „+” ikonnal</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <location filename="../src/common/utils.cpp" line="157"/>
+        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Select file to upload</source>
         <translation>A feltöltendő fájl kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <location filename="../src/common/utils.cpp" line="162"/>
+        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Upload</source>
         <translation>Feltöltés</translation>
     </message>
@@ -761,8 +767,8 @@
         <translation>Ebben az ablakban még fut egy folyamat. Az ablak bezárása megszünteti valamennyit.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <location filename="../src/common/utils.cpp" line="136"/>
+        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
         <translation>Válasszon könyvtárat a fájl mentéséhez</translation>
     </message>
@@ -784,10 +790,10 @@
         <translation>Nem használhatja tovább a terminált.</translation>
     </message>
     <message>
+        <location filename="../src/common/utils.cpp" line="253"/>
         <location filename="../src/views/listview.cpp" line="499"/>
         <location filename="../src/views/listview.cpp" line="893"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
-        <location filename="../src/common/utils.cpp" line="253"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Mégsem</translation>
@@ -830,15 +836,15 @@
         <translation>A parancs befejezése után tartsa nyitva a terminál ablakot</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <source>The name should be no more than 32 characters</source>
         <translation>A név legfeljebb 32 karakter lehet</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
-        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <location filename="../src/common/utils.cpp" line="142"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
         <source>Select</source>
         <translation>Kiválasztás</translation>
     </message>
@@ -848,20 +854,20 @@
         <translation>Privát kulcs fájl kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
         <translation>Fül címének formátuma</translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
         <translation>Távoli fül címének formátuma</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="483"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="483"/>
         <source>Close other tabs</source>
         <translation>Egyéb fülek bezárása</translation>
     </message>
@@ -1096,12 +1102,12 @@
         <translation>Maximum</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="730"/>
+        <location filename="../src/settings/settings.cpp" line="722"/>
         <source>Fast</source>
         <translation>Gyors</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="734"/>
+        <location filename="../src/settings/settings.cpp" line="726"/>
         <source>Slow</source>
         <translation>Lassú</translation>
     </message>
@@ -1267,6 +1273,11 @@
         <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Settings</source>
         <translation>Beállítások</translation>
+    </message>
+    <message>
+        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <source>The debuginfod settings will be effective after restart</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
