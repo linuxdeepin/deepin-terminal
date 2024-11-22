@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="he">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="he">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -173,17 +175,17 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="39"/>
         <source>Group Name(Required)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="41"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="44"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
@@ -203,12 +205,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="65"/>
         <source>Please enter a group name</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">השם צריך להכיל עד 32 תווים {30 ?}</translation>
     </message>
 </context>
 <context>
@@ -221,17 +223,17 @@
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
         <source>Cancel Server Group</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="498"/>
@@ -306,7 +308,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
@@ -319,10 +321,15 @@
         <translation>מהירות אנימציה של חלון Quake</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <location filename="../src/main/service.cpp" line="145"/>
+        <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Blur background</source>
         <translation>טשטש את הרקע</translation>
+    </message>
+    <message>
+        <location filename="../src/main/service.cpp" line="214"/>
+        <source>debuginfod URLs</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -340,8 +347,8 @@
         <translation>גודל גופן</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <location filename="../src/main/service.cpp" line="176"/>
+        <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Opacity</source>
         <translation>אטימות</translation>
     </message>
@@ -381,16 +388,16 @@
         <translation>קיצורי מקשים</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <location filename="../src/main/mainwindow.cpp" line="1594"/>
+        <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Others</source>
         <translation>אחרים</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="59"/>
-        <location filename="../src/main/terminalapplication.cpp" line="25"/>
         <location filename="../src/main/mainwindow.cpp" line="1592"/>
         <location filename="../src/main/mainwindow.cpp" line="2183"/>
+        <location filename="../src/main/terminalapplication.cpp" line="25"/>
+        <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Terminal</source>
         <translation>מסוף</translation>
     </message>
@@ -400,62 +407,62 @@
         <translation>סביבת עבודה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Custom commands</source>
         <translation>פקודות בהתאמה אישית</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Display shortcuts</source>
         <translation>הצג קיצור־דרך</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Remote management</source>
         <translation>שליטה מרחוק</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <source>New tab</source>
         <translation>כרטיסייה חדשה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Next tab</source>
         <translation>הכרטיסייה הבאה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Previous tab</source>
         <translation>כרטיסייה קודמת</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Select left workspace</source>
         <translation>בחר סביבת עבודה שמאלית</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
         <translation>בחר סביבת עבודה תחתונה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
         <translation>בחר סביבת עבודה ימנית</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
         <translation>בחר סביבת עבודה עליונה</translation>
     </message>
@@ -465,56 +472,56 @@
         <translation>כותרות כרטיסייה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <source>Go to tab 1</source>
         <translation>לך לכרטיסייה 1</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <source>Go to tab 2</source>
         <translation>לך לכרטיסייה 2</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
+        <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <source>Go to tab 3</source>
         <translation>לך לכרטיסייה 3</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Go to tab 4</source>
         <translation>לך לכרטיסייה 4</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Go to tab 5</source>
         <translation>לך לכרטיסייה 5</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
+        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Go to tab 6</source>
         <translation>לך לכרטיסייה 6</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Go to tab 7</source>
         <translation>לך לכרטיסייה 7</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <source>Go to tab 8</source>
         <translation>לך לכרטיסייה 8</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
+        <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Go to tab 9</source>
         <translation>לך לכרטיסייה 9</translation>
     </message>
@@ -536,47 +543,47 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
-        <location filename="../src/views/tabbar.cpp" line="486"/>
-        <location filename="../src/settings/settings_translation.cpp" line="69"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="69"/>
+        <location filename="../src/views/tabbar.cpp" line="486"/>
+        <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
         <source>Rename title</source>
         <translation>שינוי שם הכותרת</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
+        <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <source>Fullscreen</source>
         <translation>מסך מלא</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Copy</source>
         <translation>העתקה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <source>Default size</source>
         <translation>גודל ברירת מחדל</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <source>Paste</source>
         <translation>הדבקה</translation>
     </message>
@@ -586,8 +593,8 @@
         <translation>חיפוש</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <source>Select all</source>
         <translation>בחירה בהכול</translation>
     </message>
@@ -602,14 +609,14 @@
         <translation>קפיצ לפקודה הקודמת</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <source>Zoom in</source>
         <translation>הגדלת התצוגה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Zoom out</source>
         <translation>הקטנת התצוגה</translation>
     </message>
@@ -619,29 +626,29 @@
         <translation>סגירת חלונות אחרים</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="499"/>
-        <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="93"/>
+        <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Close other workspaces</source>
         <translation>סגירת סביבות עבודה אחרות</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1246"/>
+        <location filename="../src/views/termwidget.cpp" line="1247"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
         <translation>לא ניתן למצוא &quot;%1&quot;, מפעיל במקום זאת &quot;%2&quot;. אנא בדוק את פרופיל המעטפת שלך.</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1252"/>
+        <location filename="../src/views/termwidget.cpp" line="1253"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
         <translation>לא ניתן לפתוח את &quot;%1&quot;, אין אפשרות להריץ את זה</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1254"/>
+        <location filename="../src/views/termwidget.cpp" line="1255"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
         <translation>לא ניתן למצוא את &quot;%1&quot;, אין אפשרות להריץ את זה</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1297"/>
+        <location filename="../src/views/termwidget.cpp" line="1298"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>הפלט הושהה בשל לחיצה על Ctrl+S. לחץ על Ctrl+Q כדי להמשיך.</translation>
     </message>
@@ -651,39 +658,34 @@
         <translation>סגירת החלון</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="496"/>
-        <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
+        <location filename="../src/settings/settings_translation.cpp" line="97"/>
+        <location filename="../src/views/termwidget.cpp" line="496"/>
         <source>Close workspace</source>
         <translation>סגירת סביבת העבודה</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <source>Horizontal split</source>
         <translation>פיצול אופקי</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
+        <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <source>Vertical split</source>
         <translation>פיצול אנכי</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
+        <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Find</source>
         <translation>חיפוש</translation>
     </message>
     <message>
-        <location filename="../src/main/service.cpp" line="214"/>
-        <source>debuginfod urls</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/main/service.cpp" line="416"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/common/utils.cpp" line="263"/>
+        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
+        <location filename="../src/main/service.cpp" line="416"/>
         <source>please set another one.</source>
         <translation>אנא הגדר אחד אחר.</translation>
     </message>
@@ -698,8 +700,8 @@
         <translation>כרטיסיות</translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="480"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
         <translation>סגירת הכרטיסייה</translation>
     </message>
@@ -714,14 +716,14 @@
         <translation>העבר מיקוד לאייקון &quot;+&quot;</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <location filename="../src/common/utils.cpp" line="157"/>
+        <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Select file to upload</source>
         <translation>בחירה בקובץ להעלות</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <location filename="../src/common/utils.cpp" line="162"/>
+        <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Upload</source>
         <translation>העלאה</translation>
     </message>
@@ -740,13 +742,13 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
@@ -758,13 +760,13 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <location filename="../src/common/utils.cpp" line="136"/>
+        <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
@@ -784,10 +786,10 @@
         <translation>לא תוכל להשתמש במסוף יותר</translation>
     </message>
     <message>
+        <location filename="../src/common/utils.cpp" line="253"/>
         <location filename="../src/views/listview.cpp" line="499"/>
         <location filename="../src/views/listview.cpp" line="893"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
-        <location filename="../src/common/utils.cpp" line="253"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>ביטול</translation>
@@ -807,22 +809,22 @@
     <message>
         <location filename="../src/common/utils.cpp" line="341"/>
         <source>Run script string in the terminal</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="332"/>
         <source>Set the work directory</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Set the window mode on starting</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="344"/>
         <source>Run in quake mode</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="347"/>
@@ -830,38 +832,38 @@
         <translation>השאר את המסוף פתוח כשהפקודה תסתיים</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <source>The name should be no more than 32 characters</source>
         <translation>השם צריך להכיל עד 32 תווים</translation>
     </message>
     <message>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
-        <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <location filename="../src/common/utils.cpp" line="142"/>
+        <location filename="../src/main/mainwindow.cpp" line="1774"/>
+        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
         <source>Select</source>
         <translation>בחר</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="542"/>
         <source>Select the private key file</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
+        <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/views/tabbar.cpp" line="483"/>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
+        <location filename="../src/views/tabbar.cpp" line="483"/>
         <source>Close other tabs</source>
         <translation>סגור כרטיסיות אחרות</translation>
     </message>
@@ -884,7 +886,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="210"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
@@ -923,12 +925,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -958,7 +960,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="144"/>
         <source>Port:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="165"/>
@@ -983,7 +985,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>No Group</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="193"/>
@@ -998,17 +1000,17 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="205"/>
         <source>Encoding:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="211"/>
         <source>Backspace key:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="217"/>
         <source>Delete key:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="223"/>
@@ -1046,7 +1048,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="488"/>
         <source>Please enter a port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="494"/>
@@ -1061,7 +1063,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="509"/>
         <source>please input another one. </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1096,12 +1098,12 @@
         <translation>מקסימלי</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="730"/>
+        <location filename="../src/settings/settings.cpp" line="722"/>
         <source>Fast</source>
         <translation>מהיר</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings.cpp" line="734"/>
+        <location filename="../src/settings/settings.cpp" line="726"/>
         <source>Slow</source>
         <translation>איטי</translation>
     </message>
@@ -1143,19 +1145,19 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="74"/>
         <source>remote host: %h</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="87"/>
         <source>session number: %#</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <source>title set by shell: %w</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
@@ -1165,17 +1167,17 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
         <source>current directory (short): %d</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="87"/>
         <source>current directory (long): %D</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>local host: %h</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1267,6 +1269,11 @@
         <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Settings</source>
         <translation>הגדרות</translation>
+    </message>
+    <message>
+        <location filename="../src/views/termwidget.cpp" line="1200"/>
+        <source>The debuginfod settings will be effective after restart</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
