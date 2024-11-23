@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sq">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sq">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
@@ -298,12 +296,12 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="23"/>
         <source>Scroll on keystroke</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="25"/>
         <source>Scroll on output</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
@@ -329,7 +327,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -1273,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Rregullimet për debuginfo do të jenë efektive pas rinisjes</translation>
     </message>
 </context>
 <context>
