@@ -306,7 +306,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation>Salli Ctrl+rulla vaihtamaan tekstin kokoa</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
