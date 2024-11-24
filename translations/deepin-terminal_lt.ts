@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="157"/>
         <source>Delete Command</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinti komandą</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="178"/>
