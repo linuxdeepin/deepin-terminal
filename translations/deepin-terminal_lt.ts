@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="147"/>
         <source>Edit Command</source>
-        <translation>Redaguoti komandą</translation>
+        <translation>Taisyti komandą</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="157"/>
