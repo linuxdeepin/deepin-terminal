@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation>Permitir que Ctrl + botão esquerdo do mouse defina a posição do cursor</translation>
+        <translation>Permitir que Ctrl + Botão Esquerdo do Mouse defina a posição do cursor</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
