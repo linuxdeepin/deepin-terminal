@@ -178,12 +178,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="41"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="44"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>Taisyti grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
@@ -884,7 +884,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="210"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
