@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="868"/>
         <source>Delete Server</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinti serverį</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
