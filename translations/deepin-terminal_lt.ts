@@ -32,12 +32,12 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="147"/>
         <source>Edit Command</source>
-        <translation>Redaguoti komandą</translation>
+        <translation>Taisyti komandą</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="157"/>
         <source>Delete Command</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinti komandą</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="178"/>
@@ -178,12 +178,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="41"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="44"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>Taisyti grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="65"/>
         <source>Please enter a group name</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite grupės pavadinimą</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="868"/>
         <source>Delete Server</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinti serverį</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
@@ -884,7 +884,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="210"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti grupę</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
