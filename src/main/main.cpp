@@ -18,6 +18,7 @@
 
 #include <QDir>
 #include <QDebug>
+#include <QProcess>
 #include <QCommandLineParser>
 #include <QTranslator>
 #include <QTime>
@@ -28,8 +29,39 @@ DCORE_USE_NAMESPACE
 
 Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
+bool checkImmutableMode() {
+    QProcess process;
+    QStringList arguments;
+    arguments << "-s";  // 命令参数
+
+    // 启动进程并等待其完成
+    process.start("deepin-immutable-ctl", arguments);
+    if (!process.waitForStarted()) {
+        qWarning() << "Failed to start deepin-immutable-ctl:" << process.errorString();
+        return false;
+    }
+
+    if (!process.waitForFinished()) {
+        qWarning() << "deepin-immutable-ctl did not finish successfully:" << process.errorString();
+        return false;
+    }
+
+    // 获取命令输出
+    QByteArray output = process.readAllStandardOutput();
+    QString result = QString::fromUtf8(output.trimmed());
+    if (result.split(":").at(1) == "true") {
+        qInfo() << "System is in immutable mode.";
+        return true;
+    } else {
+        qInfo() << "System is not in immutable mode. Output was:" << result;
+        return false;
+    }
+}
+
 int main(int argc, char *argv[])
 {
+    if (checkImmutableMode())
+        setenv("PWD", getenv("HOME"), 1);
     if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
         setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
     }
