@@ -909,6 +909,11 @@ QString MainWindow::getConfigWindowState()
     QString windowState =
         Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
 
+    if (!screen) {
+        qCritical() << "Can't get the screen where the cursor is located!";
+        return QSize(0 ,0);
+    }
+
     // 启动参数配置的状态值优先于 内部配置的状态值
     if (m_properties.contains(StartWindowState)) {
         QString state = m_properties[StartWindowState].toString();
