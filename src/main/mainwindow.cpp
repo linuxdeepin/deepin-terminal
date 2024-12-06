@@ -930,6 +930,11 @@ QString MainWindow::getConfigWindowState()
 QSize MainWindow::halfScreenSize()
 {
     QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    if (!screen) {
+        qCritical() << "Can't get the screen where the cursor is located!";
+        return QSize(0 ,0);
+    }
+
     int w = screen->availableGeometry().width();
     int h = screen->availableGeometry().height();
 
