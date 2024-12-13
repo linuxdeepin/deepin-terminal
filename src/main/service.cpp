@@ -192,41 +192,22 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
 
 void Service::listenWindowEffectSwitcher()
 {
-    if (nullptr == m_wmSwitcher) {
-        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
-        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
+    if (!m_mainTerminalIsInitWM) {
+        connect(DWindowManagerHelper::instance(),&DWindowManagerHelper::hasBlurWindowChanged,this, &Service::slotWMChanged);
+        m_mainTerminalIsInitWM = true;
     }
 }
 
-void Service::slotWMChanged(const QString &wmName)
+void Service::slotWMChanged()
 {
-    bool isWinEffectEnabled = false;
-    if (wmName == "deepin wm")
-        isWinEffectEnabled = true;
-
+    bool isWinEffectEnabled = DWindowManagerHelper::instance()->hasBlurWindow();
     showHideOpacityAndBlurOptions(isWinEffectEnabled);
     emit onWindowEffectEnabled(isWinEffectEnabled);
 }
 
 bool Service::isWindowEffectEnabled()
 {
-    QDBusMessage msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
-
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        QList<QVariant> list = response.arguments();
-        QString wmName = list.first().toString();
-        if (wmName == "deepin wm") {
-            qCInfo(mainprocess)  << "The window effects is on";
-            return true;
-        }
-    } else {
-        qCWarning(mainprocess)  << "call CurrentWM Fail!" << response.errorMessage();
-    }
-
-    qCWarning(mainprocess)  << "The window effects is off";
-    return false;
+    return DWindowManagerHelper::instance()->hasBlurWindow();
 }
 
 qint64 Service::getEntryTime()

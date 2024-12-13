@@ -224,9 +224,8 @@ public slots:
 
     /**
      * @brief 处理窗口特效打开/关闭时，相关设置项目的显示/隐藏
-     * @param wmName
      */
-    void slotWMChanged(const QString &wmName);
+    void slotWMChanged();
 
     /**
      * @brief 自定义主题对话框关闭后的处理
@@ -264,7 +263,6 @@ private:
     static Service             *g_pService;
     DSettingsDialog            *m_settingDialog                     = nullptr;// 设置框 全局唯一显示
     CustomThemeSettingDialog   *m_customThemeSettingDialog          = nullptr;// 自定义主题设置对话框 全局唯一
-    WMSwitcher                 *m_wmSwitcher                        = nullptr;
     MainWindow                 *m_settingOwner                      = nullptr;// 设置框的所有者
     DDialog                    *m_settingShortcutConflictDialog     = nullptr;// 设置框，快捷键冲突弹窗
     bool                        m_isDialogShow                      = false;  // 雷神用来判断是否有弹窗显示
@@ -272,6 +270,7 @@ private:
     QMap<QString, QString>      m_shellsMap;
     qint64                      m_entryTime                         = 0;      // 记录进入的时间，只有创建窗口时，才会来取用这个时间
     bool                        m_mainTerminalIsStarted             = false;
+    bool                        m_mainTerminalIsInitWM             = false;
 };
 
 #endif // SERVICE_H

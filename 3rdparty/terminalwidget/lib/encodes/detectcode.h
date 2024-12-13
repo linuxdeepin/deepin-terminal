@@ -8,7 +8,7 @@
 #include <QString>
 #include <QMap>
 
-#include <chardet/chardet.h>
+
 #include <uchardet/uchardet.h>
 #include <iconv.h>
 
