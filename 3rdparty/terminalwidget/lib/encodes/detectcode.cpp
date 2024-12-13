@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QTextCodec>
 #include <exception>
+#include <chardet/chardet.h>
 
 #include <stdio.h>
 
