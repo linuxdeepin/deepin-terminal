@@ -138,7 +138,7 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
         <source>Fore color:</source>
-        <translation type="unfinished"/>
+        <translation>لون الصوت</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="332"/>
@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="350"/>
         <source>Prompt PS1:</source>
-        <translation type="unfinished"/>
+        <translation>تحذير PS1</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="354"/>
         <source>Prompt PS2:</source>
-        <translation type="unfinished"/>
+        <translation>تحذير PS2</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="424"/>
@@ -178,12 +178,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="41"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>إضافة مجموعة</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="44"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>تحرير المجموعة</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
@@ -203,12 +203,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="65"/>
         <source>Please enter a group name</source>
-        <translation type="unfinished"/>
+        <translation>يرجى إدخال اسم المجموعة</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>يجب ألا يتجاوز الاسم 30 حرفًا</translation>
     </message>
 </context>
 <context>
@@ -221,17 +221,17 @@
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation>مسح الأمر المخصص</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
         <source>Cancel Server Group</source>
-        <translation type="unfinished"/>
+        <translation>إلغاء مجموعة الخوادم</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>الخوادم غير المجمعة ستعود إلى قائمة الخوادم!</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="498"/>
@@ -306,7 +306,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation>السماح باستخدام Ctrl+التمرير لعرض حجم النص</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
         <source>Quake window animation speed</source>
-        <translation type="unfinished"/>
+        <translation>سرعة رسوم النافذة كويك</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="145"/>
@@ -327,12 +327,12 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation type="unfinished"/>
+        <translation>عناوين debuginfod</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Use on starting</source>
-        <translation type="unfinished"/>
+        <translation>استخدامه عند البدء</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
@@ -444,25 +444,25 @@
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Select left workspace</source>
-        <translation type="unfinished"/>
+        <translation>حدد arbetsbereich  اليسار</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
-        <translation type="unfinished"/>
+        <translation>حدد workspace السفلي</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
-        <translation type="unfinished"/>
+        <translation>حدد workspace الأيمن</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
-        <translation type="unfinished"/>
+        <translation>حدد workspace العلوي</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
@@ -526,32 +526,32 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>تعطيل ضبط التدفق باستخدام Ctrl+S، Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>Shell profile</source>
-        <translation type="unfinished"/>
+        <translation>ملف تعريف سطح المكتب</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>حجم السجل</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>تضمين حرف مميز (أو أكثر) في اختيارات النقر المزدوج</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation>السماح باستخدام Ctrl + النقر الأيسر على الماوس لتحديد موقع المؤشر</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>خادم الملف HTTP المستخدم لإرسال موارد معلومات التحرير</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -633,22 +633,22 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1247"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"/>
+        <translation>لم يتم العثور على &quot;%1&quot;, بدءًا من &quot;%2&quot; بدلاً من ذلك. يرجى التحقق من ملف تهيئة سطح المكتب الخاص بك.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1253"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>لم يتم فتح &quot;%1&quot;, غير قادر على تشغيله</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1255"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>لم يتم العثور على &quot;%1&quot;, غير قادر على تشغيله</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1298"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation type="unfinished"/>
+        <translation>تم تعليق الإخراج عن طريق الضغط على Ctrl+S. اضغط على Ctrl+Q للمتابعة.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
@@ -685,7 +685,7 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/main/service.cpp" line="416"/>
         <source>please set another one.</source>
-        <translation type="unfinished"/>
+        <translation>يرجى تعيين واحد آخر.</translation>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
@@ -711,7 +711,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1610"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>تبديل التركيز على أيقونة &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="157"/>
@@ -740,13 +740,13 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>لا يزال هناك عملية واحدة تعمل في هذا المحطة. سيؤدي إغلاق المحطة إنهاء هذه العملية.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>لا يزال هناك %1 عملية واحدة تعمل في هذا المحطة. سيؤدي إغلاق المحطة إلى إنهاء جميع العمليات.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
@@ -758,7 +758,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>لا يزال هناك عمليات تعمل في هذا النافذة. سيؤدي إغلاق النافذة إلى إنهاء جميع العمليات.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="136"/>
@@ -817,12 +817,12 @@
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Set the window mode on starting</source>
-        <translation type="unfinished"/>
+        <translation>تعيين وضع النافذة عند بدء التشغيل</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="344"/>
         <source>Run in quake mode</source>
-        <translation type="unfinished"/>
+        <translation>ابدأ في وضع الزلزال</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="347"/>
@@ -851,13 +851,13 @@
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
-        <translation type="unfinished"/>
+        <translation>تنسيق عنوان علامة تبويب</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
-        <translation type="unfinished"/>
+        <translation>تنسيق عنوان علامة تبويب عن بعد</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
@@ -884,7 +884,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="210"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>إضافة مجموعة</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
@@ -894,7 +894,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="215"/>
         <source>No servers yet</source>
-        <translation type="unfinished"/>
+        <translation>لم يوجد خوادم بعد</translation>
     </message>
 </context>
 <context>
@@ -907,7 +907,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="201"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation type="unfinished"/>
+        <translation>تأكد من تثبيت أوامر rz و sz في الخادم قبل النقر بزر الماوس الأيمن لتحميل الملفات ونشرها.</translation>
     </message>
 </context>
 <context>
@@ -923,12 +923,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>المجموعات</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation>الخوادم</translation>
     </message>
 </context>
 <context>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>No Group</source>
-        <translation type="unfinished"/>
+        <translation>لا مجموعة</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="193"/>
@@ -1041,7 +1041,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="483"/>
         <source>Please enter an IP address</source>
-        <translation type="unfinished"/>
+        <translation>يرجى إدخال عنوان IP</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="488"/>
@@ -1112,14 +1112,14 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="268"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="277"/>
         <source>The shortcut %1 is invalid, </source>
-        <translation type="unfinished"/>
+        <translation>الاختصار %1 غير صالح, </translation>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="284"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="291"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
         <source>The shortcut %1 was already in use, </source>
-        <translation type="unfinished"/>
+        <translation>تم استخدام الاختصار %1 بالفعل, </translation>
     </message>
 </context>
 <context>
@@ -1133,49 +1133,49 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="74"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>username: %u</source>
-        <translation type="unfinished"/>
+        <translation>اسم المستخدم: %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="74"/>
         <source>username@: %U</source>
-        <translation type="unfinished"/>
+        <translation>اسم المستخدم @</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="74"/>
         <source>remote host: %h</source>
-        <translation type="unfinished"/>
+        <translation>المضيف عن بعد:</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="87"/>
         <source>session number: %#</source>
-        <translation type="unfinished"/>
+        <translation>رقم الجلسة: %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <source>title set by shell: %w</source>
-        <translation type="unfinished"/>
+        <translation>العنوان الذي حددته الساري: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
         <source>program name: %n</source>
-        <translation type="unfinished"/>
+        <translation>اسم البرنامج: %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
         <source>current directory (short): %d</source>
-        <translation type="unfinished"/>
+        <translation>الدليل الحالي (قصير): %d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="87"/>
         <source>current directory (long): %D</source>
-        <translation type="unfinished"/>
+        <translation>الدليل الحالي (طويل): %D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>local host: %h</source>
-        <translation type="unfinished"/>
+        <translation>الجهاز المحلي: %h</translation>
     </message>
 </context>
 <context>
@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"/>
+        <translation>سيصبح إعداد debuginfod فعليًا بعد إعادة التشغيل</translation>
     </message>
 </context>
 <context>
