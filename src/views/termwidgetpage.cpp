@@ -11,6 +11,7 @@
 #include "windowsmanager.h"
 #include "mainwindow.h"
 #include "define.h"
+#include "ColorScheme.h"
 
 #include <DLog>
 #include <DDialog>
@@ -58,7 +59,9 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
     m_layout = new QVBoxLayout(this);
     m_layout->setObjectName("TermPageLayout");//Add by ut001000 renfeixiang 2020-08-13
     m_layout->setSpacing(0);
-    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setMargin(0);
+    // FIXME(hualet): m_MainWindow->windowRadius() returns 0, so we use 8 as default.
+    m_layout->setContentsMargins(8, 0, 8, 0);
     m_layout->addWidget(w);
     setLayout(m_layout);
 
@@ -79,6 +82,7 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
         m_findBar->move(width() - m_findBar->width(), 0);
     }, Qt::QueuedConnection);
 #endif
+    updateBackgroundColor();
 }
 
 inline void TermWidgetPage::handleKeywordChanged(const QString &keyword)
@@ -453,11 +457,17 @@ void TermWidgetPage::setTerminalOpacity(qreal opacity)
         term->setTermOpacity(opacity);
 }
 
-void TermWidgetPage::setColorScheme(const QString &name)
+void TermWidgetPage::updateBackgroundColor()
 {
-    QList<TermWidget *> termList = findChildren<TermWidget *>();
-    for (TermWidget *term : termList)
-        term->setColorScheme(name);
+    if (currentTerminal()) {
+        QColor color = currentTerminal()->backgroundColor();
+        color.setAlphaF(Settings::instance()->opacity());
+
+        QPalette palette = this->palette();
+        palette.setColor(QPalette::Background, color);
+        this->setPalette(palette);
+        this->setAutoFillBackground(true);
+    }
 }
 
 void TermWidgetPage::sendTextToCurrentTerm(const QString &text, bool isRemoteConnect)
@@ -709,6 +719,7 @@ void TermWidgetPage::handleUpdateSearchKeyword(const QString &keyword)
 void TermWidgetPage::applyTheme()
 {
     updateSplitStyle();
+    updateBackgroundColor();
 }
 
 void TermWidgetPage::updateSplitStyle()
