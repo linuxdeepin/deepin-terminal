@@ -61,7 +61,7 @@ void TerminalApplication::handleQuitAction()
 
 bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
-    //修复bug#110813,参考https://gerrit.uniontech.com/c/dtkwidget/+/94656
+    //修复bug#110813
     if (event->type() == QEvent::ApplicationFontChange) {
         // ApplicationFontChange 调用 font() 是 ok 的，如果在 fontChanged 中调用在某些版本中会出现 deadlock
         DFontSizeManager::instance()->setFontGenericPixelSize(static_cast<quint16>(DFontSizeManager::fontPixelSize(font())));
