@@ -16,7 +16,7 @@
 
 #include <DDesktopServices>
 #include <DInputDialog>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DLog>
 #include <DDialog>
 #include <DFloatingMessage>
@@ -32,6 +32,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QFileInfo>
+#include <QProcess>
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
@@ -178,8 +179,8 @@ void TermWidget::initConnections()
 
     connect(this, &QWidget::customContextMenuRequested, this, &TermWidget::customContextMenuCall);
 
-    connect(DApplicationHelper::instance(),
-            &DApplicationHelper::themeTypeChanged,
+    connect(DGuiApplicationHelper::instance(),
+            &DGuiApplicationHelper::themeTypeChanged,
             this,
             &TermWidget::onThemeTypeChanged);
 

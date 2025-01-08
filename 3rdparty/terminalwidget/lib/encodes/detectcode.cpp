@@ -13,6 +13,12 @@
 #include <exception>
 #include <chardet/chardet.h>
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+#include <QRegExp>
+#else
+#include <QRegularExpression>
+#endif
+
 #include <stdio.h>
 
 #define DISABLE_TEXTCODEC
@@ -115,7 +121,11 @@ QByteArray DetectCode::GetFileEncodingFormat(QString filepath, QByteArray conten
     /* chardet识别编码 */
     QString str(content);
     // 匹配的是中文(仅在UTF-8编码下)
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     bool bFlag = str.contains(QRegExp("[\\x4e00-\\x9fa5]+"));
+#else
+    bool bFlag = str.contains(QRegularExpression("[\\x4e00-\\x9fa5]+"));
+#endif
     if (bFlag) {
         const QByteArray suffix = "为增加探测率保留的中文";
         QByteArray newContent = content;

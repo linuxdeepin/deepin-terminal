@@ -140,11 +140,11 @@ TEST_F(UT_ItemWidget_Test, setFontColor)
     EXPECT_NE(itemWidget, nullptr);
 
     itemWidget->setFontColor(itemWidget->m_firstline, ItemTextColor::ItemTextColor_Text);
-    DPalette firstPalette = DApplicationHelper::instance()->palette(itemWidget->m_firstline);
+    DPalette firstPalette = DPaletteHelper::instance()->palette(itemWidget->m_firstline);
     EXPECT_EQ(firstPalette.color(DPalette::Text), itemWidget->getColor(ItemTextColor::ItemTextColor_Text));
 
     itemWidget->setFontColor(itemWidget->m_secondline, ItemTextColor::ItemTextColor_TextTips);
-    DPalette secondPalette = DApplicationHelper::instance()->palette(itemWidget->m_secondline);
+    DPalette secondPalette = DPaletteHelper::instance()->palette(itemWidget->m_secondline);
     EXPECT_EQ(secondPalette.color(DPalette::Text), itemWidget->getColor(ItemTextColor::ItemTextColor_TextTips));
 
     delete itemWidget;
@@ -182,7 +182,7 @@ TEST_F(UT_ItemWidget_Test, slotThemeChange)
     ItemWidget *itemWidget = new ItemWidget(ItemFuncType::ItemFuncType_Item, nullptr);
     EXPECT_NE(itemWidget, nullptr);
 
-    itemWidget->slotThemeChange(DApplicationHelper::LightType);
+    itemWidget->slotThemeChange(DGuiApplicationHelper::LightType);
 
     delete itemWidget;
 }

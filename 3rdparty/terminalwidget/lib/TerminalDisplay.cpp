@@ -74,6 +74,12 @@ typedef quint16 RenditionFlags;
 #define loc(X,Y) ((Y)*_columns+(X))
 #endif
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+#define MID_BTN Qt::MidButton
+#else
+#define MID_BTN Qt::MiddleButton
+#endif
+
 #define yMouseScroll 1
 
 #define REPCHAR   "ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
@@ -322,6 +328,7 @@ void TerminalDisplay::calDrawTextAdditionHeight(QPainter& painter)
 
 void TerminalDisplay::setVTFont(const QFont& f)
 {
+
     /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42250***/
     /***add begin by ut001121 zhangmeng 20200908 限制字体大小 修复BUG42412***/
     if(f.pointSize() < __minFontSize || f.pointSize() > __maxFontSize){
@@ -329,67 +336,56 @@ void TerminalDisplay::setVTFont(const QFont& f)
     }
     /***add end by ut001121***/
 
+    //merege below codes from upsteam
+    QFont font = f;
+
+    // Check if font is not fixed pitch and print a warning
+    if ( !QFontInfo(font).fixedPitch() )
+    {
+        qDebug() << "Using a variable-width font in the terminal.  This may cause performance degradation and display/alignment errors.";
+    }
+
     // 放大缩小时需要一个标志位
     // 该标志位负责取消输出时滚动
     // 发送信号修改标志位 => 调整大小时,不允许接收输出时滚动的设置
     m_isAllowScroll = false;
 
-    QFont newFont(f);
-    int strategy = 0;
-
-    // hint that text should be drawn with- or without anti-aliasing.
+    // hint that text should be drawn without anti-aliasing.
     // depending on the user's font configuration, this may not be respected
-    strategy |= _antialiasText ? QFont::PreferAntialias : QFont::NoAntialias;
-
-    // Konsole cannot handle non-integer font metrics
-    strategy |= QFont::ForceIntegerMetrics;
-
-    // In case the provided font doesn't have some specific characters it should
-    // fall back to a Monospace fonts.
-    newFont.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(strategy));
-
-    // Try to check that a good font has been loaded.
-    // For some fonts, ForceIntegerMetrics causes height() == 0 which
-    // will cause Konsole to crash later.
-    QFontMetrics fontMetrics2(newFont);
-    if (fontMetrics2.height() < 1) {
-        qDebug()<<"The font "<<newFont.toString()<<" has an invalid height()";
-        // Ask for a generic font so at least it is usable.
-        // Font listed in profile's dialog will not be updated.
-        newFont = QFont(QStringLiteral("Monospace"));
-        // Set style strategy without ForceIntegerMetrics for the font
-        strategy &= ~QFont::ForceIntegerMetrics;
-        newFont.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(strategy));
-        qDebug()<<"Font changed to "<<newFont.toString();
-    }
+    if (!_antialiasText)
+        font.setStyleStrategy( QFont::NoAntialias );
 
     // experimental optimization.  Konsole assumes that the terminal is using a
-    // mono-spaced font, in which case kerning information should have an effect.
+    // mono-spaced font, in which case kerning information should have no effect.
     // Disabling kerning saves some computation when rendering text.
-    newFont.setKerning(false);
+    font.setKerning(false);
+
+    // QFont::ForceIntegerMetrics has been removed.
+    // Set full hinting instead to ensure the letters are aligned properly.
+    font.setHintingPreference(QFont::PreferFullHinting);
 
     // "Draw intense colors in bold font" feature needs to use different font weights. StyleName
     // property, when set, doesn't allow weight changes. Since all properties (weight, stretch,
     // italic, etc) are stored in QFont independently, in almost all cases styleName is not needed.
-    newFont.setStyleName(QString());
+    font.setStyleName(QString());
 
-    if (newFont == font()) {
-        // Do not process the same font again
-        return;
-    }
+    QWidget::setFont(font);
+    fontChange(font);
 
-    QFontInfo fontInfo(newFont);
+    // just keep below codes which may fixed somthing.
+#if 0
+    QFontInfo fontInfo(font);
 
     // QFontInfo::fixedPitch() appears to not match QFont::fixedPitch() - do not test it.
     // related?  https://bugreports.qt.io/browse/QTBUG-34082
-    if (fontInfo.family() != newFont.family()
-            || !qFuzzyCompare(fontInfo.pointSizeF(), newFont.pointSizeF())
-            || fontInfo.styleHint()  != newFont.styleHint()
-            || fontInfo.weight()     != newFont.weight()
-            || fontInfo.style()      != newFont.style()
-            || fontInfo.underline()  != newFont.underline()
-            || fontInfo.strikeOut()  != newFont.strikeOut()
-            || fontInfo.rawMode()    != newFont.rawMode()) {
+    if (fontInfo.family() != font.family()
+            || !qFuzzyCompare(fontInfo.pointSizeF(), font.pointSizeF())
+            || fontInfo.styleHint()  != font.styleHint()
+            || fontInfo.weight()     != font.weight()
+            || fontInfo.style()      != font.style()
+            || fontInfo.underline()  != font.underline()
+            || fontInfo.strikeOut()  != font.strikeOut()
+            || fontInfo.rawMode()    != font.rawMode()) {
         const QString nonMatching = QString::asprintf("%s,%g,%d,%d,%d,%d,%d,%d,%d,%d",
                 qPrintable(fontInfo.family()),
                 fontInfo.pointSizeF(),
@@ -399,16 +395,14 @@ void TerminalDisplay::setVTFont(const QFont& f)
                 static_cast<int>(fontInfo.style()),
                 static_cast<int>(fontInfo.underline()),
                 static_cast<int>(fontInfo.strikeOut()),
-                // Intentional newFont use - fixedPitch is bugged, see comment above
-                static_cast<int>(newFont.fixedPitch()),
+                // Intentional font use - fixedPitch is bugged, see comment above
+                static_cast<int>(font.fixedPitch()),
                 static_cast<int>(fontInfo.rawMode()));
         qDebug() << "The font to use in the terminal can not be matched exactly on your system.";
-        qDebug() << " Selected: " << newFont.toString();
+        qDebug() << " Selected: " << font.toString();
         qDebug() << " System  : " << nonMatching;
     }
-
-    QWidget::setFont(newFont);
-    fontChange(newFont);
+#endif
 }
 
 void TerminalDisplay::setFont(const QFont &)
@@ -859,7 +853,11 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
     const QColor backgroundColor = style->backgroundColor.color(_colorTable);
 
     // draw background if different from the display's background color
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     if ( backgroundColor != palette().background().color() )
+#else
+    if ( backgroundColor != palette().window().color() )
+#endif
         drawBackground(painter,rect,backgroundColor,
                        false /* do not use transparency */);
 
@@ -1272,8 +1270,13 @@ void TerminalDisplay::showResizeNotification()
      if (!_resizeWidget)
      {
          const QString label = tr("Size: XXX x XXX");
+        #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        int width = _resizeWidget->fontMetrics().width(label);
+        #else
+        int width = _resizeWidget->fontMetrics().horizontalAdvance(label);
+        #endif
         _resizeWidget = new QLabel(label, this);
-        _resizeWidget->setMinimumWidth(_resizeWidget->fontMetrics().width(label));
+        _resizeWidget->setMinimumWidth(width);
         _resizeWidget->setMinimumHeight(_resizeWidget->sizeHint().height());
         _resizeWidget->setAlignment(Qt::AlignCenter);
 
@@ -1392,7 +1395,11 @@ void TerminalDisplay::paintEvent( QPaintEvent* pe )
 
   for (const QRect &rect : region) {
       dirtyImageRegion += widgetToImage(rect);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
       drawBackground(paint, rect, palette().background().color(), true /* use opacity setting */);
+#else
+      drawBackground(paint, rect, palette().window().color(), true /* use opacity setting */);
+#endif
   }
 
   // only turn on text anti-aliasing, never turn on normal antialiasing
@@ -1589,7 +1596,12 @@ int TerminalDisplay::textWidth(const int startColumn, const int length, const in
   QFontMetrics fm(font());
   int result = 0;
   for (int column = 0; column < length; column++) {
-    result += fm.width(_image[loc(startColumn + column, line)].character);
+        uint chwid = _image[loc(startColumn + column, line)].character;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        result += fm.width(chwid);
+#else
+        result += fm.horizontalAdvance(QChar(chwid));
+#endif
   }
   return result;
 }
@@ -1756,7 +1768,7 @@ void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
             univec.resize(p);
 
             // Create a text scaling matrix for double width and double height lines.
-            QMatrix textScale;
+            QTransform textScale;
 
             if (y < _lineProperties.size()) {
                 if ((_lineProperties[y] & LINE_DOUBLEWIDTH) != 0) {
@@ -1769,7 +1781,7 @@ void TerminalDisplay::drawContents(QPainter &paint, const QRect &rect)
             }
 
             //Apply text scaling matrix.
-            paint.setWorldTransform(QTransform(textScale), true);
+            paint.setWorldTransform(textScale, true);
 
             //calculate the area in which the text will be drawn
 
@@ -2112,7 +2124,7 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
           spot->activate(QLatin1String("click-action"));
     }
   }
-  else if ( ev->button() == Qt::MidButton )
+  else if ( ev->button() == MID_BTN)
   {
     if ( _mouseMarks || (ev->modifiers() & Qt::ShiftModifier) )
       emitSelection(true,ev->modifiers() & Qt::ControlModifier);
@@ -2206,7 +2218,7 @@ void TerminalDisplay::mouseMoveEvent(QMouseEvent* ev)
     int button = 3;
     if (ev->buttons() & Qt::LeftButton)
         button = 0;
-    if (ev->buttons() & Qt::MidButton)
+    if (ev->buttons() & MID_BTN)
         button = 1;
     if (ev->buttons() & Qt::RightButton)
         button = 2;
@@ -2248,7 +2260,7 @@ void TerminalDisplay::mouseMoveEvent(QMouseEvent* ev)
   if (_actSel == 0) return;
 
  // don't extend selection while pasting
-  if (ev->buttons() & Qt::MidButton) return;
+  if (ev->buttons() & MID_BTN) return;
 
   extendSelection( ev->pos() );
 }
@@ -2322,9 +2334,9 @@ void TerminalDisplay::extendSelection( const QPoint& position )
     QPoint left = left_not_right ? here : _iPntSelCorr;
     i = loc(left.x(),left.y());
     if (i>=0 && i<=_imageSize) {
-      selClass = charClass(_image[i].character);
+      selClass = charClass(QChar(_image[i].character));
       while ( ((left.x()>0) || (left.y()>0 && (_lineProperties[left.y()-1] & LINE_WRAPPED) ))
-                      && charClass(_image[i-1].character) == selClass )
+             && charClass(QChar(_image[i-1].character)) == selClass )
       { i--; if (left.x()>0) left.rx()--; else {left.rx()=_usedColumns-1; left.ry()--;} }
     }
 
@@ -2332,9 +2344,9 @@ void TerminalDisplay::extendSelection( const QPoint& position )
     QPoint right = left_not_right ? _iPntSelCorr : here;
     i = loc(right.x(),right.y());
     if (i>=0 && i<=_imageSize) {
-      selClass = charClass(_image[i].character);
+      selClass = charClass(QChar(_image[i].character));
       while( ((right.x()<_usedColumns-1) || (right.y()<_usedLines-1 && (_lineProperties[right.y()] & LINE_WRAPPED) ))
-                      && charClass(_image[i+1].character) == selClass )
+             && charClass(QChar(_image[i+1].character)) == selClass )
       { i++; if (right.x()<_usedColumns-1) right.rx()++; else {right.rx()=0; right.ry()++; } }
     }
 
@@ -2403,7 +2415,7 @@ void TerminalDisplay::extendSelection( const QPoint& position )
     {
       int i = loc(right.x(),right.y());
       if (i>=0 && i<=_imageSize) {
-        selClass = charClass(_image[i-1].character);
+        selClass = charClass(QChar(_image[i-1].character));
        /* if (selClass == ' ')
         {
           while ( right.x() < _usedColumns-1 && charClass(_image[i+1].character) == selClass && (right.y()<_usedLines-1) &&
@@ -2499,12 +2511,13 @@ void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
     dragInfo.state = diNone;
   }
 
+  bool midClick = (ev->button() == MID_BTN);
 
   if ( !_mouseMarks &&
        ((ev->button() == Qt::RightButton && !(ev->modifiers() & Qt::ShiftModifier))
-                        || ev->button() == Qt::MidButton) )
+                        || midClick) )
   {
-    emit mouseSignal( ev->button() == Qt::MidButton ? 1 : 2,
+    emit mouseSignal( midClick ? 1 : 2,
                       charColumn + 1,
                       charLine + 1 +_scrollBar->value() -_scrollBar->maximum() ,
                       2);
@@ -2603,12 +2616,12 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
   _wordSelectionMode = true;
 
   // find word boundaries...
-  QChar selClass = charClass(_image[i].character);
+  QChar selClass = charClass(QChar(_image[i].character));
   {
      // find the start of the word
      int x = bgnSel.x();
      while ( ((x>0) || (bgnSel.y()>0 && (_lineProperties[bgnSel.y()-1] & LINE_WRAPPED) ))
-                     && charClass(_image[i-1].character) == selClass )
+            && charClass(QChar(_image[i-1].character)) == selClass )
      {
        i--;
        if (x>0)
@@ -2627,7 +2640,7 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
      i = loc( endSel.x(), endSel.y() );
      x = endSel.x();
      while( ((x<_usedColumns-1) || (endSel.y()<_usedLines-1 && (_lineProperties[endSel.y()] & LINE_WRAPPED) ))
-                     && charClass(_image[i+1].character) == selClass )
+            && charClass(QChar(_image[i+1].character)) == selClass )
      {
          i++;
          if (x<_usedColumns-1)
@@ -2671,13 +2684,24 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
     //判断有鼠标滚轮滚动的时候，初始化键盘选择状态
     initKeyBoardSelection();
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     if (ev->orientation() != Qt::Vertical)
+#else
+    if (ev->angleDelta().x() != 0)
+#endif
         return;
 
     // if the terminal program is not interested mouse events
     // then send the event to the scrollbar if the slider has room to move
     // or otherwise send simulated up / down key presses to the terminal program
     // for the benefit of programs such as 'less'
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    int delta = ev->delta();
+    QPoint pos = ev->pos();
+#else
+    int delta = ev->angleDelta().y();
+    QPoint pos = ev->position().toPoint();
+#endif
 
     if ( _mouseMarks && _scrollBar->maximum() > 0)
     {
@@ -2689,10 +2713,10 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
         // to get a reasonable scrolling speed, scroll by one line for every 5 degrees
         // of mouse wheel rotation.  Mouse wheels typically move in steps of 15 degrees,
         // giving a scroll of 3 lines
-        int key = ev->delta() > 0 ? Qt::Key_Up : Qt::Key_Down;
+        int key = delta > 0 ? Qt::Key_Up : Qt::Key_Down;
 
         // QWheelEvent::delta() gives rotation in eighths of a degree
-        int wheelDegrees = ev->delta() / 8;
+        int wheelDegrees = delta / 8;
         int linesToScroll = abs(wheelDegrees) / 5;
 
         QKeyEvent keyScrollEvent(QEvent::KeyPress,key,Qt::NoModifier);
@@ -2704,9 +2728,9 @@ void TerminalDisplay::wheelEvent( QWheelEvent* ev )
 
         int charLine;
         int charColumn;
-        getCharacterPosition( ev->pos() , charLine , charColumn );
+        getCharacterPosition( pos , charLine , charColumn );
 
-        emit mouseSignal( ev->delta() > 0 ? 4 : 5,
+        emit mouseSignal( delta > 0 ? 4 : 5,
                           charColumn + 1,
                           charLine + 1 +_scrollBar->value() -_scrollBar->maximum() ,
                           0);
@@ -2751,13 +2775,13 @@ void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
   if (_tripleClickMode == SelectForwardsFromCursor) {
     // find word boundary start
     int i = loc(_iPntSel.x(),_iPntSel.y());
-    QChar selClass = charClass(_image[i].character);
+    QChar selClass = charClass(QChar(_image[i].character));
     int x = _iPntSel.x();
 
     while ( ((x>0) ||
              (_iPntSel.y()>0 && (_lineProperties[_iPntSel.y()-1] & LINE_WRAPPED) )
             )
-            && charClass(_image[i-1].character) == selClass )
+           && charClass(QChar(_image[i-1].character)) == selClass )
     {
         i--;
         if (x>0)
@@ -2952,7 +2976,7 @@ void TerminalDisplay::checkAndInitSelectionState()
     if (_selStartColumn != _screenWindow->cursorPosition().x()
             || _selStartLine != _screenWindow->cursorPosition().y() )
     {
-        qDebug() << "checkAndInitSelectionState!" << endl;
+        qDebug() << "checkAndInitSelectionState!";
         initKeyBoardSelection();
     }
 }
@@ -3060,7 +3084,7 @@ void TerminalDisplay::keyPressEvent( QKeyEvent* event )
                 _selEndColumn = 0;
                 _selEndLine++;
             }
-            qDebug() << "maxLineIndex: " << maxLineIndex << endl;
+            qDebug() << "maxLineIndex: " << maxLineIndex;
             qDebug() << "right: _selStartColumn" << _selStartColumn
                         << "_selStartLine" << _selStartLine
                         << "_selEndColumn" << _selEndColumn
@@ -3207,7 +3231,11 @@ QVariant TerminalDisplay::inputMethodQuery( Qt::InputMethodQuery query ) const
     const QPoint cursorPos = _screenWindow ? _screenWindow->cursorPosition() : QPoint(0,0);
     switch ( query )
     {
+        #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         case Qt::ImMicroFocus:
+        #else
+        case Qt::ImCursorRectangle:
+        #endif
                 return imageToWidget(QRect(cursorPos.x(),cursorPos.y(),1,1));
             break;
         case Qt::ImFont:
@@ -3565,7 +3593,11 @@ void TerminalDisplay::doDrag()
   QMimeData *mimeData = new QMimeData;
   mimeData->setText(QApplication::clipboard()->text(QClipboard::Selection));
   dragInfo.dragObject->setMimeData(mimeData);
+  #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   dragInfo.dragObject->start(Qt::CopyAction);
+  #else
+  dragInfo.dragObject->exec(Qt::CopyAction);
+  #endif
   // Don't delete the QTextDrag object.  Qt will delete it when it's done with it.
 }
 

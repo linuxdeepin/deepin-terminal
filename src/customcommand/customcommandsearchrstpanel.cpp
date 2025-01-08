@@ -11,7 +11,7 @@
 #include "utils.h"
 #include "mainwindow.h"
 
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DMessageBox>
 
 #include <QAction>
@@ -48,7 +48,7 @@ void CustomCommandSearchRstPanel::initUI()
     // 字体颜色随主题变化变化
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 102);
     else
         color = QColor::fromRgb(85, 85, 85, 102);
@@ -65,20 +65,20 @@ void CustomCommandSearchRstPanel::initUI()
     // 搜索框居中显示
     hlayout->addWidget(m_label, 0, Qt::AlignCenter);
     hlayout->setSpacing(0);
-    hlayout->setMargin(0);
+    hlayout->setContentsMargins(0, 0, 0, 0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
     vlayout->addSpacing(10);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_cmdListWidget);
-    vlayout->setMargin(0);
+    vlayout->setContentsMargins(0, 0, 0, 0);
     vlayout->setSpacing(10);
     setLayout(vlayout);
 
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandSearchRstPanel::handleThemeTypeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandSearchRstPanel::handleThemeTypeChanged);
 
     connect(m_rebackButton, &IconButton::focusOut, this, &CustomCommandSearchRstPanel::handleIconButtonFocusOut);
 
@@ -89,7 +89,7 @@ inline void CustomCommandSearchRstPanel::handleThemeTypeChanged(DGuiApplicationH
 {
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == themeType)
+    if (DGuiApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 102);
     else
         color = QColor::fromRgb(85, 85, 85, 102);

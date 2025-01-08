@@ -11,7 +11,7 @@
 #include "service.h"
 
 //dtk
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -57,13 +57,13 @@ static bool ut_ShortcutManager_checkShortcutValid(const QString &, const QString
 
 TEST_F(UT_CustomCommandOptDlg_Test, CustomCommandOptDlgTest)
 {
-    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::DarkType);
+    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
     QSharedPointer<CustomCommandOptDlg> cmdDlg_new(new CustomCommandOptDlg, doDeleteLater);
     cmdDlg_new->setIconPixmap(QPixmap());
     cmdDlg_new->show();
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
-    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::LightType);
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
 
     QSharedPointer<CustomCommandOptDlg> cmdDlg(new CustomCommandOptDlg, doDeleteLater);
 

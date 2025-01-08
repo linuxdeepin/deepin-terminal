@@ -8,7 +8,7 @@
 
 // dtk
 #include <DIconButton>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DFloatingWidget>
 #include <DPalette>
 #include <DSearchEdit>

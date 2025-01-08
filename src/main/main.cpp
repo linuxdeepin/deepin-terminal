@@ -13,8 +13,10 @@
 
 
 #include <DApplication>
-#include <DApplicationSettings>
 #include <DLog>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+#include <DApplicationSettings>
+#endif
 
 #include <QDir>
 #include <QDebug>
@@ -67,14 +69,18 @@ int main(int argc, char *argv[])
     }
     // 应用计时
     QTime useTime;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     useTime.start();
+#endif
     //为了更精准，起动就度量时间
     qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     // 启动应用
     TerminalApplication app(argc, argv);
     app.setStartTime(startTime);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     DApplicationSettings set(&app);
+#endif
 
     // 系统日志
 #if (DTK_VERSION >= DTK_VERSION_CHECK(5,6,8,0))

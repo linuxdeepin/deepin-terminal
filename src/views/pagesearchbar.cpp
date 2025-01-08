@@ -113,12 +113,20 @@ void PageSearchBar::keyPressEvent(QKeyEvent *event)
             if (Qt::ShiftModifier == modify
                     || (Qt::ShiftModifier | Qt::KeypadModifier) == modify) {
                 // shift + enter 查找前一个
+                #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
                 m_findPrevButton->animateClick(80);
+                #else
+                m_findPrevButton->animateClick();
+                #endif
             }
             // 没有shift修饰
             else if (Qt::NoModifier == modify || Qt::KeypadModifier == modify) {
                 // 查找下一个
+                #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
                 m_findNextButton->animateClick(80);
+                #else
+                m_findNextButton->animateClick();
+                #endif
             }
         }
     }

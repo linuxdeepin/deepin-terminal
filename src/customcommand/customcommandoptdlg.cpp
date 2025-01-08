@@ -15,7 +15,7 @@
 #include <DKeySequenceEdit>
 #include <DCommandLinkButton>
 #include <DDialogCloseButton>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DGuiApplicationHelper>
 #include <DWidgetUtil>
 #include <DLog>
@@ -297,7 +297,7 @@ void CustomCommandOptDlg::initUITitle()
     // 字色
     DPalette palette = m_titleText->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);
@@ -331,7 +331,7 @@ void CustomCommandOptDlg::initTitleConnections()
 {
     connect(m_closeButton, &DWindowCloseButton::clicked, this, &CustomCommandOptDlg::slotCloseButtonClicked);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandOptDlg::slotThemeTypeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandOptDlg::slotThemeTypeChanged);
 }
 
 inline void CustomCommandOptDlg::slotCloseButtonClicked()
@@ -343,7 +343,7 @@ inline void CustomCommandOptDlg::slotThemeTypeChanged(DGuiApplicationHelper::Col
 {
     DPalette palette = m_titleText->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == themeType)
+    if (DGuiApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);
@@ -518,11 +518,11 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
     setTabOrder(m_confirmBtn, m_closeButton);//设置右上角关闭按钮的tab键控制顺序
 
     m_verticalLine = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(m_verticalLine);
+    DPalette pa = DPaletteHelper::instance()->palette(m_verticalLine);
     QColor splitColor = pa.color(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitColor);
+    pa.setBrush(DPalette::Window, splitColor);
     m_verticalLine->setPalette(pa);
-    m_verticalLine->setBackgroundRole(QPalette::Background);
+    m_verticalLine->setBackgroundRole(QPalette::Window);
     m_verticalLine->setAutoFillBackground(true);
     m_verticalLine->setFixedSize(3, 28);
 

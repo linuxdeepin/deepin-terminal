@@ -39,11 +39,18 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INSTALL_PREFIX "/usr")
 
 # Minimum Versions
-set(QT_MINIMUM_VERSION "5.7.1")
 set(LXQTBT_MINIMUM_VERSION "0.6.0")
 
-find_package(Qt5Widgets "${QT_MINIMUM_VERSION}" REQUIRED)
-find_package(Qt5LinguistTools "${QT_MINIMUM_VERSION}" REQUIRED)
+if(DEFINED QT_DESIRED_VERSION)
+  message("Build with setting Qt version!")
+else(DEFINED QT_DESIRED_VERSION)
+    message("Searching for preferred Qt version...")
+  find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+  set(QT_DESIRED_VERSION ${QT_VERSION_MAJOR})
+endif(DEFINED QT_DESIRED_VERSION)
+
+find_package(Qt${QT_DESIRED_VERSION} REQUIRED COMPONENTS Widgets)
+
 find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
 find_package(ICU COMPONENTS i18n uc REQUIRED)
 
@@ -64,7 +71,7 @@ if(APPLE)
     endif()
 endif()
 
-set(TERMINALWIDGET_LIBRARY_NAME terminalwidget5)
+set(TERMINALWIDGET_LIBRARY_NAME terminalwidget${QT_DESIRED_VERSION})
 
 remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_BYTEARRAY)
 
@@ -137,6 +144,7 @@ set(HDRS
     lib/Vt102Emulation.h
     lib/EscapeSequenceUrlExtractor.h
     lib/encodes/detectcode.h
+    lib/qtcompat.h
 )
 
 set(UI
@@ -179,9 +187,17 @@ set(TERMINALWIDGET_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${TERMINALWIDGE
 
 CHECK_FUNCTION_EXISTS(updwtmpx HAVE_UPDWTMPX)
 
-qt5_wrap_cpp(MOCS ${HDRS})
-qt5_wrap_ui(UI_SRCS ${UI})
-set(PKG_CONFIG_REQ "Qt5Widgets")
+if(QT_DESIRED_VERSION MATCHES 6)
+  find_package(Qt${QT_DESIRED_VERSION} REQUIRED COMPONENTS Core5Compat)
+  list(APPEND LINK_LIBS Qt${QT_VERSION_MAJOR}::Core5Compat)
+  QT6_WRAP_CPP(MOCS ${HDRS})
+  QT6_WRAP_UI(UI_SRCS ${UI})
+elseif(QT_DESIRED_VERSION MATCHES 5)
+  QT5_WRAP_CPP(MOCS ${HDRS})
+  QT5_WRAP_UI(UI_SRCS ${UI})
+else()
+  message("Not support other Qt version: {QT_DESIRED_VERSION}")
+endif()
 
 lxqt_translate_ts(TERMINALWIDGET_QM
     TRANSLATION_DIR "lib/translations"
@@ -197,7 +213,8 @@ lxqt_translate_ts(TERMINALWIDGET_QM
 
 add_library(${TERMINALWIDGET_LIBRARY_NAME} SHARED ${SRCS} ${MOCS} ${UI_SRCS} ${TERMINALWIDGET_QM})
 target_link_libraries(${TERMINALWIDGET_LIBRARY_NAME}
-    Qt5::Widgets
+    Qt${QT_VERSION_MAJOR}::Widgets
+    ${LINK_LIBS}
     ICU::i18n
     ICU::uc
     -lm

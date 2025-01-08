@@ -11,7 +11,7 @@
 
 // DTK
 #include <DTitlebar>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DColorDialog>
 
 //Qt单元测试相关头文件
@@ -189,11 +189,11 @@ TEST_F(UT_CustomThemeSettingDialog_Test, CustomThemeSettingDialog)
     EXPECT_EQ(dialog->m_titleText->text().isEmpty(), false);
 
     // 主题变化 => 弹窗字体颜色变化
-    QSignalSpy signalpy(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged);
+    QSignalSpy signalpy(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged);
     EXPECT_TRUE(signalpy.count() == 0);
 
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
     signalpy.wait(1000);
     EXPECT_TRUE(signalpy.count() == 2);
 

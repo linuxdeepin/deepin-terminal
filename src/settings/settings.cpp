@@ -15,7 +15,7 @@
 #include <DSettingsWidgetFactory>
 #include <DLog>
 #include <DSlider>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DKeySequenceEdit>
 #include <DSysInfo>
 
@@ -23,6 +23,9 @@
 #include <QStandardPaths>
 #include <QFontDatabase>
 #include <QLoggingCategory>
+#include <QCollator>
+#include <QProcessEnvironment>
+#include <QJsonDocument>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"

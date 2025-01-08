@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "termwidget.h"
 #include "dbusmanager.h"
+#include "qtcompat.h"
 
 #include <DLog>
 #include <DMessageBox>
@@ -32,6 +33,10 @@
 #include <QTime>
 #include <QFontMetrics>
 #include <QLoggingCategory>
+#include <QCollator>
+#include <QProcessEnvironment>
+#include <QThread>
+
 #include <sys/utsname.h>
 
 QHash<QString, QPixmap> Utils::m_imgCacheHash;
@@ -85,7 +90,11 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElid
     QFontMetrics fontWidth(font);
 
     // 计算字符串宽度
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     int width = fontWidth.width(text);
+#else
+    int width = fontWidth.horizontalAdvance(text);
+#endif
 
     // 当字符串宽度大于最大宽度时进行转换
     if (width >= MaxWith) {
@@ -103,9 +112,9 @@ QString Utils::getRandString()
     QString str;
     QTime t;
     t = QTime::currentTime();
-    qsrand(static_cast<uint>(t.msec() + t.second() * 1000));
+    srand(static_cast<uint>(t.msec() + t.second() * 1000));
     for (int i = 0; i < max; i++) {
-        int len = qrand() % tmp.length();
+        int len = rand() % tmp.length();
         str[i] = tmp.at(len);
     }
     return str;
@@ -449,6 +458,12 @@ QStringList Utils::parseNestedQString(QString str)
     int iLeft = NOT_FOUND;
     int iRight = NOT_FOUND;
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    auto spStr = QRegExp(QStringLiteral("\\s+"));
+#else
+    auto spStr = QStringLiteral("\\s+");
+#endif
+
     // 如果只有一个引号
     if (str.count("\"") >= 1) {
         iLeft = str.indexOf("\"");
@@ -466,14 +481,14 @@ QStringList Utils::parseNestedQString(QString str)
             return paraList;
         }
 
-        paraList.append(str.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+        paraList.append(str.split(spStr));
         return  paraList;
     }
 
-    paraList.append(str.left(iLeft).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+    paraList.append(str.left(iLeft).split(spStr));
     paraList.append(str.mid(iLeft + 1, iRight - iLeft - 1));
     if (str.size() != iRight + 1)
-        paraList.append(str.right(str.size() - iRight - 1).split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts));
+        paraList.append(str.right(str.size() - iRight - 1).split(spStr));
 
     return paraList;
 }
@@ -797,10 +812,19 @@ void FontFilter::compareWhiteList()
         bool fixedFont = true;
         QFont font(sfont);
         QFontMetrics fm(font);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         int fw = fm.width(REPCHAR[0]);
+#else
+        int fw = fm.horizontalAdvance(REPCHAR[0]);
+#endif
 
         for (unsigned int i = 1; i < qstrlen(REPCHAR); i++) {
-            if (fw != fm.width(QLatin1Char(REPCHAR[i]))) {
+            #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+            int fw2 = fm.width(QLatin1Char(REPCHAR[i]));
+            #else
+            int fw2 = fm.horizontalAdvance(QLatin1Char(REPCHAR[i]));
+            #endif
+            if (fw != fw2) {
                 fixedFont = false;
                 break;
             }

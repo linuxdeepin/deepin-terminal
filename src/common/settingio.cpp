@@ -22,7 +22,11 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
 {
     QString currentSection;
     QTextStream stream(&device);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     stream.setCodec("UTF-8");
+#else
+    stream.setEncoding(QStringConverter::Utf8);
+#endif
     QString data;
     rewrite = false;
     while (!stream.atEnd()) {
@@ -361,7 +365,7 @@ hexEscape:
 
     ch = src.at(i);
     if (ch >= 'a')
-        ch = ch.unicode() - ('a' - 'A');
+        ch = QChar(ch.unicode() - ('a' - 'A'));
     if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F')) {
         escapeVal <<= 4;
         escapeVal += strchr(hexDigits, ch.toLatin1()) - hexDigits;
@@ -478,7 +482,11 @@ QSettings::Format USettings::g_customFormat = QSettings::registerFormat("conf", 
 USettings::USettings(const QString &fileName, QObject *parent)
     : QSettings(fileName, g_customFormat, parent)
 {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QSettings::setIniCodec(QTextCodec::codecForName("UTF-8"));
+#else
+    QSettings::setDefaultFormat(IniFormat);
+#endif
 }
 
 //析构函数

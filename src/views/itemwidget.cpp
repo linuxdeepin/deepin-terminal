@@ -338,7 +338,7 @@ void ItemWidget::initUI()
 void ItemWidget::initConnections()
 {
     // 颜色随主题变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ItemWidget::slotThemeChange);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ItemWidget::slotThemeChange);
     // 功能键被点击
     connect(m_funcButton, &DIconButton::clicked, this, &ItemWidget::onFuncButtonClicked);
     // 焦点从小图标切出，但在控件上
@@ -365,7 +365,7 @@ void ItemWidget::paintEvent(QPaintEvent *event)
     FocusFrame::paintEvent(event);
 }
 
-void ItemWidget::enterEvent(QEvent *event)
+void ItemWidget::enterEvent(EnterEvent *event)
 {
     // 编辑按钮现
     if (ItemFuncType_Item == m_functType)
@@ -493,7 +493,7 @@ void ItemWidget::setFontSize(DLabel *label, DFontSizeManager::SizeType fontSize)
 
 void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
 {
-    DPalette fontPalette = DApplicationHelper::instance()->palette(label);
+    DPalette fontPalette = DPaletteHelper::instance()->palette(label);
     QColor color = getColor(colorType);
     if (color.isValid()) {
         fontPalette.setBrush(DPalette::Text, color);

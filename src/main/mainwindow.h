@@ -13,6 +13,7 @@
 #include "utils.h"
 #include "define.h"
 #include "customthemesettingdialog.h"
+#include "qtcompat.h"
 
 // dtk
 #include <DMainWindow>
@@ -30,7 +31,11 @@
 #include <QMenu>
 #include <QDebug>
 #include <QShortcut>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 #include <QtX11Extras/QX11Info>
+#else
+#include <QtGui/private/qtx11extras_p.h>
+#endif
 
 #include <functional>
 
@@ -71,7 +76,7 @@ public:
      * @author ut000125 sunchengxi
      * @param event 鼠标进入主题项事件
      */
-    void enterEvent(QEvent *event) override;
+    void enterEvent(EnterEvent *event) override;
     /**
      * @brief 处理键盘主题项左键按下离开事件
      * @author ut000125 sunchengxi

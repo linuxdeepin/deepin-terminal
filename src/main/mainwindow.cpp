@@ -25,16 +25,15 @@
 #include <DSettingsGroup>
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
-#include <DThemeManager>
+// #include <DThemeManager>
 #include <DTitlebar>
 #include <DFileDialog>
 #include <DAboutDialog>
-#include <DImageButton>
+// #include <DImageButton>
 #include <DLog>
 #include <DWindowManagerHelper>
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QInputDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -48,6 +47,13 @@
 #include <QMap>
 #include <QScreen>
 #include <QLoggingCategory>
+#include <QActionGroup>
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+#include <QDesktopWidget>
+#else
+#include <QScreen>
+#endif
 
 #include <fstream>
 
@@ -91,7 +97,7 @@ void SwitchThemeMenu::hideEvent(QHideEvent *)
     emit menuHideSetThemeSignal();
 }
 
-void SwitchThemeMenu::enterEvent(QEvent *event)
+void SwitchThemeMenu::enterEvent(EnterEvent *event)
 {
     hoveredThemeStr = "";
     return QMenu::enterEvent(event);
@@ -165,7 +171,7 @@ void MainWindow::initWindow()
     setWindowIcon(QIcon::fromTheme("deepin-terminal"));
 
     // Init layout
-    m_centralLayout->setMargin(0);
+    m_centralLayout->setContentsMargins(0, 0, 0, 0);
     m_centralLayout->setSpacing(0);
     m_centralLayout->addWidget(m_termStackWidget);
     setCentralWidget(m_centralWidget);
@@ -492,7 +498,7 @@ void MainWindow::endAddTab(TermWidgetPage *termPage, bool activeTab, int index, 
     QString  expandThemeStr = "";
     expandThemeStr = Settings::instance()->extendColorScheme();
     if (!expandThemeStr.isEmpty())
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
 }
 
 bool MainWindow::hasRunningProcesses()
@@ -505,10 +511,10 @@ bool MainWindow::hasRunningProcesses()
         //没有校验当前tab中是否有其它正在执行的分屏
         if (tabPage->runningTerminalCount() != 0) {
             /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
-            qCInfo(mainprocess)  << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qCInfo(mainprocess)  << "here are processes running in this terminal tab... " << tabPage->identifier();
             return true;
         } else {
-            qCInfo(mainprocess)  << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qCInfo(mainprocess)  << "no processes running in this terminal tab... " << tabPage->identifier();
         }
     }
 
@@ -975,8 +981,13 @@ QString MainWindow::getConfigWindowState()
 
 QSize MainWindow::halfScreenSize()
 {
-    int w = qApp->desktop()->availableGeometry().width();
-    int h = qApp->desktop()->availableGeometry().height();
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    auto desk = qApp->desktop()->availableGeometry();
+#else
+    auto desk = qApp->primaryScreen()->availableGeometry();
+#endif
+    int w = desk.width();
+    int h = desk.height();
 
     QSize size;
     //开启窗管特效时会有1px的border
@@ -2151,10 +2162,10 @@ void MainWindow::addThemeMenuItems()
             if (THEME_NINE == expandThemeStr  || THEME_TEN == expandThemeStr) {
                 //选中了内置主题在9-10项之间 // 浅色方案系列
                 DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-                emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+                emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
             }else{
                 DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-                emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+                emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
             }
         }
 
@@ -2184,8 +2195,13 @@ void MainWindow::addThemeMenuItems()
 
         QObject::connect(group, SIGNAL(triggered(QAction *)),
                          this, SLOT(themeActionTriggeredSlot(QAction *)));
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         QObject::connect(group, SIGNAL(hovered(QAction *)),
                          this, SLOT(themeActionHoveredSlot(QAction *)));
+#else
+        QObject::connect(group, &QActionGroup::hovered,
+                         this, &MainWindow::themeActionHoveredSlot);
+#endif
 
         checkThemeItem();
 
@@ -2207,7 +2223,7 @@ void MainWindow::setThemeCheckItemSlot()
         Settings::instance()->setColorScheme(THEME_LIGHT);
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         return;
     }
 
@@ -2216,7 +2232,7 @@ void MainWindow::setThemeCheckItemSlot()
         Settings::instance()->setColorScheme(THEME_DARK);
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         return;
     }
 
@@ -2225,7 +2241,7 @@ void MainWindow::setThemeCheckItemSlot()
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::ColorType type = DGuiApplicationHelper::UnknownType;
         DGuiApplicationHelper::instance()->setPaletteType(type);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
         return;
     }
 
@@ -2237,7 +2253,7 @@ void MainWindow::setThemeCheckItemSlot()
         Settings::instance()->setColorScheme(THEME_DARK);
         Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         return;
     }
 
@@ -2247,7 +2263,7 @@ void MainWindow::setThemeCheckItemSlot()
         Settings::instance()->setColorScheme(THEME_LIGHT);
         Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         return;
     }
 
@@ -2256,7 +2272,7 @@ void MainWindow::setThemeCheckItemSlot()
         Settings::instance()->setColorScheme(THEME_DARK);
         Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         return;
     }
 
@@ -2268,19 +2284,19 @@ void MainWindow::menuHideSetThemeSlot()
         Settings::instance()->setColorScheme(THEME_LIGHT);
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         return;
     } else if (currCheckThemeAction == darkThemeAction) {
         Settings::instance()->setColorScheme(THEME_DARK);
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         return;
     } else if (currCheckThemeAction == autoThemeAction) {
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::ColorType type = DGuiApplicationHelper::UnknownType;
         DGuiApplicationHelper::instance()->setPaletteType(type);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
         return;
     }
 
@@ -2307,7 +2323,7 @@ void MainWindow::menuHideSetThemeSlot()
             Settings::instance()->setExtendColorScheme(THEME_EIGHT);
 
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         return;
     } else if (currCheckThemeAction == themeNineAction || currCheckThemeAction == themeTenAction) {
         Settings::instance()->setColorScheme(THEME_LIGHT);
@@ -2317,18 +2333,18 @@ void MainWindow::menuHideSetThemeSlot()
             Settings::instance()->setExtendColorScheme(THEME_TEN);
 
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         return;
     } else if (currCheckThemeAction == themeCustomAction) {
         Settings::instance()->setExtendColorScheme(Settings::instance()->m_configCustomThemePath);
         if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
             Settings::instance()->setColorScheme(THEME_LIGHT);
             DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+            emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         } else {
             Settings::instance()->setColorScheme(THEME_DARK);
             DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+            emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         }
 
         return;
@@ -2348,7 +2364,7 @@ void MainWindow::switchThemeAction(QAction *action)
         Settings::instance()->setColorScheme(THEME_LIGHT);
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         return;
     }
     //深色主题
@@ -2362,7 +2378,7 @@ void MainWindow::switchThemeAction(QAction *action)
         Settings::instance()->setColorScheme(THEME_DARK);
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         return;
 
     }
@@ -2370,7 +2386,7 @@ void MainWindow::switchThemeAction(QAction *action)
     if (action == autoThemeAction) {
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
         return;
     }
     //内置主题1
@@ -2450,7 +2466,7 @@ void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr
         Settings::instance()->setColorScheme(THEME_DARK);
         Settings::instance()->setExtendColorScheme(themeNameStr);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         return;
     }
     //内置浅色主题 9-10 之间
@@ -2464,7 +2480,7 @@ void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr
         Settings::instance()->setColorScheme(THEME_LIGHT);
         Settings::instance()->setExtendColorScheme(themeNameStr);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         return;
     }
 
@@ -2482,11 +2498,11 @@ void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr
         if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
             Settings::instance()->setColorScheme(THEME_LIGHT);
             DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+            emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
         } else {
             Settings::instance()->setColorScheme(THEME_DARK);
             DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+            emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
         }
 
         return;
@@ -2792,14 +2808,20 @@ void QuakeWindow::initTitleBar()
 void QuakeWindow::slotWorkAreaResized()
 {
     qCInfo(mainprocess)  << "Workspace size change!";
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    auto desk = QApplication::desktop()->availableGeometry();
+#else
+    auto desk = QGuiApplication::primaryScreen()->availableGeometry();
+#endif
+
     /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
-    setMinimumWidth(QApplication::desktop()->availableGeometry().width());
+    setMinimumWidth(desk.width());
     setWindowMinHeightForFont();
     /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
     updateMinHeight();
     /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
-    move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
-    setFixedWidth(QApplication::desktop()->availableGeometry().width());
+    move(desk.x(), desk.y());
+    setFixedWidth(desk.width());
     return ;
 }
 
@@ -2808,8 +2830,12 @@ void QuakeWindow::initWindowAttribute()
     /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 Begin************************/
     setWindowRadius(0);
     //QRect deskRect = QApplication::desktop()->availableGeometry();//获取可用桌面大小
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QDesktopWidget *desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+#else
+    QRect screenRect = QGuiApplication::primaryScreen()->geometry();
+#endif
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint/* | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
     //wayland时需要隐藏WindowTitle
@@ -2836,7 +2862,11 @@ void QuakeWindow::initWindowAttribute()
         }
     }
     setFixedWidth(w);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
+#else
+    connect(QGuiApplication::primaryScreen(), &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized);
+#endif
 
     int saveHeight = getQuakeHeight();
     int saveWidth = screenRect.size().width();
@@ -2872,7 +2902,11 @@ void QuakeWindow::switchFullscreen(bool forceFullscreen)
 QPoint QuakeWindow::calculateShortcutsPreviewPoint()
 {
     //--added by qinyaning(nyq) to solve the problem of can't show center--//
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QRect rect = QApplication::desktop()->availableGeometry();
+#else
+    QRect rect = QGuiApplication::primaryScreen()->geometry();
+#endif
     //---------------------------------------------------------------------//
     return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 }
@@ -3022,8 +3056,12 @@ void QuakeWindow::setHeight(int h)
 
 int QuakeWindow::getQuakeAnimationTime()
 {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QDesktopWidget *desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+#else
+    QRect screenRect = QGuiApplication::primaryScreen()->geometry();
+#endif
     //quakeAnimationBaseTime+quakeAnimationHighDistributionTotalTime的时间是雷神窗口最大高度时动画效果时间
     //动画时间计算方法：3quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间，为各个高度时动画时间
     int durationTime = quakeAnimationBaseTime + quakeAnimationHighDistributionTotalTime * this->getQuakeHeight() / (screenRect.height() * 2 / 3);
@@ -3190,7 +3228,11 @@ if(qVersion() >= QString("5.15.0")) {
 
 int QuakeWindow::getQuakeHeight()
 {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     int screenHeight = qApp->desktop()->screenGeometry().height();
+#else
+    int screenHeight = QGuiApplication::primaryScreen()->geometry().height();
+#endif
     int minHeight = screenHeight * 1 / 3;
     return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT, minHeight).toInt();
 }
@@ -3206,8 +3248,12 @@ void QuakeWindow::switchEnableResize(bool isEnable)
 {
     if (isEnable) {
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         QDesktopWidget *desktopWidget = QApplication::desktop();
         QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+#else
+        QRect screenRect = QGuiApplication::primaryScreen()->geometry();
+#endif
         //Add by ut001000 renfeixiang 2020-11-16 修改成使用写好的设置最小值的函数
         updateMinHeight();
         setMaximumHeight(screenRect.height() * 2 / 3);

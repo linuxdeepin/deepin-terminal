@@ -13,8 +13,13 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DSpinBox(parent)
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     setButtonSymbols(QAbstractSpinBox::PlusMinus);
     /******** Add by nt001000 renfeixiang 2020-05-26 :增加正则表达式限制00000现象 Begin***************/
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QRegExp regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[1-9]$)");
     lineEdit()->setValidator(new QRegExpValidator(regExp, this));
+#else
+    QRegularExpression regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[1-9]$)");
+    lineEdit()->setValidator(new QRegularExpressionValidator(regExp, this));
+#endif
     this->setMinimum(5);
     this->setMaximum(50);
     /******** Add by nt001000 renfeixiang 2020-05-26:增加正则表达式限制00000现象 End***************/

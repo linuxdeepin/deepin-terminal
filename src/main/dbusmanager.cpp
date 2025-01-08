@@ -13,6 +13,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 

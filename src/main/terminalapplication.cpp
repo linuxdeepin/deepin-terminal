@@ -10,6 +10,9 @@
 
 // qt
 #include <QDebug>
+#include <QLoggingCategory>
+#include <QTranslator>
+
 Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
 TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication(argc, argv)
@@ -20,7 +23,9 @@ TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication
     setApplicationVersion(VERSION);
     setApplicationName("deepin-terminal");
     setApplicationDisplayName(QObject::tr("Terminal"));
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+#endif
     setProductIcon(QIcon::fromTheme("deepin-terminal"));
     QString appDesc = QObject::tr("Terminal is an advanced terminal emulator with workspace"
                                   ", multiple windows, remote management, quake mode and other features.");

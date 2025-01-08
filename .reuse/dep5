@@ -23,6 +23,11 @@ Files: debian/*
 Copyright: None
 License: CC0-1.0
 
+# cmake
+Files: cmake/*
+Copyright: UnionTech Software Technology Co., Ltd.
+License: CC0-1.0
+
 # rpm
 Files: rpm/*
 Copyright: None

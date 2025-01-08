@@ -16,7 +16,7 @@
 #include "serverconfigmanager.h"
 
 #include <DAbstractDialog>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DButtonBox>
 #include <DComboBox>
 #include <DCommandLinkButton>

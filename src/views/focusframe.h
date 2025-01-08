@@ -13,6 +13,9 @@
 *******************************************************************************/
 #ifndef FOCUSFRAME_H
 #define FOCUSFRAME_H
+
+#include "qtcompat.h"
+
 // dtk
 #include <DFrame>
 #include <DPalette>
@@ -46,7 +49,7 @@ protected:
      * @author ut000610 戴正文
      * @param event 事件
      */
-    void enterEvent(QEvent *event) override;
+    void enterEvent(EnterEvent *event) override;
 
     /**
      * @brief 鼠标移除，显示DPalette::ItemBackground背景色

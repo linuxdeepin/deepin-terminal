@@ -18,13 +18,9 @@
 #include <QSharedMemory>
 #include <QMap>
 
-#include <com_deepin_wmswitcher.h>
 
 DWIDGET_USE_NAMESPACE
 
-using WMSwitcher = com::deepin::WMSwitcher;
-#define WMSwitcherService "com.deepin.WMSwitcher"
-#define WMSwitcherPath "/com/deepin/WMSwitcher"
 
 /**
  * @brief 全局的后台服务类

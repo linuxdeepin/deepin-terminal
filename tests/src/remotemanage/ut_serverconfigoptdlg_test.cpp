@@ -9,7 +9,7 @@
 #include "utils.h"
 
 // DTK
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -163,11 +163,11 @@ TEST_F(UT_ServerConfigOptDlg_Test, lambda)
     serverConfigDialog.show();
 
     // 切换主题
-    QSignalSpy signalpy1(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged);
+    QSignalSpy signalpy1(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged);
     EXPECT_TRUE(signalpy1.count() == 0);
 
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
     signalpy1.wait(1000);
     EXPECT_TRUE(signalpy1.count() == 2);
 
