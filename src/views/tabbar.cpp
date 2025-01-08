@@ -9,10 +9,27 @@
 #include "termwidgetpage.h"
 #include "windowsmanager.h"
 #include "terminalapplication.h"
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include "private/qtabbar_p.h"
+#else
+// Qt6 compatibility layer
+class QTabBarPrivateCompat
+{
+public:
+    static void initBasicStyleOption(QStyleOptionTab *option, int tabIndex, const QTabBar *tabBar)
+    {
+        option->initFrom(tabBar);
+        option->state &= ~QStyle::State_HasFocus;
+        option->rect = tabBar->tabRect(tabIndex);
+        option->text = tabBar->tabText(tabIndex);
+        option->icon = tabBar->tabIcon(tabIndex);
+        option->iconSize = tabBar->iconSize();
+    }
+};
+#endif
 
 #include <DApplication>
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 #include <DFontSizeManager>
 #include <DLog>
 #include <DIconButton>
@@ -23,9 +40,10 @@
 #include <QStyleOptionTab>
 #include <QStylePainter>
 #include <QMouseEvent>
-#include <QDesktopWidget>
+// #include <QDesktopWidget>
 #include <QPainterPath>
 #include <QMimeData>
+#include <QTabBar>
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
 #include <DSizeMode>
@@ -132,11 +150,15 @@ void TermTabStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleO
 *******************************************************************************/
 void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     Q_D(const QTabBar);
     d->initBasicStyleOption(option, tabIndex);
+#else
+    QTabBarPrivateCompat::initBasicStyleOption(option, tabIndex, this);
+#endif
 
     QRect textRect = style()->subElementRect(QStyle::SE_TabBarTabText, option, this);
-    option->text = fontMetrics().elidedText(option->text, d->elideMode, textRect.width(),
+    option->text = fontMetrics().elidedText(option->text, elideMode(), textRect.width(),
                                             Qt::TextShowMnemonic);
 
     /*********** Modify by ut000438 王亮 2020-11-25:fix bug 55813: 拖拽终端标签页终端闪退 ***********/
@@ -241,7 +263,7 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 
 int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QString &tabName)
 {
-    qCInfo(views) << "insertTab at index: " << index << " with id::" << tabIdentifier << endl;
+    qCInfo(views) << "insertTab at index: " << index << " with id::" << tabIdentifier;
     int insertIndex = DTabBar::insertTab(index, tabName);
     setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
 
@@ -305,6 +327,7 @@ int TabBar::getIndexByIdentifier(QString id)
 *******************************************************************************/
 void QTabBar::removeTab(int index)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     Q_D(QTabBar);
     if (d->validIndex(index)) {
         if (d->dragInProgress)
@@ -384,11 +407,41 @@ void QTabBar::removeTab(int index)
         }
         tabRemoved(index);
     }
+#else
+    if (index < 0 || index >= count())
+        return;
+
+    // Remove tab data
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    removeTabData(index);
+#else
+    // Qt6下不需要调用removeTabData
+#endif
+
+    // Remove tab
+    QTabBar::removeTab(index);
+
+    // Update current index if needed
+    if (index == currentIndex()) {
+        int newIndex = -1;
+        if (count() > 0) {
+            newIndex = qBound(0, index, count() - 1);
+            setCurrentIndex(newIndex);
+        } else {
+            emit currentChanged(-1);
+        }
+    } else if (index < currentIndex()) {
+        setCurrentIndex(currentIndex() - 1);
+    }
+
+    update();
+#endif
 
     TabBar *tabBar = qobject_cast<TabBar *>(this->parent());
 
     if (tabBar && tabBar->isEnableCloseTabAnimation()) {
         //tab关闭动画
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         if (d->rightB->isVisible()) {
             for (int i = 0; i < index; i++) {
                 QTabBarPrivate::Tab *tab = &d->tabList[i];
@@ -402,6 +455,7 @@ void QTabBar::removeTab(int index)
                 tab->animation->start();
             }
         }
+#endif
     }
 }
 
@@ -704,7 +758,11 @@ void TabBar::handleTabMoved(int fromIndex, int toIndex)
             && (toIndex < m_tabIdentifierList.count())
             && (fromIndex >= 0)
             && (toIndex >= 0)) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         m_tabIdentifierList.swap(fromIndex, toIndex);
+#else
+        m_tabIdentifierList.swapItemsAt(fromIndex, toIndex);
+#endif
     }
 }
 
@@ -816,7 +874,7 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 {
     Q_UNUSED(dropAction)
 
-    qCInfo(views) << "Handle Tab Droped!  index:" << index << ", target:" << target << endl;
+    qCInfo(views) << "Handle Tab Droped!  index:" << index << ", target:" << target;
     TabBar *tabbar = qobject_cast<TabBar *>(target);
 
     //拖出的标签--需要新建窗口

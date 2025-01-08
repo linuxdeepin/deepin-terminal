@@ -5,8 +5,8 @@
 
 #include "themepreviewarea.h"
 
-#include <DApplicationHelper>
-#include <DGuiApplicationHelper>
+#include <DPaletteHelper>
+#include <DPalette>
 
 #include <QPainter>
 #include <QImage>
@@ -75,7 +75,7 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
     QPainterPath FramePath;
     FramePath.addRoundedRect(QRectF(rect.x(), rect.y(), rect.width(), rect.height()), 8, 8);
     // 获取控件边框颜色
-    DPalette pa = DApplicationHelper::instance()->palette(this);
+    DPalette pa = DPaletteHelper::instance()->palette(this);
     QPen pen(pa.color(DPalette::FrameBorder), 1);
     painter.setPen(pen);
     // 绘制边框

@@ -224,7 +224,7 @@ void CustomCommandPanel::initUI()
     m_backLayout->addLayout(textLayout);
     m_backLayout->addStretch();
     m_backLayout->setSpacing(0);
-    m_backLayout->setMargin(0);
+    m_backLayout->setContentsMargins(0, 0, 0, 0);
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
     btnLayout->addSpacing(10);
@@ -233,7 +233,6 @@ void CustomCommandPanel::initUI()
 
     QHBoxLayout *hLayout = new QHBoxLayout();
     hLayout->setSpacing(0);
-    hLayout->setMargin(0);
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->addSpacing(10);
     hLayout->addWidget(m_searchEdit);

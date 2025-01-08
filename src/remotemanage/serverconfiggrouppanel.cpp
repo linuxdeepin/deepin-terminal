@@ -55,14 +55,12 @@ void ServerConfigGroupPanel::initUI()
     // 没有搜索框，返回按钮仍显示在左边
     hlayout->addStretch();
     hlayout->setSpacing(0);
-    hlayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
     vlayout->setContentsMargins(0, 0, 0, 0);
     vlayout->addSpacing(SPACEHEIGHT);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
-    vlayout->setMargin(0);
     vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 

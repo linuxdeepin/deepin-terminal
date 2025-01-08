@@ -205,7 +205,6 @@ void RemoteManagementPanel::initUI()
     hlayout->addWidget(m_searchEdit);
     hlayout->addSpacing(SPACEWIDTH);
     hlayout->setSpacing(0);
-    hlayout->setMargin(0);
 
     QHBoxLayout *textLayout = new QHBoxLayout();
     textLayout->addStretch();
@@ -225,7 +224,6 @@ void RemoteManagementPanel::initUI()
     m_backLayout->addLayout(textLayout);
     m_backLayout->addStretch();
     m_backLayout->setSpacing(0);
-    m_backLayout->setMargin(0);
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
     btnLayout->setContentsMargins(0, 0, 0, 0);
@@ -233,7 +231,6 @@ void RemoteManagementPanel::initUI()
     btnLayout->addWidget(m_pushButton);
     btnLayout->addSpacing(SPACEWIDTH);
     btnLayout->setSpacing(0);
-    btnLayout->setMargin(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
     vlayout->setContentsMargins(0, 0, 0, 0);
@@ -242,7 +239,6 @@ void RemoteManagementPanel::initUI()
     vlayout->addWidget(m_listWidget);
     vlayout->addLayout(btnLayout);
     vlayout->addSpacing(SPACEHEIGHT);
-    vlayout->setMargin(0);
     vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 

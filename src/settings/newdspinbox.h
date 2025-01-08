@@ -8,7 +8,7 @@
 
 #include <DSpinBox>
 
-#include <QRegExpValidator>
+// #include <QRegExpValidator>
 #include <QKeyEvent>
 
 DWIDGET_USE_NAMESPACE

@@ -36,6 +36,7 @@
 #include <QVector>
 #include <QList>
 #include <QSize>
+#include <QTextCodec>
 
 // KDE
 #include "kptyprocess.h"
@@ -195,7 +196,9 @@ Q_OBJECT
     /******** Modify by nt001000 renfeixiang 2020-05-14:修改 增加参数区别remove和purge卸载命令 End***************/
 
   protected:
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
       void setupChildProcess() override;
+#endif
 
   private slots:
     // called when data is received from the terminal process

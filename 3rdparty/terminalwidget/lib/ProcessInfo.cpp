@@ -353,7 +353,12 @@ bool LinuxProcessInfo::readProcInfo(int pid)
             }
         } while (!statusLine.isNull() && uidLine.isNull());
 
-        uidStrings << uidLine.split(QLatin1Char('\t'), QString::SkipEmptyParts);
+        uidStrings << uidLine.split(QLatin1Char('\t'), 
+        #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+            QString::SkipEmptyParts);
+        #else
+            Qt::SkipEmptyParts);
+        #endif
         // Must be 5 entries: 'Uid: %d %d %d %d' and
         // uid string must be less than 5 chars (uint)
         if (uidStrings.size() == 5) {

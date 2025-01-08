@@ -28,7 +28,7 @@ void UT_CustomCommandSearchRstPanel_Test::SetUp()
         Service::instance()->setProperty("isServiceInit", true);
     }
 
-    DApplicationHelper::instance()->setPaletteType(DApplicationHelper::DarkType);
+    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
     m_normalTermProperty[QuakeMode] = false;
     m_normalTermProperty[SingleFlag] = true;
     m_normalWindow = new NormalWindow(m_normalTermProperty, nullptr);
@@ -56,8 +56,8 @@ TEST_F(UT_CustomCommandSearchRstPanel_Test, CustomCommandSearchRstPanelTest)
     m_cmdSearchPanel->handleListViewFocusOut(Qt::NoFocusReason);
     //setFocus被调用过
     EXPECT_TRUE(UT_STUB_QWIDGET_SETFOCUS_RESULT);
-//    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::DarkType);
-//    emit DApplicationHelper::instance()->themeTypeChanged(DApplicationHelper::LightType);
+//    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+//    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
 //    emit m_cmdSearchPanel->m_rebackButton->focusOut(Qt::FocusReason::TabFocusReason);
 //    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::FocusReason::TabFocusReason);
 //    emit m_cmdSearchPanel->m_cmdListWidget->focusOut(Qt::NoFocusReason);

@@ -30,7 +30,7 @@
 
 // Qt
 #include <QApplication>
-#include <QByteRef>
+// #include <QByteRef>
 #include <QDir>
 #include <QFile>
 #include <QRegExp>
@@ -44,6 +44,7 @@
 #include "TerminalDisplay.h"
 #include "ShellCommand.h"
 #include "Vt102Emulation.h"
+#include "qtcompat.h"
 
 using namespace Konsole;
 
@@ -488,7 +489,7 @@ void Session::setUserTitle( int what, const QString & caption )
 
     if (what == 31) {
         QString cwd=caption;
-        cwd=cwd.replace( QRegExp(QLatin1String("^~")), QDir::homePath() );
+        cwd=cwd.replace( REG_EXP(QLatin1String("^~")), QDir::homePath() );
         emit openUrlRequest(cwd);
     }
 
@@ -750,15 +751,16 @@ void Session::done(int exitStatus)
     {
         QString message;
         QString infoText;
-        if (exitStatus == -1){
-            infoText.sprintf("There was an error creating the child process for this terminal. \n"
-                     "Failed to execute child process \"%s\"(No such file or directory)!", _program.toUtf8().data());
+        if (exitStatus == -1) {
+            infoText = QString("There was an error creating the child process for this terminal. \n"
+                               "Failed to execute child process \"%1\"(No such file or directory)!")
+                       .arg(_program);
             message = "Session crashed.";
-        }
-        else {
-            infoText.sprintf("The child process exited normally with status %d.", exitStatus);
-            message.sprintf("Session '%s' exited with status %d.",
-                      _nameTitle.toUtf8().data(), exitStatus);
+        } else {
+            infoText = QString("The child process exited normally with status %1.")
+                       .arg(exitStatus);
+            message = QString("Session '%1' exited with status %2.")
+                      .arg(_nameTitle).arg(exitStatus);
         }
         _userTitle = message;
         //sendText(infoText);

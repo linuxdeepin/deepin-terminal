@@ -21,6 +21,7 @@
 #include <QLabel>
 #include <QScroller>
 #include <QJsonObject>
+#include <QLoggingCategory>
 
 Service *Service::g_pService = nullptr;
 

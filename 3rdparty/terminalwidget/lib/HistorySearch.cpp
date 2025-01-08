@@ -19,10 +19,12 @@
 #include <QApplication>
 #include <QTextStream>
 #include <QDebug>
+// #include <QRegExp>
 
 #include "TerminalCharacterDecoder.h"
 #include "Emulation.h"
 #include "HistorySearch.h"
+#include "qtcompat.h"
 
 HistorySearch::HistorySearch(EmulationPtr emulation,
                              QString searchText,
@@ -272,7 +274,7 @@ bool HistorySearch::search(int startColumn, int startLine, int endColumn, int en
               存在特殊情况:一个完整的物理行显示在终端被分成多个逻辑行
             */
             //中文字符正则表达式
-            QRegExp regEx("[\u4E00-\u9FA5，《。》、？；：【】～！￥（）]+");
+            REG_EXP regEx("[\u4E00-\u9FA5，《。》、？；：【】～！￥（）]+");
 
             //未匹配的串-物理行开始和结束位置
             int loseEnd = matchStart;

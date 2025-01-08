@@ -673,7 +673,7 @@ static inline bool comparator(ItemWidget *item1, ItemWidget *item2)
 
 int ListView::getWidgetIndex(ItemWidget *itemWidget)
 {
-    qSort(m_itemList.begin(), m_itemList.end(), comparator);
+    std::sort(m_itemList.begin(), m_itemList.end(), comparator);
     // 从0开始
     int index = 0;
     int currentIndex = 0;

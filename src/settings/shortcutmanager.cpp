@@ -9,6 +9,7 @@
 #include "settings.h"
 #include "listview.h"
 #include "settingio.h"
+#include "qtcompat.h"
 
 #include <QStandardPaths>
 #include <QTextCodec>
@@ -268,7 +269,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
     // 单键
     if (0 == Key.count("+")) {
         //F1-F12是允许的，这个正则不够精确，但是没关系。
-        QRegExp regexp("^F[0-9]{1,2}$");
+        REG_EXP regexp("^F[0-9]{1,2}$");
         if (!Key.contains(regexp)) {
             qCInfo(tsettings) << Key << "is invalid!";
             Reason = tr("The shortcut %1 is invalid, ")
@@ -277,7 +278,7 @@ bool ShortcutManager::checkShortcutValid(const QString &Name, const QString &Key
         }
     }
     // 小键盘单键都不允许
-    QRegExp regexpNum("^Num+.*");
+    REG_EXP regexpNum("^Num+.*");
     if (Key.contains(regexpNum)) {
         qCInfo(tsettings) << Key << "is invalid!";
         Reason = tr("The shortcut %1 is invalid, ")

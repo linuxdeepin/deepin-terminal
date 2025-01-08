@@ -15,7 +15,7 @@
 #include <DPushButton>
 #include <DSuggestButton>
 #include <DFontSizeManager>
-#include <DApplicationHelper>
+#include <DPaletteHelper>
 #include <DVerticalLine>
 
 #include <QVBoxLayout>
@@ -78,7 +78,7 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
     painter.setOpacity(1);
 
     QColor borderColor;
-    if (DApplicationHelper::LightType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType())
         borderColor = QColor::fromRgb(0, 0, 0, static_cast<int>(255 * 0.05));
     else
         borderColor = QColor::fromRgb(255, 255, 255, static_cast<int>(255 * 0.2));
@@ -104,7 +104,7 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
 
         //绘画边框
         QPen framePen;
-        DPalette pax = DApplicationHelper::instance()->palette(this);
+        DPalette pax = DPaletteHelper::instance()->palette(this);
         //获取活动色
         framePen = QPen(pax.color(DPalette::Highlight), 2);
         painter.setPen(framePen);
@@ -211,7 +211,7 @@ void CustomThemeSettingDialog::initUITitle()
     // 字色
     DPalette palette = m_titleText->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);
@@ -398,10 +398,10 @@ void CustomThemeSettingDialog::initTitleConnections()
         reject();
     });
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
         DPalette palette = m_titleText->palette();
         QColor color;
-        if (DApplicationHelper::DarkType == themeType)
+        if (DGuiApplicationHelper::DarkType == themeType)
             color = QColor::fromRgb(192, 198, 212, 255);
         else
             color = QColor::fromRgb(0, 26, 46, 255);
@@ -441,11 +441,11 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
     setTabOrder(m_confirmBtn, m_closeButton);//设置右上角关闭按钮的tab键控制顺序
 
     m_verticalLine = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(m_verticalLine);
+    DPalette pa = DPaletteHelper::instance()->palette(m_verticalLine);
     QColor splitColor = pa.color(DPalette::ItemBackground);
-    pa.setBrush(DPalette::Background, splitColor);
+    pa.setBrush(DPalette::Window, splitColor);
     m_verticalLine->setPalette(pa);
-    m_verticalLine->setBackgroundRole(QPalette::Background);
+    m_verticalLine->setBackgroundRole(DPalette::Window);
     m_verticalLine->setAutoFillBackground(true);
     m_verticalLine->setFixedSize(3, 28);
 
@@ -574,10 +574,10 @@ void CustomThemeSettingDialog::loadConfiguration()
 
     qCInfo(views) << "Foreground color list number: " << strList.size();
     if (strList.size() != 3) {
-        palette.setColor(QPalette::Background, QColor(0, 255, 0));
+        palette.setColor(DPalette::Window, QColor(0, 255, 0));
         foregroundColorParameter = QColor(0, 255, 0);
     } else {
-        palette.setColor(QPalette::Background, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
+        palette.setColor(DPalette::Window, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
         foregroundColorParameter = QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt());
     }
     m_foregroundButton->setBackGroundColor(foregroundColorParameter);
@@ -587,10 +587,10 @@ void CustomThemeSettingDialog::loadConfiguration()
     strList = Settings::instance()->themeSetting->value("Background/Color").toStringList();
     qCInfo(views) << "Background color list number: " << strList.size();
     if (strList.size() != 3) {
-        palette.setColor(QPalette::Background, QColor(37, 37, 37));
+        palette.setColor(DPalette::Window, QColor(37, 37, 37));
         backgroundColorParameter = QColor(37, 37, 37);
     } else {
-        palette.setColor(QPalette::Background, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
+        palette.setColor(DPalette::Window, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
         backgroundColorParameter = QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt());
     }
     m_backgroundButton->setBackGroundColor(backgroundColorParameter);
@@ -600,10 +600,10 @@ void CustomThemeSettingDialog::loadConfiguration()
     strList = Settings::instance()->themeSetting->value("Color2Intense/Color").toStringList();
     qCInfo(views) << "Color2Intense color list number: " << strList.size();
     if (strList.size() != 3) {
-        palette.setColor(QPalette::Background, QColor(133, 153, 0));
+        palette.setColor(DPalette::Window, QColor(133, 153, 0));
         ps1ColorParameter = QColor(133, 153, 0);
     } else {
-        palette.setColor(QPalette::Background, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
+        palette.setColor(DPalette::Window, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
         ps1ColorParameter = QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt());
     }
     m_ps1Button->setBackGroundColor(ps1ColorParameter);
@@ -613,10 +613,10 @@ void CustomThemeSettingDialog::loadConfiguration()
     strList = Settings::instance()->themeSetting->value("Color4Intense/Color").toStringList();
     qCInfo(views) << "Color4Intense color list number: " << strList.size();
     if (strList.size() != 3) {
-        palette.setColor(QPalette::Background, QColor(52, 101, 164));
+        palette.setColor(DPalette::Window, QColor(52, 101, 164));
         ps2ColorParameter = QColor(52, 101, 164);
     } else {
-        palette.setColor(QPalette::Background, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
+        palette.setColor(DPalette::Window, QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt()));
         ps2ColorParameter = QColor(strList[0].toInt(), strList[1].toInt(), strList[2].toInt());
     }
     m_ps2Button->setBackGroundColor(ps2ColorParameter);

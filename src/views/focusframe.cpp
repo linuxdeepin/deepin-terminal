@@ -6,7 +6,7 @@
 #include "focusframe.h"
 
 //dtk
-#include <DApplicationHelper>
+#include <DPaletteHelper>
 #include <DPalette>
 
 // qt
@@ -14,6 +14,8 @@
 #include <QPainter>
 #include <QPen>
 #include <QPainterPath>
+
+DGUI_USE_NAMESPACE
 
 FocusFrame::FocusFrame(QWidget *parent)
     : DFrame(parent)
@@ -26,7 +28,7 @@ FocusFrame::FocusFrame(QWidget *parent)
 void FocusFrame::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    DPalette pa = DApplicationHelper::instance()->palette(this);
+    DPalette pa = DPaletteHelper::instance()->palette(this);
     DPalette::ColorType backgroundType = static_cast<DPalette::ColorType>(getBackgroudColorRole());
     // 去锯齿
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
@@ -68,7 +70,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     event->ignore();
 }
 
-void FocusFrame::enterEvent(QEvent *event)
+void FocusFrame::enterEvent(EnterEvent *event)
 {
     // 鼠标进入
     m_isHover = true;

@@ -23,6 +23,7 @@
 #include <QVariant>
 #include <QCommandLineParser>
 #include <QKeySequence>
+#include <QLoggingCategory>
 
 namespace Konsole {
 extern __attribute__((visibility("default"))) int __minFontSize;

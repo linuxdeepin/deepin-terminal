@@ -11,7 +11,7 @@
 #include "ut_stub_defines.h"
 
 // DTK
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -279,9 +279,9 @@ TEST_F(UT_RemoteManagementSearchPanel_Test, lambda)
     EXPECT_TRUE(-1 == searchPanel.m_listWidget->currentIndex());
 
     // 切换主题
-    searchPanel.handleThemeTypeChanged(DApplicationHelper::DarkType);
+    searchPanel.handleThemeTypeChanged(DGuiApplicationHelper::DarkType);
     DPalette p1 = searchPanel.m_label->palette();
-    searchPanel.handleThemeTypeChanged(DApplicationHelper::LightType);
+    searchPanel.handleThemeTypeChanged(DGuiApplicationHelper::LightType);
     DPalette p2 = searchPanel.m_label->palette();
     //一黑一白两个主题
     EXPECT_TRUE(p1.brush(QPalette::Text).color() != p2.brush(QPalette::Text).color());

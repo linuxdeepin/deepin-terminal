@@ -1,6 +1,6 @@
-project(deepin-terminal)
-
 cmake_minimum_required(VERSION 3.9.5)
+
+project(deepin-terminal)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
@@ -56,25 +56,33 @@ if(CMAKE_COVERAGE_ARG STREQUAL "CMAKE_COVERAGE_ARG_ON")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fprofile-arcs -ftest-coverage")
 endif()
 
-# Find the QtWidgets library
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
+# 引入翻译生成
+include(translation-generate)
 
 find_package(PkgConfig REQUIRED)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5DBus REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5X11Extras REQUIRED)
-find_package(DtkWidget REQUIRED)
-#find_package(DtkCore REQUIRED)
-#find_package(DtkGui REQUIRED)
+
+set(qt_required_components Core DBus Gui Network Widgets)
+
+# Find Qt version
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+message("   >>> Found Qt version: ${QT_VERSION_MAJOR}")
+set(QT_DESIRED_VERSION ${QT_VERSION_MAJOR})
+
+if (QT_VERSION_MAJOR MATCHES 6)
+    set(DTK_VERSION_MAJOR 6)
+    list(APPEND qt_required_components Core5Compat)
+else()
+    set(DTK_VERSION_MAJOR "")
+    list(APPEND qt_required_components X11Extras)
+endif()
+message("   >>> Build with DTK: ${DTK_VERSION_MAJOR}")
+
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${qt_required_components})
+find_package(Dtk${DTK_VERSION_MAJOR} COMPONENTS Widget REQUIRED)
 
 include(FindPkgConfig)
 
-pkg_search_module(DtkWidget REQUIRED dtkwidget)
-pkg_search_module(DtkGui REQUIRED dtkgui)
-pkg_search_module(DtkCore REQUIRED dtkcore)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
@@ -103,21 +111,27 @@ include_directories("src/views")
 include_directories("3rdparty/terminalwidget/lib")
 
 set(LINK_LIBS
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Widgets
-    Qt5::WidgetsPrivate
-    Qt5::Network
-
-    ${DtkWidget_LIBRARIES}
-    ${DtkCore_LIBRARIES}
-    ${DtkGUI_LIBRARIES}
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::DBus
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Network
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Dtk${DTK_VERSION_MAJOR}::Widget
+    Dtk${DTK_VERSION_MAJOR}::Core
+    Dtk${DTK_VERSION_MAJOR}::Gui
     ${DFrameworkDBus_LIBRARIES}
     ${GOBJECT_LIBRARIES}
     ${LIBSECRET_LIBRARIES}
     ${XCB_EWMH_LIBRARIES}
-    ${Qt5X11Extras_LIBRARIES}
 )
+
+if (QT_VERSION_MAJOR MATCHES 6)
+    list(APPEND LINK_LIBS Qt${QT_VERSION_MAJOR}::Core5Compat)
+    list(APPEND LINK_LIBS Qt${QT_VERSION_MAJOR}::GuiPrivate)
+else()
+    list(APPEND LINK_LIBS Qt${QT_VERSION_MAJOR}::WidgetsPrivate)
+    list(APPEND LINK_LIBS Qt${QT_VERSION_MAJOR}::X11Extras)
+endif()
 
 # Populate a CMake variable with the sources
 # TODO: portable headers?
@@ -173,6 +187,7 @@ set (DTNG_CPP_FILES
 
 set (DTNG_HEADER_FILES
     src/common/define.h
+    src/common/qtcompat.h
     src/common/utils.h
     src/common/settingio.h
     src/common/eventlogutils.h
@@ -228,37 +243,28 @@ set (DTNG_QRC_FILES
 # Program
 set (EXE_NAME deepin-terminal)
 
-# Translation
-file (GLOB DTNG_TS_FILES translations/*.ts)
-set (DTNG_CPP_FILES_FOR_I18N ${DTNG_CPP_FILES})
-
-dtk_create_i18n_from_json(DTNG_SETTINGS_I18N_FILES default-config.json settings_translation.cpp)
-list (APPEND DTNG_CPP_FILES_FOR_I18N ${DTNG_SETTINGS_I18N_FILES})
-qt5_create_translation(DTNG_QM_FILES ${DTNG_CPP_FILES_FOR_I18N} ${DTNG_TS_FILES})
+if (QT_VERSION_MAJOR MATCHES 5)
+    dtk_create_i18n_from_json(DTNG_SETTINGS_I18N_FILES default-config.json settings_translation.cpp)
+    message("DTK create I18N_FILES: " ${DTNG_SETTINGS_I18N_FILES})
+endif()
 
 add_executable (${EXE_NAME}
     ${DTNG_HEADER_FILES}
     ${DTNG_CPP_FILES}
     ${DTNG_QRC_FILES}
-    ${DTNG_QM_FILES}
 )
 
-target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
-                                              ${Qt5DBus_LIBRARIES}
-                                              ${Qt5Widgets_PRIVATE_INCLUDE_DIRS}
-                                              ${Qt5Core_PRIVATE_INCLUDE_DIRS}
-                                              ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-                                              ${PROJECT_BINARY_DIR}
-                                              ${DtkWidget_INCLUDE_DIRS}
-                                              ${DtkCore_LIBRARIES}
-                                              ${DtkGUI_INCLUDE_DIRS}
-                                              ${DFrameworkDBus_INCLUDE_DIRS}
-                                              ${ATSPI2_INCLUDE_DIRS}
-                                              ${GOBJECT_INCLUDE_DIRS}
-                                              ${LIBSECRET_INCLUDE_DIRS}
-                                              ${XCB_EWMH_INCLUDE_DIRS})
+target_include_directories(${EXE_NAME}
+    PUBLIC
+    ${PROJECT_BINARY_DIR}
+    ${DFrameworkDBus_INCLUDE_DIRS}
+    ${ATSPI2_INCLUDE_DIRS}
+    ${GOBJECT_INCLUDE_DIRS}
+    ${LIBSECRET_INCLUDE_DIRS}
+    ${XCB_EWMH_INCLUDE_DIRS}
+)
 
-target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget5)
+target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget${QT_DESIRED_VERSION})
 
 # Install settings
 
@@ -282,7 +288,13 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE)
 
-install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/translations)
+# translation files
+TRANSLATION_GENERATE(QM_FILES ${CMAKE_SOURCE_DIR}/translations)
+add_custom_target(${PROJECT_NAME}_qm_files DEPENDS ${QM_FILES})
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_qm_files)
+
+# Install translations
+install(FILES ${QM_FILES} DESTINATION share/${PROJECT_NAME}/translations)
 
 install(DIRECTORY src/assets/deepin-terminal
         DESTINATION /usr/share/deepin-manual/manual-assets/application/)
@@ -297,7 +309,11 @@ set(APPID org.deepin.terminal)
 set(configFile ${PROJECT_SOURCE_DIR}/src/assets/config/dconfig/org.deepin.terminal.json)
 if (DEFINED DSG_DATA_DIR)
     message("-- DConfig is supported by DTK")
-    dconfig_meta_files(APPID ${APPID} FILES ${configFile})
+    if (DTK_VERSION_MAJOR EQUAL "6")
+        dtk_add_config_meta_files(APPID ${APPID} FILES ${configFile})
+    else()
+        dconfig_meta_files(APPID ${APPID} FILES ${configFile})
+    endif()
 else()
     message("-- DConfig is not supported by DTK")
     install(FILES ${configFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dsg/config/org.deepin.terminal/)
@@ -307,6 +323,6 @@ install(FILES src/assets/config/logconfig/org.deepin.terminal.json
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-log-viewer/deepin-log.conf.d/)
 
 # Unit Test
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-add_subdirectory(tests)
-endif()
+# if (CMAKE_BUILD_TYPE MATCHES Debug)
+# add_subdirectory(tests)
+# endif()

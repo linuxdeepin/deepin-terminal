@@ -9,7 +9,7 @@
 #include "iconbutton.h"
 #include "mainwindow.h"
 
-#include <DApplicationHelper>
+#include <DGuiApplicationHelper>
 
 #include <QKeyEvent>
 #include <QApplication>
@@ -44,7 +44,7 @@ void RemoteManagementSearchPanel::initUI()
     // 字体颜色随主题变化而变化
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 102);
     else
         color = QColor::fromRgb(85, 85, 85, 102);
@@ -57,13 +57,13 @@ void RemoteManagementSearchPanel::initUI()
     hlayout->addWidget(m_rebackButton);
     hlayout->addWidget(m_label, 0, Qt::AlignCenter);
     hlayout->setSpacing(0);
-    hlayout->setMargin(0);
+    hlayout->setContentsMargins(0, 0, 0, 0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();
     vlayout->addSpacing(SPACEHEIGHT);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(m_listWidget);
-    vlayout->setMargin(0);
+    vlayout->setContentsMargins(0, 0, 0, 0);
     vlayout->setSpacing(SPACEHEIGHT);
     setLayout(vlayout);
 
@@ -76,7 +76,7 @@ void RemoteManagementSearchPanel::initUI()
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, &RemoteManagementSearchPanel::onRefreshList);
     connect(m_listWidget, &ListView::focusOut, this, &RemoteManagementSearchPanel::handleListViewFocusOut);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &RemoteManagementSearchPanel::handleThemeTypeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &RemoteManagementSearchPanel::handleThemeTypeChanged);
 }
 
 inline void RemoteManagementSearchPanel::handleListViewFocusOut(Qt::FocusReason type)
@@ -99,7 +99,7 @@ inline void RemoteManagementSearchPanel::handleThemeTypeChanged(DGuiApplicationH
 {
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == themeType)
+    if (DGuiApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 102);
     else
         color = QColor::fromRgb(85, 85, 85, 102);

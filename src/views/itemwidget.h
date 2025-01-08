@@ -16,6 +16,7 @@
 #define ITEMWIDGET_H
 // custom
 #include "focusframe.h"
+#include "qtcompat.h"
 
 // dtk
 //#include <DFrame>
@@ -24,7 +25,7 @@
 #include <DGuiApplicationHelper>
 #include <DFontSizeManager>
 #include <DPalette>
-#include <DApplicationHelper>
+#include <DPaletteHelper>
 // qt
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -193,7 +194,7 @@ protected:
      * @author ut000610 戴正文
      * @param event 事件
      */
-    void enterEvent(QEvent *event) override;
+    void enterEvent(EnterEvent *event) override;
     /**
      * @brief 移出，编辑按钮消失
      * @author ut000610 戴正文
