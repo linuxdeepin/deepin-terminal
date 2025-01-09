@@ -1452,8 +1452,10 @@ int Screen::copyLineToStream(int line ,
             std::copy(data + start, data + end, characterBuffer);
         }
 
-        // count cannot be any greater than length
-        count = qBound(0, count, length - start);
+        if (length > start) {
+            // count cannot be any greater than length
+            count = qBound(0, count, length - start);
+        }
 
         Q_ASSERT(screenLine < _lineProperties.count());
         currentLineProperties |= _lineProperties[screenLine];

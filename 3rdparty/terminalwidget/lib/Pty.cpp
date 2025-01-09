@@ -265,6 +265,28 @@ Pty::Pty(QObject *parent)
 
 void Pty::init()
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    // Must call parent class child process modifier, as it sets file descriptors ...etc
+    auto parentChildProcModifier = KPtyProcess::childProcessModifier();
+    setChildProcessModifier([parentChildProcModifier = std::move(parentChildProcModifier)]() {
+        if (parentChildProcModifier) {
+            parentChildProcModifier();
+        }
+
+        // reset all signal handlers
+        // this ensures that terminal applications respond to
+        // signals generated via key sequences such as Ctrl+C
+        // (which sends SIGINT)
+        struct sigaction action;
+        sigemptyset(&action.sa_mask);
+        action.sa_handler = SIG_DFL;
+        action.sa_flags = 0;
+        for (int signal = 1; signal < NSIG; signal++) {
+            sigaction(signal, &action, nullptr);
+        }
+    });
+#endif
+
     _windowColumns = 0;
     _windowLines = 0;
     _eraseChar = 0;

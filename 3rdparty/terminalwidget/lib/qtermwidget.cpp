@@ -395,11 +395,7 @@ void QTermWidget::startTerminalTeletype()
 void QTermWidget::init(int startnow)
 {
     m_layout = new QVBoxLayout();
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    m_layout->setMargin(0);
-#else
     m_layout->setContentsMargins(0, 0, 0, 0);
-#endif
     setLayout(m_layout);
 
     // translations
