@@ -1269,13 +1269,13 @@ void TerminalDisplay::showResizeNotification()
      }
      if (!_resizeWidget)
      {
-         const QString label = tr("Size: XXX x XXX");
-        #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-        int width = _resizeWidget->fontMetrics().width(label);
-        #else
-        int width = _resizeWidget->fontMetrics().horizontalAdvance(label);
-        #endif
+        const QString label = tr("Size: XXX x XXX");
         _resizeWidget = new QLabel(label, this);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        int width = _resizeWidget->fontMetrics().width(label);
+#else
+        int width = _resizeWidget->fontMetrics().horizontalAdvance(label);
+#endif
         _resizeWidget->setMinimumWidth(width);
         _resizeWidget->setMinimumHeight(_resizeWidget->sizeHint().height());
         _resizeWidget->setAlignment(Qt::AlignCenter);

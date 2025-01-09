@@ -38,23 +38,52 @@
 #include <QDebug>
 
 KPtyProcess::KPtyProcess(QObject *parent) :
-    KProcess(new KPtyProcessPrivate, parent)
+    KPtyProcess(-1, parent)
 {
     Q_D(KPtyProcess);
 
-    d->pty = new KPtyDevice(this);
+    // d->pty = new KPtyDevice(this);
+    d->pty = std::make_unique<KPtyDevice>(this);
     d->pty->open();
     connect(this, SIGNAL(stateChanged(QProcess::ProcessState)),
             SLOT(_k_onStateChanged(QProcess::ProcessState)));
 }
 
 KPtyProcess::KPtyProcess(int ptyMasterFd, QObject *parent) :
-    KProcess(new KPtyProcessPrivate, parent)
+    KProcess(parent),
+    d_ptr(new KPtyProcessPrivate)
 {
     Q_D(KPtyProcess);
 
-    d->pty = new KPtyDevice(this);
-    d->pty->open(ptyMasterFd);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    setChildProcessModifier([d]() {
+        d->pty->setCTty();
+#if 0
+        if (d->addUtmp) {
+            d->pty->login(KUser(KUser::UseRealUserID).loginName().toLocal8Bit().constData(), qgetenv("DISPLAY").constData());
+        }
+#endif
+        if (d->ptyChannels & StdinChannel) {
+            dup2(d->pty->slaveFd(), 0);
+        }
+        if (d->ptyChannels & StdoutChannel) {
+            dup2(d->pty->slaveFd(), 1);
+        }
+        if (d->ptyChannels & StderrChannel) {
+            dup2(d->pty->slaveFd(), 2);
+        }
+    });
+#endif
+
+    //d->pty = new KPtyDevice(this);
+    d->pty = std::make_unique<KPtyDevice>(this);
+
+    if (ptyMasterFd == -1) {
+        d->pty->open();
+    } else {
+        d->pty->open(ptyMasterFd);
+    }
+
     connect(this, SIGNAL(stateChanged(QProcess::ProcessState)),
             SLOT(_k_onStateChanged(QProcess::ProcessState)));
 }
@@ -66,13 +95,14 @@ KPtyProcess::~KPtyProcess()
     if (state() != QProcess::NotRunning)
     {
         if (d->addUtmp)
-        {
-            d->pty->logout();
+    {
+        d->pty->logout();
             disconnect(SIGNAL(stateChanged(QProcess::ProcessState)),
                     this, SLOT(_k_onStateChanged(QProcess::ProcessState)));
         }
     }
-    delete d->pty;
+    // delete d->pty;
+    d->pty.release();
     waitForFinished(300); // give it some time to finish
     if (state() != QProcess::NotRunning)
     {
@@ -116,7 +146,7 @@ KPtyDevice *KPtyProcess::pty() const
 {
     Q_D(const KPtyProcess);
 
-    return d->pty;
+    return d->pty.get();
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
