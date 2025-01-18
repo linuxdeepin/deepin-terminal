@@ -306,7 +306,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation>Разрешите Ctrl+колесо прокрутки для увеличения размера текста</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
