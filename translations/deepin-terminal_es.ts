@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation>URL de la información de depuración</translation>
+        <translation>URLs de la información de depuración</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
