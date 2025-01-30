@@ -306,7 +306,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation>Разрешите Ctrl+колесо прокрутки для увеличения размера текста</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation type="unfinished"/>
+        <translation>URL-адреса debuginfod</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -546,12 +546,12 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation>Разрешить сочетание клавиш Ctrl + щелчок левой кнопкой мыши для установки положения курсора</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>HTTP-файловый сервер, используемый для передачи ресурсов отладочной информации</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>No Group</source>
-        <translation type="unfinished"/>
+        <translation>Нет группы</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="193"/>
@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"/>
+        <translation>Настройки debuginfo вступят в силу после перезагрузки</translation>
     </message>
 </context>
 <context>
