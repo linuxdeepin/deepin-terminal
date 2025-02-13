@@ -107,13 +107,13 @@ QString Utils::getElidedText(QFont font, QString text, int MaxWith, Qt::TextElid
 
 QString Utils::getRandString()
 {
-    int max = 6;  //字符串长度
+    const int max = 6;  //字符串长度
     QString tmp = QString("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    QString str;
+    QString str(max, Qt::Uninitialized);
     QTime t;
     t = QTime::currentTime();
     srand(static_cast<uint>(t.msec() + t.second() * 1000));
-    for (int i = 0; i < max; i++) {
+    for (int i = 0; i < str.length(); i++) {
         int len = rand() % tmp.length();
         str[i] = tmp.at(len);
     }
