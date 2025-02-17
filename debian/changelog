@@ -1,3 +1,9 @@
+deepin-terminal (6.5.1) unstable; urgency=medium
+
+  * fix: crash when open remote manage(Bug: 303369)
+
+ -- renbin <renbin@uniontech.com>  Mon, 17 Feb 2025 14:52:07 +0800
+
 deepin-terminal (6.5.0) unstable; urgency=medium
 
   * New version 6.5.0.
