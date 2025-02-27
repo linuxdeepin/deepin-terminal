@@ -2635,7 +2635,12 @@ void NormalWindow::initWindowAttribute()
             saveWidth = WINDOW_DEFAULT_WIDTH;
             saveHeight = WINDOW_DEFAULT_HEIGHT;
         }
-        resize(QSize(saveWidth, saveHeight));
+        auto screen = qApp->primaryScreen();
+        int w = qMin(saveWidth, screen->geometry().width());
+        int h = qMin(saveHeight, screen->geometry().height());
+        if (w != saveWidth || h != saveHeight)
+            qCInfo(mainprocess) << QString("terminal`s size dose not matched screen, actual size: (%1, %2)").arg(w, h);
+        resize(QSize(w, h));
         singleFlagMove();
     }
 }
