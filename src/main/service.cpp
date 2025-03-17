@@ -137,6 +137,11 @@ void Service::slotSettingsDialogFinished(int result)
 
 void Service::showHideOpacityAndBlurOptions(bool isShow)
 {
+    if (nullptr == m_settingDialog) {
+        qCWarning(mainprocess)  << "m_settingDialog is null";
+        return;
+    }
+
     QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
     if (nullptr == rightFrame) {
         qCWarning(mainprocess)  << "can not found RightFrame in QWidget";
