@@ -15,6 +15,7 @@
 #include <DPushButton>
 #include <DSuggestButton>
 #include <DFontSizeManager>
+#include <DGuiApplicationHelper>
 #include <DPaletteHelper>
 #include <DVerticalLine>
 
