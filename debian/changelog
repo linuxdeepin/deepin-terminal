@@ -1,3 +1,9 @@
+deepin-terminal (6.5.3) unstable; urgency=medium
+
+  * refactor: upgrade Qt and DTK compatibility (#402)
+
+ -- renbin <renbin@uniontech.com>  Thu, 20 Mar 2025 19:01:38 +0800
+
 deepin-terminal (6.5.2) unstable; urgency=medium
 
   * New version 6.5.2.
