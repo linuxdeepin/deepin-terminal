@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl + sol fare tıklamasının imleç konumunu ayarlamasına izin ver</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
