@@ -11,7 +11,6 @@ Build-Depends:
  qt6-tools-dev-tools | qttools5-dev-tools,
  qt6-base-private-dev | qtbase5-private-dev,
  libdtk6widget-dev | libdtkwidget-dev,
- libdframeworkdbus-dev,
  lxqt-build-tools(>= 0.6.0~),
  libutf8proc-dev,
  libglib2.0-dev,

@@ -23,7 +23,6 @@ BuildRequires: qt5-linguist
 BuildRequires: pkgconfig(dtkcore)
 BuildRequires: pkgconfig(dtkwidget)
 BuildRequires: pkgconfig(dtkgui)
-BuildRequires: pkgconfig(dframeworkdbus)
 BuildRequires: pkgconfig(gobject-2.0)
 BuildRequires: pkgconfig(atspi-2)
 BuildRequires: pkgconfig(libsecret-1)
