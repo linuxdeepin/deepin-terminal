@@ -84,7 +84,6 @@ find_package(Dtk${DTK_VERSION_MAJOR} COMPONENTS Widget REQUIRED)
 include(FindPkgConfig)
 
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
-pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
 pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
 
@@ -119,7 +118,6 @@ set(LINK_LIBS
     Dtk${DTK_VERSION_MAJOR}::Widget
     Dtk${DTK_VERSION_MAJOR}::Core
     Dtk${DTK_VERSION_MAJOR}::Gui
-    ${DFrameworkDBus_LIBRARIES}
     ${GOBJECT_LIBRARIES}
     ${LIBSECRET_LIBRARIES}
     ${XCB_EWMH_LIBRARIES}
@@ -257,7 +255,6 @@ add_executable (${EXE_NAME}
 target_include_directories(${EXE_NAME}
     PUBLIC
     ${PROJECT_BINARY_DIR}
-    ${DFrameworkDBus_INCLUDE_DIRS}
     ${ATSPI2_INCLUDE_DIRS}
     ${GOBJECT_INCLUDE_DIRS}
     ${LIBSECRET_INCLUDE_DIRS}
