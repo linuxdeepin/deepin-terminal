@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2049"/>
         <source>Custom Theme</source>
-        <translation type="unfinished"/>
+        <translation>Giao diện tùy chỉnh</translation>
     </message>
 </context>
 <context>
