@@ -348,7 +348,7 @@
         <location filename="../src/main/service.cpp" line="176"/>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Opacity</source>
-        <translation type="unfinished"/>
+        <translation>Neleidžiamumas</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
