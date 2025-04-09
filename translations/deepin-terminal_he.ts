@@ -173,17 +173,17 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="39"/>
         <source>Group Name(Required)</source>
-        <translation type="unfinished"/>
+        <translation>שם קבוצה (נדרש)</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="41"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>הוסף קבוצה</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="44"/>
         <source>Edit Group</source>
-        <translation type="unfinished"/>
+        <translation>ערוך קבוצה</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
@@ -203,12 +203,12 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="65"/>
         <source>Please enter a group name</source>
-        <translation type="unfinished"/>
+        <translation>בבקשה מלא שם קבוצה</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>השם לא צריך להיות יותר מ-30 תווים</translation>
     </message>
 </context>
 <context>
@@ -221,17 +221,17 @@
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation>מחק פונקציהutzerdefiniert</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
         <source>Cancel Server Group</source>
-        <translation type="unfinished"/>
+        <translation>בטל קבוצתשרת</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>שרתים שאיניהם בקבוצה יחזורו לרשימת שרתים!</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="498"/>
@@ -306,7 +306,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation>הסכים ל zoom באמצעות Ctrl+מגש</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation type="unfinished"/>
+        <translation>כתובות URLs של debuginfod</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
@@ -541,17 +541,17 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>הכל תווים מיוחדים בחירה של כפתור עכבר duble</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation>הסכים לחיצה עם כפתור Ctrl + עכבר שמאל כדי להגדיר אתposição do cursor</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>שרת_HTTP המממש את משובים של מידע על שגיאות资源</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -740,13 +740,13 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>המשהה עדיין ב_terminal. סגירת terminal תסתיים אותו</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>המשהות עדיין ב_terminal. סגירת terminal תסתיים את כולם</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
@@ -758,13 +758,13 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>המשהות עדיין ב_window. סגירת window תסתיים את כולם</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="136"/>
         <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
-        <translation type="unfinished"/>
+        <translation>בחר תיקייה להצטבר קובץ</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
@@ -807,22 +807,22 @@
     <message>
         <location filename="../src/common/utils.cpp" line="341"/>
         <source>Run script string in the terminal</source>
-        <translation type="unfinished"/>
+        <translation>הצטבר סקריפט בterminal</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="332"/>
         <source>Set the work directory</source>
-        <translation type="unfinished"/>
+        <translation>הגדר תיקייה עבודה</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Set the window mode on starting</source>
-        <translation type="unfinished"/>
+        <translation>הגדר את מצב הwindow בתחילתה</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="344"/>
         <source>Run in quake mode</source>
-        <translation type="unfinished"/>
+        <translation>הצטבר בשיטה quake</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="347"/>
@@ -845,19 +845,19 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="542"/>
         <source>Select the private key file</source>
-        <translation type="unfinished"/>
+        <translation>בחר קובץ מפתח פרטי</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
-        <translation type="unfinished"/>
+        <translation>פורמט כותרת מסך</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
-        <translation type="unfinished"/>
+        <translation>פורמט כותרת מסך מרחוק</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
@@ -884,7 +884,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="210"/>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>הוסף קבוצה</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
