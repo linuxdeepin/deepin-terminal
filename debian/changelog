@@ -1,3 +1,9 @@
+deepin-terminal (6.5.5) unstable; urgency=medium
+
+  * fix: replace hover icon (Bug: 279839)
+
+ -- renbin <renbin@uniontech.com>  Thu, 10 Apr 2025 19:06:38 +0800
+
 deepin-terminal (6.5.4) unstable; urgency=medium
 
   * New version 6.5.4.
