@@ -159,12 +159,9 @@ public:
      * @param opacity
      */
     void setTerminalOpacity(qreal opacity);
-    /**
-     * @brief 设置主题
-     * @author ut000439 wangpeili
-     * @param name
-     */
-    void setColorScheme(const QString &name);
+
+
+    void updateBackgroundColor();
 
     /**
      * @brief 发送文本到当前终端
