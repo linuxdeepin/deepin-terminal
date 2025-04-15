@@ -74,7 +74,7 @@ void ItemWidget::setIcon(const QString &icon)
 void ItemWidget::setFuncIcon(ItemFuncType iconType)
 {
     // 统一设置大小
-    m_funcButton->setIconSize(QSize(20, 20));
+    m_funcButton->setIconSize(QSize(12, 12));
     switch (iconType) {
     case ItemFuncType_Item:
         m_funcButton->setIcon(QIcon::fromTheme("dt_edit"));
