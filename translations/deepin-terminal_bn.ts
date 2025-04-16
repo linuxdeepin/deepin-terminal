@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="he">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="bn">
 <context>
     <name>CustomCommandOptDlg</name>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="97"/>
         <source>Name:</source>
-        <translation>שם:</translation>
+        <translation>নাম:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="99"/>
         <source>Command:</source>
-        <translation>פקודה:</translation>
+        <translation>কমান্ড:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="101"/>
         <source>Shortcuts:</source>
-        <translation>קיצורי־דרך:</translation>
+        <translation>কাছাকাছি কমান্ড:</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="112"/>
@@ -22,66 +22,66 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="213"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="219"/>
         <source>Required</source>
-        <translation>נדרש</translation>
+        <translation>অনুগ্রহ করে একটি নাম প্রদান করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="138"/>
         <source>Add Command</source>
-        <translation>הוספת פקודה</translation>
+        <translation>কমান্ড যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="147"/>
         <source>Edit Command</source>
-        <translation>עריכת הפקודה</translation>
+        <translation>কমান্ড সম্পাদন করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="157"/>
         <source>Delete Command</source>
-        <translation>מחיקת הפקודה</translation>
+        <translation>কমান্ড ডিলিট করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="178"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ביטול</translation>
+        <translation>বাতিল</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="180"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>הוספה</translation>
+        <translation>যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="182"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>שמירה</translation>
+        <translation>পরিবর্তন সংরক্ষণ করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="624"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>אישור</translation>
+        <translation>স্বাক্ষর</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="380"/>
         <source>Please enter a name</source>
-        <translation>נא להכניס שם</translation>
+        <translation>অনুগ্রহ করে একটি নাম প্রদান করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="394"/>
         <source>Please enter a command</source>
-        <translation>נא להכניס פקודה</translation>
+        <translation>অনুগ্রহ করে একটি কমান্ড প্রদান করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="444"/>
         <source>The name already exists,</source>
-        <translation>השם כבר קיים,</translation>
+        <translation>নাম প্রতিষ্ঠিত আছে,</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="445"/>
         <source>please input another one.</source>
-        <translation>נא להכניס אחד אחר.</translation>
+        <translation>আরেকটি নাম প্রদান করুন.</translation>
     </message>
 </context>
 <context>
@@ -89,12 +89,12 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="196"/>
         <source>Add Command</source>
-        <translation>הוספת פקודה</translation>
+        <translation>কমান্ড যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="200"/>
         <source>No commands yet</source>
-        <translation>אין פקודות עדיין</translation>
+        <translation>এখন কোনো কমান্ড নেই</translation>
     </message>
 </context>
 <context>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/customcommand/customcommandplugin.cpp" line="35"/>
         <source>Custom commands</source>
-        <translation>פקודות בהתאמה אישית</translation>
+        <translation>প্রাপ্তবয়স্ক কমান্ড</translation>
     </message>
 </context>
 <context>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/customcommand/customcommandsearchrstpanel.cpp" line="132"/>
         <source>Search</source>
-        <translation>חיפוש</translation>
+        <translation>অনুসন্ধান</translation>
     </message>
 </context>
 <context>
@@ -118,54 +118,54 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="238"/>
         <source>Custom Theme</source>
-        <translation>ערכת נושא מותאמת אישית</translation>
+        <translation>প্রাপ্তবয়স্ক থিম</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="262"/>
         <source>Style:</source>
-        <translation>סגנון:</translation>
+        <translation>স্টাইল:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="266"/>
         <source>Light</source>
-        <translation>מואר</translation>
+        <translation>বRIGHT</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="271"/>
         <source>Dark</source>
-        <translation>כהה</translation>
+        <translation>চুম্বকীয়</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
         <source>Fore color:</source>
-        <translation>צבע קדמי:</translation>
+        <translation>প্রার্থী রঙ:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="332"/>
         <source>Back color:</source>
-        <translation>צבע רקע:</translation>
+        <translation>ভার্চাল রঙ:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="350"/>
         <source>Prompt PS1:</source>
-        <translation>ראש אבויב PS1:</translation>
+        <translation>PS1 প্রেক্ষাপট প্রদান করুন:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="354"/>
         <source>Prompt PS2:</source>
-        <translation>ראש אבויב PS2:</translation>
+        <translation>PS2 প্রেক্ষাপট প্রদান করুন:</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="424"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ביטול</translation>
+        <translation>বাতিল</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="431"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>אימות</translation>
+        <translation>প্রতিস্থাপন</translation>
     </message>
 </context>
 <context>
@@ -173,42 +173,42 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="39"/>
         <source>Group Name(Required)</source>
-        <translation>שם קבוצה (נדרש)</translation>
+        <translation>গ্রুপ নাম(অপশনাল)</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="41"/>
         <source>Add Group</source>
-        <translation>הוסף קבוצה</translation>
+        <translation>গ্রুপ যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="44"/>
         <source>Edit Group</source>
-        <translation>ערוך קבוצה</translation>
+        <translation>গ্রুপ সম্পাদন করুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="60"/>
         <source>Cancel</source>
-        <translation>ביטול</translation>
+        <translation>বাতিল</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="61"/>
         <source>Add</source>
-        <translation>הוספה</translation>
+        <translation>যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="61"/>
         <source>Save</source>
-        <translation>שמור</translation>
+        <translation>পাঠান</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="65"/>
         <source>Please enter a group name</source>
-        <translation>בבקשה מלא שם קבוצה</translation>
+        <translation>অনুগ্রহ করে গ্রুপের নাম দিন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
         <source>The name should be no more than 30 characters</source>
-        <translation>השם לא צריך להיות יותר מ-30 תווים</translation>
+        <translation>নামের দৈর্ঘ্য 30 অক্ষরের কম হতে হবে</translation>
     </message>
 </context>
 <context>
@@ -216,28 +216,28 @@
     <message>
         <location filename="../src/views/listview.cpp" line="868"/>
         <source>Delete Server</source>
-        <translation>מחיקת השרת</translation>
+        <translation>সার্ভার ডিলিট করুন</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
         <source>Delete Custom Command</source>
-        <translation>מחק פונקציהutzerdefiniert</translation>
+        <translation>কাস্টম কম্যান্ড ডিলিট করুন</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
         <source>Cancel Server Group</source>
-        <translation>בטל קבוצתשרת</translation>
+        <translation>সার্ভার গ্রুপ বাতিল করুন</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation>שרתים שאיניהם בקבוצה יחזורו לרשימת שרתים!</translation>
+        <translation>গ্রুপ করা হয়নি সার্ভারগুলি সার্ভার তালিকায় ফিরে যাবে</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="498"/>
         <location filename="../src/views/listview.cpp" line="880"/>
         <source>Are you sure you want to delete %1?</source>
-        <translation>האם אתה בטוח שברצונך למחוק את %1?</translation>
+        <translation>আপনি %1 ডিলিট করতে সত্যিই চান?</translation>
     </message>
 </context>
 <context>
@@ -246,34 +246,34 @@
         <location filename="../src/main/mainwindow.cpp" line="224"/>
         <location filename="../src/main/mainwindow.cpp" line="276"/>
         <source>New window</source>
-        <translation>חלון חדש</translation>
+        <translation>নতুন বার্ণনা</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="291"/>
         <source>Settings</source>
-        <translation>הגדרות</translation>
+        <translation>সেটিংস</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="702"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ביטול</translation>
+        <translation>বাতিল</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="704"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>סגירה</translation>
+        <translation>বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1752"/>
         <source>Type path to download file</source>
-        <translation>הקלד נתיב לתיקיית הורדה</translation>
+        <translation>ফাইল ডাউনলোড করার জন্য পথ লিখুন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="2049"/>
         <source>Custom Theme</source>
-        <translation>ערכת נושא מותאמת אישית</translation>
+        <translation>কাস্টম থিম</translation>
     </message>
 </context>
 <context>
@@ -281,115 +281,115 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="17"/>
         <source>Copy on select</source>
-        <translation>העתק בבחירה</translation>
+        <translation>কপি করা হবে নির্বাচন করার সময়</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="19"/>
         <source>Cursor blink</source>
-        <translation>הבהוב סמן</translation>
+        <translation>কাস্টম কর্সর ব্লিং</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="21"/>
         <source>Cursor style</source>
-        <translation>סגנון סמן</translation>
+        <translation>কারুর আকার</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="23"/>
         <source>Scroll on keystroke</source>
-        <translation>גלילה בלחיצת מקש</translation>
+        <translation>কেয়ার্স্ট্রোকে স্ক্রোল</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="25"/>
         <source>Scroll on output</source>
-        <translation>גלילה בפלט</translation>
+        <translation>আউটপুটে স্ক্রোল</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation>הסכים ל zoom באמצעות Ctrl+מגש</translation>
+        <translation>Ctrl+স্ক্রোলওয়েল দিয়ে টেক্সট সাইজ বেড়ানো উপযোগী</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>הסתרת חלון Quake לאחר אובדן מיקוד</translation>
+        <translation>ফোকাস হারালে কুয়েক বার্নার সরানো</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
         <source>Quake window animation speed</source>
-        <translation>מהירות אנימציה של חלון Quake</translation>
+        <translation>কুয়েক বার্নার গোঁতালা গতি</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="145"/>
         <location filename="../src/settings/settings_translation.cpp" line="33"/>
         <source>Blur background</source>
-        <translation>טשטש את הרקע</translation>
+        <translation>ডেক্স মজার করুন</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation>כתובות URLs של debuginfod</translation>
+        <translation>debuginfod URLs</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Use on starting</source>
-        <translation>שימוש בהפעלה</translation>
+        <translation>শুরু হলে ব্যবহার</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
         <source>Font</source>
-        <translation>גופן</translation>
+        <translation>ফন্ট</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="39"/>
         <source>Font size</source>
-        <translation>גודל גופן</translation>
+        <translation>ফন্ট সাইজ</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="176"/>
         <location filename="../src/settings/settings_translation.cpp" line="41"/>
         <source>Opacity</source>
-        <translation>אטימות</translation>
+        <translation>অপাসিবিটি</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Advanced</source>
-        <translation>מתקדם</translation>
+        <translation>গুরুতর</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
         <source>Cursor</source>
-        <translation>סמן</translation>
+        <translation>কারু</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="47"/>
         <source>Scroll</source>
-        <translation>גלגלת</translation>
+        <translation>স্ক্রোল</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="49"/>
         <source>Window</source>
-        <translation>חלון</translation>
+        <translation>বার্নার</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="51"/>
         <source>Basic</source>
-        <translation>בסיסי</translation>
+        <translation>সহজ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
         <source>Interface</source>
-        <translation>ממשק</translation>
+        <translation>সুরক্ষা</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="55"/>
         <source>Shortcuts</source>
-        <translation>קיצורי מקשים</translation>
+        <translation>ক্ষুদ্র নিয়ন্ত্রণ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1594"/>
         <location filename="../src/settings/settings_translation.cpp" line="57"/>
         <source>Others</source>
-        <translation>אחרים</translation>
+        <translation>অন্যান্য</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1592"/>
@@ -397,161 +397,161 @@
         <location filename="../src/main/terminalapplication.cpp" line="25"/>
         <location filename="../src/settings/settings_translation.cpp" line="59"/>
         <source>Terminal</source>
-        <translation>מסוף</translation>
+        <translation>টার্মিনাল</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="61"/>
         <source>Workspace</source>
-        <translation>סביבת עבודה</translation>
+        <translation>কাজের স্থান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Custom commands</source>
-        <translation>פקודות בהתאמה אישית</translation>
+        <translation>মূল্যায়ন কমান্ডস</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="65"/>
         <source>Display shortcuts</source>
-        <translation>הצג קיצור־דרך</translation>
+        <translation>নিয়ন্ত্রণ প্রদর্শন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Remote management</source>
-        <translation>שליטה מרחוק</translation>
+        <translation>দূরবর্তী মন্ত্রণ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <source>New tab</source>
-        <translation>כרטיסייה חדשה</translation>
+        <translation>নতুন টেবিলেট</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Next tab</source>
-        <translation>הכרטיסייה הבאה</translation>
+        <translation>পরবর্তী টেবিলেট</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Previous tab</source>
-        <translation>כרטיסייה קודמת</translation>
+        <translation>পূর্ববর্তী টেবিলেট</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Select left workspace</source>
-        <translation>בחר סביבת עבודה שמאלית</translation>
+        <translation>লাইফট ওয়র্কস্পেস নির্বাচন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
-        <translation>בחר סביבת עבודה תחתונה</translation>
+        <translation>নিচের ওয়র্কস্পেস নির্বাচন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
-        <translation>בחר סביבת עבודה ימנית</translation>
+        <translation>ডান ওয়র্কস্পেস নির্বাচন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
-        <translation>בחר סביבת עבודה עליונה</translation>
+        <translation>উপরিভাগের ওয়র্কস্পেস নির্বাচন</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <source>Tab titles</source>
-        <translation>כותרות כרטיסייה</translation>
+        <translation>টেবিলেট নামাবলি</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <source>Go to tab 1</source>
-        <translation>לך לכרטיסייה 1</translation>
+        <translation>টেবিলেট 1 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <source>Go to tab 2</source>
-        <translation>לך לכרטיסייה 2</translation>
+        <translation>টেবিলেট 2 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <source>Go to tab 3</source>
-        <translation>לך לכרטיסייה 3</translation>
+        <translation>টেবিলেট 3 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Go to tab 4</source>
-        <translation>לך לכרטיסייה 4</translation>
+        <translation>টেবিলেট 4 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Go to tab 5</source>
-        <translation>לך לכרטיסייה 5</translation>
+        <translation>টেবিলেট 5 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Go to tab 6</source>
-        <translation>לך לכרטיסייה 6</translation>
+        <translation>টেবিলেট 6 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Go to tab 7</source>
-        <translation>לך לכרטיסייה 7</translation>
+        <translation>টেবিলেট 7 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <source>Go to tab 8</source>
-        <translation>לך לכרטיסייה 8</translation>
+        <translation>টেবিলেট 8 যান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Go to tab 9</source>
-        <translation>לך לכרטיסייה 9</translation>
+        <translation>টেবিলেট 9 যান</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>ביטול השליטה על הזרימה באמצעות Ctrl+S, Ctrl+Q</translation>
+        <translation>Ctrl+S, Ctrl+Q ব্যবহার করে ফিডার কন্ট্রোল বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>Shell profile</source>
-        <translation>פרופיל מעטפת</translation>
+        <translation>শিল্ড প্রোফাইল</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>History size</source>
-        <translation>גודל ההיסטוריה</translation>
+        <translation>ইতিহাসের আকার</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation>הכל תווים מיוחדים בחירה של כפתור עכבר duble</translation>
+        <translation>দ্বিগুণ ক্লিকের সার্কেলে এক্সট্রা ক্যারেক্টার অন্তর্ভুক্ত করুন</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation>הסכים לחיצה עם כפתור Ctrl + עכבר שמאל כדי להגדיר אתposição do cursor</translation>
+        <translation>ক্রোয়াল+লেফট মিউস ক্লিক করে কার্সর স্থান নির্ধারণ করার অনুমতি দিন</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation>שרת_HTTP המממש את משובים של מידע על שגיאות资源</translation>
+        <translation>ডিভাগিং ইনফরমেশন রিসোর্স ট্রান্সফারের জন্য ব্যবহৃত HTTP ফাইল সারভার</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -559,229 +559,229 @@
         <location filename="../src/views/tabbar.cpp" line="486"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="208"/>
         <source>Rename title</source>
-        <translation>שינוי שם הכותרת</translation>
+        <translation>নাম পরিবর্তন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
         <source>Fullscreen</source>
-        <translation>מסך מלא</translation>
+        <translation>ফুল সিন্স্ক্রিন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="73"/>
         <source>Copy</source>
-        <translation>העתקה</translation>
+        <translation>কopi</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
         <source>Default size</source>
-        <translation>גודל ברירת מחדל</translation>
+        <translation>মানক আকার</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
         <source>Paste</source>
-        <translation>הדבקה</translation>
+        <translation>পাস্ট</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
         <source>Search</source>
-        <translation>חיפוש</translation>
+        <translation>অনুসন্ধান</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="81"/>
         <source>Select all</source>
-        <translation>בחירה בהכול</translation>
+        <translation>সব নির্বাচন</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
         <source>Jump to next command</source>
-        <translation>קפיצה לפקודה הבאה</translation>
+        <translation>পরবর্তী কমান্ডে জাঁকড়া</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
         <source>Jump to previous command</source>
-        <translation>קפיצ לפקודה הקודמת</translation>
+        <translation>পূর্ববর্তী কমান্ডে জাঁকড়া</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
         <source>Zoom in</source>
-        <translation>הגדלת התצוגה</translation>
+        <translation>বৃদ্ধি</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Zoom out</source>
-        <translation>הקטנת התצוגה</translation>
+        <translation>কমান্ড থেকে বাহির হওয়া</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="91"/>
         <source>Close other windows</source>
-        <translation>סגירת חלונות אחרים</translation>
+        <translation>অন্যান্য উইন্ডো বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Close other workspaces</source>
-        <translation>סגירת סביבות עבודה אחרות</translation>
+        <translation>অন্যান্য কাজের অ্যাস্ট্যাক্স বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1247"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>לא ניתן למצוא &quot;%1&quot;, מפעיל במקום זאת &quot;%2&quot;. אנא בדוק את פרופיל המעטפת שלך.</translation>
+        <translation>&quot;%1&quot; খুঁজতে পারা গেল না, &quot;%2&quot; ব্যবহার করা হয়েছে অন্যথায়। আপনার শেল প্রফাইলটি পরে পরে চে크 করুন।</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1253"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>לא ניתן לפתוח את &quot;%1&quot;, אין אפשרות להריץ את זה</translation>
+        <translation>&quot;%1&quot; খুলতে পারা গেল না, এটি চালানো যায় না</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1255"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>לא ניתן למצוא את &quot;%1&quot;, אין אפשרות להריץ את זה</translation>
+        <translation>&quot;%1&quot; খুঁজতে পারা গেল না, এটি চালানো যায় না</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1298"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation>הפלט הושהה בשל לחיצה על Ctrl+S. לחץ על Ctrl+Q כדי להמשיך.</translation>
+        <translation>আউটপুটটি Ctrl+S দ্বারা প্রার্থনা করা হয়েছে। Ctrl+Q দ্বারা প্রার্থনা রুপান্তরিত করুন.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
         <source>Close window</source>
-        <translation>סגירת החלון</translation>
+        <translation>উইন্ডো বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="97"/>
         <location filename="../src/views/termwidget.cpp" line="496"/>
         <source>Close workspace</source>
-        <translation>סגירת סביבת העבודה</translation>
+        <translation>কাজের অ্যাস্ট্যাক্স বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
         <source>Horizontal split</source>
-        <translation>פיצול אופקי</translation>
+        <translation>যান্ত্রিক ভাঁজ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
         <source>Vertical split</source>
-        <translation>פיצול אנכי</translation>
+        <translation>স্থায়ী ভাঁজ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
         <source>Find</source>
-        <translation>חיפוש</translation>
+        <translation>অনুসন্ধান করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="263"/>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/main/service.cpp" line="416"/>
         <source>please set another one.</source>
-        <translation>אנא הגדר אחד אחר.</translation>
+        <translation>অন্য একটি নির্বাচন করুন।</translation>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>Terminal הוא אמולטור מסוף מתקדם עם סביבת עבודה, חלונות מרובים, ניהול מרחוק, מצב Quake ותכונות נוספות.</translation>
+        <translation>টেরিন্যাল একটি উন্নত টেরিন্যাল এমুলেটর যা কাজের অ্যাস্ট্যাক্স, বহু উইন্ডো, দূরবর্তী ম্যানেজমেন্ট, কুইক মোড এবং অন্যান্য বৈশিষ্ট্য সহ রয়েছে।</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1590"/>
         <source>Tabs</source>
-        <translation>כרטיסיות</translation>
+        <translation>টেবিল</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
-        <translation>סגירת הכרטיסייה</translation>
+        <translation>টেবিল বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <source>Select tab</source>
-        <translation>בחירה בכרטיסייה</translation>
+        <translation>টেবিল নির্বাচন করুন</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1610"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>העבר מיקוד לאייקון &quot;+&quot;</translation>
+        <translation>‘+’ ইকনে ফোকাস পরিবর্তন করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="157"/>
         <location filename="../src/main/mainwindow.cpp" line="1698"/>
         <source>Select file to upload</source>
-        <translation>בחירה בקובץ להעלות</translation>
+        <translation>আপলোড করার জন্য ফাইল নির্বাচন করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="162"/>
         <location filename="../src/main/mainwindow.cpp" line="1705"/>
         <source>Upload</source>
-        <translation>העלאה</translation>
+        <translation>আপলোড</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
         <source>Programs are still running in terminal</source>
-        <translation>תוכניות עדיין רצות במסוף</translation>
+        <translation>টেরিন্যালে প্রোগ্রাম আরও চালু রয়েছে</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="182"/>
         <location filename="../src/common/utils.cpp" line="216"/>
         <source>Close this terminal?</source>
-        <translation>האם לסגור את מסוף זה?</translation>
+        <translation>এই টেরিন্যাল বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation>המשהה עדיין ב_terminal. סגירת terminal תסתיים אותו</translation>
+        <translation>এই টেরিন্যালে এখনও একটি প্রক্রিয়া চালু রয়েছে। টেরিন্যাল বন্ধ করলে সেটি বন্ধ হবে।</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation>המשהות עדיין ב_terminal. סגירת terminal תסתיים את כולם</translation>
+        <translation>এই টেরিন্যালে আরও %1 প্রক্রিয়া চালু রয়েছে। টেরিন্যাল বন্ধ করলে সবগুলো প্রক্রিয়াই বন্ধ হবে।</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
         <location filename="../src/common/utils.cpp" line="212"/>
         <source>Close this window?</source>
-        <translation>האם לסגור חלון זה?</translation>
+        <translation>এই উইন্ডো বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation>המשהות עדיין ב_window. סגירת window תסתיים את כולם</translation>
+        <translation>এই উইন্ডোতে আরও প্রক্রিয়া চালু রয়েছে। উইন্ডো বন্ধ করলে সবগুলো প্রক্রিয়াই বন্ধ হবে।</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="136"/>
         <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
-        <translation>בחר תיקייה להצטבר קובץ</translation>
+        <translation>ফাইল সংরক্ষণের জন্য একটি ডিক্রিটরি নির্বাচন করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation>האם אתה בטוח שברצונך להסיר את ההתקנה של זה?</translation>
+        <translation>আপনি কি এটি বাদ দিতে কার্যকরভাবে চান?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="243"/>
         <location filename="../src/common/utils.cpp" line="247"/>
         <source>Are you sure you want to uninstall this application?</source>
-        <translation>האם אתה בטוח שברצונך להסיר יישום זה?</translation>
+        <translation>আপনি কি এই অ্যাপ্লিকেশনটি বাদ দিতে কার্যকরভাবে চান?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="244"/>
         <location filename="../src/common/utils.cpp" line="248"/>
         <source>You will not be able to use Terminal any longer.</source>
-        <translation>לא תוכל להשתמש במסוף יותר</translation>
+        <translation>আপনি টেরিন্যাল ব্যবহার করতে পারবেন না।</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="253"/>
@@ -790,93 +790,93 @@
         <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ביטול</translation>
+        <translation>বাতাস</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="254"/>
         <location filename="../src/common/utils.cpp" line="298"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>אישור</translation>
+        <translation>হ্যাঁ</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="338"/>
         <source>Execute a command in the terminal</source>
-        <translation>ביצוע פקודה במסוף</translation>
+        <translation>টেরিন্যালে কমান্ড চালিত করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="341"/>
         <source>Run script string in the terminal</source>
-        <translation>הצטבר סקריפט בterminal</translation>
+        <translation>টেরিন্যালে স্ক্রিপ্ট এন্ট্রি চালান</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="332"/>
         <source>Set the work directory</source>
-        <translation>הגדר תיקייה עבודה</translation>
+        <translation>কাজের ডিক্রিটরি নির্ধারণ করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Set the window mode on starting</source>
-        <translation>הגדר את מצב הwindow בתחילתה</translation>
+        <translation>শুরুর সময় উইন্ডোর মডেল নির্ধারণ করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="344"/>
         <source>Run in quake mode</source>
-        <translation>הצטבר בשיטה quake</translation>
+        <translation>কুইক মডেলে চালান</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="347"/>
         <source>Keep terminal open when command finishes</source>
-        <translation>השאר את המסוף פתוח כשהפקודה תסתיים</translation>
+        <translation>কমান্ড শেষ হলে টেরিন্যাল বন্ধ করবেন না</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <source>The name should be no more than 32 characters</source>
-        <translation>השם צריך להכיל עד 32 תווים</translation>
+        <translation>নামের দৈর্ঘ্য 32 টি বাইরে থাকতে হবে</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="142"/>
         <location filename="../src/main/mainwindow.cpp" line="1774"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="546"/>
         <source>Select</source>
-        <translation>בחר</translation>
+        <translation>নির্বাচন করুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="542"/>
         <source>Select the private key file</source>
-        <translation>בחר קובץ מפתח פרטי</translation>
+        <translation>প্রাইভেট কি ফাইল নির্বাচন করুন</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
-        <translation>פורמט כותרת מסך</translation>
+        <translation>ট্যাব শিরোনাম ফরম্যাট</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
-        <translation>פורמט כותרת מסך מרחוק</translation>
+        <translation>দূরবর্তী টেবিলের শিরোনাম স্বরূপ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="483"/>
         <source>Close other tabs</source>
-        <translation>סגור כרטיסיות אחרות</translation>
+        <translation>অন্যান্য টেবিল বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="894"/>
         <source>Delete</source>
         <comment>button</comment>
-        <translation>מחיקה</translation>
+        <translation>মুছে ফেলুন</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="500"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="245"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>אימות</translation>
+        <translation>যাচ্ছেন সত্যি যাচ্ছেন</translation>
     </message>
 </context>
 <context>
@@ -884,17 +884,17 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="210"/>
         <source>Add Group</source>
-        <translation>הוסף קבוצה</translation>
+        <translation>গ্রুপ যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
         <source>Add Server</source>
-        <translation>הוספת שרת</translation>
+        <translation>সারভার যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="215"/>
         <source>No servers yet</source>
-        <translation>אין שרתים עדיין</translation>
+        <translation>এখনো কোনও সারভার নেই</translation>
     </message>
 </context>
 <context>
@@ -902,12 +902,12 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="75"/>
         <source>Remote management</source>
-        <translation>שליטה מרחוק</translation>
+        <translation>দূরবর্তী ম্যানেজমেন্ট</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="201"/>
         <source>Make sure that rz and sz commands have been installed in the server before right clicking to upload and download files.</source>
-        <translation>יש לוודא שפקודות rz ו־sz הותקנו בשרת בטרם לוחצים בלחצן ימני להעלות קבצים ולהוריד קבצים.</translation>
+        <translation>ফাইল আপলোড ও ডাউনলোড করার আগে, rz এবং sz কমান্ডগুলি সারভারে ইনস্টল করা হয়েছে সত্যিই করেন নিশ্চিত হওয়ার জন্য ডান ক্লিক করুন।</translation>
     </message>
 </context>
 <context>
@@ -915,7 +915,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementsearchpanel.cpp" line="211"/>
         <source>Search</source>
-        <translation>חיפוש</translation>
+        <translation>অনুসন্ধান করুন</translation>
     </message>
 </context>
 <context>
@@ -923,12 +923,12 @@
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="87"/>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>গ্রুপস</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigmanager.cpp" line="88"/>
         <source>Servers</source>
-        <translation type="unfinished"/>
+        <translation>সারভারস</translation>
     </message>
 </context>
 <context>
@@ -936,132 +936,132 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="91"/>
         <source>Add Server</source>
-        <translation>הוספת שרת</translation>
+        <translation>সারভার যোগ করুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="127"/>
         <source>Server name:</source>
-        <translation>שם שרת:</translation>
+        <translation>সারভার নাম:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="129"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="139"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="167"/>
         <source>Required</source>
-        <translation>נדרש</translation>
+        <translation>অবশ্যক</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="137"/>
         <source>Address:</source>
-        <translation>כתובת:</translation>
+        <translation>ঠিকান:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="144"/>
         <source>Port:</source>
-        <translation type="unfinished"/>
+        <translation>পোর্ট:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="165"/>
         <source>Username:</source>
-        <translation>שם משתמש:</translation>
+        <translation>লগইন নাম:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="172"/>
         <source>Password:</source>
-        <translation>סיסמה:</translation>
+        <translation>পাসওয়ার্ড:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="178"/>
         <source>Certificate:</source>
-        <translation>אישור:</translation>
+        <translation>সার্টিফিকেট:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="185"/>
         <source>Group:</source>
-        <translation>קבוצה:</translation>
+        <translation>গ্রুপ:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>No Group</source>
-        <translation type="unfinished"/>
+        <translation>একটি গ্রুপ নেই</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="193"/>
         <source>Path:</source>
-        <translation>נתיב:</translation>
+        <translation>পথ:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="199"/>
         <source>Command:</source>
-        <translation>פקודה:</translation>
+        <translation>কমান্ড:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="205"/>
         <source>Encoding:</source>
-        <translation type="unfinished"/>
+        <translation>কোডিং:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="211"/>
         <source>Backspace key:</source>
-        <translation type="unfinished"/>
+        <translation>ব্যাকস্পেস কী:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="217"/>
         <source>Delete key:</source>
-        <translation type="unfinished"/>
+        <translation>ডিলিট কী:</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="223"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ביטול</translation>
+        <translation>বাতিল</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="224"/>
         <source>Add</source>
         <comment>button</comment>
-        <translation>הוספה</translation>
+        <translation>যোগ</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="228"/>
         <source>Edit Server</source>
-        <translation>עריכת השרת</translation>
+        <translation>সার্ভার সম্পাদনা</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="229"/>
         <source>Save</source>
         <comment>button</comment>
-        <translation>שמירה</translation>
+        <translation>পেরেক রাখুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="470"/>
         <source>Please enter a server name</source>
-        <translation>נא להכניס שם שרת</translation>
+        <translation>পুনরায় সার্ভারের নাম লিখুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="483"/>
         <source>Please enter an IP address</source>
-        <translation>נא להכניס כתובת IP</translation>
+        <translation>IP ঠিকানা লিখুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="488"/>
         <source>Please enter a port</source>
-        <translation type="unfinished"/>
+        <translation>পোর্ট নম্বর লিখুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="494"/>
         <source>Please enter a username</source>
-        <translation>נא להכניס שם משתמש</translation>
+        <translation>লগইন নাম লিখুন</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="508"/>
         <source>The server name already exists,</source>
-        <translation>שם השרת כבר קיים,</translation>
+        <translation>সার্ভারের নাম পুনরায় রয়েছে,</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="509"/>
         <source>please input another one. </source>
-        <translation type="unfinished"/>
+        <translation>অন্য একটি লিখুন।</translation>
     </message>
 </context>
 <context>
@@ -1070,7 +1070,7 @@
         <location filename="../src/main/service.cpp" line="412"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>אישור</translation>
+        <translation>স্বাক্ষর করুন</translation>
     </message>
 </context>
 <context>
@@ -1078,32 +1078,32 @@
     <message>
         <location filename="../src/settings/settings.cpp" line="130"/>
         <source>Split screen</source>
-        <translation>פיצול המסך</translation>
+        <translation>চাহিদা ভাগ</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="130"/>
         <source>Fullscreen</source>
-        <translation>מסך מלא</translation>
+        <translation>ফুল স্কিউন</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="130"/>
         <source>Normal window</source>
-        <translation>חלון רגיל</translation>
+        <translation>নরমাল উইন্ডো</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="130"/>
         <source>Maximum</source>
-        <translation>מקסימלי</translation>
+        <translation>মেক্সিমাল</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="722"/>
         <source>Fast</source>
-        <translation>מהיר</translation>
+        <translation>গতিশীল</translation>
     </message>
     <message>
         <location filename="../src/settings/settings.cpp" line="726"/>
         <source>Slow</source>
-        <translation>איטי</translation>
+        <translation>ব্যাহত</translation>
     </message>
 </context>
 <context>
@@ -1112,14 +1112,14 @@
         <location filename="../src/settings/shortcutmanager.cpp" line="268"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="277"/>
         <source>The shortcut %1 is invalid, </source>
-        <translation>קיצור־הדרך %1 בלתי חוקי,</translation>
+        <translation>শটকুর্ট %1 অকার্যকর, </translation>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="284"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="291"/>
         <location filename="../src/settings/shortcutmanager.cpp" line="297"/>
         <source>The shortcut %1 was already in use, </source>
-        <translation>קיצור־הדרך %1 כבר היה בשימוש,</translation>
+        <translation>শটকুর্ট %1 পুনরায় ব্যবহৃত হয়েছে, </translation>
     </message>
 </context>
 <context>
@@ -1127,55 +1127,55 @@
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="42"/>
         <source>Insert</source>
-        <translation>הכנסה</translation>
+        <translation>ইনসার্ট</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="74"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>username: %u</source>
-        <translation>שם משתמש: %u</translation>
+        <translation>লগইন নাম: %u</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="74"/>
         <source>username@: %U</source>
-        <translation>@שם משתמש: %U</translation>
+        <translation>লগইন নাম@: %U</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="74"/>
         <source>remote host: %h</source>
-        <translation type="unfinished"/>
+        <translation>দূরবর্তী হোস্ট: %h</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="87"/>
         <source>session number: %#</source>
-        <translation type="unfinished"/>
+        <translation>সেসন নং: %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <source>title set by shell: %w</source>
-        <translation type="unfinished"/>
+        <translation>শিল্ড দ্বারা সেট টাইটল: %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
         <source>program name: %n</source>
-        <translation>שם תוכנה: %n</translation>
+        <translation>প্রোগ্রামের নাম: %n</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
         <source>current directory (short): %d</source>
-        <translation type="unfinished"/>
+        <translation>বর্তমান ডিক্রিটরি (ক্ষুদ্র): %d</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="87"/>
         <source>current directory (long): %D</source>
-        <translation type="unfinished"/>
+        <translation>বর্তমান ডিক্রিটরি (দীর্ঘ): %D</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="88"/>
         <source>local host: %h</source>
-        <translation type="unfinished"/>
+        <translation>লোক হোস্ট: %h</translation>
     </message>
 </context>
 <context>
@@ -1183,95 +1183,95 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="469"/>
         <source>Copy</source>
-        <translation>העתקה</translation>
+        <translation>কপি</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="472"/>
         <source>Paste</source>
-        <translation>הדבקה</translation>
+        <translation>পেস্ট</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="481"/>
         <source>Open</source>
-        <translation>פתיחה</translation>
+        <translation>এনাবল করুন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="485"/>
         <source>Open in file manager</source>
-        <translation>פתיחה במנהל הקבצים</translation>
+        <translation>ফাইল ম্যানেজারে এনাবল করুন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="490"/>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Horizontal split</source>
-        <translation>פיצול אופקי</translation>
+        <translation>স্থায়ী বিভাজন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="492"/>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>Vertical split</source>
-        <translation>פיצול אנכי</translation>
+        <translation>অপরিবর্তনীয় বিভাজন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="503"/>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>New tab</source>
-        <translation>כרטיסייה חדשה</translation>
+        <translation>নতুন টাব</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="510"/>
         <source>Exit fullscreen</source>
-        <translation>יציאה ממסך מלא</translation>
+        <translation>ফুল সিন্স্ক্রিন থেকে বের হোন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="512"/>
         <source>Fullscreen</source>
-        <translation>מסך מלא</translation>
+        <translation>ফুল সিন্স্ক্রিন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="515"/>
         <source>Find</source>
-        <translation>מציאה</translation>
+        <translation>অনুসন্ধান করুন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="519"/>
         <source>Search</source>
-        <translation>חיפוש</translation>
+        <translation>অনুসন্ধান করুন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="529"/>
         <source>Encoding</source>
-        <translation>קידוד</translation>
+        <translation>কোডিং</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="531"/>
         <source>Custom commands</source>
-        <translation>פקודות בהתאמה אישית</translation>
+        <translation>স্বার্থীকৃত কম্যান্ডস</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="533"/>
         <source>Remote management</source>
-        <translation>שליטה מרחוק</translation>
+        <translation>দূরবর্তী ম্যানেজমেন্ট</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="537"/>
         <source>Upload file</source>
-        <translation>העלאת קובץ</translation>
+        <translation>ফাইল আপলোড করুন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="538"/>
         <source>Download file</source>
-        <translation>הורדת קובץ</translation>
+        <translation>ফাইল ডাউনলোড করুন</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="543"/>
         <source>Settings</source>
-        <translation>הגדרות</translation>
+        <translation>সেটিংস</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"/>
+        <translation>রিস্টার্ট পর ডিবাগিংফিড সেটিংস কাজে লাগবে</translation>
     </message>
 </context>
 <context>
@@ -1281,20 +1281,20 @@
         <location filename="../src/common/utils.cpp" line="232"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ביטול</translation>
+        <translation>বাতিল করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="200"/>
         <source>Close</source>
         <comment>button</comment>
-        <translation>סגירה</translation>
+        <translation>বন্ধ করুন</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="233"/>
         <location filename="../src/common/utils.cpp" line="265"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>אישור</translation>
+        <translation>হ্যাঁ</translation>
     </message>
 </context>
 </TS>
