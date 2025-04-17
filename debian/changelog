@@ -1,3 +1,9 @@
+deepin-terminal (6.5.6) unstable; urgency=medium
+
+  * fix: replace icon siez 12*12(Bug: 279839)
+
+ -- renbin <renbin@uniontech.com>  Thu, 17 Apr 2025 13:09:47 +0800
+
 deepin-terminal (6.5.5) unstable; urgency=medium
 
   * fix: replace hover icon (Bug: 279839)
