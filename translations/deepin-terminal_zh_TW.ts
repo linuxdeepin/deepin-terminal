@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>未分組的服務器將返回服務器列表！</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="498"/>
