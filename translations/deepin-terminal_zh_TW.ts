@@ -551,7 +551,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>提供調試信息資源的http文件服務器</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
