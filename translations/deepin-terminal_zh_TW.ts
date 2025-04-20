@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>歷史回滾行數</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
