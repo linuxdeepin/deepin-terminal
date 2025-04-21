@@ -133,7 +133,7 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="271"/>
         <source>Dark</source>
-        <translation type="unfinished"/>
+        <translation>Mörkt</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
