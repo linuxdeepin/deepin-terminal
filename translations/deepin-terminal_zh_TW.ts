@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/remotemanage/groupconfigoptdlg.cpp" line="69"/>
         <source>The name should be no more than 30 characters</source>
-        <translation type="unfinished"/>
+        <translation>名稱長度不得超過30個字符</translation>
     </message>
 </context>
 <context>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
         <source>Ungrouped servers will go back to server list!</source>
-        <translation type="unfinished"/>
+        <translation>未分組的服務器將返回服務器列表！</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="498"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>歷史回滾行數</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
@@ -551,7 +551,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>提供調試信息資源的http文件服務器</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -740,13 +740,13 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>該終端中仍然有1個進程在運行，關閉終端將終止進程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>該終端中仍然有%1個進程在運行，關閉終端將終止進程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
@@ -758,7 +758,7 @@
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>窗口內一些終端仍然有進程在運行，關閉窗口會終止所有進程。</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="136"/>
@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation type="unfinished"/>
+        <translation>debuginfod設置將在重新啓動終端後生效。</translation>
     </message>
 </context>
 <context>
