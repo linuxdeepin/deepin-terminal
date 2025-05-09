@@ -23,7 +23,7 @@ set port [lindex $argv 2]
 set private_key [lindex $argv 3]
 set password [lindex $argv 4]
 set authentication {<<AUTHENTICATION>>}
-set ssh_cmd {zssh -X -o ServerAliveInterval=60}
+set ssh_cmd {zssh -X -C -o ServerAliveInterval=60}
 set ssh_opt {$user@$server -p $port -o PubkeyAuthentication=$authentication}
 set remote_command {<<REMOTE_COMMAND>>}
 
