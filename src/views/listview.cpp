@@ -23,6 +23,7 @@ ListView::ListView(ListType type, QWidget *parent)
       m_mainWidget(new DWidget(this)),
       m_mainLayout(new QVBoxLayout(m_mainWidget))
 {
+    qCDebug(views) << "ListView constructor entered, type:" << type;
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_mainWidget->setObjectName("ListViewMainWidget");
@@ -32,6 +33,7 @@ ListView::ListView(ListType type, QWidget *parent)
     initUI();
 
     Service::instance()->setScrollerTouchGesture(this);
+    qCDebug(views) << "ListView constructor finished";
 }
 
 ListView::~ListView()
@@ -41,6 +43,8 @@ ListView::~ListView()
 
 void ListView::addItem(ItemFuncType type, const QString &key, const QString &strDescription)
 {
+    qCDebug(views) << "ListView::addItem() entered, type:" << type << "key:" << key;
+
     // 初始化项
     ItemWidget *itemWidget = new ItemWidget(type, this);
     // 设置文字
@@ -56,6 +60,7 @@ void ListView::addItem(ItemFuncType type, const QString &key, const QString &str
     // 添加进去
     m_mainLayout->insertWidget(index, itemWidget);
     // 列表数量变化
+    qCDebug(views) << "Item added successfully, new count:" << m_itemList.count();
     emit listItemCountChange();
 
     // 分组项被点击
@@ -98,6 +103,8 @@ inline void ListView::onGroupClicked(const QString &strName, bool isFocus)
 
 bool ListView::removeItem(ItemFuncType type, const QString &key)
 {
+    qCDebug(views) << "ListView::removeItem() entered, type:" << type << "key:" << key;
+
     bool isFind = false;
     for (ItemWidget *item : m_itemList) {
         // 匹配选项
@@ -112,11 +119,14 @@ bool ListView::removeItem(ItemFuncType type, const QString &key)
             emit listItemCountChange();
         }
     }
+    qCDebug(views) << "Item removed, result:" << isFind << "new count:" << m_itemList.count();
     return isFind;
 }
 
 bool ListView::updateItem(ItemFuncType type, const QString &key, const QString &newKey, const QString &strDescription)
 {
+    qCDebug(views) << "ListView::updateItem() entered, type:" << type << "key:" << key << "newKey:" << newKey;
+
     bool isFind = false;
     // 遍历，找到需要修改的项，修改
     // 组的修改是，更新数量
@@ -131,6 +141,7 @@ bool ListView::updateItem(ItemFuncType type, const QString &key, const QString &
         }
     }
     // 返回更新结果
+    qCDebug(views) << "Item updated, result:" << isFind;
     return isFind;
 }
 
@@ -141,12 +152,15 @@ int ListView::count()
 
 void ListView::clearData()
 {
+    qCDebug(views) << "ListView::clearData() entered, item count:" << m_itemList.count();
+
     for (ItemWidget *item : m_itemList) {
         // 从列表中移除
         m_itemList.removeOne(item);
         // 删除项！！
         delete item;
     }
+    qCDebug(views) << "All items cleared";
 }
 
 int ListView::indexFromString(const QString &key, ItemFuncType type)
@@ -195,6 +209,8 @@ int ListView::getNextIndex(int index)
 
 void ListView::setCurrentIndex(int currentIndex)
 {
+    qCDebug(views) << "ListView::setCurrentIndex() entered, index:" << currentIndex;
+
     // 首先判断currentIndex的有效性
     if (!indexIsValid(currentIndex)) {
         // 无效，返回
@@ -220,6 +236,7 @@ void ListView::setCurrentIndex(int currentIndex)
     // 设置滚动条
     setScroll(currentIndex);
     m_currentIndex = currentIndex;
+    qCDebug(views) << "Current index set to:" << currentIndex;
 }
 
 void ListView::clearIndex()

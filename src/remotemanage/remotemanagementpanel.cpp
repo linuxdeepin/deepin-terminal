@@ -18,18 +18,21 @@ Q_LOGGING_CATEGORY(remotemanage,"org.deepin.terminal.remotemanage",QtInfoMsg)
 
 RemoteManagementPanel::RemoteManagementPanel(QWidget *parent) : CommonPanel(parent)
 {
+    qCDebug(remotemanage) << "RemoteManagementPanel constructor";
     Utils::set_Object_Name(this);
     initUI();
 }
 
 void RemoteManagementPanel::refreshPanel()
 {
+    qCDebug(remotemanage) << "Enter refreshPanel";
     // 清空搜索框
     clearSearchInfo();
     // 初始化列表
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Manage, m_listWidget);
     // 刷新搜索框状态
     refreshSearchState();
+    qCDebug(remotemanage) << "Exit refreshPanel";
 }
 
 void RemoteManagementPanel::setFocusInPanel()
@@ -126,21 +129,25 @@ void RemoteManagementPanel::refreshSearchState()
 
 void RemoteManagementPanel::onItemClicked(const QString &key)
 {
+    qCDebug(remotemanage) << "onItemClicked, key:" << key;
     // 获取远程信息
     ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
     if (nullptr != remote)
         emit doConnectServer(remote);
     else
         qCInfo(remotemanage) << "can't connect to remote" << key;
+    qCDebug(remotemanage) << "Exit onItemClicked";
 }
 
 void RemoteManagementPanel::showCurSearchResult()
 {
+    qCDebug(remotemanage) << "showCurSearchResult";
     QString strTxt = m_searchEdit->text();
     if (strTxt.isEmpty())
         return;
 
     emit showSearchPanel(strTxt);
+    qCDebug(remotemanage) << "Exit showCurSearchResult";
 }
 
 void RemoteManagementPanel::showAddServerConfigDlg()
@@ -172,6 +179,7 @@ void RemoteManagementPanel::showAddServerConfigDlg()
 
 void RemoteManagementPanel::initUI()
 {
+    qCDebug(remotemanage) << "Enter initUI";
     this->setBackgroundRole(QPalette::Base);
     this->setAutoFillBackground(true);
 

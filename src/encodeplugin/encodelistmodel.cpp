@@ -22,27 +22,38 @@ Q_LOGGING_CATEGORY(encodeplugin,"org.deepin.terminal.encodeplugin",QtInfoMsg)
 
 EncodeListModel::EncodeListModel(QObject *parent) : QStandardItemModel(parent)
 {
+    qCDebug(encodeplugin) << "EncodeListModel constructor enter";
     Utils::set_Object_Name(this);
     initEncodeData();
+    qCDebug(encodeplugin) << "EncodeListModel constructor exit";
 }
 
 int EncodeListModel::rowCount(const QModelIndex &parent) const
 {
+    qCDebug(encodeplugin) << "rowCount enter";
     Q_UNUSED(parent);
     //
-    return m_encodeData.count();
+    int count = m_encodeData.count();
+    qCDebug(encodeplugin) << "rowCount exit, count:" << count;
+    return count;
 }
 
 QVariant EncodeListModel::data(const QModelIndex &index, int role) const
 {
+    qCDebug(encodeplugin) << "data enter, row:" << index.row() << "role:" << role;
     Q_UNUSED(role);
     const int row = index.row();
-    return m_encodeData[row];
+    QVariant result = m_encodeData[row];
+    qCDebug(encodeplugin) << "data exit, result:" << result;
+    return result;
 }
 
 QList<QByteArray> EncodeListModel::listData()
 {
-    return  m_encodeData;
+    qCDebug(encodeplugin) << "listData enter";
+    QList<QByteArray> result = m_encodeData;
+    qCDebug(encodeplugin) << "listData exit, count:" << result.count();
+    return result;
 }
 
 void EncodeListModel::initEncodeData()

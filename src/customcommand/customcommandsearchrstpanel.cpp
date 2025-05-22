@@ -26,12 +26,15 @@ Q_DECLARE_LOGGING_CATEGORY(customcommand)
 CustomCommandSearchRstPanel::CustomCommandSearchRstPanel(QWidget *parent)
     : CommonPanel(parent)
 {
+    qCDebug(customcommand) << "Creating CustomCommandSearchRstPanel";
     Utils::set_Object_Name(this);
     initUI();
+    qCDebug(customcommand) << "CustomCommandSearchRstPanel created";
 }
 
 void CustomCommandSearchRstPanel::initUI()
 {
+    qCDebug(customcommand) << "Initializing CustomCommandSearchRstPanel UI";
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 
@@ -128,31 +131,41 @@ inline void CustomCommandSearchRstPanel::handleListViewFocusOut(Qt::FocusReason 
 
 void CustomCommandSearchRstPanel::setSearchFilter(const QString &filter)
 {
+    qCDebug(customcommand) << "Setting search filter:" << filter;
     m_strFilter = filter;
     QString showText = Utils::getElidedText(m_label->font(), filter, ITEMMAXWIDTH, Qt::ElideMiddle);
     m_label->setText(QString("%1：%2").arg(tr("Search"), showText));
+    qCDebug(customcommand) << "Search filter set to:" << showText;
 }
 
 void CustomCommandSearchRstPanel::refreshData()
 {
+    qCDebug(customcommand) << "Refreshing data with current filter:" << m_strFilter;
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, m_strFilter);
+    qCDebug(customcommand) << "Data refreshed, item count:" << m_cmdListWidget->count();
 }
 
 void CustomCommandSearchRstPanel::refreshData(const QString &strFilter)
 {
+    qCDebug(customcommand) << "Refreshing data with new filter:" << strFilter;
     setSearchFilter(strFilter);
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget, strFilter);
+    qCDebug(customcommand) << "Data refreshed with new filter, item count:" << m_cmdListWidget->count();
 }
 
 void CustomCommandSearchRstPanel::doCustomCommand(const QString &strKey)
 {
-    qCInfo(customcommand) << "Search for the current custom commonds based on the key (" << strKey << ")";
+    qCInfo(customcommand) << "Executing custom command with key:" << strKey;
     QAction *item = ShortcutManager::instance()->findActionByKey(strKey);
     QString strCommand = item ? item->data().toString() : "";
-    if (!strCommand.endsWith('\n'))
+    if (!strCommand.endsWith('\n')) {
+        qCDebug(customcommand) << "Command does not end with newline, appending one";
         strCommand.append('\n');
+    }
 
+    qCInfo(customcommand) << "Executing command:" << strCommand;
     emit handleCustomCurCommand(strCommand);
     emit focusOut();
+    qCDebug(customcommand) << "Command execution complete";
 }
 

@@ -16,6 +16,7 @@ const int animationDuration = 300;
 
 RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel(parent)
 {
+    qCDebug(remotemanage) << "RemoteManagementTopPanel constructor";
     Utils::set_Object_Name(this);
     // 远程主界面
     m_remoteManagementPanel = new RemoteManagementPanel(this);
@@ -39,10 +40,12 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
     m_serverConfigGroupPanel->hide();
     m_remoteManagementSearchPanel->hide();
     m_remoteManagementPanel->hide();
+    qCDebug(remotemanage) << "RemoteManagementTopPanel initialization complete";
 }
 
 void RemoteManagementTopPanel::show()
 {
+    qCDebug(remotemanage) << "Enter show";
     this->showAnim();
     m_remoteManagementPanel->resize(size());
     m_remoteManagementPanel->move(0, 0);
@@ -65,10 +68,12 @@ void RemoteManagementTopPanel::show()
     m_filterStack.clear();
     m_prevPanelStack.clear();
     qCInfo(remotemanage) << "show remote panel! stack clear";
+    qCDebug(remotemanage) << "Exit show";
 }
 
 void RemoteManagementTopPanel::setFocusInPanel()
 {
+    qCDebug(remotemanage) << "setFocusInPanel";
     m_remoteManagementPanel->setFocusInPanel();
 }
 
@@ -315,6 +320,7 @@ void RemoteManagementTopPanel::showPrevPanel()
 
 void RemoteManagementTopPanel::setPanelShowState(ServerConfigManager::PanelType panelType)
 {
+    qCDebug(remotemanage) << "setPanelShowState, panelType:" << panelType;
     // 设置平面状态
     m_remoteManagementPanel->m_isShow = false;
     m_serverConfigGroupPanel->m_isShow = false;
@@ -335,6 +341,7 @@ void RemoteManagementTopPanel::setPanelShowState(ServerConfigManager::PanelType 
 
 void RemoteManagementTopPanel::panelLeftToRight(QPropertyAnimation *animation, QPropertyAnimation *animation1)
 {
+    qCDebug(remotemanage) << "panelLeftToRight animation start";
     animation->setDuration(animationDuration);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();
@@ -355,6 +362,7 @@ void RemoteManagementTopPanel::panelLeftToRight(QPropertyAnimation *animation, Q
 
 void RemoteManagementTopPanel::panelRightToLeft(QPropertyAnimation *animation, QPropertyAnimation *animation1)
 {
+    qCDebug(remotemanage) << "panelRightToLeft animation start";
     animation->setDuration(animationDuration);
     animation->setEasingCurve(QEasingCurve::OutQuad);
     QRect rect = geometry();

@@ -58,19 +58,26 @@ Q_LOGGING_CATEGORY(common,"org.deepin.terminal.common",QtInfoMsg)
 
 QString Utils::getQssContent(const QString &filePath)
 {
+    qCDebug(common) << "Reading QSS content from:" << filePath;
     QFile file(filePath);
     QString qss;
 
-    if (file.open(QIODevice::ReadOnly))
+    if (file.open(QIODevice::ReadOnly)) {
         qss = file.readAll();
+        qCDebug(common) << "Successfully read" << qss.size() << "bytes from QSS file";
+    } else {
+        qCWarning(common) << "Failed to open QSS file:" << filePath << "Error:" << file.errorString();
+    }
 
     return qss;
 }
 
 QString Utils::getConfigPath()
 {
+    qCDebug(common) << "Getting config path";
     static QStringList list = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
     const QString path = list.value(0);
+    qCDebug(common) << "Config path:" << path;
     QDir dir(
         QDir(path).filePath(qApp->organizationName()));
 
@@ -122,7 +129,9 @@ QString Utils::getRandString()
 
 QString Utils::showDirDialog(QWidget *widget)
 {
+    qCDebug(common) << "Showing directory dialog";
     QString curPath = QDir::currentPath();
+    qCDebug(common) << "Current path:" << curPath;
     QString dlgTitle = QObject::tr("Select a directory to save the file");
 
     DFileDialog dialog(widget, dlgTitle, curPath);
@@ -135,15 +144,19 @@ QString Utils::showDirDialog(QWidget *widget)
     if (QDialog::Accepted == code && !dialog.selectedFiles().isEmpty()) {
         QStringList list = dialog.selectedFiles();
         const QString dirName = list.value(0);
+        qCDebug(common) << "Selected directory:" << dirName;
         return dirName;
     } else {
+        qCDebug(common) << "Directory selection canceled";
         return "";
     }
 }
 
 QStringList Utils::showFilesSelectDialog(QWidget *widget)
 {
+    qCDebug(common) << "Showing file selection dialog";
     QString curPath = QDir::currentPath();
+    qCDebug(common) << "Current path:" << curPath;
     QString dlgTitle = QObject::tr("Select file to upload");
 
     DFileDialog dialog(widget, dlgTitle, curPath);
@@ -156,6 +169,7 @@ QStringList Utils::showFilesSelectDialog(QWidget *widget)
     if (code == QDialog::Accepted)
         return dialog.selectedFiles();
 
+    qCDebug(common) << "File selection canceled";
     return QStringList();
 }
 

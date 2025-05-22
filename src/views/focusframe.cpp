@@ -14,19 +14,27 @@
 #include <QPainter>
 #include <QPen>
 #include <QPainterPath>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(views)
 
 DGUI_USE_NAMESPACE
 
 FocusFrame::FocusFrame(QWidget *parent)
     : DFrame(parent)
 {
+    qCDebug(views) << "FocusFrame constructor entered";
+
     // 先用Tab做上下键的替代，走流程
     setFocusPolicy(Qt::TabFocus);
+    qCDebug(views) << "FocusFrame constructor finished";
 }
 
 
 void FocusFrame::paintEvent(QPaintEvent *event)
 {
+    qCDebug(views) << "FocusFrame::paintEvent() entered";
+
     QPainter painter(this);
     DPalette pa = DPaletteHelper::instance()->palette(this);
     DPalette::ColorType backgroundType = static_cast<DPalette::ColorType>(getBackgroudColorRole());
@@ -68,10 +76,13 @@ void FocusFrame::paintEvent(QPaintEvent *event)
     }
     painter.end();
     event->ignore();
+    qCDebug(views) << "FocusFrame::paintEvent() finished";
 }
 
 void FocusFrame::enterEvent(EnterEvent *event)
 {
+    qCDebug(views) << "Mouse entered FocusFrame";
+
     // 鼠标进入
     m_isHover = true;
     // 背景色 0.1
@@ -83,6 +94,8 @@ void FocusFrame::enterEvent(EnterEvent *event)
 
 void FocusFrame::leaveEvent(QEvent *event)
 {
+    qCDebug(views) << "Mouse left FocusFrame";
+
     // 鼠标出
     m_isHover = false;
     // 背景色 0.02
@@ -94,6 +107,8 @@ void FocusFrame::leaveEvent(QEvent *event)
 
 void FocusFrame::focusInEvent(QFocusEvent *event)
 {
+    qCDebug(views) << "Focus gained on FocusFrame";
+
     // 焦点入
     m_isFocus = true;
     DFrame::focusInEvent(event);
@@ -101,6 +116,8 @@ void FocusFrame::focusInEvent(QFocusEvent *event)
 
 void FocusFrame::focusOutEvent(QFocusEvent *event)
 {
+    qCDebug(views) << "Focus lost on FocusFrame";
+
     // 焦点Tab出
     m_isFocus = false;
     DFrame::focusOutEvent(event);

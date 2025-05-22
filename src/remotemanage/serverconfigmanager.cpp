@@ -28,10 +28,12 @@ ServerConfigManager *ServerConfigManager::m_instance = nullptr;
 
 ServerConfigManager::ServerConfigManager(QObject *parent) : QObject(parent)
 {
+    qCDebug(remotemanage) << "ServerConfigManager constructor";
     Utils::set_Object_Name(this);
     QSettings::registerFormat("conf", SettingIO::readIniFunc, SettingIO::writeIniFunc);
     // 查找结果,写入map
     connect(this, &ServerConfigManager::lookupSerceats, this, &ServerConfigManager::onLookupFinish);
+    qCDebug(remotemanage) << "ServerConfigManager initialization complete";
 }
 
 void ServerConfigManager::settServerConfig(USettings &commandsSettings, const QString &strGroupName, ServerConfig *config)
@@ -135,13 +137,17 @@ void ServerConfigManager::fillGroupPanel(ListView *listview, const QString &grou
 
 ServerConfigManager *ServerConfigManager::instance()
 {
-    if (nullptr == m_instance)
+    qCDebug(remotemanage) << "ServerConfigManager instance requested";
+    if (nullptr == m_instance) {
+        qCDebug(remotemanage) << "Creating new ServerConfigManager instance";
         m_instance = new ServerConfigManager();
+    }
     return m_instance;
 }
 
 void ServerConfigManager::initServerConfig()
 {
+    qCDebug(remotemanage) << "Enter initServerConfig";
     bool isConvertData =  false;
     m_serverConfigs.clear();
     //---------------------------------------------------------------------------//
@@ -250,11 +256,13 @@ void ServerConfigManager::initServerConfig()
     if (m_rewriteConfig && 0 == m_lookupCount)
         ConvertData();
 
+    qCDebug(remotemanage) << "Exit initServerConfig";
     return;
 }
 
 void ServerConfigManager::saveServerConfig(ServerConfig *config)
 {
+    qCDebug(remotemanage) << "Enter saveServerConfig, server:" << config->m_serverName;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -276,10 +284,12 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
 
     qCInfo(remotemanage) << "The server configuration is added successfully.The Config group: " << config->m_group  << ".The Server name:"<< config->m_serverName;
 
+    qCDebug(remotemanage) << "Exit saveServerConfig";
 }
 
 void ServerConfigManager::delServerConfig(ServerConfig *config)
 {
+    qCDebug(remotemanage) << "Enter delServerConfig, server:" << config->m_serverName;
     // 防止重复删除
     if (nullptr == config) {
         return;
@@ -321,6 +331,7 @@ void ServerConfigManager::delServerConfig(ServerConfig *config)
 
 void ServerConfigManager::modifyServerConfig(ServerConfig *newConfig, ServerConfig *oldConfig)
 {
+    qCDebug(remotemanage) << "Enter modifyServerConfig, old:" << oldConfig->m_serverName << "new:" << newConfig->m_serverName;
     SyncData(oldConfig->m_serverName, newConfig);
     // 刷新已有数据
     delServerConfig(oldConfig);

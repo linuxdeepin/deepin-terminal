@@ -24,6 +24,7 @@ Q_DECLARE_LOGGING_CATEGORY(encodeplugin)
 
 EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeModel(new EncodeListModel(this))
 {
+    qCDebug(encodeplugin) << "EncodeListView constructor enter";
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_encodeModel->setObjectName("EncodeListModel");
@@ -76,6 +77,7 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
 
 void EncodeListView::initEncodeItems()
 {
+    qCDebug(encodeplugin) << "initEncodeItems enter";
     QList<QByteArray> encodeDataList = m_encodeModel->listData();
     // 遍历编码
     for (int i = 0; i < encodeDataList.size(); i++) {
@@ -91,10 +93,12 @@ void EncodeListView::initEncodeItems()
     // 默认起动选择第一个。
     m_standardModel->item(0)->setCheckState(Qt::Checked);
     m_modelIndexChecked = m_standardModel->index(0, 0);
+    qCDebug(encodeplugin) << "initEncodeItems exit, count:" << encodeDataList.size();
 }
 
 void EncodeListView::focusInEvent(QFocusEvent *event)
 {
+    qCDebug(encodeplugin) << "focusInEvent enter, reason:" << event->reason();
     /** add begin by ut001121 zhangmeng 20200718 for sp3 keyboard interaction*/
     // 记录焦点
     m_foucusReason = event->reason();
@@ -115,6 +119,7 @@ void EncodeListView::focusOutEvent(QFocusEvent *event)
     // mod by ut001121 zhangmeng 20200731 设置无效焦点原因 修复BUG40390
     m_foucusReason = INVALID_FOCUS_REASON;
 
+    qCDebug(encodeplugin) << "focusOutEvent exit";
     DListView::focusOutEvent(event);
 }
 
@@ -196,6 +201,7 @@ void EncodeListView::mouseMoveEvent(QMouseEvent *event)
 
 void EncodeListView::onListViewClicked(const QModelIndex &index)
 {
+    qCDebug(encodeplugin) << "onListViewClicked enter, row:" << index.row();
     if (!index.isValid()) {
         qCWarning(encodeplugin) << "The current encoding format("<< index << ") is incorrect.";
         return;
@@ -222,6 +228,7 @@ void EncodeListView::onListViewClicked(const QModelIndex &index)
 
 void EncodeListView::checkEncode(QString encode)
 {
+    qCDebug(encodeplugin) << "checkEncode enter, encode:" << encode;
     // 判断是否是当前窗口
     if (this->isActiveWindow()) {
         QStandardItemModel *model = qobject_cast<QStandardItemModel *>(this->model());
@@ -243,6 +250,7 @@ void EncodeListView::checkEncode(QString encode)
             }
         }
     }
+    qCDebug(encodeplugin) << "checkEncode exit";
 }
 
 void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,

@@ -15,9 +15,13 @@
 #include <QPaintEvent>
 #include <QBitmap>
 #include <QPainterPath>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(views)
 
 ThemePreviewArea::ThemePreviewArea(QWidget *parent) : DWidget(parent), m_titleRect(0, 0, 439, 35)
 {
+    qCDebug(views) << "ThemePreviewArea constructor";
     setFixedSize(439, 113);
 }
 
@@ -87,10 +91,14 @@ void ThemePreviewArea::paintEvent(QPaintEvent *event)
 
 void ThemePreviewArea::setTitleStyle(const QString &titleStyle)
 {
-    if ("Light" == titleStyle)
+    qCDebug(views) << "ThemePreviewArea::setTitleStyle - Style:" << titleStyle;
+    if ("Light" == titleStyle) {
+        qCDebug(views) << "Loading light theme title image";
         m_titlePixmap.load(":/logo/headbar-light.svg");
-    else
+    } else {
+        qCDebug(views) << "Loading dark theme title image";
         m_titlePixmap.load(":/logo/headbar-dark.svg");
+    }
 
     update();
 }
@@ -121,6 +129,12 @@ void ThemePreviewArea::setPs2Color(const QColor &color)
 
 void ThemePreviewArea::setAllColorParameter(const QColor &foregroundColorParameter, const QColor &backgroundColorParameter, const QColor &ps1ColorParameter, const QColor &ps2ColorParameter)
 {
+    qCDebug(views) << "ThemePreviewArea::setAllColorParameter - Setting colors:";
+    qCDebug(views) << "Foreground:" << foregroundColorParameter;
+    qCDebug(views) << "Background:" << backgroundColorParameter;
+    qCDebug(views) << "PS1:" << ps1ColorParameter;
+    qCDebug(views) << "PS2:" << ps2ColorParameter;
+    
     m_foregroundColor = foregroundColorParameter;
     m_backgroundColor = backgroundColorParameter;
     m_ps1Color = ps1ColorParameter;

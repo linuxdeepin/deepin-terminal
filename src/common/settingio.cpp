@@ -15,11 +15,12 @@
 bool SettingIO::rewrite = false;
 SettingIO::SettingIO(QObject *parent) : QObject(parent)
 {
-
+    qDebug() << "SettingIO constructor";
 }
 
 bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsMap)
 {
+    qDebug() << "Enter SettingIO::readIniFunc";
     QString currentSection;
     QTextStream stream(&device);
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
@@ -112,11 +113,13 @@ bool SettingIO::readIniFunc(QIODevice &device, QSettings::SettingsMap &settingsM
             }
         }
     }
+    qDebug() << "Exit SettingIO::readIniFunc";
     return true;
 }
 
 bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &settingsMap)
 {
+    qDebug() << "Enter SettingIO::writeIniFunc";
 #ifdef Q_OS_WIN
     const char *const eol = "\r\n";
 #else
@@ -179,6 +182,7 @@ bool SettingIO::writeIniFunc(QIODevice &device, const QSettings::SettingsMap &se
         if (device.write(block) == -1)
             writeError = true;
     }
+    qDebug() << "Exit SettingIO::writeIniFunc";
     return true;
 }
 
@@ -490,7 +494,10 @@ USettings::USettings(const QString &fileName, QObject *parent)
 }
 
 //析构函数
-USettings::~USettings() {}
+USettings::~USettings()
+{
+    qDebug() << "USettings destructor";
+}
 
 void USettings::beginGroup(const QString &prefix)
 {

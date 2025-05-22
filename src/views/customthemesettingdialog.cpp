@@ -159,6 +159,7 @@ CustomThemeSettingDialog::CustomThemeSettingDialog(QWidget *parent) : DAbstractD
     , m_ps1Button(new ColorPushButton(this))
     , m_ps2Button(new ColorPushButton(this))
 {
+    qCDebug(views) << "CustomThemeSettingDialog constructor entered";
     initUITitle();
     initUI();
     initTitleConnections();
@@ -179,10 +180,13 @@ CustomThemeSettingDialog::CustomThemeSettingDialog(QWidget *parent) : DAbstractD
 #else
     setFixedSize(459, 378);
 #endif
+    qCDebug(views) << "CustomThemeSettingDialog constructor finished";
 }
 
 void CustomThemeSettingDialog::initUITitle()
 {
+    qCDebug(views) << "CustomThemeSettingDialog::initUITitle() entered";
+
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 11);
@@ -240,10 +244,13 @@ void CustomThemeSettingDialog::initUITitle()
     m_titleText->setText(tr("Custom Theme"));
 
     m_mainLayout = mainLayout;
+    qCDebug(views) << "CustomThemeSettingDialog::initUITitle() finished";
 }
 
 void CustomThemeSettingDialog::initUI()
 {
+    qCDebug(views) << "CustomThemeSettingDialog::initUI() entered";
+
     QWidget *contentFrame = new QWidget;
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
@@ -390,10 +397,13 @@ void CustomThemeSettingDialog::initUI()
     connect(m_ps2Button, &ColorPushButton::clearFocussSignal, this, &CustomThemeSettingDialog::clearFocussSlot);
 
     loadConfiguration();
+    qCDebug(views) << "CustomThemeSettingDialog::initUI() finished";
 }
 
 void CustomThemeSettingDialog::initTitleConnections()
 {
+    qCDebug(views) << "CustomThemeSettingDialog::initTitleConnections() entered";
+
     connect(m_closeButton, &DWindowCloseButton::clicked, this, [this]() {
         loadConfiguration();
         reject();
@@ -410,6 +420,7 @@ void CustomThemeSettingDialog::initTitleConnections()
         palette.setBrush(QPalette::WindowText, color);
         m_titleText->setPalette(palette);
     });
+    qCDebug(views) << "CustomThemeSettingDialog::initTitleConnections() finished";
 }
 
 void CustomThemeSettingDialog::addCancelConfirmButtons()
@@ -489,11 +500,14 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
 
 void CustomThemeSettingDialog::onSelectColor()
 {
+    qCDebug(views) << "CustomThemeSettingDialog::onSelectColor() entered";
+
     ColorPushButton *pushButton = qobject_cast<ColorPushButton *>(sender());
     if (pushButton) {
         QColor newColor = DColorDialog::getColor(pushButton->getBackGroundColor(), this);
         if (newColor.isValid()) {
             pushButton->setBackGroundColor(newColor);
+            qCDebug(views) << "Selected color:" << newColor;
             if (pushButton == m_foregroundButton)
                 m_themePreviewArea->setForegroundgroundColor(newColor);
 

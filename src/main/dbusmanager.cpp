@@ -19,11 +19,13 @@ Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
 DBusManager::DBusManager()
 {
+    qCDebug(mainprocess) << "DBusManager constructor called";
     Utils::set_Object_Name(this);
 }
 
 DBusManager::~DBusManager()
 {
+    qCDebug(mainprocess) << "DBusManager destructor called";
     // 注销时结束连接dbus
     QDBusConnection conn = QDBusConnection::sessionBus();
     if (conn.registerService(TERMINALSERVER)) {
@@ -34,6 +36,7 @@ DBusManager::~DBusManager()
 
 bool DBusManager::initDBus()
 {
+    qCDebug(mainprocess) << "initDBus called";
     //用于雷神窗口通信的DBus
     QDBusConnection conn = QDBusConnection::sessionBus();
 
@@ -47,11 +50,13 @@ bool DBusManager::initDBus()
         return false;
     }
 
+    qCDebug(mainprocess) << "initDBus completed successfully";
     return true;
 }
 
 int DBusManager::callKDECurrentDesktop()
 {
+    qCDebug(mainprocess) << "callKDECurrentDesktop called";
     QDBusMessage msg =
         QDBusMessage::createMethodCall(KWINDBUSSERVICE, KWINDBUSPATH, KWINDBUSSERVICE, "currentDesktop");
 
@@ -68,6 +73,7 @@ int DBusManager::callKDECurrentDesktop()
 
 void DBusManager::callKDESetCurrentDesktop(int index)
 {
+    qCDebug(mainprocess) << "callKDESetCurrentDesktop called with index:" << index;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(KWINDBUSSERVICE, KWINDBUSPATH, KWINDBUSSERVICE, "setCurrentDesktop");
 
@@ -82,6 +88,7 @@ void DBusManager::callKDESetCurrentDesktop(int index)
 
 FontDataList DBusManager::callAppearanceFont(QString fontType)
 {
+    qCDebug(mainprocess) << "callAppearanceFont called with fontType:" << fontType;
     FontDataList rList;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "List");
@@ -110,6 +117,7 @@ FontDataList DBusManager::callAppearanceFont(QString fontType)
 
 FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontType)
 {
+    qCDebug(mainprocess) << "callAppearanceFont called with fontList size:" << fontList.size() << "and fontType:" << fontType;
     FontDataList retList;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "Show");
@@ -133,6 +141,7 @@ FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontT
 /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
 void DBusManager::callTerminalEntry(QStringList args)
 {
+    qCDebug(mainprocess) << "callTerminalEntry called with args:" << args;
     QDBusMessage msg =
         QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "entry");
 
@@ -147,7 +156,9 @@ void DBusManager::callTerminalEntry(QStringList args)
 
 void DBusManager::entry(QStringList args)
 {
+    qCDebug(mainprocess) << "entry called with args:" << args;
     emit entryArgs(args);
+    qCDebug(mainprocess) << "entry completed";
 }
 
 int DBusManager::consoleFontSize() const
@@ -157,7 +168,9 @@ int DBusManager::consoleFontSize() const
 
 void DBusManager::setConsoleFontSize(const int size)
 {
+    qCDebug(mainprocess) << "setConsoleFontSize called with size:" << size;
     Settings::instance()->setFontSize(size);
+    qCDebug(mainprocess) << "setConsoleFontSize completed";
 }
 
 QString DBusManager::consoleFontFamily() const
@@ -167,7 +180,9 @@ QString DBusManager::consoleFontFamily() const
 
 void DBusManager::setConsoleFontFamily(const QString family)
 {
+    qCDebug(mainprocess) << "setConsoleFontFamily called with family:" << family;
     Settings::instance()->setFontName(family);
+    qCDebug(mainprocess) << "setConsoleFontFamily completed";
 }
 
 qreal DBusManager::consoleOpacity() const
@@ -177,7 +192,9 @@ qreal DBusManager::consoleOpacity() const
 
 void DBusManager::setConsoleOpacity(const int value)
 {
+    qCDebug(mainprocess) << "setConsoleOpacity called with value:" << value;
     Settings::instance()->setOpacity(value);
+    qCDebug(mainprocess) << "setConsoleOpacity completed";
 }
 
 int DBusManager::consoleCursorShape() const
@@ -187,7 +204,9 @@ int DBusManager::consoleCursorShape() const
 
 void DBusManager::setConsoleCursorShape(const int shape)
 {
+    qCDebug(mainprocess) << "setConsoleCursorShape called with shape:" << shape;
     Settings::instance()->setCursorShape(shape);
+    qCDebug(mainprocess) << "setConsoleCursorShape completed";
 }
 
 bool DBusManager::consoleCursorBlink() const
@@ -197,7 +216,9 @@ bool DBusManager::consoleCursorBlink() const
 
 void DBusManager::setConsoleCursorBlink(const bool blink)
 {
+    qCDebug(mainprocess) << "setConsoleCursorBlink called with blink:" << blink;
     Settings::instance()->setCursorBlink(blink);
+    qCDebug(mainprocess) << "setConsoleCursorBlink completed";
 }
 
 QString DBusManager::consoleColorScheme() const
@@ -207,7 +228,9 @@ QString DBusManager::consoleColorScheme() const
 
 void DBusManager::setConsoleColorScheme(const QString scheme)
 {
+    qCDebug(mainprocess) << "setConsoleColorScheme called with scheme:" << scheme;
     Settings::instance()->setConsoleColorScheme(scheme);
+    qCDebug(mainprocess) << "setConsoleColorScheme completed";
 }
 
 QString DBusManager::consoleShell() const
@@ -217,7 +240,9 @@ QString DBusManager::consoleShell() const
 
 void DBusManager::setConsoleShell(const QString shellName)
 {
+    qCDebug(mainprocess) << "setConsoleShell called with shellName:" << shellName;
     Settings::instance()->setConsoleShell(shellName);
+    qCDebug(mainprocess) << "setConsoleShell completed";
 }
 
 void DBusManager::callSystemSound(const QString &sound)

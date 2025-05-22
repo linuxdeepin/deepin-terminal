@@ -18,13 +18,17 @@
 Q_DECLARE_LOGGING_CATEGORY(views)
 TabRenameDlg::TabRenameDlg(QWidget *parent) :  DAbstractDialog(parent)
 {
+    qCDebug(views) << "TabRenameDlg constructor enter";
     initUi();
     initContentWidget();
     initConnections();
+    qCDebug(views) << "TabRenameDlg constructor exit";
 }
 
 void TabRenameDlg::initUi()
 {
+    qCDebug(views) << "TabRenameDlg::initUi enter";
+
     setWindowModality(Qt::ApplicationModal);
     // 设置最小值 => 以免一开始挤在一起
     setMinimumWidth(SETTING_DIALOG_WIDTH);
@@ -102,11 +106,15 @@ void TabRenameDlg::setText(const QString &tabTitleFormat, const QString &remoteT
 
 void TabRenameDlg::setNormalLineEditText(const QString &text)
 {
+    qCDebug(views) << "TabRenameDlg::setNormalLineEditText:" << text;
+
     m_tabTitleEdit->getInputedit()->setText(text);
 }
 
 void TabRenameDlg::setRemoteLineEditText(const QString &text)
 {
+    qCDebug(views) << "TabRenameDlg::setRemoteLineEditText:" << text;
+
     m_remoteTabTitleEdit->getInputedit()->setText(text);
 }
 
@@ -118,6 +126,8 @@ QLineEdit *TabRenameDlg::getRemoteTabTitleEdit() const
 
 void TabRenameDlg::setFocusOnEdit(bool isRemote)
 {
+    qCDebug(views) << "TabRenameDlg::setFocusOnEdit isRemote:" << isRemote;
+
     QLineEdit *lineEdit = nullptr;
     if (isRemote) {
         // 连接远程时，设置需要操作的输入框为远程输入框
@@ -139,6 +149,8 @@ QLineEdit *TabRenameDlg::getTabTitleEdit() const
 
 void TabRenameDlg::initContentWidget()
 {
+    qCDebug(views) << "TabRenameDlg::initContentWidget enter";
+
     m_mainLayout = new QVBoxLayout();
     m_mainLayout->setObjectName("mainLayout");//Add by ut001000 renfeixiang 2020-08-13
     m_mainLayout->setContentsMargins(10, 0, 10, 10);
@@ -173,6 +185,8 @@ void TabRenameDlg::initContentWidget()
 
 void TabRenameDlg::initConnections()
 {
+    qCDebug(views) << "TabRenameDlg::initConnections enter";
+
     connect(m_cancelButton, &DPushButton::clicked, this, [ = ] {
         reject();
         close();

@@ -13,6 +13,9 @@
 #include <QLabel>
 #include <QDebug>
 #include <QMouseEvent>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(views)
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
 #include <DSizeMode>
@@ -25,6 +28,7 @@ DWIDGET_USE_NAMESPACE
 
 TitleBar::TitleBar(QWidget *parent) : QWidget(parent), m_layout(new QHBoxLayout(this))
 {
+    qDebug() << "TitleBar constructor";
     Utils::set_Object_Name(this);
     m_layout->setObjectName("TitleBarLayout");//Add by ut001000 renfeixiang 2020-08-13
     /******** Modify by m000714 daizhengwen 2020-04-15: 标签栏和Dtk标签色保持一致****************/
@@ -83,14 +87,21 @@ void TitleBar::mousePressEvent(QMouseEvent *event)
 
 void TitleBar::mouseMoveEvent(QMouseEvent *event)
 {
+    qDebug() << "TitleBar::mouseMoveEvent - Position:" << event->pos();
     forever {
         QWidget *w = this->window();
-        if(!w)
+        if(!w) {
+            qDebug() << "No parent window found";
             break;
-        if(!m_verResizedEnabled)
+        }
+        if(!m_verResizedEnabled) {
+            qDebug() << "Vertical resize disabled";
             break;
-        if(!this->hasMouseTracking())
+        }
+        if(!this->hasMouseTracking()) {
+            qDebug() << "Mouse tracking disabled";
             break;
+        }
         int windowMouseY = this->mapTo(w, event->pos()).y();
         int windowMouseYOff = w->height() - windowMouseY;
         if(event->buttons() != Qt::LeftButton && windowMouseYOff < VER_RESIZED_ALLOWED_OFF) {

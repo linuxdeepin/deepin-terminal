@@ -13,9 +13,13 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(views)
 
 CommonPanel::CommonPanel(QWidget *parent) : QFrame(parent)
 {
+    qCDebug(views) << "CommonPanel constructor entered";
 #ifdef DTKWIDGET_CLASS_DSizeMode
     // 布局模式变更时，刷新当前界面的布局，主要是按钮等高度调整等导致的效果不一致
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
@@ -36,17 +40,21 @@ CommonPanel::CommonPanel(QWidget *parent) : QFrame(parent)
 
 void CommonPanel::clearSearchInfo()
 {
+    qCDebug(views) << "CommonPanel::clearSearchInfo() entered";
     if (m_searchEdit) {
         m_searchEdit->blockSignals(true);
         m_searchEdit->clear();
         m_searchEdit->blockSignals(false);
     }
+    qCDebug(views) << "CommonPanel::clearSearchInfo() finished";
 }
 
 void CommonPanel::onFocusInBackButton()
 {
+    qCDebug(views) << "CommonPanel::onFocusInBackButton() entered";
     if (m_rebackButton) {
         // 焦点进入后，选择到返回键上
         m_rebackButton->setFocus();
     }
+    qCDebug(views) << "CommonPanel::onFocusInBackButton() finished";
 }

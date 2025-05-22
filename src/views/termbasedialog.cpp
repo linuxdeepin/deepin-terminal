@@ -11,6 +11,9 @@
 //qt
 #include <QLabel>
 #include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(views)
 
 DGUI_USE_NAMESPACE
 
@@ -39,17 +42,22 @@ void QWidget::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)
 
-
-    if (strcmp(this->metaObject()->className(), "Dtk::Widget::DDialog") != 0)
+    if (strcmp(this->metaObject()->className(), "Dtk::Widget::DDialog") != 0) {
+        qCDebug(views) << "Not DDialog, skip painting";
         return;
+    }
 
     QLabel *titleLabel = this->findChild<QLabel *>("TitleLabel");
     QLabel *messageLabel = this->findChild<QLabel *>("MessageLabel");
 
-    if (titleLabel != nullptr)
+    if (titleLabel != nullptr) {
+        qCDebug(views) << "Adjusting titleLabel transparency";
         palrtteTransparency(titleLabel, -10);
+    }
 
-    if (messageLabel != nullptr)
+    if (messageLabel != nullptr) {
+        qCDebug(views) << "Adjusting messageLabel transparency";
         palrtteTransparency(messageLabel, -30);
+    }
 
 }

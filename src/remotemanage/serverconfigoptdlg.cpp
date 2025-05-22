@@ -84,6 +84,7 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
 
 void ServerConfigOptDlg::initUI()
 {
+    qCDebug(remotemanage) << "Enter initUI";
     //all layout
     QVBoxLayout *m_VBoxLayout = new QVBoxLayout();
     m_VBoxLayout->setSpacing(SPACEHEIGHT);
@@ -292,6 +293,7 @@ void ServerConfigOptDlg::initUI()
         }
     });
 #endif
+    qCDebug(remotemanage) << "Exit initUI";
 }
 
 inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType)
@@ -351,6 +353,7 @@ void ServerConfigOptDlg::updateSizeMode()
 
 void ServerConfigOptDlg::initData()
 {
+    qCDebug(remotemanage) << "Enter initData";
     QList<QString> textCodeList = getTextCodec();
     m_coding->addItems(textCodeList);
     QList<QString> backSpaceKeyList = getBackSpaceKey();
@@ -381,6 +384,7 @@ void ServerConfigOptDlg::initData()
             m_deleteKey->setCurrentIndex(deleteKeyIndex);
         }
     }
+    qCDebug(remotemanage) << "Exit initData";
 }
 
 QList<QString> ServerConfigOptDlg::getTextCodec()
@@ -435,7 +439,7 @@ ServerConfigOptDlg::~ServerConfigOptDlg()
 
 void ServerConfigOptDlg::updataData(ServerConfig *curServer)
 {
-    qCInfo(remotemanage) << "ServerConfigOptDlg server configuration options updata data.";
+    qCDebug(remotemanage) << "ServerConfigOptDlg server configuration options updata data.";
     // 读取配置
     QList<QString> textCodeList = getTextCodec();
     QList<QString> backSpaceKeyList = getBackSpaceKey();
@@ -467,6 +471,7 @@ void ServerConfigOptDlg::updataData(ServerConfig *curServer)
     }
 
     m_currentServerName = m_serverName->text();
+    qCDebug(remotemanage) << "Exit updataData";
 }
 
 ServerConfig ServerConfigOptDlg::getData()
@@ -494,6 +499,7 @@ void ServerConfigOptDlg::resetCurServer(ServerConfig *config)
 
 void ServerConfigOptDlg::setAdvanceRegionVisible(bool isVisible)
 {
+    qCDebug(remotemanage) << "setAdvanceRegionVisible:" << isVisible;
     // 点击【高级选项】展开，优先隐藏选项，防止因布局变更导致的闪烁问题。
     bool focustOnAdvanced = m_advancedOptions->hasFocus();
     if (isVisible) {

@@ -124,6 +124,8 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     , m_isQuakeWindow(properties[QuakeMode].toBool())
     , m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
 {
+    qCDebug(mainprocess) << "MainWindow constructing";
+
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     m_menu->setObjectName("MainWindowQMenu");
     m_centralWidget->setObjectName("MainWindowCentralQWidget");
@@ -150,6 +152,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
 
 void MainWindow::initUI()
 {
+    qCDebug(mainprocess) << "Initializing MainWindow UI";
     initWindow();
     // Plugin may need centralWidget() to work so make sure initPlugin() is after setCentralWidget()
     // Other place (eg. create titlebar menu) will call plugin method so we should create plugins before init other
@@ -165,6 +168,7 @@ void MainWindow::initUI()
 
 void MainWindow::initWindow()
 {
+    qCDebug(mainprocess) << "Initializing window attributes";
     setAttribute(Qt::WA_TranslucentBackground);
     setMinimumSize(m_MinWidth, m_MinHeight);
     setEnableBlurWindow(Settings::instance()->backgroundBlur());
@@ -314,6 +318,7 @@ void MainWindow::initOptionButton()
 
 void MainWindow::initOptionMenu()
 {
+    qCDebug(mainprocess) << "Initializing titlebar menu";
     titlebar()->setMenu(m_menu);
     /******** Modify by m000714 daizhengwen 2020-04-03: 新建窗口****************/
     // 防止创建新窗口的action被多次触发
@@ -367,8 +372,10 @@ void MainWindow::initFileWatcher()
 
 void MainWindow::initPlugins()
 {
+    qCDebug(mainprocess) << "Initializing plugins";
     // Todo: real plugin loader and plugin support.
     EncodePanelPlugin *encodePlugin = new EncodePanelPlugin(this);
+    qCInfo(mainprocess) << "Created EncodePanelPlugin";
     encodePlugin->initPlugin(this);
 
     customCommandPlugin = new CustomCommandPlugin(this);
@@ -384,6 +391,7 @@ void MainWindow::initPlugins()
 
 MainWindow::~MainWindow()
 {
+    qCDebug(mainprocess) << "MainWindow destructing";
 }
 
 void MainWindow::setDefaultLocation()
@@ -412,6 +420,7 @@ bool MainWindow::isTabChangeColor(const QString &tabIdentifier)
 
 void MainWindow::addTab(TermProperties properties, bool activeTab)
 {
+    qCDebug(mainprocess) << "Adding new tab with properties, activeTab:" << activeTab;
     qint64 startTime = QDateTime::currentMSecsSinceEpoch();
     //如果不允许新建标签，则返回
     if (!beginAddTab()){
@@ -452,7 +461,8 @@ void MainWindow::addTabWithTermPage(const QString &tabName, bool activeTab, bool
 
 bool MainWindow::beginAddTab()
 {
-    /***add by ut001121 zhangmeng 修复BUG#24452 点击“+”按钮新建工作区，自定义命令/编码/远程管理插件未消失***/
+    qCDebug(mainprocess) << "Begin adding new tab";
+    /***add by ut001121 zhangmeng 修复BUG#24452 点击"+"按钮新建工作区，自定义命令/编码/远程管理插件未消失***/
     showPlugin(PLUGIN_TYPE_NONE);
 
     if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
@@ -469,6 +479,7 @@ bool MainWindow::beginAddTab()
 
 inline void MainWindow::slotLastTermClosed(const QString &identifier)
 {
+    qCDebug(mainprocess) << "Last terminal closed in tab:" << identifier;
     closeTab(identifier);
 }
 

@@ -45,9 +45,12 @@ Settings::Settings() : QObject(qApp)
 
 Settings *Settings::instance()
 {
+    qCDebug(tsettings) << "Settings instance requested";
     if(nullptr == m_settings_instance) {
+        qCDebug(tsettings) << "Creating new Settings instance";
         m_settings_instance = new Settings();
         m_settings_instance->init();
+        qCDebug(tsettings) << "Settings instance initialized";
     }
     return m_settings_instance;
 }
@@ -67,15 +70,19 @@ Settings::~Settings()
 // 统一初始化以后方可使用。
 void Settings::init()
 {
+    qCDebug(tsettings) << "Initializing settings";
     m_configPath = QString("%1/%2/%3/config.conf")
                    .arg(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), qApp->organizationName(), qApp->applicationName());
+    qCDebug(tsettings) << "Config path:" << m_configPath;
     m_backend = new QSettingBackend(m_configPath);
     m_backend->setObjectName("SettingsQSettingBackend");//Add by ut001000 renfeixiang 2020-08-13
 
     // 默认配置
     QFile configFile(":/other/default-config.json");
     if(!configFile.open(QFile::ReadOnly)) {
-        qCInfo(tsettings) << "can not open default-config.json";
+        qCWarning(tsettings) << "Failed to open default-config.json";
+    } else {
+        qCDebug(tsettings) << "Default config loaded successfully";
     }
     QByteArray json = configFile.readAll();
     configFile.close();
@@ -116,9 +123,11 @@ void Settings::init()
      * 综上即colorScheme非Light且非Dark时，修改主题为Dark
      */
     if("Light" != colorScheme() && "Dark" != colorScheme()) {
+        qCDebug(tsettings) << "Setting default color scheme to Dark";
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         setColorScheme("Dark");
         setExtendColorScheme("");
+        qCDebug(tsettings) << "Color scheme initialized";
     }
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
@@ -168,7 +177,9 @@ void Settings::init()
     themeSetting = new QSettings(m_configCustomThemePath, QSettings::IniFormat, this);
 
     QFile customThemeFile(m_configCustomThemePath);
+    qCDebug(tsettings) << "Custom theme path:" << m_configCustomThemePath;
     if (!customThemeFile.exists()) {
+        qCDebug(tsettings) << "Creating default custom theme";
         //标题栏风格   // custom_theme_title_style
         themeSetting->setValue("CustomTheme/TitleStyle", "Dark");
 

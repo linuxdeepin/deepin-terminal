@@ -17,11 +17,13 @@ Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 WindowsManager *WindowsManager::pManager = new WindowsManager();
 WindowsManager *WindowsManager::instance()
 {
+    qCDebug(mainprocess) << "WindowsManager instance requested";
     return  pManager;
 }
 
 void WindowsManager::runQuakeWindow(TermProperties properties)
 {
+    qCDebug(mainprocess) << "Enter runQuakeWindow";
     if (nullptr == m_quakeWindow) {
         qCInfo(mainprocess)  << "Create QuakeWindow!";
         m_quakeWindow = new QuakeWindow(properties);
@@ -35,10 +37,12 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
     }
     // Alt+F2的显隐功能实现点
     quakeWindowShowOrHide();
+    qCDebug(mainprocess) << "Exit runQuakeWindow";
 }
 
 void WindowsManager::quakeWindowShowOrHide()
 {
+    qCDebug(mainprocess) << "Enter quakeWindowShowOrHide";
     //隐藏 则 显示终端
     if (!m_quakeWindow->isVisible()) {
         m_quakeWindow->setAnimationFlag(false);
@@ -74,6 +78,7 @@ void WindowsManager::quakeWindowShowOrHide()
         m_quakeWindow->activateWindow();
         m_quakeWindow->focusCurrentPage();
         return;
+        qCDebug(mainprocess) << "Exit quakeWindowShowOrHide";
     }
     //隐藏终端
     m_quakeWindow->hideQuakeWindow();
@@ -81,6 +86,7 @@ void WindowsManager::quakeWindowShowOrHide()
 
 void WindowsManager::createNormalWindow(TermProperties properties, bool isShow)
 {
+    qCDebug(mainprocess) << "Enter createNormalWindow, show:" << isShow;
     TermProperties newProperties = properties;
     if (0 == m_normalWindowList.count())
         newProperties[SingleFlag] = true;
@@ -94,10 +100,12 @@ void WindowsManager::createNormalWindow(TermProperties properties, bool isShow)
     qint64 newMainWindowTime = newWindow->createNewMainWindowTime();
     QString strNewMainWindowTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_MAINWINDOE + QString::number(newMainWindowTime);
     qCInfo(mainprocess)  << "Create NormalWindow Time:" << qPrintable(strNewMainWindowTime);
+    qCDebug(mainprocess) << "Exit createNormalWindow";
 }
 
 void WindowsManager::onMainwindowClosed(MainWindow *window)
 {
+    qCDebug(mainprocess) << "Enter onMainwindowClosed, window:" << window;
     /***add begin by ut001121 zhangmeng 20200527 关闭终端窗口时重置设置框所有者 修复BUG28636***/
     if (Service::instance()->getSettingOwner() == window)
         Service::instance()->resetSettingOwner();
@@ -114,6 +122,7 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
     } else {
         //Q_ASSERT(false);
         qCWarning(mainprocess) << "unkown windows closed " << window;
+        qCDebug(mainprocess) << "Exit onMainwindowClosed";
     }
 
     window->deleteLater();
@@ -126,6 +135,7 @@ void WindowsManager::onMainwindowClosed(MainWindow *window)
 
 WindowsManager::WindowsManager(QObject *parent) : QObject(parent)
 {
+    qCDebug(mainprocess) << "WindowsManager constructor";
     Utils::set_Object_Name(this);
 }
 
@@ -142,10 +152,12 @@ int WindowsManager::widgetCount() const
 
 void WindowsManager::terminalCountIncrease()
 {
+    qCDebug(mainprocess) << "Terminal count increased from" << m_widgetCount << "to" << (m_widgetCount + 1);
     ++m_widgetCount;
 }
 
 void WindowsManager::terminalCountReduce()
 {
+    qCDebug(mainprocess) << "Terminal count reduced from" << m_widgetCount << "to" << (m_widgetCount - 1);
     --m_widgetCount;
 }

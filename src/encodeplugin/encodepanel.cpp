@@ -13,9 +13,12 @@
 #include <QScroller>
 #include <QVBoxLayout>
 
+Q_DECLARE_LOGGING_CATEGORY(encodeplugin)
+
 EncodePanel::EncodePanel(QWidget *parent)
     : RightPanel(parent), m_encodeView(new EncodeListView(this))
 {
+    qCDebug(encodeplugin) << "EncodePanel constructor enter";
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_encodeView->setObjectName("EncodeListView");
@@ -38,19 +41,24 @@ EncodePanel::EncodePanel(QWidget *parent)
     /******** Modify by nt001000 renfeixiang 2020-05-16:解决Alt+F2显示Encode时，高度变长的问题 Begin***************/
 
     connect(m_encodeView, &EncodeListView::focusOut, this, &RightPanel::hideAnim);
+    qCDebug(encodeplugin) << "EncodePanel constructor exit";
 }
 
 void EncodePanel::show()
 {
+    qCDebug(encodeplugin) << "EncodePanel show enter";
     this->showAnim();
 
     //解决Alt+F2显示Encode时，高度变长的问题 每次显示时，设置固定高度 Begin
     m_encodeView->setFixedHeight(size().height());
     //解决Alt+F2显示Encode时，高度变长的问题 End
+    qCDebug(encodeplugin) << "EncodePanel show exit";
 }
 
 void EncodePanel::updateEncode(QString encode)
 {
+    qCDebug(encodeplugin) << "updateEncode enter, encode:" << encode;
     m_encodeView->checkEncode(encode);
+    qCDebug(encodeplugin) << "updateEncode exit";
 }
 

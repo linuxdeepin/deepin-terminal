@@ -17,11 +17,16 @@
 
 //qt
 #include <QPropertyAnimation>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(views)
 
 DWIDGET_USE_NAMESPACE
 
 RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
 {
+    qCDebug(views) << "RightPanel constructor entered";
+
     // hide by default.
     QWidget::hide();
     // Init theme panel.
@@ -43,10 +48,13 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
         }
     });
 #endif
+    qCDebug(views) << "RightPanel constructor finished";
 }
 
 void RightPanel::showAnim()
 {
+    qCDebug(views) << "RightPanel::showAnim() entered";
+
     QWidget::show();
     QWidget::raise();
 
@@ -69,11 +77,14 @@ void RightPanel::showAnim()
     animation->setStartValue(QRect(windowRect.width(), rect.y(), rect.width(), panelHeight));
     animation->setEndValue(QRect(windowRect.width() - rect.width(), rect.y(), rect.width(), panelHeight));
     /***mod end by ut001121***/
+    qInfo() << "Starting show animation";
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void RightPanel::hideAnim()
 {
+    qCDebug(views) << "RightPanel::hideAnim() entered";
+
     // 隐藏状态不处理
     if (!isVisible())
         return;
@@ -111,12 +122,15 @@ void RightPanel::hideAnim()
     setEnabled(false);
 
     //开始动画
+    qInfo() << "Starting hide animation";
     animation->start(QAbstractAnimation::DeleteWhenStopped);
     /***mod end by ut001121***/
 }
 
 void RightPanel::hideEvent(QHideEvent *event)
 {
+    qCDebug(views) << "RightPanel::hideEvent() entered";
+
     /***add begin by ut001121 zhangmeng 20200801 解决终端插件被隐藏时焦点回退到工作区的问题***/
     if (QApplication::focusWidget()) {
         // 焦点控件的全局坐标
@@ -133,5 +147,6 @@ void RightPanel::hideEvent(QHideEvent *event)
     }
     /***add end by ut001121***/
 
+    qInfo() << "RightPanel hidden";
     QWidget::hideEvent(event);
 }
