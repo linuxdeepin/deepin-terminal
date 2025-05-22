@@ -41,6 +41,7 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandDat
     , m_shortCutLineEdit(new DKeySequenceEdit(this))
     , m_bDelOpt(false)
 {
+    qCDebug(customcommand) << "Creating CustomCommandOptDlg, type:" << type;
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_nameLineEdit->setObjectName("CustomNameLineEdit");
@@ -62,6 +63,7 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandDat
 
 CustomCommandOptDlg::~CustomCommandOptDlg()
 {
+    qCDebug(customcommand) << "Destroying CustomCommandOptDlg";
     if (m_currItemData) {
         delete m_currItemData;
         m_currItemData = nullptr;
@@ -74,6 +76,7 @@ CustomCommandOptDlg::~CustomCommandOptDlg()
 
 void CustomCommandOptDlg::initUI()
 {
+    qCDebug(customcommand) << "Initializing CustomCommandOptDlg UI";
     QWidget *contentFrame = new QWidget(this);
 
     QVBoxLayout *contentLayout = new QVBoxLayout;
@@ -140,6 +143,7 @@ void CustomCommandOptDlg::initUI()
     addContent(contentFrame);
     //判断是添加操作窗口还是修改操作窗口
     if (CCT_ADD == m_type) {
+        qCInfo(customcommand) << "Setting up Add Command dialog";
         setTitle(tr("Add Command"));
         initCommandFromClipBoardText();
 
@@ -149,6 +153,7 @@ void CustomCommandOptDlg::initUI()
         getMainLayout()->addSpacing(m_iSpaceSizeEighteen);
 #endif
     } else {
+        qCInfo(customcommand) << "Setting up Edit Command dialog";
         setTitle(tr("Edit Command"));
 
         m_deleteCmdWidget = new QWidget(this);
@@ -354,10 +359,12 @@ inline void CustomCommandOptDlg::slotThemeTypeChanged(DGuiApplicationHelper::Col
 
 void CustomCommandOptDlg::initCommandFromClipBoardText()
 {
+    qCDebug(customcommand) << "Initializing command from clipboard";
     if (m_commandLineEdit) {
         MainWindow *main = Utils::getMainWindow(this);//;getMainWindow();
         if (main != nullptr) {
             QString clipText = main->selectedText();
+            qCDebug(customcommand) << "Clipboard text:" << clipText;
             m_commandLineEdit->setText(clipText.trimmed());
         }
     }
@@ -489,6 +496,7 @@ void CustomCommandOptDlg::setModelIndex(const QModelIndex &mi)
 
 void CustomCommandOptDlg::slotDelCurCustomCommand()
 {
+    qCInfo(customcommand) << "Deleting current custom command";
     m_bDelOpt = true;
     reject();
 }

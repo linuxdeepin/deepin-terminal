@@ -30,6 +30,7 @@ Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 Service *Service::instance()
 {
     if(nullptr == g_pService) {
+        qCDebug(mainprocess) << "Creating new Service instance";
         g_pService = new Service();
     }
     return g_pService;
@@ -57,12 +58,16 @@ Service::~Service()
 
 void Service::init()
 {
+    qCDebug(mainprocess) << "Initializing Service";
     // 初始化自定义快捷键
     ShortcutManager::instance()->initShortcuts();
+    qCInfo(mainprocess) << "Shortcuts initialized";
     // 初始化远程管理数据
     ServerConfigManager::instance()->initServerConfig();
+    qCInfo(mainprocess) << "Server config initialized";
     // 主进程：首次赋值m_pShareMemoryInfo
     listenWindowEffectSwitcher();
+    qCDebug(mainprocess) << "Service initialization completed";
 }
 
 void Service::releaseInstance()
@@ -207,6 +212,7 @@ void Service::listenWindowEffectSwitcher()
 void Service::slotWMChanged()
 {
     bool isWinEffectEnabled = DWindowManagerHelper::instance()->hasBlurWindow();
+    qCInfo(mainprocess) << "Window effect changed, blur enabled:" << isWinEffectEnabled;
     showHideOpacityAndBlurOptions(isWinEffectEnabled);
     emit onWindowEffectEnabled(isWinEffectEnabled);
 }
@@ -284,6 +290,7 @@ bool Service::mainTerminalIsStarted()
 
 void Service::showSettingDialog(MainWindow *pOwner)
 {
+    qCDebug(mainprocess) << "Showing settings dialog for owner:" << pOwner;
     // 第一次初始化dialog
     initSetting(pOwner);
     //保存设置框的有拥者
@@ -369,6 +376,7 @@ void Service::slotCustomThemeSettingDialogFinished(int result)
 
 void Service::showShortcutConflictMsgbox(QString txt)
 {
+    qCDebug(mainprocess) << "Showing shortcut conflict message:" << txt;
     // 同步提示和快捷键
     for (QString key : ShortcutManager::instance()->m_mapReplaceText.keys()) {
         if (txt.contains(key))
@@ -422,6 +430,7 @@ void Service::Entry(QStringList arguments)
 
 void Service::EntryTerminal(QStringList arguments, bool isMain)
 {
+    qCDebug(mainprocess) << "Entering terminal with arguments:" << arguments;
     m_entryTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     TermProperties properties;
     Utils::parseCommandLine(arguments, properties);
@@ -492,6 +501,7 @@ void Service::onDesktopWorkspaceSwitched(int curDesktop, int nextDesktop)
 
 Service::Service(QObject *parent) : QObject(parent)
 {
+    qCDebug(mainprocess) << "Service constructor";
     Utils::set_Object_Name(this);
     init();
 }

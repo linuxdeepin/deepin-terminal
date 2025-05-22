@@ -16,6 +16,7 @@ Q_DECLARE_LOGGING_CATEGORY(remotemanage)
 
 RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
+    qCDebug(remotemanage) << "RemoteManagementPlugin constructor";
     Utils::set_Object_Name(this);
     m_pluginName = "Remote Management";
 }
@@ -74,23 +75,30 @@ void RemoteManagementPlugin::initPlugin(MainWindow *mainWindow)
 
 QAction *RemoteManagementPlugin::titlebarMenu(MainWindow *mainWindow)
 {
+    qCDebug(remotemanage) << "Enter titlebarMenu";
     QAction *remoteManagementAction(new QAction(tr("Remote management"), mainWindow));
 
     connect(remoteManagementAction, &QAction::triggered, mainWindow, [mainWindow]() {
         mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
     });
     return remoteManagementAction;
+    qCDebug(remotemanage) << "Exit titlebarMenu";
 }
 
 RemoteManagementTopPanel *RemoteManagementPlugin::getRemoteManagementTopPanel()
 {
-    if (nullptr == m_remoteManagementTopPanel)
+    qCDebug(remotemanage) << "Enter getRemoteManagementTopPanel";
+    if (nullptr == m_remoteManagementTopPanel) {
+        qCDebug(remotemanage) << "Initializing remote management top panel";
         initRemoteManagementTopPanel();
+    }
+    qCDebug(remotemanage) << "Exit getRemoteManagementTopPanel";
     return m_remoteManagementTopPanel;
 }
 
 void RemoteManagementPlugin::initRemoteManagementTopPanel()
 {
+    qCDebug(remotemanage) << "Enter initRemoteManagementTopPanel";
     m_remoteManagementTopPanel = new RemoteManagementTopPanel(m_mainWindow->centralWidget());
     m_remoteManagementTopPanel->setObjectName("RemoteManagementTopPanel");
     connect(m_remoteManagementTopPanel,
@@ -222,6 +230,7 @@ QString RemoteManagementPlugin::createShellFile(ServerConfig *curServer)
 
 void RemoteManagementPlugin::setRemoteEncode(QString encode)
 {
+    qCDebug(remotemanage) << "Enter setRemoteEncode, encode:" << encode;
     TermWidget *term = m_mainWindow->currentActivatedTerminal();
     if (!encode.isNull() && !encode.isEmpty()) {
         // 设置当前窗口的编码
@@ -232,10 +241,12 @@ void RemoteManagementPlugin::setRemoteEncode(QString encode)
     term->setRemoteEncode(encode);
     // 切换编码列表的编码
     emit Service::instance()->checkEncode(encode);
+    qCDebug(remotemanage) << "Exit setRemoteEncode";
 }
 
 void RemoteManagementPlugin::setBackspaceKey(TermWidget *term, QString backspaceKey)
 {
+    qCDebug(remotemanage) << "Enter setBackspaceKey, key:" << backspaceKey;
     if ("control-h" == backspaceKey)
         term->setBackspaceMode(EraseMode_Control_H);
     else if ("auto" == backspaceKey)
@@ -252,6 +263,7 @@ void RemoteManagementPlugin::setBackspaceKey(TermWidget *term, QString backspace
 
 void RemoteManagementPlugin::setDeleteKey(TermWidget *term, QString deleteKey)
 {
+    qCDebug(remotemanage) << "Enter setDeleteKey, key:" << deleteKey;
     if ("control-h" == deleteKey)
         term->setDeleteMode(EraseMode_Control_H);
     else if ("auto" == deleteKey)

@@ -38,14 +38,17 @@ ShortcutManager::ShortcutManager(QObject *parent) : QObject(parent)
 
 ShortcutManager *ShortcutManager::instance()
 {
-    if (nullptr == m_instance)
+    qCDebug(tsettings) << "ShortcutManager instance requested";
+    if (nullptr == m_instance) {
+        qCDebug(tsettings) << "Creating new ShortcutManager instance";
         m_instance = new ShortcutManager();
-
+    }
     return m_instance;
 }
 
 void ShortcutManager::initShortcuts()
 {
+    qCDebug(tsettings) << "Initializing built-in shortcuts";
     m_builtinShortcuts << "F1";
     m_builtinShortcuts << "Ctrl+C";
     m_builtinShortcuts << "Ctrl+D";
@@ -83,6 +86,7 @@ ShortcutManager::~ShortcutManager()
 
 void ShortcutManager::initConnect(MainWindow *mainWindow)
 {
+    qCDebug(tsettings) << "Connecting shortcuts to MainWindow";
     for (auto &commandAction : m_customCommandActionList) {
         connect(commandAction, &QAction::triggered, mainWindow, &MainWindow::onCommandActionTriggered);
     }
@@ -152,6 +156,8 @@ QList<QAction *> &ShortcutManager::getCustomCommandActionList()
 
 QAction *ShortcutManager::addCustomCommand(const QAction &action)
 {
+    qCDebug(tsettings) << "Adding custom command:" << action.text()
+                      << "Shortcut:" << action.shortcut().toString();
     QAction *addAction = new QAction(action.text(), this);
     addAction->setData(action.data());
     addAction->setShortcut(action.shortcut());
@@ -329,6 +335,8 @@ void ShortcutManager::delCustomCommand(CustomCommandData itemData)
 
 void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 {
+    qCDebug(tsettings) << "Saving custom command to config:" << action->text()
+                      << "Index:" << saveIndex;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
@@ -354,6 +362,7 @@ void ShortcutManager::saveCustomCommandToConfig(QAction *action, int saveIndex)
 
 int ShortcutManager::delCustomCommandToConfig(CustomCommandData itemData)
 {
+    qCDebug(tsettings) << "Deleting custom command:" << itemData.m_cmdName;
     QDir customCommandBasePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     if (!customCommandBasePath.exists())
         customCommandBasePath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));

@@ -55,6 +55,7 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
     m_funcButton->installEventFilter(this);
     installEventFilter(this);
     /***add end by ut001121***/
+    qCDebug(views) << "ItemWidget constructor finished";
 }
 
 ItemWidget::~ItemWidget()
@@ -177,6 +178,8 @@ bool operator <(const ItemWidget &item1, const ItemWidget &item2)
 
 void ItemWidget::onFuncButtonClicked()
 {
+    qCDebug(views) << "ItemWidget::onFuncButtonClicked() entered";
+
     /***add begin by ut001121 zhangmeng 20200924 判断移动事件来源 修复BUG48618***/
     if (m_moveSource) {
         m_moveSource = nullptr;
@@ -211,6 +214,8 @@ void ItemWidget::onFuncButtonClicked()
 
 void ItemWidget::onIconButtonClicked()
 {
+    qCDebug(views) << "ItemWidget::onIconButtonClicked() entered";
+
     /***add begin by ut001121 zhangmeng 20200924 判断移动事件来源 修复BUG48618***/
     if (m_moveSource) {
         m_moveSource = nullptr;
@@ -236,6 +241,8 @@ void ItemWidget::onIconButtonClicked()
 
 void ItemWidget::onFocusReback()
 {
+    qInfo() << "Focus returned to ItemWidget";
+
     setFocus();
 }
 
@@ -280,6 +287,8 @@ void ItemWidget::updateSizeMode()
 
 void ItemWidget::initUI()
 {
+    qCDebug(views) << "ItemWidget::initUI() entered";
+
     // 初始化控件大小
     setGeometry(0, 0, 220, 60);
     setFixedSize(220, 60);
@@ -333,10 +342,13 @@ void ItemWidget::initUI()
 
     // 根据不同布局初始化界面
     updateSizeMode();
+    qCDebug(views) << "ItemWidget::initUI() finished";
 }
 
 void ItemWidget::initConnections()
 {
+    qCDebug(views) << "ItemWidget::initConnections() entered";
+
     // 颜色随主题变化
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ItemWidget::slotThemeChange);
     // 功能键被点击
@@ -348,10 +360,13 @@ void ItemWidget::initConnections()
     // 图标被点击
     connect(m_iconButton, &DIconButton::clicked, this, &ItemWidget::onIconButtonClicked);
 
+    qCDebug(views) << "ItemWidget::initConnections() finished";
 }
 
 void ItemWidget::paintEvent(QPaintEvent *event)
 {
+    qCDebug(views) << "ItemWidget::paintEvent() entered";
+
     // 绘制文字长短
     QFont firstFont = m_firstline->font();
     QFont secondFont = m_secondline->font();
@@ -363,6 +378,7 @@ void ItemWidget::paintEvent(QPaintEvent *event)
     m_secondline->setText(secondText);
 
     FocusFrame::paintEvent(event);
+    qCDebug(views) << "ItemWidget::paintEvent() finished";
 }
 
 void ItemWidget::enterEvent(EnterEvent *event)

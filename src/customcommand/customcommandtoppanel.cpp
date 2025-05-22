@@ -23,6 +23,7 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
       m_customCommandPanel(new CustomCommandPanel(this)),
       m_customCommandSearchPanel(new CustomCommandSearchRstPanel(this))
 {
+    qCDebug(customcommand) << "Creating CustomCommandTopPanel";
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_customCommandPanel->setObjectName("CustomCommandPanel");
@@ -52,6 +53,7 @@ CustomCommandTopPanel::CustomCommandTopPanel(QWidget *parent)
 
 void CustomCommandTopPanel::showCustomCommandPanel()
 {
+    qCDebug(customcommand) << "Showing custom command panel";
     m_customCommandPanel->resize(size());
     m_customCommandPanel->refreshCmdPanel();
     m_customCommandPanel->show();
@@ -93,6 +95,7 @@ void CustomCommandTopPanel::showCustomCommandPanel()
 
 void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilter)
 {
+    qCDebug(customcommand) << "Showing custom command search panel with filter:" << strFilter;
     m_customCommandSearchPanel->refreshData(strFilter);
     m_customCommandSearchPanel->show();
     m_customCommandSearchPanel->m_backButton->setFocus();//m_customCommandSearchPanel->setFocus();
@@ -123,6 +126,7 @@ void CustomCommandTopPanel::showCustomCommandSearchPanel(const QString &strFilte
 
 void CustomCommandTopPanel::show(bool bSetFocus)
 {
+    qCDebug(customcommand) << "Showing top panel with focus:" << bSetFocus;
     this->showAnim();
     m_customCommandPanel->resize(size());
     m_customCommandPanel->move(0, 0);
@@ -147,6 +151,7 @@ void CustomCommandTopPanel::show(bool bSetFocus)
 
 void CustomCommandTopPanel::slotsRefreshCommandPanel()
 {
+    qCDebug(customcommand) << "Refreshing command panel";
     m_customCommandPanel->resize(size());
     //m_customCommandPanel->show();
     m_customCommandPanel->refreshCmdPanel();

@@ -21,12 +21,14 @@ Q_DECLARE_LOGGING_CATEGORY(remotemanage)
 
 RemoteManagementSearchPanel::RemoteManagementSearchPanel(QWidget *parent) : CommonPanel(parent)
 {
+    qCDebug(remotemanage) << "RemoteManagementSearchPanel constructor";
     Utils::set_Object_Name(this);
     initUI();
 }
 
 void RemoteManagementSearchPanel::initUI()
 {
+    qCDebug(remotemanage) << "Enter initUI";
     this->setBackgroundRole(QPalette::Base);
     this->setAutoFillBackground(true);
 
@@ -77,6 +79,7 @@ void RemoteManagementSearchPanel::initUI()
     connect(m_listWidget, &ListView::focusOut, this, &RemoteManagementSearchPanel::handleListViewFocusOut);
     // 字体颜色随主题变化变化
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &RemoteManagementSearchPanel::handleThemeTypeChanged);
+    qCDebug(remotemanage) << "Exit initUI";
 }
 
 inline void RemoteManagementSearchPanel::handleListViewFocusOut(Qt::FocusReason type)
@@ -110,25 +113,30 @@ inline void RemoteManagementSearchPanel::handleThemeTypeChanged(DGuiApplicationH
 
 void RemoteManagementSearchPanel::refreshDataByGroupAndFilter(const QString &strGroup, const QString &strFilter)
 {
+    qCDebug(remotemanage) << "Enter refreshDataByGroupAndFilter, group:" << strGroup << "filter:" << strFilter;
     setSearchFilter(strFilter);
     m_isGroupOrNot = true;
     m_strGroupName = strGroup;
     m_strFilter = strFilter;
     m_listWidget->clearData();
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Search, m_listWidget, strFilter, strGroup);
+    qCDebug(remotemanage) << "Exit refreshDataByGroupAndFilter";
 }
 
 void RemoteManagementSearchPanel::refreshDataByFilter(const QString &strFilter)
 {
+    qCDebug(remotemanage) << "Enter refreshDataByFilter, filter:" << strFilter;
     setSearchFilter(strFilter);
     m_isGroupOrNot = false;
     m_strFilter = strFilter;
     m_listWidget->clearData();
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Search, m_listWidget, strFilter);
+    qCDebug(remotemanage) << "Exit refreshDataByFilter";
 }
 
 void RemoteManagementSearchPanel::onItemClicked(const QString &key)
 {
+    qCDebug(remotemanage) << "onItemClicked, key:" << key;
     // 获取远程信息
     ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
     if (nullptr != remote)
@@ -147,10 +155,12 @@ void RemoteManagementSearchPanel::onFocusOutList(Qt::FocusReason type)
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
         qCInfo(remotemanage) << "search panel focus to '+'";
     }
+    qCDebug(remotemanage) << "Exit onRefreshList";
 }
 
 void RemoteManagementSearchPanel::onRefreshList()
 {
+    qCDebug(remotemanage) << "Enter onRefreshList";
     // 判断是否显示
     if (m_isShow) {
         if (m_isGroupOrNot) {
@@ -207,6 +217,7 @@ int RemoteManagementSearchPanel::getListIndex()
 
 void RemoteManagementSearchPanel::setSearchFilter(const QString &filter)
 {
+    qCDebug(remotemanage) << "setSearchFilter, filter:" << filter;
     m_strFilter = filter;
     QString showText = filter;
     showText = Utils::getElidedText(m_label->font(), showText, ITEMMAXWIDTH, Qt::ElideMiddle);

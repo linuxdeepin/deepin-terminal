@@ -17,7 +17,9 @@ Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
 TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication(argc, argv)
 {
+    qCDebug(mainprocess) << "TerminalApplication constructing with arguments:" << QCoreApplication::arguments();
     Utils::set_Object_Name(this);
+    qCDebug(mainprocess) << "Loading translations";
     loadTranslator();
     setOrganizationName("deepin");
     setApplicationVersion(VERSION);
@@ -43,12 +45,15 @@ TerminalApplication::TerminalApplication(int &argc, char *argv[]) : DApplication
 
 TerminalApplication::~TerminalApplication()
 {
+    qCDebug(mainprocess) << "TerminalApplication destructing";
     Service::releaseInstance();
     Settings::releaseInstance();
+    qCInfo(mainprocess) << "Application resources released";
 }
 
 void TerminalApplication::setStartTime(qint64 time)
 {
+    qCDebug(mainprocess) << "Setting application start time:" << time;
     m_AppStartTime = time;
 }
 
@@ -66,6 +71,7 @@ void TerminalApplication::handleQuitAction()
 
 bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
+    qCDebug(mainprocess) << "Processing event:" << event->type() << "for object:" << object;
     //修复bug#110813
     if (event->type() == QEvent::ApplicationFontChange) {
         // ApplicationFontChange 调用 font() 是 ok 的，如果在 fontChanged 中调用在某些版本中会出现 deadlock
@@ -120,6 +126,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
     // ALT+M = 右键
     if (QEvent::KeyPress == event->type()) {
         QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
+        qCDebug(mainprocess) << "Key press event:" << keyevent->key() << "modifiers:" << keyevent->modifiers();
         /***add begin by ut001121 zhangmeng 20200801 截获DPushButton控件回车按键事件并模拟空格键点击事件,用以解决回车键不响应的问题***/
         // 回车键
         // 恢复默认 添健按钮
@@ -220,6 +227,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 
 void TerminalApplication::pressSpace(QObject *obj)
 {
+    qCDebug(mainprocess) << "Simulating space key press for object:" << obj;
     // 模拟空格键按下事件
     QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
     QApplication::sendEvent(obj, &pressSpace);

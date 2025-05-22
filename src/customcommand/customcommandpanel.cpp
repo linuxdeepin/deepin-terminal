@@ -23,11 +23,13 @@ Q_DECLARE_LOGGING_CATEGORY(customcommand)
 
 CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
+    qCDebug(customcommand) << "Creating CustomCommandPanel";
     Utils::set_Object_Name(this);
     initUI();
 }
 CustomCommandPanel::~CustomCommandPanel()
 {
+    qCDebug(customcommand) << "Destroying CustomCommandPanel";
     if (m_pdlg) {
         delete m_pdlg;
         m_pdlg = nullptr;
@@ -36,10 +38,14 @@ CustomCommandPanel::~CustomCommandPanel()
 
 void CustomCommandPanel::showCurSearchResult()
 {
+    qCDebug(customcommand) << "Showing search results";
     QString strTxt = m_searchEdit->text();
-    if (strTxt.isEmpty())
+    if (strTxt.isEmpty()) {
+        qCDebug(customcommand) << "Search text is empty";
         return;
+    }
 
+    qCInfo(customcommand) << "Searching for:" << strTxt;
     emit showSearchResult(strTxt);
 }
 
@@ -69,14 +75,20 @@ void CustomCommandPanel::showAddCustomCommandDlg()
 
 void CustomCommandPanel::doCustomCommand(const QString &key)
 {
+    qCDebug(customcommand) << "Executing custom command with key:" << key;
     QAction *item = ShortcutManager::instance()->findActionByKey(key);
-    if(!item)
+    if(!item) {
+        qCWarning(customcommand) << "No command found for key:" << key;
         return;
+    }
 
     QString strCommand = item->data().toString();
-    if (!strCommand.endsWith('\n'))
+    if (!strCommand.endsWith('\n')) {
+        qCDebug(customcommand) << "Appending newline to command";
         strCommand.append('\n');
+    }
 
+    qCInfo(customcommand) << "Executing command:" << strCommand;
     emit handleCustomCurCommand(strCommand);
 }
 
@@ -125,8 +137,10 @@ void CustomCommandPanel::onAddCommandResponse(int result)
 
 void CustomCommandPanel::refreshCmdPanel()
 {
+    qCDebug(customcommand) << "Refreshing command panel";
     clearSearchInfo();
     ShortcutManager::instance()->fillCommandListData(m_cmdListWidget);
+    qCDebug(customcommand) << "Command list updated, count:" << m_cmdListWidget->count();
     refreshCmdSearchState();
 }
 
@@ -179,6 +193,7 @@ void CustomCommandPanel::setFocusInPanel()
 
 void CustomCommandPanel::initUI()
 {
+    qCDebug(customcommand) << "Initializing CustomCommandPanel UI";
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 

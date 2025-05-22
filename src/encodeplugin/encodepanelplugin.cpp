@@ -19,20 +19,25 @@ Q_DECLARE_LOGGING_CATEGORY(encodeplugin)
 
 EncodePanelPlugin::EncodePanelPlugin(QObject *parent) : MainWindowPluginInterface(parent)
 {
+    qCDebug(encodeplugin) << "EncodePanelPlugin constructor enter";
     Utils::set_Object_Name(this);
     m_pluginName = "Encoding";
+    qCDebug(encodeplugin) << "EncodePanelPlugin constructor exit";
 }
 
 void EncodePanelPlugin::initPlugin(MainWindow *mainWindow)
 {
+    qCDebug(encodeplugin) << "initPlugin enter";
     m_mainWindow = mainWindow;
 //    initEncodePanel();
     connect(m_mainWindow, &MainWindow::showPluginChanged,  this, &EncodePanelPlugin::slotShowPluginChanged);
     connect(m_mainWindow, &MainWindow::quakeHidePlugin, this, &EncodePanelPlugin::slotQuakeHidePlugin);
+    qCDebug(encodeplugin) << "initPlugin exit";
 }
 
 inline void EncodePanelPlugin::slotShowPluginChanged(const QString name)
 {
+    qCDebug(encodeplugin) << "slotShowPluginChanged enter, plugin:" << name;
     if (MainWindow::PLUGIN_TYPE_ENCODING != name) {
         // 判断插件是否显示
         if (m_isShow) {
@@ -61,6 +66,7 @@ inline void EncodePanelPlugin::slotShowPluginChanged(const QString name)
         TermWidget *term = m_mainWindow->currentActivatedTerminal();
         setCurrentTermEncode(term);
     }
+    qCDebug(encodeplugin) << "slotShowPluginChanged exit";
 }
 
 inline void EncodePanelPlugin::slotQuakeHidePlugin()
@@ -81,13 +87,16 @@ QAction *EncodePanelPlugin::titlebarMenu(MainWindow *mainWindow)
 
 EncodePanel *EncodePanelPlugin::getEncodePanel()
 {
+    qCDebug(encodeplugin) << "getEncodePanel enter";
     if (nullptr == m_encodePanel)
         initEncodePanel();
+    qCDebug(encodeplugin) << "getEncodePanel exit";
     return m_encodePanel;
 }
 
 void EncodePanelPlugin::initEncodePanel()
 {
+    qCDebug(encodeplugin) << "initEncodePanel enter";
     m_encodePanel = new EncodePanel(m_mainWindow->centralWidget());
     connect(Service::instance(), &Service::currentTermChange, m_encodePanel, [ = ](QWidget * term) {
         TermWidget *pterm = m_mainWindow->currentActivatedTerminal();
@@ -98,10 +107,12 @@ void EncodePanelPlugin::initEncodePanel()
             setCurrentTermEncode(curterm);
         }
     });
+    qCDebug(encodeplugin) << "initEncodePanel exit";
 }
 
 void EncodePanelPlugin::setCurrentTermEncode(TermWidget *term)
 {
+    qCDebug(encodeplugin) << "setCurrentTermEncode enter, term:" << term;
     QString encode;
     qCInfo(encodeplugin) <<"Whether to link remote?" << term->isConnectRemote();
     // 是否连接远程

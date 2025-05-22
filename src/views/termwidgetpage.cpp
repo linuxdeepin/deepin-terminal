@@ -23,7 +23,9 @@ Q_DECLARE_LOGGING_CATEGORY(views)
 TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
 {
+    qCDebug(views) << "TermWidgetPage constructor enter";
     Utils::set_Object_Name(this);
+    qCDebug(views) << "Setting up main window reference";
     m_MainWindow = qobject_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);
     setProperty("TAB_CUSTOM_NAME_PROPERTY", false);
@@ -124,15 +126,18 @@ QString TermWidgetPage::getCurrentTerminalTitle()
 
 void TermWidgetPage::split(Qt::Orientation orientation)
 {
+    qCDebug(views) << "TermWidgetPage::split - Orientation:" << orientation;
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     TermWidget *term = m_currentTerm;
     if (1 == getTerminalCount()) {
         qCInfo(views) << "first split";
+        qCDebug(views) << "Creating first split";
         QSplitter *firstSplit = createSubSplit(term, orientation);
         m_layout->addWidget(firstSplit);
         //return ;
     } else {
         qCInfo(views) << "not first split";
+        qCDebug(views) << "Adding new split to existing layout";
         QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
         int index = upSplit->indexOf(term);
         QList<int> parentSizes = upSplit->sizes();
@@ -184,6 +189,7 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
     qCInfo(views) << "TermWidgetPage::closeSplit:" << term->getSessionId();
     if (getTerminalCount() > 1) {
         if (!hasConfirmed && term->hasRunningProcess()) {
+            qCDebug(views) << "TermWidgetPage::closeSplit - Showing confirmation dialog";
             showExitConfirmDialog(Utils::CloseType_Terminal, 1, parentMainWindow());
             return;
         }

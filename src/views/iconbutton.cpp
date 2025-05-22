@@ -19,14 +19,18 @@ IconButton::IconButton(QWidget *parent)
 
 void IconButton::keyPressEvent(QKeyEvent *event)
 {
+    qCDebug(views) << "IconButton::keyPressEvent() entered, key:" << event->key();
+
     // 不处理向右的事件
     switch (event->key()) {
     case Qt::Key_Right:
     case Qt::Key_Up:
     case Qt::Key_Down:
+        qCDebug(views)  << "Ignoring up/down key event";
         event->ignore();
         break;
     case Qt::Key_Left:
+        qCDebug(views)  << "Processing left key, emitting preFocus";
         emit preFocus();
         break;
     default:
@@ -37,7 +41,7 @@ void IconButton::keyPressEvent(QKeyEvent *event)
 
 void IconButton::focusOutEvent(QFocusEvent *event)
 {
-    qCInfo(views) << event->reason() << "IconButton" << this;
+    qCDebug(views) << event->reason() << "IconButton" << this;
     emit focusOut(event->reason());
     DIconButton::focusOutEvent(event);
 }

@@ -21,12 +21,14 @@ Q_DECLARE_LOGGING_CATEGORY(remotemanage)
 
 ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(parent)
 {
+    qCDebug(remotemanage) << "ServerConfigGroupPanel constructor";
     Utils::set_Object_Name(this);
     initUI();
 }
 
 void ServerConfigGroupPanel::initUI()
 {
+    qCDebug(remotemanage) << "Enter initUI";
     this->setBackgroundRole(QPalette::Base);
     this->setAutoFillBackground(true);
 
@@ -71,6 +73,7 @@ void ServerConfigGroupPanel::initUI()
     connect(m_rebackButton, &DIconButton::clicked, this, &ServerConfigGroupPanel::rebackPrevPanel);
     connect(m_rebackButton, &IconButton::preFocus, this, &ServerConfigGroupPanel::rebackPrevPanel);
     connect(ServerConfigManager::instance(), &ServerConfigManager::refreshList, this, &ServerConfigGroupPanel::onRefreshList);
+    qCDebug(remotemanage) << "Exit initUI";
 }
 
 inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
@@ -125,15 +128,17 @@ inline void ServerConfigGroupPanel::onRefreshList()
 
 void ServerConfigGroupPanel::refreshData(const QString &groupName)
 {
-    qCInfo(remotemanage) << "Refresh Data!";
+    qCDebug(remotemanage) << "Refresh Data!";
     m_groupName = groupName;
     m_listWidget->clearData();
     ServerConfigManager::instance()->refreshServerList(ServerConfigManager::PanelType_Group, m_listWidget, "", groupName);
     refreshSearchState();
+    qCDebug(remotemanage) << "Exit refreshData";
 }
 
 void ServerConfigGroupPanel::setFocusBack()
 {
+    qCDebug(remotemanage) << "Enter setFocusBack";
     // 设置焦点到搜索框
     if (m_searchEdit->isVisible()) {
         // 显示搜索框
@@ -149,12 +154,14 @@ void ServerConfigGroupPanel::setFocusBack()
             emit rebackPrevPanel();
             // 不接受刷新信号的操作
             m_isShow = false;
+            qCDebug(remotemanage) << "Exit setFocusBack";
         }
     }
 }
 
 void ServerConfigGroupPanel::clearAllFocus()
 {
+    qCDebug(remotemanage) << "clearAllFocus";
     m_rebackButton->clearFocus();
     m_searchEdit->clearFocus();
     m_listWidget->clearFocus();
@@ -162,12 +169,14 @@ void ServerConfigGroupPanel::clearAllFocus()
 
 void ServerConfigGroupPanel::handleShowSearchResult()
 {
+    qCDebug(remotemanage) << "handleShowSearchResult";
     QString strFilter = m_searchEdit->text();
     emit showSearchPanel(strFilter);
 }
 
 void ServerConfigGroupPanel::refreshSearchState()
 {
+    qCDebug(remotemanage) << "refreshSearchState";
     if (m_listWidget->count() >= 2) {
         /************************ Add by m000743 sunchengxi 2020-04-22:搜索显示异常 Begin************************/
         m_searchEdit->clearEdit();
@@ -180,6 +189,7 @@ void ServerConfigGroupPanel::refreshSearchState()
 
 void ServerConfigGroupPanel::onItemClicked(const QString &key)
 {
+    qCDebug(remotemanage) << "onItemClicked, key:" << key;
     // 获取远程信息
     ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
     if (nullptr != remote)

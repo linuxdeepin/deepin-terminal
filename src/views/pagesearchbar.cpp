@@ -23,6 +23,8 @@ Q_DECLARE_LOGGING_CATEGORY(views)
 
 PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
 {
+    qCDebug(views) << "PageSearchBar constructor entered";
+
     Utils::set_Object_Name(this);
     // Init
     hide();
@@ -50,6 +52,7 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     updateSizeMode();
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, &PageSearchBar::updateSizeMode);
 #endif
+    qCDebug(views) << "PageSearchBar constructor finished";
 }
 
 bool PageSearchBar::isFocus()
@@ -64,10 +67,13 @@ bool PageSearchBar::isFocus()
 
 void PageSearchBar::focus()
 {
+    qCDebug(views) << "PageSearchBar::focus() entered";
+
     m_searchEdit->lineEdit()->setFocus();
     m_searchEdit->lineEdit()->selectAll();
     //　焦点一进入以后，就设置文字和图标，用于失去焦点后显示
     recoveryHoldContent();
+    qInfo() << "Search bar focused";
 }
 
 QString PageSearchBar::searchKeytxt()
@@ -139,6 +145,8 @@ void PageSearchBar::keyPressEvent(QKeyEvent *event)
 
 void PageSearchBar::initFindPrevButton()
 {
+    qCDebug(views) << "PageSearchBar::initFindPrevButton() entered";
+
     m_findPrevButton = new DIconButton(QStyle::SP_ArrowUp);
     m_findNextButton->setObjectName("PageSearchBarFindNextDIconButton");//Add by ut001000 renfeixiang 2020-08-13
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
@@ -150,10 +158,13 @@ void PageSearchBar::initFindPrevButton()
             emit findPrev();
         }
     });
+    qCDebug(views) << "PageSearchBar::initFindPrevButton() finished";
 }
 
 void PageSearchBar::initFindNextButton()
 {
+    qCDebug(views) << "PageSearchBar::initFindNextButton() entered";
+
     m_findNextButton = new DIconButton(QStyle::SP_ArrowDown);
     m_findNextButton->setObjectName("PageSearchBarFindNextDIconButton");//Add by ut001000 renfeixiang 2020-08-13
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
@@ -165,10 +176,13 @@ void PageSearchBar::initFindNextButton()
             emit findNext();
         }
     });
+    qCDebug(views) << "PageSearchBar::initFindNextButton() finished";
 }
 
 void PageSearchBar::initSearchEdit()
 {
+    qCDebug(views) << "PageSearchBar::initSearchEdit() entered";
+
     m_searchEdit = new DSearchEdit(this);
     //fix bug#64976 按tab键循环切换到右上角X按钮时继续按tab键，焦点不能切换到搜索框
     //设置m_searchEdit->lineEdit()为m_searchEdit的focus代理
@@ -204,6 +218,7 @@ void PageSearchBar::initSearchEdit()
     connect(m_searchEdit, &DSearchEdit::textChanged, this, [this]() {
         emit keywordChanged(m_searchEdit->lineEdit()->text());
     });
+    qCDebug(views) << "PageSearchBar::initSearchEdit() finished";
 }
 
 /**
@@ -248,5 +263,7 @@ void PageSearchBar::updateSizeMode()
 
 void PageSearchBar::setNoMatchAlert(bool isAlert)
 {
+    qCDebug(views) << "Setting no match alert:" << isAlert;
+
     m_searchEdit->setAlert(isAlert);
 }

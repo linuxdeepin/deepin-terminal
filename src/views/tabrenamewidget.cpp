@@ -11,19 +11,25 @@
 //qt
 #include <QDebug>
 #include <QKeyEvent>
+#include <QLoggingCategory>
 
+Q_DECLARE_LOGGING_CATEGORY(views)
 TabRenameWidget::TabRenameWidget(bool isRemote, bool isSetting, QWidget *parent)
     : QWidget(parent)
     , m_isRemote(isRemote)
     , m_isSetting(isSetting)
 {
+    qCDebug(views) << "TabRenameWidget constructor enter, isRemote:" << isRemote << "isSetting:" << isSetting;
     initChoseMenu();
     initUi();
     initConnections();
+    qCDebug(views) << "TabRenameWidget constructor exit";
 }
 
 void TabRenameWidget::initUi()
 {
+    qCDebug(views) << "TabRenameWidget::initUi enter";
+
     m_layout = new QHBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
     // 设置布局之间的宽度,之前的间距比较宽
@@ -57,6 +63,8 @@ void TabRenameWidget::initUi()
 
 void TabRenameWidget::initChoseMenu()
 {
+    qCDebug(views) << "TabRenameWidget::initChoseMenu enter";
+
     m_choseMenu = new DMenu(this);
     DFontSizeManager::instance()->bind(m_choseMenu, DFontSizeManager::T6);
     if (m_isRemote) {
@@ -70,6 +78,8 @@ void TabRenameWidget::initChoseMenu()
 
 void TabRenameWidget::initRemoteChoseMenu()
 {
+    qCDebug(views) << "TabRenameWidget::initRemoteChoseMenu enter";
+
     QStringList list;
     list << tr("username: %u") << tr("username@: %U") << tr("remote host: %h")
          << tr("session number: %#") << tr("title set by shell: %w");
@@ -82,6 +92,8 @@ void TabRenameWidget::initRemoteChoseMenu()
 
 void TabRenameWidget::initNormalChoseMenu()
 {
+    qCDebug(views) << "TabRenameWidget::initNormalChoseMenu enter";
+
     QStringList list;
     list << tr("program name: %n") << tr("current directory (short): %d")
          << tr("current directory (long): %D") << tr("session number: %#")
@@ -96,7 +108,10 @@ void TabRenameWidget::initNormalChoseMenu()
 
 void TabRenameWidget::initConnections()
 {
+    qCDebug(views) << "TabRenameWidget::initConnections enter";
+
     connect(m_choseMenu, &DMenu::triggered, this, [ = ](QAction * ac) {
+        qCDebug(views) << "TabRenameWidget menu item selected:" << ac->text();
         QStringList spiltlist = ac->text().split("%");
         m_inputedit->lineEdit()->insert("%" + spiltlist.at(1));
         //向输入条中输入内容后，焦点应该同步设置过去
@@ -106,6 +121,8 @@ void TabRenameWidget::initConnections()
 
 void TabRenameWidget::initLabel()
 {
+    qCDebug(views) << "TabRenameWidget::initLabel enter";
+
     m_Label = new QLabel;
     if (!m_isRemote)
         m_Label->setText(QObject::tr("Tab title format"));

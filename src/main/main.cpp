@@ -62,6 +62,7 @@ bool checkImmutableMode() {
 
 int main(int argc, char *argv[])
 {
+    qCDebug(mainprocess) << "Application starting with arguments:" << QCoreApplication::arguments();
     if (checkImmutableMode())
         setenv("PWD", getenv("HOME"), 1);
     if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
@@ -76,8 +77,10 @@ int main(int argc, char *argv[])
     qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
     // 启动应用
+    qCDebug(mainprocess) << "Creating TerminalApplication instance";
     TerminalApplication app(argc, argv);
     app.setStartTime(startTime);
+    qCInfo(mainprocess) << "TerminalApplication initialized, start time:" << startTime;
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     DApplicationSettings set(&app);
 #endif
@@ -107,6 +110,7 @@ int main(int argc, char *argv[])
 #endif
 
     // 参数解析
+    qCDebug(mainprocess) << "Parsing command line arguments";
     TermProperties properties;
     Utils::parseCommandLine(app.arguments(), properties, true);
     QStringList args = app.arguments();
@@ -116,20 +120,28 @@ int main(int argc, char *argv[])
         args += QDir::currentPath();
     }
 
+    qCDebug(mainprocess) << "Initializing DBus manager";
     DBusManager manager;
     if (!manager.initDBus()) {
         // 非第一次启动
+        qCInfo(mainprocess) << "Terminal already running, sending args via DBus";
         DBusManager::callTerminalEntry(args);
         return 0;
     }
     // 第一次启动
+    qCInfo(mainprocess) << "First terminal instance starting";
     // 这行不要删除
     qputenv("TERM", "xterm-256color");
     // 首次启动
+    qCDebug(mainprocess) << "Setting up DBus signal connections";
     QObject::connect(&manager, &DBusManager::entryArgs, Service::instance(), &Service::Entry);
+    qCDebug(mainprocess) << "Starting terminal service";
     Service::instance()->EntryTerminal(args);
+    qCInfo(mainprocess) << "Terminal service started successfully";
     // 监听触控板事件
+    qCDebug(mainprocess) << "Setting up touchpad signal listener";
     manager.listenTouchPadSignal();
+    qCInfo(mainprocess) << "Application initialization completed";
 
     return app.exec();
 }

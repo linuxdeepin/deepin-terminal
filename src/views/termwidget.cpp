@@ -45,8 +45,10 @@ Q_LOGGING_CATEGORY(views,"org.deepin.terminal.views",QtInfoMsg)
 
 TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTermWidget(0, parent), m_properties(properties)
 {
+    qCDebug(views) << "TermWidget constructor enter";
     Utils::set_Object_Name(this);
     // 窗口数量加1
+    qCDebug(views) << "Increasing terminal count";
     WindowsManager::instance()->terminalCountIncrease();
     initTabTitle();
     m_page = static_cast<TermWidgetPage *>(parentWidget());
@@ -166,6 +168,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
 
 void TermWidget::initConnections()
 {
+    qCDebug(views) << "TermWidget::initConnections enter";
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
     connect(this, &QTermWidget::receivedData, this, &TermWidget::onQTermWidgetReceivedData);
 
@@ -288,16 +291,21 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
 
 inline void TermWidget::onExitRemoteServer()
 {
+    qCDebug(views) << "TermWidget::onExitRemoteServer - Checking remote status";
     // 判断是否此时退出远程
     if (!isInRemoteServer()) {
         qCInfo(views) << "exit remote";
+        qCDebug(views) << "TermWidget::onExitRemoteServer - Exiting remote server";
         setIsConnectRemote(false);
         // 还原编码
         setTextCodec(QTextCodec::codecForName(encode().toLocal8Bit()));
         qCInfo(views) << "current encode " << encode();
+        qCDebug(views) << "TermWidget::onExitRemoteServer - Restoring original settings";
         setBackspaceMode(m_backspaceMode);
         setDeleteMode(m_deleteMode);
         emit Service::instance()->checkEncode(encode());
+    } else {
+        qCDebug(views) << "TermWidget::onExitRemoteServer - Still in remote server";
     }
 }
 
@@ -310,6 +318,7 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
 {
     qCInfo(views) << "Theme Type Changed! Current Theme Type: " << builtInTheme;
+    qCDebug(views) << "TermWidget::onThemeTypeChanged - Start theme update";
     // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
@@ -360,10 +369,14 @@ inline void TermWidget::onCopyAvailable(bool enable)
 
 inline void TermWidget::onWindowEffectEnabled(bool isWinEffectEnabled)
 {
-    if (isWinEffectEnabled)
+    qCDebug(views) << "TermWidget::onWindowEffectEnabled - Window effect:" << isWinEffectEnabled;
+    if (isWinEffectEnabled) {
+        qCDebug(views) << "Setting terminal opacity to:" << Settings::instance()->opacity();
         this->setTermOpacity(Settings::instance()->opacity());
-    else
+    } else {
+        qCDebug(views) << "Setting terminal opacity to full (1.0)";
         this->setTermOpacity(1.0);
+    }
 }
 
 TermWidget::~TermWidget()

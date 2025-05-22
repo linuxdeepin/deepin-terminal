@@ -153,6 +153,8 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 
 TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 {
+    qCDebug(views) << "TabBar constructor entered";
+
     Utils::set_Object_Name(this);
     m_termTabStyle = new TermTabStyle();
     setStyle(m_termTabStyle);
@@ -198,6 +200,7 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 #else
     setTabHeight(36);
 #endif
+    qCDebug(views) << "TabBar constructor finished";
 }
 
 TabBar::~TabBar()
@@ -232,6 +235,8 @@ const QString TabBar::identifier(int index) const
 
 int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 {
+    qCDebug(views) << "TabBar::addTab() entered, id:" << tabIdentifier << "name:" << tabName;
+
     int index = DTabBar::addTab(tabName);
     setTabData(index, QVariant::fromValue(tabIdentifier));
 
@@ -239,11 +244,14 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 
     m_tabIdentifierList << tabIdentifier;
 
+    qInfo() << "Tab added at index:" << index;
     return index;
 }
 
 int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QString &tabName)
 {
+    qCDebug(views) << "TabBar::insertTab() entered, at index:" << index << "id:" << tabIdentifier << "name:" << tabName;
+
     qCInfo(views) << "insertTab at index: " << index << " with id::" << tabIdentifier;
     int insertIndex = DTabBar::insertTab(index, tabName);
     setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
@@ -252,6 +260,7 @@ int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QStr
 
     m_tabIdentifierList.insert(index, tabIdentifier);
 
+    qInfo() << "Tab inserted at index:" << insertIndex;
     return insertIndex;
 }
 
@@ -412,6 +421,8 @@ void QTabBar::removeTab(int index)
 
 void TabBar::removeTab(const QString &tabIdentifier)
 {
+    qCDebug(views) << "TabBar::removeTab() entered, id:" << tabIdentifier;
+
     for (int i = 0; i < count(); i++) {
         if (tabData(i).toString() == tabIdentifier) {
             DTabBar::removeTab(i);
@@ -420,10 +431,13 @@ void TabBar::removeTab(const QString &tabIdentifier)
     }
 
     updateTabDragMoveStatus();
+    qInfo() << "Tab removed, id:" << tabIdentifier;
 }
 
 bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
 {
+    qCDebug(views) << "TabBar::setTabText() entered, id:" << tabIdentifier << "text:" << text;
+
     bool termFound = false;
 
     for (int i = 0; i < count(); i++) {
@@ -434,6 +448,7 @@ bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
         }
     }
 
+    qInfo() << "Tab text set, result:" << termFound;
     return termFound;
 }
 
@@ -463,6 +478,8 @@ bool TabBar::eventFilter(QObject *watched, QEvent *event)
 
 inline void TabBar::handleMiddleButtonClick(QMouseEvent *mouseEvent)
 {
+    qCDebug(views) << "TabBar::handleMiddleButtonClick() entered";
+
     //鼠标中键点击关闭标签页
     int index = -1;
     QPoint position = mouseEvent->pos();
@@ -475,10 +492,13 @@ inline void TabBar::handleMiddleButtonClick(QMouseEvent *mouseEvent)
     }
     if (index >= 0)
         emit tabCloseRequested(index);
+    qInfo() << "Middle button click handled for tab:" << index;
 }
 
 inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
 {
+    qCDebug(views) << "TabBar::handleRightButtonClick() entered";
+
     QPoint position = mouseEvent->pos();
     m_rightClickTab = -1;
 

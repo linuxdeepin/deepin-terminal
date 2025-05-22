@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QLibraryInfo>
 #include <QJsonDocument>
+#include <QDebug>
 
 #include "eventlogutils.h"
 
@@ -14,9 +15,11 @@ EventLogUtils *EventLogUtils::mInstance(nullptr);
 
 EventLogUtils &EventLogUtils::get()
 {
+    qDebug() << "Enter EventLogUtils::get()";
     if (mInstance == nullptr) {
         mInstance = new EventLogUtils;
     }
+    qDebug() << "Exit EventLogUtils::get()";
     return *mInstance;
 }
 
@@ -27,17 +30,23 @@ EventLogUtils::EventLogUtils()
     init =reinterpret_cast<bool (*)(const std::string &, bool)>(library.resolve("Initialize"));
     writeEventLog = reinterpret_cast<void (*)(const std::string &)>(library.resolve("WriteEventLog"));
 
-    if (init == nullptr)
+    if (init == nullptr) {
+        qWarning() << "Failed to resolve Initialize function in libdeepin-event-log.so";
         return;
+    }
 
     init("deepin-terminal", true);
 }
 
 void EventLogUtils::writeLogs(QJsonObject &data)
 {
-    if (writeEventLog == nullptr)
+    qDebug() << "Enter EventLogUtils::writeLogs()";
+    if (writeEventLog == nullptr) {
+        qWarning() << "writeEventLog function pointer is null";
         return;
+    }
 
     //std::string str = QJsonDocument(data).toJson(QJsonDocument::Compact).toStdString();
     writeEventLog(QJsonDocument(data).toJson(QJsonDocument::Compact).toStdString());
+    qDebug() << "Exit EventLogUtils::writeLogs()";
 }
