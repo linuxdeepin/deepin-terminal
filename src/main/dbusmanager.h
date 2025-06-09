@@ -7,6 +7,8 @@
 #define DBUSMANAGER_H
 #include "service.h"
 
+#include <DSysInfo>
+
 #include <QObject>
 #include <QList>
 #include <QVariant>
@@ -20,19 +22,24 @@
 #define KWINDBUSPATH "/KWin"
 
 // deepin Appearance
-#define APPEARANCESERVICE "com.deepin.daemon.Appearance"
-#define APPEARANCEPATH "/com/deepin/daemon/Appearance"
+inline const char *getAppearanceService() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "org.deepin.dde.Appearance1" : "com.deepin.daemon.Appearance"; }
+inline const char *getAppearancePath() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "/org/deepin/dde/Appearance1" : "/com/deepin/daemon/Appearance"; }
+#define APPEARANCESERVICE getAppearanceService()
+#define APPEARANCEPATH getAppearancePath()
 
 // sound effect 音效服务
-#define SOUND_EFFECT_SERVICE    "com.deepin.daemon.SoundEffect"
-#define SOUND_EFFECT_PATH       "/com/deepin/daemon/SoundEffect"
-#define SOUND_EFFECT_INTERFACE  "com.deepin.daemon.SoundEffect"
-#define SOUND_EFFECT_METHOD(method) QDBusMessage::createMethodCall(SOUND_EFFECT_SERVICE, SOUND_EFFECT_PATH, SOUND_EFFECT_INTERFACE, (method))
+inline const char *getSoundEffectService() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "org.deepin.dde.SoundEffect1" : "com.deepin.daemon.SoundEffect"; }
+inline const char *getSoundEffectPath() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "/org/deepin/dde/SoundEffect1" : "/com/deepin/daemon/SoundEffect"; }
+inline const char *getSoundEffectInterface() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "org.deepin.dde.SoundEffect1" : "com.deepin.daemon.SoundEffect"; }
+#define SOUND_EFFECT_METHOD(method) QDBusMessage::createMethodCall(getSoundEffectService(), getSoundEffectPath(), getSoundEffectInterface(), (method))
 
 // gesture 触控板手势
-#define GESTURE_SERVICE          "com.deepin.daemon.Gesture"
-#define GESTURE_PATH             "/com/deepin/daemon/Gesture"
-#define GESTURE_INTERFACE        "com.deepin.daemon.Gesture"
+inline const char *getGestureService() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "org.deepin.dde.Gesture1" : "com.deepin.daemon.Gesture"; }
+inline const char *getGesturePath() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "/org/deepin/dde/Gesture1" : "/com/deepin/daemon/Gesture"; }
+inline const char *getGestureInterface() { return Dtk::Core::DSysInfo::majorVersion().toInt() >= 23 ? "org.deepin.dde.Gesture1" : "com.deepin.daemon.Gesture"; }
+#define GESTURE_SERVICE          getGestureService()
+#define GESTURE_PATH             getGesturePath()
+#define GESTURE_INTERFACE        getGestureInterface()
 #define GESTURE_SIGNAL           "Event"
 
 // deepin wm 窗管
