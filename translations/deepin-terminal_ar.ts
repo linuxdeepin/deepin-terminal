@@ -752,7 +752,7 @@
         <location filename="../src/common/utils.cpp" line="192"/>
         <location filename="../src/common/utils.cpp" line="212"/>
         <source>Close this window?</source>
-        <translation>هل تريد إغلاق هذه النافذة؟</translation>
+        <translation>إغلاق هذه النافذة؟</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="193"/>
