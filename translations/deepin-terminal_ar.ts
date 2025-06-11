@@ -473,7 +473,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <source>Go to tab 1</source>
-        <translation>الذهاب إلى اللسان رقم 1</translation>
+        <translation>الذهاب إلى النافذة رقم 1</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
