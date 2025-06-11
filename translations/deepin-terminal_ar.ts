@@ -491,13 +491,13 @@
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Go to tab 4</source>
-        <translation>الذهاب إلى اللسان رقم 4</translation>
+        <translation>الذهاب إلى النافذة رقم 4</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Go to tab 5</source>
-        <translation>الذهاب إلى اللسان رقم 5</translation>
+        <translation>الذهاب إلى النافذة رقم 5</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
