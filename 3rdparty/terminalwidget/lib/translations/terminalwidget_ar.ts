@@ -36,7 +36,7 @@
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
         <source>Accessible Color Scheme</source>
-        <translation>مخطط ألوان قابل للوصول</translation>
+        <translation>نظام  ألوان قابل للوصول</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="538"/>
