@@ -22,7 +22,7 @@
     <message>
         <location filename="../Vt102Emulation.cpp" line="1105"/>
         <source>No keyboard translator available.  The information needed to convert key presses into characters to send to the terminal is missing.</source>
-        <translation>مترجم لوحة المفاتيح غير متوفر. المعلومات اللازمة لتحويل الضغط على المفاتيح إلى معلمات要去翻译的部分没有提供，这里假设翻译保持不变。</translation>
+        <translation>لا يوجد مترجم لوحة مفاتيح متاح. المعلومات اللازمة لتحويل ضغطات المفاتيح إلى أحرف للإرسال إلى الطرفية مفقودة.</translation>
     </message>
 </context>
 <context>
