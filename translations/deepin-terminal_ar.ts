@@ -503,13 +503,13 @@
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Go to tab 6</source>
-        <translation>الذهاب إلى اللسان رقم 6</translation>
+        <translation>الذهاب إلى النافذة رقم 6</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Go to tab 7</source>
-        <translation>الذهاب إلى اللسان رقم 7</translation>
+        <translation>الذهاب إلى النافذة رقم 7</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
