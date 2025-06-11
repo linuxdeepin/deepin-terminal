@@ -695,7 +695,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1590"/>
         <source>Tabs</source>
-        <translation>الألسنة</translation>
+        <translation>النوافذ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
