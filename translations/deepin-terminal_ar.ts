@@ -462,7 +462,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
-        <translation>حدد workspace العلوي</translation>
+        <translation>حدد مساحة العمل العليا</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
