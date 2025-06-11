@@ -479,7 +479,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <source>Go to tab 2</source>
-        <translation>الذهاب إلى اللسان رقم 2</translation>
+        <translation>الذهاب إلى النافذة رقم 2</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
