@@ -728,7 +728,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
         <source>Programs are still running in terminal</source>
-        <translation>لا تزال هناك برامج تعمل في الطرفية</translation>
+        <translation>لا تزال البرامج تعمل في الطرفية</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="182"/>
