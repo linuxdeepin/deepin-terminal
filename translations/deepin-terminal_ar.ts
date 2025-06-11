@@ -432,7 +432,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Next tab</source>
-        <translation>اللسان التالي</translation>
+        <translation>النافذة التالية</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
