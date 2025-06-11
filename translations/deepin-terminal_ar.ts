@@ -531,7 +531,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>Shell profile</source>
-        <translation>ملف تعريف سطح المكتب</translation>
+        <translation>ملف تعريف الصدفة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
