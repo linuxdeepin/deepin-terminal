@@ -526,7 +526,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>تعطيل ضبط التدفق باستخدام Ctrl+S، Ctrl+Q</translation>
+        <translation>تعطيل التحكم بالتدفق باستخدام Ctrl+S، Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
