@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Use on starting</source>
-        <translation>استخدامه عند البدء</translation>
+        <translation>استخدام عند البدء</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
