@@ -706,7 +706,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <source>Select tab</source>
-        <translation>اختيار اللسان</translation>
+        <translation>اختيار النافذة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1610"/>
