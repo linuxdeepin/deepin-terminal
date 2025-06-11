@@ -701,7 +701,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
-        <translation>إغلاق اللسان</translation>
+        <translation>إغلاق النافذة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
