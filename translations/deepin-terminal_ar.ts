@@ -690,7 +690,7 @@
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation> الطرفية عبارة عن محاكي مطور متقدم مزود بمساحة عمل ، ونوافذ متعددة ، والإدارة عن بعد ، ووضع متحول ، وغيرها من الميزات.</translation>
+        <translation>الطرفية هي محاكي طرفية متقدم يدعم مساحات العمل والنوافذ المتعددة والإدارة عن بُعد ووضع كويك وميزات أخرى.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1590"/>
