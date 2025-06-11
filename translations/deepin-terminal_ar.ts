@@ -822,7 +822,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="344"/>
         <source>Run in quake mode</source>
-        <translation>ابدأ في وضع الزلزال</translation>
+        <translation>التشغيل في وضع كويك</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="347"/>
