@@ -69,7 +69,7 @@
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
         <source>Cannot load color scheme: %1</source>
-        <translation>يمكن&apos;t load_不加载配色方案: %1</translation>
+        <translation>تعذّر تحميل نظام الألوان: ‏%1</translation>
     </message>
 </context>
 <context>
