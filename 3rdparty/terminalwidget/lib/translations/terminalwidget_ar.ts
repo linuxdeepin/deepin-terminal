@@ -82,7 +82,7 @@
     <message>
         <location filename="../SearchBar.cpp" line="46"/>
         <source>Regular expression</source>
-        <translation>تعبير정규 표현</translation>
+        <translation>التعبير النمطي</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="50"/>
