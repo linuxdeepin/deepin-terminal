@@ -515,13 +515,13 @@
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <source>Go to tab 8</source>
-        <translation>الذهاب إلى اللسان رقم 8</translation>
+        <translation>الذهاب إلى النافذة رقم 8</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Go to tab 9</source>
-        <translation>الذهاب إلى اللسان رقم 9</translation>
+        <translation>الذهاب إلى النافذة رقم 9</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
