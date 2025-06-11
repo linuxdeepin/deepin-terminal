@@ -456,7 +456,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
-        <translation>حدد مساحة العمل العليا</translation>
+        <translation>حدد مساحة العمل اليمنى</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
