@@ -87,7 +87,7 @@
     <message>
         <location filename="../SearchBar.cpp" line="50"/>
         <source>Highlight all matches</source>
-        <translation>تظهر جميع التوافق</translation>
+        <translation>تمييز كلّ المطابقات</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="14"/>
