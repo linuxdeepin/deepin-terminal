@@ -863,7 +863,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="483"/>
         <source>Close other tabs</source>
-        <translation>إغلاق الألسنة الأخرى</translation>
+        <translation>إغلاق النوافذ الأخرى</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="894"/>
