@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="350"/>
         <source>Prompt PS1:</source>
-        <translation>تحذير PS1</translation>
+        <translation>موجه PS1</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="354"/>
         <source>Prompt PS2:</source>
-        <translation>تحذير PS2</translation>
+        <translation>موجه PS2</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="424"/>
