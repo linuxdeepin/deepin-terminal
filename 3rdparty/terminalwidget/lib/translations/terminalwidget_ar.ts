@@ -31,7 +31,7 @@
         <location filename="../ColorScheme.cpp" line="278"/>
         <location filename="../ColorScheme.cpp" line="293"/>
         <source>Un-named Color Scheme</source>
-        <translation>_BGR的名称_配色方案</translation>
+        <translation>مخطط ألوان غير مسمّى</translation>
     </message>
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
