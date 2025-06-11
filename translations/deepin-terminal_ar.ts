@@ -450,7 +450,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
-        <translation>حدد workspace السفلي</translation>
+        <translation>حدد مساحة العمل السفلى</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
