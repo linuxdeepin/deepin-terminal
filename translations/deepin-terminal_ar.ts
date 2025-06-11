@@ -1155,7 +1155,7 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <source>title set by shell: %w</source>
-        <translation>العنوان الذي حددته الساري: %w</translation>
+        <translation>العنوان المحدد بواسطة الصدفة %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
