@@ -857,7 +857,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
-        <translation>تنسيق عنوان علامة تبويب عن بعد</translation>
+        <translation>تنسيق عنوان النافذة عن بعد</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
