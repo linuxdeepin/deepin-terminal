@@ -438,7 +438,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Previous tab</source>
-        <translation>اللسان التالي</translation>
+        <translation>النافذة السابقة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
