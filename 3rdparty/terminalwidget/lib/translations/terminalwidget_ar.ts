@@ -31,7 +31,7 @@
         <location filename="../ColorScheme.cpp" line="278"/>
         <location filename="../ColorScheme.cpp" line="293"/>
         <source>Un-named Color Scheme</source>
-        <translation>مخطط ألوان غير مسمّى</translation>
+        <translation>نظام ألوان غير مسمّى</translation>
     </message>
     <message>
         <location filename="../ColorScheme.cpp" line="464"/>
