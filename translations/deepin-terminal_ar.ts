@@ -746,7 +746,7 @@
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation>لا يزال هناك %1 عملية واحدة تعمل في هذا المحطة. سيؤدي إغلاق المحطة إلى إنهاء جميع العمليات.</translation>
+        <translation>لا تزال هناك %1 عملية قيد التشغيل في هذه الطرفية. سيؤدي إغلاق الطرفية إلى إنهاء جميعها.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
