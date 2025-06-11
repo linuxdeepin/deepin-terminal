@@ -426,7 +426,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <source>New tab</source>
-        <translation>لسان جديد</translation>
+        <translation>نافذة جديدة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
