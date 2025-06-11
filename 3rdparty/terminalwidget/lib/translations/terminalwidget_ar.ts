@@ -77,7 +77,7 @@
     <message>
         <location filename="../SearchBar.cpp" line="40"/>
         <source>Match case</source>
-        <translation>تطابق الحالتين</translation>
+        <translation>مطابقة الحالة</translation>
     </message>
     <message>
         <location filename="../SearchBar.cpp" line="46"/>
