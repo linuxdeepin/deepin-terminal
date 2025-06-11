@@ -851,7 +851,7 @@
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
-        <translation>تنسيق عنوان علامة تبويب</translation>
+        <translation>تنسيق عنوان النافذة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
