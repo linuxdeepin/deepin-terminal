@@ -1216,7 +1216,7 @@
         <location filename="../src/views/termwidget.cpp" line="503"/>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>New tab</source>
-        <translation>لسان جديد</translation>
+        <translation>نافذة جديد</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="510"/>
