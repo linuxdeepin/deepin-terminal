@@ -102,7 +102,7 @@
     <message>
         <location filename="../SearchBar.ui" line="32"/>
         <source>Find:</source>
-        <translation>أبحث عن:</translation>
+        <translation>أبحث:</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="42"/>
