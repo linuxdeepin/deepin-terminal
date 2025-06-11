@@ -92,7 +92,7 @@
     <message>
         <location filename="../SearchBar.ui" line="14"/>
         <source>SearchBar</source>
-        <translation>المربع المخصص للبحث</translation>
+        <translation>شريط البحث</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="20"/>
