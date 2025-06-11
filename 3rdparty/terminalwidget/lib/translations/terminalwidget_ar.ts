@@ -64,7 +64,7 @@
     <message>
         <location filename="../qtermwidget.cpp" line="451"/>
         <source>Color Scheme Error</source>
-        <translation>ح_attempt_ر赶赴配色方案错误</translation>
+        <translation>خطأ في نظام الألوان</translation>
     </message>
     <message>
         <location filename="../qtermwidget.cpp" line="452"/>
