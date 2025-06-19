@@ -1,0 +1,20 @@
+[main]
+host = https://www.transifex.com
+
+[o:linuxdeepin:p:deepin-terminal:r:b8563660b7d2a3a06a28f20301e7ca71]
+file_filter = translations/deepin-terminal_<lang>.ts
+source_file = translations/deepin-terminal.ts
+source_lang = en_US
+type = QT
+
+[o:linuxdeepin:p:deepin-terminal:r:57068c267b830fc1ff04b09b20247e67]
+file_filter = 3rdparty/terminalwidget/lib/translations/terminalwidget_<lang>.ts
+source_file = 3rdparty/terminalwidget/lib/translations/terminalwidget.ts
+source_lang = en_US
+type = QT
+
+[o:linuxdeepin:p:deepin-terminal:r:517babe00a8d9b6d16a2deb25d58638d]
+file_filter = translations/desktop/desktop_<lang>.ts
+source_file = translations/desktop/desktop.ts
+source_lang = en_US
+type = QT
