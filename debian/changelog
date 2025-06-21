@@ -1,3 +1,9 @@
+deepin-terminal (6.5.7) unstable; urgency=medium
+
+  * chore: Update dman's resources
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Sat, 21 Jun 2025 09:58:19 +0800
+
 deepin-terminal (6.5.6) unstable; urgency=medium
 
   * fix: replace icon siez 12*12(Bug: 279839)
