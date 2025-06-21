@@ -1,4 +1,5 @@
 # User config
+*.qm
 *.user
 moc_*.h
 moc_*.cpp

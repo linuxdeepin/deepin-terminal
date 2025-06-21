@@ -18,9 +18,6 @@
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="127"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="128"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="205"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="211"/>
         <source>Required</source>
         <translation>Неопходно</translation>
     </message>
@@ -94,7 +91,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="216"/>
         <source>No commands yet</source>
-        <translation type="unfinished"/>
+        <translation>Нема команда још</translation>
     </message>
 </context>
 <context>
@@ -177,7 +174,6 @@
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="298"/>
-        <location filename="../src/views/listview.cpp" line="492"/>
         <source>Are you sure you want to delete %1?</source>
         <translation>Заиста желите да обришете %1?</translation>
     </message>
@@ -186,7 +182,6 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="269"/>
-        <location filename="../src/main/mainwindow.cpp" line="324"/>
         <source>New window</source>
         <translation>Нови прозор</translation>
     </message>
@@ -222,9 +217,6 @@
     <name>QObject</name>
     <message>
         <location filename="../src/views/listview.cpp" line="304"/>
-        <location filename="../src/views/listview.cpp" line="493"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="236"/>
-        <location filename="../src/common/utils.cpp" line="244"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Откажи</translation>
@@ -237,39 +229,34 @@
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="494"/>
-        <location filename="../src/views/tabrenamedlg.cpp" line="241"/>
         <source>Confirm</source>
         <comment>button</comment>
         <translation>Потврди</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="514"/>
-        <location filename="../src/settings/settings_translation.cpp" line="109"/>
-        <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Close workspace</source>
         <translation>Затвори радни простор</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="517"/>
-        <location filename="../src/settings/settings_translation.cpp" line="105"/>
-        <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Close other workspaces</source>
         <translation>Затвори остале радне просторе</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1177"/>
-        <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation>Није пронађено &quot;%1&quot;, уместо тога покрећем &quot;%2&quot;. Проверите ваш профил љуске.</translation>
+        <source>Could not find "%1", starting "%2" instead. Please check your shell profile.</source>
+        <translation>Није пронађено "%1", уместо тога покрећем "%2". Проверите ваш профил љуске.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1183"/>
-        <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation>Не могу да отворим &quot;%1&quot;, покретање није могуће</translation>
+        <source>Could not open "%1", unable to run it</source>
+        <translation>Не могу да отворим "%1", покретање није могуће</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1185"/>
-        <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation>Није пронађено &quot;%1&quot;, покретање није могуће</translation>
+        <source>Could not find "%1", unable to run it</source>
+        <translation>Није пронађено "%1", покретање није могуће</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1215"/>
@@ -278,33 +265,26 @@
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="132"/>
-        <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Tab title format</source>
         <translation>Формат наслова картице</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="134"/>
-        <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Remote tab title format</source>
         <translation>Формат наслова удаљене картице</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamedlg.cpp" line="203"/>
-        <location filename="../src/views/tabbar.cpp" line="504"/>
-        <location filename="../src/settings/settings_translation.cpp" line="81"/>
-        <location filename="../src/main/mainwindow.cpp" line="1735"/>
         <source>Rename title</source>
         <translation>Промени наслов</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="498"/>
-        <location filename="../src/main/mainwindow.cpp" line="1715"/>
         <source>Close tab</source>
         <translation>Затвори картице</translation>
     </message>
     <message>
         <location filename="../src/views/tabbar.cpp" line="501"/>
-        <location filename="../src/main/mainwindow.cpp" line="1715"/>
         <source>Close other tabs</source>
         <translation>Затвори остале картице</translation>
     </message>
@@ -340,7 +320,6 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
-        <location filename="../src/main/service.cpp" line="159"/>
         <source>Blur background</source>
         <translation>Замућена позадина</translation>
     </message>
@@ -361,7 +340,6 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="53"/>
-        <location filename="../src/main/service.cpp" line="182"/>
         <source>Opacity</source>
         <translation>Прозирност</translation>
     </message>
@@ -402,14 +380,11 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="69"/>
-        <location filename="../src/main/mainwindow.cpp" line="1671"/>
         <source>Others</source>
         <translation>Остало</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="71"/>
-        <location filename="../src/main/terminalapplication.cpp" line="36"/>
-        <location filename="../src/main/mainwindow.cpp" line="1669"/>
         <source>Terminal</source>
         <translation>Терминал</translation>
     </message>
@@ -420,43 +395,36 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="75"/>
-        <location filename="../src/main/mainwindow.cpp" line="1735"/>
         <source>Custom commands</source>
         <translation>Прилагођене команде</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="77"/>
-        <location filename="../src/main/mainwindow.cpp" line="1735"/>
         <source>Display shortcuts</source>
         <translation>Прикажи пречице</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="79"/>
-        <location filename="../src/main/mainwindow.cpp" line="1735"/>
         <source>Remote management</source>
         <translation>Даљинско управљање</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="83"/>
-        <location filename="../src/main/mainwindow.cpp" line="1735"/>
         <source>Fullscreen</source>
         <translation>Цео екран</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="85"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Copy</source>
         <translation>Копирај</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="87"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Default size</source>
         <translation>Подразумевана величина</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Paste</source>
         <translation>Убаци</translation>
     </message>
@@ -467,7 +435,6 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Select all</source>
         <translation>Изабери све</translation>
     </message>
@@ -483,13 +450,11 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="99"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Zoom in</source>
         <translation>Увеличај</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Zoom out</source>
         <translation>Умањи</translation>
     </message>
@@ -505,61 +470,51 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
-        <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Horizontal split</source>
         <translation>Хоризонтална подела</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
-        <location filename="../src/main/mainwindow.cpp" line="1715"/>
         <source>New tab</source>
         <translation>Нова картица</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="115"/>
-        <location filename="../src/main/mainwindow.cpp" line="1715"/>
         <source>Next tab</source>
         <translation>Следећа картица</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="117"/>
-        <location filename="../src/main/mainwindow.cpp" line="1715"/>
         <source>Previous tab</source>
         <translation>Претходна картица</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
-        <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select left workspace</source>
         <translation>Изабери леви радни простор</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
-        <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Select lower workspace</source>
         <translation>Изабери доњи радни простор</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
-        <location filename="../src/main/mainwindow.cpp" line="1717"/>
         <source>Select right workspace</source>
         <translation>Изабери десни радни простор</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
-        <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Select upper workspace</source>
         <translation>Изабери горњи радни простор</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
-        <location filename="../src/main/mainwindow.cpp" line="1716"/>
         <source>Vertical split</source>
         <translation>Вертикална подела</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
-        <location filename="../src/main/mainwindow.cpp" line="1700"/>
         <source>Find</source>
         <translation>Пронађи</translation>
     </message>
@@ -570,55 +525,46 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Go to tab 1</source>
         <translation>Иди на картицу 1</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Go to tab 2</source>
         <translation>Иди на картицу 2</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
-        <location filename="../src/main/mainwindow.cpp" line="1718"/>
         <source>Go to tab 3</source>
         <translation>Иди на картицу 3</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
-        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 4</source>
         <translation>Иди на картицу 4</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
-        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 5</source>
         <translation>Иди на картицу 5</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
-        <location filename="../src/main/mainwindow.cpp" line="1719"/>
         <source>Go to tab 6</source>
         <translation>Иди на картицу 6</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
-        <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 7</source>
         <translation>Иди на картицу 7</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
-        <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 8</source>
         <translation>Иди на картицу 8</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
-        <location filename="../src/main/mainwindow.cpp" line="1720"/>
         <source>Go to tab 9</source>
         <translation>Иди на картицу 9</translation>
     </message>
@@ -634,7 +580,6 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="517"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="379"/>
         <source>The name should be no more than 32 characters</source>
         <translation>Име не треба бити дуже од 32 карактера</translation>
     </message>
@@ -645,8 +590,6 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="587"/>
-        <location filename="../src/main/mainwindow.cpp" line="1851"/>
-        <location filename="../src/common/utils.cpp" line="133"/>
         <source>Select</source>
         <translation>Изабери</translation>
     </message>
@@ -662,8 +605,8 @@
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1687"/>
-        <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>Пребаци фокус на &quot;+&quot; иконицу</translation>
+        <source>Switch focus to "+" icon</source>
+        <translation>Пребаци фокус на "+" иконицу</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1716"/>
@@ -672,56 +615,46 @@
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1775"/>
-        <location filename="../src/common/utils.cpp" line="148"/>
         <source>Select file to upload</source>
         <translation>Изабери датотеку за отпремање</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1782"/>
-        <location filename="../src/common/utils.cpp" line="153"/>
         <source>Upload</source>
         <translation>Отпреми</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1845"/>
-        <location filename="../src/common/utils.cpp" line="127"/>
         <source>Select a directory to save the file</source>
         <translation>Изабери директоријум за чување датотеке</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="403"/>
-        <location filename="../src/customcommand/customcommandoptdlg.cpp" line="621"/>
-        <location filename="../src/common/utils.cpp" line="254"/>
         <source>please set another one.</source>
         <translation>молимо поставите другу</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="173"/>
-        <location filename="../src/common/utils.cpp" line="207"/>
         <source>Close this terminal?</source>
         <translation>Затворити овај терминал?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="174"/>
-        <location filename="../src/common/utils.cpp" line="208"/>
         <source>There is still a process running in this terminal. Closing the terminal will kill it.</source>
         <translation>Процес још ради у овом терминалу. Затварање терминала ће га убити.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="178"/>
-        <location filename="../src/common/utils.cpp" line="212"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will kill all of them.</source>
         <translation>У овом терминалу ради %1 процеса. Затварање терминала ће их убити.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
-        <location filename="../src/common/utils.cpp" line="203"/>
         <source>Close this window?</source>
         <translation>Затворити овај прозор?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="184"/>
-        <location filename="../src/common/utils.cpp" line="204"/>
         <source>There are still processes running in this window. Closing the window will kill all of them.</source>
         <translation>У овом прозору још раде процеси. Затварање прозора ће их убити.</translation>
     </message>
@@ -737,19 +670,16 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="234"/>
-        <location filename="../src/common/utils.cpp" line="238"/>
         <source>Are you sure you want to uninstall this application?</source>
         <translation>Заиста желите да уклоните овај програм?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="235"/>
-        <location filename="../src/common/utils.cpp" line="239"/>
         <source>You will not be able to use Terminal any longer.</source>
         <translation>Више нећете моћи да користите терминал.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="245"/>
-        <location filename="../src/common/utils.cpp" line="289"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>У реду</translation>
@@ -795,7 +725,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="205"/>
         <source>No servers yet</source>
-        <translation type="unfinished"/>
+        <translation>Нема сервера још</translation>
     </message>
 </context>
 <context>
@@ -838,8 +768,6 @@
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="146"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="156"/>
-        <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="184"/>
         <source>Required</source>
         <translation>Неопходно</translation>
     </message>
@@ -993,14 +921,11 @@
     <name>ShortcutManager</name>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="283"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="292"/>
         <source>The shortcut %1 is invalid, </source>
         <translation>Пречица %1 је неважећа, </translation>
     </message>
     <message>
         <location filename="../src/settings/shortcutmanager.cpp" line="299"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="306"/>
-        <location filename="../src/settings/shortcutmanager.cpp" line="312"/>
         <source>The shortcut %1 was already in use, </source>
         <translation>Пречица %1 је била већ у употреби, </translation>
     </message>
@@ -1014,7 +939,6 @@
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="95"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="109"/>
         <source>username: %u</source>
         <translation>корисничко име: %u</translation>
     </message>
@@ -1030,13 +954,11 @@
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="108"/>
         <source>session number: %#</source>
         <translation>број сесије: %#</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="96"/>
-        <location filename="../src/views/tabrenamewidget.cpp" line="110"/>
         <source>title set by shell: %w</source>
         <translation>нслов задат од стране љуске: %w</translation>
     </message>
@@ -1085,19 +1007,16 @@
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="508"/>
-        <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Horizontal split</source>
         <translation>Хоризонтална подела</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="511"/>
-        <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>Vertical split</source>
         <translation>Вертикална подела</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="521"/>
-        <location filename="../src/views/termwidget.cpp" line="567"/>
         <source>New tab</source>
         <translation>Нова картица</translation>
     </message>
@@ -1156,7 +1075,6 @@
     <name>Utils</name>
     <message>
         <location filename="../src/common/utils.cpp" line="189"/>
-        <location filename="../src/common/utils.cpp" line="223"/>
         <source>Cancel</source>
         <comment>button</comment>
         <translation>Откажи</translation>
@@ -1169,7 +1087,6 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="224"/>
-        <location filename="../src/common/utils.cpp" line="256"/>
         <source>OK</source>
         <comment>button</comment>
         <translation>У реду</translation>
