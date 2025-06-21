@@ -1,22 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
-  <defs>
-    <filter id="deepin-terminal-a" width="127.9%" height="130.8%" x="-14%" y="-15.4%" filterUnits="objectBoundingBox">
-      <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
-      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
-      <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
-      <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0"/>
-      <feMerge>
-        <feMergeNode in="shadowMatrixOuter1"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <radialGradient id="deepin-terminal-b" cx="50%" cy="0%" r="100%" fx="50%" fy="0%" gradientTransform="matrix(0 1 -.90698 0 .5 -.5)">
-      <stop offset="0%" stop-color="#FF774D"/>
-      <stop offset="100%" stop-color="#BA0E55"/>
-    </radialGradient>
-  </defs>
-  <g fill="none" fill-rule="evenodd" filter="url(#deepin-terminal-a)" transform="translate(5 9)">
-    <rect width="86" height="78" fill="url(#deepin-terminal-b)" rx="12"/>
-    <path fill="#FFF0F0" fill-rule="nonzero" d="M51.4545455,43 C52.5842188,43 54,44.1192881 54,45.5 C54,46.8807119 52.5842188,48 51.4545455,48 L51.4545455,48 L31.5454545,48 C30.4157812,48 29,46.8807119 29,45.5 C29,44.1192881 30.4157812,43 31.5454545,43 L31.5454545,43 Z M11.8064975,15.3662902 C12.4326281,14.2929234 13.810343,13.9303668 14.8837098,14.5564975 L14.8837098,14.5564975 L32.8837098,25.0564975 C34.3720967,25.9247232 34.3720967,28.0752768 32.8837098,28.9435025 L32.8837098,28.9435025 L14.8837098,39.4435025 C13.810343,40.0696332 12.4326281,39.7070766 11.8064975,38.6337098 C11.1803668,37.560343 11.5429234,36.1826281 12.6162902,35.5564975 L12.6162902,35.5564975 L27.3835774,26.9422466 L12.6162902,18.4435025 C11.5429234,17.8173719 11.1803668,16.439657 11.8064975,15.3662902 Z"/>
-  </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="24px" viewBox="0 0 25 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>apps/128/deepin-terminal</title>
+    <defs>
+        <filter x="-9.7%" y="-5.3%" width="119.4%" height="121.3%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.20036604 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="100%" gradientTransform="translate(0.5, 0), scale(0.9091, 1), rotate(90), translate(-0.5, -0)" id="radialGradient-2">
+            <stop stop-color="#FF774D" offset="0%"></stop>
+            <stop stop-color="#BA0E55" offset="100%"></stop>
+        </radialGradient>
+        <path d="M3.84702942,-4.4408921e-16 L16.7779706,4.5341707e-16 C18.1156665,-2.63448375e-16 18.6007474,0.139281921 19.089789,0.400824253 C19.5788307,0.662366585 19.9626334,1.04616933 20.2241757,1.53521097 C20.4857181,2.02425261 20.625,2.50933348 20.625,3.84702942 L20.625,14.9029706 C20.625,16.2406665 20.4857181,16.7257474 20.2241757,17.214789 C19.9626334,17.7038307 19.5788307,18.0876334 19.089789,18.3491757 C18.6007474,18.6107181 18.1156665,18.75 16.7779706,18.75 L3.84702942,18.75 C2.50933348,18.75 2.02425261,18.6107181 1.53521097,18.3491757 C1.04616933,18.0876334 0.662366585,17.7038307 0.400824253,17.214789 C0.139281921,16.7257474 0,16.2406665 0,14.9029706 L2.26708535e-16,3.84702942 C-1.31724187e-16,2.50933348 0.139281921,2.02425261 0.400824253,1.53521097 C0.662366585,1.04616933 1.04616933,0.662366585 1.53521097,0.400824253 C2.02425261,0.139281921 2.50933348,-4.4408921e-16 3.84702942,-4.4408921e-16 Z" id="path-3"></path>
+        <filter x="-7.3%" y="-8.0%" width="114.5%" height="116.0%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="1" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="-1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="99.1887019%" id="linearGradient-5">
+            <stop stop-color="#FFFFFF" stop-opacity="0.3" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.4" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="apps/128/deepin-terminal" stroke="none" fill="none" transform="translate(0.5, 0)">
+        <g id="app/deepin-terminal/48px" filter="url(#filter-1)" stroke-width="1" fill-rule="evenodd" transform="translate(1.6875, 2.625)">
+            <g id="Rectangle-245">
+                <use fill="url(#radialGradient-2)" fill-rule="evenodd" xlink:href="#path-3"></use>
+                <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+            </g>
+            <path d="M16.7779706,-2.66453526e-15 C18.1156665,-2.66453526e-15 18.6007474,0.139281921 19.089789,0.400824253 C19.5788307,0.662366585 19.9626334,1.04616933 20.2241757,1.53521097 C20.4857181,2.02425261 20.625,2.50933348 20.625,3.84702942 L20.625,14.9029706 C20.625,16.2406665 20.4857181,16.7257474 20.2241757,17.214789 C19.9626334,17.7038307 19.5788307,18.0876334 19.089789,18.3491757 C18.6007474,18.6107181 18.1156665,18.75 16.7779706,18.75 L3.84702942,18.75 C2.50933348,18.75 2.02425261,18.6107181 1.53521097,18.3491757 C1.04616933,18.0876334 0.662366585,17.7038307 0.400824253,17.214789 C0.139281921,16.7257474 0,16.2406665 0,14.9029706 L0,3.84702942 C0,2.50933348 0.139281921,2.02425261 0.400824253,1.53521097 C0.662366585,1.04616933 1.04616933,0.662366585 1.53521097,0.400824253 C2.02425261,0.139281921 2.50933348,-2.66453526e-15 3.84702942,-2.66453526e-15 L16.7779706,-2.66453526e-15 Z M3.84702942,0.1875 C2.65572942,0.1875 2.14853874,0.285443038 1.62363575,0.566164228 C1.16726945,0.810231597 0.810231597,1.16726945 0.566164228,1.62363575 C0.285443038,2.14853874 0.1875,2.65572942 0.1875,3.84702942 L0.1875,14.9029706 C0.1875,16.0942706 0.285443038,16.6014613 0.566164228,17.1263642 C0.810231597,17.5827305 1.16726945,17.9397684 1.62363575,18.1838358 C2.14853874,18.464557 2.65572942,18.5625 3.84702942,18.5625 L16.7779706,18.5625 C17.9692706,18.5625 18.4764613,18.464557 19.0013642,18.1838358 C19.4577305,17.9397684 19.8147684,17.5827305 20.0588358,17.1263642 C20.339557,16.6014613 20.4375,16.0942706 20.4375,14.9029706 L20.4375,3.84702942 C20.4375,2.65572942 20.339557,2.14853874 20.0588358,1.62363575 C19.8147684,1.16726945 19.4577305,0.810231597 19.0013642,0.566164228 C18.4764613,0.285443038 17.9692706,0.1875 16.7779706,0.1875 L3.84702942,0.1875 Z" id="Rectangle-245" fill="url(#linearGradient-5)" fill-rule="nonzero"></path>
+            <path d="M12.421875,9.75 C12.6160376,9.75 12.7918189,9.82345328 12.9190595,9.94221117 C13.0463001,10.0609691 13.125,10.2250316 13.125,10.40625 C13.125,10.5874684 13.0463001,10.7515309 12.9190595,10.8702888 C12.7918189,10.9890467 12.6160376,11.0625 12.421875,11.0625 L8.203125,11.0625 C8.00896239,11.0625 7.83318114,10.9890467 7.70594054,10.8702888 C7.57869995,10.7515309 7.5,10.5874684 7.5,10.40625 C7.5,10.2250316 7.57869995,10.0609691 7.70594054,9.94221117 C7.83318114,9.82345328 8.00896239,9.75 8.203125,9.75 L12.421875,9.75 Z" id="路径" fill="#FFFFFF" fill-rule="nonzero"></path>
+            <polyline id="路径-2" stroke="#FFFFFF" stroke-width="1.3125" stroke-linecap="round" stroke-linejoin="round" points="3.5625 4.125 7.3125 6.65625 3.5625 9.1875"></polyline>
+        </g>
+        <g id="Guide/128"></g>
+    </g>
 </svg>

@@ -198,6 +198,9 @@
 
 ![1|addssh](fig/addssh_all.png)
 
+![1|addssh](fig/addssh_all2.png)
+
+
 
 ### 编辑服务器
 1.  打开终端远程管理界面，将光标置于某一个服务器上，则显示编辑按钮 ![edit_icon](../common/edit_icon.svg)，单击该按钮弹出编辑服务器窗口。
@@ -241,7 +244,6 @@
 
 > ![tips](../common/tips.svg)窍门 ：连接到远程服务器后，您可直接将文件拖拽到终端来上传。
 
-![0|export](fig/export.png)
 
 #### 下载文件
 
@@ -249,8 +251,6 @@
 2. 单击鼠标右键选择 **下载文件**。
 3. 在弹出的窗口中选择文件需要存放的位置。
 4. 输入要下载的文件路径，文件将下载到指定位置。
-
-![0|download](fig/download.png)
 
 ### 删除服务器
 
