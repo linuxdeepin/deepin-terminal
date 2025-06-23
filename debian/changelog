@@ -1,3 +1,9 @@
+deepin-terminal (6.5.8) unstable; urgency=medium
+
+  * fix(translations): update translations for multiple languages by Ai
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Mon, 23 Jun 2025 10:53:21 +0800
+
 deepin-terminal (6.5.7) unstable; urgency=medium
 
   * chore: Update dman's resources
