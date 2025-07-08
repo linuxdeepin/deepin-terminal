@@ -224,7 +224,7 @@ You can open remote management panel to add remote servers via the main menu or 
 
    >  ![notes](../common/notes.svg)Notes: If you need to set up more parameters, please click **Advanced options**. 
 
- ![1|addssh](fig/addsshall.png)
+ 
 
 ### Edit Servers
 
@@ -271,7 +271,7 @@ You can upload and download files after logging into a remote server.
 
 > ![tips](../common/tips.svg)Tips: You can drag the file directly into the terminal interface to upload after connecting the remote server.
 
-![1|upload](fig/upload.png)
+
 
 
 #### Download Files
@@ -281,7 +281,7 @@ You can upload and download files after logging into a remote server.
 3. Select the storage location.
 4. Input the path of the file to be downloaded. The file will be downloaded to the specified location.
 
-![1|download](fig/download.png)
+
 
 
 ### Delete Servers
@@ -291,7 +291,7 @@ You can upload and download files after logging into a remote server.
 3. Select **Delete server**.
 4. Click **Delete** on the pop-up window to confirm.
 
-![0|groupssh](fig/deletessh.png)
+
 
 ## Main Menu
 
