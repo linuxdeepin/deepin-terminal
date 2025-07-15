@@ -9,3 +9,5 @@ build/
 build-*/
 CMakeLists.txt.user
 deepin-terminal.pro.user
+.cache/*
+.cursor/*

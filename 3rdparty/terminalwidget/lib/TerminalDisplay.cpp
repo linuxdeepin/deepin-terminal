@@ -1185,7 +1185,12 @@ void TerminalDisplay::updateImage()
   const int linesToUpdate = qMin(this->_lines, qMax(0,lines  ));
   const int columnsToUpdate = qMin(this->_columns,qMax(0,columns));
 
-  auto dirtyMask = new char[columnsToUpdate + 2];
+  auto dirtyMask = new (std::nothrow) char[columnsToUpdate + 2];
+  if (!dirtyMask) {
+    qCritical() << "TerminalDisplay: Failed to allocate dirty mask (size:"
+                << (columnsToUpdate + 2) << "bytes)";
+    return;
+  }
   QRegion dirtyRegion;
 
   // debugging variable, this records the number of lines that are found to
@@ -3567,7 +3572,19 @@ void TerminalDisplay::makeImage()
 
   // We over-commit one character so that we can be more relaxed in dealing with
   // certain boundary conditions: _image[_imageSize] is a valid but unused position
-  _image = new Character[_imageSize+1];
+  _image = new (std::nothrow) Character[_imageSize + 1];
+
+  if (!_image) {
+    qCritical() << "TerminalDisplay: Failed to allocate image buffer (size:"
+                << (_imageSize + 1) << "characters,"
+                << (_imageSize + 1) * sizeof(Character) << "bytes)";
+    // Create a minimal 1x1 image as fallback
+    _imageSize = 1;
+    _image = new Character[1];
+    if (!_image) {
+      qFatal("TerminalDisplay: Cannot allocate even minimal image buffer");
+    }
+  }
 
   clearImage();
 }

@@ -618,7 +618,14 @@ uint ExtendedCharTable::createExtendedChar(uint *unicodePoints, ushort length)
 
     // add the new sequence to the table and
     // return that index
-    auto buffer = new uint[length + 1];
+    auto buffer = new (std::nothrow) uint[length + 1];
+    if (!buffer) {
+      qCritical()
+          << "Emulation: Failed to allocate extended character buffer (size:"
+          << (length + 1) << "uints," << (length + 1) * sizeof(uint)
+          << "bytes)";
+      return 0;
+    }
     buffer[0] = length;
     for (int i = 0; i < length; i++) {
         buffer[i + 1] = unicodePoints[i];
