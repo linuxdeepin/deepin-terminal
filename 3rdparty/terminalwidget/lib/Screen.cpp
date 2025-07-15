@@ -1378,7 +1378,13 @@ Character *Screen::getCharacterBuffer(const int size)
     static QVector<Character> characterBuffer(MAX_CHARS);
 
     if (characterBuffer.count() < size) {
-        characterBuffer.resize(size);
+      int oldSize = characterBuffer.count();
+      characterBuffer.resize(size);
+      if (characterBuffer.count() < size) {
+        qCritical() << "Screen: Failed to resize character buffer to size:"
+                    << size << "characters," << size * sizeof(Character)
+                    << "bytes (current size:" << characterBuffer.count() << ")";
+      }
     }
 
     return characterBuffer.data();

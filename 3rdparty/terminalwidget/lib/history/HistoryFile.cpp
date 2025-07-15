@@ -107,7 +107,9 @@ void HistoryFile::map()
     //if mmap'ing fails, fall back to the read-lseek combination
     if (_fileMap == nullptr) {
         _readWriteBalance = 0;
-        //qDebug() << "mmap'ing history failed.  errno = " << errno;
+        qWarning() << "HistoryFile: Memory mapping failed, falling back to "
+                      "read-lseek combination. errno ="
+                   << errno << "file size:" << _length;
     }
 }
 
