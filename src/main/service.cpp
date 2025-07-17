@@ -213,7 +213,8 @@ bool Service::isWindowEffectEnabled()
 {
     QDBusMessage msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    QDBusMessage response =
+        QDBusConnection::sessionBus().call(msg, QDBus::Block, 5000);
     if (response.type() == QDBusMessage::ReplyMessage) {
         QList<QVariant> list = response.arguments();
         QString wmName = list.first().toString();

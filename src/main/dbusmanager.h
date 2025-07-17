@@ -41,7 +41,9 @@
 #define WM_INTERFACE                    "com.deepin.wm"
 #define WM_WORKSPACESWITCHED            "WorkspaceSwitched"
 
-#define dbusPlaySound(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("PlaySound")<<(sound))
+#define dbusPlaySound(sound)                                                   \
+  QDBusConnection::sessionBus().call(                                          \
+      SOUND_EFFECT_METHOD("PlaySound") << (sound), QDBus::NoBlock)
 #define dbusIsSoundEnabled(sound) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("IsSoundEnabled")<<(sound))
 #define dbusEnableSound(sound, enable) QDBusConnection::sessionBus().call(SOUND_EFFECT_METHOD("EnableSound")<<(sound)<<(enable))
 
@@ -96,9 +98,9 @@ public:
      * @brief 调用主进程的创建或显示窗口入口
      * @author ut000610 戴正文
      * @param args
+     * @return 返回调用是否成功
      */
-    static void callTerminalEntry(QStringList args);
-
+    static bool callTerminalEntry(QStringList args);
 
     /** add by ut001121 zhangmeng 20200720 用于 sp3 键盘交互功能*/
     /**
