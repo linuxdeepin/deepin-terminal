@@ -40,6 +40,7 @@ Q_DECLARE_LOGGING_CATEGORY(tsettings)
 
 Settings::Settings() : QObject(qApp)
 {
+    qCDebug(tsettings) << "Settings constructor called";
     Utils::set_Object_Name(this);
 }
 
@@ -57,14 +58,21 @@ Settings *Settings::instance()
 
 Settings::~Settings()
 {
-    if (nullptr != m_Watcher)
+    qCDebug(tsettings) << "Settings destructor called";
+    if (nullptr != m_Watcher) {
+        qCDebug(tsettings) << "Deleting file watcher";
         m_Watcher->deleteLater();
+    }
 
-    if (nullptr != m_backend)
+    if (nullptr != m_backend) {
+        qCDebug(tsettings) << "Deleting backend";
         m_backend->deleteLater();
+    }
 
-    if (nullptr != settings)
+    if (nullptr != settings) {
+        qCDebug(tsettings) << "Deleting settings";
         settings->deleteLater();
+    }
 }
 
 // 统一初始化以后方可使用。
@@ -91,6 +99,7 @@ void Settings::init()
     QVariant jsonVar = doc.toVariant();
     //龙芯 且 服务器企业版
     if(Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
+        qCDebug(tsettings) << "Configuring for Loongarch UOS Enterprise";
         //隐藏透明度界面
         Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "opacity", "hide", true);
         //隐藏背景模糊界面
@@ -101,8 +110,10 @@ void Settings::init()
     QString systemFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
 
     //无效字体时，exactMatch：Returns true if a window system font exactly matching the settings of this font is available.
-    if(!QFont(defaultFont).exactMatch())
+    if(!QFont(defaultFont).exactMatch()) {
+        qCDebug(tsettings) << "Default font not available, using system fixed font:" << systemFixedFont;
         Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "font", "default", systemFixedFont);
+    }
     //更新json
     json = QJsonDocument::fromVariant(jsonVar).toJson();
     settings = DSettings::fromJson(json);
@@ -166,8 +177,10 @@ void Settings::init()
     Konsole::__maxFontSize = option->data("max").isValid() ? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
 
     // 校验正确
-    if (Konsole::__minFontSize > Konsole::__maxFontSize)
+    if (Konsole::__minFontSize > Konsole::__maxFontSize) {
+        qCDebug(tsettings) << "Font size range invalid, swapping min and max";
         qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
+    }
 
     /***add end by ut001121***/
 
@@ -240,6 +253,7 @@ void Settings::init()
 
 QStringList Settings::color2str(QColor color)
 {
+    // qCDebug(tsettings) << "Converting color to string:" << color;
     QStringList ret;
     ret << QString::number(color.red());
     ret << QString::number(color.green());
@@ -250,13 +264,17 @@ QStringList Settings::color2str(QColor color)
 //重新安装终端后在这里重置状态
 void Settings::loadDefaultsWhenReinstall()
 {
+    qCDebug(tsettings) << "Loading defaults when reinstall";
     QDir installFlagPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!installFlagPath.exists())
+    if (!installFlagPath.exists()) {
+        qCDebug(tsettings) << "Creating app config directory";
         installFlagPath.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    }
 }
 
 void Settings::addShellOption()
 {
+    qCDebug(tsettings) << "Adding shell options";
     g_shellConfigCombox->clear();
     // 获取shells
     QMap<QString, QString> shellsMap = Service::instance()->getShells();
@@ -265,9 +283,11 @@ void Settings::addShellOption()
     // 初始值
     keysList << DEFAULT_SHELL;
     // 数据转换
-    for (const QString key : shellsMap.keys())
+    for (const QString key : shellsMap.keys()) {
         keysList << key;
+    }
     g_shellConfigCombox->addItems(keysList);
+    qCDebug(tsettings) << "Shell options added:" << keysList.size() << "shells";
 }
 
 QPair<QWidget *, QWidget *>  Settings::createTabTitleFormatWidget(QObject *opt, bool isRemote)
@@ -299,49 +319,61 @@ QPair<QWidget *, QWidget *>  Settings::createTabTitleFormatWidget(QObject *opt, 
 
 void Settings::initConnection()
 {
+    qCDebug(tsettings) << "Initializing connections";
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
         Q_UNUSED(value)
-        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll."))
+        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.")) {
+            qCDebug(tsettings) << "Terminal setting changed:" << key;
             emit terminalSettingChanged(key);
-        else if (key.contains("shortcuts."))
+        } else if (key.contains("shortcuts.")) {
+            qCDebug(tsettings) << "Shortcut setting changed:" << key;
             emit shortcutSettingChanged(key);
-        else
+        } else {
+            qCDebug(tsettings) << "Window setting changed:" << key;
             emit windowSettingChanged(key);
+        }
     });
 
     QPointer<DSettingsOption> opacity = settings->option("basic.interface.opacity");
     connect(opacity, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Opacity changed:" << value.toInt();
         emit opacityChanged(value.toInt() / 100.0);
     });
 
     QPointer<DSettingsOption> cursorShape = settings->option("advanced.cursor.cursor_shape");
     connect(cursorShape, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Cursor shape changed:" << value.toInt();
         emit cursorShapeChanged(value.toInt());
     });
 
     QPointer<DSettingsOption> cursorBlink = settings->option("advanced.cursor.cursor_blink");
     connect(cursorBlink, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Cursor blink changed:" << value.toBool();
         emit cursorBlinkChanged(value.toBool());
     });
 
     QPointer<DSettingsOption> backgroundBlur = settings->option("advanced.window.blurred_background");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Background blur changed:" << value.toBool();
         emit backgroundBlurChanged(value.toBool());
     });
 
     /******** Modify by n014361 wangpeili 2020-01-06:  字体，字体大小实时生效 ****************/
     QPointer<DSettingsOption> fontSize = settings->option("basic.interface.font_size");
     connect(fontSize, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Font size changed:" << value.toInt();
         emit fontSizeChanged(value.toInt());
     });
 
     QPointer<DSettingsOption> family = settings->option("basic.interface.font");
     connect(family, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Font changed:" << value.toString();
         emit fontChanged(value.toString());
     });
 
     QPointer<DSettingsOption> PressingScroll = settings->option("advanced.scroll.scroll_on_key");
     connect(PressingScroll, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Pressing scroll changed:" << value.toBool();
         emit pressingScrollChanged(value.toBool());
     });
     /********************* Modify by n014361 wangpeili End ************************/
@@ -349,19 +381,23 @@ void Settings::initConnection()
     // 标签标题格式变化
     QPointer<DSettingsOption> tabFormat = settings->option("basic.tab_title.tab_title_format");
     connect(tabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Tab format changed:" << value.toString();
         emit tabFormatChanged(value.toString());
     });
 
     // 远程标签标题格式变化
     QPointer<DSettingsOption> remoteTabFormat = settings->option("basic.tab_title.remote_tab_title_format");
     connect(remoteTabFormat, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qCDebug(tsettings) << "Remote tab format changed:" << value.toString();
         emit remoteTabFormatChanged(value.toString());
     });
 }
 
 void Settings::releaseInstance()
 {
+    qCDebug(tsettings) << "Releasing Settings instance";
     if(nullptr != m_settings_instance) {
+        qCDebug(tsettings) << "Deleting Settings instance";
         delete m_settings_instance;
         m_settings_instance = nullptr;
     }
@@ -369,32 +405,46 @@ void Settings::releaseInstance()
 
 qreal Settings::opacity() const
 {
+    qCDebug(tsettings) << "Getting opacity value";
     return settings->option("basic.interface.opacity")->value().toInt() / 100.0;
 }
 
 QString Settings::encoding() const
 {
+    qCDebug(tsettings) << "Getting encoding:" << m_EncodeName;
     return m_EncodeName;
 }
 
 QString Settings::fontName()
 {
-    return settings->option("basic.interface.font")->value().toString();
+    // qCDebug(tsettings) << "Getting font name";
+    QString fontName = settings->option("basic.interface.font")->value().toString();
+    // qCDebug(tsettings) << "Font name:" << fontName;
+    return fontName;
 }
 
 int Settings::fontSize()
 {
-    return settings->option("basic.interface.font_size")->value().toInt();
+    // qCDebug(tsettings) << "Getting font size";
+    int size = settings->option("basic.interface.font_size")->value().toInt();
+    // qCDebug(tsettings) << "Font size:" << size;
+    return size;
 }
 
 bool Settings::PressingScroll()
 {
-    return settings->option("advanced.scroll.scroll_on_key")->value().toBool();
+    // qCDebug(tsettings) << "Getting pressing scroll setting";
+    bool scroll = settings->option("advanced.scroll.scroll_on_key")->value().toBool();
+    // qCDebug(tsettings) << "Pressing scroll:" << scroll;
+    return scroll;
 }
 
 bool Settings::OutputtingScroll()
 {
-    return settings->option("advanced.scroll.scroll_on_output")->value().toBool();
+    // qCDebug(tsettings) << "Getting outputting scroll setting";
+    bool scroll = settings->option("advanced.scroll.scroll_on_output")->value().toBool();
+    // qCDebug(tsettings) << "Outputting scroll:" << scroll;
+    return scroll;
 }
 
 /*******************************************************************************
@@ -420,28 +470,39 @@ bool Settings::OutputtingScroll()
 
 QString Settings::tabTitleFormat() const
 {
-    return settings->option("basic.tab_title.tab_title_format")->value().toString();
+    // qCDebug(tsettings) << "Getting tab title format";
+    QString format = settings->option("basic.tab_title.tab_title_format")->value().toString();
+    // qCDebug(tsettings) << "Tab title format:" << format;
+    return format;
 }
 
 QString Settings::remoteTabTitleFormat() const
 {
-    return settings->option("basic.tab_title.remote_tab_title_format")->value().toString();
+    // qCDebug(tsettings) << "Getting remote tab title format";
+    QString format = settings->option("basic.tab_title.remote_tab_title_format")->value().toString();
+    // qCDebug(tsettings) << "Remote tab title format:" << format;
+    return format;
 }
 
 QString Settings::shellPath() const
 {
+    qCDebug(tsettings) << "Getting shell path";
     QString strShellProgram = settings->option("advanced.shell.default_shell")->value().toString();
     // $SHELL无法写入配置文件中
     if (DEFAULT_SHELL == strShellProgram || strShellProgram.isEmpty()) {
+        qCDebug(tsettings) << "Using default shell from environment";
         QString shell{ getenv("SHELL") };
+        qCDebug(tsettings) << "Default shell:" << shell;
         return shell;
     }
 
+    qCDebug(tsettings) << "Using configured shell:" << strShellProgram;
     return strShellProgram;
 }
 
 void Settings::reloadShellOptions()
 {
+    qCDebug(tsettings) << "Reloading shell options";
     // 记录设置当前值
     QString strShellProgram = settings->option("advanced.shell.default_shell")->value().toString();
     // 更新shell选项
@@ -449,37 +510,53 @@ void Settings::reloadShellOptions()
     QMap<QString, QString> shellMap = Service::instance()->shellsMap();
     // 设置之前的项 若strShellProgram不存在会自动选取第一项
     g_shellConfigCombox->setCurrentText(shellMap.key(strShellProgram));
+    qCDebug(tsettings) << "Shell options reloaded";
 }
 
 int Settings::cursorShape() const
 {
-    return settings->option("advanced.cursor.cursor_shape")->value().toInt();
+    // qCDebug(tsettings) << "Getting cursor shape";
+    int shape = settings->option("advanced.cursor.cursor_shape")->value().toInt();
+    // qCDebug(tsettings) << "Cursor shape:" << shape;
+    return shape;
 }
 
 bool Settings::cursorBlink() const
 {
-    return settings->option("advanced.cursor.cursor_blink")->value().toBool();
+    // qCDebug(tsettings) << "Getting cursor blink setting";
+    bool blink = settings->option("advanced.cursor.cursor_blink")->value().toBool();
+    // qCDebug(tsettings) << "Cursor blink:" << blink;
+    return blink;
 }
 
 bool Settings::backgroundBlur() const
 {
-    return settings->option("advanced.window.blurred_background")->value().toBool();
+    // qCDebug(tsettings) << "Getting background blur setting";
+    bool blur = settings->option("advanced.window.blurred_background")->value().toBool();
+    // qCDebug(tsettings) << "Background blur:" << blur;
+    return blur;
 }
 
 
 QString Settings::colorScheme() const
 {
+    qCDebug(tsettings) << "Getting color scheme";
     //选择主题未确定
     if(!bSwitchTheme) {
+        qCDebug(tsettings) << "Theme switch not confirmed, returning from map";
         return switchThemeMap["basic.interface.theme"];
     }
-    return settings->option("basic.interface.theme")->value().toString();
+    QString scheme = settings->option("basic.interface.theme")->value().toString();
+    qCDebug(tsettings) << "Color scheme:" << scheme;
+    return scheme;
 }
 
 void Settings::setColorScheme(const QString &name)
 {
+    qCDebug(tsettings) << "Setting color scheme to:" << name;
     //选择主题未确定
     if(!bSwitchTheme) {
+        qCDebug(tsettings) << "Theme switch not confirmed, storing in map";
         switchThemeMap["basic.interface.theme"] = name;
         return;
     }
@@ -488,17 +565,22 @@ void Settings::setColorScheme(const QString &name)
 
 QString Settings::extendColorScheme() const
 {
+    qCDebug(tsettings) << "Getting extend color scheme";
     //选择主题未确定
     if(!bSwitchTheme) {
+        qCDebug(tsettings) << "Theme switch not confirmed, returning from map";
         return switchThemeMap["basic.interface.expand_theme"];
     }
-    return settings->option("basic.interface.expand_theme")->value().toString();
+    QString scheme = settings->option("basic.interface.expand_theme")->value().toString();
+    qCDebug(tsettings) << "Extend color scheme:" << scheme;
+    return scheme;
 }
 
 void Settings::setExtendColorScheme(const QString &name)
 {
-    //选择主题未确定
+    qCDebug(tsettings) << "Setting extend color scheme to:" << name;
     if(!bSwitchTheme) {
+        qCDebug(tsettings) << "Theme switch not confirmed, storing in map";
         switchThemeMap["basic.interface.expand_theme"] = name;
         return;
     }
@@ -532,11 +614,15 @@ void Settings::setExtendColorScheme(const QString &name)
 
 bool Settings::IsPasteSelection()
 {
-    return settings->option("advanced.cursor.auto_copy_selection")->value().toBool();
+    // qCDebug(tsettings) << "Getting paste selection setting";
+    bool paste = settings->option("advanced.cursor.auto_copy_selection")->value().toBool();
+    // qCDebug(tsettings) << "Paste selection:" << paste;
+    return paste;
 }
 
 bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 {
+    qCDebug(tsettings) << "Checking shortcut conflict for:" << Name << "key:" << Key;
     for (QString &tmpKey : settings->keys()) {
         // 获取设置里面的快捷键键值
         QString strKey = settings->value(tmpKey).toString();
@@ -549,12 +635,14 @@ bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
             }
         }
     }
+    qCDebug(tsettings) << "No shortcut conflict found";
     return  false;
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 Begin***************/
 void Settings::handleWidthFont()
 {
+    qCDebug(tsettings) << "Handling width font";
     FontDataList Whitelist = DBusManager::callAppearanceFont("monospacefont");
 
     //将新安装的字体，加载到字体库中
@@ -562,10 +650,12 @@ void Settings::handleWidthFont()
     for (int i = 0; i < Whitelist.count(); ++i) {
         QString name = Whitelist[i].value;
         if (-1 == comboBox->findData(name)) {
+            // qCDebug(tsettings) << "Adding new font to database:" << name;
             QString fontpath =  QDir::homePath() + "/.local/share/fonts/" + name + "/";// + name + ".ttf";
             QDir dir(fontpath);
-            if (dir.count() > 2)
+            if (dir.count() > 2) {
                 fontpath = fontpath + dir[2];
+            }
 
             int ret = base.addApplicationFont(fontpath);
             if (-1 == ret)
@@ -586,12 +676,16 @@ void Settings::handleWidthFont()
         comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
     comboBox->setCurrentIndex(comboBox->findData(fontname));
+    qCDebug(tsettings) << "Width font handling completed";
 }
 
 
 bool Settings::enableControlFlow(void)
 {
-    return !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool();
+    // qCDebug(tsettings) << "Getting control flow setting";
+    bool enable = !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool();
+    // qCDebug(tsettings) << "Control flow enabled:" << enable;
+    return enable;
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/

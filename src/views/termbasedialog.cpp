@@ -25,6 +25,7 @@ DGUI_USE_NAMESPACE
 *******************************************************************************/
 static void palrtteTransparency(QWidget *widget, qint8 alphaFloat)
 {
+    qCDebug(views) << "Enter palrtteTransparency";
     QPalette palette = widget->palette();
     QColor color = DGuiApplicationHelper::adjustColor(palette.color(QPalette::BrightText), 0, 0, 0, 0, 0, 0, alphaFloat);
     palette.setColor(QPalette::WindowText, color);
@@ -40,10 +41,11 @@ static void palrtteTransparency(QWidget *widget, qint8 alphaFloat)
 *******************************************************************************/
 void QWidget::paintEvent(QPaintEvent *e)
 {
+    // qCDebug(views) << "Enter TermBaseDialog::paintEvent";
     Q_UNUSED(e)
 
     if (strcmp(this->metaObject()->className(), "Dtk::Widget::DDialog") != 0) {
-        qCDebug(views) << "Not DDialog, skip painting";
+        // qCDebug(views) << "Not DDialog, skip painting";
         return;
     }
 
@@ -51,12 +53,12 @@ void QWidget::paintEvent(QPaintEvent *e)
     QLabel *messageLabel = this->findChild<QLabel *>("MessageLabel");
 
     if (titleLabel != nullptr) {
-        qCDebug(views) << "Adjusting titleLabel transparency";
+        // qCDebug(views) << "Adjusting titleLabel transparency";
         palrtteTransparency(titleLabel, -10);
     }
 
     if (messageLabel != nullptr) {
-        qCDebug(views) << "Adjusting messageLabel transparency";
+        // qCDebug(views) << "Adjusting messageLabel transparency";
         palrtteTransparency(messageLabel, -30);
     }
 

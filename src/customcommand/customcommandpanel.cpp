@@ -31,6 +31,7 @@ CustomCommandPanel::~CustomCommandPanel()
 {
     qCDebug(customcommand) << "Destroying CustomCommandPanel";
     if (m_pdlg) {
+        qCDebug(customcommand) << "m_pdlg is not null, deleting";
         delete m_pdlg;
         m_pdlg = nullptr;
     }
@@ -51,6 +52,7 @@ void CustomCommandPanel::showCurSearchResult()
 
 void CustomCommandPanel::showAddCustomCommandDlg()
 {
+    // qCDebug(customcommand) << "Enter showAddCustomCommandDlg";
     if (m_pushButton->hasFocus()) {
         qCInfo(customcommand) << "The Add command button has focus to click on!";
         m_bpushButtonHaveFocus = true;
@@ -60,6 +62,7 @@ void CustomCommandPanel::showAddCustomCommandDlg()
     }
 
     if (m_pdlg) {
+        qCDebug(customcommand) << "m_pdlg exists, deleting";
         delete m_pdlg;
         m_pdlg = nullptr;
     }
@@ -94,14 +97,18 @@ void CustomCommandPanel::doCustomCommand(const QString &key)
 
 void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
 {
+    // qCDebug(customcommand) << "Enter onFocusOut";
     if ((Qt::TabFocusReason == type) || (Qt::NoFocusReason == type)) {
+        qCDebug(customcommand) << "TabFocusReason or NoFocusReason";
         // 下一个 或 列表为空， 焦点定位到添加按钮上
         m_pushButton->setFocus();
         m_cmdListWidget->clearIndex();
         qCInfo(customcommand) << "Set the focus to the Add command button";
     } else if (Qt::BacktabFocusReason == type) {
+        qCDebug(customcommand) << "BacktabFocusReason";
         // 判断是否可见，可见设置焦点
         if (m_searchEdit->isVisible()) {
+            qCDebug(customcommand) << "search edit is visible";
             m_searchEdit->lineEdit()->setFocus();
             m_cmdListWidget->clearIndex();
             qCInfo(customcommand) << "Set the focus to the Search edit";
@@ -111,9 +118,11 @@ void CustomCommandPanel::onFocusOut(Qt::FocusReason type)
 
 void CustomCommandPanel::onAddCommandResponse(int result)
 {
+        // qCDebug(customcommand) << "Enter onAddCommandResponse";
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
         if (QDialog::Accepted == result) {
+            qCDebug(customcommand) << "dialog accepted";
             QAction *newAction = m_pdlg->getCurCustomCmd();
             // 新增快捷键 => 显示在列表中使用大写 down2up dzw 20201215
             m_cmdListWidget->addItem(ItemFuncType_Item, newAction->text(), Utils::converDownToUp(newAction->shortcut().toString()));
@@ -131,8 +140,10 @@ void CustomCommandPanel::onAddCommandResponse(int result)
 
         }
 
-        if (m_bpushButtonHaveFocus)
+        if (m_bpushButtonHaveFocus) {
+            qCDebug(customcommand) << "push button had focus, restoring";
             m_pushButton->setFocus(Qt::TabFocusReason);
+        }
 }
 
 void CustomCommandPanel::refreshCmdPanel()
@@ -146,28 +157,35 @@ void CustomCommandPanel::refreshCmdPanel()
 
 void CustomCommandPanel::refreshCmdSearchState()
 {
+    // qCDebug(customcommand) << "Enter refreshCmdSearchState";
     if (m_cmdListWidget->count() >= 2) {
+        qCDebug(customcommand) << "command list count >= 2";
         /************************ Add by m000743 sunchengxi 2020-04-22:自定义命令搜索显示异常 Begin************************/
         m_searchEdit->clearEdit();
         /************************ Add by m000743 sunchengxi 2020-04-22:自定义命令搜索显示异常  End ************************/
         m_searchEdit->show();
     } else {
+        qCDebug(customcommand) << "command list count < 2";
         m_searchEdit->hide();
     }
 
     static bool hasStretch = false;
     if (m_cmdListWidget->count() <= 0) {
+        qCDebug(customcommand) << "command list count <= 0";
         m_textLabel->show();
         m_imageLabel->show();
         if (hasStretch == false) {
+            qCDebug(customcommand) << "hasStretch is false, adding stretch";
             dynamic_cast<QVBoxLayout*>(this->layout())->insertLayout(3, m_backLayout);
             dynamic_cast<QVBoxLayout*>(this->layout())->insertStretch(4);
             hasStretch = true;
         }
     } else {
+        qCDebug(customcommand) << "command list count > 0";
         m_textLabel->hide();
         m_imageLabel->hide();
         if (hasStretch == true) {
+            qCDebug(customcommand) << "hasStretch is true, removing stretch";
             this->layout()->removeItem(this->layout()->itemAt(3));
             this->layout()->removeItem(this->layout()->itemAt(3));
             hasStretch = false;
@@ -177,13 +195,17 @@ void CustomCommandPanel::refreshCmdSearchState()
 
 void CustomCommandPanel::setFocusInPanel()
 {
+    // qCDebug(customcommand) << "Enter setFocusInPanel";
     if (m_searchEdit->isVisible()) {
+        qCDebug(customcommand) << "search edit is visible";
         // 搜索框在
         m_searchEdit->lineEdit()->setFocus();
     } else if (m_cmdListWidget->isVisible() && m_cmdListWidget->count() != 0) {
+        qCDebug(customcommand) << "command list widget is visible and has items";
         // 列表数据不为0
         m_cmdListWidget->setFocus();
     } else if (m_pushButton->isVisible()) {
+        qCDebug(customcommand) << "push button is visible";
         // 添加按钮下
         m_pushButton->setFocus();
     } else {

@@ -78,7 +78,9 @@ void ServerConfigGroupPanel::initUI()
 
 inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
 {
+    qCDebug(remotemanage) << "Enter ServerConfigGroupPanel::onListViewFocusOut";
     if (!m_isShow) {
+        qCDebug(remotemanage) << "Branch: panel is not shown";
         // 不显示，不处理焦点
         return;
     }
@@ -88,22 +90,29 @@ inline void ServerConfigGroupPanel::onListViewFocusOut(Qt::FocusReason type)
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
         m_listWidget->clearIndex();
     } else if (Qt::BacktabFocusReason == type) {
+        qCDebug(remotemanage) << "Branch: backtab focus reason";
         // 判断是否可见，可见设置焦点
-        if (m_searchEdit->isVisible())
+        if (m_searchEdit->isVisible()) {
+            qCDebug(remotemanage) << "Branch: search edit is visible";
             m_searchEdit->lineEdit()->setFocus();
-        else
+        } else {
+            qCDebug(remotemanage) << "Branch: search edit is not visible";
             m_rebackButton->setFocus();
+        }
 
         m_listWidget->clearIndex();
     } else if (Qt::NoFocusReason == type) {
         qCInfo(remotemanage) << "group NoFocusReason";
         int isFocus = false;
         // 列表没有内容，焦点返回到返回键上
-        if (m_listWidget->hasFocus() || m_rebackButton->hasFocus())
+        if (m_listWidget->hasFocus() || m_rebackButton->hasFocus()) {
+            qCDebug(remotemanage) << "Branch: list widget or reback button has focus";
             isFocus  = true;
+        }
 
         int count  = ServerConfigManager::instance()->getServerCount(m_groupName);
         if (0 == count) {
+            qCDebug(remotemanage) << "Branch: server count is 0";
             emit rebackPrevPanel();
             m_isShow = false;
             return;
@@ -116,9 +125,11 @@ inline void ServerConfigGroupPanel::onRefreshList()
 {
     qCInfo(remotemanage) << "group refresh list";
     if (m_isShow) {
+        qCDebug(remotemanage) << "Branch: panel is shown";
         refreshData(m_groupName);
         QMap<QString, QList<ServerConfig *>> &configMap = ServerConfigManager::instance()->getServerConfigs();
         if (!configMap.contains(m_groupName)) {
+            qCDebug(remotemanage) << "Branch: group not found in config map";
             // 没有这个组 ==> 组内没成员，则返回
             emit rebackPrevPanel();
             m_isShow = false;
@@ -141,15 +152,19 @@ void ServerConfigGroupPanel::setFocusBack()
     qCDebug(remotemanage) << "Enter setFocusBack";
     // 设置焦点到搜索框
     if (m_searchEdit->isVisible()) {
+        qCDebug(remotemanage) << "Branch: search edit is visible";
         // 显示搜索框
         m_searchEdit->lineEdit()->setFocus();
     } else {
+        qCDebug(remotemanage) << "Branch: search edit is not visible";
         // 没有搜索框
         if (ServerConfigManager::instance()->getServerCount(m_groupName)) {
+            qCDebug(remotemanage) << "Branch: server count > 0";
             setFocus();
             // 没有搜索框,焦点落到列表中
             m_listWidget->setCurrentIndex(0);
         } else {
+            qCDebug(remotemanage) << "server count is 0, emitting rebackPrevPanel";
             // 没有列表，直接显示远程主界面
             emit rebackPrevPanel();
             // 不接受刷新信号的操作
@@ -178,11 +193,13 @@ void ServerConfigGroupPanel::refreshSearchState()
 {
     qCDebug(remotemanage) << "refreshSearchState";
     if (m_listWidget->count() >= 2) {
+        qCDebug(remotemanage) << "Branch: list widget count >= 2";
         /************************ Add by m000743 sunchengxi 2020-04-22:搜索显示异常 Begin************************/
         m_searchEdit->clearEdit();
         /************************ Add by m000743 sunchengxi 2020-04-22:搜索显示异常  End ************************/
         m_searchEdit->show();
     } else {
+        qCDebug(remotemanage) << "Branch: list widget count < 2";
         m_searchEdit->hide();
     }
 }
@@ -192,8 +209,10 @@ void ServerConfigGroupPanel::onItemClicked(const QString &key)
     qCDebug(remotemanage) << "onItemClicked, key:" << key;
     // 获取远程信息
     ServerConfig *remote = ServerConfigManager::instance()->getServerConfig(key);
-    if (nullptr != remote)
+    if (nullptr != remote) {
+        qCDebug(remotemanage) << "Branch: remote config found";
         emit doConnectServer(remote);
-    else
+    } else {
         qCWarning(remotemanage) << "can't connect to remote" << key;
+    }
 }

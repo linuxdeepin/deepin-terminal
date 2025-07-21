@@ -39,9 +39,11 @@ void CustomCommandPlugin::initPlugin(MainWindow *mainWindow)
 
 QAction *CustomCommandPlugin::titlebarMenu(MainWindow *mainWindow)
 {
+    // qCDebug(customcommand) << "Enter titlebarMenu";
     QAction *customCommandAction(new QAction(tr("Custom commands"), mainWindow));
 
     connect(customCommandAction, &QAction::triggered, mainWindow, [mainWindow]() {
+        qCDebug(customcommand) << "Lambda: customCommandAction triggered";
         mainWindow->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
     });
 
@@ -62,14 +64,18 @@ void CustomCommandPlugin::initCustomCommandTopPanel()
 
 CustomCommandTopPanel *CustomCommandPlugin::getCustomCommandTopPanel()
 {
-    if (!m_customCommandTopPanel)
+    // qCDebug(customcommand) << "Enter getCustomCommandTopPanel";
+    if (!m_customCommandTopPanel) {
+        qCDebug(customcommand) << "m_customCommandTopPanel is null, initializing";
         initCustomCommandTopPanel();
+    }
 
     return m_customCommandTopPanel;
 }
 
 void CustomCommandPlugin::doCustomCommand(const QString &strTxt)
 {
+    // qCDebug(customcommand) << "Enter doCustomCommand";
     qCDebug(customcommand) << "Executing custom command:" << strTxt;
     if (!strTxt.isEmpty()) {
         qCInfo(customcommand) << "Sending command to terminal:" << strTxt;
@@ -88,6 +94,7 @@ void CustomCommandPlugin::doShowPlugin(const QString name, bool bSetFocus)
 {
     qCDebug(customcommand) << "Show plugin called for:" << name << "with focus:" << bSetFocus;
     if (MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND != name) {
+        qCDebug(customcommand) << "plugin type is not CUSTOMCOMMAND";
         // 若插件已经显示，则隐藏
         if (m_isShow) {
             qCInfo(customcommand) << "Hiding command top panel";
@@ -95,6 +102,7 @@ void CustomCommandPlugin::doShowPlugin(const QString name, bool bSetFocus)
             m_isShow = false;
         }
     } else {
+        qCDebug(customcommand) << "plugin type is CUSTOMCOMMAND";
         /******** Add by nt001000 renfeixiang 2020-05-18:修改雷神窗口太小时，自定义界面使用不方便，将雷神窗口变大适应正常的自定义界面 Begin***************/
         if (m_mainWindow->isQuakeMode() && m_mainWindow->height() < LISTMINHEIGHT) {
             qCDebug(customcommand) << "Adjusting quake window size for command panel";

@@ -51,10 +51,13 @@ void CustomCommandSearchRstPanel::initUI()
     // 字体颜色随主题变化变化
     DPalette palette = m_label->palette();
     QColor color;
-    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
+        qCDebug(customcommand) << "Dark theme type";
         color = QColor::fromRgb(192, 198, 212, 102);
-    else
+    } else {
+        qCDebug(customcommand) << "Light theme type";
         color = QColor::fromRgb(85, 85, 85, 102);
+    }
 
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
@@ -90,12 +93,16 @@ void CustomCommandSearchRstPanel::initUI()
 
 inline void CustomCommandSearchRstPanel::handleThemeTypeChanged(DGuiApplicationHelper::ColorType themeType)
 {
+    // qCDebug(customcommand) << "Enter handleThemeTypeChanged";
     DPalette palette = m_label->palette();
     QColor color;
-    if (DGuiApplicationHelper::DarkType == themeType)
+    if (DGuiApplicationHelper::DarkType == themeType) {
+        // qCDebug(customcommand) << "Dark theme type in handleThemeTypeChanged";
         color = QColor::fromRgb(192, 198, 212, 102);
-    else
+    } else {
+        // qCDebug(customcommand) << "Light theme type in handleThemeTypeChanged";
         color = QColor::fromRgb(85, 85, 85, 102);
+    }
 
     palette.setBrush(QPalette::Text, color);
     m_label->setPalette(palette);
@@ -103,8 +110,10 @@ inline void CustomCommandSearchRstPanel::handleThemeTypeChanged(DGuiApplicationH
 
 inline void CustomCommandSearchRstPanel::handleIconButtonFocusOut(Qt::FocusReason type)
 {
+    // qCDebug(customcommand) << "Enter handleIconButtonFocusOut";
     // 焦点切出，没值的时候
     if (Qt::TabFocusReason == type && 0 == m_cmdListWidget->count()) {
+        qCDebug(customcommand) << "TabFocusReason and cmdListWidget count is 0";
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
@@ -114,14 +123,17 @@ inline void CustomCommandSearchRstPanel::handleIconButtonFocusOut(Qt::FocusReaso
 
 inline void CustomCommandSearchRstPanel::handleListViewFocusOut(Qt::FocusReason type)
 {
+    // qCDebug(customcommand) << "Enter handleListViewFocusOut";
     Q_UNUSED(type);
     if (Qt::TabFocusReason == type) {
+        qCDebug(customcommand) << "TabFocusReason";
         // tab 进入 +
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Tab, Qt::MetaModifier);
         QApplication::sendEvent(Utils::getMainWindow(this), &keyPress);
         qCInfo(customcommand) << "search panel focus on '+'";
         m_cmdListWidget->clearIndex();
     } else if (Qt::BacktabFocusReason == type || Qt::NoFocusReason == type) {
+        qCDebug(customcommand) << "BacktabFocusReason or NoFocusReason";
         // shift + tab 返回 返回键               // 列表为空，也返回到返回键上
         m_rebackButton->setFocus();
         m_cmdListWidget->clearIndex();

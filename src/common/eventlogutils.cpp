@@ -15,11 +15,11 @@ EventLogUtils *EventLogUtils::mInstance(nullptr);
 
 EventLogUtils &EventLogUtils::get()
 {
-    qDebug() << "Enter EventLogUtils::get()";
+    // qDebug() << "Enter EventLogUtils::get()";
     if (mInstance == nullptr) {
         mInstance = new EventLogUtils;
     }
-    qDebug() << "Exit EventLogUtils::get()";
+    // qDebug() << "Exit EventLogUtils::get()";
     return *mInstance;
 }
 
@@ -40,7 +40,7 @@ EventLogUtils::EventLogUtils()
 
 void EventLogUtils::writeLogs(QJsonObject &data)
 {
-    qDebug() << "Enter EventLogUtils::writeLogs()";
+    // qDebug() << "Enter EventLogUtils::writeLogs()";
     if (writeEventLog == nullptr) {
         qWarning() << "writeEventLog function pointer is null";
         return;
@@ -48,5 +48,5 @@ void EventLogUtils::writeLogs(QJsonObject &data)
 
     //std::string str = QJsonDocument(data).toJson(QJsonDocument::Compact).toStdString();
     writeEventLog(QJsonDocument(data).toJson(QJsonDocument::Compact).toStdString());
-    qDebug() << "Exit EventLogUtils::writeLogs()";
+    // qDebug() << "Exit EventLogUtils::writeLogs()";
 }

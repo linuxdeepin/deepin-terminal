@@ -14,12 +14,13 @@ Q_DECLARE_LOGGING_CATEGORY(views)
 IconButton::IconButton(QWidget *parent)
     : DIconButton(parent)
 {
+    // qCDebug(views) << "Enter IconButton::IconButton";
     Utils::set_Object_Name(this);
 }
 
 void IconButton::keyPressEvent(QKeyEvent *event)
 {
-    qCDebug(views) << "IconButton::keyPressEvent() entered, key:" << event->key();
+    // qCDebug(views) << "IconButton::keyPressEvent() entered, key:" << event->key();
 
     // 不处理向右的事件
     switch (event->key()) {
@@ -34,6 +35,7 @@ void IconButton::keyPressEvent(QKeyEvent *event)
         emit preFocus();
         break;
     default:
+        // qCDebug(views) << "Default key handling";
         DIconButton::keyPressEvent(event);
         break;
     }
@@ -41,7 +43,7 @@ void IconButton::keyPressEvent(QKeyEvent *event)
 
 void IconButton::focusOutEvent(QFocusEvent *event)
 {
-    qCDebug(views) << event->reason() << "IconButton" << this;
+    // qCDebug(views) << event->reason() << "IconButton" << this;
     emit focusOut(event->reason());
     DIconButton::focusOutEvent(event);
 }

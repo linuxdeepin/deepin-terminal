@@ -163,6 +163,7 @@ void DBusManager::entry(QStringList args)
 
 int DBusManager::consoleFontSize() const
 {
+    // qCDebug(mainprocess)<< "Enter consoleFontSize";
     return Settings::instance()->fontSize();
 }
 
@@ -175,6 +176,7 @@ void DBusManager::setConsoleFontSize(const int size)
 
 QString DBusManager::consoleFontFamily() const
 {
+    // qCDebug(mainprocess)<< "Enter consoleFontFamily";
     return Settings::instance()->fontName();
 }
 
@@ -187,6 +189,7 @@ void DBusManager::setConsoleFontFamily(const QString family)
 
 qreal DBusManager::consoleOpacity() const
 {
+    // qCDebug(mainprocess)<< "Enter consoleOpacity";
     return Settings::instance()->opacity();
 }
 
@@ -199,6 +202,7 @@ void DBusManager::setConsoleOpacity(const int value)
 
 int DBusManager::consoleCursorShape() const
 {
+    // qCDebug(mainprocess)<< "Enter consoleCursorShape";
     return Settings::instance()->cursorShape();
 }
 
@@ -211,6 +215,7 @@ void DBusManager::setConsoleCursorShape(const int shape)
 
 bool DBusManager::consoleCursorBlink() const
 {
+    // qCDebug(mainprocess)<< "Enter consoleCursorBlink";
     return Settings::instance()->cursorBlink();
 }
 
@@ -223,6 +228,7 @@ void DBusManager::setConsoleCursorBlink(const bool blink)
 
 QString DBusManager::consoleColorScheme() const
 {
+    // qCDebug(mainprocess)<< "Enter consoleColorScheme";
     return Settings::instance()->colorScheme();
 }
 
@@ -235,6 +241,7 @@ void DBusManager::setConsoleColorScheme(const QString scheme)
 
 QString DBusManager::consoleShell() const
 {
+    // qCDebug(mainprocess)<< "Enter consoleShell";
     return Settings::instance()->shellPath();
 }
 
@@ -247,6 +254,7 @@ void DBusManager::setConsoleShell(const QString shellName)
 
 void DBusManager::callSystemSound(const QString &sound)
 {
+    qCDebug(mainprocess)<< "Enter callSystemSound";
     QDBusMessage response = dbusPlaySound(sound);
     if (response.type() == QDBusMessage::ReplyMessage)
         qCInfo(mainprocess)  << "Calling the 'dbusPlaySound' interface successded!";
@@ -256,6 +264,7 @@ void DBusManager::callSystemSound(const QString &sound)
 
 void DBusManager::listenTouchPadSignal()
 {
+    qCDebug(mainprocess)<< "Enter listenTouchPadSignal";
     // 注册监听触控板事件
     bool isConnect = QDBusConnection::systemBus().connect(GESTURE_SERVICE, GESTURE_PATH, GESTURE_INTERFACE, GESTURE_SIGNAL, Service::instance(), SIGNAL(touchPadEventSignal(QString, QString, int)));
     if (isConnect)
@@ -266,6 +275,7 @@ void DBusManager::listenTouchPadSignal()
 
 void DBusManager::listenDesktopSwitched()
 {
+    qCDebug(mainprocess)<< "Enter listenDesktopSwitched";
     // 注册监听桌面工作区切换
     bool isConnect = QDBusConnection::sessionBus().connect(WM_SERVICE, WM_PATH, WM_INTERFACE, WM_WORKSPACESWITCHED, Service::instance(), SLOT(onDesktopWorkspaceSwitched(int, int)));
     if (isConnect)

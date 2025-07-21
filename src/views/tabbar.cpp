@@ -37,42 +37,52 @@ Q_DECLARE_LOGGING_CATEGORY(views)
 //TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
 {
+    // qCDebug(views) << "Enter TermTabStyle::TermTabStyle";
     Utils::set_Object_Name(this);
 }
 
 TermTabStyle::~TermTabStyle()
 {
+    // qCDebug(views) << "Enter TermTabStyle::~TermTabStyle";
 }
 
 void TermTabStyle::setTabTextColor(const QColor &color)
 {
+    // qCDebug(views) << "Enter TermTabStyle::setTabTextColor with color:" << color;
     m_tabTextColor = color;
 }
 
 void TermTabStyle::setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusMap)
 {
+    // qCDebug(views) << "Enter TermTabStyle::setTabStatusMap with" << tabStatusMap.size() << "items";
     m_tabStatusMap = tabStatusMap;
 }
 
 QSize TermTabStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const
 {
+    // qCDebug(views) << "Enter TermTabStyle::sizeFromContents with type:" << type << "size:" << size;
     return QProxyStyle::sizeFromContents(type, option, size, widget);
 }
 
 int TermTabStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
+    // qCDebug(views) << "Enter TermTabStyle::pixelMetric with metric:" << metric;
     return QProxyStyle::pixelMetric(metric, option, widget);
 }
 
 void TermTabStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
+    // qCDebug(views) << "Enter TermTabStyle::drawControl with element:" << element;
     if (CE_TabBarTabLabel == element) {
+        // qCDebug(views) << "Branch: Drawing tab bar tab label";
         if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option)) {
+            // qCDebug(views) << "Branch: Tab option cast successful";
             DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
 
             QTextOption textOption;
             textOption.setAlignment(Qt::AlignCenter);
 
+            // qCDebug(views) << "Branch: Setting up font";
             QFont textFont = QApplication::font();
             int fontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
             textFont.setPixelSize(fontSize);
@@ -81,46 +91,60 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
             QString content = tab->text;
             QRect tabRect = tab->rect;
 
+            // qCDebug(views) << "Branch: Getting tab identifier";
             QString strTabIndex = QString::number(tab->row);
             QObject *styleObject = option->styleObject;
             // 取出对应index的tab唯一标识identifier
             QString strTabIdentifier = styleObject->property(strTabIndex.toLatin1()).toString();
 
+            // qCDebug(views) << "Branch: Checking tab status";
             // 由于标签现在可以左右移动切换，index会变化，改成使用唯一标识identifier进行判断
             if (TabTextColorStatus_Changed == m_tabStatusMap.value(strTabIdentifier)) {
+                // qCDebug(views) << "Branch: Tab status is changed, applying custom color";
                 if (tab->state & QStyle::State_Selected) {
+                    // qCDebug(views) << "Branch: Tab is selected, using highlighted text color";
                     DPalette pa = appHelper->standardPalette(appHelper->themeType());
                     painter->setPen(pa.color(DPalette::HighlightedText));
                 } else if (tab->state & QStyle::State_MouseOver) {
+                    // qCDebug(views) << "Branch: Tab is mouse over, using custom text color";
                     painter->setPen(m_tabTextColor);
                 } else {
+                    // qCDebug(views) << "Branch: Tab is normal state, using custom text color";
                     painter->setPen(m_tabTextColor);
                 }
             } else {
+                // qCDebug(views) << "Branch: Tab status is normal, using standard colors";
                 DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                if (tab->state & QStyle::State_Selected)
+                if (tab->state & QStyle::State_Selected) {
+                    // qCDebug(views) << "Branch: Tab is selected, using highlighted text color";
                     painter->setPen(pa.color(DPalette::HighlightedText));
-                else if (tab->state & QStyle::State_MouseOver)
+                } else if (tab->state & QStyle::State_MouseOver) {
+                    // qCDebug(views) << "Branch: Tab is mouse over, using title text color";
                     painter->setPen(pa.color(DPalette::TextTitle));
-                else
+                } else {
+                    // qCDebug(views) << "Branch: Tab is normal state, using title text color";
                     painter->setPen(pa.color(DPalette::TextTitle));
-
+                }
             }
 
+            // qCDebug(views) << "Branch: Drawing elided text";
             QFontMetrics fontMetric(textFont);
             const int TAB_LEFTRIGHT_SPACE = 30;
             QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width() - TAB_LEFTRIGHT_SPACE, Qt::TextShowMnemonic);
             painter->drawText(tabRect, elidedText, textOption);
         } else {
+            // qCDebug(views) << "Branch: Tab option cast failed, using default drawing";
             QProxyStyle::drawControl(element, option, painter, widget);
         }
     } else {
+        // qCDebug(views) << "Branch: Not tab bar tab label, using default drawing";
         QProxyStyle::drawControl(element, option, painter, widget);
     }
 }
 
 void TermTabStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
+    // qCDebug(views) << "Enter TermTabStyle::drawPrimitive with element:" << element;
     QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 //TermTabStyle 结束
@@ -134,6 +158,7 @@ void TermTabStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleO
 *******************************************************************************/
 void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 {
+    qCDebug(views) << "Enter QTabBar::initStyleOption with tabIndex:" << tabIndex;
     Q_D(const QTabBar);
     d->initBasicStyleOption(option, tabIndex);
 
@@ -143,6 +168,7 @@ void QTabBar::initStyleOption(QStyleOptionTab *option, int tabIndex) const
 
     /*********** Modify by ut000438 王亮 2020-11-25:fix bug 55813: 拖拽终端标签页终端闪退 ***********/
     if (tabIndex >= 0) {
+        qCDebug(views) << "Branch: Tab index is valid, setting properties";
         // 保存对应index的tab唯一标识identifier
         option->styleObject->setProperty(QString("%1").arg(tabIndex).toLatin1(), tabData(tabIndex));
         // 保存tab的索引值到row字段
@@ -159,12 +185,15 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     m_termTabStyle = new TermTabStyle();
     setStyle(m_termTabStyle);
 
+    qCDebug(views) << "Branch: Clearing maps";
     m_sessionIdTabIndexMap.clear();
     m_sessionIdTabIdMap.clear();
     m_tabStatusMap.clear();
 
+    qCDebug(views) << "Branch: Installing event filter";
     installEventFilter(this);
 
+    qCDebug(views) << "Branch: Setting tab properties";
     //启用关闭tab动画效果
     setEnableCloseTabAnimation(true);
     setTabsClosable(true);
@@ -173,18 +202,25 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setFocusPolicy(Qt::TabFocus);
     setStartDragDistance(40);
 
+    qCDebug(views) << "Branch: Setting tab width limits";
     setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
 
+    qCDebug(views) << "Branch: Updating tab drag move status";
     //统一设置Tab拖动/移动状态
     updateTabDragMoveStatus();
 
+    qCDebug(views) << "Branch: Setting up add button";
     DIconButton *addButton = findChild<DIconButton *>("AddButton");
-    if (nullptr != addButton)
+    if (nullptr != addButton) {
+        qCDebug(views) << "Branch: Add button found, setting focus policy";
         addButton->setFocusPolicy(Qt::TabFocus);
+    }
 
+    qCDebug(views) << "Branch: Connecting tab bar signals";
     connect(this, &DTabBar::tabBarClicked, this, &TabBar::handleTabBarClicked);
 
+    qCDebug(views) << "Branch: Connecting tab drag signals";
     // 用于窗口tab拖拽
     connect(this, &DTabBar::tabMoved, this, &TabBar::handleTabMoved);
     connect(this, &DTabBar::tabDroped, this, &TabBar::handleTabDroped);
@@ -193,11 +229,14 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     connect(this, &DTabBar::dragActionChanged, this, &TabBar::handleDragActionChanged);
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
+    qCDebug(views) << "Branch: Setting up size mode handling";
     setTabHeight(DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
+        qCDebug(views) << "Lambda: Size mode changed, updating tab height";
         setTabHeight(DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
     });
 #else
+    qCDebug(views) << "Branch: Size mode handling not available, setting fixed height";
     setTabHeight(36);
 #endif
     qCDebug(views) << "TabBar constructor finished";
@@ -205,32 +244,44 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
 
 TabBar::~TabBar()
 {
-    if (m_rightMenu != nullptr)
-        m_rightMenu->deleteLater();
+    qCDebug(views) << "Enter TabBar::~TabBar";
 
-    if (m_termTabStyle != nullptr)
+    if (m_rightMenu != nullptr) {
+        qCDebug(views) << "Branch: Right menu exists, deleting";
+        m_rightMenu->deleteLater();
+    }
+
+    if (m_termTabStyle != nullptr) {
+        qCDebug(views) << "Branch: Tab style exists, deleting";
         delete m_termTabStyle;
+    }
 }
 
 void TabBar::setTabHeight(int tabHeight)
 {
+    // qCDebug(views) << "Enter TabBar::setTabHeight with height:" << tabHeight;
     m_tabHeight = tabHeight;
     setFixedHeight(tabHeight);
 }
 
 void TabBar::setTabItemMinWidth(int tabItemMinWidth)
 {
+    // qCDebug(views) << "Enter TabBar::setTabItemMinWidth with width:" << tabItemMinWidth; 
     m_tabItemMinWidth = tabItemMinWidth;
 }
 
 void TabBar::setTabItemMaxWidth(int tabItemMaxWidth)
 {
+    // qCDebug(views) << "Enter TabBar::setTabItemMaxWidth with width:" << tabItemMaxWidth;
     m_tabItemMaxWidth = tabItemMaxWidth;
 }
 
 const QString TabBar::identifier(int index) const
 {
-    return tabData(index).toString();
+    // qCDebug(views) << "Enter TabBar::identifier with index:" << index;
+    QString id = tabData(index).toString();
+    // qCDebug(views) << "Branch: Returning identifier:" << id;
+    return id;
 }
 
 int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
@@ -240,8 +291,10 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
     int index = DTabBar::addTab(tabName);
     setTabData(index, QVariant::fromValue(tabIdentifier));
 
+    qCDebug(views) << "Branch: Updating tab drag move status";
     updateTabDragMoveStatus();
 
+    qCDebug(views) << "Branch: Adding identifier to list";
     m_tabIdentifierList << tabIdentifier;
 
     qInfo() << "Tab added at index:" << index;
@@ -266,42 +319,56 @@ int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QStr
 
 void TabBar::saveSessionIdWithTabIndex(int sessionId, int index)
 {
+    // qCDebug(views) << "Enter TabBar::saveSessionIdWithTabIndex with sessionId:" << sessionId << "index:" << index;
     m_sessionIdTabIndexMap.insert(sessionId, index);
 }
 
 void TabBar::saveSessionIdWithTabId(int sessionId, const QString &tabIdentifier)
 {
+    // qCDebug(views) << "Enter TabBar::saveSessionIdWithTabId with sessionId:" << sessionId << "tabIdentifier:" << tabIdentifier;
     m_sessionIdTabIdMap.insert(sessionId, tabIdentifier);
 }
 
 QMap<int, int> TabBar::getSessionIdTabIndexMap()
 {
+    // qCDebug(views) << "Enter TabBar::getSessionIdTabIndexMap";
     return m_sessionIdTabIndexMap;
 }
 
 int TabBar::queryIndexBySessionId(int sessionId)
 {
-    if (m_sessionIdTabIndexMap.isEmpty())
+    qCDebug(views) << "Enter TabBar::queryIndexBySessionId with sessionId:" << sessionId;
+    if (m_sessionIdTabIndexMap.isEmpty()) {
+        qCDebug(views) << "Branch: Session ID map is empty, returning -1";
         return -1;
+    }
 
+    qCDebug(views) << "Branch: Getting tab identifier for session";
     QString tabIdentifier = m_sessionIdTabIdMap.value(sessionId);
 
+    qCDebug(views) << "Branch: Searching for tab with identifier:" << tabIdentifier;
     for (int i = 0; i < count(); i++) {
         if (identifier(i) == tabIdentifier) {
+            qCDebug(views) << "Branch: Found tab at index:" << i;
             return i;
         }
     }
 
+    qCDebug(views) << "Branch: Tab not found, returning -1";
     return -1;
 }
 
 int TabBar::getIndexByIdentifier(QString id)
 {
+    qCDebug(views) << "Enter TabBar::getIndexByIdentifier with id:" << id;
     for (int i = 0; i < count(); i++) {
-        if (identifier(i) == id)
+        if (identifier(i) == id) {
+            qCDebug(views) << "Branch: Found tab at index:" << i;
             return i;
+        }
     }
-    return  -1;
+    qCDebug(views) << "Branch: Tab not found, returning -1";
+    return -1;
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -318,8 +385,10 @@ int TabBar::getIndexByIdentifier(QString id)
 *******************************************************************************/
 void QTabBar::removeTab(int index)
 {
+    // qCDebug(views) << "Enter QTabBar::removeTab with index:" << index;
     Q_D(QTabBar);
     if (d->validIndex(index)) {
+        // qCDebug(views) << "Branch: Tab is valid, removing";
         if (d->dragInProgress)
             d->moveTabFinished(d->pressedIndex);
 
@@ -401,6 +470,7 @@ void QTabBar::removeTab(int index)
     TabBar *tabBar = qobject_cast<TabBar *>(this->parent());
 
     if (tabBar && tabBar->isEnableCloseTabAnimation()) {
+        // qCDebug(views) << "Branch: Tab close animation is enabled";
         //tab关闭动画
         if (d->rightB->isVisible()) {
             for (int i = 0; i < index; i++) {
@@ -425,6 +495,7 @@ void TabBar::removeTab(const QString &tabIdentifier)
 
     for (int i = 0; i < count(); i++) {
         if (tabData(i).toString() == tabIdentifier) {
+            qCDebug(views) << "Branch: Found tab with identifier, removing";
             DTabBar::removeTab(i);
             break;
         }
@@ -442,6 +513,7 @@ bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
 
     for (int i = 0; i < count(); i++) {
         if (tabData(i).toString() == tabIdentifier) {
+            qCDebug(views) << "Branch: Found tab with identifier, setting text";
             termFound = true;
             DTabBar::setTabText(i, text);
             break;
@@ -454,22 +526,30 @@ bool TabBar::setTabText(const QString &tabIdentifier, const QString &text)
 
 bool TabBar::eventFilter(QObject *watched, QEvent *event)
 {
+    // qCDebug(views) << "Enter TabBar::eventFilter with event:" << event->type();
     Q_UNUSED(watched)
 
     if (QEvent::MouseButtonPress == event->type()) {
+        // qCDebug(views) << "Branch: Mouse button press event";
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 
         if (Qt::RightButton == mouseEvent->button()) {
+            // qCDebug(views) << "Branch: Right button press event";
             bool isHandle = handleRightButtonClick(mouseEvent);
             if (isHandle)
                 return isHandle;
         } else if (Qt::MiddleButton == mouseEvent->button()) {
+            // qCDebug(views) << "Branch: Middle button press event";
             handleMiddleButtonClick(mouseEvent);
         }
     } else if (QEvent::DragEnter == event->type()) {
+        // qCDebug(views) << "Branch: Drag enter event";
     } else if (QEvent::DragLeave == event->type()) {
+        // qCDebug(views) << "Branch: Drag leave event";
     } else if (QEvent::Drop == event->type()) {
+        // qCDebug(views) << "Branch: Drop event";
     } else if (QEvent::DragMove == event->type()) {
+        // qCDebug(views) << "Branch: Drag move event";
         event->accept();
     }
 
@@ -486,6 +566,7 @@ inline void TabBar::handleMiddleButtonClick(QMouseEvent *mouseEvent)
 
     for (int i = 0; i < this->count(); i++) {
         if (tabRect(i).contains(position)) {
+            // qCDebug(views) << "Branch: Found tab with position, closing";
             index = i;
             break;
         }
@@ -504,6 +585,7 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
 
     for (int i = 0; i < this->count(); i++) {
         if (tabRect(i).contains(position)) {
+            // qCDebug(views) << "Branch: Found tab with position, right click";
             m_rightClickTab = i;
             break;
         }
@@ -511,6 +593,7 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
 
     // 弹出tab标签的右键菜单
     if (m_rightClickTab >= 0) {
+        // qCDebug(views) << "Branch: Right click tab found, showing menu";
         if (m_rightMenu == nullptr) {
             m_rightMenu = new DMenu(this);
             m_rightMenu->setObjectName("TabBarRightMenu");//Add by ut001000 renfeixiang 2020-08-13
@@ -552,16 +635,19 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
 
 inline void TabBar::onCloseTabActionTriggered()
 {
+    // qCDebug(views) << "TabBar::onCloseTabActionTriggered() entered, tab index:" << m_rightClickTab;
     Q_EMIT tabCloseRequested(m_rightClickTab);
 }
 
 inline void TabBar::onCloseOtherTabActionTriggered()
 {
+    // qCDebug(views) << "TabBar::onCloseOtherTabActionTriggered() entered, tab index:" << m_rightClickTab;
     emit menuCloseOtherTab(identifier(m_rightClickTab));
 }
 
 inline void TabBar::onRenameTabActionTriggered()
 {
+    // qCDebug(views) << "TabBar::onRenameTabActionTriggered() entered, tab index:" << m_rightClickTab;
     emit showRenameTabDialog(identifier(m_rightClickTab));
 }
 
@@ -573,6 +659,7 @@ inline void TabBar::onRenameTabActionTriggered()
 *******************************************************************************/
 QPixmap dropShadow(const QPixmap &source, qreal radius, const QColor &color, const QPoint &offset)
 {
+    // qCDebug(views) << "Enter dropShadow with radius:" << radius << "color:" << color << "offset:" << offset;
     QImage shadow = dropShadow(source, radius, color);
     shadow.setDevicePixelRatio(source.devicePixelRatio());
 
@@ -586,6 +673,7 @@ QPixmap dropShadow(const QPixmap &source, qreal radius, const QColor &color, con
 
 QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option, QPoint *hotspot) const
 {
+    // qCDebug(views) << "Enter TabBar::createDragPixmapFromTab with index:" << index;
     Q_UNUSED(option)
 
     const qreal ratio = qApp->devicePixelRatio();
@@ -627,6 +715,7 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
 
     //当开启了窗口特效时
     if (DWindowManagerHelper::instance()->hasComposite()) {
+        // qCDebug(views) << "Branch: Window has composite";
         QPainterPath roundedRectPath;
 
         const int cornerRadius = 6;
@@ -650,6 +739,7 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
 
         return dropShadow(QPixmap::fromImage(backgroundImage), 5, shadowColor, QPoint(0, 0));
     } else {
+        // qCDebug(views) << "Branch: Window does not have composite";
         painter.end();
 
         return QPixmap::fromImage(backgroundImage);
@@ -658,6 +748,7 @@ QPixmap TabBar::createDragPixmapFromTab(int index, const QStyleOptionTab &option
 
 QMimeData *TabBar::createMimeDataFromTab(int index, const QStyleOptionTab &option) const
 {
+    // qCDebug(views) << "Enter TabBar::createMimeDataFromTab with index:" << index;
     Q_UNUSED(option)
 
     const QString tabName = tabText(index);
@@ -678,16 +769,21 @@ QMimeData *TabBar::createMimeDataFromTab(int index, const QStyleOptionTab &optio
 
 void TabBar::insertFromMimeDataOnDragEnter(int index, const QMimeData *source)
 {
-    if (nullptr == source)
+    qCDebug(views) << "Enter TabBar::insertFromMimeDataOnDragEnter with index:" << index;
+    if (nullptr == source) {
+        qCDebug(views) << "Branch: Source is null";
         return;
+    }
 
     const QString tabName = QString::fromUtf8(source->data("deepin-terminal/tabbar"));
 
     QVariant pVar = source->property("termpage");
     TermWidgetPage *termPage = static_cast<TermWidgetPage *>(pVar.value<void *>());
 
-    if (nullptr == termPage)
+    if (nullptr == termPage) {
+        qCDebug(views) << "Branch: Term page is null";
         return;
+    }
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
     window->addTabWithTermPage(tabName, true, true, termPage, index);
@@ -698,16 +794,21 @@ void TabBar::insertFromMimeDataOnDragEnter(int index, const QMimeData *source)
 
 void TabBar::insertFromMimeData(int index, const QMimeData *source)
 {
-    if (nullptr == source)
+    // qCDebug(views) << "Enter TabBar::insertFromMimeData with index:" << index;
+    if (nullptr == source) {
+        qCDebug(views) << "Branch: Source is null";
         return;
+    }
 
     const QString tabName = QString::fromUtf8(source->data("deepin-terminal/tabbar"));
 
     QVariant pVar = source->property("termpage");
     TermWidgetPage *termPage = static_cast<TermWidgetPage *>(pVar.value<void *>());
 
-    if (nullptr == termPage)
+    if (nullptr == termPage) {
+        qCDebug(views) << "Branch: Term page is null";
         return;
+    }
 
     MainWindow *window = static_cast<MainWindow *>(this->window());
     window->addTabWithTermPage(tabName, true, false, termPage, index);
@@ -718,6 +819,7 @@ void TabBar::insertFromMimeData(int index, const QMimeData *source)
 
 bool TabBar::canInsertFromMimeData(int index, const QMimeData *source) const
 {
+    // qCDebug(views) << "Enter TabBar::canInsertFromMimeData with index:" << index;
     Q_UNUSED(index)
     //根据标签的QMimeData的MIME类型(即format)判断是否可以将标签插入当前tab中
     return source->hasFormat("deepin-terminal/tabbar");
@@ -725,6 +827,7 @@ bool TabBar::canInsertFromMimeData(int index, const QMimeData *source) const
 
 void TabBar::handleTabMoved(int fromIndex, int toIndex)
 {
+    // qCDebug(views) << "Enter TabBar::handleTabMoved with fromIndex:" << fromIndex << "toIndex:" << toIndex;
     if ((fromIndex < m_tabIdentifierList.count())
             && (toIndex < m_tabIdentifierList.count())
             && (fromIndex >= 0)
@@ -739,6 +842,7 @@ void TabBar::handleTabMoved(int fromIndex, int toIndex)
 
 void TabBar::handleTabReleased(int index)
 {
+    // qCDebug(views) << "Enter TabBar::handleTabReleased with index:" << index;
     if (index < 0)
         index = 0;
 
@@ -765,13 +869,16 @@ void TabBar::handleTabReleased(int index)
 
 void TabBar::handleDragActionChanged(Qt::DropAction action)
 {
+    qCDebug(views) << "Enter TabBar::handleDragActionChanged with action:" << action;
     if (Qt::IgnoreAction == action) {
+        qCDebug(views) << "Branch: Ignore action";
         // 如果拖动标签页未成功，则将光标重置为Qt::ArrowCursor。
         if (dragIconWindow()) {
             QGuiApplication::changeOverrideCursor(Qt::ArrowCursor);
             DPlatformWindowHandle::setDisableWindowOverrideCursor(dragIconWindow(), true);
         }
     } else if (dragIconWindow()) {
+        qCDebug(views) << "Branch: Drag icon window is not null";
         DPlatformWindowHandle::setDisableWindowOverrideCursor(dragIconWindow(), false);
         if (QGuiApplication::overrideCursor()) {
             QGuiApplication::changeOverrideCursor(QGuiApplication::overrideCursor()->shape());
@@ -781,6 +888,7 @@ void TabBar::handleDragActionChanged(Qt::DropAction action)
 
 void TabBar::createWindowFromTermPage(const QString &tabName, TermWidgetPage *termPage, bool isActiveTab)
 {
+    qCDebug(views) << "Enter TabBar::createWindowFromTermPage with tabName:" << tabName << "isActiveTab:" << isActiveTab;
     //创建窗口
     TermProperties properties;
     properties[DragDropTerminal] = true;
@@ -799,6 +907,7 @@ void TabBar::createWindowFromTermPage(const QString &tabName, TermWidgetPage *te
 
 QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
 {
+    // qCDebug(views) << "Enter TabBar::calculateDragDropWindowPosition with window:" << window;
     QPoint pos(QCursor::pos() - window->topLevelWidget()->pos());
 
     return pos;
@@ -806,9 +915,12 @@ QPoint TabBar::calculateDragDropWindowPosition(MainWindow *window)
 
 inline void TabBar::handleWindowClose()
 {
+    qCDebug(views) << "Enter TabBar::handleWindowClose";
     MainWindow *window = qobject_cast<MainWindow *>(sender());
-    if (nullptr == window)
+    if (nullptr == window) {
+        qCDebug(views) << "Branch: Window is null";
         return;
+    }
 
     int windowIndex = WindowsManager::instance()->getNormalWindowList().indexOf(window);
     qCInfo(views) << "Close window at index: " << windowIndex;
@@ -822,8 +934,11 @@ inline void TabBar::handleWindowClose()
 
 void TabBar::handleTabIsRemoved(int index)
 {
-    if ((index < 0) || (index >= m_tabIdentifierList.size()))
+    qCDebug(views) << "Enter TabBar::handleTabIsRemoved with index:" << index;
+    if ((index < 0) || (index >= m_tabIdentifierList.size())) {
+        qCDebug(views) << "Branch: Index is out of range";
         return;
+    }
 
     QString removeId = m_tabIdentifierList.at(index);
     m_tabIdentifierList.removeAt(index);
@@ -836,6 +951,7 @@ void TabBar::handleTabIsRemoved(int index)
 
 void TabBar::closeTab(const int &index)
 {
+    qCDebug(views) << "Enter TabBar::closeTab with index:" << index;
     DTabBar::removeTab(index);
 
     updateTabDragMoveStatus();
@@ -843,6 +959,7 @@ void TabBar::closeTab(const int &index)
 
 void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *target)
 {
+    qCDebug(views) << "Enter TabBar::handleTabDroped with index:" << index << "dropAction:" << dropAction << "target:" << target;
     Q_UNUSED(dropAction)
 
     qCInfo(views) << "Handle Tab Droped!  index:" << index << ", target:" << target;
@@ -867,24 +984,28 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 
 QSize TabBar::minimumTabSizeHint(int index) const
 {
+    // qCDebug(views) << "Enter TabBar::minimumTabSizeHint with index:" << index;
     Q_UNUSED(index)
     return QSize(m_tabItemMinWidth, m_tabHeight);
 }
 
 QSize TabBar::maximumTabSizeHint(int index) const
 {
+    // qCDebug(views) << "Enter TabBar::maximumTabSizeHint with index:" << index;
     Q_UNUSED(index)
     return QSize(m_tabItemMaxWidth, m_tabHeight);
 }
 
 void TabBar::setNeedChangeTextColor(const QString &tabIdentifier, const QColor &color)
 {
+    qCDebug(views) << "Enter TabBar::setNeedChangeTextColor with tabIdentifier:" << tabIdentifier << "color:" << color;
     m_tabStatusMap.insert(tabIdentifier, TabTextColorStatus_NeedChange);
     m_tabChangedTextColor = color;
 }
 
 void TabBar::removeNeedChangeTextColor(const QString &tabIdentifier)
 {
+    qCDebug(views) << "Enter TabBar::removeNeedChangeTextColor with tabIdentifier:" << tabIdentifier;
     m_tabStatusMap.remove(tabIdentifier);
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
@@ -896,11 +1017,13 @@ void TabBar::removeNeedChangeTextColor(const QString &tabIdentifier)
 
 void TabBar::setChangeTextColor(const QString &tabIdentifier)
 {
+    qCDebug(views) << "Enter TabBar::setChangeTextColor with tabIdentifier:" << tabIdentifier;
     m_tabStatusMap.insert(tabIdentifier, TabTextColorStatus_Changed);
     QColor color = m_tabChangedTextColor;
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
     if (style) {
+        qCDebug(views) << "Branch: Style is not null";
         style->setTabTextColor(color);
         style->setTabStatusMap(m_tabStatusMap);
         style->polish(this);
@@ -911,15 +1034,18 @@ void TabBar::setChangeTextColor(const QString &tabIdentifier)
 
 bool TabBar::isNeedChangeTextColor(const QString &tabIdentifier)
 {
+    qCDebug(views) << "Enter TabBar::isNeedChangeTextColor with tabIdentifier:" << tabIdentifier;
     return (m_tabStatusMap.value(tabIdentifier) == TabTextColorStatus_NeedChange);
 }
 
 void TabBar::setClearTabColor(const QString &tabIdentifier)
 {
+    qCDebug(views) << "Enter TabBar::setClearTabColor with tabIdentifier:" << tabIdentifier;
     m_tabStatusMap.insert(tabIdentifier, TabTextColorStatus_Default);
 
     TermTabStyle *style = qobject_cast<TermTabStyle *>(this->style());
     if (style) {
+        qCDebug(views) << "Branch: Style is not null";
         style->setTabStatusMap(m_tabStatusMap);
         style->polish(this);
     }
@@ -927,21 +1053,25 @@ void TabBar::setClearTabColor(const QString &tabIdentifier)
 
 void TabBar::setTabStatusMap(const QMap<QString, TabTextColorStatus> &tabStatusMap)
 {
+    // qCDebug(views) << "Enter TabBar::setTabStatusMap with tabStatusMap:" << tabStatusMap;
     m_tabStatusMap = tabStatusMap;
 }
 
 void TabBar::setEnableCloseTabAnimation(bool isEnableCloseTabAnimation)
 {
+    // qCDebug(views) << "Enter TabBar::setEnableCloseTabAnimation with isEnableCloseTabAnimation:" << isEnableCloseTabAnimation;
     m_isEnableCloseTabAnimation = isEnableCloseTabAnimation;
 }
 
 bool TabBar::isEnableCloseTabAnimation()
 {
+    // qCDebug(views) << "Enter TabBar::isEnableCloseTabAnimation";
     return m_isEnableCloseTabAnimation;
 }
 
 void TabBar::setIsQuakeWindowTab(bool isQuakeWindowTab)
 {
+    qCDebug(views) << "Enter TabBar::setIsQuakeWindowTab with isQuakeWindowTab:" << isQuakeWindowTab;
     m_isQuakeWindowTab = isQuakeWindowTab;
 
     //刚初始化窗口同时, 更新Tab拖动/移动状态
@@ -950,7 +1080,9 @@ void TabBar::setIsQuakeWindowTab(bool isQuakeWindowTab)
 
 void TabBar::updateTabDragMoveStatus()
 {
+    qCDebug(views) << "Enter TabBar::updateTabDragMoveStatus";
     if (m_isQuakeWindowTab && 1 == this->count()) {
+        qCDebug(views) << "Branch: Quake window tab is only one, setting movable and dragable to false";
         setMovable(false);
         setDragable(false);
         return;
@@ -962,8 +1094,10 @@ void TabBar::updateTabDragMoveStatus()
     //针对雷神窗口单独进行处理
     MainWindow *quakeWindow = WindowsManager::instance()->getQuakeWindow();
     if (nullptr != quakeWindow) {
+        qCDebug(views) << "Branch: Quake window is not null";
         TabBar *quakeWindowTabbar = quakeWindow->findChild<TabBar *>(this->metaObject()->className());
         if (1 == quakeWindowTabbar->count()) {
+            qCDebug(views) << "Branch: Quake window tab is only one, setting movable and dragable to false";
             quakeWindowTabbar->setMovable(false);
             quakeWindowTabbar->setDragable(false);
             return;
@@ -976,11 +1110,13 @@ void TabBar::updateTabDragMoveStatus()
 
 void TabBar::setCurrentIndex(int index)
 {
+    qCDebug(views) << "Enter TabBar::setCurrentIndex with index:" << index;
     DTabBar::setCurrentIndex(index);
     this->removeNeedChangeTextColor(identifier(index));
 }
 
 void TabBar::handleTabBarClicked(int index)
 {
+    qCDebug(views) << "Enter TabBar::handleTabBarClicked with index:" << index;
     emit tabBarClicked(index, tabData(index).toString());
 }

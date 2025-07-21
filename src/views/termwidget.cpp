@@ -67,8 +67,10 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 此方法会丢失焦点（show hide方法丢失焦点）
     // setTermOpacity(Settings::instance()->opacity());
 
+    qCDebug(views) << "Branch: Checking window effects and setting opacity";
     // 底层方法，设置当前窗口的透明度
     if (Service::instance()->isWindowEffectEnabled()) {
+        qCDebug(views) << "Branch: Window effects enabled, setting opacity";
         // 判断当前是否有窗口特效
         setTerminalOpacity(Settings::instance()->opacity());
     }
@@ -76,11 +78,13 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
+    qCDebug(views) << "Branch: Setting up theme";
     // theme
     QString theme = "Dark";
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
     //theme = Settings::instance()->colorScheme();
     if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
+        qCDebug(views) << "Branch: Light theme detected, using Light color scheme";
         theme = "Light";
     }
     /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
@@ -214,6 +218,7 @@ void TermWidget::initConnections()
 
 inline void TermWidget::onSetTerminalFont()
 {
+    // qCDebug(views) << "Enter TermWidget::onSetTerminalFont";
     QFont font = getTerminalFont();
     font.setFamily(Settings::instance()->fontName());
     font.setPointSize(Settings::instance()->fontSize());
@@ -222,23 +227,28 @@ inline void TermWidget::onSetTerminalFont()
 
 inline void TermWidget::onSig_noMatchFound()
 {
+    // qCDebug(views) << "Enter TermWidget::onSig_noMatchFound";
     parentPage()->setMismatchAlert(true);
 }
 
 inline void TermWidget::onQTermWidgetReceivedData(QString value)
 {
+    qCDebug(views) << "Enter TermWidget::onQTermWidgetReceivedData";
     Q_UNUSED(value)
     // 完善终端输出滚动相关功能，默认设置为"智能滚动"(即滚动条滑到最底下时自动滚动)
     if (!Settings::instance()->OutputtingScroll()) {
+        qCDebug(views) << "Branch: OutputtingScroll is false, setting isAllowScroll to true";
         setIsAllowScroll(true);
         return;
     }
 
     // 获取是否允许输出时滚动
     if (getIsAllowScroll()) {
+        qCDebug(views) << "Branch: getIsAllowScroll is true, setting trackOutput to OutputtingScroll";
         // 允许,则滚动到最新位置
         setTrackOutput(Settings::instance()->OutputtingScroll());
     } else {
+        qCDebug(views) << "Branch: getIsAllowScroll is false, setting isAllowScroll to true";
         // 不允许,则不滚动
         // 将标志位置位
         setIsAllowScroll(true);
@@ -247,6 +257,7 @@ inline void TermWidget::onQTermWidgetReceivedData(QString value)
 
 inline void TermWidget::onTermWidgetReceivedData(QString value)
 {
+    qCDebug(views) << "Enter TermWidget::onTermWidgetReceivedData";
     //前提：
     //启动终端ForegroundPid:A
     //远程开始、输入信息中、远程中：ForegroundPid:B
@@ -255,9 +266,11 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
 
     //准备输入密码，且 ForegroundPid 不等于A时，为有效准备
     if(m_remotePasswordIsReady && getForegroundProcessId() != m_remoteMainPid) {
+        qCDebug(views) << "Branch: m_remotePasswordIsReady is true and getForegroundProcessId is not equal to m_remoteMainPid";
         //匹配关键字
         if(value.toLower().contains("password:")
                 || value.toLower().contains("enter passphrase for key")) {
+            qCDebug(views) << "Branch: value contains password or passphrase";
         //输入密码,密码不为空，则发送
             if(!m_remotePassword.isEmpty())
                 sendText(m_remotePassword + "\r");
@@ -265,21 +278,25 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
         }
         //第一次远程时，需要授权
         if(value.toLower().contains("yes/no")) {
+            qCDebug(views) << "Branch: value contains yes/no";
             sendText("yes\r");
         }
 
     }
     //若ForegroundPid等于A，则代表远程结束，如开始连接时立刻ctrl+c
     if(m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
+        qCDebug(views) << "Branch: m_remotePasswordIsReady is true and getForegroundProcessId is equal to m_remoteMainPid";
         m_remotePasswordIsReady = false;
     }
 
     /******** Modify by ut000610 daizhengwen 2020-05-25: quit download****************/
     if (value.contains("Transfer incomplete")) {
+        qCDebug(views) << "Branch: value contains Transfer incomplete";
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
         QApplication::sendEvent(focusWidget(), &keyPress);
     }
     if (value.endsWith("\b \b #")) {                     // 结束的时候有乱码的话，将它清除
+        qCDebug(views) << "Branch: value ends with \b \b #";
         QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
         QApplication::sendEvent(focusWidget(), &keyPress);
     }
@@ -311,6 +328,7 @@ inline void TermWidget::onExitRemoteServer()
 
 inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 {
+    qCDebug(views) << "Enter TermWidget::onUrlActivated";
     if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu)
         QDesktopServices::openUrl(url);
 }
@@ -345,11 +363,13 @@ inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType buil
 
 inline void TermWidget::onTermIsIdle(bool bIdle)
 {
+    qCDebug(views) << "Enter TermWidget::onTermIsIdle";
     emit termIsIdle(m_page->identifier(), bIdle);
 }
 
 inline void TermWidget::onTitleChanged()
 {
+    qCDebug(views) << "Enter TermWidget::onTitleChanged";
     // 解析shell传来的title 用户名 主机名 地址/目录
     QString tabTitle = TermWidget::title();
     // %w shell设置的窗口标题
@@ -361,7 +381,9 @@ inline void TermWidget::onTitleChanged()
 
 inline void TermWidget::onCopyAvailable(bool enable)
 {
+    qCDebug(views) << "Enter TermWidget::onCopyAvailable";
     if (Settings::instance()->IsPasteSelection() && enable) {
+        qCDebug(views) << "Branch: IsPasteSelection is true and enable is true";
         QString strSelected = selectedText();
         QApplication::clipboard()->setText(strSelected, QClipboard::Clipboard);
     }
@@ -381,21 +403,25 @@ inline void TermWidget::onWindowEffectEnabled(bool isWinEffectEnabled)
 
 TermWidget::~TermWidget()
 {
+    // qCDebug(views) << "Enter TermWidget::~TermWidget";
     // 窗口减1
     WindowsManager::instance()->terminalCountReduce();
 }
 
 TermWidgetPage *TermWidget::parentPage()
 {
+    // qCDebug(views) << "Enter TermWidget::parentPage";
     return  m_page;
 }
 
 void TermWidget::onTitleArgsChange(QString key, QString value)
 {
+    qCDebug(views) << "Enter TermWidget::onTitleArgsChange";
     // tab获取参数
     m_tabArgs[key] = value;
     // 获取当前目录短 由长到短
     if (DIR_L == key) {
+        qCDebug(views) << "Branch: DIR_L is equal to key";
         QString dir = value;
         // 当前目录短（若有优化方法请及时告知）
         if ("~" == dir || dir.startsWith(QDir::homePath())) {
@@ -412,9 +438,11 @@ void TermWidget::onTitleArgsChange(QString key, QString value)
             dir.replace(homePath, "~");
             m_tabArgs[DIR_L] = dir;
         } else if ("/" == dir) {
+            qCDebug(views) << "Branch: / is equal to dir";
             // 出现根目录/的情况
             m_tabArgs[DIR_S] = "/";
         } else {
+            qCDebug(views) << "Branch: dir is not ~ or /";
             // 一般情况
             QStringList pathList = dir.split("/");
             m_tabArgs[DIR_S] = pathList.last();
@@ -427,6 +455,7 @@ void TermWidget::onTitleArgsChange(QString key, QString value)
 
 void TermWidget::onHostnameChanged()
 {
+    qCDebug(views) << "Enter TermWidget::onHostnameChanged";
     // 主机名变化
     QString hostName = QHostInfo::localHostName();
     m_tabArgs[LOCAL_HOST_NAME] = hostName;
@@ -436,16 +465,19 @@ void TermWidget::onHostnameChanged()
 
 inline void TermWidget::onCopy()
 {
+    qCDebug(views) << "Enter TermWidget::onCopy";
     copyClipboard();
 }
 
 inline void TermWidget::onPaste()
 {
+    qCDebug(views) << "Enter TermWidget::onPaste";
     pasteClipboard();
 }
 
 inline void TermWidget::onOpenFileInFileManager()
 {
+    qCDebug(views) << "Enter TermWidget::onOpenFileInFileManager";
     //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 
     //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
@@ -455,6 +487,7 @@ inline void TermWidget::onOpenFileInFileManager()
     QProcess process;
     //未选择内容
     if (selectedText().isEmpty()) {
+        qCDebug(views) << "Branch: selectedText is empty, starting dde-file-manager with workingDirectory";
         process.startDetached("dde-file-manager", {"-n", workingDirectory()});
         return;
     }
@@ -462,6 +495,7 @@ inline void TermWidget::onOpenFileInFileManager()
     QFileInfo fi(workingDirectory() + "/" + selectedText());
     //选择的内容是文件或者文件夹
     if (fi.isFile() || fi.isDir()) {
+        qCDebug(views) << "Branch: selectedText is a file or directory, starting dde-file-manager with --show-item";
         process.startDetached("dde-file-manager", {"--show-item", workingDirectory() + "/" + selectedText()});
         return;
     }
@@ -472,6 +506,7 @@ inline void TermWidget::onOpenFileInFileManager()
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
 void TermWidget::addMenuActions(const QPoint &pos)
 {
+    qCDebug(views) << "Enter TermWidget::addMenuActions";
     bool isRemoting = isConnectRemote();
 
     QList<QAction *> termActions = filterActions(pos);
@@ -577,6 +612,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
 inline void TermWidget::onHorizontalSplit()
 {
+    qCDebug(views) << "Enter TermWidget::onHorizontalSplit";
     getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitHorizontal);
@@ -584,6 +620,7 @@ inline void TermWidget::onHorizontalSplit()
 
 inline void TermWidget::onVerticalSplit()
 {
+    qCDebug(views) << "Enter TermWidget::onVerticalSplit";
     getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitVertical);
@@ -591,103 +628,123 @@ inline void TermWidget::onVerticalSplit()
 
 inline void TermWidget::splitHorizontal()
 {
+    // qCDebug(views) << "Enter TermWidget::splitHorizontal";
     parentPage()->split(Qt::Horizontal);
 }
 
 inline void TermWidget::splitVertical()
 {
+    // qCDebug(views) << "Enter TermWidget::splitVertical";
     parentPage()->split(Qt::Vertical);
 }
 
 inline void TermWidget::onCloseCurrWorkSpace()
 {
+    qCDebug(views) << "Enter TermWidget::onCloseCurrWorkSpace";
     parentPage()->closeSplit(parentPage()->currentTerminal());
 }
 
 inline void TermWidget::onCloseOtherWorkSpaces()
 {
+    qCDebug(views) << "Enter TermWidget::onCloseOtherWorkSpaces";
     parentPage()->closeOtherTerminal();
 }
 
 inline void TermWidget::onCreateNewTab()
 {
+    qCDebug(views) << "Enter TermWidget::onCreateNewTab";
     parentPage()->parentMainWindow()->createNewTab();
 }
 
 inline void TermWidget::onSwitchFullScreen()
 {
+    qCDebug(views) << "Enter TermWidget::onSwitchFullScreen";
     parentPage()->parentMainWindow()->switchFullscreen();
 }
 
 inline void TermWidget::openBing()
 {
+    qCDebug(views) << "Enter TermWidget::openBing";
     QString strUrl = "https://cn.bing.com/search?q=" + selectedText();
     openUrl(strUrl);
 }
 
 inline void TermWidget::openBaidu()
 {
+    qCDebug(views) << "Enter TermWidget::openBaidu";
     QString strUrl = "https://www.baidu.com/s?wd=" + selectedText();
     openUrl(strUrl);
 }
 
 inline void TermWidget::openGithub()
 {
+    qCDebug(views) << "Enter TermWidget::openGithub";
     QString strUrl = "https://github.com/search?q=" + selectedText();
     openUrl(strUrl);
 }
 
 inline void TermWidget::openStackOverflow()
 {
+    qCDebug(views) << "Enter TermWidget::openStackOverflow";
     QString strUrl = "https://stackoverflow.com/search?q=" + selectedText();
     openUrl(strUrl);
 }
 
 inline void TermWidget::onShowSearchBar()
 {
+    qCDebug(views) << "Enter TermWidget::onShowSearchBar";
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
 }
 
 inline void TermWidget::onShowEncoding()
 {
+    qCDebug(views) << "Enter TermWidget::onShowEncoding";
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
 }
 
 inline void TermWidget::onShowCustomCommands()
 {
+    qCDebug(views) << "Enter TermWidget::onShowCustomCommands";
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
 }
 
 inline void TermWidget::onShowRemoteManagement()
 {
+    qCDebug(views) << "Enter TermWidget::onShowRemoteManagement";
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
 }
 
 inline void TermWidget::onUploadFile()
 {
+    qCDebug(views) << "Enter TermWidget::onUploadFile";
     parentPage()->parentMainWindow()->remoteUploadFile();
 }
 
 inline void TermWidget::onDownloadFile()
 {
+    qCDebug(views) << "Enter TermWidget::onDownloadFile";
     parentPage()->parentMainWindow()->remoteDownloadFile();
 }
 
 inline void TermWidget::onShowSettings()
 {
+    qCDebug(views) << "Enter TermWidget::onShowSettings";
     Service::instance()->showSettingDialog(parentPage()->parentMainWindow());
 }
 
 inline void TermWidget::openUrl(QString strUrl)
 {
+    qCDebug(views) << "Enter TermWidget::openUrl:" << strUrl;
     QDesktopServices::openUrl(QUrl(strUrl));
 }
 
 inline QString TermWidget::getFormatFileName(QString selectedText)
 {
+    qCDebug(views) << "Enter TermWidget::getFormatFileName:" << selectedText;
     QString fileName = selectedText.trimmed();
     if ((fileName.startsWith("'") && fileName.endsWith("'"))
             || (fileName.startsWith("\"") && fileName.endsWith("\""))) {
+        qCDebug(views) << "Branch: fileName is wrapped in quotes";
         fileName = fileName.remove(0, 1);
         fileName = fileName.remove(fileName.length() - 1, 1);
         qCInfo(views) << "Format fileName is " << fileName;
@@ -698,15 +755,19 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
 
 inline QString TermWidget::getFilePath(QString fileName)
 {
+    qCDebug(views) << "Enter TermWidget::getFilePath:" << fileName;
     //如果fileName本身已经是一个文件路径
-    if (fileName.startsWith("/"))
+    if (fileName.startsWith("/")) {
+        qCDebug(views) << "Branch: fileName starts with /, returning fileName";
         return fileName;
+    }
 
     return workingDirectory() + "/" + fileName;
 }
 
 void TermWidget::inputRemotePassword(const QString &remotePassword)
 {
+    qCDebug(views) << "Enter TermWidget::inputRemotePassword";
     //每个工作区设置对应的标志位
     m_remoteMainPid = getForegroundProcessId();
     m_remotePassword = remotePassword;
@@ -728,6 +789,7 @@ void TermWidget::inputRemotePassword(const QString &remotePassword)
 
 inline void TermWidget::onOpenFile()
 {
+    qCDebug(views) << "Enter TermWidget::onOpenFile";
     QString fileName = getFormatFileName(selectedText());
     QString filePath = getFilePath(fileName);
     QUrl fileUrl = QUrl::fromLocalFile(filePath);
@@ -736,16 +798,19 @@ inline void TermWidget::onOpenFile()
 
 QString TermWidget::RemoteEncode() const
 {
+    // qCDebug(views) << "Enter TermWidget::RemoteEncode";
     return m_remoteEncode;
 }
 
 void TermWidget::setRemoteEncode(const QString &RemoteEncode)
 {
+    // qCDebug(views) << "Enter TermWidget::setRemoteEncode:" << RemoteEncode;
     m_remoteEncode = RemoteEncode;
 }
 
 void TermWidget::setBackspaceMode(const EraseMode &backspaceMode)
 {
+    qCDebug(views) << "Enter TermWidget::setBackspaceMode:" << backspaceMode;
     char ch;
     int length;
     switch (backspaceMode) {
@@ -779,6 +844,7 @@ void TermWidget::setBackspaceMode(const EraseMode &backspaceMode)
 
 void TermWidget::setDeleteMode(const EraseMode &deleteMode)
 {
+    qCDebug(views) << "Enter TermWidget::setDeleteMode:" << deleteMode;
     char ch;
     int length;
     switch (deleteMode) {
@@ -807,6 +873,7 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
 
 int TermWidget::getTermLayer()
 {
+    qCDebug(views) << "Enter TermWidget::getTermLayer";
     int layer = 1;
     QWidget *currentW = this;
     while (currentW->parentWidget() != parentPage()) {
@@ -818,6 +885,7 @@ int TermWidget::getTermLayer()
 
 void TermWidget::setTabFormat(const QString &tabFormat)
 {
+    qCDebug(views) << "Enter TermWidget::setTabFormat:" << tabFormat;
     // 非全局设置优先级更高
     if (m_tabFormat.isGlobal != false && m_tabFormat.currentTabFormat != tabFormat) {
         m_tabFormat.currentTabFormat = tabFormat;
@@ -828,6 +896,7 @@ void TermWidget::setTabFormat(const QString &tabFormat)
 
 void TermWidget::setRemoteTabFormat(const QString &remoteTabFormat)
 {
+    qCDebug(views) << "Enter TermWidget::setRemoteTabFormat:" << remoteTabFormat;
     // 非全局设置优先级更高
     if (m_tabFormat.isGlobal != false && m_tabFormat.remoteTabFormat != remoteTabFormat) {
         m_tabFormat.remoteTabFormat = remoteTabFormat;
@@ -838,6 +907,7 @@ void TermWidget::setRemoteTabFormat(const QString &remoteTabFormat)
 
 void TermWidget::renameTabFormat(const QString &tabFormat, const QString &remoteTabFormat)
 {
+    qCDebug(views) << "Enter TermWidget::renameTabFormat:" << tabFormat << remoteTabFormat;
     // 重命名优先级高
     m_tabFormat.currentTabFormat = tabFormat;
     m_tabFormat.remoteTabFormat = remoteTabFormat;
@@ -847,6 +917,7 @@ void TermWidget::renameTabFormat(const QString &tabFormat, const QString &remote
 
 QString TermWidget::getTabTitle()
 {
+    qCDebug(views) << "Enter TermWidget::getTabTitle";
     QString strTabName;
     // 判断当前是否连接远程
     if (isConnectRemote() /*|| getForegroundProcessName() == "ssh"*/) {
@@ -866,6 +937,7 @@ QString TermWidget::getTabTitle()
 
 QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat)
 {
+    qCDebug(views) << "Enter TermWidget::getTabTitle";
     // 遍历参数列表
     for (QString key : format.keys()) {
         // 判断是否包含改参数
@@ -879,6 +951,7 @@ QString TermWidget::getTabTitle(QMap<QString, QString> format, QString TabFormat
 
 void TermWidget::initTabTitle()
 {
+    qCDebug(views) << "Enter TermWidget::initTabTitle";
     static ushort sessionNumber = 0;
     // 初始化标签标题参数
     initTabTitleArgs();
@@ -898,6 +971,7 @@ void TermWidget::initTabTitle()
 
 void TermWidget::initTabTitleArgs()
 {
+    qCDebug(views) << "Enter TermWidget::initTabTitleArgs";
     QStringList strTabArgs = TAB_ARGS.split(" ");
     // 填充标签标题参数
     for (QString arg : strTabArgs)
@@ -913,46 +987,57 @@ void TermWidget::initTabTitleArgs()
 
 QString TermWidget::getTabTitleFormat()
 {
+    // qCDebug(views) << "Enter TermWidget::getTabTitleFormat";
     return m_tabFormat.currentTabFormat;
 }
 
 QString TermWidget::getRemoteTabTitleFormat()
 {
+    // qCDebug(views) << "Enter TermWidget::getRemoteTabTitleFormat";
     return m_tabFormat.remoteTabFormat;
 }
 
 QString TermWidget::getCurrentTabTitleFormat()
 {
+    qCDebug(views) << "Enter TermWidget::getCurrentTabTitleFormat";
     // 连接远程
-    if (isConnectRemote())
+    if (isConnectRemote()) {
+        qCDebug(views) << "Branch: isConnectRemote is true, returning remoteTabFormat";
         return m_tabFormat.remoteTabFormat;
+    }
 
     // 未连接远程
+    qCDebug(views) << "Branch: isConnectRemote is false, returning currentTabFormat";
     return m_tabFormat.currentTabFormat;
 }
 
 QString TermWidget::encode() const
 {
+    // qCDebug(views) << "Enter TermWidget::encode";
     return m_encode;
 }
 
 void TermWidget::setEncode(const QString &encode)
 {
+    // qCDebug(views) << "Enter TermWidget::setEncode:" << encode;
     m_encode = encode;
 }
 
 bool TermWidget::isConnectRemote() const
 {
+    // qCDebug(views) << "Enter TermWidget::isConnectRemote";
     return m_isConnectRemote;
 }
 
 void TermWidget::setIsConnectRemote(bool isConnectRemote)
 {
+    // qCDebug(views) << "Enter TermWidget::setIsConnectRemote:" << isConnectRemote;
     m_isConnectRemote = isConnectRemote;
 }
 
 void TermWidget::modifyRemoteTabTitle(ServerConfig remoteConfig)
 {
+    qCDebug(views) << "Enter TermWidget::modifyRemoteTabTitle";
     // 远程主机名
     m_remoteTabArgs[REMOTE_HOST_NAME] = remoteConfig.m_address;
     // 用户名 %u
@@ -966,16 +1051,19 @@ void TermWidget::modifyRemoteTabTitle(ServerConfig remoteConfig)
 
 bool TermWidget::enterSzCommand() const
 {
+    // qCDebug(views) << "Enter TermWidget::enterSzCommand";
     return m_enterSzCommand;
 }
 
 void TermWidget::setEnterSzCommand(bool enterSzCommand)
 {
+    // qCDebug(views) << "Enter TermWidget::setEnterSzCommand:" << enterSzCommand;
     m_enterSzCommand = enterSzCommand;
 }
 
 inline void TermWidget::customContextMenuCall(const QPoint &pos)
 {
+    qCDebug(views) << "Enter TermWidget::customContextMenuCall";
     /***add by ut001121 zhangmeng 20200514 右键获取焦点, 修复BUG#26003***/
     setFocus();
 
@@ -984,6 +1072,7 @@ inline void TermWidget::customContextMenuCall(const QPoint &pos)
 
     /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
     if (nullptr == m_menu) {
+        qCDebug(views) << "Branch: m_menu is nullptr, creating new DMenu";
         m_menu = new DMenu(this);
         m_menu->setObjectName("TermMenu");//Add by ut001000 renfeixiang 2020-08-13
     }
@@ -997,24 +1086,32 @@ inline void TermWidget::customContextMenuCall(const QPoint &pos)
 
 bool TermWidget::isInRemoteServer()
 {
+    qCDebug(views) << "Enter TermWidget::isInRemoteServer";
     int pid = getForegroundProcessId();
-    if (pid <= 0)
+    if (pid <= 0) {
+        qCDebug(views) << "Branch: pid is less than or equal to 0, returning false";
         return false;
+    }
 
     QString pidFilepath = "/proc/" + QString::number(pid) + "/comm";
     QFile pidFile(pidFilepath);
     if (pidFile.exists()) {
+        qCDebug(views) << "Branch: pidFile exists, opening file";
         pidFile.open(QIODevice::ReadOnly | QIODevice::Text);
         QString commString(pidFile.readLine());
         pidFile.close();
-        if ("expect" == commString.trimmed())
+        if ("expect" == commString.trimmed()) {
+            qCDebug(views) << "Branch: commString is expect, returning true";
             return true;
+        }
     }
+    qCDebug(views) << "Branch: commString is not expect, returning false";
     return false;
 }
 
 void TermWidget::setTermOpacity(qreal opacity)
 {
+    qCDebug(views) << "Enter TermWidget::setTermOpacity";
     //这里再次判断一遍，因为刚启动时，还是需要判断一次当前是否开启了窗口特效
     qreal termOpacity = opacity;
     if (!Service::instance()->isWindowEffectEnabled())
@@ -1029,6 +1126,7 @@ void TermWidget::setTermOpacity(qreal opacity)
 
 void TermWidget::setTermFont(const QString &fontName)
 {
+    qCDebug(views) << "Enter TermWidget::setTermFont:" << fontName;
     QFont font = getTerminalFont();
     font.setFamily(fontName);
     setTerminalFont(font);
@@ -1036,6 +1134,7 @@ void TermWidget::setTermFont(const QString &fontName)
 
 void TermWidget::setTermFontSize(const int fontSize)
 {
+    qCDebug(views) << "Enter TermWidget::setTermFontSize:" << fontSize;
     QFont font = getTerminalFont();
     font.setFixedPitch(true);
     font.setPointSize(fontSize);
@@ -1044,12 +1143,14 @@ void TermWidget::setTermFontSize(const int fontSize)
 
 void TermWidget::setCursorShape(int shape)
 {
+    qCDebug(views) << "Enter TermWidget::setCursorShape:" << shape;
     Konsole::Emulation::KeyboardCursorShape cursorShape = Konsole::Emulation::KeyboardCursorShape(shape);
     setKeyboardCursorShape(cursorShape);
 }
 
 void TermWidget::setPressingScroll(bool enable)
 {
+    qCDebug(views) << "Enter TermWidget::setPressingScroll:" << enable;
     if (enable)
         setMotionAfterPasting(2);
     else
@@ -1058,6 +1159,7 @@ void TermWidget::setPressingScroll(bool enable)
 
 void TermWidget::selectEncode(QString encode)
 {
+    qCDebug(views) << "Enter TermWidget::selectEncode:" << encode;
     // 直接设置终端
     setTextCodec(QTextCodec::codecForName(encode.toUtf8()));
     // 是否连接远程
@@ -1076,11 +1178,13 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
 {
     qCInfo(views) << "Setting Value Changed! Current Config's key:" << keyName;
     if ("basic.interface.opacity" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: basic.interface.opacity";
         setTermOpacity(Settings::instance()->opacity());
         return;
     }
 
     if ("basic.interface.font" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: basic.interface.font";
         setTermFont(Settings::instance()->fontName());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体变化时设置雷神窗口最小高度 Begin***************/
         m_page->parentMainWindow()->setWindowMinHeightForFont();
@@ -1091,6 +1195,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     }
 
     if ("basic.interface.font_size" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: basic.interface.font_size";
         setTermFontSize(Settings::instance()->fontSize());
         /******** Add by nt001000 renfeixiang 2020-05-20:增加字体大小变化时设置雷神窗口最小高度 Begin***************/
         m_page->parentMainWindow()->setWindowMinHeightForFont();
@@ -1101,25 +1206,30 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     }
 
     if ("advanced.cursor.cursor_shape" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: advanced.cursor.cursor_shape";
         setCursorShape(Settings::instance()->cursorShape());
         return;
     }
 
     if ("advanced.cursor.cursor_blink" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: advanced.cursor.cursor_blink";
         setBlinkingCursor(Settings::instance()->cursorBlink());
         return;
     }
 
     if ("advanced.scroll.scroll_on_key" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: advanced.scroll.scroll_on_key";
         setPressingScroll(Settings::instance()->PressingScroll());
         return;
     }
 
     if ("basic.interface.theme" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: basic.interface.theme";
         return;
     }
     // 这里只是立即生效一次，真正生效起作用的地方在初始的connect中
     if ("advanced.cursor.auto_copy_selection" == keyName) {
+        qCDebug(views) << "Enter TermWidget::onSettingValueChanged: advanced.cursor.auto_copy_selection";
         if (Settings::instance()->IsPasteSelection())
             copyClipboard();
         else
@@ -1139,15 +1249,18 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
 
 void TermWidget::onDropInUrls(const char *urls)
 {
+    qCDebug(views) << "Enter TermWidget::onDropInUrls";
     QString strUrls = QString::fromLocal8Bit(urls);
     qCInfo(views) << "recv urls:" << strUrls;
     if (isConnectRemote()) {
+        qCDebug(views) << "Branch: isConnectRemote is true, uploading file";
         // 远程管理连接中
         QString strTxt = "sz ";
         strTxt += strUrls;
         // 上传文件
         parentPage()->parentMainWindow()->remoteUploadFile(strTxt);
     } else {
+        qCDebug(views) << "Branch: isConnectRemote is false, sending text";
         // 发送字符
         sendText(strUrls);
     }
@@ -1156,8 +1269,10 @@ void TermWidget::onDropInUrls(const char *urls)
 
 inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 {
+    qCDebug(views) << "Enter TermWidget::onTouchPadSignal";
     // 当前窗口被激活,且有焦点
     if (isActiveWindow() && hasFocus()) {
+        qCDebug(views) << "Branch: isActiveWindow and hasFocus";
         if (name == "pinch" && fingers == 2) {
             if (direction == "in") {
                 // 捏合 in是手指捏合的方向 向内缩小
@@ -1172,18 +1287,24 @@ inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fi
 
 void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 {
+    qCDebug(views) << "Enter TermWidget::onShellMessage";
     if (isSuccess) {
+        qCDebug(views) << "Branch: isSuccess is true";
         // 替换了shell提示
         QString strSetShell = Settings::instance()->shellPath();
         QString strShellWarning = QObject::tr("Could not find \"%1\", starting \"%2\" instead. Please check your shell profile.").arg(strSetShell).arg(currentShell);
         showShellMessage(strShellWarning);
     } else {
+        qCDebug(views) << "Branch: isSuccess is false";
         // 启动shell失败
         QString strShellNoFound;
-        if(QFile::exists(currentShell))
+        if(QFile::exists(currentShell)) {
+            qCDebug(views) << "Branch: currentShell exists";
             strShellNoFound = QObject::tr("Could not open \"%1\", unable to run it").arg(currentShell);
-        else
+        } else {
+            qCDebug(views) << "Branch: currentShell does not exist";
             strShellNoFound = QObject::tr("Could not find \"%1\", unable to run it").arg(currentShell);
+        }
 
         showShellMessage(strShellNoFound);
     }
@@ -1191,14 +1312,18 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 
 void TermWidget::wheelEvent(QWheelEvent *event)
 {
+    // qCDebug(views) << "Enter TermWidget::wheelEvent";
     // 当前窗口被激活,且有焦点
     if (isActiveWindow() && hasFocus()) {
+        // qCDebug(views) << "Branch: isActiveWindow and hasFocus";
         if (Qt::ControlModifier == event->modifiers()) {
             int directionY = event->angleDelta().y();
             if (directionY < 0) {
+                qCDebug(views) << "Branch: directionY is less than 0, zooming out";
                 // 向下缩小
                 zoomOut();  // zoom out 缩小
             } else {
+                qCDebug(views) << "Branch: directionY is greater than 0, zooming in";
                 // 向上放大
                 zoomIn();   // zoom in 放大
             }
@@ -1210,7 +1335,9 @@ void TermWidget::wheelEvent(QWheelEvent *event)
 
 void TermWidget::showFlowMessage(bool show)
 {
+    qCDebug(views) << "Enter TermWidget::showFlowMessage";
     if (nullptr == m_flowMessage) {
+        qCDebug(views) << "Branch: m_flowMessage is nullptr, creating new DFloatingMessage";
         m_flowMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
         m_flowMessage->setIcon(QIcon(":icons/deepin/builtin/warning.svg"));
         QString strText = QObject::tr("Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.");
@@ -1222,6 +1349,7 @@ void TermWidget::showFlowMessage(bool show)
 
 void TermWidget::showShellMessage(QString strWarnings)
 {
+    qCDebug(views) << "Enter TermWidget::showShellMessage";
     // 初始化悬浮框
     DFloatingMessage *shellWarningsMessage = new DFloatingMessage(DFloatingMessage::ResidentType, this);
     // 关闭悬浮框时销毁

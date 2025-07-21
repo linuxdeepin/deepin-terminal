@@ -33,7 +33,7 @@ FocusFrame::FocusFrame(QWidget *parent)
 
 void FocusFrame::paintEvent(QPaintEvent *event)
 {
-    qCDebug(views) << "FocusFrame::paintEvent() entered";
+    // qCDebug(views) << "FocusFrame::paintEvent() entered";
 
     QPainter painter(this);
     DPalette pa = DPaletteHelper::instance()->palette(this);
@@ -44,6 +44,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
 
     // 焦点若在，则画边框
     if (m_isFocus) {
+        // qCDebug(views) << "Branch: Focus is active";
         // 边框
         QPainterPath FramePath;
         // 效果和以下代码类似，兼容紧凑模式
@@ -64,6 +65,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         // ui要有框，背景不变
         painter.fillPath(itemBackgroudPath, QBrush(pa.color(backgroundType)));
     } else {
+        // qCDebug(views) << "Branch: Focus is not active";
         // 焦点不在，不绘制
         // 绘制背景
         QPainterPath itemBackgroudPath;
@@ -81,7 +83,7 @@ void FocusFrame::paintEvent(QPaintEvent *event)
 
 void FocusFrame::enterEvent(EnterEvent *event)
 {
-    qCDebug(views) << "Mouse entered FocusFrame";
+    // qCDebug(views) << "Mouse entered FocusFrame";
 
     // 鼠标进入
     m_isHover = true;
@@ -94,7 +96,7 @@ void FocusFrame::enterEvent(EnterEvent *event)
 
 void FocusFrame::leaveEvent(QEvent *event)
 {
-    qCDebug(views) << "Mouse left FocusFrame";
+    // qCDebug(views) << "Mouse left FocusFrame";
 
     // 鼠标出
     m_isHover = false;
@@ -107,7 +109,7 @@ void FocusFrame::leaveEvent(QEvent *event)
 
 void FocusFrame::focusInEvent(QFocusEvent *event)
 {
-    qCDebug(views) << "Focus gained on FocusFrame";
+    // qCDebug(views) << "Focus gained on FocusFrame";
 
     // 焦点入
     m_isFocus = true;
@@ -116,7 +118,7 @@ void FocusFrame::focusInEvent(QFocusEvent *event)
 
 void FocusFrame::focusOutEvent(QFocusEvent *event)
 {
-    qCDebug(views) << "Focus lost on FocusFrame";
+    // qCDebug(views) << "Focus lost on FocusFrame";
 
     // 焦点Tab出
     m_isFocus = false;
@@ -125,6 +127,7 @@ void FocusFrame::focusOutEvent(QFocusEvent *event)
 
 void FocusFrame::paintRoundedRect(QPainterPath &path, const QRect &background)
 {
+    // qCDebug(views) << "Enter FocusFrame::paintRoundedRect";
     // 这两个参数调整可以调整圆角
     int cornerSize = 16;
     int arcRadius = 8;
@@ -142,11 +145,14 @@ void FocusFrame::paintRoundedRect(QPainterPath &path, const QRect &background)
 
 int FocusFrame::getBackgroudColorRole()
 {
+    // qCDebug(views) << "Enter FocusFrame::getBackgroudColorRole";
     if (m_isHover) {
+        // qCDebug(views) << "Branch: Mouse is hovering";
         // 鼠标悬浮 返回背景色 0.1
         return DPalette::ObviousBackground;
     }
 
+    // qCDebug(views) << "Branch: Mouse is not hovering";
     // 鼠标不悬浮 返回背景色 0.02
     return DPalette::ItemBackground;
 }

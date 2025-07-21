@@ -57,10 +57,13 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
 
 bool PageSearchBar::isFocus()
 {
+    qCDebug(views) << "Enter PageSearchBar::isFocus";
     MainWindow *minwindow = Utils::getMainWindow(this);
     DIconButton *addButton = minwindow->findChild<DIconButton *>("AddButton");
-    if (addButton != nullptr)
+    if (addButton != nullptr) {
+        qCDebug(views) << "Branch: addButton is not null, setting tab order";
         QWidget::setTabOrder(m_findNextButton, addButton);
+    }
 
     return m_searchEdit->lineEdit()->hasFocus();
 }
@@ -78,29 +81,36 @@ void PageSearchBar::focus()
 
 QString PageSearchBar::searchKeytxt()
 {
+    // qCDebug(views) << "Enter PageSearchBar::searchKeytxt";
     return m_searchEdit->text();
 }
 
 void PageSearchBar::saveOldHoldContent()
 {
+    // qCDebug(views) << "Enter PageSearchBar::saveOldHoldContent";
     m_originalPlaceHolder = m_searchEdit->placeHolder();
 }
 
 void PageSearchBar::clearHoldContent()
 {
+    qCDebug(views) << "Enter PageSearchBar::clearHoldContent";
     // 置空内容
     m_searchEdit->setPlaceHolder("");
     DIconButton *iconBtn = m_searchEdit->findChild<DIconButton *>();
-    if (iconBtn != nullptr)
+    if (iconBtn != nullptr) {
+        qCDebug(views) << "Branch: iconBtn is not null, clearing icon";
         iconBtn->setIcon(QIcon(""));
+    }
 }
 
 void PageSearchBar::recoveryHoldContent()
 {
+    qCDebug(views) << "Enter PageSearchBar::recoveryHoldContent";
     // 还原文本
     m_searchEdit->setPlaceHolder(m_originalPlaceHolder);
     DIconButton *iconBtn = m_searchEdit->findChild<DIconButton *>();
     if (iconBtn != nullptr) {
+        qCDebug(views) << "Branch: iconBtn is not null, restoring icon";
         // 还原图标
         iconBtn->setIcon(DStyle::SP_IndicatorSearch);
     }
@@ -109,28 +119,37 @@ void PageSearchBar::recoveryHoldContent()
 
 void PageSearchBar::keyPressEvent(QKeyEvent *event)
 {
+    // qCDebug(views) << "Enter PageSearchBar::keyPressEvent";
     switch (event->key()) {
     case Qt::Key_Enter:
     case Qt::Key_Return: {
+        // qCDebug(views) << "Branch: Key_Enter/Key_Return";
         // 搜索框有焦点的情况下
         if (m_searchEdit->lineEdit()->hasFocus()) {
+            // qCDebug(views) << "Branch: search edit has focus";
             Qt::KeyboardModifiers modify = event->modifiers();
             // 有shift修饰， Qt::KeypadModifier 修饰是否是小键盘
             if (Qt::ShiftModifier == modify
                     || (Qt::ShiftModifier | Qt::KeypadModifier) == modify) {
+                // qCDebug(views) << "Branch: shift modifier, finding previous";
                 // shift + enter 查找前一个
                 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+                qCDebug(views) << "Branch: Qt version < 6.0, animateClick with 80ms";
                 m_findPrevButton->animateClick(80);
                 #else
+                qCDebug(views) << "Branch: Qt version >= 6.0, animateClick without duration";
                 m_findPrevButton->animateClick();
                 #endif
             }
             // 没有shift修饰
             else if (Qt::NoModifier == modify || Qt::KeypadModifier == modify) {
+                // qCDebug(views) << "Branch: no shift modifier, finding next";
                 // 查找下一个
                 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+                qCDebug(views) << "Branch: Qt version < 6.0, animateClick with 80ms";
                 m_findNextButton->animateClick(80);
                 #else
+                qCDebug(views) << "Branch: Qt version >= 6.0, animateClick without duration";
                 m_findNextButton->animateClick();
                 #endif
             }
@@ -138,9 +157,11 @@ void PageSearchBar::keyPressEvent(QKeyEvent *event)
     }
     break;
     default:
+        // qCDebug(views) << "Branch: default key";
         DFloatingWidget::keyPressEvent(event);
         break;
     }
+    // qCDebug(views) << "PageSearchBar::keyPressEvent finished";
 }
 
 void PageSearchBar::initFindPrevButton()
@@ -153,7 +174,9 @@ void PageSearchBar::initFindPrevButton()
     m_findPrevButton->setFocusPolicy(Qt::TabFocus);
 
     connect(m_findPrevButton, &DIconButton::clicked, this, [this]() {
+        qCDebug(views) << "Find previous button clicked";
         if (!m_searchEdit->lineEdit()->text().isEmpty()) {
+            qCDebug(views) << "Branch: search text is not empty";
             m_searchStartTime = QDateTime::currentMSecsSinceEpoch();
             emit findPrev();
         }
@@ -171,7 +194,9 @@ void PageSearchBar::initFindNextButton()
     m_findNextButton->setFocusPolicy(Qt::TabFocus);
 
     connect(m_findNextButton, &DIconButton::clicked, this, [this]() {
+        qCDebug(views) << "Find next button clicked";
         if (!m_searchEdit->lineEdit()->text().isEmpty()) {
+            qCDebug(views) << "Branch: search text is not empty";
             m_searchStartTime = QDateTime::currentMSecsSinceEpoch();
             emit findNext();
         }
@@ -200,12 +225,15 @@ void PageSearchBar::initSearchEdit()
     QList<QToolButton *> list = m_searchEdit->lineEdit()->findChildren<QToolButton *>();
     QAction *clearAction = m_searchEdit->lineEdit()->findChild<QAction *>(QLatin1String("_q_qlineeditclearaction"));
     if (clearAction != nullptr) {
+        qCDebug(views) << "Branch: clearAction found, setting up clear button";
         for (int i = 0; i < list.count(); i++) {
             if (list.at(i)->defaultAction() == clearAction) {
+                // qCDebug(views) << "Branch: found clear button, reconnecting signal";
                 QToolButton *clearBtn = list.at(i);
                 //屏蔽lineedit清除按钮的槽函数,_q_clearFocus()获得有效的判断条件
                 clearBtn->disconnect(SIGNAL(clicked()));
                 connect(clearBtn, &QToolButton::clicked, this, [this]() {
+                    // qCDebug(views) << "Clear button clicked";
                     m_searchEdit->lineEdit()->setText("");
                 });
             }
@@ -216,6 +244,7 @@ void PageSearchBar::initSearchEdit()
 
     // 需求不让自动查找，这个接口预留
     connect(m_searchEdit, &DSearchEdit::textChanged, this, [this]() {
+        qCDebug(views) << "Search text changed";
         emit keywordChanged(m_searchEdit->lineEdit()->text());
     });
     qCDebug(views) << "PageSearchBar::initSearchEdit() finished";
@@ -227,10 +256,13 @@ void PageSearchBar::initSearchEdit()
  */
 void PageSearchBar::updateSizeMode()
 {
+    // qCDebug(views) << "Enter PageSearchBar::updateSizeMode";
 #ifdef DTKWIDGET_CLASS_DSizeMode
+    // qCDebug(views) << "Branch: DTKWIDGET_CLASS_DSizeMode defined";
     DIconButton *searchIconBtn = m_searchEdit->findChild<DIconButton *>();
 
     if (DGuiApplicationHelper::isCompactMode()) {
+        // qCDebug(views) << "Branch: compact mode";
         setFixedSize(barWidthCompact, barHeightCompact);
         setContentsMargins(compactMarigin, compactMarigin, compactMarigin, compactMarigin);
         m_findPrevButton->setFixedSize(btnWidthCompact, btnHeightCompact);
@@ -238,9 +270,11 @@ void PageSearchBar::updateSizeMode()
         m_searchEdit->setFixedHeight(COMMONHEIGHT_COMPACT);
 
         if (searchIconBtn) {
+            qCDebug(views) << "Branch: searchIconBtn exists, setting compact icon size";
             searchIconBtn->setIconSize(QSize(ICON_CTX_SIZE_24, ICON_CTX_SIZE_24));
         }
     } else {
+        // qCDebug(views) << "Branch: normal mode";
         setFixedSize(barWidth, barHight);
         setContentsMargins(defaultMarigin, defaultMarigin, defaultMarigin, defaultMarigin);
         m_findPrevButton->setFixedSize(widgetHight, widgetHight);
@@ -248,17 +282,20 @@ void PageSearchBar::updateSizeMode()
         m_searchEdit->setFixedHeight(COMMONHEIGHT);
 
         if (searchIconBtn) {
+            qCDebug(views) << "Branch: searchIconBtn exists, setting normal icon size";
             searchIconBtn->setIconSize(QSize(ICON_CTX_SIZE_32, ICON_CTX_SIZE_32));
         }
     }
 
     if (layout()) {
+        qCDebug(views) << "Branch: layout exists, updating layout properties";
         layout()->setContentsMargins(DSizeModeHelper::element(compactLayoutMarigins, defaultLayoutMarigins));
         layout()->setSpacing(DSizeModeHelper::element(9, widgetSpace));
         layout()->invalidate();
         update();
     }
 #endif
+    // qCDebug(views) << "PageSearchBar::updateSizeMode finished";
 }
 
 void PageSearchBar::setNoMatchAlert(bool isAlert)

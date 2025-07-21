@@ -59,6 +59,7 @@ void TerminalApplication::setStartTime(qint64 time)
 
 qint64 TerminalApplication::getStartTime()
 {
+    // qCDebug(mainprocess) << "Enter TerminalApplication::getStartTime";
     return m_AppStartTime;
 }
 
@@ -74,22 +75,27 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
     qCDebug(mainprocess) << "Processing event:" << event->type() << "for object:" << object;
     //修复bug#110813
     if (event->type() == QEvent::ApplicationFontChange) {
+        qCDebug(mainprocess) << "Branch: handling application font change";
         // ApplicationFontChange 调用 font() 是 ok 的，如果在 fontChanged 中调用在某些版本中会出现 deadlock
         DFontSizeManager::instance()->setFontGenericPixelSize(static_cast<quint16>(DFontSizeManager::fontPixelSize(font())));
     }
 
     // 针对DTK做的特殊处理,等DTK自己完成后,需要删除
     if (QStringLiteral("Dtk::Widget::DKeySequenceEdit") == object->metaObject()->className()) {
+        qCDebug(mainprocess) << "Branch: handling DKeySequenceEdit";
         // 焦点移除,移除edit
         if (QEvent::FocusOut == event->type()) {
+            qCDebug(mainprocess) << "Branch: focus out event";
             DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
             // 包含edit
             if (m_keySequenceList.contains(edit)) {
+                qCDebug(mainprocess) << "Branch: removing edit from list";
                 m_keySequenceList.removeOne(edit);
                 qCInfo(mainprocess)  << "remove editing when foucs out";
             }
         }
         if (QEvent::KeyPress == event->type()) {
+            qCDebug(mainprocess) << "Branch: key press event";
             QKeyEvent *keyevent = static_cast<QKeyEvent *>(event);
             // 获取DKeySequenceEdit
             DKeySequenceEdit *edit = static_cast<DKeySequenceEdit *>(object);
@@ -98,6 +104,7 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
                     || Qt::Key_Return == keyevent->key()
                     || Qt::Key_Space == keyevent->key()
                ) {
+                qCDebug(mainprocess) << "Branch: Enter/Return/Space key pressed";
                 // 当快捷键输入框内容不为空
                 // 设置里的快捷键输入框
                 if (!edit->keySequence().isEmpty()
@@ -227,12 +234,14 @@ bool TerminalApplication::notify(QObject *object, QEvent *event)
 
 void TerminalApplication::pressSpace(QObject *obj)
 {
+    qCDebug(mainprocess) << "Enter TerminalApplication::pressSpace";
     qCDebug(mainprocess) << "Simulating space key press for object:" << obj;
     // 模拟空格键按下事件
     QKeyEvent pressSpace(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
     QApplication::sendEvent(obj, &pressSpace);
     // 设置定时
     QTimer::singleShot(80, this, [obj]() {
+        qCDebug(mainprocess) << "Lambda: simulating space key release";
         // 模拟空格键松开事件
         QKeyEvent releaseSpace(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
         QApplication::sendEvent(obj, &releaseSpace);
