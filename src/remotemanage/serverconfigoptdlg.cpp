@@ -221,6 +221,13 @@ void ServerConfigOptDlg::initUI()
     m_pGridLayout->addWidget(m_deleteKey, 11, 1, 1, 3);
     m_VBoxLayout->addLayout(m_pGridLayout);
 
+    // 初始化高级选项和删除服务器按钮
+    m_advancedOptions = new DCommandLinkButton(tr("Advanced Options"), this);
+    m_delServer = new DPushButton(tr("Delete Server"), this);
+    // 可根据实际 UI 需求将 m_advancedOptions 和 m_delServer 加入布局
+    m_pGridLayout->addWidget(m_advancedOptions, 12, 0, 1, 2);
+    m_pGridLayout->addWidget(m_delServer, 12, 2, 1, 2);
+
     DPushButton *pCancelButton = new DPushButton(tr("Cancel", "button"));
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add", "button"));
     //Add a line by m000750 zhangmeng 2020-04-22设置回车触发默认按钮
@@ -280,41 +287,6 @@ inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::Co
 
     palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
-}
-
-/**
- * @brief 接收 DGuiApplicationHelper::sizeModeChanged() 信号, 根据不同的布局模式调整
- *      当前界面的布局. 只能在界面创建完成后调用.
- *      在此界面中调整标题栏组件、文本Label的属性，调整后修改设置框界面大小。
- */
-void ServerConfigOptDlg::updateSizeMode()
-{
-#ifdef DTKWIDGET_CLASS_DSizeMode
-    QList<DLabel *> labelList = findChildren<DLabel *>();
-
-    if (DGuiApplicationHelper::isCompactMode()) {
-        for (DLabel *label : labelList) {
-            label->setFixedHeight(COMMONHEIGHT_COMPACT);
-        }
-
-        m_iconLabel->setFixedSize(ICONSIZE_40_COMPACT, ICONSIZE_40_COMPACT);
-        m_closeButton->setFixedWidth(ICONSIZE_40_COMPACT);
-        m_closeButton->setIconSize(QSize(ICONSIZE_40_COMPACT, ICONSIZE_40_COMPACT));
-        m_bottomVLine->setFixedSize(VERTICAL_WIDTH_COMPACT, VERTICAL_HEIGHT_COMPACT);
-    } else {
-        for (DLabel *label : labelList) {
-            label->setMinimumHeight(COMMONHEIGHT);
-        }
-
-        m_iconLabel->setFixedSize(ICONSIZE_50, ICONSIZE_50);
-        m_closeButton->setFixedWidth(ICONSIZE_50);
-        m_closeButton->setIconSize(QSize(ICONSIZE_50, ICONSIZE_50));
-        m_bottomVLine->setFixedSize(VERTICAL_WIDTH, VERTICAL_HEIGHT);
-    }
-
-    // 根据新界面布局，刷新界面大小
-    QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, sizeHint().height()); });
-#endif
 }
 
 /**

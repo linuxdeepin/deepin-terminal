@@ -176,6 +176,8 @@ public slots:
      */
     void onItemModify(const QString &key, bool isFocusOn);
     void onGroupModify(const QString &key, bool isFocusOn);
+    void deleteItem(const QString &key, ItemFuncType type);
+    void onDeleteServerDialogFinished(int result);
 
 private slots:
     /**

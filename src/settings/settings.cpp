@@ -20,6 +20,9 @@
 #include <QStandardPaths>
 #include <QFontDatabase>
 #include <QLoggingCategory>
+#include <QJsonDocument>
+#include <QCollator>
+#include <QProcessEnvironment>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"

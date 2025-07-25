@@ -13,7 +13,7 @@
 #include "utils.h"
 #include "define.h"
 #include "customthemesettingdialog.h"
-#include "views/switchthememenu.h"
+#include "../views/switchthememenu.h"
 
 // dtk
 #include <DMainWindow>
@@ -65,7 +65,7 @@ class MainWindow : public DMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(TermProperties properties, QWidget *parent = nullptr);
+    explicit MainWindow(const TermProperties &properties, QWidget *parent = nullptr);
     ~MainWindow() override;
 
     /**

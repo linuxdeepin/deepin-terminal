@@ -237,6 +237,13 @@ public:
     //自定义主题配置是否修改
     bool    m_customThemeModify = false;
 
+    void setFontSize(const int size);
+    void setFontName(const QString font);
+    void setOpacity(const int opacity);
+    void setConsoleColorScheme(const QString scheme);
+    void setCursorShape(const int shape);
+    void setCursorBlink(const bool blink);
+    void setConsoleShell(const QString shellName);
 
 public:
 //    QString getKeyshortcutFromKeymap(const QString &keyCategory, const QString &keyName);

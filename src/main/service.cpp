@@ -25,6 +25,9 @@
 #include <QDBusConnectionInterface>
 #include <QLoggingCategory>
 
+#define WMSwitcherService "com.deepin.wm"
+#define WMSwitcherPath "/com/deepin/wm"
+
 Service *Service::g_pService = nullptr;
 
 Q_DECLARE_LOGGING_CATEGORY(LogMain)
@@ -245,6 +248,9 @@ void Service::listenWindowEffectSwitcher()
 void Service::listenDebuginfodOption()
 {
     bool isWinEffectEnabled = false;
+    QString wmName;
+    // 这里应有获取 wmName 的逻辑，临时设为空字符串，实际应根据你的业务获取当前 wm 名称
+    // 例如：wmName = ...;
     if (wmName == "deepin wm")
         isWinEffectEnabled = true;
 

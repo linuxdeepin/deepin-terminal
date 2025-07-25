@@ -30,6 +30,7 @@
 #include <QClipboard>
 #include <QFileInfo>
 #include <QProcess>
+#include <DWindowManagerHelper>
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
@@ -171,7 +172,7 @@ void TermWidget::initConnections()
     connect(this, &QTermWidget::receivedData, this, &TermWidget::onQTermWidgetReceivedData);
 
     // 接收到输出
-    connect(this, &TermWidget::receivedData, this, &TermWidget::onTermWidgetReceivedData);
+    connect(this, &QTermWidget::receivedData, this, &TermWidget::onTermWidgetReceivedData);
 
     // 接收到拖拽文件的Urls数据
     connect(this, &QTermWidget::sendUrlsToTerm, this, &TermWidget::onDropInUrls);
@@ -212,7 +213,7 @@ void TermWidget::initConnections()
     connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
 }
 
-inline void TermWidget::onSetTerminalFont()
+void TermWidget::onSetTerminalFont()
 {
     QFont font = getTerminalFont();
     font.setFamily(Settings::instance()->fontName());
@@ -220,12 +221,12 @@ inline void TermWidget::onSetTerminalFont()
     setTerminalFont(font);
 }
 
-inline void TermWidget::onSig_noMatchFound()
+void TermWidget::onSig_noMatchFound()
 {
     parentPage()->setMismatchAlert(true);
 }
 
-inline void TermWidget::onQTermWidgetReceivedData(QString value)
+void TermWidget::onQTermWidgetReceivedData(QString value)
 {
     Q_UNUSED(value)
     // 完善终端输出滚动相关功能，默认设置为"智能滚动"(即滚动条滑到最底下时自动滚动)
@@ -245,7 +246,7 @@ inline void TermWidget::onQTermWidgetReceivedData(QString value)
     }
 }
 
-inline void TermWidget::onTermWidgetReceivedData(QString value)
+void TermWidget::onTermWidgetReceivedData(QString value)
 {
     //前提：
     //启动终端ForegroundPid:A
@@ -289,7 +290,7 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
         QTimer::singleShot(100, this, &TermWidget::onExitRemoteServer);
 }
 
-inline void TermWidget::onExitRemoteServer()
+void TermWidget::onExitRemoteServer()
 {
     // 判断是否此时退出远程
     if (!isInRemoteServer()) {
@@ -304,23 +305,19 @@ inline void TermWidget::onExitRemoteServer()
     }
 }
 
-inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
+void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier || fromContextMenu)
         QDesktopServices::openUrl(url);
 }
 
-inline void TermWidget::onColorThemeChanged(const QString &colorTheme)
+void TermWidget::onColorThemeChanged(const QString &colorTheme)
 {
-    qCInfo(LogViews) << "Theme Type Changed! Current Theme Type: " << builtInTheme;
-    // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
-    QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
-    if (builtInTheme == DGuiApplicationHelper::LightType)
-        theme = "Light";
+    qCInfo(LogViews) << "Theme Type Changed! Current colorTheme: " << colorTheme;
+    setTheme(colorTheme);
+}
 
-inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
+void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
 {
     Q_UNUSED(themeType);
     if ("System Theme" == Settings::instance()->colorScheme()) {
@@ -334,12 +331,12 @@ inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeTyp
     }
 }
 
-inline void TermWidget::onTermIsIdle(bool bIdle)
+void TermWidget::onTermIsIdle(bool bIdle)
 {
     emit termIsIdle(m_page->identifier(), bIdle);
 }
 
-inline void TermWidget::onTitleChanged()
+void TermWidget::onTitleChanged()
 {
     // 解析shell传来的title 用户名 主机名 地址/目录
     QString tabTitle = TermWidget::title();
@@ -350,7 +347,7 @@ inline void TermWidget::onTitleChanged()
     emit termTitleChanged(getTabTitle());
 }
 
-inline void TermWidget::onCopyAvailable(bool enable)
+void TermWidget::onCopyAvailable(bool enable)
 {
     if (Settings::instance()->IsPasteSelection() && enable) {
         QString strSelected = selectedText();
@@ -358,7 +355,7 @@ inline void TermWidget::onCopyAvailable(bool enable)
     }
 }
 
-inline void TermWidget::onWindowEffectEnabled(bool isWinEffectEnabled)
+void TermWidget::onWindowEffectEnabled(bool isWinEffectEnabled)
 {
     if (isWinEffectEnabled)
         this->setTermOpacity(Settings::instance()->opacity());
@@ -421,17 +418,17 @@ void TermWidget::onHostnameChanged()
     emit termTitleChanged(getTabTitle());
 }
 
-inline void TermWidget::onCopy()
+void TermWidget::onCopy()
 {
     copyClipboard();
 }
 
-inline void TermWidget::onPaste()
+void TermWidget::onPaste()
 {
     pasteClipboard();
 }
 
-inline void TermWidget::onOpenFileInFileManager()
+void TermWidget::onOpenFileInFileManager()
 {
     //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 
@@ -558,113 +555,113 @@ void TermWidget::addMenuActions(const QPoint &pos)
     }
 }
 
-inline void TermWidget::onHorizontalSplit()
+void TermWidget::onHorizontalSplit()
 {
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitHorizontal);
 }
 
-inline void TermWidget::onVerticalSplit()
+void TermWidget::onVerticalSplit()
 {
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitVertical);
 }
 
-inline void TermWidget::splitHorizontal()
+void TermWidget::splitHorizontal()
 {
     parentPage()->split(Qt::Horizontal);
 }
 
-inline void TermWidget::splitVertical()
+void TermWidget::splitVertical()
 {
     parentPage()->split(Qt::Vertical);
 }
 
-inline void TermWidget::onCloseCurrWorkSpace()
+void TermWidget::onCloseCurrWorkSpace()
 {
     parentPage()->closeSplit(parentPage()->currentTerminal());
 }
 
-inline void TermWidget::onCloseOtherWorkSpaces()
+void TermWidget::onCloseOtherWorkSpaces()
 {
     parentPage()->closeOtherTerminal();
 }
 
-inline void TermWidget::onCreateNewTab()
+void TermWidget::onCreateNewTab()
 {
     parentPage()->parentMainWindow()->createNewTab();
 }
 
-inline void TermWidget::onSwitchFullScreen()
+void TermWidget::onSwitchFullScreen()
 {
     parentPage()->parentMainWindow()->switchFullscreen();
 }
 
-inline void TermWidget::openBing()
+void TermWidget::openBing()
 {
     QString strUrl = "https://cn.bing.com/search?q=" + selectedText();
     openUrl(strUrl);
 }
 
-inline void TermWidget::openBaidu()
+void TermWidget::openBaidu()
 {
     QString strUrl = "https://www.baidu.com/s?wd=" + selectedText();
     openUrl(strUrl);
 }
 
-inline void TermWidget::openGithub()
+void TermWidget::openGithub()
 {
     QString strUrl = "https://github.com/search?q=" + selectedText();
     openUrl(strUrl);
 }
 
-inline void TermWidget::openStackOverflow()
+void TermWidget::openStackOverflow()
 {
     QString strUrl = "https://stackoverflow.com/search?q=" + selectedText();
     openUrl(strUrl);
 }
 
-inline void TermWidget::onShowSearchBar()
+void TermWidget::onShowSearchBar()
 {
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_SEARCHBAR);
 }
 
-inline void TermWidget::onShowEncoding()
+void TermWidget::onShowEncoding()
 {
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_ENCODING);
 }
 
-inline void TermWidget::onShowCustomCommands()
+void TermWidget::onShowCustomCommands()
 {
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_CUSTOMCOMMAND);
 }
 
-inline void TermWidget::onShowRemoteManagement()
+void TermWidget::onShowRemoteManagement()
 {
     parentPage()->parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_REMOTEMANAGEMENT);
 }
 
-inline void TermWidget::onUploadFile()
+void TermWidget::onUploadFile()
 {
     parentPage()->parentMainWindow()->remoteUploadFile();
 }
 
-inline void TermWidget::onDownloadFile()
+void TermWidget::onDownloadFile()
 {
     parentPage()->parentMainWindow()->remoteDownloadFile();
 }
 
-inline void TermWidget::onShowSettings()
+void TermWidget::onShowSettings()
 {
     Service::instance()->showSettingDialog(parentPage()->parentMainWindow());
 }
 
-inline void TermWidget::openUrl(QString strUrl)
+void TermWidget::openUrl(QString strUrl)
 {
     QDesktopServices::openUrl(QUrl(strUrl));
 }
 
-inline QString TermWidget::getFormatFileName(QString selectedText)
+QString TermWidget::getFormatFileName(QString selectedText)
 {
     QString fileName = selectedText.trimmed();
     if ((fileName.startsWith("'") && fileName.endsWith("'"))
@@ -677,7 +674,7 @@ inline QString TermWidget::getFormatFileName(QString selectedText)
     return fileName;
 }
 
-inline QString TermWidget::getFilePath(QString fileName)
+QString TermWidget::getFilePath(QString fileName)
 {
     //如果fileName本身已经是一个文件路径
     if (fileName.startsWith("/"))
@@ -748,7 +745,7 @@ void TermWidget::setTheme(const QString &colorTheme)
     changeTitleColor(lightness);
 }
 
-inline void TermWidget::onOpenFile()
+void TermWidget::onOpenFile()
 {
     QString fileName = getFormatFileName(selectedText());
     QString filePath = getFilePath(fileName);
@@ -996,7 +993,7 @@ void TermWidget::setEnterSzCommand(bool enterSzCommand)
     m_enterSzCommand = enterSzCommand;
 }
 
-inline void TermWidget::customContextMenuCall(const QPoint &pos)
+void TermWidget::customContextMenuCall(const QPoint &pos)
 {
     /***add by ut001121 zhangmeng 20200514 右键获取焦点, 修复BUG#26003***/
     setFocus();
@@ -1213,7 +1210,7 @@ void TermWidget::onDropInUrls(const char *urls)
 }
 
 
-inline void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
+void TermWidget::onTouchPadSignal(QString name, QString direction, int fingers)
 {
     // 当前窗口被激活,且有焦点
     if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
@@ -1264,14 +1261,14 @@ void TermWidget::wheelEvent(QWheelEvent *event)
         } else if ((Qt::ControlModifier | Qt::ShiftModifier) == event->modifiers()) {
             int newOpacity;
             if (directionY < 0) {
-                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() - STEP_OPACITY;
+                newOpacity = Settings::instance()->opacity() * 100 - STEP_OPACITY;
             } else {
-                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() + STEP_OPACITY;
+                newOpacity = Settings::instance()->opacity() * 100 + STEP_OPACITY;
             }
             newOpacity = qBound(0, newOpacity, 100);
             qInfo() << Q_FUNC_INFO << "new opacity:" << newOpacity;
             setTerminalOpacity(newOpacity / 100.f);
-            Settings::instance()->settings->option("basic.interface.opacity")->setValue((int)(newOpacity));
+            Settings::instance()->setOpacity(newOpacity / 100.0);
         } else {
             QTermWidget::wheelEvent(event);
         }

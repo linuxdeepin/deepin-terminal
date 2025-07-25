@@ -139,40 +139,43 @@ void TermWidgetPage::split(Qt::Orientation orientation)
         int index = upSplit->indexOf(term);
         QList<int> parentSizes = upSplit->sizes();
 
-    QSplitter *splitter = qobject_cast<QSplitter *>(term->parent());
-    int index = splitter ? splitter->indexOf(term) : m_layout->indexOf(term);
+        QSplitter *splitter = qobject_cast<QSplitter *>(term->parent());
+        if (!splitter) {
+            index = m_layout->indexOf(term);
+        }
 
-    // if there's already a splitter, and the orientation is correct,
-    // just add a new term to the splitter.
-    if (splitter && splitter->orientation() != orientation) {
-        TermProperties properties(term->workingDirectory());
-        TermWidget *newTerm  = createTerm(properties);
+        // if there's already a splitter, and the orientation is correct,
+        // just add a new term to the splitter.
+        if (splitter && splitter->orientation() != orientation) {
+            TermProperties properties(term->workingDirectory());
+            TermWidget *newTerm  = createTerm(properties);
 
-        // copy the size of the current term to the new term, so the new term will
-        // keep the same size portion as the current term after the splitter relayout.
-        // this behavior is copied form iTerm2.
-        QList<int> sizes = splitter->sizes();
-        sizes.insert(index+1, sizes.at(index));
-        splitter->insertWidget(index+1, newTerm);  // insert after the current term
-        splitter->setSizes(sizes);
-
-        setSplitStyle(splitter);
-        setCurrentTerminal(newTerm);
-    } else {
-    // if there's no splitter, or the orientation is not correct,
-    // create a new splitter, put the 2 terms into the splitter,
-    // and replace the old term with the splitter.
-        if (splitter) {
-            // see above splitter->insertWidget part to know why.
+            // copy the size of the current term to the new term, so the new term will
+            // keep the same size portion as the current term after the splitter relayout.
+            // this behavior is copied form iTerm2.
             QList<int> sizes = splitter->sizes();
-            sizes.insert(index, sizes.at(index));
-            QSplitter *newSplitter = createSubSplit(term, orientation);
-            splitter->insertWidget(index, newSplitter);
+            sizes.insert(index+1, sizes.at(index));
+            splitter->insertWidget(index+1, newTerm);  // insert after the current term
             splitter->setSizes(sizes);
+
             setSplitStyle(splitter);
+            setCurrentTerminal(newTerm);
         } else {
-            QSplitter *newSplitter = createSubSplit(term, orientation);
-            m_layout->insertWidget(index, newSplitter);
+            // if there's no splitter, or the orientation is not correct,
+            // create a new splitter, put the 2 terms into the splitter,
+            // and replace the old term with the splitter.
+            if (splitter) {
+                // see above splitter->insertWidget part to know why.
+                QList<int> sizes = splitter->sizes();
+                sizes.insert(index, sizes.at(index));
+                QSplitter *newSplitter = createSubSplit(term, orientation);
+                splitter->insertWidget(index, newSplitter);
+                splitter->setSizes(sizes);
+                setSplitStyle(splitter);
+            } else {
+                QSplitter *newSplitter = createSubSplit(term, orientation);
+                m_layout->insertWidget(index, newSplitter);
+            }
         }
     }
 
@@ -220,6 +223,8 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
             return;
         }
 
+        // 获取上级分屏器
+        QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
         // 另一个兄弟也可能是终端，也可能是split,
         QWidget *brother = upSplit->widget(0);
         TermWidget *nextTerm =  upSplit->findChild<TermWidget *>();

@@ -32,6 +32,7 @@
 #include <QLoggingCategory>
 #include <sys/utsname.h>
 #include <fontconfig/fontconfig.h>
+#include <QProcessEnvironment>
 
 struct FcPatternDeleter
 {
@@ -737,7 +738,6 @@ FontDataList Utils::getFonts()
          return FontDataList();
     }
     //qCInfo(LogCommon) << "m_thread is Running";
-}
 
     QScopedPointer<FcFontSet, FcFontSetDeleter> fcList(FcFontList(0, pat.data(), os.data()));
     if (!fcList) {
@@ -746,4 +746,5 @@ FontDataList Utils::getFonts()
     }
     // qCInfo(LogCommon) << "Font whitelist obtained through the dbus interface :" << DBUSWhitelist;
     // qCInfo(LogCommon) << "Whitelist of real available fonts :" << Whitelist;
+    return fontDatalist;
 }

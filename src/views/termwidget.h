@@ -7,6 +7,9 @@
 #define TERMWIDGET_H
 
 #include <DFloatingMessage>
+#include <DGuiApplicationHelper>
+#include <QString>
+#include <QtCore/QString>
 
 #include  "qtermwidget.h"
 #include "termwidgetpage.h"
@@ -195,6 +198,13 @@ public:
     void setDeleteMode(const EraseMode &deleteMode);
 
     /**
+     * @brief 获取当前terminal距离page的层次．用于限定分屏
+     * @author ut000439 王培利
+     * @return
+     */
+    int getTermLayer();
+
+    /**
      * @brief 设置标签标题格式（全局设置）
      * @author ut000610 戴正文
      * @param tabFormat
@@ -279,33 +289,46 @@ public:
     void setTheme(const QString &colorTheme);
 
 public slots:
-    /**
-     * @brief Terminal的各项设置生效
-     * @author n014361 王培利
-     * @param keyName 设置项名称
-     */
     void onSettingValueChanged(const QString &keyName);
-    /**
-     * @brief 处理拖拽进来的文件名，1) 正常模式下: 目前只显示,暂不处理
-     * @author ut000610 戴正文
-     * @param urls 拖拽进来的文件名
-     */
     void onDropInUrls(const char *urls);
-    /**
-     * @brief 处理触控板事件
-     * @author ut000610 戴正文
-     * @param name 触控板事件类型(手势或者触摸类型) pinch 捏 tap 敲 swipe 右键单击 单键
-     * @param direction 手势方向 触控板上 up 触控板下 down 左 left 右 right 无 none 向内 in 向外 out 触控屏上 top 触摸屏下 bot
-     * @param fingers 手指数量 (1,2,3,4,5)
-     */
     void onTouchPadSignal(QString name, QString direction, int fingers);
-    /**
-     * @brief 处理shell消息提示
-     * @author ut000610 戴正文
-     * @param currentShell 当前使用的shell
-     * @param isSuccess 启用shell是否成功 true 替换了shell false 替换shell但启动失败
-     */
     void onShellMessage(QString currentShell, bool isSuccess);
+    void onTitleArgsChange(QString key, QString value);
+    void onHostnameChanged();
+    void onQTermWidgetReceivedData(QString value);
+    void onTermWidgetReceivedData(QString value);
+    void onExitRemoteServer();
+    void onUrlActivated(const QUrl &url, bool fromContextMenu);
+    void onThemeChanged(DGuiApplicationHelper::ColorType themeType);
+    void onTermIsIdle(bool bIdle);
+    void onTitleChanged();
+    void onWindowEffectEnabled(bool isWinEffectEnabled);
+    void onCopyAvailable(bool enable);
+    void onSetTerminalFont();
+    void onSig_noMatchFound();
+    void onCopy();
+    void onPaste();
+    void onOpenFile();
+    void onOpenFileInFileManager();
+    void onUploadFile();
+    void onDownloadFile();
+    void onShowSettings();
+    void onShowEncoding();
+    void onShowCustomCommands();
+    void onShowRemoteManagement();
+    void onShowSearchBar();
+    void onHorizontalSplit();
+    void onVerticalSplit();
+    void splitHorizontal();
+    void splitVertical();
+    void onCloseCurrWorkSpace();
+    void onCloseOtherWorkSpaces();
+    void onCreateNewTab();
+    void onSwitchFullScreen();
+    void openBing();
+    void openBaidu();
+    void openGithub();
+    void openStackOverflow();
 
 signals:
     void termRequestRenameTab(QString newTabName);
@@ -328,59 +351,8 @@ private slots:
      * @param pos
      */
     void customContextMenuCall(const QPoint &pos);
-    /**
-     * @brief 标签标题参数变化
-     * @author ut000610 戴正文
-     * @param key
-     * @param value
-     */
-    void onTitleArgsChange(QString key, QString value);
-    /**
-     * @brief 主机名变化
-     * @author ut000610 戴正文
-     */
-    void onHostnameChanged();
-
-    void onQTermWidgetReceivedData(QString value);
-    void onTermWidgetReceivedData(QString value);
-    void onExitRemoteServer();
-    void onUrlActivated(const QUrl &url, bool fromContextMenu);
     void onColorThemeChanged(const QString &colorTheme);
-    void onThemeChanged(DApplicationHelper::ColorType themeType);
-    void onTermIsIdle(bool bIdle);
-    void onTitleChanged();
-    void onWindowEffectEnabled(bool isWinEffectEnabled);
-    void onCopyAvailable(bool enable);
-    void onSetTerminalFont();
-    void onSig_noMatchFound();
 
-    void onCopy();
-    void onPaste();
-    /**
-     * @brief 根据文件路径打开文件
-     * @author ut000438 王亮
-     */
-    void onOpenFile();
-    void onOpenFileInFileManager();
-    void onUploadFile();
-    void onDownloadFile();
-    void onShowSettings();
-    void onShowEncoding();
-    void onShowCustomCommands();
-    void onShowRemoteManagement();
-    void onShowSearchBar();
-    void onHorizontalSplit();
-    void onVerticalSplit();
-    void splitHorizontal();
-    void splitVertical();
-    void onCloseCurrWorkSpace();
-    void onCloseOtherWorkSpaces();
-    void onCreateNewTab();
-    void onSwitchFullScreen();
-    void openBing();
-    void openBaidu();
-    void openGithub();
-    void openStackOverflow();
 private:
     /**
      * @brief 初始化信号槽连接
@@ -467,6 +439,8 @@ private:
     // 9:6
     static const int MIN_WIDTH = 180;
     static const int MIN_HEIGHT = 120;
+
+    DGuiApplicationHelper::ColorType builtInTheme = DGuiApplicationHelper::DarkType;
 };
 
 #endif  // TERMWIDGET_H

@@ -76,6 +76,8 @@ public:
         return m_currentServerName;
     }
 
+    void setAdvanceRegionVisible(bool isVisible);
+
     /**
      * @brief 服务器配置选项更新数据
      * @author ut000610 daizhengwen
@@ -135,6 +137,8 @@ private:
     bool m_bDelOpt = false;
     QGridLayout *m_pGridLayout = nullptr;
     DVerticalLine *m_bottomVLine = nullptr;
+    DCommandLinkButton *m_advancedOptions = nullptr;
+    DPushButton *m_delServer = nullptr;
 
     /**
      * @brief 服务器配置选项初始化UI界面

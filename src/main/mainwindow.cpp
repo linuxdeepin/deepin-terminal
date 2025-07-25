@@ -44,7 +44,8 @@
 #include <QScreen>
 #include <QLoggingCategory>
 #include <fstream>
-#include "views/switchthememenu.h"
+#include "../views/switchthememenu.h"
+#include <QDesktopWidget>
 
 using std::ifstream;
 using std::ofstream;
@@ -68,41 +69,7 @@ Q_LOGGING_CATEGORY(LogMain,"log.terminal.main.work")
 Q_LOGGING_CATEGORY(LogMain,"log.terminal.main.work",QtInfoMsg)
 #endif
 
-SwitchThemeMenu::SwitchThemeMenu(const QString &title, QWidget *parent): QMenu(title, parent)
-{
-}
-
-void SwitchThemeMenu::leaveEvent(QEvent *)
-{
-    //鼠标停靠悬浮判断
-    bool ishover = this->property("hover").toBool();
-    if (!ishover)
-        emit mainWindowCheckThemeItemSignal();
-}
-
-void SwitchThemeMenu::hideEvent(QHideEvent *)
-{
-    hoveredThemeStr = "";
-    emit menuHideSetThemeSignal();
-}
-
-void SwitchThemeMenu::enterEvent(QEvent *event)
-{
-    hoveredThemeStr = "";
-    return QMenu::enterEvent(event);
-}
-
-void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)
-{
-    //fix bug#64969主题中点击tab键不可以切换主题
-    //内置主题屏蔽 除了 上下左右回车键的其他按键响应 处理bug#53439
-    if (event->key() != Qt::Key_Space) {
-        emit mainWindowCheckThemeItemSignal();
-        return QMenu::keyPressEvent(event);
-    }
-}
-
-MainWindow::MainWindow(TermProperties properties, QWidget *parent)
+MainWindow::MainWindow(const TermProperties &properties, QWidget *parent)
     : DMainWindow(parent)
     , m_menu(new QMenu(this))
     , m_tabbar(nullptr)
@@ -112,6 +79,7 @@ MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     , m_properties(properties)
     , m_isQuakeWindow(properties[QuakeMode].toBool())
     , m_winInfoConfig(new QSettings(getWinInfoConfigPath(), QSettings::IniFormat, this))
+
 {
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     m_menu->setObjectName("MainWindowQMenu");

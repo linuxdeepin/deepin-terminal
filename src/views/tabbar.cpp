@@ -958,3 +958,7 @@ void TabBar::handleTabBarClicked(int index)
 {
     emit tabBarClicked(index, tabData(index).toString());
 }
+
+void TabBar::setTabHeight(int height) {
+    setStyleSheet(QString("QTabBar::tab { height: %1px; }").arg(height));
+}

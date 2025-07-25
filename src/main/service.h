@@ -143,6 +143,8 @@ public:
      */
     bool mainTerminalIsStarted();
 
+    bool isWindowEffectEnabled();
+
 signals:
     /**
      * @brief 刷新面板

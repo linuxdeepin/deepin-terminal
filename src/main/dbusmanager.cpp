@@ -12,6 +12,8 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QLoggingCategory>
+#define APPEARANCESERVICE "com.deepin.appearance"
+#define APPEARANCEPATH "/com/deepin/appearance"
 Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
 Q_DECLARE_LOGGING_CATEGORY(LogMain)

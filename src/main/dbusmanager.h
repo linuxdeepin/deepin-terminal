@@ -91,6 +91,9 @@ public:
      */
     static void callTerminalEntry(QStringList args);
 
+    // 获取有效的字体列表
+    static FontDataList callAppearanceFont(QString fontType);
+    static FontDataList callAppearanceFont(QStringList fontList, QString fontType);
 
     /** add by ut001121 zhangmeng 20200720 用于 sp3 键盘交互功能*/
     /**

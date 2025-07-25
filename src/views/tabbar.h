@@ -130,6 +130,7 @@ public:
      * @param tabItemMaxWidth 标签项最大宽度
      */
     void setTabItemMaxWidth(int tabItemMaxWidth);
+    void setTabHeight(int height);
 
     /**
      * @brief 增加标签

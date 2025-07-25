@@ -896,3 +896,15 @@ void ListView::deleteItem(const QString &key, ItemFuncType type)
     // 释放窗口
     Service::instance()->setIsDialogShow(window(), false);
 }
+
+void ListView::onDeleteServerDialogFinished(int result)
+{
+    // 处理删除服务器对话框的结果
+    if (result == DDialog::Accepted && m_configDialog) {
+        // 用户确认删除，调用删除逻辑
+        QString serverName = m_configDialog->getServerName();
+        onDeleteDialogFinished(serverName, ItemFuncType_Item);
+    }
+    // 释放窗口
+    Service::instance()->setIsDialogShow(window(), false);
+}
