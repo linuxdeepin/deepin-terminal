@@ -8,6 +8,7 @@ Build-Depends:
  pkg-config,
  qt6-5compat-dev | hello,
  qt6-base-dev | qtbase5-dev,
+ qt6-tools-dev | qttools5-dev,
  qt6-tools-dev-tools | qttools5-dev-tools,
  qt6-base-private-dev | qtbase5-private-dev,
  libdtk6widget-dev | libdtkwidget-dev,
