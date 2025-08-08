@@ -51,7 +51,12 @@ endif(DEFINED QT_DESIRED_VERSION)
 
 find_package(Qt${QT_DESIRED_VERSION} REQUIRED COMPONENTS Widgets)
 
-find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+# 先尝试查找 lxqt2-build-tools，失败则查找 lxqt-build-tools
+find_package(lxqt2-build-tools ${LXQTBT_MINIMUM_VERSION} QUIET)
+if(NOT lxqt2-build-tools_FOUND)
+    find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+endif()
+
 find_package(ICU COMPONENTS i18n uc REQUIRED)
 
 if(USE_UTF8PROC)

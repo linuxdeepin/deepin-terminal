@@ -1,3 +1,9 @@
+deepin-terminal (6.5.12) unstable; urgency=medium
+
+  * chore: Update version to 6.5.11
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Fri, 08 Aug 2025 09:25:55 +0800
+
 deepin-terminal (6.5.11) unstable; urgency=medium
 
   * chore: Add new Lao translation file
