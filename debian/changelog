@@ -1,3 +1,9 @@
+deepin-terminal (6.5.14) unstable; urgency=medium
+
+  * chore: Add qt6-tools-dev to Build-Depends in debian/control (#435)
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Wed, 13 Aug 2025 16:32:43 +0800
+
 deepin-terminal (6.5.13) unstable; urgency=medium
 
   * Add qt6-tools-dev to Build-Depends in debian/control
