@@ -60,14 +60,18 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setHistorySize(Settings::instance()->historySize());
     setTerminalWordCharacters(Settings::instance()->wordCharacters());
 
+    // 设置系统环境变量 - 这是必须的，确保shell能正确显示提示符和支持tab补全
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    
     // 设置debuginfod
     if (Settings::instance()->enableDebuginfod()) {
-        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
         if (!env.contains("DEBUGINFOD_URLS")) {
             env.insert("DEBUGINFOD_URLS", Settings::instance()->debuginfodUrls());
-            setEnvironment(env.toStringList());
         }
     }
+    
+    // 将系统环境变量传递给终端，确保PS1、USER、HOME、PATH等重要变量可用
+    setEnvironment(env.toStringList());
 
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
