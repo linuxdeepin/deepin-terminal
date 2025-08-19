@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="264"/>
         <source>debuginfod URLs</source>
-        <translation>debuginfod 網址</translation>
+        <translation>debuginfod URLs</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="40"/>

@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="264"/>
         <source>debuginfod URLs</source>
-        <translation>debuginfod 网址</translation>
+        <translation>debuginfod URLs</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="40"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="160"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation>用于传输调试信息资源的HTTP文件服务器</translation>
+        <translation>提供调试信息资源的HTTP文件服务器</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1915"/>
