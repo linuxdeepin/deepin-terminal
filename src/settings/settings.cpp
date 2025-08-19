@@ -359,6 +359,11 @@ void Settings::initConnection()
         emit wordCharactersChanged(value.toString());
     });
 
+    QPointer<DSettingsOption> cursorPositionSet = settings->option("advanced.cursor.set_cursor_position");
+    connect(cursorPositionSet, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit enableSetCursorPosition(value.toBool());
+    });
+
     QPointer<DSettingsOption> backgroundBlur = settings->option("basic.interface.blurred_background");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         qCDebug(tsettings) << "Background blur changed:" << value.toBool();
@@ -546,6 +551,11 @@ bool Settings::cursorBlink() const
     bool blink = settings->option("advanced.cursor.cursor_blink")->value().toBool();
     // qCDebug(tsettings) << "Cursor blink:" << blink;
     return blink;
+}
+
+bool Settings::enableSetCursorPosition() const
+{
+    return settings->option("advanced.cursor.set_cursor_position")->value().toBool();
 }
 
 bool Settings::backgroundBlur() const

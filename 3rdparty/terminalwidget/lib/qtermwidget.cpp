@@ -351,6 +351,11 @@ void QTermWidget::setIsAllowScroll(bool isAllowScroll)
     m_impl->m_terminalDisplay->setIsAllowScroll(isAllowScroll);
 }
 
+void QTermWidget::enableSetCursorPosition(bool enable)
+{
+    m_impl->m_terminalDisplay->setCursorPositionEnable(enable);
+}
+
 /*******************************************************************************
  1. @函数:    setNoHasSelect
  2. @作者:    ut001000 任飞翔

@@ -273,6 +273,8 @@ public:
     void setDrawLineChars(bool drawLineChars);
 
     void setBoldIntense(bool boldIntense);
+    
+    void enableSetCursorPosition(bool enable);
 
     // 获取是否允许输出时滚动
     bool getIsAllowScroll() const;

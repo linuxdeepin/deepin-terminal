@@ -225,6 +225,11 @@ bool TerminalDisplay::isLineCharString(const QString& string) const {
     return canDraw(string.at(0).unicode());
 }
 
+void TerminalDisplay::setCursorPositionEnable(bool enable)
+{
+    _cursorPositionSetEnable = enable;
+}
+
 /*******************************************************************************
  1. @函数:    setIsAllowScroll
  2. @作者:    ut000610 戴正文
@@ -451,6 +456,7 @@ TerminalDisplay::TerminalDisplay(QWidget *parent)
 ,_blinking(false)
 ,_hasBlinker(false)
 ,_cursorBlinking(false)
+,_cursorPositionSetEnable(false)
 ,_hasBlinkingCursor(false)
 ,_allowBlinkingText(true)
 ,_ctrlDrag(false)
@@ -1413,7 +1419,11 @@ void TerminalDisplay::paintEvent( QPaintEvent* pe )
   for (const QRect &rect : region) {
       dirtyImageRegion += widgetToImage(rect);
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-      drawBackground(paint, rect, palette().background().color(), true /* use opacity setting */);
+      #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        drawBackground(paint, rect, palette().background().color(), true /* use opacity setting */);
+#else
+        drawBackground(paint, rect, palette().window().color(), true /* use opacity setting */);
+#endif
 #else
       drawBackground(paint, rect, palette().window().color(), true /* use opacity setting */);
 #endif
@@ -2108,6 +2118,16 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
     //emit testIsSelected(pos.x(), pos.y(), selected);
 
     selected =  _screenWindow->isSelected(pos.x(),pos.y());
+
+    if (_cursorPositionSetEnable && (ev->modifiers() & Qt::ControlModifier)) {
+        int line = charLine;
+        int column = charColumn;
+        line -= cursorPosition().y();
+        column -= cursorPosition().x();
+        int count = 0;
+        count += line * _columns + column;
+        emit changedCursonPosition(count);
+    }
 
     if ((!_ctrlDrag || ev->modifiers() & Qt::ControlModifier) && selected ) {
       // The user clicked inside selected text

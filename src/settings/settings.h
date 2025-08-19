@@ -67,6 +67,7 @@ public:
      * @return
      */
     bool cursorBlink() const;
+    bool enableSetCursorPosition() const;
     /**
      * @brief 设置界面获取背景模糊属性
      * @author ut001121 zhangmeng
@@ -322,6 +323,7 @@ signals:
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
     void wordCharactersChanged(QString wordCharacters);
+    void enableSetCursorPosition(bool enable);
     void historySizeChanged(int historySize);
 
     // 设置中的标签标题格式变化

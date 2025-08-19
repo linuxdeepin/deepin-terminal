@@ -147,6 +147,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setKeyboardCursorShape(static_cast<QTermWidget::KeyboardCursorShape>(Settings::instance()->cursorShape()));
     // 光标闪烁
     setBlinkingCursor(Settings::instance()->cursorBlink());
+    // 设置是否启用Ctrl+鼠标点击设置光标位置
+    enableSetCursorPosition(Settings::instance()->enableSetCursorPosition());
 
     // 按键滚动
     setPressingScroll(Settings::instance()->PressingScroll());
@@ -988,6 +990,10 @@ void TermWidget::initTabTitle()
     // 标签标题变化，则每个term变化
     connect(Settings::instance(), &Settings::tabFormatChanged, this, &TermWidget::setTabFormat);
     connect(Settings::instance(), &Settings::remoteTabFormatChanged, this, &TermWidget::setRemoteTabFormat);
+    // TODO: Fix this signal connection - enableSetCursorPosition signal not properly implemented
+    // connect(Settings::instance(), &Settings::enableSetCursorPosition, this, [this](bool enable) {
+    //     enableSetCursorPosition(enable);
+    // });
 }
 
 void TermWidget::initTabTitleArgs()
@@ -1236,6 +1242,10 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
         qCDebug(views) << "Enter TermWidget::onSettingValueChanged: advanced.cursor.cursor_blink";
         setBlinkingCursor(Settings::instance()->cursorBlink());
         return;
+    }
+
+    if ("advanced.cursor.set_cursor_position" == keyName) {
+        enableSetCursorPosition(Settings::instance()->enableSetCursorPosition());
     }
 
     if ("advanced.scroll.scroll_on_key" == keyName) {
