@@ -153,6 +153,10 @@ public slots:
      */
     void onIconButtonClicked();
     /**
+     * @brief 处理删除按钮点击，发射删除信号
+     */
+    void onDeleteButtonClicked();
+    /**
      * @brief 功能键丢失焦点，当前窗口获得焦点
      * @author ut000610 戴正文
      */

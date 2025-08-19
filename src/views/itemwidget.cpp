@@ -403,8 +403,8 @@ void ItemWidget::initUI()
     }
 
     // 功能键布局
-    // Todo (Yutao Meng): 建议删除键采用自定义图标，以免某些主题中没有合适的明暗色图标
-    m_deleteButton->setIcon(QIcon::fromTheme("edit-delete"));
+    // 删除键使用更常见的“关闭”主题图标（等效为X），避免部分主题缺少edit-delete
+    m_deleteButton->setIcon(QIcon::fromTheme("window-close"));
     m_deleteButton->setFlat(true);
     m_deleteButton->setFocusPolicy(Qt::NoFocus);
     setFuncIcon(ItemFuncType(m_functType));
@@ -457,8 +457,25 @@ void ItemWidget::initConnections()
     connect(m_funcButton, &IconButton::focusOut, this, &ItemWidget::onFocusOut);
     // 图标被点击
     connect(m_iconButton, &DIconButton::clicked, this, &ItemWidget::onIconButtonClicked);
+    // 删除按钮被点击
+    connect(m_deleteButton, &DIconButton::clicked, this, &ItemWidget::onDeleteButtonClicked);
 
     qCDebug(views) << "ItemWidget::initConnections() finished";
+}
+void ItemWidget::onDeleteButtonClicked()
+{
+    qCDebug(views) << "ItemWidget::onDeleteButtonClicked() entered";
+
+    /***add begin by ut001121 zhangmeng 20200924 判断移动事件来源 修复BUG48618***/
+    if (m_moveSource) {
+        qCDebug(views) << "Branch: m_moveSource exists, returning";
+        m_moveSource = nullptr;
+        return ;
+    }
+    /***add end by ut001121***/
+
+    // 分组与项都允许删除
+    emit itemDelete(m_firstText, m_functType);
 }
 
 void ItemWidget::paintEvent(QPaintEvent *event)
