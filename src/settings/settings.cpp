@@ -872,8 +872,10 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     auto rightWidget = new NewDspinBox();
 
-    rightWidget->setMinimum(option->data("min").toInt());
-    rightWidget->setMaximum(option->data("max").toInt());
+    // 使用新的setRange方法来设置范围，这将自动更新验证器
+    int minValue = option->data("min").toInt();
+    int maxValue = option->data("max").toInt();
+    rightWidget->setRange(minValue, maxValue);
     rightWidget->setSingleStep(option->data("step").toInt());
     rightWidget->setValue(option->value().toInt());
 

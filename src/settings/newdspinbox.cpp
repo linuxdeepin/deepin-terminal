@@ -7,6 +7,13 @@
 #include "newdspinbox.h"
 #include "utils.h"
 #include <QDebug>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+#include <QRegExp>
+#include <QRegExpValidator>
+#else
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
+#endif
 
 NewDspinBox::NewDspinBox(QWidget *parent) : DSpinBox(parent)
 {
@@ -15,20 +22,49 @@ NewDspinBox::NewDspinBox(QWidget *parent) : DSpinBox(parent)
 
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     setButtonSymbols(QAbstractSpinBox::PlusMinus);
-    /******** Add by nt001000 renfeixiang 2020-05-26 :增加正则表达式限制00000现象 Begin***************/
+    
+    // 设置默认范围（字体大小的范围）
+    setRange(5, 50);
+    
+    // qDebug() << "NewDspinBox constructor end";
+}
+
+void NewDspinBox::setRange(int min, int max)
+{
+    // 设置数值范围
+    this->setMinimum(min);
+    this->setMaximum(max);
+    
+    // 更新验证器
+    updateValidator(min, max);
+}
+
+void NewDspinBox::updateValidator(int min, int max)
+{
+    // 根据范围动态生成正则表达式
+    QString regexPattern;
+    
+    if (min <= 9 && max <= 99) {
+        // 对于字体大小 (5-50) 或类似的小范围
+        regexPattern = QString("(^[%1-9]$)|(^[1-4][0-9]$)|(^[5][0]$)").arg(min);
+    } else if (min >= 1000 && max <= 10000) {
+        // 对于历史记录大小 (1000-10000) 
+        // 匹配 1000-9999 和 10000
+        regexPattern = "(^[1-9][0-9]{3}$)|(^10000$)";
+    } else {
+        // 对于其他范围，使用更通用的验证（只允许数字）
+        int minDigits = QString::number(min).length();
+        int maxDigits = QString::number(max).length();
+        regexPattern = QString("^[0-9]{%1,%2}$").arg(minDigits).arg(maxDigits);
+    }
+    
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    // qDebug() << "using QRegExp for Qt < 6.0";
-    QRegExp regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[1-9]$)");
+    QRegExp regExp(regexPattern);
     lineEdit()->setValidator(new QRegExpValidator(regExp, this));
 #else
-    // qDebug() << "using QRegularExpression for Qt >= 6.0";
-    QRegularExpression regExp("(^[1-4][0-9]$)|(^[5][0]$)|(^[1-9]$)");
+    QRegularExpression regExp(regexPattern);
     lineEdit()->setValidator(new QRegularExpressionValidator(regExp, this));
 #endif
-    this->setMinimum(5);
-    this->setMaximum(50);
-    /******** Add by nt001000 renfeixiang 2020-05-26:增加正则表达式限制00000现象 End***************/
-    // qDebug() << "NewDspinBox constructor end";
 }
 
 void NewDspinBox::wheelEvent(QWheelEvent *event)

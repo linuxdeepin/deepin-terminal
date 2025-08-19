@@ -24,6 +24,12 @@ class NewDspinBox : public DSpinBox
     Q_OBJECT
 public:
     explicit NewDspinBox(QWidget *parent = nullptr);
+    /**
+     * @brief 设置数值范围并更新验证器
+     * @param min 最小值
+     * @param max 最大值
+     */
+    void setRange(int min, int max);
 
 protected:
     /**
@@ -32,6 +38,14 @@ protected:
      * @param event
      */
     void wheelEvent(QWheelEvent *event) override;
+
+private:
+    /**
+     * @brief 根据最小值和最大值创建合适的正则表达式验证器
+     * @param min 最小值
+     * @param max 最大值
+     */
+    void updateValidator(int min, int max);
 };
 
 
