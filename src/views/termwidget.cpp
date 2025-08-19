@@ -1367,34 +1367,27 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 void TermWidget::wheelEvent(QWheelEvent *event)
 {
     int directionY = event->angleDelta().y();
+    if (directionY == 0) {
+        // 兼容触控板等设备
+        directionY = event->pixelDelta().y();
+    }
+    bool handled = false;
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
-        if (Qt::ControlModifier == event->modifiers()) {
-            int directionY = event->angleDelta().y();
+    if (isActiveWindow() && hasFocus()) {
+        // Ctrl + 滚轮 缩放字体（保留原行为，由开关控制）
+        if (Settings::instance()->ScrollWheelZoom() && event->modifiers() == Qt::ControlModifier) {
             if (directionY < 0) {
                 qCDebug(views) << "Branch: directionY is less than 0, zooming out";
-                // 向下缩小
-                zoomOut();  // zoom out 缩小
+                zoomOut();  // 缩小
             } else {
                 qCDebug(views) << "Branch: directionY is greater than 0, zooming in";
-                // 向上放大
-                zoomIn();   // zoom in 放大
+                zoomIn();   // 放大
             }
-        } else if ((Qt::ControlModifier | Qt::ShiftModifier) == event->modifiers()){
-            int newOpacity;
-            if (directionY < 0) {
-                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() - STEP_OPACITY;
-            } else {
-                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() + STEP_OPACITY;
-            }
-            newOpacity = qBound(0, newOpacity, 100);
-            qInfo() << Q_FUNC_INFO << "new opacity:" << newOpacity;
-            setTerminalOpacity(newOpacity / 100.f);
-            Settings::instance()->settings->option("basic.interface.opacity")->setValue((int)(newOpacity));
-        } else {
-            QTermWidget::wheelEvent(event);
+            handled = true;
         }
-    } else {
+    }
+
+    if (!handled) {
         QTermWidget::wheelEvent(event);
     }
 }

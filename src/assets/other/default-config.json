@@ -374,6 +374,12 @@
                             "type": "checkbox",
                             "text": "Allow Ctrl+scrollwheel to zoom text size",
                             "default": true
+                        },
+                        {
+                            "key": "opacity_on_ctrl_shift_updown",
+                            "type": "checkbox",
+                            "text": "Allow Ctrl+Shift+Up/Down to adjust opacity",
+                            "default": true
                         }
                     ]
                 },

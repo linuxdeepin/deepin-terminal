@@ -117,6 +117,8 @@ public:
      * @return
      */
     bool ScrollWheelZoom();
+    // 是否允许 Ctrl+Alt+滚轮 调整透明度
+    bool OpacityCtrlAltScrollWheel();
 //    void reload();
     /**
      * @brief 标签标题

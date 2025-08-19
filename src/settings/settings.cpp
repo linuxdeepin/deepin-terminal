@@ -1071,3 +1071,18 @@ bool Settings::ScrollWheelZoom()
     return settings->option("advanced.scroll.zoom_on_ctrl_scrollwheel")->value().toBool();
 }
 
+bool Settings::OpacityCtrlAltScrollWheel()
+{
+    // 为兼容性保留旧键，优先读取新键（Ctrl+Shift+Up/Down）
+    if (auto newOpt = settings->option("advanced.scroll.opacity_on_ctrl_shift_updown")) {
+        return newOpt->value().toBool();
+    }
+    if (auto shiftOpt = settings->option("advanced.scroll.opacity_on_shift_scrollwheel")) {
+        return shiftOpt->value().toBool();
+    }
+    if (auto oldOpt = settings->option("advanced.scroll.opacity_on_ctrl_alt_scrollwheel")) {
+        return oldOpt->value().toBool();
+    }
+    return true; // 默认开启
+}
+

@@ -1713,6 +1713,32 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             if (term->isActiveWindow())
                 term->showFlowMessage(false);
         }
+
+        // Ctrl+Shift+Up/Down 调整透明度
+        if ((keyEvent->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier)) && 
+            Settings::instance()->OpacityCtrlAltScrollWheel() &&
+            (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down)) {
+            
+            int current = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt();
+            int step = 5; // 每次调整5%
+            int newOpacity;
+            
+            if (keyEvent->key() == Qt::Key_Up) {
+                newOpacity = current + step; // Up键增加透明度（更不透明）
+            } else {
+                newOpacity = current - step; // Down键减少透明度（更透明）
+            }
+            
+            // 与设置界面滑块保持一致（范围 20-100）
+            newOpacity = qBound(20, newOpacity, 100);
+            qInfo() << Q_FUNC_INFO << "Ctrl+Shift+" << (keyEvent->key() == Qt::Key_Up ? "Up" : "Down") 
+                    << "opacity change from" << current << "to" << newOpacity;
+            
+            // 只修改设置值，让 Settings::terminalSettingChanged 信号触发更新
+            Settings::instance()->settings->option("basic.interface.opacity")->setValue(newOpacity);
+            
+            return true; // 事件已处理
+        }
     }
 
     //if (watched == this) {

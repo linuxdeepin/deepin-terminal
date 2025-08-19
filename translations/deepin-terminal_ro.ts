@@ -304,12 +304,12 @@
         <translation>Închide</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2051"/>
+        <location filename="../src/main/mainwindow.cpp" line="2077"/>
         <source>Type path to download file</source>
         <translation>Introduceți calea pentru a descărca fișierul</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="2377"/>
+        <location filename="../src/main/mainwindow.cpp" line="2403"/>
         <source>Custom Theme</source>
         <translation>Temă personalizată</translation>
     </message>
@@ -341,15 +341,15 @@
         <translation>Confirma</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1935"/>
-        <location filename="../src/settings/settings_translation.cpp" line="100"/>
+        <location filename="../src/main/mainwindow.cpp" line="1961"/>
+        <location filename="../src/settings/settings_translation.cpp" line="102"/>
         <location filename="../src/views/termwidget.cpp" line="575"/>
         <source>Close workspace</source>
         <translation>Închide spațiul de lucru</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1935"/>
-        <location filename="../src/settings/settings_translation.cpp" line="96"/>
+        <location filename="../src/main/mainwindow.cpp" line="1961"/>
+        <location filename="../src/settings/settings_translation.cpp" line="98"/>
         <location filename="../src/views/termwidget.cpp" line="578"/>
         <source>Close other workspaces</source>
         <translation>Închide alte spații de lucru</translation>
@@ -370,38 +370,38 @@
         <translation>Nu s-a găsit &quot;%1&quot;, nu se poate rula</translation>
     </message>
     <message>
-        <location filename="../src/views/termwidget.cpp" line="1409"/>
+        <location filename="../src/views/termwidget.cpp" line="1402"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
         <translation>Ieșirea a fost suspendată apăsând Ctrl+S. Apăsarea Ctrl+Q pentru a o relua.</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="124"/>
+        <location filename="../src/settings/settings_translation.cpp" line="126"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="145"/>
         <source>Tab title format</source>
         <translation>Format titlu fereastră</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="126"/>
+        <location filename="../src/settings/settings_translation.cpp" line="128"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="148"/>
         <source>Remote tab title format</source>
         <translation>Format titlu fereastră remotă</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1953"/>
-        <location filename="../src/settings/settings_translation.cpp" line="72"/>
+        <location filename="../src/main/mainwindow.cpp" line="1979"/>
+        <location filename="../src/settings/settings_translation.cpp" line="74"/>
         <location filename="../src/views/tabbar.cpp" line="611"/>
         <location filename="../src/views/tabrenamedlg.cpp" line="246"/>
         <source>Rename title</source>
         <translation>Redenumește titlul</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1933"/>
+        <location filename="../src/main/mainwindow.cpp" line="1959"/>
         <location filename="../src/views/tabbar.cpp" line="605"/>
         <source>Close tab</source>
         <translation>Închide fereastră</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1933"/>
+        <location filename="../src/main/mainwindow.cpp" line="1959"/>
         <location filename="../src/views/tabbar.cpp" line="608"/>
         <source>Close other tabs</source>
         <translation>Închide alte ferestre</translation>
@@ -438,37 +438,42 @@
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="32"/>
+        <source>Allow Ctrl+Shift+Up/Down to adjust opacity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settings/settings_translation.cpp" line="34"/>
         <source>Hide Quake window after losing focus</source>
         <translation>Ascunde fereastra Quake după pierderea focusului</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="34"/>
+        <location filename="../src/settings/settings_translation.cpp" line="36"/>
         <source>Quake window animation speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="152"/>
+        <location filename="../src/settings/settings_translation.cpp" line="154"/>
         <source>History size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="154"/>
+        <location filename="../src/settings/settings_translation.cpp" line="156"/>
         <source>Include special character(s) in double click selections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="156"/>
+        <location filename="../src/settings/settings_translation.cpp" line="158"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="158"/>
+        <location filename="../src/settings/settings_translation.cpp" line="160"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="189"/>
-        <location filename="../src/settings/settings_translation.cpp" line="36"/>
+        <location filename="../src/settings/settings_translation.cpp" line="38"/>
         <source>Blur background</source>
         <translation>Filtrează fundalul</translation>
     </message>
@@ -478,290 +483,290 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="38"/>
+        <location filename="../src/settings/settings_translation.cpp" line="40"/>
         <source>Use on starting</source>
         <translation>Utilizează la pornire</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="40"/>
+        <location filename="../src/settings/settings_translation.cpp" line="42"/>
         <source>Font</source>
         <translation>Font</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="42"/>
+        <location filename="../src/settings/settings_translation.cpp" line="44"/>
         <source>Font size</source>
         <translation>Mărimea fontului</translation>
     </message>
     <message>
         <location filename="../src/main/service.cpp" line="225"/>
-        <location filename="../src/settings/settings_translation.cpp" line="44"/>
+        <location filename="../src/settings/settings_translation.cpp" line="46"/>
         <source>Opacity</source>
         <translation>Transparență</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="46"/>
+        <location filename="../src/settings/settings_translation.cpp" line="48"/>
         <source>Advanced</source>
         <translation>Avansat</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="48"/>
+        <location filename="../src/settings/settings_translation.cpp" line="50"/>
         <source>Cursor</source>
         <translation>Cursor</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="50"/>
+        <location filename="../src/settings/settings_translation.cpp" line="52"/>
         <source>Scroll</source>
         <translation>Rulare</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="52"/>
+        <location filename="../src/settings/settings_translation.cpp" line="54"/>
         <source>Window</source>
         <translation>Fereastră</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="54"/>
+        <location filename="../src/settings/settings_translation.cpp" line="56"/>
         <source>Basic</source>
         <translation>De bază</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="56"/>
+        <location filename="../src/settings/settings_translation.cpp" line="58"/>
         <source>Interface</source>
         <translation>Interfață</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="58"/>
+        <location filename="../src/settings/settings_translation.cpp" line="60"/>
         <source>Shortcuts</source>
         <translation>Comenzi rapide</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1889"/>
-        <location filename="../src/settings/settings_translation.cpp" line="60"/>
+        <location filename="../src/main/mainwindow.cpp" line="1915"/>
+        <location filename="../src/settings/settings_translation.cpp" line="62"/>
         <source>Others</source>
         <translation>Altele</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1887"/>
+        <location filename="../src/main/mainwindow.cpp" line="1913"/>
         <location filename="../src/main/terminalapplication.cpp" line="27"/>
-        <location filename="../src/settings/settings_translation.cpp" line="62"/>
+        <location filename="../src/settings/settings_translation.cpp" line="64"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="64"/>
+        <location filename="../src/settings/settings_translation.cpp" line="66"/>
         <source>Workspace</source>
         <translation>Spațiu de lucru</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1953"/>
-        <location filename="../src/settings/settings_translation.cpp" line="66"/>
+        <location filename="../src/main/mainwindow.cpp" line="1979"/>
+        <location filename="../src/settings/settings_translation.cpp" line="68"/>
         <source>Custom commands</source>
         <translation>Comenzi personalizate</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1953"/>
-        <location filename="../src/settings/settings_translation.cpp" line="68"/>
+        <location filename="../src/main/mainwindow.cpp" line="1979"/>
+        <location filename="../src/settings/settings_translation.cpp" line="70"/>
         <source>Display shortcuts</source>
         <translation>Comenzi rapide de afișare</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1953"/>
-        <location filename="../src/settings/settings_translation.cpp" line="70"/>
+        <location filename="../src/main/mainwindow.cpp" line="1979"/>
+        <location filename="../src/settings/settings_translation.cpp" line="72"/>
         <source>Remote management</source>
         <translation>Administrare la distanță</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1953"/>
-        <location filename="../src/settings/settings_translation.cpp" line="74"/>
+        <location filename="../src/main/mainwindow.cpp" line="1979"/>
+        <location filename="../src/settings/settings_translation.cpp" line="76"/>
         <source>Fullscreen</source>
         <translation>Ecran complet</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1918"/>
-        <location filename="../src/settings/settings_translation.cpp" line="76"/>
+        <location filename="../src/main/mainwindow.cpp" line="1944"/>
+        <location filename="../src/settings/settings_translation.cpp" line="78"/>
         <source>Copy</source>
         <translation>Copiere</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1918"/>
-        <location filename="../src/settings/settings_translation.cpp" line="78"/>
+        <location filename="../src/main/mainwindow.cpp" line="1944"/>
+        <location filename="../src/settings/settings_translation.cpp" line="80"/>
         <source>Default size</source>
         <translation>Mărimea implicită</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1918"/>
-        <location filename="../src/settings/settings_translation.cpp" line="80"/>
+        <location filename="../src/main/mainwindow.cpp" line="1944"/>
+        <location filename="../src/settings/settings_translation.cpp" line="82"/>
         <source>Paste</source>
         <translation>Lipire</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="82"/>
+        <location filename="../src/settings/settings_translation.cpp" line="84"/>
         <source>Search</source>
         <translation>Căutare</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1918"/>
-        <location filename="../src/settings/settings_translation.cpp" line="84"/>
+        <location filename="../src/main/mainwindow.cpp" line="1944"/>
+        <location filename="../src/settings/settings_translation.cpp" line="86"/>
         <source>Select all</source>
         <translation>Selectare tot</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="86"/>
+        <location filename="../src/settings/settings_translation.cpp" line="88"/>
         <source>Jump to next command</source>
         <translation>Sari la comanda următoare</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="88"/>
+        <location filename="../src/settings/settings_translation.cpp" line="90"/>
         <source>Jump to previous command</source>
         <translation>Sari la comanda anterioară</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1918"/>
-        <location filename="../src/settings/settings_translation.cpp" line="90"/>
+        <location filename="../src/main/mainwindow.cpp" line="1944"/>
+        <location filename="../src/settings/settings_translation.cpp" line="92"/>
         <source>Zoom in</source>
         <translation>Mărire</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1918"/>
-        <location filename="../src/settings/settings_translation.cpp" line="92"/>
+        <location filename="../src/main/mainwindow.cpp" line="1944"/>
+        <location filename="../src/settings/settings_translation.cpp" line="94"/>
         <source>Zoom out</source>
         <translation>Micșorare</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="94"/>
+        <location filename="../src/settings/settings_translation.cpp" line="96"/>
         <source>Close other windows</source>
         <translation>Închide alte ferești</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="98"/>
+        <location filename="../src/settings/settings_translation.cpp" line="100"/>
         <source>Close window</source>
         <translation>Închide fereastra</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1934"/>
-        <location filename="../src/settings/settings_translation.cpp" line="102"/>
+        <location filename="../src/main/mainwindow.cpp" line="1960"/>
+        <location filename="../src/settings/settings_translation.cpp" line="104"/>
         <source>Horizontal split</source>
         <translation>Împărțire orizontală</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1933"/>
-        <location filename="../src/settings/settings_translation.cpp" line="104"/>
+        <location filename="../src/main/mainwindow.cpp" line="1959"/>
+        <location filename="../src/settings/settings_translation.cpp" line="106"/>
         <source>New tab</source>
         <translation>Ficat nou</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1933"/>
-        <location filename="../src/settings/settings_translation.cpp" line="106"/>
+        <location filename="../src/main/mainwindow.cpp" line="1959"/>
+        <location filename="../src/settings/settings_translation.cpp" line="108"/>
         <source>Next tab</source>
         <translation>Ficat următor</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1933"/>
-        <location filename="../src/settings/settings_translation.cpp" line="108"/>
+        <location filename="../src/main/mainwindow.cpp" line="1959"/>
+        <location filename="../src/settings/settings_translation.cpp" line="110"/>
         <source>Previous tab</source>
         <translation>Ficăra anterioră</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1935"/>
-        <location filename="../src/settings/settings_translation.cpp" line="110"/>
+        <location filename="../src/main/mainwindow.cpp" line="1961"/>
+        <location filename="../src/settings/settings_translation.cpp" line="112"/>
         <source>Select left workspace</source>
         <translation>Selectează spațiul de lucru din stânga</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1934"/>
-        <location filename="../src/settings/settings_translation.cpp" line="112"/>
+        <location filename="../src/main/mainwindow.cpp" line="1960"/>
+        <location filename="../src/settings/settings_translation.cpp" line="114"/>
         <source>Select lower workspace</source>
         <translation>Selectează spațiul de lucru inferior</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1935"/>
-        <location filename="../src/settings/settings_translation.cpp" line="114"/>
+        <location filename="../src/main/mainwindow.cpp" line="1961"/>
+        <location filename="../src/settings/settings_translation.cpp" line="116"/>
         <source>Select right workspace</source>
         <translation>Selectează spațiul de lucru din dreapta</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1934"/>
-        <location filename="../src/settings/settings_translation.cpp" line="116"/>
+        <location filename="../src/main/mainwindow.cpp" line="1960"/>
+        <location filename="../src/settings/settings_translation.cpp" line="118"/>
         <source>Select upper workspace</source>
         <translation>Selectează spațiul de lucru superior</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1934"/>
-        <location filename="../src/settings/settings_translation.cpp" line="118"/>
+        <location filename="../src/main/mainwindow.cpp" line="1960"/>
+        <location filename="../src/settings/settings_translation.cpp" line="120"/>
         <source>Vertical split</source>
         <translation>Împărțire verticală</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1918"/>
-        <location filename="../src/settings/settings_translation.cpp" line="120"/>
+        <location filename="../src/main/mainwindow.cpp" line="1944"/>
+        <location filename="../src/settings/settings_translation.cpp" line="122"/>
         <source>Find</source>
         <translation>Caută</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="122"/>
+        <location filename="../src/settings/settings_translation.cpp" line="124"/>
         <source>Tab titles</source>
         <translation>Titlurile ficărelor</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1936"/>
-        <location filename="../src/settings/settings_translation.cpp" line="128"/>
+        <location filename="../src/main/mainwindow.cpp" line="1962"/>
+        <location filename="../src/settings/settings_translation.cpp" line="130"/>
         <source>Go to tab 1</source>
         <translation>Mergi la ficăra 1</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1936"/>
-        <location filename="../src/settings/settings_translation.cpp" line="130"/>
+        <location filename="../src/main/mainwindow.cpp" line="1962"/>
+        <location filename="../src/settings/settings_translation.cpp" line="132"/>
         <source>Go to tab 2</source>
         <translation>Mergi la ficăra 2</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1936"/>
-        <location filename="../src/settings/settings_translation.cpp" line="132"/>
+        <location filename="../src/main/mainwindow.cpp" line="1962"/>
+        <location filename="../src/settings/settings_translation.cpp" line="134"/>
         <source>Go to tab 3</source>
         <translation>Mergi la ficăra 3</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1937"/>
-        <location filename="../src/settings/settings_translation.cpp" line="134"/>
+        <location filename="../src/main/mainwindow.cpp" line="1963"/>
+        <location filename="../src/settings/settings_translation.cpp" line="136"/>
         <source>Go to tab 4</source>
         <translation>Mergi la ficăra 4</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1937"/>
-        <location filename="../src/settings/settings_translation.cpp" line="136"/>
+        <location filename="../src/main/mainwindow.cpp" line="1963"/>
+        <location filename="../src/settings/settings_translation.cpp" line="138"/>
         <source>Go to tab 5</source>
         <translation>Mergi la ficăra 5</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1937"/>
-        <location filename="../src/settings/settings_translation.cpp" line="138"/>
+        <location filename="../src/main/mainwindow.cpp" line="1963"/>
+        <location filename="../src/settings/settings_translation.cpp" line="140"/>
         <source>Go to tab 6</source>
         <translation>Mergi la ficăra 6</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1938"/>
-        <location filename="../src/settings/settings_translation.cpp" line="140"/>
+        <location filename="../src/main/mainwindow.cpp" line="1964"/>
+        <location filename="../src/settings/settings_translation.cpp" line="142"/>
         <source>Go to tab 7</source>
         <translation>Mergi la ficăra 7</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1938"/>
-        <location filename="../src/settings/settings_translation.cpp" line="142"/>
+        <location filename="../src/main/mainwindow.cpp" line="1964"/>
+        <location filename="../src/settings/settings_translation.cpp" line="144"/>
         <source>Go to tab 8</source>
         <translation>Mergi la ficăra 8</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1938"/>
-        <location filename="../src/settings/settings_translation.cpp" line="144"/>
+        <location filename="../src/main/mainwindow.cpp" line="1964"/>
+        <location filename="../src/settings/settings_translation.cpp" line="146"/>
         <source>Go to tab 9</source>
         <translation>Mergi la ficăra 9</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="146"/>
+        <location filename="../src/settings/settings_translation.cpp" line="148"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
         <translation>Dezactivează controlul fluxului folosind Ctrl+S, Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/settings/settings_translation.cpp" line="148"/>
+        <location filename="../src/settings/settings_translation.cpp" line="150"/>
         <source>Shell profile</source>
         <translation>Profil shell</translation>
     </message>
@@ -778,7 +783,7 @@
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="152"/>
-        <location filename="../src/main/mainwindow.cpp" line="2074"/>
+        <location filename="../src/main/mainwindow.cpp" line="2100"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="716"/>
         <source>Select</source>
         <translation>Selectează</translation>
@@ -791,35 +796,35 @@
  fereestre, gestionare remote, mod quake și alte caracteristici.</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1885"/>
+        <location filename="../src/main/mainwindow.cpp" line="1911"/>
         <source>Tabs</source>
         <translation>Ficăre</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1905"/>
+        <location filename="../src/main/mainwindow.cpp" line="1931"/>
         <source>Switch focus to &quot;+&quot; icon</source>
         <translation>Schimbați atenția către simbolul &apos;+&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main/mainwindow.cpp" line="1934"/>
+        <location filename="../src/main/mainwindow.cpp" line="1960"/>
         <source>Select tab</source>
         <translation>Selectează ficăra</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="171"/>
-        <location filename="../src/main/mainwindow.cpp" line="1995"/>
+        <location filename="../src/main/mainwindow.cpp" line="2021"/>
         <source>Select file to upload</source>
         <translation>Selectează fișierul de încărcat</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="176"/>
-        <location filename="../src/main/mainwindow.cpp" line="2002"/>
+        <location filename="../src/main/mainwindow.cpp" line="2028"/>
         <source>Upload</source>
         <translation>Încarcă</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="146"/>
-        <location filename="../src/main/mainwindow.cpp" line="2068"/>
+        <location filename="../src/main/mainwindow.cpp" line="2094"/>
         <source>Select a directory to save the file</source>
         <translation>Selectează un director pentru a salva fișierul</translation>
     </message>
@@ -958,12 +963,12 @@
 <context>
     <name>QTermWidget</name>
     <message>
-        <location filename="../3rdparty/terminalwidget/lib/qtermwidget.cpp" line="670"/>
+        <location filename="../3rdparty/terminalwidget/lib/qtermwidget.cpp" line="674"/>
         <source>Color Scheme Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../3rdparty/terminalwidget/lib/qtermwidget.cpp" line="670"/>
+        <location filename="../3rdparty/terminalwidget/lib/qtermwidget.cpp" line="674"/>
         <source>Cannot load color scheme: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1013,6 +1018,7 @@
         <location filename="../3rdparty/terminalwidget/lib/SearchBar.ui" line="14"/>
         <location filename="../build/3rdparty/terminalwidget/ui_SearchBar.h" line="106"/>
         <location filename="../build/Desktop-Debug/3rdparty/terminalwidget/ui_SearchBar.h" line="106"/>
+        <location filename="../obj-x86_64-linux-gnu/3rdparty/terminalwidget/ui_SearchBar.h" line="106"/>
         <source>SearchBar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1020,6 +1026,7 @@
         <location filename="../3rdparty/terminalwidget/lib/SearchBar.ui" line="20"/>
         <location filename="../build/3rdparty/terminalwidget/ui_SearchBar.h" line="107"/>
         <location filename="../build/Desktop-Debug/3rdparty/terminalwidget/ui_SearchBar.h" line="107"/>
+        <location filename="../obj-x86_64-linux-gnu/3rdparty/terminalwidget/ui_SearchBar.h" line="107"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1027,6 +1034,7 @@
         <location filename="../3rdparty/terminalwidget/lib/SearchBar.ui" line="32"/>
         <location filename="../build/3rdparty/terminalwidget/ui_SearchBar.h" line="108"/>
         <location filename="../build/Desktop-Debug/3rdparty/terminalwidget/ui_SearchBar.h" line="108"/>
+        <location filename="../obj-x86_64-linux-gnu/3rdparty/terminalwidget/ui_SearchBar.h" line="108"/>
         <source>Find:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1034,6 +1042,7 @@
         <location filename="../3rdparty/terminalwidget/lib/SearchBar.ui" line="42"/>
         <location filename="../build/3rdparty/terminalwidget/ui_SearchBar.h" line="109"/>
         <location filename="../build/Desktop-Debug/3rdparty/terminalwidget/ui_SearchBar.h" line="109"/>
+        <location filename="../obj-x86_64-linux-gnu/3rdparty/terminalwidget/ui_SearchBar.h" line="109"/>
         <source>&lt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1041,6 +1050,7 @@
         <location filename="../3rdparty/terminalwidget/lib/SearchBar.ui" line="54"/>
         <location filename="../build/3rdparty/terminalwidget/ui_SearchBar.h" line="110"/>
         <location filename="../build/Desktop-Debug/3rdparty/terminalwidget/ui_SearchBar.h" line="110"/>
+        <location filename="../obj-x86_64-linux-gnu/3rdparty/terminalwidget/ui_SearchBar.h" line="110"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1048,6 +1058,7 @@
         <location filename="../3rdparty/terminalwidget/lib/SearchBar.ui" line="66"/>
         <location filename="../build/3rdparty/terminalwidget/ui_SearchBar.h" line="111"/>
         <location filename="../build/Desktop-Debug/3rdparty/terminalwidget/ui_SearchBar.h" line="111"/>
+        <location filename="../obj-x86_64-linux-gnu/3rdparty/terminalwidget/ui_SearchBar.h" line="111"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
