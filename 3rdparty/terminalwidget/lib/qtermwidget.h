@@ -390,6 +390,8 @@ protected slots:
     void selectionChanged(bool textSelected);
 
 private slots:
+    // Handle Ctrl+Mouse click cursor reposition request from TerminalDisplay
+    void onChangedCursorPosition(int count);
     void matchFound(int startColumn, int startLine, int endColumn, int endLine, int lastBackwardsPosition, int loseChinese, int matchChinese);
 
     /**
