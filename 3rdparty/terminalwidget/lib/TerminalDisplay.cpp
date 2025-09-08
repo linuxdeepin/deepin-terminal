@@ -686,6 +686,23 @@ void TerminalDisplay::setOpacity(qreal opacity)
     }*/
 
     _blendColor = color.rgba();
+
+    // Keep the scrollbar's appearance in sync with transparency settings
+    if (_scrollBar) {
+        const bool isTransparent = HAVE_TRANSPARENCY && qAlpha(_blendColor) < 0xff;
+
+        // Avoid style sheets and style hints: rely on palette and widget attributes
+        _scrollBar->setAutoFillBackground(!isTransparent);
+        _scrollBar->setAttribute(Qt::WA_TranslucentBackground, isTransparent);
+
+        QPalette pal = _scrollBar->palette();
+        QColor winColor = pal.color(QPalette::Window);
+        winColor.setAlpha(isTransparent ? 0 : 255);
+        pal.setColor(QPalette::Window, winColor);
+        _scrollBar->setPalette(pal);
+
+        _scrollBar->update();
+    }
 }
 
 void TerminalDisplay::setBackgroundImage(QString backgroundImage)
