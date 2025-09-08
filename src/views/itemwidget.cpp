@@ -403,8 +403,8 @@ void ItemWidget::initUI()
     }
 
     // 功能键布局
-    // 删除键使用更常见的“关闭”主题图标（等效为X），避免部分主题缺少edit-delete
-    m_deleteButton->setIcon(QIcon::fromTheme("window-close"));
+    // 删除键图标统一使用 edit-delete，保持明暗主题一致
+    m_deleteButton->setIcon(QIcon::fromTheme("edit-delete"));
     m_deleteButton->setFlat(true);
     m_deleteButton->setFocusPolicy(Qt::NoFocus);
     setFuncIcon(ItemFuncType(m_functType));
@@ -760,5 +760,7 @@ void ItemWidget::slotThemeChange(DGuiApplicationHelper::ColorType themeType)
     Q_UNUSED(themeType);
     setFontColor(m_firstline, ItemTextColor_Text);
     setFontColor(m_secondline, ItemTextColor_TextTips);
+    // 主题变化时统一使用 edit-delete 图标
+    m_deleteButton->setIcon(QIcon::fromTheme("edit-delete"));
     qCDebug(views) << "ItemWidget::slotThemeChange finished";
 }
