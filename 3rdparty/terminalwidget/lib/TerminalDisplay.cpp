@@ -693,12 +693,15 @@ void TerminalDisplay::setOpacity(qreal opacity)
 
         // Avoid style sheets and style hints: rely on palette and widget attributes
         _scrollBar->setAutoFillBackground(!isTransparent);
-        _scrollBar->setAttribute(Qt::WA_TranslucentBackground, isTransparent);
-
+        
+        // Don't use WA_TranslucentBackground as it may affect positioning calculations
+        // Instead, only modify the palette for transparency
         QPalette pal = _scrollBar->palette();
-        QColor winColor = pal.color(QPalette::Window);
-        winColor.setAlpha(isTransparent ? 0 : 255);
-        pal.setColor(QPalette::Window, winColor);
+        
+        QColor bgColor = pal.color(QPalette::Window);
+        bgColor.setAlpha(isTransparent ? 0 : 255);
+        
+        pal.setColor(QPalette::Window, bgColor);
         _scrollBar->setPalette(pal);
 
         _scrollBar->update();
