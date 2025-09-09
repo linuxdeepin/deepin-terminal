@@ -326,7 +326,7 @@ Name[zh_TW]=雷神模式終端器
 
 
 # [Desktop Action] sections for compatibility with desktop environments expecting Desktop Actions
-[Desktop Action NewWindow]
+[Desktop Action new-window]
 Exec=deepin-terminal
 Name=New Window
 Name[zh_CN]=新建窗口
@@ -334,7 +334,7 @@ Name[zh_HK]=新建視窗
 Name[zh_TW]=新增視窗
 Name[lo]=ໜ້າຕ່າງໃໝ່
 
-[Desktop Action Quake]
+[Desktop Action quake-mode]
 Exec=deepin-terminal --quake-mode
 Name=Quake Terminal
 Name[zh_CN]=雷神终端
