@@ -1447,13 +1447,15 @@ int Screen::copyLineToStream(int line ,
         }
 
         //retrieve line from screen image
-        auto end = qMin(start + count, length);
-        if (start < end) {
-            std::copy(data + start, data + end, characterBuffer);
-        }
-
-        if (length > start) {
-            // count cannot be any greater than length
+        // If selection starts beyond current line length, nothing to copy
+        if (start >= length) {
+            count = 0;
+        } else {
+            auto end = qMin(start + count, length);
+            if (start < end) {
+                std::copy(data + start, data + end, characterBuffer);
+            }
+            // count cannot be any greater than available length from start
             count = qBound(0, count, length - start);
         }
 
