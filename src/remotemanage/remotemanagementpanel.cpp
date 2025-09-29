@@ -252,6 +252,14 @@ void RemoteManagementPanel::initUI()
     m_pushButton->setFixedHeight(COMMONHEIGHT);
     m_pushButton->setText(tr("Add Server"));
 
+    QFontMetrics fm(m_pushButton->font());
+    int padding = fm.height() * 0.6;
+    int textWidth1 = fm.horizontalAdvance(m_pushButton->text()) + padding;
+    int textWidth2 = fm.horizontalAdvance(m_addGroupButton->text()) + padding;
+    int maxWidth = qMax(textWidth1, textWidth2);
+    m_pushButton->setMinimumWidth(maxWidth);
+    m_addGroupButton->setMinimumWidth(maxWidth);
+
     m_textLabel = new DLabel(this);
     m_textLabel->resize(136, 18);
     m_textLabel->setText(tr("No servers yet"));
@@ -288,12 +296,10 @@ void RemoteManagementPanel::initUI()
     m_backLayout->setSpacing(0);
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
-    btnLayout->setContentsMargins(0, 0, 0, 0);
-    btnLayout->addSpacing(SPACEWIDTH);
+    btnLayout->setContentsMargins(SPACEWIDTH, SPACEWIDTH, SPACEWIDTH, SPACEWIDTH);
     btnLayout->addWidget(m_pushButton);
     btnLayout->addSpacing(SPACEWIDTH);
     btnLayout->addWidget(m_addGroupButton);
-    btnLayout->addSpacing(SPACEWIDTH);
     btnLayout->setSpacing(0);
 
     QVBoxLayout *vlayout = new QVBoxLayout();

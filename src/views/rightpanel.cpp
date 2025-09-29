@@ -31,7 +31,7 @@ RightPanel::RightPanel(QWidget *parent) : QWidget(parent)
     // hide by default.
     QWidget::hide();
     // Init theme panel.
-    setFixedWidth(240 + 2);
+    setFixedWidth(260);
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
     qCDebug(views) << "Branch: DTKWIDGET_CLASS_DSizeMode defined";
