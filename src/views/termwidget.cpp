@@ -98,15 +98,29 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     qCDebug(views) << "Branch: Setting up theme";
     // theme
     QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    //theme = Settings::instance()->colorScheme();
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        qCDebug(views) << "Branch: Light theme detected, using Light color scheme";
-        theme = "Light";
+   
+    // 检查用户是否选择了特定主题
+    QString expandThemeStr = Settings::instance()->extendColorScheme();
+    if (!expandThemeStr.isEmpty()) {
+        // 用户选择了自定义主题（Theme1, Theme2等），使用该主题
+        qCDebug(views) << "Branch: Using user selected custom theme:" << expandThemeStr;
+        setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
+        Settings::instance()->m_customThemeModify = false;
+    } else {
+        // 用户选择了基础主题（浅色/深色）或"跟随系统"
+        // 先检查用户是否选择了浅色或深色主题
+        QString basicTheme = Settings::instance()->colorScheme();
+        if (basicTheme == "Light" || basicTheme == "Dark") {
+            // 用户明确选择了浅色或深色主题
+            qCDebug(views) << "Branch: Using user selected basic theme:" << basicTheme;
+            setColorScheme(basicTheme);
+        } else {
+            // 用户选择了"跟随系统"或初次启动，使用默认深色主题
+            qCDebug(views) << "Branch: Using default Dark theme, system theme changes will be handled by theme change mechanism";
+            setColorScheme(theme);
+            Settings::instance()->setColorScheme(theme);
+        }
     }
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-    setColorScheme(theme);
-    Settings::instance()->setColorScheme(theme);
 
     // 这个参数启动为默认值UTF-8
     setTextCodec(QTextCodec::codecForName("UTF-8"));
