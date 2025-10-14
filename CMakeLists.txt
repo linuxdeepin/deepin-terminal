@@ -80,6 +80,9 @@ message("   >>> Build with DTK: ${DTK_VERSION_MAJOR}")
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${qt_required_components})
 find_package(Dtk${DTK_VERSION_MAJOR} COMPONENTS Widget REQUIRED)
+if(Qt${QT_VERSION_MAJOR}_VERSION VERSION_GREATER_EQUAL 6.10)
+  find_package(Qt${QT_VERSION_MAJOR} COMPONENTS GuiPrivate WidgetsPrivate REQUIRED)
+endif()
 
 include(FindPkgConfig)
 
